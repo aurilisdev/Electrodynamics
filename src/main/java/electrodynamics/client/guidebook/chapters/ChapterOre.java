@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.api.References;
-import electrodynamics.api.item.ItemUtils;
 import electrodynamics.client.guidebook.utils.ImageWrapperObject;
 import electrodynamics.client.guidebook.utils.ItemWrapperObject;
 import electrodynamics.client.guidebook.utils.TextWrapperObject;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Page;
 import electrodynamics.common.block.subtype.SubtypeOre;
+import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import net.minecraft.network.chat.MutableComponent;

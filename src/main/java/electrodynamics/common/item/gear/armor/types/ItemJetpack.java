@@ -9,7 +9,7 @@ import com.mojang.datafixers.util.Pair;
 import electrodynamics.api.References;
 import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.client.ClientRegister;
-import electrodynamics.client.KeyBinds;
+import electrodynamics.client.keys.KeyBinds;
 import electrodynamics.client.render.model.armor.types.ModelJetpack;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.common.packet.NetworkHandler;

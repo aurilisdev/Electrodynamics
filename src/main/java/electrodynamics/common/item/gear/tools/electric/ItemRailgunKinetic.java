@@ -3,11 +3,11 @@ package electrodynamics.common.item.gear.tools.electric;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.prefab.item.ElectricItemProperties;
+import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.sounds.SoundSource;

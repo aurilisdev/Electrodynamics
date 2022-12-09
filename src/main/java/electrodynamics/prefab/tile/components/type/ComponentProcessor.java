@@ -7,7 +7,6 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.network.FluidUtilities;
@@ -26,6 +25,7 @@ import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.utilities.ItemUtils;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.fluids.FluidStack;

@@ -4,12 +4,13 @@ import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.conductor.IConductor;
 import electrodynamics.common.damage.DamageSources;
+import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -19,10 +20,12 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class ElectricityUtils {
+	
 	public static void electrecuteEntity(Entity entityIn, TransferPack transfer) {
 		if (transfer.getVoltage() <= 960.0) {
+			Ingredient insulatingItems = Ingredient.of(ElectrodynamicsTags.Items.INSULATES_PLAYER_FEET);
 			for (ItemStack armor : entityIn.getArmorSlots()) {
-				if (armor.getItem() == ElectrodynamicsItems.ITEM_RUBBERBOOTS.get()) {
+				if (ItemUtils.isIngredientMember(insulatingItems, armor.getItem())) {
 					float damage = (float) transfer.getAmps() / 10.0f;
 					if (Math.random() < damage) {
 						int integerDamage = (int) Math.max(1, damage);

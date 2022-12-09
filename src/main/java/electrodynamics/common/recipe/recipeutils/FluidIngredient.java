@@ -26,7 +26,8 @@ public class FluidIngredient extends Ingredient {
 	@Nonnull
 	private List<FluidStack> fluidStacks;
 
-	private TagKey<Fluid> tag;
+	@Nullable
+	public TagKey<Fluid> tag;
 	private int amount;
 
 	public FluidIngredient(FluidStack fluidStack) {
@@ -79,6 +80,15 @@ public class FluidIngredient extends Ingredient {
 		tag = FluidTags.create(resource);
 		this.amount = amount;
 		fluidStacks = new ArrayList<>();
+	}
+	
+	public FluidIngredient(TagKey<Fluid> tag, int amt) {
+		super(Stream.empty());
+		this.tag = tag;
+		amount = amt;
+		//Initialize to avoid null
+		fluidStacks = new ArrayList<>();
+		fluidStacks = getMatchingFluids();
 	}
 
 	public static FluidIngredient deserialize(JsonObject jsonObject) {

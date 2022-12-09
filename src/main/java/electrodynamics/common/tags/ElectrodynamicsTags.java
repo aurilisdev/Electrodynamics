@@ -177,9 +177,11 @@ public class ElectrodynamicsTags {
 		
 		public static final TagKey<Item> COAL_COKE = forgeTag("coal_coke");
 		public static final TagKey<Item> PLASTIC = forgeTag("plastic");
+		
 		public static final TagKey<Item> GEARS = forgeTag("gears");
 		public static final TagKey<Item> INGOTS = forgeTag("ingots");
 		public static final TagKey<Item> ORES = forgeTag("ores");
+		public static final TagKey<Item> INSULATES_PLAYER_FEET = forgeTag("insulates_player_feet");
 		
 		private static void init() {}
 		

@@ -11,8 +11,10 @@ import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.condition.ConfigCondition;
 import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
+import electrodynamics.common.event.ServerEventHandler;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
+import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.settings.OreConfig;
 import electrodynamics.common.tags.ElectrodynamicsTags;
@@ -50,11 +52,14 @@ public class Electrodynamics {
 		ElectrodynamicsRecipeInit.RECIPE_TYPES.register(bus);
 		ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
 		ElectrodynamicsAttributeModifiers.init();
+		
 	}
 
 	@SubscribeEvent
 	public static void onCommonSetup(FMLCommonSetupEvent event) {
+		ServerEventHandler.init();
 		NetworkHandler.init();
+		CombustionFuelRegister.INSTANCE = new CombustionFuelRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
 		ElectrodynamicsTags.init();
 		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to 1.19.2
 	}

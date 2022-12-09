@@ -4,8 +4,8 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import electrodynamics.api.item.IItemElectric;
-import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.gear.armor.types.ItemNightVisionGoggles;
+import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;

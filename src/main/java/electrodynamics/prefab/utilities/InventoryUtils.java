@@ -3,7 +3,6 @@ package electrodynamics.prefab.utilities;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.tile.GenericTile;

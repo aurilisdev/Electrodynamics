@@ -3,7 +3,6 @@ package electrodynamics.common.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
 import electrodynamics.prefab.tile.GenericTile;
@@ -13,6 +12,7 @@ import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;

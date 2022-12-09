@@ -4,6 +4,7 @@ import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCombustionChamber;
 import electrodynamics.common.network.FluidUtilities;
+import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.properties.Property;
@@ -22,16 +23,16 @@ import electrodynamics.prefab.tile.types.GenericFluidTile;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
+import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.prefab.utilities.tile.CombustionFuelSource;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class TileCombustionChamber extends GenericFluidTile implements IElectricGenerator, ITickableSoundTile {
@@ -44,16 +45,8 @@ public class TileCombustionChamber extends GenericFluidTile implements IElectric
 	private CachedTileOutput output;
 	//for future upgrades
 	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier", 1.0));
-
-	private static TagKey<Fluid>[] FUELS;
 	
 	private boolean isSoundPlaying = false;
-
-	static {
-		CombustionFuelSource.addFuelSource(ElectrodynamicsTags.Fluids.HYDROGEN, 1000, 1);
-		CombustionFuelSource.addFuelSource(ElectrodynamicsTags.Fluids.ETHANOL, 1, 1);
-		FUELS = CombustionFuelSource.FUELS.keySet().toArray(new TagKey[0]);
-	}
 
 	public TileCombustionChamber(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_COMBUSTIONCHAMBER.get(), worldPosition, blockState);
@@ -62,7 +55,7 @@ public class TileCombustionChamber extends GenericFluidTile implements IElectric
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST));
 		addComponent(new ComponentInventory(this).size(1).bucketInputs(1).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
-		addComponent(new ComponentFluidHandlerMulti(this).setInputTanks(1, TANK_CAPACITY).setInputDirections(Direction.WEST).setInputFluidTags(FUELS));
+		addComponent(new ComponentFluidHandlerMulti(this).setInputTanks(1, TANK_CAPACITY).setInputDirections(Direction.WEST).setInputFluidTags(CombustionFuelRegister.INSTANCE.getFluidTags()));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.combustionchamber).createMenu((id, player) -> new ContainerCombustionChamber(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
@@ -81,11 +74,14 @@ public class TileCombustionChamber extends GenericFluidTile implements IElectric
 		if (burnTime.get() <= 0) {
 			running.set(false);
 			if (tank.getFluidAmount() > 0) {
-				CombustionFuelSource source = CombustionFuelSource.getSourceFromFluid(tank.getFluid().getFluid());
-				tank.getFluid().shrink(source.getFluidUsage());
-				fuelMultiplier = source.getPowerMultiplier();
-				running.set(true);
-				burnTime.set(TICKS_PER_MILLIBUCKET);
+				CombustionFuelSource source = CombustionFuelRegister.INSTANCE.getFuelFromFluid(tank.getFluid());
+				if(!source.isEmpty()) {
+					tank.drain(new FluidStack(tank.getFluid().getFluid(), source.getFuelUsage()), FluidAction.EXECUTE);
+					fuelMultiplier = source.getPowerMultiplier();
+					running.set(true);
+					burnTime.set(TICKS_PER_MILLIBUCKET);
+				}
+				
 			}
 		} else {
 			running.set(true);

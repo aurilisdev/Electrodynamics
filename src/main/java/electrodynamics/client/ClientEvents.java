@@ -1,55 +1,48 @@
 package electrodynamics.client;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.datafixers.util.Pair;
-
-import electrodynamics.api.item.ItemUtils;
+import electrodynamics.client.keys.event.AbstractKeyPressHandler;
+import electrodynamics.client.keys.event.HandlerModeSwitchJetpack;
+import electrodynamics.client.keys.event.HandlerToggleNVGoggles;
+import electrodynamics.client.keys.event.HandlerToggleServoLegs;
+import electrodynamics.client.render.event.levelstage.AbstractLevelStageHandler;
+import electrodynamics.client.render.event.levelstage.HandlerMarkerLines;
+import electrodynamics.client.render.event.levelstage.HandlerQuarryArm;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
-import electrodynamics.common.item.subtype.SubtypeDrillHead;
-import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketModeSwitchServer;
-import electrodynamics.common.packet.types.PacketModeSwitchServer.Mode;
-import electrodynamics.common.packet.types.PacketToggleOnServer;
-import electrodynamics.common.packet.types.PacketToggleOnServer.Type;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.TextUtils;
-import electrodynamics.prefab.utilities.object.QuarryArmDataHolder;
-import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.InputEvent.Key;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientEvents {
 
+	private static final List<AbstractKeyPressHandler> KEY_PRESS_HANDLERS = new ArrayList<>();
+	private static final List<AbstractLevelStageHandler> LEVEL_STAGE_RENDER_HANDLERS = new ArrayList<>();
+	
+	public static void init() {
+		KEY_PRESS_HANDLERS.add(new HandlerToggleNVGoggles());
+		KEY_PRESS_HANDLERS.add(new HandlerToggleServoLegs());
+		KEY_PRESS_HANDLERS.add(new HandlerToggleServoLegs());
+		KEY_PRESS_HANDLERS.add(new HandlerModeSwitchJetpack());
+		
+		LEVEL_STAGE_RENDER_HANDLERS.add(HandlerQuarryArm.INSTANCE);
+		LEVEL_STAGE_RENDER_HANDLERS.add(HandlerMarkerLines.INSTANCE);
+	}
+	
 	@SubscribeEvent
 	public static void renderRailgunTooltip(RenderGuiOverlayEvent.Post event) {
 		Player player = Minecraft.getInstance().player;
@@ -97,135 +90,26 @@ public class ClientEvents {
 		event.getPoseStack().popPose();
 	}
 
-	private static HashSet<Pair<Long, BlockPos>> blocks = new HashSet<>();
-
-	public static HashMap<BlockPos, List<AABB>> markerLines = new HashMap<>();
-
-	public static HashMap<BlockPos, QuarryArmDataHolder> quarryArm = new HashMap<>();
-
 	@SubscribeEvent
-	public static void renderSelectedBlocks(RenderLevelStageEvent event) {
-		if (event.getStage() == Stage.AFTER_WEATHER) {
-			PoseStack matrix = event.getPoseStack();
-			MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-			VertexConsumer builder = buffer.getBuffer(RenderType.LINES);
-			Minecraft minecraft = Minecraft.getInstance();
-			GameRenderer renderer = minecraft.gameRenderer;
-			Vec3 camera = renderer.getMainCamera().getPosition();
-			Iterator<Pair<Long, BlockPos>> it = blocks.iterator();
-			while (it.hasNext()) {
-				Pair<Long, BlockPos> pair = it.next();
-				AABB box = new AABB(pair.getSecond());
-				matrix.pushPose();
-				matrix.translate(-camera.x, -camera.y, -camera.z);
-				LevelRenderer.renderLineBox(matrix, builder, box, 1.0F, 1.0F, 1.0F, 1.0F);
-				matrix.popPose();
-				if (System.currentTimeMillis() - pair.getFirst() > 10000) {
-					it.remove();
-				}
+	public static void handleRenderEvents(RenderLevelStageEvent event) {
+		LEVEL_STAGE_RENDER_HANDLERS.forEach(handler -> {
+			if(handler.shouldRender(event.getStage())) {
+				handler.render(event, Minecraft.getInstance());
 			}
-			buffer.endBatch(RenderType.LINES);
-			VertexConsumer sheetBuilder = buffer.getBuffer(RenderingUtils.beaconType());
-			markerLines.forEach((pos, list) -> list.forEach(aabb -> {
-				matrix.pushPose();
-				matrix.translate(-camera.x, -camera.y, -camera.z);
-				RenderingUtils.renderSolidColorBox(matrix, minecraft, sheetBuilder, aabb, 1.0F, 0F, 0F, 1.0F, 255, 0);
-				matrix.popPose();
-			}));
-			buffer.endBatch(RenderingUtils.beaconType());
-			TextureAtlasSprite cornerFrame = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_QUARRYARM);
-			float u0Frame = cornerFrame.getU0();
-			float u1Frame = cornerFrame.getU1();
-			float v0Frame = cornerFrame.getV0();
-			float v1Frame = cornerFrame.getV1();
-			float[] colorsFrame = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
-
-			TextureAtlasSprite titanium = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(SubtypeDrillHead.titanium.blockTextureLoc);
-			float u0Titanium = titanium.getU0();
-			float u1Titanium = titanium.getU1();
-			float v0Titanium = titanium.getV0();
-			float v1Titanium = titanium.getV1();
-			float[] colorsTitanium = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
-
-			VertexConsumer armBuilder = buffer.getBuffer(Sheets.solidBlockSheet());
-
-			quarryArm.forEach((pos, data) -> {
-				data.armParts.forEach(aabb -> {
-					matrix.pushPose();
-					matrix.translate(-camera.x, -camera.y, -camera.z);
-					RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, 255);
-					matrix.popPose();
-				});
-				data.titaniumParts.forEach(aabb -> {
-					matrix.pushPose();
-					matrix.translate(-camera.x, -camera.y, -camera.z);
-					RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, 255);
-					matrix.popPose();
-				});
-				if (data.headType != null) {
-					matrix.pushPose();
-					matrix.translate(-camera.x, -camera.y, -camera.z);
-					TextureAtlasSprite headText = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(data.headType.blockTextureLoc);
-					float u0Head = headText.getU0();
-					float u1Head = headText.getU1();
-					float v0Head = headText.getV0();
-					float v1Head = headText.getV1();
-					float[] colorsHead = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
-					RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, data.drillHead, colorsHead[0], colorsHead[1], colorsHead[2], colorsHead[3], u0Head, v0Head, u1Head, v1Head, 255);
-					matrix.popPose();
-				}
-			});
-
-			buffer.endBatch(Sheets.solidBlockSheet());
-		}
-	}
-
-	public static void addRenderLocation(BlockPos pos) {
-		blocks.add(new Pair<>(System.currentTimeMillis(), pos));
+		});
 	}
 
 	@SubscribeEvent
 	public static void wipeRenderHashes(ClientPlayerNetworkEvent.LoggingOut event) {
 		Player player = event.getPlayer();
 		if (player != null) {
-			blocks.clear();
-			markerLines.clear();
-			quarryArm.clear();
+			LEVEL_STAGE_RENDER_HANDLERS.forEach(handler -> handler.clear());
 		}
 	}
 
 	@SubscribeEvent
-	public static void keyPressEvents(Key event) {
-		Minecraft minecraft = Minecraft.getInstance();
-		Player player = minecraft.player;
-		if (KeyBinds.switchJetpackMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchJetpackMode.isDown()) {
-			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-			if (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
-				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.JETPACK));
-			}
-		}
-
-		if (KeyBinds.toggleNvgs.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleNvgs.isDown()) {
-			ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
-			if (ItemUtils.testItems(playerHead.getItem(), ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get()) || ItemUtils.testItems(playerHead.getItem(), ElectrodynamicsItems.ITEM_COMBATHELMET.get())) {
-				NetworkHandler.CHANNEL.sendToServer(new PacketToggleOnServer(player.getUUID(), Type.NVGS));
-			}
-		}
-
-		if (KeyBinds.switchServoLeggingsMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchServoLeggingsMode.isDown()) {
-			ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-			if (ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
-				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.SERVOLEGS));
-			}
-		}
-
-		if (KeyBinds.toggleServoLeggings.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleServoLeggings.isDown()) {
-			ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-			if (ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
-				NetworkHandler.CHANNEL.sendToServer(new PacketToggleOnServer(player.getUUID(), Type.SERVOLEGGINGS));
-			}
-		}
-
+	public static void handleKeyPress(Key event) {
+		KEY_PRESS_HANDLERS.forEach(handler -> handler.handler(event, Minecraft.getInstance()));
 	}
 
 }

@@ -9,7 +9,7 @@ import javax.annotation.Nullable;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.tile.IPlayerStorable;
-import electrodynamics.client.ClientEvents;
+import electrodynamics.client.render.event.levelstage.HandlerQuarryArm;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerQuarry;
@@ -353,7 +353,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	private void tickClient(ComponentTickable tick) {
 		BlockPos pos = getBlockPos();
-		ClientEvents.quarryArm.remove(pos);
+		HandlerQuarryArm.removeRenderData(getBlockPos());
 		if (hasClientCorners() && clientMiningPos != null) {
 			if (storedArmFrames.isEmpty()) {
 				storedArmFrames = getArmFrames();
@@ -483,7 +483,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				break;
 			}
 			storedArmFrames.remove(0);
-			ClientEvents.quarryArm.put(pos, new QuarryArmDataHolder(arms, titanium, downHead, clientHeadType));
+			HandlerQuarryArm.addRenderData(pos, new QuarryArmDataHolder(arms, titanium, downHead, clientHeadType));
 		}
 	}
 
@@ -1193,7 +1193,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	@Override
 	public void setRemoved() {
 		if (getLevel().isClientSide) {
-			ClientEvents.quarryArm.remove(getBlockPos());
+			HandlerQuarryArm.removeRenderData(getBlockPos());
 		}
 		super.setRemoved();
 	}

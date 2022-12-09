@@ -1,4 +1,4 @@
-package electrodynamics.client;
+package electrodynamics.client.keys;
 
 import com.mojang.blaze3d.platform.InputConstants;
 

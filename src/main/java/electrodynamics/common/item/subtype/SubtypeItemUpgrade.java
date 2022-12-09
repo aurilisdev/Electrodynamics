@@ -6,11 +6,11 @@ import java.util.List;
 import org.apache.logging.log4j.util.TriConsumer;
 
 import electrodynamics.api.ISubtype;
-import electrodynamics.api.item.ItemUtils;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
+import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
