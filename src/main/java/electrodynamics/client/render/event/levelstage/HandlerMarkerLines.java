@@ -5,60 +5,63 @@ import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
 
 import electrodynamics.prefab.utilities.RenderingUtils;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 
 public class HandlerMarkerLines extends AbstractLevelStageHandler {
 
 	public static final HandlerMarkerLines INSTANCE = new HandlerMarkerLines();
-	
+
 	private final HashMap<BlockPos, List<AABB>> markerLines = new HashMap<>();
-	
+
 	@Override
 	public boolean shouldRender(Stage stage) {
-		return stage == Stage.AFTER_TRANSLUCENT_BLOCKS;
+		return stage == Stage.AFTER_TRIPWIRE_BLOCKS;
 	}
 
 	@Override
-	public void render(RenderLevelStageEvent event, Minecraft minecraft) {
-		
+	public void render(Camera camera, Frustum frustum, LevelRenderer renderer, PoseStack stack,
+			Matrix4f projectionMatrix, Minecraft minecraft, int renderTick, float partialTick) {
+
 		MultiBufferSource.BufferSource buffer = minecraft.renderBuffers().bufferSource();
-		PoseStack matrix = event.getPoseStack();
-		GameRenderer renderer = minecraft.gameRenderer;
-		Vec3 camera = renderer.getMainCamera().getPosition();
-		
-		VertexConsumer sheetBuilder = buffer.getBuffer(RenderingUtils.beaconType());
+		RenderType beaconType = RenderingUtils.beaconType();
+		VertexConsumer sheetBuilder = buffer.getBuffer(beaconType);
+		Vec3 camPos = camera.getPosition();
+
 		markerLines.forEach((pos, list) -> list.forEach(aabb -> {
-			matrix.pushPose();
-			matrix.translate(-camera.x, -camera.y, -camera.z);
-			RenderingUtils.renderSolidColorBox(matrix, minecraft, sheetBuilder, aabb, 1.0F, 0F, 0F, 1.0F, 255, 0);
-			matrix.popPose();
+			stack.pushPose();
+			stack.translate(-camPos.x, -camPos.y, -camPos.z);
+			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, aabb, 1.0F, 0F, 0F, 1.0F, 255, 0);
+			stack.popPose();
 		}));
-		buffer.endBatch(RenderingUtils.beaconType());
-		
+		buffer.endBatch(beaconType);
+
 	}
-	
+
 	@Override
 	public void clear() {
 		markerLines.clear();
 	}
-	
+
 	public static boolean containsLines(BlockPos pos) {
 		return INSTANCE.markerLines.containsKey(pos);
 	}
-	
+
 	public static void addLines(BlockPos pos, List<AABB> lines) {
 		INSTANCE.markerLines.put(pos, lines);
 	}
-	
+
 	public static void removeLines(BlockPos pos) {
 		INSTANCE.markerLines.remove(pos);
 	}

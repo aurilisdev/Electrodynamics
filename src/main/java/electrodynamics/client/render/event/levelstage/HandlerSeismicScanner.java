@@ -6,16 +6,17 @@ import java.util.Map.Entry;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
 
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 
 public class HandlerSeismicScanner extends AbstractLevelStageHandler {
@@ -26,27 +27,28 @@ public class HandlerSeismicScanner extends AbstractLevelStageHandler {
 	
 	@Override
 	public boolean shouldRender(Stage stage) {
-		return stage == Stage.AFTER_TRANSLUCENT_BLOCKS;
+		return stage == Stage.AFTER_TRIPWIRE_BLOCKS;
 	}
 
 	@Override
-	public void render(RenderLevelStageEvent event, Minecraft minecraft) {
+	public void render(Camera camera, Frustum frustum, LevelRenderer renderer, PoseStack stack,
+			Matrix4f projectionMatrix, Minecraft minecraft, int renderTick, float partialTick) {
 		
-		PoseStack matrix = event.getPoseStack();
-		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
+		MultiBufferSource.BufferSource buffer = minecraft.renderBuffers().bufferSource();
 		VertexConsumer builder = buffer.getBuffer(RenderType.LINES);
-		GameRenderer renderer = minecraft.gameRenderer;
-		Vec3 camera = renderer.getMainCamera().getPosition();
+		Vec3 camPos = camera.getPosition();
 		
 		Iterator<Entry<BlockPos, Long>> it = pingedBlocks.entrySet().iterator();
 		while (it.hasNext()) {
 			Entry<BlockPos, Long> entry = it.next();
 			AABB box = new AABB(entry.getKey());
-			matrix.pushPose();
-			matrix.translate(-camera.x, -camera.y, -camera.z);
-			LevelRenderer.renderLineBox(matrix, builder, box, 1.0F, 1.0F, 1.0F, 1.0F);
-			matrix.popPose();
+			stack.pushPose();
+			stack.translate(-camPos.x, -camPos.y, -camPos.z);
+			LevelRenderer.renderLineBox(stack, builder, box, 1.0F, 1.0F, 1.0F, 1.0F);
+			stack.popPose();
 			if (System.currentTimeMillis() - entry.getValue() > 10000) {
+				it.remove();
+			} else if (minecraft.level.getBlockState(entry.getKey()).isAir()) {
 				it.remove();
 			}
 		}

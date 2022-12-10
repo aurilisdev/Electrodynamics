@@ -4,20 +4,22 @@ import java.util.HashMap;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Matrix4f;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.object.QuarryArmDataHolder;
+import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 
 public class HandlerQuarryArm extends AbstractLevelStageHandler {
@@ -32,11 +34,11 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 	}
 
 	@Override
-	public void render(RenderLevelStageEvent event, Minecraft minecraft) {
+	public void render(Camera camera, Frustum frustum, LevelRenderer renderer, PoseStack stack,
+			Matrix4f projectionMatrix, Minecraft minecraft, int renderTick, float partialTick) {
+		
 		MultiBufferSource.BufferSource buffer = minecraft.renderBuffers().bufferSource();
-		PoseStack matrix = event.getPoseStack();
-		GameRenderer renderer = minecraft.gameRenderer;
-		Vec3 camera = renderer.getMainCamera().getPosition();
+		Vec3 camPos = camera.getPosition();
 		
 		TextureAtlasSprite cornerFrame = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_QUARRYARM);
 		float u0Frame = cornerFrame.getU0();
@@ -56,28 +58,28 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 
 		armsToRender.forEach((pos, data) -> {
 			data.armParts.forEach(aabb -> {
-				matrix.pushPose();
-				matrix.translate(-camera.x, -camera.y, -camera.z);
-				RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, 255);
-				matrix.popPose();
+				stack.pushPose();
+				stack.translate(-camPos.x, -camPos.y, -camPos.z);
+				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, 255);
+				stack.popPose();
 			});
 			data.titaniumParts.forEach(aabb -> {
-				matrix.pushPose();
-				matrix.translate(-camera.x, -camera.y, -camera.z);
-				RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, 255);
-				matrix.popPose();
+				stack.pushPose();
+				stack.translate(-camPos.x, -camPos.y, -camPos.z);
+				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, 255);
+				stack.popPose();
 			});
 			if (data.headType != null) {
-				matrix.pushPose();
-				matrix.translate(-camera.x, -camera.y, -camera.z);
+				stack.pushPose();
+				stack.translate(-camPos.x, -camPos.y, -camPos.z);
 				TextureAtlasSprite headText = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(data.headType.blockTextureLoc);
 				float u0Head = headText.getU0();
 				float u1Head = headText.getU1();
 				float v0Head = headText.getV0();
 				float v1Head = headText.getV1();
 				float[] colorsHead = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
-				RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, data.drillHead, colorsHead[0], colorsHead[1], colorsHead[2], colorsHead[3], u0Head, v0Head, u1Head, v1Head, 255);
-				matrix.popPose();
+				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, data.drillHead, colorsHead[0], colorsHead[1], colorsHead[2], colorsHead[3], u0Head, v0Head, u1Head, v1Head, 255);
+				stack.popPose();
 			}
 		});
 
