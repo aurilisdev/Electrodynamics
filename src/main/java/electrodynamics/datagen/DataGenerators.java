@@ -6,6 +6,7 @@ import electrodynamics.datagen.client.ElectrodynamicsBlockStateProvider;
 import electrodynamics.datagen.client.ElectrodynamicsItemModelsProvider;
 import electrodynamics.datagen.client.ElectrodynamicsLangKeyProvider;
 import electrodynamics.datagen.client.ElectrodynamicsSoundProvider;
+import electrodynamics.datagen.server.CoalGeneratorFuelSourceProvider;
 import electrodynamics.datagen.server.CombustionChamberFuelSourceProvider;
 import electrodynamics.datagen.server.ElectrodynamicsBiomeFeaturesProvider;
 import electrodynamics.datagen.server.ElectrodynamicsBlockTagsProvider;
@@ -34,6 +35,7 @@ public class DataGenerators {
 			generator.addProvider(true, new ElectrodynamicsRecipeProvider(generator));
 			generator.addProvider(true, new ElectrodynamicsBiomeFeaturesProvider(generator));
 			generator.addProvider(true, new CombustionChamberFuelSourceProvider(generator));
+			generator.addProvider(true, new CoalGeneratorFuelSourceProvider(generator));
 		}
 		if (event.includeClient()) {
 			generator.addProvider(true, new ElectrodynamicsBlockStateProvider(generator, event.getExistingFileHelper()));

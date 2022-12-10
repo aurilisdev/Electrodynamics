@@ -76,19 +76,15 @@ public class FluidIngredient extends Ingredient {
 	 * @param amount
 	 */
 	private FluidIngredient(ResourceLocation resource, int amount) {
-		super(Stream.empty());
-		tag = FluidTags.create(resource);
-		this.amount = amount;
-		fluidStacks = new ArrayList<>();
+		this(FluidTags.create(resource), amount);
 	}
 	
-	public FluidIngredient(TagKey<Fluid> tag, int amt) {
+	public FluidIngredient(TagKey<Fluid> tag, int amount) {
 		super(Stream.empty());
 		this.tag = tag;
-		amount = amt;
-		//Initialize to avoid null
+		this.amount = amount;
 		fluidStacks = new ArrayList<>();
-		fluidStacks = getMatchingFluids();
+
 	}
 
 	public static FluidIngredient deserialize(JsonObject jsonObject) {
@@ -166,7 +162,7 @@ public class FluidIngredient extends Ingredient {
 	}
 
 	public FluidStack getFluidStack() {
-		return fluidStacks.get(0);
+		return getMatchingFluids().get(0);
 	}
 
 }

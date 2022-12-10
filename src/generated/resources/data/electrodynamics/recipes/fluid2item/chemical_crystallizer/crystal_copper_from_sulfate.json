@@ -4,7 +4,7 @@
   "fluidinputs": {
     "0": {
       "amount": 200,
-      "tag": "forge:_sulfatecopper"
+      "tag": "forge:sulfate_copper"
     },
     "count": 1
   },

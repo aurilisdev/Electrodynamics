@@ -14,6 +14,7 @@ import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
 import electrodynamics.common.event.ServerEventHandler;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
+import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.settings.OreConfig;
@@ -60,6 +61,7 @@ public class Electrodynamics {
 		ServerEventHandler.init();
 		NetworkHandler.init();
 		CombustionFuelRegister.INSTANCE = new CombustionFuelRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
+		CoalGeneratorFuelRegister.INSTANCE = new CoalGeneratorFuelRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
 		ElectrodynamicsTags.init();
 		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to 1.19.2
 	}

@@ -11,6 +11,7 @@ import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 
 /**
  * Apparently with packets, certain class calls cannot be called within the packet itself because Java
@@ -48,6 +49,11 @@ public class BarrierMethods {
 		if (minecraft.level != null && minecraft.player != null) {
 			CombustionFuelRegister.INSTANCE.setClientValues(fuels);
 		}
+	}
+
+	public static void handlerClientCoalGenFuels(HashSet<Item> fuels) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

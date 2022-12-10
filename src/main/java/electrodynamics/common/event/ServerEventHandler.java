@@ -15,6 +15,7 @@ import electrodynamics.common.event.types.player.starttracking.AbstractPlayerSta
 import electrodynamics.common.event.types.player.starttracking.HandlerJetpackSound;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
+import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
@@ -22,6 +23,7 @@ import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -74,8 +76,14 @@ public class ServerEventHandler {
 	}
 	
 	@SubscribeEvent
-	public static void reloadListeners(AddReloadListenerEvent event) {
+	public static void addReloadListeners(AddReloadListenerEvent event) {
 		event.addListener(CombustionFuelRegister.INSTANCE);
+		event.addListener(CoalGeneratorFuelRegister.INSTANCE);
+	}
+	
+	@SubscribeEvent
+	public static void serverStartedHandler(ServerStartedEvent event) {
+		CoalGeneratorFuelRegister.INSTANCE.generateTagValues();
 	}
 
 

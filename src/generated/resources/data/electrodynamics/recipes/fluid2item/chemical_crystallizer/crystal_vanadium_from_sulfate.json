@@ -4,7 +4,7 @@
   "fluidinputs": {
     "0": {
       "amount": 200,
-      "tag": "forge:_sulfatevanadium"
+      "tag": "forge:sulfate_vanadium"
     },
     "count": 1
   },

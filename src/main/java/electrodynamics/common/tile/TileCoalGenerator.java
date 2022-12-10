@@ -6,6 +6,7 @@ import java.util.List;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
+import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.generic.GenericGeneratorTile;
 import electrodynamics.prefab.properties.Property;
@@ -28,14 +29,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class TileCoalGenerator extends GenericGeneratorTile {
 	protected CachedTileOutput output;
@@ -120,9 +117,6 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 	}
 
 	public static List<Item> getValidItems() {
-		List<Item> items = new ArrayList<>(ForgeRegistries.ITEMS.tags().getTag(ItemTags.COALS).stream().toList());
-		items.add(Items.CHARCOAL);
-		items.add(Blocks.COAL_BLOCK.asItem());
-		return items;
+		return new ArrayList<>(CoalGeneratorFuelRegister.INSTANCE.getFuels());
 	}
 }

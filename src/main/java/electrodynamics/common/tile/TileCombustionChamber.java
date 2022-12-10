@@ -6,7 +6,6 @@ import electrodynamics.common.inventory.container.tile.ContainerCombustionChambe
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.sound.SoundBarrierMethods;

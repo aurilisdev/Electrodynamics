@@ -135,7 +135,7 @@ public class CombustionFuelRegister extends SimplePreparableReloadListener<HashS
 	}
 
 	private static boolean isJson(final ResourceLocation filename) {
-		return filename.toString().endsWith(JSON_EXTENSION);
+		return filename.toString().contains(FOLDER) && filename.toString().endsWith(JSON_EXTENSION);
 	}
 
 }
