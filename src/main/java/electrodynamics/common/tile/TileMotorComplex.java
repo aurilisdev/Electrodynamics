@@ -37,7 +37,7 @@ public class TileMotorComplex extends GenericTile implements ITickableSoundTile 
 	
 	private boolean isSoundPlaying = false;
 
-	public Property<Double> speed = property(new Property<Double>(PropertyType.Double, "speed", 1.0));
+	public Property<Double> speed = property(new Property<Double>(PropertyType.Double, "speed", DEFAULT_SPEED));
 	public Property<Double> powerMultiplier = property(new Property<Double>(PropertyType.Double, "powerMultiplier", 1.0));
 	public Property<Boolean> isPowered = property(new Property<Boolean>(PropertyType.Boolean, "isPowered", false));
 

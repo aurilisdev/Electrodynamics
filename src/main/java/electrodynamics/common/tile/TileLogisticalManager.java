@@ -1,6 +1,7 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.common.item.ItemDrillHead;
+import electrodynamics.common.tile.quarry.TileQuarry;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;

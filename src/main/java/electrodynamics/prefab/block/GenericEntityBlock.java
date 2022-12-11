@@ -131,5 +131,16 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		}
 		return super.getDrops(state, builder);
 	}
+	
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if(newState.isAir()) {
+			BlockEntity entity = level.getBlockEntity(pos);
+			if(entity != null && entity instanceof GenericTile generic) {
+				generic.onBlockDestroyed();
+			}
+		}
+		super.onRemove(state, level, pos, newState, isMoving);
+	}
 
 }

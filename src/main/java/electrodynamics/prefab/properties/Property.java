@@ -85,7 +85,18 @@ public class Property<T> {
 	}
 
 	public void verify(T updated) {
-		if (value == null ? updated != null : !value.equals(updated)) {
+		boolean shouldUpdate = false;
+		if(value == null && updated != null) {
+			shouldUpdate = true;
+		}
+		if(value != null && updated != null) {
+			if(type.predicate != null) {
+				shouldUpdate = type.predicate.test(value, updated);
+			} else {
+				shouldUpdate = !value.equals(updated);
+			}
+		}
+		if (shouldUpdate) {
 			isDirty = true;
 			manager.setDirty();
 		}

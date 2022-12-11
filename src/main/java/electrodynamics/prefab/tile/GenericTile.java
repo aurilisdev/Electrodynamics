@@ -316,5 +316,9 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 		return InteractionResult.PASS;
 	}
+	
+	public void onBlockDestroyed() {
+		
+	}
 
 }

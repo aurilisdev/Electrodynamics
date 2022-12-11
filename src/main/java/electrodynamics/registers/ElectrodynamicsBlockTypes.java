@@ -48,7 +48,6 @@ import electrodynamics.common.tile.TileMotorComplex;
 import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.common.tile.TileOxidationFurnace;
-import electrodynamics.common.tile.TileQuarry;
 import electrodynamics.common.tile.TileReinforcedAlloyer;
 import electrodynamics.common.tile.TileSeismicMarker;
 import electrodynamics.common.tile.TileSeismicRelay;
@@ -65,6 +64,8 @@ import electrodynamics.common.tile.TileWireMillTriple;
 import electrodynamics.common.tile.network.TileLogisticalWire;
 import electrodynamics.common.tile.network.TilePipe;
 import electrodynamics.common.tile.network.TileWire;
+import electrodynamics.common.tile.quarry.TileFrame;
+import electrodynamics.common.tile.quarry.TileQuarry;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -139,4 +140,5 @@ public class ElectrodynamicsBlockTypes {
 	public static final RegistryObject<BlockEntityType<TileCoolantResavoir>> TILE_COOLANTRESAVOIR = BLOCK_ENTITY_TYPES.register(SubtypeMachine.coolantresavoir.tag(), () -> new BlockEntityType<>(TileCoolantResavoir::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.coolantresavoir)), null));
 	public static final RegistryObject<BlockEntityType<TileMotorComplex>> TILE_MOTORCOMPLEX = BLOCK_ENTITY_TYPES.register(SubtypeMachine.motorcomplex.tag(), () -> new BlockEntityType<>(TileMotorComplex::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.motorcomplex)), null));
 	public static final RegistryObject<BlockEntityType<TileLogisticalManager>> TILE_LOGISTICALMANAGER = BLOCK_ENTITY_TYPES.register("logisticalmanager", () -> new BlockEntityType<>(TileLogisticalManager::new, Sets.newHashSet(ElectrodynamicsBlocks.blockLogisticalManager), null));
+	public static final RegistryObject<BlockEntityType<TileFrame>> TILE_QUARRY_FRAME = BLOCK_ENTITY_TYPES.register("quarryframe", () -> new BlockEntityType<>(TileFrame::new, Sets.newHashSet(ElectrodynamicsBlocks.blockFrame), null));
 }

@@ -37,7 +37,7 @@ public class TileCoolantResavoir extends GenericFluidTile {
 
 	public boolean hasEnoughFluid(int fluidAmnt) {
 		ComponentFluidHandlerSimple simple = getComponent(ComponentType.FluidHandler);
-		return simple.isEmpty() && simple.getFluidAmount() >= fluidAmnt;
+		return !simple.isEmpty() && simple.getFluidAmount() >= fluidAmnt;
 	}
 
 	public void drainFluid(int fluidAmnt) {

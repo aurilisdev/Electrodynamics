@@ -6,13 +6,18 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
+import electrodynamics.common.tile.quarry.TileFrame;
+import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
@@ -20,6 +25,7 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -28,7 +34,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
 
-public class BlockFrame extends Block {
+public class BlockFrame extends BaseEntityBlock {
 
 	// The Hoe is the removal tool to help prevent accidentally breaking the frame
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -94,6 +100,38 @@ public class BlockFrame extends Block {
 	@Override
 	public FluidState getFluidState(BlockState state) {
 		return state.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+	}
+
+	@Override
+	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+		return new TileFrame(pos, state);
+	}
+	
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if(newState.isAir() && !state.getValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY) && !level.isClientSide) {
+			BlockEntity entity = level.getBlockEntity(pos);
+			if(entity != null && entity instanceof TileFrame frame) {
+				frame.purposefullyDestroyed();
+			}
+		}
+		super.onRemove(state, level, pos, newState, isMoving);
+	}
+	
+	public static void writeToNbt(CompoundTag tag, String key, BlockState state) {
+		CompoundTag data = new CompoundTag();
+		data.putString("facing", state.getValue(FACING).name());
+		data.putBoolean("waterlogged", state.getValue(BlockStateProperties.WATERLOGGED));
+		data.putBoolean("decay", state.getValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY));
+		tag.put(key, data);
+	}
+	
+	public static BlockState readFromNbt(CompoundTag tag) {
+		BlockState state = ElectrodynamicsBlocks.blockFrame.defaultBlockState();
+		state.setValue(FACING, Direction.byName(tag.getString("facing")));
+		state.setValue(BlockStateProperties.WATERLOGGED, tag.getBoolean("waterlogged"));
+		state.setValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY, tag.getBoolean("decay"));
+		return state;
 	}
 
 }
