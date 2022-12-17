@@ -82,9 +82,10 @@ public class ComponentTickable implements Component {
 		tickCommon();
 		if (!level.isClientSide) {
 			tickServer();
-			if(holder != null && holder.getPropertyManager().isDirty()) {
+			if(holder != null && (holder.getPropertyManager().isDirty() || holder.isChanged)) {
 				holder.setChanged();
 				holder.getPropertyManager().clean();
+				holder.isChanged = false;
 			}
 		} else {
 			tickClient();

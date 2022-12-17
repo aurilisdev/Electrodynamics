@@ -101,6 +101,11 @@ public class Property<T> {
 			manager.setDirty();
 		}
 	}
+	
+	public void load(Object val) {
+		value = (T) type.attemptCast(val);
+		rawValue = (T) value;
+	}
 
 	public Property<T> noSave() {
 		shouldSave = false;

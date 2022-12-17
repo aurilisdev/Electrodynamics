@@ -44,6 +44,9 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	private ComponentProcessor[] processors = new ComponentProcessor[5];
 	private PropertyManager propertyManager = new PropertyManager();
 
+	//use this for manually setting the change flag
+	public boolean isChanged = false;
+	
 	public <T> Property<T> property(Property<T> prop) {
 		for(Property<?> existing : propertyManager.getProperties()) {
 			if(existing.getName().equals(prop.getName())) {

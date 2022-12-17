@@ -269,7 +269,8 @@ public enum PropertyType {
 		default:
 			break;
 		}
-		prop.setAmbigous(val);
+		tag.remove(prop.getName());
+		prop.load(val);
 	}
 
 	Object attemptCast(Object updated) {

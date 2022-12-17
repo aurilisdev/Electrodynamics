@@ -237,6 +237,8 @@ public class ClientRegister {
 
 	// Custom Textures
 	public static final ResourceLocation TEXTURE_QUARRYARM = new ResourceLocation(CUSTOM_LOC + "quarryarm");
+	public static final ResourceLocation TEXTURE_QUARRYARM_DARK = new ResourceLocation(CUSTOM_LOC + "quarrydark");
+	
 
 	public static void setup() {
 		ClientEvents.init();
@@ -360,6 +362,7 @@ public class ClientRegister {
 
 	static {
 		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM);
+		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM_DARK);
 	}
 
 	@SubscribeEvent

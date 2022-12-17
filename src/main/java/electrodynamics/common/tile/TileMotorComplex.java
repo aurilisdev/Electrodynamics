@@ -31,22 +31,22 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class TileMotorComplex extends GenericTile implements ITickableSoundTile {
 
 	// 10 ticks per block
-	public static final double DEFAULT_SPEED = Math.min(Constants.MIN_QUARRYBLOCKS_PER_TICK, 100);
+	public static final int DEFAULT_SPEED = Math.min(Constants.MIN_QUARRYBLOCKS_PER_TICK, 100);
 	// 1 tick per block
-	public static final double MAX_SPEED = Math.max(Constants.MAX_QUARRYBLOCKS_PER_TICK, 1);
+	public static final int MAX_SPEED = Math.max(Constants.MAX_QUARRYBLOCKS_PER_TICK, 1);
 	
 	private boolean isSoundPlaying = false;
 
-	public Property<Double> speed = property(new Property<Double>(PropertyType.Double, "speed", DEFAULT_SPEED));
-	public Property<Double> powerMultiplier = property(new Property<Double>(PropertyType.Double, "powerMultiplier", 1.0));
-	public Property<Boolean> isPowered = property(new Property<Boolean>(PropertyType.Boolean, "isPowered", false));
+	public final Property<Integer> speed = property(new Property<Integer>(PropertyType.Integer, "speed", DEFAULT_SPEED));
+	public final Property<Double> powerMultiplier = property(new Property<Double>(PropertyType.Double, "powerMultiplier", 1.0));
+	public final Property<Boolean> isPowered = property(new Property<Boolean>(PropertyType.Boolean, "isPowered", false));
 
 	public TileMotorComplex(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_MOTORCOMPLEX.get(), pos, state);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.SOUTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.MOTORCOMPLEX_USAGE_PER_TICK * 1000));
+		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.SOUTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.MOTORCOMPLEX_USAGE_PER_TICK * 10000));
 		addComponent(new ComponentInventory(this).size(3).upgrades(3).validUpgrades(ContainerMotorComplex.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.motorcomplex).createMenu((id, player) -> new ContainerMotorComplex(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
@@ -80,11 +80,11 @@ public class TileMotorComplex extends GenericTile implements ITickableSoundTile 
 					for (int i = 0; i < stack.getCount(); i++) {
 						switch (((ItemUpgrade) stack.getItem()).subtype) {
 						case basicspeed:
-							speed.set(Math.max(speed.set(speed.get() * 0.8).get(), MAX_SPEED));
+							speed.set((int) Math.max((double) speed.get() * 0.8, MAX_SPEED));
 							powerMultiplier.set(powerMultiplier.get() * 3);
 							break;
 						case advancedspeed:
-							speed.set(Math.max(speed.set(speed.get() * 0.5).get(), MAX_SPEED));
+							speed.set((int) Math.max((double) speed.get() * 0.5, MAX_SPEED));
 							powerMultiplier.set(powerMultiplier.get() * 2);
 							break;
 						default:
