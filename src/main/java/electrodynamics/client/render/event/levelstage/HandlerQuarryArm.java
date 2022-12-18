@@ -5,7 +5,6 @@ import java.util.HashMap;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
@@ -66,14 +65,6 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 
 		armsToRender.forEach((pos, data) -> {
 			//assures a smoother rotation
-			long gameTime = minecraft.level.getGameTime();
-			long speed = data.speed();
-			if(data.speed() < 4) {
-				speed = 4;
-			}
-			int multipler = (int) (gameTime % speed);
-			float degressRot = partialTick * 10F;
-	
 			data.armParts().forEach(aabb -> {
 				stack.pushPose();
 				stack.translate(-camPos.x, -camPos.y, -camPos.z);
@@ -83,9 +74,6 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 			data.verticalShaftRotateParts().forEach(aabb -> {
 				stack.pushPose();
 				stack.translate(-camPos.x, -camPos.y, -camPos.z);
-				if(data.shouldRotate()) {
-					//stack.mulPose(new Quaternion(0, degressRot, 0, true));
-				}
 				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsFrameDark[0], colorsFrameDark[1], colorsFrameDark[2], colorsFrameDark[3], u0FrameDark, v0FrameDark, u1FrameDark, v1FrameDark, 255);
 				stack.popPose();
 			});
