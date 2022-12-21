@@ -851,8 +851,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		BlockPos end = corners.get().get(0);
 
 		double widthLeft, widthRight, widthTop, widthBottom;
-		AABB left, right, bottom, top, center;
-		AABB headHolder;
+		AABB center, headHolder;
 		AABB downHead = null;
 
 		List<AABB> lightSegments = new ArrayList<>();
@@ -919,7 +918,14 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		/* Horizontal Arm Segment */
 		
 		Direction facing = ((ComponentDirection) getComponent(ComponentType.Direction)).getDirection().getOpposite();
+		
+		int i = 0; 
+		int removal = 0;
+		int wholeWidthLeft, wholeWidthRight, wholeWidthTop, wholeWidthBottom;
+		double remainderWidthLeft, remainderWidthRight, remainderWidthTop, remainderWidthBottom;
+		
 		switch (facing) {
+		
 		case NORTH, SOUTH:
 
 			//currentFrame.x - start.x
@@ -930,21 +936,18 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			widthTop = z - start.getZ();
 			//currentFrame.z - end.z
 			widthBottom = z - end.getZ();
-			
-			int removal = 0;
-			int i = 0;
 
-			int wholeWidthLeft = (int) (widthLeft / X_ARM_SEGMENT_LENGTH);
-			double remainderWidthLeft = widthLeft - wholeWidthLeft;
+			wholeWidthLeft = (int) (widthLeft / X_ARM_SEGMENT_LENGTH);
+			remainderWidthLeft = widthLeft - wholeWidthLeft;
 			
-			int wholeWidthRight = (int) (widthRight / X_ARM_SEGMENT_LENGTH);
-			double remainderWidthRight = widthRight - wholeWidthRight;
+			wholeWidthRight = (int) (widthRight / X_ARM_SEGMENT_LENGTH);
+			remainderWidthRight = widthRight - wholeWidthRight;
 			
-			int wholeWidthBottom = (int) (widthBottom / Z_ARM_SEGMENT_LENGTH);
-			double remainderWidthBottom = widthBottom - wholeWidthBottom;
+			wholeWidthBottom = (int) (widthBottom / Z_ARM_SEGMENT_LENGTH);
+			remainderWidthBottom = widthBottom - wholeWidthBottom;
 			
-			int wholeWidthTop = (int) (widthTop / Z_ARM_SEGMENT_LENGTH);
-			double remainderWidthTop = widthTop - wholeWidthTop;
+			wholeWidthTop = (int) (widthTop / Z_ARM_SEGMENT_LENGTH);
+			remainderWidthTop = widthTop - wholeWidthTop;
 			
 			if (facing == Direction.SOUTH) {
 				if (cornerOnRight.get()) {
@@ -1422,34 +1425,297 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			widthRight = currentFrame.z() - end.getZ();
 			widthTop = currentFrame.x() - start.getX();
 			widthBottom = currentFrame.x() - end.getX();
+			
+			wholeWidthLeft = (int) (widthLeft / Z_ARM_SEGMENT_LENGTH);
+			remainderWidthLeft = widthLeft - wholeWidthLeft;
+			
+			wholeWidthRight = (int) (widthRight / Z_ARM_SEGMENT_LENGTH);
+			remainderWidthRight = widthRight - wholeWidthRight;
+			
+			wholeWidthBottom = (int) (widthBottom / X_ARM_SEGMENT_LENGTH);
+			remainderWidthBottom = widthBottom - wholeWidthBottom;
+			
+			wholeWidthTop = (int) (widthTop / X_ARM_SEGMENT_LENGTH);
+			remainderWidthTop = widthTop - wholeWidthTop;
 
 			if (facing == Direction.WEST) {
 				if (cornerOnRight.get()) {
-					left = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthLeft + 0.25);
-					right = new AABB(x + 0.25, y - 0.25, z + 0.8125, x + 0.75, y + 0.25, z - widthRight + 0.75);
+					//left = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthLeft + 0.25);
+					//right = new AABB(x + 0.25, y - 0.25, z + 0.8125, x + 0.75, y + 0.25, z - widthRight + 0.75);
 				} else {
-					left = new AABB(x + 0.25, y - 0.25, z + 0.8125, x + 0.75, y + 0.25, z - widthLeft + 0.75);
-					right = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthRight + 0.25);
+					//left = new AABB(x + 0.25, y - 0.25, z + 0.8125, x + 0.75, y + 0.25, z - widthLeft + 0.75);
+					//right = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthRight + 0.25);
 				}
-				bottom = new AABB(x + 0.8125, y - 0.25, z + 0.25, x - widthBottom + 0.75, y + 0.25, z + 0.75);
-				top = new AABB(x + 0.1875, y - 0.25, z + 0.25, x - widthTop + 0.25, y + 0.25, z + 0.75);
+				//bottom = new AABB(x + 0.8125, y - 0.25, z + 0.25, x - widthBottom + 0.75, y + 0.25, z + 0.75);
+				//top = new AABB(x + 0.1875, y - 0.25, z + 0.25, x - widthTop + 0.25, y + 0.25, z + 0.75);
 			} else {
 				if (cornerOnRight.get()) {
-					left = new AABB(x + 0.25, y - 0.25, z + 0.8125, x + 0.75, y + 0.25, z - widthLeft + 0.75);
-					right = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthRight + 0.25);
+					
+					/* LEFT */
+					
+					i = -1;
+					removal = remainderWidthLeft < -0.125 ? 1 : 0;
+					while(i > wholeWidthLeft - removal) {
+						//horizontal lines
+						lightSegments.add(new AABB(x + 0.25, y - 0.25, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + 0.6875, x + 0.3125, y - 0.1875, z - widthLeft + (i + 1) * Z_ARM_SEGMENT_LENGTH + 0.6875));
+						lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + 0.6875, x + 0.3125, y + 0.25, z - widthLeft + (i + 1) * Z_ARM_SEGMENT_LENGTH + 0.6875));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + 0.6875, x + 0.75, y - 0.1875, z - widthLeft + (i + 1) * Z_ARM_SEGMENT_LENGTH + 0.6875));
+						lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + 0.6875, x + 0.75, y + 0.25, z - widthLeft + (i + 1) * Z_ARM_SEGMENT_LENGTH + 0.6875));
+						//center
+						darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + 0.6875, x + 0.625, y + 0.125, z - widthLeft + (i + 1) * Z_ARM_SEGMENT_LENGTH + 0.6875));
+						//vertical lines
+						lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.68755 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.53215)));
+						
+						i--;
+					}
+					
+					if(removal == 1) {
+						//horizontal lines
+						lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthLeft + 0.6875, x + 0.3125, y - 0.1875, z + 0.8125));
+						lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthLeft + 0.6875, x + 0.3125, y + 0.25, z + 0.8125));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthLeft + 0.6875, x + 0.75, y - 0.1875, z + 0.8125));
+						lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthLeft + 0.6875, x + 0.75, y + 0.25, z + 0.8125));
+						//center
+						darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthLeft + 0.6875, x + 0.625, y + 0.125, z + 0.8125));
+						//vertical lines
+						lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthLeft - Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - Z_ARM_SEGMENT_LENGTH - remainderWidthLeft + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthLeft - Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - Z_ARM_SEGMENT_LENGTH - remainderWidthLeft + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthLeft - Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - Z_ARM_SEGMENT_LENGTH - remainderWidthLeft + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthLeft - Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - Z_ARM_SEGMENT_LENGTH - remainderWidthLeft + (0.6875 + 0.53215)));
+					} else {
+						//horizontal lines
+						lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthLeft + Z_ARM_SEGMENT_LENGTH + 0.6875, x + 0.3125, y - 0.1875, z + 0.8125));
+						lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthLeft + Z_ARM_SEGMENT_LENGTH + 0.6875, x + 0.3125, y + 0.25, z + 0.8125));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthLeft + Z_ARM_SEGMENT_LENGTH + 0.6875, x + 0.75, y - 0.1875, z + 0.8125));
+						lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthLeft + Z_ARM_SEGMENT_LENGTH + 0.6875, x + 0.75, y + 0.25, z + 0.8125));
+						//center
+						darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthLeft + Z_ARM_SEGMENT_LENGTH + 0.6875, x + 0.625, y + 0.125, z + 0.8125));
+						//vertical lines
+						lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthLeft + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthLeft + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthLeft + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthLeft + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthLeft + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthLeft + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthLeft + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthLeft + (0.6875 + 0.53215)));
+					}
+					
+					/* RIGHT */
+					
+					i = 0;
+					removal = remainderWidthRight < 0.125 ? 1 : 0;
+					while(i < wholeWidthRight - removal) {
+						//horizontal lines
+						lightSegments.add(new AABB(x + 0.25, y - 0.25, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + 0.3125, x + 0.3125, y - 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * (i + 1) + 0.3125));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + 0.3125, x + 0.75, y - 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * (i + 1) + 0.3125));
+						lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + 0.3125, x + 0.3125, y + 0.25, z - widthRight + Z_ARM_SEGMENT_LENGTH * (i + 1) + 0.3125));
+						lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + 0.3125, x + 0.75, y + 0.25, z - widthRight + Z_ARM_SEGMENT_LENGTH * (i + 1) + 0.3125));
+						//center
+						darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + 0.3125, x + 0.625, y + 0.125, z - widthRight + Z_ARM_SEGMENT_LENGTH * (i + 1) + 0.3125));
+						//vertical lines
+						lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.3125 + 0.53215)));
+						
+						i++;
+					}
+					
+					if(removal == 1) {
+						lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.3125, y - 0.1875, z + 0.1875));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.75, y - 0.1875, z + 0.1875));
+						lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.3125, y + 0.25, z + 0.1875));
+						lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.75, y + 0.25, z + 0.1875));
+						//center
+						darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.625, y + 0.125, z + 0.1875));
+						//vertical lines
+						lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215)));
+					} else {
+						lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthRight + 0.3125, x + 0.3125, y - 0.1875, z + 0.1875));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthRight + 0.3125, x + 0.75, y - 0.1875, z + 0.1875));
+						lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthRight + 0.3125, x + 0.3125, y + 0.25, z + 0.1875));
+						lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthRight + 0.3125, x + 0.75, y + 0.25, z + 0.1875));
+						//center
+						darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthRight + 0.3125, x + 0.625, y + 0.125, z + 0.1875));
+						//vertical lines
+						lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthRight + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthRight + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthRight + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthRight + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthRight + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthRight + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthRight + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthRight + (0.3125 + 0.53215)));
+					}
+					
+					//right = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthRight + 0.25);
 				} else {
-					left = new AABB(x + 0.25, y - 0.25, z + 0.1875, x + 0.75, y + 0.25, z - widthLeft + 0.25);
-					right = new AABB(x + 0.25, y - 0.25, z + 0.8125, x + 0.75, y + 0.25, z - widthRight + 0.75);
+					
+					/* LEFT */
+					
+					i = 0;
+					removal = remainderWidthLeft < 0.125 ? 1 : 0;
+					while(i < wholeWidthLeft - removal) {
+						//horizontal lines
+						lightSegments.add(new AABB(x + 0.25, y - 0.25, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.3125, y - 0.1875, z - widthLeft + (i + 1) * Z_ARM_SEGMENT_LENGTH + 0.3125));
+						lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.3125, y + 0.25, z - widthLeft + (i + 1) * Z_ARM_SEGMENT_LENGTH + 0.3125));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.75, y - 0.1875, z - widthLeft + (i + 1) * Z_ARM_SEGMENT_LENGTH + 0.3125));
+						lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.75, y + 0.25, z - widthLeft + (i + 1) * Z_ARM_SEGMENT_LENGTH + 0.3125));
+						//center
+						darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.625, y + 0.125, z - widthLeft + (i + 1) * Z_ARM_SEGMENT_LENGTH + 0.3125));
+						//vertical lines
+						lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - widthLeft + i * Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215)));
+						
+						i++;
+					}
+					
+					if(removal == 1) {
+						//horizontal lines
+						lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthLeft - Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.3125, y - 0.1875, z + 0.1875));
+						lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthLeft - Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.3125, y + 0.25, z + 0.1875));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthLeft - Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.75, y - 0.1875, z + 0.1875));
+						lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthLeft - Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.75, y + 0.25, z + 0.1875));
+						//center
+						darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthLeft - Z_ARM_SEGMENT_LENGTH + 0.3125, x + 0.625, y + 0.125, z + 0.1875));
+						//vertical lines
+						lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthLeft - Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - Z_ARM_SEGMENT_LENGTH - remainderWidthLeft + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthLeft - Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - Z_ARM_SEGMENT_LENGTH - remainderWidthLeft + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthLeft - Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - Z_ARM_SEGMENT_LENGTH - remainderWidthLeft + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthLeft - Z_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - Z_ARM_SEGMENT_LENGTH - remainderWidthLeft + (0.3125 + 0.53215)));
+					} else {
+						//horizontal lines
+						lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthLeft + 0.3125, x + 0.3125, y - 0.1875, z + 0.1875));
+						lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthLeft + 0.3125, x + 0.3125, y + 0.25, z + 0.1875));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthLeft + 0.3125, x + 0.75, y - 0.1875, z + 0.1875));
+						lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthLeft + 0.3125, x + 0.75, y + 0.25, z + 0.1875));
+						//center
+						darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthLeft + 0.3125, x + 0.625, y + 0.125, z + 0.1875));
+						//vertical lines
+						lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthLeft + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthLeft + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthLeft + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthLeft + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthLeft + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthLeft + (0.3125 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthLeft + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthLeft + (0.3125 + 0.53215)));
+					}
+					
+					/* RIGHT */
+					
+					i = -1;
+					removal = remainderWidthRight < -0.125 ? 1 : 0;
+					while(i > wholeWidthRight - removal) {
+						//horizontal lines
+						lightSegments.add(new AABB(x + 0.25, y - 0.25, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + 0.6875, x + 0.3125, y - 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * (i + 1) + 0.6875));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + 0.6875, x + 0.75, y - 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * (i + 1) + 0.6875));
+						lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + 0.6875, x + 0.3125, y + 0.25, z - widthRight + Z_ARM_SEGMENT_LENGTH * (i + 1) + 0.6875));
+						lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + 0.6875, x + 0.75, y + 0.25, z - widthRight + Z_ARM_SEGMENT_LENGTH * (i + 1) + 0.6875));
+						//center
+						darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + 0.6875, x + 0.625, y + 0.125, z - widthRight + Z_ARM_SEGMENT_LENGTH * (i + 1) + 0.6875));
+						//vertical lines
+						lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - widthRight + Z_ARM_SEGMENT_LENGTH * i + (0.6875 + 0.53215)));
+						
+						i--;
+					}
+					
+					if(removal == 1) {
+						lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthRight + 0.6875, x + 0.3125, y - 0.1875, z + 0.8125));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthRight + 0.6875, x + 0.75, y - 0.1875, z + 0.8125));
+						lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthRight + 0.6875, x + 0.3125, y + 0.25, z + 0.8125));
+						lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthRight + 0.6875, x + 0.75, y + 0.25, z + 0.8125));
+						//center
+						darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthRight + 0.6875, x + 0.625, y + 0.125, z + 0.8125));
+						//vertical lines
+						lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthRight - Z_ARM_SEGMENT_LENGTH + (0.6875 + 0.53215)));
+					} else {
+						lightSegments.add(new AABB(x + 0.25, y - 0.25, z + Z_ARM_SEGMENT_LENGTH - remainderWidthRight + 0.6875, x + 0.3125, y - 0.1875, z + 0.8125));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.25, z + Z_ARM_SEGMENT_LENGTH - remainderWidthRight + 0.6875, x + 0.75, y - 0.1875, z + 0.8125));
+						lightSegments.add(new AABB(x + 0.25, y + 0.1875, z + Z_ARM_SEGMENT_LENGTH - remainderWidthRight + 0.6875, x + 0.3125, y + 0.25, z + 0.8125));
+						lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z + Z_ARM_SEGMENT_LENGTH - remainderWidthRight + 0.6875, x + 0.75, y + 0.25, z + 0.8125));
+						//center
+						darkSegments.add(new AABB(x + 0.3875, y - 0.125, z + Z_ARM_SEGMENT_LENGTH - remainderWidthRight + 0.6875, x + 0.625, y + 0.125, z + 0.8125));
+						//vertical lines
+						lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthRight + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthRight + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthRight + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthRight + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthRight + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthRight + (0.6875 + 0.53215)));
+						lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthRight + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthRight + (0.6875 + 0.53215)));
+					}
+					
 				}
-				bottom = new AABB(x + 0.1875, y - 0.25, z + 0.25, x - widthBottom + 0.25, y + 0.25, z + 0.75);
-				top = new AABB(x + 0.8125, y - 0.25, z + 0.25, x - widthTop + 0.75, y + 0.25, z + 0.75);
+				
+				/* BOTTOM */
+				
+				i = 0;
+				while(i < wholeWidthBottom - 1) {
+					//vertical lines
+					lightSegments.add(new AABB(x - widthBottom + i * X_ARM_SEGMENT_LENGTH + 0.3125, y - 0.25, z + 0.25, x - widthBottom + (i + 1) * X_ARM_SEGMENT_LENGTH + 0.3125, y - 0.1875, z + 0.3125));
+					lightSegments.add(new AABB(x - widthBottom + i * X_ARM_SEGMENT_LENGTH + 0.3125, y - 0.25, z + 0.6875, x - widthBottom + (i + 1) * X_ARM_SEGMENT_LENGTH + 0.3125, y - 0.1875, z + 0.75));
+					lightSegments.add(new AABB(x - widthBottom + i * X_ARM_SEGMENT_LENGTH + 0.3125, y + 0.1875, z + 0.25, x - widthBottom + (i + 1) * X_ARM_SEGMENT_LENGTH + 0.3125, y + 0.25, z + 0.3125));
+					lightSegments.add(new AABB(x - widthBottom + i * X_ARM_SEGMENT_LENGTH + 0.3125, y + 0.1875, z + 0.6875, x - widthBottom + (i + 1) * X_ARM_SEGMENT_LENGTH + 0.3125, y + 0.25, z + 0.75));
+					//center
+					darkSegments.add(new AABB(x - widthBottom + i * X_ARM_SEGMENT_LENGTH + 0.3125, y - 0.125, z + 0.3875, x - widthBottom + (i + 1) * X_ARM_SEGMENT_LENGTH + 0.3125, y + 0.125, z + 0.625));
+					//vertical lines
+					lightSegments.add(new AABB(x - widthBottom + i * X_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), y - 0.25, z + 0.3125, x - widthBottom + i * X_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215), y - 0.1875, z + 0.6875));
+					lightSegments.add(new AABB(x - widthBottom + i * X_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), y + 0.1875, z + 0.3125, x - widthBottom + i * X_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215), y + 0.25, z + 0.6875));
+					lightSegments.add(new AABB(x - widthBottom + i * X_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), y - 0.1875, z + 0.25, x - widthBottom + i * X_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215), y + 0.1875, z + 0.3125));
+					lightSegments.add(new AABB(x - widthBottom + i * X_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), y - 0.1875, z + 0.6875, x - widthBottom + i * X_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215), y + 0.1875, z + 0.75));
+					
+					i++;
+				}
+				
+				//vertical lines
+				lightSegments.add(new AABB(x - remainderWidthBottom + 0.3125 - X_ARM_SEGMENT_LENGTH, y - 0.25, z + 0.25, x + 0.1875, y - 0.1875, z + 0.3125));
+				lightSegments.add(new AABB(x - remainderWidthBottom + 0.3125 - X_ARM_SEGMENT_LENGTH, y - 0.25, z + 0.6875, x + 0.1875, y - 0.1875, z + 0.75));
+				lightSegments.add(new AABB(x - remainderWidthBottom + 0.3125 - X_ARM_SEGMENT_LENGTH, y + 0.1875, z + 0.25, x + 0.1875, y + 0.25, z + 0.3125));
+				lightSegments.add(new AABB(x - remainderWidthBottom + 0.3125 - X_ARM_SEGMENT_LENGTH, y + 0.1875, z + 0.6875, x + 0.1875, y + 0.25, z + 0.75));
+				//center
+				darkSegments.add(new AABB(x - remainderWidthBottom + 0.3125 - X_ARM_SEGMENT_LENGTH, y - 0.125, z + 0.3875, x + 0.1875, y + 0.125, z + 0.625));
+				//vertical lines
+				lightSegments.add(new AABB(x - remainderWidthBottom - X_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), y - 0.25, z + 0.3125, x - remainderWidthBottom - X_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215), y - 0.1875, z + 0.6875));
+				lightSegments.add(new AABB(x - remainderWidthBottom - X_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), y + 0.1875, z + 0.3125, x - remainderWidthBottom - X_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215), y + 0.25, z + 0.6875));
+				lightSegments.add(new AABB(x - remainderWidthBottom - X_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), y - 0.1875, z + 0.25, x - remainderWidthBottom - X_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215), y + 0.1875, z + 0.3125));
+				lightSegments.add(new AABB(x - remainderWidthBottom - X_ARM_SEGMENT_LENGTH + (0.3125 + 0.468765), y - 0.1875, z + 0.6875, x - remainderWidthBottom - X_ARM_SEGMENT_LENGTH + (0.3125 + 0.53215), y + 0.1875, z + 0.75));
+				
+				/* TOP */
+				
+				i = 0;
+				while(i > wholeWidthTop + 1) {
+					//vertical lines
+					lightSegments.add(new AABB(x - widthTop + i * X_ARM_SEGMENT_LENGTH + 0.6875, y - 0.25, z + 0.25, x - widthTop + (i - 1) * X_ARM_SEGMENT_LENGTH + 0.6875, y - 0.1875, z + 0.3125));
+					lightSegments.add(new AABB(x - widthTop + i * X_ARM_SEGMENT_LENGTH + 0.6875, y - 0.25, z + 0.6875, x - widthTop + (i - 1) * X_ARM_SEGMENT_LENGTH + 0.6875, y - 0.1875, z + 0.75));
+					lightSegments.add(new AABB(x - widthTop + i * X_ARM_SEGMENT_LENGTH + 0.6875, y + 0.1875, z + 0.25, x - widthTop + (i - 1) * X_ARM_SEGMENT_LENGTH + 0.6875, y + 0.25, z + 0.3125));
+					lightSegments.add(new AABB(x - widthTop + i * X_ARM_SEGMENT_LENGTH + 0.6875, y + 0.1875, z + 0.6875, x - widthTop + (i - 1) * X_ARM_SEGMENT_LENGTH + 0.6875, y + 0.25, z + 0.75));
+					//center
+					darkSegments.add(new AABB(x - widthTop + i * X_ARM_SEGMENT_LENGTH + 0.6875, y - 0.125, z + 0.3875, x - widthTop + (i - 1) * X_ARM_SEGMENT_LENGTH + 0.6875, y + 0.125, z + 0.625));
+					//vertical segments
+					lightSegments.add(new AABB(x - widthTop + (i - 1) * X_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), y - 0.1875, z + 0.25, x - widthTop + (i - 1) * X_ARM_SEGMENT_LENGTH + (0.6875 + 0.53215), y + 0.1875, z + 0.3125));
+					lightSegments.add(new AABB(x - widthTop + (i - 1) * X_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), y - 0.1875, z + 0.6875, x - widthTop + (i - 1) * X_ARM_SEGMENT_LENGTH + (0.6875 + 0.53215), y + 0.1875, z + 0.75));
+					lightSegments.add(new AABB(x - widthTop + (i - 1) * X_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), y - 0.25, z + 0.3125, x - widthTop + (i - 1) * X_ARM_SEGMENT_LENGTH + (0.6875 + 0.53215), y - 0.1875, z + 0.6875));
+					lightSegments.add(new AABB(x - widthTop + (i - 1) * X_ARM_SEGMENT_LENGTH + (0.6875 + 0.468765), y + 0.1875, z + 0.3125, x - widthTop + (i - 1) * X_ARM_SEGMENT_LENGTH + (0.6875 + 0.53215), y + 0.25, z + 0.6875));
+					
+					
+					i--;
+				}
+				
+				//vertical lines
+				lightSegments.add(new AABB(x - remainderWidthTop + X_ARM_SEGMENT_LENGTH + 0.6875, y - 0.25, z + 0.25, x + 0.8125, y - 0.1875, z + 0.3125));
+				lightSegments.add(new AABB(x - remainderWidthTop + X_ARM_SEGMENT_LENGTH + 0.6875, y - 0.25, z + 0.6875, x + 0.8125, y - 0.1875, z + 0.75));
+				lightSegments.add(new AABB(x - remainderWidthTop + X_ARM_SEGMENT_LENGTH + 0.6875, y + 0.1875, z + 0.25, x + 0.8125, y + 0.25, z + 0.3125));
+				lightSegments.add(new AABB(x - remainderWidthTop + X_ARM_SEGMENT_LENGTH + 0.6875, y + 0.1875, z + 0.6875, x + 0.8125, y + 0.25, z + 0.75));
+				//center
+				darkSegments.add(new AABB(x - remainderWidthTop + X_ARM_SEGMENT_LENGTH + 0.6875, y - 0.125, z + 0.3875, x + 0.8125, y + 0.125, z + 0.625));
+				//vertical segments
+				lightSegments.add(new AABB(x - remainderWidthTop + (0.6875 + 0.468765), y - 0.1875, z + 0.25, x - remainderWidthTop + (0.6875 + 0.53215), y + 0.1875, z + 0.3125));
+				lightSegments.add(new AABB(x - remainderWidthTop + (0.6875 + 0.468765), y - 0.1875, z + 0.6875, x - remainderWidthTop + (0.6875 + 0.53215), y + 0.1875, z + 0.75));
+				lightSegments.add(new AABB(x - remainderWidthTop + (0.6875 + 0.468765), y - 0.25, z + 0.3125, x - remainderWidthTop + (0.6875 + 0.53215), y - 0.1875, z + 0.6875));
+				lightSegments.add(new AABB(x - remainderWidthTop + (0.6875 + 0.468765), y + 0.1875, z + 0.3125, x - remainderWidthTop + (0.6875 + 0.53215), y + 0.25, z + 0.6875));
+				
 			}
-
-			lightSegments.add(left);
-			lightSegments.add(right);
-			lightSegments.add(bottom);
-			lightSegments.add(top);
-			lightSegments.addAll(lightSegments);
 
 			break;
 		default:
@@ -1660,6 +1926,9 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 	
 	public void handleFramesDecayNoVarUpdate() {
+		if(!hasCorners()) {
+			return;
+		}
 		Level world = getLevel();
 		BlockPos frontOfQuarry = corners.get().get(0);
 		BlockPos foqFar = corners.get().get(1);
