@@ -15,6 +15,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.BaseEntityBlock;
@@ -33,15 +34,34 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BlockFrame extends BaseEntityBlock {
 
 	// The Hoe is the removal tool to help prevent accidentally breaking the frame
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
+	private static final VoxelShape FRAME = Block.box(0, 0, 0, 16, 4, 16);
+	private static final VoxelShape FRAME_CORNER = Shapes.or(Block.box(4.0D, 0.0D, 4.0D, 12.0D, 12.0D, 12.0D), Block.box(0, 0, 0, 16, 4, 16));
 
-	public BlockFrame() {
+	private final int type;
+	
+	public BlockFrame(int type) {
 		super(Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
 		registerDefaultState(stateDefinition.any().setValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY, Boolean.FALSE).setValue(BlockStateProperties.WATERLOGGED, false).setValue(FACING, Direction.NORTH));
+		this.type = type;
+	}
+	
+	@Override
+	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+		if(type == 0) {
+			return FRAME;
+		//room for future expansion
+		} else if (type == 1) {
+			return FRAME_CORNER;
+		}
+		return super.getShape(pState, pLevel, pPos, pContext);
 	}
 
 	@Nullable

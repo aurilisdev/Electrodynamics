@@ -165,6 +165,8 @@ public class ClientRegister {
 		event.register(MODEL_RODHSLASTEEL);
 		event.register(MODEL_LATHESHAFT);
 		event.register(MODEL_MOTORCOMPLEXROTOR);
+		event.register(MODEL_QUARRYWHEEL_STILL);
+		event.register(MODEL_QUARRYWHEEL_ROT);
 	}
 
 	public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(BLOCK_LOC + "advancedsolarpaneltop");
@@ -234,10 +236,14 @@ public class ClientRegister {
 			References.ID + ":textures/entity/projectile/rodstainlesssteel.png");
 	public static final ResourceLocation TEXTURE_RODHSLASTEEL = new ResourceLocation(
 			References.ID + ":textures/entity/projectile/rodhslasteel.png");
+	
+	public static final ResourceLocation MODEL_QUARRYWHEEL_STILL = new ResourceLocation(BLOCK_LOC + "quarrywheelstill");
+	public static final ResourceLocation MODEL_QUARRYWHEEL_ROT = new ResourceLocation(BLOCK_LOC + "quarrywheelrot");
 
 	// Custom Textures
 	public static final ResourceLocation TEXTURE_QUARRYARM = new ResourceLocation(CUSTOM_LOC + "quarryarm");
 	public static final ResourceLocation TEXTURE_QUARRYARM_DARK = new ResourceLocation(CUSTOM_LOC + "quarrydark");
+	public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation("forge", "white");
 	
 
 	public static void setup() {
@@ -363,6 +369,7 @@ public class ClientRegister {
 	static {
 		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM);
 		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM_DARK);
+		customBlockTextures.add(ClientRegister.TEXTURE_WHITE);
 	}
 
 	@SubscribeEvent

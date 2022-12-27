@@ -1,4 +1,4 @@
-package electrodynamics.prefab.utilities;
+package electrodynamics.prefab.utilities.math;
 
 import electrodynamics.prefab.utilities.object.Location;
 import net.minecraft.world.entity.Entity;

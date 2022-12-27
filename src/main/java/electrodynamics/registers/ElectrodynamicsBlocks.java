@@ -92,9 +92,9 @@ public class ElectrodynamicsBlocks {
 	public static final RegistryObject<Block> SEISMIC_MARKER = BLOCKS.register("seismicmarker",
 			supplier(() -> blockSeismicMarker = new BlockSeismicMarker()));
 	public static final RegistryObject<Block> FRAME = BLOCKS.register("frame",
-			supplier(() -> blockFrame = new BlockFrame()));
+			supplier(() -> blockFrame = new BlockFrame(0)));
 	public static final RegistryObject<Block> FRAME_CORNER = BLOCKS.register("framecorner",
-			supplier(() -> blockFrameCorner = new BlockFrame()));
+			supplier(() -> blockFrameCorner = new BlockFrame(1)));
 	public static final RegistryObject<Block> LOGISTICAL_MANAGER = BLOCKS.register("logisticalmanager",
 			supplier(() -> blockLogisticalManager = new BlockLogisticalManager()));
 
