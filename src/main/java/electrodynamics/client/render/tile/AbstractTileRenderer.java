@@ -6,6 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.prefab.tile.GenericTile;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -36,6 +37,10 @@ public abstract class AbstractTileRenderer<T extends GenericTile> implements Blo
 	
 	public Minecraft minecraft() {
 		return Minecraft.getInstance();
+	}
+	
+	public ClientLevel level() {
+		return minecraft().level;
 	}
 	
 	public BakedModel getModel(ResourceLocation model) {

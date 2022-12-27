@@ -892,6 +892,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		int wholeWidthLeft, wholeWidthRight, wholeWidthTop, wholeWidthBottom;
 		double remainderWidthLeft, remainderWidthRight, remainderWidthTop, remainderWidthBottom;
 		
+		int[] markerLineSigns = new int[4];
+		
 		switch (facing) {
 		
 		case NORTH, SOUTH:
@@ -926,6 +928,13 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				topWheel = new QuarryWheelDataHolder(new PrecisionVector(x + 0.5, y, z - widthTop + 0.5), 270, currentFrame.degrees() * -currentFrame.deltaX(), 0);
 				
 				north(x, y, z, darkSegments, lightSegments, widthLeft, widthRight, widthTop, widthBottom, wholeWidthLeft, wholeWidthRight, wholeWidthTop, wholeWidthBottom, remainderWidthLeft, remainderWidthRight, remainderWidthTop, remainderWidthBottom);	
+			
+				if(cornerOnRight.get()) {
+					
+				} else {
+					markerLineSigns = new int[] {1, 1, -1, -1};
+				}
+			
 			}
 			
 			break;
@@ -958,7 +967,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		default:
 			break;
 		}
-		HandlerQuarryArm.addRenderData(pos, new QuarryArmDataHolder(lightSegments, darkSegments, titanium, Pair.of(headPos, headAabb), headType, leftWheel, rightWheel, topWheel, bottomWheel, running.get(), progressCounter.get() , speed.get(), corners.get()));
+		HandlerQuarryArm.addRenderData(pos, new QuarryArmDataHolder(lightSegments, darkSegments, titanium, Pair.of(headPos, headAabb), headType, leftWheel, rightWheel, topWheel, bottomWheel, running.get(), progressCounter.get() , speed.get(), corners.get(), markerLineSigns));
 		
 	}
 	

@@ -12,7 +12,6 @@ import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.math.PrecisionVector;
 import electrodynamics.prefab.utilities.object.QuarryArmDataHolder;
-import mezz.jei.common.gui.ingredients.RendererOverrides;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -119,6 +118,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				if(!frustum.isVisible(vec.shiftWhole(aabb))) {
 					return;
 				}
+				
 				TextureAtlasSprite headText = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(data.headType().blockTextureLoc);
 				float u0Head = headText.getU0();
 				float u1Head = headText.getU1();
@@ -141,23 +141,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsHead[0], colorsHead[1], colorsHead[2], colorsHead[3], u0Head, v0Head, u1Head, v1Head, 255);
 				stack.popPose();
 			}
-			stack.pushPose();
-			BlockPos start = data.corners().get(0);
-			BlockPos nearCorner = data.corners().get(1);
-			BlockPos farCorner = data.corners().get(2);
-			BlockPos end = data.corners().get(3);
 			
-			double deltaX = nearCorner.getX() - start.getX();
-			double deltaZ = nearCorner.getZ() - start.getZ();
-			double quarterDeltaX = deltaX / 4.0;
-			double quarterDeltaZ = deltaZ / 4.0;
-			
-			stack.translate(start.getX(), start.getY(), start.getZ());
-			
-			AABB beam1 = new AABB(0.4375, 0.5625, 0.4375, quarterDeltaX + 0.5, 0.6875, quarterDeltaZ + 0.5625);
-			
-			RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, beam1, 1.0F, 0, 0.01F, 1.0F, u0Titanium, v0Titanium, u1Titanium, v1Titanium, 255);
-			stack.popPose();
 		});
 		
 		buffer.endBatch(Sheets.solidBlockSheet());
@@ -242,6 +226,81 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 			
 			stack.popPose();
 		});
+		
+		VertexConsumer lineBuilder = buffer.getBuffer(Sheets.translucentCullBlockSheet());
+		
+		armsToRender.forEach((pos, data) -> {
+			BlockPos start = data.corners().get(0);
+			BlockPos nearCorner = data.corners().get(1);
+			BlockPos farCorner = data.corners().get(2);
+			BlockPos end = data.corners().get(3);
+			
+			int time = 200;
+			int cutoff = 180;
+			int half = (time - cutoff) / 2;
+			
+			float alpha = minecraft.level.getGameTime() % time;
+			
+			if(alpha < cutoff) {
+				return;
+			}
+			
+			alpha = time - alpha;
+			if(alpha <= half) {
+				alpha = alpha / (float) half; 
+			} else {
+				alpha = alpha - half;
+				alpha = 1.0F - (alpha / (float) half); 
+			}
+
+			double deltaX = nearCorner.getX() - start.getX();
+			double deltaZ = nearCorner.getZ() - start.getZ();
+			
+			AABB beam = new AABB(0.4375, 0.5625, 0.4375, deltaX * data.signs()[0] + 0.5625, 0.6875, deltaZ * data.signs()[0] + 0.5625);
+			
+			if(frustum.isVisible(beam.move(start))) {
+				stack.pushPose();
+				stack.translate(start.getX(), start.getY(), start.getZ());
+				RenderingUtils.renderFilledBoxNoOverlay(stack, lineBuilder, beam, 1.0F, 0, 0, alpha, u0White, v0White, u1White, v1White, 255);
+				stack.popPose();
+			}
+			
+			deltaX = farCorner.getX() - start.getX();
+			deltaZ = farCorner.getZ() - start.getZ();
+			beam = new AABB(0.4375, 0.5625, 0.4375, deltaX * data.signs()[1] + 0.5625, 0.6875, deltaZ * data.signs()[1] + 0.5625);
+			
+			if(frustum.isVisible(beam.move(start))) {
+				stack.pushPose();
+				stack.translate(start.getX(), start.getY(), start.getZ());
+				RenderingUtils.renderFilledBoxNoOverlay(stack, lineBuilder, beam, 1.0F, 0, 0, alpha, u0White, v0White, u1White, v1White, 255);
+				stack.popPose();
+			}
+			
+			deltaX = end.getX() - nearCorner.getX();
+			deltaZ = end.getZ() - nearCorner.getZ();
+			beam = new AABB(0.4375, 0.5625, 0.4375, deltaX * data.signs()[2] + 0.5625, 0.6875, deltaZ * data.signs()[2] + 0.5625);
+			
+			if(frustum.isVisible(beam.move(end))) {
+				stack.pushPose();
+				stack.translate(end.getX(), end.getY(), end.getZ());
+				RenderingUtils.renderFilledBoxNoOverlay(stack, lineBuilder, beam, 1.0F, 0, 0, alpha, u0White, v0White, u1White, v1White, 255);
+				stack.popPose();
+			}
+			
+			deltaX = end.getX() - farCorner.getX();
+			deltaZ = end.getZ() - farCorner.getZ();
+			beam = new AABB(0.4375, 0.5625, 0.4375, deltaX * data.signs()[3] + 0.5625, 0.6875, deltaZ * data.signs()[3] + 0.5625);
+			
+			if(frustum.isVisible(beam.move(end))) {
+				stack.pushPose();
+				stack.translate(end.getX(), end.getY(), end.getZ());
+				RenderingUtils.renderFilledBoxNoOverlay(stack, lineBuilder, beam, 1.0F, 0, 0, alpha, u0White, v0White, u1White, v1White, 255);
+				stack.popPose();
+			}
+			
+		});
+		
+		buffer.endBatch(Sheets.translucentCullBlockSheet());
 		
 		stack.popPose();
 	}
