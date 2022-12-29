@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.TileMotorComplex;
 import electrodynamics.common.tile.TileSeismicRelay;
 import electrodynamics.common.tile.quarry.TileQuarry;
 import electrodynamics.prefab.tile.components.ComponentType;

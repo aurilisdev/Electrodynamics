@@ -31,9 +31,9 @@ import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 public class HandlerQuarryArm extends AbstractLevelStageHandler {
 
 	public static final HandlerQuarryArm INSTANCE = new HandlerQuarryArm();
-	
+
 	private final HashMap<BlockPos, QuarryArmDataHolder> armsToRender = new HashMap<>();
-	
+
 	@Override
 	public boolean shouldRender(Stage stage) {
 		return stage == Stage.AFTER_TRANSLUCENT_BLOCKS;
@@ -145,7 +145,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 		});
 		
 		buffer.endBatch(Sheets.solidBlockSheet());
-		
+		/*
 		armsToRender.forEach((pos, data) -> {
 			BakedModel wheelStill = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_QUARRYWHEEL_STILL);
 			BakedModel wheelRot = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_QUARRYWHEEL_ROT);
@@ -226,7 +226,8 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 			
 			stack.popPose();
 		});
-		
+		*/
+		/*
 		VertexConsumer lineBuilder = buffer.getBuffer(Sheets.translucentCullBlockSheet());
 		
 		armsToRender.forEach((pos, data) -> {
@@ -252,7 +253,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				alpha = alpha - half;
 				alpha = 1.0F - (alpha / (float) half); 
 			}
-
+			//alpha = 1.0F;
 			double deltaX = nearCorner.getX() - start.getX();
 			double deltaZ = nearCorner.getZ() - start.getZ();
 			
@@ -301,22 +302,21 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 		});
 		
 		buffer.endBatch(Sheets.translucentCullBlockSheet());
-		
+		*/
 		stack.popPose();
 	}
-	
+
 	@Override
 	public void clear() {
 		armsToRender.clear();
 	}
-	
+
 	public static void addRenderData(BlockPos pos, QuarryArmDataHolder data) {
 		INSTANCE.armsToRender.put(pos, data);
 	}
-	
+
 	public static void removeRenderData(BlockPos pos) {
 		INSTANCE.armsToRender.remove(pos);
 	}
-	
 
 }
