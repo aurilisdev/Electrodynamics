@@ -226,8 +226,8 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 			
 			stack.popPose();
 		});
-		*/
-		/*
+		
+		
 		VertexConsumer lineBuilder = buffer.getBuffer(Sheets.translucentCullBlockSheet());
 		
 		armsToRender.forEach((pos, data) -> {
@@ -300,9 +300,9 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 			}
 			
 		});
-		
-		buffer.endBatch(Sheets.translucentCullBlockSheet());
 		*/
+		buffer.endBatch(Sheets.translucentCullBlockSheet());
+		
 		stack.popPose();
 	}
 

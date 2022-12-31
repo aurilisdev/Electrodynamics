@@ -56,9 +56,9 @@ public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 			
 			AABB beam = new AABB(0, 0, 0, 0, 0, 0);
 			if(facing == Direction.NORTH) {
-				beam = new AABB(0.4375, 9.0 / 16.0, 0, 0.5625, 11.0 / 16.0, -6.0 / 16.0);
+				beam = new AABB(0.4375, 0.5625, 0, 0.5625, 0.6875, -0.375);
 			} else if(facing == Direction.SOUTH) {
-				
+				beam = new AABB(0.4375, 0.5625, 1, 0.5625, 0.6875, 1.375);
 			} else if (facing == Direction.EAST) {
 				
 			} else {
@@ -82,7 +82,7 @@ public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 				alpha = alpha - half;
 				alpha = 1.0F - (alpha / (float) half); 
 			}
-			
+			//alpha = 1.0F;
 			TextureAtlasSprite whiteTexture = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_WHITE);
 			
 			RenderingUtils.renderFilledBoxNoOverlay(stack, sheetBuilder, beam, 1.0F, 0, 0, alpha, whiteTexture.getU0(), whiteTexture.getV0(), whiteTexture.getV1(), whiteTexture.getV1(), 255);
