@@ -145,7 +145,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 		});
 		
 		buffer.endBatch(Sheets.solidBlockSheet());
-		/*
+		
 		armsToRender.forEach((pos, data) -> {
 			BakedModel wheelStill = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_QUARRYWHEEL_STILL);
 			BakedModel wheelRot = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_QUARRYWHEEL_ROT);
@@ -253,7 +253,6 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				alpha = alpha - half;
 				alpha = 1.0F - (alpha / (float) half); 
 			}
-			//alpha = 1.0F;
 			double deltaX = nearCorner.getX() - start.getX();
 			double deltaZ = nearCorner.getZ() - start.getZ();
 			
@@ -300,7 +299,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 			}
 			
 		});
-		*/
+		
 		buffer.endBatch(Sheets.translucentCullBlockSheet());
 		
 		stack.popPose();

@@ -63,6 +63,12 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
+/**
+ * Loosely based on Quarry concept from Buildcraft with aspects of Extra Utilities's Ender Quarry 
+ * 
+ * @author skip999
+ *
+ */
 public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	private static final int CAPACITY = 10000;

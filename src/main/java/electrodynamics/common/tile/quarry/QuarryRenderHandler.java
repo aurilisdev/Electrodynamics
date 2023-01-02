@@ -20,6 +20,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
 
+/**
+ * Handles creation of all required AABBs and render data that is then used in the {@link HandlerQuarryArm} renderer
+ * 
+ * @author skip999
+ *
+ */
 public class QuarryRenderHandler {
 	
 	private QuarryArmFrameWrapper currentFrame = null;
@@ -80,7 +86,7 @@ public class QuarryRenderHandler {
 		int wholeWidthLeft, wholeWidthRight, wholeWidthTop, wholeWidthBottom;
 		double remainderWidthLeft, remainderWidthRight, remainderWidthTop, remainderWidthBottom;
 		
-		int[] markerLineSigns = new int[4];
+		int[] markerLineSigns = new int[] {1, 1, -1, -1};
 		
 		switch (facing) {
 		
@@ -122,8 +128,6 @@ public class QuarryRenderHandler {
 				bottomWheel = new QuarryWheelDataHolder(new PrecisionVector(x + 0.5, y, z - widthBottom + 0.5), 270, currentFrame.degrees() * -currentFrame.deltaX(), 0);
 				
 				topWheel = new QuarryWheelDataHolder(new PrecisionVector(x + 0.5, y, z - widthTop + 0.5), 90, currentFrame.degrees() * currentFrame.deltaX(), 0);
-			
-				markerLineSigns = new int[] {1, 1, -1, -1};
 				
 			} else {
 				
@@ -144,8 +148,6 @@ public class QuarryRenderHandler {
 				bottomWheel = new QuarryWheelDataHolder(new PrecisionVector(x + 0.5, y, z - widthBottom + 0.5), 90, currentFrame.degrees() * currentFrame.deltaX(), 0);
 				
 				topWheel = new QuarryWheelDataHolder(new PrecisionVector(x + 0.5, y, z - widthTop + 0.5), 270, currentFrame.degrees() * -currentFrame.deltaX(), 0);
-			
-				markerLineSigns = new int[] {1, 1, -1, -1};
 			
 			}
 			
@@ -170,9 +172,43 @@ public class QuarryRenderHandler {
 			remainderWidthTop = widthTop - wholeWidthTop;
 			
 			if (facing == Direction.WEST) {
-				//west(x, y, z, darkSegments, lightSegments, widthLeft, widthRight, widthTop, widthBottom, wholeWidthLeft, wholeWidthRight, wholeWidthTop, wholeWidthBottom, remainderWidthLeft, remainderWidthRight, remainderWidthTop, remainderWidthBottom);
+				west(x, y, z, darkSegments, lightSegments, widthLeft, widthRight, widthTop, widthBottom, wholeWidthLeft, wholeWidthRight, wholeWidthTop, wholeWidthBottom, remainderWidthLeft, remainderWidthRight, remainderWidthTop, remainderWidthBottom);
+			
+				if(onRight) {
+					leftWheel = new QuarryWheelDataHolder(new PrecisionVector(x + 0.5, y, z - widthLeft + 0.5), 270, currentFrame.degrees() * -currentFrame.deltaX(), 0);
+					
+					rightWheel = new QuarryWheelDataHolder(new PrecisionVector(x + 0.5, y, z - widthRight + 0.5), 90, currentFrame.degrees() * currentFrame.deltaX(), 0);
+					
+				} else {
+					leftWheel = new QuarryWheelDataHolder(new PrecisionVector(x + 0.5, y, z - widthLeft + 0.5), 90, currentFrame.degrees() * currentFrame.deltaX(), 0);
+					
+					rightWheel = new QuarryWheelDataHolder(new PrecisionVector(x + 0.5, y, z - widthRight + 0.5), 270, currentFrame.degrees() * -currentFrame.deltaX(), 0);
+					
+				}
+				
+				bottomWheel = new QuarryWheelDataHolder(new PrecisionVector(x - widthBottom + 0.5, y, z + 0.5), 180, currentFrame.degrees() * -currentFrame.deltaZ(), 0);
+				
+				topWheel = new QuarryWheelDataHolder(new PrecisionVector(x - widthTop + 0.5, y, z + 0.5), 0, currentFrame.degrees() * currentFrame.deltaZ(), 0);
+
 			} else {
-				//east(x, y, z, darkSegments, lightSegments, widthLeft, widthRight, widthTop, widthBottom, wholeWidthLeft, wholeWidthRight, wholeWidthTop, wholeWidthBottom, remainderWidthLeft, remainderWidthRight, remainderWidthTop, remainderWidthBottom);
+				east(x, y, z, darkSegments, lightSegments, widthLeft, widthRight, widthTop, widthBottom, wholeWidthLeft, wholeWidthRight, wholeWidthTop, wholeWidthBottom, remainderWidthLeft, remainderWidthRight, remainderWidthTop, remainderWidthBottom);
+				
+				if(onRight) {
+					leftWheel = new QuarryWheelDataHolder(new PrecisionVector(x + 0.5, y, z - widthLeft + 0.5), 90, currentFrame.degrees() * currentFrame.deltaX(), 0);
+					
+					rightWheel = new QuarryWheelDataHolder(new PrecisionVector(x + 0.5, y, z - widthRight + 0.5), 270, currentFrame.degrees() * -currentFrame.deltaX(), 0);
+					
+				} else {
+					leftWheel = new QuarryWheelDataHolder(new PrecisionVector(x + 0.5, y, z - widthLeft + 0.5), 270, currentFrame.degrees() * -currentFrame.deltaX(), 0);
+					
+					rightWheel = new QuarryWheelDataHolder(new PrecisionVector(x + 0.5, y, z - widthRight + 0.5), 90, currentFrame.degrees() * currentFrame.deltaX(), 0);
+					
+				}
+				
+				bottomWheel = new QuarryWheelDataHolder(new PrecisionVector(x - widthBottom + 0.5, y, z + 0.5), 0, currentFrame.degrees() * currentFrame.deltaZ(), 0);
+				
+				topWheel = new QuarryWheelDataHolder(new PrecisionVector(x - widthTop + 0.5, y, z + 0.5), 180, currentFrame.degrees() * -currentFrame.deltaZ(), 0);
+			
 			}
 			
 			break;
@@ -207,7 +243,7 @@ public class QuarryRenderHandler {
 			//cylinder
 			darkSegments.add(Pair.of(pos, new AABB(0.375, 0, 0.375, 0.625, -1.0, 0.625)));
 		}
-		int wholeOffset = (int) (wholeSegmentCount * 1.0);
+		int wholeOffset = wholeSegmentCount;
 		pos = new PrecisionVector(x, y - wholeOffset, z);
 		//vertical lines
 		lightSegments.add(Pair.of(pos, new AABB(0.25, -0.3125, 0.25, 0.3125, -1.0 * remainder, 0.3125)));
@@ -217,10 +253,10 @@ public class QuarryRenderHandler {
 		
 		//horizontal lines
 		if(remainder > 0.5) {
-			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.5 - 0.03125, 0.3125, 0.3125, -0.5  + 0.03125, 0.6875)));
-			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.5 - 0.03125, 0.6875, 0.6875, -0.5 + 0.03125, 0.75)));
-			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.5 - 0.03125, 0.3125, 0.75, -0.5  + 0.03125, 0.6875)));
-			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.5 - 0.03125, 0.25, 0.6875, -0.5  + 0.03125, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.75 - 0.03125, 0.3125, 0.3125, -0.75 + 0.03125, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.75 - 0.03125, 0.6875, 0.6875, -0.75 + 0.03125, 0.75)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.75 - 0.03125, 0.3125, 0.75, -0.75 + 0.03125, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.75 - 0.03125, 0.25, 0.6875, -0.75 + 0.03125, 0.3125)));
 		}
 		
 		//cylinder
@@ -807,563 +843,644 @@ public class QuarryRenderHandler {
 		
 	}
 	
-//	private void east(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, double widthTop, double widthBottom, int wholeWidthLeft, int wholeWidthRight, int wholeWidthTop, int wholeWidthBottom, double remainderWidthLeft, double remainderWidthRight, double remainderWidthTop, double remainderWidthBottom) {
-//		int i = 0;
-//		if (onRight) {
-//			eastOnRight(x, y, z, darkSegments, lightSegments, widthLeft, widthRight, wholeWidthLeft, wholeWidthRight, remainderWidthLeft, remainderWidthRight);
-//		} else {
-//			eastOnLeft(x, y, z, darkSegments, lightSegments, widthLeft, widthRight, wholeWidthLeft, wholeWidthRight, remainderWidthLeft, remainderWidthRight);
-//		}
-//		
-//		/* BOTTOM */
-//		
-//		i = 0;
-//		while(i < wholeWidthBottom - 1) {
-//			//vertical lines
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + 0.3125, y - 0.25, z + 0.25, x - widthBottom + (i + 1) * 1.0 + 0.3125, y - 0.1875, z + 0.3125));
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + 0.3125, y - 0.25, z + 0.6875, x - widthBottom + (i + 1) * 1.0 + 0.3125, y - 0.1875, z + 0.75));
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + 0.3125, y + 0.1875, z + 0.25, x - widthBottom + (i + 1) * 1.0 + 0.3125, y + 0.25, z + 0.3125));
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + 0.3125, y + 0.1875, z + 0.6875, x - widthBottom + (i + 1) * 1.0 + 0.3125, y + 0.25, z + 0.75));
-//			//center
-//			darkSegments.add(new AABB(x - widthBottom + i * 1.0 + 0.3125, y - 0.125, z + 0.3875, x - widthBottom + (i + 1) * 1.0 + 0.3125, y + 0.125, z + 0.625));
-//			//vertical lines
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + (0.3125 + 0.468765), y - 0.25, z + 0.3125, x - widthBottom + i * 1.0 + (0.3125 + 0.53215), y - 0.1875, z + 0.6875));
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + (0.3125 + 0.468765), y + 0.1875, z + 0.3125, x - widthBottom + i * 1.0 + (0.3125 + 0.53215), y + 0.25, z + 0.6875));
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + (0.3125 + 0.468765), y - 0.1875, z + 0.25, x - widthBottom + i * 1.0 + (0.3125 + 0.53215), y + 0.1875, z + 0.3125));
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + (0.3125 + 0.468765), y - 0.1875, z + 0.6875, x - widthBottom + i * 1.0 + (0.3125 + 0.53215), y + 0.1875, z + 0.75));
-//			
-//			i++;
-//		}
-//		
-//		//vertical lines
-//		lightSegments.add(new AABB(x - remainderWidthBottom + 0.3125 - 1.0, y - 0.25, z + 0.25, x + 0.1875, y - 0.1875, z + 0.3125));
-//		lightSegments.add(new AABB(x - remainderWidthBottom + 0.3125 - 1.0, y - 0.25, z + 0.6875, x + 0.1875, y - 0.1875, z + 0.75));
-//		lightSegments.add(new AABB(x - remainderWidthBottom + 0.3125 - 1.0, y + 0.1875, z + 0.25, x + 0.1875, y + 0.25, z + 0.3125));
-//		lightSegments.add(new AABB(x - remainderWidthBottom + 0.3125 - 1.0, y + 0.1875, z + 0.6875, x + 0.1875, y + 0.25, z + 0.75));
-//		//center
-//		darkSegments.add(new AABB(x - remainderWidthBottom + 0.3125 - 1.0, y - 0.125, z + 0.3875, x + 0.1875, y + 0.125, z + 0.625));
-//		//vertical lines
-//		lightSegments.add(new AABB(x - remainderWidthBottom - 1.0 + (0.3125 + 0.468765), y - 0.25, z + 0.3125, x - remainderWidthBottom - 1.0 + (0.3125 + 0.53215), y - 0.1875, z + 0.6875));
-//		lightSegments.add(new AABB(x - remainderWidthBottom - 1.0 + (0.3125 + 0.468765), y + 0.1875, z + 0.3125, x - remainderWidthBottom - 1.0 + (0.3125 + 0.53215), y + 0.25, z + 0.6875));
-//		lightSegments.add(new AABB(x - remainderWidthBottom - 1.0 + (0.3125 + 0.468765), y - 0.1875, z + 0.25, x - remainderWidthBottom - 1.0 + (0.3125 + 0.53215), y + 0.1875, z + 0.3125));
-//		lightSegments.add(new AABB(x - remainderWidthBottom - 1.0 + (0.3125 + 0.468765), y - 0.1875, z + 0.6875, x - remainderWidthBottom - 1.0 + (0.3125 + 0.53215), y + 0.1875, z + 0.75));
-//		
-//		/* TOP */
-//		
-//		i = 0;
-//		while(i > wholeWidthTop + 1) {
-//			//vertical lines
-//			lightSegments.add(new AABB(x - widthTop + i * 1.0 + 0.6875, y - 0.25, z + 0.25, x - widthTop + (i - 1) * 1.0 + 0.6875, y - 0.1875, z + 0.3125));
-//			lightSegments.add(new AABB(x - widthTop + i * 1.0 + 0.6875, y - 0.25, z + 0.6875, x - widthTop + (i - 1) * 1.0 + 0.6875, y - 0.1875, z + 0.75));
-//			lightSegments.add(new AABB(x - widthTop + i * 1.0 + 0.6875, y + 0.1875, z + 0.25, x - widthTop + (i - 1) * 1.0 + 0.6875, y + 0.25, z + 0.3125));
-//			lightSegments.add(new AABB(x - widthTop + i * 1.0 + 0.6875, y + 0.1875, z + 0.6875, x - widthTop + (i - 1) * 1.0 + 0.6875, y + 0.25, z + 0.75));
-//			//center
-//			darkSegments.add(new AABB(x - widthTop + i * 1.0 + 0.6875, y - 0.125, z + 0.3875, x - widthTop + (i - 1) * 1.0 + 0.6875, y + 0.125, z + 0.625));
-//			//vertical segments
-//			lightSegments.add(new AABB(x - widthTop + (i - 1) * 1.0 + (0.6875 + 0.468765), y - 0.1875, z + 0.25, x - widthTop + (i - 1) * 1.0 + (0.6875 + 0.53215), y + 0.1875, z + 0.3125));
-//			lightSegments.add(new AABB(x - widthTop + (i - 1) * 1.0 + (0.6875 + 0.468765), y - 0.1875, z + 0.6875, x - widthTop + (i - 1) * 1.0 + (0.6875 + 0.53215), y + 0.1875, z + 0.75));
-//			lightSegments.add(new AABB(x - widthTop + (i - 1) * 1.0 + (0.6875 + 0.468765), y - 0.25, z + 0.3125, x - widthTop + (i - 1) * 1.0 + (0.6875 + 0.53215), y - 0.1875, z + 0.6875));
-//			lightSegments.add(new AABB(x - widthTop + (i - 1) * 1.0 + (0.6875 + 0.468765), y + 0.1875, z + 0.3125, x - widthTop + (i - 1) * 1.0 + (0.6875 + 0.53215), y + 0.25, z + 0.6875));
-//			
-//			
-//			i--;
-//		}
-//		
-//		//vertical lines
-//		lightSegments.add(new AABB(x - remainderWidthTop + 1.0 + 0.6875, y - 0.25, z + 0.25, x + 0.8125, y - 0.1875, z + 0.3125));
-//		lightSegments.add(new AABB(x - remainderWidthTop + 1.0 + 0.6875, y - 0.25, z + 0.6875, x + 0.8125, y - 0.1875, z + 0.75));
-//		lightSegments.add(new AABB(x - remainderWidthTop + 1.0 + 0.6875, y + 0.1875, z + 0.25, x + 0.8125, y + 0.25, z + 0.3125));
-//		lightSegments.add(new AABB(x - remainderWidthTop + 1.0 + 0.6875, y + 0.1875, z + 0.6875, x + 0.8125, y + 0.25, z + 0.75));
-//		//center
-//		darkSegments.add(new AABB(x - remainderWidthTop + 1.0 + 0.6875, y - 0.125, z + 0.3875, x + 0.8125, y + 0.125, z + 0.625));
-//		//vertical segments
-//		lightSegments.add(new AABB(x - remainderWidthTop + (0.6875 + 0.468765), y - 0.1875, z + 0.25, x - remainderWidthTop + (0.6875 + 0.53215), y + 0.1875, z + 0.3125));
-//		lightSegments.add(new AABB(x - remainderWidthTop + (0.6875 + 0.468765), y - 0.1875, z + 0.6875, x - remainderWidthTop + (0.6875 + 0.53215), y + 0.1875, z + 0.75));
-//		lightSegments.add(new AABB(x - remainderWidthTop + (0.6875 + 0.468765), y - 0.25, z + 0.3125, x - remainderWidthTop + (0.6875 + 0.53215), y - 0.1875, z + 0.6875));
-//		lightSegments.add(new AABB(x - remainderWidthTop + (0.6875 + 0.468765), y + 0.1875, z + 0.3125, x - remainderWidthTop + (0.6875 + 0.53215), y + 0.25, z + 0.6875));
-//		
-//	}
-//	
-//	private void eastOnRight(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
-//		int i = 0;
-//		int removal = 0;
-//		/* LEFT */
-//		
-//		i = -1;
-//		removal = remainderWidthLeft < -0.125 ? 1 : 0;
-//		while(i > wholeWidthLeft - removal) {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - widthLeft + i * 1.0 + 0.6875, x + 0.3125, y - 0.1875, z - widthLeft + (i + 1) * 1.0 + 0.6875));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - widthLeft + i * 1.0 + 0.6875, x + 0.3125, y + 0.25, z - widthLeft + (i + 1) * 1.0 + 0.6875));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - widthLeft + i * 1.0 + 0.6875, x + 0.75, y - 0.1875, z - widthLeft + (i + 1) * 1.0 + 0.6875));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - widthLeft + i * 1.0 + 0.6875, x + 0.75, y + 0.25, z - widthLeft + (i + 1) * 1.0 + 0.6875));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - widthLeft + i * 1.0 + 0.6875, x + 0.625, y + 0.125, z - widthLeft + (i + 1) * 1.0 + 0.6875));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - widthLeft + i * 1.0 + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - widthLeft + i * 1.0 + (0.68755 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - widthLeft + i * 1.0 + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - widthLeft + i * 1.0 + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - widthLeft + i * 1.0 + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - widthLeft + i * 1.0 + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - widthLeft + i * 1.0 + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - widthLeft + i * 1.0 + (0.6875 + 0.53215)));
-//			
-//			i--;
-//		}
-//		
-//		if(removal == 1) {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthLeft + 0.6875, x + 0.3125, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthLeft + 0.6875, x + 0.3125, y + 0.25, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthLeft + 0.6875, x + 0.75, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthLeft + 0.6875, x + 0.75, y + 0.25, z + 0.8125));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthLeft + 0.6875, x + 0.625, y + 0.125, z + 0.8125));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthLeft - 1.0 + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - 1.0 - remainderWidthLeft + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthLeft - 1.0 + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - 1.0 - remainderWidthLeft + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthLeft - 1.0 + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - 1.0 - remainderWidthLeft + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthLeft - 1.0 + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - 1.0 - remainderWidthLeft + (0.6875 + 0.53215)));
-//		} else {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthLeft + 1.0 + 0.6875, x + 0.3125, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthLeft + 1.0 + 0.6875, x + 0.3125, y + 0.25, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthLeft + 1.0 + 0.6875, x + 0.75, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthLeft + 1.0 + 0.6875, x + 0.75, y + 0.25, z + 0.8125));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthLeft + 1.0 + 0.6875, x + 0.625, y + 0.125, z + 0.8125));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthLeft + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthLeft + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthLeft + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthLeft + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthLeft + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthLeft + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthLeft + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthLeft + (0.6875 + 0.53215)));
-//		}
-//		
-//		/* RIGHT */
-//		
-//		i = 0;
-//		removal = remainderWidthRight < 0.125 ? 1 : 0;
-//		while(i < wholeWidthRight - removal) {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - widthRight + 1.0 * i + 0.3125, x + 0.3125, y - 0.1875, z - widthRight + 1.0 * (i + 1) + 0.3125));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - widthRight + 1.0 * i + 0.3125, x + 0.75, y - 0.1875, z - widthRight + 1.0 * (i + 1) + 0.3125));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - widthRight + 1.0 * i + 0.3125, x + 0.3125, y + 0.25, z - widthRight + 1.0 * (i + 1) + 0.3125));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - widthRight + 1.0 * i + 0.3125, x + 0.75, y + 0.25, z - widthRight + 1.0 * (i + 1) + 0.3125));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - widthRight + 1.0 * i + 0.3125, x + 0.625, y + 0.125, z - widthRight + 1.0 * (i + 1) + 0.3125));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - widthRight + 1.0 * i + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - widthRight + 1.0 * i + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - widthRight + 1.0 * i + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - widthRight + 1.0 * i + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - widthRight + 1.0 * i + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - widthRight + 1.0 * i + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - widthRight + 1.0 * i + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - widthRight + 1.0 * i + (0.3125 + 0.53215)));
-//			
-//			i++;
-//		}
-//		
-//		if(removal == 1) {
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthRight - 1.0 + 0.3125, x + 0.3125, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthRight - 1.0 + 0.3125, x + 0.75, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthRight - 1.0 + 0.3125, x + 0.3125, y + 0.25, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthRight - 1.0 + 0.3125, x + 0.75, y + 0.25, z + 0.1875));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthRight - 1.0 + 0.3125, x + 0.625, y + 0.125, z + 0.1875));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthRight - 1.0 + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthRight - 1.0 + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthRight - 1.0 + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthRight - 1.0 + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthRight - 1.0 + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthRight - 1.0 + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthRight - 1.0 + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthRight - 1.0 + (0.3125 + 0.53215)));
-//		} else {
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthRight + 0.3125, x + 0.3125, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthRight + 0.3125, x + 0.75, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthRight + 0.3125, x + 0.3125, y + 0.25, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthRight + 0.3125, x + 0.75, y + 0.25, z + 0.1875));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthRight + 0.3125, x + 0.625, y + 0.125, z + 0.1875));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthRight + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthRight + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthRight + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthRight + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthRight + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthRight + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthRight + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthRight + (0.3125 + 0.53215)));
-//		}
-//	}
-//	
-//	private void eastOnLeft(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
-//		int i = 0;
-//		int removal = 0;
-//		/* LEFT */
-//		
-//		i = 0;
-//		removal = remainderWidthLeft < 0.125 ? 1 : 0;
-//		while(i < wholeWidthLeft - removal) {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - widthLeft + i * 1.0 + 0.3125, x + 0.3125, y - 0.1875, z - widthLeft + (i + 1) * 1.0 + 0.3125));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - widthLeft + i * 1.0 + 0.3125, x + 0.3125, y + 0.25, z - widthLeft + (i + 1) * 1.0 + 0.3125));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - widthLeft + i * 1.0 + 0.3125, x + 0.75, y - 0.1875, z - widthLeft + (i + 1) * 1.0 + 0.3125));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - widthLeft + i * 1.0 + 0.3125, x + 0.75, y + 0.25, z - widthLeft + (i + 1) * 1.0 + 0.3125));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - widthLeft + i * 1.0 + 0.3125, x + 0.625, y + 0.125, z - widthLeft + (i + 1) * 1.0 + 0.3125));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - widthLeft + i * 1.0 + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - widthLeft + i * 1.0 + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - widthLeft + i * 1.0 + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - widthLeft + i * 1.0 + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - widthLeft + i * 1.0 + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - widthLeft + i * 1.0 + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - widthLeft + i * 1.0 + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - widthLeft + i * 1.0 + (0.3125 + 0.53215)));
-//			
-//			i++;
-//		}
-//		
-//		if(removal == 1) {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthLeft - 1.0 + 0.3125, x + 0.3125, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthLeft - 1.0 + 0.3125, x + 0.3125, y + 0.25, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthLeft - 1.0 + 0.3125, x + 0.75, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthLeft - 1.0 + 0.3125, x + 0.75, y + 0.25, z + 0.1875));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthLeft - 1.0 + 0.3125, x + 0.625, y + 0.125, z + 0.1875));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthLeft - 1.0 + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - 1.0 - remainderWidthLeft + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthLeft - 1.0 + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - 1.0 - remainderWidthLeft + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthLeft - 1.0 + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - 1.0 - remainderWidthLeft + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthLeft - 1.0 + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - 1.0 - remainderWidthLeft + (0.3125 + 0.53215)));
-//		} else {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthLeft + 0.3125, x + 0.3125, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthLeft + 0.3125, x + 0.3125, y + 0.25, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthLeft + 0.3125, x + 0.75, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthLeft + 0.3125, x + 0.75, y + 0.25, z + 0.1875));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthLeft + 0.3125, x + 0.625, y + 0.125, z + 0.1875));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthLeft + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthLeft + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthLeft + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthLeft + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthLeft + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthLeft + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthLeft + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthLeft + (0.3125 + 0.53215)));
-//		}
-//		
-//		/* RIGHT */
-//		
-//		i = -1;
-//		removal = remainderWidthRight < -0.125 ? 1 : 0;
-//		while(i > wholeWidthRight - removal) {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - widthRight + 1.0 * i + 0.6875, x + 0.3125, y - 0.1875, z - widthRight + 1.0 * (i + 1) + 0.6875));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - widthRight + 1.0 * i + 0.6875, x + 0.75, y - 0.1875, z - widthRight + 1.0 * (i + 1) + 0.6875));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - widthRight + 1.0 * i + 0.6875, x + 0.3125, y + 0.25, z - widthRight + 1.0 * (i + 1) + 0.6875));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - widthRight + 1.0 * i + 0.6875, x + 0.75, y + 0.25, z - widthRight + 1.0 * (i + 1) + 0.6875));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - widthRight + 1.0 * i + 0.6875, x + 0.625, y + 0.125, z - widthRight + 1.0 * (i + 1) + 0.6875));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - widthRight + 1.0 * i + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - widthRight + 1.0 * i + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - widthRight + 1.0 * i + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - widthRight + 1.0 * i + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - widthRight + 1.0 * i + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - widthRight + 1.0 * i + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - widthRight + 1.0 * i + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - widthRight + 1.0 * i + (0.6875 + 0.53215)));
-//			
-//			i--;
-//		}
-//		
-//		if(removal == 1) {
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthRight + 0.6875, x + 0.3125, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthRight + 0.6875, x + 0.75, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthRight + 0.6875, x + 0.3125, y + 0.25, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthRight + 0.6875, x + 0.75, y + 0.25, z + 0.8125));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthRight + 0.6875, x + 0.625, y + 0.125, z + 0.8125));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthRight - 1.0 + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthRight - 1.0 + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthRight - 1.0 + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthRight - 1.0 + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthRight - 1.0 + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthRight - 1.0 + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthRight - 1.0 + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthRight - 1.0 + (0.6875 + 0.53215)));
-//		} else {
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z + 1.0 - remainderWidthRight + 0.6875, x + 0.3125, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z + 1.0 - remainderWidthRight + 0.6875, x + 0.75, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z + 1.0 - remainderWidthRight + 0.6875, x + 0.3125, y + 0.25, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z + 1.0 - remainderWidthRight + 0.6875, x + 0.75, y + 0.25, z + 0.8125));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z + 1.0 - remainderWidthRight + 0.6875, x + 0.625, y + 0.125, z + 0.8125));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthRight + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthRight + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthRight + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthRight + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthRight + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthRight + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthRight + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthRight + (0.6875 + 0.53215)));
-//		}
-//		
-//	}
-//	
-//	private void west(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, double widthTop, double widthBottom, int wholeWidthLeft, int wholeWidthRight, int wholeWidthTop, int wholeWidthBottom, double remainderWidthLeft, double remainderWidthRight, double remainderWidthTop, double remainderWidthBottom) {
-//		int i = 0;
-//		if (onRight) {
-//			westOnRight(x, y, z, darkSegments, lightSegments, widthLeft, widthRight, wholeWidthLeft, wholeWidthRight, remainderWidthLeft, remainderWidthRight);
-//		} else {
-//			westOnLeft(x, y, z, darkSegments, lightSegments, widthLeft, widthRight, wholeWidthLeft, wholeWidthRight, remainderWidthLeft, remainderWidthRight);
-//		}
-//		
-//		/* BOTTOM */
-//		
-//		i = -1;
-//		while(i > wholeWidthBottom) {
-//			//vertical lines
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + 0.6875, y - 0.25, z + 0.25, x - widthBottom + (i + 1) * 1.0 + 0.6875, y - 0.1875, z + 0.3125));
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + 0.6875, y - 0.25, z + 0.6875, x - widthBottom + (i + 1) * 1.0 + 0.6875, y - 0.1875, z + 0.75));
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + 0.6875, y + 0.1875, z + 0.25, x - widthBottom + (i + 1) * 1.0 + 0.6875, y + 0.25, z + 0.3125));
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + 0.6875, y + 0.1875, z + 0.6875, x - widthBottom + (i + 1) * 1.0 + 0.6875, y + 0.25, z + 0.75));
-//			//center
-//			darkSegments.add(new AABB(x - widthBottom + i * 1.0 + 0.6875, y - 0.125, z + 0.3875, x - widthBottom + (i + 1) * 1.0 + 0.6875, y + 0.125, z + 0.625));
-//			//vertical lines
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + (0.6875 + 0.468765), y - 0.25, z + 0.3125, x - widthBottom + i * 1.0 + (0.6875 + 0.53215), y - 0.1875, z + 0.6875));
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + (0.6875 + 0.468765), y + 0.1875, z + 0.3125, x - widthBottom + i * 1.0 + (0.6875 + 0.53215), y + 0.25, z + 0.6875));
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + (0.6875 + 0.468765), y - 0.1875, z + 0.25, x - widthBottom + i * 1.0 + (0.6875 + 0.53215), y + 0.1875, z + 0.3125));
-//			lightSegments.add(new AABB(x - widthBottom + i * 1.0 + (0.6875 + 0.468765), y - 0.1875, z + 0.6875, x - widthBottom + i * 1.0 + (0.6875 + 0.53215), y + 0.1875, z + 0.75));
-//			
-//			i--;
-//		}
-//		
-//		//vertical lines
-//		lightSegments.add(new AABB(x - remainderWidthBottom + 0.6875 + 1.0, y - 0.25, z + 0.25, x + 0.8125, y - 0.1875, z + 0.3125));
-//		lightSegments.add(new AABB(x - remainderWidthBottom + 0.6875 + 1.0, y - 0.25, z + 0.6875, x + 0.8125, y - 0.1875, z + 0.75));
-//		lightSegments.add(new AABB(x - remainderWidthBottom + 0.6875 + 1.0, y + 0.1875, z + 0.25, x + 0.8125, y + 0.25, z + 0.3125));
-//		lightSegments.add(new AABB(x - remainderWidthBottom + 0.6875 + 1.0, y + 0.1875, z + 0.6875, x + 0.8125, y + 0.25, z + 0.75));
-//		//center
-//		darkSegments.add(new AABB(x - remainderWidthBottom + 0.6875 + 1.0, y - 0.125, z + 0.3875, x + 0.8125, y + 0.125, z + 0.625));
-//		//vertical lines
-//		lightSegments.add(new AABB(x - remainderWidthBottom + (0.6875 + 0.468765), y - 0.25, z + 0.3125, x - remainderWidthBottom + (0.6875 + 0.53215), y - 0.1875, z + 0.6875));
-//		lightSegments.add(new AABB(x - remainderWidthBottom + (0.6875 + 0.468765), y + 0.1875, z + 0.3125, x - remainderWidthBottom + (0.6875 + 0.53215), y + 0.25, z + 0.6875));
-//		lightSegments.add(new AABB(x - remainderWidthBottom + (0.6875 + 0.468765), y - 0.1875, z + 0.25, x - remainderWidthBottom + (0.6875 + 0.53215), y + 0.1875, z + 0.3125));
-//		lightSegments.add(new AABB(x - remainderWidthBottom + (0.6875 + 0.468765), y - 0.1875, z + 0.6875, x - remainderWidthBottom + (0.6875 + 0.53215), y + 0.1875, z + 0.75));
-//		
-//		/* TOP */
-//		
-//		i = 1;
-//		while(i < wholeWidthTop) {
-//			//vertical lines
-//			lightSegments.add(new AABB(x - widthTop + i * 1.0 + 0.3125, y - 0.25, z + 0.25, x - widthTop + (i - 1) * 1.0 + 0.3125, y - 0.1875, z + 0.3125));
-//			lightSegments.add(new AABB(x - widthTop + i * 1.0 + 0.3125, y - 0.25, z + 0.6875, x - widthTop + (i - 1) * 1.0 + 0.3125, y - 0.1875, z + 0.75));
-//			lightSegments.add(new AABB(x - widthTop + i * 1.0 + 0.3125, y + 0.1875, z + 0.25, x - widthTop + (i - 1) * 1.0 + 0.3125, y + 0.25, z + 0.3125));
-//			lightSegments.add(new AABB(x - widthTop + i * 1.0 + 0.3125, y + 0.1875, z + 0.6875, x - widthTop + (i - 1) * 1.0 + 0.3125, y + 0.25, z + 0.75));
-//			//center
-//			darkSegments.add(new AABB(x - widthTop + i * 1.0 + 0.3125, y - 0.125, z + 0.3875, x - widthTop + (i - 1) * 1.0 + 0.3125, y + 0.125, z + 0.625));
-//			//vertical segments
-//			lightSegments.add(new AABB(x - widthTop + (i - 1) * 1.0 + (0.3125 + 0.468765), y - 0.1875, z + 0.25, x - widthTop + (i - 1) * 1.0 + (0.3125 + 0.53215), y + 0.1875, z + 0.3125));
-//			lightSegments.add(new AABB(x - widthTop + (i - 1) * 1.0 + (0.3125 + 0.468765), y - 0.1875, z + 0.6875, x - widthTop + (i - 1) * 1.0 + (0.3125 + 0.53215), y + 0.1875, z + 0.75));
-//			lightSegments.add(new AABB(x - widthTop + (i - 1) * 1.0 + (0.3125 + 0.468765), y - 0.25, z + 0.3125, x - widthTop + (i - 1) * 1.0 + (0.3125 + 0.53215), y - 0.1875, z + 0.6875));
-//			lightSegments.add(new AABB(x - widthTop + (i - 1) * 1.0 + (0.3125 + 0.468765), y + 0.1875, z + 0.3125, x - widthTop + (i - 1) * 1.0 + (0.3125 + 0.53215), y + 0.25, z + 0.6875));
-//			
-//			
-//			i++;
-//		}
-//		
-//		//vertical lines
-//		lightSegments.add(new AABB(x - remainderWidthTop - 1.0 + 0.3125, y - 0.25, z + 0.25, x + 0.1875, y - 0.1875, z + 0.3125));
-//		lightSegments.add(new AABB(x - remainderWidthTop - 1.0 + 0.3125, y - 0.25, z + 0.6875, x + 0.1875, y - 0.1875, z + 0.75));
-//		lightSegments.add(new AABB(x - remainderWidthTop - 1.0 + 0.3125, y + 0.1875, z + 0.25, x + 0.1875, y + 0.25, z + 0.3125));
-//		lightSegments.add(new AABB(x - remainderWidthTop - 1.0 + 0.3125, y + 0.1875, z + 0.6875, x + 0.1875, y + 0.25, z + 0.75));
-//		//center
-//		darkSegments.add(new AABB(x - remainderWidthTop - 1.0 + 0.3125, y - 0.125, z + 0.3875, x + 0.1875, y + 0.125, z + 0.625));
-//		//vertical segments
-//		lightSegments.add(new AABB(x - remainderWidthTop - 1.0 + (0.3125 + 0.468765), y - 0.1875, z + 0.25, x - 1.0 - remainderWidthTop + (0.3125 + 0.53215), y + 0.1875, z + 0.3125));
-//		lightSegments.add(new AABB(x - remainderWidthTop - 1.0 + (0.3125 + 0.468765), y - 0.1875, z + 0.6875, x - 1.0 - remainderWidthTop + (0.3125 + 0.53215), y + 0.1875, z + 0.75));
-//		lightSegments.add(new AABB(x - remainderWidthTop - 1.0 + (0.3125 + 0.468765), y - 0.25, z + 0.3125, x - 1.0 - remainderWidthTop + (0.3125 + 0.53215), y - 0.1875, z + 0.6875));
-//		lightSegments.add(new AABB(x - remainderWidthTop - 1.0 + (0.3125 + 0.468765), y + 0.1875, z + 0.3125, x - 1.0 - remainderWidthTop + (0.3125 + 0.53215), y + 0.25, z + 0.6875));
-//		
-//	}
-//	
-//	private void westOnRight(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
-//		int i = 0;
-//		int removal = 0;
-//		/* LEFT */
-//		
-//		i = 0;
-//		removal = remainderWidthLeft < 0.125 ? 1 : 0;
-//		while(i < wholeWidthLeft - removal) {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - widthLeft + i * 1.0 + 0.3125, x + 0.3125, y - 0.1875, z - widthLeft + (i + 1) * 1.0 + 0.3125));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - widthLeft + i * 1.0 + 0.3125, x + 0.3125, y + 0.25, z - widthLeft + (i + 1) * 1.0 + 0.3125));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - widthLeft + i * 1.0 + 0.3125, x + 0.75, y - 0.1875, z - widthLeft + (i + 1) * 1.0 + 0.3125));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - widthLeft + i * 1.0 + 0.3125, x + 0.75, y + 0.25, z - widthLeft + (i + 1) * 1.0 + 0.3125));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - widthLeft + i * 1.0 + 0.3125, x + 0.625, y + 0.125, z - widthLeft + (i + 1) * 1.0 + 0.3125));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - widthLeft + i * 1.0 + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - widthLeft + i * 1.0 + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - widthLeft + i * 1.0 + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - widthLeft + i * 1.0 + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - widthLeft + i * 1.0 + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - widthLeft + i * 1.0 + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - widthLeft + i * 1.0 + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - widthLeft + i * 1.0 + (0.3125 + 0.53215)));
-//			
-//			i++;
-//		}
-//		
-//		if(removal == 1) {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthLeft - 1.0 + 0.3125, x + 0.3125, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthLeft - 1.0 + 0.3125, x + 0.3125, y + 0.25, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthLeft - 1.0 + 0.3125, x + 0.75, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthLeft - 1.0 + 0.3125, x + 0.75, y + 0.25, z + 0.1875));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthLeft - 1.0 + 0.3125, x + 0.625, y + 0.125, z + 0.1875));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthLeft - 1.0 + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - 1.0 - remainderWidthLeft + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthLeft - 1.0 + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - 1.0 - remainderWidthLeft + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthLeft - 1.0 + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - 1.0 - remainderWidthLeft + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthLeft - 1.0 + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - 1.0 - remainderWidthLeft + (0.3125 + 0.53215)));
-//		} else {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthLeft + 0.3125, x + 0.3125, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthLeft + 0.3125, x + 0.3125, y + 0.25, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthLeft + 0.3125, x + 0.75, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthLeft + 0.3125, x + 0.75, y + 0.25, z + 0.1875));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthLeft + 0.3125, x + 0.625, y + 0.125, z + 0.1875));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthLeft + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthLeft + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthLeft + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthLeft + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthLeft + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthLeft + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthLeft + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthLeft + (0.3125 + 0.53215)));
-//		}
-//		
-//		/* RIGHT */
-//		
-//		i = -1;
-//		removal = remainderWidthRight < -0.125 ? 1 : 0;
-//		while(i > wholeWidthRight - removal) {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - widthRight + 1.0 * i + 0.6875, x + 0.3125, y - 0.1875, z - widthRight + 1.0 * (i + 1) + 0.6875));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - widthRight + 1.0 * i + 0.6875, x + 0.75, y - 0.1875, z - widthRight + 1.0 * (i + 1) + 0.6875));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - widthRight + 1.0 * i + 0.6875, x + 0.3125, y + 0.25, z - widthRight + 1.0 * (i + 1) + 0.6875));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - widthRight + 1.0 * i + 0.6875, x + 0.75, y + 0.25, z - widthRight + 1.0 * (i + 1) + 0.6875));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - widthRight + 1.0 * i + 0.6875, x + 0.625, y + 0.125, z - widthRight + 1.0 * (i + 1) + 0.6875));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - widthRight + 1.0 * i + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - widthRight + 1.0 * i + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - widthRight + 1.0 * i + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - widthRight + 1.0 * i + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - widthRight + 1.0 * i + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - widthRight + 1.0 * i + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - widthRight + 1.0 * i + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - widthRight + 1.0 * i + (0.6875 + 0.53215)));
-//			
-//			i--;
-//		}
-//		
-//		if(removal == 1) {
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthRight + 0.6875, x + 0.3125, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthRight + 0.6875, x + 0.75, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthRight + 0.6875, x + 0.3125, y + 0.25, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthRight + 0.6875, x + 0.75, y + 0.25, z + 0.8125));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthRight + 0.6875, x + 0.625, y + 0.125, z + 0.8125));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthRight - 1.0 + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthRight - 1.0 + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthRight - 1.0 + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthRight - 1.0 + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthRight - 1.0 + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthRight - 1.0 + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthRight - 1.0 + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthRight - 1.0 + (0.6875 + 0.53215)));
-//		} else {
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z + 1.0 - remainderWidthRight + 0.6875, x + 0.3125, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z + 1.0 - remainderWidthRight + 0.6875, x + 0.75, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z + 1.0 - remainderWidthRight + 0.6875, x + 0.3125, y + 0.25, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z + 1.0 - remainderWidthRight + 0.6875, x + 0.75, y + 0.25, z + 0.8125));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z + 1.0 - remainderWidthRight + 0.6875, x + 0.625, y + 0.125, z + 0.8125));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthRight + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthRight + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthRight + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthRight + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthRight + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthRight + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthRight + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthRight + (0.6875 + 0.53215)));
-//		}
-//		
-//	}
-//	
-//	private void westOnLeft(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
-//		int i = 0;
-//		int removal = 0;
-//		
-//		/* LEFT */
-//		
-//		i = -1;
-//		removal = remainderWidthLeft < -0.125 ? 1 : 0;
-//		while(i > wholeWidthLeft - removal) {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - widthLeft + i * 1.0 + 0.6875, x + 0.3125, y - 0.1875, z - widthLeft + (i + 1) * 1.0 + 0.6875));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - widthLeft + i * 1.0 + 0.6875, x + 0.3125, y + 0.25, z - widthLeft + (i + 1) * 1.0 + 0.6875));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - widthLeft + i * 1.0 + 0.6875, x + 0.75, y - 0.1875, z - widthLeft + (i + 1) * 1.0 + 0.6875));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - widthLeft + i * 1.0 + 0.6875, x + 0.75, y + 0.25, z - widthLeft + (i + 1) * 1.0 + 0.6875));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - widthLeft + i * 1.0 + 0.6875, x + 0.625, y + 0.125, z - widthLeft + (i + 1) * 1.0 + 0.6875));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - widthLeft + i * 1.0 + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - widthLeft + i * 1.0 + (0.68755 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - widthLeft + i * 1.0 + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - widthLeft + i * 1.0 + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - widthLeft + i * 1.0 + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - widthLeft + i * 1.0 + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - widthLeft + i * 1.0 + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - widthLeft + i * 1.0 + (0.6875 + 0.53215)));
-//			
-//			i--;
-//		}
-//		
-//		if(removal == 1) {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthLeft + 0.6875, x + 0.3125, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthLeft + 0.6875, x + 0.3125, y + 0.25, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthLeft + 0.6875, x + 0.75, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthLeft + 0.6875, x + 0.75, y + 0.25, z + 0.8125));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthLeft + 0.6875, x + 0.625, y + 0.125, z + 0.8125));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthLeft - 1.0 + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - 1.0 - remainderWidthLeft + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthLeft - 1.0 + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - 1.0 - remainderWidthLeft + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthLeft - 1.0 + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - 1.0 - remainderWidthLeft + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthLeft - 1.0 + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - 1.0 - remainderWidthLeft + (0.6875 + 0.53215)));
-//		} else {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthLeft + 1.0 + 0.6875, x + 0.3125, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthLeft + 1.0 + 0.6875, x + 0.3125, y + 0.25, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthLeft + 1.0 + 0.6875, x + 0.75, y - 0.1875, z + 0.8125));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthLeft + 1.0 + 0.6875, x + 0.75, y + 0.25, z + 0.8125));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthLeft + 1.0 + 0.6875, x + 0.625, y + 0.125, z + 0.8125));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthLeft + (0.6875 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthLeft + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthLeft + (0.6875 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthLeft + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthLeft + (0.6875 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthLeft + (0.6875 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthLeft + (0.6875 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthLeft + (0.6875 + 0.53215)));
-//		}
-//		
-//		/* RIGHT */
-//		
-//		i = 0;
-//		removal = remainderWidthRight < 0.125 ? 1 : 0;
-//		while(i < wholeWidthRight - removal) {
-//			//horizontal lines
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - widthRight + 1.0 * i + 0.3125, x + 0.3125, y - 0.1875, z - widthRight + 1.0 * (i + 1) + 0.3125));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - widthRight + 1.0 * i + 0.3125, x + 0.75, y - 0.1875, z - widthRight + 1.0 * (i + 1) + 0.3125));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - widthRight + 1.0 * i + 0.3125, x + 0.3125, y + 0.25, z - widthRight + 1.0 * (i + 1) + 0.3125));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - widthRight + 1.0 * i + 0.3125, x + 0.75, y + 0.25, z - widthRight + 1.0 * (i + 1) + 0.3125));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - widthRight + 1.0 * i + 0.3125, x + 0.625, y + 0.125, z - widthRight + 1.0 * (i + 1) + 0.3125));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - widthRight + 1.0 * i + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - widthRight + 1.0 * i + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - widthRight + 1.0 * i + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - widthRight + 1.0 * i + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - widthRight + 1.0 * i + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - widthRight + 1.0 * i + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - widthRight + 1.0 * i + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - widthRight + 1.0 * i + (0.3125 + 0.53215)));
-//			
-//			i++;
-//		}
-//		
-//		if(removal == 1) {
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthRight - 1.0 + 0.3125, x + 0.3125, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthRight - 1.0 + 0.3125, x + 0.75, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthRight - 1.0 + 0.3125, x + 0.3125, y + 0.25, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthRight - 1.0 + 0.3125, x + 0.75, y + 0.25, z + 0.1875));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthRight - 1.0 + 0.3125, x + 0.625, y + 0.125, z + 0.1875));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthRight - 1.0 + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthRight - 1.0 + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthRight - 1.0 + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthRight - 1.0 + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthRight - 1.0 + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthRight - 1.0 + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthRight - 1.0 + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthRight - 1.0 + (0.3125 + 0.53215)));
-//		} else {
-//			lightSegments.add(new AABB(x + 0.25, y - 0.25, z - remainderWidthRight + 0.3125, x + 0.3125, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.25, z - remainderWidthRight + 0.3125, x + 0.75, y - 0.1875, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.25, y + 0.1875, z - remainderWidthRight + 0.3125, x + 0.3125, y + 0.25, z + 0.1875));
-//			lightSegments.add(new AABB(x + 0.6875, y + 0.1875, z - remainderWidthRight + 0.3125, x + 0.75, y + 0.25, z + 0.1875));
-//			//center
-//			darkSegments.add(new AABB(x + 0.3875, y - 0.125, z - remainderWidthRight + 0.3125, x + 0.625, y + 0.125, z + 0.1875));
-//			//vertical lines
-//			lightSegments.add(new AABB(x + 0.3125, y - 0.25, z - remainderWidthRight + (0.3125 + 0.468765), x + 0.6875, y - 0.1875, z - remainderWidthRight + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.3125, y + 0.1875, z - remainderWidthRight + (0.3125 + 0.468765), x + 0.6875, y + 0.25, z - remainderWidthRight + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.25, y - 0.1875, z - remainderWidthRight + (0.3125 + 0.468765), x + 0.3125, y + 0.1875, z - remainderWidthRight + (0.3125 + 0.53215)));
-//			lightSegments.add(new AABB(x + 0.6875, y - 0.1875, z - remainderWidthRight + (0.3125 + 0.468765), x + 0.75, y + 0.1875, z - remainderWidthRight + (0.3125 + 0.53215)));
-//		}
-//
-//	}
+	private void east(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, double widthTop, double widthBottom, int wholeWidthLeft, int wholeWidthRight, int wholeWidthTop, int wholeWidthBottom, double remainderWidthLeft, double remainderWidthRight, double remainderWidthTop, double remainderWidthBottom) {
+		
+		if (onRight) {
+			eastOnRight(x, y, z, darkSegments, lightSegments, widthLeft, widthRight, wholeWidthLeft, wholeWidthRight, remainderWidthLeft, remainderWidthRight);
+		} else {
+			eastOnLeft(x, y, z, darkSegments, lightSegments, widthLeft, widthRight, wholeWidthLeft, wholeWidthRight, remainderWidthLeft, remainderWidthRight);
+		}
+		
+		/* BOTTOM */
+		
+		int i = 0;
+		PrecisionVector pos;
+		while(i < wholeWidthBottom - 1) {
+			pos = new PrecisionVector(x - widthBottom + i * 1.0 + 0.8125, y, z);
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.25, 0.25, 1.0, -0.1875, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.25, 0.6875, 1.0, -0.1875, 0.75)));
+			lightSegments.add(Pair.of(pos, new AABB(0, 0.1875, 0.25, 1.0, 0.25, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0, 0.1875, 0.6875, 1.0, 0.25, 0.75)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0, -0.125, 0.3875, 1.0, 0.125, 0.625)));
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, -0.25, 0.3125, 1, -0.1875, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, 0.1875, 0.3125, 1, 0.25, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, -0.1875, 0.25, 1, 0.1875, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, -0.1875, 0.6875, 1, 0.1875, 0.75)));
+			
+			i++;
+		}
+		pos = new PrecisionVector(x, y, z);
+		//vertical lines
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthBottom + 0.8125 - 1.0, -0.25, 0.25, 0.1875, -0.1875, 0.3125)));
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthBottom + 0.8125 - 1.0, -0.25, 0.6875, 0.1875, -0.1875, 0.75)));
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthBottom + 0.8125 - 1.0, 0.1875, 0.25, 0.1875, 0.25, 0.3125)));
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthBottom + 0.8125 - 1.0, 0.1875, 0.6875, 0.1875, 0.25, 0.75)));
+		//center
+		darkSegments.add(Pair.of(pos, new AABB(-remainderWidthBottom + 0.8125 - 1.0, -0.125, 0.3875, 0.1875, 0.125, 0.625)));
+		//vertical lines
+		if(remainderWidthBottom > 0.5) {
+			pos = new PrecisionVector(x - remainderWidthBottom - 1.0 + 0.8125, y, z);
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, -0.25, 0.3125, 1, -0.1875, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, 0.1875, 0.3125, 1, 0.25, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, -0.1875, 0.25, 1, 0.1875, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, -0.1875, 0.6875, 1, 0.1875, 0.75)));
+		}
+		
+		/* TOP */
+		
+		i = 0;
+		while(i > wholeWidthTop + 1) {
+			pos = new PrecisionVector(x - widthTop + i * 1.0 + 0.1875, y, z);
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.25, 0.25, -1.0, -0.1875, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.25, 0.6875, -1.0, -0.1875, 0.75)));
+			lightSegments.add(Pair.of(pos, new AABB(0, 0.1875, 0.25, -1.0, 0.25, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0, 0.1875, 0.6875, -1.0, 0.25, 0.75)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0, -0.125, 0.3875, -1.0, 0.125, 0.625)));
+			//vertical segments
+			lightSegments.add(Pair.of(pos, new AABB(-1.0 + 0, -0.1875, 0.25, -1.0 + 0.0625, 0.1875, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(-1.0 + 0, -0.1875, 0.6875, -1.0 + 0.0625, 0.1875, 0.75)));
+			lightSegments.add(Pair.of(pos, new AABB(-1.0 + 0, -0.25, 0.3125, -1.0 + 0.0625, -0.1875, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(-1.0 + 0, 0.1875, 0.3125, -1.0 + 0.0625, 0.25, 0.6875)));
+			
+			
+			i--;
+		}
+		pos = new PrecisionVector(x, y, z);
+		//vertical lines
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthTop + 1.0 + 0.1875, -0.25, 0.25, 0.8125, -0.1875, 0.3125)));
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthTop + 1.0 + 0.1875, -0.25, 0.6875, 0.8125, -0.1875, 0.75)));
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthTop + 1.0 + 0.1875, 0.1875, 0.25, 0.8125, 0.25, 0.3125)));
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthTop + 1.0 + 0.1875, 0.1875, 0.6875, 0.8125, 0.25, 0.75)));
+		//center
+		darkSegments.add(Pair.of(pos, new AABB(-remainderWidthTop + 1.0 + 0.1875, -0.125, 0.3875, 0.8125, 0.125, 0.625)));
+		//vertical segments
+		if(remainderWidthTop < -0.5) {
+			pos = new PrecisionVector(x - remainderWidthTop + 0.1875, y, z);
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.1875, 0.25, 0.0625, 0.1875, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.1875, 0.6875, 0.0625, 0.1875, 0.75)));
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.25, 0.3125, 0.0625, -0.1875, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(0, 0.1875, 0.3125, 0.0625, 0.25, 0.6875)));
+		}
+		
+	}
+	
+	private void eastOnRight(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
+		/* LEFT */
+		
+		int i = 0;
+		int removal = remainderWidthLeft < -0.625 ? 1 : 0;
+		PrecisionVector pos;
+		
+		while(i > wholeWidthLeft + 1 - removal) {
+			pos = new PrecisionVector(x, y, z - widthLeft + i * 1.0 + 0.1875);
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, 0, 0.3125, -0.1875, -1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, 0, 0.3125, 0.25, -1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, 0, 0.75, -0.1875, -1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, 0, 0.75, 0.25, -1.0)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, 0, 0.625, 0.125, -1.0)));
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, -1.0 + 0, 0.6875, -0.1875, -1.0 + 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, -1.0 + 0, 0.6875, 0.25, -1.0 + 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, -1.0 + 0, 0.3125, 0.1875, -1.0 + 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, -1.0 + 0, 0.75, 0.1875, -1.0 + 0.0625)));
+			
+			i--;
+		}
+		pos = new PrecisionVector(x, y, z);
+		if(removal == 1) {
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthLeft + 0.1875, 0.3125, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthLeft + 0.1875, 0.3125, 0.25, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, -remainderWidthLeft + 0.1875, 0.75, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthLeft + 0.1875, 0.75, 0.25, 0.8125)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthLeft + 0.1875, 0.625, 0.125, 0.8125)));
+			//vertical lines
+			//pos = new PrecisionVector(x, y, z - remainderWidthLeft - 1.0 + 0.1875);
+			//lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0.468765, 0.6875, -0.1875, 0.53215)));
+			//lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0.468765, 0.6875, 0.25, 0.53215)));
+			//lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0.468765, 0.3125, 0.1875, 0.53215)));
+			//lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0.468765, 0.75, 0.1875, 0.53215)));
+			
+		} else {
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthLeft + 1.0 + 0.1875, 0.3125, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthLeft + 1.0 + 0.1875, 0.3125, 0.25, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, -remainderWidthLeft + 1.0 + 0.1875, 0.75, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthLeft + 1.0 + 0.1875, 0.75, 0.25, 0.8125)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthLeft + 1.0 + 0.1875, 0.625, 0.125, 0.8125)));
+			//vertical lines
+			if(remainderWidthLeft < -0.5) {
+				pos = new PrecisionVector(x, y, z - remainderWidthLeft + 0.1875);
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0, 0.6875, -0.1875, 0.0625)));
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0, 0.6875, 0.25, 0.0625)));
+				lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0, 0.3125, 0.1875, 0.0625)));
+				lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0, 0.75, 0.1875, 0.0625)));
+			}
+			
+		}
+		
+		/* RIGHT */
+		
+		i = 0;
+		removal = remainderWidthRight < 0.625 ? 1 : 0;
+		while(i < wholeWidthRight - removal) {
+			pos = new PrecisionVector(x, y, z - widthRight + 1.0 * i + 0.8125);
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, 0, 0.3125, -0.1875, 1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, 0, 0.75, -0.1875, 1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, 0, 0.3125, 0.25, 1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, 0, 0.75, 0.25, 1.0)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, 0, 0.625, 0.125, 1.0)));
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0.468765, 0.6875, -0.1875, 0.53215)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0.468765, 0.6875, 0.25, 0.53215)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0.468765, 0.3125, 0.1875, 0.53215)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0.468765, 0.75, 0.1875, 0.53215)));
+			
+			i++;
+		}
+		
+		pos = new PrecisionVector(x, y, z);
+		if(removal == 1) {
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthRight - 1.0 + 0.8125, 0.3125, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, -remainderWidthRight - 1.0 + 0.8125, 0.75, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthRight - 1.0 + 0.8125, 0.3125, 0.25, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthRight - 1.0 + 0.8125, 0.75, 0.25, 0.1875)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthRight - 1.0 + 0.8125, 0.625, 0.125, 0.1875)));
+			//vertical lines
+			pos = new PrecisionVector(x, y, z - remainderWidthRight - 1.0 + 0.8125);
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0.468765, 0.6875, -0.1875, 0.53215)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0.468765, 0.6875, 0.25, 0.53215)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0.468765, 0.3125, 0.1875, 0.53215)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0.468765, 0.75, 0.1875, 0.53215)));
+		} else {
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthRight + 0.8125, 0.3125, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, -remainderWidthRight + 0.8125, 0.75, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthRight + 0.8125, 0.3125, 0.25, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthRight + 0.8125, 0.75, 0.25, 0.1875)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthRight + 0.8125, 0.625, 0.125, 0.1875)));
+			//vertical lines
+			/*
+			pos = new PrecisionVector(x, y, z - remainderWidthRight + 0.8125);
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0.468765, 0.6875, -0.1875, 0.53215)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0.468765, 0.6875, 0.25, 0.53215)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0.468765, 0.3125, 0.1875, 0.53215)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0.468765, 0.75, 0.1875, 0.53215)));
+			*/
+		}
+		
+	}
+	
+	private void eastOnLeft(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
+		/* LEFT */
+		
+		int i = 0;
+		int removal = remainderWidthLeft < 0.625 ? 1 : 0;
+		PrecisionVector pos;
+		
+		while(i < wholeWidthLeft - removal) {
+			pos = new PrecisionVector(x, y, z - widthLeft + i * 1.0 + 0.8125);
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, 0, 0.3125, -0.1875, 1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, 0, 0.3125, 0.25, 1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, 0, 0.75, -0.1875, 1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, 0, 0.75, 0.25, 1.0)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB( 0.3875, -0.125, 0, 0.625, 0.125, 1.0)));
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0.9375, 0.6875, -0.1875, 1)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0.9375, 0.6875, 0.25, 1)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0.9375, 0.3125, 0.1875, 1)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0.9375, 0.75, 0.1875, 1)));
+			
+			i++;
+		}
+		
+		pos = new PrecisionVector(x, y, z);
+		if(removal == 1) {
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthLeft - 1.0 + 0.8125, 0.3125, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthLeft - 1.0 + 0.8125, 0.3125, 0.25, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, - remainderWidthLeft - 1.0 + 0.8125, 0.75, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthLeft - 1.0 + 0.8125, 0.75, 0.25, 0.1875)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthLeft - 1.0 + 0.8125, 0.625, 0.125, 0.1875)));
+			//vertical lines
+			if(remainderWidthLeft > 0.5) {
+				pos = new PrecisionVector(x, y, z - remainderWidthLeft - 1.0 + 0.8125);
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0.9375, 0.6875, -0.1875, 1)));
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0.9375, 0.6875, 0.25, 1)));
+				lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0.9375, 0.3125, 0.1875, 1)));
+				lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0.9375, 0.75, 0.1875, 1)));
+			}
+		} else {
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthLeft + 0.8125, 0.3125, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthLeft + 0.8125, 0.3125, 0.25, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, -remainderWidthLeft + 0.8125, 0.75, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthLeft + 0.8125, 0.75, 0.25, 0.1875)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthLeft + 0.8125, 0.625, 0.125, 0.1875)));
+			//vertical lines
+			
+			//pos = new PrecisionVector(x, y, z - remainderWidthLeft + 0.8125);
+			//lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0.9375, 0.6875, -0.1875, 1)));
+			//lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0.9375, 0.6875, 0.25, 1)));
+			//lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0.9375, 0.3125, 0.1875, 1)));
+			//lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0.9375, 0.75, 0.1875, 1)));
+		}
+		
+		/* RIGHT */
+		
+		i = 0;
+		removal = remainderWidthRight < -0.625 ? 1 : 0;
+		while(i > wholeWidthRight + 1 - removal) {
+			pos = new PrecisionVector(x, y, z - widthRight + 1.0 * i + 0.1875);
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, 0, 0.3125, -0.1875, -1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, 0, 0.75, -0.1875, -1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, 0, 0.3125, 0.25, -1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, 0, 0.75, 0.25, -1.0)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, 0, 0.625, 0.125, -1.0)));
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, -1.0 + 0, 0.6875, -0.1875, -1.0 + 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, -1.0 + 0, 0.6875, 0.25, -1.0 + 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, -1.0 + 0, 0.3125, 0.1875, -1.0 + 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, -1.0 + 0, 0.75, 0.1875, -1.0 + 0.0625)));
+			
+			i--;
+		}
+		
+		pos = new PrecisionVector(x, y, z);
+		if(removal == 1) {
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthRight + 0.1875, 0.3125, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, -remainderWidthRight + 0.1875, 0.75, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthRight + 0.1875, 0.3125, 0.25, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthRight + 0.1875, 0.75, 0.25, 0.8125)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthRight + 0.1875, 0.625, 0.125, 0.8125)));
+			//vertical lines
+			/*
+			pos = new PrecisionVector(x, y, z - remainderWidthRight - 1.0 + 0.1875);
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0, 0.6875, -0.1875, 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0, 0.6875, 0.25, 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0, 0.3125, 0.1875, 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0, 0.75, 0.1875, 0.0625)));
+			*/
+		} else {
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, 1.0 - remainderWidthRight + 0.1875, 0.3125, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, 1.0 - remainderWidthRight + 0.1875, 0.75, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, 1.0 - remainderWidthRight + 0.1875, 0.3125, 0.25, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, 1.0 - remainderWidthRight + 0.1875, 0.75, 0.25, 0.8125)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, 1.0 - remainderWidthRight + 0.1875, 0.625, 0.125, 0.8125)));
+			//vertical lines
+			if(remainderWidthRight < -0.5) {
+				pos = new PrecisionVector(x, y, z - remainderWidthRight + 0.1875);
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0, 0.6875, -0.1875, 0.0625)));
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0, 0.6875, 0.25, 0.0625)));
+				lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0, 0.3125, 0.1875, 0.0625)));
+				lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0, 0.75, 0.1875, 0.0625)));
+			}
+			
+		}
+		
+	}
+	
+	private void west(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, double widthTop, double widthBottom, int wholeWidthLeft, int wholeWidthRight, int wholeWidthTop, int wholeWidthBottom, double remainderWidthLeft, double remainderWidthRight, double remainderWidthTop, double remainderWidthBottom) {
+		if (onRight) {
+			westOnRight(x, y, z, darkSegments, lightSegments, widthLeft, widthRight, wholeWidthLeft, wholeWidthRight, remainderWidthLeft, remainderWidthRight);
+		} else {
+			westOnLeft(x, y, z, darkSegments, lightSegments, widthLeft, widthRight, wholeWidthLeft, wholeWidthRight, remainderWidthLeft, remainderWidthRight);
+		}
+		
+		/* BOTTOM */
+		
+		int i = 0;
+		PrecisionVector pos;
+		
+		while(i > wholeWidthBottom + 1) {
+			pos = new PrecisionVector(x - widthBottom + i * 1.0 + 0.1875, y, z);
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.25, 0.25, -1.0, -0.1875, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.25, 0.6875, -1.0, -0.1875, 0.75)));
+			lightSegments.add(Pair.of(pos, new AABB(0, 0.1875, 0.25, -1.0, 0.25, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0, 0.1875, 0.6875, -1.0, 0.25, 0.75)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0, -0.125, 0.3875, -1.0, 0.125, 0.625)));
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(-1.0 + 0, -0.25, 0.3125, -1.0 + 0.0625, -0.1875, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(-1.0 + 0, 0.1875, 0.3125, -1.0 + 0.0625, 0.25, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(-1.0 + 0, -0.1875, 0.25, -1.0 + 0.0625, 0.1875, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(-1.0 + 0, -0.1875, 0.6875, -1.0 + 0.0625, 0.1875, 0.75)));
+			
+			i--;
+		}
+		
+		pos = new PrecisionVector(x, y, z);
+		//vertical lines
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthBottom + 0.1875 + 1.0, -0.25, 0.25, 0.8125, -0.1875, 0.3125)));
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthBottom + 0.1875 + 1.0, -0.25, 0.6875, 0.8125, -0.1875, 0.75)));
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthBottom + 0.1875 + 1.0, 0.1875, 0.25, 0.8125, 0.25, 0.3125)));
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthBottom + 0.1875 + 1.0, 0.1875, 0.6875, 0.8125, 0.25, 0.75)));
+		//center
+		darkSegments.add(Pair.of(pos, new AABB(-remainderWidthBottom + 0.1875 + 1.0, -0.125, 0.3875, 0.8125, 0.125, 0.625)));
+		//vertical lines
+		if(remainderWidthBottom < -0.5) {
+			pos = new PrecisionVector(x - remainderWidthBottom + 0.1875, y, z);
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.25, 0.3125, 0.0625, -0.1875, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(0, 0.1875, 0.3125, 0.0625, 0.25, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.1875, 0.25, 0.0625, 0.1875, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.1875, 0.6875, 0.0625, 0.1875, 0.75)));
+		}
+		
+		/* TOP */
+		
+		i = 0;
+		while(i < wholeWidthTop - 1) {
+			pos = new PrecisionVector(x - widthTop + i * 1.0 + 0.8125, y, z);
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.25, 0.25, 1.0, -0.1875, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0, -0.25, 0.6875, 1.0, -0.1875, 0.75)));
+			lightSegments.add(Pair.of(pos, new AABB(0, 0.1875, 0.25, 1.0, 0.25, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0, 0.1875, 0.6875, 1.0, 0.25, 0.75)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0, -0.125, 0.3875, 1.0, 0.125, 0.625)));
+			//vertical segments
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, -0.1875, 0.25, 1, 0.1875, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, -0.1875, 0.6875, 1, 0.1875, 0.75)));
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, -0.25, 0.3125, 1, -0.1875, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, 0.1875, 0.3125, 1, 0.25, 0.6875)));
+			
+			i++;
+		}
+		
+		pos = new PrecisionVector(x, y, z);
+		//vertical lines
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthTop - 1.0 + 0.8125, -0.25, 0.25, 0.1875, -0.1875, 0.3125)));
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthTop - 1.0 + 0.8125, -0.25, 0.6875, 0.1875, -0.1875, 0.75)));
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthTop - 1.0 + 0.8125, 0.1875, 0.25, 0.1875, 0.25, 0.3125)));
+		lightSegments.add(Pair.of(pos, new AABB(-remainderWidthTop - 1.0 + 0.8125, 0.1875, 0.6875, 0.1875, 0.25, 0.75)));
+		//center
+		darkSegments.add(Pair.of(pos, new AABB(-remainderWidthTop - 1.0 + 0.8125, -0.125, 0.3875, 0.1875, 0.125, 0.625)));
+		//vertical segments
+		if(remainderWidthTop > 0.5) {
+			pos = new PrecisionVector(x - remainderWidthTop - 1.0 + 0.8125, y, z);
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, -0.1875, 0.25, 1, 0.1875, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, -0.1875, 0.6875, 1, 0.1875, 0.75)));
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, -0.25, 0.3125, 1, -0.1875, 0.6875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.9375, 0.1875, 0.3125, 1, 0.25, 0.6875)));
+		}
+		
+	}
+	
+	private void westOnRight(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
+		/* LEFT */
+		
+		int i = 0;
+		int removal = remainderWidthLeft < 0.625 ? 1 : 0;
+		PrecisionVector pos;
+		
+		while(i < wholeWidthLeft - removal) {
+			pos = new PrecisionVector(x, y, z - widthLeft + i * 1.0 + 0.8125);
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, 0, 0.3125, -0.1875, 1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, 0, 0.3125, 0.25, 1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, 0, 0.75, -0.1875, 1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, 0, 0.75, 0.25, 1.0)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, 0, 0.625, 0.125, 1.0)));
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0.9375, 0.6875, -0.1875, 1)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0.9375, 0.6875, 0.25, 1)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0.9375, 0.3125, 0.1875, 1)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0.9375, 0.75, 0.1875, 1)));
+			
+			i++;
+		}
+		
+		pos = new PrecisionVector(x, y, z);
+		if(removal == 1) {
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthLeft - 1.0 + 0.8125, 0.3125, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthLeft - 1.0 + 0.8125, 0.3125, 0.25, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, -remainderWidthLeft - 1.0 + 0.8125, 0.75, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthLeft - 1.0 + 0.8125, 0.75, 0.25, 0.1875)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthLeft - 1.0 + 0.8125, 0.625, 0.125, 0.1875)));
+			//vertical lines
+			if(remainderWidthLeft > 0.5) {
+				pos = new PrecisionVector(x, y, z - remainderWidthLeft - 1.0 + 0.8125);
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0.9375, 0.6875, -0.1875, 1)));
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0.9375, 0.6875, 0.25, 1)));
+				lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0.9375, 0.3125, 0.1875, 1)));
+				lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0.9375, 0.75, 0.1875, 1)));
+			}
+			
+		} else {
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthLeft + 0.8125, 0.3125, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthLeft + 0.8125, 0.3125, 0.25, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, -remainderWidthLeft + 0.8125, 0.75, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthLeft + 0.8125, 0.75, 0.25, 0.1875)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthLeft + 0.8125, 0.625, 0.125, 0.1875)));
+			//vertical lines
+			
+			//pos = new PrecisionVector(x, y, z - remainderWidthLeft + 0.8125);
+			//lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0.9375, 0.6875, -0.1875, 1)));
+			//lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0.9375, 0.6875, 0.25, 1)));
+			//lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0.9375, 0.3125, 0.1875, 1)));
+			//lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0.9375, 0.75, 0.1875, 1)));
+			
+		}
+		
+		/* RIGHT */
+		
+		i = 0;
+		removal = remainderWidthRight < -0.625 ? 1 : 0;
+		while(i > wholeWidthRight + 1 - removal) {
+			pos = new PrecisionVector(x, y, z - widthRight + 1.0 * i + 0.1875);
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, 0, 0.3125, -0.1875, -1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, 0, 0.75, -0.1875, -1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, 0, 0.3125, 0.25, -1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, 0, 0.75, 0.25, -1.0)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, 0, 0.625, 0.125, -1.0)));
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, -1.0 + 0, 0.6875, -0.1875, -1.0 + 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, -1.0 + 0, 0.6875, 0.25, -1.0 + 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, -1.0 + 0, 0.3125, 0.1875, -1.0 + 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, -1.0 + 0, 0.75, 0.1875, -1.0 + 0.0625)));
+			
+			i--;
+		}
+		
+		pos = new PrecisionVector(x, y, z);
+		if(removal == 1) {
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthRight + 0.1875, 0.3125, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, -remainderWidthRight + 0.1875, 0.75, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthRight + 0.1875, 0.3125, 0.25, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthRight + 0.1875, 0.75, 0.25, 0.8125)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthRight + 0.1875, 0.625, 0.125, 0.8125)));
+			//vertical lines
+			/*
+			pos = new PrecisionVector(x, y, z - remainderWidthRight - 1.0 + 0.1875);
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0, 0.6875, -0.1875, 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0, 0.6875, 0.25, 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0, 0.3125, 0.1875, 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0, 0.75, 0.1875, 0.0625)));
+			*/
+		} else {
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, 1.0 - remainderWidthRight + 0.1875, 0.3125, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, 1.0 - remainderWidthRight + 0.1875, 0.75, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, 1.0 - remainderWidthRight + 0.1875, 0.3125, 0.25, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, 1.0 - remainderWidthRight + 0.1875, 0.75, 0.25, 0.8125)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, 1.0 - remainderWidthRight + 0.1875, 0.625, 0.125, 0.8125)));
+			//vertical lines
+			if(remainderWidthRight < -0.5) {
+				pos = new PrecisionVector(x, y, z - remainderWidthRight + 0.1875);
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0, 0.6875, -0.1875, 0.0625)));
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0, 0.6875, 0.25, 0.0625)));
+				lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0, 0.3125, 0.1875, 0.0625)));
+				lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0, 0.75, 0.1875, 0.0625)));
+			}
+			
+		}
+		
+	}
+	
+	private void westOnLeft(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
+		/* LEFT */
+		
+		int i = 0;
+		int removal = remainderWidthLeft < -0.625 ? 1 : 0;
+		PrecisionVector pos;
+		while(i > wholeWidthLeft + 1 - removal) {
+			pos = new PrecisionVector(x, y, z - widthLeft + i * 1.0 + 0.1875);
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, 0, 0.3125, -0.1875, -1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, 0, 0.3125, 0.25, -1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, 0, 0.75, -0.1875, -1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, 0, 0.75, 0.25, -1.0)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, 0, 0.625, 0.125, -1.0)));
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, -1.0 + 0, 0.6875, -0.1875, -1.0 + 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, -1.0 + 0, 0.6875, 0.25, -1.0 + 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, -1.0 + 0, 0.3125, 0.1875, -1.0 + 0.0625)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, -1.0 + 0, 0.75, 0.1875, -1.0 + 0.0625)));
+			
+			i--;
+		}
+		
+		pos = new PrecisionVector(x, y, z);
+		if(removal == 1) {
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthLeft + 0.1875, 0.3125, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthLeft + 0.1875, 0.3125, 0.25, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, -remainderWidthLeft + 0.1875, 0.75, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthLeft + 0.1875, 0.75, 0.25, 0.8125)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthLeft + 0.1875, 0.625, 0.125, 0.8125)));
+			//vertical lines
+			
+			//pos = new PrecisionVector(x, y, z - 1.0 - remainderWidthLeft + 0.1875);
+			//lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0, 0.6875, -0.1875, 0.0625)));
+			//lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0, 0.6875, 0.25, 0.0625)));
+			//lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0, 0.3125, 0.1875, 0.0625)));
+			//lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0, 0.75, 0.1875, 0.0625)));
+			
+		} else {
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthLeft + 1.0 + 0.1875, 0.3125, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthLeft + 1.0 + 0.1875, 0.3125, 0.25, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, -remainderWidthLeft + 1.0 + 0.1875, 0.75, -0.1875, 0.8125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthLeft + 1.0 + 0.1875, 0.75, 0.25, 0.8125)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthLeft + 1.0 + 0.1875, 0.625, 0.125, 0.8125)));
+			//vertical lines
+			if(remainderWidthLeft < -0.5) {
+				pos = new PrecisionVector(x, y, z - remainderWidthLeft + 0.1875);
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0, 0.6875, -0.1875, 0.0625)));
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0, 0.6875, 0.25, 0.0625)));
+				lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0, 0.3125, 0.1875, 0.0625)));
+				lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0, 0.75, 0.1875, 0.0625)));
+			}
+		}
+
+		/* RIGHT */
+		
+		i = 0;
+		removal = remainderWidthRight < 0.625 ? 1 : 0;
+		while(i < wholeWidthRight - removal) {
+			pos = new PrecisionVector(x, y, z - widthRight + 1.0 * i + 0.8125);
+			//horizontal lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, 0, 0.3125, -0.1875, 1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, 0, 0.75, -0.1875, 1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, 0, 0.3125, 0.25, 1.0)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, 0, 0.75, 0.25, 1.0)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, 0, 0.625, 0.125, 1.0)));
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0.9375, 0.6875, -0.1875, 1)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0.9375, 0.6875, 0.25, 1)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0.9375, 0.3125, 0.1875, 1)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0.9375, 0.75, 0.1875, 1)));
+			
+			i++;
+		}
+		
+		pos = new PrecisionVector(x, y, z);
+		if(removal == 1) {
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthRight - 1.0 + 0.8125, 0.3125, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, -remainderWidthRight - 1.0 + 0.8125, 0.75, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthRight - 1.0 + 0.8125, 0.3125, 0.25, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthRight - 1.0 + 0.8125, 0.75, 0.25, 0.1875)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthRight - 1.0 + 0.8125, 0.625, 0.125, 0.1875)));
+			//vertical lines
+			if(remainderWidthRight > 0.5) {
+				pos = new PrecisionVector(x, y, z - remainderWidthRight - 1.0 + 0.8125);
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0.9375, 0.6875, -0.1875, 1)));
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0.9375, 0.6875, 0.25, 1)));
+				lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0.9375, 0.3125, 0.1875, 1)));
+				lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0.9375, 0.75, 0.1875, 1)));
+			}
+		} else {
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.25, -remainderWidthRight + 0.8125, 0.3125, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.25, -remainderWidthRight + 0.8125, 0.75, -0.1875, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, 0.1875, -remainderWidthRight + 0.8125, 0.3125, 0.25, 0.1875)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, 0.1875, -remainderWidthRight + 0.8125, 0.75, 0.25, 0.1875)));
+			//center
+			darkSegments.add(Pair.of(pos, new AABB(0.3875, -0.125, -remainderWidthRight + 0.8125, 0.625, 0.125, 0.1875)));
+			//vertical lines
+			/*
+			pos = new PrecisionVector(x, y, z - remainderWidthRight + 0.8125);
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.25, 0.9375, 0.6875, -0.1875, 1)));
+			lightSegments.add(Pair.of(pos, new AABB(0.3125, 0.1875, 0.9375, 0.6875, 0.25, 1)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.1875, 0.9375, 0.3125, 0.1875, 1)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.1875, 0.9375, 0.75, 0.1875, 1)));
+			*/
+		}
+		
+	}
 
 	@Nullable
 	private QuarryArmFrameWrapper getCurrentFrame(TileQuarry quarry) {

@@ -60,7 +60,7 @@ public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 			} else if(facing == Direction.SOUTH) {
 				beam = new AABB(0.4375, 0.5625, 1, 0.5625, 0.6875, 1.375);
 			} else if (facing == Direction.EAST) {
-				
+				beam = new AABB(1, 0.5625, 0.4375, 1.375, 0.6875, 0.5625);
 			} else {
 				
 			}
