@@ -297,8 +297,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		setChanged(-1);
 	}
 	
-	//this method is handled by the capability, so we 
-	private void setChanged(int slot) {
+	public void setChanged(int slot) {
 		items.forceDirty();
 		if (onChanged != null) {
 			onChanged.accept(this, slot);

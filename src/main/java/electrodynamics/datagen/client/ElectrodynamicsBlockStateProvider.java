@@ -91,7 +91,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		simpleBlock(ElectrodynamicsBlocks.blockFrameCorner, existingBlock(ElectrodynamicsBlocks.blockFrameCorner), true);
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.hydroelectricgenerator), existingBlock(blockLoc("hydroelectricgeneratorengine")), false);
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.lathe), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.lathe)), true);
-		horrRotatedBlock(ElectrodynamicsBlocks.blockLogisticalManager, existingBlock(ElectrodynamicsBlocks.blockLogisticalManager), true);
+		wire(ElectrodynamicsBlocks.blockLogisticalManager, existingBlock(blockLoc("logisticalmanager_none")), existingBlock(blockLoc("logisticalmanager_inventory")), false);
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusher), existingBlock(blockLoc("mineralcrusherbase")), false);
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusherdouble), existingBlock(blockLoc("mineralcrusherdoublebase")), false);
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrushertriple), existingBlock(blockLoc("mineralcrushertriplebase")), false);

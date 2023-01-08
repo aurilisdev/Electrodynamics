@@ -11,7 +11,6 @@ import electrodynamics.common.tile.quarry.TileQuarry;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.Entity;
@@ -138,36 +137,11 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 		return machine == SubtypeMachine.advancedsolarpanel || machine == SubtypeMachine.windmill;
 	}
 
-	private static ItemStack getMachine(SubtypeMachine inputMachine) {
-		return new ItemStack(ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(inputMachine).get());
-	}
-
 	@Override
 	public boolean isIPlayerStorable() {
 		return machine.isPlayerStorable();
 	}
 
-	/*
-	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-		if (tile instanceof GenericTile machine) {
-			ComponentInventory inv = machine.getComponent(ComponentType.Inventory);
-			if (Constants.DROP_MACHINE_INVENTORIES) {
-				ItemStack stack = new ItemStack(this);
-				Containers.dropContents(machine.getLevel(), machine.getBlockPos(), inv.getItems());
-				tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
-					double joules = el.getJoulesStored();
-					if (joules > 0) {
-						stack.getOrCreateTag().putDouble("joules", joules);
-					}
-				});
-				return Arrays.asList(stack);
-			}
-		}
-		return super.getDrops(state, builder);
-	}
-	*/
 	@Override
 	public ItemStack getCloneItemStack(BlockGetter level, BlockPos pPos, BlockState pState) {
 		ItemStack stack = super.getCloneItemStack(level, pPos, pState);

@@ -70,7 +70,6 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 		return 1;
 	}
 
-	//TODO fix
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		if (worldIn.isClientSide) {

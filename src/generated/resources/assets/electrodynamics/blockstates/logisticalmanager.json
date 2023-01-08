@@ -1,19 +1,108 @@
 {
-  "variants": {
-    "facing=east": {
-      "model": "electrodynamics:block/logisticalmanager"
+  "multipart": [
+    {
+      "apply": {
+        "model": "electrodynamics:block/logisticalmanager_none"
+      },
+      "when": {
+        "OR": [
+          {
+            "up": "none"
+          },
+          {
+            "down": "none"
+          },
+          {
+            "north": "none"
+          },
+          {
+            "east": "none"
+          },
+          {
+            "south": "none"
+          },
+          {
+            "west": "none"
+          }
+        ]
+      }
     },
-    "facing=north": {
-      "model": "electrodynamics:block/logisticalmanager",
-      "y": 270
+    {
+      "apply": {
+        "model": "electrodynamics:block/logisticalmanager_inventory",
+        "x": 270
+      },
+      "when": {
+        "OR": [
+          {
+            "up": "wire|inventory"
+          }
+        ]
+      }
     },
-    "facing=south": {
-      "model": "electrodynamics:block/logisticalmanager",
-      "y": 90
+    {
+      "apply": {
+        "model": "electrodynamics:block/logisticalmanager_inventory",
+        "x": 90
+      },
+      "when": {
+        "OR": [
+          {
+            "down": "wire|inventory"
+          }
+        ]
+      }
     },
-    "facing=west": {
-      "model": "electrodynamics:block/logisticalmanager",
-      "y": 180
+    {
+      "apply": {
+        "model": "electrodynamics:block/logisticalmanager_inventory"
+      },
+      "when": {
+        "OR": [
+          {
+            "north": "wire|inventory"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "electrodynamics:block/logisticalmanager_inventory",
+        "y": 90
+      },
+      "when": {
+        "OR": [
+          {
+            "east": "wire|inventory"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "electrodynamics:block/logisticalmanager_inventory",
+        "y": 180
+      },
+      "when": {
+        "OR": [
+          {
+            "south": "wire|inventory"
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "electrodynamics:block/logisticalmanager_inventory",
+        "y": 270
+      },
+      "when": {
+        "OR": [
+          {
+            "west": "wire|inventory"
+          }
+        ]
+      }
     }
-  }
+  ]
 }

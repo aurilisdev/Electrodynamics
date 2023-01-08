@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class TileFrame extends BlockEntity {
 
-	private BlockPos ownerQuarryPos = null;
+	public BlockPos ownerQuarryPos = null;
 	
 	private static final String KEY = "quarrypos";
 	

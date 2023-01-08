@@ -88,30 +88,9 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 	@Override
 	public void onPickup(ItemStack stack, BlockPos pos, Player player) {
 		Level world = player.level;
-		/*
-		BlockEntity tile = world.getBlockEntity(pos);
-		if (tile instanceof GenericTile generic && generic.getComponent(ComponentType.Inventory) instanceof ComponentInventory inv) {
-			Containers.dropContents(world, pos, inv);
-		}
-		*/
 		world.destroyBlock(pos, true, player);
 	}
-	/*
-	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder) {
-		ItemStack stack = new ItemStack(this);
-		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-		if (tile != null) {
-			tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
-				double joules = el.getJoulesStored();
-				if (joules > 0) {
-					stack.getOrCreateTag().putDouble("joules", joules);
-				}
-			});
-		}
-		return Arrays.asList(stack);
-	}
-	*/
+
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);

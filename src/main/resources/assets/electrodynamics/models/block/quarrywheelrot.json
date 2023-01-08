@@ -6,7 +6,7 @@
 	],
 	"textures": {
 		"0": "electrodynamics:model/quarrywheel",
-		"particle": "electrodynamics:model/quarrywheell"
+		"particle": "electrodynamics:model/quarrywheel"
 	},
 	"elements": [
 		{

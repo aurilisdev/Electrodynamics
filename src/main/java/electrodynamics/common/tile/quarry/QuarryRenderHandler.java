@@ -45,7 +45,6 @@ public class QuarryRenderHandler {
 			return;
 		}
 		
-		//loc.add(-0.5,0,-0.5);
 		BlockPos start = quarry.corners.get().get(3);
 		BlockPos end = quarry.corners.get().get(0);
 
@@ -245,25 +244,28 @@ public class QuarryRenderHandler {
 		}
 		int wholeOffset = wholeSegmentCount;
 		pos = new PrecisionVector(x, y - wholeOffset, z);
-		//vertical lines
-		lightSegments.add(Pair.of(pos, new AABB(0.25, -0.3125, 0.25, 0.3125, -1.0 * remainder, 0.3125)));
-		lightSegments.add(Pair.of(pos, new AABB(0.25, -0.3125, 0.6875, 0.3125, -1.0 * remainder, 0.75)));
-		lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.3125, 0.25, 0.75, -1.0 * remainder, 0.3125)));
-		lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.3125, 0.6875, 0.75, -1.0 * remainder, 0.75)));
-		
-		//horizontal lines
-		if(remainder > 0.5) {
-			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.75 - 0.03125, 0.3125, 0.3125, -0.75 + 0.03125, 0.6875)));
-			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.75 - 0.03125, 0.6875, 0.6875, -0.75 + 0.03125, 0.75)));
-			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.75 - 0.03125, 0.3125, 0.75, -0.75 + 0.03125, 0.6875)));
-			lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.75 - 0.03125, 0.25, 0.6875, -0.75 + 0.03125, 0.3125)));
+		if(remainder > 0) {
+			//vertical lines
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.3125, 0.25, 0.3125, -1.0 * remainder, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.25, -0.3125, 0.6875, 0.3125, -1.0 * remainder, 0.75)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.3125, 0.25, 0.75, -1.0 * remainder, 0.3125)));
+			lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.3125, 0.6875, 0.75, -1.0 * remainder, 0.75)));
+			//cylinder
+			darkSegments.add(Pair.of(pos, new AABB(0.375, -0.3125, 0.375, 0.625, -1.0 * remainder, 0.625)));
+			//horizontal lines
+			if(remainder > 0.5) {
+				lightSegments.add(Pair.of(pos, new AABB(0.25, -0.75 - 0.03125, 0.3125, 0.3125, -0.75 + 0.03125, 0.6875)));
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.75 - 0.03125, 0.6875, 0.6875, -0.75 + 0.03125, 0.75)));
+				lightSegments.add(Pair.of(pos, new AABB(0.6875, -0.75 - 0.03125, 0.3125, 0.75, -0.75 + 0.03125, 0.6875)));
+				lightSegments.add(Pair.of(pos, new AABB(0.3125, -0.75 - 0.03125, 0.25, 0.6875, -0.75 + 0.03125, 0.3125)));
+			}
 		}
 		
-		//cylinder
-		darkSegments.add(Pair.of(pos, new AABB(0.375, -0.3125, 0.375, 0.625, -1.0 * remainder, 0.625)));
-
 		titanium.add(Pair.of(new PrecisionVector(x, y, z), new AABB(0.1875, 0.325, 0.1875, 0.8125, -0.325, 0.8125)));
-		titanium.add(Pair.of(new PrecisionVector(x, y - deltaY, z), new AABB(0.20, 0, 0.20, 0.8, -0.2, 0.8)));
+		if(remainder > 0) {
+			titanium.add(Pair.of(new PrecisionVector(x, y - deltaY, z), new AABB(0.20, 0, 0.20, 0.8, -0.2, 0.8)));
+		}
+		
 	}
 	
 	private void north(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, double widthTop, double widthBottom, int wholeWidthLeft, int wholeWidthRight, int wholeWidthTop, int wholeWidthBottom, double remainderWidthLeft, double remainderWidthRight, double remainderWidthTop, double remainderWidthBottom) {
@@ -1488,11 +1490,12 @@ public class QuarryRenderHandler {
 			return new QuarryArmFrameWrapper(null, 0, 0, 0);
 		}	
 		
-		if (!quarry.isMotorComplexPowered() || quarry.prevMiningPos.get().equals(TileQuarry.OUT_OF_REACH) || quarry.prevMiningPos.get().equals(quarry.miningPos.get())) {
-			return new QuarryArmFrameWrapper(new Location(quarry.miningPos.get().offset(0, -1, 0)), 0, 0, 0);
+		
+		if (quarry.prevMiningPos.get().equals(TileQuarry.OUT_OF_REACH) || quarry.prevMiningPos.get().equals(quarry.miningPos.get())) {
+			return new QuarryArmFrameWrapper(new Location(quarry.miningPos.get()).add(-0.5, -0.5, -0.5), 0, 0, 0);
 		}
 		
-		if(!quarry.hasHead.get()) {
+		if(!quarry.hasHead.get() || !quarry.isMotorComplexPowered()) {
 			return currentFrame;
 		}
 		

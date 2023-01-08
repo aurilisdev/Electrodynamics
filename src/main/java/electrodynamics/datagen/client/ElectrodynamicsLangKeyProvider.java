@@ -566,24 +566,50 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("seismicrelay.posfound", "%1$s , %2$s");
 			addGuiLabel("seismicrelay.posoptional", "%s , Optional");
 			addGuiLabel("motorcomplex.speed", "Ticks per Block: %s");
-			addGuiLabel("quarry.voiditems", "Void List");
-			addGuiLabel("quarry.needvoidcard", "No Card");
-			addGuiLabel("quarry.status", "Status:");
-			addGuiLabel("quarry.ringfound", "Ring Found");
-			addGuiLabel("quarry.noring", "No Ring");
-			addGuiLabel("quarry.setup", "Setting Up...");
-			addGuiLabel("quarry.mining", "Mining...");
-			addGuiLabel("quarry.finished", "Finished!");
-			addGuiLabel("quarry.error", "Error");
-			addGuiLabel("quarry.running", "Running...");
-			addGuiLabel("quarry.needspower", "No Power!");
-			addGuiLabel("quarry.hashead", "Has Head");
-			addGuiLabel("quarry.nohead", "No Head!");
-			addGuiLabel("quarry.stats", "Stats:");
+			
+			addGuiLabel("quarry.ringusage", "Ring Usage: %s");
+			addGuiLabel("quarry.miningusage", "Drill Usage: %s");
+			
 			addGuiLabel("quarry.fortune", "Fortune: %s");
 			addGuiLabel("quarry.silktouch", "Silk Touch: %s");
 			addGuiLabel("quarry.unbreaking", "Unbreaking: %s");
-
+			
+			addGuiLabel("quarry.wateruse", "Coolant/Block: %s");
+			
+			addGuiLabel("quarry.motorcomplex", "Motor Complex");
+			addGuiLabel("quarry.seismicrelay", "Seismic Relay");
+			addGuiLabel("quarry.coolantresavoir", "Coolant Resavoir");
+			
+			addGuiLabel("quarry.voiditems", "Void List");
+			addGuiLabel("quarry.needvoidcard", "No Card");
+			
+			addGuiLabel("quarry.status", "Status:");
+			addGuiLabel("quarry.clearingarea", "Clearing...");
+			addGuiLabel("quarry.setup", "Setting Up...");
+			addGuiLabel("quarry.mining", "Mining...");
+			addGuiLabel("quarry.notmining", "Error!");
+			addGuiLabel("quarry.finished", "Finished!");
+			
+			addGuiLabel("quarry.miningposition", "Mining At:");
+			addGuiLabel("quarry.notavailable", "N/A");
+			
+			addGuiLabel("quarry.drillhead", "Drill Head:");
+			addGuiLabel("quarry.hashead", "Present");
+			addGuiLabel("quarry.nohead", "Missing");
+			
+			addGuiLabel("quarry.errors", "Errors:");
+			addGuiLabel("quarry.norelay", "No Relay");
+			addGuiLabel("quarry.nomotorcomplex", "No Motor");
+			addGuiLabel("quarry.nocoolantresavoir", "No Resavoir");
+			addGuiLabel("quarry.nocorners", "Invalid Corners");
+			addGuiLabel("quarry.motorcomplexnotpowered", "Motor Power");
+			addGuiLabel("quarry.nopower", "Quarry Power");
+			addGuiLabel("quarry.areanotclear", "Area Blocked");
+			addGuiLabel("quarry.noring", "No Ring");
+			addGuiLabel("quarry.missinghead", "No Drill Head");
+			addGuiLabel("quarry.noerrors", "None");
+			addGuiLabel("quarry.miningframe", "Active Frame");
+			
 			add("keycategory.electrodynamics", "Electrodynamics");
 			addKeyLabel("jetpackascend", "Ascend with Jetpack");
 			addKeyLabel("togglenvgs", "Toggle Night Vision Goggles");
