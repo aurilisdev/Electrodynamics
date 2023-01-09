@@ -199,7 +199,7 @@ public class ComponentProcessor implements Component {
 
 		setRecipe(locRecipe);
 		
-		operatingTicks.set((double) locRecipe.getTicks());
+		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
 		
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
@@ -252,7 +252,7 @@ public class ComponentProcessor implements Component {
 		}
 		setRecipe(locRecipe);
 		
-		operatingTicks.set((double) locRecipe.getTicks());
+		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
 		
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
@@ -304,7 +304,7 @@ public class ComponentProcessor implements Component {
 		}
 		setRecipe(locRecipe);
 		
-		operatingTicks.set((double) locRecipe.getTicks());
+		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
 		
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
@@ -348,7 +348,7 @@ public class ComponentProcessor implements Component {
 		}
 		setRecipe(locRecipe);
 		
-		operatingTicks.set((double) locRecipe.getTicks());
+		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
 		
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
@@ -392,7 +392,7 @@ public class ComponentProcessor implements Component {
 		}
 		setRecipe(locRecipe);
 		
-		operatingTicks.set((double) locRecipe.getTicks());
+		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
 		
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
@@ -436,7 +436,7 @@ public class ComponentProcessor implements Component {
 		}
 		setRecipe(locRecipe);
 		
-		operatingTicks.set((double) locRecipe.getTicks());
+		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
 		
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);

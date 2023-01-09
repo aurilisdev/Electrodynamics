@@ -57,6 +57,8 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		hasItemBi = false;
 		hasFluidBi = false;
 		xp = experience;
+		this.ticks = ticks;
+		this.usagePerTick = usagePerTick;
 	}
 
 	protected ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, double experience, int ticks, double usagePerTick) {
@@ -66,6 +68,8 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		itemBiCount = itemBiproducts.length;
 		hasFluidBi = false;
 		xp = experience;
+		this.ticks = ticks;
+		this.usagePerTick = usagePerTick;
 	}
 
 	protected ElectrodynamicsRecipe(ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience, int ticks, double usagePerTick) {
@@ -75,6 +79,8 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		fluidBiProducts = fluidBiproducts;
 		fluidBiCount = fluidBiproducts.length;
 		xp = experience;
+		this.ticks = ticks;
+		this.usagePerTick = usagePerTick;
 	}
 
 	protected ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience, int ticks, double usagePerTick) {
@@ -86,6 +92,8 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		fluidBiProducts = fluidBiproducts;
 		fluidBiCount = fluidBiproducts.length;
 		xp = experience;
+		this.ticks = ticks;
+		this.usagePerTick = usagePerTick;
 	}
 
 	/**
