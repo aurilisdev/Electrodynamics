@@ -11,5 +11,7 @@
   "output": {
     "count": 3,
     "item": "electrodynamics:impuredustiron"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 450.0
 }

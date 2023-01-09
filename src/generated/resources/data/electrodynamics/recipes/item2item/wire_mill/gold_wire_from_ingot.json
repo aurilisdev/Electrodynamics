@@ -19,5 +19,7 @@
   "output": {
     "count": 1,
     "item": "electrodynamics:wiregold"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 125.0
 }

@@ -19,5 +19,7 @@
   "output": {
     "count": 9,
     "item": "minecraft:lapis_lazuli"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 350.0
 }

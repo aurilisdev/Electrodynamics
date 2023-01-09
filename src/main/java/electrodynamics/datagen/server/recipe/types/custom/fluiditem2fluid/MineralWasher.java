@@ -19,10 +19,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class MineralWasher extends AbstractRecipeGenerator {
 
+	public static double MINERALWASHER_USAGE_PER_TICK = 400.0;
+	public static int MINERALWASHER_REQUIRED_TICKS = 200;
+	
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
 
-		newRecipe(new FluidStack(Fluids.LAVA, 1500), 0, "lava_from_magma_block")
+		newRecipe(new FluidStack(Fluids.LAVA, 1500), 0, 200, 400.0, "lava_from_magma_block")
 				//
 				.addFluidTagInput(FluidTags.LAVA, 1000)
 				//
@@ -32,8 +35,7 @@ public class MineralWasher extends AbstractRecipeGenerator {
 
 		for (SubtypeSulfateFluid fluid : SubtypeSulfateFluid.values()) {
 			if (fluid.source != null) {
-				newRecipe(new FluidStack(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(fluid).get(), 1000), 0,
-						"sulfate_" + fluid.name())
+				newRecipe(new FluidStack(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(fluid).get(), 1000), 0, 200, 400.0, "sulfate_" + fluid.name())
 						//
 						.addItemTagInput(fluid.source, 1)
 						//
@@ -45,9 +47,8 @@ public class MineralWasher extends AbstractRecipeGenerator {
 
 	}
 
-	private FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, String name) {
-		return FinishedRecipeFluidOutput.of(ElectrodynamicsRecipeInit.MINERAL_WASHER_SERIALIZER.get(), stack, xp)
-				.name(RecipeCategory.FLUID_ITEM_2_FLUID, References.ID, "mineral_washer/" + name);
+	private FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name) {
+		return FinishedRecipeFluidOutput.of(ElectrodynamicsRecipeInit.MINERAL_WASHER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_ITEM_2_FLUID, References.ID, "mineral_washer/" + name);
 	}
 
 }

@@ -15,22 +15,25 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class ElectrolyticSeparator extends AbstractRecipeGenerator {
 
+	public static int ELECTROLYTICSEPARATOR_REQUIRED_TICKS = 200;
+	public static double ELECTROLYTICSEPARATOR_USAGE_PER_TICK = 250.0;
+
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
-		
-		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidOxygen, 1000), 0, "water_to_hydrogen_and_oxygen")
-		//
-		.addFluidTagInput(FluidTags.WATER, 1000)
-		//
-		.addFluidBiproduct(new ProbableFluid(new FluidStack(ElectrodynamicsFluids.fluidHydrogen, 2000), 1))
-		//
-		.complete(consumer);;
-		
+
+		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidOxygen, 1000), 0, 200, 250.0, "water_to_hydrogen_and_oxygen")
+				//
+				.addFluidTagInput(FluidTags.WATER, 1000)
+				//
+				.addFluidBiproduct(new ProbableFluid(new FluidStack(ElectrodynamicsFluids.fluidHydrogen, 2000), 1))
+				//
+				.complete(consumer);
+		;
+
 	}
-	
-	private FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, String name) {
-		return FinishedRecipeFluidOutput.of(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPARATOR_SERIALIZER.get(), stack, xp)
-				.name(RecipeCategory.FLUID_2_FLUID, References.ID, "electrolytic_separator/" + name);
+
+	private FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name) {
+		return FinishedRecipeFluidOutput.of(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPARATOR_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_2_FLUID, References.ID, "electrolytic_separator/" + name);
 	}
 
 }

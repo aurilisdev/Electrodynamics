@@ -19,10 +19,13 @@ import net.minecraftforge.common.Tags;
 
 public class EnergizedAlloyer extends AbstractRecipeGenerator {
 
+	public static int ENERGIZEDALLOYER_REQUIRED_TICKS = 50;
+	public static double ENERGIZEDALLOYER_USAGE_PER_TICK = 50.0;
+	
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
 
-		newRecipe(new ItemStack(CUSTOM_GLASS[SubtypeGlass.aluminum.ordinal()], 4), 0.5F, "aluminum_glass")
+		newRecipe(new ItemStack(CUSTOM_GLASS[SubtypeGlass.aluminum.ordinal()], 4), 0.5F, 50, 50.0, "aluminum_glass")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_ALUMINUM, 1)
 				//
@@ -32,7 +35,7 @@ public class EnergizedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.bronze.ordinal()], 5), 0.35F, "ingot_bronze")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.bronze.ordinal()], 5), 0.35F, 50, 50.0, "ingot_bronze")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_TIN, 1)
 				//
@@ -42,7 +45,7 @@ public class EnergizedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(Items.NETHERITE_INGOT, 2), 1.0F, "ingot_netherite")
+		newRecipe(new ItemStack(Items.NETHERITE_INGOT, 2), 1.0F, 50, 50.0, "ingot_netherite")
 				//
 				.addItemStackInput(new ItemStack(Items.NETHERITE_SCRAP))
 				//
@@ -52,7 +55,7 @@ public class EnergizedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.0F, "slag")
+		newRecipe(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.0F, 50, 50.0, "slag")
 				//
 				.addItemTagInput(Tags.Items.INGOTS, 1)
 				//
@@ -60,7 +63,7 @@ public class EnergizedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.stainlesssteel.ordinal()], 4), 0.4F, "ingot_stainless_steel")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.stainlesssteel.ordinal()], 4), 0.4F, 50, 50.0, "ingot_stainless_steel")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_CHROMIUM, 1)
 				//
@@ -70,7 +73,7 @@ public class EnergizedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.steel.ordinal()], 3), 0.3F, "ingot_steel")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.steel.ordinal()], 3), 0.3F, 50, 50.0, "ingot_steel")
 				//
 				.addItemTagInput(Tags.Items.INGOTS_IRON, 2)
 				//
@@ -80,7 +83,7 @@ public class EnergizedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.vanadiumsteel.ordinal()], 8), 0.3F, "ingot_vanadium_steel")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.vanadiumsteel.ordinal()], 8), 0.3F, 50, 50.0, "ingot_vanadium_steel")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_STEEL, 8)
 				//
@@ -92,9 +95,8 @@ public class EnergizedAlloyer extends AbstractRecipeGenerator {
 
 	}
 
-	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, String name) {
-		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_SERIALIZER.get(), stack, xp)
-				.name(RecipeCategory.ITEM_2_ITEM, References.ID, "energized_alloyer/" + name);
+	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
+		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, References.ID, "energized_alloyer/" + name);
 	}
 
 }

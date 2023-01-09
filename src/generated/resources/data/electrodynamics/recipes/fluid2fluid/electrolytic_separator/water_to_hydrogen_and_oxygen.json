@@ -19,5 +19,7 @@
   "output": {
     "amount": 1000,
     "fluid": "electrodynamics:fluidoxygen"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 250.0
 }

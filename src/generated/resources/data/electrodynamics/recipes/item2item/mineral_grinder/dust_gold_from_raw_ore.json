@@ -19,5 +19,7 @@
   "output": {
     "count": 2,
     "item": "electrodynamics:dustgold"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 350.0
 }

@@ -19,5 +19,7 @@
   "output": {
     "count": 3,
     "item": "minecraft:coal"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 350.0
 }

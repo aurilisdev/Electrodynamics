@@ -23,5 +23,7 @@
   "output": {
     "count": 8,
     "item": "electrodynamics:ingotvanadiumsteel"
-  }
+  },
+  "ticks": 50,
+  "usagepertick": 50.0
 }

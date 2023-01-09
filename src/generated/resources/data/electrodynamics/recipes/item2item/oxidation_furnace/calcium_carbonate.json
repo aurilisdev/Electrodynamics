@@ -15,5 +15,7 @@
   "output": {
     "count": 2,
     "item": "electrodynamics:oxidecalciumcarbonate"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 350.0
 }

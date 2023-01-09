@@ -23,5 +23,7 @@
   "output": {
     "count": 4,
     "item": "electrodynamics:glassaluminum"
-  }
+  },
+  "ticks": 50,
+  "usagepertick": 50.0
 }

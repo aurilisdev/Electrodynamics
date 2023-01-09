@@ -11,5 +11,7 @@
   "output": {
     "count": 4,
     "item": "electrodynamics:dustniter"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 450.0
 }

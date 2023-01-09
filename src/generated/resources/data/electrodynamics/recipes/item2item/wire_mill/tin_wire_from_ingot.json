@@ -19,5 +19,7 @@
   "output": {
     "count": 1,
     "item": "electrodynamics:wiretin"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 125.0
 }

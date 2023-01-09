@@ -3,7 +3,6 @@ package electrodynamics.compatibility.jei.recipecategories.item2item.specificmac
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.categories.item2item.specificmachines.ReinforcedAlloyerRecipe;
-import electrodynamics.common.settings.Constants;
 import electrodynamics.compatibility.jei.ElectrodynamicsJEIPlugin;
 import electrodynamics.compatibility.jei.recipecategories.item2item.Item2ItemRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowRightAnimatedWrapper;
@@ -30,7 +29,7 @@ public class ReinforcedAlloyerRecipeCategory extends Item2ItemRecipeCategory<Rei
 
 	private static ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(41, 23);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 49, Constants.REINFORCEDALLOYER_USAGE_PER_TICK, 960);
+	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 49, 960);
 	private static BiproductPercentWrapper ITEM_LABEL = new BiproductPercentWrapper(100, 40, false);
 
 	private static int ANIM_TIME = 50;

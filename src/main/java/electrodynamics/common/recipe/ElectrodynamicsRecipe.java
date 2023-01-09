@@ -41,6 +41,10 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 	private int fluidBiCount;
 
 	private double xp;
+	
+	private int ticks;
+	private double usagePerTick;
+	
 
 	private ProbableItem[] itemBiProducts;
 	private ProbableFluid[] fluidBiProducts;
@@ -48,14 +52,14 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 	private HashMap<Integer, List<Integer>> itemArrangements = new HashMap<>();
 	private List<Integer> fluidArrangement;
 
-	protected ElectrodynamicsRecipe(ResourceLocation recipeID, double experience) {
+	protected ElectrodynamicsRecipe(ResourceLocation recipeID, double experience, int ticks, double usagePerTick) {
 		id = recipeID;
 		hasItemBi = false;
 		hasFluidBi = false;
 		xp = experience;
 	}
 
-	protected ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, double experience) {
+	protected ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, double experience, int ticks, double usagePerTick) {
 		id = recipeID;
 		hasItemBi = true;
 		itemBiProducts = itemBiproducts;
@@ -64,7 +68,7 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		xp = experience;
 	}
 
-	protected ElectrodynamicsRecipe(ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
+	protected ElectrodynamicsRecipe(ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience, int ticks, double usagePerTick) {
 		id = recipeID;
 		hasItemBi = false;
 		hasFluidBi = true;
@@ -73,7 +77,7 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		xp = experience;
 	}
 
-	protected ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
+	protected ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience, int ticks, double usagePerTick) {
 		id = recipeID;
 		hasItemBi = true;
 		itemBiProducts = itemBiproducts;
@@ -178,6 +182,14 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 
 	public double getXp() {
 		return xp;
+	}
+	
+	public int getTicks() {
+		return ticks;
+	}
+	
+	public double getUsagePerTick() {
+		return usagePerTick;
 	}
 
 	public static List<ElectrodynamicsRecipe> findRecipesbyType(RecipeType<? extends ElectrodynamicsRecipe> typeIn, Level world) {

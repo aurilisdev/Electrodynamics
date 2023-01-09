@@ -15,5 +15,7 @@
   "output": {
     "count": 16,
     "item": "electrodynamics:glassclear"
-  }
+  },
+  "ticks": 50,
+  "usagepertick": 50.0
 }

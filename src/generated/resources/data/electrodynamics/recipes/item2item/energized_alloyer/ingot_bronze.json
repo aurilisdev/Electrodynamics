@@ -23,5 +23,7 @@
   "output": {
     "count": 5,
     "item": "electrodynamics:ingotbronze"
-  }
+  },
+  "ticks": 50,
+  "usagepertick": 50.0
 }

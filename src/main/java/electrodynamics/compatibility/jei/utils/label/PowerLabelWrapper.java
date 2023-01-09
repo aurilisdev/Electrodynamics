@@ -7,17 +7,22 @@ import net.minecraft.network.chat.Component;
 
 public class PowerLabelWrapper extends GenericLabelWrapper {
 
-	private double wattage;
 	private int voltage;
+	private double wattage = -1;
 
+	public PowerLabelWrapper(int xPos, int yPos, int voltage) {
+		super(0xFF808080, yPos, xPos);
+		this.voltage = voltage;
+	}
+	
 	public PowerLabelWrapper(int xPos, int yPos, double joulesPerTick, int voltage) {
 		super(0xFF808080, yPos, xPos);
-		wattage = joulesPerTick * 20 / 1000.0;
 		this.voltage = voltage;
 	}
 
 	@Override
 	public Component getComponent(ElectrodynamicsRecipeCategory<?> category, ElectrodynamicsRecipe recipe) {
+		double wattage = this.wattage == -1 ? recipe.getUsagePerTick() * 20.0 / 1000.0 : this.wattage;
 		return TextUtils.jeiTranslated("guilabel.power", voltage, wattage);
 	}
 }

@@ -11,5 +11,7 @@
   "output": {
     "count": 3,
     "item": "electrodynamics:impuredusttin"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 450.0
 }

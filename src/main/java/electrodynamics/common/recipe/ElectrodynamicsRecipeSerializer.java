@@ -26,6 +26,8 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 	public static final String FLUID_BIPRODUCTS = "fluidbi";
 	public static final String OUTPUT = "output";
 	public static final String EXPERIENCE = "experience";
+	public static final String TICKS = "ticks";
+	public static final String USAGE_PER_TICK = "usagepertick";
 
 	private Class<T> RECIPE_CLASS;
 
@@ -156,5 +158,21 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 	public static double getExperience(JsonObject json) {
 		return json.has(EXPERIENCE) ? json.get(EXPERIENCE).getAsDouble() : 0;
 	}
+	
+	public static int getTicks(JsonObject json) {
+		if(!json.has(TICKS)) {
+			throw new UnsupportedOperationException("You must include an operating tick time!");
+		}
+		return json.get(TICKS).getAsInt();
+	}
+	
+	public static double getUsagePerTick(JsonObject json) {
+		if(!json.has(USAGE_PER_TICK)) {
+			throw new UnsupportedOperationException("You must include a usage per tick!");
+		}
+		return json.get(USAGE_PER_TICK).getAsDouble();
+	}
+	
+	
 
 }

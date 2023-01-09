@@ -90,7 +90,6 @@ public class ComponentProcessor implements Component {
 			}
 			if (holder.hasComponent(ComponentType.Electrodynamic)) {
 				ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-				//TODO implement recipe usage and operating times
 				electro.joules(electro.getJoulesStored() - usage.get() * operatingSpeed.get());
 			}
 		} else if (operatingTicks.get() > 0) {
@@ -123,7 +122,7 @@ public class ComponentProcessor implements Component {
 	}
 
 	public double getUsage() {
-		return usage.get();
+		return usage.get() * operatingSpeed.get();
 	}
 
 	public ComponentProcessor requiredTicks(long requiredTicks) {
@@ -187,10 +186,6 @@ public class ComponentProcessor implements Component {
 
 	// Instead of checking all at once, we check one at a time; more efficient
 	public boolean canProcessItem2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
-		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-		if (electro.getJoulesStored() < pr.getUsage()) {
-			return false;
-		}
 		Item2ItemRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
 			pr.operatingTicks.set(0.0);
@@ -203,6 +198,17 @@ public class ComponentProcessor implements Component {
 		}
 
 		setRecipe(locRecipe);
+		
+		operatingTicks.set((double) locRecipe.getTicks());
+		usage.set(locRecipe.getUsagePerTick());
+		
+		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+		electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
+		
+		if (electro.getJoulesStored() < pr.getUsage()) {
+			return false;
+		}
+		
 
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(processorNumber);
@@ -234,10 +240,6 @@ public class ComponentProcessor implements Component {
 	}
 
 	public boolean canProcessFluid2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
-		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-		if (electro.getJoulesStored() < pr.getUsage()) {
-			return false;
-		}
 		Fluid2ItemRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
 			pr.operatingTicks.set(0.0);
@@ -249,6 +251,17 @@ public class ComponentProcessor implements Component {
 			locRecipe = (Fluid2ItemRecipe) recipe;
 		}
 		setRecipe(locRecipe);
+		
+		operatingTicks.set((double) locRecipe.getTicks());
+		usage.set(locRecipe.getUsagePerTick());
+		
+		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+		electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
+		
+		if (electro.getJoulesStored() < pr.getUsage()) {
+			return false;
+		}
+		
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(processorNumber);
 		ItemStack result = recipe.getResultItem();
@@ -279,10 +292,6 @@ public class ComponentProcessor implements Component {
 	}
 
 	public boolean canProcessFluid2FluidRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
-		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-		if (electro.getJoulesStored() < pr.getUsage()) {
-			return false;
-		}
 		Fluid2FluidRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
 			pr.operatingTicks.set(0.0);
@@ -294,6 +303,17 @@ public class ComponentProcessor implements Component {
 			locRecipe = (Fluid2FluidRecipe) recipe;
 		}
 		setRecipe(locRecipe);
+		
+		operatingTicks.set((double) locRecipe.getTicks());
+		usage.set(locRecipe.getUsagePerTick());
+		
+		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+		electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
+		
+		if (electro.getJoulesStored() < pr.getUsage()) {
+			return false;
+		}
+		
 		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
 		int amtAccepted = handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
 		if (amtAccepted < locRecipe.getFluidRecipeOutput().getAmount()) {
@@ -316,10 +336,6 @@ public class ComponentProcessor implements Component {
 	}
 
 	public boolean canProcessItem2FluidRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
-		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-		if (electro.getJoulesStored() < pr.getUsage()) {
-			return false;
-		}
 		Item2FluidRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
 			pr.operatingTicks.set(0.0);
@@ -331,6 +347,17 @@ public class ComponentProcessor implements Component {
 			locRecipe = (Item2FluidRecipe) recipe;
 		}
 		setRecipe(locRecipe);
+		
+		operatingTicks.set((double) locRecipe.getTicks());
+		usage.set(locRecipe.getUsagePerTick());
+		
+		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+		electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
+		
+		if (electro.getJoulesStored() < pr.getUsage()) {
+			return false;
+		}
+		
 		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
 		int amtAccepted = handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
 		if (amtAccepted < locRecipe.getFluidRecipeOutput().getAmount()) {
@@ -353,10 +380,6 @@ public class ComponentProcessor implements Component {
 	}
 
 	public boolean canProcessFluidItem2FluidRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
-		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-		if (electro.getJoulesStored() < pr.getUsage()) {
-			return false;
-		}
 		FluidItem2FluidRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
 			pr.operatingTicks.set(0.0);
@@ -368,6 +391,17 @@ public class ComponentProcessor implements Component {
 			locRecipe = (FluidItem2FluidRecipe) recipe;
 		}
 		setRecipe(locRecipe);
+		
+		operatingTicks.set((double) locRecipe.getTicks());
+		usage.set(locRecipe.getUsagePerTick());
+		
+		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+		electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
+		
+		if (electro.getJoulesStored() < pr.getUsage()) {
+			return false;
+		}
+		
 		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
 		int amtAccepted = handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
 		if (amtAccepted < locRecipe.getFluidRecipeOutput().getAmount()) {
@@ -390,10 +424,6 @@ public class ComponentProcessor implements Component {
 	}
 
 	public boolean canProcessFluidItem2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
-		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-		if (electro.getJoulesStored() < pr.getUsage()) {
-			return false;
-		}
 		FluidItem2ItemRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
 			pr.operatingTicks.set(0.0);
@@ -405,6 +435,17 @@ public class ComponentProcessor implements Component {
 			locRecipe = (FluidItem2ItemRecipe) recipe;
 		}
 		setRecipe(locRecipe);
+		
+		operatingTicks.set((double) locRecipe.getTicks());
+		usage.set(locRecipe.getUsagePerTick());
+		
+		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+		electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
+		
+		if (electro.getJoulesStored() < pr.getUsage()) {
+			return false;
+		}
+		
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(processorNumber);
 		ItemStack result = recipe.getResultItem();

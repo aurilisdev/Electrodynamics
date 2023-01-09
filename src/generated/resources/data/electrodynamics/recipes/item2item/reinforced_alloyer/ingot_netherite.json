@@ -23,5 +23,7 @@
   "output": {
     "count": 2,
     "item": "minecraft:netherite_ingot"
-  }
+  },
+  "ticks": 50,
+  "usagepertick": 50.0
 }

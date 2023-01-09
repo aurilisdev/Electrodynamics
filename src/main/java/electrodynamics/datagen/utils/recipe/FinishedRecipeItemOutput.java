@@ -11,8 +11,8 @@ public class FinishedRecipeItemOutput extends AbstractElectrodynamicsFinishedRec
 
 	private ItemStack output;
 	
-	private FinishedRecipeItemOutput(RecipeSerializer<?> serializer, ItemStack stack, double experience/*, double processTime, double usage*/) {
-		super(serializer, experience/*, processTime, usage*/);
+	private FinishedRecipeItemOutput(RecipeSerializer<?> serializer, ItemStack stack, double experience, int processTime, double usage) {
+		super(serializer, experience, processTime, usage);
 		this.output = stack;
 	}
 
@@ -29,8 +29,8 @@ public class FinishedRecipeItemOutput extends AbstractElectrodynamicsFinishedRec
 		return (FinishedRecipeItemOutput) super.name(category, parent, name);
 	}
 	
-	public static FinishedRecipeItemOutput of(RecipeSerializer<?> serializer, ItemStack output, double experience/*, double processTime, double usage*/) {
-		return new FinishedRecipeItemOutput(serializer, output, experience/*, processTime, usage*/);
+	public static FinishedRecipeItemOutput of(RecipeSerializer<?> serializer, ItemStack output, double experience, int processTime, double usage) {
+		return new FinishedRecipeItemOutput(serializer, output, experience, processTime, usage);
 	}
 	
 

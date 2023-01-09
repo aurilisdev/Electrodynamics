@@ -19,5 +19,7 @@
   "output": {
     "count": 1,
     "item": "electrodynamics:rodsteel"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 350.0
 }

@@ -19,5 +19,7 @@
   "output": {
     "count": 1,
     "item": "electrodynamics:impuredustlead"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 450.0
 }

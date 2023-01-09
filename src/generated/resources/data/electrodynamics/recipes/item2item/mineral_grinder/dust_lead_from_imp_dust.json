@@ -11,5 +11,7 @@
   "output": {
     "count": 1,
     "item": "electrodynamics:dustlead"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 350.0
 }

@@ -3,7 +3,6 @@ package electrodynamics.compatibility.jei.recipecategories.fluid2fluid.specificm
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.categories.fluid2fluid.specificmachines.ElectrolyticSeparatorRecipe;
-import electrodynamics.common.settings.Constants;
 import electrodynamics.compatibility.jei.recipecategories.fluid2fluid.Fluid2FluidRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowRightAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
@@ -32,7 +31,7 @@ public class ElectrolyticSeparatorRecipeCategory extends Fluid2FluidRecipeCatego
 	private static DefaultFluidGaugeWrapper OUT_GAUGE = new DefaultFluidGaugeWrapper(48, 5, 5000);
 	private static DefaultFluidGaugeWrapper BIPRODUCT_GAUGE = new DefaultFluidGaugeWrapper(88, 5, 5000);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK, 240);
+	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, 240);
 
 	private static int ANIM_TIME = 50;
 

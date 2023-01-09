@@ -19,10 +19,13 @@ import net.minecraftforge.common.Tags;
 
 public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 
+	public static int REINFORCEDALLOYER_REQUIRED_TICKS = 50;
+	public static double REINFORCEDALLOYER_USAGE_PER_TICK = 50.0;
+
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
 
-		newRecipe(new ItemStack(CUSTOM_GLASS[SubtypeGlass.aluminum.ordinal()], 5), 0.5F, "aluminum_glass")
+		newRecipe(new ItemStack(CUSTOM_GLASS[SubtypeGlass.aluminum.ordinal()], 5), 0.5F, 50, 50.0, "aluminum_glass")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_ALUMINUM, 1)
 				//
@@ -32,7 +35,7 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.bronze.ordinal()], 7), 0.1F, "ingot_bronze")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.bronze.ordinal()], 7), 0.1F, 50, 50.0, "ingot_bronze")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_TIN, 1)
 				//
@@ -42,7 +45,7 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(CUSTOM_GLASS[SubtypeGlass.clear.ordinal()], 16), 0.1F, "clear_glass")
+		newRecipe(new ItemStack(CUSTOM_GLASS[SubtypeGlass.clear.ordinal()], 16), 0.1F, 50, 50.0, "clear_glass")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.COAL_COKE, 1)
 				//
@@ -50,7 +53,7 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.bronze.ordinal()], 2), 0.3F, "ingot_hsla_steel")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.bronze.ordinal()], 2), 0.3F, 50, 50.0, "ingot_hsla_steel")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_STAINLESSSTEEL, 1)
 				//
@@ -60,7 +63,7 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(Items.NETHERITE_INGOT, 2), 1.0F, "ingot_netherite")
+		newRecipe(new ItemStack(Items.NETHERITE_INGOT, 2), 1.0F, 50, 50.0, "ingot_netherite")
 				//
 				.addItemStackInput(new ItemStack(Items.NETHERITE_SCRAP))
 				//
@@ -70,7 +73,7 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.0F, "slag")
+		newRecipe(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.0F, 50, 50.0, "slag")
 				//
 				.addItemTagInput(Tags.Items.INGOTS, 1)
 				//
@@ -78,7 +81,7 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.stainlesssteel.ordinal()], 4), 0.4F, "ingot_stainless_steel")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.stainlesssteel.ordinal()], 4), 0.4F, 50, 50.0, "ingot_stainless_steel")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_CHROMIUM, 1)
 				//
@@ -88,7 +91,7 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.steel.ordinal()], 4), 0.3F, "ingot_steel")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.steel.ordinal()], 4), 0.3F, 50, 50.0, "ingot_steel")
 				//
 				.addItemTagInput(Tags.Items.INGOTS_IRON, 2)
 				//
@@ -98,8 +101,7 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.superconductive.ordinal()], 4), 0.3F,
-				"ingot_superconductive_endereye")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.superconductive.ordinal()], 4), 0.3F, 50, 50.0, "ingot_superconductive_endereye")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_SILVER, 5)
 				//
@@ -109,8 +111,7 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.superconductive.ordinal()], 4), 0.3F,
-				"ingot_superconductive_netherite")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.superconductive.ordinal()], 4), 0.3F, 50, 50.0, "ingot_superconductive_netherite")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_SILVER, 5)
 				//
@@ -120,7 +121,7 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.titaniumcarbide.ordinal()], 4), 0.3F, "ingot_titanium_carbide")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.titaniumcarbide.ordinal()], 4), 0.3F, 50, 50.0, "ingot_titanium_carbide")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_TITANIUM, 1)
 				//
@@ -130,7 +131,7 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.vanadiumsteel.ordinal()], 8), 0.3F, "vanadium_steel_ingot")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.vanadiumsteel.ordinal()], 8), 0.3F, 50, 50.0, "vanadium_steel_ingot")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_STEEL, 8)
 				//
@@ -142,9 +143,8 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 
 	}
 
-	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, String name) {
-		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_SERIALIZER.get(), stack, xp)
-				.name(RecipeCategory.ITEM_2_ITEM, References.ID, "reinforced_alloyer/" + name);
+	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
+		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, References.ID, "reinforced_alloyer/" + name);
 	}
 
 }

@@ -18,5 +18,7 @@
   "output": {
     "amount": 1000,
     "fluid": "electrodynamics:fluidhydraulic"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 400.0
 }

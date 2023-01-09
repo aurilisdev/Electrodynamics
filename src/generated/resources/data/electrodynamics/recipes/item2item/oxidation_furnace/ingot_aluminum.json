@@ -23,5 +23,7 @@
   "output": {
     "count": 3,
     "item": "electrodynamics:ingotaluminum"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 350.0
 }

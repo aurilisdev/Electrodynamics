@@ -18,5 +18,7 @@
   "output": {
     "amount": 250,
     "fluid": "electrodynamics:fluidsulfatemolybdenum"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 400.0
 }

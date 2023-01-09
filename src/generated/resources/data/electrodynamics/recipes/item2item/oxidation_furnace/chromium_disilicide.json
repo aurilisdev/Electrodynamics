@@ -15,5 +15,7 @@
   "output": {
     "count": 1,
     "item": "electrodynamics:oxidechromiumdisilicide"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 350.0
 }

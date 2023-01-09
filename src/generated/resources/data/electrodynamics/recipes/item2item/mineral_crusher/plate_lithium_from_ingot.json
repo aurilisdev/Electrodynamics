@@ -11,5 +11,7 @@
   "output": {
     "count": 1,
     "item": "electrodynamics:platelithium"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 450.0
 }

@@ -15,12 +15,12 @@ public class ReinforcedAlloyerRecipe extends Item2ItemRecipe {
 	public static final String MOD_ID = electrodynamics.api.References.ID;
 	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-	public ReinforcedAlloyerRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, double experience) {
-		super(recipeID, inputs, output, experience);
+	public ReinforcedAlloyerRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, double experience, int ticks, double usagePerTick) {
+		super(recipeID, inputs, output, experience, ticks, usagePerTick);
 	}
 
-	public ReinforcedAlloyerRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, double experience) {
-		super(id, input, output, itemBiproducts, experience);
+	public ReinforcedAlloyerRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, double experience, int ticks, double usagePerTick) {
+		super(id, input, output, itemBiproducts, experience, ticks, usagePerTick);
 	}
 
 	@Override

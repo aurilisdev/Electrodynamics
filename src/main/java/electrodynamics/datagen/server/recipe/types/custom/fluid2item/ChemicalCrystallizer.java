@@ -17,22 +17,25 @@ import net.minecraft.world.item.Items;
 
 public class ChemicalCrystallizer extends AbstractRecipeGenerator {
 
+	public static double CHEMICALCRYSTALLIZER_USAGE_PER_TICK = 800.0;
+	public static int CHEMICALCRYSTALLIZER_REQUIRED_TICKS = 200;
+
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
 
-		newRecipe(new ItemStack(Items.CLAY_BALL), 0, "clay_ball")
+		newRecipe(new ItemStack(Items.CLAY_BALL), 0, 200, 800.0, "clay_ball")
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.CLAY, 200)
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(Items.OBSIDIAN), 0, "obsidian_from_lava")
+		newRecipe(new ItemStack(Items.OBSIDIAN), 0, 200, 800.0, "obsidian_from_lava")
 				//
 				.addFluidTagInput(FluidTags.LAVA, 1000)
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_SHEETPLASTIC.get()), 0, "plastic_sheet")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_SHEETPLASTIC.get()), 0, 200, 800.0, "plastic_sheet")
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.POLYETHLYENE, 500)
 				//
@@ -40,7 +43,7 @@ public class ChemicalCrystallizer extends AbstractRecipeGenerator {
 
 		for (SubtypeSulfateFluid fluid : SubtypeSulfateFluid.values()) {
 			if (fluid.crystal != null) {
-				newRecipe(new ItemStack(fluid.crystal.get()), 0, "crystal_" + fluid.name() + "_from_sulfate" )
+				newRecipe(new ItemStack(fluid.crystal.get()), 0, 200, 800.0, "crystal_" + fluid.name() + "_from_sulfate")
 						//
 						.addFluidTagInput(fluid.tag, 200)
 						//
@@ -50,9 +53,8 @@ public class ChemicalCrystallizer extends AbstractRecipeGenerator {
 
 	}
 
-	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, String name) {
-		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_SERIALIZER.get(), stack, xp)
-				.name(RecipeCategory.FLUID_2_ITEM, References.ID, "chemical_crystallizer/" + name);
+	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
+		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_2_ITEM, References.ID, "chemical_crystallizer/" + name);
 	}
 
 }

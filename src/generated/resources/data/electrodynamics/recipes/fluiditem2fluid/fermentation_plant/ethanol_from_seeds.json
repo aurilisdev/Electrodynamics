@@ -18,5 +18,7 @@
   "output": {
     "amount": 100,
     "fluid": "electrodynamics:fluidethanol"
-  }
+  },
+  "ticks": 2000,
+  "usagepertick": 20.0
 }

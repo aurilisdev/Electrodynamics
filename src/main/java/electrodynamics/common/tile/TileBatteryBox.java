@@ -49,7 +49,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		super(type, worldPosition, blockState);
 		this.baseVoltage = baseVoltage;
 		powerOutput = property(new Property<Double>(PropertyType.Double, "powerOutput", output));
-		maxJoules = property(new Property<Double>(PropertyType.Double, "maxJoules", max));
+		maxJoules = property(new Property<Double>(PropertyType.Double, "maxJoulesStored", max));
 		receiveLimitLeft = property(new Property<Double>(PropertyType.Double, "receiveLimitLeft", output * currentCapacityMultiplier.get()));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));

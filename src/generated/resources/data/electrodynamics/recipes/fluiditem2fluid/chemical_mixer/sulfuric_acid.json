@@ -18,5 +18,7 @@
   "output": {
     "amount": 2500,
     "fluid": "electrodynamics:fluidsulfuricacid"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 400.0
 }

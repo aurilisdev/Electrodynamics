@@ -18,5 +18,7 @@
   "output": {
     "amount": 1500,
     "fluid": "minecraft:lava"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 400.0
 }

@@ -19,5 +19,7 @@
   "output": {
     "count": 7,
     "item": "minecraft:quartz"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 350.0
 }

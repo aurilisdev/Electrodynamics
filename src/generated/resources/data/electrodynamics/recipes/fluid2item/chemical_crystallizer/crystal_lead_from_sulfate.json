@@ -11,5 +11,7 @@
   "output": {
     "count": 1,
     "item": "electrodynamics:crystallead"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 800.0
 }

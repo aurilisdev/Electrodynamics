@@ -15,5 +15,7 @@
   "output": {
     "count": 1,
     "item": "electrodynamics:oxidedisulfur"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 350.0
 }

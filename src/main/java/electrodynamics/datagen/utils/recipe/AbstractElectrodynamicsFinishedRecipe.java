@@ -36,14 +36,14 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 	private List<Pair<TagKey<Fluid>, Integer>> tagFluidIngredients = new ArrayList<>();
 	
 	private double experience = 0.0;
-	//private double processTime = 0.0;
-	//private double usagePerTick = 0.0;
+	private int processTime = 0;
+	private double usagePerTick = 0.0;
 	
-	protected AbstractElectrodynamicsFinishedRecipe(RecipeSerializer<?> serializer, double experience/*, double processTime, double usagePerTick*/) {
+	protected AbstractElectrodynamicsFinishedRecipe(RecipeSerializer<?> serializer, double experience, int processTime, double usagePerTick) {
 		this.serializer = serializer;
 		this.experience = experience;
-		//this.processTime = processTime;
-		//this.usagePerTick = usagePerTick;
+		this.processTime = processTime;
+		this.usagePerTick = usagePerTick;
 	}
 	
 	public AbstractElectrodynamicsFinishedRecipe name(RecipeCategory category, String parent, String name) {
@@ -90,8 +90,8 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 	public void serializeRecipeData(JsonObject recipeJson) {
 		boolean inputsFlag = false;
 		
-		//recipeJson.addProperty(ElectrodynamicsRecipeSerializer.TIME, processTime);
-		//recipeJson.addProperty(ElectrodynamicsRecipeSerializer.USAGE, usagePerTick);
+		recipeJson.addProperty(ElectrodynamicsRecipeSerializer.TICKS, processTime);
+		recipeJson.addProperty(ElectrodynamicsRecipeSerializer.USAGE_PER_TICK, usagePerTick);
 		
 		int itemInputsCount = itemIngredients.size() + tagItemIngredients.size();
 		if(itemInputsCount > 0) {

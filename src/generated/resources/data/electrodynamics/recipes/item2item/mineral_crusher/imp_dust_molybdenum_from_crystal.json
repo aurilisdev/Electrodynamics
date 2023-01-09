@@ -19,5 +19,7 @@
   "output": {
     "count": 1,
     "item": "electrodynamics:impuredustmolybdenum"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 450.0
 }

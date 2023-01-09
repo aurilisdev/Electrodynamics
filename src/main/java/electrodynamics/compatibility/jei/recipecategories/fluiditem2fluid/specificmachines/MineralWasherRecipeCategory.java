@@ -3,7 +3,6 @@ package electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.speci
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.MineralWasherRecipe;
-import electrodynamics.common.settings.Constants;
 import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.FluidItem2FluidRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowLeftAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowRightAnimatedWrapper;
@@ -34,7 +33,7 @@ public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory<M
 	private static DefaultFluidGaugeWrapper IN_GAUGE = new DefaultFluidGaugeWrapper(10, 5, 5000);
 	private static DefaultFluidGaugeWrapper OUT_GAUGE = new DefaultFluidGaugeWrapper(108, 5, 5000);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, Constants.MINERALCRUSHER_USAGE_PER_TICK, 480);
+	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, 480);
 
 	private static int ANIM_TIME = 50;
 

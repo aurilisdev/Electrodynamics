@@ -11,5 +11,7 @@
   "output": {
     "count": 1,
     "item": "electrodynamics:titaniumheatcoil"
-  }
+  },
+  "ticks": 200,
+  "usagepertick": 125.0
 }
