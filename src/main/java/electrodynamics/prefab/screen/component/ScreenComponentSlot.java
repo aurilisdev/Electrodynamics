@@ -19,9 +19,6 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class ScreenComponentSlot extends ScreenComponentGeneric {
 	
-	public static final ResourceLocation TEXTURE_SLOT = new ResourceLocation(References.ID + ":textures/screen/component/slot.png");
-	public static final ResourceLocation TEXTURE_ICON = new ResourceLocation(References.ID + ":textures/screen/component/icon.png");
-	
 	private final ISlotTexture slotType;
 	private final ITexture iconType;
 	private TextSupplier tooltip;
@@ -90,7 +87,7 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 
 	public static enum SlotType implements ISlotTexture {
 		
-		NORMAL(18, 18, 0, 0);
+		NORMAL(18, 18, 0, 0, 18, 18, "slot_regular");
 		
 		private final int textureWidth;
 		private final int textureHeight;
@@ -103,18 +100,18 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 		private final int xOffset;
 		private final int yOffset;
 		
-		private SlotType(int textureWidth, int textureHeight, int textureU, int textureV) {
-			this(textureWidth, textureHeight, textureU, textureV, -1, -1);
+		private SlotType(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, String name) {
+			this(textureWidth, textureHeight, textureU, textureV, imageWidth, imageHeight, name, -1, -1);
 		}
 		
-		private SlotType(int textureWidth, int textureHeight, int textureU, int textureV, int xOffset, int yOffset) {
+		private SlotType(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, String name, int xOffset, int yOffset) {
 			this.textureWidth = textureWidth;
 			this.textureHeight = textureHeight;
 			this.textureU = textureU;
 			this.textureV = textureV;
-			this.imageWidth = 256;
-			this.imageHeight = 256;;
-			this.loc = TEXTURE_SLOT;
+			this.imageWidth = imageWidth;
+			this.imageHeight = imageHeight;
+			this.loc = new ResourceLocation(References.ID + ":textures/screen/component/slot/" + name + ".png");
 			
 			this.xOffset = xOffset;
 			this.yOffset = yOffset;
@@ -169,12 +166,19 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 	public static enum IconType implements ITexture {
 		
 		NONE(0, 0, 0, 0, 0 ,0, null),
-		ENERGY(18, 18, 0, 0, 256, 256, TEXTURE_ICON),
-		FLUID(18, 18, 18, 0, 256, 256, TEXTURE_ICON),
-		GAS(18, 18, 36, 0, 256, 256, TEXTURE_ICON),
-		UPGRADE(18, 18, 54, 0, 256, 256, TEXTURE_ICON),
-		DRILL_HEAD(18, 18, 72, 0, 256, 256, TEXTURE_ICON),
-		TRASH_CAN(18, 18, 90, 0, 256, 256, TEXTURE_ICON);
+		ENERGY_DARK(10, 10, 0, 0, 10, 10, "electricity_dark"),
+		FLUID_DARK(14, 14, 0, 0, 14, 14, "fluid_dark"),
+		GAS_DARK(16, 16, 0, 0, 16, 16, "gas_dark"),
+		UPGRADE_DARK(12, 12, 0, 0, 12, 12, "upgrade_dark"),
+		DRILL_HEAD_DARK(12, 12, 0, 0, 12, 12, "drill_head_dark"),
+		TRASH_CAN_DARK(10, 10, 0, 0, 10, 10, "trash_can_dark"),
+		
+		ENERGY_GREEN(14, 14, 0, 0, 14, 14, "electricity_green"),
+		ENCHANTMENT(16, 16, 0, 0, 16, 16, "enchantment"),
+		FLUID_BLUE(16, 16, 0, 0, 16, 16, "fluid_blue"),
+		MINING_LOCATION(18, 18, 0, 0, 18, 18, "mining_location"), 
+		QUARRY_COMPONENTS(18, 18, 0, 0, 18, 18, "quarry_components"),
+		TEMPERATURE(14, 14, 0, 0, 14, 14, "temperature");
 		
 		private final int textureWidth;
 		private final int textureHeight;
@@ -184,14 +188,14 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 		private final int imageHeight;
 		private final ResourceLocation loc;
 		
-		private IconType(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc) {
+		private IconType(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, String name) {
 			this.textureWidth = textureWidth;
 			this.textureHeight = textureHeight;
 			this.textureU = textureU;
 			this.textureV = textureV;
 			this.imageWidth = imageWidth;
 			this.imageHeight = imageHeight;
-			this.loc = loc;
+			this.loc = new ResourceLocation(References.ID + ":textures/screen/component/icon/" + name + ".png");
 		}
 
 		@Override

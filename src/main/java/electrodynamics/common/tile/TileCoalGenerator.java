@@ -39,8 +39,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 	protected TransferPack currentOutput = TransferPack.EMPTY;
 	public TargetValue heat = new TargetValue(property(new Property<Double>(PropertyType.Double, "heat", 27.0)));
 	public Property<Integer> burnTime = property(new Property<Integer>(PropertyType.Integer, "burnTime", 0));
-	public Property<Integer> maxBurnTime = property(new Property<Integer>(PropertyType.Integer, "maxBurnTime", 0));
-	public double clientMaxBurnTime;
+	public Property<Integer> maxBurnTime = property(new Property<Integer>(PropertyType.Integer, "maxBurnTime", 1));
 	//for future planned upgrades
 	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier", 1.0));
 
@@ -70,7 +69,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 		if (burnTime.get() <= 0 && !fuel.isEmpty()) {
 			burnTime.set(ForgeHooks.getBurnTime(fuel, null));
 			fuel.shrink(1);
-			maxBurnTime.set(burnTime.get());
+			maxBurnTime.set(Math.max(burnTime.get(), 1));
 		}
 		BlockMachine machine = (BlockMachine) getBlockState().getBlock();
 		if (machine != null) {

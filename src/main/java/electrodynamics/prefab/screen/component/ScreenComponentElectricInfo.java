@@ -11,6 +11,7 @@ import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.TextPropertySupplier;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.screen.GenericScreen;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
@@ -29,7 +30,7 @@ public class ScreenComponentElectricInfo extends ScreenComponentGuiTab {
 	private Function<ComponentElectrodynamic, Double> wattage = null;
 	
 	public ScreenComponentElectricInfo(final TextPropertySupplier infoHandler, final IScreenWrapper gui, final int x, final int y) {
-		super(GuiInfoTabTextures.ELECTRIC, infoHandler, gui, x, y);
+		super(GuiInfoTabTextures.REGULAR, IconType.ENERGY_GREEN, infoHandler, gui, x, y);
 	}
 
 	public ScreenComponentElectricInfo(final IScreenWrapper gui, final int x, final int y) {

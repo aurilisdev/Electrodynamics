@@ -91,12 +91,13 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		world.destroyBlock(pos, true, player);
 	}
 
+	//TODO get this to work
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 		if (tile instanceof GenericTile machine) {
 			ComponentInventory inv = machine.getComponent(ComponentType.Inventory);
-			if (Constants.DROP_MACHINE_INVENTORIES) {
+			if (true) {
 				ItemStack stack = new ItemStack(this);
 				Containers.dropContents(machine.getLevel(), machine.getBlockPos(), inv.getItems());
 				tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {

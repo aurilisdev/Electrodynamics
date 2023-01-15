@@ -5,14 +5,13 @@ import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot.SlotType;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 
 public class SlotQuarryTrashcan extends SlotGeneric {
 	
 	public SlotQuarryTrashcan(Container inventory, int index, int x, int y) {
-		super(SlotType.NORMAL, IconType.TRASH_CAN, inventory, index, x, y);
+		super(SlotType.NORMAL, IconType.TRASH_CAN_DARK, inventory, index, x, y);
 	}
 	
 	@Override

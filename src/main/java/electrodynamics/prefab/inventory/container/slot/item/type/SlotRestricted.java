@@ -2,6 +2,7 @@ package electrodynamics.prefab.inventory.container.slot.item.type;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
 
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.component.ISlotTexture;
@@ -16,6 +17,8 @@ public class SlotRestricted extends SlotGeneric {
 	private List<Item> whitelist;
 	private List<Class<?>> classes;
 	private List<Capability<?>> validCapabilities;
+	
+	private Predicate<ItemStack> mayPlace = stack -> false;
 
 	public SlotRestricted(Container inventory, int index, int x, int y) {
 		super(inventory, index, x, y);
@@ -25,33 +28,20 @@ public class SlotRestricted extends SlotGeneric {
 		super(slot, icon, inv, index, x, y);
 	}
 	
+	public SlotRestricted setRestriction(Predicate<ItemStack> mayPlace) {
+		this.mayPlace = mayPlace;
+		return this;
+	}
+	
 	public SlotRestricted setRestriction(Item... items) {
 		whitelist = Arrays.asList(items);
+		mayPlace = stack -> whitelist.contains(stack.getItem());
 		return this;
 	}
 	
 	public SlotRestricted setRestriction(Class<?>... items) {
 		classes = Arrays.asList(items);
-		return this;
-	}
-	
-	public SlotRestricted setRestriction(Capability<?>... capabilities) {
-		validCapabilities = Arrays.asList(capabilities);
-		return this;
-	}
-	
-	
-
-	@Override
-	public boolean mayPlace(ItemStack stack) {
-		if (super.mayPlace(stack)) {
-			if (validCapabilities != null) {
-				for (Capability<?> cap : validCapabilities) {
-					if (stack.getCapability(cap).map(m -> true).orElse(false)) {
-						return true;
-					}
-				}
-			}
+		mayPlace = stack -> {
 			if (classes != null) {
 				for (Class<?> cl : classes) {
 					if (cl.isInstance(stack.getItem())) {
@@ -59,9 +49,30 @@ public class SlotRestricted extends SlotGeneric {
 					}
 				}
 			}
+			return false;
+		};
+		return this;
+	}
+	
+	public SlotRestricted setRestriction(Capability<?>... capabilities) {
+		validCapabilities = Arrays.asList(capabilities);
+		mayPlace = stack -> {
+			if (validCapabilities != null) {
+				for (Capability<?> cap : validCapabilities) {
+					if (stack.getCapability(cap).map(m -> true).orElse(false)) {
+						return true;
+					}
+				}
+			}
+			return false;
+		};
+		return this;
+	}
+	
+	
 
-			return whitelist != null && whitelist.contains(stack.getItem());
-		}
-		return false;
+	@Override
+	public boolean mayPlace(ItemStack stack) {
+		return super.mayPlace(stack) && mayPlace.test(stack);
 	}
 }

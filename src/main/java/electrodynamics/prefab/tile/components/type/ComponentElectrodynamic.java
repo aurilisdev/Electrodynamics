@@ -51,12 +51,14 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	protected DoubleSupplier getJoules = () -> joules.get();
 	protected BooleanSupplier hasCapability = () -> true;
 	private Direction lastReturnedSide = Direction.UP;
+	
+	public static final String SAVE_KEY = "joules";
 
 	public ComponentElectrodynamic(GenericTile source) {
 		holder(source);
 		voltage = source.property(new Property<Double>(PropertyType.Double, "voltage", ElectrodynamicsCapabilities.DEFAULT_VOLTAGE));
 		maxJoules = source.property(new Property<Double>(PropertyType.Double, "maxJoules", 0.0));
-		joules = source.property(new Property<Double>(PropertyType.Double, "joules", 0.0));
+		joules = source.property(new Property<Double>(PropertyType.Double, SAVE_KEY, 0.0));
 	}
 
 	@Override

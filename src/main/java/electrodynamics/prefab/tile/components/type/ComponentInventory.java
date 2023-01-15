@@ -51,6 +51,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	protected Function<Direction, Collection<Integer>> getSlotsFunction;
 	protected LazyOptional<IItemHandlerModifiable>[] sideWrappers = IndexedSidedInvWrapper.create(this, Direction.values());
 
+	public static final String SAVE_KEY = "itemproperty";
+	
 	/*
 	 * IMPORTANT DEFINITIONS:
 	 * 

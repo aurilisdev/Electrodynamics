@@ -17,7 +17,12 @@
                 {
                   "op": "replace",
                   "source": "Items",
-                  "target": "BlockEntityTag.Items"
+                  "target": "BlockEntityTag"
+                },
+                {
+                  "op": "replace",
+                  "source": "itemproperty_size",
+                  "target": "BlockEntityTag"
                 },
                 {
                   "op": "replace",

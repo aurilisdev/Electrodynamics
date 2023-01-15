@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 public class SlotFluid extends SlotGeneric {
 
 	public SlotFluid(Container inventory, int index, int x, int y) {
-		super(SlotType.NORMAL, IconType.FLUID, inventory, index, x, y);
+		super(SlotType.NORMAL, IconType.FLUID_DARK, inventory, index, x, y);
 	}
 
 	@Override

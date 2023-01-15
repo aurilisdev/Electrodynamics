@@ -19,7 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class CoalGeneratorFuelSourceProvider implements DataProvider {
 
-	public static final String LOC = "data/" + References.ID + "/" + CoalGeneratorFuelRegister.FOLDER + CoalGeneratorFuelRegister.FILE_NAME;
+	public static final String LOC = "data/" + References.ID + "/" + CoalGeneratorFuelRegister.FOLDER + "/" + CoalGeneratorFuelRegister.FILE_NAME;
 	
 	private final DataGenerator dataGenerator;
 	

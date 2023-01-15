@@ -10,7 +10,6 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.item.Item;
 
 public class ContainerCoalGenerator extends GenericContainerBlockEntity<TileCoalGenerator> {
 
@@ -28,7 +27,9 @@ public class ContainerCoalGenerator extends GenericContainerBlockEntity<TileCoal
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotRestricted(inv, nextIndex(), 25, 42).setRestriction(CoalGeneratorFuelRegister.INSTANCE.getFuels().toArray(new Item[CoalGeneratorFuelRegister.INSTANCE.getFuels().size()])));
+		addSlot(new SlotRestricted(inv, nextIndex(), 25, 42).setRestriction(stack -> {
+			return CoalGeneratorFuelRegister.INSTANCE.isFuel(stack.getItem());
+		}));
 	}
 
 }

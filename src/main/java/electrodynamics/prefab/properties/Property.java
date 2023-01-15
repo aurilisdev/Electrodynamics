@@ -90,11 +90,7 @@ public class Property<T> {
 			shouldUpdate = true;
 		}
 		if(value != null && updated != null) {
-			if(type.predicate != null) {
-				shouldUpdate = type.predicate.test(value, updated);
-			} else {
-				shouldUpdate = !value.equals(updated);
-			}
+			shouldUpdate = !type.predicate.test(value, updated);
 		}
 		if (shouldUpdate) {
 			isDirty = true;

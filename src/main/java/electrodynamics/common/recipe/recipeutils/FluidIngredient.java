@@ -21,6 +21,12 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * Extension of Ingredient that adds Fluid compatibility 
+ * 
+ * @author skip999
+ *
+ */
 public class FluidIngredient extends Ingredient {
 
 	@Nonnull

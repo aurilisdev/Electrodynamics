@@ -8,29 +8,24 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerQuarry;
-import electrodynamics.common.item.ItemUpgrade;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.TileCoolantResavoir;
 import electrodynamics.common.tile.TileMotorComplex;
 import electrodynamics.common.tile.TileSeismicRelay;
 import electrodynamics.common.tile.quarry.TileQuarry;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotQuarryTrashcan;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentGuiTab;
 import electrodynamics.prefab.screen.component.ScreenComponentGuiTab.GuiInfoTabTextures;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ItemStack;
 
 public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 
@@ -38,10 +33,10 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		super(container, inv, titleIn);
 		imageHeight += 58;
 		inventoryLabelY += 58;
-		components.add(new ScreenComponentGuiTab(GuiInfoTabTextures.MINING_LOCATION, this::getMiningLocationInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 4));
-		components.add(new ScreenComponentGuiTab(GuiInfoTabTextures.QUARRY_COMPONENTS, this::getComponentInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 3));
-		components.add(new ScreenComponentGuiTab(GuiInfoTabTextures.WATER, this::getFluidInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 2));
-		components.add(new ScreenComponentGuiTab(GuiInfoTabTextures.ENCHANTMENT, this::getEnchantmentInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE));
+		components.add(new ScreenComponentGuiTab(GuiInfoTabTextures.REGULAR, IconType.MINING_LOCATION, this::getMiningLocationInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 4));
+		components.add(new ScreenComponentGuiTab(GuiInfoTabTextures.REGULAR, IconType.QUARRY_COMPONENTS, this::getComponentInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 3));
+		components.add(new ScreenComponentGuiTab(GuiInfoTabTextures.REGULAR, IconType.FLUID_BLUE, this::getFluidInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 2));
+		components.add(new ScreenComponentGuiTab(GuiInfoTabTextures.REGULAR, IconType.ENCHANTMENT, this::getEnchantmentInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE));
 		components.add(new ScreenComponentElectricInfo(this::getElectricInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 

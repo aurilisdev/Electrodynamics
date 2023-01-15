@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import electrodynamics.Electrodynamics;
+import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
@@ -48,7 +49,8 @@ public abstract class AbstractLootTableProvider extends LootTableProvider {
 				.add(LootItem.lootTableItem(block)
 						.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
 						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
-								.copy("Items", "BlockEntityTag.Items", CopyNbtFunction.MergeStrategy.REPLACE)
+								.copy("Items", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE)
+								.copy(ComponentInventory.SAVE_KEY + "_size", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE)
 								.copy("additional", "BlockEntityTag.additional", CopyNbtFunction.MergeStrategy.REPLACE))
 						.apply(SetContainerContents.setContents(type)
 								.withEntry(DynamicLoot.dynamicEntry(new ResourceLocation("minecraft", "contents")))));
@@ -78,7 +80,8 @@ public abstract class AbstractLootTableProvider extends LootTableProvider {
 				.add(LootItem.lootTableItem(block)
 						.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
 						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
-								.copy("Items", "BlockEntityTag.Items", CopyNbtFunction.MergeStrategy.REPLACE)
+								.copy("Items", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE)
+								.copy(ComponentInventory.SAVE_KEY + "_size", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE)
 								.copy("joules", "BlockEntityTag.joules", CopyNbtFunction.MergeStrategy.REPLACE)
 								.copy("additional", "BlockEntityTag.additional", CopyNbtFunction.MergeStrategy.REPLACE))
 						.apply(SetContainerContents.setContents(type)
@@ -91,7 +94,8 @@ public abstract class AbstractLootTableProvider extends LootTableProvider {
 				.add(LootItem.lootTableItem(block)
 						.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
 						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
-								.copy("Items", "BlockEntityTag.Items", CopyNbtFunction.MergeStrategy.REPLACE)
+								.copy("Items", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE)
+								.copy(ComponentInventory.SAVE_KEY + "_size", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE)
 								.copy("fluid", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE)
 								.copy("additional", "BlockEntityTag.additional", CopyNbtFunction.MergeStrategy.REPLACE))
 						.apply(SetContainerContents.setContents(type)
@@ -104,7 +108,8 @@ public abstract class AbstractLootTableProvider extends LootTableProvider {
 				.add(LootItem.lootTableItem(block)
 						.apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY))
 						.apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY)
-								.copy("Items", "BlockEntityTag.Items", CopyNbtFunction.MergeStrategy.REPLACE)
+								.copy("Items", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE)
+								.copy(ComponentInventory.SAVE_KEY + "_size", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE)
 								.copy("joules", "BlockEntityTag.joules", CopyNbtFunction.MergeStrategy.REPLACE)
 								.copy("fluid", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE)
 								.copy("additional", "BlockEntityTag.additional", CopyNbtFunction.MergeStrategy.REPLACE))
@@ -183,7 +188,7 @@ public abstract class AbstractLootTableProvider extends LootTableProvider {
 
 	@Override
 	public String getName() {
-		return "MatterOverdrive LootTables";
+		return "Electrodynamics LootTables";
 	}
 
 }

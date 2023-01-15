@@ -31,7 +31,7 @@ public class ContainerQuarry extends GenericContainerBlockEntity<TileQuarry> {
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
 		playerInvOffset = 58;
-		addSlot(new SlotRestricted(SlotType.NORMAL, IconType.DRILL_HEAD, inv, nextIndex(), 30, 100).setRestriction(ItemDrillHead.class));
+		addSlot(new SlotRestricted(SlotType.NORMAL, IconType.DRILL_HEAD_DARK, inv, nextIndex(), 30, 100).setRestriction(ItemDrillHead.class));
 		for (int i = 0; i < 2; ++i) {
 			for (int j = 0; j < 3; ++j) {
 				addSlot(new SlotQuarryTrashcan(inv, nextIndex(), 85 + j * 18, 26 + i * 18));

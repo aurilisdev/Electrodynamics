@@ -69,11 +69,9 @@ public enum PropertyType {
 	
 	//this allows us to deal with classes that don't implement the equals method
 	@Nullable
-	public BiPredicate<Object, Object> predicate;
+	public BiPredicate<Object, Object> predicate = (o1, o2) -> o1.equals(o2);
 	
-	private PropertyType() {
-		this(null);
-	}
+	private PropertyType() {}
 	
 	private PropertyType(BiPredicate<Object, Object> predicate) {
 		this.predicate = predicate;

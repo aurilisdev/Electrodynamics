@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 public class SlotCharging extends SlotGeneric {
 
 	public SlotCharging(Container inventory, int index, int x, int y) {
-		super(SlotType.NORMAL, IconType.ENERGY, inventory, index, x, y);
+		super(SlotType.NORMAL, IconType.ENERGY_DARK, inventory, index, x, y);
 	}
 
 	@Override

@@ -72,14 +72,14 @@ public class ScreenComponentProgress extends ScreenComponentGeneric {
 	}
 	
 	public static enum ProgressTextures implements ITexture {
-		ARROW_RIGHT_OFF(22, 16, 0, 0, 256, 256, TEXTURE),
-		ARROW_RIGHT_ON(22, 16, 22, 0, 256, 256, TEXTURE),
-		ARROW_LEFT_ON(22, 16, 44, 0, 256, 256, TEXTURE),
-		ARROW_LEFT_OFF(22, 16, 96, 0, 256, 256, TEXTURE),
-		FLAME_ON(14, 14, 0, 19, 256, 256, TEXTURE),
-		FLAME_OFF(14, 14, 0, 33, 256, 256, TEXTURE),
-		BATTER_CHARGE_RIGHT_OFF(19, 10, 0, 47, 256, 256, TEXTURE),
-		BATTER_CHARGE_RIGHT_ON(19, 10, 19, 47, 256, 256, TEXTURE);
+		ARROW_RIGHT_OFF(22, 16, 0, 0, 44, 16, "arrow_right"),
+		ARROW_RIGHT_ON(22, 16, 22, 0, 44, 16, "arrow_right"),
+		ARROW_LEFT_ON(22, 16, 0, 0, 44, 16, "arrow_left"),
+		ARROW_LEFT_OFF(22, 16, 22, 0, 44, 16, "arrow_left"),
+		FLAME_ON(14, 14, 0, 0, 14, 28, "flame"),
+		FLAME_OFF(14, 14, 0, 14, 14, 28, "flame"),
+		BATTER_CHARGE_RIGHT_OFF(19, 10, 0, 0, 38, 10, "battery_charge"),
+		BATTER_CHARGE_RIGHT_ON(19, 10, 19, 0, 38, 10, "battery_charge");
 		
 		private final int textureWidth;
 		private final int textureHeight;
@@ -89,14 +89,14 @@ public class ScreenComponentProgress extends ScreenComponentGeneric {
 		private final int imageHeight;
 		private final ResourceLocation loc;
 		
-		private ProgressTextures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc) {
+		private ProgressTextures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, String name) {
 			this.textureWidth = textureWidth;
 			this.textureHeight = textureHeight;
 			this.textureU = textureU;
 			this.textureV = textureV;
 			this.imageWidth = imageWidth;
 			this.imageHeight = imageHeight;
-			this.loc = loc;
+			this.loc = new ResourceLocation(References.ID + ":textures/screen/component/progress/" + name+ ".png");
 		}
 
 		@Override
