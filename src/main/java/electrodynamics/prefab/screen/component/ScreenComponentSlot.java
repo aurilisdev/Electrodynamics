@@ -6,6 +6,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
+import electrodynamics.api.screen.ITexture;
+import electrodynamics.api.screen.component.ISlotTexture;
 import electrodynamics.api.screen.component.TextSupplier;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.network.chat.Component;
@@ -15,96 +17,218 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenComponentSlot extends ScreenComponent {
-	private final EnumSlotType type;
+public class ScreenComponentSlot extends ScreenComponentGeneric {
+	
+	public static final ResourceLocation TEXTURE_SLOT = new ResourceLocation(References.ID + ":textures/screen/component/slot.png");
+	public static final ResourceLocation TEXTURE_ICON = new ResourceLocation(References.ID + ":textures/screen/component/icon.png");
+	
+	private final ISlotTexture slotType;
+	private final ITexture iconType;
 	private TextSupplier tooltip;
-	private int color = RenderingUtils.getRGBA(255, 255, 255, 255);
+	
+	private final Slot slot;
 
-	public ScreenComponentSlot(final EnumSlotType type, final IScreenWrapper gui, final int x, final int y) {
-		super(new ResourceLocation(References.ID + ":textures/screen/component/slot.png"), gui, x, y);
-		this.type = type;
+	public ScreenComponentSlot(Slot slot, final ISlotTexture type, final ITexture iconType, final IScreenWrapper gui, final int x, final int y) {
+		super(type, gui, x, y);
+		this.slotType = type;
+		this.iconType = iconType;
+		this.slot = slot;
 	}
 
-	public ScreenComponentSlot(final IScreenWrapper gui, final int x, final int y) {
-		this(EnumSlotType.NORMAL, gui, x, y);
+	public ScreenComponentSlot(Slot slot, final IScreenWrapper gui, final int x, final int y) {
+		this(slot, SlotType.NORMAL, IconType.NONE, gui, x, y);
 	}
 
-	public ScreenComponentSlot(final IScreenWrapper gui, final int x, final int y, Slot slot) {
-		this(EnumSlotType.NORMAL, gui, x, y, () -> slot.getItem().isEmpty() ? Component.literal("") : slot.getItem().getHoverName());
-	}
-
-	public ScreenComponentSlot(final EnumSlotType type, final IScreenWrapper gui, final int x, final int y, Slot slot) {
-		this(type, gui, x, y, () -> slot.getItem().getHoverName());
-	}
-
-	public ScreenComponentSlot(final EnumSlotType type, final IScreenWrapper gui, final int x, final int y, final TextSupplier tooltip) {
-		this(type, gui, x, y);
+	public ScreenComponentSlot(Slot slot, final ISlotTexture type, final ITexture iconType, final IScreenWrapper gui, final int x, final int y, final TextSupplier tooltip) {
+		this(slot, type, iconType, gui, x, y);
 		this.tooltip = tooltip;
 	}
 
 	public void tooltip(TextSupplier tooltip) {
 		this.tooltip = tooltip;
 	}
-
-	@Override
-	public Rectangle getBounds(final int guiWidth, final int guiHeight) {
-		return new Rectangle(guiWidth + xLocation, guiHeight + yLocation, type.getWidth(), type.getHeight());
-	}
-
-	@Override
-	public void renderBackground(PoseStack stack, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
-		RenderingUtils.bindTexture(resource);
-		RenderingUtils.color(color);
-		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, type.getTextureX(), type.getTextureY(), type.getWidth(), type.getHeight());
-		RenderingUtils.color(RenderingUtils.getRGBA(255, 255, 255, 255));
-	}
-
-	public ScreenComponentSlot color(int color) {
-		this.color = color;
+	
+	public ScreenComponentSlot setHoverText(Slot slot) {
+		tooltip = () -> slot.getItem().isEmpty() ? Component.literal("") : slot.getItem().getHoverName();
 		return this;
 	}
 
 	@Override
+	public Rectangle getBounds(final int guiWidth, final int guiHeight) {
+		return new Rectangle(guiWidth + xLocation, guiHeight + yLocation, slotType.textureWidth(), slotType.textureHeight());
+	}
+
+	@Override
+	public void renderBackground(PoseStack stack, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
+		if(!isVisible()) {
+			return;
+		}
+		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
+		if(iconType == IconType.NONE) {
+			return;
+		}
+		RenderingUtils.bindTexture(iconType.getLocation());
+		int slotXOffset = (slotType.imageWidth() - iconType.imageWidth()) / 2;
+		int slotYOffset = (slotType.imageHeight() - iconType.imageHeight()) / 2;
+		gui.drawTexturedRect(stack, guiWidth + xLocation + slotXOffset, guiHeight + yLocation + slotYOffset, iconType.textureU(), iconType.textureV(), iconType.textureWidth(), iconType.textureHeight(), iconType.imageWidth(), iconType.imageHeight());
+	}
+
+	@Override
 	public void renderForeground(PoseStack stack, final int xAxis, final int yAxis) {
-		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, type.width, type.height) && tooltip != null && !tooltip.getText().getString().isEmpty()) {
+		if(!slot.isActive()) {
+			return;
+		}
+		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, slotType.textureWidth(), slotType.textureHeight()) && tooltip != null && !tooltip.getText().getString().isEmpty()) {
 			gui.displayTooltip(stack, tooltip.getText(), xAxis, yAxis);
 		}
 	}
+	
+	@Override
+	public boolean isVisible() {
+		return slot.isActive();
+	}
 
-	public enum EnumSlotType {
-		NORMAL(18, 18, 0, 0),
-		BATTERY(18, 18, 18, 0),
-		LIQUID(18, 18, 36, 0),
-		GAS(18, 18, 54, 0),
-		SPEED(18, 18, 72, 0);
-
-		private final int width;
-		private final int height;
-		private final int textureX;
-		private final int textureY;
-
-		EnumSlotType(int width, int height, int textureX, int textureY) {
-			this.width = width;
-			this.height = height;
-			this.textureX = textureX;
-			this.textureY = textureY;
+	public static enum SlotType implements ISlotTexture {
+		
+		NORMAL(18, 18, 0, 0);
+		
+		private final int textureWidth;
+		private final int textureHeight;
+		private final int textureU;
+		private final int textureV;
+		private final int imageWidth;
+		private final int imageHeight;
+		private final ResourceLocation loc;
+		
+		private final int xOffset;
+		private final int yOffset;
+		
+		private SlotType(int textureWidth, int textureHeight, int textureU, int textureV) {
+			this(textureWidth, textureHeight, textureU, textureV, -1, -1);
+		}
+		
+		private SlotType(int textureWidth, int textureHeight, int textureU, int textureV, int xOffset, int yOffset) {
+			this.textureWidth = textureWidth;
+			this.textureHeight = textureHeight;
+			this.textureU = textureU;
+			this.textureV = textureV;
+			this.imageWidth = 256;
+			this.imageHeight = 256;;
+			this.loc = TEXTURE_SLOT;
+			
+			this.xOffset = xOffset;
+			this.yOffset = yOffset;
 		}
 
-		public int getWidth() {
-			return width;
+		@Override
+		public ResourceLocation getLocation() {
+			return loc;
 		}
 
-		public int getHeight() {
-			return height;
+		@Override
+		public int imageHeight() {
+			return imageHeight;
 		}
 
-		public int getTextureX() {
-			return textureX;
+		@Override
+		public int imageWidth() {
+			return imageWidth;
 		}
 
-		public int getTextureY() {
-			return textureY;
+		@Override
+		public int textureHeight() {
+			return textureHeight;
 		}
+
+		@Override
+		public int textureU() {
+			return textureU;
+		}
+
+		@Override
+		public int textureV() {
+			return textureV;
+		}
+
+		@Override
+		public int textureWidth() {
+			return textureWidth;
+		}
+		
+		public int xOffset() {
+			return xOffset;
+		}
+		
+		public int yOffset() {
+			return yOffset;
+		}
+		
+	
+	}
+	
+	public static enum IconType implements ITexture {
+		
+		NONE(0, 0, 0, 0, 0 ,0, null),
+		ENERGY(18, 18, 0, 0, 256, 256, TEXTURE_ICON),
+		FLUID(18, 18, 18, 0, 256, 256, TEXTURE_ICON),
+		GAS(18, 18, 36, 0, 256, 256, TEXTURE_ICON),
+		UPGRADE(18, 18, 54, 0, 256, 256, TEXTURE_ICON),
+		DRILL_HEAD(18, 18, 72, 0, 256, 256, TEXTURE_ICON),
+		TRASH_CAN(18, 18, 90, 0, 256, 256, TEXTURE_ICON);
+		
+		private final int textureWidth;
+		private final int textureHeight;
+		private final int textureU;
+		private final int textureV;
+		private final int imageWidth;
+		private final int imageHeight;
+		private final ResourceLocation loc;
+		
+		private IconType(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc) {
+			this.textureWidth = textureWidth;
+			this.textureHeight = textureHeight;
+			this.textureU = textureU;
+			this.textureV = textureV;
+			this.imageWidth = imageWidth;
+			this.imageHeight = imageHeight;
+			this.loc = loc;
+		}
+
+		@Override
+		public ResourceLocation getLocation() {
+			return loc;
+		}
+
+		@Override
+		public int imageHeight() {
+			return imageHeight;
+		}
+
+		@Override
+		public int imageWidth() {
+			return imageWidth;
+		}
+
+		@Override
+		public int textureHeight() {
+			return textureHeight;
+		}
+
+		@Override
+		public int textureU() {
+			return textureU;
+		}
+
+		@Override
+		public int textureV() {
+			return textureV;
+		}
+
+		@Override
+		public int textureWidth() {
+			return textureWidth;
+		}
+		
 	}
 
 }

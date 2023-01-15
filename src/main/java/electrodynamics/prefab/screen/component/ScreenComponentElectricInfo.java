@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
@@ -20,22 +19,21 @@ import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenComponentElectricInfo extends ScreenComponentInfo {
+public class ScreenComponentElectricInfo extends ScreenComponentGuiTab {
+	
 	private Function<ComponentElectrodynamic, Double> wattage = null;
-
+	
 	public ScreenComponentElectricInfo(final TextPropertySupplier infoHandler, final IScreenWrapper gui, final int x, final int y) {
-		super(infoHandler, new ResourceLocation(References.ID + ":textures/screen/component/electric.png"), gui, x, y);
+		super(GuiInfoTabTextures.ELECTRIC, infoHandler, gui, x, y);
 	}
 
 	public ScreenComponentElectricInfo(final IScreenWrapper gui, final int x, final int y) {
-		super(null, new ResourceLocation(References.ID + ":textures/screen/component/electric.png"), gui, x, y);
-		infoHandler = this::getElectricInformation;
+		this(ScreenComponentGuiTab.EMPTY, gui, x, y);
 	}
 
 	public ScreenComponentElectricInfo wattage(double wattage) {
@@ -49,10 +47,10 @@ public class ScreenComponentElectricInfo extends ScreenComponentInfo {
 
 	@Override
 	protected List<? extends FormattedCharSequence> getInfo(List<? extends FormattedCharSequence> list) {
-		if (infoHandler == null) {
+		if (infoHandler == EMPTY) {
 			return getElectricInformation();
 		}
-		return infoHandler.getInfo();
+		return super.getInfo(list);
 	}
 
 	private List<? extends FormattedCharSequence> getElectricInformation() {

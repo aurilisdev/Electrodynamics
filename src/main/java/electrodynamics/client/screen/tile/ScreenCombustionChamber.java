@@ -5,8 +5,11 @@ import electrodynamics.common.tile.TileCombustionChamber;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentFluid;
-import electrodynamics.prefab.screen.component.ScreenComponentInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressBars;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressTextures;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import net.minecraft.network.chat.Component;
@@ -26,14 +29,14 @@ public class ScreenCombustionChamber extends GenericScreen<ContainerCombustionCh
 			}
 			return null;
 		}, this, 98, 18));
-		components.add(new ScreenComponentProgress(() -> 0, this, 69, 33));
-		components.add(new ScreenComponentProgress(() -> {
+		components.add(new ScreenComponentGeneric(ProgressTextures.ARROW_RIGHT_OFF, this, 69, 33));
+		components.add(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
 			TileCombustionChamber boiler = container.getHostFromIntArray();
 			if (boiler != null) {
 				return boiler.burnTime.get() / (double) TileCombustionChamber.TICKS_PER_MILLIBUCKET;
 			}
 			return 0;
-		}, this, 119, 34).flame());
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
+		}, this, 119, 34));
+		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 }

@@ -22,7 +22,6 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.InventoryUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsSounds;
@@ -48,10 +47,7 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 	}
 
 	public TileElectricArcFurnace(SubtypeMachine machine, int extra, BlockPos worldPosition, BlockState blockState) {
-		super(extra == 1 ? ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACEDOUBLE.get()
-				: extra == 2 ? ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACETRIPLE.get()
-						: ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACE.get(),
-				worldPosition, blockState);
+		super(extra == 1 ? ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACEDOUBLE.get() : extra == 2 ? ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACETRIPLE.get() : ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACE.get(), worldPosition, blockState);
 
 		int processorInputs = 1;
 		int processorCount = extra + 1;
@@ -61,40 +57,21 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH)
-				.voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * Math.pow(2, extra))
-				.maxJoules(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK * 20 * (extra + 1)));
+		addComponent(new ComponentTickable().tickClient(this::tickClient));
+		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * Math.pow(2, extra)).maxJoules(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK * 20 * (extra + 1)));
 
 		int[] ints = new int[extra + 1];
 		for (int i = 0; i <= extra; i++) {
 			ints[i] = i * 2;
 		}
 
-		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3)
-				.processors(processorCount).processorInputs(processorInputs)
-				.validUpgrades(ContainerElectricArcFurnace.VALID_UPGRADES).valid(machineValidator(ints))
-				.setMachineSlots(extra));
-		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> (extra == 0
-				? new ContainerElectricArcFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray())
-				: extra == 1
-						? new ContainerElectricArcFurnaceDouble(id, player, getComponent(ComponentType.Inventory),
-								getCoordsArray())
-						: extra == 2
-								? new ContainerElectricArcFurnaceTriple(id, player,
-										getComponent(ComponentType.Inventory), getCoordsArray())
-								: null)));
+		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount).processorInputs(processorInputs).validUpgrades(ContainerElectricArcFurnace.VALID_UPGRADES).valid(machineValidator(ints)).setMachineSlots(extra));
+		addComponent(new ComponentContainerProvider(machine).createMenu((id,
+				player) -> (extra == 0 ? new ContainerElectricArcFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerElectricArcFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerElectricArcFurnaceTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 		for (int i = 0; i <= extra; i++) {
-			addProcessor(new ComponentProcessor(this).setProcessorNumber(i).canProcess(this::canProcess)
-					.failed(component -> cachedRecipe = null).process(this::process)
-					.requiredTicks(Constants.ELECTRICARCFURNACE_REQUIRED_TICKS)
-					.usage(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK));
+			addProcessor(new ComponentProcessor(this, i, extra + 1).canProcess(this::canProcess).failed(component -> cachedRecipe = null).process(this::process).requiredTicks(Constants.ELECTRICARCFURNACE_REQUIRED_TICKS).usage(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK));
 		}
-	}
-
-	protected void tickServer(ComponentTickable tick) {
-		InventoryUtils.handleExperienceUpgrade(this);
 	}
 
 	protected void process(ComponentProcessor component) {
@@ -129,8 +106,7 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 	}
 
 	private boolean checkConditions(ComponentProcessor component) {
-		if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic)
-				.getJoulesStored() < component.getUsage() * component.operatingSpeed.get()) {
+		if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() < component.getUsage() * component.operatingSpeed.get()) {
 			return false;
 		}
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
@@ -159,8 +135,7 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 
 		ItemStack output = inv.getOutputContents().get(component.getProcessorNumber());
 		ItemStack result = cachedRecipe.getResultItem();
-		return (output.isEmpty() || ItemStack.isSame(output, result))
-				&& output.getCount() + result.getCount() <= output.getMaxStackSize();
+		return (output.isEmpty() || ItemStack.isSame(output, result)) && output.getCount() + result.getCount() <= output.getMaxStackSize();
 
 	}
 
@@ -171,15 +146,10 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 		if (level.random.nextDouble() < 0.15) {
 			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			double d4 = level.random.nextDouble();
-			double d5 = direction.getAxis() == Direction.Axis.X
-					? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1)
-					: d4;
+			double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : d4;
 			double d6 = level.random.nextDouble();
-			double d7 = direction.getAxis() == Direction.Axis.Z
-					? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1)
-					: d4;
-			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6,
-					worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
+			double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : d4;
+			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
 		}
 		if (!isSoundPlaying) {
 			isSoundPlaying = true;

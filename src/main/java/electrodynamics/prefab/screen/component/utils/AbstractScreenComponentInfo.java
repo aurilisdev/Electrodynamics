@@ -1,43 +1,33 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.utils;
 
-import java.awt.Rectangle;
+import java.util.Collections;
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.screen.IScreenWrapper;
+import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.component.TextPropertySupplier;
-import electrodynamics.prefab.utilities.RenderingUtils;
-import net.minecraft.resources.ResourceLocation;
+import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class ScreenComponentInfo extends ScreenComponent {
+public abstract class AbstractScreenComponentInfo extends ScreenComponentGeneric {
 	public static final int SIZE = 26;
 	protected TextPropertySupplier infoHandler;
+	
+	public static final TextPropertySupplier EMPTY = Collections::emptyList;
 
-	protected ScreenComponentInfo(TextPropertySupplier infoHandler, ResourceLocation resource, IScreenWrapper gui, int x, int y) {
-		super(resource, gui, x, y);
+	public AbstractScreenComponentInfo(ITexture texture, TextPropertySupplier infoHandler, IScreenWrapper gui, int x, int y) {
+		super(texture, gui, x, y);
 		this.infoHandler = infoHandler;
 	}
 
 	@Override
-	public Rectangle getBounds(int guiWidth, int guiHeight) {
-		return new Rectangle(guiWidth + xLocation, guiHeight + yLocation, SIZE, SIZE);
-	}
-
-	@Override
-	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		RenderingUtils.bindTexture(resource);
-
-		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, 0, 0, SIZE, SIZE);
-	}
-
-	@Override
 	public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
-		if (isPointInRegion(xLocation + 3, yLocation + 3, xAxis, yAxis, 21, 20)) {
+		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, texture.textureWidth(), texture.textureHeight())) {
 			displayTooltips(stack, getInfo(infoHandler.getInfo()), xAxis, yAxis);
 		}
 	}
@@ -49,7 +39,7 @@ public abstract class ScreenComponentInfo extends ScreenComponent {
 
 	@Override
 	public void mouseClicked(double xAxis, double yAxis, int button) {
-		if (button == 0 && isPointInRegion(xLocation + 3, yLocation + 3, xAxis, yAxis, 21, 20)) {
+		if (button == 0 && isPointInRegion(xLocation, yLocation, xAxis, yAxis, texture.textureWidth(), texture.textureHeight())) {
 			buttonClicked();
 		}
 	}

@@ -55,17 +55,16 @@ public class CoalGeneratorFuelRegister extends SimplePreparableReloadListener<Js
 	private static final Gson GSON = new Gson();
 
 	private final HashSet<Item> fuels = new HashSet<>();
-	
+
 	private final HashSet<TagKey<Item>> tags = new HashSet<>();
-	
+
 	private final Logger logger = Electrodynamics.LOGGER;
 
 	@Override
 	protected JsonObject prepare(ResourceManager manager, ProfilerFiller profiler) {
 		JsonObject combinedFuelsJson = new JsonObject();
 
-		List<Entry<ResourceLocation, Resource>> resources = new ArrayList<>(
-				manager.listResources(FOLDER, CoalGeneratorFuelRegister::isJson).entrySet());
+		List<Entry<ResourceLocation, Resource>> resources = new ArrayList<>(manager.listResources(FOLDER, CoalGeneratorFuelRegister::isJson).entrySet());
 		Collections.reverse(resources);
 		JsonArray combinedArray = new JsonArray();
 		for (Entry<ResourceLocation, Resource> entry : resources) {
@@ -77,14 +76,11 @@ public class CoalGeneratorFuelRegister extends SimplePreparableReloadListener<Js
 			final ResourceLocation jsonFile = new ResourceLocation(namespace, dataPath);
 
 			Resource resource = entry.getValue();
-			try (final InputStream inputStream = resource.open();
-					final Reader reader = new BufferedReader(
-							new InputStreamReader(inputStream, StandardCharsets.UTF_8));) {
+			try (final InputStream inputStream = resource.open(); final Reader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));) {
 				final JsonObject json = (JsonObject) GsonHelper.fromJson(GSON, reader, JsonElement.class);
 				combinedArray.addAll(json.get(KEY).getAsJsonArray());
 			} catch (RuntimeException | IOException exception) {
-				this.logger.error("Data loader for {} could not read data {} from file {} in data pack {}",
-						FOLDER, jsonFile, loc, resource.sourcePackId(), exception);
+				this.logger.error("Data loader for {} could not read data {} from file {} in data pack {}", FOLDER, jsonFile, loc, resource.sourcePackId(), exception);
 			}
 
 		}
@@ -99,7 +95,7 @@ public class CoalGeneratorFuelRegister extends SimplePreparableReloadListener<Js
 		tags.clear();
 		ArrayList<String> list = GSON.fromJson(json.get(KEY).getAsJsonArray(), ArrayList.class);
 		list.forEach(key -> {
-			if(key.charAt(0) == '#') {
+			if (key.charAt(0) == '#') {
 				tags.add(ItemTags.create(new ResourceLocation(key.substring(1))));
 			} else {
 				fuels.add(ForgeRegistries.ITEMS.getValue(new ResourceLocation(key)));
@@ -107,30 +103,30 @@ public class CoalGeneratorFuelRegister extends SimplePreparableReloadListener<Js
 		});
 
 	}
-	
+
 	public void generateTagValues() {
 		tags.forEach(tag -> {
-			for(ItemStack item : Ingredient.of(tag).getItems()) {
+			for (ItemStack item : Ingredient.of(tag).getItems()) {
 				fuels.add(item.getItem());
 			}
 		});
 		tags.clear();
 	}
-	
+
 	public void setClientValues(HashSet<Item> fuels) {
 		this.fuels.clear();
 		this.fuels.addAll(fuels);
 	}
-	
+
 	public CoalGeneratorFuelRegister subscribeAsSyncable(final SimpleChannel channel) {
 		MinecraftForge.EVENT_BUS.addListener(this.getDatapackSyncListener(channel));
 		return this;
 	}
-	
-	public HashSet<Item> getFuels(){
+
+	public HashSet<Item> getFuels() {
 		return fuels;
 	}
-	
+
 	public boolean isFuel(Item item) {
 		return fuels.contains(item);
 	}
@@ -140,8 +136,7 @@ public class CoalGeneratorFuelRegister extends SimplePreparableReloadListener<Js
 			generateTagValues();
 			ServerPlayer player = event.getPlayer();
 			PacketSetClientCoalGenFuels packet = new PacketSetClientCoalGenFuels(fuels);
-			PacketTarget target = player == null ? PacketDistributor.ALL.noArg()
-					: PacketDistributor.PLAYER.with(() -> player);
+			PacketTarget target = player == null ? PacketDistributor.ALL.noArg() : PacketDistributor.PLAYER.with(() -> player);
 			channel.send(target, packet);
 		};
 	}

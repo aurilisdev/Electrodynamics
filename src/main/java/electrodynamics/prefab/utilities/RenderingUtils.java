@@ -41,6 +41,8 @@ import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RenderingUtils {
+	
+	public static final int WHITE = RenderingUtils.getRGBA(255, 255, 255, 255);
 
 	public static void renderStar(PoseStack stack, MultiBufferSource bufferIn, float time, int starFrags, float r, float g, float b, float a, boolean star) {
 		stack.pushPose();
@@ -284,5 +286,9 @@ public class RenderingUtils {
 
 	public static RenderType beaconType() {
 		return RenderType.beaconBeam(new ResourceLocation("textures/entity/beacon_beam.png"), true);
+	}
+	
+	public static void resetColor() {
+		RenderingUtils.color(WHITE);
 	}
 }

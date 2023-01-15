@@ -8,7 +8,7 @@ import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentInfo;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.network.chat.Component;
@@ -21,7 +21,7 @@ public class ScreenSolarPanel extends GenericScreen<ContainerSolarPanel> {
 
 	public ScreenSolarPanel(ContainerSolarPanel container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
+		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 
 	@Override

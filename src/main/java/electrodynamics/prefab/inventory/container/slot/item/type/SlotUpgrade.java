@@ -5,7 +5,8 @@ import java.util.List;
 
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot.SlotType;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
@@ -16,7 +17,7 @@ public class SlotUpgrade extends SlotGeneric {
 	private List<Item> items;
 
 	public SlotUpgrade(Container inventory, int index, int x, int y, SubtypeItemUpgrade... upgrades) {
-		super(inventory, index, x, y);
+		super(SlotType.NORMAL, IconType.UPGRADE, inventory, index, x, y);
 
 		items = new ArrayList<>();
 		for (SubtypeItemUpgrade upg : upgrades) {
@@ -27,11 +28,6 @@ public class SlotUpgrade extends SlotGeneric {
 	@Override
 	public boolean mayPlace(ItemStack stack) {
 		return items != null && items.contains(stack.getItem());
-	}
-
-	@Override
-	public EnumSlotType getSlotType() {
-		return EnumSlotType.SPEED;
 	}
 
 }

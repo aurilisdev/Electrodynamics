@@ -268,10 +268,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativepowersource), "Creative Power Source");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.downgradetransformer), "Downgrade Transformer");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnace), "Electric Arc Furnace");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacedouble),
-					"Double Electric Arc Furnace");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacetriple),
-					"Triple Electric Arc Furnace");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacedouble), "Double Electric Arc Furnace");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacetriple), "Triple Electric Arc Furnace");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnace), "Electric Furnace");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacedouble), "Double Electric Furnace");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacetriple), "Triple Electric Furnace");
@@ -300,8 +298,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tanksteel), "Steel Tank");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tankreinforced), "Reinforced Tank");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tankhsla), "HSLA Tank");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.thermoelectricgenerator),
-					"Thermoelectric Generator");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.thermoelectricgenerator), "Thermoelectric Generator");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.upgradetransformer), "Upgrade Transformer");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.windmill), "Windmill");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremill), "Wire Mill");
@@ -378,29 +375,25 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedgold), "Insulated Gold Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatediron), "Insulated Iron Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsilver), "Insulated Silver Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsuperconductive),
-					"Insulated Superconductive Wire");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsuperconductive), "Insulated Superconductive Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedtin), "Insulated Tin Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedcopper), "Ceramic Copper Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedgold), "Ceramic Gold Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatediron), "Ceramic Iron Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsilver), "Ceramic Silver Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsuperconductive),
-					"Ceramic Superconductive Wire");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsuperconductive), "Ceramic Superconductive Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedtin), "Ceramic Tin Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticscopper), "Logistical Copper Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsgold), "Logistical Gold Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsiron), "Logistical Iron Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssilver), "Logistical Silver Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssuperconductive),
-					"Logistical Superconductive Wire");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssuperconductive), "Logistical Superconductive Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticstin), "Logistical Tin Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedcopper), "Thick Copper Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedgold), "Thick Gold Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatediron), "Thick Iron Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsilver), "Thick Silver Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsuperconductive),
-					"Thick Superconductive Wire");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsuperconductive), "Thick Superconductive Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedtin), "Thick Tin Wire");
 
 			addFluid(ElectrodynamicsFluids.fluidClay, "Clay Slurry");
@@ -566,37 +559,37 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("seismicrelay.posfound", "%1$s , %2$s");
 			addGuiLabel("seismicrelay.posoptional", "%s , Optional");
 			addGuiLabel("motorcomplex.speed", "Ticks per Block: %s");
-			
+
 			addGuiLabel("quarry.ringusage", "Ring Usage: %s");
 			addGuiLabel("quarry.miningusage", "Drill Usage: %s");
-			
+
 			addGuiLabel("quarry.fortune", "Fortune: %s");
 			addGuiLabel("quarry.silktouch", "Silk Touch: %s");
 			addGuiLabel("quarry.unbreaking", "Unbreaking: %s");
-			
+
 			addGuiLabel("quarry.wateruse", "Coolant/Block: %s");
-			
+
 			addGuiLabel("quarry.motorcomplex", "Motor Complex");
 			addGuiLabel("quarry.seismicrelay", "Seismic Relay");
 			addGuiLabel("quarry.coolantresavoir", "Coolant Resavoir");
-			
+
 			addGuiLabel("quarry.voiditems", "Void List");
 			addGuiLabel("quarry.needvoidcard", "No Card");
-			
+
 			addGuiLabel("quarry.status", "Status:");
 			addGuiLabel("quarry.clearingarea", "Clearing...");
 			addGuiLabel("quarry.setup", "Setting Up...");
 			addGuiLabel("quarry.mining", "Mining...");
 			addGuiLabel("quarry.notmining", "Error!");
 			addGuiLabel("quarry.finished", "Finished!");
-			
-			addGuiLabel("quarry.miningposition", "Mining At:");
+
+			addGuiLabel("quarry.miningposition", "Mining At: %s");
 			addGuiLabel("quarry.notavailable", "N/A");
-			
-			addGuiLabel("quarry.drillhead", "Drill Head:");
+
+			addGuiLabel("quarry.drillhead", "Drill Head: %s");
 			addGuiLabel("quarry.hashead", "Present");
 			addGuiLabel("quarry.nohead", "Missing");
-			
+
 			addGuiLabel("quarry.errors", "Errors:");
 			addGuiLabel("quarry.norelay", "No Relay");
 			addGuiLabel("quarry.nomotorcomplex", "No Motor");
@@ -609,7 +602,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("quarry.missinghead", "No Drill Head");
 			addGuiLabel("quarry.noerrors", "None");
 			addGuiLabel("quarry.miningframe", "Active Frame");
-			
+
 			add("keycategory.electrodynamics", "Electrodynamics");
 			addKeyLabel("jetpackascend", "Ascend with Jetpack");
 			addKeyLabel("togglenvgs", "Toggle Night Vision Goggles");
@@ -619,8 +612,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addJei("guilabel.power", "%1$sV %2$skW");
 			addJei("info.item.coalgeneratorfuelsource", "Coal Generator Fuel:\n    Burn Time: %ss");
-			addJei("info.fluid.combustionchamberfuel",
-					"Combustion Chamber Fuel:\n    Produces: %2$s kW\n    Cost: %1$s mb.");
+			addJei("info.fluid.combustionchamberfuel", "Combustion Chamber Fuel:\n    Produces: %2$s kW\n    Cost: %1$s mb.");
 
 			addDamageSource("electricity", "%s was electrocuted");
 			addDamageSource("accelerated_bolt", "%1$s was perforated by %2$s");
@@ -1485,7 +1477,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 	private void addSubtitle(String key, String translation) {
 		add("subtitles." + References.ID + "." + key, translation);
 	}
-	
+
 	private void addSubtitle(RegistryObject<SoundEvent> sound, String translation) {
 		addSubtitle(sound.getId().getPath(), translation);
 	}

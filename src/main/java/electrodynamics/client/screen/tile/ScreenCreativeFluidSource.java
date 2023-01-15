@@ -6,7 +6,8 @@ import electrodynamics.common.inventory.container.tile.ContainerCreativeFluidSou
 import electrodynamics.common.tile.TileCreativeFluidSource;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentFluid;
-import electrodynamics.prefab.screen.component.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressTextures;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.utilities.TextUtils;
@@ -17,7 +18,7 @@ public class ScreenCreativeFluidSource extends GenericScreen<ContainerCreativeFl
 
 	public ScreenCreativeFluidSource(ContainerCreativeFluidSource container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
-		components.add(new ScreenComponentProgress(() -> 0, this, 102, 33));
+		components.add(new ScreenComponentGeneric(ProgressTextures.ARROW_RIGHT_OFF, this, 102, 33));
 		components.add(new ScreenComponentFluid(() -> {
 			TileCreativeFluidSource boiler = menu.getHostFromIntArray();
 			if (boiler != null) {

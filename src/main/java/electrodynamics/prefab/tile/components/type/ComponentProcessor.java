@@ -26,6 +26,8 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.utilities.ItemUtils;
+import electrodynamics.prefab.utilities.NBTUtils;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.fluids.FluidStack;
@@ -48,19 +50,24 @@ public class ComponentProcessor implements Component {
 	private Consumer<ComponentProcessor> process;
 	private Consumer<ComponentProcessor> failed;
 	private int processorNumber = 0;
+	private int totalProcessors = 1;
 
 	private List<ElectrodynamicsRecipe> cachedRecipes = new ArrayList<>();
 	private ElectrodynamicsRecipe recipe;
 	private double storedXp = 0.0;
-
+	
 	public ComponentProcessor(GenericTile source) {
+		this(source, 0, 1);
+	}
+	
+	public ComponentProcessor(GenericTile source, int processorNumber, int totalProcessors) {
 		holder(source);
-		if (holder.getProcessors().length == 0) {
-			operatingSpeed = source.property(new Property<Double>(PropertyType.Double, "operatingSpeed0", 1.0));
-			operatingTicks = source.property(new Property<Double>(PropertyType.Double, "operatingTicks0", 0.0));
-			usage = source.property(new Property<Double>(PropertyType.Double, "usage", 0.0));
-			requiredTicks = source.property(new Property<Double>(PropertyType.Double, "requiredTicks0", 0.0));
-		}
+		this.processorNumber = processorNumber;
+		this.totalProcessors = totalProcessors;
+		operatingSpeed = holder.property(new Property<Double>(PropertyType.Double, "operatingSpeed" + processorNumber, 1.0));
+		operatingTicks = holder.property(new Property<Double>(PropertyType.Double, "operatingTicks" + processorNumber, 0.0));
+		usage = holder.property(new Property<Double>(PropertyType.Double, "usage", 0.0));
+		requiredTicks = holder.property(new Property<Double>(PropertyType.Double, "requiredTicks" + processorNumber, 0.0));
 		if (!holder.hasComponent(ComponentType.Inventory)) {
 			throw new UnsupportedOperationException("You need to implement an inventory component to use the processor component!");
 		}
@@ -130,15 +137,6 @@ public class ComponentProcessor implements Component {
 		return this;
 	}
 
-	public ComponentProcessor setProcessorNumber(int number) {
-		processorNumber = number;
-		operatingSpeed = holder.property(new Property<Double>(PropertyType.Double, "operatingSpeed" + processorNumber, 0.0));
-		operatingTicks = holder.property(new Property<Double>(PropertyType.Double, "operatingTicks" + processorNumber, 0.0));
-		usage = holder.property(new Property<Double>(PropertyType.Double, "usage", 0.0));
-		requiredTicks = holder.property(new Property<Double>(PropertyType.Double, "requiredTicks" + processorNumber, 0.0));
-		return this;
-	}
-
 	public int getProcessorNumber() {
 		return processorNumber;
 	}
@@ -203,7 +201,7 @@ public class ComponentProcessor implements Component {
 		usage.set(locRecipe.getUsagePerTick());
 		
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-		electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
+		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
 		
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
@@ -256,7 +254,7 @@ public class ComponentProcessor implements Component {
 		usage.set(locRecipe.getUsagePerTick());
 		
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-		electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
+		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
 		
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
@@ -308,7 +306,7 @@ public class ComponentProcessor implements Component {
 		usage.set(locRecipe.getUsagePerTick());
 		
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-		electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
+		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
 		
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
@@ -352,7 +350,7 @@ public class ComponentProcessor implements Component {
 		usage.set(locRecipe.getUsagePerTick());
 		
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-		electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
+		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
 		
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
@@ -396,7 +394,7 @@ public class ComponentProcessor implements Component {
 		usage.set(locRecipe.getUsagePerTick());
 		
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-		electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
+		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
 		
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
@@ -440,7 +438,7 @@ public class ComponentProcessor implements Component {
 		usage.set(locRecipe.getUsagePerTick());
 		
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
-		electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
+		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
 		
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
@@ -742,8 +740,8 @@ public class ComponentProcessor implements Component {
 		}
 	}
 
-	//TODO see if this works with properties now
 	private void dispenseExperience(ComponentInventory inv, double experience) {
+		storedXp += experience;
 		int start = inv.getUpgradeSlotStartIndex();
 		int count = inv.upgrades();
 		for (int i = start; i < start + count; i++) {
@@ -751,7 +749,9 @@ public class ComponentProcessor implements Component {
 			if (!stack.isEmpty()) {
 				ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
 				if (upgrade.subtype == SubtypeItemUpgrade.experience) {
-					storedXp += experience;
+					CompoundTag tag = stack.getOrCreateTag();
+					tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + getStoredXp());
+					setStoredXp(0);
 					break;
 				}
 			}

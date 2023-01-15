@@ -2,14 +2,15 @@ package electrodynamics.prefab.inventory.container.slot.item.type;
 
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot.SlotType;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 
 public class SlotCharging extends SlotGeneric {
 
 	public SlotCharging(Container inventory, int index, int x, int y) {
-		super(inventory, index, x, y);
+		super(SlotType.NORMAL, IconType.ENERGY, inventory, index, x, y);
 	}
 
 	@Override
@@ -18,11 +19,6 @@ public class SlotCharging extends SlotGeneric {
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public EnumSlotType getSlotType() {
-		return EnumSlotType.BATTERY;
 	}
 
 }

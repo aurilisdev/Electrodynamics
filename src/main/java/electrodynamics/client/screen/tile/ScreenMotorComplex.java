@@ -12,7 +12,7 @@ import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.TileMotorComplex;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentInfo;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.TextUtils;
@@ -25,7 +25,7 @@ public class ScreenMotorComplex extends GenericScreen<ContainerMotorComplex> {
 
 	public ScreenMotorComplex(ContainerMotorComplex container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
-		components.add(new ScreenComponentElectricInfo(this::getElectricInformation, this, -ScreenComponentInfo.SIZE + 1, 2));
+		components.add(new ScreenComponentElectricInfo(this::getElectricInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 
 	private List<? extends FormattedCharSequence> getElectricInformation() {

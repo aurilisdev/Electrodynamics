@@ -5,8 +5,11 @@ import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentFluid;
-import electrodynamics.prefab.screen.component.ScreenComponentInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressBars;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressTextures;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
@@ -20,7 +23,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
 	public ScreenMineralWasher(ContainerMineralWasher container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentProgress(() -> {
+		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			GenericTile furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
@@ -30,7 +33,7 @@ public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
 			}
 			return 0;
 		}, this, 42, 30));
-		components.add(new ScreenComponentProgress(() -> {
+		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			GenericTile furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
@@ -40,7 +43,7 @@ public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
 			}
 			return 0;
 		}, this, 98, 30));
-		components.add(new ScreenComponentProgress(() -> 0, this, 42, 50).left());
+		components.add(new ScreenComponentGeneric(ProgressTextures.ARROW_LEFT_OFF, this, 42, 50));
 		components.add(new ScreenComponentFluid(() -> {
 			TileMineralWasher boiler = container.getHostFromIntArray();
 			if (boiler != null) {
@@ -55,6 +58,6 @@ public class ScreenMineralWasher extends GenericScreen<ContainerMineralWasher> {
 			}
 			return null;
 		}, this, 127, 18));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
+		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 }

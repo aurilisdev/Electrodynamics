@@ -139,6 +139,7 @@ public class FluidIngredient extends Ingredient {
 	}
 
 	public void write(FriendlyByteBuf output) {
+		fluidStacks = getMatchingFluids();
 		output.writeInt(fluidStacks.size());
 		for (FluidStack stack : fluidStacks) {
 			output.writeFluidStack(stack);

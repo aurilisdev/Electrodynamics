@@ -9,10 +9,12 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.IGuiComponent;
+import electrodynamics.api.screen.component.ISlotTexture;
 import electrodynamics.prefab.inventory.container.GenericContainer;
 import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.EnumSlotType;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot.SlotType;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -44,11 +46,11 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 	}
 
 	protected ScreenComponentSlot createScreenSlot(Slot slot) {
-		// this is a lot cleaner IMO and more straight-forward
 		if (slot instanceof SlotGeneric generic) {
-			return new ScreenComponentSlot(generic.getSlotType(), this, slot.x - 1, slot.y - 1);
+			ISlotTexture texture = generic.getSlotType();
+			return new ScreenComponentSlot(slot, texture, generic.getIconType(), this, slot.x + texture.xOffset(), slot.y + texture.yOffset());
 		}
-		return new ScreenComponentSlot(EnumSlotType.NORMAL, this, slot.x - 1, slot.y - 1);
+		return new ScreenComponentSlot(slot, SlotType.NORMAL, IconType.NONE, this, slot.x + SlotType.NORMAL.xOffset(), slot.y + SlotType.NORMAL.yOffset());
 	}
 
 	@Override
@@ -141,8 +143,8 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 	}
 
 	@Override
-	public void drawTexturedRect(PoseStack stack, int x, int y, int u, int v, int w, int h) {
-		blit(stack, x, y, u, v, w, h);
+	public void drawTexturedRect(PoseStack stack, int x, int y, int u, int v, int w, int h, int imgW, int imgH) {
+		blit(stack, x, y, u, v, w, h, imgW, imgH);
 	}
 
 	@Override

@@ -12,9 +12,10 @@ import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.TileCoalGenerator;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressBars;
 import electrodynamics.prefab.screen.component.ScreenComponentTemperature;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.ChatFormatting;
@@ -28,15 +29,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 	public ScreenCoalGenerator(ContainerCoalGenerator container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentProgress(() -> {
+		components.add(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
 			TileCoalGenerator box = container.getHostFromIntArray();
 			if (box != null) {
 				return box.burnTime.get() / box.clientMaxBurnTime;
 			}
 			return 0;
-		}, this, 25, 25).flame());
-		components.add(new ScreenComponentTemperature(this::getTemperatureInformation, this, -ScreenComponentInfo.SIZE + 1, 2 + ScreenComponentInfo.SIZE));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
+		}, this, 25, 25));
+		components.add(new ScreenComponentTemperature(this::getTemperatureInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE));
+		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 
 	private List<FormattedCharSequence> getTemperatureInformation() {

@@ -59,6 +59,7 @@ public class InventoryUtils {
 		return items;
 	}
 
+	/*
 	public static void handleExperienceUpgrade(GenericTile tile) {
 		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
 		ComponentProcessor proc = tile.getComponent(ComponentType.Processor);
@@ -72,7 +73,7 @@ public class InventoryUtils {
 			}
 		}
 	}
-
+	*/
 	private static void drainProcXp(ComponentInventory inv, ComponentProcessor proc) {
 		for (ItemStack stack : inv.getUpgradeContents()) {
 			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype == SubtypeItemUpgrade.experience) {
