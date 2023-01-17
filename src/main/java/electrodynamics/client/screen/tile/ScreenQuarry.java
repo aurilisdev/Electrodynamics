@@ -21,6 +21,7 @@ import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -89,7 +90,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		if(complex == null) {
 			text = "N/A";
 		} else {
-			text = "" + (int) complex.speed.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK;
+			text = TextUtils.formatFluidValue(complex.speed.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
 		}
 		list.add(TextUtils.gui("quarry.wateruse", Component.literal(text).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		return list;
@@ -180,31 +181,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		return list;
 		
 	}
-	
-	/*
-	@Override
-	protected void containerTick() {
-		super.containerTick();
-		
-		boolean shouldShow = false;
-		if(menu.getIInventory() instanceof ComponentInventory inv) {
-			for(ItemStack stack : inv.getUpgradeContents()) {
-				if(stack.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype == SubtypeItemUpgrade.itemvoid) {
-					shouldShow = true;
-					break;
-				}
-			}
-		} 
 
-		for(Slot slot : menu.slots) {
-			if(slot instanceof SlotQuarryTrashcan trashcan) {
-				trashcan.isActive = shouldShow;
-			}
-		}
-		
-		
-	}
-	*/
 	@Override
 	protected void renderLabels(PoseStack stack, int x, int y) {
 		super.renderLabels(stack, x, y);
@@ -247,7 +224,6 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 	}
 	
 	private String getErrorKey(TileQuarry quarry) {
-		
 		if(!quarry.hasSeismicRelay.get()) {
 			return "quarry.norelay";
 		} else if (!quarry.hasMotorComplex.get()) {
@@ -268,7 +244,11 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 			return "quarry.noring";
 		} else if (!quarry.hasHead.get()) {
 			return "quarry.missinghead";
-		} 
+		} else if (!quarry.getFluidResavoir().hasEnoughFluid((int) (quarry.getMotorComplex().powerMultiplier.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK))) {
+			return "quarry.nocoolant";
+		} else if (!quarry.<ComponentInventory>getComponent(ComponentType.Inventory).areOutputsEmpty()) {
+			return "quarry.inventoryroom";
+		}
 		
 		return "quarry.noerrors";
 	}

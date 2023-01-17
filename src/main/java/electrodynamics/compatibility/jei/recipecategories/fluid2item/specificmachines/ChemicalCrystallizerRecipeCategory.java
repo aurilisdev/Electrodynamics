@@ -11,6 +11,7 @@ import electrodynamics.compatibility.jei.utils.gui.fluid.DefaultFluidGaugeWrappe
 import electrodynamics.compatibility.jei.utils.gui.item.BucketSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
+import electrodynamics.compatibility.jei.utils.label.TimeLabelWrapper;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
@@ -32,6 +33,7 @@ public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory
 	private static DefaultFluidGaugeWrapper IN_GAUGE = new DefaultFluidGaugeWrapper(14, 5, 5000);
 
 	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, 240);
+	private static TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 55);
 
 	private static int ANIM_TIME = 50;
 
@@ -50,7 +52,7 @@ public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory
 		setOutputSlots(guiHelper, OUT_SLOT);
 		setFluidInputs(guiHelper, IN_GAUGE);
 		setAnimatedArrows(guiHelper, ANIM_LEFT_ARROW, ANIM_RIGHT_ARROW);
-		setLabels(POWER_LABEL);
+		setLabels(POWER_LABEL, TIME_LABEL);
 	}
 
 	public ResourceLocation getUid() {

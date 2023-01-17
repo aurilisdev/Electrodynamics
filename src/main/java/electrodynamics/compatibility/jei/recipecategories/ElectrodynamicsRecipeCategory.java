@@ -128,7 +128,12 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	public void addDescriptions(PoseStack stack, ElectrodynamicsRecipe recipe) {
 		Font fontRenderer = Minecraft.getInstance().font;
 		for (GenericLabelWrapper wrap : LABELS) {
-			fontRenderer.draw(stack, wrap.getComponent(this, recipe), wrap.getXPos(), wrap.getYPos(), wrap.getColor());
+			Component text = wrap.getComponent(this, recipe);
+			if(wrap.xIsEnd()) {
+				fontRenderer.draw(stack, text, wrap.getXPos() - fontRenderer.width(text.getVisualOrderText()), wrap.getYPos(), wrap.getColor());
+			} else {
+				fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
+			}
 		}
 	}
 

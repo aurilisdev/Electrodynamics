@@ -6,7 +6,7 @@
 	],
 	"textures": {
 		"0": "electrodynamics:model/framecorner",
-		"particle": "electrodynamics:model/framecorner"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

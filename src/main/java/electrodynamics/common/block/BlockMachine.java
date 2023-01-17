@@ -45,8 +45,7 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 				if (i == 0 && j == 0) {
 					advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), Shapes.block()));
 				} else {
-					advancedsolarpanelsubnodes
-							.add(new Subnode(new BlockPos(i, 1, j), Shapes.box(0, 13.0 / 16.0, 0, 1, 1, 1)));
+					advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), Shapes.box(0, 13.0 / 16.0, 0, 1, 1, 1)));
 				}
 			}
 		}
@@ -77,9 +76,7 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-		return isValidMultiblockPlacement(state, worldIn, pos,
-				machine == SubtypeMachine.advancedsolarpanel ? advancedsolarpanelsubnodes
-						: machine == SubtypeMachine.windmill ? windmillsubnodes : new HashSet<Subnode>());
+		return isValidMultiblockPlacement(state, worldIn, pos, machine == SubtypeMachine.advancedsolarpanel ? advancedsolarpanelsubnodes : machine == SubtypeMachine.windmill ? windmillsubnodes : new HashSet<Subnode>());
 	}
 
 	@Override
@@ -116,15 +113,18 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 	@Override
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		BlockEntity tile = worldIn.getBlockEntity(pos);
-		if (!(state.getBlock() == newState.getBlock() && state.getValue(FACING) != newState.getValue(FACING))
-				&& tile instanceof TileQuarry quarry) {
-			if (quarry.hasCorners()) {
+		if (!(state.getBlock() == newState.getBlock() && state.getValue(FACING) != newState.getValue(FACING))) {
+			
+			if(tile instanceof IMultiblockTileNode multi) {
+				multi.onNodeReplaced(worldIn, pos, true);
+			}
+			if (tile instanceof TileQuarry quarry && quarry.hasCorners()) {
 				quarry.handleFramesDecay();
 			}
 		}
-		if (hasMultiBlock()) {
+		if (newState.isAir()) {
 			if (tile instanceof IMultiblockTileNode multi) {
-				multi.onNodeReplaced(worldIn, pos, true);
+				multi.onNodeReplaced(worldIn, pos, false);
 			}
 		}
 

@@ -95,10 +95,10 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-		if (tile instanceof GenericTile machine) {
+		if (tile instanceof GenericTile machine && machine != null) {
+			ItemStack stack = new ItemStack(this);
 			ComponentInventory inv = machine.getComponent(ComponentType.Inventory);
-			if (true) {
-				ItemStack stack = new ItemStack(this);
+			if (inv != null) {
 				Containers.dropContents(machine.getLevel(), machine.getBlockPos(), inv.getItems());
 				tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
 					double joules = el.getJoulesStored();
@@ -106,8 +106,9 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 						stack.getOrCreateTag().putDouble("joules", joules);
 					}
 				});
-				return Arrays.asList(stack);
 			}
+			return Arrays.asList(stack);
+			
 		}
 		return super.getDrops(state, builder);
 	}

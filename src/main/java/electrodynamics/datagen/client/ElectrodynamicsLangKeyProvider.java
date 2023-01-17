@@ -491,7 +491,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addTooltip("machine.voltage.480", "Voltage: 480 Volts");
 			addTooltip("machine.voltage.960", "Voltage: 960 Volts");
 			addTooltip("item.electric.info", "Energy Stored: %s");
-			addTooltip("item.electric.voltage", "Input/Output Voltage: %s");
+			addTooltip("item.electric.voltage", "I/O Voltage: %s");
 			addTooltip("itemcanister", "1000 mB");
 			addTooltip("railguntemp", "Temperature %s");
 			addTooltip("railgunmaxtemp", "Max Temp: %s");
@@ -602,6 +602,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("quarry.missinghead", "No Drill Head");
 			addGuiLabel("quarry.noerrors", "None");
 			addGuiLabel("quarry.miningframe", "Active Frame");
+			addGuiLabel("quarry.nocoolant", "Coolant Levels");
+			addGuiLabel("quarry.inventoryroom", "Inventory Full");
 
 			add("keycategory.electrodynamics", "Electrodynamics");
 			addKeyLabel("jetpackascend", "Ascend with Jetpack");

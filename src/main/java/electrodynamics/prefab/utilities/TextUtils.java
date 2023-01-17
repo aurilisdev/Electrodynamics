@@ -1,12 +1,14 @@
 package electrodynamics.prefab.utilities;
 
+import java.text.DecimalFormat;
+
 import electrodynamics.api.References;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 public class TextUtils {
-	
+
 	public static final String GUI_BASE = "gui";
 	public static final String TOOLTIP_BASE = "tooltip";
 	public static final String JEI_BASE = "jei";
@@ -16,10 +18,12 @@ public class TextUtils {
 	public static final String JEI_INFO_FLUID = "info.fluid";
 	public static final String BLOCK_BASE = "block";
 	
+	public static final DecimalFormat FORMATTER = new DecimalFormat("0.0##");
+
 	public static MutableComponent tooltip(String key, Object... additional) {
 		return translated(TOOLTIP_BASE, key, additional);
 	}
-	
+
 	public static MutableComponent guidebook(String key, Object... additional) {
 		return translated(GUIDEBOOK_BASE, key, additional);
 	}
@@ -27,22 +31,23 @@ public class TextUtils {
 	public static MutableComponent gui(String key, Object... additional) {
 		return translated(GUI_BASE, key, additional);
 	}
-	public static MutableComponent chatMessage(String key, Object...additional) {
+
+	public static MutableComponent chatMessage(String key, Object... additional) {
 		return translated(MESSAGE_BASE, key, additional);
 	}
-	
+
 	public static MutableComponent jeiTranslated(String key, Object... additional) {
 		return Component.translatable(JEI_BASE + "." + key, additional);
 	}
-	
+
 	public static MutableComponent jeiItemTranslated(String key, Object... additional) {
 		return jeiTranslated(JEI_INFO_ITEM + "." + key, additional);
 	}
-	
+
 	public static MutableComponent jeiFluidTranslated(String key, Object... additional) {
 		return jeiTranslated(JEI_INFO_FLUID + "." + key, additional);
 	}
-	
+
 	public static MutableComponent block(String key, Object... additional) {
 		return translated(BLOCK_BASE, key, additional);
 	}
@@ -62,5 +67,29 @@ public class TextUtils {
 	public static boolean translationExists(String base, String key) {
 		return I18n.exists(base + "." + References.ID + "." + key);
 	}
+
+	public static String formatFluidValue(int fluidLevel) {
+		double fluidDouble = fluidLevel;
+		if(fluidLevel >= 1000) {
+			return FORMATTER.format(fluidDouble / 1000.0) + " B";
+		} else if (fluidLevel >= 1000000) {
+			return FORMATTER.format(fluidDouble / 1000000) + " kB";
+		} else if (fluidLevel >= 1000000000) {
+			return FORMATTER.format(fluidDouble / 1000000000) + " MB";
+		}
+		
+		return fluidLevel + " mB";
+	}
+
+	public static String formatTicksToTimeValue(int ticks) {
+		double time = ticks / 20;
+		if (time > 0.1) {
+			return FORMATTER.format(time) + " s";
+		}
+
+		time = time * 1000;
+		return FORMATTER.format(time) + " ms";
+	}
+
 
 }

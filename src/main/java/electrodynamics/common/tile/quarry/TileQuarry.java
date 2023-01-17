@@ -307,15 +307,22 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		if (shouldFail) {
 			return;
 		}
+		
+		if (!inv.areOutputsEmpty() || !resavoir.hasEnoughFluid(fluidUse) || !hasHead.get()) {
+			running.set(false);
+			return;
+		}
 
 		running.set(true);
 		progressCounter.set(progressCounter.get() + 1);
 
-		// if there is no room for mined blocks, the fluid resavoir doesn't have enough
-		// fluid, or there isn't a drill head, return
-		if (!inv.areOutputsEmpty() || !resavoir.hasEnoughFluid(fluidUse) || !hasHead.get() || progressCounter.get() < speed.get()) {
+		if(progressCounter.get() < speed.get()) {
 			return;
 		}
+		
+		// if there is no room for mined blocks, the fluid resavoir doesn't have enough
+		// fluid, or there isn't a drill head, return
+		
 
 		progressCounter.set(0);
 
@@ -1180,16 +1187,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	@Nullable
 	public TileCoolantResavoir getFluidResavoir() {
-		ComponentDirection quarryDir = getComponent(ComponentType.Direction);
-		Direction facing = quarryDir.getDirection().getOpposite();
-		BlockEntity entity = level.getBlockEntity(getBlockPos().relative(facing.getClockWise()));
+		BlockEntity entity = level.getBlockEntity(getBlockPos().offset(0, 1, 0));
 		if (entity != null && entity instanceof TileCoolantResavoir resavoir) {
 			return resavoir;
 		}
-		entity = level.getBlockEntity(getBlockPos().relative(facing.getCounterClockWise()));
-		if (entity != null && entity instanceof TileCoolantResavoir resavoir) {
-			return resavoir;
-		}
+
 		return null;
 	}
 

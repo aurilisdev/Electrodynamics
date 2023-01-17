@@ -11,6 +11,7 @@ import electrodynamics.compatibility.jei.utils.gui.item.BigItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
+import electrodynamics.compatibility.jei.utils.label.TimeLabelWrapper;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
@@ -31,6 +32,7 @@ public class EnergizedAlloyerRecipeCategory extends Item2ItemRecipeCategory<Ener
 
 	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 49, 480);
 	private static BiproductPercentWrapper ITEM_LABEL = new BiproductPercentWrapper(100, 40, false);
+	private static TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 49);
 
 	private static int ANIM_TIME = 50;
 
@@ -49,7 +51,7 @@ public class EnergizedAlloyerRecipeCategory extends Item2ItemRecipeCategory<Ener
 		setInputSlots(guiHelper, INPUT_SLOT_1, INPUT_SLOT_2);
 		setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);
 		setAnimatedArrows(guiHelper, ANIM_ARROW);
-		setLabels(POWER_LABEL, ITEM_LABEL);
+		setLabels(POWER_LABEL, ITEM_LABEL, TIME_LABEL);
 	}
 
 	public ResourceLocation getUid() {

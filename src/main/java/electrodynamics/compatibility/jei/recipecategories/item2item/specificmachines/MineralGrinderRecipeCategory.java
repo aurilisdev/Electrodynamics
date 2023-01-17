@@ -11,6 +11,7 @@ import electrodynamics.compatibility.jei.utils.gui.item.BigItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
+import electrodynamics.compatibility.jei.utils.label.TimeLabelWrapper;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
@@ -30,6 +31,7 @@ public class MineralGrinderRecipeCategory extends Item2ItemRecipeCategory<Minera
 
 	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 48, 120);
 	private static BiproductPercentWrapper ITEM_LABEL = new BiproductPercentWrapper(100, 40, false);
+	private static TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 48);
 
 	private static int ANIM_TIME = 50;
 
@@ -48,7 +50,7 @@ public class MineralGrinderRecipeCategory extends Item2ItemRecipeCategory<Minera
 		setInputSlots(guiHelper, INPUT_SLOT);
 		setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);
 		setAnimatedArrows(guiHelper, ANIM_ARROW);
-		setLabels(POWER_LABEL, ITEM_LABEL);
+		setLabels(POWER_LABEL, ITEM_LABEL, TIME_LABEL);
 	}
 
 	public ResourceLocation getUid() {
