@@ -65,7 +65,7 @@ public class ComponentProcessor implements Component {
 		this.processorNumber = processorNumber;
 		this.totalProcessors = totalProcessors;
 		operatingSpeed = holder.property(new Property<Double>(PropertyType.Double, "operatingSpeed" + processorNumber, 1.0));
-		operatingTicks = holder.property(new Property<Double>(PropertyType.Double, "operatingTicks" + processorNumber, 0.0));
+		operatingTicks = holder.property(new Property<Double>(PropertyType.Double, "operatingTicks" + processorNumber, 0.0)).noSave();
 		usage = holder.property(new Property<Double>(PropertyType.Double, "usage", 0.0));
 		requiredTicks = holder.property(new Property<Double>(PropertyType.Double, "requiredTicks" + processorNumber, 0.0));
 		if (!holder.hasComponent(ComponentType.Inventory)) {

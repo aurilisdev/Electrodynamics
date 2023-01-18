@@ -87,7 +87,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				}
 				stack.pushPose();
 				stack.translate(vec.x, vec.y, vec.z);
-				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, 255);
+				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
 				stack.popPose();
 			});
 			data.darkParts().forEach(pair -> {
@@ -98,7 +98,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				}
 				stack.pushPose();
 				stack.translate(vec.x, vec.y, vec.z);
-				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsFrameDark[0], colorsFrameDark[1], colorsFrameDark[2], colorsFrameDark[3], u0FrameDark, v0FrameDark, u1FrameDark, v1FrameDark, 255);
+				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsFrameDark[0], colorsFrameDark[1], colorsFrameDark[2], colorsFrameDark[3], u0FrameDark, v0FrameDark, u1FrameDark, v1FrameDark, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
 				stack.popPose();
 			});
 			data.titaniumParts().forEach(pair -> {
@@ -109,7 +109,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				}
 				stack.pushPose();
 				stack.translate(vec.x, vec.y, vec.z);
-				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, 255);
+				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
 				stack.popPose();
 			});
 			if (data.headType() != null) {
@@ -130,7 +130,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				if(data.running()) {
 					float speed = (float) Math.max(data.speed(), 5.0);
 					float progress = data.progress();
-					if(speed == 4.0) {
+					if(speed >= 4.0) {
 						progress = Math.abs(minecraft.level.getGameTime() % 5);
 					}
 					float degrees = 360.0F * (progress / speed);
@@ -138,7 +138,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 					stack.mulPose(new Quaternion(0, degrees, 0, true));
 					stack.translate(-vec.remX - 0.5, 0, -vec.remZ - 0.5);
 				}
-				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsHead[0], colorsHead[1], colorsHead[2], colorsHead[3], u0Head, v0Head, u1Head, v1Head, 255);
+				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsHead[0], colorsHead[1], colorsHead[2], colorsHead[3], u0Head, v0Head, u1Head, v1Head, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
 				stack.popPose();
 			}
 			

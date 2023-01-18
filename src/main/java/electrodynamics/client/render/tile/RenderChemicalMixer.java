@@ -39,7 +39,16 @@ public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer>
 		matrixStackIn.pushPose();
 		ibakedmodel = getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
 		matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
-		matrixStackIn.mulPose(new Quaternion(0, (tileEntityIn.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0 ? partialTicks : 0) * 10, 0, true));
+		
+		ComponentProcessor proc = tileEntityIn.getComponent(ComponentType.Processor);
+		
+		float degrees = 0.0F;
+		
+		if(proc.operatingTicks.get() > 0) {
+			degrees = proc.operatingTicks.get().floatValue() / Math.max(proc.requiredTicks.get().floatValue(), 1.0F) * 360.0F * proc.operatingSpeed.get().floatValue() * 2.0F;
+		}
+		
+		matrixStackIn.mulPose(new Quaternion(0, degrees, 0, true));
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
 		
