@@ -15,7 +15,6 @@ import electrodynamics.client.guidebook.utils.ImageWrapperObject;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Module;
 import electrodynamics.prefab.utilities.TextUtils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 
 public class ModuleElectrodynamics extends Module {
@@ -47,7 +46,7 @@ public class ModuleElectrodynamics extends Module {
 
 	@Override
 	public MutableComponent getTitle() {
-		return TextUtils.gui(References.ID);
+		return TextUtils.guidebook(References.ID);
 	}
 
 }

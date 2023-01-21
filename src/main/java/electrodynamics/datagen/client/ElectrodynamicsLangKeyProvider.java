@@ -39,8 +39,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
-	private Locale locale;
-	private String modID;
+	public final Locale locale;
+	public final String modID;
 
 	public ElectrodynamicsLangKeyProvider(DataGenerator gen, Locale locale, String modID) {
 		super(gen, modID, locale.toString());
