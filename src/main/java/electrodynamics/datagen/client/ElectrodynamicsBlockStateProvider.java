@@ -32,8 +32,15 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 
+	public final String modID;
+	
+	public ElectrodynamicsBlockStateProvider(DataGenerator gen, ExistingFileHelper exFileHelper, String modID) {
+		super(gen, modID, exFileHelper);
+		this.modID = modID;
+	}
+	
 	public ElectrodynamicsBlockStateProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
-		super(gen, References.ID, exFileHelper);
+		this(gen, exFileHelper, References.ID);
 	}
 
 	@Override
@@ -358,7 +365,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	}
 
 	*/
-	private void wire(Block block, ModelFile none, ModelFile side, boolean registerItem) {
+	public void wire(Block block, ModelFile none, ModelFile side, boolean registerItem) {
 		getMultipartBuilder(block)
 			.part().modelFile(none).addModel().useOr()
 				.condition(EnumConnectType.UP, EnumConnectType.NONE)
@@ -386,15 +393,15 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	}
 	
 
-	private BlockModelBuilder getObjModel(String name, String modelLoc) {
+	public BlockModelBuilder getObjModel(String name, String modelLoc) {
 		return models().withExistingParent("block/" + name, "cube").customLoader(ObjModelBuilder::begin).flipV(true)
 				.modelLocation(modLoc("models/" + modelLoc + ".obj")).end();
 	}
 
-	private BlockModelBuilder blockTopBottom(RegistryObject<Block> block, String top, String bottom, String side) {
+	public BlockModelBuilder blockTopBottom(RegistryObject<Block> block, String top, String bottom, String side) {
 		return models().cubeBottomTop(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(),
-				new ResourceLocation(References.ID, side), new ResourceLocation(References.ID, bottom),
-				new ResourceLocation(References.ID, top));
+				new ResourceLocation(modID, side), new ResourceLocation(modID, bottom),
+				new ResourceLocation(modID, top));
 	}
 	
 	public ItemModelBuilder blockItem(Block block, ModelFile model) {

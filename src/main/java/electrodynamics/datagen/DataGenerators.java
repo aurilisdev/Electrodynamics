@@ -5,6 +5,7 @@ import electrodynamics.datagen.client.ElectrodynamicsBlockModelsProvider;
 import electrodynamics.datagen.client.ElectrodynamicsBlockStateProvider;
 import electrodynamics.datagen.client.ElectrodynamicsItemModelsProvider;
 import electrodynamics.datagen.client.ElectrodynamicsLangKeyProvider;
+import electrodynamics.datagen.client.ElectrodynamicsLangKeyProvider.Locale;
 import electrodynamics.datagen.client.ElectrodynamicsSoundProvider;
 import electrodynamics.datagen.server.CoalGeneratorFuelSourceProvider;
 import electrodynamics.datagen.server.CombustionChamberFuelSourceProvider;
@@ -41,7 +42,7 @@ public class DataGenerators {
 			generator.addProvider(true, new ElectrodynamicsBlockStateProvider(generator, event.getExistingFileHelper()));
 			generator.addProvider(true, new ElectrodynamicsBlockModelsProvider(generator, event.getExistingFileHelper()));
 			generator.addProvider(true, new ElectrodynamicsItemModelsProvider(generator, event.getExistingFileHelper()));
-			generator.addProvider(true, new ElectrodynamicsLangKeyProvider(generator, "en_us"));
+			generator.addProvider(true, new ElectrodynamicsLangKeyProvider(generator, Locale.EN_US));
 			generator.addProvider(true, new ElectrodynamicsSoundProvider(generator, event.getExistingFileHelper()));
 		}
 	}

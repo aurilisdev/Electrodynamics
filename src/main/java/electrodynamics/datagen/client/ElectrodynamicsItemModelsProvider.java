@@ -41,8 +41,15 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 
+	public final String modID;
+	
+	public ElectrodynamicsItemModelsProvider(DataGenerator generator, ExistingFileHelper existingFileHelper, String modID) {
+		super(generator, modID, existingFileHelper);
+		this.modID = modID;
+	}
+	
 	public ElectrodynamicsItemModelsProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-		super(generator, References.ID, existingFileHelper);
+		this(generator, existingFileHelper, References.ID);
 	}
 
 	@Override

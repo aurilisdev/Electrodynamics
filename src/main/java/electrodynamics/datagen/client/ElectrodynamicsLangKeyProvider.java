@@ -39,16 +39,16 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
-	private String locale;
+	private Locale locale;
 	private String modID;
 
-	public ElectrodynamicsLangKeyProvider(DataGenerator gen, String locale, String modID) {
-		super(gen, modID, locale);
+	public ElectrodynamicsLangKeyProvider(DataGenerator gen, Locale locale, String modID) {
+		super(gen, modID, locale.toString());
 		this.locale = locale;
 		this.modID = modID;
 	}
 	
-	public ElectrodynamicsLangKeyProvider(DataGenerator gen, String local) {
+	public ElectrodynamicsLangKeyProvider(DataGenerator gen, Locale local) {
 		this(gen, local, References.ID);
 	}
 
@@ -56,7 +56,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 	protected void addTranslations() {
 
 		switch (locale) {
-		case "en_us":
+		case EN_US:
 		default:
 
 			add("itemGroup.itemgroup" + References.ID, "Electrodynamics");
@@ -1516,6 +1516,15 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 	public void addGuidebook(String key, String translation) {
 		add("guidebook." + modID + "." + key, translation);
+	}
+	
+	public static enum Locale {
+		EN_US;
+		
+		@Override
+		public String toString() {
+			return super.toString().toLowerCase();
+		}
 	}
 
 }
