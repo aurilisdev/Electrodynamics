@@ -205,31 +205,31 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 
 	}
 
-	private void layeredItem(RegistryObject<Item> item, Parent parent, ResourceLocation... textures) {
+	public void layeredItem(RegistryObject<Item> item, Parent parent, ResourceLocation... textures) {
 		layeredItem(name(item), parent, textures);
 	}
 
-	private void layeredItem(Item item, Parent parent, ResourceLocation... textures) {
+	public void layeredItem(Item item, Parent parent, ResourceLocation... textures) {
 		layeredItem(name(item), parent, textures);
 	}
 
-	private void layeredItem(String name, Parent parent, ResourceLocation... textures) {
+	public void layeredItem(String name, Parent parent, ResourceLocation... textures) {
 		layeredBuilder(name, parent, textures);
 	}
 
-	private void toggleableItem(RegistryObject<Item> item, String toggle, Parent parentOff, Parent parentOn,
+	public void toggleableItem(RegistryObject<Item> item, String toggle, Parent parentOff, Parent parentOn,
 			ResourceLocation[] offText, ResourceLocation[] onText) {
 		toggleableItem(name(item), toggle, parentOff, parentOn, offText, onText);
 	}
 
-	private void toggleableItem(String name, String toggle, Parent parentOff, Parent parentOn,
+	public void toggleableItem(String name, String toggle, Parent parentOff, Parent parentOn,
 			ResourceLocation[] offText, ResourceLocation[] onText) {
 		ItemModelBuilder off = layeredBuilder(name, parentOff, offText);
 		ItemModelBuilder on = layeredBuilder(name + toggle, parentOn, onText);
 		off.override().predicate(ClientRegister.ON, 1.0F).model(on).end();
 	}
 
-	private ItemModelBuilder layeredBuilder(String name, Parent parent, ResourceLocation... textures) {
+	public ItemModelBuilder layeredBuilder(String name, Parent parent, ResourceLocation... textures) {
 		if (textures == null || textures.length == 0) {
 			throw new UnsupportedOperationException("You need to provide at least one texture");
 		}
@@ -242,12 +242,12 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		return builder;
 	}
 
-	private DynamicFluidContainerModelBuilder<ItemModelBuilder> getBucketModel(RegistryObject<Item> item,
+	public DynamicFluidContainerModelBuilder<ItemModelBuilder> getBucketModel(RegistryObject<Item> item,
 			Parent parent) {
 		return getBucketModel(name(item), parent);
 	}
 
-	private DynamicFluidContainerModelBuilder<ItemModelBuilder> getBucketModel(String name, Parent parent) {
+	public DynamicFluidContainerModelBuilder<ItemModelBuilder> getBucketModel(String name, Parent parent) {
 		return withExistingParent(name, parent.loc).customLoader(DynamicFluidContainerModelBuilder::begin);
 	}
 
@@ -255,39 +255,39 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		return getBuilder(key(block).getPath()).parent(model);
 	}
 
-	private ResourceLocation key(Block block) {
+	public ResourceLocation key(Block block) {
 		return ForgeRegistries.BLOCKS.getKey(block);
 	}
 
-	private ResourceLocation itemLoc(String texture) {
+	public ResourceLocation itemLoc(String texture) {
 		return modLoc("item/" + texture);
 	}
 
-	private ResourceLocation blockLoc(String texture) {
+	public ResourceLocation blockLoc(String texture) {
 		return modLoc("block/" + texture);
 	}
 
-	private String name(RegistryObject<Item> item) {
+	public String name(RegistryObject<Item> item) {
 		return name(item.get());
 	}
 
-	private String name(Item item) {
+	public String name(Item item) {
 		return ForgeRegistries.ITEMS.getKey(item).getPath();
 	}
 
-	private ExistingModelFile existingBlock(RegistryObject<Block> block) {
+	public ExistingModelFile existingBlock(RegistryObject<Block> block) {
 		return existingBlock(block.getId());
 	}
 
-	private ExistingModelFile existingBlock(Block block) {
+	public ExistingModelFile existingBlock(Block block) {
 		return existingBlock(ForgeRegistries.BLOCKS.getKey(block));
 	}
 
-	private ExistingModelFile existingBlock(ResourceLocation loc) {
+	public ExistingModelFile existingBlock(ResourceLocation loc) {
 		return getExistingFile(loc);
 	}
 
-	private static enum Parent {
+	public static enum Parent {
 
 		GENERATED(), HANDHELD(), FORGE_DEFAULT("forge", "item/default");
 

@@ -25,11 +25,15 @@ import net.minecraft.data.recipes.RecipeProvider;
 
 public class ElectrodynamicsRecipeProvider extends RecipeProvider {
 
-	private static final List<AbstractRecipeGenerator> GENERATORS = new ArrayList<>();
+	public final List<AbstractRecipeGenerator> GENERATORS = new ArrayList<>();
 	
 	
 	public ElectrodynamicsRecipeProvider(DataGenerator gen) {
 		super(gen);
+		addRecipes();
+	}
+	
+	public void addRecipes() {
 		GENERATORS.add(new CraftingTable());
 		GENERATORS.add(new Smelting());
 		GENERATORS.add(new ElectrolyticSeparator());

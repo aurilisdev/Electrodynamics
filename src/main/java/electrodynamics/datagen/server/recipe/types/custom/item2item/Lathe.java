@@ -19,7 +19,17 @@ public class Lathe extends AbstractRecipeGenerator {
 
 	public static int LATHE_REQUIRED_TICKS = 200;
 	public static double LATHE_USAGE_PER_TICK = 350.0;
-	
+
+	private final String modID;
+
+	public Lathe(String modID) {
+		this.modID = modID;
+	}
+
+	public Lathe() {
+		this(References.ID);
+	}
+
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
 
@@ -58,7 +68,7 @@ public class Lathe extends AbstractRecipeGenerator {
 	}
 
 	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.LATHE_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, References.ID, "lathe/" + name);
+		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.LATHE_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, modID, "lathe/" + name);
 	}
 
 }

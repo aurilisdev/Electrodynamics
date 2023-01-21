@@ -22,6 +22,16 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 	public static int REINFORCEDALLOYER_REQUIRED_TICKS = 50;
 	public static double REINFORCEDALLOYER_USAGE_PER_TICK = 50.0;
 
+	private final String modID;
+
+	public ReinforcedAlloyer(String modID) {
+		this.modID = modID;
+	}
+
+	public ReinforcedAlloyer() {
+		this(References.ID);
+	}
+	
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
 
@@ -144,7 +154,7 @@ public class ReinforcedAlloyer extends AbstractRecipeGenerator {
 	}
 
 	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, References.ID, "reinforced_alloyer/" + name);
+		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, modID, "reinforced_alloyer/" + name);
 	}
 
 }

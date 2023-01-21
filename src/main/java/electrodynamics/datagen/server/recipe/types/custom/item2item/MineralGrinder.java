@@ -25,6 +25,16 @@ public class MineralGrinder extends AbstractRecipeGenerator {
 	public static double MINERALGRINDER_USAGE_PER_TICK = 350.0;
 	public static int MINERALGRINDER_REQUIRED_TICKS = 200;
 
+	private final String modID;
+
+	public MineralGrinder(String modID) {
+		this.modID = modID;
+	}
+
+	public MineralGrinder() {
+		this(References.ID);
+	}
+	
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
 
@@ -278,7 +288,7 @@ public class MineralGrinder extends AbstractRecipeGenerator {
 	}
 
 	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.MINERAL_GRINDER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, References.ID, "mineral_grinder/" + name);
+		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.MINERAL_GRINDER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, modID, "mineral_grinder/" + name);
 	}
 
 }

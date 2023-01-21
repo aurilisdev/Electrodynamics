@@ -21,7 +21,17 @@ public class EnergizedAlloyer extends AbstractRecipeGenerator {
 
 	public static int ENERGIZEDALLOYER_REQUIRED_TICKS = 50;
 	public static double ENERGIZEDALLOYER_USAGE_PER_TICK = 50.0;
-	
+
+	private final String modID;
+
+	public EnergizedAlloyer(String modID) {
+		this.modID = modID;
+	}
+
+	public EnergizedAlloyer() {
+		this(References.ID);
+	}
+
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
 
@@ -96,7 +106,7 @@ public class EnergizedAlloyer extends AbstractRecipeGenerator {
 	}
 
 	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, References.ID, "energized_alloyer/" + name);
+		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, modID, "energized_alloyer/" + name);
 	}
 
 }

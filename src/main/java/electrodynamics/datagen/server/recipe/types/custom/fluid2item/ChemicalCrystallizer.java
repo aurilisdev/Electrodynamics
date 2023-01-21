@@ -19,6 +19,16 @@ public class ChemicalCrystallizer extends AbstractRecipeGenerator {
 
 	public static double CHEMICALCRYSTALLIZER_USAGE_PER_TICK = 800.0;
 	public static int CHEMICALCRYSTALLIZER_REQUIRED_TICKS = 200;
+	
+	private final String modID;
+	
+	public ChemicalCrystallizer(String modID) {
+		this.modID = modID;
+	}
+	
+	public ChemicalCrystallizer() {
+		this(References.ID);
+	}
 
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
@@ -54,7 +64,7 @@ public class ChemicalCrystallizer extends AbstractRecipeGenerator {
 	}
 
 	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_2_ITEM, References.ID, "chemical_crystallizer/" + name);
+		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_2_ITEM, modID, "chemical_crystallizer/" + name);
 	}
 
 }

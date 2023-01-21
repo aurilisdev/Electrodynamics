@@ -24,6 +24,16 @@ public class OxidationFurnace extends AbstractRecipeGenerator {
 	public static double OXIDATIONFURNACE_USAGE_PER_TICK = 350.0;
 	public static int OXIDATIONFURNACE_REQUIRED_TICKS = 200;
 
+	private final String modID;
+
+	public OxidationFurnace(String modID) {
+		this.modID = modID;
+	}
+
+	public OxidationFurnace() {
+		this(References.ID);
+	}
+	
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
 
@@ -132,7 +142,7 @@ public class OxidationFurnace extends AbstractRecipeGenerator {
 	}
 
 	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, References.ID, "oxidation_furnace/" + name);
+		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, modID, "oxidation_furnace/" + name);
 	}
 
 }

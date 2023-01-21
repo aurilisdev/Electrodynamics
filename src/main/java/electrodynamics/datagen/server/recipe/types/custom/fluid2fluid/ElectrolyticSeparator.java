@@ -17,6 +17,16 @@ public class ElectrolyticSeparator extends AbstractRecipeGenerator {
 
 	public static int ELECTROLYTICSEPARATOR_REQUIRED_TICKS = 200;
 	public static double ELECTROLYTICSEPARATOR_USAGE_PER_TICK = 250.0;
+	
+	private final String modID;
+	
+	public ElectrolyticSeparator(String modID) {
+		this.modID = modID;
+	}
+	
+	public ElectrolyticSeparator() {
+		this(References.ID);
+	}
 
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
@@ -32,8 +42,8 @@ public class ElectrolyticSeparator extends AbstractRecipeGenerator {
 
 	}
 
-	private FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeFluidOutput.of(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPARATOR_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_2_FLUID, References.ID, "electrolytic_separator/" + name);
+	public FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name) {
+		return FinishedRecipeFluidOutput.of(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPARATOR_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_2_FLUID, modID, "electrolytic_separator/" + name);
 	}
 
 }

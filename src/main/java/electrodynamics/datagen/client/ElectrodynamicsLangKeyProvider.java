@@ -40,10 +40,16 @@ import net.minecraftforge.registries.RegistryObject;
 public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 	private String locale;
+	private String modID;
 
-	public ElectrodynamicsLangKeyProvider(DataGenerator gen, String locale) {
-		super(gen, References.ID, locale);
+	public ElectrodynamicsLangKeyProvider(DataGenerator gen, String locale, String modID) {
+		super(gen, modID, locale);
 		this.locale = locale;
+		this.modID = modID;
+	}
+	
+	public ElectrodynamicsLangKeyProvider(DataGenerator gen, String local) {
+		this(gen, local, References.ID);
 	}
 
 	@Override
@@ -1440,76 +1446,76 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 	}
 
-	private void addItem(RegistryObject<Item> item, String translation) {
+	public void addItem(RegistryObject<Item> item, String translation) {
 		add(item.get(), translation);
 	}
 
-	private void addItem(Item item, String translation) {
+	public void addItem(Item item, String translation) {
 		add(item, translation);
 	}
 
-	private void addBlock(RegistryObject<Block> block, String translation) {
+	public void addBlock(RegistryObject<Block> block, String translation) {
 		add(block.get(), translation);
 	}
 
-	private void addBlock(Block block, String translation) {
+	public void addBlock(Block block, String translation) {
 		add(block, translation);
 	}
 
-	private void addTooltip(String key, String translation) {
-		add("tooltip." + References.ID + "." + key, translation);
+	public void addTooltip(String key, String translation) {
+		add("tooltip." + modID + "." + key, translation);
 	}
 
-	private void addFluid(Fluid fluid, String translation) {
-		add("fluid." + References.ID + "." + ForgeRegistries.FLUIDS.getKey(fluid).getPath(), translation);
+	public void addFluid(Fluid fluid, String translation) {
+		add("fluid." + modID + "." + ForgeRegistries.FLUIDS.getKey(fluid).getPath(), translation);
 	}
 
-	private void addContainer(SubtypeMachine key, String translation) {
+	public void addContainer(SubtypeMachine key, String translation) {
 		addContainer(key.name(), translation);
 	}
 
-	private void addContainer(String key, String translation) {
+	public void addContainer(String key, String translation) {
 		add("container." + key, translation);
 	}
 
-	private void addCommand(String key, String translation) {
-		add("command." + References.ID + "." + key, translation);
+	public void addCommand(String key, String translation) {
+		add("command." + modID + "." + key, translation);
 	}
 
-	private void addSubtitle(String key, String translation) {
-		add("subtitles." + References.ID + "." + key, translation);
+	public void addSubtitle(String key, String translation) {
+		add("subtitles." + modID + "." + key, translation);
 	}
 
-	private void addSubtitle(RegistryObject<SoundEvent> sound, String translation) {
+	public void addSubtitle(RegistryObject<SoundEvent> sound, String translation) {
 		addSubtitle(sound.getId().getPath(), translation);
 	}
 
-	private void addGuiLabel(String key, String translation) {
-		add("gui." + References.ID + "." + key, translation);
+	public void addGuiLabel(String key, String translation) {
+		add("gui." + modID + "." + key, translation);
 	}
 
-	private void addDimension(String key, String translation) {
-		add("dimension." + References.ID + "." + key, translation);
+	public void addDimension(String key, String translation) {
+		add("dimension." + modID + "." + key, translation);
 	}
 
-	private void addKeyLabel(String key, String translation) {
-		add("key." + References.ID + "." + key, translation);
+	public void addKeyLabel(String key, String translation) {
+		add("key." + modID + "." + key, translation);
 	}
 
-	private void addJei(String key, String translation) {
+	public void addJei(String key, String translation) {
 		add("jei." + key, translation);
 	}
 
-	private void addDamageSource(String key, String translation) {
+	public void addDamageSource(String key, String translation) {
 		add("death.attack." + key, translation);
 	}
 
-	private void addChatMessage(String key, String translation) {
-		add("chat." + References.ID + "." + key, translation);
+	public void addChatMessage(String key, String translation) {
+		add("chat." + modID + "." + key, translation);
 	}
 
-	private void addGuidebook(String key, String translation) {
-		add("guidebook." + References.ID + "." + key, translation);
+	public void addGuidebook(String key, String translation) {
+		add("guidebook." + modID + "." + key, translation);
 	}
 
 }

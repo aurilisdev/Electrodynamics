@@ -19,7 +19,17 @@ public class FermentationPlant extends AbstractRecipeGenerator {
 
 	public static double FERMENTATIONPLANT_USAGE_PER_TICK = 20.0;
 	public static int FERMENTATIONPLANT_REQUIRED_TICKS = 2000;
-	
+
+	private final String modID;
+
+	public FermentationPlant(String modID) {
+		this.modID = modID;
+	}
+
+	public FermentationPlant() {
+		this(References.ID);
+	}
+
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
 
@@ -90,8 +100,7 @@ public class FermentationPlant extends AbstractRecipeGenerator {
 	}
 
 	private FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeFluidOutput.of(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_SERIALIZER.get(), stack, xp, ticks, usagePerTick)
-				.name(RecipeCategory.FLUID_ITEM_2_FLUID, References.ID, "fermentation_plant/" + name);
+		return FinishedRecipeFluidOutput.of(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_ITEM_2_FLUID, modID, "fermentation_plant/" + name);
 	}
 
 }

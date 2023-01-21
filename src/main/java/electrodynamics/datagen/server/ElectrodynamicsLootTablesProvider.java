@@ -168,31 +168,31 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 
 	}
 
-	private <T extends GenericTile> void addITable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
+	public <T extends GenericTile> void addITable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
 		lootTables.put(block, itemTable(name(block), block, tilereg.get()));
 	}
 
-	private <T extends GenericTile> void addETable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
+	public <T extends GenericTile> void addETable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
 
 		lootTables.put(block, energyTable(name(block), block, tilereg.get()));
 	}
 
-	private <T extends GenericTile> void addFTable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
+	public <T extends GenericTile> void addFTable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
 
 		lootTables.put(block, fluidTable(name(block), block, tilereg.get()));
 	}
 
-	private <T extends GenericTile> void addIETable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
+	public <T extends GenericTile> void addIETable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
 
 		lootTables.put(block, itemEnergyTable(name(block), block, tilereg.get()));
 	}
 
-	private <T extends GenericTile> void addIFTable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
+	public <T extends GenericTile> void addIFTable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
 
 		lootTables.put(block, itemFluidTable(name(block), block, tilereg.get()));
 	}
 
-	private <T extends GenericTile> void addIEFTable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
+	public <T extends GenericTile> void addIEFTable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
 
 		lootTables.put(block, itemEnergyFluidTable(name(block), block, tilereg.get()));
 	}
@@ -203,29 +203,29 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 	 * @author SeaRobber69
 	 * @param reg The block that will be added
 	 */
-	private void addSilkTouchOnlyTable(RegistryObject<Block> reg) {
+	public void addSilkTouchOnlyTable(RegistryObject<Block> reg) {
 		Block block = reg.get();
 		lootTables.put(block, createSilkTouchOnlyTable(name(block), block));
 	}
 
-	private void addFortuneAndSilkTouchTable(RegistryObject<Block> reg, Item nonSilk, int minDrop, int maxDrop) {
+	public void addFortuneAndSilkTouchTable(RegistryObject<Block> reg, Item nonSilk, int minDrop, int maxDrop) {
 		addFortuneAndSilkTouchTable(reg.get(), nonSilk, minDrop, maxDrop);
 	}
 
-	private void addFortuneAndSilkTouchTable(Block block, Item nonSilk, int minDrop, int maxDrop) {
+	public void addFortuneAndSilkTouchTable(Block block, Item nonSilk, int minDrop, int maxDrop) {
 		lootTables.put(block, createSilkTouchAndFortuneTable(name(block), block, nonSilk, minDrop, maxDrop));
 	}
 
-	private void addSimpleBlock(RegistryObject<Block> reg) {
+	public void addSimpleBlock(RegistryObject<Block> reg) {
 		addSimpleBlock(reg.get());
 	}
 
-	private void addSimpleBlock(Block block) {
+	public void addSimpleBlock(Block block) {
 		;
 		lootTables.put(block, createSimpleBlockTable(name(block), block));
 	}
 
-	private String name(Block block) {
+	public String name(Block block) {
 		return ForgeRegistries.BLOCKS.getKey(block).getPath();
 	}
 

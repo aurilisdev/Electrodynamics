@@ -209,7 +209,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		
 	}
 	
-	private ItemModelBuilder simpleBlock(Block block, ModelFile file, boolean registerItem) {
+	public ItemModelBuilder simpleBlock(Block block, ModelFile file, boolean registerItem) {
 		simpleBlock(block, file);
 		if (registerItem) {
 			return blockItem(block, file);
@@ -217,19 +217,19 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return null;
 	}
 
-	private ItemModelBuilder simpleBlock(RegistryObject<Block> block, ResourceLocation texture, boolean registerItem) {
+	public ItemModelBuilder simpleBlock(RegistryObject<Block> block, ResourceLocation texture, boolean registerItem) {
 		return simpleBlock(block.get(), texture, registerItem);
 	}
 	
-	private ItemModelBuilder simpleBlock(Block block, ResourceLocation texture, boolean registerItem) {
+	public ItemModelBuilder simpleBlock(Block block, ResourceLocation texture, boolean registerItem) {
 		return simpleBlock(block, models().cubeAll(name(block), texture), registerItem);
 	}
 	
-	private ItemModelBuilder glassBlock(RegistryObject<Block> block, ResourceLocation texture, boolean registerItem) {
+	public ItemModelBuilder glassBlock(RegistryObject<Block> block, ResourceLocation texture, boolean registerItem) {
 		return glassBlock(block.get(), texture, registerItem);
 	}
 
-	private ItemModelBuilder glassBlock(Block block, ResourceLocation texture, boolean registerItem) {
+	public ItemModelBuilder glassBlock(Block block, ResourceLocation texture, boolean registerItem) {
 		BlockModelBuilder builder = models().cubeAll(name(block), texture).renderType("cutout");
 		getVariantBuilder(block).partialState().setModels(new ConfiguredModel(builder));
 		if (registerItem) {
@@ -238,11 +238,11 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return null;
 	}
 	
-	private ItemModelBuilder airBlock(RegistryObject<Block> block, String particleTexture, boolean registerItem) {
+	public ItemModelBuilder airBlock(RegistryObject<Block> block, String particleTexture, boolean registerItem) {
 		return airBlock(block.get(), particleTexture, registerItem);
 	}
 
-	private ItemModelBuilder airBlock(Block block, String particleTexture, boolean registerItem) {
+	public ItemModelBuilder airBlock(Block block, String particleTexture, boolean registerItem) {
 		BlockModelBuilder builder = models().getBuilder(name(block)).texture("particle", modLoc(particleTexture)).renderType("cutout");
 		getVariantBuilder(block).partialState().setModels(new ConfiguredModel(builder));
 		if (registerItem) {
@@ -251,12 +251,12 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return null;
 	}
 	
-	private ItemModelBuilder bottomSlabBlock(RegistryObject<Block> block, ResourceLocation side, ResourceLocation bottom,
+	public ItemModelBuilder bottomSlabBlock(RegistryObject<Block> block, ResourceLocation side, ResourceLocation bottom,
 			ResourceLocation top, boolean registerItem) {
 		return bottomSlabBlock(block.get(), side, bottom, top, registerItem);
 	}
 
-	private ItemModelBuilder bottomSlabBlock(Block block, ResourceLocation side, ResourceLocation bottom,
+	public ItemModelBuilder bottomSlabBlock(Block block, ResourceLocation side, ResourceLocation bottom,
 			ResourceLocation top, boolean registerItem) {
 		BlockModelBuilder builder = models().slab(name(block), side, bottom, top);
 		getVariantBuilder(block).partialState().setModels(new ConfiguredModel(builder));
@@ -266,11 +266,11 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return null;
 	}
 	
-	private ItemModelBuilder horrRotatedBlock(RegistryObject<Block> block, ModelFile modelFile, boolean registerItem) {
+	public ItemModelBuilder horrRotatedBlock(RegistryObject<Block> block, ModelFile modelFile, boolean registerItem) {
 		return horrRotatedBlock(block.get(), modelFile, registerItem);
 	}
 	
-	private ItemModelBuilder horrRotatedBlock(Block block, ModelFile file, boolean registerItem) {
+	public ItemModelBuilder horrRotatedBlock(Block block, ModelFile file, boolean registerItem) {
 		getVariantBuilder(block).partialState().with(GenericEntityBlock.FACING, Direction.NORTH).modelForState()
 				.modelFile(file).rotationY(270).addModel().partialState()
 				.with(GenericEntityBlock.FACING, Direction.EAST).modelForState().modelFile(file).rotationY(0)
@@ -284,11 +284,11 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return null;
 	}
 
-	private ItemModelBuilder horrRotatedLitBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, boolean registerItem) {
+	public ItemModelBuilder horrRotatedLitBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, boolean registerItem) {
 		return horrRotatedLitBlock(block.get(), off, on, registerItem);
 	}
 	
-	private ItemModelBuilder horrRotatedLitBlock(Block block, ModelFile off, ModelFile on, boolean registerItem) {
+	public ItemModelBuilder horrRotatedLitBlock(Block block, ModelFile off, ModelFile on, boolean registerItem) {
 		getVariantBuilder(block).partialState().with(GenericEntityBlock.FACING, Direction.NORTH)
 				.with(BlockStateProperties.LIT, false).modelForState().modelFile(off).rotationY(270).addModel()
 				.partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(BlockStateProperties.LIT, false)
@@ -310,11 +310,11 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 
 	}
 	
-	private ItemModelBuilder redstoneToggleBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, boolean registerItem) {
+	public ItemModelBuilder redstoneToggleBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, boolean registerItem) {
 		return redstoneToggleBlock(block.get(), off, on, registerItem);
 	}
 	 
-	private ItemModelBuilder redstoneToggleBlock(Block block, ModelFile off, ModelFile on, boolean registerItem) {
+	public ItemModelBuilder redstoneToggleBlock(Block block, ModelFile off, ModelFile on, boolean registerItem) {
 		getVariantBuilder(block).partialState().with(BlockStateProperties.LIT, false).modelForState()
 				.modelFile(off).addModel().partialState().with(BlockStateProperties.LIT, true).modelForState()
 				.modelFile(on).addModel();
@@ -401,31 +401,31 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
         return itemModels().getBuilder(key(block).getPath()).parent(model);
     }
 
-	private ResourceLocation key(Block block) {
+	public ResourceLocation key(Block block) {
 		return ForgeRegistries.BLOCKS.getKey(block);
 	}
 
-	private String name(Block block) {
+	public String name(Block block) {
 		return key(block).getPath();
 	}
 
-	private ExistingModelFile existingBlock(RegistryObject<Block> block) {
+	public ExistingModelFile existingBlock(RegistryObject<Block> block) {
 		return existingBlock(block.getId());
 	}
 	
-	private ExistingModelFile existingBlock(Block block) {
+	public ExistingModelFile existingBlock(Block block) {
 		return existingBlock(ForgeRegistries.BLOCKS.getKey(block));
 	}
 
-	private ExistingModelFile existingBlock(ResourceLocation loc) {
+	public ExistingModelFile existingBlock(ResourceLocation loc) {
 		return models().getExistingFile(loc);
 	}
 
-	private ResourceLocation blockLoc(String texture) {
+	public ResourceLocation blockLoc(String texture) {
 		return modLoc("block/" + texture);
 	}
 	
-	private ResourceLocation modelLoc(String texture) {
+	public ResourceLocation modelLoc(String texture) {
 		return modLoc("model/" + texture);
 	}
 	
