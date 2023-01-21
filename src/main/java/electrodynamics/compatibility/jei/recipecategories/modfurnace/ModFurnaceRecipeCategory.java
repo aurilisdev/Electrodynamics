@@ -14,7 +14,7 @@ import electrodynamics.compatibility.jei.utils.gui.ScreenObjectWrapper;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.GenericItemSlotWrapper;
-import electrodynamics.compatibility.jei.utils.label.GenericLabelWrapper;
+import electrodynamics.compatibility.jei.utils.label.AbstractLabelWrapper;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -34,7 +34,7 @@ import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 
 public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> implements IRecipeCategory<T> {
 
-	private GenericLabelWrapper[] LABELS;
+	private AbstractLabelWrapper[] LABELS;
 
 	private LoadingCache<Integer, List<IDrawableAnimated>> ANIMATED_ARROWS;
 	private LoadingCache<Integer, List<IDrawableStatic>> STATIC_ARROWS;
@@ -145,7 +145,7 @@ public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> 
 
 	public void addDescriptions(PoseStack stack, AbstractCookingRecipe recipe) {
 		Font fontRenderer = Minecraft.getInstance().font;
-		for (GenericLabelWrapper wrap : LABELS) {
+		for (AbstractLabelWrapper wrap : LABELS) {
 			Component text = wrap.getComponent(this, recipe);
 			if(wrap.xIsEnd()) {
 				fontRenderer.draw(stack, text, wrap.getXPos() - fontRenderer.width(text.getVisualOrderText()), wrap.getYPos(), wrap.getColor());
@@ -221,7 +221,7 @@ public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> 
 		});
 	}
 
-	public void setLabels(GenericLabelWrapper... labels) {
+	public void setLabels(AbstractLabelWrapper... labels) {
 		LABELS = labels;
 	}
 

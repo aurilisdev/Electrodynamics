@@ -6,7 +6,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Recipe;
 
-public class PowerLabelWrapper extends GenericLabelWrapper {
+public class PowerLabelWrapper extends AbstractLabelWrapper {
 
 	private int voltage;
 	private double wattage = -1;

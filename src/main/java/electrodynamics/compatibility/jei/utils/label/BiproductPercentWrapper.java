@@ -10,7 +10,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Recipe;
 
-public class BiproductPercentWrapper extends GenericLabelWrapper {
+public class BiproductPercentWrapper extends AbstractLabelWrapper {
 
 	private boolean isFluid;
 	private double percentage = -1;
@@ -35,7 +35,7 @@ public class BiproductPercentWrapper extends GenericLabelWrapper {
 				Component.literal(percentage * 100 + "%");
 			} else {
 				ElectrodynamicsRecipeCategory<?> electroCat = (ElectrodynamicsRecipeCategory<?>) category;
-				List<GenericLabelWrapper> labels = Arrays.asList(electroCat.LABELS);
+				List<AbstractLabelWrapper> labels = Arrays.asList(electroCat.LABELS);
 				int biPos = labels.indexOf(this) - electroCat.itemBiLabelFirstIndex;
 				ElectrodynamicsRecipe electro = (ElectrodynamicsRecipe) recipe;
 				if(electro.hasItemBiproducts()) {

@@ -6,7 +6,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Recipe;
 
-public class TimeLabelWrapper extends GenericLabelWrapper {
+public class TimeLabelWrapper extends AbstractLabelWrapper {
 
 	private int ticks = -1;
 	

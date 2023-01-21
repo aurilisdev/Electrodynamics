@@ -19,7 +19,7 @@ import electrodynamics.compatibility.jei.utils.gui.fluid.GenericFluidGaugeWrappe
 import electrodynamics.compatibility.jei.utils.gui.item.BucketSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.GenericItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
-import electrodynamics.compatibility.jei.utils.label.GenericLabelWrapper;
+import electrodynamics.compatibility.jei.utils.label.AbstractLabelWrapper;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -50,7 +50,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
 	private Class<T> RECIPE_CATEGORY_CLASS;
 
-	public GenericLabelWrapper[] LABELS;
+	public AbstractLabelWrapper[] LABELS;
 
 	public int itemBiLabelFirstIndex;
 	public int fluidBiLabelFirstIndex;
@@ -127,7 +127,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
 	public void addDescriptions(PoseStack stack, ElectrodynamicsRecipe recipe) {
 		Font fontRenderer = Minecraft.getInstance().font;
-		for (GenericLabelWrapper wrap : LABELS) {
+		for (AbstractLabelWrapper wrap : LABELS) {
 			Component text = wrap.getComponent(this, recipe);
 			if(wrap.xIsEnd()) {
 				fontRenderer.draw(stack, text, wrap.getXPos() - fontRenderer.width(text.getVisualOrderText()), wrap.getYPos(), wrap.getColor());
@@ -141,9 +141,9 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		return ANIMATION_LENGTH;
 	}
 
-	public void setLabels(GenericLabelWrapper... labels) {
+	public void setLabels(AbstractLabelWrapper... labels) {
 		LABELS = labels;
-		GenericLabelWrapper wrap;
+		AbstractLabelWrapper wrap;
 		boolean firstItemBi = false;
 		for (int i = 0; i < labels.length; i++) {
 			wrap = labels[i];

@@ -4,14 +4,14 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.crafting.Recipe;
 
-public abstract class GenericLabelWrapper {
+public abstract class AbstractLabelWrapper {
 
 	private int COLOR;
 	private int Y_POS;
 	private int X_POS;
 	private boolean xIsEnd;
 
-	public GenericLabelWrapper(int color, int yPos, int endXPos, boolean xIsEnd) {
+	public AbstractLabelWrapper(int color, int yPos, int endXPos, boolean xIsEnd) {
 		COLOR = color;
 		Y_POS = yPos;
 		X_POS = endXPos;
