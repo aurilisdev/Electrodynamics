@@ -237,12 +237,20 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	}
 
 	public ItemModelBuilder glassBlock(Block block, ResourceLocation texture, boolean registerItem) {
-		BlockModelBuilder builder = models().cubeAll(name(block), texture).renderType("cutout");
+		return simpleBlockCustomRenderType(block, texture, new ResourceLocation("cutout"), registerItem);
+	}
+	
+	public ItemModelBuilder simpleBlockCustomRenderType(Block block, ResourceLocation texture, ResourceLocation renderType, boolean registerItem) {
+		BlockModelBuilder builder = models().cubeAll(name(block), texture).renderType(renderType);
 		getVariantBuilder(block).partialState().setModels(new ConfiguredModel(builder));
 		if (registerItem) {
 			return blockItem(block, builder);
 		}
 		return null;
+	}
+	
+	public ItemModelBuilder simpleBlockCustomRenderType(RegistryObject<Block> block, ResourceLocation texture, ResourceLocation renderType, boolean registerItem) {
+		return simpleBlockCustomRenderType(block.get(), texture, renderType, registerItem);
 	}
 	
 	public ItemModelBuilder airBlock(RegistryObject<Block> block, String particleTexture, boolean registerItem) {
