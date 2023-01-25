@@ -17,18 +17,18 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 
-public class MineralWasher extends AbstractRecipeGenerator {
+public class ElectrodynamicsMineralWasherRecipes extends AbstractRecipeGenerator {
 
 	public static double MINERALWASHER_USAGE_PER_TICK = 400.0;
 	public static int MINERALWASHER_REQUIRED_TICKS = 200;
 
 	private final String modID;
 
-	public MineralWasher(String modID) {
+	public ElectrodynamicsMineralWasherRecipes(String modID) {
 		this.modID = modID;
 	}
 
-	public MineralWasher() {
+	public ElectrodynamicsMineralWasherRecipes() {
 		this(References.ID);
 	}
 
@@ -57,7 +57,7 @@ public class MineralWasher extends AbstractRecipeGenerator {
 
 	}
 
-	private FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name) {
+	public FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name) {
 		return FinishedRecipeFluidOutput.of(ElectrodynamicsRecipeInit.MINERAL_WASHER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_ITEM_2_FLUID, modID, "mineral_washer/" + name);
 	}
 

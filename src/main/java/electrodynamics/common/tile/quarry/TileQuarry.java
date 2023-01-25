@@ -159,7 +159,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	private boolean cont = false;
 
 	// Client Parameters
-	private QuarryRenderHandler renderHandler = null;
+	private QuarryRenderManger renderHandler = null;
 
 	public TileQuarry(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_QUARRY.get(), pos, state);
@@ -881,7 +881,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	private void tickClient(ComponentTickable tick) {
 		if (renderHandler == null) {
-			renderHandler = new QuarryRenderHandler();
+			renderHandler = new QuarryRenderManger();
 		}
 		renderHandler.render(this);
 	}

@@ -13,18 +13,18 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.FluidTags;
 import net.minecraftforge.fluids.FluidStack;
 
-public class ElectrolyticSeparator extends AbstractRecipeGenerator {
+public class ElectrodynamicsElectrolyticSeparatorRecipes extends AbstractRecipeGenerator {
 
 	public static int ELECTROLYTICSEPARATOR_REQUIRED_TICKS = 200;
 	public static double ELECTROLYTICSEPARATOR_USAGE_PER_TICK = 250.0;
 	
 	private final String modID;
 	
-	public ElectrolyticSeparator(String modID) {
+	public ElectrodynamicsElectrolyticSeparatorRecipes(String modID) {
 		this.modID = modID;
 	}
 	
-	public ElectrolyticSeparator() {
+	public ElectrodynamicsElectrolyticSeparatorRecipes() {
 		this(References.ID);
 	}
 

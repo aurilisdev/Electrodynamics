@@ -17,18 +17,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 
-public class WireMill extends AbstractRecipeGenerator {
+public class ElectrodynamicsWireMillRecipes extends AbstractRecipeGenerator {
 
 	public static double WIREMILL_USAGE_PER_TICK = 125.0;
 	public static int WIREMILL_REQUIRED_TICKS = 200;
 
 	private final String modID;
 
-	public WireMill(String modID) {
+	public ElectrodynamicsWireMillRecipes(String modID) {
 		this.modID = modID;
 	}
 
-	public WireMill() {
+	public ElectrodynamicsWireMillRecipes() {
 		this(References.ID);
 	}
 	
@@ -91,7 +91,7 @@ public class WireMill extends AbstractRecipeGenerator {
 
 	}
 
-	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
+	public FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
 		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.WIRE_MILL_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, modID, "wire_mill/" + name);
 	}
 

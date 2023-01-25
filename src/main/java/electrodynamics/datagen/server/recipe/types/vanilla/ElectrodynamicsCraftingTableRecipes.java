@@ -33,7 +33,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.PartialNBTIngredient;
 
-public class CraftingTable extends AbstractRecipeGenerator {
+public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator {
 
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {

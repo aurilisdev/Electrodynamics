@@ -19,18 +19,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 
-public class OxidationFurnace extends AbstractRecipeGenerator {
+public class ElectrodynamicsOxidationFurnaceRecipes extends AbstractRecipeGenerator {
 
 	public static double OXIDATIONFURNACE_USAGE_PER_TICK = 350.0;
 	public static int OXIDATIONFURNACE_REQUIRED_TICKS = 200;
 
 	private final String modID;
 
-	public OxidationFurnace(String modID) {
+	public ElectrodynamicsOxidationFurnaceRecipes(String modID) {
 		this.modID = modID;
 	}
 
-	public OxidationFurnace() {
+	public ElectrodynamicsOxidationFurnaceRecipes() {
 		this(References.ID);
 	}
 	
@@ -141,7 +141,7 @@ public class OxidationFurnace extends AbstractRecipeGenerator {
 
 	}
 
-	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
+	public FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
 		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.OXIDATION_FURNACE_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, modID, "oxidation_furnace/" + name);
 	}
 

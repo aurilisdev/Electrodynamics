@@ -4,20 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import electrodynamics.datagen.server.recipe.types.custom.fluid2fluid.ElectrolyticSeparator;
-import electrodynamics.datagen.server.recipe.types.custom.fluid2item.ChemicalCrystallizer;
-import electrodynamics.datagen.server.recipe.types.custom.fluiditem2fluid.ChemicalMixer;
-import electrodynamics.datagen.server.recipe.types.custom.fluiditem2fluid.FermentationPlant;
-import electrodynamics.datagen.server.recipe.types.custom.fluiditem2fluid.MineralWasher;
-import electrodynamics.datagen.server.recipe.types.custom.item2item.EnergizedAlloyer;
-import electrodynamics.datagen.server.recipe.types.custom.item2item.Lathe;
-import electrodynamics.datagen.server.recipe.types.custom.item2item.MineralCrusher;
-import electrodynamics.datagen.server.recipe.types.custom.item2item.MineralGrinder;
-import electrodynamics.datagen.server.recipe.types.custom.item2item.OxidationFurnace;
-import electrodynamics.datagen.server.recipe.types.custom.item2item.ReinforcedAlloyer;
-import electrodynamics.datagen.server.recipe.types.custom.item2item.WireMill;
-import electrodynamics.datagen.server.recipe.types.vanilla.CraftingTable;
-import electrodynamics.datagen.server.recipe.types.vanilla.Smelting;
+import electrodynamics.datagen.server.recipe.types.custom.fluid2fluid.ElectrodynamicsElectrolyticSeparatorRecipes;
+import electrodynamics.datagen.server.recipe.types.custom.fluid2item.ElectrodynamicsChemicalCrystallizerRecipes;
+import electrodynamics.datagen.server.recipe.types.custom.fluiditem2fluid.ElectrodynamicsChemicalMixerRecipes;
+import electrodynamics.datagen.server.recipe.types.custom.fluiditem2fluid.ElectrodynamicsFermentationPlantRecipes;
+import electrodynamics.datagen.server.recipe.types.custom.fluiditem2fluid.ElectrodynamicsMineralWasherRecipes;
+import electrodynamics.datagen.server.recipe.types.custom.item2item.ElectrodynamicsEnergizedAlloyerRecipes;
+import electrodynamics.datagen.server.recipe.types.custom.item2item.ElectrodynamicsLatheRecipes;
+import electrodynamics.datagen.server.recipe.types.custom.item2item.ElectrodynamicsMineralCrusherRecipes;
+import electrodynamics.datagen.server.recipe.types.custom.item2item.ElectrodynamicsMineralGrinderRecipes;
+import electrodynamics.datagen.server.recipe.types.custom.item2item.ElectrodynamicsOxidationFurnaceRecipes;
+import electrodynamics.datagen.server.recipe.types.custom.item2item.ElectrodynamicsReinforcedAlloyerRecipes;
+import electrodynamics.datagen.server.recipe.types.custom.item2item.ElectrodynamicsWireMillRecipes;
+import electrodynamics.datagen.server.recipe.types.vanilla.ElectrodynamicsCraftingTableRecipes;
+import electrodynamics.datagen.server.recipe.types.vanilla.ElectrodynamicsSmeltingRecipes;
 import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
@@ -34,20 +34,20 @@ public class ElectrodynamicsRecipeProvider extends RecipeProvider {
 	}
 	
 	public void addRecipes() {
-		GENERATORS.add(new CraftingTable());
-		GENERATORS.add(new Smelting());
-		GENERATORS.add(new ElectrolyticSeparator());
-		GENERATORS.add(new ChemicalCrystallizer());
-		GENERATORS.add(new MineralWasher());
-		GENERATORS.add(new FermentationPlant());
-		GENERATORS.add(new ChemicalMixer());
-		GENERATORS.add(new EnergizedAlloyer());
-		GENERATORS.add(new Lathe());
-		GENERATORS.add(new MineralCrusher());
-		GENERATORS.add(new MineralGrinder());
-		GENERATORS.add(new OxidationFurnace());
-		GENERATORS.add(new ReinforcedAlloyer());
-		GENERATORS.add(new WireMill());
+		GENERATORS.add(new ElectrodynamicsCraftingTableRecipes());
+		GENERATORS.add(new ElectrodynamicsSmeltingRecipes());
+		GENERATORS.add(new ElectrodynamicsElectrolyticSeparatorRecipes());
+		GENERATORS.add(new ElectrodynamicsChemicalCrystallizerRecipes());
+		GENERATORS.add(new ElectrodynamicsMineralWasherRecipes());
+		GENERATORS.add(new ElectrodynamicsFermentationPlantRecipes());
+		GENERATORS.add(new ElectrodynamicsChemicalMixerRecipes());
+		GENERATORS.add(new ElectrodynamicsEnergizedAlloyerRecipes());
+		GENERATORS.add(new ElectrodynamicsLatheRecipes());
+		GENERATORS.add(new ElectrodynamicsMineralCrusherRecipes());
+		GENERATORS.add(new ElectrodynamicsMineralGrinderRecipes());
+		GENERATORS.add(new ElectrodynamicsOxidationFurnaceRecipes());
+		GENERATORS.add(new ElectrodynamicsReinforcedAlloyerRecipes());
+		GENERATORS.add(new ElectrodynamicsWireMillRecipes());
 	}
 
 	@Override

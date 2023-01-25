@@ -16,18 +16,18 @@ import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fluids.FluidStack;
 
-public class ChemicalMixer extends AbstractRecipeGenerator {
+public class ElectrodynamicsChemicalMixerRecipes extends AbstractRecipeGenerator {
 
 	public static double CHEMICALMIXER_USAGE_PER_TICK = 400.0;
 	public static int CHEMICALMIXER_REQUIRED_TICKS = 200;
 	
 	private final String modID;
 	
-	public ChemicalMixer(String modID) {
+	public ElectrodynamicsChemicalMixerRecipes(String modID) {
 		this.modID = modID;
 	}
 	
-	public ChemicalMixer() {
+	public ElectrodynamicsChemicalMixerRecipes() {
 		this(References.ID);
 	}
 
@@ -100,7 +100,7 @@ public class ChemicalMixer extends AbstractRecipeGenerator {
 
 	}
 
-	private FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name) {
+	public FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name) {
 		return FinishedRecipeFluidOutput.of(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_ITEM_2_FLUID, modID, "chemical_mixer/" + name);
 	}
 

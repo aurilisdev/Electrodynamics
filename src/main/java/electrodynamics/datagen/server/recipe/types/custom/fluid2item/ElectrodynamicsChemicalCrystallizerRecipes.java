@@ -15,18 +15,18 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public class ChemicalCrystallizer extends AbstractRecipeGenerator {
+public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGenerator {
 
 	public static double CHEMICALCRYSTALLIZER_USAGE_PER_TICK = 800.0;
 	public static int CHEMICALCRYSTALLIZER_REQUIRED_TICKS = 200;
 	
 	private final String modID;
 	
-	public ChemicalCrystallizer(String modID) {
+	public ElectrodynamicsChemicalCrystallizerRecipes(String modID) {
 		this.modID = modID;
 	}
 	
-	public ChemicalCrystallizer() {
+	public ElectrodynamicsChemicalCrystallizerRecipes() {
 		this(References.ID);
 	}
 
@@ -63,7 +63,7 @@ public class ChemicalCrystallizer extends AbstractRecipeGenerator {
 
 	}
 
-	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
+	public FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
 		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_2_ITEM, modID, "chemical_crystallizer/" + name);
 	}
 

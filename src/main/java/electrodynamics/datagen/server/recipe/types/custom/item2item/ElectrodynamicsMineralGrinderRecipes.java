@@ -20,18 +20,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
 
-public class MineralGrinder extends AbstractRecipeGenerator {
+public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerator {
 
 	public static double MINERALGRINDER_USAGE_PER_TICK = 350.0;
 	public static int MINERALGRINDER_REQUIRED_TICKS = 200;
 
 	private final String modID;
 
-	public MineralGrinder(String modID) {
+	public ElectrodynamicsMineralGrinderRecipes(String modID) {
 		this.modID = modID;
 	}
 
-	public MineralGrinder() {
+	public ElectrodynamicsMineralGrinderRecipes() {
 		this(References.ID);
 	}
 	
@@ -287,7 +287,7 @@ public class MineralGrinder extends AbstractRecipeGenerator {
 
 	}
 
-	private FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
+	public FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
 		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.MINERAL_GRINDER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, modID, "mineral_grinder/" + name);
 	}
 

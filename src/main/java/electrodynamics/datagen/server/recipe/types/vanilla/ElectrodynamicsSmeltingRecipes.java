@@ -16,7 +16,7 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 
-public class Smelting extends AbstractRecipeGenerator {
+public class ElectrodynamicsSmeltingRecipes extends AbstractRecipeGenerator {
 
 	private static final String SMELTING_LOC = "smelting/";
 	private static final String BLASTING_LOC = "blasting/";

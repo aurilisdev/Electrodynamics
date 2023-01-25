@@ -26,12 +26,12 @@ import net.minecraft.world.phys.AABB;
  * @author skip999
  *
  */
-public class QuarryRenderHandler {
+public class QuarryRenderManger {
 	
 	private QuarryArmFrameWrapper currentFrame = null;
 	private boolean onRight = false;
 	
-	public QuarryRenderHandler() { }
+	public QuarryRenderManger() { }
 
 	public void render(TileQuarry quarry) {
 		BlockPos pos = quarry.getBlockPos();
