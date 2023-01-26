@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.IWrenchable;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -27,7 +26,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 public abstract class GenericEntityBlock extends BaseEntityBlock implements IWrenchable {
@@ -88,10 +86,6 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 	@Override
 	public void onPickup(ItemStack stack, BlockPos pos, Player player) {
 		Level world = player.level;
-		BlockEntity tile = world.getBlockEntity(pos);
-		if (tile instanceof GenericTile generic && generic.getComponent(ComponentType.Inventory) instanceof ComponentInventory inv) {
-			Containers.dropContents(world, pos, inv);
-		}
 		world.destroyBlock(pos, true, player);
 	}
 
