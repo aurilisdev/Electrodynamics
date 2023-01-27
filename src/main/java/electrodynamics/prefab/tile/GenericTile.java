@@ -323,5 +323,13 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	public void onBlockDestroyed() {
 		
 	}
+	
+	public void onNeightborChanged(BlockPos neighbor) {
+		
+	}
+	
+	public void onPlace(BlockState oldState, boolean isMoving) {
+		
+	}
 
 }
