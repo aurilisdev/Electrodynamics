@@ -319,7 +319,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	}
 	
 	public ItemModelBuilder horrRotatedLitBlock(Block block, ModelFile off, ModelFile on, boolean registerItem) {
-		return horrRotatedBlock(block, on, 0, registerItem);
+		return horrRotatedLitBlock(block, off, on, 0, registerItem);
 	}
 	
 	public ItemModelBuilder horrRotatedLitBlock(Block block, ModelFile off, ModelFile on, int rotationOffset, boolean registerItem) {
