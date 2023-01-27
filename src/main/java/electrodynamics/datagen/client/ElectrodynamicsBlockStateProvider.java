@@ -18,6 +18,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -421,6 +422,29 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 
 	}
 	
+	public ItemModelBuilder snowyBlock(Block block, ModelFile noSnow, ModelFile withSnow, boolean registerItem) {
+		getVariantBuilder(block)
+			.partialState()
+				.with(SnowyDirtBlock.SNOWY, false)
+				.modelForState().modelFile(noSnow).addModel()
+			.partialState()
+				.with(SnowyDirtBlock.SNOWY, true)
+				.modelForState().modelFile(withSnow).rotationY(0).addModel();
+			
+		if (registerItem) {
+			return blockItem(block, noSnow);
+		}
+		return null;
+	}
+	
+	public ItemModelBuilder simpleColumnBlock(Block block, ResourceLocation side, ResourceLocation top, boolean registerItem) {
+		BlockModelBuilder builder = models().cubeColumn(name(block), side, top);
+		getVariantBuilder(block).partialState().setModels(new ConfiguredModel(builder));
+		if (registerItem) {
+			return blockItem(block, builder);
+		}
+		return null;
+	}
 
 	public BlockModelBuilder getObjModel(String name, String modelLoc) {
 		return models().withExistingParent("block/" + name, "cube").customLoader(ObjModelBuilder::begin).flipV(true)
