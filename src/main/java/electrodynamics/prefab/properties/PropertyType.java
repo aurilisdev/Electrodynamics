@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
@@ -16,6 +15,8 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import electrodynamics.prefab.utilities.object.Location;
 
 public enum PropertyType {
 	Byte,
@@ -65,7 +66,8 @@ public enum PropertyType {
 			}
 		}
 		return true;
-	});
+	}),
+	Location;
 	
 	//this allows us to deal with classes that don't implement the equals method
 	@Nullable
@@ -120,6 +122,10 @@ public enum PropertyType {
 			buf.writeInt(posList.size());
 			posList.forEach(pos -> buf.writeBlockPos(pos));
 			break;
+		case Location:
+			Location loc = (Location) val;
+			loc.toBuffer(buf);
+			break;
 		default:
 			break;
 		}
@@ -158,6 +164,8 @@ public enum PropertyType {
 				list.add(buf.readBlockPos());
 			}
 			return list;
+		case Location:
+			return electrodynamics.prefab.utilities.object.Location.fromBuffer(buf);
 		default:
 			break;
 		}
@@ -215,6 +223,9 @@ public enum PropertyType {
 			}
 			tag.put(prop.getName(), data);
 			break;
+		case Location:
+			((Location) val).writeToNBT(tag, prop.getName());
+			break;
 		default:
 			break;
 		}
@@ -264,6 +275,9 @@ public enum PropertyType {
 				list.add(NbtUtils.readBlockPos(data.getCompound("pos" + i)));
 			}
 			val = list;
+		case Location:
+			val = electrodynamics.prefab.utilities.object.Location.readFromNBT(tag, prop.getName());
+			break;
 		default:
 			break;
 		}

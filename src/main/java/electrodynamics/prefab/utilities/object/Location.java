@@ -4,6 +4,7 @@ import com.mojang.math.Vector3f;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -221,5 +222,15 @@ public final class Location {
 		nbt.putDouble(name + "X", x);
 		nbt.putDouble(name + "Y", y);
 		nbt.putDouble(name + "Z", z);
+	}
+	
+	public void toBuffer(FriendlyByteBuf buffer) {
+		buffer.writeDouble(x);
+		buffer.writeDouble(y);
+		buffer.writeDouble(z);
+	}
+	
+	public static Location fromBuffer(FriendlyByteBuf buffer) {
+		return new Location(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
 	}
 }

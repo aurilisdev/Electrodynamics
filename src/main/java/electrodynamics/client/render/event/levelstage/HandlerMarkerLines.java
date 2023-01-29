@@ -31,8 +31,7 @@ public class HandlerMarkerLines extends AbstractLevelStageHandler {
 	}
 
 	@Override
-	public void render(Camera camera, Frustum frustum, LevelRenderer renderer, PoseStack stack,
-			Matrix4f projectionMatrix, Minecraft minecraft, int renderTick, float partialTick) {
+	public void render(Camera camera, Frustum frustum, LevelRenderer renderer, PoseStack stack, Matrix4f projectionMatrix, Minecraft minecraft, int renderTick, float partialTick) {
 
 		MultiBufferSource.BufferSource buffer = minecraft.renderBuffers().bufferSource();
 		RenderType beaconType = RenderingUtils.beaconType();
