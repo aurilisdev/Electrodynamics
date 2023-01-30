@@ -1,6 +1,7 @@
 package electrodynamics.prefab.screen.component;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.DoubleSupplier;
 
@@ -9,6 +10,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.ITexture;
+import electrodynamics.api.screen.component.TextSupplier;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -18,14 +20,19 @@ import net.minecraft.util.FormattedCharSequence;
 public class ScreenComponentCountdown extends AbstractScreenComponentInfo {
 
 	private final DoubleSupplier progressInfoHandler;
+	private TextSupplier tooltip;
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(References.ID + ":textures/screen/component/countdown.png");
 
-	public ScreenComponentCountdown(final DoubleSupplier progressInfoHandler, final IScreenWrapper gui, final int x, final int y) {
+	public ScreenComponentCountdown(TextSupplier tooltip, DoubleSupplier progressInfoHandler, final IScreenWrapper gui, final int x, final int y) {
 		super(CountdownTextures.BACKGROUND_DEFAULT, AbstractScreenComponentInfo.EMPTY, gui, x, y);
 		this.progressInfoHandler = progressInfoHandler;
 	}
 
+	public ScreenComponentCountdown(final DoubleSupplier progressInfoHandler, final IScreenWrapper gui, final int x, final int y) {
+		this(null, progressInfoHandler, gui, x, y);
+	}
+	
 	@Override
 	public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
 		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, texture.textureWidth(), texture.textureHeight())) {
@@ -43,6 +50,9 @@ public class ScreenComponentCountdown extends AbstractScreenComponentInfo {
 
 	@Override
 	protected List<? extends FormattedCharSequence> getInfo(List<? extends FormattedCharSequence> list) {
+		if(tooltip != null) {
+			return Arrays.asList(tooltip.getText().getVisualOrderText());
+		}
 		return getTooltips();
 	}
 
@@ -56,7 +66,7 @@ public class ScreenComponentCountdown extends AbstractScreenComponentInfo {
 	
 	public static enum CountdownTextures implements ITexture {
 		BACKGROUND_DEFAULT(60, 12, 0, 0, 256, 256, TEXTURE),
-		COUNTDOWN_BAR_DEFAULT(58, 10, 12, 0, 256, 256, TEXTURE);
+		COUNTDOWN_BAR_DEFAULT(58, 10, 0, 12, 256, 256, TEXTURE);
 		
 		private final int textureWidth;
 		private final int textureHeight;
