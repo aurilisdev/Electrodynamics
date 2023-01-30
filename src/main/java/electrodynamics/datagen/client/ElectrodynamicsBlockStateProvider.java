@@ -283,27 +283,27 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	}
 	
 	public ItemModelBuilder horrRotatedBlock(RegistryObject<Block> block, ModelFile modelFile, boolean registerItem) {
-		return horrRotatedBlock(block, modelFile, 0, registerItem);
+		return horrRotatedBlock(block, modelFile, 0, 0, registerItem);
 	}
 	
-	public ItemModelBuilder horrRotatedBlock(RegistryObject<Block> block, ModelFile modelFile, int rotationOffset, boolean registerItem) {
-		return horrRotatedBlock(block.get(), modelFile, rotationOffset, registerItem);
+	public ItemModelBuilder horrRotatedBlock(RegistryObject<Block> block, ModelFile modelFile, int yRotationOffset, int xRotation, boolean registerItem) {
+		return horrRotatedBlock(block.get(), modelFile, yRotationOffset, xRotation, registerItem);
 	}
 	
 	public ItemModelBuilder horrRotatedBlock(Block block, ModelFile file, boolean registerItem) {
-		return horrRotatedBlock(block, file, 0, registerItem);
+		return horrRotatedBlock(block, file, 0, 0, registerItem);
 	}
 	
-	public ItemModelBuilder horrRotatedBlock(Block block, ModelFile file, int rotationOffset, boolean registerItem) {
+	public ItemModelBuilder horrRotatedBlock(Block block, ModelFile file, int yRotationOffset, int xRotation, boolean registerItem) {
 		getVariantBuilder(block)
 			.partialState().with(GenericEntityBlock.FACING, Direction.NORTH)
-				.modelForState().modelFile(file).rotationY((270 + rotationOffset) % 360).addModel()
+				.modelForState().modelFile(file).rotationY((270 + yRotationOffset) % 360).rotationX(xRotation).addModel()
 			.partialState().with(GenericEntityBlock.FACING, Direction.EAST)
-				.modelForState().modelFile(file).rotationY((0 + rotationOffset) % 360).addModel()
+				.modelForState().modelFile(file).rotationY((0 + yRotationOffset) % 360).rotationX(xRotation).addModel()
 			.partialState().with(GenericEntityBlock.FACING, Direction.SOUTH)
-				.modelForState().modelFile(file).rotationY((90 + rotationOffset) % 360).addModel()
+				.modelForState().modelFile(file).rotationY((90 + yRotationOffset) % 360).rotationX(xRotation).addModel()
 			.partialState().with(GenericEntityBlock.FACING, Direction.WEST)
-				.modelForState().modelFile(file).rotationY((180 + rotationOffset) % 360).addModel();
+				.modelForState().modelFile(file).rotationY((180 + yRotationOffset) % 360).rotationX(xRotation).addModel();
 		if (registerItem) {
 			return blockItem(block, file);
 		}
@@ -311,35 +311,35 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	}
 	
 	public ItemModelBuilder horrRotatedLitBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, boolean registerItem) {
-		return horrRotatedBlock(block, on, 0, registerItem);
+		return horrRotatedBlock(block, on, 0, 0, registerItem);
 	}
 
-	public ItemModelBuilder horrRotatedLitBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, int rotationOffset, boolean registerItem) {
-		return horrRotatedLitBlock(block.get(), off, on, rotationOffset, registerItem);
+	public ItemModelBuilder horrRotatedLitBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, int yRotationOffset, int xRotation, boolean registerItem) {
+		return horrRotatedLitBlock(block.get(), off, on, yRotationOffset, xRotation, registerItem);
 	}
 	
 	public ItemModelBuilder horrRotatedLitBlock(Block block, ModelFile off, ModelFile on, boolean registerItem) {
-		return horrRotatedLitBlock(block, off, on, 0, registerItem);
+		return horrRotatedLitBlock(block, off, on, 0, 0, registerItem);
 	}
 	
-	public ItemModelBuilder horrRotatedLitBlock(Block block, ModelFile off, ModelFile on, int rotationOffset, boolean registerItem) {
+	public ItemModelBuilder horrRotatedLitBlock(Block block, ModelFile off, ModelFile on, int yRotationOffset, int xRotation, boolean registerItem) {
 		getVariantBuilder(block)
 			.partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(BlockStateProperties.LIT, false)
-				.modelForState().modelFile(off).rotationY((270 + rotationOffset) % 360).addModel()
+				.modelForState().modelFile(off).rotationY((270 + yRotationOffset) % 360).rotationX(xRotation).addModel()
 			.partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(BlockStateProperties.LIT, false)
-				.modelForState().modelFile(off).rotationY((0 + rotationOffset) % 360).addModel()
+				.modelForState().modelFile(off).rotationY((0 + yRotationOffset) % 360).rotationX(xRotation).addModel()
 			.partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(BlockStateProperties.LIT, false)
-				.modelForState().modelFile(off).rotationY((90 + rotationOffset) % 360).addModel()
+				.modelForState().modelFile(off).rotationY((90 + yRotationOffset) % 360).rotationX(xRotation).addModel()
 			.partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(BlockStateProperties.LIT, false)
-				.modelForState().modelFile(off).rotationY((180 + rotationOffset) % 360).addModel()
+				.modelForState().modelFile(off).rotationY((180 + yRotationOffset) % 360).rotationX(xRotation).addModel()
 			.partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(BlockStateProperties.LIT, true)
-				.modelForState().modelFile(on).rotationY((270 + rotationOffset) % 360).addModel()
+				.modelForState().modelFile(on).rotationY((270 + yRotationOffset) % 360).rotationX(xRotation).addModel()
 			.partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(BlockStateProperties.LIT, true)
-				.modelForState().modelFile(on).rotationY((0 + rotationOffset) % 360).addModel()
+				.modelForState().modelFile(on).rotationY((0 + yRotationOffset) % 360).rotationX(xRotation).addModel()
 			.partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(BlockStateProperties.LIT, true)
-				.modelForState().modelFile(on).rotationY((90 + rotationOffset) % 360).addModel()
+				.modelForState().modelFile(on).rotationY((90 + yRotationOffset) % 360).rotationX(xRotation).addModel()
 			.partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(BlockStateProperties.LIT, true)
-				.modelForState().modelFile(on).rotationY((180 + rotationOffset) % 360).addModel();
+				.modelForState().modelFile(on).rotationY((180 + yRotationOffset) % 360).rotationX(xRotation).addModel();
 		if (registerItem) {
 			return blockItem(block, off);
 		}
