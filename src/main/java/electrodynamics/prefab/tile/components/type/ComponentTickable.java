@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 
 public class ComponentTickable implements Component {
 	private GenericTile holder;
-
+	
 	@Override
 	public void holder(GenericTile holder) {
 		this.holder = holder;

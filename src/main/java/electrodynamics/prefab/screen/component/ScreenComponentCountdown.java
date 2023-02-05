@@ -1,7 +1,6 @@
 package electrodynamics.prefab.screen.component;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.DoubleSupplier;
 
@@ -10,7 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.ITexture;
-import electrodynamics.api.screen.component.TextSupplier;
+import electrodynamics.api.screen.component.TextPropertySupplier;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -20,13 +19,14 @@ import net.minecraft.util.FormattedCharSequence;
 public class ScreenComponentCountdown extends AbstractScreenComponentInfo {
 
 	private final DoubleSupplier progressInfoHandler;
-	private TextSupplier tooltip;
+	private TextPropertySupplier tooltip;
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(References.ID + ":textures/screen/component/countdown.png");
 
-	public ScreenComponentCountdown(TextSupplier tooltip, DoubleSupplier progressInfoHandler, final IScreenWrapper gui, final int x, final int y) {
+	public ScreenComponentCountdown(final TextPropertySupplier tooltip, DoubleSupplier progressInfoHandler, final IScreenWrapper gui, final int x, final int y) {
 		super(CountdownTextures.BACKGROUND_DEFAULT, AbstractScreenComponentInfo.EMPTY, gui, x, y);
 		this.progressInfoHandler = progressInfoHandler;
+		this.tooltip = tooltip;
 	}
 
 	public ScreenComponentCountdown(final DoubleSupplier progressInfoHandler, final IScreenWrapper gui, final int x, final int y) {
@@ -51,7 +51,7 @@ public class ScreenComponentCountdown extends AbstractScreenComponentInfo {
 	@Override
 	protected List<? extends FormattedCharSequence> getInfo(List<? extends FormattedCharSequence> list) {
 		if(tooltip != null) {
-			return Arrays.asList(tooltip.getText().getVisualOrderText());
+			return tooltip.getInfo();
 		}
 		return getTooltips();
 	}

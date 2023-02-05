@@ -1,5 +1,7 @@
 package electrodynamics.datagen.client;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.api.References;
 import electrodynamics.common.block.connect.EnumConnectType;
 import electrodynamics.common.block.subtype.SubtypeGlass;
@@ -18,6 +20,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
@@ -437,6 +440,25 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return null;
 	}
 	
+	//gotta love dealing with mojank
+	public ItemModelBuilder pressurePlateBlock(PressurePlateBlock block, ResourceLocation texture, @Nullable ResourceLocation renderType, boolean registerItem) {
+		ModelFile pressurePlate = models().pressurePlate(name(block), texture);
+		ModelFile pressurePlateDown = models().pressurePlateDown(name(block) + "_down", texture);
+		if (renderType != null) {
+			pressurePlate = models().pressurePlate(name(block), texture).renderType(renderType);
+			pressurePlateDown = models().pressurePlateDown(name(block) + "_down", texture).renderType(renderType);
+		} 
+		return pressurePlateBlock(block, pressurePlate, pressurePlateDown, renderType, registerItem);
+	}
+
+	public ItemModelBuilder pressurePlateBlock(PressurePlateBlock block, ModelFile pressurePlate, ModelFile pressurePlateDown, @Nullable ResourceLocation renderType, boolean registerItem) {
+		getVariantBuilder(block).partialState().with(PressurePlateBlock.POWERED, true).addModels(new ConfiguredModel(pressurePlateDown)).partialState().with(PressurePlateBlock.POWERED, false).addModels(new ConfiguredModel(pressurePlate));
+		if(registerItem) {
+			return blockItem(block, pressurePlate);
+		}
+		return null;
+	}
+	
 	public ItemModelBuilder simpleColumnBlock(Block block, ResourceLocation side, ResourceLocation top, boolean registerItem) {
 		BlockModelBuilder builder = models().cubeColumn(name(block), side, top);
 		getVariantBuilder(block).partialState().setModels(new ConfiguredModel(builder));
@@ -445,7 +467,25 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		}
 		return null;
 	}
-
+	
+	public ItemModelBuilder crossBlock(RegistryObject<Block> block, ResourceLocation texture, @Nullable ResourceLocation renderType, boolean registerItem) {
+		return crossBlock(block.get(), texture, renderType, registerItem);
+	}
+	
+	public ItemModelBuilder crossBlock(Block block, ResourceLocation texture, @Nullable ResourceLocation renderType, boolean registerItem) {
+		ModelFile cross;
+		if(renderType == null) {
+			cross = models().cross(name(block), texture);
+		} else {
+			cross = models().cross(name(block), texture).renderType(renderType);
+		}
+		getVariantBuilder(block).partialState().setModels(new ConfiguredModel(cross));
+		if(registerItem) {
+			return blockItem(block, cross);
+		}
+		return null;
+	}
+	
 	public BlockModelBuilder getObjModel(String name, String modelLoc) {
 		return models().withExistingParent("block/" + name, "cube").customLoader(ObjModelBuilder::begin).flipV(true)
 				.modelLocation(modLoc("models/" + modelLoc + ".obj")).end();

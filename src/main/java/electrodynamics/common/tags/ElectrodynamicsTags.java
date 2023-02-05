@@ -6,7 +6,6 @@ import java.util.List;
 import electrodynamics.common.fluid.types.gas.FluidHydrogen;
 import electrodynamics.common.fluid.types.gas.FluidOxygen;
 import electrodynamics.common.fluid.types.liquid.FluidClay;
-import electrodynamics.common.fluid.types.liquid.FluidConcrete;
 import electrodynamics.common.fluid.types.liquid.FluidEthanol;
 import electrodynamics.common.fluid.types.liquid.FluidHydraulic;
 import electrodynamics.common.fluid.types.liquid.FluidHydrogenFluoride;
@@ -253,7 +252,6 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Fluid> MOLYBDENUM_SULF = forgeTag(FluidSulfate.FORGE_TAG + "molybdenum");
 		public static final TagKey<Fluid> NETHERITE_SULF = forgeTag(FluidSulfate.FORGE_TAG + "netherite");
 		public static final TagKey<Fluid> CLAY = forgeTag(FluidClay.FORGE_TAG);
-		public static final TagKey<Fluid> CONCRETE = forgeTag(FluidConcrete.FORGE_TAG);
 		public static final TagKey<Fluid> OXYGEN = forgeTag(FluidOxygen.FORGE_TAG);
 		public static final TagKey<Fluid> HYDROGEN = forgeTag(FluidHydrogen.FORGE_TAG);
 		public static final TagKey<Fluid> HYDRAULIC_FLUID = forgeTag(FluidHydraulic.FORGE_TAG);
@@ -274,7 +272,6 @@ public class ElectrodynamicsTags {
 			FLUID_TAGS.add(MOLYBDENUM_SULF);
 			FLUID_TAGS.add(NETHERITE_SULF);
 			FLUID_TAGS.add(CLAY);
-			FLUID_TAGS.add(CONCRETE);
 			FLUID_TAGS.add(OXYGEN);
 			FLUID_TAGS.add(HYDROGEN);
 			FLUID_TAGS.add(HYDRAULIC_FLUID);
@@ -294,7 +291,6 @@ public class ElectrodynamicsTags {
 			ItemCanister.addTag(MOLYBDENUM_SULF);
 			ItemCanister.addTag(NETHERITE_SULF);
 			ItemCanister.addTag(CLAY);
-			ItemCanister.addTag(CONCRETE);
 			ItemCanister.addTag(OXYGEN);
 			ItemCanister.addTag(HYDROGEN);
 			ItemCanister.addTag(HYDRAULIC_FLUID);
