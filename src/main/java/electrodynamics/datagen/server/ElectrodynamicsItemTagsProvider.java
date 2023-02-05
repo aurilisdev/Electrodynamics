@@ -110,6 +110,8 @@ public class ElectrodynamicsItemTagsProvider extends ItemTagsProvider {
 		
 		tag(ElectrodynamicsTags.Items.PLASTIC).add(ElectrodynamicsItems.ITEM_SHEETPLASTIC.get());
 		
+		tag(ElectrodynamicsTags.Items.SLAG).add(ElectrodynamicsItems.SLAG.get());
+		
 		tag(ElectrodynamicsTags.Items.INSULATES_PLAYER_FEET).add(ElectrodynamicsItems.ITEM_RUBBERBOOTS.get(), ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get(), ElectrodynamicsItems.ITEM_COMBATBOOTS.get());
 
 	}
