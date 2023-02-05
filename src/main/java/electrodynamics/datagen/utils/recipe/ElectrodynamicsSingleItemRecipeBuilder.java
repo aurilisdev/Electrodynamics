@@ -2,6 +2,10 @@ package electrodynamics.datagen.utils.recipe;
 
 import java.util.function.Consumer;
 
+import javax.annotation.Nullable;
+
+import com.google.gson.JsonObject;
+
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.SingleItemRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -19,6 +23,12 @@ public class ElectrodynamicsSingleItemRecipeBuilder extends SingleItemRecipeBuil
 
 	public ElectrodynamicsSingleItemRecipeBuilder(ResourceLocation id, RecipeSerializer<?> recipe, Ingredient input, Item result, int count) {
 		super(id, recipe, "", input, result, count, null, null);
+	}
+	
+	@Override
+	@Nullable
+	public JsonObject serializeAdvancement() {
+		return null;
 	}
 	
 	public static Builder stonecuttingRecipe(Ingredient input, Item output, int count) {
