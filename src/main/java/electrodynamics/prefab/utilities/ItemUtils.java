@@ -37,10 +37,10 @@ public class ItemUtils {
 	public static Item fromBlock(Block block) {
 		return new ItemStack(block).getItem();
 	}
-	
+
 	public static boolean isIngredientMember(Ingredient ing, Item item) {
-		for(ItemStack stack : ing.getItems()) {
-			if(testItems(item, stack.getItem())) {
+		for (ItemStack stack : ing.getItems()) {
+			if (testItems(item, stack.getItem())) {
 				return true;
 			}
 		}

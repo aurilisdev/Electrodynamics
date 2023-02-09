@@ -18,8 +18,8 @@ import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.compatibility.jei.utils.gui.fluid.GenericFluidGaugeWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.BucketSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.GenericItemSlotWrapper;
-import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
 import electrodynamics.compatibility.jei.utils.label.AbstractLabelWrapper;
+import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -129,7 +129,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		Font fontRenderer = Minecraft.getInstance().font;
 		for (AbstractLabelWrapper wrap : LABELS) {
 			Component text = wrap.getComponent(this, recipe);
-			if(wrap.xIsEnd()) {
+			if (wrap.xIsEnd()) {
 				fontRenderer.draw(stack, text, wrap.getXPos() - fontRenderer.width(text.getVisualOrderText()), wrap.getYPos(), wrap.getColor());
 			} else {
 				fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());

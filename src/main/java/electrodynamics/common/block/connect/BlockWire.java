@@ -261,5 +261,5 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return ((BlockWire) state.getBlock()).wire.wireType == WireType.LOGISTICAL ? new TileLogisticalWire(pos, state) : new TileWire(pos, state);
 	}
-	
+
 }

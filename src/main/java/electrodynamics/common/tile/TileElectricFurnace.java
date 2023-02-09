@@ -38,9 +38,9 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileElectricFurnace extends GenericTile implements ITickableSoundTile {
 
 	protected SmeltingRecipe cachedRecipe = null;
-	
+
 	private List<SmeltingRecipe> cachedRecipes = null;
-	
+
 	private boolean isSoundPlaying = false;
 
 	public TileElectricFurnace(BlockPos worldPosition, BlockState blockState) {
@@ -89,7 +89,7 @@ public class TileElectricFurnace extends GenericTile implements ITickableSoundTi
 		for (ItemStack stack : inv.getUpgradeContents()) {
 			if (!stack.isEmpty() && ((ItemUpgrade) stack.getItem()).subtype == SubtypeItemUpgrade.experience) {
 				CompoundTag tag = stack.getOrCreateTag();
-				tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) +  cachedRecipe.getExperience());
+				tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + cachedRecipe.getExperience());
 				break;
 			}
 		}
@@ -97,14 +97,14 @@ public class TileElectricFurnace extends GenericTile implements ITickableSoundTi
 
 	protected boolean canProcess(ComponentProcessor component) {
 		boolean canProcess = checkConditions(component);
-		
-		if(BlockEntityUtils.isLit(this) ^ canProcess) {
+
+		if (BlockEntityUtils.isLit(this) ^ canProcess) {
 			BlockEntityUtils.updateLit(this, canProcess);
 		}
 
 		return canProcess;
 	}
-	
+
 	private boolean checkConditions(ComponentProcessor component) {
 		if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() < component.getUsage() * component.operatingSpeed.get()) {
 			return false;
@@ -114,33 +114,32 @@ public class TileElectricFurnace extends GenericTile implements ITickableSoundTi
 		if (input.isEmpty()) {
 			return false;
 		}
-		
+
 		if (cachedRecipes == null) {
 			cachedRecipes = level.getRecipeManager().getAllRecipesFor(RecipeType.SMELTING);
 		}
-		
-		if(cachedRecipe == null) {
+
+		if (cachedRecipe == null) {
 			cachedRecipe = getMatchedRecipe(input);
-			if(cachedRecipe == null) {
+			if (cachedRecipe == null) {
 				return false;
-			} else {
-				component.operatingTicks.set(0.0);
 			}
-		} 
-		
-		if(!cachedRecipe.matches(new SimpleContainer(input), level)) {
+			component.operatingTicks.set(0.0);
+		}
+
+		if (!cachedRecipe.matches(new SimpleContainer(input), level)) {
 			cachedRecipe = null;
 			return false;
 		}
-		
+
 		ItemStack output = inv.getOutputContents().get(component.getProcessorNumber());
 		ItemStack result = cachedRecipe.getResultItem();
-		return (output.isEmpty() || ItemStack.isSame(output, result)) && output.getCount() + result.getCount() <= output.getMaxStackSize();	
-		
+		return (output.isEmpty() || ItemStack.isSame(output, result)) && output.getCount() + result.getCount() <= output.getMaxStackSize();
+
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if(!isProcessorActive()) {
+		if (!isProcessorActive()) {
 			return;
 		}
 		if (level.random.nextDouble() < 0.15) {
@@ -166,14 +165,14 @@ public class TileElectricFurnace extends GenericTile implements ITickableSoundTi
 	public boolean shouldPlaySound() {
 		return isProcessorActive();
 	}
-	
+
 	private SmeltingRecipe getMatchedRecipe(ItemStack stack) {
-		for(SmeltingRecipe recipe : cachedRecipes) {
-			if(recipe.matches(new SimpleContainer(stack), level)) {
+		for (SmeltingRecipe recipe : cachedRecipes) {
+			if (recipe.matches(new SimpleContainer(stack), level)) {
 				return recipe;
 			}
 		}
 		return null;
 	}
-	
+
 }

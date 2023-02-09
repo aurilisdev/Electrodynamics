@@ -58,8 +58,7 @@ public class TileMineralGrinder extends GenericTile implements ITickableSoundTil
 		}
 
 		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).biproducts(biproducts).upgrades(3).processors(processorCount).processorInputs(processorInputs).validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator(ints)).setMachineSlots(extra));
-		addComponent(new ComponentContainerProvider(machine)
-				.createMenu((id, player) -> (extra == 0 ? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
+		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> (extra == 0 ? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 		for (int i = 0; i <= extra; i++) {
 			addProcessor(new ComponentProcessor(this, i, extra + 1).canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.MINERAL_GRINDER_TYPE.get())).process(component -> component.processItem2ItemRecipe(component)));

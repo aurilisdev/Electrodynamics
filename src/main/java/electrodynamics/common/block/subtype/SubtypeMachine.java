@@ -126,7 +126,7 @@ public enum SubtypeMachine implements ISubtype {
 	SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass, boolean customModel) {
 		this(showInItemGroup, tileclass, customModel, 0);
 	}
-	
+
 	SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass, int litBrightness) {
 		this.showInItemGroup = showInItemGroup;
 		this.tileclass = tileclass;

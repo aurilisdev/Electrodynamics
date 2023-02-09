@@ -67,38 +67,28 @@ public class ServerEventHandler {
 	public static void handlerStartTrackingPlayer(PlayerEvent.StartTracking event) {
 		START_TRACKING_PLAYER_HANDLERS.forEach(handler -> handler.handle(event));
 	}
-	
+
 	@SubscribeEvent
 	public static void tick(PlayerTickEvent event) {
 		if (event.side == LogicalSide.CLIENT && event.player.level.getLevelData().getDayTime() % 50 == 10) {
 			NetworkHandler.CHANNEL.sendToServer(new PacketPlayerInformation());
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void addReloadListeners(AddReloadListenerEvent event) {
 		event.addListener(CombustionFuelRegister.INSTANCE);
 		event.addListener(CoalGeneratorFuelRegister.INSTANCE);
 	}
-	
+
 	@SubscribeEvent
 	public static void serverStartedHandler(ServerStartedEvent event) {
 		CoalGeneratorFuelRegister.INSTANCE.generateTagValues();
 	}
 
-
 	// TODO: Why was this commented?
 	/*
-	 * @SubscribeEvent public static void
-	 * jetpackOwnerSoundHandler(PlayerLoggedInEvent event) { Player player =
-	 * event.getPlayer(); if(player instanceof ServerPlayer server) { ItemStack
-	 * chest = player.getItemBySlot(EquipmentSlot.CHEST); if(!chest.isEmpty() &&
-	 * (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get())
-	 * || ItemUtils.testItems(chest.getItem(),
-	 * DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) {
-	 * NetworkHandler.CHANNEL.sendTo(new
-	 * PacketJetpackEquipedSound(player.getUUID()),
-	 * server.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT); } } }
+	 * @SubscribeEvent public static void jetpackOwnerSoundHandler(PlayerLoggedInEvent event) { Player player = event.getPlayer(); if(player instanceof ServerPlayer server) { ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST); if(!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get()))) { NetworkHandler.CHANNEL.sendTo(new PacketJetpackEquipedSound(player.getUUID()), server.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT); } } }
 	 */
 
 }

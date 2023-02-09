@@ -20,8 +20,7 @@ public abstract class GenericGeneratorTile extends GenericTile implements IElect
 	@Nullable
 	public final SubtypeItemUpgrade[] validMultipliers;
 
-	public GenericGeneratorTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState,
-			double multiplier, SubtypeItemUpgrade...itemUpgrades) {
+	public GenericGeneratorTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState, double multiplier, SubtypeItemUpgrade... itemUpgrades) {
 		super(tileEntityTypeIn, worldPos, blockState);
 		upgradeMultiplier = multiplier;
 		validMultipliers = itemUpgrades;
@@ -30,13 +29,13 @@ public abstract class GenericGeneratorTile extends GenericTile implements IElect
 	@Override
 	public void onInventoryChange(ComponentInventory inv, int slot) {
 		super.onInventoryChange(inv, slot);
-		
+
 		if (inv.getUpgradeContents().size() > 0 && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1) && validMultipliers != null) {
 			setMultiplier(1);
 			for (ItemStack stack : inv.getUpgradeContents()) {
 				if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype.isEmpty) {
 					for (int i = 0; i < stack.getCount(); i++) {
-						if(ArrayUtils.contains(validMultipliers, upgrade.subtype)) {
+						if (ArrayUtils.contains(validMultipliers, upgrade.subtype)) {
 							setMultiplier(upgradeMultiplier);
 						}
 					}
@@ -45,7 +44,5 @@ public abstract class GenericGeneratorTile extends GenericTile implements IElect
 		}
 
 	}
-	
-	
 
 }

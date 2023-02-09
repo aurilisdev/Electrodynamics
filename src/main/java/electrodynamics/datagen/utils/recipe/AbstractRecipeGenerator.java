@@ -53,9 +53,9 @@ public abstract class AbstractRecipeGenerator {
 	public static Item[] PLATES;
 	public static Item[] RAW_ORES;
 	public static Item[] RODS;
-	
+
 	public AbstractRecipeGenerator() {
-		
+
 		CUSTOM_GLASS = ElectrodynamicsItems.getAllItemForSubtype(SubtypeGlass.values());
 		MACHINES = ElectrodynamicsItems.getAllItemForSubtype(SubtypeMachine.values());
 		ORES = ElectrodynamicsItems.getAllItemForSubtype(SubtypeOre.values());
@@ -79,9 +79,9 @@ public abstract class AbstractRecipeGenerator {
 		PLATES = ElectrodynamicsItems.getAllItemForSubtype(SubtypePlate.values());
 		RAW_ORES = ElectrodynamicsItems.getAllItemForSubtype(SubtypeRawOre.values());
 		RODS = ElectrodynamicsItems.getAllItemForSubtype(SubtypeRod.values());
-		
+
 	}
-	
+
 	public abstract void addRecipes(Consumer<FinishedRecipe> consumer);
-	
+
 }

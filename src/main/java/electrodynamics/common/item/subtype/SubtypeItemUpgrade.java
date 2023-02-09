@@ -142,11 +142,17 @@ public enum SubtypeItemUpgrade implements ISubtype {
 			}
 		}
 
-	}, 1), improvedsolarcell(1),
+	}, 1),
+	improvedsolarcell(1),
 	// generator.setMultiplier(2.25);
 	stator(1),
 	// generator.setMultiplier(2.25);
-	range(12), experience(1), itemvoid(1), silktouch(1), fortune(3), unbreaking(3);
+	range(12),
+	experience(1),
+	itemvoid(1),
+	silktouch(1),
+	fortune(3),
+	unbreaking(3);
 
 	public final TriConsumer<GenericTile, ComponentProcessor, ItemStack> applyUpgrade;
 	public final int maxSize;
@@ -160,9 +166,9 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	}
 
 	SubtypeItemUpgrade(int maxStackSize) {
-		this.applyUpgrade = (holder, processor, upgrade) -> {
+		applyUpgrade = (holder, processor, upgrade) -> {
 		};
-		this.maxSize = maxStackSize;
+		maxSize = maxStackSize;
 		isEmpty = true;
 	}
 

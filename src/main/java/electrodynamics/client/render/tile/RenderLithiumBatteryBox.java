@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 
 public class RenderLithiumBatteryBox extends AbstractTileRenderer<TileLithiumBatteryBox> {
-	
+
 	public RenderLithiumBatteryBox(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}

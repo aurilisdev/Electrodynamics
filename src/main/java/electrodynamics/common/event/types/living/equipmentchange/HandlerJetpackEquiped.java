@@ -22,7 +22,7 @@ public class HandlerJetpackEquiped extends AbstractEquipmentChangeHandler {
 				NetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new PacketJetpackEquipedSound(player.getUUID()));
 			}
 		}
-		
+
 	}
 
 }

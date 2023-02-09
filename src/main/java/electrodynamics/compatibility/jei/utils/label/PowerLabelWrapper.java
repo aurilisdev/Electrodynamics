@@ -15,19 +15,18 @@ public class PowerLabelWrapper extends AbstractLabelWrapper {
 		super(0xFF808080, yPos, xPos, false);
 		this.voltage = voltage;
 	}
-	
+
 	public PowerLabelWrapper(int xPos, int yPos, double joulesPerTick, int voltage) {
 		super(0xFF808080, yPos, xPos, false);
 		this.voltage = voltage;
-		this.wattage = joulesPerTick * 20.0 / 1000.0;
+		wattage = joulesPerTick * 20.0 / 1000.0;
 	}
 
 	@Override
 	public Component getComponent(IRecipeCategory<?> category, Recipe<?> recipe) {
-		if(wattage > -1) {
+		if (wattage > -1) {
 			return TextUtils.jeiTranslated("guilabel.power", voltage, wattage);
-		} else {
-			return TextUtils.jeiTranslated("guilabel.power", voltage, ((ElectrodynamicsRecipe) recipe).getUsagePerTick() * 20.0 / 1000.0);
 		}
+		return TextUtils.jeiTranslated("guilabel.power", voltage, ((ElectrodynamicsRecipe) recipe).getUsagePerTick() * 20.0 / 1000.0);
 	}
 }

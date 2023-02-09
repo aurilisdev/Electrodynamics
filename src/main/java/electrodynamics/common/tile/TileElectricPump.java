@@ -31,9 +31,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidStack;
 
 public class TileElectricPump extends GenericTile implements ITickableSoundTile {
-	
-	private Property<Boolean> isGenerating = property(new Property<Boolean>(PropertyType.Boolean, "isGenerating", false));
-	
+
+	private Property<Boolean> isGenerating = property(new Property<>(PropertyType.Boolean, "isGenerating", false));
+
 	private boolean isSoundPlaying = false;
 
 	public TileElectricPump(BlockPos worldPosition, BlockState blockState) {
@@ -68,14 +68,14 @@ public class TileElectricPump extends GenericTile implements ITickableSoundTile 
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if(!shouldPlaySound()) {
+		if (!shouldPlaySound()) {
 			return;
 		}
 		if (level.random.nextDouble() < 0.15) {
 			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.2 + 0.8, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 		}
 		level.addParticle(ParticleTypes.BUBBLE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() - level.random.nextDouble() * 0.2 - .1, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
-		
+
 		if (!isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_ELECTRICPUMP.get(), this, true);
@@ -91,7 +91,6 @@ public class TileElectricPump extends GenericTile implements ITickableSoundTile 
 	public boolean shouldPlaySound() {
 		return isGenerating.get();
 	}
-	
 
 	static {
 		VoxelShape shape = Shapes.empty();

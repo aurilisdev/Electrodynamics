@@ -26,7 +26,7 @@ public class ElectrodynamicStorage implements ICapabilityElectrodynamic {
 
 	@Override
 	public void onChange() {
-		//Not Needed
+		// Not Needed
 	}
 
 }

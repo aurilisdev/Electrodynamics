@@ -11,7 +11,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
 public enum SubtypeIngot implements ISubtype {
-	
+
 	tin(ElectrodynamicsTags.Items.INGOT_TIN, () -> ElectrodynamicsItems.getItem(SubtypeDust.tin)),
 	silver(ElectrodynamicsTags.Items.INGOT_SILVER, () -> ElectrodynamicsItems.getItem(SubtypeDust.silver)),
 	steel(ElectrodynamicsTags.Items.INGOT_STEEL, () -> ElectrodynamicsItems.getItem(SubtypeDust.steel)),
@@ -32,16 +32,16 @@ public enum SubtypeIngot implements ISubtype {
 	public final TagKey<Item> tag;
 	@Nullable
 	public final Supplier<Item> grindedDust;
-	
-	private SubtypeIngot(TagKey<Item> tag) {
+
+	SubtypeIngot(TagKey<Item> tag) {
 		this(tag, null);
 	}
-	
-	private SubtypeIngot(TagKey<Item> tag, Supplier<Item> grindedDust) {
+
+	SubtypeIngot(TagKey<Item> tag, Supplier<Item> grindedDust) {
 		this.tag = tag;
 		this.grindedDust = grindedDust;
 	}
-	
+
 	@Override
 	public String tag() {
 		return "ingot" + name();

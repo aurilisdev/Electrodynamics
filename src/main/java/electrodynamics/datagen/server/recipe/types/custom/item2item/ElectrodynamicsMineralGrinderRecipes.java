@@ -11,9 +11,9 @@ import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import electrodynamics.common.tags.ElectrodynamicsTags;
+import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
 import electrodynamics.datagen.utils.recipe.FinishedRecipeItemOutput;
-import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.ItemStack;
@@ -34,13 +34,13 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 	public ElectrodynamicsMineralGrinderRecipes() {
 		this(References.ID);
 	}
-	
+
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
 
 		for (SubtypeIngot ingot : SubtypeIngot.values()) {
 			if (ingot.grindedDust != null) {
-				newRecipe(new ItemStack(ingot.grindedDust.get()), 0, 200, 350.0,  "dust_" + ingot.name() + "_from_ingot")
+				newRecipe(new ItemStack(ingot.grindedDust.get()), 0, 200, 350.0, "dust_" + ingot.name() + "_from_ingot")
 						//
 						.addItemTagInput(ingot.tag, 1)
 						//

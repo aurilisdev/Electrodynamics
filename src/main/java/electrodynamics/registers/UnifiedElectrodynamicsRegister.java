@@ -26,7 +26,7 @@ public class UnifiedElectrodynamicsRegister {
 
 	static {
 		// machines
-		//cleaner and simpler is it not?
+		// cleaner and simpler is it not?
 		BlockItemDescriptable.addDescription(() -> UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnace), TextUtils.tooltip("machine.voltage.120"));
 		BlockItemDescriptable.addDescription(() -> UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnacedouble), TextUtils.tooltip("machine.voltage.240"));
 		BlockItemDescriptable.addDescription(() -> UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnacetriple), TextUtils.tooltip("machine.voltage.480"));

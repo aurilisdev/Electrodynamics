@@ -26,8 +26,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class ElectrodynamicsFeatures {
 	public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES = DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, References.ID);
 	public static final DeferredRegister<PlacedFeature> PLACED_FEATURES = DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, References.ID);
-	
-	
+
 	static {
 		// Ore Generation
 		for (SubtypeOre ore : SubtypeOre.values()) {

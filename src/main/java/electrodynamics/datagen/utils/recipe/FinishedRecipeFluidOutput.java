@@ -10,10 +10,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class FinishedRecipeFluidOutput extends AbstractElectrodynamicsFinishedRecipe {
 
 	private FluidStack output;
-	
+
 	private FinishedRecipeFluidOutput(RecipeSerializer<?> serializer, FluidStack stack, double experience, int processTime, double usage) {
 		super(serializer, experience, processTime, usage);
-		this.output = stack;
+		output = stack;
 	}
 
 	@Override
@@ -23,12 +23,12 @@ public class FinishedRecipeFluidOutput extends AbstractElectrodynamicsFinishedRe
 		output.addProperty("amount", this.output.getAmount());
 		recipeJson.add(ElectrodynamicsRecipeSerializer.OUTPUT, output);
 	}
-	
+
 	@Override
 	public FinishedRecipeFluidOutput name(RecipeCategory category, String parent, String name) {
 		return (FinishedRecipeFluidOutput) super.name(category, parent, name);
 	}
-	
+
 	public static FinishedRecipeFluidOutput of(RecipeSerializer<?> serializer, FluidStack output, double experience, int processTime, double usage) {
 		return new FinishedRecipeFluidOutput(serializer, output, experience, processTime, usage);
 	}

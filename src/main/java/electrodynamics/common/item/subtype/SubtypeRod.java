@@ -12,11 +12,11 @@ public enum SubtypeRod implements ISubtype {
 	titaniumcarbide(ElectrodynamicsTags.Items.ROD_TITANIUMCARBIDE);
 
 	public final TagKey<Item> tag;
-	
-	private SubtypeRod(TagKey<Item> tag) {
+
+	SubtypeRod(TagKey<Item> tag) {
 		this.tag = tag;
 	}
-	
+
 	@Override
 	public String tag() {
 		return "rod" + name();

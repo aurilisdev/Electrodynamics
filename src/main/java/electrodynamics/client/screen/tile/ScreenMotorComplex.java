@@ -45,7 +45,7 @@ public class ScreenMotorComplex extends GenericScreen<ContainerMotorComplex> {
 		int blocksPerTick = 0;
 		TileMotorComplex motor = menu.getHostFromIntArray();
 		if (motor != null && motor.isPowered.get()) {
-			blocksPerTick = motor.speed.get().intValue();
+			blocksPerTick = motor.speed.get();
 		}
 		font.draw(stack, TextUtils.gui("motorcomplex.speed", blocksPerTick), 30, 40, 4210752);
 	}

@@ -44,15 +44,13 @@ public class ElectrodynamicsSmeltingRecipes extends AbstractRecipeGenerator {
 
 		for (SubtypeOre ore : SubtypeOre.values()) {
 			if (ore.smeltingItem != null) {
-				ElectrodynamicsCookingRecipe
-						.smeltingRecipe(ore.smeltingItem.get(), (float) ore.smeltingXp, ore.smeltingTime)
+				ElectrodynamicsCookingRecipe.smeltingRecipe(ore.smeltingItem.get(), (float) ore.smeltingXp, ore.smeltingTime)
 						//
 						.input(ore.itemTag)
 						//
 						.complete(References.ID, SMELTING_LOC + ore.name() + "_ingot_from_ore", consumer);
 
-				ElectrodynamicsCookingRecipe
-						.blastingRecipe(ore.smeltingItem.get(), (float) ore.smeltingXp, ore.smeltingTime / 2)
+				ElectrodynamicsCookingRecipe.blastingRecipe(ore.smeltingItem.get(), (float) ore.smeltingXp, ore.smeltingTime / 2)
 						//
 						.input(ore.itemTag)
 						//

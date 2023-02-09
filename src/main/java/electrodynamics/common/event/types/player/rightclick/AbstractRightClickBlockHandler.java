@@ -5,5 +5,5 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBloc
 public abstract class AbstractRightClickBlockHandler {
 
 	public abstract void handle(RightClickBlock event);
-	
+
 }

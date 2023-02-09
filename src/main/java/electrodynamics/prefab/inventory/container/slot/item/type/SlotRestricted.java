@@ -17,7 +17,7 @@ public class SlotRestricted extends SlotGeneric {
 	private List<Item> whitelist;
 	private List<Class<?>> classes;
 	private List<Capability<?>> validCapabilities;
-	
+
 	private Predicate<ItemStack> mayPlace = stack -> false;
 
 	public SlotRestricted(Container inventory, int index, int x, int y) {
@@ -27,18 +27,18 @@ public class SlotRestricted extends SlotGeneric {
 	public SlotRestricted(ISlotTexture slot, ITexture icon, Container inv, int index, int x, int y) {
 		super(slot, icon, inv, index, x, y);
 	}
-	
+
 	public SlotRestricted setRestriction(Predicate<ItemStack> mayPlace) {
 		this.mayPlace = mayPlace;
 		return this;
 	}
-	
+
 	public SlotRestricted setRestriction(Item... items) {
 		whitelist = Arrays.asList(items);
 		mayPlace = stack -> whitelist.contains(stack.getItem());
 		return this;
 	}
-	
+
 	public SlotRestricted setRestriction(Class<?>... items) {
 		classes = Arrays.asList(items);
 		mayPlace = stack -> {
@@ -53,7 +53,7 @@ public class SlotRestricted extends SlotGeneric {
 		};
 		return this;
 	}
-	
+
 	public SlotRestricted setRestriction(Capability<?>... capabilities) {
 		validCapabilities = Arrays.asList(capabilities);
 		mayPlace = stack -> {
@@ -68,8 +68,6 @@ public class SlotRestricted extends SlotGeneric {
 		};
 		return this;
 	}
-	
-	
 
 	@Override
 	public boolean mayPlace(ItemStack stack) {

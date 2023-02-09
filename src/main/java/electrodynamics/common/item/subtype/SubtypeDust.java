@@ -37,17 +37,17 @@ public enum SubtypeDust implements ISubtype {
 	@Nullable
 	public final Supplier<Item> smeltedItem;
 	public final int smeltTime;
-	
-	private SubtypeDust(TagKey<Item> tag) {
+
+	SubtypeDust(TagKey<Item> tag) {
 		this(tag, null, 0);
 	}
-	
-	private SubtypeDust(TagKey<Item> tag, Supplier<Item> smeltedItem, int smeltTime) {
+
+	SubtypeDust(TagKey<Item> tag, Supplier<Item> smeltedItem, int smeltTime) {
 		this.tag = tag;
 		this.smeltedItem = smeltedItem;
 		this.smeltTime = smeltTime;
 	}
-	
+
 	@Override
 	public String tag() {
 		return "dust" + name();

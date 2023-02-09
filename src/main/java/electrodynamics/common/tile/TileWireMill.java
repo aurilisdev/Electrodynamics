@@ -30,9 +30,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileWireMill extends GenericTile implements ITickableSoundTile {
-	
+
 	private boolean isSoundPlaying = false;
-	
+
 	public TileWireMill(BlockPos worldPosition, BlockState blockState) {
 		this(SubtypeMachine.wiremill, 0, worldPosition, blockState);
 	}
@@ -65,14 +65,14 @@ public class TileWireMill extends GenericTile implements ITickableSoundTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if(!isProcessorActive()) {
+		if (!isProcessorActive()) {
 			return;
 		}
 
 		if (level.random.nextDouble() < 0.15) {
 			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.5 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 		}
-		
+
 		if (!isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HUM.get(), this, true);

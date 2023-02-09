@@ -27,13 +27,9 @@ public class TileFluidVoid extends GenericFluidTile {
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentFluidHandlerSimple(128000, this, "").setInputDirections(Direction.NORTH, Direction.SOUTH,
-				Direction.EAST, Direction.UP, Direction.WEST, Direction.DOWN));
-		addComponent(
-				new ComponentInventory(this).size(1).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.fluidvoid)
-				.createMenu((id, player) -> new ContainerFluidVoid(id, player, getComponent(ComponentType.Inventory),
-						getCoordsArray())));
+		addComponent(new ComponentFluidHandlerSimple(128000, this, "").setInputDirections(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.UP, Direction.WEST, Direction.DOWN));
+		addComponent(new ComponentInventory(this).size(1).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.fluidvoid).createMenu((id, player) -> new ContainerFluidVoid(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	private void tickServer(ComponentTickable tick) {

@@ -40,19 +40,18 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 	}
 
 	@Override
-	public void render(Camera camera, Frustum frustum, LevelRenderer renderer, PoseStack stack,
-			Matrix4f projectionMatrix, Minecraft minecraft, int renderTick, float partialTick) {
-		
+	public void render(Camera camera, Frustum frustum, LevelRenderer renderer, PoseStack stack, Matrix4f projectionMatrix, Minecraft minecraft, int renderTick, float partialTick) {
+
 		MultiBufferSource.BufferSource buffer = minecraft.renderBuffers().bufferSource();
 		Vec3 camPos = camera.getPosition();
-		
+
 		TextureAtlasSprite armTexture = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_QUARRYARM);
 		float u0Frame = armTexture.getU0();
 		float u1Frame = armTexture.getU1();
 		float v0Frame = armTexture.getV0();
 		float v1Frame = armTexture.getV1();
 		float[] colorsFrame = RenderingUtils.getColorArray(armTexture.getPixelRGBA(0, 10, 10));
-		
+
 		TextureAtlasSprite darkArmTexture = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_QUARRYARM_DARK);
 		float u0FrameDark = darkArmTexture.getU0();
 		float u1FrameDark = darkArmTexture.getU1();
@@ -72,17 +71,16 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 		float u1White = whiteTexture.getU1();
 		float v0White = whiteTexture.getV0();
 		float v1White = whiteTexture.getV1();
-		
+
 		VertexConsumer armBuilder = buffer.getBuffer(Sheets.solidBlockSheet());
-		
-		
+
 		stack.pushPose();
 		stack.translate(-camPos.x, -camPos.y, -camPos.z);
 		armsToRender.forEach((pos, data) -> {
 			data.lightParts().forEach(pair -> {
 				PrecisionVector vec = pair.getFirst();
 				AABB aabb = vec.shiftRemainder(pair.getSecond());
-				if(!frustum.isVisible(vec.shiftWhole(aabb))) {
+				if (!frustum.isVisible(vec.shiftWhole(aabb))) {
 					return;
 				}
 				stack.pushPose();
@@ -93,7 +91,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 			data.darkParts().forEach(pair -> {
 				PrecisionVector vec = pair.getFirst();
 				AABB aabb = vec.shiftRemainder(pair.getSecond());
-				if(!frustum.isVisible(vec.shiftWhole(aabb))) {
+				if (!frustum.isVisible(vec.shiftWhole(aabb))) {
 					return;
 				}
 				stack.pushPose();
@@ -104,7 +102,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 			data.titaniumParts().forEach(pair -> {
 				PrecisionVector vec = pair.getFirst();
 				AABB aabb = vec.shiftRemainder(pair.getSecond());
-				if(!frustum.isVisible(vec.shiftWhole(aabb))) {
+				if (!frustum.isVisible(vec.shiftWhole(aabb))) {
 					return;
 				}
 				stack.pushPose();
@@ -115,10 +113,10 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 			if (data.headType() != null) {
 				PrecisionVector vec = data.drillHead().getFirst();
 				AABB aabb = vec.shiftRemainder(data.drillHead().getSecond());
-				if(!frustum.isVisible(vec.shiftWhole(aabb))) {
+				if (!frustum.isVisible(vec.shiftWhole(aabb))) {
 					return;
 				}
-				
+
 				TextureAtlasSprite headText = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(data.headType().blockTextureLoc);
 				float u0Head = headText.getU0();
 				float u1Head = headText.getU1();
@@ -127,10 +125,10 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				float[] colorsHead = RenderingUtils.getColorArray(armTexture.getPixelRGBA(0, 10, 10));
 				stack.pushPose();
 				stack.translate(vec.x, vec.y, vec.z);
-				if(data.running()) {
+				if (data.running()) {
 					float speed = (float) Math.max(data.speed(), 5.0);
 					float progress = data.progress();
-					if(speed >= 4.0) {
+					if (speed >= 4.0) {
 						progress = Math.abs(minecraft.level.getGameTime() % 5);
 					}
 					float degrees = 360.0F * (progress / speed);
@@ -141,167 +139,166 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsHead[0], colorsHead[1], colorsHead[2], colorsHead[3], u0Head, v0Head, u1Head, v1Head, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
 				stack.popPose();
 			}
-			
+
 		});
-		
+
 		buffer.endBatch(Sheets.solidBlockSheet());
-		
+
 		armsToRender.forEach((pos, data) -> {
 			BakedModel wheelStill = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_QUARRYWHEEL_STILL);
 			BakedModel wheelRot = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_QUARRYWHEEL_ROT);
-			
+
 			stack.pushPose();
-			
+
 			PrecisionVector vec = data.leftWheel().vector();
 			stack.translate(vec.totX(), vec.totY(), vec.totZ());
 			stack.mulPose(new Quaternion(0, data.leftWheel().yAxisRotation(), 0, true));
-			
+
 			RenderingUtils.renderModel(wheelStill, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
-			
+
 			stack.pushPose();
 			stack.translate(0.0, 0.0625, 0.0);
 			stack.mulPose(new Quaternion(data.leftWheel().xAxisRotation(), 0, data.leftWheel().zAxisRotation(), true));
 			stack.translate(0.0, -0.0625, 0.0);
-			
+
 			RenderingUtils.renderModel(wheelRot, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
-			
+
 			stack.popPose();
-			
+
 			stack.popPose();
-			
+
 			stack.pushPose();
-			
+
 			vec = data.rightWheel().vector();
 			stack.translate(vec.totX(), vec.totY(), vec.totZ());
 			stack.mulPose(new Quaternion(0, data.rightWheel().yAxisRotation(), 0, true));
-			
+
 			RenderingUtils.renderModel(wheelStill, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
-			
+
 			stack.pushPose();
 			stack.translate(0.0, 0.0625, 0.0);
 			stack.mulPose(new Quaternion(data.rightWheel().xAxisRotation(), 0, data.rightWheel().zAxisRotation(), true));
 			stack.translate(0.0, -0.0625, 0.0);
-			
+
 			RenderingUtils.renderModel(wheelRot, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
-			
+
 			stack.popPose();
-			
+
 			stack.popPose();
-			
+
 			stack.pushPose();
-			
+
 			vec = data.bottomWheel().vector();
 			stack.translate(vec.totX(), vec.totY(), vec.totZ());
 			stack.mulPose(new Quaternion(0, data.bottomWheel().yAxisRotation(), 0, true));
-			
+
 			RenderingUtils.renderModel(wheelStill, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
-			
+
 			stack.pushPose();
 			stack.translate(0.0, 0.0625, 0.0);
 			stack.mulPose(new Quaternion(data.bottomWheel().xAxisRotation(), 0, data.bottomWheel().zAxisRotation(), true));
 			stack.translate(0.0, -0.0625, 0.0);
-			
+
 			RenderingUtils.renderModel(wheelRot, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
-			
+
 			stack.popPose();
-			
+
 			stack.popPose();
-			
+
 			stack.pushPose();
-			
+
 			vec = data.topWheel().vector();
 			stack.translate(vec.totX(), vec.totY(), vec.totZ());
 			stack.mulPose(new Quaternion(0, data.topWheel().yAxisRotation(), 0, true));
-			
+
 			RenderingUtils.renderModel(wheelStill, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
-			
+
 			stack.pushPose();
 			stack.translate(0.0, 0.0625, 0.0);
 			stack.mulPose(new Quaternion(data.topWheel().xAxisRotation(), 0, data.topWheel().zAxisRotation(), true));
 			stack.translate(0.0, -0.0625, 0.0);
-			
+
 			RenderingUtils.renderModel(wheelRot, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
-			
+
 			stack.popPose();
-			
+
 			stack.popPose();
 		});
-		
-		
+
 		VertexConsumer lineBuilder = buffer.getBuffer(Sheets.translucentCullBlockSheet());
-		
+
 		armsToRender.forEach((pos, data) -> {
 			BlockPos start = data.corners().get(0);
 			BlockPos nearCorner = data.corners().get(1);
 			BlockPos farCorner = data.corners().get(2);
 			BlockPos end = data.corners().get(3);
-			
+
 			int time = 200;
 			int cutoff = 180;
 			int half = (time - cutoff) / 2;
-			
+
 			float alpha = minecraft.level.getGameTime() % time;
-			
-			if(alpha < cutoff) {
+
+			if (alpha < cutoff) {
 				return;
 			}
-			
+
 			alpha = time - alpha;
-			if(alpha <= half) {
-				alpha = alpha / (float) half; 
+			if (alpha <= half) {
+				alpha = alpha / half;
 			} else {
 				alpha = alpha - half;
-				alpha = 1.0F - (alpha / (float) half); 
+				alpha = 1.0F - alpha / half;
 			}
 			double deltaX = nearCorner.getX() - start.getX();
 			double deltaZ = nearCorner.getZ() - start.getZ();
-			
+
 			AABB beam = new AABB(0.4375, 0.5625, 0.4375, deltaX * data.signs()[0] + 0.5625, 0.6875, deltaZ * data.signs()[0] + 0.5625);
-			
-			if(frustum.isVisible(beam.move(start))) {
+
+			if (frustum.isVisible(beam.move(start))) {
 				stack.pushPose();
 				stack.translate(start.getX(), start.getY(), start.getZ());
 				RenderingUtils.renderFilledBoxNoOverlay(stack, lineBuilder, beam, 1.0F, 0, 0, alpha, u0White, v0White, u1White, v1White, 255);
 				stack.popPose();
 			}
-			
+
 			deltaX = farCorner.getX() - start.getX();
 			deltaZ = farCorner.getZ() - start.getZ();
 			beam = new AABB(0.4375, 0.5625, 0.4375, deltaX * data.signs()[1] + 0.5625, 0.6875, deltaZ * data.signs()[1] + 0.5625);
-			
-			if(frustum.isVisible(beam.move(start))) {
+
+			if (frustum.isVisible(beam.move(start))) {
 				stack.pushPose();
 				stack.translate(start.getX(), start.getY(), start.getZ());
 				RenderingUtils.renderFilledBoxNoOverlay(stack, lineBuilder, beam, 1.0F, 0, 0, alpha, u0White, v0White, u1White, v1White, 255);
 				stack.popPose();
 			}
-			
+
 			deltaX = end.getX() - nearCorner.getX();
 			deltaZ = end.getZ() - nearCorner.getZ();
 			beam = new AABB(0.4375, 0.5625, 0.4375, deltaX * data.signs()[2] + 0.5625, 0.6875, deltaZ * data.signs()[2] + 0.5625);
-			
-			if(frustum.isVisible(beam.move(end))) {
+
+			if (frustum.isVisible(beam.move(end))) {
 				stack.pushPose();
 				stack.translate(end.getX(), end.getY(), end.getZ());
 				RenderingUtils.renderFilledBoxNoOverlay(stack, lineBuilder, beam, 1.0F, 0, 0, alpha, u0White, v0White, u1White, v1White, 255);
 				stack.popPose();
 			}
-			
+
 			deltaX = end.getX() - farCorner.getX();
 			deltaZ = end.getZ() - farCorner.getZ();
 			beam = new AABB(0.4375, 0.5625, 0.4375, deltaX * data.signs()[3] + 0.5625, 0.6875, deltaZ * data.signs()[3] + 0.5625);
-			
-			if(frustum.isVisible(beam.move(end))) {
+
+			if (frustum.isVisible(beam.move(end))) {
 				stack.pushPose();
 				stack.translate(end.getX(), end.getY(), end.getZ());
 				RenderingUtils.renderFilledBoxNoOverlay(stack, lineBuilder, beam, 1.0F, 0, 0, alpha, u0White, v0White, u1White, v1White, 255);
 				stack.popPose();
 			}
-			
+
 		});
-		
+
 		buffer.endBatch(Sheets.translucentCullBlockSheet());
-		
+
 		stack.popPose();
 	}
 

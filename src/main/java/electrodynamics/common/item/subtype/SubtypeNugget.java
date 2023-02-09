@@ -23,13 +23,13 @@ public enum SubtypeNugget implements ISubtype {
 	public final TagKey<Item> tag;
 	public final TagKey<Item> sourceIngot;
 	public final Supplier<Item> productIngot;
-	
-	private SubtypeNugget(TagKey<Item> tag, TagKey<Item> sourceIngot, Supplier<Item> productIngot) {
+
+	SubtypeNugget(TagKey<Item> tag, TagKey<Item> sourceIngot, Supplier<Item> productIngot) {
 		this.tag = tag;
 		this.sourceIngot = sourceIngot;
 		this.productIngot = productIngot;
 	}
-	
+
 	@Override
 	public String tag() {
 		return "nugget" + name();

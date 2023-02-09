@@ -18,10 +18,10 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileMultimeterBlock extends GenericTile {
-	public Property<Double> voltage = property(new Property<Double>(PropertyType.Double, "voltage", 0.0));
-	public Property<Double> joules = property(new Property<Double>(PropertyType.Double, "joules", 0.0));
-	public Property<Double> resistance = property(new Property<Double>(PropertyType.Double, "resistance", 0.0));
-	public Property<Double> loss = property(new Property<Double>(PropertyType.Double, "loss", 0.0));
+	public Property<Double> voltage = property(new Property<>(PropertyType.Double, "voltage", 0.0));
+	public Property<Double> joules = property(new Property<>(PropertyType.Double, "joules", 0.0));
+	public Property<Double> resistance = property(new Property<>(PropertyType.Double, "resistance", 0.0));
+	public Property<Double> loss = property(new Property<>(PropertyType.Double, "loss", 0.0));
 
 	public CachedTileOutput input;
 

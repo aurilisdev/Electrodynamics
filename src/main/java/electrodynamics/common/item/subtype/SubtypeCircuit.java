@@ -10,10 +10,10 @@ public enum SubtypeCircuit implements ISubtype {
 	advanced(ElectrodynamicsTags.Items.CIRCUITS_ADVANCED),
 	elite(ElectrodynamicsTags.Items.CIRCUITS_ELITE),
 	ultimate(ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE);
-	
+
 	public final TagKey<Item> tag;
-	
-	private SubtypeCircuit(TagKey<Item> tag) {
+
+	SubtypeCircuit(TagKey<Item> tag) {
 		this.tag = tag;
 	}
 

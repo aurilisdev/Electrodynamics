@@ -106,7 +106,7 @@ public class FluidUtilities {
 				ItemStack stack = buckets.get(i);
 				if (!stack.isEmpty() && !CapabilityUtils.isFluidItemNull()) {
 					FluidStack containerFluid = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
-					if(tank.isFluidValid(containerFluid)) {
+					if (tank.isFluidValid(containerFluid)) {
 						int amtDrained = tank.fill(containerFluid, FluidAction.SIMULATE);
 						FluidStack drained = new FluidStack(containerFluid.getFluid(), amtDrained);
 						CapabilityUtils.drain(stack, drained);
@@ -118,7 +118,7 @@ public class FluidUtilities {
 				}
 			}
 		}
-		
+
 	}
 
 	public static void fillItem(GenericTile tile, FluidTank[] tanks) {
@@ -134,20 +134,20 @@ public class FluidUtilities {
 					int amtFilled = CapabilityUtils.simFill(stack, fluid);
 					FluidStack taken = new FluidStack(fluid.getFluid(), amtFilled);
 					boolean isWater = taken.getFluid().isSame(Fluids.WATER);
-					if(isBucket && amtFilled == 1000 && (isWater || taken.getFluid().isSame(Fluids.LAVA))) {
+					if (isBucket && amtFilled == 1000 && (isWater || taken.getFluid().isSame(Fluids.LAVA))) {
 						tank.drain(taken, FluidAction.EXECUTE);
 						ItemStack filledBucket;
-						if(isWater) {
+						if (isWater) {
 							filledBucket = new ItemStack(Items.WATER_BUCKET);
 						} else {
 							filledBucket = new ItemStack(Items.LAVA_BUCKET);
 						}
 						inv.setItem(inv.getOutputBucketStartIndex() + i, filledBucket.copy());
-					} else if(!isBucket) {
+					} else if (!isBucket) {
 						CapabilityUtils.fill(stack, taken);
 						tank.drain(taken, FluidAction.EXECUTE);
 					}
-					
+
 				}
 			}
 		}

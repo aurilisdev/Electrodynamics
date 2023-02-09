@@ -34,7 +34,7 @@ public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
 		TileBatteryBox box = menu.getHostFromIntArray();
 		if (box != null) {
 			ComponentElectrodynamic el = box.getComponent(ComponentType.Electrodynamic);
-			list.add(TextUtils.gui("machine.current", Component.literal(ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get() /  el.getVoltage(), DisplayUnit.AMPERE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("machine.current", Component.literal(ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get() / el.getVoltage(), DisplayUnit.AMPERE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(TextUtils.gui("machine.transfer", Component.literal(ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get(), DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(TextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(el.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(TextUtils.gui("machine.stored", Component.literal(ChatFormatter.getChatDisplayShort(el.getJoulesStored(), DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(box.maxJoules.get() * box.currentCapacityMultiplier.get(), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());

@@ -37,11 +37,11 @@ import net.minecraftforge.common.ForgeHooks;
 public class TileCoalGenerator extends GenericGeneratorTile {
 	protected CachedTileOutput output;
 	protected TransferPack currentOutput = TransferPack.EMPTY;
-	public TargetValue heat = new TargetValue(property(new Property<Double>(PropertyType.Double, "heat", 27.0)));
-	public Property<Integer> burnTime = property(new Property<Integer>(PropertyType.Integer, "burnTime", 0));
-	public Property<Integer> maxBurnTime = property(new Property<Integer>(PropertyType.Integer, "maxBurnTime", 1));
-	//for future planned upgrades
-	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier", 1.0));
+	public TargetValue heat = new TargetValue(property(new Property<>(PropertyType.Double, "heat", 27.0)));
+	public Property<Integer> burnTime = property(new Property<>(PropertyType.Integer, "burnTime", 0));
+	public Property<Integer> maxBurnTime = property(new Property<>(PropertyType.Integer, "maxBurnTime", 1));
+	// for future planned upgrades
+	private Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
 
 	public TileCoalGenerator(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_COALGENERATOR.get(), worldPosition, blockState, 1.0);
@@ -74,7 +74,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 		BlockMachine machine = (BlockMachine) getBlockState().getBlock();
 		if (machine != null) {
 			boolean greaterBurnTime = burnTime.get() > 0;
-			if(BlockEntityUtils.isLit(this) ^ greaterBurnTime) {
+			if (BlockEntityUtils.isLit(this) ^ greaterBurnTime) {
 				BlockEntityUtils.updateLit(this, greaterBurnTime);
 			}
 		}

@@ -17,7 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 
 public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBlock> {
-	
+
 	public RenderMultimeterBlock(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}

@@ -24,8 +24,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ElectrodynamicsItemTagsProvider extends ItemTagsProvider {
 
-	public ElectrodynamicsItemTagsProvider(DataGenerator generator, BlockTagsProvider provider,
-			ExistingFileHelper existingFileHelper) {
+	public ElectrodynamicsItemTagsProvider(DataGenerator generator, BlockTagsProvider provider, ExistingFileHelper existingFileHelper) {
 		super(generator, provider, References.ID, existingFileHelper);
 	}
 
@@ -105,13 +104,13 @@ public class ElectrodynamicsItemTagsProvider extends ItemTagsProvider {
 		for (SubtypeOre ore : SubtypeOre.values()) {
 			ores.addTag(ore.itemTag);
 		}
-		
+
 		tag(ElectrodynamicsTags.Items.COAL_COKE).add(ElectrodynamicsItems.COAL_COKE.get());
-		
+
 		tag(ElectrodynamicsTags.Items.PLASTIC).add(ElectrodynamicsItems.ITEM_SHEETPLASTIC.get());
-		
+
 		tag(ElectrodynamicsTags.Items.SLAG).add(ElectrodynamicsItems.SLAG.get());
-		
+
 		tag(ElectrodynamicsTags.Items.INSULATES_PLAYER_FEET).add(ElectrodynamicsItems.ITEM_RUBBERBOOTS.get(), ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get(), ElectrodynamicsItems.ITEM_COMBATBOOTS.get());
 
 	}

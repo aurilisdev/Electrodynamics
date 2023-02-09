@@ -33,15 +33,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class TileWindmill extends GenericGeneratorTile implements IMultiblockTileNode, ITickableSoundTile {
-	
+
 	protected CachedTileOutput output;
-	private Property<Boolean> isGenerating = property(new Property<Boolean>(PropertyType.Boolean, "isGenerating", false));
-	public Property<Boolean> directionFlag = property(new Property<Boolean>(PropertyType.Boolean, "directionFlag", false));
-	public Property<Double> generating = property(new Property<Double>(PropertyType.Double, "generating", 0.0));
-	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier", 1.0));
+	private Property<Boolean> isGenerating = property(new Property<>(PropertyType.Boolean, "isGenerating", false));
+	public Property<Boolean> directionFlag = property(new Property<>(PropertyType.Boolean, "directionFlag", false));
+	public Property<Double> generating = property(new Property<>(PropertyType.Double, "generating", 0.0));
+	private Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
 	public double savedTickRotation;
 	public double rotationSpeed;
-	
+
 	private boolean isSoundPlaying = false;
 
 	public TileWindmill(BlockPos worldPosition, BlockState blockState) {

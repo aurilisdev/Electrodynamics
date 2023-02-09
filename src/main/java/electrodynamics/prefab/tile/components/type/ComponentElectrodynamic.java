@@ -51,14 +51,14 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	protected DoubleSupplier getJoules = () -> joules.get();
 	protected BooleanSupplier hasCapability = () -> true;
 	private Direction lastReturnedSide = Direction.UP;
-	
+
 	public static final String SAVE_KEY = "joules";
 
 	public ComponentElectrodynamic(GenericTile source) {
 		holder(source);
-		voltage = source.property(new Property<Double>(PropertyType.Double, "voltage", ElectrodynamicsCapabilities.DEFAULT_VOLTAGE));
-		maxJoules = source.property(new Property<Double>(PropertyType.Double, "maxJoules", 0.0));
-		joules = source.property(new Property<Double>(PropertyType.Double, SAVE_KEY, 0.0));
+		voltage = source.property(new Property<>(PropertyType.Double, "voltage", ElectrodynamicsCapabilities.DEFAULT_VOLTAGE));
+		maxJoules = source.property(new Property<>(PropertyType.Double, "maxJoules", 0.0));
+		joules = source.property(new Property<>(PropertyType.Double, SAVE_KEY, 0.0));
 	}
 
 	@Override
@@ -81,12 +81,9 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		if (side == null || inputDirections.contains(side) || outputDirections.contains(side)) {
 			return true;
 		}
-		Direction dir = holder.hasComponent(ComponentType.Direction)
-				? holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()
-				: null;
+		Direction dir = holder.hasComponent(ComponentType.Direction) ? holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection() : null;
 		if (dir != null) {
-			return relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side))
-					|| relativeOutputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side));
+			return relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side)) || relativeOutputDirections.contains(BlockEntityUtils.getRelativeSide(dir, side));
 		}
 		return false;
 	}
@@ -99,10 +96,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 
 	@Override
 	public TransferPack extractPower(TransferPack transfer, boolean debug) {
-		if (outputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction)
-				&& relativeOutputDirections.contains(BlockEntityUtils.getRelativeSide(
-						holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
-						lastReturnedSide))) {
+		if (outputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction) && relativeOutputDirections.contains(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
 			return functionExtractPower.apply(transfer, debug);
 		}
 		return TransferPack.EMPTY;
@@ -110,10 +104,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 
 	@Override
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
-		if (inputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction)
-				&& relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(
-						holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(),
-						lastReturnedSide))) {
+		if (inputDirections.contains(lastReturnedSide) || holder.hasComponent(ComponentType.Direction) && relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), lastReturnedSide))) {
 			return functionReceivePower.apply(transfer, debug);
 		}
 		return TransferPack.EMPTY;
@@ -125,7 +116,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		} else {
 			this.joules.set(Math.max(0, Math.min(maxJoules.get(), joules)));
 		}
-		if(joules != 0) {
+		if (joules != 0) {
 			onChange();
 		}
 		return this;
@@ -198,7 +189,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 			if (stack.getItem() instanceof ItemElectric) {
 				IItemElectric el = (IItemElectric) stack.getItem();
 				TransferPack pack = functionReceivePower.apply(el.extractPower(stack, maxJoules.get() - joules.get(), false), false);
-				if(pack != TransferPack.EMPTY) {
+				if (pack != TransferPack.EMPTY) {
 					onChange();
 				}
 			}
@@ -212,8 +203,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 			ItemStack stack = inventory.getItem(slot);
 			if (stack.getItem() instanceof ItemElectric) {
 				IItemElectric el = (IItemElectric) stack.getItem();
-				functionExtractPower.apply(
-						el.receivePower(stack, TransferPack.joulesVoltage(joules.get(), voltage.get()), false), false);
+				functionExtractPower.apply(el.receivePower(stack, TransferPack.joulesVoltage(joules.get(), voltage.get()), false), false);
 			}
 		}
 		return this;
@@ -234,8 +224,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		Level world = holder.getLevel();
 		BlockPos pos = holder.getBlockPos();
 		world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-		world.explode(null, pos.getX(), pos.getY(), pos.getZ(),
-				(float) Math.log10(10 + transfer.getVoltage() / getVoltage()), BlockInteraction.DESTROY);
+		world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()), BlockInteraction.DESTROY);
 	}
 
 	@Override
@@ -250,7 +239,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 
 	@Override
 	public void onChange() {
-		if(holder != null) {
+		if (holder != null) {
 			holder.onEnergyChange(this);
 		}
 	}

@@ -6,7 +6,7 @@ import electrodynamics.prefab.tile.components.Component;
 public interface IComponentFluidHandler extends Component {
 
 	PropertyFluidTank[] getInputTanks();
-	
+
 	PropertyFluidTank[] getOutputTanks();
-	
+
 }

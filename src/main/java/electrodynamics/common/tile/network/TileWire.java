@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileWire extends GenericTileWire {
-	public Property<Double> transmit = property(new Property<Double>(PropertyType.Double, "transmit", 0.0));
+	public Property<Double> transmit = property(new Property<>(PropertyType.Double, "transmit", 0.0));
 
 	public TileWire(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_WIRE.get(), pos, state);

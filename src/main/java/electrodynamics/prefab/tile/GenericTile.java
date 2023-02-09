@@ -44,16 +44,16 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	private ComponentProcessor[] processors = new ComponentProcessor[5];
 	private PropertyManager propertyManager = new PropertyManager();
 
-	//use this for manually setting the change flag
+	// use this for manually setting the change flag
 	public boolean isChanged = false;
-	
+
 	public <T> Property<T> property(Property<T> prop) {
-		for(Property<?> existing : propertyManager.getProperties()) {
-			if(existing.getName().equals(prop.getName())) {
+		for (Property<?> existing : propertyManager.getProperties()) {
+			if (existing.getName().equals(prop.getName())) {
 				throw new RuntimeException(prop.getName() + " is already being used by another property!");
 			}
 		}
-		
+
 		return propertyManager.addProperty(prop);
 	}
 
@@ -156,21 +156,21 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	@Override
 	public void onLoad() {
 		super.onLoad();
-		
-		for(Component component : components) {
-			if(component != null) {
+
+		for (Component component : components) {
+			if (component != null) {
 				component.holder(this);
 				component.onLoad();
 			}
 		}
-		
+
 		if (hasComponent(ComponentType.PacketHandler)) {
 			Scheduler.schedule(1, () -> {
 				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 			});
 		}
-		
+
 	}
 
 	@Override
@@ -211,7 +211,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		//sendAllProperties();
+		// sendAllProperties();
 		CompoundTag tag = super.getUpdateTag();
 		saveAdditional(tag);
 		return tag;
@@ -238,10 +238,10 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	public boolean isPoweredByRedstone() {
 		return level.getDirectSignalTo(worldPosition) > 0;
 	}
-	
+
 	public boolean isProcessorActive() {
-		for(ComponentProcessor pr : processors) {
-			if(pr != null && pr.operatingTicks.get() > 0) {
+		for (ComponentProcessor pr : processors) {
+			if (pr != null && pr.operatingTicks.get() > 0) {
 				return true;
 			}
 		}
@@ -259,29 +259,29 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 		return (x, y, i) -> list.contains(x) || x >= i.getInputBucketStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade upgrade && i.isUpgradeValid(upgrade.subtype);
 	}
-	
+
 	public void onEnergyChange(ComponentElectrodynamic cap) {
-		//hook method for now
+		// hook method for now
 	}
-	
-	//no more polling for upgrade effects :D
+
+	// no more polling for upgrade effects :D
 	public void onInventoryChange(ComponentInventory inv, int slot) {
-		//this can be moved to a seperate tile class in the future
-		if(hasComponent(ComponentType.Processor)) {
+		// this can be moved to a seperate tile class in the future
+		if (hasComponent(ComponentType.Processor)) {
 			this.<ComponentProcessor>getComponent(ComponentType.Processor).onInventoryChange(inv, slot);
 		}
-		for(ComponentProcessor processor : processors) {
-			if(processor != null) {
+		for (ComponentProcessor processor : processors) {
+			if (processor != null) {
 				processor.onInventoryChange(inv, slot);
 			}
 		}
 	}
-	
+
 	public void onFluidTankChange(FluidTank tank) {
-		//hook method for now
+		// hook method for now
 	}
-	
-	//This is ceded to the tile to allow for greater control with the use function
+
+	// This is ceded to the tile to allow for greater control with the use function
 	public InteractionResult use(Player player, InteractionHand handIn, BlockHitResult hit) {
 		ItemStack stack = player.getItemInHand(handIn);
 		if (stack.getItem() instanceof ItemUpgrade upgrade && hasComponent(ComponentType.Inventory)) {
@@ -319,17 +319,17 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 		return InteractionResult.PASS;
 	}
-	
+
 	public void onBlockDestroyed() {
-		
+
 	}
-	
+
 	public void onNeightborChanged(BlockPos neighbor) {
-		
+
 	}
-	
+
 	public void onPlace(BlockState oldState, boolean isMoving) {
-		
+
 	}
 
 }

@@ -19,7 +19,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class AbstractScreenComponentGauge extends ScreenComponentGeneric {
-	
+
 	public static final ResourceLocation TEXTURE = new ResourceLocation(References.ID + ":textures/screen/component/fluid.png");
 
 	public AbstractScreenComponentGauge(IScreenWrapper gui, int x, int y) {
@@ -73,11 +73,11 @@ public abstract class AbstractScreenComponentGauge extends ScreenComponentGeneri
 	protected abstract ResourceLocation getTexture();
 
 	protected abstract Component getTooltip();
-	
-	public static enum GaugeTextures implements ITexture {
+
+	public enum GaugeTextures implements ITexture {
 		BACKGROUND_DEFAULT(14, 49, 0, 0, 256, 256, TEXTURE),
 		LEVEL_DEFAULT(14, 49, 14, 0, 256, 256, TEXTURE);
-		
+
 		private final int textureWidth;
 		private final int textureHeight;
 		private final int textureU;
@@ -85,8 +85,8 @@ public abstract class AbstractScreenComponentGauge extends ScreenComponentGeneri
 		private final int imageWidth;
 		private final int imageHeight;
 		private final ResourceLocation loc;
-		
-		private GaugeTextures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc) {
+
+		GaugeTextures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc) {
 			this.textureWidth = textureWidth;
 			this.textureHeight = textureHeight;
 			this.textureU = textureU;
@@ -130,7 +130,7 @@ public abstract class AbstractScreenComponentGauge extends ScreenComponentGeneri
 		public int textureWidth() {
 			return textureWidth;
 		}
-		
+
 	}
-	
+
 }

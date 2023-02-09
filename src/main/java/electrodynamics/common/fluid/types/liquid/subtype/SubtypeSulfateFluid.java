@@ -25,18 +25,18 @@ public enum SubtypeSulfateFluid implements ISubtype {
 	lithium(ElectrodynamicsTags.Fluids.LITHIUM_SULF, () -> ElectrodynamicsItems.getItem(SubtypeCrystal.lithium), ElectrodynamicsTags.Items.ORE_LITHIUM),
 	molybdenum(ElectrodynamicsTags.Fluids.MOLYBDENUM_SULF, () -> ElectrodynamicsItems.getItem(SubtypeCrystal.molybdenum), ElectrodynamicsTags.Items.ORE_MOLYBDENUM),
 	netherite(ElectrodynamicsTags.Fluids.NETHERITE_SULF, () -> ElectrodynamicsItems.getItem(SubtypeCrystal.netherite), Tags.Items.ORES_NETHERITE_SCRAP);
-	
+
 	public final TagKey<Fluid> tag;
 	@Nullable
 	public final TagKey<Item> source;
 	@Nullable
 	public final Supplier<Item> crystal;
-	
-	private SubtypeSulfateFluid(TagKey<Fluid> tag, TagKey<Item> source) {
+
+	SubtypeSulfateFluid(TagKey<Fluid> tag, TagKey<Item> source) {
 		this(tag, null, source);
 	}
-	
-	private SubtypeSulfateFluid(TagKey<Fluid> tag, Supplier<Item> crystal, TagKey<Item> source) {
+
+	SubtypeSulfateFluid(TagKey<Fluid> tag, Supplier<Item> crystal, TagKey<Item> source) {
 		this.tag = tag;
 		this.crystal = crystal;
 		this.source = source;

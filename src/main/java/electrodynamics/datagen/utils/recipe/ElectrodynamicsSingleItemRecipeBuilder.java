@@ -24,19 +24,19 @@ public class ElectrodynamicsSingleItemRecipeBuilder extends SingleItemRecipeBuil
 	public ElectrodynamicsSingleItemRecipeBuilder(ResourceLocation id, RecipeSerializer<?> recipe, Ingredient input, Item result, int count) {
 		super(id, recipe, "", input, result, count, null, null);
 	}
-	
+
 	@Override
 	@Nullable
 	public JsonObject serializeAdvancement() {
 		return null;
 	}
-	
+
 	public static Builder stonecuttingRecipe(Ingredient input, Item output, int count) {
 		return new Builder(input, output, count, RecipeSerializer.STONECUTTER);
 	}
-	
+
 	public static class Builder {
-		
+
 		private final Item result;
 		private final int count;
 		private final RecipeSerializer<?> serializer;
@@ -52,9 +52,7 @@ public class ElectrodynamicsSingleItemRecipeBuilder extends SingleItemRecipeBuil
 		public void complete(String parent, String name, Consumer<FinishedRecipe> consumer) {
 			consumer.accept(new ElectrodynamicsSingleItemRecipeBuilder(new ResourceLocation(parent, name), serializer, input, result, count));
 		}
-		
-	}
 
-	
+	}
 
 }

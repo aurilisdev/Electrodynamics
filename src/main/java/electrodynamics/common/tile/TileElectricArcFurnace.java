@@ -66,8 +66,7 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 		}
 
 		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount).processorInputs(processorInputs).validUpgrades(ContainerElectricArcFurnace.VALID_UPGRADES).valid(machineValidator(ints)).setMachineSlots(extra));
-		addComponent(new ComponentContainerProvider(machine).createMenu((id,
-				player) -> (extra == 0 ? new ContainerElectricArcFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerElectricArcFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerElectricArcFurnaceTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
+		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> (extra == 0 ? new ContainerElectricArcFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerElectricArcFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerElectricArcFurnaceTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 		for (int i = 0; i <= extra; i++) {
 			addProcessor(new ComponentProcessor(this, i, extra + 1).canProcess(this::canProcess).failed(component -> cachedRecipe = null).process(this::process).requiredTicks(Constants.ELECTRICARCFURNACE_REQUIRED_TICKS).usage(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK));
@@ -123,9 +122,8 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 			cachedRecipe = getMatchedRecipe(input);
 			if (cachedRecipe == null) {
 				return false;
-			} else {
-				component.operatingTicks.set(0.0);
 			}
+			component.operatingTicks.set(0.0);
 		}
 
 		if (!cachedRecipe.matches(new SimpleContainer(input), level)) {

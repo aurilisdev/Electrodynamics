@@ -35,23 +35,21 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
- * INVENTORY corresponds to a chest 
- * WIRE corresponds to a Quarry
+ * INVENTORY corresponds to a chest WIRE corresponds to a Quarry
  * 
  * @author skip999
  *
  */
 public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 
-	public static final Map<Direction, EnumProperty<EnumConnectType>> FACING_TO_PROPERTY_MAP = Util
-			.make(Maps.newEnumMap(Direction.class), p -> {
-				p.put(Direction.NORTH, EnumConnectType.NORTH);
-				p.put(Direction.EAST, EnumConnectType.EAST);
-				p.put(Direction.SOUTH, EnumConnectType.SOUTH);
-				p.put(Direction.WEST, EnumConnectType.WEST);
-				p.put(Direction.UP, EnumConnectType.UP);
-				p.put(Direction.DOWN, EnumConnectType.DOWN);
-			});
+	public static final Map<Direction, EnumProperty<EnumConnectType>> FACING_TO_PROPERTY_MAP = Util.make(Maps.newEnumMap(Direction.class), p -> {
+		p.put(Direction.NORTH, EnumConnectType.NORTH);
+		p.put(Direction.EAST, EnumConnectType.EAST);
+		p.put(Direction.SOUTH, EnumConnectType.SOUTH);
+		p.put(Direction.WEST, EnumConnectType.WEST);
+		p.put(Direction.UP, EnumConnectType.UP);
+		p.put(Direction.DOWN, EnumConnectType.DOWN);
+	});
 
 	protected final VoxelShape cube;
 	protected final VoxelShape cubeup;
@@ -65,8 +63,7 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 	protected boolean locked = false;
 
 	public BlockLogisticalManager() {
-		super(Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).noOcclusion()
-				.requiresCorrectToolForDrops());
+		super(Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
 		double w = 3;
 		double sm = 8 - w;
 		double lg = 8 + w;
@@ -132,8 +129,7 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 			}
 		}
 		while (locked) {
-			System.out
-					.println("Manager bounding boxes locked. This should never happen but still does for some reason!");
+			System.out.println("Manager bounding boxes locked. This should never happen but still does for some reason!");
 		}
 		shapestates.put(checked, shape);
 		if (shape == null) {
@@ -150,8 +146,7 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
-		builder.add(EnumConnectType.UP, EnumConnectType.DOWN, EnumConnectType.NORTH, EnumConnectType.EAST,
-				EnumConnectType.SOUTH, EnumConnectType.WEST);
+		builder.add(EnumConnectType.UP, EnumConnectType.DOWN, EnumConnectType.NORTH, EnumConnectType.EAST, EnumConnectType.SOUTH, EnumConnectType.WEST);
 	}
 
 	@Override
@@ -160,8 +155,7 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 	}
 
 	@Override
-	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState stateIn, @Nullable LivingEntity placer,
-			ItemStack stack) {
+	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState stateIn, @Nullable LivingEntity placer, ItemStack stack) {
 		BlockState currentState = stateIn;
 		for (Direction dir : Direction.values()) {
 			if (TileLogisticalManager.isQuarry(pos.relative(dir), worldIn)) {
@@ -174,13 +168,12 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 	}
 
 	@Override
-	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world,
-			BlockPos currentPos, BlockPos facingPos) {
+	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
 		if (stateIn.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
 			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
 		EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(facing);
-		BlockEntity tile = world.getBlockEntity(facingPos);
+		world.getBlockEntity(facingPos);
 		if (TileLogisticalManager.isQuarry(facingPos, world)) {
 			return stateIn.setValue(property, EnumConnectType.WIRE);
 		} else if (TileLogisticalManager.isValidInventory(facingPos, world, facing.getOpposite())) {
@@ -200,7 +193,7 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 			}
 		}
 	}
-	
+
 	@Override
 	public void onNeighborChange(BlockState state, LevelReader world, BlockPos pos, BlockPos neighbor) {
 		super.onNeighborChange(state, world, pos, neighbor);

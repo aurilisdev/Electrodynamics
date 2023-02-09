@@ -36,7 +36,7 @@ public class TileElectrolyticSeparator extends GenericFluidTile implements ITick
 
 	private static final Direction OXYGEN_DIRECTION = Direction.EAST;
 	private static final Direction HYDROGEN_DIRECTION = Direction.WEST;
-	
+
 	private boolean isSoundPlaying = false;
 
 	public TileElectrolyticSeparator(BlockPos worldPos, BlockState blockState) {
@@ -65,7 +65,7 @@ public class TileElectrolyticSeparator extends GenericFluidTile implements ITick
 		if (level.random.nextDouble() < 0.15) {
 			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 		}
-		
+
 		if (!isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_ELECTROLYTICSEPARATOR.get(), this, true);

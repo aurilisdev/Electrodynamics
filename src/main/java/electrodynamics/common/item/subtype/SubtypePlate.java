@@ -21,12 +21,12 @@ public enum SubtypePlate implements ISubtype {
 
 	public final TagKey<Item> tag;
 	public final TagKey<Item> sourceIngot;
-	
-	private SubtypePlate(TagKey<Item> tag, TagKey<Item> sourceIngot) {
+
+	SubtypePlate(TagKey<Item> tag, TagKey<Item> sourceIngot) {
 		this.tag = tag;
 		this.sourceIngot = sourceIngot;
 	}
-	
+
 	@Override
 	public String tag() {
 		return "plate" + name();

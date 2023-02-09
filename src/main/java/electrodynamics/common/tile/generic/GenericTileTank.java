@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class GenericTileTank extends GenericFluidTile {
-	//done :D
+	// done :D
 
 	public GenericTileTank(BlockEntityType<?> tile, int capacity, SubtypeMachine machine, BlockPos pos, BlockState state) {
 		super(tile, pos, state);

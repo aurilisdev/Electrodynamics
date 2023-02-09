@@ -15,11 +15,11 @@ public class HandlerHydraulicBoots extends AbstractLivingHurtHandler {
 
 	private static final ItemStack HYDRAULIC_BOOTS = new ItemStack(ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get());
 	private static final ItemStack COMBAT_BOOTS = new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get());
-	
+
 	@Override
 	public void handle(LivingHurtEvent event) {
 		DamageSource source = event.getSource();
-		if(!source.isFall()) {
+		if (!source.isFall()) {
 			return;
 		}
 		ItemStack playerBoots = event.getEntity().getItemBySlot(EquipmentSlot.FEET);
@@ -31,7 +31,7 @@ public class HandlerHydraulicBoots extends AbstractLivingHurtHandler {
 				event.getEntity().getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(), ElectrodynamicsSounds.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
 			}
 		}
-		
+
 	}
 
 }

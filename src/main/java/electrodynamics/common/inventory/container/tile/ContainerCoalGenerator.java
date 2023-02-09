@@ -27,9 +27,7 @@ public class ContainerCoalGenerator extends GenericContainerBlockEntity<TileCoal
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotRestricted(inv, nextIndex(), 25, 42).setRestriction(stack -> {
-			return CoalGeneratorFuelRegister.INSTANCE.isFuel(stack.getItem());
-		}));
+		addSlot(new SlotRestricted(inv, nextIndex(), 25, 42).setRestriction(stack -> CoalGeneratorFuelRegister.INSTANCE.isFuel(stack.getItem())));
 	}
 
 }

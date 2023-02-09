@@ -18,7 +18,7 @@ import net.minecraft.world.item.DiggerItem;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderChargerGeneric extends AbstractTileRenderer<GenericTileCharger> {
-	
+
 	public RenderChargerGeneric(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}

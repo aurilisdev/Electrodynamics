@@ -47,7 +47,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		this.locale = locale;
 		this.modID = modID;
 	}
-	
+
 	public ElectrodynamicsLangKeyProvider(DataGenerator gen, Locale local) {
 		this(gen, local, References.ID);
 	}
@@ -1517,10 +1517,10 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 	public void addGuidebook(String key, String translation) {
 		add("guidebook." + modID + "." + key, translation);
 	}
-	
-	public static enum Locale {
+
+	public enum Locale {
 		EN_US;
-		
+
 		@Override
 		public String toString() {
 			return super.toString().toLowerCase();

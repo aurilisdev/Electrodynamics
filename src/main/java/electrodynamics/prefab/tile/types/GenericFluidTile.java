@@ -28,7 +28,7 @@ public class GenericFluidTile extends GenericTile {
 	protected GenericFluidTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
 		super(tileEntityTypeIn, worldPos, blockState);
 	}
-	
+
 	@Override
 	public InteractionResult use(Player player, InteractionHand handIn, BlockHitResult hit) {
 		ItemStack stack = player.getItemInHand(handIn);
@@ -80,7 +80,7 @@ public class GenericFluidTile extends GenericTile {
 			}
 			player.awardStat(Stats.INTERACT_WITH_FURNACE);
 			return InteractionResult.CONSUME;
-		} 
+		}
 		return super.use(player, handIn, hit);
 	}
 

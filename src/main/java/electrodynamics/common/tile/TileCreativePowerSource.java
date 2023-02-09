@@ -26,8 +26,8 @@ public class TileCreativePowerSource extends GenericTile {
 
 	private static final int POWER_MULTIPLIER = 1000000;
 
-	public Property<Integer> voltage = property(new Property<Integer>(PropertyType.Integer, "setvoltage", 0));
-	public Property<Integer> power = property(new Property<Integer>(PropertyType.Integer, "setpower", 0));
+	public Property<Integer> voltage = property(new Property<>(PropertyType.Integer, "setvoltage", 0));
+	public Property<Integer> power = property(new Property<>(PropertyType.Integer, "setpower", 0));
 
 	protected List<CachedTileOutput> outputs;
 

@@ -55,19 +55,19 @@ public class ComponentProcessor implements Component {
 	private List<ElectrodynamicsRecipe> cachedRecipes = new ArrayList<>();
 	private ElectrodynamicsRecipe recipe;
 	private double storedXp = 0.0;
-	
+
 	public ComponentProcessor(GenericTile source) {
 		this(source, 0, 1);
 	}
-	
+
 	public ComponentProcessor(GenericTile source, int processorNumber, int totalProcessors) {
 		holder(source);
 		this.processorNumber = processorNumber;
 		this.totalProcessors = totalProcessors;
-		operatingSpeed = holder.property(new Property<Double>(PropertyType.Double, "operatingSpeed" + processorNumber, 1.0));
-		operatingTicks = holder.property(new Property<Double>(PropertyType.Double, "operatingTicks" + processorNumber, 0.0)).noSave();
-		usage = holder.property(new Property<Double>(PropertyType.Double, "usage", 0.0));
-		requiredTicks = holder.property(new Property<Double>(PropertyType.Double, "requiredTicks" + processorNumber, 0.0));
+		operatingSpeed = holder.property(new Property<>(PropertyType.Double, "operatingSpeed" + processorNumber, 1.0));
+		operatingTicks = holder.property(new Property<>(PropertyType.Double, "operatingTicks" + processorNumber, 0.0)).noSave();
+		usage = holder.property(new Property<>(PropertyType.Double, "usage", 0.0));
+		requiredTicks = holder.property(new Property<>(PropertyType.Double, "requiredTicks" + processorNumber, 0.0));
 		if (!holder.hasComponent(ComponentType.Inventory)) {
 			throw new UnsupportedOperationException("You need to implement an inventory component to use the processor component!");
 		}
@@ -100,7 +100,7 @@ public class ComponentProcessor implements Component {
 				electro.joules(electro.getJoulesStored() - usage.get() * operatingSpeed.get());
 			}
 		} else if (operatingTicks.get() > 0) {
-			//TODO look at keeping progress if the recipe is unchanged
+			// TODO look at keeping progress if the recipe is unchanged
 			operatingTicks.set(0.0);
 			if (failed != null) {
 				failed.accept(this);
@@ -196,17 +196,16 @@ public class ComponentProcessor implements Component {
 		}
 
 		setRecipe(locRecipe);
-		
+
 		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
-		
+
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
-		
+
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
 		}
-		
 
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(processorNumber);
@@ -249,17 +248,17 @@ public class ComponentProcessor implements Component {
 			locRecipe = (Fluid2ItemRecipe) recipe;
 		}
 		setRecipe(locRecipe);
-		
+
 		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
-		
+
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
-		
+
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
 		}
-		
+
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(processorNumber);
 		ItemStack result = recipe.getResultItem();
@@ -301,17 +300,17 @@ public class ComponentProcessor implements Component {
 			locRecipe = (Fluid2FluidRecipe) recipe;
 		}
 		setRecipe(locRecipe);
-		
+
 		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
-		
+
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
-		
+
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
 		}
-		
+
 		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
 		int amtAccepted = handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
 		if (amtAccepted < locRecipe.getFluidRecipeOutput().getAmount()) {
@@ -345,17 +344,17 @@ public class ComponentProcessor implements Component {
 			locRecipe = (Item2FluidRecipe) recipe;
 		}
 		setRecipe(locRecipe);
-		
+
 		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
-		
+
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
-		
+
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
 		}
-		
+
 		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
 		int amtAccepted = handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
 		if (amtAccepted < locRecipe.getFluidRecipeOutput().getAmount()) {
@@ -389,17 +388,17 @@ public class ComponentProcessor implements Component {
 			locRecipe = (FluidItem2FluidRecipe) recipe;
 		}
 		setRecipe(locRecipe);
-		
+
 		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
-		
+
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
-		
+
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
 		}
-		
+
 		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
 		int amtAccepted = handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
 		if (amtAccepted < locRecipe.getFluidRecipeOutput().getAmount()) {
@@ -433,17 +432,17 @@ public class ComponentProcessor implements Component {
 			locRecipe = (FluidItem2ItemRecipe) recipe;
 		}
 		setRecipe(locRecipe);
-		
+
 		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
-		
+
 		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
-		
+
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
 		}
-		
+
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(processorNumber);
 		ItemStack result = recipe.getResultItem();
@@ -515,20 +514,20 @@ public class ComponentProcessor implements Component {
 				ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
 				FluidTank[] outTanks = handler.getOutputTanks();
 				for (int i = 0; i < fluidBi.length; i++) {
-					
+
 					outTanks[i].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
 				}
 			}
-			
+
 			int outputSlot = inv.getOutputSlots().get(procNumber);
-			
+
 			if (inv.getOutputContents().get(procNumber).isEmpty()) {
 				inv.setItem(outputSlot, locRecipe.getResultItem().copy());
 			} else {
 				ItemStack stack = inv.getOutputContents().get(procNumber);
 				stack.grow(locRecipe.getResultItem().getCount());
 				inv.setItem(outputSlot, stack);
-				
+
 			}
 			List<List<Integer>> inputs = inv.getInputSlots();
 			for (int i = 0; i < inputs.get(procNumber).size(); i++) {
@@ -799,19 +798,19 @@ public class ComponentProcessor implements Component {
 		}
 		return ElectrodynamicsRecipe.getRecipe(pr, cachedRecipes);
 	}
-	
+
 	private void setChanged() {
-		//hook method; empty for now
+		// hook method; empty for now
 	}
-	
-	//now it only calculates it when the upgrades in the inventory change
+
+	// now it only calculates it when the upgrades in the inventory change
 	public void onInventoryChange(ComponentInventory inv, int slot) {
-		if(inv.getUpgradeContents().size() > 0 && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
+		if (inv.getUpgradeContents().size() > 0 && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
 			operatingSpeed.set(1.0);
 			for (ItemStack stack : inv.getUpgradeContents()) {
 				if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype.isEmpty) {
 					for (int i = 0; i < stack.getCount(); i++) {
-						if(upgrade.subtype == SubtypeItemUpgrade.basicspeed) {
+						if (upgrade.subtype == SubtypeItemUpgrade.basicspeed) {
 							operatingSpeed.set(Math.min(operatingSpeed.get() * 1.5, Math.pow(1.5, 3)));
 						} else if (upgrade.subtype == SubtypeItemUpgrade.advancedspeed) {
 							operatingSpeed.set(Math.min(operatingSpeed.get() * 2.25, Math.pow(2.25, 3)));
@@ -819,7 +818,7 @@ public class ComponentProcessor implements Component {
 					}
 				}
 			}
-			
+
 			if (holder.hasComponent(ComponentType.Electrodynamic)) {
 				ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 				electro.maxJoules(usage.get() * operatingSpeed.get() * 10);

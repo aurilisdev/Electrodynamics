@@ -13,10 +13,10 @@ public class ElectrodynamicsFluidTagsProvider extends FluidTagsProvider {
 	public ElectrodynamicsFluidTagsProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
 		super(generator, References.ID, existingFileHelper);
 	}
-	
+
 	@Override
 	protected void addTags() {
-		
+
 		tag(ElectrodynamicsTags.Fluids.CLAY).add(ElectrodynamicsFluids.fluidClay);
 		tag(ElectrodynamicsTags.Fluids.ETHANOL).add(ElectrodynamicsFluids.fluidEthanol);
 		tag(ElectrodynamicsTags.Fluids.HYDRAULIC_FLUID).add(ElectrodynamicsFluids.fluidHydraulic);
@@ -25,10 +25,10 @@ public class ElectrodynamicsFluidTagsProvider extends FluidTagsProvider {
 		tag(ElectrodynamicsTags.Fluids.OXYGEN).add(ElectrodynamicsFluids.fluidOxygen);
 		tag(ElectrodynamicsTags.Fluids.POLYETHLYENE).add(ElectrodynamicsFluids.fluidPolyethylene);
 		tag(ElectrodynamicsTags.Fluids.SULFURIC_ACID).add(ElectrodynamicsFluids.fluidSulfuricAcid);
-		for(SubtypeSulfateFluid sulfate : SubtypeSulfateFluid.values()) {
+		for (SubtypeSulfateFluid sulfate : SubtypeSulfateFluid.values()) {
 			tag(sulfate.tag).add(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(sulfate).get());
 		}
-		
+
 	}
 
 }

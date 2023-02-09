@@ -20,7 +20,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineralCrusherTriple> {
-	
+
 	public RenderMineralCrusherTriple(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}

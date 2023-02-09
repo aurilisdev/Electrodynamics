@@ -14,7 +14,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileMultiSubnode extends GenericTile {
-	public Property<BlockPos> nodePos = property(new Property<BlockPos>(PropertyType.BlockPos, "nodePos", BlockPos.ZERO));
+	public Property<BlockPos> nodePos = property(new Property<>(PropertyType.BlockPos, "nodePos", BlockPos.ZERO));
 	public VoxelShape shapeCache;
 
 	public TileMultiSubnode(BlockPos worldPosition, BlockState blockState) {

@@ -12,8 +12,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 /**
- * Modification of the FluidTank class incorporating the property system. The protected constructor 
- * should remain protected
+ * Modification of the FluidTank class incorporating the property system. The protected constructor should remain protected
  * 
  * @author skip999
  *
@@ -27,20 +26,16 @@ public class PropertyFluidTank extends FluidTank {
 	public PropertyFluidTank(int capacity, GenericTile holder, String key) {
 		super(capacity);
 		this.holder = holder;
-		fluidStackProperty = holder.property(
-				new Property<FluidStack>(PropertyType.Fluidstack, "propertyfluidtankstack" + key, FluidStack.EMPTY));
-		capacityProperty = holder
-				.property(new Property<Integer>(PropertyType.Integer, "propertyfluidtankcapacity" + key, capacity));
+		fluidStackProperty = holder.property(new Property<>(PropertyType.Fluidstack, "propertyfluidtankstack" + key, FluidStack.EMPTY));
+		capacityProperty = holder.property(new Property<>(PropertyType.Integer, "propertyfluidtankcapacity" + key, capacity));
 	}
 
 	public PropertyFluidTank(int capacity, Predicate<FluidStack> validator, GenericTile holder, String key) {
 		super(capacity, validator);
-		fluidStackProperty = holder.property(
-				new Property<FluidStack>(PropertyType.Fluidstack, "propertyfluidtankstack" + key, FluidStack.EMPTY));
-		capacityProperty = holder
-				.property(new Property<Integer>(PropertyType.Integer, "propertyfluidtankcapacity" + key, capacity));
+		fluidStackProperty = holder.property(new Property<>(PropertyType.Fluidstack, "propertyfluidtankstack" + key, FluidStack.EMPTY));
+		capacityProperty = holder.property(new Property<>(PropertyType.Integer, "propertyfluidtankcapacity" + key, capacity));
 	}
-	
+
 	protected PropertyFluidTank(PropertyFluidTank other) {
 		super(other.capacity, other.validator);
 		fluidStackProperty = other.fluidStackProperty;
@@ -53,8 +48,7 @@ public class PropertyFluidTank extends FluidTank {
 
 	@Override
 	public String toString() {
-		return "Fluid: " + getFluid().getTranslationKey() + "\nAmount: " + getFluidAmount() + "\nCapacity: "
-				+ getCapacity();
+		return "Fluid: " + getFluid().getTranslationKey() + "\nAmount: " + getFluidAmount() + "\nCapacity: " + getCapacity();
 	}
 
 	@Override
@@ -76,7 +70,7 @@ public class PropertyFluidTank extends FluidTank {
 
 	@Override
 	public PropertyFluidTank setCapacity(int capacity) {
-		this.capacityProperty.set(capacity);
+		capacityProperty.set(capacity);
 		onContentsChanged();
 		return this;
 	}
@@ -128,8 +122,9 @@ public class PropertyFluidTank extends FluidTank {
 		} else {
 			setFluid(new FluidStack(getFluid(), getCapacity()));
 		}
-		if (filled > 0)
+		if (filled > 0) {
 			onContentsChanged();
+		}
 		return filled;
 	}
 
@@ -160,7 +155,7 @@ public class PropertyFluidTank extends FluidTank {
 	@Override
 	public void setFluid(FluidStack stack) {
 		onContentsChanged();
-		this.fluidStackProperty.set(stack);
+		fluidStackProperty.set(stack);
 	}
 
 	@Override
@@ -168,6 +163,7 @@ public class PropertyFluidTank extends FluidTank {
 		return getFluid().isEmpty();
 	}
 
+	@Override
 	public int getSpace() {
 		return Math.max(0, getCapacity() - getFluidAmount());
 	}

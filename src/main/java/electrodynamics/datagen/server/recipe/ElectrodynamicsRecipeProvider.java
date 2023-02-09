@@ -26,13 +26,12 @@ import net.minecraft.data.recipes.RecipeProvider;
 public class ElectrodynamicsRecipeProvider extends RecipeProvider {
 
 	public final List<AbstractRecipeGenerator> GENERATORS = new ArrayList<>();
-	
-	
+
 	public ElectrodynamicsRecipeProvider(DataGenerator gen) {
 		super(gen);
 		addRecipes();
 	}
-	
+
 	public void addRecipes() {
 		GENERATORS.add(new ElectrodynamicsCraftingTableRecipes());
 		GENERATORS.add(new ElectrodynamicsSmeltingRecipes());
@@ -52,11 +51,9 @@ public class ElectrodynamicsRecipeProvider extends RecipeProvider {
 
 	@Override
 	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
-		for(AbstractRecipeGenerator generator : GENERATORS) {
+		for (AbstractRecipeGenerator generator : GENERATORS) {
 			generator.addRecipes(consumer);
 		}
 	}
-
-
 
 }

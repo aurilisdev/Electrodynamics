@@ -21,14 +21,13 @@ public enum SubtypeCrystal implements ISubtype {
 	molybdenum(() -> ElectrodynamicsItems.getItem(SubtypeImpureDust.molybdenum)),
 	potassiumchloride(null),
 	netherite(() -> ElectrodynamicsItems.getItem(SubtypeImpureDust.netherite));
-	
+
 	@Nullable
 	public final Supplier<Item> crushedItem;
-	
-	private SubtypeCrystal(Supplier<Item> crushedItem) {
+
+	SubtypeCrystal(Supplier<Item> crushedItem) {
 		this.crushedItem = crushedItem;
 	}
-	
 
 	@Override
 	public String tag() {

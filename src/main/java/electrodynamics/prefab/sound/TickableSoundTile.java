@@ -16,8 +16,7 @@ public class TickableSoundTile extends AbstractTickableSoundInstance {
 
 	protected final ITickableSoundTile tile;
 	private final float initialVolume;
-	private final float initialPitch;
-	
+
 	public TickableSoundTile(SoundEvent event, ITickableSoundTile tile, boolean repeat) {
 		this(event, SoundSource.BLOCKS, tile, 0.5F, 1.0F, repeat);
 	}
@@ -27,12 +26,11 @@ public class TickableSoundTile extends AbstractTickableSoundInstance {
 		this.tile = tile;
 		this.volume = 0.5F;
 		this.pitch = 1.0F;
-		this.x = tile.getBlockPos().getX();
-		this.y = tile.getBlockPos().getY();
-		this.z = tile.getBlockPos().getZ();
-		this.looping = repeat;
+		x = tile.getBlockPos().getX();
+		y = tile.getBlockPos().getY();
+		z = tile.getBlockPos().getZ();
+		looping = repeat;
 		initialVolume = volume;
-		initialPitch = pitch;
 	}
 
 	@Override
@@ -43,11 +41,11 @@ public class TickableSoundTile extends AbstractTickableSoundInstance {
 		Player player = Minecraft.getInstance().player;
 		double distance = WorldUtils.distanceBetweenPositions(player.blockPosition(), tile.getBlockPos());
 		if (distance > 0 && distance <= MAXIMUM_DISTANCE) {
-			this.volume = (float) (initialVolume / distance);
+			volume = (float) (initialVolume / distance);
 		} else if (distance > MAXIMUM_DISTANCE) {
-			this.volume = 0;
+			volume = 0;
 		} else {
-			this.volume = initialVolume;
+			volume = initialVolume;
 		}
 	}
 

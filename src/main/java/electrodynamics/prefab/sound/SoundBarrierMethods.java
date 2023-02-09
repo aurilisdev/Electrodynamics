@@ -11,9 +11,8 @@ public class SoundBarrierMethods {
 		Minecraft.getInstance().getSoundManager().play(new TickableSoundTile(event, tile, repeat));
 	}
 
-	public static void playTileSound(SoundEvent event, SoundSource source, ITickableSoundTile tile, float volume, float pitch,
-			boolean repeat) {
+	public static void playTileSound(SoundEvent event, SoundSource source, ITickableSoundTile tile, float volume, float pitch, boolean repeat) {
 		Minecraft.getInstance().getSoundManager().play(new TickableSoundTile(event, source, tile, volume, pitch, repeat));
 	}
-	
+
 }

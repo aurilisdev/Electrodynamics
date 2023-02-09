@@ -1,5 +1,6 @@
 package electrodynamics.registers;
 
+import static electrodynamics.registers.ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP;
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidClay;
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidEthanol;
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidHydraulic;
@@ -8,7 +9,6 @@ import static electrodynamics.registers.ElectrodynamicsFluids.fluidHydrogenFluor
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidOxygen;
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidPolyethylene;
 import static electrodynamics.registers.ElectrodynamicsFluids.fluidSulfuricAcid;
-import static electrodynamics.registers.ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP;
 import static electrodynamics.registers.UnifiedElectrodynamicsRegister.supplier;
 
 import java.util.Map.Entry;

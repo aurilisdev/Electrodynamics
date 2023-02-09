@@ -17,7 +17,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public abstract class AbstractScreenComponentInfo extends ScreenComponentGeneric {
 	public static final int SIZE = 26;
 	protected TextPropertySupplier infoHandler;
-	
+
 	public static final TextPropertySupplier EMPTY = Collections::emptyList;
 
 	public AbstractScreenComponentInfo(ITexture texture, TextPropertySupplier infoHandler, IScreenWrapper gui, int x, int y) {

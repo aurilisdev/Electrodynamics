@@ -10,21 +10,20 @@ import electrodynamics.prefab.screen.component.utils.AbstractScreenComponent;
 import electrodynamics.prefab.utilities.RenderingUtils;
 
 /**
- * simple implementation of AbstractScreenComponent that allows custom images to
- * be drawn to the screen
+ * simple implementation of AbstractScreenComponent that allows custom images to be drawn to the screen
  * 
  * @author skip999
  *
  */
 public class ScreenComponentGeneric extends AbstractScreenComponent {
-	
-	private int color = RenderingUtils.WHITE; 
+
+	private int color = RenderingUtils.WHITE;
 
 	public ScreenComponentGeneric(ITexture texture, IScreenWrapper gui, int x, int y) {
 		super(texture, gui, x, y);
 	}
-	
-	public ScreenComponentGeneric setColor(int color){
+
+	public ScreenComponentGeneric setColor(int color) {
 		this.color = color;
 		return this;
 	}

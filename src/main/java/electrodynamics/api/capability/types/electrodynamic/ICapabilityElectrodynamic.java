@@ -67,7 +67,7 @@ public interface ICapabilityElectrodynamic {
 			}
 		}
 	}
-	
+
 	void onChange();
-	
+
 }

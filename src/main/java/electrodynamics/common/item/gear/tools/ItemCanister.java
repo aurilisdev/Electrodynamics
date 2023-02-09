@@ -57,11 +57,8 @@ public class ItemCanister extends Item {
 				for (Fluid liq : getWhitelistedFluids().getSecond()) {
 					ItemStack temp = new ItemStack(this);
 					// For init only; do not use anywhere else!
-					temp.getCapability(CapabilityUtils.getFluidItemCap())
-							.ifPresent(h -> ((RestrictedFluidHandlerItemStack) h)
-									.fillInit(new FluidStack(liq, MAX_FLUID_CAPACITY)));
-					temp.getCapability(CapabilityUtils.getFluidItemCap())
-							.ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
+					temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(liq, MAX_FLUID_CAPACITY)));
+					temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
 					items.add(temp);
 
 				}
@@ -80,9 +77,7 @@ public class ItemCanister extends Item {
 			stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> {
 				if (!((FluidHandlerItemStack.SwapEmpty) h).getFluid().getFluid().isSame(EMPTY_FLUID)) {
 					FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty) h;
-					tooltip.add(
-							Component.literal(cap.getFluidInTank(0).getAmount() + " / " + MAX_FLUID_CAPACITY + " mB")
-									.withStyle(ChatFormatting.GRAY));
+					tooltip.add(Component.literal(cap.getFluidInTank(0).getAmount() + " / " + MAX_FLUID_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
 					tooltip.add(cap.getFluid().getDisplayName().copy().withStyle(ChatFormatting.DARK_GRAY));
 				}
 			});
@@ -100,9 +95,7 @@ public class ItemCanister extends Item {
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM)
-				.map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID))
-				.orElse(false);
+		return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID)).orElse(false);
 	}
 
 	@Override
@@ -126,8 +119,7 @@ public class ItemCanister extends Item {
 					if (amtFilled >= 1000) {
 						CapabilityUtils.fill(stack, sourceFluid);
 						world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-						world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1,
-								1);
+						world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
 					}
 				}
 			}
@@ -137,8 +129,7 @@ public class ItemCanister extends Item {
 	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
 		List<Fluid> whitelisted = new ArrayList<>();
 		for (Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
-			if (fluid.getBucket() != null && fluid.getBucket().builtInRegistryHolder().key().location().equals(
-					ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get().builtInRegistryHolder().key().location())) {
+			if (fluid.getBucket() != null && fluid.getBucket().builtInRegistryHolder().key().location().equals(ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get().builtInRegistryHolder().key().location())) {
 				whitelisted.add(fluid);
 			}
 		}

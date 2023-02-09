@@ -57,5 +57,5 @@ public abstract class AbstractScreenComponent implements IGuiComponent {
 	protected boolean isPointInRegion(int x, int y, double xAxis, double yAxis, int width, int height) {
 		return xAxis >= x && xAxis <= x + width - 1 && yAxis >= y && yAxis <= y + height - 1;
 	}
-	
+
 }

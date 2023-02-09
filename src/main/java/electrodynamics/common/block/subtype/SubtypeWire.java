@@ -13,11 +13,11 @@ import net.minecraft.world.level.material.Material;
 // wires are rarely connected in all directions.
 // Also manipulated uniformally
 public enum SubtypeWire implements ISubtype {
-	
+
 	/* UNINSULATED */
-	tin(WireMaterial.TIN, 60, WireClass.BARE, WireType.UNINSULATED), 
+	tin(WireMaterial.TIN, 60, WireClass.BARE, WireType.UNINSULATED),
 	iron(WireMaterial.IRON, 100, WireClass.BARE, WireType.UNINSULATED),
-	copper(WireMaterial.COPPER, 360, WireClass.BARE, WireType.UNINSULATED), 
+	copper(WireMaterial.COPPER, 360, WireClass.BARE, WireType.UNINSULATED),
 	silver(WireMaterial.SILVER, 600, WireClass.BARE, WireType.UNINSULATED),
 	gold(WireMaterial.GOLD, 1000, WireClass.BARE, WireType.UNINSULATED),
 	superconductive(WireMaterial.SUPERCONDUCTIVE, Long.MAX_VALUE, WireClass.BARE, WireType.UNINSULATED),
@@ -58,40 +58,40 @@ public enum SubtypeWire implements ISubtype {
 	public final WireMaterial material;
 
 	SubtypeWire(WireMaterial material, double dividend, long capacity, WireClass wireClass, WireType wireType) {
-		this.resistance = material.resistance / dividend;
+		resistance = material.resistance / dividend;
 		this.capacity = capacity;
 		this.wireClass = wireClass;
 		this.wireType = wireType;
 		this.material = material;
 	}
-	
+
 	SubtypeWire(WireMaterial material, long capacity, WireClass wireClass, WireType wireType) {
 		this(material, 1, capacity, wireClass, wireType);
 	}
 
 	public static SubtypeWire getWireForType(WireType wireType, WireMaterial material) {
-		
+
 		for (SubtypeWire wire : values()) {
-			if(wire.wireType == wireType && wire.material == material) {
+			if (wire.wireType == wireType && wire.material == material) {
 				return wire;
 			}
 		}
-		
+
 		return SubtypeWire.copper;
 	}
-	
+
 	public static SubtypeWire[] getWiresForType(WireType type) {
 		List<SubtypeWire> wires = new ArrayList<>();
-		
-		for(SubtypeWire wire : values()) {
-			if(wire.wireType == type) {
+
+		for (SubtypeWire wire : values()) {
+			if (wire.wireType == type) {
 				wires.add(wire);
 			}
 		}
-		
+
 		return wires.toArray(new SubtypeWire[wires.size()]);
 	}
-	
+
 	@Override
 	public String tag() {
 		return "wire" + name();
@@ -106,60 +106,59 @@ public enum SubtypeWire implements ISubtype {
 	public boolean isItem() {
 		return false;
 	}
-	
+
 	public static enum WireClass {
-		BARE(false, true, 0), 
-		INSULATED(true, false, 240), 
-		HIGHLY_INSULATED(true, false, 960), 
+		BARE(false, true, 0),
+		INSULATED(true, false, 240),
+		HIGHLY_INSULATED(true, false, 960),
 		WELL_INSULATED(true, true, 480);
-		
+
 		public final boolean insulated;
 		public final boolean fireProof;
 		public final int shockVoltage;
-		
-		private WireClass(boolean insulated, boolean fireProof, int shockVoltage) {
+
+		WireClass(boolean insulated, boolean fireProof, int shockVoltage) {
 			this.insulated = insulated;
 			this.fireProof = fireProof;
 			this.shockVoltage = shockVoltage;
 		}
 	}
-	
+
 	public static enum WireType {
-		UNINSULATED(false, 1, Material.METAL, SoundType.METAL), 
-		INSULATED(false, 2, Material.WOOL, SoundType.WOOL), 
-		LOGISTICAL(true, 2, Material.WOOL, SoundType.WOOL), 
-		CERAMIC(false, 2, Material.STONE, SoundType.STONE), 
+		UNINSULATED(false, 1, Material.METAL, SoundType.METAL),
+		INSULATED(false, 2, Material.WOOL, SoundType.WOOL),
+		LOGISTICAL(true, 2, Material.WOOL, SoundType.WOOL),
+		CERAMIC(false, 2, Material.STONE, SoundType.STONE),
 		HIGHLY_INSULATED(false, 3, Material.WOOL, SoundType.WOOL);
-		
+
 		public final boolean conductsRedstone;
 		public final int radius;
 		public final Material material;
 		public final SoundType soundType;
-		
-		private WireType(boolean conductsRedstone, int radius, Material material, SoundType soundType) {
+
+		WireType(boolean conductsRedstone, int radius, Material material, SoundType soundType) {
 			this.conductsRedstone = conductsRedstone;
 			this.radius = radius;
 			this.material = material;
 			this.soundType = soundType;
 		}
 	}
-	
+
 	public static enum WireMaterial {
-		
-		COPPER(0.0030096),// annealed copper 
-		GOLD(0.004294), 
-		IRON(0.01709), 
-		SILVER(0.0027984), 
-		SUPERCONDUCTIVE(0), 
+
+		COPPER(0.0030096), // annealed copper
+		GOLD(0.004294),
+		IRON(0.01709),
+		SILVER(0.0027984),
+		SUPERCONDUCTIVE(0),
 		TIN(0.020064); // Tin has 15% the conductivity of copper. Tin resistance = copper / 0.15
-		
+
 		public final double resistance;
-		
-		private WireMaterial(double resistance) {
+
+		WireMaterial(double resistance) {
 			this.resistance = resistance;
 		}
-		
+
 	}
-	
-	
+
 }

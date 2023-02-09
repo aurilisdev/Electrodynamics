@@ -31,14 +31,14 @@ public class ElectrodynamicsTags {
 		Blocks.init();
 		Fluids.init();
 	}
-	
+
 	public static class Items {
-		
+
 		public static final TagKey<Item> CIRCUITS_BASIC = forgeTag("circuits/basic");
 		public static final TagKey<Item> CIRCUITS_ADVANCED = forgeTag("circuits/advanced");
 		public static final TagKey<Item> CIRCUITS_ELITE = forgeTag("circuits/elite");
 		public static final TagKey<Item> CIRCUITS_ULTIMATE = forgeTag("circuits/ultimate");
-		
+
 		public static final TagKey<Item> DUST_BRONZE = forgeTag("dusts/bronze");
 		public static final TagKey<Item> DUST_COPPER = forgeTag("dusts/copper");
 		public static final TagKey<Item> DUST_ENDEREYE = forgeTag("dusts/endereye");
@@ -58,13 +58,13 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Item> DUST_SUPERCONDUCTIVE = forgeTag("dusts/superconductive");
 		public static final TagKey<Item> DUST_TIN = forgeTag("dusts/tin");
 		public static final TagKey<Item> DUST_VANADIUM = forgeTag("dusts/vanadium");
-		
+
 		public static final TagKey<Item> GEAR_BRONZE = forgeTag("gears/bronze");
 		public static final TagKey<Item> GEAR_COPPER = forgeTag("gears/copper");
 		public static final TagKey<Item> GEAR_IRON = forgeTag("gears/iron");
 		public static final TagKey<Item> GEAR_STEEL = forgeTag("gears/steel");
 		public static final TagKey<Item> GEAR_TIN = forgeTag("gears/tin");
-		
+
 		public static final TagKey<Item> IMPURE_DUST_COPPER = forgeTag("impuredust/copper");
 		public static final TagKey<Item> IMPURE_DUST_GOLD = forgeTag("impuredust/gold");
 		public static final TagKey<Item> IMPURE_DUST_IRON = forgeTag("impuredust/iron");
@@ -75,7 +75,7 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Item> IMPURE_DUST_SILVER = forgeTag("impuredust/silver");
 		public static final TagKey<Item> IMPURE_DUST_TIN = forgeTag("impuredust/tin");
 		public static final TagKey<Item> IMPURE_DUST_VANADIUM = forgeTag("impuredust/vanadium");
-		
+
 		public static final TagKey<Item> INGOT_ALUMINUM = forgeTag("ingots/aluminum");
 		public static final TagKey<Item> INGOT_BRONZE = forgeTag("ingots/bronze");
 		public static final TagKey<Item> INGOT_CHROMIUM = forgeTag("ingots/chromium");
@@ -92,7 +92,7 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Item> INGOT_TITANIUMCARBIDE = forgeTag("ingots/titaniumcarbide");
 		public static final TagKey<Item> INGOT_VANADIUM = forgeTag("ingots/vanadium");
 		public static final TagKey<Item> INGOT_VANADIUMSTEEL = forgeTag("ingots/vanadiumsteel");
-		
+
 		public static final TagKey<Item> NUGGET_COPPER = forgeTag("nuggets/copper");
 		public static final TagKey<Item> NUGGET_HSLASTEEL = forgeTag("nuggets/hslasteel");
 		public static final TagKey<Item> NUGGET_SILVER = forgeTag("nuggets/silver");
@@ -101,7 +101,7 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Item> NUGGET_SUPERCONDUCTIVE = forgeTag("nuggets/superconductive");
 		public static final TagKey<Item> NUGGET_TIN = forgeTag("nuggets/tin");
 		public static final TagKey<Item> NUGGET_TITANIUMCARBIDE = forgeTag("nuggets/titaniumcarbide");
-		
+
 		public static final TagKey<Item> ORE_ALUMINUM = forgeTag("ores/aluminum");
 		public static final TagKey<Item> ORE_CHROMIUM = forgeTag("ores/chromium");
 		public static final TagKey<Item> ORE_COPPER = forgeTag("ores/copper");
@@ -120,7 +120,7 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Item> ORE_TITANIUM = forgeTag("ores/titanium");
 		public static final TagKey<Item> ORE_URANIUM = forgeTag("ores/uranium");
 		public static final TagKey<Item> ORE_VANADIUM = forgeTag("ores/vanadium");
-		
+
 		public static final TagKey<Item> OXIDE_CALCIUMCARBONATE = forgeTag("oxide/calciumcarbonate");
 		public static final TagKey<Item> OXIDE_CHROMIUM = forgeTag("oxide/chromium");
 		public static final TagKey<Item> OXIDE_CHROMIUMDISILICIDE = forgeTag("oxide/chromiumdisilicide");
@@ -131,7 +131,7 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Item> OXIDE_THIONYLCHLORIDE = forgeTag("oxide/thionylchloride");
 		public static final TagKey<Item> OXIDE_TRISULFUR = forgeTag("oxide/trisulfur");
 		public static final TagKey<Item> OXIDE_VANADIUM = forgeTag("oxide/vanadium");
-		
+
 		public static final TagKey<Item> PLATE_ALUMINUM = forgeTag("plates/aluminum");
 		public static final TagKey<Item> PLATE_BRONZE = forgeTag("plates/bronze");
 		public static final TagKey<Item> PLATE_HSLASTEEL = forgeTag("plates/hslasteel");
@@ -143,7 +143,7 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Item> PLATE_TITANIUM = forgeTag("plates/titanium");
 		public static final TagKey<Item> PLATE_TITANIUMCARBIDE = forgeTag("plates/titaniumcarbide");
 		public static final TagKey<Item> PLATE_VANADIUMSTEEL = forgeTag("plates/vanadiumsteel");
-		
+
 		public static final TagKey<Item> RAW_ORE_CHROMIUM = forgeTag("raw_materials/chromium");
 		public static final TagKey<Item> RAW_ORE_FLUORITE = forgeTag("raw_materials/fluorite");
 		public static final TagKey<Item> RAW_ORE_LEAD = forgeTag("raw_materials/lead");
@@ -154,12 +154,12 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Item> RAW_ORE_TITANIUM = forgeTag("raw_materials/titanium");
 		public static final TagKey<Item> RAW_ORE_URANIUM = forgeTag("raw_materials/uranium");
 		public static final TagKey<Item> RAW_ORE_VANADIUM = forgeTag("raw_materials/vanadinite");
-		
+
 		public static final TagKey<Item> ROD_HSLASTEEL = forgeTag("rods/hslasteel");
 		public static final TagKey<Item> ROD_STAINLESSSTEEL = forgeTag("rods/stainlesssteel");
 		public static final TagKey<Item> ROD_STEEL = forgeTag("rods/steel");
 		public static final TagKey<Item> ROD_TITANIUMCARBIDE = forgeTag("rods/titaniumcarbide");
-		
+
 		public static final TagKey<Item> STORAGE_BLOCK_ALUMINUM = forgeTag("storage_blocks/aluminum");
 		public static final TagKey<Item> STORAGE_BLOCK_BRONZE = forgeTag("storage_blocks/bronze");
 		public static final TagKey<Item> STORAGE_BLOCK_CHROMIUM = forgeTag("storage_blocks/chromium");
@@ -173,25 +173,26 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Item> STORAGE_BLOCK_TITANIUM = forgeTag("storage_blocks/titanium");
 		public static final TagKey<Item> STORAGE_BLOCK_TITANIUMCARBIDE = forgeTag("storage_blocks/titaniumcarbide");
 		public static final TagKey<Item> STORAGE_BLOCK_VANADIUMSTEEL = forgeTag("storage_blocks/vanadiumsteel");
-		
+
 		public static final TagKey<Item> COAL_COKE = forgeTag("coal_coke");
 		public static final TagKey<Item> PLASTIC = forgeTag("plastic");
 		public static final TagKey<Item> SLAG = forgeTag("slag");
-		
+
 		public static final TagKey<Item> GEARS = forgeTag("gears");
 		public static final TagKey<Item> INGOTS = forgeTag("ingots");
 		public static final TagKey<Item> ORES = forgeTag("ores");
 		public static final TagKey<Item> INSULATES_PLAYER_FEET = forgeTag("insulates_player_feet");
-		
-		private static void init() {}
-		
+
+		private static void init() {
+		}
+
 		private static TagKey<Item> forgeTag(String name) {
 			return ItemTags.create(new ResourceLocation("forge", name));
 		}
 	}
-	
+
 	public static class Blocks {
-		
+
 		public static final TagKey<Block> ORE_ALUMINUM = forgeTag("ores/aluminum");
 		public static final TagKey<Block> ORE_CHROMIUM = forgeTag("ores/chromium");
 		public static final TagKey<Block> ORE_COPPER = forgeTag("ores/copper");
@@ -210,7 +211,7 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Block> ORE_TITANIUM = forgeTag("ores/titanium");
 		public static final TagKey<Block> ORE_URANIUM = forgeTag("ores/uranium");
 		public static final TagKey<Block> ORE_VANADIUM = forgeTag("ores/vanadium");
-		
+
 		public static final TagKey<Block> STORAGE_BLOCK_ALUMINUM = forgeTag("storage_blocks/aluminum");
 		public static final TagKey<Block> STORAGE_BLOCK_BRONZE = forgeTag("storage_blocks/bronze");
 		public static final TagKey<Block> STORAGE_BLOCK_CHROMIUM = forgeTag("storage_blocks/chromium");
@@ -224,15 +225,16 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Block> STORAGE_BLOCK_TITANIUM = forgeTag("storage_blocks/titanium");
 		public static final TagKey<Block> STORAGE_BLOCK_TITANIUMCARBIDE = forgeTag("storage_blocks/titaniumcarbide");
 		public static final TagKey<Block> STORAGE_BLOCK_VANADIUMSTEEL = forgeTag("storage_blocks/vanadiumsteel");
-		
+
 		public static final TagKey<Block> ORES = forgeTag("ores");
-		
-		private static void init() {}
-		
+
+		private static void init() {
+		}
+
 		private static TagKey<Block> forgeTag(String name) {
 			return BlockTags.create(new ResourceLocation("forge", name));
 		}
-		
+
 	}
 
 	// Only the Tag objects should ever be visible from this class!

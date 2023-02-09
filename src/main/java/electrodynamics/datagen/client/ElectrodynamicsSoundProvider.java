@@ -14,11 +14,11 @@ import net.minecraftforge.registries.RegistryObject;
 public class ElectrodynamicsSoundProvider extends SoundDefinitionsProvider {
 
 	private final String modID;
-	
+
 	public ElectrodynamicsSoundProvider(DataGenerator generator, ExistingFileHelper helper) {
 		this(generator, helper, References.ID);
 	}
-	
+
 	public ElectrodynamicsSoundProvider(DataGenerator generator, ExistingFileHelper helper, String modID) {
 		super(generator, modID, helper);
 		this.modID = modID;
@@ -53,9 +53,7 @@ public class ElectrodynamicsSoundProvider extends SoundDefinitionsProvider {
 	}
 
 	private void add(RegistryObject<SoundEvent> sound) {
-		add(sound.get(),
-				SoundDefinition.definition().subtitle("subtitles." + modID + "." + sound.getId().getPath())
-						.with(Sound.sound(sound.getId(), SoundType.SOUND)));
+		add(sound.get(), SoundDefinition.definition().subtitle("subtitles." + modID + "." + sound.getId().getPath()).with(Sound.sound(sound.getId(), SoundType.SOUND)));
 	}
 
 }

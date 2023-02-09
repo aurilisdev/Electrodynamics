@@ -26,9 +26,9 @@ public class ComponentContainerProvider implements Component, MenuProvider {
 	public ComponentContainerProvider(String name) {
 		this.name = name;
 	}
-	
+
 	public ComponentContainerProvider(SubtypeMachine machine) {
-		this.name = "container." + machine.name();
+		name = "container." + machine.name();
 	}
 
 	public ComponentContainerProvider createMenu(BiFunction<Integer, Inventory, AbstractContainerMenu> createMenuFunction) {

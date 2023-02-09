@@ -17,7 +17,7 @@ public class TextUtils {
 	public static final String JEI_INFO_ITEM = "info.item";
 	public static final String JEI_INFO_FLUID = "info.fluid";
 	public static final String BLOCK_BASE = "block";
-	
+
 	public static final DecimalFormat FORMATTER = new DecimalFormat("0.0##");
 
 	public static MutableComponent tooltip(String key, Object... additional) {
@@ -70,14 +70,14 @@ public class TextUtils {
 
 	public static String formatFluidValue(int fluidLevel) {
 		double fluidDouble = fluidLevel;
-		if(fluidLevel >= 1000) {
+		if (fluidLevel >= 1000) {
 			return FORMATTER.format(fluidDouble / 1000.0) + " B";
 		} else if (fluidLevel >= 1000000) {
 			return FORMATTER.format(fluidDouble / 1000000) + " kB";
 		} else if (fluidLevel >= 1000000000) {
 			return FORMATTER.format(fluidDouble / 1000000000) + " MB";
 		}
-		
+
 		return fluidLevel + " mB";
 	}
 
@@ -90,6 +90,5 @@ public class TextUtils {
 		time = time * 1000;
 		return FORMATTER.format(time) + " ms";
 	}
-
 
 }

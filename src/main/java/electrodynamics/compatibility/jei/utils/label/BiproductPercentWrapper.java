@@ -19,7 +19,7 @@ public class BiproductPercentWrapper extends AbstractLabelWrapper {
 		super(0xFF808080, yPos, xEndPos, false);
 		this.isFluid = isFluid;
 	}
-	
+
 	public BiproductPercentWrapper(int xEndPos, int yPos, double percentage, boolean isFluid) {
 		super(0xFF808080, yPos, xEndPos, false);
 		this.isFluid = isFluid;
@@ -30,20 +30,17 @@ public class BiproductPercentWrapper extends AbstractLabelWrapper {
 	public Component getComponent(IRecipeCategory<?> category, Recipe<?> recipe) {
 		if (isFluid) {
 			// for future use
+		} else if (percentage > -1) {
+			Component.literal(percentage * 100 + "%");
 		} else {
-			if(percentage > -1) {
-				Component.literal(percentage * 100 + "%");
-			} else {
-				ElectrodynamicsRecipeCategory<?> electroCat = (ElectrodynamicsRecipeCategory<?>) category;
-				List<AbstractLabelWrapper> labels = Arrays.asList(electroCat.LABELS);
-				int biPos = labels.indexOf(this) - electroCat.itemBiLabelFirstIndex;
-				ElectrodynamicsRecipe electro = (ElectrodynamicsRecipe) recipe;
-				if(electro.hasItemBiproducts()) {
-					ProbableItem item = electro.getItemBiproducts()[biPos];
-					return Component.literal(item.getChance() * 100 + "%");
-				}
+			ElectrodynamicsRecipeCategory<?> electroCat = (ElectrodynamicsRecipeCategory<?>) category;
+			List<AbstractLabelWrapper> labels = Arrays.asList(electroCat.LABELS);
+			int biPos = labels.indexOf(this) - electroCat.itemBiLabelFirstIndex;
+			ElectrodynamicsRecipe electro = (ElectrodynamicsRecipe) recipe;
+			if (electro.hasItemBiproducts()) {
+				ProbableItem item = electro.getItemBiproducts()[biPos];
+				return Component.literal(item.getChance() * 100 + "%");
 			}
-			
 		}
 		return Component.literal("");
 	}

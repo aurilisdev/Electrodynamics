@@ -17,13 +17,13 @@ public class ElectrodynamicsElectrolyticSeparatorRecipes extends AbstractRecipeG
 
 	public static int ELECTROLYTICSEPARATOR_REQUIRED_TICKS = 200;
 	public static double ELECTROLYTICSEPARATOR_USAGE_PER_TICK = 250.0;
-	
+
 	private final String modID;
-	
+
 	public ElectrodynamicsElectrolyticSeparatorRecipes(String modID) {
 		this.modID = modID;
 	}
-	
+
 	public ElectrodynamicsElectrolyticSeparatorRecipes() {
 		this(References.ID);
 	}
@@ -38,7 +38,6 @@ public class ElectrodynamicsElectrolyticSeparatorRecipes extends AbstractRecipeG
 				.addFluidBiproduct(new ProbableFluid(new FluidStack(ElectrodynamicsFluids.fluidHydrogen, 2000), 1))
 				//
 				.complete(consumer);
-		;
 
 	}
 

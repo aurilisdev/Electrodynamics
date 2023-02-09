@@ -17,8 +17,7 @@ import net.minecraftforge.client.gui.overlay.NamedGuiOverlay;
 public class HandlerRailgunTemperature extends AbstractPostGuiOverlayHandler {
 
 	@Override
-	public void renderToScreen(NamedGuiOverlay overlay, PoseStack stack, Window window, Minecraft minecraft,
-			float partialTicks) {
+	public void renderToScreen(NamedGuiOverlay overlay, PoseStack stack, Window window, Minecraft minecraft, float partialTicks) {
 		Player player = minecraft.player;
 		ItemStack gunStackMainHand = player.getItemBySlot(EquipmentSlot.MAINHAND);
 		ItemStack gunStackOffHand = player.getItemBySlot(EquipmentSlot.OFFHAND);
@@ -28,11 +27,11 @@ public class HandlerRailgunTemperature extends AbstractPostGuiOverlayHandler {
 		} else if (gunStackOffHand.getItem() instanceof ItemRailgun) {
 			renderHeatToolTip(stack, minecraft, gunStackOffHand);
 		}
-		
+
 	}
-	
+
 	private void renderHeatToolTip(PoseStack stack, Minecraft minecraft, ItemStack item) {
-		
+
 		ItemRailgun railgun = (ItemRailgun) item.getItem();
 		double temperature = railgun.getTemperatureStored(item);
 		String correction = "";
@@ -48,7 +47,7 @@ public class HandlerRailgunTemperature extends AbstractPostGuiOverlayHandler {
 		}
 
 		TextUtils.tooltip("railguntemp", Component.literal(temperature + correction + " C"));
-		
+
 		Component currTempText = TextUtils.tooltip("railguntemp", Component.literal(temperature + correction + " C")).withStyle(ChatFormatting.YELLOW);
 		Component maxTempText = TextUtils.tooltip("railgunmaxtemp", Component.literal(railgun.getMaxTemp() + " C")).withStyle(ChatFormatting.YELLOW);
 

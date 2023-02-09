@@ -22,7 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
- * Extension of Ingredient that adds Fluid compatibility 
+ * Extension of Ingredient that adds Fluid compatibility
  * 
  * @author skip999
  *
@@ -84,7 +84,7 @@ public class FluidIngredient extends Ingredient {
 	private FluidIngredient(ResourceLocation resource, int amount) {
 		this(FluidTags.create(resource), amount);
 	}
-	
+
 	public FluidIngredient(TagKey<Fluid> tag, int amount) {
 		super(Stream.empty());
 		this.tag = tag;

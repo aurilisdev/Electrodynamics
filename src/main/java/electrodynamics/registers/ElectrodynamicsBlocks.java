@@ -46,57 +46,36 @@ public class ElectrodynamicsBlocks {
 
 	static {
 		for (SubtypeOre subtype : SubtypeOre.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(
-					() -> new DropExperienceBlock(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(
-							subtype.hardness, subtype.resistance), UniformInt.of(subtype.minXP, subtype.maxXP)),
-					subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new DropExperienceBlock(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(subtype.hardness, subtype.resistance), UniformInt.of(subtype.minXP, subtype.maxXP)), subtype)));
 		}
 		for (SubtypeOreDeepslate subtype : SubtypeOreDeepslate.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype,
-					BLOCKS.register(subtype.tag(), supplier(() -> new DropExperienceBlock(
-							Properties.of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops()
-									.strength(subtype.hardness + 1.5f, subtype.resistance + 1.5f),
-							UniformInt.of(subtype.minXP, subtype.maxXP)), subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new DropExperienceBlock(Properties.of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(subtype.hardness + 1.5f, subtype.resistance + 1.5f), UniformInt.of(subtype.minXP, subtype.maxXP)), subtype)));
 		}
 		for (SubtypeRawOreBlock subtype : SubtypeRawOreBlock.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(
-					() -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F)),
-					subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F)), subtype)));
 		}
 		for (SubtypeMachine subtype : SubtypeMachine.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype,
-					BLOCKS.register(subtype.tag(), supplier(() -> new BlockMachine(subtype), subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockMachine(subtype), subtype)));
 		}
 		for (SubtypeWire subtype : SubtypeWire.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype,
-					BLOCKS.register(subtype.tag(), supplier(() -> new BlockWire(subtype), subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockWire(subtype), subtype)));
 		}
 		for (SubtypePipe subtype : SubtypePipe.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype,
-					BLOCKS.register(subtype.tag(), supplier(() -> new BlockPipe(subtype), subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockPipe(subtype), subtype)));
 		}
 		for (SubtypeGlass subtype : SubtypeGlass.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype,
-					BLOCKS.register(subtype.tag(), supplier(() -> new BlockCustomGlass(subtype), subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockCustomGlass(subtype), subtype)));
 		}
 		for (SubtypeResourceBlock subtype : SubtypeResourceBlock.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(),
-					supplier(() -> new Block(Properties.of(subtype.getMaterial())
-							.strength(subtype.getHardness(), subtype.getResistance()).sound(subtype.getSoundType())),
-							subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new Block(Properties.of(subtype.getMaterial()).strength(subtype.getHardness(), subtype.getResistance()).sound(subtype.getSoundType())), subtype)));
 		}
 	}
 
-	public static final RegistryObject<Block> MULTI_SUBNODE = BLOCKS.register("multisubnode",
-			supplier(() -> multi = new BlockMultiSubnode()));
-	public static final RegistryObject<Block> SEISMIC_MARKER = BLOCKS.register("seismicmarker",
-			supplier(() -> blockSeismicMarker = new BlockSeismicMarker()));
-	public static final RegistryObject<Block> FRAME = BLOCKS.register("frame",
-			supplier(() -> blockFrame = new BlockFrame(0)));
-	public static final RegistryObject<Block> FRAME_CORNER = BLOCKS.register("framecorner",
-			supplier(() -> blockFrameCorner = new BlockFrame(1)));
-	public static final RegistryObject<Block> LOGISTICAL_MANAGER = BLOCKS.register("logisticalmanager",
-			supplier(() -> blockLogisticalManager = new BlockLogisticalManager()));
+	public static final RegistryObject<Block> MULTI_SUBNODE = BLOCKS.register("multisubnode", supplier(() -> multi = new BlockMultiSubnode()));
+	public static final RegistryObject<Block> SEISMIC_MARKER = BLOCKS.register("seismicmarker", supplier(() -> blockSeismicMarker = new BlockSeismicMarker()));
+	public static final RegistryObject<Block> FRAME = BLOCKS.register("frame", supplier(() -> blockFrame = new BlockFrame(0)));
+	public static final RegistryObject<Block> FRAME_CORNER = BLOCKS.register("framecorner", supplier(() -> blockFrameCorner = new BlockFrame(1)));
+	public static final RegistryObject<Block> LOGISTICAL_MANAGER = BLOCKS.register("logisticalmanager", supplier(() -> blockLogisticalManager = new BlockLogisticalManager()));
 
 	public static Block[] getAllBlockForSubtype(ISubtype[] values) {
 		List<Block> list = new ArrayList<>();

@@ -12,7 +12,7 @@ public class SlotNoModification extends SlotGeneric {
 	public SlotNoModification(Container inventory, int index, int x, int y) {
 		super(inventory, index, x, y);
 	}
-	
+
 	public SlotNoModification(ISlotTexture slot, ITexture icon, Container inventory, int index, int x, int y) {
 		super(slot, icon, inventory, index, x, y);
 	}

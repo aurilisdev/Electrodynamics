@@ -15,7 +15,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher> {
-	
+
 	public RenderMineralWasher(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}

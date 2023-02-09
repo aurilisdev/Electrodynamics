@@ -11,24 +11,24 @@ import net.minecraft.resources.ResourceLocation;
  *
  */
 public interface ITexture {
-	
+
 	int textureWidth();
-	
+
 	int textureHeight();
-	
+
 	int textureU();
-	
+
 	int textureV();
-	
+
 	int imageWidth();
-	
+
 	int imageHeight();
-	
+
 	ResourceLocation getLocation();
-	
-	public static enum Textures implements ITexture {
+
+	public enum Textures implements ITexture {
 		NONE(0, 0, 0, 0, 0, 0, null);
-		
+
 		private final int textureWidth;
 		private final int textureHeight;
 		private final int textureU;
@@ -36,8 +36,8 @@ public interface ITexture {
 		private final int imageWidth;
 		private final int imageHeight;
 		private final ResourceLocation loc;
-		
-		private Textures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc) {
+
+		Textures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc) {
 			this.textureWidth = textureWidth;
 			this.textureHeight = textureHeight;
 			this.textureU = textureU;
@@ -81,7 +81,7 @@ public interface ITexture {
 		public int textureWidth() {
 			return textureWidth;
 		}
-		
+
 	}
 
 }

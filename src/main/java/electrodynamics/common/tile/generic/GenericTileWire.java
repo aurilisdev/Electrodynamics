@@ -57,7 +57,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 
 				@Override
 				public void onChange() {
-					
+
 				}
 			});
 		}

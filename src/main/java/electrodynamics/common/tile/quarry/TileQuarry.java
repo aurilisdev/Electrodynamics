@@ -64,8 +64,7 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
 /**
- * Loosely based on Quarry concept from Buildcraft with aspects of Extra
- * Utilities's Ender Quarry
+ * Loosely based on Quarry concept from Buildcraft with aspects of Extra Utilities's Ender Quarry
  * 
  * @author skip999
  *
@@ -164,33 +163,33 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	public TileQuarry(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_QUARRY.get(), pos, state);
 
-		hasMotorComplex = property(new Property<Boolean>(PropertyType.Boolean, "hasmotorcomplex", false));
-		hasCoolantResavoir = property(new Property<Boolean>(PropertyType.Boolean, "hascoolantresavoir", false));
-		hasSeismicRelay = property(new Property<Boolean>(PropertyType.Boolean, "hasseismicrelay", false));
-		hasRing = property(new Property<Boolean>(PropertyType.Boolean, "hasring", false));
-		cornerOnRight = property(new Property<Boolean>(PropertyType.Boolean, "corneronright", false));
-		isAreaCleared = property(new Property<Boolean>(PropertyType.Boolean, "areaClear", false));
+		hasMotorComplex = property(new Property<>(PropertyType.Boolean, "hasmotorcomplex", false));
+		hasCoolantResavoir = property(new Property<>(PropertyType.Boolean, "hascoolantresavoir", false));
+		hasSeismicRelay = property(new Property<>(PropertyType.Boolean, "hasseismicrelay", false));
+		hasRing = property(new Property<>(PropertyType.Boolean, "hasring", false));
+		cornerOnRight = property(new Property<>(PropertyType.Boolean, "corneronright", false));
+		isAreaCleared = property(new Property<>(PropertyType.Boolean, "areaClear", false));
 
 		corners = property(new Property<List<BlockPos>>(PropertyType.BlockPosList, "corners", new ArrayList<>()));
-		miningPos = property(new Property<BlockPos>(PropertyType.BlockPos, "miningpos", OUT_OF_REACH));
-		prevMiningPos = property(new Property<BlockPos>(PropertyType.BlockPos, "prevminingpos", OUT_OF_REACH));
+		miningPos = property(new Property<>(PropertyType.BlockPos, "miningpos", OUT_OF_REACH));
+		prevMiningPos = property(new Property<>(PropertyType.BlockPos, "prevminingpos", OUT_OF_REACH));
 
-		quarryPowerUsage = property(new Property<Double>(PropertyType.Double, "quarrypowerusage", 0.0));
-		setupPowerUsage = property(new Property<Double>(PropertyType.Double, "setuppowerusage", 0.0));
-		isPowered = property(new Property<Boolean>(PropertyType.Boolean, "ispowered", false));
-		hasHead = property(new Property<Boolean>(PropertyType.Boolean, "hashead", false));
-		currHead = property(new Property<CompoundTag>(PropertyType.CompoundTag, "headtype", new CompoundTag()));
+		quarryPowerUsage = property(new Property<>(PropertyType.Double, "quarrypowerusage", 0.0));
+		setupPowerUsage = property(new Property<>(PropertyType.Double, "setuppowerusage", 0.0));
+		isPowered = property(new Property<>(PropertyType.Boolean, "ispowered", false));
+		hasHead = property(new Property<>(PropertyType.Boolean, "hashead", false));
+		currHead = property(new Property<>(PropertyType.CompoundTag, "headtype", new CompoundTag()));
 
-		hasItemVoid = property(new Property<Boolean>(PropertyType.Boolean, "hasitemvoid", false));
-		fortuneLevel = property(new Property<Integer>(PropertyType.Integer, "fortunelevel", 0));
-		silkTouchLevel = property(new Property<Integer>(PropertyType.Integer, "silktouchlevel", 0));
-		unbreakingLevel = property(new Property<Integer>(PropertyType.Integer, "unbreakinglevel", 0));
+		hasItemVoid = property(new Property<>(PropertyType.Boolean, "hasitemvoid", false));
+		fortuneLevel = property(new Property<>(PropertyType.Integer, "fortunelevel", 0));
+		silkTouchLevel = property(new Property<>(PropertyType.Integer, "silktouchlevel", 0));
+		unbreakingLevel = property(new Property<>(PropertyType.Integer, "unbreakinglevel", 0));
 
-		isFinished = property(new Property<Boolean>(PropertyType.Boolean, "isfinished", false));
-		speed = property(new Property<Integer>(PropertyType.Integer, "speed", 0));
-		progressCounter = property(new Property<Integer>(PropertyType.Integer, "progresscounter", 0));
-		running = property(new Property<Boolean>(PropertyType.Boolean, "isrunning", false));
-		isTryingToMineFrame = property(new Property<Boolean>(PropertyType.Boolean, "istryingtomineframe", false));
+		isFinished = property(new Property<>(PropertyType.Boolean, "isfinished", false));
+		speed = property(new Property<>(PropertyType.Integer, "speed", 0));
+		progressCounter = property(new Property<>(PropertyType.Integer, "progresscounter", 0));
+		running = property(new Property<>(PropertyType.Boolean, "isrunning", false));
+		isTryingToMineFrame = property(new Property<>(PropertyType.Boolean, "istryingtomineframe", false));
 
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
@@ -307,7 +306,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		if (shouldFail) {
 			return;
 		}
-		
+
 		if (!inv.areOutputsEmpty() || !resavoir.hasEnoughFluid(fluidUse) || !hasHead.get()) {
 			running.set(false);
 			return;
@@ -316,22 +315,20 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		running.set(true);
 		progressCounter.set(progressCounter.get() + 1);
 
-		if(progressCounter.get() < speed.get()) {
+		if (progressCounter.get() < speed.get()) {
 			return;
 		}
-		
+
 		// if there is no room for mined blocks, the fluid resavoir doesn't have enough
 		// fluid, or there isn't a drill head, return
-		
 
 		progressCounter.set(0);
 
 		if (canMineIfFrame(world.getBlockState(miningPos.get()), miningPos.get())) {
 			isTryingToMineFrame.set(true);
 			return;
-		} else {
-			isTryingToMineFrame.set(false);
 		}
+		isTryingToMineFrame.set(false);
 
 		resavoir.drainFluid(fluidUse);
 		BlockPos cornerStart = corners.get().get(3);
@@ -427,8 +424,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	/**
-	 * Looks for obstructions that have been placed in the previously mined area If
-	 * one is found, the mining position is set to that position
+	 * Looks for obstructions that have been placed in the previously mined area If one is found, the mining position is set to that position
 	 */
 	private void maintainMiningArea() {
 		Level world = getLevel();
@@ -560,9 +556,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			if (canMineIfFrame(state, checkPos)) {
 				isTryingToMineFrame.set(true);
 				return;
-			} else {
-				isTryingToMineFrame.set(true);
 			}
+			isTryingToMineFrame.set(true);
 			float strength = state.getDestroySpeed(world, checkPos);
 			int blockSkip = 0;
 			while (skipBlock(state) && blockSkip < CLEAR_SKIP) {
@@ -756,9 +751,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		if (canMineIfFrame(world.getBlockState(currPos), currPos)) {
 			isTryingToMineFrame.set(true);
 			return;
-		} else {
-			isTryingToMineFrame.set(false);
 		}
+		isTryingToMineFrame.set(false);
 
 		if ((currPosX ? currPos.getX() : currPos.getZ()) == startCV) {
 			world.setBlockAndUpdate(startPos, cornerState);
@@ -793,9 +787,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		if (canMineIfFrame(world.getBlockState(currPos), currPos)) {
 			isTryingToMineFrame.set(true);
 			return;
-		} else {
-			isTryingToMineFrame.set(false);
 		}
+		isTryingToMineFrame.set(false);
 		world.setBlockAndUpdate(currPos, ElectrodynamicsBlocks.blockFrame.defaultBlockState().setValue(GenericEntityBlock.FACING, cornerOnRight.get() ? frameFace.getOpposite() : frameFace).setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE));
 		repairedFrames.add(currPos);
 		world.playSound(null, currPos, SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 0.5F, 1.0F);
@@ -876,7 +869,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	private boolean skipBlock(BlockState state) {
-		return state.isAir() || !state.getFluidState().is(Fluids.EMPTY) || state.is(Blocks.BEDROCK) || (miningPos.get().getY() == level.getMinBuildHeight());
+		return state.isAir() || !state.getFluidState().is(Fluids.EMPTY) || state.is(Blocks.BEDROCK) || miningPos.get().getY() == level.getMinBuildHeight();
 	}
 
 	private void tickClient(ComponentTickable tick) {
@@ -1099,7 +1092,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	@Override
 	public void onInventoryChange(ComponentInventory inv, int slot) {
 		super.onInventoryChange(inv, slot);
-		if (inv.getUpgradeContents().size() > 0 && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
+		if (!inv.getUpgradeContents().isEmpty() && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
 			double quarryPowerMultiplier = 0;
 			int silkTouchLevel = 0;
 			int fortuneLevel = 0;
@@ -1217,9 +1210,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		TileMotorComplex complex = getMotorComplex();
 		if (complex == null) {
 			return false;
-		} else {
-			return complex.isPowered.get();
 		}
+		return complex.isPowered.get();
 	}
 
 	public boolean canMineIfFrame(BlockState state, BlockPos pos) {

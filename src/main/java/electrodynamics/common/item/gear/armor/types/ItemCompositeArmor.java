@@ -96,7 +96,7 @@ public class ItemCompositeArmor extends ArmorItem {
 			items.add(empty);
 		}
 	}
-	
+
 	@Override
 	public boolean canBeDepleted() {
 		return false;

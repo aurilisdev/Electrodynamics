@@ -37,54 +37,54 @@ public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, UP, 1.0F, 0F, 0F, 1.0F, 255, 0);
 			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, RIGHT, 1.0F, 0F, 0F, 1.0F, 255, 0);
 			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, DOWN, 1.0F, 0F, 0F, 1.0F, 255, 0);
-			
+
 			Direction facing = tile.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().getOpposite();
-			
+
 			boolean doesQuarryHaveRing = false;
 			BlockEntity entity = level().getBlockEntity(tile.getBlockPos().relative(facing.getClockWise()));
-			if(entity != null && entity instanceof TileQuarry quarry) {
+			if (entity != null && entity instanceof TileQuarry quarry) {
 				doesQuarryHaveRing = quarry.hasRing.get();
 			}
 			entity = level().getBlockEntity(tile.getBlockPos().relative(facing.getCounterClockWise()));
-			if(entity != null && entity instanceof TileQuarry quarry) {
+			if (entity != null && entity instanceof TileQuarry quarry) {
 				doesQuarryHaveRing = quarry.hasRing.get();
 			}
-			
-			if(!doesQuarryHaveRing) {
+
+			if (!doesQuarryHaveRing) {
 				return;
 			}
-			
+
 			AABB beam;
-			if(facing == Direction.NORTH) {
+			if (facing == Direction.NORTH) {
 				beam = new AABB(0.4375, 0.5625, 0, 0.5625, 0.6875, -0.375);
-			} else if(facing == Direction.SOUTH) {
+			} else if (facing == Direction.SOUTH) {
 				beam = new AABB(0.4375, 0.5625, 1, 0.5625, 0.6875, 1.375);
 			} else if (facing == Direction.EAST) {
 				beam = new AABB(1, 0.5625, 0.4375, 1.375, 0.6875, 0.5625);
 			} else {
 				beam = new AABB(0, 0.5625, 0.4375, -0.375, 0.6875, 0.5625);
 			}
-			
+
 			int time = 200;
 			int cutoff = 180;
 			int half = (time - cutoff) / 2;
-			
+
 			float alpha = getGameTime() % time;
-			
-			if(alpha < cutoff) {
+
+			if (alpha < cutoff) {
 				return;
 			}
-			
+
 			alpha = time - alpha;
-			if(alpha <= half) {
-				alpha = alpha / (float) half; 
+			if (alpha <= half) {
+				alpha = alpha / half;
 			} else {
 				alpha = alpha - half;
-				alpha = 1.0F - (alpha / (float) half); 
+				alpha = 1.0F - alpha / half;
 			}
 
 			TextureAtlasSprite whiteTexture = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_WHITE);
-			
+
 			RenderingUtils.renderFilledBoxNoOverlay(stack, sheetBuilder, beam, 1.0F, 0, 0, alpha, whiteTexture.getU0(), whiteTexture.getV0(), whiteTexture.getV1(), whiteTexture.getV1(), 255);
 		}
 	}

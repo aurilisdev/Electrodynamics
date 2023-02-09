@@ -32,7 +32,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.items.IItemHandlerModifiable;
 
-
 public class ComponentInventory implements Component, WorldlyContainer {
 	protected GenericTile holder = null;
 
@@ -52,7 +51,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	protected LazyOptional<IItemHandlerModifiable>[] sideWrappers = IndexedSidedInvWrapper.create(this, Direction.values());
 
 	public static final String SAVE_KEY = "itemproperty";
-	
+
 	/*
 	 * IMPORTANT DEFINITIONS:
 	 * 
@@ -70,7 +69,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	private int processors = 0;
 	private int processorInputs = 0;
 	private BiConsumer<ComponentInventory, Integer> onChanged = (componentInventory, slot) -> {
-		if(holder != null) {
+		if (holder != null) {
 			holder.onInventoryChange(componentInventory, slot);
 		}
 	};
@@ -93,7 +92,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	public ComponentInventory size(int inventorySize) {
 		this.inventorySize = inventorySize;
-		items = holder.property(new Property<NonNullList<ItemStack>>(PropertyType.InventoryItems, "itemproperty", NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY)));
+		items = holder.property(new Property<>(PropertyType.InventoryItems, "itemproperty", NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY)));
 		return this;
 	}
 
@@ -169,11 +168,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, Direction side) {
-		return (side == null || directionMappings.containsKey(side)
-				|| holder.hasComponent(ComponentType.Direction)
-						&& relativeDirectionMappings.containsKey(BlockEntityUtils.getRelativeSide(
-								holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side)))
-				&& capability == ForgeCapabilities.ITEM_HANDLER;
+		return (side == null || directionMappings.containsKey(side) || holder.hasComponent(ComponentType.Direction) && relativeDirectionMappings.containsKey(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))) && capability == ForgeCapabilities.ITEM_HANDLER;
 	}
 
 	@Override
@@ -204,7 +199,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	@Override
 	public ItemStack removeItem(int index, int count) {
 		ItemStack stack = ContainerHelper.removeItem(items.get(), index, count);
-		if(!stack.isEmpty()) {
+		if (!stack.isEmpty()) {
 			setChanged(index);
 		}
 		return stack;
@@ -294,11 +289,11 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	@Override
-	//this is only called through someone instance checking of this class....
+	// this is only called through someone instance checking of this class....
 	public void setChanged() {
 		setChanged(-1);
 	}
-	
+
 	public void setChanged(int slot) {
 		items.forceDirty();
 		if (onChanged != null) {

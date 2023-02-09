@@ -77,7 +77,7 @@ public class ElectrodynamicsShapedCraftingRecipe extends ShapedRecipeBuilder.Res
 			if (patterns.size() > 3) {
 				throw new UnsupportedOperationException("Already 3 patterns present");
 			}
-			this.patterns.add(pattern);
+			patterns.add(pattern);
 			return this;
 		}
 

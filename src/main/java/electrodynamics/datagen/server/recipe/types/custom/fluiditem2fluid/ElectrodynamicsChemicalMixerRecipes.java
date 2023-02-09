@@ -6,9 +6,9 @@ import electrodynamics.api.References;
 import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.tags.ElectrodynamicsTags;
+import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
 import electrodynamics.datagen.utils.recipe.FinishedRecipeFluidOutput;
-import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.FluidTags;
@@ -20,13 +20,13 @@ public class ElectrodynamicsChemicalMixerRecipes extends AbstractRecipeGenerator
 
 	public static double CHEMICALMIXER_USAGE_PER_TICK = 400.0;
 	public static int CHEMICALMIXER_REQUIRED_TICKS = 200;
-	
+
 	private final String modID;
-	
+
 	public ElectrodynamicsChemicalMixerRecipes(String modID) {
 		this.modID = modID;
 	}
-	
+
 	public ElectrodynamicsChemicalMixerRecipes() {
 		this(References.ID);
 	}

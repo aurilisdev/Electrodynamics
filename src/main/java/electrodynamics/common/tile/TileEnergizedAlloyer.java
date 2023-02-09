@@ -24,7 +24,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileEnergizedAlloyer extends GenericTile implements ITickableSoundTile {
-	
+
 	private boolean isSoundPlaying = false;
 
 	public TileEnergizedAlloyer(BlockPos worldPosition, BlockState blockState) {
@@ -41,14 +41,14 @@ public class TileEnergizedAlloyer extends GenericTile implements ITickableSoundT
 
 	protected boolean canProcessEnergAlloy(ComponentProcessor component) {
 		boolean canProcess = component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE.get());
-		if(BlockEntityUtils.isLit(this) ^ canProcess) {
+		if (BlockEntityUtils.isLit(this) ^ canProcess) {
 			BlockEntityUtils.updateLit(this, canProcess);
 		}
 		return canProcess;
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if(!shouldPlaySound()) {
+		if (!shouldPlaySound()) {
 			return;
 		}
 		if (level.random.nextDouble() < 0.15) {

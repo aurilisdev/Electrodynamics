@@ -29,7 +29,7 @@ public abstract class AbstractLabelWrapper {
 	public int getXPos() {
 		return X_POS;
 	}
-	
+
 	public boolean xIsEnd() {
 		return xIsEnd;
 	}

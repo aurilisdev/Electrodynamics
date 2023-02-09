@@ -34,12 +34,12 @@ public class TileMotorComplex extends GenericTile implements ITickableSoundTile 
 	public static final int DEFAULT_SPEED = Math.min(Constants.MIN_QUARRYBLOCKS_PER_TICK, 100);
 	// 1 tick per block
 	public static final int MAX_SPEED = Math.max(Constants.MAX_QUARRYBLOCKS_PER_TICK, 1);
-	
+
 	private boolean isSoundPlaying = false;
 
-	public final Property<Integer> speed = property(new Property<Integer>(PropertyType.Integer, "speed", DEFAULT_SPEED));
-	public final Property<Double> powerMultiplier = property(new Property<Double>(PropertyType.Double, "powerMultiplier", 1.0));
-	public final Property<Boolean> isPowered = property(new Property<Boolean>(PropertyType.Boolean, "isPowered", false));
+	public final Property<Integer> speed = property(new Property<>(PropertyType.Integer, "speed", DEFAULT_SPEED));
+	public final Property<Double> powerMultiplier = property(new Property<>(PropertyType.Double, "powerMultiplier", 1.0));
+	public final Property<Boolean> isPowered = property(new Property<>(PropertyType.Boolean, "isPowered", false));
 
 	public TileMotorComplex(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_MOTORCOMPLEX.get(), pos, state);
@@ -68,11 +68,11 @@ public class TileMotorComplex extends GenericTile implements ITickableSoundTile 
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_MOTORRUNNING.get(), this, true);
 		}
 	}
-	
+
 	@Override
 	public void onInventoryChange(ComponentInventory inv, int slot) {
 		super.onInventoryChange(inv, slot);
-		if(inv.getUpgradeContents().size() > 0 && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
+		if (inv.getUpgradeContents().size() > 0 && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
 			speed.set(DEFAULT_SPEED);
 			powerMultiplier.set(1.0);
 			for (ItemStack stack : inv.getUpgradeContents()) {

@@ -12,7 +12,7 @@ public class ItemDescriptable extends Item {
 
 	private Component[] tooltips;
 
-	public ItemDescriptable(Properties properties, Component...tooltips) {
+	public ItemDescriptable(Properties properties, Component... tooltips) {
 		super(properties);
 		this.tooltips = tooltips;
 	}
@@ -20,8 +20,8 @@ public class ItemDescriptable extends Item {
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
 		super.appendHoverText(stack, world, tooltips, flag);
-		if(tooltips != null) {
-			for(Component tooltip : this.tooltips) {
+		if (tooltips != null) {
+			for (Component tooltip : this.tooltips) {
 				tooltips.add(tooltip);
 			}
 		}

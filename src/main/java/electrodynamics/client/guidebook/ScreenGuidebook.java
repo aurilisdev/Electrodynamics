@@ -2,7 +2,6 @@ package electrodynamics.client.guidebook;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -293,14 +292,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		for (Module mod : temp) {
 			cats.add(mod.getTitle());
 		}
-		Collections.sort(cats, new Comparator<MutableComponent>() {
-
-			@Override
-			public int compare(MutableComponent component1, MutableComponent component2) {
-				return component1.toString().compareToIgnoreCase(component2.toString());
-			}
-			
-		});
+		Collections.sort(cats, (component1, component2) -> component1.toString().compareToIgnoreCase(component2.toString()));
 		for (MutableComponent cat : cats) {
 			for (int i = 0; i < temp.size(); i++) {
 				Module mod = temp.get(i);

@@ -65,7 +65,6 @@ public class ElectrodynamicsShapelessCraftingRecipe extends ShapelessRecipeBuild
 		@Nullable
 		private ICondition[] recipeConditions;
 
-
 		private Builder(Item item, int count) {
 			this.item = item;
 			this.count = count;
@@ -94,7 +93,7 @@ public class ElectrodynamicsShapelessCraftingRecipe extends ShapelessRecipeBuild
 			ingredients.add(Ingredient.of(item));
 			return this;
 		}
-		
+
 		public Builder addConditions(ICondition... conditions) {
 			recipeConditions = conditions;
 			return this;

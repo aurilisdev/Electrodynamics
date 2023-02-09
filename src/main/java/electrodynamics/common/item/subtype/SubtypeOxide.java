@@ -18,11 +18,11 @@ public enum SubtypeOxide implements ISubtype {
 	chromiumdisilicide(ElectrodynamicsTags.Items.OXIDE_CHROMIUMDISILICIDE);
 
 	public final TagKey<Item> tag;
-	
-	private SubtypeOxide(TagKey<Item> tag) {
+
+	SubtypeOxide(TagKey<Item> tag) {
 		this.tag = tag;
 	}
-	
+
 	@Override
 	public String tag() {
 		return "oxide" + name();

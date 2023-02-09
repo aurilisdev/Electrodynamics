@@ -7,7 +7,7 @@ import net.minecraft.world.item.crafting.Recipe;
 public class LabelWrapperGeneric extends AbstractLabelWrapper {
 
 	private final Component label;
-	
+
 	public LabelWrapperGeneric(int color, int yPos, int endXPos, boolean xIsEnd, Component label) {
 		super(color, yPos, endXPos, xIsEnd);
 		this.label = label;

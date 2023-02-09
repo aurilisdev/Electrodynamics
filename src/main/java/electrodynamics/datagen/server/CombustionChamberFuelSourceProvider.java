@@ -19,15 +19,15 @@ import net.minecraft.data.DataProvider;
 public class CombustionChamberFuelSourceProvider implements DataProvider {
 
 	public static final String LOC = "data/" + References.ID + "/" + CombustionFuelRegister.FOLDER + "/";
-	
+
 	private final DataGenerator dataGenerator;
-	
+
 	private final Map<String, JsonObject> jsons = new HashMap<>();
-	
+
 	public CombustionChamberFuelSourceProvider(DataGenerator gen) {
 		dataGenerator = gen;
 	}
-	
+
 	@Override
 	public void run(CachedOutput cache) throws IOException {
 		addFuels();
@@ -41,7 +41,7 @@ public class CombustionChamberFuelSourceProvider implements DataProvider {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void addFuels() {
 		jsons.put("ethanol", CombustionFuelSource.toJson(ElectrodynamicsTags.Fluids.ETHANOL, 1, 1));
 		jsons.put("hydrogen", CombustionFuelSource.toJson(ElectrodynamicsTags.Fluids.HYDROGEN, 1000, 1));

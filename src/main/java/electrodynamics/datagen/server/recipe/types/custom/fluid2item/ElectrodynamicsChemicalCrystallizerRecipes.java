@@ -6,10 +6,10 @@ import electrodynamics.api.References;
 import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.tags.ElectrodynamicsTags;
+import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
 import electrodynamics.datagen.utils.recipe.FinishedRecipeItemOutput;
 import electrodynamics.registers.ElectrodynamicsItems;
-import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
@@ -19,13 +19,13 @@ public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGe
 
 	public static double CHEMICALCRYSTALLIZER_USAGE_PER_TICK = 800.0;
 	public static int CHEMICALCRYSTALLIZER_REQUIRED_TICKS = 200;
-	
+
 	private final String modID;
-	
+
 	public ElectrodynamicsChemicalCrystallizerRecipes(String modID) {
 		this.modID = modID;
 	}
-	
+
 	public ElectrodynamicsChemicalCrystallizerRecipes() {
 		this(References.ID);
 	}

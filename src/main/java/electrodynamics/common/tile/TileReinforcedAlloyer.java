@@ -26,7 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileReinforcedAlloyer extends GenericTile implements ITickableSoundTile {
 
 	private boolean isSoundPlaying = false;
-	
+
 	public TileReinforcedAlloyer(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_REINFORCEDALLOYER.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection());
@@ -40,7 +40,7 @@ public class TileReinforcedAlloyer extends GenericTile implements ITickableSound
 
 	protected boolean canProcessReinfAlloy(ComponentProcessor component) {
 		boolean canProcess = component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE.get());
-		if(BlockEntityUtils.isLit(this) ^ canProcess) {
+		if (BlockEntityUtils.isLit(this) ^ canProcess) {
 			BlockEntityUtils.updateLit(this, canProcess);
 		}
 
@@ -48,7 +48,7 @@ public class TileReinforcedAlloyer extends GenericTile implements ITickableSound
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if(!shouldPlaySound()) {
+		if (!shouldPlaySound()) {
 			return;
 		}
 		if (level.random.nextDouble() < 0.15) {

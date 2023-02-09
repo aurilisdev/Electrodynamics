@@ -22,7 +22,7 @@ public class HandlerRightClickWires extends AbstractRightClickBlockHandler {
 	@Override
 	public void handle(RightClickBlock event) {
 		Player player = event.getEntity();
-		if(player.level.isClientSide) {
+		if (player.level.isClientSide) {
 			return;
 		}
 
@@ -66,7 +66,7 @@ public class HandlerRightClickWires extends AbstractRightClickBlockHandler {
 				stack.shrink(1);
 			}
 		}
-		
+
 	}
 
 }

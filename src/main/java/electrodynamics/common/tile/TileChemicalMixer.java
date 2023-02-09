@@ -22,9 +22,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
 public class TileChemicalMixer extends GenericFluidTile {
-	
+
 	public static final int MAX_TANK_CAPACITY = 5000;
-	
+
 	public TileChemicalMixer(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_CHEMICALMIXER.get(), worldPosition, blockState);
 		addComponent(new ComponentTickable().tickClient(this::tickClient));

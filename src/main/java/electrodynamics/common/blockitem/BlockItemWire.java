@@ -27,15 +27,15 @@ public class BlockItemWire extends BlockItem {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		tooltip.add(TextUtils.tooltip("itemwire.resistance", ChatFormatter.getChatDisplay(wire.wire.resistance, DisplayUnit.RESISTANCE)).withStyle(ChatFormatting.GRAY));
 		tooltip.add(TextUtils.tooltip("itemwire.maxamps", ChatFormatter.getChatDisplay(wire.wire.capacity, DisplayUnit.AMPERE)).withStyle(ChatFormatting.GRAY));
-		if(wire.wire.wireClass.shockVoltage == 0) {
+		if (wire.wire.wireClass.shockVoltage == 0) {
 			tooltip.add(TextUtils.tooltip("itemwire.info.uninsulated"));
 		} else {
 			tooltip.add(TextUtils.tooltip("itemwire.info.insulationrating", wire.wire.wireClass.shockVoltage));
 		}
-		if(wire.wire.wireClass.fireProof) {
+		if (wire.wire.wireClass.fireProof) {
 			TextUtils.tooltip("itemwire.info.fireproof");
 		}
-		if(wire.wire.wireType.conductsRedstone) {
+		if (wire.wire.wireType.conductsRedstone) {
 			TextUtils.tooltip("itemwire.info.redstone");
 		}
 	}

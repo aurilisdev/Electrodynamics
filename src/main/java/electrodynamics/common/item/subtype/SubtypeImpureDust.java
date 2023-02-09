@@ -22,12 +22,12 @@ public enum SubtypeImpureDust implements ISubtype {
 
 	public final TagKey<Item> tag;
 	public final Supplier<Item> grindedDust;
-	
-	private SubtypeImpureDust(TagKey<Item> tag, Supplier<Item> grindedDust) {
+
+	SubtypeImpureDust(TagKey<Item> tag, Supplier<Item> grindedDust) {
 		this.tag = tag;
 		this.grindedDust = grindedDust;
 	}
-	
+
 	@Override
 	public String tag() {
 		return "impuredust" + name();

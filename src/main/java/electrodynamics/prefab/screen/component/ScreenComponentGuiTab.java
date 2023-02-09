@@ -34,7 +34,7 @@ public class ScreenComponentGuiTab extends AbstractScreenComponentInfo {
 	@Override
 	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
-		if(iconType == IconType.NONE) {
+		if (iconType == IconType.NONE) {
 			return;
 		}
 		RenderingUtils.bindTexture(iconType.getLocation());
@@ -43,7 +43,7 @@ public class ScreenComponentGuiTab extends AbstractScreenComponentInfo {
 		gui.drawTexturedRect(stack, guiWidth + xLocation + slotXOffset, guiHeight + yLocation + slotYOffset, iconType.textureU(), iconType.textureV(), iconType.textureWidth(), iconType.textureHeight(), iconType.imageWidth(), iconType.imageHeight());
 	}
 
-	public static enum GuiInfoTabTextures implements ITexture {
+	public enum GuiInfoTabTextures implements ITexture {
 		REGULAR(26, 26, 0, 0, 26, 26, "tab_regular");
 
 		private final int textureWidth;
@@ -54,14 +54,14 @@ public class ScreenComponentGuiTab extends AbstractScreenComponentInfo {
 		private final int imageHeight;
 		private final ResourceLocation loc;
 
-		private GuiInfoTabTextures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, String name) {
+		GuiInfoTabTextures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, String name) {
 			this.textureWidth = textureWidth;
 			this.textureHeight = textureHeight;
 			this.textureU = textureU;
 			this.textureV = textureV;
 			this.imageWidth = imageWidth;
 			this.imageHeight = imageHeight;
-			this.loc = new ResourceLocation(References.ID + ":textures/screen/component/guitab/" + name + ".png");
+			loc = new ResourceLocation(References.ID + ":textures/screen/component/guitab/" + name + ".png");
 		}
 
 		@Override

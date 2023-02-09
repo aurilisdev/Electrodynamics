@@ -23,7 +23,7 @@ public class TileLogisticalManager extends GenericTile {
 
 	private TileQuarry[] quarries = new TileQuarry[6];
 	private BlockEntity[] inventories = new BlockEntity[6];
-	
+
 	public TileLogisticalManager(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_LOGISTICALMANAGER.get(), pos, state);
 		addComponent(new ComponentDirection());
@@ -31,54 +31,54 @@ public class TileLogisticalManager extends GenericTile {
 	}
 
 	private void tickServer(ComponentTickable tick) {
-		for(int i = 0; i < 6; i++) {
+		for (int i = 0; i < 6; i++) {
 			BlockEntity inventory = inventories[i];
-			if(inventory != null) {
+			if (inventory != null) {
 				LazyOptional<IItemHandler> lazy = inventory.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.values()[i].getOpposite());
-				if(lazy.isPresent()) {
+				if (lazy.isPresent()) {
 					IItemHandler handler = lazy.resolve().get();
-					for(TileQuarry quarry : quarries) {
-						if(quarry != null) {
+					for (TileQuarry quarry : quarries) {
+						if (quarry != null) {
 							addItemsToInventory(quarry.getComponent(ComponentType.Inventory), handler);
 						}
 					}
 				}
 			}
 		}
-		
+
 	}
-	
+
 	public void refreshConnections() {
 		quarries = new TileQuarry[6];
 		inventories = new BlockEntity[6];
-		for(Direction dir : Direction.values()) {
+		for (Direction dir : Direction.values()) {
 			BlockEntity entity = level.getBlockEntity(getBlockPos().relative(dir));
 			if (entity != null) {
-				if(entity instanceof TileQuarry quarry) {
+				if (entity instanceof TileQuarry quarry) {
 					quarries[dir.ordinal()] = quarry;
-				} else if(entity.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).isPresent()) {
+				} else if (entity.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).isPresent()) {
 					inventories[dir.ordinal()] = entity;
 				}
 			}
 		}
 	}
-	
+
 	@Override
 	public void onLoad() {
 		super.onLoad();
 		Scheduler.schedule(1, this::refreshConnections);
 	}
-	
+
 	private void addItemsToInventory(ComponentInventory quarryInventory, IItemHandler handler) {
-		for(int i = 0; i < quarryInventory.outputs(); i++) {
+		for (int i = 0; i < quarryInventory.outputs(); i++) {
 			int index = i + quarryInventory.getOutputStartIndex();
 			ItemStack mined = quarryInventory.getItem(index);
-			if(!mined.isEmpty()) {
-				for(int j = 0; j < handler.getSlots(); j++) {
+			if (!mined.isEmpty()) {
+				for (int j = 0; j < handler.getSlots(); j++) {
 					mined = handler.insertItem(j, mined, false);
 					quarryInventory.setItem(index, mined);
 					quarryInventory.setChanged(index);
-					if(mined.isEmpty()) {
+					if (mined.isEmpty()) {
 						break;
 					}
 				}
@@ -86,18 +86,18 @@ public class TileLogisticalManager extends GenericTile {
 		}
 
 	}
-	
+
 	public static boolean isQuarry(BlockPos pos, LevelAccessor world) {
 		BlockEntity entity = world.getBlockEntity(pos);
 		return entity != null && entity instanceof TileQuarry quarry;
 	}
-	
+
 	public static boolean isValidInventory(BlockPos pos, LevelAccessor world, Direction dir) {
 		BlockEntity entity = world.getBlockEntity(pos);
-		if(entity == null) {
+		if (entity == null) {
 			return false;
 		}
-		if(entity.getCapability(ForgeCapabilities.ITEM_HANDLER, dir).isPresent()) {
+		if (entity.getCapability(ForgeCapabilities.ITEM_HANDLER, dir).isPresent()) {
 			return true;
 		}
 		return entity instanceof Container;

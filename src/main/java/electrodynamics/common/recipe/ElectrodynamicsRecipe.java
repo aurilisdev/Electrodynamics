@@ -41,10 +41,9 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 	private int fluidBiCount;
 
 	private double xp;
-	
+
 	private int ticks;
 	private double usagePerTick;
-	
 
 	private ProbableItem[] itemBiProducts;
 	private ProbableFluid[] fluidBiProducts;
@@ -191,11 +190,11 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 	public double getXp() {
 		return xp;
 	}
-	
+
 	public int getTicks() {
 		return ticks;
 	}
-	
+
 	public double getUsagePerTick() {
 		return usagePerTick;
 	}

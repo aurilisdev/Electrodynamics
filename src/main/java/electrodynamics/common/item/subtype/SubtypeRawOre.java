@@ -27,13 +27,13 @@ public enum SubtypeRawOre implements ISubtype {
 	public final Supplier<Item> crushedItem;
 	@Nullable
 	public final Supplier<Item> grindedItem;
-	
-	private SubtypeRawOre(TagKey<Item> tag, Supplier<Item> crushedItem, Supplier<Item> grindedItem) {
+
+	SubtypeRawOre(TagKey<Item> tag, Supplier<Item> crushedItem, Supplier<Item> grindedItem) {
 		this.tag = tag;
 		this.crushedItem = crushedItem;
 		this.grindedItem = grindedItem;
 	}
-	
+
 	@Override
 	public String tag() {
 		return "rawore" + name();

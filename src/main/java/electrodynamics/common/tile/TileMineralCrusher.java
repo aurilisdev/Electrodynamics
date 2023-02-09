@@ -30,7 +30,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class TileMineralCrusher extends GenericTile implements ITickableSoundTile {
 	public long clientRunningTicks = 0;
-	
+
 	private boolean isSoundPlaying = false;
 
 	public TileMineralCrusher(BlockPos pos, BlockState state) {
@@ -66,7 +66,7 @@ public class TileMineralCrusher extends GenericTile implements ITickableSoundTil
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if(!isProcessorActive()) {
+		if (!isProcessorActive()) {
 			return;
 		}
 
@@ -100,7 +100,7 @@ public class TileMineralCrusher extends GenericTile implements ITickableSoundTil
 			}
 		}
 		clientRunningTicks++;
-		
+
 		if (!isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_MINERALCRUSHER.get(), this, true);

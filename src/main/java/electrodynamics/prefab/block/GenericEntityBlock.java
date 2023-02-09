@@ -83,14 +83,13 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		return super.mirror(state, mirrorIn);
 	}
 
-	
 	@Override
 	public void onPickup(ItemStack stack, BlockPos pos, Player player) {
 		Level world = player.level;
 		world.destroyBlock(pos, true, player);
 	}
 
-	//TODO get this to work
+	// TODO get this to work
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
 		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
@@ -107,36 +106,36 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 				});
 			}
 			return Arrays.asList(stack);
-			
+
 		}
 		return super.getDrops(state, builder);
 	}
-	
+
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if(newState.isAir()) {
+		if (newState.isAir()) {
 			BlockEntity entity = level.getBlockEntity(pos);
-			if(entity != null && entity instanceof GenericTile generic) {
+			if (entity != null && entity instanceof GenericTile generic) {
 				generic.onBlockDestroyed();
 			}
 		}
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
-	
+
 	@Override
 	public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
 		super.onNeighborChange(state, level, pos, neighbor);
 		BlockEntity entity = level.getBlockEntity(pos);
-		if(entity != null && entity instanceof GenericTile generic) {
+		if (entity != null && entity instanceof GenericTile generic) {
 			generic.onNeightborChanged(neighbor);
 		}
 	}
-	
+
 	@Override
 	public void onPlace(BlockState newState, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
 		super.onPlace(newState, level, pos, oldState, isMoving);
 		BlockEntity entity = level.getBlockEntity(pos);
-		if(entity != null && entity instanceof GenericTile generic) {
+		if (entity != null && entity instanceof GenericTile generic) {
 			generic.onPlace(oldState, isMoving);
 		}
 	}

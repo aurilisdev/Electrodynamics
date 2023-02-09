@@ -8,8 +8,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenComponentTemperature extends ScreenComponentGuiTab {
-	
-	//this could be condensed to a ScreenComponentGuiTab class, but is left for future expansion purposes
+
+	// this could be condensed to a ScreenComponentGuiTab class, but is left for future expansion purposes
 	public ScreenComponentTemperature(final TextPropertySupplier infoHandler, final IScreenWrapper gui, final int x, final int y) {
 		super(GuiInfoTabTextures.REGULAR, IconType.TEMPERATURE, infoHandler, gui, x, y);
 	}

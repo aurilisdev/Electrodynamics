@@ -79,7 +79,7 @@ public class TileCreativeFluidSource extends GenericTile {
 				boolean electroPipe = faceTile instanceof GenericTilePipe;
 				LazyOptional<IFluidHandler> cap = faceTile.getCapability(ForgeCapabilities.FLUID_HANDLER, direction);
 				if (cap.isPresent()) {
-				IFluidHandler fHandler = cap.resolve().get();
+					IFluidHandler fHandler = cap.resolve().get();
 					FluidStack tankFluid = handler.getFluid();
 					if (electroPipe) {
 						if (handler.getFluidAmount() > 0) {
@@ -91,7 +91,7 @@ public class TileCreativeFluidSource extends GenericTile {
 						fHandler.fill(taken, FluidAction.EXECUTE);
 					}
 				}
-				
+
 			}
 		}
 	}

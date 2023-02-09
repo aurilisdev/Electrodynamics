@@ -25,7 +25,7 @@ public class ElectrodynamicsFluids {
 	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, References.ID);
 
 	public static final HashMap<ISubtype, RegistryObject<Fluid>> SUBTYPEFLUID_REGISTRY_MAP = new HashMap<>();
-	
+
 	// Liquids
 	public static FluidEthanol fluidEthanol;
 	public static FluidSulfuricAcid fluidSulfuricAcid;
@@ -54,7 +54,7 @@ public class ElectrodynamicsFluids {
 		FLUIDS.register("fluidhydrogen", supplier(() -> fluidHydrogen = new FluidHydrogen()));
 
 	}
-	
+
 	public static Fluid getFluid(ISubtype value) {
 		return SUBTYPEFLUID_REGISTRY_MAP.get(value).get();
 	}

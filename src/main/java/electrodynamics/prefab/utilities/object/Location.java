@@ -223,13 +223,13 @@ public final class Location {
 		nbt.putDouble(name + "Y", y);
 		nbt.putDouble(name + "Z", z);
 	}
-	
+
 	public void toBuffer(FriendlyByteBuf buffer) {
 		buffer.writeDouble(x);
 		buffer.writeDouble(y);
 		buffer.writeDouble(z);
 	}
-	
+
 	public static Location fromBuffer(FriendlyByteBuf buffer) {
 		return new Location(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
 	}

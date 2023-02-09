@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 
 import com.google.gson.JsonObject;
 
-import electrodynamics.api.ISubtype;
 import electrodynamics.datagen.utils.SimpleOreFeatureProvider;
 import electrodynamics.datagen.utils.SimpleOreFeatureProvider.BiomeModifierType;
 import electrodynamics.registers.ElectrodynamicsFeatures;
@@ -29,7 +28,7 @@ public class ElectrodynamicsBiomeFeaturesProvider implements DataProvider {
 	private final Map<String, JsonObject> jsons = new HashMap<>();
 
 	public ElectrodynamicsBiomeFeaturesProvider(DataGenerator generator) {
-		this.dataGenerator = generator;
+		dataGenerator = generator;
 	}
 
 	@Override

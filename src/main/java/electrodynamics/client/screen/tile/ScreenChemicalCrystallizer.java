@@ -38,7 +38,7 @@ public class ScreenChemicalCrystallizer extends GenericScreen<ContainerChemicalC
 		components.add(new ScreenComponentFluid(() -> {
 			TileChemicalCrystallizer boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return  boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks()[0];
+				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks()[0];
 			}
 			return null;
 		}, this, 21, 18));

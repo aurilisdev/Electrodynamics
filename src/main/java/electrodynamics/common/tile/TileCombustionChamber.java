@@ -35,16 +35,16 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class TileCombustionChamber extends GenericFluidTile implements IElectricGenerator, ITickableSoundTile {
-	
+
 	public static final int TICKS_PER_MILLIBUCKET = 200;
 	public static final int TANK_CAPACITY = 1000;
-	public Property<Boolean> running = property(new Property<Boolean>(PropertyType.Boolean, "running", false));
-	public Property<Integer> burnTime = property(new Property<Integer>(PropertyType.Integer, "burnTime", 0));
+	public Property<Boolean> running = property(new Property<>(PropertyType.Boolean, "running", false));
+	public Property<Integer> burnTime = property(new Property<>(PropertyType.Integer, "burnTime", 0));
 	private double fuelMultiplier = 1;
 	private CachedTileOutput output;
-	//for future upgrades
-	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier", 1.0));
-	
+	// for future upgrades
+	private Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
+
 	private boolean isSoundPlaying = false;
 
 	public TileCombustionChamber(BlockPos worldPosition, BlockState blockState) {
@@ -74,13 +74,13 @@ public class TileCombustionChamber extends GenericFluidTile implements IElectric
 			running.set(false);
 			if (tank.getFluidAmount() > 0) {
 				CombustionFuelSource source = CombustionFuelRegister.INSTANCE.getFuelFromFluid(tank.getFluid());
-				if(!source.isEmpty()) {
+				if (!source.isEmpty()) {
 					tank.drain(new FluidStack(tank.getFluid().getFluid(), source.getFuelUsage()), FluidAction.EXECUTE);
 					fuelMultiplier = source.getPowerMultiplier();
 					running.set(true);
 					burnTime.set(TICKS_PER_MILLIBUCKET);
 				}
-				
+
 			}
 		} else {
 			running.set(true);
@@ -94,14 +94,14 @@ public class TileCombustionChamber extends GenericFluidTile implements IElectric
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if(!running.get()) {
+		if (!running.get()) {
 			return;
 		}
-		
+
 		if (level.random.nextDouble() < 0.15) {
 			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble(), worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 		}
-		
+
 		if (!isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_COMBUSTIONCHAMBER.get(), this, true);

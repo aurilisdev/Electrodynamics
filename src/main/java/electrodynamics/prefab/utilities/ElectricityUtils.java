@@ -20,7 +20,7 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class ElectricityUtils {
-	
+
 	public static void electrecuteEntity(Entity entityIn, TransferPack transfer) {
 		if (transfer.getVoltage() <= 960.0) {
 			Ingredient insulatingItems = Ingredient.of(ElectrodynamicsTags.Items.INSULATES_PLAYER_FEET);

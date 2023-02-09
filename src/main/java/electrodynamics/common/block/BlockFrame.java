@@ -46,18 +46,18 @@ public class BlockFrame extends BaseEntityBlock {
 	private static final VoxelShape FRAME_CORNER = Shapes.or(Block.box(4.0D, 0.0D, 4.0D, 12.0D, 12.0D, 12.0D), Block.box(0, 0, 0, 16, 4, 16));
 
 	private final int type;
-	
+
 	public BlockFrame(int type) {
 		super(Properties.of(Material.METAL).strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
 		registerDefaultState(stateDefinition.any().setValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY, Boolean.FALSE).setValue(BlockStateProperties.WATERLOGGED, false).setValue(FACING, Direction.NORTH));
 		this.type = type;
 	}
-	
+
 	@Override
 	public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-		if(type == 0) {
+		if (type == 0) {
 			return FRAME;
-		//room for future expansion
+			// room for future expansion
 		} else if (type == 1) {
 			return FRAME_CORNER;
 		}
@@ -126,18 +126,18 @@ public class BlockFrame extends BaseEntityBlock {
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new TileFrame(pos, state);
 	}
-	
+
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if(newState.isAir() && !state.getValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY) && !level.isClientSide) {
+		if (newState.isAir() && !state.getValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY) && !level.isClientSide) {
 			BlockEntity entity = level.getBlockEntity(pos);
-			if(entity != null && entity instanceof TileFrame frame) {
+			if (entity != null && entity instanceof TileFrame frame) {
 				frame.purposefullyDestroyed();
 			}
 		}
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
-	
+
 	public static void writeToNbt(CompoundTag tag, String key, BlockState state) {
 		CompoundTag data = new CompoundTag();
 		data.putString("facing", state.getValue(FACING).name());
@@ -145,7 +145,7 @@ public class BlockFrame extends BaseEntityBlock {
 		data.putBoolean("decay", state.getValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY));
 		tag.put(key, data);
 	}
-	
+
 	public static BlockState readFromNbt(CompoundTag tag) {
 		BlockState state = ElectrodynamicsBlocks.blockFrame.defaultBlockState();
 		state.setValue(FACING, Direction.byName(tag.getString("facing")));

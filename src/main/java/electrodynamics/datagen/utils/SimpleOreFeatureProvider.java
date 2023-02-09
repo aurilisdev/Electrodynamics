@@ -53,30 +53,15 @@ public class SimpleOreFeatureProvider {
 
 		JsonObject json = new JsonObject();
 
-		String modifierName;
-		switch (modifierType) {
-		case NONE_BIOME:
-			modifierName = ForgeMod.NONE_BIOME_MODIFIER_TYPE.getId().toString();
-			break;
-		case ADD_FEATURES:
-			modifierName = ForgeMod.ADD_FEATURES_BIOME_MODIFIER_TYPE.getId().toString();
-			break;
-		case REMOVE_FEATURES:
-			modifierName = ForgeMod.REMOVE_FEATURES_BIOME_MODIFIER_TYPE.getId().toString();
-			break;
-		case ADD_SPAWNS:
-			modifierName = ForgeMod.ADD_SPAWNS_BIOME_MODIFIER_TYPE.getId().toString();
-			break;
-		case REMOVE_SPAWNS:
-			modifierName = ForgeMod.REMOVE_SPAWNS_BIOME_MODIFIER_TYPE.getId().toString();
-			break;
-		case NONE_STRUCTURE:
-			modifierName = ForgeMod.NONE_STRUCTURE_MODIFIER_TYPE.getId().toString();
-			break;
-		default:
-			modifierName = ForgeMod.NONE_BIOME_MODIFIER_TYPE.getId().toString();
-		}
-
+		String modifierName = switch (modifierType) {
+		case NONE_BIOME -> ForgeMod.NONE_BIOME_MODIFIER_TYPE.getId().toString();
+		case ADD_FEATURES -> ForgeMod.ADD_FEATURES_BIOME_MODIFIER_TYPE.getId().toString();
+		case REMOVE_FEATURES -> ForgeMod.REMOVE_FEATURES_BIOME_MODIFIER_TYPE.getId().toString();
+		case ADD_SPAWNS -> ForgeMod.ADD_SPAWNS_BIOME_MODIFIER_TYPE.getId().toString();
+		case REMOVE_SPAWNS -> ForgeMod.REMOVE_SPAWNS_BIOME_MODIFIER_TYPE.getId().toString();
+		case NONE_STRUCTURE -> ForgeMod.NONE_STRUCTURE_MODIFIER_TYPE.getId().toString();
+		default -> ForgeMod.NONE_BIOME_MODIFIER_TYPE.getId().toString();
+		};
 		json.addProperty("type", modifierName);
 
 		String biomeName;
@@ -90,7 +75,7 @@ public class SimpleOreFeatureProvider {
 		json.addProperty("biomes", biomeName);
 
 		json.addProperty("features", feature.getId().toString());
-		
+
 		json.addProperty("step", decoration.getName());
 
 		return json;
@@ -101,8 +86,13 @@ public class SimpleOreFeatureProvider {
 		return new SimpleOreFeatureProvider(feature, modifier);
 	}
 
-	public static enum BiomeModifierType {
-		NONE_BIOME, ADD_FEATURES, REMOVE_FEATURES, ADD_SPAWNS, REMOVE_SPAWNS, NONE_STRUCTURE;
+	public enum BiomeModifierType {
+		NONE_BIOME,
+		ADD_FEATURES,
+		REMOVE_FEATURES,
+		ADD_SPAWNS,
+		REMOVE_SPAWNS,
+		NONE_STRUCTURE;
 	}
 
 }

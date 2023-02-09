@@ -103,7 +103,6 @@ public class ElectrodynamicsItems {
 		}
 	}
 
-	
 	public static final RegistryObject<Item> ITEM_COMPOSITEPLATING = ITEMS.register("compositeplating", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_SHEETPLASTIC = ITEMS.register("sheetplastic", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_RAWCOMPOSITEPLATING = ITEMS.register("compositeplatingraw", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
@@ -111,8 +110,7 @@ public class ElectrodynamicsItems {
 	public static final RegistryObject<Item> ITEM_FRAME = ITEMS.register("frame", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrame, new Item.Properties().stacksTo(64))));
 	public static final RegistryObject<Item> ITEM_FRAMECORNER = ITEMS.register("framecorner", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrameCorner, new Item.Properties().stacksTo(64))));
 	public static final RegistryObject<Item> ITEM_LOGISTICALMANAGER = ITEMS.register("logisticalmanager", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockLogisticalManager, new Item.Properties().tab(References.CORETAB))));
-	
-	
+
 	public static final RegistryObject<Item> ITEM_SEISMICMARKER = ITEMS.register("seismicmarker", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockSeismicMarker, new Item.Properties().tab(References.CORETAB))));
 
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation", supplier(() -> new Item(new Item.Properties().tab(References.CORETAB))));
@@ -166,15 +164,15 @@ public class ElectrodynamicsItems {
 			SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(subtype).get(), new Item.Properties().tab(References.CORETAB)), subtype)));
 		}
 	}
-	
-	public static Item[] getAllItemForSubtype(ISubtype[] values){
+
+	public static Item[] getAllItemForSubtype(ISubtype[] values) {
 		List<Item> list = new ArrayList<>();
-		for(ISubtype value : values) {
+		for (ISubtype value : values) {
 			list.add(SUBTYPEITEMREGISTER_MAPPINGS.get(value).get());
 		}
 		return list.toArray(new Item[] {});
 	}
-	
+
 	public static Item getItem(ISubtype value) {
 		return SUBTYPEITEMREGISTER_MAPPINGS.get(value).get();
 	}

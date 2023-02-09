@@ -30,9 +30,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class TileSolarPanel extends GenericGeneratorTile {
 
 	protected CachedTileOutput output;
-	public TargetValue currentRotation = new TargetValue(property(new Property<Double>(PropertyType.Double, "currentRotation", 1.0)));
-	private Property<Boolean> generating = property(new Property<Boolean>(PropertyType.Boolean, "generating", false));
-	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier", 1.0));
+	public TargetValue currentRotation = new TargetValue(property(new Property<>(PropertyType.Double, "currentRotation", 1.0)));
+	private Property<Boolean> generating = property(new Property<>(PropertyType.Boolean, "generating", false));
+	private Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
 
 	@Override
 	public double getMultiplier() {

@@ -11,11 +11,11 @@ import net.minecraft.core.BlockPos;
 public interface ITickableSoundTile {
 
 	void setNotPlaying();
-	
+
 	boolean shouldPlaySound();
-	
+
 	BlockPos getBlockPos();
-	
+
 	boolean isRemoved();
-	
+
 }

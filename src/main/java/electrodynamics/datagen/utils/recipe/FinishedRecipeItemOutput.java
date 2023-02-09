@@ -10,10 +10,10 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class FinishedRecipeItemOutput extends AbstractElectrodynamicsFinishedRecipe {
 
 	private ItemStack output;
-	
+
 	private FinishedRecipeItemOutput(RecipeSerializer<?> serializer, ItemStack stack, double experience, int processTime, double usage) {
 		super(serializer, experience, processTime, usage);
-		this.output = stack;
+		output = stack;
 	}
 
 	@Override
@@ -23,15 +23,14 @@ public class FinishedRecipeItemOutput extends AbstractElectrodynamicsFinishedRec
 		output.addProperty(ElectrodynamicsRecipeSerializer.COUNT, this.output.getCount());
 		recipeJson.add(ElectrodynamicsRecipeSerializer.OUTPUT, output);
 	}
-	
+
 	@Override
 	public FinishedRecipeItemOutput name(RecipeCategory category, String parent, String name) {
 		return (FinishedRecipeItemOutput) super.name(category, parent, name);
 	}
-	
+
 	public static FinishedRecipeItemOutput of(RecipeSerializer<?> serializer, ItemStack output, double experience, int processTime, double usage) {
 		return new FinishedRecipeItemOutput(serializer, output, experience, processTime, usage);
 	}
-	
 
 }

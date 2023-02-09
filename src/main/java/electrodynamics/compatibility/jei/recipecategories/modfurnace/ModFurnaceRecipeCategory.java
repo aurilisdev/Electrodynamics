@@ -147,7 +147,7 @@ public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> 
 		Font fontRenderer = Minecraft.getInstance().font;
 		for (AbstractLabelWrapper wrap : LABELS) {
 			Component text = wrap.getComponent(this, recipe);
-			if(wrap.xIsEnd()) {
+			if (wrap.xIsEnd()) {
 				fontRenderer.draw(stack, text, wrap.getXPos() - fontRenderer.width(text.getVisualOrderText()), wrap.getYPos(), wrap.getColor());
 			} else {
 				fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());

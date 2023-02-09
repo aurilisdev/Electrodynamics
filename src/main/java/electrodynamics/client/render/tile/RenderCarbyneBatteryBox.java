@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 
 public class RenderCarbyneBatteryBox extends AbstractTileRenderer<TileCarbyneBatteryBox> {
-	
+
 	public RenderCarbyneBatteryBox(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}

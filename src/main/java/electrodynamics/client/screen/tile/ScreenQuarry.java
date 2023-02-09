@@ -46,26 +46,13 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		TileQuarry quarry = menu.getHostFromIntArray();
 		if (quarry != null) {
 			ComponentElectrodynamic electro = quarry.getComponent(ComponentType.Electrodynamic);
-			list.add(TextUtils
-					.gui("quarry.ringusage",
-							Component.literal(ChatFormatter.getChatDisplayShort(quarry.setupPowerUsage.get() * 20,
-									DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY))
-					.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(TextUtils
-					.gui("quarry.miningusage",
-							Component.literal(ChatFormatter.getChatDisplayShort(quarry.quarryPowerUsage.get() * 20,
-									DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY))
-					.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(
-					TextUtils
-							.gui("machine.voltage",
-									Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(),
-											DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY))
-							.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("quarry.ringusage", Component.literal(ChatFormatter.getChatDisplayShort(quarry.setupPowerUsage.get() * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("quarry.miningusage", Component.literal(ChatFormatter.getChatDisplayShort(quarry.quarryPowerUsage.get() * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}
-	
+
 	private List<? extends FormattedCharSequence> getEnchantmentInformation() {
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		TileQuarry quarry = menu.getHostFromIntArray();
@@ -76,9 +63,9 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		list.add(TextUtils.gui("quarry.silktouch", Component.literal(quarry.silkTouchLevel.get() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		list.add(TextUtils.gui("quarry.unbreaking", Component.literal(quarry.unbreakingLevel.get() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		return list;
-		
+
 	}
-	
+
 	private List<? extends FormattedCharSequence> getFluidInformation() {
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		TileQuarry quarry = menu.getHostFromIntArray();
@@ -87,26 +74,26 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		}
 		TileMotorComplex complex = quarry.getMotorComplex();
 		String text;
-		if(complex == null) {
+		if (complex == null) {
 			text = "N/A";
 		} else {
 			text = TextUtils.formatFluidValue(complex.speed.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
 		}
 		list.add(TextUtils.gui("quarry.wateruse", Component.literal(text).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		return list;
-		
+
 	}
-	
+
 	private List<? extends FormattedCharSequence> getComponentInformation() {
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		TileQuarry quarry = menu.getHostFromIntArray();
 		if (quarry == null) {
 			return list;
 		}
-		
+
 		TileMotorComplex complex = quarry.getMotorComplex();
 		ChatFormatting formatting;
-		if(complex == null) {
+		if (complex == null) {
 			formatting = ChatFormatting.RED;
 		} else {
 			ComponentElectrodynamic electro = complex.getComponent(ComponentType.Electrodynamic);
@@ -117,69 +104,61 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 			}
 		}
 		list.add(TextUtils.gui("quarry.motorcomplex").withStyle(formatting).getVisualOrderText());
-		
+
 		TileSeismicRelay relay = quarry.getSeismicRelay();
-		
-		if(relay == null) {
+
+		if (relay == null) {
 			formatting = ChatFormatting.RED;
+		} else if (quarry.hasCorners()) {
+			formatting = ChatFormatting.GREEN;
 		} else {
-			if(quarry.hasCorners()) {
-				formatting = ChatFormatting.GREEN;
-			} else {
-				formatting = ChatFormatting.YELLOW;
-			}
+			formatting = ChatFormatting.YELLOW;
 		}
-		
+
 		list.add(TextUtils.gui("quarry.seismicrelay").withStyle(formatting).getVisualOrderText());
-		
+
 		TileCoolantResavoir resavoir = quarry.getFluidResavoir();
-		
-		if(resavoir == null) {
+
+		if (resavoir == null) {
 			formatting = ChatFormatting.RED;
+		} else if ((complex == null) || resavoir.hasEnoughFluid((int) (complex.powerMultiplier.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK))) {
+			formatting = ChatFormatting.GREEN;
 		} else {
-			if(complex == null) {
-				formatting = ChatFormatting.GREEN;
-			} else {
-				if(resavoir.hasEnoughFluid((int) (complex.powerMultiplier.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK))) {
-					formatting = ChatFormatting.GREEN;
-				} else {
-					formatting = ChatFormatting.YELLOW;
-				}
-			}
+			formatting = ChatFormatting.YELLOW;
 		}
-		
+
 		list.add(TextUtils.gui("quarry.coolantresavoir").withStyle(formatting).getVisualOrderText());
-		
+
 		return list;
-		
+
 	}
-	
+
 	private List<? extends FormattedCharSequence> getMiningLocationInformation() {
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		TileQuarry quarry = menu.getHostFromIntArray();
 		if (quarry == null) {
 			return list;
 		}
-		
+
 		Component location;
-		if(quarry.miningPos.get().equals(TileQuarry.OUT_OF_REACH)) {
+		if (quarry.miningPos.get().equals(TileQuarry.OUT_OF_REACH)) {
 			location = TextUtils.gui("quarry.notavailable").withStyle(ChatFormatting.RED);
 		} else {
 			location = Component.literal(quarry.miningPos.get().toShortString()).withStyle(ChatFormatting.GRAY);
 		}
-		
-		list.add(TextUtils.gui("quarry.miningposition",  location).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		
+
+		list.add(TextUtils.gui("quarry.miningposition", location).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+
 		if (quarry.hasHead.get()) {
 			location = TextUtils.gui("quarry.hashead").withStyle(ChatFormatting.GRAY);
 		} else {
 			location = TextUtils.gui("quarry.nohead").withStyle(ChatFormatting.RED);
 		}
-		
+
 		list.add(TextUtils.gui("quarry.drillhead", location).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		
+
 		return list;
-		
+
 	}
 
 	@Override
@@ -189,19 +168,19 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		if (quarry == null) {
 			return;
 		}
-		//void card
+		// void card
 		if (quarry.hasItemVoid.get()) {
 			font.draw(stack, TextUtils.gui("quarry.voiditems"), 85, 14, 4210752);
 		} else {
 			font.draw(stack, TextUtils.gui("quarry.needvoidcard"), 85, 14, 4210752);
 		}
-		
+
 		/* STATUS */
-		
+
 		font.draw(stack, TextUtils.gui("quarry.status"), 5, 32, 4210752);
 
 		int height = 42;
-		if(!quarry.isAreaCleared.get()) {
+		if (!quarry.isAreaCleared.get()) {
 			font.draw(stack, TextUtils.gui("quarry.clearingarea"), 10, height, 4210752);
 		} else if (!quarry.hasRing.get()) {
 			font.draw(stack, TextUtils.gui("quarry.setup"), 10, height, 4210752);
@@ -212,19 +191,16 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		} else {
 			font.draw(stack, TextUtils.gui("quarry.notmining"), 10, height, 4210752);
 		}
-		
-		
+
 		/* ERRORS */
-		
+
 		font.draw(stack, TextUtils.gui("quarry.errors"), 5, 65, 4210752);
 		font.draw(stack, TextUtils.gui(getErrorKey(quarry)), 10, 75, 4210752);
-		
-		
-		
+
 	}
-	
+
 	private String getErrorKey(TileQuarry quarry) {
-		if(!quarry.hasSeismicRelay.get()) {
+		if (!quarry.hasSeismicRelay.get()) {
 			return "quarry.norelay";
 		} else if (!quarry.hasMotorComplex.get()) {
 			return "quarry.nomotorcomplex";
@@ -249,7 +225,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		} else if (!quarry.<ComponentInventory>getComponent(ComponentType.Inventory).areOutputsEmpty()) {
 			return "quarry.inventoryroom";
 		}
-		
+
 		return "quarry.noerrors";
 	}
 

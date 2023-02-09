@@ -8,9 +8,9 @@ import electrodynamics.common.item.subtype.SubtypeNugget;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import electrodynamics.common.tags.ElectrodynamicsTags;
+import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
 import electrodynamics.datagen.utils.recipe.FinishedRecipeItemOutput;
-import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.world.item.ItemStack;
@@ -31,7 +31,7 @@ public class ElectrodynamicsWireMillRecipes extends AbstractRecipeGenerator {
 	public ElectrodynamicsWireMillRecipes() {
 		this(References.ID);
 	}
-	
+
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
 

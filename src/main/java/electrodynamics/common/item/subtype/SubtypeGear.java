@@ -12,11 +12,11 @@ public enum SubtypeGear implements ISubtype {
 	tin(ElectrodynamicsTags.Items.GEAR_TIN, ElectrodynamicsTags.Items.INGOT_TIN),
 	steel(ElectrodynamicsTags.Items.GEAR_STEEL, ElectrodynamicsTags.Items.INGOT_STEEL),
 	bronze(ElectrodynamicsTags.Items.GEAR_BRONZE, ElectrodynamicsTags.Items.INGOT_BRONZE);
-	
+
 	public final TagKey<Item> tag;
 	public final TagKey<Item> sourceIngot;
-	
-	private SubtypeGear(TagKey<Item> tag, TagKey<Item> sourceIngot) {
+
+	SubtypeGear(TagKey<Item> tag, TagKey<Item> sourceIngot) {
 		this.tag = tag;
 		this.sourceIngot = sourceIngot;
 	}

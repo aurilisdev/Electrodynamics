@@ -114,8 +114,8 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
 		BlockEntity tile = worldIn.getBlockEntity(pos);
 		if (!(state.getBlock() == newState.getBlock() && state.getValue(FACING) != newState.getValue(FACING))) {
-			
-			if(tile instanceof IMultiblockTileNode multi) {
+
+			if (tile instanceof IMultiblockTileNode multi) {
 				multi.onNodeReplaced(worldIn, pos, true);
 			}
 			if (tile instanceof TileQuarry quarry && quarry.hasCorners()) {

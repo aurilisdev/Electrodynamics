@@ -14,23 +14,23 @@ import net.minecraftforge.api.distmarker.OnlyIn;
  * Class could be condensed to ScreenComponentGeneric, but is left to allow for future potential expansion
  */
 public class ScreenComponentTextInputBar extends ScreenComponentGeneric {
-	
+
 	public static final ResourceLocation TEXTURE = new ResourceLocation(References.ID + ":textures/screen/component/textinputbar.png");
 
 	public ScreenComponentTextInputBar(ITexture texture, final IScreenWrapper gui, final int x, final int y) {
 		super(texture, gui, x, y);
 	}
-	
+
 	@Override
 	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		// TODO variable-width text input bar
 		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
 	}
-	
-	public static enum TextInputTextures implements ITexture {
+
+	public enum TextInputTextures implements ITexture {
 		TEXT_INPUT_LARGE(56, 16, 0, 0, 256, 256, TEXTURE),
 		TEXT_INPUT_SMALL(49, 16, 0, 16, 256, 256, TEXTURE);
-		
+
 		private final int textureWidth;
 		private final int textureHeight;
 		private final int textureU;
@@ -38,8 +38,8 @@ public class ScreenComponentTextInputBar extends ScreenComponentGeneric {
 		private final int imageWidth;
 		private final int imageHeight;
 		private final ResourceLocation loc;
-		
-		private TextInputTextures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc) {
+
+		TextInputTextures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc) {
 			this.textureWidth = textureWidth;
 			this.textureHeight = textureHeight;
 			this.textureU = textureU;
@@ -83,6 +83,6 @@ public class ScreenComponentTextInputBar extends ScreenComponentGeneric {
 		public int textureWidth() {
 			return textureWidth;
 		}
-		
+
 	}
 }

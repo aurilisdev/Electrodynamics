@@ -9,5 +9,5 @@ import net.minecraftforge.client.gui.overlay.NamedGuiOverlay;
 public abstract class AbstractPostGuiOverlayHandler {
 
 	public abstract void renderToScreen(NamedGuiOverlay overlay, PoseStack stack, Window window, Minecraft minecraft, float partialTicks);
-	
+
 }

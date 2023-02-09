@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 
 public class RenderMineralGrinder extends AbstractTileRenderer<TileMineralGrinder> {
-	
+
 	public RenderMineralGrinder(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}

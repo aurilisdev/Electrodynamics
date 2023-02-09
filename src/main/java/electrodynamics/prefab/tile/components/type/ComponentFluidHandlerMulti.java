@@ -29,117 +29,112 @@ import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.registries.ForgeRegistries;
 
-
 /**
- * This class is separate from ComponentFluidHandlerSimple as it has segregated
- * input and output tanks. These tanks are then dispatched when the Capability 
- * is requested. The only way to fill an output tank or drain an input tank
- * is through internal tile logic. 
+ * This class is separate from ComponentFluidHandlerSimple as it has segregated input and output tanks. These tanks are then dispatched when the Capability is requested. The only way to fill an output tank or drain an input tank is through internal tile logic.
  * 
- * This class also allows for RecipeTypes to be used as filters, as Recipes 
- * inherently have segregated inputs and outputs. 
+ * This class also allows for RecipeTypes to be used as filters, as Recipes inherently have segregated inputs and outputs.
  * 
  * @author skip999
  *
  */
-public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
+public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 
 	private GenericTile holder;
-	
+
 	@Nullable
 	public Direction[] inputDirections;
 	@Nullable
 	public Direction[] outputDirections;
-	
+
 	private PropertyFluidTank[] inputTanks;
 	private PropertyFluidTank[] outputTanks;
-	
+
 	@Nullable
 	private RecipeType<? extends AbstractFluidRecipe> recipeType;
-	
+
 	@Nullable
 	private TagKey<Fluid>[] validInputFluidTags;
 	@Nullable
 	private Fluid[] validInputFluids;
 	private HashSet<Fluid> inputValidatorFluids = new HashSet<>();
-	
+
 	@Nullable
 	private TagKey<Fluid>[] validOutputFluidTags;
 	@Nullable
 	private Fluid[] validOutputFluids;
 	private HashSet<Fluid> outputValidatorFluids = new HashSet<>();
-	
+
 	public ComponentFluidHandlerMulti(GenericTile holder) {
 		this.holder = holder;
 	}
-	
+
 	public ComponentFluidHandlerMulti setInputTanks(int count, int capacity) {
 		inputTanks = new PropertyFluidTank[count];
-		for(int i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) {
 			inputTanks[i] = new PropertyFluidTank(capacity, holder, "input" + i);
 		}
 		return this;
 	}
-	
+
 	public ComponentFluidHandlerMulti setOutputTanks(int count, int capacity) {
 		outputTanks = new PropertyFluidTank[count];
-		for(int i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) {
 			outputTanks[i] = new PropertyFluidTank(capacity, holder, "output" + i);
 		}
 		return this;
 	}
-	
+
 	public ComponentFluidHandlerMulti setTanks(int inputCount, int outputCount, int capacity) {
 		return setInputTanks(inputCount, capacity).setOutputTanks(outputCount, capacity);
 	}
-	
-	public ComponentFluidHandlerMulti setInputFluids(Fluid...fluids) {
+
+	public ComponentFluidHandlerMulti setInputFluids(Fluid... fluids) {
 		validInputFluids = fluids;
 		return this;
 	}
-	
-	public ComponentFluidHandlerMulti setInputFluidTags(TagKey<Fluid>...fluids) {
+
+	public ComponentFluidHandlerMulti setInputFluidTags(TagKey<Fluid>... fluids) {
 		validInputFluidTags = fluids;
 		return this;
 	}
-	
-	public ComponentFluidHandlerMulti setOutputFluids(Fluid...fluids) {
+
+	public ComponentFluidHandlerMulti setOutputFluids(Fluid... fluids) {
 		validOutputFluids = fluids;
 		return this;
 	}
-	
-	public ComponentFluidHandlerMulti setOutputFluidTags(TagKey<Fluid>...fluids) {
+
+	public ComponentFluidHandlerMulti setOutputFluidTags(TagKey<Fluid>... fluids) {
 		validOutputFluidTags = fluids;
 		return this;
 	}
-	
+
 	public ComponentFluidHandlerMulti setInputDirections(Direction... directions) {
-		this.inputDirections = directions;
+		inputDirections = directions;
 		return this;
 	}
 
 	public ComponentFluidHandlerMulti setOutputDirections(Direction... directions) {
-		this.outputDirections = directions;
+		outputDirections = directions;
 		return this;
 	}
-	
+
 	public ComponentFluidHandlerMulti universalInput() {
-		this.inputDirections = Direction.values();
+		inputDirections = Direction.values();
 		return this;
 	}
-	
+
 	public ComponentFluidHandlerMulti universalOutput() {
-		this.outputDirections = Direction.values();
+		outputDirections = Direction.values();
 		return this;
 	}
-	
+
 	public ComponentFluidHandlerMulti setRecipeType(RecipeType<? extends AbstractFluidRecipe> recipeType) {
 		this.recipeType = recipeType;
 		return this;
 	}
-	
+
 	public int tankCount(boolean input) {
-		if(input) {
+		if (input) {
 			return inputTanks == null ? 0 : inputTanks.length;
 		}
 		return outputTanks == null ? 0 : outputTanks.length;
@@ -151,7 +146,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 		}
 		return outputTanks[tank].getFluid();
 	}
-	
+
 	@Nullable
 	public PropertyFluidTank getTankFromFluid(Fluid fluid, boolean isInput) {
 		if (isInput) {
@@ -165,7 +160,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 					return tank;
 				}
 			}
-		} 
+		}
 		for (PropertyFluidTank tank : outputTanks) {
 			if (tank.getFluid().getFluid().isSame(fluid)) {
 				return tank;
@@ -176,40 +171,40 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 				return tank;
 			}
 		}
-		
+
 		return null;
 	}
 
 	public int getTankCapacity(int tank, boolean input) {
-		if(input) {
+		if (input) {
 			return inputTanks[tank].getCapacity();
 		}
 		return outputTanks[tank].getCapacity();
 	}
 
 	public boolean isFluidValid(int tank, @NotNull FluidStack stack, boolean input) {
-		if(input) {
+		if (input) {
 			return inputTanks[tank].isFluidValid(stack);
 		}
 		return outputTanks[tank].isFluidValid(stack);
 	}
 
 	public int fill(int tank, FluidStack resource, FluidAction action, boolean input) {
-		if(input) {
+		if (input) {
 			return inputTanks[tank].fill(resource, action);
 		}
 		return outputTanks[tank].fill(resource, action);
 	}
 
 	public @NotNull FluidStack drain(int tank, FluidStack resource, FluidAction action, boolean input) {
-		if(input) {
+		if (input) {
 			return inputTanks[tank].drain(resource, action);
 		}
 		return outputTanks[tank].drain(resource, action);
 	}
 
 	public @NotNull FluidStack drain(int tank, int maxDrain, FluidAction action, boolean input) {
-		if(input) {
+		if (input) {
 			return inputTanks[tank].drain(maxDrain, action);
 		}
 		return outputTanks[tank].drain(maxDrain, action);
@@ -219,12 +214,12 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 	public ComponentType getType() {
 		return ComponentType.FluidHandler;
 	}
-	
+
 	@Override
 	public boolean hasCapability(Capability<?> capability, Direction side) {
 		return capability == ForgeCapabilities.FLUID_HANDLER;
 	}
-	
+
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
 		if (!hasCapability(capability, side)) {
@@ -238,12 +233,12 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 			return LazyOptional.empty();
 		}
 	}
-	
+
 	@Override
 	public void holder(GenericTile holder) {
 		this.holder = holder;
 	}
-	
+
 	@Override
 	public void onLoad() {
 		if (recipeType != null) {
@@ -284,43 +279,43 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 			inputValidatorFluids.addAll(inputFluidHolder);
 			outputValidatorFluids.addAll(outputFluidHohlder);
 		} else {
-			if(validInputFluids != null) {
-				for(Fluid fluid : validInputFluids) {
+			if (validInputFluids != null) {
+				for (Fluid fluid : validInputFluids) {
 					inputValidatorFluids.add(fluid);
 				}
 			}
-			if(validInputFluidTags != null) {
-				for(TagKey<Fluid> tag : validInputFluidTags) {
-					for(Fluid fluid : ForgeRegistries.FLUIDS.tags().getTag(tag).stream().toList()) {
+			if (validInputFluidTags != null) {
+				for (TagKey<Fluid> tag : validInputFluidTags) {
+					for (Fluid fluid : ForgeRegistries.FLUIDS.tags().getTag(tag).stream().toList()) {
 						inputValidatorFluids.add(fluid);
 					}
 				}
 			}
-			if(validOutputFluids != null) {
-				for(Fluid fluid : validOutputFluids) {
+			if (validOutputFluids != null) {
+				for (Fluid fluid : validOutputFluids) {
 					outputValidatorFluids.add(fluid);
 				}
 			}
-			if(validOutputFluidTags != null) {
-				for(TagKey<Fluid> tag : validOutputFluidTags) {
-					for(Fluid fluid : ForgeRegistries.FLUIDS.tags().getTag(tag).stream().toList()) {
+			if (validOutputFluidTags != null) {
+				for (TagKey<Fluid> tag : validOutputFluidTags) {
+					for (Fluid fluid : ForgeRegistries.FLUIDS.tags().getTag(tag).stream().toList()) {
 						outputValidatorFluids.add(fluid);
 					}
 				}
 			}
 		}
-		if(!inputValidatorFluids.isEmpty()) {
-			for(PropertyFluidTank tank : inputTanks) {
+		if (!inputValidatorFluids.isEmpty()) {
+			for (PropertyFluidTank tank : inputTanks) {
 				tank.setValidator(fluidStack -> inputValidatorFluids.contains(fluidStack.getFluid()));
 			}
 		}
-		if(!outputValidatorFluids.isEmpty()) {
-			for(PropertyFluidTank tank : outputTanks) {
+		if (!outputValidatorFluids.isEmpty()) {
+			for (PropertyFluidTank tank : outputTanks) {
 				tank.setValidator(fluidStack -> outputValidatorFluids.contains(fluidStack.getFluid()));
 			}
 		}
 	}
-	
+
 	@Override
 	public PropertyFluidTank[] getInputTanks() {
 		return inputTanks;
@@ -330,7 +325,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 	public PropertyFluidTank[] getOutputTanks() {
 		return outputTanks;
 	}
-	
+
 	private boolean hasOutputDir(Direction dir) {
 		if (outputDirections == null) {
 			return false;
@@ -346,15 +341,15 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 		Direction facing = holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 		return ArrayUtils.contains(inputDirections, BlockEntityUtils.getRelativeSide(facing, dir));
 	}
-	
+
 	private class InputTankDispatcher implements IFluidHandler {
 
 		private PropertyFluidTank[] tanks;
-		
+
 		public InputTankDispatcher(PropertyFluidTank[] tanks) {
 			this.tanks = tanks;
 		}
-		
+
 		@Override
 		public int getTanks() {
 			return tanks.length;
@@ -362,7 +357,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 
 		@Override
 		public @NotNull FluidStack getFluidInTank(int tank) {
-			if(tank >= getTanks()) {
+			if (tank >= getTanks()) {
 				return FluidStack.EMPTY;
 			}
 			return tanks[tank].getFluid();
@@ -370,7 +365,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 
 		@Override
 		public int getTankCapacity(int tank) {
-			if(tank >= getTanks()) {
+			if (tank >= getTanks()) {
 				return 0;
 			}
 			return tanks[tank].getCapacity();
@@ -378,7 +373,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 
 		@Override
 		public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
-			if(tank >= getTanks()) {
+			if (tank >= getTanks()) {
 				return false;
 			}
 			return tanks[tank].isFluidValid(stack);
@@ -386,13 +381,13 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 
 		@Override
 		public int fill(FluidStack resource, FluidAction action) {
-			for(PropertyFluidTank tank : tanks) {
-				if(tank.getFluid().getFluid().isSame(resource.getFluid())) {
+			for (PropertyFluidTank tank : tanks) {
+				if (tank.getFluid().getFluid().isSame(resource.getFluid())) {
 					return tank.fill(resource, action);
 				}
 			}
-			for(PropertyFluidTank tank : tanks) {
-				if(tank.isEmpty()) {
+			for (PropertyFluidTank tank : tanks) {
+				if (tank.isEmpty()) {
 					return tank.fill(resource, action);
 				}
 			}
@@ -408,17 +403,17 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 		public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
 			return FluidStack.EMPTY;
 		}
-		
+
 	}
-	
+
 	private class OutputTankDispatcher implements IFluidHandler {
 
 		private PropertyFluidTank[] tanks;
-		
+
 		public OutputTankDispatcher(PropertyFluidTank[] tanks) {
 			this.tanks = tanks;
 		}
-		
+
 		@Override
 		public int getTanks() {
 			return tanks.length;
@@ -426,7 +421,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 
 		@Override
 		public @NotNull FluidStack getFluidInTank(int tank) {
-			if(tank >= getTanks()) {
+			if (tank >= getTanks()) {
 				return FluidStack.EMPTY;
 			}
 			return tanks[tank].getFluid();
@@ -434,7 +429,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 
 		@Override
 		public int getTankCapacity(int tank) {
-			if(tank >= getTanks()) {
+			if (tank >= getTanks()) {
 				return 0;
 			}
 			return tanks[tank].getCapacity();
@@ -452,8 +447,8 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 
 		@Override
 		public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
-			for(PropertyFluidTank tank : tanks) {
-				if(tank.getFluid().getFluid().isSame(resource.getFluid())) {
+			for (PropertyFluidTank tank : tanks) {
+				if (tank.getFluid().getFluid().isSame(resource.getFluid())) {
 					return tank.drain(resource, action);
 				}
 			}
@@ -464,7 +459,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler{
 		public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
 			return FluidStack.EMPTY;
 		}
-		
+
 	}
 
 }

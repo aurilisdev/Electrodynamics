@@ -18,16 +18,16 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenComponentSlot extends ScreenComponentGeneric {
-	
+
 	private final ISlotTexture slotType;
 	private final ITexture iconType;
 	private TextSupplier tooltip;
-	
+
 	private final Slot slot;
 
 	public ScreenComponentSlot(Slot slot, final ISlotTexture type, final ITexture iconType, final IScreenWrapper gui, final int x, final int y) {
 		super(type, gui, x, y);
-		this.slotType = type;
+		slotType = type;
 		this.iconType = iconType;
 		this.slot = slot;
 	}
@@ -44,7 +44,7 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 	public void tooltip(TextSupplier tooltip) {
 		this.tooltip = tooltip;
 	}
-	
+
 	public ScreenComponentSlot setHoverText(Slot slot) {
 		tooltip = () -> slot.getItem().isEmpty() ? Component.literal("") : slot.getItem().getHoverName();
 		return this;
@@ -57,11 +57,11 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 
 	@Override
 	public void renderBackground(PoseStack stack, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
-		if(!isVisible()) {
+		if (!isVisible()) {
 			return;
 		}
 		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
-		if(iconType == IconType.NONE) {
+		if (iconType == IconType.NONE) {
 			return;
 		}
 		RenderingUtils.bindTexture(iconType.getLocation());
@@ -72,23 +72,23 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 
 	@Override
 	public void renderForeground(PoseStack stack, final int xAxis, final int yAxis) {
-		if(!slot.isActive()) {
+		if (!slot.isActive()) {
 			return;
 		}
 		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, slotType.textureWidth(), slotType.textureHeight()) && tooltip != null && !tooltip.getText().getString().isEmpty()) {
 			gui.displayTooltip(stack, tooltip.getText(), xAxis, yAxis);
 		}
 	}
-	
+
 	@Override
 	public boolean isVisible() {
 		return slot.isActive();
 	}
 
-	public static enum SlotType implements ISlotTexture {
-		
+	public enum SlotType implements ISlotTexture {
+
 		NORMAL(18, 18, 0, 0, 18, 18, "slot_regular");
-		
+
 		private final int textureWidth;
 		private final int textureHeight;
 		private final int textureU;
@@ -96,23 +96,23 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 		private final int imageWidth;
 		private final int imageHeight;
 		private final ResourceLocation loc;
-		
+
 		private final int xOffset;
 		private final int yOffset;
-		
-		private SlotType(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, String name) {
+
+		SlotType(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, String name) {
 			this(textureWidth, textureHeight, textureU, textureV, imageWidth, imageHeight, name, -1, -1);
 		}
-		
-		private SlotType(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, String name, int xOffset, int yOffset) {
+
+		SlotType(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, String name, int xOffset, int yOffset) {
 			this.textureWidth = textureWidth;
 			this.textureHeight = textureHeight;
 			this.textureU = textureU;
 			this.textureV = textureV;
 			this.imageWidth = imageWidth;
 			this.imageHeight = imageHeight;
-			this.loc = new ResourceLocation(References.ID + ":textures/screen/component/slot/" + name + ".png");
-			
+			loc = new ResourceLocation(References.ID + ":textures/screen/component/slot/" + name + ".png");
+
 			this.xOffset = xOffset;
 			this.yOffset = yOffset;
 		}
@@ -151,35 +151,36 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 		public int textureWidth() {
 			return textureWidth;
 		}
-		
+
+		@Override
 		public int xOffset() {
 			return xOffset;
 		}
-		
+
+		@Override
 		public int yOffset() {
 			return yOffset;
 		}
-		
-	
+
 	}
-	
-	public static enum IconType implements ITexture {
-		
-		NONE(0, 0, 0, 0, 0 ,0, null),
+
+	public enum IconType implements ITexture {
+
+		NONE(0, 0, 0, 0, 0, 0, null),
 		ENERGY_DARK(10, 10, 0, 0, 10, 10, "electricity_dark"),
 		FLUID_DARK(14, 14, 0, 0, 14, 14, "fluid_dark"),
 		GAS_DARK(16, 16, 0, 0, 16, 16, "gas_dark"),
 		UPGRADE_DARK(12, 12, 0, 0, 12, 12, "upgrade_dark"),
 		DRILL_HEAD_DARK(12, 12, 0, 0, 12, 12, "drill_head_dark"),
 		TRASH_CAN_DARK(10, 10, 0, 0, 10, 10, "trash_can_dark"),
-		
+
 		ENERGY_GREEN(14, 14, 0, 0, 14, 14, "electricity_green"),
 		ENCHANTMENT(16, 16, 0, 0, 16, 16, "enchantment"),
 		FLUID_BLUE(16, 16, 0, 0, 16, 16, "fluid_blue"),
-		MINING_LOCATION(18, 18, 0, 0, 18, 18, "mining_location"), 
+		MINING_LOCATION(18, 18, 0, 0, 18, 18, "mining_location"),
 		QUARRY_COMPONENTS(18, 18, 0, 0, 18, 18, "quarry_components"),
 		TEMPERATURE(14, 14, 0, 0, 14, 14, "temperature");
-		
+
 		private final int textureWidth;
 		private final int textureHeight;
 		private final int textureU;
@@ -187,15 +188,15 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 		private final int imageWidth;
 		private final int imageHeight;
 		private final ResourceLocation loc;
-		
-		private IconType(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, String name) {
+
+		IconType(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, String name) {
 			this.textureWidth = textureWidth;
 			this.textureHeight = textureHeight;
 			this.textureU = textureU;
 			this.textureV = textureV;
 			this.imageWidth = imageWidth;
 			this.imageHeight = imageHeight;
-			this.loc = new ResourceLocation(References.ID + ":textures/screen/component/icon/" + name + ".png");
+			loc = new ResourceLocation(References.ID + ":textures/screen/component/icon/" + name + ".png");
 		}
 
 		@Override
@@ -232,7 +233,7 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 		public int textureWidth() {
 			return textureWidth;
 		}
-		
+
 	}
 
 }

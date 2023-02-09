@@ -53,7 +53,7 @@ public class Electrodynamics {
 		ElectrodynamicsRecipeInit.RECIPE_TYPES.register(bus);
 		ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
 		ElectrodynamicsAttributeModifiers.init();
-		
+
 	}
 
 	@SubscribeEvent

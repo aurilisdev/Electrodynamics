@@ -18,7 +18,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderLathe extends AbstractTileRenderer<TileLathe> {
-	
+
 	public RenderLathe(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}

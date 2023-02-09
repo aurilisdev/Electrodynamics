@@ -15,21 +15,20 @@ public class BlockEntityUtils {
 		}
 		return Direction.from3DDataValue(RELATIVE_MATRIX[main.ordinal()][relative.ordinal()]);
 	}
-	
+
 	public static void updateLit(GenericTile tile, Boolean value) {
 		Level world = tile.getLevel();
 		BlockPos pos = tile.getBlockPos();
-		if(tile.getBlockState().hasProperty(BlockMachine.ON)) {
+		if (tile.getBlockState().hasProperty(BlockMachine.ON)) {
 			world.setBlockAndUpdate(pos, world.getBlockState(pos).setValue(BlockMachine.ON, value));
 		}
 	}
-	
+
 	public static boolean isLit(GenericTile tile) {
-		if(tile.getBlockState().hasProperty(BlockMachine.ON)) {
+		if (tile.getBlockState().hasProperty(BlockMachine.ON)) {
 			return tile.getBlockState().getValue(BlockMachine.ON);
 		}
 		return false;
 	}
-	
 
 }

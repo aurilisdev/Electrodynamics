@@ -53,7 +53,7 @@ public class BarrierMethods {
 
 	public static void handlerClientCoalGenFuels(HashSet<Item> fuels) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -80,7 +80,7 @@ public class CoalGeneratorFuelRegister extends SimplePreparableReloadListener<Js
 				final JsonObject json = (JsonObject) GsonHelper.fromJson(GSON, reader, JsonElement.class);
 				combinedArray.addAll(json.get(KEY).getAsJsonArray());
 			} catch (RuntimeException | IOException exception) {
-				this.logger.error("Data loader for {} could not read data {} from file {} in data pack {}", FOLDER, jsonFile, loc, resource.sourcePackId(), exception);
+				logger.error("Data loader for {} could not read data {} from file {} in data pack {}", FOLDER, jsonFile, loc, resource.sourcePackId(), exception);
 			}
 
 		}
@@ -119,7 +119,7 @@ public class CoalGeneratorFuelRegister extends SimplePreparableReloadListener<Js
 	}
 
 	public CoalGeneratorFuelRegister subscribeAsSyncable(final SimpleChannel channel) {
-		MinecraftForge.EVENT_BUS.addListener(this.getDatapackSyncListener(channel));
+		MinecraftForge.EVENT_BUS.addListener(getDatapackSyncListener(channel));
 		return this;
 	}
 

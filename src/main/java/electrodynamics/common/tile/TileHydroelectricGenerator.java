@@ -36,12 +36,12 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileHydroelectricGenerator extends GenericGeneratorTile implements ITickableSoundTile {
 	protected CachedTileOutput output;
-	public Property<Boolean> isGenerating = property(new Property<Boolean>(PropertyType.Boolean, "isGenerating", false));
-	public Property<Boolean> directionFlag = property(new Property<Boolean>(PropertyType.Boolean, "directionFlag", false));
-	public Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier", 1.0));
+	public Property<Boolean> isGenerating = property(new Property<>(PropertyType.Boolean, "isGenerating", false));
+	public Property<Boolean> directionFlag = property(new Property<>(PropertyType.Boolean, "directionFlag", false));
+	public Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
 	public double savedTickRotation;
 	public double rotationSpeed;
-	
+
 	private boolean isSoundPlaying = false;
 
 	public TileHydroelectricGenerator(BlockPos worldPosition, BlockState blockState) {
@@ -100,7 +100,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if(!shouldPlaySound()) {
+		if (!shouldPlaySound()) {
 			return;
 		}
 		if (level.random.nextDouble() < 0.3) {

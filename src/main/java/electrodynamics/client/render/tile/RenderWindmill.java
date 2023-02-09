@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 
 public class RenderWindmill extends AbstractTileRenderer<TileWindmill> {
-	
+
 	public RenderWindmill(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}

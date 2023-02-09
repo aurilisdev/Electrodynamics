@@ -26,12 +26,9 @@ import net.minecraftforge.registries.ForgeRegistries;
 /**
  * Extension of PropertyFluidTank implementing directional I/O and the Component system
  * 
- * This is a separate class because ComponentFluidHandlerMulti is does not have 
- * segregated input and output tanks. Instead it has a single tank that is used for 
- * both functions. 
+ * This is a separate class because ComponentFluidHandlerMulti is does not have segregated input and output tanks. Instead it has a single tank that is used for both functions.
  * 
- * This class also has no concept of a RecipeType tied to it since recipes have 
- * segregated inputs and outputs. 
+ * This class also has no concept of a RecipeType tied to it since recipes have segregated inputs and outputs.
  * 
  * @author skip999
  *
@@ -56,28 +53,28 @@ public class ComponentFluidHandlerSimple extends PropertyFluidTank implements IC
 	public ComponentFluidHandlerSimple(int capacity, GenericTile holder, String key) {
 		super(capacity, holder, key);
 	}
-	
+
 	protected ComponentFluidHandlerSimple(ComponentFluidHandlerSimple other) {
 		super(other);
 	}
 
 	public ComponentFluidHandlerSimple setInputDirections(Direction... directions) {
-		this.inputDirections = directions;
+		inputDirections = directions;
 		return this;
 	}
 
 	public ComponentFluidHandlerSimple setOutputDirections(Direction... directions) {
-		this.outputDirections = directions;
+		outputDirections = directions;
 		return this;
 	}
-	
+
 	public ComponentFluidHandlerSimple universalInput() {
-		this.inputDirections = Direction.values();
+		inputDirections = Direction.values();
 		return this;
 	}
-	
+
 	public ComponentFluidHandlerSimple universalOutput() {
-		this.outputDirections = Direction.values();
+		outputDirections = Direction.values();
 		return this;
 	}
 
@@ -90,13 +87,13 @@ public class ComponentFluidHandlerSimple extends PropertyFluidTank implements IC
 	public ComponentFluidHandlerSimple setValidator(Predicate<FluidStack> validator) {
 		return (ComponentFluidHandlerSimple) super.setValidator(validator);
 	}
-	
-	public ComponentFluidHandlerSimple setValidFluids(Fluid...fluids) {
+
+	public ComponentFluidHandlerSimple setValidFluids(Fluid... fluids) {
 		validFluids = fluids;
 		return this;
 	}
-	
-	public ComponentFluidHandlerSimple setValidFluidTags(TagKey<Fluid>...fluids) {
+
+	public ComponentFluidHandlerSimple setValidFluidTags(TagKey<Fluid>... fluids) {
 		validFluidTags = fluids;
 		return this;
 	}
@@ -105,9 +102,8 @@ public class ComponentFluidHandlerSimple extends PropertyFluidTank implements IC
 	public boolean equals(Object obj) {
 		if (obj instanceof ComponentFluidHandlerSimple tank) {
 			return tank.getFluid().equals(getFluid()) && tank.getCapacity() == getCapacity();
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -144,23 +140,23 @@ public class ComponentFluidHandlerSimple extends PropertyFluidTank implements IC
 
 	@Override
 	public void onLoad() {
-		if(validFluids != null) {
-			for(Fluid fluid : validFluids) {
+		if (validFluids != null) {
+			for (Fluid fluid : validFluids) {
 				validatorFluids.add(fluid);
 			}
 		}
-		if(validFluidTags != null) {
-			for(TagKey<Fluid> tag : validFluidTags) {
-				for(Fluid fluid : ForgeRegistries.FLUIDS.tags().getTag(tag).stream().toList()) {
+		if (validFluidTags != null) {
+			for (TagKey<Fluid> tag : validFluidTags) {
+				for (Fluid fluid : ForgeRegistries.FLUIDS.tags().getTag(tag).stream().toList()) {
 					validatorFluids.add(fluid);
 				}
 			}
 		}
-		if(!validatorFluids.isEmpty()) {
+		if (!validatorFluids.isEmpty()) {
 			validator = fluidStack -> validatorFluids.contains(fluidStack.getFluid());
 		}
 	}
-	
+
 	@Override
 	public PropertyFluidTank[] getInputTanks() {
 		return toArray();
@@ -186,9 +182,9 @@ public class ComponentFluidHandlerSimple extends PropertyFluidTank implements IC
 		Direction facing = holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 		return ArrayUtils.contains(inputDirections, BlockEntityUtils.getRelativeSide(facing, dir));
 	}
-	
+
 	public PropertyFluidTank[] toArray() {
-		return new PropertyFluidTank[] {this};
+		return new PropertyFluidTank[] { this };
 	}
 
 	private class InputTank extends ComponentFluidHandlerSimple {

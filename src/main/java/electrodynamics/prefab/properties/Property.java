@@ -11,7 +11,7 @@ public class Property<T> {
 
 	public Property(PropertyType type, String name, T defaultValue) {
 		this.type = type;
-		if(name == null || name.length() == 0) {
+		if (name == null || name.length() == 0) {
 			throw new RuntimeException("The property's name cannot be null or empty");
 		}
 		this.name = name;
@@ -54,7 +54,7 @@ public class Property<T> {
 	public boolean isDirty() {
 		return isDirty;
 	}
-	
+
 	@Deprecated(forRemoval = false)
 	public void forceDirty() {
 		isDirty = true;
@@ -69,9 +69,9 @@ public class Property<T> {
 		this.manager = manager;
 	}
 
-	//there is no benefit to delaying value verification. The marginal performance value is traded for potential desync issues
-	//you also don't need to set the values like the multiplier on the battery box to one at the beginning of every tick if
-	//you do an interrupt-type method of setting them. You can define a default value in the constructor that is saved to NBT
+	// there is no benefit to delaying value verification. The marginal performance value is traded for potential desync issues
+	// you also don't need to set the values like the multiplier on the battery box to one at the beginning of every tick if
+	// you do an interrupt-type method of setting them. You can define a default value in the constructor that is saved to NBT
 	public Property<T> set(T updated) {
 		verify(updated);
 		value = (T) type.attemptCast(updated);
@@ -86,10 +86,10 @@ public class Property<T> {
 
 	public void verify(T updated) {
 		boolean shouldUpdate = false;
-		if(value == null && updated != null) {
+		if (value == null && updated != null) {
 			shouldUpdate = true;
 		}
-		if(value != null && updated != null) {
+		if (value != null && updated != null) {
 			shouldUpdate = !type.predicate.test(value, updated);
 		}
 		if (shouldUpdate) {
@@ -97,10 +97,10 @@ public class Property<T> {
 			manager.setDirty();
 		}
 	}
-	
+
 	public void load(Object val) {
 		value = (T) type.attemptCast(val);
-		rawValue = (T) value;
+		rawValue = value;
 	}
 
 	public Property<T> noSave() {
@@ -111,7 +111,7 @@ public class Property<T> {
 	public boolean shouldSave() {
 		return shouldSave;
 	}
-	
+
 	@Override
 	public String toString() {
 		return rawValue == null ? "null" : rawValue.toString();

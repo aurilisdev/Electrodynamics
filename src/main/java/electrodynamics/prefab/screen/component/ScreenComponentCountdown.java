@@ -32,7 +32,7 @@ public class ScreenComponentCountdown extends AbstractScreenComponentInfo {
 	public ScreenComponentCountdown(final DoubleSupplier progressInfoHandler, final IScreenWrapper gui, final int x, final int y) {
 		this(null, progressInfoHandler, gui, x, y);
 	}
-	
+
 	@Override
 	public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
 		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, texture.textureWidth(), texture.textureHeight())) {
@@ -50,7 +50,7 @@ public class ScreenComponentCountdown extends AbstractScreenComponentInfo {
 
 	@Override
 	protected List<? extends FormattedCharSequence> getInfo(List<? extends FormattedCharSequence> list) {
-		if(tooltip != null) {
+		if (tooltip != null) {
 			return tooltip.getInfo();
 		}
 		return getTooltips();
@@ -63,11 +63,11 @@ public class ScreenComponentCountdown extends AbstractScreenComponentInfo {
 		}
 		return tips;
 	}
-	
-	public static enum CountdownTextures implements ITexture {
+
+	public enum CountdownTextures implements ITexture {
 		BACKGROUND_DEFAULT(60, 12, 0, 0, 256, 256, TEXTURE),
 		COUNTDOWN_BAR_DEFAULT(58, 10, 0, 12, 256, 256, TEXTURE);
-		
+
 		private final int textureWidth;
 		private final int textureHeight;
 		private final int textureU;
@@ -75,8 +75,8 @@ public class ScreenComponentCountdown extends AbstractScreenComponentInfo {
 		private final int imageWidth;
 		private final int imageHeight;
 		private final ResourceLocation loc;
-		
-		private CountdownTextures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc) {
+
+		CountdownTextures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc) {
 			this.textureWidth = textureWidth;
 			this.textureHeight = textureHeight;
 			this.textureU = textureU;
@@ -120,7 +120,7 @@ public class ScreenComponentCountdown extends AbstractScreenComponentInfo {
 		public int textureWidth() {
 			return textureWidth;
 		}
-		
+
 	}
 
 }

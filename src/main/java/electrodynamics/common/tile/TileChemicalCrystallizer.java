@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class TileChemicalCrystallizer extends GenericFluidTile implements ITickableSoundTile {
 	public static final int MAX_TANK_CAPACITY = 5000;
-	//client-exclusive variable that is never saved
+	// client-exclusive variable that is never saved
 	private boolean isSoundPlaying = false;
 
 	public TileChemicalCrystallizer(BlockPos worldPosition, BlockState blockState) {
@@ -41,10 +41,10 @@ public class TileChemicalCrystallizer extends GenericFluidTile implements ITicka
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if(!shouldPlaySound()) {
+		if (!shouldPlaySound()) {
 			return;
 		}
-		
+
 		if (level.random.nextDouble() < 0.15) {
 			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			double d4 = level.random.nextDouble();
@@ -53,7 +53,7 @@ public class TileChemicalCrystallizer extends GenericFluidTile implements ITicka
 			double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : d4;
 			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
 		}
-		
+
 		if (!isSoundPlaying) {
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HUM.get(), this, true);

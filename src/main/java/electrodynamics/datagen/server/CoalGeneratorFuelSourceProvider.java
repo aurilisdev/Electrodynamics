@@ -15,18 +15,17 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class CoalGeneratorFuelSourceProvider implements DataProvider {
 
 	public static final String LOC = "data/" + References.ID + "/" + CoalGeneratorFuelRegister.FOLDER + "/" + CoalGeneratorFuelRegister.FILE_NAME;
-	
+
 	private final DataGenerator dataGenerator;
-	
+
 	public CoalGeneratorFuelSourceProvider(DataGenerator gen) {
 		dataGenerator = gen;
 	}
-	
+
 	@Override
 	public void run(CachedOutput cache) throws IOException {
 		JsonObject json = new JsonObject();
@@ -34,28 +33,23 @@ public class CoalGeneratorFuelSourceProvider implements DataProvider {
 
 		Path parent = dataGenerator.getOutputFolder().resolve(LOC + ".json");
 		try {
-			
+
 			DataProvider.saveStable(cache, json, parent);
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void getFuels(JsonObject object) {
 		JsonArray json = new JsonArray();
-		
+
 		addTag(ItemTags.COALS, json);
 		addTag(Tags.Items.STORAGE_BLOCKS_COAL, json);
-		
-		
+
 		object.add(CoalGeneratorFuelRegister.KEY, json);
 	}
-	
-	private void addItem(Item item, JsonArray json) {
-		json.add(ForgeRegistries.ITEMS.getKey(item).toString());
-	}
-	
+
 	private void addTag(TagKey<Item> item, JsonArray json) {
 		json.add("#" + item.location().toString());
 	}

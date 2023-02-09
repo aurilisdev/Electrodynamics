@@ -4,9 +4,9 @@ import java.util.function.Consumer;
 
 import electrodynamics.api.References;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
+import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
 import electrodynamics.datagen.utils.recipe.FinishedRecipeFluidOutput;
-import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.FluidTags;

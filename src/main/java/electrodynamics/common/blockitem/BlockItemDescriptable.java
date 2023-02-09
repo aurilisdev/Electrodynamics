@@ -10,20 +10,14 @@ import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class BlockItemDescriptable extends BlockItem {
 	private static HashMap<Block, HashSet<MutableComponent>> descriptionMappings = new HashMap<>();
@@ -52,21 +46,8 @@ public class BlockItemDescriptable extends BlockItem {
 	}
 
 	/*
-	@Override
-	public InteractionResult place(BlockPlaceContext p) {
-		ItemStack stack = p.getItemInHand().copy();
-		InteractionResult result = super.place(p);
-		if (stack.hasTag()) {
-			double joules = stack.getTag().getDouble("joules");
-			BlockEntity entity = p.getLevel().getBlockEntity(p.getClickedPos());
-			if (entity != null && stack.hasTag() && entity instanceof GenericTile gen && gen.hasComponent(ComponentType.Electrodynamic)) {
-				ComponentElectrodynamic electrodynamic = gen.getComponent(ComponentType.Electrodynamic);
-				electrodynamic.setJoulesStored(joules);
-			}
-		}
-		return result;
-	}
-	*/
+	 * @Override public InteractionResult place(BlockPlaceContext p) { ItemStack stack = p.getItemInHand().copy(); InteractionResult result = super.place(p); if (stack.hasTag()) { double joules = stack.getTag().getDouble("joules"); BlockEntity entity = p.getLevel().getBlockEntity(p.getClickedPos()); if (entity != null && stack.hasTag() && entity instanceof GenericTile gen && gen.hasComponent(ComponentType.Electrodynamic)) { ComponentElectrodynamic electrodynamic = gen.getComponent(ComponentType.Electrodynamic); electrodynamic.setJoulesStored(joules); } } return result; }
+	 */
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);

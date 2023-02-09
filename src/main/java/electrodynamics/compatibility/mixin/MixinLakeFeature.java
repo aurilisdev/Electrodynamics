@@ -22,7 +22,6 @@ import net.minecraft.world.level.material.Fluids;
 @Mixin(LakeFeature.class)
 public class MixinLakeFeature {
 
-	@SuppressWarnings("static-method")
 	@Inject(method = "place(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/WorldGenLevel;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z", ordinal = 0), slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/tags/TagKey;)Z", shift = At.Shift.BEFORE, ordinal = 0), to = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/feature/LakeFeature;markAboveForPostProcessing(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/core/BlockPos;)V", ordinal = 1)), locals = LocalCapture.CAPTURE_FAILHARD)
 	private void spawnSulfurInlakes(FeaturePlaceContext<Configuration> context, CallbackInfoReturnable<Boolean> cir, BlockPos blockpos, WorldGenLevel worldgenlevel, RandomSource random, LakeFeature.Configuration config, boolean[] aboolean, int i, BlockState blockstate1, BlockState blockstate2, int j2, int j3, int l3) {
 		BlockPos blockpos2 = blockpos.offset(j2, l3, j3);

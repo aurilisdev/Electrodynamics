@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 
 public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedSolarPanel> {
-	
+
 	public RenderAdvancedSolarPanel(BlockEntityRendererProvider.Context context) {
 		super(context);
 	}

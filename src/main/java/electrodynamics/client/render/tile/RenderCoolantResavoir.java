@@ -29,7 +29,7 @@ public class RenderCoolantResavoir extends AbstractTileRenderer<TileCoolantResav
 
 	@Override
 	public void render(TileCoolantResavoir entity, float tick, PoseStack stack, MultiBufferSource source, int light, int overlay) {
-		ComponentFluidHandlerSimple tank =  entity.getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerSimple tank = entity.getComponent(ComponentType.FluidHandler);
 		if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
 			FluidStack fluid = tank.getFluid();
 			float yHeight = Math.max(Math.min((float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y), MIN_Y);

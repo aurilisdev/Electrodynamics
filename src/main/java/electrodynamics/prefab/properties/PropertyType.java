@@ -7,6 +7,7 @@ import java.util.function.BiPredicate;
 
 import javax.annotation.Nullable;
 
+import electrodynamics.prefab.utilities.object.Location;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -15,8 +16,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-
-import electrodynamics.prefab.utilities.object.Location;
 
 public enum PropertyType {
 	Byte,
@@ -28,54 +27,55 @@ public enum PropertyType {
 	CompoundTag,
 	BlockPos,
 	InventoryItems((thisList, otherList) -> {
-		NonNullList<ItemStack> thisCasted = (NonNullList<ItemStack>)thisList; 
-		NonNullList<ItemStack> otherCasted = (NonNullList<ItemStack>)otherList;
-		if(thisCasted.size() != otherCasted.size()) {
+		NonNullList<ItemStack> thisCasted = (NonNullList<ItemStack>) thisList;
+		NonNullList<ItemStack> otherCasted = (NonNullList<ItemStack>) otherList;
+		if (thisCasted.size() != otherCasted.size()) {
 			return false;
 		}
 		ItemStack a, b;
-		for(int i = 0; i < thisCasted.size(); i++) {
+		for (int i = 0; i < thisCasted.size(); i++) {
 			a = thisCasted.get(i);
 			b = otherCasted.get(i);
-			if(!ItemStack.isSameItemSameTags(a, b)) {
+			if (!ItemStack.isSameItemSameTags(a, b)) {
 				return false;
 			}
 		}
 		return true;
 	}),
 	Fluidstack((thisStack, otherStack) -> {
-		FluidStack thisCasted = (FluidStack)thisStack;
-		FluidStack otherCasted = (FluidStack)otherStack;
-		if(thisCasted.getAmount() != otherCasted.getAmount()) {
+		FluidStack thisCasted = (FluidStack) thisStack;
+		FluidStack otherCasted = (FluidStack) otherStack;
+		if (thisCasted.getAmount() != otherCasted.getAmount()) {
 			return false;
 		}
 		return thisCasted.getFluid().isSame(otherCasted.getFluid());
 	}),
 	BlockPosList((thisList, otherList) -> {
-		List<BlockPos> thisCasted = (List<BlockPos>)thisList; 
-		List<BlockPos> otherCasted = (List<BlockPos>)otherList;
-		if(thisCasted.size() != otherCasted.size()) {
+		List<BlockPos> thisCasted = (List<BlockPos>) thisList;
+		List<BlockPos> otherCasted = (List<BlockPos>) otherList;
+		if (thisCasted.size() != otherCasted.size()) {
 			return false;
 		}
 		BlockPos a, b;
-		for(int i = 0; i < thisCasted.size(); i++) {
+		for (int i = 0; i < thisCasted.size(); i++) {
 			a = thisCasted.get(i);
 			b = otherCasted.get(i);
-			if(!a.equals(b)) {
+			if (!a.equals(b)) {
 				return false;
 			}
 		}
 		return true;
 	}),
 	Location;
-	
-	//this allows us to deal with classes that don't implement the equals method
+
+	// this allows us to deal with classes that don't implement the equals method
 	@Nullable
-	public BiPredicate<Object, Object> predicate = (o1, o2) -> o1.equals(o2);
-	
-	private PropertyType() {}
-	
-	private PropertyType(BiPredicate<Object, Object> predicate) {
+	public BiPredicate<Object, Object> predicate = Object::equals;
+
+	PropertyType() {
+	}
+
+	PropertyType(BiPredicate<Object, Object> predicate) {
 		this.predicate = predicate;
 	}
 
@@ -160,7 +160,7 @@ public enum PropertyType {
 		case BlockPosList:
 			List<BlockPos> list = new ArrayList<>();
 			size = buf.readInt();
-			for(int i = 0; i < size; i++) {
+			for (int i = 0; i < size; i++) {
 				list.add(buf.readBlockPos());
 			}
 			return list;
@@ -218,7 +218,7 @@ public enum PropertyType {
 			List<BlockPos> posList = (List<BlockPos>) prop.get();
 			CompoundTag data = new CompoundTag();
 			data.putInt("size", posList.size());
-			for(int i = 0; i < posList.size(); i++) {
+			for (int i = 0; i < posList.size(); i++) {
 				data.put("pos" + i, NbtUtils.writeBlockPos(posList.get(i)));
 			}
 			tag.put(prop.getName(), data);
@@ -271,7 +271,7 @@ public enum PropertyType {
 			List<BlockPos> list = new ArrayList<>();
 			CompoundTag data = tag.getCompound(prop.getName());
 			size = data.getInt("size");
-			for(int i = 0; i < size; i++) {
+			for (int i = 0; i < size; i++) {
 				list.add(NbtUtils.readBlockPos(data.getCompound("pos" + i)));
 			}
 			val = list;

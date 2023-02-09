@@ -25,7 +25,7 @@ public class ModuleElectrodynamics extends Module {
 	public ImageWrapperObject getLogo() {
 		return LOGO;
 	}
-	
+
 	@Override
 	protected List<Chapter> genChapters() {
 		List<Chapter> chapters = new ArrayList<>();
