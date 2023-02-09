@@ -2,17 +2,18 @@ package electrodynamics.common.tile;
 
 import java.util.HashSet;
 
-import electrodynamics.api.electricity.generator.IElectricGenerator;
-import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.BlockMachine;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerWindmill;
-import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.common.tile.generic.GenericGeneratorTile;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.sound.SoundBarrierMethods;
+import electrodynamics.prefab.sound.utils.ITickableSoundTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -27,29 +28,30 @@ import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class TileWindmill extends GenericTile implements IMultiblockTileNode, IElectricGenerator {
+public class TileWindmill extends GenericGeneratorTile implements IMultiblockTileNode, ITickableSoundTile {
+	
 	protected CachedTileOutput output;
-	private Property<Boolean> isGenerating = property(new Property<Boolean>(PropertyType.Boolean, "isGenerating")).set(false);
-	public Property<Boolean> directionFlag = property(new Property<Boolean>(PropertyType.Boolean, "directionFlag")).set(false);
-	public Property<Double> generating = property(new Property<Double>(PropertyType.Double, "generating")).set(0.0);
-	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier")).set(1.0);
+	private Property<Boolean> isGenerating = property(new Property<Boolean>(PropertyType.Boolean, "isGenerating", false));
+	public Property<Boolean> directionFlag = property(new Property<Boolean>(PropertyType.Boolean, "directionFlag", false));
+	public Property<Double> generating = property(new Property<Double>(PropertyType.Double, "generating", 0.0));
+	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier", 1.0));
 	public double savedTickRotation;
 	public double rotationSpeed;
+	
+	private boolean isSoundPlaying = false;
 
 	public TileWindmill(BlockPos worldPosition, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_WINDMILL.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_WINDMILL.get(), worldPosition, blockState, 2.25, SubtypeItemUpgrade.stator);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN));
-		addComponent(new ComponentInventory(this).size(1).upgrades(1).slotFaces(0, Direction.values()).shouldSendInfo().validUpgrades(ContainerWindmill.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider("container.windmill").createMenu((id, player) -> new ContainerWindmill(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentInventory(this).size(1).upgrades(1).slotFaces(0, Direction.values()).validUpgrades(ContainerWindmill.VALID_UPGRADES).valid(machineValidator()));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.windmill).createMenu((id, player) -> new ContainerWindmill(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
 	}
 
@@ -59,14 +61,6 @@ public class TileWindmill extends GenericTile implements IMultiblockTileNode, IE
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
-		multiplier.set(1.0, true);
-		for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
-			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade) {
-				for (int i = 0; i < stack.getCount(); i++) {
-					upgrade.subtype.applyUpgrade.accept(this, null, null);
-				}
-			}
-		}
 		ComponentDirection direction = getComponent(ComponentType.Direction);
 		Direction facing = direction.getDirection();
 		if (tickable.getTicks() % 40 == 0) {
@@ -90,9 +84,20 @@ public class TileWindmill extends GenericTile implements IMultiblockTileNode, IE
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if (isGenerating.get() && tickable.getTicks() % 180 == 0) {
-			SoundAPI.playSound(ElectrodynamicsSounds.SOUND_WINDMILL.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
+		if (shouldPlaySound() && !isSoundPlaying) {
+			isSoundPlaying = true;
+			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HUM.get(), this, true);
 		}
+	}
+
+	@Override
+	public void setNotPlaying() {
+		isSoundPlaying = false;
+	}
+
+	@Override
+	public boolean shouldPlaySound() {
+		return isGenerating.get();
 	}
 
 	@Override

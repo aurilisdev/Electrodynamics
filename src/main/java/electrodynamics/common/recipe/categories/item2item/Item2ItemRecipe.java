@@ -23,26 +23,26 @@ public abstract class Item2ItemRecipe extends ElectrodynamicsRecipe {
 	private CountableIngredient[] ITEM_INPUTS;
 	private ItemStack OUTPUT;
 
-	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, double experience) {
-		super(recipeID, experience);
+	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, double experience, int ticks, double usagePerTick) {
+		super(recipeID, experience, ticks, usagePerTick);
 		ITEM_INPUTS = inputs;
 		OUTPUT = output;
 	}
 
-	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts, double experience) {
-		super(recipeID, itemBiproducts, experience);
+	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts, double experience, int ticks, double usagePerTick) {
+		super(recipeID, itemBiproducts, experience, ticks, usagePerTick);
 		ITEM_INPUTS = inputs;
 		OUTPUT = output;
 	}
 
-	public Item2ItemRecipe(CountableIngredient[] inputs, ItemStack output, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
-		super(fluidBiproducts, recipeID, experience);
+	public Item2ItemRecipe(CountableIngredient[] inputs, ItemStack output, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience, int ticks, double usagePerTick) {
+		super(fluidBiproducts, recipeID, experience, ticks, usagePerTick);
 		ITEM_INPUTS = inputs;
 		OUTPUT = output;
 	}
 
-	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
-		super(recipeID, itemBiproducts, fluidBiproducts, experience);
+	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience, int ticks, double usagePerTick) {
+		super(recipeID, itemBiproducts, fluidBiproducts, experience, ticks, usagePerTick);
 		ITEM_INPUTS = inputs;
 		OUTPUT = output;
 	}

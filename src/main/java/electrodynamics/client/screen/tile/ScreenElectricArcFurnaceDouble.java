@@ -4,8 +4,9 @@ import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurna
 import electrodynamics.common.tile.TileElectricArcFurnace;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressBars;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,7 +18,7 @@ public class ScreenElectricArcFurnaceDouble extends GenericScreen<ContainerElect
 
 	public ScreenElectricArcFurnaceDouble(ContainerElectricArcFurnaceDouble container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentProgress(() -> {
+		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
@@ -27,7 +28,7 @@ public class ScreenElectricArcFurnaceDouble extends GenericScreen<ContainerElect
 			}
 			return 0;
 		}, this, 84, 24));
-		components.add(new ScreenComponentProgress(() -> {
+		components.add(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
@@ -36,8 +37,8 @@ public class ScreenElectricArcFurnaceDouble extends GenericScreen<ContainerElect
 				}
 			}
 			return 0;
-		}, this, 39, 26).flame());
-		components.add(new ScreenComponentProgress(() -> {
+		}, this, 39, 26));
+		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(1);
@@ -47,7 +48,7 @@ public class ScreenElectricArcFurnaceDouble extends GenericScreen<ContainerElect
 			}
 			return 0;
 		}, this, 84, 44));
-		components.add(new ScreenComponentProgress(() -> {
+		components.add(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(1);
@@ -56,7 +57,7 @@ public class ScreenElectricArcFurnaceDouble extends GenericScreen<ContainerElect
 				}
 			}
 			return 0;
-		}, this, 39, 46).flame());
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
+		}, this, 39, 46));
+		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 }

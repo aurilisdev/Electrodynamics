@@ -54,6 +54,11 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 					}
 					return getNetwork().receivePower(transfer, debug);
 				}
+
+				@Override
+				public void onChange() {
+					
+				}
 			});
 		}
 		addComponent(new ComponentPacketHandler());

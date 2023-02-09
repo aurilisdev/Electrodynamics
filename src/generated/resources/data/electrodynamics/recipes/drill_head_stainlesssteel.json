@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/stainlesssteel"
+    },
+    "P": {
+      "tag": "forge:plates/stainlesssteel"
+    }
+  },
+  "pattern": [
+    " I ",
+    "IPI"
+  ],
+  "result": {
+    "item": "electrodynamics:drillheadstainlesssteel"
+  }
+}

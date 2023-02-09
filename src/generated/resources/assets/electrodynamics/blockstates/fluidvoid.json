@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/fluidvoid"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/fluidvoid",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/fluidvoid",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/fluidvoid",
+      "y": 180
+    }
+  }
+}

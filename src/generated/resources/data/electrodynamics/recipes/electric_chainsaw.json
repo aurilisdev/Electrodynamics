@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "electrodynamics:battery"
+    },
+    "I": {
+      "item": "electrodynamics:wireiron"
+    },
+    "M": {
+      "item": "electrodynamics:motor"
+    },
+    "P": {
+      "tag": "forge:plastic"
+    },
+    "S": {
+      "tag": "forge:plates/steel"
+    }
+  },
+  "pattern": [
+    "SP ",
+    "IMB"
+  ],
+  "result": {
+    "item": "electrodynamics:electricchainsaw"
+  }
+}

@@ -3,6 +3,7 @@ package electrodynamics.prefab.block;
 import java.util.Arrays;
 import java.util.List;
 
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.IWrenchable;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -14,6 +15,7 @@ import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 
 public abstract class GenericEntityBlock extends BaseEntityBlock implements IWrenchable {
 	public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
@@ -80,19 +83,62 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		return super.mirror(state, mirrorIn);
 	}
 
+	
 	@Override
 	public void onPickup(ItemStack stack, BlockPos pos, Player player) {
 		Level world = player.level;
-		BlockEntity tile = world.getBlockEntity(pos);
-		if (tile instanceof GenericTile generic && generic.getComponent(ComponentType.Inventory) instanceof ComponentInventory inv) {
-			Containers.dropContents(world, pos, inv);
-		}
 		world.destroyBlock(pos, true, player);
 	}
 
+	//TODO get this to work
 	@Override
 	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
-		return Arrays.asList(new ItemStack(this));
+		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+		if (tile instanceof GenericTile machine && machine != null) {
+			ItemStack stack = new ItemStack(this);
+			ComponentInventory inv = machine.getComponent(ComponentType.Inventory);
+			if (inv != null) {
+				Containers.dropContents(machine.getLevel(), machine.getBlockPos(), inv.getItems());
+				tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
+					double joules = el.getJoulesStored();
+					if (joules > 0) {
+						stack.getOrCreateTag().putDouble("joules", joules);
+					}
+				});
+			}
+			return Arrays.asList(stack);
+			
+		}
+		return super.getDrops(state, builder);
+	}
+	
+	@Override
+	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
+		if(newState.isAir()) {
+			BlockEntity entity = level.getBlockEntity(pos);
+			if(entity != null && entity instanceof GenericTile generic) {
+				generic.onBlockDestroyed();
+			}
+		}
+		super.onRemove(state, level, pos, newState, isMoving);
+	}
+	
+	@Override
+	public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
+		super.onNeighborChange(state, level, pos, neighbor);
+		BlockEntity entity = level.getBlockEntity(pos);
+		if(entity != null && entity instanceof GenericTile generic) {
+			generic.onNeightborChanged(neighbor);
+		}
+	}
+	
+	@Override
+	public void onPlace(BlockState newState, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
+		super.onPlace(newState, level, pos, oldState, isMoving);
+		BlockEntity entity = level.getBlockEntity(pos);
+		if(entity != null && entity instanceof GenericTile generic) {
+			generic.onPlace(oldState, isMoving);
+		}
 	}
 
 }

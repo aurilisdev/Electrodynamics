@@ -3,7 +3,6 @@ package electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.speci
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.MineralWasherRecipe;
-import electrodynamics.common.settings.Constants;
 import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.FluidItem2FluidRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowLeftAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowRightAnimatedWrapper;
@@ -12,6 +11,7 @@ import electrodynamics.compatibility.jei.utils.gui.fluid.DefaultFluidGaugeWrappe
 import electrodynamics.compatibility.jei.utils.gui.item.BucketSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
+import electrodynamics.compatibility.jei.utils.label.TimeLabelWrapper;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
@@ -34,7 +34,8 @@ public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory<M
 	private static DefaultFluidGaugeWrapper IN_GAUGE = new DefaultFluidGaugeWrapper(10, 5, 5000);
 	private static DefaultFluidGaugeWrapper OUT_GAUGE = new DefaultFluidGaugeWrapper(108, 5, 5000);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, Constants.MINERALCRUSHER_USAGE_PER_TICK, 480);
+	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, 480);
+	private static TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 55);
 
 	private static int ANIM_TIME = 50;
 
@@ -54,7 +55,7 @@ public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory<M
 		setFluidInputs(guiHelper, IN_GAUGE);
 		setFluidOutputs(guiHelper, OUT_GAUGE);
 		setAnimatedArrows(guiHelper, ANIM_LEFT_ARROW, ANIM_RIGHT_ARROW_1, ANIM_RIGHT_ARROW_2);
-		setLabels(POWER_LABEL);
+		setLabels(POWER_LABEL, TIME_LABEL);
 	}
 
 	public ResourceLocation getUid() {

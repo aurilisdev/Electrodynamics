@@ -3,7 +3,7 @@ package electrodynamics.common.packet.types;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import electrodynamics.api.item.ItemUtils;
+import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;

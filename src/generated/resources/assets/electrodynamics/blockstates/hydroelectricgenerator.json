@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/hydroelectricgeneratorengine"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/hydroelectricgeneratorengine",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/hydroelectricgeneratorengine",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/hydroelectricgeneratorengine",
+      "y": 180
+    }
+  }
+}

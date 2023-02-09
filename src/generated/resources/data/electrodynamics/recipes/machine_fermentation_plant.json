@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "tag": "forge:circuits/basic"
+    },
+    "C": {
+      "item": "minecraft:cauldron"
+    },
+    "F": {
+      "item": "minecraft:furnace"
+    },
+    "I": {
+      "tag": "forge:plates/iron"
+    },
+    "M": {
+      "item": "electrodynamics:motor"
+    }
+  },
+  "pattern": [
+    "IMI",
+    "BCB",
+    "IFI"
+  ],
+  "result": {
+    "item": "electrodynamics:fermentationplant"
+  }
+}

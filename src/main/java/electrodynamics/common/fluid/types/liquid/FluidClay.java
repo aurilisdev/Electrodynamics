@@ -14,7 +14,7 @@ public class FluidClay extends FluidNonPlaceable {
 
 	public FluidClay() {
 		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED);
-		type = new SimpleWaterBasedFluidType(References.ID, "clay");
+		type = new SimpleWaterBasedFluidType(References.ID, "fluidclay");
 	}
 
 	@Override

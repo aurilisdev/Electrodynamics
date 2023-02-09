@@ -21,12 +21,19 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * Extension of Ingredient that adds Fluid compatibility 
+ * 
+ * @author skip999
+ *
+ */
 public class FluidIngredient extends Ingredient {
 
 	@Nonnull
 	private List<FluidStack> fluidStacks;
 
-	private TagKey<Fluid> tag;
+	@Nullable
+	public TagKey<Fluid> tag;
 	private int amount;
 
 	public FluidIngredient(FluidStack fluidStack) {
@@ -75,10 +82,15 @@ public class FluidIngredient extends Ingredient {
 	 * @param amount
 	 */
 	private FluidIngredient(ResourceLocation resource, int amount) {
+		this(FluidTags.create(resource), amount);
+	}
+	
+	public FluidIngredient(TagKey<Fluid> tag, int amount) {
 		super(Stream.empty());
-		tag = FluidTags.create(resource);
+		this.tag = tag;
 		this.amount = amount;
 		fluidStacks = new ArrayList<>();
+
 	}
 
 	public static FluidIngredient deserialize(JsonObject jsonObject) {
@@ -157,7 +169,7 @@ public class FluidIngredient extends Ingredient {
 	}
 
 	public FluidStack getFluidStack() {
-		return fluidStacks.get(0);
+		return getMatchingFluids().get(0);
 	}
 
 }

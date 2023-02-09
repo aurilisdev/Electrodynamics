@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/frame"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/frame",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/frame",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/frame",
+      "y": 180
+    }
+  }
+}

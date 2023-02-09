@@ -83,12 +83,12 @@ public abstract class GenericTilePipe extends GenericTile implements IPipe {
 
 				@Override
 				public FluidStack drain(FluidStack resource, FluidAction action) {
-					return new FluidStack(Fluids.WATER, 0);
+					return FluidStack.EMPTY;
 				}
 
 				@Override
 				public FluidStack drain(int maxDrain, FluidAction action) {
-					return new FluidStack(Fluids.WATER, 0);
+					return FluidStack.EMPTY;
 				}
 			});
 		}

@@ -9,14 +9,15 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 
-public class RenderMineralWasher implements BlockEntityRenderer<TileMineralWasher> {
+public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher> {
+	
 	public RenderMineralWasher(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "forge:circuits/basic"
+    },
+    "G": {
+      "tag": "forge:gears/bronze"
+    },
+    "M": {
+      "item": "electrodynamics:wiremill"
+    },
+    "W": {
+      "item": "electrodynamics:wireinsulatedsilver"
+    }
+  },
+  "pattern": [
+    "CGC",
+    "WMW",
+    "CGC"
+  ],
+  "result": {
+    "item": "electrodynamics:wiremilldouble"
+  }
+}

@@ -13,20 +13,20 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public abstract class AbstractFluidRecipe extends ElectrodynamicsRecipe {
 
-	protected AbstractFluidRecipe(ResourceLocation recipeID, double experience) {
-		super(recipeID, experience);
+	protected AbstractFluidRecipe(ResourceLocation recipeID, double experience, int ticks, double usagePerTick) {
+		super(recipeID, experience, ticks, usagePerTick);
 	}
 
-	protected AbstractFluidRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, double experience) {
-		super(recipeID, itemBiproducts, experience);
+	protected AbstractFluidRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, double experience, int ticks, double usagePerTick) {
+		super(recipeID, itemBiproducts, experience, ticks, usagePerTick);
 	}
 
-	protected AbstractFluidRecipe(ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
-		super(fluidBiproducts, recipeID, experience);
+	protected AbstractFluidRecipe(ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience, int ticks, double usagePerTick) {
+		super(fluidBiproducts, recipeID, experience, ticks, usagePerTick);
 	}
 
-	protected AbstractFluidRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
-		super(recipeID, itemBiproducts, fluidBiproducts, experience);
+	protected AbstractFluidRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience, int ticks, double usagePerTick) {
+		super(recipeID, itemBiproducts, fluidBiproducts, experience, ticks, usagePerTick);
 	}
 
 	@Override

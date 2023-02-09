@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/mineralgrindertriplebase"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/mineralgrindertriplebase",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/mineralgrindertriplebase",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/mineralgrindertriplebase",
+      "y": 180
+    }
+  }
+}

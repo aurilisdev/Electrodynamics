@@ -15,7 +15,7 @@ public class FluidHydrogenFluoride extends FluidNonPlaceable {
 
 	public FluidHydrogenFluoride() {
 		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED);
-		type = new SimpleWaterBasedFluidType(References.ID, "hydrogenfluoride", -375879936);
+		type = new SimpleWaterBasedFluidType(References.ID, "fluidhydrogenfluoride", -375879936);
 	}
 
 	@Override

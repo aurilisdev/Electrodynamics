@@ -126,10 +126,11 @@ public class ClientRegister {
 	// for registration purposes only!
 	private static List<ResourceLocation> customBlockTextures = new ArrayList<>();
 
+	public static final ResourceLocation ON = new ResourceLocation("on");
+
 	@SubscribeEvent
 	public static void onModelEvent(RegisterAdditional event) {
 		event.register(MODEL_ADVSOLARTOP);
-		event.register(MODEL_ADVSOLARBASE);
 		event.register(MODEL_BATTERYBOX);
 		event.register(MODEL_BATTERYBOX2);
 		event.register(MODEL_BATTERYBOX3);
@@ -144,6 +145,7 @@ public class ClientRegister {
 		event.register(MODEL_LITHIUMBATTERYBOX5);
 		event.register(MODEL_LITHIUMBATTERYBOX6);
 		event.register(MODEL_LITHIUMBATTERYBOX7);
+		event.register(MODEL_CHEMICALMIXERBASE);
 		event.register(MODEL_CARBYNEBATTERYBOX);
 		event.register(MODEL_CARBYNEBATTERYBOX2);
 		event.register(MODEL_CARBYNEBATTERYBOX3);
@@ -153,34 +155,21 @@ public class ClientRegister {
 		event.register(MODEL_CARBYNEBATTERYBOX7);
 		event.register(MODEL_HYDROELECTRICGENERATORBLADES);
 		event.register(MODEL_WINDMILLBLADES);
-		event.register(MODEL_MINERALCRUSHERBASE);
 		event.register(MODEL_MINERALCRUSHERHANDLE);
-		event.register(MODEL_MINERALCRUSHERDOUBLEBASE);
 		event.register(MODEL_MINERALCRUSHERDOUBLEHANDLE);
-		event.register(MODEL_MINERALCRUSHERTRIPLEBASE);
 		event.register(MODEL_MINERALCRUSHERTRIPLEHANDLE);
-		event.register(MODEL_MINERALGRINDERBASE);
 		event.register(MODEL_MINERALGRINDERWHEEL);
-		event.register(MODEL_MINERALGRINDERDOUBLEBASE);
-		event.register(MODEL_MINERALGRINDERTRIPLEBASE);
-		event.register(MODEL_FERMENTATIONPLANTWATER);
-		event.register(MODEL_FERMENTATIONPLANTETHANOL);
-		event.register(MODEL_COMBUSTIONCHAMBERETHANOL);
-		event.register(MODEL_COMBUSTIONCHAMBERHYDROGEN);
-		event.register(MODEL_CHEMICALMIXERBASE);
 		event.register(MODEL_CHEMICALMIXERBLADES);
-		event.register(MODEL_CHEMICALMIXERWATER);
-		event.register(MODEL_CHEMICALMIXERSULFURICACID);
 		event.register(MODEL_RODSTEEL);
 		event.register(MODEL_RODSTAINLESSSTEEL);
 		event.register(MODEL_RODHSLASTEEL);
-		event.register(MODEL_LATHE);
 		event.register(MODEL_LATHESHAFT);
 		event.register(MODEL_MOTORCOMPLEXROTOR);
+		event.register(MODEL_QUARRYWHEEL_STILL);
+		event.register(MODEL_QUARRYWHEEL_ROT);
 	}
 
 	public static final ResourceLocation MODEL_ADVSOLARTOP = new ResourceLocation(BLOCK_LOC + "advancedsolarpaneltop");
-	public static final ResourceLocation MODEL_ADVSOLARBASE = new ResourceLocation(BLOCK_LOC + "advancedsolarpanelbase");
 	public static final ResourceLocation MODEL_BATTERYBOX = new ResourceLocation(BLOCK_LOC + "batterybox");
 	public static final ResourceLocation MODEL_BATTERYBOX2 = new ResourceLocation(BLOCK_LOC + "batterybox2");
 	public static final ResourceLocation MODEL_BATTERYBOX3 = new ResourceLocation(BLOCK_LOC + "batterybox3");
@@ -202,27 +191,14 @@ public class ClientRegister {
 	public static final ResourceLocation MODEL_CARBYNEBATTERYBOX5 = new ResourceLocation(BLOCK_LOC + "carbynebatterybox5");
 	public static final ResourceLocation MODEL_CARBYNEBATTERYBOX6 = new ResourceLocation(BLOCK_LOC + "carbynebatterybox6");
 	public static final ResourceLocation MODEL_CARBYNEBATTERYBOX7 = new ResourceLocation(BLOCK_LOC + "carbynebatterybox7");
+	public static final ResourceLocation MODEL_CHEMICALMIXERBASE = new ResourceLocation(BLOCK_LOC + "chemicalmixerbase");
 	public static final ResourceLocation MODEL_HYDROELECTRICGENERATORBLADES = new ResourceLocation(BLOCK_LOC + "hydroelectricgeneratorblades");
 	public static final ResourceLocation MODEL_WINDMILLBLADES = new ResourceLocation(BLOCK_LOC + "windmillblades");
-	public static final ResourceLocation MODEL_MINERALCRUSHERBASE = new ResourceLocation(BLOCK_LOC + "mineralcrusherbase");
 	public static final ResourceLocation MODEL_MINERALCRUSHERHANDLE = new ResourceLocation(BLOCK_LOC + "mineralcrusherhandle");
-	public static final ResourceLocation MODEL_MINERALCRUSHERDOUBLEBASE = new ResourceLocation(BLOCK_LOC + "mineralcrusherdoublebase");
 	public static final ResourceLocation MODEL_MINERALCRUSHERDOUBLEHANDLE = new ResourceLocation(BLOCK_LOC + "mineralcrusherdoublehandle");
-	public static final ResourceLocation MODEL_MINERALCRUSHERTRIPLEBASE = new ResourceLocation(BLOCK_LOC + "mineralcrushertriplebase");
 	public static final ResourceLocation MODEL_MINERALCRUSHERTRIPLEHANDLE = new ResourceLocation(BLOCK_LOC + "mineralcrushertriplehandle");
-	public static final ResourceLocation MODEL_MINERALGRINDERBASE = new ResourceLocation(BLOCK_LOC + "mineralgrinderbase");
-	public static final ResourceLocation MODEL_MINERALGRINDERDOUBLEBASE = new ResourceLocation(BLOCK_LOC + "mineralgrinderdoublebase");
-	public static final ResourceLocation MODEL_MINERALGRINDERTRIPLEBASE = new ResourceLocation(BLOCK_LOC + "mineralgrindertriplebase");
 	public static final ResourceLocation MODEL_MINERALGRINDERWHEEL = new ResourceLocation(BLOCK_LOC + "mineralgrinderwheel");
-	public static final ResourceLocation MODEL_FERMENTATIONPLANTWATER = new ResourceLocation(BLOCK_LOC + "fermentationplantwater");
-	public static final ResourceLocation MODEL_FERMENTATIONPLANTETHANOL = new ResourceLocation(BLOCK_LOC + "fermentationplantethanol");
-	public static final ResourceLocation MODEL_COMBUSTIONCHAMBERETHANOL = new ResourceLocation(BLOCK_LOC + "combustionchamberethanol");
-	public static final ResourceLocation MODEL_COMBUSTIONCHAMBERHYDROGEN = new ResourceLocation(BLOCK_LOC + "combustionchamberhydrogen");
-	public static final ResourceLocation MODEL_CHEMICALMIXERBASE = new ResourceLocation(BLOCK_LOC + "chemicalmixerbase");
 	public static final ResourceLocation MODEL_CHEMICALMIXERBLADES = new ResourceLocation(BLOCK_LOC + "chemicalmixerblades");
-	public static final ResourceLocation MODEL_CHEMICALMIXERWATER = new ResourceLocation(BLOCK_LOC + "chemicalmixerwater");
-	public static final ResourceLocation MODEL_CHEMICALMIXERSULFURICACID = new ResourceLocation(BLOCK_LOC + "chemicalmixersulfuricacid");
-	public static final ResourceLocation MODEL_LATHE = new ResourceLocation(BLOCK_LOC + "lathe");
 	public static final ResourceLocation MODEL_LATHESHAFT = new ResourceLocation(BLOCK_LOC + "latheshaft");
 	public static final ResourceLocation MODEL_MOTORCOMPLEXROTOR = new ResourceLocation(BLOCK_LOC + "motorcomplexrotor");
 
@@ -234,10 +210,17 @@ public class ClientRegister {
 	public static final ResourceLocation TEXTURE_RODSTAINLESSSTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodstainlesssteel.png");
 	public static final ResourceLocation TEXTURE_RODHSLASTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodhslasteel.png");
 
+	public static final ResourceLocation MODEL_QUARRYWHEEL_STILL = new ResourceLocation(BLOCK_LOC + "quarrywheelstill");
+	public static final ResourceLocation MODEL_QUARRYWHEEL_ROT = new ResourceLocation(BLOCK_LOC + "quarrywheelrot");
+
 	// Custom Textures
 	public static final ResourceLocation TEXTURE_QUARRYARM = new ResourceLocation(CUSTOM_LOC + "quarryarm");
+	public static final ResourceLocation TEXTURE_QUARRYARM_DARK = new ResourceLocation(CUSTOM_LOC + "quarrydark");
+	public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation("forge", "white");
 
 	public static void setup() {
+		ClientEvents.init();
+
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICFURNACEDOUBLE.get(), ScreenElectricFurnaceDouble::new);
@@ -273,8 +256,8 @@ public class ClientRegister {
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_QUARRY.get(), ScreenQuarry::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_GUIDEBOOK.get(), ScreenGuidebook::new);
 
-		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICDRILL.get(), new ResourceLocation("on"), (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricDrill) stack.getItem()).getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
-		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW.get(), new ResourceLocation("on"), (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
+		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICDRILL.get(), ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricDrill) stack.getItem()).getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
+		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW.get(), ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 
 		ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
 	}
@@ -320,6 +303,8 @@ public class ClientRegister {
 
 	static {
 		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM);
+		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM_DARK);
+		customBlockTextures.add(ClientRegister.TEXTURE_WHITE);
 	}
 
 	@SubscribeEvent

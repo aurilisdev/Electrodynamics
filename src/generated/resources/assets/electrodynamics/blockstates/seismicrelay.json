@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/seismicrelay"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/seismicrelay",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/seismicrelay",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/seismicrelay",
+      "y": 180
+    }
+  }
+}

@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.api.network.pipe.IPipe;
-import electrodynamics.common.tile.generic.GenericTilePipe;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
@@ -19,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
@@ -83,79 +82,78 @@ public class FluidUtilities {
 			BlockPos face = tile.getBlockPos().relative(direction.getOpposite());
 			BlockEntity faceTile = tile.getLevel().getBlockEntity(face);
 			if (faceTile != null) {
-				boolean electroPipe = faceTile instanceof GenericTilePipe;
 				LazyOptional<IFluidHandler> cap = faceTile.getCapability(ForgeCapabilities.FLUID_HANDLER, direction);
 				if (cap.isPresent()) {
 					IFluidHandler fHandler = cap.resolve().get();
 					for (FluidTank fluidTank : tanks) {
 						FluidStack tankFluid = fluidTank.getFluid();
-						if (electroPipe) {
-							if (fluidTank.getFluidAmount() > 0) {
-								fluidTank.getFluid().shrink(fHandler.fill(tankFluid, FluidAction.EXECUTE));
-							}
+						int amtAccepted = fHandler.fill(tankFluid, FluidAction.EXECUTE);
+						FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
+						fluidTank.drain(taken, FluidAction.EXECUTE);
+					}
+				}
+			}
+		}
+	}
+
+	public static void drainItem(GenericTile tile, FluidTank[] tanks) {
+		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
+		// should stop the crashes now
+		List<ItemStack> buckets = inv.getInputBucketContents();
+		if (tanks.length >= buckets.size()) {
+			for (int i = 0; i < buckets.size(); i++) {
+				FluidTank tank = tanks[i];
+				ItemStack stack = buckets.get(i);
+				if (!stack.isEmpty() && !CapabilityUtils.isFluidItemNull()) {
+					FluidStack containerFluid = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
+					if(tank.isFluidValid(containerFluid)) {
+						int amtDrained = tank.fill(containerFluid, FluidAction.SIMULATE);
+						FluidStack drained = new FluidStack(containerFluid.getFluid(), amtDrained);
+						CapabilityUtils.drain(stack, drained);
+						tank.fill(drained, FluidAction.EXECUTE);
+						if (stack.getItem() instanceof BucketItem) {
+							inv.setItem(inv.getInputBucketStartIndex() + i, new ItemStack(Items.BUCKET));
+						}
+					}
+				}
+			}
+		}
+		
+	}
+
+	public static void fillItem(GenericTile tile, FluidTank[] tanks) {
+		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
+		List<ItemStack> buckets = inv.getOutputBucketContents();
+		if (tanks.length >= buckets.size()) {
+			for (int i = 0; i < buckets.size(); i++) {
+				ItemStack stack = buckets.get(i);
+				FluidTank tank = tanks[i];
+				boolean isBucket = stack.getItem() instanceof BucketItem;
+				if (!stack.isEmpty() && !CapabilityUtils.isFluidItemNull()) {
+					FluidStack fluid = tank.getFluid();
+					int amtFilled = CapabilityUtils.simFill(stack, fluid);
+					FluidStack taken = new FluidStack(fluid.getFluid(), amtFilled);
+					boolean isWater = taken.getFluid().isSame(Fluids.WATER);
+					if(isBucket && amtFilled == 1000 && (isWater || taken.getFluid().isSame(Fluids.LAVA))) {
+						tank.drain(taken, FluidAction.EXECUTE);
+						ItemStack filledBucket;
+						if(isWater) {
+							filledBucket = new ItemStack(Items.WATER_BUCKET);
 						} else {
-							int amtAccepted = fHandler.fill(tankFluid, FluidAction.SIMULATE);
-							FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
-							fHandler.fill(taken, FluidAction.EXECUTE);
-							fluidTank.drain(taken, FluidAction.EXECUTE);
+							filledBucket = new ItemStack(Items.LAVA_BUCKET);
 						}
-					}
-				}
-			}
-		}
-	}
-
-	public static void drainItem(GenericTile tile) {
-		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
-		AbstractFluidHandler<?> handler = tile.getComponent(ComponentType.FluidHandler);
-		// should stop the crashes now
-		if (handler != null) {
-			FluidTank[] tanks = handler.getInputTanks();
-			List<ItemStack> buckets = inv.getInputBucketContents();
-			if (tanks.length >= buckets.size()) {
-				for (int i = 0; i < buckets.size(); i++) {
-					FluidTank tank = tanks[i];
-					ItemStack stack = buckets.get(i);
-					if (!stack.isEmpty() && !CapabilityUtils.isFluidItemNull()) {
-						FluidStack containerFluid = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
-						if (handler.getValidInputFluids().contains(containerFluid.getFluid()) && tank.isFluidValid(containerFluid)) {
-							int amtDrained = tank.fill(containerFluid, FluidAction.SIMULATE);
-							FluidStack drained = new FluidStack(containerFluid.getFluid(), amtDrained);
-							CapabilityUtils.drain(stack, drained);
-							tank.fill(drained, FluidAction.EXECUTE);
-							if (stack.getItem() instanceof BucketItem) {
-								inv.setItem(inv.getInputBucketStartIndex() + i, new ItemStack(Items.BUCKET, 1));
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	public static void fillItem(GenericTile tile) {
-		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
-		AbstractFluidHandler<?> handler = tile.getComponent(ComponentType.FluidHandler);
-		// should stop the crashes now
-		if (handler != null) {
-			FluidTank[] tanks = handler.getOutputTanks();
-			List<ItemStack> buckets = inv.getOutputBucketContents();
-			if (tanks.length >= buckets.size()) {
-				for (int i = 0; i < buckets.size(); i++) {
-					ItemStack stack = buckets.get(i);
-					FluidTank tank = tanks[i];
-					if (!stack.isEmpty() && !(stack.getItem() instanceof BucketItem) && !CapabilityUtils.isFluidItemNull()) {
-						FluidStack fluid = tank.getFluid();
-						int amtFilled = CapabilityUtils.simFill(stack, fluid);
-						FluidStack taken = new FluidStack(fluid.getFluid(), amtFilled);
+						inv.setItem(inv.getOutputBucketStartIndex() + i, filledBucket.copy());
+					} else if(!isBucket) {
 						CapabilityUtils.fill(stack, taken);
 						tank.drain(taken, FluidAction.EXECUTE);
 					}
+					
 				}
 			}
 		}
 	}
 
+	@Deprecated(since = "don't set a filter if you want to allow for all fluids")
 	public static Fluid[] getAllRegistryFluids() {
 		List<Fluid> list = new ArrayList<>(ForgeRegistries.FLUIDS.getValues());
 		Fluid[] fluids = new Fluid[list.size()];

@@ -3,13 +3,13 @@ package electrodynamics.compatibility.jei.recipecategories.fluid2fluid.specificm
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.categories.fluid2fluid.specificmachines.ElectrolyticSeparatorRecipe;
-import electrodynamics.common.settings.Constants;
 import electrodynamics.compatibility.jei.recipecategories.fluid2fluid.Fluid2FluidRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowRightAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.compatibility.jei.utils.gui.fluid.DefaultFluidGaugeWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.BucketSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
+import electrodynamics.compatibility.jei.utils.label.TimeLabelWrapper;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
@@ -32,7 +32,8 @@ public class ElectrolyticSeparatorRecipeCategory extends Fluid2FluidRecipeCatego
 	private static DefaultFluidGaugeWrapper OUT_GAUGE = new DefaultFluidGaugeWrapper(48, 5, 5000);
 	private static DefaultFluidGaugeWrapper BIPRODUCT_GAUGE = new DefaultFluidGaugeWrapper(88, 5, 5000);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, Constants.ELECTROLYTICSEPARATOR_USAGE_PER_TICK, 240);
+	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, 240);
+	private static TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 55);
 
 	private static int ANIM_TIME = 50;
 
@@ -52,7 +53,7 @@ public class ElectrolyticSeparatorRecipeCategory extends Fluid2FluidRecipeCatego
 		setFluidInputs(guiHelper, IN_GAUGE);
 		setFluidOutputs(guiHelper, OUT_GAUGE, BIPRODUCT_GAUGE);
 		setAnimatedArrows(guiHelper, ANIM_RIGHT_ARROW_1, ANIM_RIGHT_ARROW_2);
-		setLabels(POWER_LABEL);
+		setLabels(POWER_LABEL, TIME_LABEL);
 	}
 
 	public ResourceLocation getUid() {

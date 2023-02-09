@@ -2,6 +2,7 @@ package electrodynamics.prefab.tile.components.type;
 
 import java.util.function.BiFunction;
 
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -24,6 +25,10 @@ public class ComponentContainerProvider implements Component, MenuProvider {
 
 	public ComponentContainerProvider(String name) {
 		this.name = name;
+	}
+	
+	public ComponentContainerProvider(SubtypeMachine machine) {
+		this.name = "container." + machine.name();
 	}
 
 	public ComponentContainerProvider createMenu(BiFunction<Integer, Inventory, AbstractContainerMenu> createMenuFunction) {

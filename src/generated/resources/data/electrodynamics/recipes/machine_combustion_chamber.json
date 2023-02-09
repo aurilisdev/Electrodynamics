@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "minecraft:cauldron"
+    },
+    "G": {
+      "tag": "forge:gears/iron"
+    },
+    "M": {
+      "item": "electrodynamics:motor"
+    },
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "W": {
+      "item": "electrodynamics:coil"
+    }
+  },
+  "pattern": [
+    "PMP",
+    "GWG",
+    "PCP"
+  ],
+  "result": {
+    "item": "electrodynamics:combustionchamber"
+  }
+}

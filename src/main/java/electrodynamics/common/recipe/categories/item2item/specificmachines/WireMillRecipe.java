@@ -15,12 +15,12 @@ public class WireMillRecipe extends Item2ItemRecipe {
 	public static final String MOD_ID = electrodynamics.api.References.ID;
 	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-	public WireMillRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, double experience) {
-		super(id, input, output, experience);
+	public WireMillRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, double experience, int ticks, double usagePerTick) {
+		super(id, input, output, experience, ticks, usagePerTick);
 	}
 
-	public WireMillRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, double experience) {
-		super(id, input, output, itemBiproducts, experience);
+	public WireMillRecipe(ResourceLocation id, CountableIngredient[] input, ItemStack output, ProbableItem[] itemBiproducts, double experience, int ticks, double usagePerTick) {
+		super(id, input, output, itemBiproducts, experience, ticks, usagePerTick);
 	}
 
 	@Override

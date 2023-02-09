@@ -23,26 +23,26 @@ public abstract class Item2FluidRecipe extends AbstractFluidRecipe {
 	private CountableIngredient[] ITEM_INPUTS;
 	private FluidStack FLUID_OUTPUT;
 
-	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidStack fluidOutput, double experience) {
-		super(recipeID, experience);
+	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidStack fluidOutput, double experience, int ticks, double usagePerTick) {
+		super(recipeID, experience, ticks, usagePerTick);
 		ITEM_INPUTS = itemInputs;
 		FLUID_OUTPUT = fluidOutput;
 	}
 
-	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, FluidStack fluidOutput, ProbableItem[] itemBiproducts, double experience) {
-		super(recipeID, itemBiproducts, experience);
+	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, FluidStack fluidOutput, ProbableItem[] itemBiproducts, double experience, int ticks, double usagePerTick) {
+		super(recipeID, itemBiproducts, experience, ticks, usagePerTick);
 		ITEM_INPUTS = inputs;
 		FLUID_OUTPUT = fluidOutput;
 	}
 
-	public Item2FluidRecipe(CountableIngredient[] inputs, FluidStack fluidOutput, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
-		super(fluidBiproducts, recipeID, experience);
+	public Item2FluidRecipe(CountableIngredient[] inputs, FluidStack fluidOutput, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience, int ticks, double usagePerTick) {
+		super(fluidBiproducts, recipeID, experience, ticks, usagePerTick);
 		ITEM_INPUTS = inputs;
 		FLUID_OUTPUT = fluidOutput;
 	}
 
-	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, FluidStack fluidOutput, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
-		super(recipeID, itemBiproducts, fluidBiproducts, experience);
+	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, FluidStack fluidOutput, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience, int ticks, double usagePerTick) {
+		super(recipeID, itemBiproducts, fluidBiproducts, experience, ticks, usagePerTick);
 		ITEM_INPUTS = inputs;
 		FLUID_OUTPUT = fluidOutput;
 	}

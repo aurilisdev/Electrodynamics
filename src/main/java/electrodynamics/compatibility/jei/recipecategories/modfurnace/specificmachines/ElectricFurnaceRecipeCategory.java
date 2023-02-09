@@ -14,6 +14,7 @@ import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.BigItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
+import electrodynamics.compatibility.jei.utils.label.TimeLabelWrapper;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import mezz.jei.api.constants.ModIds;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -36,11 +37,12 @@ public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory<Smel
 	private static FlameStaticWrapper FLAME = new FlameStaticWrapper(5, 23);
 
 	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 48, Constants.ELECTRICFURNACE_USAGE_PER_TICK, 120);
+	private static TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 48, Constants.ELECTRICFURNACE_REQUIRED_TICKS);
 
 	private static int ANIM_TIME = 50;
 
 	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = SubtypeMachine.electricfurnace.tag() + "0";
+	private static String RECIPE_GROUP = SubtypeMachine.electricfurnace.tag();
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricfurnace));
 
@@ -49,12 +51,12 @@ public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory<Smel
 	public static final RecipeType<SmeltingRecipe> RECIPE_TYPE = RecipeType.create(ModIds.MINECRAFT_ID, "smelting", SmeltingRecipe.class);
 
 	public ElectricFurnaceRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, SmeltingRecipe.class, ANIM_TIME, Constants.ELECTRICFURNACE_USAGE_PER_TICK, 120);
+		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, SmeltingRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, INPUT_SLOT);
 		setOutputSlots(guiHelper, OUTPUT_SLOT);
 		setStaticArrows(guiHelper, FLAME);
 		setAnimatedArrows(guiHelper, ANIM_ARROW);
-		setLabels(POWER_LABEL);
+		setLabels(POWER_LABEL, TIME_LABEL);
 	}
 
 	public ResourceLocation getUid() {

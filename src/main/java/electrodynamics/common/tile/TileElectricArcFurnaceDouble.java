@@ -1,10 +1,11 @@
 package electrodynamics.common.tile;
 
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileElectricArcFurnaceDouble extends TileElectricArcFurnace {
 	public TileElectricArcFurnaceDouble(BlockPos worldPosition, BlockState blockState) {
-		super(1, worldPosition, blockState);
+		super(SubtypeMachine.electricarcfurnacedouble, 1, worldPosition, blockState);
 	}
 }

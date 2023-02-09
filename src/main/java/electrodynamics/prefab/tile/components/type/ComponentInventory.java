@@ -5,12 +5,13 @@ import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.apache.commons.lang3.ArrayUtils;
 
+import electrodynamics.api.capability.types.itemhandler.IndexedSidedInvWrapper;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
@@ -30,7 +31,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.wrapper.SidedInvWrapper;
+
 
 public class ComponentInventory implements Component, WorldlyContainer {
 	protected GenericTile holder = null;
@@ -48,8 +49,10 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	protected EnumMap<Direction, ArrayList<Integer>> relativeDirectionMappings = new EnumMap<>(Direction.class);
 	protected int inventorySize;
 	protected Function<Direction, Collection<Integer>> getSlotsFunction;
-	protected LazyOptional<IItemHandlerModifiable>[] sideWrappers = SidedInvWrapper.create(this, Direction.values());
+	protected LazyOptional<IItemHandlerModifiable>[] sideWrappers = IndexedSidedInvWrapper.create(this, Direction.values());
 
+	public static final String SAVE_KEY = "itemproperty";
+	
 	/*
 	 * IMPORTANT DEFINITIONS:
 	 * 
@@ -66,16 +69,19 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	private int processors = 0;
 	private int processorInputs = 0;
-	private Consumer<ComponentInventory> onChanged;
+	private BiConsumer<ComponentInventory, Integer> onChanged = (componentInventory, slot) -> {
+		if(holder != null) {
+			holder.onInventoryChange(componentInventory, slot);
+		}
+	};
 
 	protected SubtypeItemUpgrade[] validUpgrades = SubtypeItemUpgrade.values();
-	private boolean shouldSendInfo;
 
 	public ComponentInventory(GenericTile holder) {
 		holder(holder);
 	}
 
-	public ComponentInventory onChanged(Consumer<ComponentInventory> onChanged) {
+	public ComponentInventory onChanged(BiConsumer<ComponentInventory, Integer> onChanged) {
 		this.onChanged = onChanged;
 		return this;
 	}
@@ -87,7 +93,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	public ComponentInventory size(int inventorySize) {
 		this.inventorySize = inventorySize;
-		items = holder.property(new Property<NonNullList<ItemStack>>(PropertyType.InventoryItems, "itemproperty")).set(NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY)).save();
+		items = holder.property(new Property<NonNullList<ItemStack>>(PropertyType.InventoryItems, "itemproperty", NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY)));
 		return this;
 	}
 
@@ -163,7 +169,11 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, Direction side) {
-		return (side == null || directionMappings.containsKey(side) || holder.hasComponent(ComponentType.Direction) && relativeDirectionMappings.containsKey(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))) && capability == ForgeCapabilities.ITEM_HANDLER;
+		return (side == null || directionMappings.containsKey(side)
+				|| holder.hasComponent(ComponentType.Direction)
+						&& relativeDirectionMappings.containsKey(BlockEntityUtils.getRelativeSide(
+								holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side)))
+				&& capability == ForgeCapabilities.ITEM_HANDLER;
 	}
 
 	@Override
@@ -193,10 +203,11 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public ItemStack removeItem(int index, int count) {
-		if (shouldSendInfo) {
-			items.setDirty();
+		ItemStack stack = ContainerHelper.removeItem(items.get(), index, count);
+		if(!stack.isEmpty()) {
+			setChanged(index);
 		}
-		return ContainerHelper.removeItem(items.get(), index, count);
+		return stack;
 	}
 
 	@Override
@@ -209,14 +220,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		if (stack.getCount() > getMaxStackSize()) {
 			stack.setCount(getMaxStackSize());
 		}
-		if (shouldSendInfo) {
-
-			if (stack.getCount() != items.get().get(index).getCount() || stack.getItem() != items.get().get(index).getItem()) {
-				items.setDirty();
-			}
-		}
 		items.get().set(index, stack);
-
+		setChanged(index);
 	}
 
 	@Override
@@ -228,9 +233,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	@Override
 	public void clearContent() {
 		items.get().clear();
-		if (shouldSendInfo) {
-			items.setDirty();
-		}
 	}
 
 	@Override
@@ -272,6 +274,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return test.contains(index);
 	}
 
+	@Deprecated(forRemoval = false, since = "Only call this if absolutely nessisary. You want to call getItem() so NBT can be saved")
 	public NonNullList<ItemStack> getItems() {
 		return items.get();
 	}
@@ -291,11 +294,15 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	@Override
+	//this is only called through someone instance checking of this class....
 	public void setChanged() {
-		holder.setChanged();
-		items.setDirty();
+		setChanged(-1);
+	}
+	
+	public void setChanged(int slot) {
+		items.forceDirty();
 		if (onChanged != null) {
-			onChanged.accept(this);
+			onChanged.accept(this, slot);
 		}
 	}
 
@@ -476,21 +483,24 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return list;
 	}
 
-	public List<Integer> getInputSlots() {
+	public List<List<Integer>> getInputSlots() {
+		List<List<Integer>> combined = new ArrayList<>();
 		if (processors == 0) {
 			List<Integer> list = new ArrayList<>();
 			for (int i = 0; i < inputs; i++) {
 				list.add(getInputStartIndex() + i);
 			}
-			return list;
+			combined.add(list);
+			return combined;
 		}
-		List<Integer> list = new ArrayList<>();
 		for (int i = 0; i < processors; i++) {
+			List<Integer> list = new ArrayList<>();
 			for (int j = 0; j < processorInputs; j++) {
 				list.add(j + i * (processorInputs + 1));
 			}
+			combined.add(list);
 		}
-		return list;
+		return combined;
 	}
 
 	// you're making me break out a sheet of paper for this!
@@ -575,11 +585,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			}
 		}
 		return false;
-	}
-
-	public ComponentInventory shouldSendInfo() {
-		shouldSendInfo = true;
-		return this;
 	}
 
 }

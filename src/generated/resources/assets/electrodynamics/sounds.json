@@ -1,0 +1,146 @@
+{
+  "ceramicplateadded": {
+    "sounds": [
+      "electrodynamics:ceramicplateadded"
+    ],
+    "subtitle": "subtitles.electrodynamics.ceramicplateadded"
+  },
+  "ceramicplatebreaking": {
+    "sounds": [
+      "electrodynamics:ceramicplatebreaking"
+    ],
+    "subtitle": "subtitles.electrodynamics.ceramicplatebreaking"
+  },
+  "combustionchamber": {
+    "sounds": [
+      "electrodynamics:combustionchamber"
+    ],
+    "subtitle": "subtitles.electrodynamics.combustionchamber"
+  },
+  "electricpump": {
+    "sounds": [
+      "electrodynamics:electricpump"
+    ],
+    "subtitle": "subtitles.electrodynamics.electricpump"
+  },
+  "electrolyticseparator": {
+    "sounds": [
+      "electrodynamics:electrolyticseparator"
+    ],
+    "subtitle": "subtitles.electrodynamics.electrolyticseparator"
+  },
+  "equipheavyarmor": {
+    "sounds": [
+      "electrodynamics:equipheavyarmor"
+    ],
+    "subtitle": "subtitles.electrodynamics.equipheavyarmor"
+  },
+  "hum": {
+    "sounds": [
+      "electrodynamics:hum"
+    ],
+    "subtitle": "subtitles.electrodynamics.hum"
+  },
+  "hydraulicboots": {
+    "sounds": [
+      "electrodynamics:hydraulicboots"
+    ],
+    "subtitle": "subtitles.electrodynamics.hydraulicboots"
+  },
+  "hydroelectricgenerator": {
+    "sounds": [
+      "electrodynamics:hydroelectricgenerator"
+    ],
+    "subtitle": "subtitles.electrodynamics.hydroelectricgenerator"
+  },
+  "jetpack": {
+    "sounds": [
+      "electrodynamics:jetpack"
+    ],
+    "subtitle": "subtitles.electrodynamics.jetpack"
+  },
+  "jetpackswitchmode": {
+    "sounds": [
+      "electrodynamics:jetpackswitchmode"
+    ],
+    "subtitle": "subtitles.electrodynamics.jetpackswitchmode"
+  },
+  "latherunning": {
+    "sounds": [
+      "electrodynamics:latherunning"
+    ],
+    "subtitle": "subtitles.electrodynamics.latherunning"
+  },
+  "mineralcrusher": {
+    "sounds": [
+      "electrodynamics:mineralcrusher"
+    ],
+    "subtitle": "subtitles.electrodynamics.mineralcrusher"
+  },
+  "mineralgrinder": {
+    "sounds": [
+      "electrodynamics:mineralgrinder"
+    ],
+    "subtitle": "subtitles.electrodynamics.mineralgrinder"
+  },
+  "motorrunning": {
+    "sounds": [
+      "electrodynamics:motorrunning"
+    ],
+    "subtitle": "subtitles.electrodynamics.motorrunning"
+  },
+  "nightvisiongogglesoff": {
+    "sounds": [
+      "electrodynamics:nightvisiongogglesoff"
+    ],
+    "subtitle": "subtitles.electrodynamics.nightvisiongogglesoff"
+  },
+  "nightvisiongoggleson": {
+    "sounds": [
+      "electrodynamics:nightvisiongoggleson"
+    ],
+    "subtitle": "subtitles.electrodynamics.nightvisiongoggleson"
+  },
+  "railgunkinetic": {
+    "sounds": [
+      "electrodynamics:railgunkinetic"
+    ],
+    "subtitle": "subtitles.electrodynamics.railgunkinetic"
+  },
+  "railgunkinetic_noammo": {
+    "sounds": [
+      "electrodynamics:railgunkinetic_noammo"
+    ],
+    "subtitle": "subtitles.electrodynamics.railgunkinetic_noammo"
+  },
+  "railgunplasma": {
+    "sounds": [
+      "electrodynamics:railgunplasma"
+    ],
+    "subtitle": "subtitles.electrodynamics.railgunplasma"
+  },
+  "railgunplasma_nopower": {
+    "sounds": [
+      "electrodynamics:railgunplasma_nopower"
+    ],
+    "subtitle": "subtitles.electrodynamics.railgunplasma_nopower"
+  },
+  "rodhittingground": {
+    "sounds": [
+      "electrodynamics:rodhittingground"
+    ],
+    "subtitle": "subtitles.electrodynamics.rodhittingground"
+  },
+  "seismicscanner": {
+    "sounds": [
+      "electrodynamics:seismicscanner"
+    ],
+    "subtitle": "subtitles.electrodynamics.seismicscanner"
+  },
+  "windmill": {
+    "sounds": [
+      "electrodynamics:windmill"
+    ],
+    "subtitle": "subtitles.electrodynamics.windmill"
+  }
+}

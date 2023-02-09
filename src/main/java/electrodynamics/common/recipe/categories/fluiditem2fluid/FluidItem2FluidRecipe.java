@@ -11,7 +11,7 @@ import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.core.NonNullList;
@@ -25,29 +25,29 @@ public abstract class FluidItem2FluidRecipe extends AbstractFluidRecipe {
 	private CountableIngredient[] ingredients;
 	private FluidStack outputStack;
 
-	protected FluidItem2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, FluidStack outputFluid, double experience) {
-		super(recipeID, experience);
+	protected FluidItem2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, FluidStack outputFluid, double experience, int ticks, double usagePerTick) {
+		super(recipeID, experience, ticks, usagePerTick);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
 		outputStack = outputFluid;
 	}
 
-	protected FluidItem2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts, double experience) {
-		super(recipeID, itemBiproducts, experience);
+	protected FluidItem2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts, double experience, int ticks, double usagePerTick) {
+		super(recipeID, itemBiproducts, experience, ticks, usagePerTick);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
 		outputStack = outputFluid;
 	}
 
-	protected FluidItem2FluidRecipe(CountableIngredient[] inputItems, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
-		super(fluidBiproducts, recipeID, experience);
+	protected FluidItem2FluidRecipe(CountableIngredient[] inputItems, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience, int ticks, double usagePerTick) {
+		super(fluidBiproducts, recipeID, experience, ticks, usagePerTick);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
 		outputStack = outputFluid;
 	}
 
-	protected FluidItem2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
-		super(recipeID, itemBiproducts, fluidBiproducts, experience);
+	protected FluidItem2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience, int ticks, double usagePerTick) {
+		super(recipeID, itemBiproducts, fluidBiproducts, experience, ticks, usagePerTick);
 		ingredients = inputItems;
 		fluidIngredients = inputFluids;
 		outputStack = outputFluid;
@@ -58,7 +58,7 @@ public abstract class FluidItem2FluidRecipe extends AbstractFluidRecipe {
 
 		Pair<List<Integer>, Boolean> itemPair = areItemsValid(getCountedIngredients(), ((ComponentInventory) pr.getHolder().getComponent(ComponentType.Inventory)).getInputContents().get(pr.getProcessorNumber()));
 		if (Boolean.TRUE.equals(itemPair.getSecond())) {
-			Pair<List<Integer>, Boolean> fluidPair = areFluidsValid(getFluidIngredients(), ((AbstractFluidHandler<?>) pr.getHolder().getComponent(ComponentType.FluidHandler)).getInputTanks());
+			Pair<List<Integer>, Boolean> fluidPair = areFluidsValid(getFluidIngredients(), pr.getHolder().<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks());
 			if (Boolean.TRUE.equals(fluidPair.getSecond())) {
 				setItemArrangement(pr.getProcessorNumber(), itemPair.getFirst());
 				setFluidArrangement(fluidPair.getFirst());

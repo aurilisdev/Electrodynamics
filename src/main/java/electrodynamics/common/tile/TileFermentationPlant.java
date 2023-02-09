@@ -1,10 +1,9 @@
 package electrodynamics.common.tile;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerFermentationPlant;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -14,7 +13,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.InventoryUtils;
+import electrodynamics.prefab.tile.types.GenericFluidTile;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,25 +21,21 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class TileFermentationPlant extends GenericTile {
+public class TileFermentationPlant extends GenericFluidTile {
 
 	public static final int MAX_TANK_CAPACITY = 5000;
 
 	public TileFermentationPlant(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_FERMENTATIONPLANT.get(), worldPosition, blockState);
-		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
+		addComponent(new ComponentTickable().tickClient(this::tickClient));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentElectrodynamic(this).input(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(Constants.FERMENTATIONPLANT_USAGE_PER_TICK * 10));
-		addComponent(((ComponentFluidHandlerMulti) new ComponentFluidHandlerMulti(this).relativeInput(Direction.EAST).relativeOutput(Direction.WEST)).setAddFluidsValues(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE.get(), MAX_TANK_CAPACITY, true, true));
+		addComponent(new ComponentElectrodynamic(this).input(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE));
+		addComponent(new ComponentFluidHandlerMulti(this).setTanks(1, 1, MAX_TANK_CAPACITY).setInputDirections(Direction.EAST).setOutputDirections(Direction.WEST).setRecipeType(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE.get()));
 		addComponent(new ComponentInventory(this).size(6).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP).inputs(1).bucketInputs(1).bucketOutputs(1).upgrades(3).processors(1).processorInputs(1).validUpgrades(ContainerFermentationPlant.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentProcessor(this).setProcessorNumber(0).canProcess(processor -> processor.outputToPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE.get())).process(component -> component.processFluidItem2FluidRecipe(component)).usage(Constants.FERMENTATIONPLANT_USAGE_PER_TICK).requiredTicks(Constants.FERMENTATIONPLANT_REQUIRED_TICKS));
-		addComponent(new ComponentContainerProvider("container.fermentationplant").createMenu((id, player) -> new ContainerFermentationPlant(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentProcessor(this).canProcess(processor -> processor.outputToPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE.get())).process(component -> component.processFluidItem2FluidRecipe(component)));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.fermentationplant).createMenu((id, player) -> new ContainerFermentationPlant(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
-	}
-
-	protected void tickServer(ComponentTickable tick) {
-		InventoryUtils.handleExperienceUpgrade(this);
 	}
 
 	@Override

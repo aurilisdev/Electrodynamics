@@ -4,7 +4,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"1": "electrodynamics:model/chemicalcrystallizer",
-		"particle": "electrodynamics:model/chemicalcrystallizer"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"groups": [
 		{

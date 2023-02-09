@@ -3,7 +3,6 @@ package electrodynamics.prefab.utilities;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.item.ItemUtils;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.tile.GenericTile;
@@ -60,6 +59,7 @@ public class InventoryUtils {
 		return items;
 	}
 
+	/*
 	public static void handleExperienceUpgrade(GenericTile tile) {
 		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
 		ComponentProcessor proc = tile.getComponent(ComponentType.Processor);
@@ -73,7 +73,7 @@ public class InventoryUtils {
 			}
 		}
 	}
-
+	*/
 	private static void drainProcXp(ComponentInventory inv, ComponentProcessor proc) {
 		for (ItemStack stack : inv.getUpgradeContents()) {
 			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype == SubtypeItemUpgrade.experience) {

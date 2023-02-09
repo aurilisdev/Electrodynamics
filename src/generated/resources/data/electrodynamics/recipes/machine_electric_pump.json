@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "M": {
+      "item": "electrodynamics:motor"
+    },
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "S": {
+      "tag": "forge:plates/steel"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "SMS",
+    "SPS"
+  ],
+  "result": {
+    "item": "electrodynamics:electricpump"
+  }
+}

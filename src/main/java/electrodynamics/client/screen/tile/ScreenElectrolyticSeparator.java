@@ -5,11 +5,12 @@ import electrodynamics.common.tile.TileElectrolyticSeparator;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentFluid;
-import electrodynamics.prefab.screen.component.ScreenComponentInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressBars;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,7 +19,7 @@ public class ScreenElectrolyticSeparator extends GenericScreen<ContainerElectrol
 
 	public ScreenElectrolyticSeparator(ContainerElectrolyticSeparator container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
-		components.add(new ScreenComponentProgress(() -> {
+		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			GenericTile furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
@@ -28,7 +29,7 @@ public class ScreenElectrolyticSeparator extends GenericScreen<ContainerElectrol
 			}
 			return 0;
 		}, this, 38, 30));
-		components.add(new ScreenComponentProgress(() -> {
+		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			GenericTile furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
@@ -41,25 +42,25 @@ public class ScreenElectrolyticSeparator extends GenericScreen<ContainerElectrol
 		components.add(new ScreenComponentFluid(() -> {
 			TileElectrolyticSeparator boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return ((AbstractFluidHandler<?>) boiler.getComponent(ComponentType.FluidHandler)).getInputTanks()[0];
+				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks()[0];
 			}
 			return null;
 		}, this, 21, 18));
 		components.add(new ScreenComponentFluid(() -> {
 			TileElectrolyticSeparator boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return ((AbstractFluidHandler<?>) boiler.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
+				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getOutputTanks()[0];
 			}
 			return null;
 		}, this, 62, 18));
 		components.add(new ScreenComponentFluid(() -> {
 			TileElectrolyticSeparator boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return ((AbstractFluidHandler<?>) boiler.getComponent(ComponentType.FluidHandler)).getOutputTanks()[1];
+				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getOutputTanks()[1];
 			}
 			return null;
 		}, this, 102, 18));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
+		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 
 }

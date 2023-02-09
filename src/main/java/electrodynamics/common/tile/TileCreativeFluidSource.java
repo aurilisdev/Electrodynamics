@@ -1,8 +1,6 @@
 package electrodynamics.common.tile;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCreativeFluidSource;
 import electrodynamics.common.tile.generic.GenericTilePipe;
 import electrodynamics.prefab.tile.GenericTile;
@@ -30,29 +28,17 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class TileCreativeFluidSource extends GenericTile {
-
-	private static Fluid[] fluids = new Fluid[0];
-
-	static {
-		List<Fluid> list = new ArrayList<>(ForgeRegistries.FLUIDS.getValues());
-		fluids = new Fluid[list.size()];
-		for (int i = 0; i < list.size(); i++) {
-			fluids[i] = list.get(i);
-		}
-	}
 
 	public TileCreativeFluidSource(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_CREATIVEFLUIDSOURCE.get(), worldPos, blockState);
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentFluidHandlerSimple(this).relativeOutput(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.UP, Direction.WEST, Direction.DOWN).setManualFluids(1, true, 128000, fluids));
+		addComponent(new ComponentFluidHandlerSimple(128000, this, "").universalOutput());
 		addComponent(new ComponentInventory(this).size(2).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
-		addComponent(new ComponentContainerProvider("container.creativefluidsource").createMenu((id, player) -> new ContainerCreativeFluidSource(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.creativefluidsource).createMenu((id, player) -> new ContainerCreativeFluidSource(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	private void tickServer(ComponentTickable tick) {
@@ -61,12 +47,11 @@ public class TileCreativeFluidSource extends GenericTile {
 		ItemStack input = inv.getItem(0);
 		ItemStack output = inv.getItem(1);
 
-		FluidTank tank = handler.getInputTanks()[0];
-		tank.setFluid(new FluidStack(tank.getFluid(), tank.getCapacity()));
+		handler.setFluid(new FluidStack(handler.getFluid(), handler.getCapacity()));
 
 		// set tank fluid from slot 1
 		if (!input.isEmpty() && CapabilityUtils.hasFluidItemCap(input)) {
-			tank.setFluid(new FluidStack(CapabilityUtils.simDrain(input, Integer.MAX_VALUE).getFluid(), tank.getCapacity()));
+			handler.setFluid(new FluidStack(CapabilityUtils.simDrain(input, Integer.MAX_VALUE).getFluid(), handler.getCapacity()));
 		}
 		// fill item in slot 2
 		if (!output.isEmpty() && CapabilityUtils.hasFluidItemCap(output)) {
@@ -86,7 +71,7 @@ public class TileCreativeFluidSource extends GenericTile {
 		}
 		// try to output to pipe
 		ComponentDirection componentDirection = getComponent(ComponentType.Direction);
-		for (Direction relative : handler.relativeOutputDirections) {
+		for (Direction relative : handler.outputDirections) {
 			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative.getOpposite());
 			BlockPos face = getBlockPos().relative(direction.getOpposite());
 			BlockEntity faceTile = getLevel().getBlockEntity(face);
@@ -94,20 +79,19 @@ public class TileCreativeFluidSource extends GenericTile {
 				boolean electroPipe = faceTile instanceof GenericTilePipe;
 				LazyOptional<IFluidHandler> cap = faceTile.getCapability(ForgeCapabilities.FLUID_HANDLER, direction);
 				if (cap.isPresent()) {
-					IFluidHandler fHandler = cap.resolve().get();
-					for (FluidTank fluidTank : handler.getOutputTanks()) {
-						FluidStack tankFluid = fluidTank.getFluid();
-						if (electroPipe) {
-							if (fluidTank.getFluidAmount() > 0) {
-								fHandler.fill(tankFluid, FluidAction.EXECUTE);
-							}
-						} else {
-							int amtAccepted = fHandler.fill(tankFluid, FluidAction.SIMULATE);
-							FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
-							fHandler.fill(taken, FluidAction.EXECUTE);
+				IFluidHandler fHandler = cap.resolve().get();
+					FluidStack tankFluid = handler.getFluid();
+					if (electroPipe) {
+						if (handler.getFluidAmount() > 0) {
+							fHandler.fill(tankFluid, FluidAction.EXECUTE);
 						}
+					} else {
+						int amtAccepted = fHandler.fill(tankFluid, FluidAction.SIMULATE);
+						FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
+						fHandler.fill(taken, FluidAction.EXECUTE);
 					}
 				}
+				
 			}
 		}
 	}

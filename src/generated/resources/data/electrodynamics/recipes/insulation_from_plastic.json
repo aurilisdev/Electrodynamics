@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:plastic"
+    }
+  ],
+  "result": {
+    "count": 20,
+    "item": "electrodynamics:insulation"
+  }
+}

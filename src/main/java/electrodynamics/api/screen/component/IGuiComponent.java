@@ -31,5 +31,9 @@ public interface IGuiComponent {
 
 	default void mouseWheel(double mouseX, double mouseY, double delta) {
 	}
+	
+	default boolean isVisible() {
+		return true;
+	}
 
 }

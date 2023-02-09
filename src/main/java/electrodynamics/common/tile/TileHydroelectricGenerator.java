@@ -1,15 +1,15 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.api.electricity.generator.IElectricGenerator;
-import electrodynamics.api.sound.SoundAPI;
 import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
-import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.common.tile.generic.GenericGeneratorTile;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.sound.SoundBarrierMethods;
+import electrodynamics.prefab.sound.utils.ITickableSoundTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -25,9 +25,7 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
@@ -36,22 +34,24 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class TileHydroelectricGenerator extends GenericTile implements IElectricGenerator {
+public class TileHydroelectricGenerator extends GenericGeneratorTile implements ITickableSoundTile {
 	protected CachedTileOutput output;
-	public Property<Boolean> isGenerating = property(new Property<Boolean>(PropertyType.Boolean, "isGenerating")).set(false);
-	public Property<Boolean> directionFlag = property(new Property<Boolean>(PropertyType.Boolean, "directionFlag")).set(false);
-	public Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier")).set(1.0);
+	public Property<Boolean> isGenerating = property(new Property<Boolean>(PropertyType.Boolean, "isGenerating", false));
+	public Property<Boolean> directionFlag = property(new Property<Boolean>(PropertyType.Boolean, "directionFlag", false));
+	public Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier", 1.0));
 	public double savedTickRotation;
 	public double rotationSpeed;
+	
+	private boolean isSoundPlaying = false;
 
 	public TileHydroelectricGenerator(BlockPos worldPosition, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_HYDROELECTRICGENERATOR.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_HYDROELECTRICGENERATOR.get(), worldPosition, blockState, 2.25, SubtypeItemUpgrade.stator);
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
-		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.values()).shouldSendInfo().validUpgrades(ContainerHydroelectricGenerator.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider("container.hydroelectricgenerator").createMenu((id, player) -> new ContainerHydroelectricGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.values()).validUpgrades(ContainerHydroelectricGenerator.VALID_UPGRADES).valid(machineValidator()));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.hydroelectricgenerator).createMenu((id, player) -> new ContainerHydroelectricGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 			}
 			output.update(worldPosition.relative(facing.getOpposite()));
 		}
-		if (isGenerating.get() == Boolean.TRUE && output.valid()) {
+		if (isGenerating.get() && output.valid()) {
 			ElectricityUtils.receivePower(output.getSafe(), facing, getProduced(), false);
 		}
 	}
@@ -97,18 +97,13 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 	protected void tickCommon(ComponentTickable tickable) {
 		savedTickRotation += (directionFlag.get() ? 1 : -1) * rotationSpeed;
 		rotationSpeed = Mth.clamp(rotationSpeed + 0.05 * (isGenerating.get() == Boolean.TRUE ? 1 : -1), 0.0, 1.0);
-		multiplier.set(1.0, true);
-		for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
-			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade) {
-				for (int i = 0; i < stack.getCount(); i++) {
-					upgrade.subtype.applyUpgrade.accept(this, null, null);
-				}
-			}
-		}
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if (isGenerating.get() && level.random.nextDouble() < 0.3) {
+		if(!shouldPlaySound()) {
+			return;
+		}
+		if (level.random.nextDouble() < 0.3) {
 			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			double d4 = level.random.nextDouble();
 			double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0.2D : 1.2D) : d4;
@@ -116,9 +111,20 @@ public class TileHydroelectricGenerator extends GenericTile implements IElectric
 			double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0.2D : 1.2D) : d4;
 			level.addParticle(ParticleTypes.BUBBLE_COLUMN_UP, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
 		}
-		if (isGenerating.get() && tickable.getTicks() % 100 == 0) {
-			SoundAPI.playSound(ElectrodynamicsSounds.SOUND_HYDROELECTRICGENERATOR.get(), SoundSource.BLOCKS, 1, 1, worldPosition);
+		if (!isSoundPlaying) {
+			isSoundPlaying = true;
+			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HYDROELECTRICGENERATOR.get(), this, true);
 		}
+	}
+
+	@Override
+	public void setNotPlaying() {
+		isSoundPlaying = false;
+	}
+
+	@Override
+	public boolean shouldPlaySound() {
+		return isGenerating.get();
 	}
 
 	@Override

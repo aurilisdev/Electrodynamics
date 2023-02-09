@@ -10,11 +10,13 @@ import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
 import electrodynamics.common.tile.generic.GenericTileCharger;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.ScreenComponentCharge;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentInfo;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressBars;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -27,7 +29,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 	public ScreenChargerGeneric(ContainerChargerGeneric screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
 
-		components.add(new ScreenComponentCharge(() -> {
+		components.add(new ScreenComponentProgress(ProgressBars.BATTERY_CHARGE_RIGHT, () -> {
 			GenericTileCharger charger = menu.getHostFromIntArray();
 			if (charger != null) {
 				ItemStack chargingItem = menu.getSlot(0).getItem();
@@ -38,7 +40,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 			return 0;
 		}, this, 118, 37));
 
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).wattage(e -> e.getMaxJoulesStored() * 20));
+		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2).wattage(e -> e.getMaxJoulesStored() * 20));
 	}
 
 	@Override
@@ -68,7 +70,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 				chargeCapable = electro.getVoltage() / electricItem.getElectricProperties().receive.getVoltage() * 100;
 			}
 
-			list.add(Component.translatable("gui.genericcharger.chargeperc", Component.literal(DECIMAL_FORMATTER.format(chargingPercentage) + "%").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+			list.add(TextUtils.gui("genericcharger.chargeperc", Component.literal(DECIMAL_FORMATTER.format(chargingPercentage) + "%").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 
 			if (chargeCapable < 33) {
 				list.add(getChargeCapableFormatted(chargeCapable, ChatFormatting.RED));
@@ -83,7 +85,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 	}
 
 	private static Component getChargeCapableFormatted(double chargeCapable, ChatFormatting formatColor) {
-		return Component.translatable("gui.genericcharger.chargecapable", Component.literal(DECIMAL_FORMATTER.format(chargeCapable) + "%").withStyle(formatColor)).withStyle(ChatFormatting.DARK_GRAY);
+		return TextUtils.gui("genericcharger.chargecapable", Component.literal(DECIMAL_FORMATTER.format(chargeCapable) + "%").withStyle(formatColor)).withStyle(ChatFormatting.DARK_GRAY);
 	}
 
 }

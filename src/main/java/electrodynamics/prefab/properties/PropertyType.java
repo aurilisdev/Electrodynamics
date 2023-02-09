@@ -1,13 +1,22 @@
 package electrodynamics.prefab.properties;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.function.BiPredicate;
+
+import javax.annotation.Nullable;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
+
+import electrodynamics.prefab.utilities.object.Location;
 
 public enum PropertyType {
 	Byte,
@@ -18,7 +27,57 @@ public enum PropertyType {
 	UUID,
 	CompoundTag,
 	BlockPos,
-	InventoryItems;
+	InventoryItems((thisList, otherList) -> {
+		NonNullList<ItemStack> thisCasted = (NonNullList<ItemStack>)thisList; 
+		NonNullList<ItemStack> otherCasted = (NonNullList<ItemStack>)otherList;
+		if(thisCasted.size() != otherCasted.size()) {
+			return false;
+		}
+		ItemStack a, b;
+		for(int i = 0; i < thisCasted.size(); i++) {
+			a = thisCasted.get(i);
+			b = otherCasted.get(i);
+			if(!ItemStack.isSameItemSameTags(a, b)) {
+				return false;
+			}
+		}
+		return true;
+	}),
+	Fluidstack((thisStack, otherStack) -> {
+		FluidStack thisCasted = (FluidStack)thisStack;
+		FluidStack otherCasted = (FluidStack)otherStack;
+		if(thisCasted.getAmount() != otherCasted.getAmount()) {
+			return false;
+		}
+		return thisCasted.getFluid().isSame(otherCasted.getFluid());
+	}),
+	BlockPosList((thisList, otherList) -> {
+		List<BlockPos> thisCasted = (List<BlockPos>)thisList; 
+		List<BlockPos> otherCasted = (List<BlockPos>)otherList;
+		if(thisCasted.size() != otherCasted.size()) {
+			return false;
+		}
+		BlockPos a, b;
+		for(int i = 0; i < thisCasted.size(); i++) {
+			a = thisCasted.get(i);
+			b = otherCasted.get(i);
+			if(!a.equals(b)) {
+				return false;
+			}
+		}
+		return true;
+	}),
+	Location;
+	
+	//this allows us to deal with classes that don't implement the equals method
+	@Nullable
+	public BiPredicate<Object, Object> predicate = (o1, o2) -> o1.equals(o2);
+	
+	private PropertyType() {}
+	
+	private PropertyType(BiPredicate<Object, Object> predicate) {
+		this.predicate = predicate;
+	}
 
 	public void write(Property<?> prop, FriendlyByteBuf buf) {
 		Object val = prop.get();
@@ -55,6 +114,18 @@ public enum PropertyType {
 			ContainerHelper.saveAllItems(tag, list);
 			buf.writeNbt(tag);
 			break;
+		case Fluidstack:
+			buf.writeFluidStack((FluidStack) prop.get());
+			break;
+		case BlockPosList:
+			List<BlockPos> posList = (List<BlockPos>) prop.get();
+			buf.writeInt(posList.size());
+			posList.forEach(pos -> buf.writeBlockPos(pos));
+			break;
+		case Location:
+			Location loc = (Location) val;
+			loc.toBuffer(buf);
+			break;
 		default:
 			break;
 		}
@@ -84,6 +155,17 @@ public enum PropertyType {
 			NonNullList<ItemStack> toBeFilled = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
 			ContainerHelper.loadAllItems(buf.readNbt(), toBeFilled);
 			return toBeFilled;
+		case Fluidstack:
+			return buf.readFluidStack();
+		case BlockPosList:
+			List<BlockPos> list = new ArrayList<>();
+			size = buf.readInt();
+			for(int i = 0; i < size; i++) {
+				list.add(buf.readBlockPos());
+			}
+			return list;
+		case Location:
+			return electrodynamics.prefab.utilities.object.Location.fromBuffer(buf);
 		default:
 			break;
 		}
@@ -127,6 +209,23 @@ public enum PropertyType {
 			tag.putInt(prop.getName() + "_size", list.size());
 			ContainerHelper.saveAllItems(tag, list);
 			break;
+		case Fluidstack:
+			CompoundTag fluidTag = new CompoundTag();
+			((FluidStack) prop.get()).writeToNBT(fluidTag);
+			tag.put(prop.getName(), fluidTag);
+			break;
+		case BlockPosList:
+			List<BlockPos> posList = (List<BlockPos>) prop.get();
+			CompoundTag data = new CompoundTag();
+			data.putInt("size", posList.size());
+			for(int i = 0; i < posList.size(); i++) {
+				data.put("pos" + i, NbtUtils.writeBlockPos(posList.get(i)));
+			}
+			tag.put(prop.getName(), data);
+			break;
+		case Location:
+			((Location) val).writeToNBT(tag, prop.getName());
+			break;
 		default:
 			break;
 		}
@@ -165,10 +264,25 @@ public enum PropertyType {
 			ContainerHelper.loadAllItems(tag, toBeFilled);
 			val = toBeFilled;
 			break;
+		case Fluidstack:
+			val = FluidStack.loadFluidStackFromNBT(tag.getCompound(prop.getName()));
+			break;
+		case BlockPosList:
+			List<BlockPos> list = new ArrayList<>();
+			CompoundTag data = tag.getCompound(prop.getName());
+			size = data.getInt("size");
+			for(int i = 0; i < size; i++) {
+				list.add(NbtUtils.readBlockPos(data.getCompound("pos" + i)));
+			}
+			val = list;
+		case Location:
+			val = electrodynamics.prefab.utilities.object.Location.readFromNBT(tag, prop.getName());
+			break;
 		default:
 			break;
 		}
-		prop.setAmbigous(val);
+		tag.remove(prop.getName());
+		prop.load(val);
 	}
 
 	Object attemptCast(Object updated) {

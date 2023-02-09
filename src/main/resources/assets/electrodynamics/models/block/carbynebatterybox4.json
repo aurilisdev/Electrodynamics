@@ -8,6 +8,6 @@
 	],
 	"textures": {
 		"0": "electrodynamics:model/carbynebatterybox4",
-		"particle": "electrodynamics:model/carbynebatterybox4"
+		"particle": "electrodynamics:block/steelcasing"
 	}
 }

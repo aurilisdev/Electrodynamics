@@ -11,7 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TilePipe extends GenericTilePipe {
-	public Property<Double> transmit = property(new Property<Double>(PropertyType.Double, "transmit")).set(0.0);
+	public Property<Double> transmit = property(new Property<Double>(PropertyType.Double, "transmit", 0.0));
 
 	public TilePipe(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_PIPE.get(), pos, state);

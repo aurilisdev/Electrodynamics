@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 300,
+  "experience": 0.0,
+  "ingredient": {
+    "item": "electrodynamics:ceramicwet"
+  },
+  "result": "electrodynamics:ceramiccooked"
+}

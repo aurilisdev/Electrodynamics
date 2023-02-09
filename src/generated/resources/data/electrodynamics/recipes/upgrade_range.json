@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "tag": "forge:circuits/basic"
+    },
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "W": {
+      "item": "electrodynamics:wireinsulatedcopper"
+    }
+  },
+  "pattern": [
+    "PWP",
+    "WBW",
+    "PWP"
+  ],
+  "result": {
+    "item": "electrodynamics:upgraderange"
+  }
+}

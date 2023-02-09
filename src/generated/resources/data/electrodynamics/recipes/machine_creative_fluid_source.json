@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "minecraft:bedrock"
+    },
+    "C": {
+      "item": "electrodynamics:creativepowersource"
+    }
+  },
+  "pattern": [
+    "CCC",
+    "CBC",
+    "CCC"
+  ],
+  "result": {
+    "item": "electrodynamics:creativefluidsource"
+  }
+}

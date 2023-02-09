@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:rabbit_hide"
+    }
+  ],
+  "result": {
+    "count": 3,
+    "item": "electrodynamics:insulation"
+  }
+}

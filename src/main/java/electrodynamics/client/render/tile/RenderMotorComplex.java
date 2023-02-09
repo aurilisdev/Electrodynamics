@@ -10,17 +10,16 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.RenderingUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 
-public class RenderMotorComplex implements BlockEntityRenderer<TileMotorComplex> {
+public class RenderMotorComplex extends AbstractTileRenderer<TileMotorComplex> {
 
 	public RenderMotorComplex(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override
@@ -36,7 +35,7 @@ public class RenderMotorComplex implements BlockEntityRenderer<TileMotorComplex>
 			progressDegrees = 360.0f * (float) Math.sin(clientTicks / tile.speed.get());
 		}
 
-		BakedModel shaft = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_MOTORCOMPLEXROTOR);
+		BakedModel shaft = getModel(ClientRegister.MODEL_MOTORCOMPLEXROTOR);
 
 		switch (facing) {
 		case EAST:

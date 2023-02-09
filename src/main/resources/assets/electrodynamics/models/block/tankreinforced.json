@@ -4,7 +4,7 @@
   "texture_size" : [ 64, 64 ],
   "textures" : {
     "1" : "electrodynamics:model/tankreinforced",
-    "particle" : "electrodynamics:model/tankreinforced"
+    "particle" : "electrodynamics:block/steelcasing"
   },
   "loader" : "forge:composite",
   "children" : {

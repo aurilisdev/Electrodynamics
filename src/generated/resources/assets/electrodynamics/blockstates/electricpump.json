@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/electricpump"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/electricpump",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/electricpump",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/electricpump",
+      "y": 180
+    }
+  }
+}

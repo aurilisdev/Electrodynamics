@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "tag": "forge:circuits/basic"
+    },
+    "C": {
+      "item": "minecraft:cactus"
+    },
+    "P": {
+      "tag": "forge:plates/steel"
+    }
+  },
+  "pattern": [
+    "PCP",
+    "CBC",
+    "PCP"
+  ],
+  "result": {
+    "count": 4,
+    "item": "electrodynamics:upgradeitemvoid"
+  }
+}

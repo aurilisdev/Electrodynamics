@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "tag": "forge:ingots/iron"
+    },
+    "W": {
+      "item": "electrodynamics:wirecopper"
+    }
+  },
+  "pattern": [
+    " W ",
+    "WIW",
+    " W "
+  ],
+  "result": {
+    "item": "electrodynamics:coil"
+  }
+}

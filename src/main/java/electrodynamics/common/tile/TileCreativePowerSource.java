@@ -3,6 +3,7 @@ package electrodynamics.common.tile;
 import java.util.ArrayList;
 import java.util.List;
 
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
@@ -25,8 +26,8 @@ public class TileCreativePowerSource extends GenericTile {
 
 	private static final int POWER_MULTIPLIER = 1000000;
 
-	public Property<Integer> voltage = property(new Property<Integer>(PropertyType.Integer, "voltage")).set(0).save();
-	public Property<Integer> power = property(new Property<Integer>(PropertyType.Integer, "power")).set(0).save();
+	public Property<Integer> voltage = property(new Property<Integer>(PropertyType.Integer, "setvoltage", 0));
+	public Property<Integer> power = property(new Property<Integer>(PropertyType.Integer, "setpower", 0));
 
 	protected List<CachedTileOutput> outputs;
 
@@ -36,7 +37,7 @@ public class TileCreativePowerSource extends GenericTile {
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).output(Direction.UP).output(Direction.NORTH).output(Direction.SOUTH).output(Direction.EAST).output(Direction.WEST));
 		addComponent(new ComponentInventory(this));
-		addComponent(new ComponentContainerProvider("container.creativepowersource").createMenu((id, player) -> new ContainerCreativePowerSource(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.creativepowersource).createMenu((id, player) -> new ContainerCreativePowerSource(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	private void tickServer(ComponentTickable tick) {

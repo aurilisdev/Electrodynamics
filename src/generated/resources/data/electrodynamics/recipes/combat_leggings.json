@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "L": {
+      "item": "electrodynamics:compositearmorleggings"
+    },
+    "M": {
+      "item": "electrodynamics:servoleggings"
+    },
+    "S": {
+      "tag": "forge:plates/hslasteel"
+    },
+    "T": {
+      "tag": "forge:plates/titaniumcarbide"
+    }
+  },
+  "pattern": [
+    "TMT",
+    "TST",
+    "TLT"
+  ],
+  "result": {
+    "item": "electrodynamics:combatarmorleggings"
+  }
+}

@@ -2,7 +2,7 @@ package electrodynamics.prefab.sound;
 
 import java.util.UUID;
 
-import electrodynamics.api.item.ItemUtils;
+import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.WorldUtils;
 import electrodynamics.registers.ElectrodynamicsItems;

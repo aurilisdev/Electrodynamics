@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/chemicalcrystallizer"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/chemicalcrystallizer",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/chemicalcrystallizer",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/chemicalcrystallizer",
+      "y": 180
+    }
+  }
+}

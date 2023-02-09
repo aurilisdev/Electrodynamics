@@ -12,6 +12,7 @@ import electrodynamics.client.render.model.armor.types.ModelServoLeggings;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
@@ -98,8 +99,8 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, world, tooltip, flagIn);
-		tooltip.add(Component.translatable("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
-		tooltip.add(Component.translatable("tooltip.item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
+		tooltip.add(TextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
+		tooltip.add(TextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
 		staticAppendTooltips(stack, world, tooltip, flagIn);
 	}
 
@@ -107,21 +108,21 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 		if (stack.hasTag()) {
 			CompoundTag tag = stack.getTag();
 			if (tag.getBoolean(NBTUtils.ON)) {
-				tooltip.add(Component.translatable("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
+				tooltip.add(TextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
 			} else {
-				tooltip.add(Component.translatable("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
+				tooltip.add(TextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
 			}
 			Component modeTip = switch (tag.getInt(NBTUtils.MODE)) {
-			case 0 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.servolegs.step").withStyle(ChatFormatting.GREEN));
-			case 1 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.servolegs.both").withStyle(ChatFormatting.AQUA));
-			case 2 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.servolegs.speed").withStyle(ChatFormatting.GREEN));
-			case 3 -> Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.servolegs.none").withStyle(ChatFormatting.RED));
+			case 0 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("servolegs.step").withStyle(ChatFormatting.GREEN));
+			case 1 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("servolegs.both").withStyle(ChatFormatting.AQUA));
+			case 2 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("servolegs.speed").withStyle(ChatFormatting.GREEN));
+			case 3 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("servolegs.none").withStyle(ChatFormatting.RED));
 			default -> Component.literal("");
 			};
 			tooltip.add(modeTip);
 		} else {
-			tooltip.add(Component.translatable("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
-			tooltip.add(Component.translatable("tooltip.jetpack.mode").withStyle(ChatFormatting.GRAY).append(Component.translatable("tooltip.servolegs.none").withStyle(ChatFormatting.RED)));
+			tooltip.add(TextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
+			tooltip.add(TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("servolegs.none").withStyle(ChatFormatting.RED)));
 		}
 	}
 

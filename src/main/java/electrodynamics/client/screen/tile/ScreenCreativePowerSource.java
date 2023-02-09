@@ -6,6 +6,8 @@ import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSou
 import electrodynamics.common.tile.TileCreativePowerSource;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentTextInputBar;
+import electrodynamics.prefab.screen.component.ScreenComponentTextInputBar.TextInputTextures;
+import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
@@ -20,8 +22,8 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 
 	public ScreenCreativePowerSource(ContainerCreativePowerSource container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
-		components.add(new ScreenComponentTextInputBar(this, 80, 27).small());
-		components.add(new ScreenComponentTextInputBar(this, 80, 45).small());
+		components.add(new ScreenComponentTextInputBar(TextInputTextures.TEXT_INPUT_SMALL, this, 80, 27));
+		components.add(new ScreenComponentTextInputBar(TextInputTextures.TEXT_INPUT_SMALL, this, 80, 45));
 	}
 
 	@Override
@@ -41,14 +43,14 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 		minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		int i = (width - imageWidth) / 2;
 		int j = (height - imageHeight) / 2;
-		voltage = new EditBox(font, i + 85, j + 31, 46, 13, Component.translatable("container.creativepowersource.voltage"));
+		voltage = new EditBox(font, i + 85, j + 31, 46, 13, TextUtils.gui("creativepowersource.voltage"));
 		voltage.setTextColor(-1);
 		voltage.setTextColorUneditable(-1);
 		voltage.setBordered(false);
 		voltage.setMaxLength(6);
 		voltage.setResponder(this::setVoltage);
 
-		power = new EditBox(font, i + 85, j + 31 + 18, 46, 13, Component.translatable("container.creativepowersource.power"));
+		power = new EditBox(font, i + 85, j + 31 + 18, 46, 13, TextUtils.gui("creativepowersource.power"));
 		power.setTextColor(-1);
 		power.setTextColorUneditable(-1);
 		power.setBordered(false);
@@ -111,10 +113,10 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 	@Override
 	protected void renderLabels(PoseStack stack, int x, int y) {
 		super.renderLabels(stack, x, y);
-		font.draw(stack, Component.translatable("gui.creativepowersource.voltage"), 40, 31, 4210752);
-		font.draw(stack, Component.translatable("gui.creativepowersource.power"), 40, 49, 4210752);
-		font.draw(stack, Component.translatable("gui.creativepowersource.voltunit"), 131, 31, 4210752);
-		font.draw(stack, Component.translatable("gui.creativepowersource.powerunit"), 131, 49, 4210752);
+		font.draw(stack, TextUtils.gui("creativepowersource.voltage"), 40, 31, 4210752);
+		font.draw(stack, TextUtils.gui("creativepowersource.power"), 40, 49, 4210752);
+		font.draw(stack, TextUtils.gui("creativepowersource.voltunit"), 131, 31, 4210752);
+		font.draw(stack, TextUtils.gui("creativepowersource.powerunit"), 131, 49, 4210752);
 	}
 
 }

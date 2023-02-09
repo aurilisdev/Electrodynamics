@@ -3,7 +3,7 @@ package electrodynamics.common.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.client.ClientEvents;
+import electrodynamics.client.render.event.levelstage.HandlerMarkerLines;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
@@ -27,16 +27,16 @@ public class TileSeismicMarker extends GenericTile {
 		BlockPos pos = getBlockPos();
 		if (world.hasNeighborSignal(pos)) {
 			// do not combine!
-			if (!ClientEvents.markerLines.containsKey(pos)) {
+			if (!HandlerMarkerLines.containsLines(pos)) {
 				List<AABB> boxes = new ArrayList<>();
 				boxes.add(new AABB(pos.getX() + 0.25, pos.getY() + 0.5625, pos.getZ() + 0.4375, pos.getX() + MAX_RADIUS + 1.5625, pos.getY() + 0.6875, pos.getZ() + 0.5625));
 				boxes.add(new AABB(pos.getX() + 0.25, pos.getY() + 0.5625, pos.getZ() + 0.4375, pos.getX() - MAX_RADIUS - 0.5625, pos.getY() + 0.6875, pos.getZ() + 0.5625));
 				boxes.add(new AABB(pos.getX() + 0.4375, pos.getY() + 0.5625, pos.getZ() + 0.25, pos.getX() + 0.5625, pos.getY() + 0.6875, pos.getZ() + MAX_RADIUS + 1.5625));
 				boxes.add(new AABB(pos.getX() + 0.4375, pos.getY() + 0.5625, pos.getZ() + 0.25, pos.getX() + 0.5625, pos.getY() + 0.6875, pos.getZ() - MAX_RADIUS - 0.5625));
-				ClientEvents.markerLines.put(pos, boxes);
+				HandlerMarkerLines.addLines(pos, boxes);
 			}
 		} else {
-			ClientEvents.markerLines.remove(pos);
+			HandlerMarkerLines.removeLines(pos);
 		}
 	}
 
@@ -44,7 +44,7 @@ public class TileSeismicMarker extends GenericTile {
 	public void setRemoved() {
 		super.setRemoved();
 		if (getLevel().isClientSide) {
-			ClientEvents.markerLines.remove(getBlockPos());
+			HandlerMarkerLines.removeLines(getBlockPos());
 		}
 	}
 

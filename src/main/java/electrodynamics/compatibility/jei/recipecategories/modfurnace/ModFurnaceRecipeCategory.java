@@ -14,7 +14,7 @@ import electrodynamics.compatibility.jei.utils.gui.ScreenObjectWrapper;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.GenericItemSlotWrapper;
-import electrodynamics.compatibility.jei.utils.label.GenericLabelWrapper;
+import electrodynamics.compatibility.jei.utils.label.AbstractLabelWrapper;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -34,7 +34,7 @@ import net.minecraft.world.item.crafting.AbstractCookingRecipe;
 
 public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> implements IRecipeCategory<T> {
 
-	private GenericLabelWrapper[] LABELS;
+	private AbstractLabelWrapper[] LABELS;
 
 	private LoadingCache<Integer, List<IDrawableAnimated>> ANIMATED_ARROWS;
 	private LoadingCache<Integer, List<IDrawableStatic>> STATIC_ARROWS;
@@ -56,10 +56,7 @@ public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> 
 
 	private Class<T> RECIPE_CATEGORY_CLASS;
 
-	private double JOULES;
-	private int VOLTAGE;
-
-	protected ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeClass, int animTime, double joulesPerTick, int voltage) {
+	public ModFurnaceRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeClass, int animTime) {
 
 		ANIMATION_LENGTH = animTime;
 
@@ -70,9 +67,6 @@ public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> 
 		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(), wrapper.getLength(), wrapper.getWidth());
 
 		RECIPE_CATEGORY_CLASS = recipeClass;
-
-		JOULES = joulesPerTick;
-		VOLTAGE = voltage;
 	}
 
 	public Class<T> getRecipeClass() {
@@ -141,7 +135,7 @@ public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> 
 			arrow.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
 		}
 
-		addDescriptions(matrixStack);
+		addDescriptions(matrixStack, recipe);
 	}
 
 	// in case we decide to do something wacky with a furnace
@@ -149,12 +143,15 @@ public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> 
 
 	public abstract List<ItemStack> getItemOutputs(AbstractCookingRecipe recipe);
 
-	public void addDescriptions(PoseStack stack) {
+	public void addDescriptions(PoseStack stack, AbstractCookingRecipe recipe) {
 		Font fontRenderer = Minecraft.getInstance().font;
-		Component text;
-		for (GenericLabelWrapper wrap : LABELS) {
-			text = Component.translatable("jei.guilabel.power", VOLTAGE, JOULES * 20 / 1000.0);
-			fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
+		for (AbstractLabelWrapper wrap : LABELS) {
+			Component text = wrap.getComponent(this, recipe);
+			if(wrap.xIsEnd()) {
+				fontRenderer.draw(stack, text, wrap.getXPos() - fontRenderer.width(text.getVisualOrderText()), wrap.getYPos(), wrap.getColor());
+			} else {
+				fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
+			}
 		}
 	}
 
@@ -224,7 +221,7 @@ public abstract class ModFurnaceRecipeCategory<T extends AbstractCookingRecipe> 
 		});
 	}
 
-	public void setLabels(GenericLabelWrapper... labels) {
+	public void setLabels(AbstractLabelWrapper... labels) {
 		LABELS = labels;
 	}
 

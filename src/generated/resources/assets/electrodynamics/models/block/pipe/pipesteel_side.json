@@ -1,0 +1,7 @@
+{
+  "parent": "electrodynamics:parent/pipe_side",
+  "textures": {
+    "particle": "#texture",
+    "texture": "electrodynamics:block/pipe/pipesteel"
+  }
+}

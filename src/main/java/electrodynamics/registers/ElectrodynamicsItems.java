@@ -2,7 +2,9 @@ package electrodynamics.registers;
 
 import static electrodynamics.registers.UnifiedElectrodynamicsRegister.supplier;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.References;
@@ -99,15 +101,18 @@ public class ElectrodynamicsItems {
 		for (SubtypeDrillHead drill : SubtypeDrillHead.values()) {
 			SUBTYPEITEMREGISTER_MAPPINGS.put(drill, ITEMS.register(drill.tag(), supplier(() -> new ItemDrillHead(drill), drill)));
 		}
-		ITEMS.register("sheetplastic", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
-		ITEMS.register("compositeplating", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
-		ITEMS.register("compositeplatingraw", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
-		ITEMS.register("molybdenumfertilizer", supplier(() -> new BoneMealItem(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
-		ITEMS.register("frame", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrame, new Item.Properties().stacksTo(64))));
-		ITEMS.register("framecorner", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrameCorner, new Item.Properties().stacksTo(64))));
-		ITEMS.register("logisticalmanager", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockLogisticalManager, new Item.Properties().tab(References.CORETAB))));
 	}
 
+	
+	public static final RegistryObject<Item> ITEM_COMPOSITEPLATING = ITEMS.register("compositeplating", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
+	public static final RegistryObject<Item> ITEM_SHEETPLASTIC = ITEMS.register("sheetplastic", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
+	public static final RegistryObject<Item> ITEM_RAWCOMPOSITEPLATING = ITEMS.register("compositeplatingraw", supplier(() -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
+	public static final RegistryObject<Item> ITEM_MOLYBDENUMFERTILIZER = ITEMS.register("molybdenumfertilizer", supplier(() -> new BoneMealItem(new Item.Properties().stacksTo(64).tab(References.CORETAB))));
+	public static final RegistryObject<Item> ITEM_FRAME = ITEMS.register("frame", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrame, new Item.Properties().stacksTo(64))));
+	public static final RegistryObject<Item> ITEM_FRAMECORNER = ITEMS.register("framecorner", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrameCorner, new Item.Properties().stacksTo(64))));
+	public static final RegistryObject<Item> ITEM_LOGISTICALMANAGER = ITEMS.register("logisticalmanager", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockLogisticalManager, new Item.Properties().tab(References.CORETAB))));
+	
+	
 	public static final RegistryObject<Item> ITEM_SEISMICMARKER = ITEMS.register("seismicmarker", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockSeismicMarker, new Item.Properties().tab(References.CORETAB))));
 
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation", supplier(() -> new Item(new Item.Properties().tab(References.CORETAB))));
@@ -143,11 +148,11 @@ public class ElectrodynamicsItems {
 	public static final RegistryObject<Item> ITEM_NIGHTVISIONGOGGLES = ITEMS.register("nightvisiongoggles", supplier(() -> new ItemNightVisionGoggles((ElectricItemProperties) new ElectricItemProperties().capacity(ItemNightVisionGoggles.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
 	public static final RegistryObject<Item> ITEM_HYDRAULICBOOTS = ITEMS.register("hydraulicboots", supplier(ItemHydraulicBoots::new));
 	public static final RegistryObject<Item> ITEM_JETPACK = ITEMS.register("jetpack", supplier(ItemJetpack::new));
-	public static final RegistryObject<Item> ITEM_SERVOLEGGINGS = ITEMS.register("servoleggings", supplier(() -> new ItemServoLeggings((ElectricItemProperties) new ElectricItemProperties().capacity(ItemServoLeggings.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1))));
+	public static final RegistryObject<Item> ITEM_SERVOLEGGINGS = ITEMS.register("servoleggings", supplier(() -> new ItemServoLeggings((ElectricItemProperties) new ElectricItemProperties().capacity(ItemServoLeggings.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1).fireResistant())));
 
-	public static final RegistryObject<Item> ITEM_COMBATHELMET = ITEMS.register("combatarmorhelmet", supplier(() -> new ItemCombatArmor(new ElectricItemProperties().capacity(ItemNightVisionGoggles.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1), EquipmentSlot.HEAD)));
-	public static final RegistryObject<Item> ITEM_COMBATCHESTPLATE = ITEMS.register("combatarmorchestplate", supplier(() -> new ItemCombatArmor(new Item.Properties().stacksTo(1).tab(References.CORETAB), EquipmentSlot.CHEST)));
-	public static final RegistryObject<Item> ITEM_COMBATLEGGINGS = ITEMS.register("combatarmorleggings", supplier(() -> new ItemCombatArmor(new ElectricItemProperties().capacity(ItemServoLeggings.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1), EquipmentSlot.LEGS)));
+	public static final RegistryObject<Item> ITEM_COMBATHELMET = ITEMS.register("combatarmorhelmet", supplier(() -> new ItemCombatArmor(new ElectricItemProperties().capacity(ItemNightVisionGoggles.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemNightVisionGoggles.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1).fireResistant(), EquipmentSlot.HEAD)));
+	public static final RegistryObject<Item> ITEM_COMBATCHESTPLATE = ITEMS.register("combatarmorchestplate", supplier(() -> new ItemCombatArmor(new Item.Properties().stacksTo(1).tab(References.CORETAB).fireResistant(), EquipmentSlot.CHEST)));
+	public static final RegistryObject<Item> ITEM_COMBATLEGGINGS = ITEMS.register("combatarmorleggings", supplier(() -> new ItemCombatArmor(new ElectricItemProperties().capacity(ItemServoLeggings.JOULES_PER_TICK * 200000).extract(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).receive(TransferPack.joulesVoltage(ItemServoLeggings.JOULES_PER_TICK, 120)).tab(References.CORETAB).stacksTo(1).fireResistant(), EquipmentSlot.LEGS)));
 	public static final RegistryObject<Item> ITEM_COMBATBOOTS = ITEMS.register("combatarmorboots", supplier(() -> new ItemCombatArmor(new Item.Properties().stacksTo(1).tab(References.CORETAB), EquipmentSlot.FEET)));
 
 	private static void registerSubtypeItem(ISubtype[] array) {
@@ -160,5 +165,17 @@ public class ElectrodynamicsItems {
 		for (ISubtype subtype : array) {
 			SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(subtype).get(), new Item.Properties().tab(References.CORETAB)), subtype)));
 		}
+	}
+	
+	public static Item[] getAllItemForSubtype(ISubtype[] values){
+		List<Item> list = new ArrayList<>();
+		for(ISubtype value : values) {
+			list.add(SUBTYPEITEMREGISTER_MAPPINGS.get(value).get());
+		}
+		return list.toArray(new Item[] {});
+	}
+	
+	public static Item getItem(ISubtype value) {
+		return SUBTYPEITEMREGISTER_MAPPINGS.get(value).get();
 	}
 }

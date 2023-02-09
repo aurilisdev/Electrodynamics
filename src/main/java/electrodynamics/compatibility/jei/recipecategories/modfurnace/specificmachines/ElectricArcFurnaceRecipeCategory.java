@@ -14,6 +14,7 @@ import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.BigItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
+import electrodynamics.compatibility.jei.utils.label.TimeLabelWrapper;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import mezz.jei.api.constants.ModIds;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -35,25 +36,26 @@ public class ElectricArcFurnaceRecipeCategory extends ModFurnaceRecipeCategory<B
 	private static FlameStaticWrapper FLAME = new FlameStaticWrapper(5, 23);
 
 	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 48, Constants.ELECTRICARCFURNACE_USAGE_PER_TICK, 120);
+	private static TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 48, Constants.ELECTRICARCFURNACE_REQUIRED_TICKS);
 
 	private static int ANIM_TIME = 50;
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.electricarcfurnace));
 
 	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = SubtypeMachine.electricarcfurnace.tag() + "0";
+	private static String RECIPE_GROUP = SubtypeMachine.electricarcfurnace.tag();
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
 	public static final RecipeType<BlastingRecipe> RECIPE_TYPE = RecipeType.create(ModIds.MINECRAFT_ID, "mod_blasting", BlastingRecipe.class);
 
 	public ElectricArcFurnaceRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, BlastingRecipe.class, ANIM_TIME, Constants.ELECTRICARCFURNACE_USAGE_PER_TICK, 120);
+		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, BlastingRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, INPUT_SLOT);
 		setOutputSlots(guiHelper, OUTPUT_SLOT);
 		setStaticArrows(guiHelper, FLAME);
 		setAnimatedArrows(guiHelper, ANIM_ARROW);
-		setLabels(POWER_LABEL);
+		setLabels(POWER_LABEL, TIME_LABEL);
 	}
 
 	public ResourceLocation getUid() {

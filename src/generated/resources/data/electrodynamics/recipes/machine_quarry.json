@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "forge:circuits/elite"
+    },
+    "D": {
+      "item": "minecraft:diamond_pickaxe"
+    },
+    "P": {
+      "tag": "forge:plates/steel"
+    }
+  },
+  "pattern": [
+    "PCP",
+    "CDC",
+    "PCP"
+  ],
+  "result": {
+    "item": "electrodynamics:quarry"
+  }
+}

@@ -13,6 +13,8 @@ import electrodynamics.common.packet.types.PacketPowerSetting;
 import electrodynamics.common.packet.types.PacketRenderJetpackParticles;
 import electrodynamics.common.packet.types.PacketSendUpdateProperties;
 import electrodynamics.common.packet.types.PacketServerUpdateTile;
+import electrodynamics.common.packet.types.PacketSetClientCoalGenFuels;
+import electrodynamics.common.packet.types.PacketSetClientCombustionFuel;
 import electrodynamics.common.packet.types.PacketSpawnSmokeParticle;
 import electrodynamics.common.packet.types.PacketToggleOnServer;
 import electrodynamics.common.packet.types.PacketUpdateTile;
@@ -40,6 +42,8 @@ public class NetworkHandler {
 		CHANNEL.registerMessage(disc++, PacketAddClientRenderInfo.class, PacketAddClientRenderInfo::encode, PacketAddClientRenderInfo::decode, PacketAddClientRenderInfo::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		CHANNEL.registerMessage(disc++, PacketJetpackEquipedSound.class, PacketJetpackEquipedSound::encode, PacketJetpackEquipedSound::decode, PacketJetpackEquipedSound::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		CHANNEL.registerMessage(disc++, PacketRenderJetpackParticles.class, PacketRenderJetpackParticles::encode, PacketRenderJetpackParticles::decode, PacketRenderJetpackParticles::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+		CHANNEL.registerMessage(disc++, PacketSetClientCombustionFuel.class, PacketSetClientCombustionFuel::encode, PacketSetClientCombustionFuel::decode, PacketSetClientCombustionFuel::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+		CHANNEL.registerMessage(disc++, PacketSetClientCoalGenFuels.class, PacketSetClientCoalGenFuels::encode, PacketSetClientCoalGenFuels::decode, PacketSetClientCoalGenFuels::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 	}
 
 	public static String getPlayerInformation(String username) {

@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_name",
+              "source": "block_entity"
+            },
+            {
+              "function": "minecraft:copy_nbt",
+              "ops": [
+                {
+                  "op": "replace",
+                  "source": "joules",
+                  "target": "BlockEntityTag.joules"
+                },
+                {
+                  "op": "replace",
+                  "source": "additional",
+                  "target": "BlockEntityTag.additional"
+                }
+              ],
+              "source": "block_entity"
+            }
+          ],
+          "name": "electrodynamics:circuitbreaker"
+        }
+      ],
+      "name": "circuitbreaker",
+      "rolls": 1.0
+    }
+  ]
+}

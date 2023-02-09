@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/chemicalmixer"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/chemicalmixer",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/chemicalmixer",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/chemicalmixer",
+      "y": 180
+    }
+  }
+}

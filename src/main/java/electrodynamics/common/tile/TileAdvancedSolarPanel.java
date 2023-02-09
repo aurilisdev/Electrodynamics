@@ -3,16 +3,16 @@ package electrodynamics.common.tile;
 import java.util.HashSet;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.BlockMachine;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
-import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.common.tile.generic.GenericGeneratorTile;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
@@ -27,18 +27,17 @@ import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTileNode, IElectricGenerator {
+public class TileAdvancedSolarPanel extends GenericGeneratorTile implements IMultiblockTileNode {
 
 	protected CachedTileOutput output;
-	public TargetValue currentRotation = new TargetValue(property(new Property<Double>(PropertyType.Double, "currentRotation")).set(0.0));
-	private Property<Boolean> generating = property(new Property<Boolean>(PropertyType.Boolean, "generating")).set(false);
-	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier")).set(1.0);
+	public TargetValue currentRotation = new TargetValue(property(new Property<Double>(PropertyType.Double, "currentRotation", 0.0)));
+	private Property<Boolean> generating = property(new Property<Boolean>(PropertyType.Boolean, "generating", false));
+	private Property<Double> multiplier = property(new Property<Double>(PropertyType.Double, "multiplier", 1.0));
 
 	@Override
 	public double getMultiplier() {
@@ -51,23 +50,15 @@ public class TileAdvancedSolarPanel extends GenericTile implements IMultiblockTi
 	}
 
 	public TileAdvancedSolarPanel(BlockPos worldPosition, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_ADVANCEDSOLARPANEL.get(), worldPosition, blockState);
+		super(ElectrodynamicsBlockTypes.TILE_ADVANCEDSOLARPANEL.get(), worldPosition, blockState, 2.25, SubtypeItemUpgrade.improvedsolarcell);
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2));
-		addComponent(new ComponentInventory(this).size(1).upgrades(1).slotFaces(0, Direction.values()).shouldSendInfo().validUpgrades(ContainerSolarPanel.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider("container.advancedsolarpanel").createMenu((id, player) -> new ContainerSolarPanel(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentInventory(this).size(1).upgrades(1).slotFaces(0, Direction.values()).validUpgrades(ContainerSolarPanel.VALID_UPGRADES).valid(machineValidator()));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.advancedsolarpanel).createMenu((id, player) -> new ContainerSolarPanel(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
-		multiplier.set(1.0, true);
-		for (ItemStack stack : this.<ComponentInventory>getComponent(ComponentType.Inventory).getItems()) {
-			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade) {
-				for (int i = 0; i < stack.getCount(); i++) {
-					upgrade.subtype.applyUpgrade.accept(this, null, null);
-				}
-			}
-		}
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(Direction.DOWN));
 		}

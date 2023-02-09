@@ -13,7 +13,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public interface IScreenWrapper {
-	void drawTexturedRect(PoseStack stack, int x, int y, int u, int v, int w, int h);
+	void drawTexturedRect(PoseStack stack, int x, int y, int u, int v, int w, int h, int imgW, int imgH);
 
 	void drawTexturedRectFromIcon(PoseStack stack, int x, int y, TextureAtlasSprite icon, int w, int h);
 

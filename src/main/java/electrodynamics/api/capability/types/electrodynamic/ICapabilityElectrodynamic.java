@@ -26,6 +26,7 @@ public interface ICapabilityElectrodynamic {
 		if (!debug && taken > 0) {
 			if (transfer.getVoltage() == getVoltage()) {
 				setJoulesStored(getJoulesStored() - taken);
+				onChange();
 			}
 			if (transfer.getVoltage() > getVoltage()) {
 				overVoltage(transfer);
@@ -40,6 +41,7 @@ public interface ICapabilityElectrodynamic {
 		if (!debug && received > 0) {
 			if (transfer.getVoltage() == getVoltage() || getVoltage() == -1) {
 				setJoulesStored(getJoulesStored() + received);
+				onChange();
 			}
 			if (transfer.getVoltage() > getVoltage() && getVoltage() != -1) {
 				overVoltage(transfer);
@@ -65,4 +67,7 @@ public interface ICapabilityElectrodynamic {
 			}
 		}
 	}
+	
+	void onChange();
+	
 }

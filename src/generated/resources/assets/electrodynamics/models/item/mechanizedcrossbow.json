@@ -1,0 +1,76 @@
+{
+  "parent": "minecraft:item/generated",
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        -90,
+        0,
+        35
+      ],
+      "scale": [
+        0.68,
+        0.68,
+        0.68
+      ],
+      "translation": [
+        1.13,
+        3.2,
+        1.13
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        -90,
+        0,
+        -55
+      ],
+      "scale": [
+        0.68,
+        0.68,
+        0.68
+      ],
+      "translation": [
+        1.13,
+        3.2,
+        1.13
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -90,
+        0,
+        30
+      ],
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ],
+      "translation": [
+        2,
+        0.1,
+        -3
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        -90,
+        0,
+        -60
+      ],
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ],
+      "translation": [
+        2,
+        0.1,
+        -3
+      ]
+    }
+  },
+  "textures": {
+    "layer0": "electrodynamics:item/tools/mechanizedcrossbow"
+  }
+}

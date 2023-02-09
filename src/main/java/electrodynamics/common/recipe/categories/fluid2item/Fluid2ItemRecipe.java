@@ -10,7 +10,7 @@ import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
@@ -23,33 +23,33 @@ public abstract class Fluid2ItemRecipe extends AbstractFluidRecipe {
 	private FluidIngredient[] INPUT_FLUIDS;
 	private ItemStack ITEM_OUTPUT;
 
-	public Fluid2ItemRecipe(ResourceLocation recipeID, FluidIngredient[] fluidInputs, ItemStack itemOutput, double experience) {
-		super(recipeID, experience);
+	public Fluid2ItemRecipe(ResourceLocation recipeID, FluidIngredient[] fluidInputs, ItemStack itemOutput, double experience, int ticks, double usagePerTick) {
+		super(recipeID, experience, ticks, usagePerTick);
 		INPUT_FLUIDS = fluidInputs;
 		ITEM_OUTPUT = itemOutput;
 	}
 
-	public Fluid2ItemRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableItem[] itemBiproducts, double experience) {
-		super(recipeID, itemBiproducts, experience);
+	public Fluid2ItemRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableItem[] itemBiproducts, double experience, int ticks, double usagePerTick) {
+		super(recipeID, itemBiproducts, experience, ticks, usagePerTick);
 		INPUT_FLUIDS = inputFluids;
 		ITEM_OUTPUT = itemOutput;
 	}
 
-	public Fluid2ItemRecipe(FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
-		super(fluidBiproducts, recipeID, experience);
+	public Fluid2ItemRecipe(FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience, int ticks, double usagePerTick) {
+		super(fluidBiproducts, recipeID, experience, ticks, usagePerTick);
 		INPUT_FLUIDS = inputFluids;
 		ITEM_OUTPUT = itemOutput;
 	}
 
-	public Fluid2ItemRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
-		super(recipeID, itemBiproducts, fluidBiproducts, experience);
+	public Fluid2ItemRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, ItemStack itemOutput, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience, int ticks, double usagePerTick) {
+		super(recipeID, itemBiproducts, fluidBiproducts, experience, ticks, usagePerTick);
 		INPUT_FLUIDS = inputFluids;
 		ITEM_OUTPUT = itemOutput;
 	}
 
 	@Override
 	public boolean matchesRecipe(ComponentProcessor pr) {
-		Pair<List<Integer>, Boolean> pair = areFluidsValid(getFluidIngredients(), ((AbstractFluidHandler<?>) pr.getHolder().getComponent(ComponentType.FluidHandler)).getInputTanks());
+		Pair<List<Integer>, Boolean> pair = areFluidsValid(getFluidIngredients(), pr.getHolder().<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks());
 		if (pair.getSecond()) {
 			setFluidArrangement(pair.getFirst());
 			return true;

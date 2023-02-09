@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "forge:circuits/elite"
+    },
+    "D": {
+      "tag": "forge:gems/diamond"
+    },
+    "E": {
+      "item": "electrodynamics:electricarcfurnacedouble"
+    },
+    "O": {
+      "tag": "forge:dusts/obsidian"
+    }
+  },
+  "pattern": [
+    "COC",
+    "DED",
+    "COC"
+  ],
+  "result": {
+    "item": "electrodynamics:electricarcfurnacetriple"
+  }
+}

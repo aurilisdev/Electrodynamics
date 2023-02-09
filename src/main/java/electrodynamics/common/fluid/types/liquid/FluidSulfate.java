@@ -9,14 +9,14 @@ import net.minecraftforge.fluids.FluidType;
 
 public class FluidSulfate extends FluidNonPlaceable {
 
-	public static final String FORGE_TAG = "_sulfate";
+	public static final String FORGE_TAG = "sulfate_";
 
 	public SubtypeSulfateFluid mineral;
 
 	public FluidSulfate(SubtypeSulfateFluid mineral) {
 		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED);
 		this.mineral = mineral;
-		type = new SimpleWaterBasedFluidType(References.ID, mineral.name() + "sulfate");
+		type = new SimpleWaterBasedFluidType(References.ID, "fluidsulfate" + mineral.name());
 	}
 
 	private final FluidType type;

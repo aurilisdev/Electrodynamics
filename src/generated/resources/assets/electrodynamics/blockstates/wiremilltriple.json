@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/wiremilltriple"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/wiremilltriple",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/wiremilltriple",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/wiremilltriple",
+      "y": 180
+    }
+  }
+}

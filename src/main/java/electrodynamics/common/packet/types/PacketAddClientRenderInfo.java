@@ -3,7 +3,7 @@ package electrodynamics.common.packet.types;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import electrodynamics.client.ClientEvents;
+import electrodynamics.client.render.event.levelstage.HandlerSeismicScanner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
@@ -27,7 +27,7 @@ public class PacketAddClientRenderInfo {
 			ClientLevel world = minecraft.level;
 			if (world != null && minecraft.player != null) {
 				if (minecraft.player.getUUID().equals(message.playerId)) {
-					ClientEvents.addRenderLocation(message.pos);
+					HandlerSeismicScanner.addBlock(message.pos);
 				}
 
 			}

@@ -15,8 +15,8 @@ public class ElectrolyticSeparatorRecipe extends Fluid2FluidRecipe {
 	public static final String MOD_ID = electrodynamics.api.References.ID;
 	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-	public ElectrolyticSeparatorRecipe(FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableFluid[] fluidbiproducts, ResourceLocation recipeID, double experience) {
-		super(inputFluids, outputFluid, fluidbiproducts, recipeID, experience);
+	public ElectrolyticSeparatorRecipe(FluidIngredient[] inputFluids, FluidStack outputFluid, ProbableFluid[] fluidbiproducts, ResourceLocation recipeID, double experience, int ticks, double usagePerTick) {
+		super(inputFluids, outputFluid, fluidbiproducts, recipeID, experience, ticks, usagePerTick);
 	}
 
 	@Override

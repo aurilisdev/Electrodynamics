@@ -2,6 +2,7 @@ package electrodynamics.prefab.screen.component;
 
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.FluidTankSupplier;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentGauge;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -12,7 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenComponentFluid extends ScreenComponentGauge {
+public class ScreenComponentFluid extends AbstractScreenComponentGauge {
 	private FluidTankSupplier fluidInfoHandler;
 
 	public ScreenComponentFluid(FluidTankSupplier fluidInfoHandler, IScreenWrapper gui, int x, int y) {
@@ -25,7 +26,7 @@ public class ScreenComponentFluid extends ScreenComponentGauge {
 		IFluidTank tank = fluidInfoHandler.getTank();
 		if (tank != null) {
 			if (tank.getFluidAmount() > 0 && tank.getCapacity() > 0) {
-				return tank.getFluidAmount() * (HEIGHT - 2) / tank.getCapacity();
+				return tank.getFluidAmount() * (GaugeTextures.BACKGROUND_DEFAULT.textureHeight() - 2) / tank.getCapacity();
 			}
 		}
 
@@ -52,7 +53,7 @@ public class ScreenComponentFluid extends ScreenComponentGauge {
 			IClientFluidTypeExtensions extensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
 			return extensions.getStillTexture();
 		}
-		return resource;
+		return texture.getLocation();
 	}
 
 	@Override

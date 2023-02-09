@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "minecraft:glass_bottle"
+    },
+    "P": {
+      "tag": "forge:plates/bronze"
+    },
+    "W": {
+      "item": "electrodynamics:wireinsulatedcopper"
+    }
+  },
+  "pattern": [
+    "PBP",
+    "BWB",
+    "PBP"
+  ],
+  "result": {
+    "item": "electrodynamics:upgradeexperience"
+  }
+}

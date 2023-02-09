@@ -2,6 +2,7 @@ package electrodynamics.client.guidebook;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -20,10 +21,12 @@ import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.button.ButtonGuidebook;
 import electrodynamics.prefab.screen.component.button.ButtonGuidebook.ButtonType;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
@@ -119,7 +122,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			List<Button> pageButtons = new ArrayList<>();
 			for (int j = 0; j < subModules.size(); j++) {
 				Module module = subModules.get(j);
-				pageButtons.add(new Button(guiWidth + 45, guiHeight + 43 + j * MODULE_SEPERATION, 120, 20, Component.translatable(module.getTitle()), button -> setPageNumber(module.getStartingPageNumber())));
+				pageButtons.add(new Button(guiWidth + 45, guiHeight + 43 + j * MODULE_SEPERATION, 120, 20, module.getTitle(), button -> setPageNumber(module.getStartingPageNumber())));
 			}
 			MODULE_BUTTONS.add(pageButtons);
 		}
@@ -140,7 +143,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 					if (index < currChapters.size()) {
 						chapter = currChapters.get(index);
 						int chapterNumber = chapter.getStartingPageNumber();
-						pageButtons.add(new Button(guiWidth + 45, guiHeight + 56 + j * CHAPTER_SEPERATION, 120, 20, Component.translatable(chapter.getTitleKey()), button -> setPageNumber(chapterNumber)));
+						pageButtons.add(new Button(guiWidth + 45, guiHeight + 56 + j * CHAPTER_SEPERATION, 120, 20, chapter.getTitle(), button -> setPageNumber(chapterNumber)));
 						index++;
 					} else {
 						break;
@@ -211,28 +214,28 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		Page page = getCurrentPage();
 
 		if (page instanceof ModulePage) {
-			Component modTitle = Component.translatable("guidebook.availablemodules").withStyle(ChatFormatting.BOLD);
+			Component modTitle = TextUtils.guidebook("availablemodules").withStyle(ChatFormatting.BOLD);
 			int xShift = (TEXTURE_WIDTH - font.width(modTitle)) / 2;
 			font.draw(stack, modTitle, refX + xShift, refY + 16, 4210752);
 		} else if (page instanceof ChapterPage) {
 			Module currMod = getCurrentModule();
 			if (currMod != null) {
-				Component moduleTitle = Component.translatable(currMod.getTitle()).withStyle(ChatFormatting.BOLD);
+				Component moduleTitle = currMod.getTitle().withStyle(ChatFormatting.BOLD);
 				int xShift = (TEXTURE_WIDTH - font.width(moduleTitle)) / 2;
 				font.draw(stack, moduleTitle, refX + xShift, refY + 16, 4210752);
 
-				Component chapTitle = Component.translatable("guidebook.chapters").withStyle(ChatFormatting.UNDERLINE);
+				Component chapTitle = TextUtils.guidebook("chapters").withStyle(ChatFormatting.UNDERLINE);
 				xShift = (TEXTURE_WIDTH - font.width(chapTitle)) / 2;
 				font.draw(stack, chapTitle, refX + xShift, refY + 31, 4210752);
 			}
 		} else {
 			Module currMod = getCurrentModule();
 			if (currMod != null) {
-				Component moduleTitle = Component.translatable(currMod.getTitle()).withStyle(ChatFormatting.BOLD);
+				Component moduleTitle = currMod.getTitle().withStyle(ChatFormatting.BOLD);
 				int xShift = (TEXTURE_WIDTH - font.width(moduleTitle)) / 2;
 				font.draw(stack, moduleTitle, refX + xShift, refY + 16, 4210752);
 
-				Component chapTitle = Component.translatable(page.getChapterKey()).withStyle(ChatFormatting.UNDERLINE);
+				Component chapTitle = page.getChapterName().withStyle(ChatFormatting.UNDERLINE);
 				xShift = (TEXTURE_WIDTH - font.width(chapTitle)) / 2;
 				font.draw(stack, chapTitle, refX + xShift, refY + 26, 4210752);
 
@@ -241,19 +244,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 				font.draw(stack, pageNumber, refX + xShift, refY + 200, 4210752);
 
 				for (TextWrapperObject text : page.getText()) {
-					Component component;
-					if (text.componentInfo == null) {
-						if (text.formats == null) {
-							component = Component.translatable(text.textKey);
-						} else {
-							component = Component.translatable(text.textKey).withStyle(text.formats);
-						}
-					} else if (text.formats == null) {
-						component = Component.translatable(text.textKey, text.componentInfo);
-					} else {
-						component = Component.translatable(text.textKey, text.componentInfo).withStyle(text.formats);
-					}
-					font.draw(stack, component, refX + text.xOffset, refY + text.yOffset, text.color);
+					font.draw(stack, text.text, refX + text.xOffset, refY + text.yOffset, text.color);
 				}
 			}
 		}
@@ -298,12 +289,19 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		GUIDEBOOK_MODULES = new ArrayList<>();
 		GUIDEBOOK_MODULES.add(temp.get(0));
 		temp.remove(0);
-		List<String> cats = new ArrayList<>();
+		List<MutableComponent> cats = new ArrayList<>();
 		for (Module mod : temp) {
-			cats.add(mod.getTitleCat());
+			cats.add(mod.getTitle());
 		}
-		Collections.sort(cats);
-		for (String cat : cats) {
+		Collections.sort(cats, new Comparator<MutableComponent>() {
+
+			@Override
+			public int compare(MutableComponent component1, MutableComponent component2) {
+				return component1.toString().compareToIgnoreCase(component2.toString());
+			}
+			
+		});
+		for (MutableComponent cat : cats) {
 			for (int i = 0; i < temp.size(); i++) {
 				Module mod = temp.get(i);
 				if (mod.isCat(cat)) {
