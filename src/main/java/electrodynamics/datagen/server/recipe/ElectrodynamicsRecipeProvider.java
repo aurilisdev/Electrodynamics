@@ -48,6 +48,11 @@ public class ElectrodynamicsRecipeProvider extends RecipeProvider {
 		GENERATORS.add(new ElectrodynamicsOxidationFurnaceRecipes());
 		GENERATORS.add(new ElectrodynamicsReinforcedAlloyerRecipes());
 		GENERATORS.add(new ElectrodynamicsWireMillRecipes());
+		
+		/*
+		 * Electrolytic Separator Recipe
+		 * HSLA Steel Ingot Recipe
+		 */
 	}
 
 	@Override

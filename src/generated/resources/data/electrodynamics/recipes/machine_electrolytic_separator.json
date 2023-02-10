@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "forge:circuits/advanced"
+    },
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "T": {
+      "item": "electrodynamics:tanksteel"
+    },
+    "X": {
+      "item": "electrodynamics:upgradetransformer"
+    }
+  },
+  "pattern": [
+    "PTP",
+    "TXT",
+    "PCP"
+  ],
+  "result": {
+    "item": "electrodynamics:electrolyticseparator"
+  }
+}

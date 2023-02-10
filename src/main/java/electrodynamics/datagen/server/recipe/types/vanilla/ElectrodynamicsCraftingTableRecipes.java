@@ -593,7 +593,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(References.ID, "upgrade_experience", consumer);
 
-		ItemStack fortuneBook = new ItemStack(Items.BOOK);
+		ItemStack fortuneBook = new ItemStack(Items.ENCHANTED_BOOK);
 		fortuneBook.enchant(Enchantments.BLOCK_FORTUNE, 1);
 		ElectrodynamicsShapedCraftingRecipe.start(UPGRADES[SubtypeItemUpgrade.fortune.ordinal()], 1)
 				//
@@ -693,7 +693,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(References.ID, "upgrade_range", consumer);
 
-		ItemStack silkTouchBook = new ItemStack(Items.BOOK);
+		ItemStack silkTouchBook = new ItemStack(Items.ENCHANTED_BOOK);
 		silkTouchBook.enchant(Enchantments.SILK_TOUCH, 1);
 		ElectrodynamicsShapedCraftingRecipe.start(UPGRADES[SubtypeItemUpgrade.silktouch.ordinal()], 1)
 				//
@@ -727,7 +727,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(References.ID, "upgrade_stator", consumer);
 
-		ItemStack unbreakingBook = new ItemStack(Items.BOOK);
+		ItemStack unbreakingBook = new ItemStack(Items.ENCHANTED_BOOK);
 		unbreakingBook.enchant(Enchantments.UNBREAKING, 1);
 		ElectrodynamicsShapedCraftingRecipe.start(UPGRADES[SubtypeItemUpgrade.unbreaking.ordinal()], 1)
 				//
@@ -1296,6 +1296,24 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				.addKey('E', MACHINES[SubtypeMachine.electricarcfurnacedouble.ordinal()])
 				//
 				.complete(References.ID, "machine_electric_arc_furnace_triple", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.electrolyticseparator.ordinal()], 1)
+				//
+				.addPattern("PTP")
+				//
+				.addPattern("TXT")
+				//
+				.addPattern("PCP")
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+				//
+				.addKey('T', MACHINES[SubtypeMachine.tanksteel.ordinal()])
+				//
+				.addKey('X', MACHINES[SubtypeMachine.upgradetransformer.ordinal()])
+				//
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+				//
+				.complete(References.ID, "machine_electrolytic_separator", consumer);
 
 		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.energizedalloyer.ordinal()], 1)
 				//

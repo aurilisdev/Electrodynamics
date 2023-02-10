@@ -91,16 +91,40 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		return super.getCapability(capability, face);
 	}
 
+	//this is changed so all the battery boxes can convert FE to joules, regardless of voltage
 	@Override
 	public int receiveEnergy(int maxReceive, boolean simulate) {
-		TransferPack pack = this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).receivePower(TransferPack.joulesVoltage(maxReceive, ElectrodynamicsCapabilities.DEFAULT_VOLTAGE), simulate);
-		return (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
+		
+		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		
+		int accepted = Math.min(maxReceive, (int) (electro.getMaxJoulesStored() - electro.getJoulesStored()));
+		
+		if(!simulate) {
+			electro.joules(electro.getJoulesStored() + accepted);
+		}
+		
+		return accepted;
 	}
 
+	//we still mandate 120V for all FE cables here though
 	@Override
 	public int extractEnergy(int maxExtract, boolean simulate) {
-		TransferPack pack = this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).extractPower(TransferPack.joulesVoltage(maxExtract, ElectrodynamicsCapabilities.DEFAULT_VOLTAGE), simulate);
-		return (int) Math.min(Integer.MAX_VALUE, pack.getJoules());
+		
+		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		
+		int taken = Math.min(maxExtract, (int) electro.getJoulesStored());
+		
+		if(!simulate) {
+		
+			electro.joules(electro.getJoulesStored() - taken);
+			
+			if(electro.getVoltage() > ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) {
+				electro.overVoltage(TransferPack.joulesVoltage(taken, electro.getVoltage()));
+			}
+			
+		}
+		
+		return taken;
 	}
 
 	@Override
