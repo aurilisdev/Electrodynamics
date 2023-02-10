@@ -121,7 +121,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 
 		if (resavoir == null) {
 			formatting = ChatFormatting.RED;
-		} else if ((complex == null) || resavoir.hasEnoughFluid((int) (complex.powerMultiplier.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK))) {
+		} else if (complex == null || resavoir.hasEnoughFluid((int) (complex.powerMultiplier.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK))) {
 			formatting = ChatFormatting.GREEN;
 		} else {
 			formatting = ChatFormatting.YELLOW;

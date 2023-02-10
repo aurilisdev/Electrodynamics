@@ -48,7 +48,7 @@ public class IndexedSidedInvWrapper extends SidedInvWrapper {
 
 		int m;
 		if (!stackInSlot.isEmpty()) {
-			if ((stackInSlot.getCount() >= Math.min(stackInSlot.getMaxStackSize(), getSlotLimit(slot))) || !ItemHandlerHelper.canItemStacksStack(stack, stackInSlot) || !component.canPlaceItemThroughFace(slot1, stack, side) || !component.canPlaceItem(slot1, stack)) {
+			if (stackInSlot.getCount() >= Math.min(stackInSlot.getMaxStackSize(), getSlotLimit(slot)) || !ItemHandlerHelper.canItemStacksStack(stack, stackInSlot) || !component.canPlaceItemThroughFace(slot1, stack, side) || !component.canPlaceItem(slot1, stack)) {
 				return stack;
 			}
 

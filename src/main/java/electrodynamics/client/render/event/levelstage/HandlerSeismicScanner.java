@@ -45,7 +45,7 @@ public class HandlerSeismicScanner extends AbstractLevelStageHandler {
 			stack.translate(-camPos.x, -camPos.y, -camPos.z);
 			LevelRenderer.renderLineBox(stack, builder, box, 1.0F, 1.0F, 1.0F, 1.0F);
 			stack.popPose();
-			if ((System.currentTimeMillis() - entry.getValue() > 10000) || minecraft.level.getBlockState(entry.getKey()).isAir()) {
+			if (System.currentTimeMillis() - entry.getValue() > 10000 || minecraft.level.getBlockState(entry.getKey()).isAir()) {
 				it.remove();
 			}
 		}
