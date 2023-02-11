@@ -63,7 +63,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.bronze.ordinal()], 2), 0.3F, 50, 50.0, "ingot_hsla_steel")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.hslasteel.ordinal()], 2), 0.3F, 50, 50.0, "ingot_hsla_steel")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_STAINLESSSTEEL, 1)
 				//

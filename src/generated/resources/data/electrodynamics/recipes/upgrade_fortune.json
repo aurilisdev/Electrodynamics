@@ -3,7 +3,7 @@
   "key": {
     "B": {
       "type": "forge:partial_nbt",
-      "item": "minecraft:book",
+      "item": "minecraft:enchanted_book",
       "nbt": "{Enchantments:[{id:\"minecraft:fortune\",lvl:1s}]}"
     },
     "C": {
