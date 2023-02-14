@@ -91,39 +91,39 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		return super.getCapability(capability, face);
 	}
 
-	//this is changed so all the battery boxes can convert FE to joules, regardless of voltage
+	// this is changed so all the battery boxes can convert FE to joules, regardless of voltage
 	@Override
 	public int receiveEnergy(int maxReceive, boolean simulate) {
-		
+
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		
+
 		int accepted = Math.min(maxReceive, (int) (electro.getMaxJoulesStored() - electro.getJoulesStored()));
-		
-		if(!simulate) {
+
+		if (!simulate) {
 			electro.joules(electro.getJoulesStored() + accepted);
 		}
-		
+
 		return accepted;
 	}
 
-	//we still mandate 120V for all FE cables here though
+	// we still mandate 120V for all FE cables here though
 	@Override
 	public int extractEnergy(int maxExtract, boolean simulate) {
-		
+
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		
+
 		int taken = Math.min(maxExtract, (int) electro.getJoulesStored());
-		
-		if(!simulate) {
-		
+
+		if (!simulate) {
+
 			electro.joules(electro.getJoulesStored() - taken);
-			
-			if(electro.getVoltage() > ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) {
+
+			if (electro.getVoltage() > ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) {
 				electro.overVoltage(TransferPack.joulesVoltage(taken, electro.getVoltage()));
 			}
-			
+
 		}
-		
+
 		return taken;
 	}
 
