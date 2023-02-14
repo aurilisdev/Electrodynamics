@@ -28,9 +28,9 @@ public enum SubtypeOre implements ISubtype {
 	// min + max + perChunk based on silver
 	lead(2, 15, 6, -64, 32, 4f, 8f, 1, 1, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.lead), () -> ElectrodynamicsItems.getItem(SubtypeIngot.lead), 0.7, 200, ElectrodynamicsTags.Items.ORE_LEAD, ElectrodynamicsTags.Blocks.ORE_LEAD),
 	// min + max + perChunkbasedon diamond
-	uraninite(3, 6, 8, -64, -32, 10f, 6.5f, 1, 1, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.uranium), null, 0, 0, ElectrodynamicsTags.Items.ORE_URANIUM, ElectrodynamicsTags.Blocks.ORE_URANIUM),
+	uraninite(3, 4, 8, -64, -32, 10f, 6.5f, 1, 1, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.uranium), null, 0, 0, ElectrodynamicsTags.Items.ORE_URANIUM, ElectrodynamicsTags.Blocks.ORE_URANIUM),
 	// min + max + perChunk based on thorianite
-	thorianite(3, 15, 8, -32, 32, 10f, 6.5f, 1, 1, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.thorium), null, 0, 0, ElectrodynamicsTags.Items.ORE_THORIUM, ElectrodynamicsTags.Blocks.ORE_THORIUM),
+	thorianite(3, 12, 8, -32, 32, 10f, 6.5f, 1, 1, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.thorium), null, 0, 0, ElectrodynamicsTags.Items.ORE_THORIUM, ElectrodynamicsTags.Blocks.ORE_THORIUM),
 	// not changed
 	monazite(2, 5, 8, 0, 32, 6f, 4.5f, 1, 1, null, null, 0, 0, ElectrodynamicsTags.Items.ORE_MONAZITE, ElectrodynamicsTags.Blocks.ORE_MONAZITE),
 	// doubled depth + amount
