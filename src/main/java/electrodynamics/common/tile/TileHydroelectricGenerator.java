@@ -9,7 +9,7 @@ import electrodynamics.common.tile.generic.GenericGeneratorTile;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSoundTile;
+import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -34,7 +34,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class TileHydroelectricGenerator extends GenericGeneratorTile implements ITickableSoundTile {
+public class TileHydroelectricGenerator extends GenericGeneratorTile implements ITickableSound {
 	protected CachedTileOutput output;
 	public Property<Boolean> isGenerating = property(new Property<>(PropertyType.Boolean, "isGenerating", false));
 	public Property<Boolean> directionFlag = property(new Property<>(PropertyType.Boolean, "directionFlag", false));
@@ -58,7 +58,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 	public AABB getRenderBoundingBox() {
 		ComponentDirection direction = getComponent(ComponentType.Direction);
 		Direction facing = direction.getDirection();
-		return super.getRenderBoundingBox().expandTowards(facing.getStepX(), facing.getStepY(), facing.getStepZ());
+		return super.getRenderBoundingBox();
 	}
 
 	protected void tickServer(ComponentTickable tickable) {

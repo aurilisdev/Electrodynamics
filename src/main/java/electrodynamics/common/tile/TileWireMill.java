@@ -9,7 +9,7 @@ import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorTrip
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSoundTile;
+import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -29,7 +29,7 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class TileWireMill extends GenericTile implements ITickableSoundTile {
+public class TileWireMill extends GenericTile implements ITickableSound {
 
 	private boolean isSoundPlaying = false;
 

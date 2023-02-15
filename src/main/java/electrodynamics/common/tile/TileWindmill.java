@@ -13,7 +13,7 @@ import electrodynamics.common.tile.generic.GenericGeneratorTile;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSoundTile;
+import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -32,7 +32,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class TileWindmill extends GenericGeneratorTile implements IMultiblockTileNode, ITickableSoundTile {
+public class TileWindmill extends GenericGeneratorTile implements IMultiblockTileNode, ITickableSound {
 
 	protected CachedTileOutput output;
 	private Property<Boolean> isGenerating = property(new Property<>(PropertyType.Boolean, "isGenerating", false));

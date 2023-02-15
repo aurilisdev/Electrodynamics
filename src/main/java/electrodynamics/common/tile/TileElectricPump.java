@@ -7,7 +7,7 @@ import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSoundTile;
+import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -30,7 +30,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidStack;
 
-public class TileElectricPump extends GenericTile implements ITickableSoundTile {
+public class TileElectricPump extends GenericTile implements ITickableSound {
 
 	private Property<Boolean> isGenerating = property(new Property<>(PropertyType.Boolean, "isGenerating", false));
 

@@ -1,6 +1,6 @@
 package electrodynamics.prefab.sound;
 
-import electrodynamics.prefab.sound.utils.ITickableSoundTile;
+import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.utilities.WorldUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
@@ -8,20 +8,21 @@ import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class TickableSoundTile extends AbstractTickableSoundInstance {
+public class TickableSoundTile<T extends BlockEntity & ITickableSound> extends AbstractTickableSoundInstance {
 
 	// Yes it's weird, but I couldn't think of a better way
 	private static final double MAXIMUM_DISTANCE = 10;
 
-	protected final ITickableSoundTile tile;
+	protected final T tile;
 	private final float initialVolume;
 
-	public TickableSoundTile(SoundEvent event, ITickableSoundTile tile, boolean repeat) {
+	public TickableSoundTile(SoundEvent event, T tile, boolean repeat) {
 		this(event, SoundSource.BLOCKS, tile, 0.5F, 1.0F, repeat);
 	}
 
-	public TickableSoundTile(SoundEvent event, SoundSource source, ITickableSoundTile tile, float volume, float pitch, boolean repeat) {
+	public TickableSoundTile(SoundEvent event, SoundSource source, T tile, float volume, float pitch, boolean repeat) {
 		super(event, source, SoundInstance.createUnseededRandom());
 		this.tile = tile;
 		this.volume = 0.5F;
