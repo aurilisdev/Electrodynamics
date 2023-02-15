@@ -58,7 +58,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 	public AABB getRenderBoundingBox() {
 		ComponentDirection direction = getComponent(ComponentType.Direction);
 		Direction facing = direction.getDirection();
-		return super.getRenderBoundingBox();
+		return super.getRenderBoundingBox().expandTowards(facing.getStepX(), facing.getStepY(), facing.getStepZ());
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
@@ -157,18 +157,6 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 		shape = Shapes.join(shape, Shapes.box(0.4975, 0.375, 0.375625, 0.56, 0.5625, 0.625625), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.4975, 0.375, 0.313125, 0.56, 0.4375, 0.375625), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.4975, 0.375, 0.625625, 0.56, 0.4375, 0.688125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(1.294375, 0.125, 0.125625, 1.3725, 0.75, 0.188125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(1.294375, 0.75, 0.125625, 1.3725, 0.8125, 0.875625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(1.294375, 0.0625, 0.125625, 1.3725, 0.125, 0.875625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(1.294375, 0.125, 0.813125, 1.3725, 0.75, 0.875625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.9975, 0.125, 0.813125, 1.075625, 0.75, 0.875625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.9975, 0.0625, 0.125625, 1.075625, 0.125, 0.875625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.9975, 0.75, 0.125625, 1.075625, 0.8125, 0.875625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.9975, 0.125, 0.125625, 1.075625, 0.75, 0.188125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(1.06, -0.125, 0.438125, 1.31, 1, 0.563125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(1.06, 0.375, -0.061875, 1.31, 0.5, 1.063125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.9975, 0.375, 0.438125, 1.3725, 0.5, 0.563125), BooleanOp.OR);
-
 		VoxelShapes.registerShape(SubtypeMachine.hydroelectricgenerator, shape, Direction.EAST);
 	}
 }
