@@ -54,7 +54,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentInventory(this).size(4).inputs(1).upgrades(3).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid((i, s, c) -> i == 3 ? s.getItem() instanceof ItemElectric : machineValidator().test(i, s, c)));
+		addComponent(new ComponentInventory(this).size(4).inputs(1).upgrades(3).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid((i, s, c) -> i == 0 ? s.getItem() instanceof ItemElectric : machineValidator().test(i, s, c)));
 		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 		addComponent(new ComponentElectrodynamic(this).voltage(baseVoltage).maxJoules(max).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
 
@@ -75,7 +75,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
 			electro.joules(electro.getMaxJoulesStored());
 		}
-		electro.drainElectricItem(3);
+		electro.drainElectricItem(0);
 	}
 
 	@Override
