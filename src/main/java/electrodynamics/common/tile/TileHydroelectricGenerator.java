@@ -50,7 +50,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
-		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.values()).validUpgrades(ContainerHydroelectricGenerator.VALID_UPGRADES).valid(machineValidator()));
+		addComponent(new ComponentInventory(this).size(1).upgrades(1).slotFaces(0, Direction.values()).validUpgrades(ContainerHydroelectricGenerator.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.hydroelectricgenerator).createMenu((id, player) -> new ContainerHydroelectricGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 

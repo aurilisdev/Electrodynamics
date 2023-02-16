@@ -42,7 +42,7 @@ public class TileElectricPump extends GenericTile implements ITickableSound {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentFluidHandlerMulti(this).setOutputTanks(1, 0).setOutputDirections(Direction.EAST).setInputFluidTags(FluidTags.WATER));
+		addComponent(new ComponentFluidHandlerMulti(this).setOutputTanks(1, 0).setOutputDirections(Direction.EAST).setOutputFluidTags(FluidTags.WATER));
 	}
 
 	protected CachedTileOutput output;

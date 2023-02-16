@@ -26,10 +26,10 @@ public class ContainerBatteryBox extends GenericContainerBlockEntity<TileBattery
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
+		addSlot(new SlotCharging(inv, nextIndex(), 133, 14));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
-		addSlot(new SlotCharging(inv, nextIndex(), 133, 14));
 	}
 
 }
