@@ -151,6 +151,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addItem(ElectrodynamicsItems.getItem(SubtypeDust.silver), "Silver Dust");
 			addItem(ElectrodynamicsItems.getItem(SubtypeDust.sulfur), "Sulfur");
 			addItem(ElectrodynamicsItems.getItem(SubtypeDust.superconductive), "Superconductive Blend");
+			addItem(ElectrodynamicsItems.getItem(SubtypeDust.tin), "Tin Dust");
 			addItem(ElectrodynamicsItems.getItem(SubtypeDust.vanadium), "Vanadium Dust");
 
 			addItem(ElectrodynamicsItems.getItem(SubtypeGear.bronze), "Bronze Gear");
@@ -205,6 +206,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.copper), "Copper Nugget");
 			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.hslasteel), "HSLA Steel Nugget");
 			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.silver), "Silver Nugget");
+			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.steel), "Steel Nugget");
 			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.stainlesssteel), "Stainless Steel Nugget");
 			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.superconductive), "Superconductive Nugget");
 			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.tin), "Tin Nugget");

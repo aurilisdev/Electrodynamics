@@ -1613,7 +1613,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
 				//
-				.addKey('F', MACHINES[SubtypeMachine.oxidationfurnace.ordinal()])
+				.addKey('F', MACHINES[SubtypeMachine.electricfurnace.ordinal()])
 				//
 				.addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
 				//
