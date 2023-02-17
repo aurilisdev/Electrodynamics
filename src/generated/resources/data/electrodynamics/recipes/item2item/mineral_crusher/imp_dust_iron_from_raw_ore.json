@@ -4,13 +4,13 @@
   "iteminputs": {
     "0": {
       "count": 1,
-      "tag": "forge:raw_materials/tin"
+      "tag": "forge:raw_materials/iron"
     },
     "count": 1
   },
   "output": {
     "count": 3,
-    "item": "electrodynamics:impuredusttin"
+    "item": "electrodynamics:impuredustiron"
   },
   "ticks": 200,
   "usagepertick": 450.0

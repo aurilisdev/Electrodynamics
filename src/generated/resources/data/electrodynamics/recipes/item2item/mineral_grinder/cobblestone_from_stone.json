@@ -11,8 +11,8 @@
   },
   "iteminputs": {
     "0": {
-      "count": 2,
-      "tag": "forge:ores/sulfur"
+      "count": 1,
+      "tag": "forge:stone"
     },
     "count": 1
   },

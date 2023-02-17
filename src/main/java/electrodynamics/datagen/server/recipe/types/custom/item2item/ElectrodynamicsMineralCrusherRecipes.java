@@ -72,7 +72,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				if (raw == SubtypeRawOre.titanium || raw == SubtypeRawOre.chromium) {
 					newRecipe(new ItemStack(raw.crushedItem.get(), 3), 0.5F, 200, 450.0, "oxide_" + raw.name() + "_from_raw_ore")
 							//
-							.addItemTagInput(raw.tag, 3)
+							.addItemTagInput(raw.tag, 1)
 							//
 							.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.iron), 1, 0.3))
 							//
@@ -80,13 +80,31 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				} else {
 					newRecipe(new ItemStack(raw.crushedItem.get(), 3), 0.3F, 200, 450.0, "imp_dust_" + raw.name() + "_from_raw_ore")
 							//
-							.addItemTagInput(raw.tag, 3)
+							.addItemTagInput(raw.tag, 1)
 							//
 							.complete(consumer);
 				}
 
 			}
 		}
+		
+		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.iron.ordinal()], 3), 0.3F, 200, 450.0, "imp_dust_iron_from_raw_ore")
+		//
+		.addItemTagInput(Tags.Items.RAW_MATERIALS_IRON, 1)
+		//
+		.complete(consumer);
+		
+		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.gold.ordinal()], 3), 0.3F, 200, 450.0, "imp_dust_gold_from_raw_ore")
+		//
+		.addItemTagInput(Tags.Items.RAW_MATERIALS_GOLD, 1)
+		//
+		.complete(consumer);
+		
+		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.copper.ordinal()], 3), 0.3F, 200, 450.0, "imp_dust_copper_from_raw_ore")
+		//
+		.addItemTagInput(Tags.Items.RAW_MATERIALS_COPPER, 1)
+		//
+		.complete(consumer);
 
 		newRecipe(new ItemStack(OXIDES[SubtypeOxide.chromite.ordinal()], 3), 0.3F, 200, 450.0, "oxide_chromite_from_ore")
 				//
