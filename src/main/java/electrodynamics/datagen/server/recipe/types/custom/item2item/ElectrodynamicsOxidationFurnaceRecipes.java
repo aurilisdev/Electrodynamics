@@ -131,7 +131,7 @@ public class ElectrodynamicsOxidationFurnaceRecipes extends AbstractRecipeGenera
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(OXIDES[SubtypeOxide.thionylchloride.ordinal()], 1), 0.1F, 200, 350.0, "vanadium_oxide")
+		newRecipe(new ItemStack(OXIDES[SubtypeOxide.vanadium.ordinal()], 1), 0.1F, 200, 350.0, "vanadium_oxide")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.DUST_VANADIUM, 1)
 				//

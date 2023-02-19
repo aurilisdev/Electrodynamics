@@ -7,7 +7,7 @@ import electrodynamics.common.inventory.container.tile.ContainerElectrolyticSepa
 import electrodynamics.common.network.FluidUtilities;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSoundTile;
+import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
@@ -29,7 +29,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class TileElectrolyticSeparator extends GenericFluidTile implements ITickableSoundTile {
+public class TileElectrolyticSeparator extends GenericFluidTile implements ITickableSound {
 
 	public static final int MAX_TANK_CAPACITY = 5000;
 	public long clientTicks = 0;

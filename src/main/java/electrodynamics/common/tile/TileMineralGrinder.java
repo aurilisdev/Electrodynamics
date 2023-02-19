@@ -8,7 +8,7 @@ import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorDoub
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorTriple;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSoundTile;
+import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -28,7 +28,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileMineralGrinder extends GenericTile implements ITickableSoundTile {
+public class TileMineralGrinder extends GenericTile implements ITickableSound {
 	public long clientRunningTicks = 0;
 
 	private boolean isSoundPlaying = false;

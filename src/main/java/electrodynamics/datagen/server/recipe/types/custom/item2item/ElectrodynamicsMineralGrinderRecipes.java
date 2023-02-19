@@ -67,7 +67,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(DUSTS[SubtypeDust.copper.ordinal()]), 0, 200, 350.0, "dust_netherite_from_scrap")
+		newRecipe(new ItemStack(DUSTS[SubtypeDust.netherite.ordinal()]), 0, 200, 350.0, "dust_netherite_from_scrap")
 				//
 				.addItemStackInput(new ItemStack(Items.NETHERITE_SCRAP))
 				//
@@ -257,7 +257,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 
 		newRecipe(new ItemStack(DUSTS[SubtypeDust.sulfur.ordinal()], 3), 0.2F, 200, 350.0, "dust_sulfur_from_ore")
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.ORE_SULFUR, 2)
+				.addItemTagInput(ElectrodynamicsTags.Items.ORE_SULFUR, 1)
 				//
 				.addItemBiproduct(new ProbableItem(Items.COAL, 1, 0.05))
 				//
@@ -265,7 +265,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 
 		newRecipe(new ItemStack(Items.COBBLESTONE, 1), 0.01F, 200, 350.0, "cobblestone_from_stone")
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.ORE_SULFUR, 2)
+				.addItemTagInput(Tags.Items.STONE, 1)
 				//
 				.addItemBiproduct(new ProbableItem(Items.GRAVEL, 1, 0.4))
 				//

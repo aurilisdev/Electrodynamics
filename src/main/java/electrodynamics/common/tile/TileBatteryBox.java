@@ -54,7 +54,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentInventory(this).size(4).inputs(1).upgrades(3).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid((i, s, c) -> i == 3 ? s.getItem() instanceof ItemElectric : machineValidator().test(i, s, c)));
+		addComponent(new ComponentInventory(this).size(4).inputs(1).upgrades(3).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid((i, s, c) -> i == 0 ? s.getItem() instanceof ItemElectric : machineValidator().test(i, s, c)));
 		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 		addComponent(new ComponentElectrodynamic(this).voltage(baseVoltage).maxJoules(max).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
 
@@ -75,7 +75,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
 			electro.joules(electro.getMaxJoulesStored());
 		}
-		electro.drainElectricItem(3);
+		electro.drainElectricItem(0);
 	}
 
 	@Override
@@ -91,39 +91,39 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		return super.getCapability(capability, face);
 	}
 
-	//this is changed so all the battery boxes can convert FE to joules, regardless of voltage
+	// this is changed so all the battery boxes can convert FE to joules, regardless of voltage
 	@Override
 	public int receiveEnergy(int maxReceive, boolean simulate) {
-		
+
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		
+
 		int accepted = Math.min(maxReceive, (int) (electro.getMaxJoulesStored() - electro.getJoulesStored()));
-		
-		if(!simulate) {
+
+		if (!simulate) {
 			electro.joules(electro.getJoulesStored() + accepted);
 		}
-		
+
 		return accepted;
 	}
 
-	//we still mandate 120V for all FE cables here though
+	// we still mandate 120V for all FE cables here though
 	@Override
 	public int extractEnergy(int maxExtract, boolean simulate) {
-		
+
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		
+
 		int taken = Math.min(maxExtract, (int) electro.getJoulesStored());
-		
-		if(!simulate) {
-		
+
+		if (!simulate) {
+
 			electro.joules(electro.getJoulesStored() - taken);
-			
-			if(electro.getVoltage() > ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) {
+
+			if (electro.getVoltage() > ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) {
 				electro.overVoltage(TransferPack.joulesVoltage(taken, electro.getVoltage()));
 			}
-			
+
 		}
-		
+
 		return taken;
 	}
 
