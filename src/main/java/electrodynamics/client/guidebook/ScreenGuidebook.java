@@ -7,49 +7,75 @@ import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
-import electrodynamics.client.guidebook.utils.ImageWrapperObject;
-import electrodynamics.client.guidebook.utils.ItemWrapperObject;
-import electrodynamics.client.guidebook.utils.TextWrapperObject;
-import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Module;
+import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Page;
 import electrodynamics.client.guidebook.utils.components.Page.ChapterPage;
+import electrodynamics.client.guidebook.utils.components.Page.ImageWrapper;
+import electrodynamics.client.guidebook.utils.components.Page.ItemWrapper;
 import electrodynamics.client.guidebook.utils.components.Page.ModulePage;
+import electrodynamics.client.guidebook.utils.components.Page.TextWrapper;
+import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.ItemWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.TextWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject.ImageTextDescriptor;
 import electrodynamics.common.inventory.container.item.ContainerGuidebook;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.button.ButtonGuidebook;
 import electrodynamics.prefab.screen.component.button.ButtonGuidebook.ButtonType;
+import electrodynamics.prefab.screen.component.button.ButtonSpecificPage;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 
+/**
+ * A basic implementation of a Guidebook that allows for variable length text
+ * and images along with some basic formatting options.
+ * 
+ * @author skip999
+ *
+ */
 public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
-	private static List<Module> GUIDEBOOK_MODULES = new ArrayList<>();
-	private static List<Page> GUIDEBOOK_PAGES = new ArrayList<>();
-	private static boolean hasInitHappened = false;
-	private static int modulePageOffset = 0;
-
-	// index represents page number; 0 indexed
-	private static List<List<Button>> MODULE_BUTTONS = new ArrayList<>();
-	private static List<List<Button>> CHAPTER_BUTTONS = new ArrayList<>();
-
-	private static int currPageNumber = 0;
+	private static final List<Module> GUIDEBOOK_MODULES = new ArrayList<>();
 
 	// 0 is defined as the starting page
 	private static final int GUIDEBOOK_STARTING_PAGE = 0;
 
 	private static final int MODULES_PER_PAGE = 4;
+	private static final int CHAPTERS_PER_PAGE = 4;
 
 	private static final int TEXTURE_WIDTH = 176;
 	private static final int TEXTURE_HEIGHT = 224;
+
+	public static final int TEXT_START_Y = 40;
+	public static final int TEXT_END_Y = 180;
+
+	public static final int LINE_HEIGHT = 10;
+
+	public static final int TEXT_START_X = 10;
+	public static final int TEXT_END_X = 158;
+
+	public static final int TEXT_WIDTH = TEXT_END_X - TEXT_START_X;
+	public static final int LINES_PER_PAGE = (TEXT_END_Y - TEXT_START_Y) / LINE_HEIGHT + 1;// have to add one to get the last line
+
+	public static final int Y_PIXELS_PER_PAGE = LINES_PER_PAGE * LINE_HEIGHT;
+
+	private static final int MODULE_SEPERATION = 40;
+	private static final int CHAPTER_SEPERATION = 35;
+
+	public static int currPageNumber = 0;
+
+	private int nextPageNumber = 0;
+
+	private List<Page> pages = new ArrayList<>();
 
 	private static final ResourceLocation PAGE_TEXTURE = new ResourceLocation(References.ID + ":textures/screen/guidebook/resources/guidebookpage.png");
 
@@ -59,6 +85,21 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	private ButtonGuidebook home;
 	private ButtonGuidebook chapters;
 
+	private int lineY = TEXT_START_Y;
+
+	private int lineX = TEXT_START_X;
+
+	private int imagePixelHeightLeft = LINES_PER_PAGE * LINE_HEIGHT;
+	private int imagePixelWidthLeft = TEXT_WIDTH;
+
+	private int previousHeight = 0;
+
+	private int color = 0;
+	private boolean centered = false;
+	private MutableComponent mergedText = Component.empty();
+
+	private boolean previousWasText = false;
+
 	public ScreenGuidebook(ContainerGuidebook screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
 		imageHeight += 58;
@@ -67,34 +108,57 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 	@Override
 	protected void init() {
-		if (!hasInitHappened) {
-			sortModules();
-			int pageOffset = GUIDEBOOK_STARTING_PAGE + (int) Math.ceil((double) GUIDEBOOK_MODULES.size() / (double) MODULES_PER_PAGE);
-			modulePageOffset = pageOffset;
-			for (Module module : GUIDEBOOK_MODULES) {
-				pageOffset += module.setPageNumbers(pageOffset);
-			}
-			for (int i = 0; i < modulePageOffset; i++) {
-				GUIDEBOOK_PAGES.add(new ModulePage(i));
-			}
-			for (Module module : GUIDEBOOK_MODULES) {
-				GUIDEBOOK_PAGES.addAll(module.getAllPages());
-			}
-			hasInitHappened = true;
-		}
-		initChapterButtons();
-		initModuleButtons();
+
 		super.init();
+
+		/*
+		 * we want to do this every time init is called to deal with the font reloading
+		 * 
+		 * for all of the chapters, take their lang keys and convert them into formatted
+		 * char arrays
+		 * 
+		 * then split them based upon the page width
+		 * 
+		 * * we want images to be inserted between the text
+		 * 
+		 * then assign the split arrays to a page
+		 * 
+		 * then assign those pages to the chapter
+		 */
+
+		sortModules();
+
 		initPageButtons();
-		for (List<Button> buttons : MODULE_BUTTONS) {
-			for (Button button : buttons) {
-				addRenderableWidget(button);
+
+		genModuelPages();
+
+		genPages();
+
+	}
+
+	private void sortModules() {
+		List<Module> temp = new ArrayList<>(GUIDEBOOK_MODULES);
+		GUIDEBOOK_MODULES.clear();
+		GUIDEBOOK_MODULES.add(temp.get(0));
+		temp.remove(0);
+		List<MutableComponent> cats = new ArrayList<>();
+		for (Module mod : temp) {
+			cats.add(mod.getTitle());
+		}
+		Collections.sort(cats, (component1, component2) -> component1.toString().compareToIgnoreCase(component2.toString()));
+		for (MutableComponent cat : cats) {
+			for (int i = 0; i < temp.size(); i++) {
+				Module mod = temp.get(i);
+				if (mod.isCat(cat)) {
+					GUIDEBOOK_MODULES.add(mod);
+					temp.remove(i);
+					break;
+				}
 			}
 		}
-		for (List<Button> buttons : CHAPTER_BUTTONS) {
-			for (Button button : buttons) {
-				addRenderableWidget(button);
-			}
+		for (Module module : GUIDEBOOK_MODULES) {
+			module.chapters.clear();
+			module.addChapters();
 		}
 	}
 
@@ -111,96 +175,376 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		addRenderableWidget(chapters);
 	}
 
-	private void initModuleButtons() {
-		MODULE_BUTTONS.clear();
+	private void genModuelPages() {
 		int guiWidth = (width - imageWidth) / 2;
 		int guiHeight = (height - imageHeight) / 2;
-		List<Module> subModules;
-		for (int i = 0; i < modulePageOffset; i++) {
-			subModules = getModuleSubset(i * MODULES_PER_PAGE);
-			List<Button> pageButtons = new ArrayList<>();
-			for (int j = 0; j < subModules.size(); j++) {
-				Module module = subModules.get(j);
-				pageButtons.add(new Button(guiWidth + 45, guiHeight + 43 + j * MODULE_SEPERATION, 120, 20, module.getTitle(), button -> setPageNumber(module.getStartingPageNumber())));
+
+		int numPages = (int) Math.ceil((double) GUIDEBOOK_MODULES.size() / (double) MODULES_PER_PAGE);
+		int index = 0;
+		for (int i = 0; i < numPages; i++) {
+			final ModulePage page = new ModulePage(nextPageNumber);
+
+			for (int j = 0; i < MODULES_PER_PAGE; j++) {
+
+				if (index >= GUIDEBOOK_MODULES.size()) {
+					break;
+				}
+				Module module = GUIDEBOOK_MODULES.get(index);
+				page.images.add(new ImageWrapper(TEXT_START_X, j * MODULE_SEPERATION + TEXT_START_Y - 2, module.getLogo()));
+				addRenderableWidget(new ButtonSpecificPage(guiWidth + 45, guiHeight + 43 + j * MODULE_SEPERATION, 120, 20, nextPageNumber, module.getTitle(), button -> setPageNumber(module.getPage())));
+				index++;
 			}
-			MODULE_BUTTONS.add(pageButtons);
+
+			pages.add(page);
+
+			nextPageNumber++;
 		}
+
 	}
 
-	private void initChapterButtons() {
-		CHAPTER_BUTTONS.clear();
+	private void genPages() {
+
 		int guiWidth = (width - imageWidth) / 2;
 		int guiHeight = (height - imageHeight) / 2;
-		List<Chapter> currChapters;
+
 		for (Module module : GUIDEBOOK_MODULES) {
-			currChapters = module.getChapters();
-			Chapter chapter;
+
+			module.setStartPage(nextPageNumber);
+
+			int numPages = (int) Math.ceil((double) module.chapters.size() / (double) CHAPTERS_PER_PAGE);
 			int index = 0;
-			List<Button> pageButtons = new ArrayList<>();
-			for (int i = 0; i < module.getChapterPages(); i++) {
-				for (int j = 0; j < Module.CHAPTERS_PER_PAGE; j++) {
-					if (index < currChapters.size()) {
-						chapter = currChapters.get(index);
-						int chapterNumber = chapter.getStartingPageNumber();
-						pageButtons.add(new Button(guiWidth + 45, guiHeight + 56 + j * CHAPTER_SEPERATION, 120, 20, chapter.getTitle(), button -> setPageNumber(chapterNumber)));
-						index++;
-					} else {
+
+			for (int i = 0; i < numPages; i++) {
+				final ChapterPage chapterPage = new ChapterPage(nextPageNumber, module);
+				for (int j = 0; j < CHAPTERS_PER_PAGE; j++) {
+					if (index >= module.chapters.size()) {
 						break;
 					}
+					final Chapter chapter = module.chapters.get(index);
+
+					if (chapter.getLogo() instanceof ImageWrapperObject image) {
+						chapterPage.images.add(new ImageWrapper(TEXT_START_X, j * CHAPTER_SEPERATION + TEXT_START_Y + 10, image));
+					} else if (chapter.getLogo() instanceof ItemWrapperObject item) {
+						chapterPage.items.add(new ItemWrapper(TEXT_START_X, j * CHAPTER_SEPERATION + TEXT_START_Y + 10, item));
+					}
+
+					addRenderableWidget(new ButtonSpecificPage(guiWidth + 45, guiHeight + 56 + j * CHAPTER_SEPERATION, 120, 20, nextPageNumber, chapter.getTitle(), button -> setPageNumber(chapter.getStartPage())));
+
+					index++;
 				}
+				pages.add(chapterPage);
+				nextPageNumber++;
+
 			}
-			CHAPTER_BUTTONS.add(pageButtons);
+
+			for (Chapter chapter : module.chapters) {
+
+				chapter.setStartPage(nextPageNumber);
+
+				Page currentPage = new Page(nextPageNumber);
+				currentPage.associatedChapter = chapter;
+				nextPageNumber++;
+
+				for (Object data : chapter.pageData) {
+
+					if (data instanceof TextWrapperObject textWrapper) {
+
+						previousWasText = true;
+						lineX = TEXT_START_X;
+						imagePixelWidthLeft = TEXT_WIDTH;
+						previousHeight = 0;
+
+						if (textWrapper == TextWrapperObject.BLANK_LINE) {
+
+							currentPage = writeCurrentTextToPage(currentPage, chapter);
+
+							imagePixelHeightLeft -= LINE_HEIGHT;
+
+							if (imagePixelHeightLeft <= 0) {
+								pages.add(currentPage);
+								currentPage = new Page(nextPageNumber);
+								currentPage.associatedChapter = chapter;
+								nextPageNumber++;
+
+								imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
+								lineY = TEXT_START_Y;
+								lineX = TEXT_START_X;
+								imagePixelWidthLeft = TEXT_WIDTH;
+							} else {
+								lineY += LINE_HEIGHT;
+							}
+
+						} else {
+
+							if (textWrapper.newPage || textWrapper.isSeparateStart) {
+
+								currentPage = writeCurrentTextToPage(currentPage, chapter);
+
+							}
+
+							centered = textWrapper.center;
+
+							color = textWrapper.color;
+
+							MutableComponent indentions = Component.empty();
+
+							for (int i = 0; i < textWrapper.numberOfIndentions; i++) {
+								indentions = indentions.append("    ");
+							}
+
+							mergedText = mergedText.append(indentions.append(textWrapper.text));
+
+							if (textWrapper.newPage) {
+
+								pages.add(currentPage);
+								currentPage = new Page(nextPageNumber);
+								currentPage.associatedChapter = chapter;
+								nextPageNumber++;
+
+								imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
+								lineY = TEXT_START_Y;
+
+							}
+						}
+
+					} else if (data instanceof ImageWrapperObject imageWrapper) {
+
+						if (previousWasText) {
+							currentPage = writeCurrentTextToPage(currentPage, chapter);
+							centered = false;
+							previousWasText = false;
+						}
+
+						if (imageWrapper.newPage) {
+							pages.add(currentPage);
+							currentPage = new Page(nextPageNumber);
+							currentPage.associatedChapter = chapter;
+							nextPageNumber++;
+
+							imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
+							lineY = TEXT_START_Y;
+							lineX = TEXT_START_X;
+							imagePixelWidthLeft = TEXT_WIDTH;
+							previousHeight = 0;
+						}
+
+						int trueHeight = imageWrapper.trueHeight - imageWrapper.descriptorTopOffset + imageWrapper.descriptorBottomOffset;
+
+						if (trueHeight > Y_PIXELS_PER_PAGE) {
+							throw new UnsupportedOperationException("The image cannot be more than " + (Y_PIXELS_PER_PAGE) + " pixels tall!");
+						}
+
+						if (imageWrapper.allowNextToOthers && imageWrapper.width <= imagePixelWidthLeft) {
+							imagePixelWidthLeft -= imageWrapper.width;
+
+							currentPage.images.add(new ImageWrapper(lineX, lineY, imageWrapper));
+
+							lineX += imageWrapper.width;
+
+							if (trueHeight > previousHeight) {
+								lineY += previousHeight;
+								previousHeight = trueHeight;
+								lineY -= trueHeight;
+							}
+
+						} else {
+							lineX = TEXT_START_X;
+							imagePixelWidthLeft = TEXT_WIDTH;
+							previousHeight = 0;
+
+							if (trueHeight > imagePixelHeightLeft) {
+
+								pages.add(currentPage);
+								currentPage = new Page(nextPageNumber);
+								currentPage.associatedChapter = chapter;
+								nextPageNumber++;
+
+								imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
+								lineY = TEXT_START_Y;
+								lineX = TEXT_START_X;
+								imagePixelWidthLeft = TEXT_WIDTH;
+								previousHeight = 0;
+
+							}
+
+							currentPage.images.add(new ImageWrapper(lineX, lineY, imageWrapper));
+
+							lineY += trueHeight;
+							imagePixelHeightLeft -= trueHeight;
+						}
+
+						if (imagePixelHeightLeft == 0) {
+							pages.add(currentPage);
+							currentPage = new Page(nextPageNumber);
+							currentPage.associatedChapter = chapter;
+							nextPageNumber++;
+
+							imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
+							lineY = TEXT_START_Y;
+							lineX = TEXT_START_X;
+							imagePixelWidthLeft = TEXT_WIDTH;
+						}
+
+					} else if (data instanceof ItemWrapperObject itemWrapper) {
+
+						if (previousWasText) {
+							currentPage = writeCurrentTextToPage(currentPage, chapter);
+							centered = false;
+							previousWasText = false;
+						}
+
+						if (itemWrapper.newPage) {
+							pages.add(currentPage);
+							currentPage = new Page(nextPageNumber);
+							currentPage.associatedChapter = chapter;
+							nextPageNumber++;
+
+							imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
+							lineY = TEXT_START_Y;
+							lineX = TEXT_START_X;
+							imagePixelWidthLeft = TEXT_WIDTH;
+						}
+
+						int trueHeight = itemWrapper.height - itemWrapper.descriptorTopOffset + itemWrapper.descriptorBottomOffset;
+
+						if (trueHeight > Y_PIXELS_PER_PAGE) {
+							throw new UnsupportedOperationException("The item cannot be more than " + Y_PIXELS_PER_PAGE + " pixels tall!");
+						}
+
+						if (itemWrapper.allowNextToOthers && itemWrapper.width <= imagePixelWidthLeft) {
+
+							imagePixelWidthLeft -= itemWrapper.width;
+
+							currentPage.items.add(new ItemWrapper(lineX, lineY, itemWrapper));
+
+							lineX += itemWrapper.width;
+
+							if (trueHeight > previousHeight) {
+								lineY += previousHeight;
+								previousHeight = trueHeight;
+								lineY -= trueHeight;
+							}
+
+						} else {
+
+							if (trueHeight > imagePixelHeightLeft) {
+
+								pages.add(currentPage);
+								currentPage = new Page(nextPageNumber);
+								currentPage.associatedChapter = chapter;
+								nextPageNumber++;
+
+								imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
+								lineY = TEXT_START_Y;
+								lineX = TEXT_START_X;
+								imagePixelWidthLeft = TEXT_WIDTH;
+
+							}
+
+							currentPage.items.add(new ItemWrapper(lineX, lineY, itemWrapper));
+
+							lineY += trueHeight;
+							imagePixelHeightLeft -= trueHeight;
+
+						}
+
+						if (imagePixelHeightLeft == 0) {
+							pages.add(currentPage);
+							currentPage = new Page(nextPageNumber);
+							currentPage.associatedChapter = chapter;
+							nextPageNumber++;
+
+							imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
+							lineY = TEXT_START_Y;
+							lineX = TEXT_START_X;
+							imagePixelWidthLeft = TEXT_WIDTH;
+						}
+
+					}
+
+				}
+
+				currentPage = writeCurrentTextToPage(currentPage, chapter);
+				pages.add(currentPage);
+				imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
+				lineY = TEXT_START_Y;
+				lineX = TEXT_START_X;
+				imagePixelWidthLeft = TEXT_WIDTH;
+				// nextPageNumber++;
+
+			}
+
 		}
+
 	}
 
-	private static final int MODULE_SEPERATION = 40;
-	private static final int CHAPTER_SEPERATION = 35;
+	private Page writeCurrentTextToPage(Page currentPage, Chapter chapter) {
+
+		if (mergedText.equals(Component.empty())) {
+			return currentPage;
+		}
+
+		int remainder = lineY % LINE_HEIGHT;
+		if (remainder > 0) {
+			int whole = lineY - remainder;
+			lineY = whole + LINE_HEIGHT;
+			imagePixelHeightLeft = TEXT_END_Y + LINE_HEIGHT - lineY;
+		}
+
+		List<FormattedCharSequence> text = new ArrayList<>();
+		text.addAll(font.split(mergedText, TEXT_WIDTH));
+		mergedText = Component.empty();
+
+		while (text.size() > 0) {
+
+			if (imagePixelHeightLeft <= 0) {
+				imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
+				lineY = TEXT_START_Y;
+				pages.add(currentPage);
+				currentPage = new Page(nextPageNumber);
+				currentPage.associatedChapter = chapter;
+				nextPageNumber++;
+			}
+
+			currentPage.text.add(new TextWrapper(lineX, lineY, text.get(0), color, centered));
+
+			text.remove(0);
+
+			lineY += LINE_HEIGHT;
+
+			imagePixelHeightLeft -= LINE_HEIGHT;
+		}
+
+		return currentPage;
+
+	}
 
 	@Override
 	protected void renderBg(PoseStack stack, float partialTick, int x, int y) {
-		Page page = getCurrentPage();
-		updatePageArrowVis();
-		updateModuleButtonVis();
-		// this one may need to be reworked if it lags
-		updateChapterButtonVis();
-		RenderingUtils.bindTexture(PAGE_TEXTURE);
+
 		int guiWidth = (width - imageWidth) / 2;
 		int guiHeight = (height - imageHeight) / 2;
+		RenderingUtils.bindTexture(PAGE_TEXTURE);
 		blit(stack, guiWidth, guiHeight, 0, 0, TEXTURE_WIDTH, TEXTURE_HEIGHT);
 
-		if (page instanceof ModulePage) {
-			List<Module> pageModules = getModuleSubset(getCurrentPageNumber() * MODULES_PER_PAGE);
+		Page page = getCurrentPage();
 
-			for (int i = 0; i < pageModules.size(); i++) {
-				Module module = pageModules.get(i);
-				ImageWrapperObject image = module.getLogo();
-				RenderingUtils.bindTexture(new ResourceLocation(image.location));
-				blit(stack, guiWidth + image.xOffset, guiHeight + image.yOffet + i * MODULE_SEPERATION, image.uStart, image.vStart, image.width, image.height, image.imgheight, image.imgwidth);
-			}
-		} else if (page instanceof ChapterPage) {
-			Module currentModule = getCurrentModule();
-			if (currentModule != null) {
-				List<Chapter> chaptersForPage = currentModule.getChapterSubList(getCurrentPageNumber());
-				for (int i = 0; i < chaptersForPage.size(); i++) {
-					Chapter chapter = chaptersForPage.get(i);
-					Object object = chapter.getLogo();
-					if (object instanceof ImageWrapperObject image) {
-						RenderingUtils.bindTexture(new ResourceLocation(image.location));
-						blit(stack, guiWidth + image.xOffset, guiHeight + image.yOffet + i * CHAPTER_SEPERATION, image.uStart, image.vStart, image.width, image.height, image.imgwidth, image.imgheight);
-					} else if (object instanceof ItemWrapperObject item) {
-						RenderingUtils.renderItemScaled(item.item, guiWidth + item.xOffset, guiHeight + item.yOffset + i * CHAPTER_SEPERATION, item.scale);
-					}
+		updatePageArrowVis();
 
-				}
-			}
-		} else {
-			for (ImageWrapperObject image : page.getImages()) {
-				RenderingUtils.bindTexture(new ResourceLocation(image.location));
-				blit(stack, guiWidth + image.xOffset, guiHeight + image.yOffet, getBlitOffset(), image.uStart, image.vStart, image.width, image.height, image.imgheight, image.imgwidth);
-			}
-			for (ItemWrapperObject item : page.getItems()) {
-				RenderingUtils.renderItemScaled(item.item, guiWidth + item.xOffset, guiHeight + item.yOffset, item.scale);
-			}
+		for (ImageWrapper wrapper : page.images) {
+
+			ImageWrapperObject image = wrapper.image();
+
+			RenderingUtils.bindTexture(wrapper.image().location);
+			blit(stack, guiWidth + wrapper.x() + image.xOffset, guiHeight + wrapper.y() + image.yOffset - image.descriptorTopOffset, image.uStart, image.vStart, image.width, image.height, image.imgheight, image.imgwidth);
+
+		}
+
+		for (ItemWrapper wrapper : page.items) {
+
+			ItemWrapperObject item = wrapper.item();
+
+			RenderingUtils.renderItemScaled(item.item, guiWidth + item.xOffset + wrapper.x(), guiHeight + item.yOffset + wrapper.y(), item.scale);
 		}
 
 	}
@@ -213,9 +557,11 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		Page page = getCurrentPage();
 
 		if (page instanceof ModulePage) {
+
 			Component modTitle = TextUtils.guidebook("availablemodules").withStyle(ChatFormatting.BOLD);
 			int xShift = (TEXTURE_WIDTH - font.width(modTitle)) / 2;
 			font.draw(stack, modTitle, refX + xShift, refY + 16, 4210752);
+
 		} else if (page instanceof ChapterPage) {
 			Module currMod = getCurrentModule();
 			if (currMod != null) {
@@ -234,7 +580,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 				int xShift = (TEXTURE_WIDTH - font.width(moduleTitle)) / 2;
 				font.draw(stack, moduleTitle, refX + xShift, refY + 16, 4210752);
 
-				Component chapTitle = page.getChapterName().withStyle(ChatFormatting.UNDERLINE);
+				Component chapTitle = page.associatedChapter.getTitle().withStyle(ChatFormatting.UNDERLINE);
 				xShift = (TEXTURE_WIDTH - font.width(chapTitle)) / 2;
 				font.draw(stack, chapTitle, refX + xShift, refY + 26, 4210752);
 
@@ -242,67 +588,60 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 				xShift = (TEXTURE_WIDTH - font.width(pageNumber)) / 2;
 				font.draw(stack, pageNumber, refX + xShift, refY + 200, 4210752);
 
-				for (TextWrapperObject text : page.getText()) {
-					font.draw(stack, text.text, refX + text.xOffset, refY + text.yOffset, text.color);
+				for (TextWrapper text : page.text) {
+
+					if (text.centered()) {
+						xShift = (TEXT_WIDTH - font.width(text.characters())) / 2;
+						font.draw(stack, text.characters(), text.x() + refX + xShift, refY + text.y(), text.color());
+					} else {
+						font.draw(stack, text.characters(), text.x() + refX, text.y() + refY, text.color());
+					}
+
 				}
+
+				for (ImageWrapper wrapper : page.images) {
+
+					ImageWrapperObject image = wrapper.image();
+
+					for (ImageTextDescriptor descriptor : image.descriptors) {
+						font.draw(stack, descriptor.text, refX + wrapper.x() + descriptor.xOffsetFromImage, refY + wrapper.y() + descriptor.yOffsetFromImage, descriptor.color);
+					}
+
+				}
+
+				for (ItemWrapper wrapper : page.items) {
+
+					ItemWrapperObject item = wrapper.item();
+
+					for (ImageTextDescriptor descriptor : item.descriptors) {
+						font.draw(stack, descriptor.text, refX + wrapper.x() + descriptor.xOffsetFromImage, refY + wrapper.y() + descriptor.yOffsetFromImage, descriptor.color);
+					}
+
+				}
+
 			}
 		}
 	}
 
-	private static int getCurrentModuleNumber() {
-		for (int i = 0; i < GUIDEBOOK_MODULES.size(); i++) {
-			Module module = GUIDEBOOK_MODULES.get(i);
-			if (module.isPageInModule(currPageNumber)) {
-				return i;
-			}
-		}
-		return -1;
-	}
+	private Module getCurrentModule() {
 
-	private static Module getCurrentModule() {
-		int mod = getCurrentModuleNumber();
-		if (mod > -1) {
-			return GUIDEBOOK_MODULES.get(mod);
+		Page page = getCurrentPage();
+
+		if (page instanceof ChapterPage chapter) {
+			return chapter.associatedModule;
+		} else if (page.associatedChapter != null) {
+			return page.associatedChapter.module;
 		}
+
 		return null;
 	}
 
-	private static Page getCurrentPage() {
-		return GUIDEBOOK_PAGES.get(currPageNumber);
-	}
+	private Page getCurrentPage() {
 
-	public static void addGuidebookModule(Module module) {
-		if (!module.isFirst() || GUIDEBOOK_MODULES.isEmpty()) {
-			GUIDEBOOK_MODULES.add(module);
-		} else {
-			List<Module> temp = new ArrayList<>(GUIDEBOOK_MODULES);
-			GUIDEBOOK_MODULES = new ArrayList<>();
-			GUIDEBOOK_MODULES.add(module);
-			GUIDEBOOK_MODULES.addAll(temp);
+		if (currPageNumber >= pages.size()) {
+			currPageNumber = pages.size() - 1;
 		}
-	}
-
-	// You are really fucking around if you get this to crash...
-	private static void sortModules() {
-		List<Module> temp = new ArrayList<>(GUIDEBOOK_MODULES);
-		GUIDEBOOK_MODULES = new ArrayList<>();
-		GUIDEBOOK_MODULES.add(temp.get(0));
-		temp.remove(0);
-		List<MutableComponent> cats = new ArrayList<>();
-		for (Module mod : temp) {
-			cats.add(mod.getTitle());
-		}
-		Collections.sort(cats, (component1, component2) -> component1.toString().compareToIgnoreCase(component2.toString()));
-		for (MutableComponent cat : cats) {
-			for (int i = 0; i < temp.size(); i++) {
-				Module mod = temp.get(i);
-				if (mod.isCat(cat)) {
-					GUIDEBOOK_MODULES.add(mod);
-					temp.remove(i);
-					break;
-				}
-			}
-		}
+		return pages.get(currPageNumber);
 	}
 
 	protected void pageForward() {
@@ -322,7 +661,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	protected void goToChapterPage() {
 		Module module = getCurrentModule();
 		if (module != null) {
-			setPageNumber(module.getStartingPageNumber());
+			setPageNumber(module.getPage());
 		}
 	}
 
@@ -330,27 +669,21 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		setPageNumber(0);
 	}
 
-	private static int getPageCount() {
-		return GUIDEBOOK_PAGES.size();
+	private int getPageCount() {
+		return pages.size();
 	}
 
 	private static int getCurrentPageNumber() {
 		return currPageNumber;
 	}
 
-	private static void movePage(int number) {
+	private void movePage(int number) {
 		currPageNumber += number;
-		currPageNumber = Mth.clamp(currPageNumber, 0, GUIDEBOOK_PAGES.size() - 1);
+		currPageNumber = Mth.clamp(currPageNumber, 0, pages.size() - 1);
 	}
 
 	private static void setPageNumber(int number) {
 		currPageNumber = number;
-	}
-
-	private static List<Module> getModuleSubset(int offset) {
-		int end = offset + MODULES_PER_PAGE;
-		int sizeCheck = GUIDEBOOK_MODULES.size() - 1;
-		return GUIDEBOOK_MODULES.subList(offset, end > sizeCheck ? sizeCheck + 1 : end);
 	}
 
 	private void updatePageArrowVis() {
@@ -358,37 +691,13 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		back.visible = currPageNumber > GUIDEBOOK_STARTING_PAGE;
 	}
 
-	private static void updateModuleButtonVis() {
-		for (List<Button> buttons : MODULE_BUTTONS) {
-			for (Button button : buttons) {
-				button.visible = false;
-			}
+	public static void addGuidebookModule(Module module) {
+		if (module instanceof ModuleElectrodynamics) {
+			GUIDEBOOK_MODULES.add(0, module);
+		} else {
+			GUIDEBOOK_MODULES.add(module);
 		}
-		if (getCurrentPage() instanceof ModulePage) {
-			for (Button button : MODULE_BUTTONS.get(currPageNumber)) {
-				button.visible = true;
-			}
-		}
+
 	}
 
-	private static void updateChapterButtonVis() {
-		for (List<Button> buttons : CHAPTER_BUTTONS) {
-			for (Button button : buttons) {
-				button.visible = false;
-			}
-		}
-		if (getCurrentPage() instanceof ChapterPage) {
-			int currModNumber = getCurrentModuleNumber();
-			if (currModNumber > -1) {
-				Module currentModule = GUIDEBOOK_MODULES.get(currModNumber);
-				List<Chapter> currChaps = currentModule.getChapters();
-				List<Button> chapButtons = CHAPTER_BUTTONS.get(currModNumber);
-				for (int i = 0; i < currChaps.size(); i++) {
-					if (currChaps.get(i).getChapterPageNumber() == getCurrentPageNumber()) {
-						chapButtons.get(i).visible = true;
-					}
-				}
-			}
-		}
-	}
 }

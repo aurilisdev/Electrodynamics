@@ -1,62 +1,45 @@
 package electrodynamics.client.guidebook.utils.components;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import electrodynamics.client.guidebook.utils.pagedata.TextWrapperObject;
 import net.minecraft.network.chat.MutableComponent;
 
+/**
+ * A simple data-wrapping class that contains a logo, a name, and the content
+ * associated with it
+ * 
+ * @author skip999
+ *
+ */
 public abstract class Chapter {
 
-	private List<Page> pages;
-	private int startingPageNumber;
-	private int endingPageNumber;
+	private int startPage = 0;
+	public List<Object> pageData = new ArrayList<>();
+	public final Module module;
 
-	private int chapterPageNumber;
-
-	public Chapter() {
-		pages = genPages();
+	public Chapter(Module module) {
+		addData();
+		this.module = module;
 	}
 
-	public int setPageNumbers(int startingPageNumber) {
-		this.startingPageNumber = startingPageNumber;
-		int count = 0;
-		for (Page page : pages) {
-			page.setPageNumber(startingPageNumber);
-			page.setChapterName(getTitle());
-			startingPageNumber++;
-			count++;
-		}
-		endingPageNumber = startingPageNumber;
-		return count;
+	public void setStartPage(int page) {
+		startPage = page;
 	}
 
-	public List<Page> getPages() {
-		return pages;
+	public int getStartPage() {
+		return startPage;
 	}
 
-	public int getStartingPageNumber() {
-		return startingPageNumber;
-	}
-
-	public int getEndingPageNumber() {
-		return endingPageNumber;
-	}
-
-	public void setChapterPageNumber(int number) {
-		chapterPageNumber = number;
-	}
-
-	public int getChapterPageNumber() {
-		return chapterPageNumber;
-	}
-
-	public boolean isPageInChapter(int pageNumber) {
-		return pageNumber >= startingPageNumber && pageNumber < endingPageNumber;
-	}
-
-	protected abstract List<Page> genPages();
+	public abstract void addData();
 
 	public abstract Object getLogo();
 
 	public abstract MutableComponent getTitle();
+
+	protected void blankLine() {
+		pageData.add(TextWrapperObject.BLANK_LINE);
+	}
 
 }

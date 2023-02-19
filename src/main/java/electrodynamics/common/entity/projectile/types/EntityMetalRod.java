@@ -75,7 +75,6 @@ public class EntityMetalRod extends EntityCustomProjectile {
 		entityData.define(NUMBER, number);
 	}
 
-	// It bugs for some reason if I don't have the break
 	@Override
 	public void onHitEntity(EntityHitResult hit) {
 		switch (number) {

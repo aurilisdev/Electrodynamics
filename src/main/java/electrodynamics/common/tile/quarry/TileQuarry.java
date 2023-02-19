@@ -170,7 +170,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		cornerOnRight = property(new Property<>(PropertyType.Boolean, "corneronright", false));
 		isAreaCleared = property(new Property<>(PropertyType.Boolean, "areaClear", false));
 
-		corners = property(new Property<List<BlockPos>>(PropertyType.BlockPosList, "corners", new ArrayList<>()));
+		corners = property(new Property<List<BlockPos>>(PropertyType.BlockPosList, "corners", List.of(OUT_OF_REACH, OUT_OF_REACH, OUT_OF_REACH, OUT_OF_REACH)));
 		miningPos = property(new Property<>(PropertyType.BlockPos, "miningpos", OUT_OF_REACH));
 		prevMiningPos = property(new Property<>(PropertyType.BlockPos, "prevminingpos", OUT_OF_REACH));
 

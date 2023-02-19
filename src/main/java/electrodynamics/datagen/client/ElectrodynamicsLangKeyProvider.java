@@ -205,6 +205,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.copper), "Copper Nugget");
 			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.hslasteel), "HSLA Steel Nugget");
 			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.silver), "Silver Nugget");
+			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.steel), "Steel Nugget");
 			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.stainlesssteel), "Stainless Steel Nugget");
 			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.superconductive), "Superconductive Nugget");
 			addItem(ElectrodynamicsItems.getItem(SubtypeNugget.tin), "Tin Nugget");
@@ -658,270 +659,131 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook(References.ID, "Electrodynamics");
 
+			addGuidebook("chapter.gettingstarted", "Getting Started");
+
+			addGuidebook("chapter.gettingstarted.l1",
+					"Electrodynamics is a mod based around realistic electricity and more realistic concepts in general. As a result, you will find it plays very differently than other tech mods you're used to. The main difference will be that Electro "
+							+ "is much more involved, as that is the price that comes with realism. Keep this in mind as you progress in the mod! If you are brand new to this mod, I highly recommend you read the section on Electricity, as it will help you "
+							+ "immensely. Another important concept to note is that Electrodynamics is not designed to stand on its own. It is based on the concept of the old Universal Electricity mod, in which you have a mod with basic concepts and technology, " + "and then have several addon mods that hook into those concepts.");
+
 			addGuidebook("chapter.ores", "Ores");
 			addGuidebook("chapter.ores.spawnrange", "Y = %1$s to Y = %2$s");
-			addGuidebook("chapter.ores.aluminumname", "Name: Bauxite");
-			addGuidebook("chapter.ores.aluminummaterial", "Material: Aluminum");
-			addGuidebook("chapter.ores.chromitename", "Name: Chromite");
-			addGuidebook("chapter.ores.chromitematerial", "Material: Chromium");
-			addGuidebook("chapter.ores.fluoritename", "Name: Fluorite");
-			addGuidebook("chapter.ores.fluoritematerial", "Material: Fluorite");
-			addGuidebook("chapter.ores.halitename", "Name: Halite");
-			addGuidebook("chapter.ores.halitematerial", "Material: NaCl");
-			addGuidebook("chapter.ores.leadname", "Name: Galena");
-			addGuidebook("chapter.ores.leadmaterial", "Material: Lead");
-			addGuidebook("chapter.ores.lepidolitename", "Name: Lepidolite");
-			addGuidebook("chapter.ores.lepidolitematerial", "Material: Lithium");
-			addGuidebook("chapter.ores.molybdenumname", "Name: Molybdenite");
-			addGuidebook("chapter.ores.molybdenummaterial", "Material: Molybdenum");
-			addGuidebook("chapter.ores.monazitename", "Name: Monazite");
-			addGuidebook("chapter.ores.monazitematerial", "Material: Monazite");
-			addGuidebook("chapter.ores.nitername", "Name: Niter");
-			addGuidebook("chapter.ores.nitermaterial", "Material: Niter");
-			addGuidebook("chapter.ores.rutilename", "Name: Rutile");
-			addGuidebook("chapter.ores.rutilematerial", "Material: Titanium");
-			addGuidebook("chapter.ores.silvername", "Name: Argentite");
-			addGuidebook("chapter.ores.silvermaterial", "Material: Silver");
-			addGuidebook("chapter.ores.sulfurname", "Name: Sulfide");
-			addGuidebook("chapter.ores.sulfurmaterial", "Material: Sulfur");
-			addGuidebook("chapter.ores.sylvitename", "Name: Sylvite");
-			addGuidebook("chapter.ores.sylvitematerial", "Material: KCl");
-			addGuidebook("chapter.ores.thorianitename", "Name: Thorianite");
-			addGuidebook("chapter.ores.thorianitematerial", "Material: Thorium");
-			addGuidebook("chapter.ores.tinname", "Name: Cassiterite");
-			addGuidebook("chapter.ores.tinmaterial", "Material: Tin");
-			addGuidebook("chapter.ores.uraninitename", "Name: Uraninite");
-			addGuidebook("chapter.ores.uraninitematerial", "Material: Uranium");
-			addGuidebook("chapter.ores.vanadinitename", "Name: Vanadinite");
-			addGuidebook("chapter.ores.vanadinitematerial", "Material: Vanadium");
+			addGuidebook("chapter.ores.material", "Material: %s");
+			addGuidebook("chapter.ores.material_aluminum", "Aluminum");
+			addGuidebook("chapter.ores.material_chromium", "Chromium");
+			addGuidebook("chapter.ores.material_fluorite", "Fluorite");
+			addGuidebook("chapter.ores.material_salt", "NaCl");
+			addGuidebook("chapter.ores.material_lead", "Lead");
+			addGuidebook("chapter.ores.material_lithium", "Lithium");
+			addGuidebook("chapter.ores.material_molybdenum", "Molybdenum");
+			addGuidebook("chapter.ores.material_monazite", "Monazite");
+			addGuidebook("chapter.ores.material_niter", "Niter");
+			addGuidebook("chapter.ores.material_titanium", "Titanium");
+			addGuidebook("chapter.ores.material_silver", "Silver");
+			addGuidebook("chapter.ores.material_sulfur", "Sulfur");
+			addGuidebook("chapter.ores.material_sylvite", "KCl");
+			addGuidebook("chapter.ores.material_thorium", "Thorium");
+			addGuidebook("chapter.ores.material_tin", "Tin");
+			addGuidebook("chapter.ores.material_uranium", "Uranium");
+			addGuidebook("chapter.ores.material_vanadium", "Vanadium");
 
 			addGuidebook("chapter.electricity", "Electricity");
-			// spaces are weird, so leave a little space on the end
-			// "of flow is measured in units "
-			addGuidebook("chapter.electricity.p1l1", "    Understanding how energy   ");
-			addGuidebook("chapter.electricity.p1l2", "and electricity work is key.   ");
-			addGuidebook("chapter.electricity.p1l3", "Energy is what machines use to ");
-			addGuidebook("chapter.electricity.p1l4", "do work, and it is measured in ");
-			addGuidebook("chapter.electricity.p1l5", "units of Joules. However, the  ");
-			addGuidebook("chapter.electricity.p1l6", "energy needs to be \"flowing\" ");
-			addGuidebook("chapter.electricity.p1l7", "in order to do work. The rate  ");
-			addGuidebook("chapter.electricity.p1l8", "of flow is measured in units of");
-			addGuidebook("chapter.electricity.p1l9", "Volts. The pressure or force   ");
-			addGuidebook("chapter.electricity.p1l10", "of the flow in measured in    ");
-			addGuidebook("chapter.electricity.p1l11", "units of Amps. The amount of  ");
-			addGuidebook("chapter.electricity.p1l12", "energy transfered in one      ");
-			addGuidebook("chapter.electricity.p1l13", "second is known as the Power");
-			addGuidebook("chapter.electricity.p1l14", "and is measured in units of    ");
-			addGuidebook("chapter.electricity.p1l15", "Watts. Power can easily be     ");
 
-			addGuidebook("chapter.electricity.p2l1", "found through the formula      ");
-			addGuidebook("chapter.electricity.p2l2", "P = IV, where I is the current ");
-			addGuidebook("chapter.electricity.p2l3", "and V is the voltage.    ");
-			addGuidebook("chapter.electricity.p2l4", "    Now, how does this impact  ");
-			addGuidebook("chapter.electricity.p2l5", "you and what do you need to    ");
-			addGuidebook("chapter.electricity.p2l6", "pay attention to? All machines ");
-			addGuidebook("chapter.electricity.p2l7", "require energy at a specific   ");
-			addGuidebook("chapter.electricity.p2l8", "voltage to function. The       ");
-			addGuidebook("chapter.electricity.p2l9", "voltage will be displayed in   ");
-			addGuidebook("chapter.electricity.p2l10", "the tooltip usually. However,  ");
-			addGuidebook("chapter.electricity.p2l11", "if you do not have access to   ");
-			addGuidebook("chapter.electricity.p2l12", "this, there are a couple of    ");
-			addGuidebook("chapter.electricity.p2l13", "methods of checking.           ");
-			addGuidebook("chapter.electricity.p2l14", "    The first method is to look");
-			addGuidebook("chapter.electricity.p2l15", "at the base of the machine in  ");
+			addGuidebook("chapter.electricity.l1", "Understanding how energy and electricity work is key if you want to do well in Electrodynamics. Energy is what machines use to do work, and it is measured in units of Joules (J). However, the energy needs to be \"flowing\" in order to do work. The rate "
+					+ "of flow is measured in units of Volts (V). The pressure or force of the flow in measured in units of Amperes or Amps for short (A or I). The amount of energy transfered in one second is known as the Power and is measured in units of " + "Watts (W). Power can easily be found through the formula P = IV, where I is the current and V is the voltage.");
 
-			addGuidebook("chapter.electricity.p3l1", "question. Most machines have a ");
-			addGuidebook("chapter.electricity.p3l2", "set of colored diagonal lines, ");
-			addGuidebook("chapter.electricity.p3l3", "with the color being directly  ");
-			addGuidebook("chapter.electricity.p3l4", "related to the voltage. The    ");
-			addGuidebook("chapter.electricity.p3l5", "following colors represent the ");
-			addGuidebook("chapter.electricity.p3l6", "following voltages:            ");
-			addGuidebook("chapter.electricity.p3l7", "    Yellow                     ");
-			addGuidebook("chapter.electricity.p3l8", "    Blue                       ");
-			addGuidebook("chapter.electricity.p3l9", "    Red                        ");
-			addGuidebook("chapter.electricity.p3l10", "    Purple                     ");
-			addGuidebook("chapter.electricity.p3l11", "The following pages contain    ");
-			addGuidebook("chapter.electricity.p3l12", "examples of machines with      ");
-			addGuidebook("chapter.electricity.p3l13", "these markings:                ");
-			addGuidebook("chapter.electricity.voltageval", ": %sV");
+			addGuidebook("chapter.electricity.l2", "Now, how does this impact you and what do you need to pay attention to? All machines require energy at a specific voltage to function. The voltage will be displayed in the tooltip usually. However, " + "if you do not have access to this, there are a couple of methods of checking.");
 
-			addGuidebook("chapter.electricity.p4l1", "Examples of 120V machines.     ");
-			addGuidebook("chapter.electricity.p4l2", "Note the markings do not have  ");
-			addGuidebook("chapter.electricity.p4l3", "to be at the base.");
+			addGuidebook("chapter.electricity.l3", "The first method is to look at the base of the machine in question. Most machines have a set of colored diagonal lines, with the color being directly related to the voltage. The " + "following voltages are represented by the following colors:");
 
-			addGuidebook("chapter.electricity.p5l1", "Examples of 240V machines.     ");
+			addGuidebook("chapter.electricity.voltageval", "%1$s V : %2$s");
+			addGuidebook("chapter.electricity.yellow", "Yellow");
+			addGuidebook("chapter.electricity.blue", "Blue");
+			addGuidebook("chapter.electricity.red", "Red");
+			addGuidebook("chapter.electricity.purple", "Purple");
 
-			addGuidebook("chapter.electricity.p6l1", "Examples of 480V machines.     ");
+			addGuidebook("chapter.electricity.l4", "The following pages contain examples of machines with these markings:");
 
-			addGuidebook("chapter.electricity.p7l1", "Examples of 960V machines.     ");
+			addGuidebook("chapter.electricity.voltageexample", "Examples of %sV machines:");
+			addGuidebook("chapter.electricity.voltageexamplenote", "Note the markings do not have to be at the base.");
 
-			addGuidebook("chapter.electricity.p8l1", "The second method for          ");
-			addGuidebook("chapter.electricity.p8l2", "checking a machine's voltage   ");
-			addGuidebook("chapter.electricity.p8l3", "is to look at the voltage      ");
-			addGuidebook("chapter.electricity.p8l4", "displayed by the energy        ");
-			addGuidebook("chapter.electricity.p8l5", "tooltip in it's GUI. This tooltip");
-			addGuidebook("chapter.electricity.p8l6", "will also tell you useful      ");
-			addGuidebook("chapter.electricity.p8l7", "information such as the        ");
-			addGuidebook("chapter.electricity.p8l8", "wattage of the machine. The    ");
-			addGuidebook("chapter.electricity.p8l9", "next page contains examples    ");
-			addGuidebook("chapter.electricity.p8l10", "of this tooltip:               ");
+			addGuidebook("chapter.electricity.l5", "The second method for checking a machine's voltage is to look at the voltage displayed by the energy tooltip in it's GUI. This tooltip will also tell you useful information such as the " + "wattage of the machine. The next page contains examples of this tooltip:");
 
-			addGuidebook("chapter.electricity.p9l1", "Note, the tooltip can also     ");
-			addGuidebook("chapter.electricity.p9l2", "contain other useful info.     ");
+			addGuidebook("chapter.electricity.guivoltagenote", "Note, the tooltip can also contain other useful info.");
 
-			addGuidebook("chapter.electricity.p10l1", "    However, not every machine ");
-			addGuidebook("chapter.electricity.p10l2", "has markings such as the       ");
-			addGuidebook("chapter.electricity.p10l3", "Quarry or has a GUI like the   ");
-			addGuidebook("chapter.electricity.p10l4", "Pump, so it's important to pay ");
-			addGuidebook("chapter.electricity.p10l5", "attention when placing cables  ");
-			addGuidebook("chapter.electricity.p10l6", "and machines. Too low of a     ");
-			addGuidebook("chapter.electricity.p10l7", "voltage, and a machine won't   ");
-			addGuidebook("chapter.electricity.p10l8", "run. Too high of a voltage, and");
-			addGuidebook("chapter.electricity.p10l9", "the machine will explode!      ");
-			addGuidebook("chapter.electricity.p10l10", "    Now that we have a basic   ");
-			addGuidebook("chapter.electricity.p10l11", "understanding of voltage and   ");
-			addGuidebook("chapter.electricity.p10l12", "how it works, it's time to     ");
-			addGuidebook("chapter.electricity.p10l13", "understand the energy I/O      ");
-			addGuidebook("chapter.electricity.p10l14", "ports that machines will have. ");
-			addGuidebook("chapter.electricity.p10l15", "Unlike the voltage indicators  ");
+			addGuidebook("chapter.electricity.l6", "However, not every machine has markings such as the Quarry or has a GUI like the Pump, so it's important to pay attention when placing cables and machines. Too low of a " + "voltage, and a machine won't run. Too high of a voltage, and the machine will explode!");
 
-			addGuidebook("chapter.electricity.p11l1", "discussed previously, these    ");
-			addGuidebook("chapter.electricity.p11l2", "ports are universal to all     ");
-			addGuidebook("chapter.electricity.p11l3", "machines that use energy.      ");
-			addGuidebook("chapter.electricity.p11l4", "There are two ports:");
-			addGuidebook("chapter.electricity.p11l5-1", "Red");
-			addGuidebook("chapter.electricity.p11l5-2", ": Input");
-			addGuidebook("chapter.electricity.p11l6-1", "Grey");
-			addGuidebook("chapter.electricity.p11l6-2", ": Output");
-			addGuidebook("chapter.electricity.p11l7", "Here is an example of each:    ");
+			addGuidebook("chapter.electricity.l7",
+					"Now that we have a basic understanding of voltage and how it works, it's time to understand how to get energy into the machine. All machines that use energy will have an I/O port to connect to. However, unlike the voltage indicators discussed previously, these " + "ports are universal to all machines that use energy. There are two ports for energy:");
 
-			addGuidebook("chapter.electricity.p12l1", "    However, what is connected ");
-			addGuidebook("chapter.electricity.p12l2", "to these ports? Now it's time  ");
-			addGuidebook("chapter.electricity.p12l3", "to discuss how electricity is  ");
-			addGuidebook("chapter.electricity.p12l4", "transfered: Wires. Wires in    ");
-			addGuidebook("chapter.electricity.p12l5", "this mod function a little     ");
-			addGuidebook("chapter.electricity.p12l6", "differently than what you're   ");
-			addGuidebook("chapter.electricity.p12l7", "used to. If you hover over a   ");
-			addGuidebook("chapter.electricity.p12l8", "wire in your inventory, you    ");
-			addGuidebook("chapter.electricity.p12l9", "will notice it has a resistance");
-			addGuidebook("chapter.electricity.p12l10", "and a maximum rated current.   ");
-			addGuidebook("chapter.electricity.p12l11", "The resistance determines how  ");
-			addGuidebook("chapter.electricity.p12l12", "much energy is lost over the   ");
-			addGuidebook("chapter.electricity.p12l13", "wire. You can use P = I*I*R to ");
-			addGuidebook("chapter.electricity.p12l14", "to calculate the exact amount  ");
-			addGuidebook("chapter.electricity.p12l15", "lost. The longer a wire, the   ");
+			addGuidebook("chapter.electricity.energyinput", "Red : Input");
+			addGuidebook("chapter.electricity.energyoutput", "Grey : Output");
 
-			addGuidebook("chapter.electricity.p13l1", "greater the energy loss. In    ");
-			addGuidebook("chapter.electricity.p13l2", "order to minimize power loss,  ");
-			addGuidebook("chapter.electricity.p13l3", "ideal cable networks will have ");
-			addGuidebook("chapter.electricity.p13l4", "short segments with high       ");
-			addGuidebook("chapter.electricity.p13l5", "curent and long segments with  ");
-			addGuidebook("chapter.electricity.p13l6", "low current. This design is    ");
-			addGuidebook("chapter.electricity.p13l7", "highlighted by the maximum     ");
-			addGuidebook("chapter.electricity.p13l8", "current rating of a wire. If   ");
-			addGuidebook("chapter.electricity.p13l9", "this limit is reached, the     ");
-			addGuidebook("chapter.electricity.p13l10", "cable will catch on fire and   ");
-			addGuidebook("chapter.electricity.p13l11", "be destroyed! You will also    ");
-			addGuidebook("chapter.electricity.p13l12", "notice that there are insulated");
-			addGuidebook("chapter.electricity.p13l13", "and non-insulated wires.       ");
-			addGuidebook("chapter.electricity.p13l14", "Non-insulated wires will shock ");
-			addGuidebook("chapter.electricity.p13l15", "the player on contact, while   ");
+			addGuidebook("chapter.electricity.l8", "Here is an example of each:");
 
-			addGuidebook("chapter.electricity.p14l1", "the insulated variant will     ");
-			addGuidebook("chapter.electricity.p14l2", "protect the player up to a     ");
-			addGuidebook("chapter.electricity.p14l3", "rated voltage. (also displayed ");
-			addGuidebook("chapter.electricity.p14l4", "in the wire's tooltip!) It is  ");
-			addGuidebook("chapter.electricity.p14l5", "important to note that wires do");
-			addGuidebook("chapter.electricity.p14l6", "not store energy!              ");
-			addGuidebook("chapter.electricity.p14l7", "    Now that we know how to    ");
-			addGuidebook("chapter.electricity.p14l8", "get energy to a machine and    ");
-			addGuidebook("chapter.electricity.p14l9", "understand it must be at a     ");
-			addGuidebook("chapter.electricity.p14l10", "specific voltage, you're      ");
-			addGuidebook("chapter.electricity.p14l11", "probably wondering how that    ");
-			addGuidebook("chapter.electricity.p14l12", "voltage is achieved. This is   ");
-			addGuidebook("chapter.electricity.p14l13", "where the Upgrade and          ");
-			addGuidebook("chapter.electricity.p14l14", "Downgrade Transformers come    ");
-			addGuidebook("chapter.electricity.p14l15", "in. The Upgrade Transformer    ");
+			addGuidebook("chapter.electricity.l9",
+					"However, what is connected to these ports? Now it's time to discuss how electricity is transfered: Wires. Wires in this mod function a little differently than what you're used to. If you hover over a "
+							+ "wire in your inventory, you will notice it has a resistance and a maximum rated current. The resistance determines how much energy is lost over the wire. You can use P = I*I*R to to calculate the exact amount "
+							+ "lost. The longer a wire, the greater the energy loss. In order to minimize power loss, ideal cable networks will have short segments with high curent and long segments with low current. This design is "
+							+ "highlighted by the maximum current rating of a wire, known as its Ampacity. If this limit is reached, the cable will catch on fire and be destroyed! You will also notice that there are insulated and non-insulated wires. "
+							+ "Non-insulated wires will shock the player on contact, while the insulated variant will protect the player up to a rated voltage (also displayed in the wire's tooltip). It is important to note that wires do " + "not store energy like Univeral Cables or Flux Ducts!");
 
-			addGuidebook("chapter.electricity.p15l1", "will take any input voltage    ");
-			addGuidebook("chapter.electricity.p15l2", "at any current and output      ");
-			addGuidebook("chapter.electricity.p15l3", "double voltage at half the     ");
-			addGuidebook("chapter.electricity.p15l4", "current. The Downgrade         ");
-			addGuidebook("chapter.electricity.p15l5", "Transformer takes any input    ");
-			addGuidebook("chapter.electricity.p15l6", "voltage at any current and     ");
-			addGuidebook("chapter.electricity.p15l7", "outputs half the voltage at    ");
-			addGuidebook("chapter.electricity.p15l8", "double the current. Note,      ");
-			addGuidebook("chapter.electricity.p15l9", "Transformers are not 100%      ");
-			addGuidebook("chapter.electricity.p15l10", "efficient, so be wise with    ");
-			addGuidebook("chapter.electricity.p15l11", "your use of them. Also,        ");
-			addGuidebook("chapter.electricity.p15l12", "Transformers will instantly    ");
-			addGuidebook("chapter.electricity.p15l13", "kill you if you walk over them!");
-			addGuidebook("chapter.electricity.p15l14", "Then next page contains a set  ");
-			addGuidebook("chapter.electricity.p15l15", "of useful equations:           ");
+			addGuidebook("chapter.electricity.l10",
+					"Now that we know how to get energy to a machine and understand it must be at a specific voltage, you're probably wondering how that voltage is achieved. Most power sources in Electrodynamics are 120V or 240V, which works well for some basic machines, " + "but that simply won't cut it for higher voltage machines. This is where the Upgrade and Downgrade Transformers come "
+							+ "in. The Upgrade Transformer will take any input voltage at any current and output double voltage at half the current. The Downgrade Transformer takes any input voltage at any current and outputs half the voltage at "
+							+ "double the current. Note, Transformers are not 100% efficient, so be wise with your use of them. Also, Transformers will instantly kill you if you walk over them while energized!");
 
-			addGuidebook("chapter.electricity.p16l1", "Useful Equations:              ");
-			addGuidebook("chapter.electricity.p16l2", "P = E / time                   ");
-			addGuidebook("chapter.electricity.p16l3", "P = V * I                      ");
-			addGuidebook("chapter.electricity.p16l4", "E/s = (E/tick) * 20            ");
-			addGuidebook("chapter.electricity.p16l5", "V = I * R                      ");
-			addGuidebook("chapter.electricity.p16l6", "P = I*I*R                      ");
+			addGuidebook("chapter.electricity.l11", "In summary, machines need energy at a specific voltage to work. There are multiple methods of finding this voltage. Machines have specific colored ports for energy input and output. Energy is transfered into machines using wires, with the type of wire "
+					+ "used determining how the cable network performs. Voltages can be stepped up and stepped down using transformers. The following are a set of equations that can be useful when working with Joules:");
+
+			addGuidebook("chapter.electricity.powerfromenergy", "P = E / time");
+			addGuidebook("chapter.electricity.powerfromvoltage", "P = V * I");
+			addGuidebook("chapter.electricity.energytickstoseconds", "E/s = (E/tick) * 20");
+			addGuidebook("chapter.electricity.voltagefromresistance", "V = I * R");
+			addGuidebook("chapter.electricity.powerfromcurrent", "P = I*I*R");
 
 			addGuidebook("chapter.fluids", "Fluids");
-			addGuidebook("chapter.fluids.p1l1", "    Fluids play an important   ");
-			addGuidebook("chapter.fluids.p1l2", "role just like energy. They're ");
-			addGuidebook("chapter.fluids.p1l3", "used for crafting materials    ");
-			addGuidebook("chapter.fluids.p1l4", "and for cooling machinery.     ");
-			addGuidebook("chapter.fluids.p1l5", "Fortunately, if you have been  ");
-			addGuidebook("chapter.fluids.p1l6", "able to grasp energy, then     ");
-			addGuidebook("chapter.fluids.p1l7", "fluid mechanics should be a    ");
-			addGuidebook("chapter.fluids.p1l8", "breeze.                        ");
-			addGuidebook("chapter.fluids.p1l9", "    As with energy, fluids have");
-			addGuidebook("chapter.fluids.p1l10", "their own I/O ports. These     ");
-			addGuidebook("chapter.fluids.p1l11", "ports are universal to any     ");
-			addGuidebook("chapter.fluids.p1l12", "machine that uses or produces  ");
-			addGuidebook("chapter.fluids.p1l13", "fluid. They are:               ");
-			addGuidebook("chapter.fluids.p1l14-1", "Blue");
-			addGuidebook("chapter.fluids.p1l14-2", ": Input");
-			addGuidebook("chapter.fluids.p1l15-1", "Yellow");
-			addGuidebook("chapter.fluids.p1l15-2", ": Output");
 
-			addGuidebook("chapter.fluids.p2l1", "Here are some examples:        ");
-			addGuidebook("chapter.fluids.p2l2", "    However, what do we hook   ");
-			addGuidebook("chapter.fluids.p2l3", "up to these ports? The answer  ");
-			addGuidebook("chapter.fluids.p2l4", "is simple: Pipes! Pipes have no");
-			addGuidebook("chapter.fluids.p2l5", "internal storage buffer, which ");
-			addGuidebook("chapter.fluids.p2l6", "means they will not transfer a ");
+			addGuidebook("chapter.fluids.l1", "Fluids play an important role just like energy in Electrodynamics. They're used for crafting various materials and for cooling machinery. Fortunately, if you have been able to grasp energy, then fluid mechanics should be a breeze, as they are very similar " + "to how other mods work.");
 
-			addGuidebook("chapter.fluids.p3l1", "fluid unless it has somewhere  ");
-			addGuidebook("chapter.fluids.p3l2", "to go. This means you don't    ");
-			addGuidebook("chapter.fluids.p3l3", "have to worry about a machine  ");
-			addGuidebook("chapter.fluids.p3l4", "outputting a fluid if you hook ");
-			addGuidebook("chapter.fluids.p3l5", "up a pipe accidentally. Also,  ");
-			addGuidebook("chapter.fluids.p3l6", "Electrodynamics machines will  ");
-			addGuidebook("chapter.fluids.p3l7", "only accept fluids they can    ");
-			addGuidebook("chapter.fluids.p3l8", "process with! Pipes have a     ");
-			addGuidebook("chapter.fluids.p3l9", "limited transfer rate similar   ");
-			addGuidebook("chapter.fluids.p3l10", "to the current cap on wires.   ");
-			addGuidebook("chapter.fluids.p3l11", "However, unlike wires, they    ");
-			addGuidebook("chapter.fluids.p3l12", "will not explode if this limit ");
-			addGuidebook("chapter.fluids.p3l13", "is reached! The downside is    ");
-			addGuidebook("chapter.fluids.p3l14", "your choice of pipe is limited ");
-			addGuidebook("chapter.fluids.p3l15", "to the following:              ");
+			addGuidebook("chapter.fluids.l2", "As with energy, fluids have their own I/O ports. These ports are universal to any machine that uses or produces fluid. They are:");
+			addGuidebook("chapter.fluids.fluidinput", "Input: Blue");
+			addGuidebook("chapter.fluids.fluidoutput", "Output: Yellow");
+			addGuidebook("chapter.fluids.l3", "Here are some examples:");
 
-			addGuidebook("chapter.fluids.p4l1-1", "Copper");
-			addGuidebook("chapter.fluids.p4l1-2", ": 5000mB Cap");
-			addGuidebook("chapter.fluids.p4l2-1", "Steel");
-			addGuidebook("chapter.fluids.p4l2-2", ": 10000mB Cap");
-			addGuidebook("chapter.fluids.p4l3", "    One final thing to note is ");
-			addGuidebook("chapter.fluids.p4l4", "that Electrodynamics fluids    ");
-			addGuidebook("chapter.fluids.p4l5", "cannot be carried by a bucket. ");
-			addGuidebook("chapter.fluids.p4l6", "If you need to manually move   ");
-			addGuidebook("chapter.fluids.p4l7", "fluids such as Sulfuric Acid,  ");
-			addGuidebook("chapter.fluids.p4l8", "you will need to use a         ");
-			addGuidebook("chapter.fluids.p4l9", "Reinforced Canister!           ");
+			addGuidebook("chapter.fluids.l4",
+					"However, what do we hook up to these ports? The answer is simple: Pipes! Unlike other mods, pipes in Electrodynamics have no internal storage buffer, which means they will not transfer a fluid unless it has somewhere to go. This means you don't have to worry about a machine "
+							+ "outputting a fluid if you hook up a pipe accidentally. Also, Electrodynamics machines will only accept fluids they can process with! Pipes have a limited transfer rate similar to the Ampacity of wires. However, unlike wires, they "
+							+ "will not explode if this limit is reached. The downside though is that your choice of pipe is limited to the following throughput capacities:");
 
-			addGuidebook("chapter.machines", "Machines");
-			addGuidebook("chapter.machines.p0l1", "Generator Specs:");
+			addGuidebook("chapter.fluids.pipecapacity", "%1$s : %2$s mB ");
+			addGuidebook("chapter.fluids.pipecopper", "Copper");
+			addGuidebook("chapter.fluids.pipesteel", "Steel");
+
+			addGuidebook("chapter.fluids.l5", "But what if I need to store a large amount of fluid? Fear not, as Electrodynamics has you covered there. Electrodynamics tanks accept fluid from the top and output fluid through the bottom. Furthermore, stack two tanks on top of eachother, " + "and the top one will automatically output into the bottom one.");
+
+			addGuidebook("chapter.fluids.l6", "One final thing to note is that Electrodynamics fluids cannot be carried by a bucket. For example, it simply doesn't make sense to transfer Sulfuric Acid in a bucket made out of Iron. If you need to manually move fluids such as Sulfuric Acid, you will need to " + "use a Reinforced Canister!");
+
+			addGuidebook("chapter.generators", "Generators");
+			addGuidebook("chapter.generators.generationbase", "Default: %1$s at %2$sV");
+			addGuidebook("chapter.generators.generationupgrade", "Upgraded: %1$s at %2$sV");
+			addGuidebook("chapter.generators.tips", "Tips:");
+			addGuidebook("chapter.generators.tipsolarweather", "*Rain reduces production");
+			addGuidebook("chapter.generators.tipsolartemperature", "*Hotter biomes produce more power");
+			addGuidebook("chapter.generators.tipminy", "Min Y: %s");
+			addGuidebook("chapter.generators.tipidealy", "Ideal Y: %s");
+			addGuidebook("chapter.generators.tiptemprange", "Temp: %1$s C < T < %2$s C");
+			addGuidebook("chapter.generators.tipidealtemp", "Ideal Temp: %s C");
+			addGuidebook("chapter.generators.fuels", "Fuels:");
+			addGuidebook("chapter.generators.burntime", "Burn Time: %s");
+			addGuidebook("chapter.generators.use", "Use:");
+			addGuidebook("chapter.generators.heatsource", "Heat Sources:");
+			addGuidebook("chapter.generators.multiplier", "Multiplier: x%s");
+			addGuidebook("chapter.generators.upgrades", "Upgrades:");
+
+			addGuidebook("chapter.generators.thermoelectricgeneratoruse", "The heat source is placed at the back of the machine");
+			addGuidebook("chapter.generators.combustionchamberburn", "Usage/burn: %s mB");
+
 			addGuidebook("chapter.machines.basespecs", "Base: %1$s kW at %2$s V");
 			addGuidebook("chapter.machines.maxspecs", "Max: %1$s kW at %2$s V");
 			addGuidebook("chapter.machines.wind", "Y=319: 1.16 kW, 120 V");
@@ -932,515 +794,126 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.machines.thermoname", "Thermoelectric Gen.");
 			addGuidebook("chapter.machines.hydroname", "Hydroelectric Gen.");
 
-			addGuidebook("chapter.machines.p1l1", "How to use the Quarry?");
-			addGuidebook("chapter.machines.p1l2-1", "Step 1:");
-			addGuidebook("chapter.machines.p1l2-2", "Set up a ring of 4");
-			addGuidebook("chapter.machines.p1l3", "Seismic Markers. The ring must ");
-			addGuidebook("chapter.machines.p1l4", "be a minimum of 3x3 and has a  ");
-			addGuidebook("chapter.machines.p1l5", "max size of 66x66. Placing a   ");
-			addGuidebook("chapter.machines.p1l6", "redstone signal next to a      ");
-			addGuidebook("chapter.machines.p1l7", "marker will display guide lines.");
+			addGuidebook("chapter.machines", "Machines");
 
-			addGuidebook("chapter.machines.p2l1-1", "Step 2:");
-			addGuidebook("chapter.machines.p2l1-2", "Place a Seismic Relay");
-			addGuidebook("chapter.machines.p2l2", "down at one of the corners.    ");
-			addGuidebook("chapter.machines.p2l3", "If done correctly, you will    ");
-			addGuidebook("chapter.machines.p2l4", "hear the sound of an anvil,    ");
-			addGuidebook("chapter.machines.p2l5", "and the Seismic Markers will   ");
-			addGuidebook("chapter.machines.p2l6", "be placed in the Relay's       ");
-			addGuidebook("chapter.machines.p2l7", "inventory.                     ");
+			addGuidebook("chapter.machines.chargerheader", "Understanding the Charger:");
+			addGuidebook("chapter.machines.l1", "The Charger does what the name suggests and charges items. When charging an item, it's crucial to select a Charger with the correct voltage. If the charger's voltage is less than the item's, the item will only be charged a percentage of it's full charge. This can be " + "calculated by the formula:");
+			addGuidebook("chapter.machines.chargeformula", "Vcharger / Vitem");
 
-			addGuidebook("chapter.machines.p4l1-1", "Step 3:");
-			addGuidebook("chapter.machines.p4l1-2", "Place a Quarry on");
-			addGuidebook("chapter.machines.p4l2", "either the left or the right   ");
-			addGuidebook("chapter.machines.p4l3", "side of the Relay. The Quarry  ");
-			addGuidebook("chapter.machines.p4l4", "must be facing the same        ");
-			addGuidebook("chapter.machines.p4l5", "direction as the Relay.        ");
+			addGuidebook("chapter.machines.l2", "If the charger's voltage is greater than the item's, it will explode!");
+			addGuidebook("chapter.machines.l3", "It is possible to operate a charger with battery power using the 3 battery slots:");
 
-			addGuidebook("chapter.machines.p5l1-1", "Step 4:");
-			addGuidebook("chapter.machines.p5l1-2", "Place a Coolant");
-			addGuidebook("chapter.machines.p5l2", "Resavoir on top of the Quarry. ");
-			addGuidebook("chapter.machines.p5l3", "The Quarry needs to be         ");
-			addGuidebook("chapter.machines.p5l4", "cooled with water to run. The  ");
-			addGuidebook("chapter.machines.p5l5", "faster it runs, the more water ");
-			addGuidebook("chapter.machines.p5l6", "it will use.                   ");
+			addGuidebook("chapter.machines.l4", "The charge of the item placed in one of these slots will be transfered to the item in the charging slot. Along with actual batteries, any item with a charge can be used! However, be mindful of the item's voltage. If it is less than the voltage of the charger, it "
+					+ "will be reduced to a pile of Slag! If the item's voltage is greater than the charger's, the charger will explode!");
 
-			addGuidebook("chapter.machines.p6l1-1", "Step 5:");
-			addGuidebook("chapter.machines.p6l1-2", "Place a Motor");
-			addGuidebook("chapter.machines.p6l2", "Complex on the side opposite   ");
-			addGuidebook("chapter.machines.p6l3", "the Seismic Relay. The green   ");
-			addGuidebook("chapter.machines.p6l4", "port of the Relay must be      ");
-			addGuidebook("chapter.machines.p6l5", "facing the green port of the   ");
-			addGuidebook("chapter.machines.p6l6", "Quarry. The Motor Complex      ");
-			addGuidebook("chapter.machines.p6l7", "controls the speed of the      ");
-			addGuidebook("chapter.machines.p6l8", "Quarry. It accepts either Basic");
-			addGuidebook("chapter.machines.p6l9", "or Advanced Speed Upgrades,    ");
-			addGuidebook("chapter.machines.p6l10", "and has a maximum speed of     ");
-			addGuidebook("chapter.machines.p6l11", "1 Block/tick. This can be      ");
-			addGuidebook("chapter.machines.p6l12", "achieved with 6 Advanced       ");
-			addGuidebook("chapter.machines.p6l13", "upgrades, but comes with a     ");
-			addGuidebook("chapter.machines.p6l14", "heafty power consumtion!       ");
+			addGuidebook("chapter.quarry", "The Quarry");
 
-			addGuidebook("chapter.machines.p8l1-1", "Step 6:");
-			addGuidebook("chapter.machines.p8l1-2", "Power the Quarry and");
-			addGuidebook("chapter.machines.p8l2", "the Motor Complex. Both need   ");
-			addGuidebook("chapter.machines.p8l3", "240V. The Quarry will use a    ");
-			addGuidebook("chapter.machines.p8l4", "small amount of power to set   ");
-			addGuidebook("chapter.machines.p8l5", "up the mining ring. If blocks  ");
-			addGuidebook("chapter.machines.p8l6", "are in the way, they will be   ");
-			addGuidebook("chapter.machines.p8l7", "removed without drops! When    ");
-			addGuidebook("chapter.machines.p8l8", "the ring is finished, the mining");
-			addGuidebook("chapter.machines.p8l9", "arm will deploy.               ");
+			addGuidebook("chapter.quarry.l1", "The Quarry is Electrodynamics' way of providing auto-mining. It takes inspiration from Buildcraft's Quarry and expands upon what it can do. This short walkthrough will provide you the steps on how to set up and operate one yourself.");
 
-			addGuidebook("chapter.machines.p11l1-1", "Step 7:");
-			addGuidebook("chapter.machines.p11l1-2", "Open the Quarry GUI.");
-			addGuidebook("chapter.machines.p11l2", "In order to begin mining, the  ");
-			addGuidebook("chapter.machines.p11l3", "Quarry will need a Drill Head. ");
-			addGuidebook("chapter.machines.p11l4", "There are multiple types with  ");
-			addGuidebook("chapter.machines.p11l5", "varying durabilities:          ");
-			addGuidebook("chapter.machines.durability", ": %s");
-			addGuidebook("chapter.machines.p11l6", "Steel");
-			addGuidebook("chapter.machines.p11l7", "S. Steel");
-			addGuidebook("chapter.machines.p11l8", "HSLA Steel");
-			addGuidebook("chapter.machines.p11l9", "Titanium");
-			addGuidebook("chapter.machines.p11l10", "T. Carbide");
-			addGuidebook("chapter.machines.p11l11", "Take the Drill Head of your    ");
-			addGuidebook("chapter.machines.p11l12", "choice and place it in the top ");
-			addGuidebook("chapter.machines.p11l13", "right slot of the Quarry GUI.  ");
-			addGuidebook("chapter.machines.p11l14", "Now direct your attention to   ");
-			addGuidebook("chapter.machines.p11l15", "3 upgrade slots in the GUI. The");
+			addGuidebook("chapter.quarry.step", "Step %s:");
 
-			addGuidebook("chapter.machines.p12l1", "Quarry itself will use no power");
-			addGuidebook("chapter.machines.p12l2", "after setup. However, if you   ");
-			addGuidebook("chapter.machines.p12l3", "add upgrades, it will begin to.");
-			addGuidebook("chapter.machines.p12l4", "Your upgrade options are:      ");
-			addGuidebook("chapter.machines.p12l5", "     Void                      ");
-			addGuidebook("chapter.machines.p12l6", "     Fortune                   ");
-			addGuidebook("chapter.machines.p12l7", "     Silk Touch                ");
-			addGuidebook("chapter.machines.p12l8", "     Unbreaking                ");
-			addGuidebook("chapter.machines.p12l9-1", "The");
-			addGuidebook("chapter.machines.p12l9-2", "Void");
-			addGuidebook("chapter.machines.p12l9-3", "Upgrade will activate");
-			addGuidebook("chapter.machines.p12l10", "the top 6 slots in the GUI.     ");
-			addGuidebook("chapter.machines.p12l11", "Any items placed in these       ");
-			addGuidebook("chapter.machines.p12l12", "slots will be voided by the     ");
-			addGuidebook("chapter.machines.p12l13", "Quarry. The upgrade will        ");
-			addGuidebook("chapter.machines.p12l14", "cause the Quarry to start       ");
-			addGuidebook("chapter.machines.p12l15", "drawing its base usage. The     ");
+			addGuidebook("chapter.quarry.step1l1", "Set up a ring of 4 Seismic Markers with one Marker at each corner. The ring must be a minimum of 3x3 and has a default maximum size of 66x66. Placing a redstone signal next to a marker will display guide lines.");
 
-			addGuidebook("chapter.machines.p13l1-1", "Fortune");
-			addGuidebook("chapter.machines.p13l1-2", "Upgrade applies the ");
-			addGuidebook("chapter.machines.p13l2", "Fortune enchantment to the     ");
-			addGuidebook("chapter.machines.p13l3", "blocks mined by the Quarry.    ");
-			addGuidebook("chapter.machines.p13l4", "A maximum of 3 can be used     ");
-			addGuidebook("chapter.machines.p13l5", "and it cannot be used in       ");
-			addGuidebook("chapter.machines.p13l6", "tandem with the Silk Touch     ");
-			addGuidebook("chapter.machines.p13l7-1", "Upgrade. The");
-			addGuidebook("chapter.machines.p13l7-2", "Silk Touch");
-			addGuidebook("chapter.machines.p13l8", "Upgrade will apply the Silk     ");
-			addGuidebook("chapter.machines.p13l9", "Touch enchantment to the        ");
-			addGuidebook("chapter.machines.p13l10", "blocks mined by the Quarry. A   ");
-			addGuidebook("chapter.machines.p13l11", "maximum of 1 can be used and    ");
-			addGuidebook("chapter.machines.p13l12", "it cannot be used in tandem     ");
-			addGuidebook("chapter.machines.p13l13", "with the Fortune Upgrade. Both  ");
-			addGuidebook("chapter.machines.p13l14", "will cause the Quarry to draw   ");
-			addGuidebook("chapter.machines.p13l15", "large amounts of power. The     ");
+			addGuidebook("chapter.quarry.step2l1", "Place a Seismic Relay down at the outside of one of the corners next to a Seismic Marker. If done correctly, you will hear the sound of an Anvil. The Seismic Markers will also then be collected by the Relay and placed in its inventory.");
 
-			addGuidebook("chapter.machines.p14l1-1", "Unbreaking");
-			addGuidebook("chapter.machines.p14l1-2", "Upgrade reduces");
-			addGuidebook("chapter.machines.p14l2", "the durability used from the   ");
-			addGuidebook("chapter.machines.p14l3", "Drill Head. A maximum of 3 can ");
-			addGuidebook("chapter.machines.p14l4", "be used, and it will cause the ");
-			addGuidebook("chapter.machines.p14l5", "Quarry to draw a large amount  ");
-			addGuidebook("chapter.machines.p14l6", "of power.                      ");
+			addGuidebook("chapter.quarry.step3l1", "Place a Quarry on either the left or the right side of the Relay. The Quarry must be facing the same direction as the Relay.");
 
-			addGuidebook("chapter.machines.p16l1-1", "Step 8:");
-			addGuidebook("chapter.machines.p16l1-2", "This step is optional,");
-			addGuidebook("chapter.machines.p16l2", "but highly recommended. Place  ");
-			addGuidebook("chapter.machines.p16l3", "a Logistical Manager in front  ");
-			addGuidebook("chapter.machines.p16l4", "of the Quarry, with the green  ");
-			addGuidebook("chapter.machines.p16l5", "square of the T facing the     ");
-			addGuidebook("chapter.machines.p16l6", "front of the Quarry. Place a   ");
-			addGuidebook("chapter.machines.p16l7", "chest to the left and right    ");
-			addGuidebook("chapter.machines.p16l8", "of the Manager. The chest on   ");
-			addGuidebook("chapter.machines.p16l9", "the left can be filled with    ");
-			addGuidebook("chapter.machines.p16l10", "Drill Heads to resupply the    ");
-			addGuidebook("chapter.machines.p16l11", "Quarry. The Manager will fill  ");
-			addGuidebook("chapter.machines.p16l12", "the chest on the right with all");
-			addGuidebook("chapter.machines.p16l13", "the blocks the Quarry mines.   ");
-			addGuidebook("chapter.machines.p16l14", "Now direct your attention to   ");
-			addGuidebook("chapter.machines.p16l15", "3 upgrade slots in the GUI. The");
+			addGuidebook("chapter.quarry.step4l1", "Place a Coolant Resavoir on top of the Quarry. The Quarry needs a constant supply of Water to remain cool. The faster it runs, the more water it will use!");
 
-			addGuidebook("chapter.machines.p19l1", "Using the Injector Upgrade:");
-			addGuidebook("chapter.machines.p19l2", "    The Auto-Injector Upgrade  ");
-			addGuidebook("chapter.machines.p19l3", "gives machines the ability to  ");
-			addGuidebook("chapter.machines.p19l4", "intake items from surrounding  ");
-			addGuidebook("chapter.machines.p19l5", "inventories. The upgrade has   ");
-			addGuidebook("chapter.machines.p19l6", "two modes: Default and Smart.  ");
-			addGuidebook("chapter.machines.p19l7-1", "Default");
-			addGuidebook("chapter.machines.p19l7-2", "mode will attempt to");
-			addGuidebook("chapter.machines.p19l8", "fill every input slot in order ");
-			addGuidebook("chapter.machines.p19l9", "of the directions on the card. ");
-			addGuidebook("chapter.machines.p19l10-1", "Smart");
-			addGuidebook("chapter.machines.p19l10-2", "mode will map each input");
-			addGuidebook("chapter.machines.p19l11", "slot to each direction on the  ");
-			addGuidebook("chapter.machines.p19l12", "card. If there are more slots  ");
-			addGuidebook("chapter.machines.p19l13", "than directions, the remaining ");
-			addGuidebook("chapter.machines.p19l14", "slots will be mapped to the    ");
-			addGuidebook("chapter.machines.p19l15", "final direction. To add a      ");
+			addGuidebook("chapter.quarry.step5l1", "Place a Motor Complex on the side of the Quarry opposite the Seismic Relay. The green port of the Relay must be facing the green port of the Quarry. The Motor Complex controls the speed of the Quarry. It accepts either Basic or Advanced Speed Upgrades, "
+					+ "and has a maximum speed of 1 Block/tick. This can be achieved with 6 Advanced upgrades, but comes with a heafty power consumtion!");
 
-			addGuidebook("chapter.machines.p20l1", "direction, Shift + Right-Click ");
-			addGuidebook("chapter.machines.p20l2", "the card while facing the      ");
-			addGuidebook("chapter.machines.p20l3", "desired direction. To clear all");
-			addGuidebook("chapter.machines.p20l4", "directions, Shift + Left-Click.");
-			addGuidebook("chapter.machines.p20l5", "To toggle Smart mode, Right-   ");
-			addGuidebook("chapter.machines.p20l6", "Click the card.                ");
+			addGuidebook("chapter.quarry.step6l1", "Power the Quarry and the Motor Complex; both use 240V. The Quarry itself uses power to perform tasks such as clearing amd maintaining the mining ring. The upgrades placed in the Quarry also have a direct impact on its power usage. Note that If blocks are in the way when "
+					+ "the Quarry starts clearing the ring, they will be removed without drops! When the ring is finished, the mining arm will deploy.");
 
-			addGuidebook("chapter.machines.p21l1", "Using the Ejector Upgrade:");
-			addGuidebook("chapter.machines.p21l2", "    The Auto-Ejector Upgrade   ");
-			addGuidebook("chapter.machines.p21l3", "gives machines the ability to  ");
-			addGuidebook("chapter.machines.p21l4", "output items to surrounding    ");
-			addGuidebook("chapter.machines.p21l5", "inventories. The upgrade has   ");
-			addGuidebook("chapter.machines.p21l6", "two modes: Default and Smart.  ");
-			addGuidebook("chapter.machines.p21l7-1", "Default");
-			addGuidebook("chapter.machines.p21l7-2", "mode will attempt to");
-			addGuidebook("chapter.machines.p21l8", "output every slot in order of  ");
-			addGuidebook("chapter.machines.p21l9", "the directions on the card.    ");
-			addGuidebook("chapter.machines.p21l10-1", "Smart");
-			addGuidebook("chapter.machines.p21l10-2", "mode will map each");
-			addGuidebook("chapter.machines.p21l11", "output slot to each direction  ");
-			addGuidebook("chapter.machines.p21l12", "on the card. If there are more ");
-			addGuidebook("chapter.machines.p21l13", "slots than directions, the     ");
-			addGuidebook("chapter.machines.p21l14", "remaining slots will be mapped ");
-			addGuidebook("chapter.machines.p21l15", "to the final direction. To add ");
+			addGuidebook("chapter.quarry.step7l1", "Open the Quarry GUI. In order to begin mining blocks, the Quarry will need a Drill Head. There are multiple types with varying durabilities:");
 
-			addGuidebook("chapter.machines.p22l1", "a direction, Shift + Right-Click");
-			addGuidebook("chapter.machines.p22l2", "the card while facing the      ");
-			addGuidebook("chapter.machines.p22l3", "desired direction. To clear all");
-			addGuidebook("chapter.machines.p22l4", "directions, Shift + Left-Click.");
-			addGuidebook("chapter.machines.p22l5", "To toggle Smart mode, Right-   ");
-			addGuidebook("chapter.machines.p22l6", "Click the card. It is important");
-			addGuidebook("chapter.machines.p22l7", "to note that output slots come ");
-			addGuidebook("chapter.machines.p22l8", "before biproduct slots. For    ");
-			addGuidebook("chapter.machines.p22l9", "example, if there are 3 output ");
-			addGuidebook("chapter.machines.p22l10", "slots and 2 biproduct slots,  ");
-			addGuidebook("chapter.machines.p22l11", "the card would empty all 3     ");
-			addGuidebook("chapter.machines.p22l12", "output slots before it empties ");
-			addGuidebook("chapter.machines.p22l13", "the 2 biproduct slots.         ");
-			addGuidebook("chapter.machines.p22l14", "slots will be mapped to the    ");
-			addGuidebook("chapter.machines.p22l15", "final direction. To add a      ");
+			addGuidebook("chapter.quarry.drillhead", "%1$s : %2$s");
+			addGuidebook("chapter.quarry.steelhead", "Steel");
+			addGuidebook("chapter.quarry.stainlesshead", "Stainless");
+			addGuidebook("chapter.quarry.hslahead", "HSLA Steel");
+			addGuidebook("chapter.quarry.titaniumhead", "Titanium");
+			addGuidebook("chapter.quarry.carbidehead", "Carbide");
+			addGuidebook("chapter.quarry.infinitedurability", "Infinite");
 
-			addGuidebook("chapter.machines.p23l1", "Understanding the Charger:");
-			addGuidebook("chapter.machines.p23l2", "    The Charger does what the  ");
-			addGuidebook("chapter.machines.p23l3", "name suggests and charges      ");
-			addGuidebook("chapter.machines.p23l4", "items. When charging an item,  ");
-			addGuidebook("chapter.machines.p23l5", "it's crucial to select a charger");
-			addGuidebook("chapter.machines.p23l6", "with the correct voltage. If   ");
-			addGuidebook("chapter.machines.p23l7", "the charger's voltage is less  ");
-			addGuidebook("chapter.machines.p23l8", "than the item's, the item will ");
-			addGuidebook("chapter.machines.p23l9", "only be charged a percentage   ");
-			addGuidebook("chapter.machines.p23l10", "of it's full charge. This can be");
-			addGuidebook("chapter.machines.p23l11", "calculated by the formula:     ");
-			addGuidebook("chapter.machines.p23l12", "     Vcharger / Vitem          ");
-			addGuidebook("chapter.machines.p23l13", "If the charger's voltage is    ");
-			addGuidebook("chapter.machines.p23l14", "greater, it will explode!      ");
-			addGuidebook("chapter.machines.p23l15", "    It is possible to operate  ");
+			addGuidebook("chapter.quarry.step7l2", "Take the Drill Head of your choice and place it in the bottom left slot of the Quarry GUI. Now direct your attention to the 3 upgrade slots in the GUI. The Quarry itself will use no power after setup. However, if you add upgrades, it will begin to, and depending on the " + "upgrade, this can be a substantial amount! Your 4 upgrade options are:");
 
-			addGuidebook("chapter.machines.p24l1", "a charger with battery power   ");
-			addGuidebook("chapter.machines.p24l2", "using the 3 battery slots:     ");
-			addGuidebook("chapter.machines.p24l3", "The charge of the item placed  ");
-			addGuidebook("chapter.machines.p24l4", "in one of these slots will be  ");
-			addGuidebook("chapter.machines.p24l5", "transfered to the item in the  ");
-			addGuidebook("chapter.machines.p24l6", "charging slot. Along with actual");
-			addGuidebook("chapter.machines.p24l7", "batteries, any item with a     ");
-			addGuidebook("chapter.machines.p24l8", "charge can be used! However,   ");
+			addGuidebook("chapter.quarry.step7the", "The ");
 
-			addGuidebook("chapter.machines.p25l1", "be mindful of the item's       ");
-			addGuidebook("chapter.machines.p25l2", "voltage. If it is less than    ");
-			addGuidebook("chapter.machines.p25l3", "the voltage of the charger, it ");
-			addGuidebook("chapter.machines.p25l4", "will be reduced to a pile of   ");
-			addGuidebook("chapter.machines.p25l5", "Slag! If the item's voltage is ");
-			addGuidebook("chapter.machines.p25l6", "greater than the charger's,    ");
-			addGuidebook("chapter.machines.p25l7", "the charger will explode!      ");
+			addGuidebook("chapter.quarry.step7unbreaking", "Unbreaking");
+			addGuidebook("chapter.quarry.step7unbreakingdesc", " Upgrade reduces the durability used from the Drill Head when a block is mined. A maximum of 3 can be used for an effect of Unbreaking III, and it will cause the Quarry to draw a large amount of power when installed.");
+
+			addGuidebook("chapter.quarry.step7fortune", "Fortune");
+			addGuidebook("chapter.quarry.step7fortunedesc", " Upgrade applies the Fortune enchantment to the blocks mined by the Quarry. A maximum of 3 can be used for an effect of Fortune III and it cannot be used in tandem with the Silk Touch Upgrade. The upgrade draws a large amount of power.");
+
+			addGuidebook("chapter.quarry.step7silktouch", "Silk Touch");
+			addGuidebook("chapter.quarry.step7silktouchdesc", " Upgrade will apply the Silk Touch enchantment to the blocks mined by the Quarry. A maximum of 1 can be used and it cannot be used in tandem with the Fortune Upgrade. The upgrade will cause the Quarry to draw a huge amount of power.");
+
+			addGuidebook("chapter.quarry.step7void", "Void");
+			addGuidebook("chapter.quarry.step7voiddesc", " Upgrade will activate 6 otherwise hidden slots in the GUI. Any items placed in these slots will be voided by the Quarry when mined. The upgrade will cause the Quarry to start drawing its base usage.");
+
+			addGuidebook("chapter.quarry.step8l1", "This step is optional, but highly recommended. Place a Logistical Manager in front of the Quarry, then place a chest on any remaining side of the Manager. The Logistical Manager will automatically transfer items from the Quarry's inventory into an attached chest. "
+					+ "Furthermore, if you place a Drill Head in one of the attached chests, it will automatically be transfered to the Quarry when the existing one breaks.");
+
+			addGuidebook("chapter.upgrades", "Upgrades");
+
+			addGuidebook("chapter.upgrades.injectorheader", "Using the Injector Upgrade:");
+
+			addGuidebook("chapter.upgrades.l1", "The Auto-Injector Upgrade gives machines the ability to intake items from surrounding inventories. The upgrade has two modes: Default and Smart. ");
+			addGuidebook("chapter.upgrades.default", "Default");
+			addGuidebook("chapter.upgrades.l2", " mode will attempt to fill every input slot in order of the directions on the card. ");
+			addGuidebook("chapter.upgrades.smart", "Smart");
+			addGuidebook("chapter.upgrades.l3", " mode will map each input slot to each direction on the card. If there are more slots than directions, the remaining slots will be mapped to the final direction. To add a direction, Shift + Right-Click the card while facing the desired direction. To clear all " + "directions, Shift + Left-Click. To toggle Smart mode, Right-Click the card.");
+
+			addGuidebook("chapter.upgrades.ejectorheader", "Using the Ejector Upgrade:");
+
+			addGuidebook("chapter.upgrades.l4", "The Auto-Ejector Upgrade gives machines the ability to output items to surrounding inventories. The upgrade has two modes: Default and Smart. ");
+			addGuidebook("chapter.upgrades.l5", " mode will attempt to output every slot in order of the directions on the card. ");
+			addGuidebook("chapter.upgrades.l6", " mode will map each output slot to each direction on the card. If there are more slots than directions, the remaining slots will be mapped to the final direction. To add a direction, Shift + Right-Click the card while facing the desired direction. To clear all " + "directions, Shift + Left-Click. To toggle Smart mode, Right-Click the card.");
+			addGuidebook("chapter.upgrades.l7", "It is important to note that indexes for Electrodynamics output slots come before biproduct slots in the inventory. For example, if there are 3 output slots and 2 biproduct slots, the card would empty all 3 output slots before it empties the 2 biproduct slots.");
+
+			addGuidebook("chapter.tools", "Tools");
+
+			addGuidebook("chapter.tools.ammo", "Ammo:");
+			addGuidebook("chapter.tools.damage", "Damage:");
+
+			addGuidebook("chapter.tools.roddamage", "%1$s: %2$s");
+			addGuidebook("chapter.tools.steel", "Steel");
+			addGuidebook("chapter.tools.stainless", "Stainless Steel");
+			addGuidebook("chapter.tools.hsla", "HSLA Steel");
+			addGuidebook("chapter.tools.ap", " AP*");
+			addGuidebook("chapter.tools.apnote", "*ignores armor");
+
+			addGuidebook("chapter.tools.kineticl1", "To use the Kinetic Railgun, hold the gun in one hand and the ammo type of your choice in the other.");
+
+			addGuidebook("chapter.tools.energy", "Energy");
+			addGuidebook("chapter.tools.initial", "Initial");
+			addGuidebook("chapter.tools.after", "After %s");
+
+			addGuidebook("chapter.tools.seismicl1", "The Seismic Scanner is a very useful item. It is able to scan for a selected block within a 16 block radius from the player. To use the Scanner, Right-Click to access it's GUI and insert the desired block into the scanning slot. Next, Shift + Right-Click to start a "
+					+ "scan. If the Scanner is able to find the block, it will list the coordinates in its GUI and temporarily highlight the block in the world. Note, you will not see the highlight if you can't see the block itself. The Scanner has a 10s cooldown between scans.");
+
+			addGuidebook("chapter.armor", "Armor");
+
+			addGuidebook("chapter.armor.jetpack", "The Jetpack uses Condensed Hydrogen as fuel. It can be filled in either a tank or directly in the Electrolyzer. The Jetpack has 3 modes: Regular, Hover, and Off.");
+			addGuidebook("chapter.armor.hydraulicboots", "Hydraulic Boots use Hydraulic Fluid as their \"fuel\". They can be filled either in a tank or directly in a Chemical Mixer. Hydraulic Boots will heavily reduce fall damage, but not completely eliminate it.");
+			addGuidebook("chapter.armor.combatchestplate", "The Combat Chestplate uses Condensed Hydrogen as fuel. It can be filled in either a tank or directly in the Electrolyzer. The Combat Chestplate has 3 modes: Regular, Hover, and Off.");
+			addGuidebook("chapter.armor.combatboots", "Combat Boots use Hydraulic Fluid as their \"fuel\". They can be filled either in a tank or directly in a Chemical Mixer. Combat Boots will heavily reduce fall damage, but not completely eliminate it.");
+
+			addGuidebook("chapter.armor.ceramicheader", "Ceramic Plate Protection:");
+			addGuidebook("chapter.armor.ceramicl1",
+					"Composite and Combat armor have a unique ability: Ceramic Protection. To use this ability, you must first add Ceramic Plates to the chestplate. This is accomplished by Right-Clicking a Ceramic Plate while wearing one of the two chestplates. If sucessfull, you will hear " + "the sound of a velcro strap. A maximum of two plates can be be held by both chestplates.");
+
+			addGuidebook("chapter.armor.ceramicl2", "For the ability to trigger, you must be wearing a full set of the armor type, and it must be a complete set. You must then take more than 16 damage. If these conditions are met, you will hear the plate break and a Ceramic Plate will be removed " + "from the chestplate. The damage dealt will then be reduced to its square root.");
 
 			addGuidebook("chapter.misc", "Misc");
-			addGuidebook("chapter.misc.p1l1", "The Kinetic Railgun:");
-			addGuidebook("chapter.misc.p1l2", "Ammo:");
-			addGuidebook("chapter.misc.p1l3", "     Steel Rod");
-			addGuidebook("chapter.misc.p1l4", "     S. Steel Rod");
-			addGuidebook("chapter.misc.p1l5", "     HSLA Steel Rod");
-			addGuidebook("chapter.misc.p1l6", "Damage:");
-			addGuidebook("chapter.misc.p1l7-1", "Steel");
-			addGuidebook("chapter.misc.p1l7-2", ": 16");
-			addGuidebook("chapter.misc.p1l8-1", "S. Steel");
-			addGuidebook("chapter.misc.p1l8-2", ": 18");
-			addGuidebook("chapter.misc.p1l9-1", "HSLA Steel");
-			addGuidebook("chapter.misc.p1l9-2", ": 4 AP*");
-			addGuidebook("chapter.misc.p1l10", "*ignores armor");
-			addGuidebook("chapter.misc.p1l11", "To use the Kinetic Railgun,    ");
-			addGuidebook("chapter.misc.p1l12", "hold the gun in one hand and   ");
-			addGuidebook("chapter.misc.p1l13", "the ammo type of your choice   ");
-			addGuidebook("chapter.misc.p1l14", "in the other.                  ");
-
-			addGuidebook("chapter.misc.p2l1", "The Plasma Railgun:");
-			addGuidebook("chapter.misc.p2l2", "Ammo:");
-			addGuidebook("chapter.misc.p2l3", "     Energy");
-			addGuidebook("chapter.misc.p2l4", "Damage");
-			addGuidebook("chapter.misc.p2l5-1", "Initial");
-			addGuidebook("chapter.misc.p2l5-2", ": 40 AP*");
-			addGuidebook("chapter.misc.p2l6-1", "After 1s");
-			addGuidebook("chapter.misc.p2l6-2", ": 20 AP*");
-			addGuidebook("chapter.misc.p2l7", "*ignores armor");
-
-			addGuidebook("chapter.misc.p3l1", "Ceramic Plate Protection:");
-			addGuidebook("chapter.misc.p3l2", "Composite and Combat armor     ");
-			addGuidebook("chapter.misc.p3l3", "have a unique ability: Ceramic ");
-			addGuidebook("chapter.misc.p3l4", "Protection. To use this ability,");
-			addGuidebook("chapter.misc.p3l5", "you must first add Ceramic     ");
-			addGuidebook("chapter.misc.p3l6", "Plates to the chestplate. This ");
-			addGuidebook("chapter.misc.p3l7", "is accomplished by wearing     ");
-			addGuidebook("chapter.misc.p3l8", "either a Composite or Combat   ");
-			addGuidebook("chapter.misc.p3l9", "chestplate. Holding a Ceramic  ");
-			addGuidebook("chapter.misc.p3l10", "plate in your hand, Right+Click.");
-			addGuidebook("chapter.misc.p3l11", "If sucessfull, you will hear   ");
-			addGuidebook("chapter.misc.p3l12", "the sound of a velcro strap.   ");
-			addGuidebook("chapter.misc.p3l13", "A maximum of two plates can be ");
-			addGuidebook("chapter.misc.p3l14", "be held by both chestplates.   ");
-			addGuidebook("chapter.misc.p3l15", "For the ability to trigger, you");
-
-			addGuidebook("chapter.misc.p4l1", "must be wearing a full set of  ");
-			addGuidebook("chapter.misc.p4l2", "the armor type, and it must be ");
-			addGuidebook("chapter.misc.p4l3", "a complete set. You must then  ");
-			addGuidebook("chapter.misc.p4l4", "take more than 16 damage. If   ");
-			addGuidebook("chapter.misc.p4l5", "these conditions are met, you  ");
-			addGuidebook("chapter.misc.p4l6", "will hear the plate break, a   ");
-			addGuidebook("chapter.misc.p4l7", "Ceramic Plate will be removed  ");
-			addGuidebook("chapter.misc.p4l8", "from the chestplate, and the   ");
-			addGuidebook("chapter.misc.p4l9", "damage dealt will be reduced   ");
-			addGuidebook("chapter.misc.p4l10", "to its square root.            ");
-
-			addGuidebook("chapter.misc.p5l1", "The Seismic Scanner:");
-			addGuidebook("chapter.misc.p5l2", "The Seismic Scanner is a very  ");
-			addGuidebook("chapter.misc.p5l3", "useful item. It is able to scan");
-			addGuidebook("chapter.misc.p5l4", "for a selected block within a  ");
-			addGuidebook("chapter.misc.p5l5", "16 block radius. To use the    ");
-			addGuidebook("chapter.misc.p5l6", "scanner, Right-Click the       ");
-			addGuidebook("chapter.misc.p5l7", "Scanner to access it's GUI and ");
-			addGuidebook("chapter.misc.p5l8", "insert the desired block. Next,");
-			addGuidebook("chapter.misc.p5l9", "Shift + Right-Click to start a ");
-			addGuidebook("chapter.misc.p5l10", "scan. If the Scanner is able   ");
-			addGuidebook("chapter.misc.p5l11", "to find the block, it will list");
-			addGuidebook("chapter.misc.p5l12", "the coordinates in its GUI and ");
-			addGuidebook("chapter.misc.p5l13", "highlight the block in the     ");
-			addGuidebook("chapter.misc.p5l14", "world. Note, you will not see  ");
-			addGuidebook("chapter.misc.p5l15", "the highlight if you can't see ");
-
-			addGuidebook("chapter.misc.p6l1", "the block itself. The Scanner  ");
-			addGuidebook("chapter.misc.p6l2", "has a 10s cooldown between     ");
-			addGuidebook("chapter.misc.p6l3", "scans.");
-
-			addGuidebook("chapter.gettingstarted", "Getting Started");
-			addGuidebook("chapter.gettingstarted.p1l1", "    Electrodynamics is a       ");
-			addGuidebook("chapter.gettingstarted.p1l2", "mod based around realistic     ");
-			addGuidebook("chapter.gettingstarted.p1l3", "electricity and more realistic ");
-			addGuidebook("chapter.gettingstarted.p1l4", "concepts in general. As a      ");
-			addGuidebook("chapter.gettingstarted.p1l5", "result, you will find it plays ");
-			addGuidebook("chapter.gettingstarted.p1l6", "very differently than other    ");
-			addGuidebook("chapter.gettingstarted.p1l7", "tech mods you're used to. The  ");
-			addGuidebook("chapter.gettingstarted.p1l8", "main difference will be that   ");
-			addGuidebook("chapter.gettingstarted.p1l9", "Electro is much more involved, ");
-			addGuidebook("chapter.gettingstarted.p1l10", "as that is the price that comes");
-			addGuidebook("chapter.gettingstarted.p1l11", "with realism. Keep this in mind");
-			addGuidebook("chapter.gettingstarted.p1l12", "as you progress in the mod!    ");
-			addGuidebook("chapter.gettingstarted.p1l13", "    Starting out in Electro,   ");
-			addGuidebook("chapter.gettingstarted.p1l14", "you will notice that getting   ");
-			addGuidebook("chapter.gettingstarted.p1l15", "into technology is much more   ");
-
-			addGuidebook("chapter.gettingstarted.p2l1", "challenging that typical. Not  ");
-			addGuidebook("chapter.gettingstarted.p2l2", "only will you find you need    ");
-			addGuidebook("chapter.gettingstarted.p2l3", "minerals, you will also need   ");
-			addGuidebook("chapter.gettingstarted.p2l4", "materials such as wool. Also   ");
-			addGuidebook("chapter.gettingstarted.p2l5", "it will be very hard to power  ");
-			addGuidebook("chapter.gettingstarted.p2l6", "your first machines, as the    ");
-			addGuidebook("chapter.gettingstarted.p2l7", "power generation options       ");
-			addGuidebook("chapter.gettingstarted.p2l8", "you have avialable are weak.   ");
-			addGuidebook("chapter.gettingstarted.p2l9", "This is done by design, as     ");
-			addGuidebook("chapter.gettingstarted.p2l10", "early game Electro is focused  ");
-			addGuidebook("chapter.gettingstarted.p2l11", "around rationing power and     ");
-			addGuidebook("chapter.gettingstarted.p2l12", "materials. You will need to    ");
-			addGuidebook("chapter.gettingstarted.p2l13", "be smart with the choices you  ");
-			addGuidebook("chapter.gettingstarted.p2l14", "make in this stage.            ");
-			addGuidebook("chapter.gettingstarted.p2l15", "    While weak, you still need ");
-
-			addGuidebook("chapter.gettingstarted.p3l1", "a source of power. You have    ");
-			addGuidebook("chapter.gettingstarted.p3l2", "5 options:                     ");
-			addGuidebook("chapter.gettingstarted.p3l3", "     Thermoelectric Generator  ");
-			addGuidebook("chapter.gettingstarted.p3l4", "     Hydroelectric Generator   ");
-			addGuidebook("chapter.gettingstarted.p3l5", "     Windmill                  ");
-			addGuidebook("chapter.gettingstarted.p3l6", "     Solar Panel               ");
-			addGuidebook("chapter.gettingstarted.p3l7", "     Coal Generator            ");
-			addGuidebook("chapter.gettingstarted.p3l8", "Of the 5, the Coal Generator   ");
-			addGuidebook("chapter.gettingstarted.p3l9", "produces the most, but uses    ");
-			addGuidebook("chapter.gettingstarted.p3l10", "fuel. See the Machines chapter ");
-			addGuidebook("chapter.gettingstarted.p3l11", "for more detailed specs.       ");
-			addGuidebook("chapter.gettingstarted.p3l12", "    Now that you have a power  ");
-			addGuidebook("chapter.gettingstarted.p3l13", "source, I highly recommend     ");
-			addGuidebook("chapter.gettingstarted.p3l14", "reading the Electricity chapter,");
-			addGuidebook("chapter.gettingstarted.p3l15", "and I will assume you've read   ");
-
-			addGuidebook("chapter.gettingstarted.p4l1", "it after this point. Although  ");
-			addGuidebook("chapter.gettingstarted.p4l2", "weak, your power source is     ");
-			addGuidebook("chapter.gettingstarted.p4l3", "still able to power machines   ");
-			addGuidebook("chapter.gettingstarted.p4l4", "if you invest in a Battery Box.");
-			addGuidebook("chapter.gettingstarted.p4l5", "The Battery Box will allow you ");
-			addGuidebook("chapter.gettingstarted.p4l6", "you build up chrage to run     ");
-			addGuidebook("chapter.gettingstarted.p4l7", "machines for a short period    ");
-			addGuidebook("chapter.gettingstarted.p4l8", "of time. Knowing that your     ");
-			addGuidebook("chapter.gettingstarted.p4l9", "power is limited, do not invest");
-			addGuidebook("chapter.gettingstarted.p4l10", "in early game ore doubling.    ");
-			addGuidebook("chapter.gettingstarted.p4l11", "You do not have the power to   ");
-			addGuidebook("chapter.gettingstarted.p4l12", "run it.                        ");
-			addGuidebook("chapter.gettingstarted.p4l13", "    Next, you will need to     ");
-			addGuidebook("chapter.gettingstarted.p4l14", "make some machines to use the  ");
-			addGuidebook("chapter.gettingstarted.p4l15", "power you are now storing.     ");
-
-			addGuidebook("chapter.gettingstarted.p5l1", "Your first machines should be  ");
-			addGuidebook("chapter.gettingstarted.p5l2", "the following (in order):      ");
-			addGuidebook("chapter.gettingstarted.p5l3", "     Wire Mill                 ");
-			addGuidebook("chapter.gettingstarted.p5l4", "     Mineral Crusher           ");
-			addGuidebook("chapter.gettingstarted.p5l5", "     Electric Arc Furnace      ");
-			addGuidebook("chapter.gettingstarted.p5l6", "     Electric Furnace          ");
-			addGuidebook("chapter.gettingstarted.p5l7", "These machines will help you   ");
-			addGuidebook("chapter.gettingstarted.p5l8", "maximize your limited materials");
-			addGuidebook("chapter.gettingstarted.p5l9", "since you cannot double ores.   ");
-			addGuidebook("chapter.gettingstarted.p5l10", "Note how the Mineral Crusher   ");
-			addGuidebook("chapter.gettingstarted.p5l11", "also requires a higher voltage ");
-			addGuidebook("chapter.gettingstarted.p5l12", "than your Battery Box's. This  ");
-			addGuidebook("chapter.gettingstarted.p5l13", "too is by design, so you learn ");
-			addGuidebook("chapter.gettingstarted.p5l14", "early on how to use the        ");
-			addGuidebook("chapter.gettingstarted.p5l15", "Upgrade and Downgrade          ");
-
-			addGuidebook("chapter.gettingstarted.p6l1", "Transformers. With your basic  ");
-			addGuidebook("chapter.gettingstarted.p6l2", "infrastructure, you can now    ");
-			addGuidebook("chapter.gettingstarted.p6l3", "invest in a few tools to help  ");
-			addGuidebook("chapter.gettingstarted.p6l4", "you moving forward:            ");
-			addGuidebook("chapter.gettingstarted.p6l5", "     Electric Drill            ");
-			addGuidebook("chapter.gettingstarted.p6l6", "     Night Vision Goggles      ");
-			addGuidebook("chapter.gettingstarted.p6l7", "     Seismic Scanner           ");
-			addGuidebook("chapter.gettingstarted.p6l8", "These will make mining easier, ");
-			addGuidebook("chapter.gettingstarted.p6l9", "however you do not need them   ");
-			addGuidebook("chapter.gettingstarted.p6l10", "to progress. If you make them  ");
-			addGuidebook("chapter.gettingstarted.p6l11", "however, you will need to make ");
-			addGuidebook("chapter.gettingstarted.p6l12", "a Charger. The only one you    ");
-			addGuidebook("chapter.gettingstarted.p6l13", "will be able to make is the    ");
-			addGuidebook("chapter.gettingstarted.p6l14", "120V Charger, but it will get  ");
-			addGuidebook("chapter.gettingstarted.p6l15", "the job done for now. See the  ");
-
-			addGuidebook("chapter.gettingstarted.p7l1", "Machines chapter for a more    ");
-			addGuidebook("chapter.gettingstarted.p7l2", "in-depth guide on the Charger. ");
-			addGuidebook("chapter.gettingstarted.p7l3", "    To progress further in the ");
-			addGuidebook("chapter.gettingstarted.p7l4", "mod, you will need to increase ");
-			addGuidebook("chapter.gettingstarted.p7l5", "your power generation. You     ");
-			addGuidebook("chapter.gettingstarted.p7l6", "have two main options:         ");
-			addGuidebook("chapter.gettingstarted.p7l7", "     Advanced Solar Panel      ");
-			addGuidebook("chapter.gettingstarted.p7l8", "     Combustion Chamber        ");
-			addGuidebook("chapter.gettingstarted.p7l9", "The Advanced Solar Panel is    ");
-			addGuidebook("chapter.gettingstarted.p7l10", "more expensive up-front, as    ");
-			addGuidebook("chapter.gettingstarted.p7l11", "it costs more and will require ");
-			addGuidebook("chapter.gettingstarted.p7l12", "large-scale energy storage.    ");
-			addGuidebook("chapter.gettingstarted.p7l13", "However, with the Improved     ");
-			addGuidebook("chapter.gettingstarted.p7l14", "Solar Cell Upgrade, it will    ");
-			addGuidebook("chapter.gettingstarted.p7l15", "produce the most power. The    ");
-
-			addGuidebook("chapter.gettingstarted.p8l1", "Combustion Chamber itself is   ");
-			addGuidebook("chapter.gettingstarted.p8l2", "cheaper, but requires a fuel   ");
-			addGuidebook("chapter.gettingstarted.p8l3", "source. You will need to also  ");
-			addGuidebook("chapter.gettingstarted.p8l4", "invest in fuel production if   ");
-			addGuidebook("chapter.gettingstarted.p8l5", "you want to go this route. On  ");
-			addGuidebook("chapter.gettingstarted.p8l6", "top of this, the Chamber has   ");
-			addGuidebook("chapter.gettingstarted.p8l7", "no available upgrades, meaning ");
-			addGuidebook("chapter.gettingstarted.p8l8", "you will have to keep making   ");
-			addGuidebook("chapter.gettingstarted.p8l9", "more.                          ");
-			addGuidebook("chapter.gettingstarted.p8l10", "    Now that you have a better ");
-			addGuidebook("chapter.gettingstarted.p8l11", "power source, you have made    ");
-			addGuidebook("chapter.gettingstarted.p8l12", "it out of the early game.      ");
-			addGuidebook("chapter.gettingstarted.p8l13", "Mid-Game Electro is all about  ");
-			addGuidebook("chapter.gettingstarted.p8l14", "expansion. You can now run     ");
-			addGuidebook("chapter.gettingstarted.p8l15", "machines more frequently,      ");
-
-			addGuidebook("chapter.gettingstarted.p9l1", "which means you can start ore  ");
-			addGuidebook("chapter.gettingstarted.p9l2", "doubling now. However, why go  ");
-			addGuidebook("chapter.gettingstarted.p9l3", "with 2x when you can jump      ");
-			addGuidebook("chapter.gettingstarted.p9l4", "straight to 3x! You can also   ");
-			addGuidebook("chapter.gettingstarted.p9l5", "begin to invest in upgrades,   ");
-			addGuidebook("chapter.gettingstarted.p9l6", "improving the efficiency of    ");
-			addGuidebook("chapter.gettingstarted.p9l7", "your machines. In particular,  ");
-			addGuidebook("chapter.gettingstarted.p9l8", "I would recommend the Speed    ");
-			addGuidebook("chapter.gettingstarted.p9l9", "Upgrades, and the Injector     ");
-			addGuidebook("chapter.gettingstarted.p9l10", "and Ejector Upgrades. You will ");
-			addGuidebook("chapter.gettingstarted.p9l11", "need an Oxidation Furnace for  ");
-			addGuidebook("chapter.gettingstarted.p9l12", "the latter two however. See    ");
-			addGuidebook("chapter.gettingstarted.p9l13", "the Misc chapter for details   ");
-			addGuidebook("chapter.gettingstarted.p9l14", "on using them.                 ");
-			addGuidebook("chapter.gettingstarted.p9l15", "    You are probably tired of  ");
-
-			addGuidebook("chapter.gettingstarted.p10l1", "manually mining by now, so why ");
-			addGuidebook("chapter.gettingstarted.p10l2", "not invest in a Quarry! The    ");
-			addGuidebook("chapter.gettingstarted.p10l3", "Quarry is one of your main     ");
-			addGuidebook("chapter.gettingstarted.p10l4", "goals in the mid-game, and will");
-			addGuidebook("chapter.gettingstarted.p10l5", "help with resource gathering   ");
-			addGuidebook("chapter.gettingstarted.p10l6", "a lot. See the Machines chapter");
-			addGuidebook("chapter.gettingstarted.p10l7", "for a detailed guide on how to ");
-			addGuidebook("chapter.gettingstarted.p10l8", "set up and use the Quarry.     ");
-			addGuidebook("chapter.gettingstarted.p10l9", "    Your final goal of the mid-");
-			addGuidebook("chapter.gettingstarted.p10l10", "game is to make an Energized   ");
-			addGuidebook("chapter.gettingstarted.p10l11", "Alloyer. The Alloyer will      ");
-			addGuidebook("chapter.gettingstarted.p10l12", "unlock Stainless Steel for     ");
-			addGuidebook("chapter.gettingstarted.p10l13", "you, enabling you to craft     ");
-			addGuidebook("chapter.gettingstarted.p10l14", "items such as the Jetpack and  ");
-			addGuidebook("chapter.gettingstarted.p10l15", "the Kinetic Railgun. At this   ");
-
-			addGuidebook("chapter.gettingstarted.p11l1", "point, I will leave the choices");
-			addGuidebook("chapter.gettingstarted.p11l2", "up to you. You have made it    ");
-			addGuidebook("chapter.gettingstarted.p11l3", "to the mid-game and have a     ");
-			addGuidebook("chapter.gettingstarted.p11l4", "Quarry up and running. Time to ");
-			addGuidebook("chapter.gettingstarted.p11l5", "explore the rest of the mod    ");
-			addGuidebook("chapter.gettingstarted.p11l6", "on your own!                   ");
+			addGuidebook("chapter.misc.l1", "Futurum Usui.");
 
 			addGuidebook("chapter.tips", "Tips");
-			addGuidebook("chapter.tips.p1l1", "1. Use Energy Storage:");
-			addGuidebook("chapter.tips.p1l2", "Electrodynamics has several    ");
-			addGuidebook("chapter.tips.p1l3", "tiers of energy storage. You   ");
-			addGuidebook("chapter.tips.p1l4", "should invest in using them in ");
-			addGuidebook("chapter.tips.p1l5", "all stages of progression.     ");
-			addGuidebook("chapter.tips.p1l6", "Note, the Capacity Upgrade not ");
-			addGuidebook("chapter.tips.p1l7", "only increases the capacity of ");
-			addGuidebook("chapter.tips.p1l8", "a Battery Box, but also the    ");
-			addGuidebook("chapter.tips.p1l9", "output voltage!                ");
+			addGuidebook("chapter.tips.tip", "Tip %s:");
+			addGuidebook("chapter.tips.tip1", "Use Energy Storage frequently. Electrodynamics has several tiers of energy storage. You should invest in using them in all stages of progression. Note, the Capacity Upgrade not only increases the capacity of a Battery Box, but also the output voltage!");
 
-			addGuidebook("chapter.tips.p2l1", "2. No 2x ore early-game:");
-			addGuidebook("chapter.tips.p2l2", "This is touched on in the      ");
-			addGuidebook("chapter.tips.p2l3", "Getting Started chapter, but   ");
-			addGuidebook("chapter.tips.p2l4", "do not invest in 2x ore        ");
-			addGuidebook("chapter.tips.p2l5", "processing in the early game.  ");
-			addGuidebook("chapter.tips.p2l6", "You do not have the power to   ");
-			addGuidebook("chapter.tips.p2l7", "run it, and you will have a bad");
-			addGuidebook("chapter.tips.p2l8", "time if you attempt it. Instead,");
-			addGuidebook("chapter.tips.p2l9", "focus on getting better power  ");
-			addGuidebook("chapter.tips.p2l10", "generation so you can jump to  ");
-			addGuidebook("chapter.tips.p2l11", "3x ore processing instead!     ");
-
-			addGuidebook("chapter.tips.p3l1", "3. Transmit at High Voltage:");
-			addGuidebook("chapter.tips.p3l2", "This is mentioned in the       ");
-			addGuidebook("chapter.tips.p3l3", "Electricity chapter, but you   ");
-			addGuidebook("chapter.tips.p3l4", "should transmit large amounts  ");
-			addGuidebook("chapter.tips.p3l5", "of power at high voltage and   ");
-			addGuidebook("chapter.tips.p3l6", "then step it down for          ");
-			addGuidebook("chapter.tips.p3l7", "distribution. This will help   ");
-			addGuidebook("chapter.tips.p3l8", "reduce the need for heavy-     ");
-			addGuidebook("chapter.tips.p3l9", "duty cables as well as the     ");
-			addGuidebook("chapter.tips.p3l10", "amount of power lost due to    ");
-			addGuidebook("chapter.tips.p3l11", "the cable's own resistance!    ");
+			addGuidebook("chapter.tips.tip2", "Transmit at High Voltage. This is mentioned in the Electricity chapter, but you should transmit large amounts of power at high voltage and then step it down for distribution. This will help reduce the need for heavy-duty cables as well as the " + "amount of power lost due to the cable's own resistance!");
 
 		}
 
@@ -1518,7 +991,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		add("guidebook." + modID + "." + key, translation);
 	}
 
-	public enum Locale {
+	public static enum Locale {
 		EN_US;
 
 		@Override

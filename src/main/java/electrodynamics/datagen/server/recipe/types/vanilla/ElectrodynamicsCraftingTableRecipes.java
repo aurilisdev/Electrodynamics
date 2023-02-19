@@ -1173,7 +1173,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.addPattern("W C")
 				//
-				.addPattern("SSS")
+				.addPattern("SIS")
 				//
 				.addKey('I', Tags.Items.INGOTS_IRON)
 				//

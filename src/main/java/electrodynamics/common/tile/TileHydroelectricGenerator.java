@@ -140,7 +140,9 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 	@Override
 	public TransferPack getProduced() {
 		return TransferPack.ampsVoltage(Constants.HYDROELECTRICGENERATOR_AMPERAGE * (isGenerating.get() ? multiplier.get() : 0), this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
+
 	}
+	
 
 	static {
 		VoxelShape shape = Shapes.empty();

@@ -1,42 +1,21 @@
 package electrodynamics.client.guidebook.chapters;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import electrodynamics.api.References;
-import electrodynamics.client.guidebook.utils.ImageWrapperObject;
-import electrodynamics.client.guidebook.utils.ItemWrapperObject;
-import electrodynamics.client.guidebook.utils.TextWrapperObject;
 import electrodynamics.client.guidebook.utils.components.Chapter;
-import electrodynamics.client.guidebook.utils.components.Page;
+import electrodynamics.client.guidebook.utils.components.Module;
+import electrodynamics.client.guidebook.utils.pagedata.ItemWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject.ImageTextDescriptor;
 import electrodynamics.common.block.subtype.SubtypeOre;
-import electrodynamics.prefab.utilities.ItemUtils;
+import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.prefab.utilities.TextUtils;
-import electrodynamics.registers.UnifiedElectrodynamicsRegister;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.network.chat.MutableComponent;
 
 public class ChapterOre extends Chapter {
 
-	// private static final ImageWrapperObject LOGO = new ImageWrapperObject(10, 50,
-	// 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/oretin.png");
-	private static final ItemWrapperObject LOGO = new ItemWrapperObject(17, 60, 2.0F, ItemUtils.fromBlock(UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeOre.tin)));
+	private static final ItemWrapperObject LOGO = new ItemWrapperObject(7, 10, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.tin));
 
-	@Override
-	protected List<Page> genPages() {
-		// FOR SANITY'S SAKE, PLEASE LEAVE THIS SPACED OUT!!!!!!!!!!!!!!!!!!
-		List<Page> pages = new ArrayList<>();
-
-		pages.add(new Page(new ImageWrapperObject[] { new ImageWrapperObject(10, 45, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/orealuminum.png"), new ImageWrapperObject(10, 80, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/orechromite.png"), new ImageWrapperObject(10, 115, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/orefluorite.png"), new ImageWrapperObject(10, 150, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/orehalite.png") }, new TextWrapperObject[] { new TextWrapperObject(45, 47, 4210752, TextUtils.guidebook("chapter.ores.aluminumname")), new TextWrapperObject(45, 57, 4210752, TextUtils.guidebook("chapter.ores.aluminummaterial")), new TextWrapperObject(45, 67, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.aluminum.maxY, SubtypeOre.aluminum.minY)), new TextWrapperObject(45, 82, 4210752, TextUtils.guidebook("chapter.ores.chromitename")), new TextWrapperObject(45, 92, 4210752, TextUtils.guidebook("chapter.ores.chromitematerial")), new TextWrapperObject(45, 102, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.chromite.maxY, SubtypeOre.chromite.minY)), new TextWrapperObject(45, 117, 4210752, TextUtils.guidebook("chapter.ores.fluoritename")), new TextWrapperObject(45, 127, 4210752, TextUtils.guidebook("chapter.ores.fluoritematerial")), new TextWrapperObject(45, 137, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.fluorite.maxY, SubtypeOre.fluorite.minY)), new TextWrapperObject(45, 152, 4210752, TextUtils.guidebook("chapter.ores.halitename")), new TextWrapperObject(45, 162, 4210752, TextUtils.guidebook("chapter.ores.halitematerial")), new TextWrapperObject(45, 172, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.halite.maxY, SubtypeOre.halite.minY)) }));
-
-		pages.add(new Page(new ImageWrapperObject[] { new ImageWrapperObject(10, 45, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/orelead.png"), new ImageWrapperObject(10, 80, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/orelepidolite.png"), new ImageWrapperObject(10, 115, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/oremolybdenum.png"), new ImageWrapperObject(10, 150, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/oremonazite.png") }, new TextWrapperObject[] { new TextWrapperObject(45, 47, 4210752, TextUtils.guidebook("chapter.ores.leadname")), new TextWrapperObject(45, 57, 4210752, TextUtils.guidebook("chapter.ores.leadmaterial")), new TextWrapperObject(45, 67, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.lead.maxY, SubtypeOre.lead.minY)), new TextWrapperObject(45, 82, 4210752, TextUtils.guidebook("chapter.ores.lepidolitename")), new TextWrapperObject(45, 92, 4210752, TextUtils.guidebook("chapter.ores.lepidolitematerial")), new TextWrapperObject(45, 102, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.lepidolite.maxY, SubtypeOre.lepidolite.minY)), new TextWrapperObject(45, 117, 4210752, TextUtils.guidebook("chapter.ores.molybdenumname")), new TextWrapperObject(45, 127, 4210752, TextUtils.guidebook("chapter.ores.molybdenummaterial")), new TextWrapperObject(45, 137, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.molybdenum.maxY, SubtypeOre.molybdenum.minY)), new TextWrapperObject(45, 152, 4210752, TextUtils.guidebook("chapter.ores.monazitename")), new TextWrapperObject(45, 162, 4210752, TextUtils.guidebook("chapter.ores.monazitematerial")), new TextWrapperObject(45, 172, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.monazite.maxY, SubtypeOre.monazite.minY)) }));
-
-		pages.add(new Page(new ImageWrapperObject[] { new ImageWrapperObject(10, 45, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/oreniter.png"), new ImageWrapperObject(10, 80, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/orerutile.png"), new ImageWrapperObject(10, 115, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/oresilver.png"), new ImageWrapperObject(10, 150, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/oresulfur.png") }, new TextWrapperObject[] { new TextWrapperObject(45, 47, 4210752, TextUtils.guidebook("chapter.ores.nitername")), new TextWrapperObject(45, 57, 4210752, TextUtils.guidebook("chapter.ores.nitermaterial")), new TextWrapperObject(45, 67, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.niter.maxY, SubtypeOre.niter.minY)), new TextWrapperObject(45, 82, 4210752, TextUtils.guidebook("chapter.ores.rutilename")), new TextWrapperObject(45, 92, 4210752, TextUtils.guidebook("chapter.ores.rutilematerial")), new TextWrapperObject(45, 102, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.rutile.maxY, SubtypeOre.rutile.minY)), new TextWrapperObject(45, 117, 4210752, TextUtils.guidebook("chapter.ores.silvername")), new TextWrapperObject(45, 127, 4210752, TextUtils.guidebook("chapter.ores.silvermaterial")), new TextWrapperObject(45, 137, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.silver.maxY, SubtypeOre.silver.minY)), new TextWrapperObject(45, 152, 4210752, TextUtils.guidebook("chapter.ores.sulfurname")), new TextWrapperObject(45, 162, 4210752, TextUtils.guidebook("chapter.ores.sulfurmaterial")), new TextWrapperObject(45, 172, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.sulfur.maxY, SubtypeOre.sulfur.minY)) }));
-
-		pages.add(new Page(new ImageWrapperObject[] { new ImageWrapperObject(10, 45, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/oresylvite.png"), new ImageWrapperObject(10, 80, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/orethorianite.png"), new ImageWrapperObject(10, 115, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/oretin.png"), new ImageWrapperObject(10, 150, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/oreuraninite.png") }, new TextWrapperObject[] { new TextWrapperObject(45, 47, 4210752, TextUtils.guidebook("chapter.ores.sylvitename")), new TextWrapperObject(45, 57, 4210752, TextUtils.guidebook("chapter.ores.sylvitematerial")), new TextWrapperObject(45, 67, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.sylvite.maxY, SubtypeOre.sylvite.minY)), new TextWrapperObject(45, 82, 4210752, TextUtils.guidebook("chapter.ores.thorianitename")), new TextWrapperObject(45, 92, 4210752, TextUtils.guidebook("chapter.ores.thorianitematerial")), new TextWrapperObject(45, 102, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.thorianite.maxY, SubtypeOre.thorianite.minY)), new TextWrapperObject(45, 117, 4210752, TextUtils.guidebook("chapter.ores.tinname")), new TextWrapperObject(45, 127, 4210752, TextUtils.guidebook("chapter.ores.tinmaterial")), new TextWrapperObject(45, 137, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.tin.maxY, SubtypeOre.tin.minY)), new TextWrapperObject(45, 152, 4210752, TextUtils.guidebook("chapter.ores.uraninitename")), new TextWrapperObject(45, 162, 4210752, TextUtils.guidebook("chapter.ores.uraninitematerial")), new TextWrapperObject(45, 172, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.uraninite.maxY, SubtypeOre.uraninite.minY)) }));
-
-		pages.add(new Page(new ImageWrapperObject[] { new ImageWrapperObject(10, 45, 0, 0, 32, 32, 32, 32, References.ID + ":textures/block/ore/orevanadinite.png"), }, new TextWrapperObject[] { new TextWrapperObject(45, 47, 4210752, TextUtils.guidebook("chapter.ores.vanadinitename")), new TextWrapperObject(45, 57, 4210752, TextUtils.guidebook("chapter.ores.vanadinitematerial")), new TextWrapperObject(45, 67, 4210752, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.vanadinite.maxY, SubtypeOre.vanadinite.minY)), }));
-
-		return pages;
+	public ChapterOre(Module module) {
+		super(module);
 	}
 
 	@Override
@@ -47,6 +26,185 @@ public class ChapterOre extends Chapter {
 	@Override
 	public MutableComponent getTitle() {
 		return TextUtils.guidebook("chapter.ores");
+	}
+
+	@Override
+	public void addData() {
+		
+		//Regular Ores
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.aluminum), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.aluminum).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_aluminum"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.aluminum.minY, SubtypeOre.aluminum.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.chromite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.chromite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_chromium"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.chromite.minY, SubtypeOre.chromite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.fluorite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.fluorite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_fluorite"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.fluorite.minY, SubtypeOre.fluorite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.halite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.halite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_salt"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.halite.minY, SubtypeOre.halite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.lead), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.lead).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_lead"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.lead.minY, SubtypeOre.lead.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.lepidolite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.lepidolite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_lithium"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.lepidolite.minY, SubtypeOre.lepidolite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.molybdenum), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.molybdenum).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_molybdenum"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.molybdenum.minY, SubtypeOre.molybdenum.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.monazite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.monazite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_monazite"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.monazite.minY, SubtypeOre.monazite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.niter), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.niter).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_niter"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.niter.minY, SubtypeOre.niter.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.rutile), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.rutile).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_titanium"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.rutile.minY, SubtypeOre.rutile.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.silver), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.silver).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_silver"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.silver.minY, SubtypeOre.silver.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.sulfur), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.sulfur).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_sulfur"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.sulfur.minY, SubtypeOre.sulfur.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.sylvite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.sylvite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_sylvite"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.sylvite.minY, SubtypeOre.sylvite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.thorianite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.thorianite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_thorium"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.thorianite.minY, SubtypeOre.thorianite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.tin), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.tin).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_tin"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.tin.minY, SubtypeOre.tin.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.uraninite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.uraninite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_uranium"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.uraninite.minY, SubtypeOre.uraninite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOre.vanadinite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOre.vanadinite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_vanadium"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOre.vanadinite.minY, SubtypeOre.vanadinite.maxY))));
+		
+		//Deep Ores
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.aluminum), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.aluminum).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_aluminum"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.aluminum.minY, SubtypeOreDeepslate.aluminum.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.chromite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.chromite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_chromium"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.chromite.minY, SubtypeOreDeepslate.chromite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.fluorite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.fluorite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_fluorite"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.fluorite.minY, SubtypeOreDeepslate.fluorite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.halite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.halite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_salt"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.halite.minY, SubtypeOreDeepslate.halite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.lead), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.lead).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_lead"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.lead.minY, SubtypeOreDeepslate.lead.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.lepidolite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.lepidolite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_lithium"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.lepidolite.minY, SubtypeOreDeepslate.lepidolite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.molybdenum), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.molybdenum).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_molybdenum"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.molybdenum.minY, SubtypeOreDeepslate.molybdenum.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.monazite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.monazite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_monazite"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.monazite.minY, SubtypeOreDeepslate.monazite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.niter), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.niter).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_niter"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.niter.minY, SubtypeOreDeepslate.niter.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.rutile), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.rutile).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_titanium"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.rutile.minY, SubtypeOreDeepslate.rutile.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.silver), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.silver).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_silver"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.silver.minY, SubtypeOreDeepslate.silver.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.sulfur), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.sulfur).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_sulfur"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.sulfur.minY, SubtypeOreDeepslate.sulfur.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.sylvite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.sylvite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_sylvite"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.sylvite.minY, SubtypeOreDeepslate.sylvite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.thorianite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.thorianite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_thorium"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.thorianite.minY, SubtypeOreDeepslate.thorianite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.tin), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.tin).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_tin"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.tin.minY, SubtypeOreDeepslate.tin.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.uraninite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.uraninite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_uranium"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.uraninite.minY, SubtypeOreDeepslate.uraninite.maxY))));
+		
+		pageData.add(new ItemWrapperObject(7, 5, 2.0F, 32, 37, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.vanadinite), 
+				new ImageTextDescriptor(40, 0, ElectrodynamicsItems.getItem(SubtypeOreDeepslate.vanadinite).getDescription()), 
+				new ImageTextDescriptor(40, 10, TextUtils.guidebook("chapter.ores.material", TextUtils.guidebook("chapter.ores.material_vanadium"))),
+				new ImageTextDescriptor(40, 20, TextUtils.guidebook("chapter.ores.spawnrange", SubtypeOreDeepslate.vanadinite.minY, SubtypeOreDeepslate.vanadinite.maxY))));
+		
 	}
 
 }

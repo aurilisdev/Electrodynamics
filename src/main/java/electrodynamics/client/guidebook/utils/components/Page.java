@@ -1,100 +1,57 @@
 package electrodynamics.client.guidebook.utils.components;
 
-import electrodynamics.client.guidebook.utils.ImageWrapperObject;
-import electrodynamics.client.guidebook.utils.ItemWrapperObject;
-import electrodynamics.client.guidebook.utils.TextWrapperObject;
-import net.minecraft.network.chat.MutableComponent;
+import java.util.ArrayList;
+import java.util.List;
+
+import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.ItemWrapperObject;
+import net.minecraft.util.FormattedCharSequence;
 
 public class Page {
 
 	private int pageNumber = 0;
+	public List<TextWrapper> text = new ArrayList<>();
+	public List<ImageWrapper> images = new ArrayList<>();
+	public List<ItemWrapper> items = new ArrayList<>();
+	public Chapter associatedChapter;
 
-	private ImageWrapperObject[] images = new ImageWrapperObject[] {};
-	private TextWrapperObject[] text = new TextWrapperObject[] {};
-	private ItemWrapperObject[] items = new ItemWrapperObject[] {};
-
-	private MutableComponent chapterText;
-
-	public Page(ImageWrapperObject[] images, TextWrapperObject[] text, ItemWrapperObject[] items) {
-		this.images = images;
-		this.text = text;
-		this.items = items;
+	public Page(int pageNumber) {
+		this.pageNumber = pageNumber;
 	}
 
-	public Page(ImageWrapperObject[] images, TextWrapperObject[] text) {
-		this.images = images;
-		this.text = text;
-	}
-
-	public Page(TextWrapperObject[] text, ItemWrapperObject[] items) {
-		this.text = text;
-		this.items = items;
-	}
-
-	public Page(ImageWrapperObject[] images, ItemWrapperObject[] items) {
-		this.images = images;
-		this.items = items;
-	}
-
-	public Page(TextWrapperObject[] text) {
-		this.text = text;
-	}
-
-	public Page(ImageWrapperObject[] images) {
-		this.images = images;
-	}
-
-	public Page(ItemWrapperObject[] items) {
-		this.items = items;
-	}
-
-	// For a blank page
-	public Page() {
-	}
-
-	protected void setPageNumber(int number) {
-		pageNumber = number;
-	}
-
-	protected void setChapterName(MutableComponent text) {
-		chapterText = text;
-	}
-
-	public int getPageNumber() {
+	public int getPage() {
 		return pageNumber;
 	}
 
-	public MutableComponent getChapterName() {
-		return chapterText;
+	public static record TextWrapper(int x, int y, FormattedCharSequence characters, int color, boolean centered) {
+
 	}
 
-	public TextWrapperObject[] getText() {
-		return text;
+	public static record ImageWrapper(int x, int y, ImageWrapperObject image) {
+
 	}
 
-	public ImageWrapperObject[] getImages() {
-		return images;
+	public static record ItemWrapper(int x, int y, ItemWrapperObject item) {
+
 	}
 
-	public ItemWrapperObject[] getItems() {
-		return items;
-	}
-
-	// A simple wrapper class for the chapter pages used by Modules
 	public static class ChapterPage extends Page {
 
-		public ChapterPage(int pageNumber) {
-			setPageNumber(pageNumber);
+		public Module associatedModule;
+
+		public ChapterPage(int pageNumber, Module module) {
+			super(pageNumber);
+			associatedModule = module;
 		}
 
 	}
 
-	// A simple wrapper class for the Module list pages used by @ScreenGuidebook
 	public static class ModulePage extends Page {
 
 		public ModulePage(int pageNumber) {
-			setPageNumber(pageNumber);
+			super(pageNumber);
 		}
 
 	}
+
 }
