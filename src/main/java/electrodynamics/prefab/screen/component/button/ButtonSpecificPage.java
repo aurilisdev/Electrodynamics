@@ -81,7 +81,7 @@ public class ButtonSpecificPage extends Button {
 	}
 
 	public boolean isVisible() {
-		return page == ScreenGuidebook.currPageNumber;
+		return page == ScreenGuidebook.currPageNumber || page == ScreenGuidebook.currPageNumber + 1;
 	}
 
 }

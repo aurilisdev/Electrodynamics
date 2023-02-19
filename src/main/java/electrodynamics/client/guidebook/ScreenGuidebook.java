@@ -52,16 +52,24 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	private static final int MODULES_PER_PAGE = 4;
 	private static final int CHAPTERS_PER_PAGE = 4;
 
-	private static final int TEXTURE_WIDTH = 176;
-	private static final int TEXTURE_HEIGHT = 224;
+	private static final int LEFT_TEXTURE_WIDTH = 171;
+	private static final int LEFT_TEXTURE_HEIGHT = 224;
+	
+	private static final int RIGHT_TEXTURE_WIDTH = 171;
+	private static final int RIGHT_TEXTURE_HEIGHT = 224;
+	
+	private static final int OLD_TEXTURE_WIDTH = 171;
+	
+	private static final int LEFT_X_SHIFT = -OLD_TEXTURE_WIDTH / 2 + 2;
+	private static final int RIGHT_X_SHIFT = OLD_TEXTURE_WIDTH / 2 + 3;
 
 	public static final int TEXT_START_Y = 40;
 	public static final int TEXT_END_Y = 180;
 
 	public static final int LINE_HEIGHT = 10;
 
-	public static final int TEXT_START_X = 10;
-	public static final int TEXT_END_X = 158;
+	public static final int TEXT_START_X = 12;
+	public static final int TEXT_END_X = 166;
 
 	public static final int TEXT_WIDTH = TEXT_END_X - TEXT_START_X;
 	public static final int LINES_PER_PAGE = (TEXT_END_Y - TEXT_START_Y) / LINE_HEIGHT + 1;// have to add one to get the last line
@@ -77,7 +85,8 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 	private List<Page> pages = new ArrayList<>();
 
-	private static final ResourceLocation PAGE_TEXTURE = new ResourceLocation(References.ID + ":textures/screen/guidebook/resources/guidebookpage.png");
+	private static final ResourceLocation PAGE_TEXTURE_LEFT = new ResourceLocation(References.ID + ":textures/screen/guidebook/resources/guidebookpageleft.png");
+	private static final ResourceLocation PAGE_TEXTURE_RIGHT = new ResourceLocation(References.ID + ":textures/screen/guidebook/resources/guidebookpageright.png");
 
 	private PageButton forward;
 	private PageButton back;
@@ -165,10 +174,10 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	private void initPageButtons() {
 		int guiWidth = (width - imageWidth) / 2;
 		int guiHeight = (height - imageHeight) / 2;
-		forward = new PageButton(guiWidth + 142, guiHeight + 200, true, button -> pageForward(), true);
-		back = new PageButton(guiWidth + 10, guiHeight + 200, false, button -> pageBackward(), true);
-		home = new ButtonGuidebook(guiWidth + 115, guiHeight + 202, button -> goToModulePage(), ButtonType.HOME);
-		chapters = new ButtonGuidebook(guiWidth + 50, guiHeight + 202, button -> goToChapterPage(), ButtonType.CHAPTERS);
+		forward = new PageButton(guiWidth + 142 - 45, guiHeight + 200, true, button -> pageForward(), true);
+		back = new PageButton(guiWidth + 10 + 44, guiHeight + 200, false, button -> pageBackward(), true);
+		home = new ButtonGuidebook(guiWidth + 115 - 186, guiHeight + 202, button -> goToModulePage(), ButtonType.HOME);
+		chapters = new ButtonGuidebook(guiWidth + 50 - 100, guiHeight + 202, button -> goToChapterPage(), ButtonType.CHAPTERS);
 		addRenderableWidget(forward);
 		addRenderableWidget(back);
 		addRenderableWidget(home);
@@ -191,7 +200,8 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 				}
 				Module module = GUIDEBOOK_MODULES.get(index);
 				page.images.add(new ImageWrapper(TEXT_START_X, j * MODULE_SEPERATION + TEXT_START_Y - 2, module.getLogo()));
-				addRenderableWidget(new ButtonSpecificPage(guiWidth + 45, guiHeight + 43 + j * MODULE_SEPERATION, 120, 20, nextPageNumber, module.getTitle(), button -> setPageNumber(module.getPage())));
+				int xShift = nextPageNumber % 2 == 0 ? LEFT_X_SHIFT : RIGHT_X_SHIFT - 8;
+				addRenderableWidget(new ButtonSpecificPage(guiWidth + 45 + xShift, guiHeight + 43 + j * MODULE_SEPERATION, 120, 20, nextPageNumber, module.getTitle(), button -> setPageNumber(module.getPage())));
 				index++;
 			}
 
@@ -227,8 +237,10 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 					} else if (chapter.getLogo() instanceof ItemWrapperObject item) {
 						chapterPage.items.add(new ItemWrapper(TEXT_START_X, j * CHAPTER_SEPERATION + TEXT_START_Y + 10, item));
 					}
+					
+					int xShift = nextPageNumber % 2 == 0 ? LEFT_X_SHIFT : RIGHT_X_SHIFT - 8;
 
-					addRenderableWidget(new ButtonSpecificPage(guiWidth + 45, guiHeight + 56 + j * CHAPTER_SEPERATION, 120, 20, nextPageNumber, chapter.getTitle(), button -> setPageNumber(chapter.getStartPage())));
+					addRenderableWidget(new ButtonSpecificPage(guiWidth + 45 + xShift, guiHeight + 56 + j * CHAPTER_SEPERATION, 120, 20, nextPageNumber, chapter.getTitle(), button -> setPageNumber(chapter.getStartPage())));
 
 					index++;
 				}
@@ -261,15 +273,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 							imagePixelHeightLeft -= LINE_HEIGHT;
 
 							if (imagePixelHeightLeft <= 0) {
-								pages.add(currentPage);
-								currentPage = new Page(nextPageNumber);
-								currentPage.associatedChapter = chapter;
-								nextPageNumber++;
-
-								imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
-								lineY = TEXT_START_Y;
-								lineX = TEXT_START_X;
-								imagePixelWidthLeft = TEXT_WIDTH;
+								currentPage = resetToNewPage(currentPage, chapter);
 							} else {
 								lineY += LINE_HEIGHT;
 							}
@@ -296,13 +300,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 							if (textWrapper.newPage) {
 
-								pages.add(currentPage);
-								currentPage = new Page(nextPageNumber);
-								currentPage.associatedChapter = chapter;
-								nextPageNumber++;
-
-								imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
-								lineY = TEXT_START_Y;
+								currentPage = resetToNewPage(currentPage, chapter);
 
 							}
 						}
@@ -316,15 +314,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 						}
 
 						if (imageWrapper.newPage) {
-							pages.add(currentPage);
-							currentPage = new Page(nextPageNumber);
-							currentPage.associatedChapter = chapter;
-							nextPageNumber++;
-
-							imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
-							lineY = TEXT_START_Y;
-							lineX = TEXT_START_X;
-							imagePixelWidthLeft = TEXT_WIDTH;
+							currentPage = resetToNewPage(currentPage, chapter);
 							previousHeight = 0;
 						}
 
@@ -354,16 +344,8 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 							if (trueHeight > imagePixelHeightLeft) {
 
-								pages.add(currentPage);
-								currentPage = new Page(nextPageNumber);
-								currentPage.associatedChapter = chapter;
-								nextPageNumber++;
-
-								imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
-								lineY = TEXT_START_Y;
-								lineX = TEXT_START_X;
-								imagePixelWidthLeft = TEXT_WIDTH;
-								previousHeight = 0;
+								currentPage = resetToNewPage(currentPage, chapter);
+								previousHeight = trueHeight;
 
 							}
 
@@ -374,15 +356,8 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 						}
 
 						if (imagePixelHeightLeft == 0) {
-							pages.add(currentPage);
-							currentPage = new Page(nextPageNumber);
-							currentPage.associatedChapter = chapter;
-							nextPageNumber++;
-
-							imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
-							lineY = TEXT_START_Y;
-							lineX = TEXT_START_X;
-							imagePixelWidthLeft = TEXT_WIDTH;
+							currentPage = resetToNewPage(currentPage, chapter);
+							previousHeight = 0;
 						}
 
 					} else if (data instanceof ItemWrapperObject itemWrapper) {
@@ -394,15 +369,8 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 						}
 
 						if (itemWrapper.newPage) {
-							pages.add(currentPage);
-							currentPage = new Page(nextPageNumber);
-							currentPage.associatedChapter = chapter;
-							nextPageNumber++;
-
-							imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
-							lineY = TEXT_START_Y;
-							lineX = TEXT_START_X;
-							imagePixelWidthLeft = TEXT_WIDTH;
+							currentPage = resetToNewPage(currentPage, chapter);
+							previousHeight = 0;
 						}
 
 						int trueHeight = itemWrapper.height - itemWrapper.descriptorTopOffset + itemWrapper.descriptorBottomOffset;
@@ -429,15 +397,8 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 							if (trueHeight > imagePixelHeightLeft) {
 
-								pages.add(currentPage);
-								currentPage = new Page(nextPageNumber);
-								currentPage.associatedChapter = chapter;
-								nextPageNumber++;
-
-								imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
-								lineY = TEXT_START_Y;
-								lineX = TEXT_START_X;
-								imagePixelWidthLeft = TEXT_WIDTH;
+								currentPage = resetToNewPage(currentPage, chapter);
+								previousHeight = trueHeight;
 
 							}
 
@@ -449,15 +410,8 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 						}
 
 						if (imagePixelHeightLeft == 0) {
-							pages.add(currentPage);
-							currentPage = new Page(nextPageNumber);
-							currentPage.associatedChapter = chapter;
-							nextPageNumber++;
-
-							imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
-							lineY = TEXT_START_Y;
-							lineX = TEXT_START_X;
-							imagePixelWidthLeft = TEXT_WIDTH;
+							currentPage = resetToNewPage(currentPage, chapter);
+							previousHeight = 0;
 						}
 
 					}
@@ -470,10 +424,14 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 				lineY = TEXT_START_Y;
 				lineX = TEXT_START_X;
 				imagePixelWidthLeft = TEXT_WIDTH;
-				// nextPageNumber++;
 
 			}
 
+		}
+		
+		if(pages.size() % 2 == 1) {
+			pages.add(new Page(nextPageNumber));
+			nextPageNumber++;
 		}
 
 	}
@@ -498,12 +456,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		while (text.size() > 0) {
 
 			if (imagePixelHeightLeft <= 0) {
-				imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
-				lineY = TEXT_START_Y;
-				pages.add(currentPage);
-				currentPage = new Page(nextPageNumber);
-				currentPage.associatedChapter = chapter;
-				nextPageNumber++;
+				currentPage = resetToNewPage(currentPage, chapter);
 			}
 
 			currentPage.text.add(new TextWrapper(lineX, lineY, text.get(0), color, centered));
@@ -518,25 +471,49 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		return currentPage;
 
 	}
+	
+	private Page resetToNewPage(Page page, Chapter chapter) {
+		pages.add(page);
+		page = new Page(nextPageNumber);
+		page.associatedChapter = chapter;
+		nextPageNumber++;
+
+		imagePixelHeightLeft = Y_PIXELS_PER_PAGE;
+		lineY = TEXT_START_Y;
+		lineX = TEXT_START_X;
+		imagePixelWidthLeft = TEXT_WIDTH;
+		
+		return page;
+	}
 
 	@Override
 	protected void renderBg(PoseStack stack, float partialTick, int x, int y) {
-
+		
 		int guiWidth = (width - imageWidth) / 2;
 		int guiHeight = (height - imageHeight) / 2;
-		RenderingUtils.bindTexture(PAGE_TEXTURE);
-		blit(stack, guiWidth, guiHeight, 0, 0, TEXTURE_WIDTH, TEXTURE_HEIGHT);
-
-		Page page = getCurrentPage();
-
+		
+		RenderingUtils.bindTexture(PAGE_TEXTURE_LEFT);
+		blit(stack, guiWidth + LEFT_X_SHIFT, guiHeight, 0, 0, LEFT_TEXTURE_WIDTH, LEFT_TEXTURE_HEIGHT);
+		
+		RenderingUtils.bindTexture(PAGE_TEXTURE_RIGHT);
+		blit(stack, guiWidth + RIGHT_X_SHIFT, guiHeight, 0, 0, RIGHT_TEXTURE_WIDTH, RIGHT_TEXTURE_HEIGHT);
+		
 		updatePageArrowVis();
+
+		renderPageBackground(stack, LEFT_X_SHIFT, guiWidth, guiHeight, getCurrentPage());
+		renderPageBackground(stack, RIGHT_X_SHIFT - 8, guiWidth, guiHeight, getNextPage());
+
+	}
+	
+	private void renderPageBackground(PoseStack stack, int xShift, int guiWidth, int guiHeight, Page page) {
+		
 
 		for (ImageWrapper wrapper : page.images) {
 
 			ImageWrapperObject image = wrapper.image();
 
 			RenderingUtils.bindTexture(wrapper.image().location);
-			blit(stack, guiWidth + wrapper.x() + image.xOffset, guiHeight + wrapper.y() + image.yOffset - image.descriptorTopOffset, image.uStart, image.vStart, image.width, image.height, image.imgheight, image.imgwidth);
+			blit(stack, guiWidth + wrapper.x() + image.xOffset + xShift, guiHeight + wrapper.y() + image.yOffset - image.descriptorTopOffset, image.uStart, image.vStart, image.width, image.height, image.imgheight, image.imgwidth);
 
 		}
 
@@ -544,124 +521,122 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 			ItemWrapperObject item = wrapper.item();
 
-			RenderingUtils.renderItemScaled(item.item, guiWidth + item.xOffset + wrapper.x(), guiHeight + item.yOffset + wrapper.y(), item.scale);
+			RenderingUtils.renderItemScaled(item.item, guiWidth + item.xOffset + wrapper.x() + xShift, guiHeight + item.yOffset + wrapper.y(), item.scale);
 		}
-
 	}
 
 	@Override
 	protected void renderLabels(PoseStack stack, int x, int y) {
+
+		renderPageLabels(stack, LEFT_X_SHIFT, getCurrentPage());
+		
+		renderPageLabels(stack, RIGHT_X_SHIFT - 8, getNextPage());
+		
+	}
+	
+	private void renderPageLabels(PoseStack stack, int xPageShift, Page page) {
 		int refX = titleLabelX - 8;
 		int refY = titleLabelY - 6;
-
-		Page page = getCurrentPage();
-
+		
 		if (page instanceof ModulePage) {
 
 			Component modTitle = TextUtils.guidebook("availablemodules").withStyle(ChatFormatting.BOLD);
-			int xShift = (TEXTURE_WIDTH - font.width(modTitle)) / 2;
-			font.draw(stack, modTitle, refX + xShift, refY + 16, 4210752);
+			int xShift = (TEXT_WIDTH - font.width(modTitle)) / 2;
+			font.draw(stack, modTitle, refX + TEXT_START_X + xShift + xPageShift, refY + 16, 4210752);
 
-		} else if (page instanceof ChapterPage) {
-			Module currMod = getCurrentModule();
-			if (currMod != null) {
-				Component moduleTitle = currMod.getTitle().withStyle(ChatFormatting.BOLD);
-				int xShift = (TEXTURE_WIDTH - font.width(moduleTitle)) / 2;
-				font.draw(stack, moduleTitle, refX + xShift, refY + 16, 4210752);
+		} else if (page instanceof ChapterPage chapter) {
+			Module currMod = chapter.associatedModule;
+			Component moduleTitle = currMod.getTitle().withStyle(ChatFormatting.BOLD);
+			int xShift = (TEXT_WIDTH - font.width(moduleTitle)) / 2;
+			font.draw(stack, moduleTitle, refX + xShift + TEXT_START_X + xPageShift, refY + 16, 4210752);
 
-				Component chapTitle = TextUtils.guidebook("chapters").withStyle(ChatFormatting.UNDERLINE);
-				xShift = (TEXTURE_WIDTH - font.width(chapTitle)) / 2;
-				font.draw(stack, chapTitle, refX + xShift, refY + 31, 4210752);
-			}
+			Component chapTitle = TextUtils.guidebook("chapters").withStyle(ChatFormatting.UNDERLINE);
+			xShift = (TEXT_WIDTH - font.width(chapTitle)) / 2;
+			font.draw(stack, chapTitle, refX + TEXT_START_X + xShift + xPageShift, refY + 31, 4210752);
 		} else {
-			Module currMod = getCurrentModule();
-			if (currMod != null) {
-				Component moduleTitle = currMod.getTitle().withStyle(ChatFormatting.BOLD);
-				int xShift = (TEXTURE_WIDTH - font.width(moduleTitle)) / 2;
-				font.draw(stack, moduleTitle, refX + xShift, refY + 16, 4210752);
+			Module currMod = page.associatedChapter.module;
+			Component moduleTitle = currMod.getTitle().withStyle(ChatFormatting.BOLD);
+			int xShift = (TEXT_WIDTH - font.width(moduleTitle)) / 2;
+			font.draw(stack, moduleTitle, refX + TEXT_START_X + xShift + xPageShift, refY + 16, 4210752);
 
-				Component chapTitle = page.associatedChapter.getTitle().withStyle(ChatFormatting.UNDERLINE);
-				xShift = (TEXTURE_WIDTH - font.width(chapTitle)) / 2;
-				font.draw(stack, chapTitle, refX + xShift, refY + 26, 4210752);
+			Component chapTitle = page.associatedChapter.getTitle().withStyle(ChatFormatting.UNDERLINE);
+			xShift = (TEXT_WIDTH - font.width(chapTitle)) / 2;
+			font.draw(stack, chapTitle, refX + TEXT_START_X + xShift + xPageShift, refY + 26, 4210752);
 
-				Component pageNumber = Component.literal(getCurrentPageNumber() + "");
-				xShift = (TEXTURE_WIDTH - font.width(pageNumber)) / 2;
-				font.draw(stack, pageNumber, refX + xShift, refY + 200, 4210752);
+			Component pageNumber = Component.literal(page.getPage() + 1 + "");
+			xShift = (TEXT_WIDTH - font.width(pageNumber)) / 2;
+			font.draw(stack, pageNumber, refX + TEXT_START_X + xShift + xPageShift, refY + 200, 4210752);
 
-				for (TextWrapper text : page.text) {
+			for (TextWrapper text : page.text) {
 
-					if (text.centered()) {
-						xShift = (TEXT_WIDTH - font.width(text.characters())) / 2;
-						font.draw(stack, text.characters(), text.x() + refX + xShift, refY + text.y(), text.color());
-					} else {
-						font.draw(stack, text.characters(), text.x() + refX, text.y() + refY, text.color());
-					}
-
+				if (text.centered()) {
+					xShift = (TEXT_WIDTH - font.width(text.characters())) / 2;
+					font.draw(stack, text.characters(), text.x() + refX + xShift + xPageShift, refY + text.y(), text.color());
+				} else {
+					font.draw(stack, text.characters(), text.x() + refX + xPageShift, text.y() + refY, text.color());
 				}
 
-				for (ImageWrapper wrapper : page.images) {
+			}
 
-					ImageWrapperObject image = wrapper.image();
+			for (ImageWrapper wrapper : page.images) {
 
-					for (ImageTextDescriptor descriptor : image.descriptors) {
-						font.draw(stack, descriptor.text, refX + wrapper.x() + descriptor.xOffsetFromImage, refY + wrapper.y() + descriptor.yOffsetFromImage, descriptor.color);
-					}
+				ImageWrapperObject image = wrapper.image();
 
+				for (ImageTextDescriptor descriptor : image.descriptors) {
+					font.draw(stack, descriptor.text, refX + wrapper.x() + descriptor.xOffsetFromImage + xPageShift, refY + wrapper.y() + descriptor.yOffsetFromImage, descriptor.color);
 				}
 
-				for (ItemWrapper wrapper : page.items) {
+			}
 
-					ItemWrapperObject item = wrapper.item();
+			for (ItemWrapper wrapper : page.items) {
 
-					for (ImageTextDescriptor descriptor : item.descriptors) {
-						font.draw(stack, descriptor.text, refX + wrapper.x() + descriptor.xOffsetFromImage, refY + wrapper.y() + descriptor.yOffsetFromImage, descriptor.color);
-					}
+				ItemWrapperObject item = wrapper.item();
 
+				for (ImageTextDescriptor descriptor : item.descriptors) {
+					font.draw(stack, descriptor.text, refX + wrapper.x() + descriptor.xOffsetFromImage + xPageShift, refY + wrapper.y() + descriptor.yOffsetFromImage, descriptor.color);
 				}
 
 			}
 		}
-	}
-
-	private Module getCurrentModule() {
-
-		Page page = getCurrentPage();
-
-		if (page instanceof ChapterPage chapter) {
-			return chapter.associatedModule;
-		} else if (page.associatedChapter != null) {
-			return page.associatedChapter.module;
-		}
-
-		return null;
 	}
 
 	private Page getCurrentPage() {
 
 		if (currPageNumber >= pages.size()) {
-			currPageNumber = pages.size() - 1;
+			currPageNumber = pages.size() - 2;
 		}
 		return pages.get(currPageNumber);
 	}
+	
+	private Page getNextPage() {
+		if (currPageNumber >= pages.size()) {
+			currPageNumber = pages.size() - 2;
+		}
+		return pages.get(currPageNumber + 1);
+	}
 
 	protected void pageForward() {
-		if (getCurrentPageNumber() < getPageCount() - 1) {
-			movePage(1);
+		if (currPageNumber < pages.size() - 2) {
+			movePage(2);
 		}
 		updatePageArrowVis();
 	}
 
 	protected void pageBackward() {
-		if (getCurrentPageNumber() > GUIDEBOOK_STARTING_PAGE) {
-			movePage(-1);
+		if (currPageNumber > GUIDEBOOK_STARTING_PAGE + 1) {
+			movePage(-2);
 		}
 		updatePageArrowVis();
 	}
 
 	protected void goToChapterPage() {
-		Module module = getCurrentModule();
-		if (module != null) {
+		Page page = getCurrentPage();
+		if(page instanceof ModulePage module) {
 			setPageNumber(module.getPage());
+		} else if (page instanceof ChapterPage chapter) {
+			setPageNumber(chapter.associatedModule.getPage());
+		} else {
+			setPageNumber(page.associatedChapter.module.getPage());
 		}
 	}
 
@@ -669,25 +644,20 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		setPageNumber(0);
 	}
 
-	private int getPageCount() {
-		return pages.size();
-	}
-
-	private static int getCurrentPageNumber() {
-		return currPageNumber;
-	}
-
 	private void movePage(int number) {
 		currPageNumber += number;
-		currPageNumber = Mth.clamp(currPageNumber, 0, pages.size() - 1);
+		currPageNumber = Mth.clamp(currPageNumber, 0, pages.size() - 2);
 	}
 
 	private static void setPageNumber(int number) {
+		if(number % 2 == 1) {
+			number = number - 1;
+		}
 		currPageNumber = number;
 	}
 
 	private void updatePageArrowVis() {
-		forward.visible = getCurrentPageNumber() < getPageCount() - 1;
+		forward.visible = currPageNumber < pages.size() - 2;
 		back.visible = currPageNumber > GUIDEBOOK_STARTING_PAGE;
 	}
 
