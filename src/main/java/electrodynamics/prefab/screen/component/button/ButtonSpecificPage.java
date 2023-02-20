@@ -12,16 +12,14 @@ public class ButtonSpecificPage extends Button {
 
 	public final int page;
 
-	public ButtonSpecificPage(int x, int y, int width, int height, int page, Component message,
-			OnPress onPress) {
+	public ButtonSpecificPage(int x, int y, int width, int height, int page, Component message, OnPress onPress) {
 		super(x, y, width, height, message, onPress);
 		this.page = page;
 	}
 
 	public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
 		if (isVisible()) {
-			this.isHovered = pMouseX >= this.x && pMouseY >= this.y && pMouseX < this.x + this.width
-					&& pMouseY < this.y + this.height;
+			this.isHovered = pMouseX >= this.x && pMouseY >= this.y && pMouseX < this.x + this.width && pMouseY < this.y + this.height;
 			this.renderButton(pPoseStack, pMouseX, pMouseY, pPartialTick);
 		}
 	}
@@ -65,15 +63,11 @@ public class ButtonSpecificPage extends Button {
 	}
 
 	protected boolean clicked(double pMouseX, double pMouseY) {
-		return this.active && isVisible() && pMouseX >= (double) this.x
-				&& pMouseY >= (double) this.y && pMouseX < (double) (this.x + this.width)
-				&& pMouseY < (double) (this.y + this.height);
+		return this.active && isVisible() && pMouseX >= (double) this.x && pMouseY >= (double) this.y && pMouseX < (double) (this.x + this.width) && pMouseY < (double) (this.y + this.height);
 	}
 
 	public boolean isMouseOver(double pMouseX, double pMouseY) {
-		return this.active && isVisible() && pMouseX >= (double) this.x
-				&& pMouseY >= (double) this.y && pMouseX < (double) (this.x + this.width)
-				&& pMouseY < (double) (this.y + this.height);
+		return this.active && isVisible() && pMouseX >= (double) this.x && pMouseY >= (double) this.y && pMouseX < (double) (this.x + this.width) && pMouseY < (double) (this.y + this.height);
 	}
 
 	public boolean isActive() {

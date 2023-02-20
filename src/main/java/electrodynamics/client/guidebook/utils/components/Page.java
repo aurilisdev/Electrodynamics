@@ -5,7 +5,7 @@ import java.util.List;
 
 import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject;
 import electrodynamics.client.guidebook.utils.pagedata.ItemWrapperObject;
-import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.network.chat.FormattedText;
 
 public class Page {
 
@@ -23,7 +23,7 @@ public class Page {
 		return pageNumber;
 	}
 
-	public static record TextWrapper(int x, int y, FormattedCharSequence characters, int color, boolean centered) {
+	public static record TextWrapper(int x, int y, FormattedText characters, int color, boolean centered) {
 
 	}
 
@@ -52,6 +52,14 @@ public class Page {
 			super(pageNumber);
 		}
 
+	}
+	
+	public static class CoverPage extends ModulePage {
+
+		public CoverPage(int pageNumber) {
+			super(pageNumber);
+		}
+		
 	}
 
 }

@@ -24,6 +24,7 @@ import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.item.subtype.SubtypeRod;
+import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -655,6 +656,10 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addSubtitle(ElectrodynamicsSounds.SOUND_JETPACKSWITCHMODE, "Equipment cycles mode");
 			addSubtitle(ElectrodynamicsSounds.SOUND_JETPACK, "Jetpack engine runs");
 
+			
+			addGuidebook("title", "Electrodynamics Electric Code 1st Edition");
+			addGuidebook("titlequote", "\"There is nothing more permanent than a temporary solution.\"");
+			
 			addGuidebook("availablemodules", "Available Modules");
 			addGuidebook("chapters", "Chapters");
 
@@ -916,6 +921,13 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.tips.tip2", "Transmit at High Voltage. This is mentioned in the Electricity chapter, but you should transmit large amounts of power at high voltage and then step it down for distribution. This will help reduce the need for heavy-duty cables as well as the " + "amount of power lost due to the cable's own resistance!");
 
+			
+			addGuidebook("searchparameters", "Parameters");
+			addGuidebook("selectall", "All");
+			addGuidebook("selectnone", "None");
+			addGuidebook("casesensitive", "Case-Sensitive");
+			
+			
 		}
 
 	}

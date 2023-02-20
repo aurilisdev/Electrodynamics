@@ -6,21 +6,20 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.References;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.prefab.utilities.RenderingUtils;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvents;
 
-public class ButtonGuidebook extends Button {
+public class ButtonModuleSelector extends ButtonSpecificPage {
 
-	private GuidebookButtonType type;
+	private boolean selected = false;
 
-	public ButtonGuidebook(int pX, int pY, OnPress pOnPress, GuidebookButtonType type) {
-		super(pX, pY, type.off.textureWidth, type.on.textureHeight, Component.empty(), pOnPress);
-		this.type = type;
+	public ButtonModuleSelector(int x, int y, int page, boolean selected) {
+		super(x, y, 9, 9, page, Component.empty(), button -> {
+			ButtonModuleSelector selector = (ButtonModuleSelector) button;
+			selector.selected = !selector.selected;
+		});
+		this.selected = selected;
 	}
 
 	@Override
@@ -28,36 +27,25 @@ public class ButtonGuidebook extends Button {
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
 		RenderingUtils.resetColor();
 
-		ITexture texture = type.off;
+		ITexture texture = GuidebookButtonTextures.CHECKBOX_OFF;
 
-		if (isHoveredOrFocused()) {
-			texture = type.on;
+		if (selected) {
+			texture = GuidebookButtonTextures.CHECKBOX_ON;
 		}
 		RenderingUtils.bindTexture(texture.getLocation());
 		blit(pPoseStack, this.x, this.y, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
 	}
 
-	public static enum GuidebookButtonType {
-
-		HOME(GuidebookButtonTextures.HOME_OFF, GuidebookButtonTextures.HOME_ON), CHAPTERS(GuidebookButtonTextures.CHAPTERS_OFF, GuidebookButtonTextures.CHAPTERS_ON), SEARCH(GuidebookButtonTextures.SEARCH_OFF, GuidebookButtonTextures.SEARCH_ON);
-
-		public final GuidebookButtonTextures off;
-		public final GuidebookButtonTextures on;
-
-		GuidebookButtonType(GuidebookButtonTextures off, GuidebookButtonTextures on) {
-			this.off = off;
-			this.on = on;
-		}
-
+	public void setSelected(boolean selected) {
+		this.selected = selected;
 	}
 
-	public void playDownSound(SoundManager pHandler) {
-		pHandler.play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
-
+	public boolean isSelected() {
+		return selected;
 	}
 
 	public static enum GuidebookButtonTextures implements ITexture {
-		HOME_OFF(11, 10, 0, 0, 11, 10, "homeoff"), HOME_ON(11, 10, 0, 0, 11, 10, "homeon"), CHAPTERS_OFF(11, 10, 0, 0, 11, 10, "chaptersoff"), CHAPTERS_ON(11, 10, 0, 0, 11, 10, "chapterson"), SEARCH_OFF(11, 10, 0, 0, 11, 10, "searchoff"), SEARCH_ON(11, 10, 0, 0, 11, 10, "searchon");
+		CHECKBOX_OFF(9, 9, 0, 0, 9, 9, "checkboxoff"), CHECKBOX_ON(9, 9, 0, 0, 9, 9, "checkboxon");
 
 		private final int textureWidth;
 		private final int textureHeight;

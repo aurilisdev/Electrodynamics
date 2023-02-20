@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
+import electrodynamics.api.screen.component.IGuiComponent;
 import electrodynamics.client.guidebook.utils.components.Module;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Page;
 import electrodynamics.client.guidebook.utils.components.Page.ChapterPage;
+import electrodynamics.client.guidebook.utils.components.Page.CoverPage;
 import electrodynamics.client.guidebook.utils.components.Page.ImageWrapper;
 import electrodynamics.client.guidebook.utils.components.Page.ItemWrapper;
 import electrodynamics.client.guidebook.utils.components.Page.ModulePage;
@@ -21,17 +24,24 @@ import electrodynamics.client.guidebook.utils.pagedata.TextWrapperObject;
 import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject.ImageTextDescriptor;
 import electrodynamics.common.inventory.container.item.ContainerGuidebook;
 import electrodynamics.prefab.screen.GenericScreen;
+import electrodynamics.prefab.screen.component.ScreenComponentGuidebookArrow;
+import electrodynamics.prefab.screen.component.ScreenComponentGuidebookArrow.ArrowTextures;
 import electrodynamics.prefab.screen.component.button.ButtonGuidebook;
-import electrodynamics.prefab.screen.component.button.ButtonGuidebook.ButtonType;
+import electrodynamics.prefab.screen.component.button.ButtonModuleSelector;
+import electrodynamics.prefab.screen.component.button.ButtonSearchedText;
+import electrodynamics.prefab.screen.component.button.ButtonGuidebook.GuidebookButtonType;
 import electrodynamics.prefab.screen.component.button.ButtonSpecificPage;
+import electrodynamics.prefab.screen.component.editbox.EditBoxSpecificPage;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.inventory.PageButton;
+import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -54,12 +64,12 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 	private static final int LEFT_TEXTURE_WIDTH = 171;
 	private static final int LEFT_TEXTURE_HEIGHT = 224;
-	
+
 	private static final int RIGHT_TEXTURE_WIDTH = 171;
 	private static final int RIGHT_TEXTURE_HEIGHT = 224;
-	
+
 	private static final int OLD_TEXTURE_WIDTH = 171;
-	
+
 	private static final int LEFT_X_SHIFT = -OLD_TEXTURE_WIDTH / 2 + 2;
 	private static final int RIGHT_X_SHIFT = OLD_TEXTURE_WIDTH / 2 + 3;
 
@@ -85,14 +95,28 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 	private List<Page> pages = new ArrayList<>();
 
-	private static final ResourceLocation PAGE_TEXTURE_LEFT = new ResourceLocation(References.ID + ":textures/screen/guidebook/resources/guidebookpageleft.png");
-	private static final ResourceLocation PAGE_TEXTURE_RIGHT = new ResourceLocation(References.ID + ":textures/screen/guidebook/resources/guidebookpageright.png");
+	private static final ResourceLocation PAGE_TEXTURE_LEFT = new ResourceLocation(References.ID, "textures/screen/guidebook/resources/guidebookpageleft.png");
+	private static final ResourceLocation PAGE_TEXTURE_RIGHT = new ResourceLocation(References.ID, "textures/screen/guidebook/resources/guidebookpageright.png");
 
 	private PageButton forward;
 	private PageButton back;
 
 	private ButtonGuidebook home;
 	private ButtonGuidebook chapters;
+	private ButtonGuidebook search;
+
+	private EditBoxSpecificPage searchBox;
+
+	private ScreenComponentGuidebookArrow down;
+	private ScreenComponentGuidebookArrow up;
+
+	private ButtonModuleSelector caseSensitive;
+
+	private List<ButtonModuleSelector> moduleParameters = new ArrayList<>();
+
+	private List<SearchHit> searches = new ArrayList<>();
+
+	private List<ButtonSearchedText> searchButtons = new ArrayList<>();
 
 	private int lineY = TEXT_START_Y;
 
@@ -139,9 +163,14 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 		initPageButtons();
 
+		pages.add(getCoverPage());
+		nextPageNumber++;
+
 		genModuelPages();
 
 		genPages();
+
+		genSearchPages();
 
 	}
 
@@ -176,12 +205,14 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		int guiHeight = (height - imageHeight) / 2;
 		forward = new PageButton(guiWidth + 142 - 45, guiHeight + 200, true, button -> pageForward(), true);
 		back = new PageButton(guiWidth + 10 + 44, guiHeight + 200, false, button -> pageBackward(), true);
-		home = new ButtonGuidebook(guiWidth + 115 - 186, guiHeight + 202, button -> goToModulePage(), ButtonType.HOME);
-		chapters = new ButtonGuidebook(guiWidth + 50 - 100, guiHeight + 202, button -> goToChapterPage(), ButtonType.CHAPTERS);
+		home = new ButtonGuidebook(guiWidth + 115 - 186, guiHeight + 202, button -> goToModulePage(), GuidebookButtonType.HOME);
+		chapters = new ButtonGuidebook(guiWidth + 50 - 100, guiHeight + 202, button -> goToChapterPage(), GuidebookButtonType.CHAPTERS);
+		search = new ButtonGuidebook(guiWidth + 235, guiHeight + 202, button -> goToSearchPage(), GuidebookButtonType.SEARCH);
 		addRenderableWidget(forward);
 		addRenderableWidget(back);
 		addRenderableWidget(home);
 		addRenderableWidget(chapters);
+		addRenderableWidget(search);
 	}
 
 	private void genModuelPages() {
@@ -237,7 +268,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 					} else if (chapter.getLogo() instanceof ItemWrapperObject item) {
 						chapterPage.items.add(new ItemWrapper(TEXT_START_X, j * CHAPTER_SEPERATION + TEXT_START_Y + 10, item));
 					}
-					
+
 					int xShift = nextPageNumber % 2 == 0 ? LEFT_X_SHIFT : RIGHT_X_SHIFT - 8;
 
 					addRenderableWidget(new ButtonSpecificPage(guiWidth + 45 + xShift, guiHeight + 56 + j * CHAPTER_SEPERATION, 120, 20, nextPageNumber, chapter.getTitle(), button -> setPageNumber(chapter.getStartPage())));
@@ -428,9 +459,9 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			}
 
 		}
-		
-		if(pages.size() % 2 == 1) {
-			pages.add(new Page(nextPageNumber));
+
+		if (pages.size() % 2 == 1) {
+			pages.add(new CoverPage(nextPageNumber));
 			nextPageNumber++;
 		}
 
@@ -449,8 +480,8 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			imagePixelHeightLeft = TEXT_END_Y + LINE_HEIGHT - lineY;
 		}
 
-		List<FormattedCharSequence> text = new ArrayList<>();
-		text.addAll(font.split(mergedText, TEXT_WIDTH));
+		List<FormattedText> text = new ArrayList<>();
+		text.addAll(font.getSplitter().splitLines(mergedText, TEXT_WIDTH, Style.EMPTY));
 		mergedText = Component.empty();
 
 		while (text.size() > 0) {
@@ -458,7 +489,6 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			if (imagePixelHeightLeft <= 0) {
 				currentPage = resetToNewPage(currentPage, chapter);
 			}
-
 			currentPage.text.add(new TextWrapper(lineX, lineY, text.get(0), color, centered));
 
 			text.remove(0);
@@ -471,7 +501,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		return currentPage;
 
 	}
-	
+
 	private Page resetToNewPage(Page page, Chapter chapter) {
 		pages.add(page);
 		page = new Page(nextPageNumber);
@@ -482,31 +512,47 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		lineY = TEXT_START_Y;
 		lineX = TEXT_START_X;
 		imagePixelWidthLeft = TEXT_WIDTH;
-		
+
 		return page;
+	}
+
+	private void genSearchPages() {
+
+		pages.add(getSearchPageLeft());
+		nextPageNumber++;
+
+		pages.add(getSeatchPageRight());
+		nextPageNumber++;
+
 	}
 
 	@Override
 	protected void renderBg(PoseStack stack, float partialTick, int x, int y) {
-		
+
 		int guiWidth = (width - imageWidth) / 2;
 		int guiHeight = (height - imageHeight) / 2;
-		
+
 		RenderingUtils.bindTexture(PAGE_TEXTURE_LEFT);
 		blit(stack, guiWidth + LEFT_X_SHIFT, guiHeight, 0, 0, LEFT_TEXTURE_WIDTH, LEFT_TEXTURE_HEIGHT);
-		
+
 		RenderingUtils.bindTexture(PAGE_TEXTURE_RIGHT);
 		blit(stack, guiWidth + RIGHT_X_SHIFT, guiHeight, 0, 0, RIGHT_TEXTURE_WIDTH, RIGHT_TEXTURE_HEIGHT);
-		
+
 		updatePageArrowVis();
 
 		renderPageBackground(stack, LEFT_X_SHIFT, guiWidth, guiHeight, getCurrentPage());
 		renderPageBackground(stack, RIGHT_X_SHIFT - 8, guiWidth, guiHeight, getNextPage());
 
+		int xAxis = x - guiWidth;
+		int yAxis = y - guiHeight;
+
+		for (IGuiComponent component : components) {
+			component.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
+		}
+
 	}
-	
+
 	private void renderPageBackground(PoseStack stack, int xShift, int guiWidth, int guiHeight, Page page) {
-		
 
 		for (ImageWrapper wrapper : page.images) {
 
@@ -529,16 +575,49 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	protected void renderLabels(PoseStack stack, int x, int y) {
 
 		renderPageLabels(stack, LEFT_X_SHIFT, getCurrentPage());
-		
+
 		renderPageLabels(stack, RIGHT_X_SHIFT - 8, getNextPage());
-		
+
 	}
-	
+
 	private void renderPageLabels(PoseStack stack, int xPageShift, Page page) {
 		int refX = titleLabelX - 8;
 		int refY = titleLabelY - 6;
-		
-		if (page instanceof ModulePage) {
+
+		if (page instanceof CoverPage) {
+
+			for (TextWrapper text : page.text) {
+
+				if (text.centered()) {
+					int xShift = (TEXT_WIDTH - font.width(text.characters())) / 2;
+					font.draw(stack, Language.getInstance().getVisualOrder(text.characters()), text.x() + refX + xShift + xPageShift, refY + text.y(), text.color());
+				} else {
+					font.draw(stack, Language.getInstance().getVisualOrder(text.characters()), text.x() + refX + xPageShift, text.y() + refY, text.color());
+				}
+
+			}
+
+			for (ImageWrapper wrapper : page.images) {
+
+				ImageWrapperObject image = wrapper.image();
+
+				for (ImageTextDescriptor descriptor : image.descriptors) {
+					font.draw(stack, descriptor.text, refX + wrapper.x() + descriptor.xOffsetFromImage + xPageShift, refY + wrapper.y() + descriptor.yOffsetFromImage, descriptor.color);
+				}
+
+			}
+
+			for (ItemWrapper wrapper : page.items) {
+
+				ItemWrapperObject item = wrapper.item();
+
+				for (ImageTextDescriptor descriptor : item.descriptors) {
+					font.draw(stack, descriptor.text, refX + wrapper.x() + descriptor.xOffsetFromImage + xPageShift, refY + wrapper.y() + descriptor.yOffsetFromImage, descriptor.color);
+				}
+
+			}
+
+		} else if (page instanceof ModulePage) {
 
 			Component modTitle = TextUtils.guidebook("availablemodules").withStyle(ChatFormatting.BOLD);
 			int xShift = (TEXT_WIDTH - font.width(modTitle)) / 2;
@@ -571,9 +650,9 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 				if (text.centered()) {
 					xShift = (TEXT_WIDTH - font.width(text.characters())) / 2;
-					font.draw(stack, text.characters(), text.x() + refX + xShift + xPageShift, refY + text.y(), text.color());
+					font.draw(stack, Language.getInstance().getVisualOrder(text.characters()), text.x() + refX + xShift + xPageShift, refY + text.y(), text.color());
 				} else {
-					font.draw(stack, text.characters(), text.x() + refX + xPageShift, text.y() + refY, text.color());
+					font.draw(stack, Language.getInstance().getVisualOrder(text.characters()), text.x() + refX + xPageShift, text.y() + refY, text.color());
 				}
 
 			}
@@ -607,7 +686,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		}
 		return pages.get(currPageNumber);
 	}
-	
+
 	private Page getNextPage() {
 		if (currPageNumber >= pages.size()) {
 			currPageNumber = pages.size() - 2;
@@ -631,7 +710,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 	protected void goToChapterPage() {
 		Page page = getCurrentPage();
-		if(page instanceof ModulePage module) {
+		if (page instanceof ModulePage module) {
 			setPageNumber(module.getPage());
 		} else if (page instanceof ChapterPage chapter) {
 			setPageNumber(chapter.associatedModule.getPage());
@@ -640,25 +719,32 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		}
 	}
 
+	protected void goToSearchPage() {
+		setPageNumber(pages.size() - 2);
+	}
+
 	protected void goToModulePage() {
-		setPageNumber(0);
+		setPageNumber(1);
 	}
 
 	private void movePage(int number) {
 		currPageNumber += number;
-		currPageNumber = Mth.clamp(currPageNumber, 0, pages.size() - 2);
+		currPageNumber = Mth.clamp(currPageNumber, 0, pages.size() - 4);
 	}
 
 	private static void setPageNumber(int number) {
-		if(number % 2 == 1) {
+		if (number % 2 == 1) {
 			number = number - 1;
 		}
 		currPageNumber = number;
 	}
 
 	private void updatePageArrowVis() {
-		forward.visible = currPageNumber < pages.size() - 2;
-		back.visible = currPageNumber > GUIDEBOOK_STARTING_PAGE;
+		forward.visible = currPageNumber < pages.size() - 4;
+		back.visible = currPageNumber > GUIDEBOOK_STARTING_PAGE && currPageNumber < pages.size() - 2;
+		home.visible = currPageNumber != 0;
+		chapters.visible = currPageNumber != 0 && currPageNumber < pages.size() - 4;
+		search.visible = currPageNumber < pages.size() - 4;
 	}
 
 	public static void addGuidebookModule(Module module) {
@@ -667,6 +753,256 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		} else {
 			GUIDEBOOK_MODULES.add(module);
 		}
+
+	}
+
+	private CoverPage getCoverPage() {
+
+		CoverPage page = new CoverPage(nextPageNumber);
+
+		List<FormattedText> split = font.getSplitter().splitLines(TextUtils.guidebook("title").withStyle(ChatFormatting.BOLD), TEXT_WIDTH, Style.EMPTY);
+
+		int y = 16;
+
+		for (FormattedText text : split) {
+
+			page.text.add(new TextWrapper(TEXT_START_X, y, text, TextWrapperObject.DEFAULT_COLOR, true));
+			y += LINE_HEIGHT;
+
+		}
+
+		y += 5;
+
+		int xOffset = (TEXT_WIDTH - 74) / 2;
+
+		page.images.add(new ImageWrapper(TEXT_START_X, y, new ImageWrapperObject(xOffset, 0, 0, 0, 74, 100, 74, 100, new ResourceLocation(References.ID, "textures/screen/guidebook/resources/guidebookcover.png"))));
+
+		y += 105;
+
+		split = font.getSplitter().splitLines(TextUtils.guidebook("titlequote"), TEXT_WIDTH, Style.EMPTY);
+
+		for (FormattedText text : split) {
+
+			page.text.add(new TextWrapper(TEXT_START_X, y, text, TextWrapperObject.DEFAULT_COLOR, false));
+			y += LINE_HEIGHT;
+
+		}
+
+		return page;
+
+	}
+
+	private CoverPage getSearchPageLeft() {
+		CoverPage page = new CoverPage(nextPageNumber);
+
+		List<FormattedText> split = font.getSplitter().splitLines(TextUtils.guidebook("searchparameters").withStyle(ChatFormatting.BOLD), TEXT_WIDTH, Style.EMPTY);
+
+		int y = 16;
+
+		for (FormattedText text : split) {
+
+			page.text.add(new TextWrapper(TEXT_START_X, y, text, TextWrapperObject.DEFAULT_COLOR, true));
+			y += LINE_HEIGHT + 2;
+
+		}
+
+		y += 5;
+
+		int guiWidth = (width - imageWidth) / 2;
+		int guiHeight = (height - imageHeight) / 2;
+
+		for (Module module : GUIDEBOOK_MODULES) {
+
+			page.text.add(new TextWrapper(TEXT_START_X + 15, y, module.getTitle(), TextWrapperObject.DEFAULT_COLOR, false));
+
+			ButtonModuleSelector selector = new ButtonModuleSelector(guiWidth - 70, guiHeight - 1 + y, nextPageNumber, true);
+
+			moduleParameters.add(selector);
+
+			addRenderableWidget(selector);
+
+			y += LINE_HEIGHT;
+
+		}
+
+		page.text.add(new TextWrapper(TEXT_START_X + 15, 165, TextUtils.guidebook("casesensitive"), TextWrapperObject.DEFAULT_COLOR, false));
+		caseSensitive = new ButtonModuleSelector(guiWidth - 70, guiHeight + 165, nextPageNumber, false);
+		addRenderableWidget(caseSensitive);
+
+		addRenderableWidget(new ButtonSpecificPage(guiWidth - 71, guiHeight + 180, 75, 20, nextPageNumber, TextUtils.guidebook("selectall"), button -> {
+			for (ButtonModuleSelector selector : moduleParameters) {
+				selector.setSelected(true);
+			}
+		}));
+
+		addRenderableWidget(new ButtonSpecificPage(guiWidth + 8, guiHeight + 180, 75, 20, nextPageNumber, TextUtils.guidebook("selectnone"), button -> {
+			for (ButtonModuleSelector selector : moduleParameters) {
+				selector.setSelected(false);
+			}
+		}));
+
+		return page;
+	}
+
+	private CoverPage getSeatchPageRight() {
+		CoverPage page = new CoverPage(nextPageNumber);
+
+		int guiWidth = (width - imageWidth) / 2;
+		int guiHeight = (height - imageHeight) / 2;
+
+		searchBox = new EditBoxSpecificPage(font, guiWidth + 92, guiHeight + 10, TEXT_WIDTH, 12, nextPageNumber, Component.empty());
+		searchBox.setResponder(this::onTextSearched);
+		searchBox.setTextColor(0xFFFFFFFF);
+		searchBox.setMaxLength(100);
+
+		addRenderableWidget(searchBox);
+
+		for (int i = 0; i < SEARCH_BUTTON_COUNT; i++) {
+			ButtonSearchedText search = new ButtonSearchedText(guiWidth + 92, guiHeight + 35 + 35 * i, TEXT_WIDTH, nextPageNumber, button -> {
+
+			});
+			searchButtons.add(search);
+			search.setShouldShow(false);
+			addRenderableWidget(search);
+		}
+
+		components.add(down = new ScreenComponentGuidebookArrow(ArrowTextures.ARROW_DOWN, this, 174, 200, nextPageNumber));
+
+		components.add(up = new ScreenComponentGuidebookArrow(ArrowTextures.ARROW_UP, this, 154, 200, nextPageNumber));
+
+		return page;
+	}
+
+	private final int minScroll = 0;
+	private int maxScroll = 0;
+	private int scrollIndex = 0;
+
+	private static final int SEARCH_BUTTON_COUNT = 5;
+
+	private void onTextSearched(String text) {
+
+		searches.clear();
+
+		if (text.isEmpty() || text.isBlank()) {
+			maxScroll = 0;
+			scrollIndex = 0;
+			resetSearchButtons();
+			return;
+		}
+
+		List<SearchHit> found = new ArrayList<>();
+
+		List<Module> selectedModules = new ArrayList<>();
+
+		for (int i = 0; i < GUIDEBOOK_MODULES.size(); i++) {
+			if (moduleParameters.get(i).isSelected()) {
+				selectedModules.add(GUIDEBOOK_MODULES.get(i));
+			}
+		}
+
+		for (Page page : pages) {
+
+			if (!(page instanceof ChapterPage || page instanceof ModulePage || page instanceof CoverPage)) {
+
+				for (Module module : selectedModules) {
+					if (page.associatedChapter.module.isCat(module.getTitle())) {
+						for (TextWrapper wrapper : page.text) {
+
+							if (caseSensitive.isSelected() && wrapper.characters().getString().contains(text)) {
+								
+								found.add(new SearchHit(wrapper.characters(), page.getPage(), page.associatedChapter));
+								
+							} else if (!caseSensitive.isSelected() && wrapper.characters().getString().toLowerCase().contains(text.toLowerCase())) {
+								
+								found.add(new SearchHit(wrapper.characters(), page.getPage(), page.associatedChapter));
+								
+							}
+
+						}
+					}
+				}
+			}
+
+		}
+		searches.addAll(found);
+
+		maxScroll = Math.max(0, searches.size() - SEARCH_BUTTON_COUNT);
+
+		if (scrollIndex > maxScroll) {
+			scrollIndex = maxScroll;
+		}
+
+		updateSearchButtons();
+
+	}
+
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+
+		if (searches.size() == 0) {
+			resetSearchButtons();
+			return super.mouseScrolled(mouseX, mouseY, delta);
+		}
+
+		if (currPageNumber >= pages.size() - 2) {
+
+			int scrollDelta = delta > 0 ? -1 : 1;
+
+			scrollIndex = Mth.clamp(scrollIndex + scrollDelta, minScroll, maxScroll);
+
+			updateSearchButtons();
+
+		}
+		return super.mouseScrolled(mouseX, mouseY, delta);
+	}
+
+	private void updateSearchButtons() {
+		up.setShouldRender(scrollIndex > minScroll);
+		down.setShouldRender(scrollIndex < maxScroll);
+		
+		resetSearchButtons();
+
+		if (searches.size() == 0) {
+			return;
+		}
+		
+		if (scrollIndex > maxScroll) {
+			scrollIndex = maxScroll;
+		}
+
+		int listSize = SEARCH_BUTTON_COUNT > searches.size() ? searches.size() : SEARCH_BUTTON_COUNT;
+		
+		for (int i = 0; i < listSize; i++) {
+
+			ButtonSearchedText searched = searchButtons.get(i);
+			SearchHit hit = searches.get(i + scrollIndex);
+
+			searched.setShouldShow(true);
+			searched.setChapter(hit.chapter.getTitle());
+			searched.setLine(hit.text);
+
+		}
+
+	}
+
+	private void resetSearchButtons() {
+		for (ButtonSearchedText button : searchButtons) {
+			button.setLine(Component.empty());
+			button.setChapter(Component.empty());
+			button.setShouldShow(false);
+		}
+	}
+
+	@Override
+	public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
+		InputConstants.Key mouseKey = InputConstants.getKey(pKeyCode, pScanCode);
+		if (this.minecraft.options.keyInventory.isActiveAndMatches(mouseKey) && searchBox.isVisible() && searchBox.isFocused()) {
+			return false;
+		}
+		return super.keyPressed(pKeyCode, pScanCode, pModifiers);
+	}
+
+	private static record SearchHit(FormattedText text, int page, Chapter chapter) {
 
 	}
 
