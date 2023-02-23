@@ -275,6 +275,7 @@ public enum PropertyType {
 				list.add(NbtUtils.readBlockPos(data.getCompound("pos" + i)));
 			}
 			val = list;
+			break;
 		case Location:
 			val = electrodynamics.prefab.utilities.object.Location.readFromNBT(tag, prop.getName());
 			break;
