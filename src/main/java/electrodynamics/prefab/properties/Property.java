@@ -116,5 +116,9 @@ public class Property<T> {
 	public String toString() {
 		return rawValue == null ? "null" : rawValue.toString();
 	}
+	
+	public PropertyManager getPropertyManager() {
+		return manager;
+	}
 
 }

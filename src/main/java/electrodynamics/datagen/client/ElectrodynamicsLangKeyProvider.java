@@ -24,7 +24,6 @@ import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.item.subtype.SubtypeRod;
-import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -656,10 +655,9 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addSubtitle(ElectrodynamicsSounds.SOUND_JETPACKSWITCHMODE, "Equipment cycles mode");
 			addSubtitle(ElectrodynamicsSounds.SOUND_JETPACK, "Jetpack engine runs");
 
-			
 			addGuidebook("title", "Electrodynamics Electric Code 1st Edition");
 			addGuidebook("titlequote", "\"There is nothing more permanent than a temporary solution.\"");
-			
+
 			addGuidebook("availablemodules", "Available Modules");
 			addGuidebook("chapters", "Chapters");
 
@@ -768,7 +766,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.fluids.l5", "But what if I need to store a large amount of fluid? Fear not, as Electrodynamics has you covered there. Electrodynamics tanks accept fluid from the top and output fluid through the bottom. Furthermore, stack two tanks on top of eachother, " + "and the top one will automatically output into the bottom one.");
 
-			addGuidebook("chapter.fluids.l6", "One final thing to note is that Electrodynamics fluids cannot be carried by a bucket. For example, it simply doesn't make sense to transfer Sulfuric Acid in a bucket made out of Iron. If you need to manually move fluids such as Sulfuric Acid, you will need to " + "use a Reinforced Canister!");
+			addGuidebook("chapter.fluids.l6", "One final thing to note is that Electrodynamics fluids cannot be carried by a bucket. For example, it simply doesn't make sense to transfer Sulfuric Acid in a bucket made out of Iron. If you need to manually move fluids such as Sulfuric Acid, you will need to "
+					+ "use a Reinforced Canister! All fluid machines have input and output bucket slots that can be used for manually filling and draining the machine. If you need to manually empty an input tank, click a Reinforced Canister on it and the fluid will drain into the canister. To void any fluid, " + "either pipe or manually transfer it into ");
 
 			addGuidebook("chapter.generators", "Generators");
 			addGuidebook("chapter.generators.generationbase", "Default: %1$s at %2$sV");
@@ -921,13 +920,11 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.tips.tip2", "Transmit at High Voltage. This is mentioned in the Electricity chapter, but you should transmit large amounts of power at high voltage and then step it down for distribution. This will help reduce the need for heavy-duty cables as well as the " + "amount of power lost due to the cable's own resistance!");
 
-			
 			addGuidebook("searchparameters", "Parameters");
 			addGuidebook("selectall", "All");
 			addGuidebook("selectnone", "None");
 			addGuidebook("casesensitive", "Case-Sensitive");
-			
-			
+
 		}
 
 	}

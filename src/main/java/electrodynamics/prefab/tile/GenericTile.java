@@ -43,6 +43,12 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	private Component[] components = new Component[ComponentType.values().length];
 	private ComponentProcessor[] processors = new ComponentProcessor[5];
 	private PropertyManager propertyManager = new PropertyManager();
+	
+	//I only put this here as it seems useful for any tile to have this ability
+	//and I don't want to start coupling things
+	
+	private boolean updateCarriedItem = false;
+	private ItemStack carriedStack = ItemStack.EMPTY;
 
 	// use this for manually setting the change flag
 	public boolean isChanged = false;
@@ -125,6 +131,10 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 				pr.loadFromNBT(compound);
 			}
 		}
+		
+		updateCarriedItem = compound.getBoolean("carrieditemflag");
+		carriedStack = ItemStack.of(compound.getCompound("carrieditemdata"));
+		
 	}
 
 	@Override
@@ -146,6 +156,10 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 				pr.saveToNBT(compound);
 			}
 		}
+		compound.putBoolean("carrieditemflag", updateCarriedItem);
+		CompoundTag carriedData = new CompoundTag();
+		carriedData = carriedStack.save(carriedData);
+		compound.put("carrieditemdata", carriedData);
 		super.saveAdditional(compound);
 	}
 
@@ -211,7 +225,6 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 
 	@Override
 	public CompoundTag getUpdateTag() {
-		// sendAllProperties();
 		CompoundTag tag = super.getUpdateTag();
 		saveAdditional(tag);
 		return tag;
@@ -331,5 +344,21 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	public void onPlace(BlockState oldState, boolean isMoving) {
 
 	}
+	
+	public void updateCarriedItemInContainer(ItemStack stack) {
+		carriedStack = stack.copy();
+		updateCarriedFlag(true);
+	}
+	
+	public void updateCarriedFlag(boolean flag) {
+		updateCarriedItem = flag;
+	}
 
+	public boolean shouldUpdateCarriedItem() {
+		return updateCarriedItem;
+	}
+	
+	public ItemStack getNewCarriedItem() {
+		return carriedStack;
+	}
 }

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketSendUpdateProperties;
+import electrodynamics.common.packet.types.PacketSendUpdatePropertiesClient;
 import electrodynamics.common.packet.types.PacketUpdateTile;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
@@ -123,7 +123,7 @@ public class ComponentPacketHandler implements Component {
 				if (world instanceof ServerLevel level) {
 					List<ServerPlayer> players = level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false);
 					if (!players.isEmpty()) {
-						PacketSendUpdateProperties packet = new PacketSendUpdateProperties(holder);
+						PacketSendUpdatePropertiesClient packet = new PacketSendUpdatePropertiesClient(holder);
 						players.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
 						holder.getPropertyManager().clean();
 					}

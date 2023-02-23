@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.IFluidTank;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenComponentFluid extends AbstractScreenComponentGauge {
-	private FluidTankSupplier fluidInfoHandler;
+	protected FluidTankSupplier fluidInfoHandler;
 
 	public ScreenComponentFluid(FluidTankSupplier fluidInfoHandler, IScreenWrapper gui, int x, int y) {
 		super(gui, x, y);

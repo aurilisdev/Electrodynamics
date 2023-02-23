@@ -13,29 +13,29 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkEvent.Context;
 
-public class PacketSendUpdateProperties {
+public class PacketSendUpdatePropertiesClient {
 
 	private final BlockPos pos;
 	private final ArrayList<Property<?>> dirtyProperties;
 	private final ArrayList<Object> objects;
 
-	public PacketSendUpdateProperties(IPropertyHolderTile tile) {
+	public PacketSendUpdatePropertiesClient(IPropertyHolderTile tile) {
 		this(tile.getTile().getBlockPos(), tile.getPropertyManager().getDirtyProperties());
 	}
 
-	public PacketSendUpdateProperties(BlockPos pos, ArrayList<Property<?>> dirtyProperties) {
+	public PacketSendUpdatePropertiesClient(BlockPos pos, ArrayList<Property<?>> dirtyProperties) {
 		this.pos = pos;
 		this.dirtyProperties = dirtyProperties;
 		objects = null;
 	}
 
-	public PacketSendUpdateProperties(BlockPos pos, ArrayList<Object> values, boolean object) {
+	public PacketSendUpdatePropertiesClient(BlockPos pos, ArrayList<Object> values, boolean object) {
 		this.pos = pos;
 		dirtyProperties = null;
 		objects = values;
 	}
 
-	public static void handle(PacketSendUpdateProperties message, Supplier<Context> context) {
+	public static void handle(PacketSendUpdatePropertiesClient message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
 			ClientLevel world = Minecraft.getInstance().level;
@@ -54,7 +54,7 @@ public class PacketSendUpdateProperties {
 		ctx.setPacketHandled(true);
 	}
 
-	public static void encode(PacketSendUpdateProperties message, FriendlyByteBuf buf) {
+	public static void encode(PacketSendUpdatePropertiesClient message, FriendlyByteBuf buf) {
 		buf.writeBlockPos(message.pos);
 		buf.writeInt(message.dirtyProperties.size());
 		int size = 0;
@@ -73,7 +73,7 @@ public class PacketSendUpdateProperties {
 		}
 	}
 
-	public static PacketSendUpdateProperties decode(FriendlyByteBuf buf) {
+	public static PacketSendUpdatePropertiesClient decode(FriendlyByteBuf buf) {
 		BlockPos pos = buf.readBlockPos();
 		int fullSize = buf.readInt();
 		int size = buf.readInt();
@@ -88,6 +88,6 @@ public class PacketSendUpdateProperties {
 			Object value = PropertyType.values()[type].read(buf);
 			values.set(index, value);
 		}
-		return new PacketSendUpdateProperties(pos, values, true);
+		return new PacketSendUpdatePropertiesClient(pos, values, true);
 	}
 }

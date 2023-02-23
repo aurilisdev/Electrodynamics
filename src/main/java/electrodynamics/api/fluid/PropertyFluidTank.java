@@ -4,6 +4,8 @@ import java.util.function.Predicate;
 
 import org.jetbrains.annotations.NotNull;
 
+import electrodynamics.common.packet.NetworkHandler;
+import electrodynamics.common.packet.types.PacketSendUpdatePropertiesServer;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
@@ -176,6 +178,15 @@ public class PropertyFluidTank extends FluidTank {
 				holder.onFluidTankChange(this);
 			}
 		}
+	}
+	
+	//this must be called to update the server if interacted with on the client
+	public void updateServer() {
+		
+		if(holder != null) {
+			NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(fluidStackProperty.getPropertyManager().getProperties().indexOf(fluidStackProperty), fluidStackProperty, holder.getBlockPos()));
+		}
+
 	}
 
 }

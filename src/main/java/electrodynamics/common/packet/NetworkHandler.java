@@ -11,12 +11,14 @@ import electrodynamics.common.packet.types.PacketModeSwitchServer;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
 import electrodynamics.common.packet.types.PacketPowerSetting;
 import electrodynamics.common.packet.types.PacketRenderJetpackParticles;
-import electrodynamics.common.packet.types.PacketSendUpdateProperties;
+import electrodynamics.common.packet.types.PacketSendUpdatePropertiesClient;
+import electrodynamics.common.packet.types.PacketSendUpdatePropertiesServer;
 import electrodynamics.common.packet.types.PacketServerUpdateTile;
 import electrodynamics.common.packet.types.PacketSetClientCoalGenFuels;
 import electrodynamics.common.packet.types.PacketSetClientCombustionFuel;
 import electrodynamics.common.packet.types.PacketSpawnSmokeParticle;
 import electrodynamics.common.packet.types.PacketToggleOnServer;
+import electrodynamics.common.packet.types.PacketUpdateCarriedItemServer;
 import electrodynamics.common.packet.types.PacketUpdateTile;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.network.NetworkDirection;
@@ -31,7 +33,8 @@ public class NetworkHandler {
 
 	public static void init() {
 		CHANNEL.registerMessage(disc++, PacketUpdateTile.class, PacketUpdateTile::encode, PacketUpdateTile::decode, PacketUpdateTile::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
-		CHANNEL.registerMessage(disc++, PacketSendUpdateProperties.class, PacketSendUpdateProperties::encode, PacketSendUpdateProperties::decode, PacketSendUpdateProperties::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+		CHANNEL.registerMessage(disc++, PacketSendUpdatePropertiesClient.class, PacketSendUpdatePropertiesClient::encode, PacketSendUpdatePropertiesClient::decode, PacketSendUpdatePropertiesClient::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+		CHANNEL.registerMessage(disc++, PacketSendUpdatePropertiesServer.class, PacketSendUpdatePropertiesServer::encode, PacketSendUpdatePropertiesServer::decode, PacketSendUpdatePropertiesServer::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketSpawnSmokeParticle.class, PacketSpawnSmokeParticle::encode, PacketSpawnSmokeParticle::decode, PacketSpawnSmokeParticle::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		CHANNEL.registerMessage(disc++, PacketPlayerInformation.class, PacketPlayerInformation::encode, PacketPlayerInformation::decode, PacketPlayerInformation::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 		CHANNEL.registerMessage(disc++, PacketServerUpdateTile.class, PacketServerUpdateTile::encode, PacketServerUpdateTile::decode, PacketServerUpdateTile::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
@@ -44,6 +47,7 @@ public class NetworkHandler {
 		CHANNEL.registerMessage(disc++, PacketRenderJetpackParticles.class, PacketRenderJetpackParticles::encode, PacketRenderJetpackParticles::decode, PacketRenderJetpackParticles::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		CHANNEL.registerMessage(disc++, PacketSetClientCombustionFuel.class, PacketSetClientCombustionFuel::encode, PacketSetClientCombustionFuel::decode, PacketSetClientCombustionFuel::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		CHANNEL.registerMessage(disc++, PacketSetClientCoalGenFuels.class, PacketSetClientCoalGenFuels::encode, PacketSetClientCoalGenFuels::decode, PacketSetClientCoalGenFuels::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+		CHANNEL.registerMessage(disc++, PacketUpdateCarriedItemServer.class, PacketUpdateCarriedItemServer::encode, PacketUpdateCarriedItemServer::decode, PacketUpdateCarriedItemServer::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 	}
 
 	public static String getPlayerInformation(String username) {
