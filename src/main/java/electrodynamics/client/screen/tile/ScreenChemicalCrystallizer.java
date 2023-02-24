@@ -4,7 +4,7 @@ import electrodynamics.common.inventory.container.tile.ContainerChemicalCrystall
 import electrodynamics.common.tile.TileChemicalCrystallizer;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentFluid;
+import electrodynamics.prefab.screen.component.ScreenComponentFluidInput;
 import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress;
 import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressBars;
@@ -35,7 +35,7 @@ public class ScreenChemicalCrystallizer extends GenericScreen<ContainerChemicalC
 			return 0;
 		}, this, 41, 31));
 		components.add(new ScreenComponentGeneric(ProgressTextures.ARROW_LEFT_OFF, this, 41, 51));
-		components.add(new ScreenComponentFluid(() -> {
+		components.add(new ScreenComponentFluidInput(() -> {
 			TileChemicalCrystallizer boiler = container.getHostFromIntArray();
 			if (boiler != null) {
 				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks()[0];

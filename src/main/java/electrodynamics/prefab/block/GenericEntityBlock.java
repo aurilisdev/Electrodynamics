@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
@@ -138,6 +139,16 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		if (entity != null && entity instanceof GenericTile generic) {
 			generic.onPlace(oldState, isMoving);
 		}
+	}
+
+	@Override
+	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos neighbor, boolean isMoving) {
+		super.neighborChanged(state, level, pos, block, neighbor, isMoving);
+		BlockEntity entity = level.getBlockEntity(pos);
+		if (entity != null && entity instanceof GenericTile generic) {
+			generic.onNeightborChanged(neighbor);
+		}
+
 	}
 
 }

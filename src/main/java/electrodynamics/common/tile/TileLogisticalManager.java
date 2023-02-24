@@ -1,5 +1,6 @@
 package electrodynamics.common.tile;
 
+import electrodynamics.common.item.ItemDrillHead;
 import electrodynamics.common.tile.quarry.TileQuarry;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -39,13 +40,23 @@ public class TileLogisticalManager extends GenericTile {
 					IItemHandler handler = lazy.resolve().get();
 					for (TileQuarry quarry : quarries) {
 						if (quarry != null) {
-							addItemsToInventory(quarry.getComponent(ComponentType.Inventory), handler);
+							manipulateItems(quarry.getComponent(ComponentType.Inventory), handler);
 						}
 					}
 				}
 			}
 		}
 
+	}
+	
+	@Override
+	public void onNeightborChanged(BlockPos neighbor) {
+		refreshConnections();
+	}
+	
+	@Override
+	public void onPlace(BlockState oldState, boolean isMoving) {
+		refreshConnections();
 	}
 
 	public void refreshConnections() {
@@ -68,6 +79,34 @@ public class TileLogisticalManager extends GenericTile {
 		super.onLoad();
 		Scheduler.schedule(1, this::refreshConnections);
 	}
+	
+	private void manipulateItems(ComponentInventory quarryInventory, IItemHandler handler) {
+		
+		if(quarryInventory.getItem(TileQuarry.DRILL_HEAD_INDEX).isEmpty()) {
+			restockDrillHead(quarryInventory, handler);
+		}
+		
+		addItemsToInventory(quarryInventory, handler);
+		
+	}
+
+	private void restockDrillHead(ComponentInventory quarryInventory, IItemHandler handler) {
+		
+		ItemStack stack;
+		
+		for(int i = 0; i < handler.getSlots(); i++) {
+			
+			stack = handler.getStackInSlot(i);
+			
+			if(!stack.isEmpty() && stack.getItem() instanceof ItemDrillHead head) {
+				quarryInventory.setItem(TileQuarry.DRILL_HEAD_INDEX, stack.copy());
+			}
+			
+			handler.extractItem(i, stack.getMaxStackSize(), false);
+			
+		}
+		
+	}
 
 	private void addItemsToInventory(ComponentInventory quarryInventory, IItemHandler handler) {
 		for (int i = 0; i < quarryInventory.outputs(); i++) {
@@ -84,6 +123,7 @@ public class TileLogisticalManager extends GenericTile {
 				}
 			}
 		}
+		
 
 	}
 

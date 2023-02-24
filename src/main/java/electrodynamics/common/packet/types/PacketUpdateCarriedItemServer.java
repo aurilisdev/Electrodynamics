@@ -1,5 +1,6 @@
 package electrodynamics.common.packet.types;
 
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import electrodynamics.prefab.tile.GenericTile;
@@ -13,10 +14,12 @@ public class PacketUpdateCarriedItemServer {
 	
 	private final ItemStack carriedItem;
 	private final BlockPos tilePos;
+	private final UUID playerId;
 	
-	public PacketUpdateCarriedItemServer(ItemStack carriedItem, BlockPos tilePos) {
+	public PacketUpdateCarriedItemServer(ItemStack carriedItem, BlockPos tilePos, UUID playerId) {
 		this.carriedItem = carriedItem;
 		this.tilePos = tilePos;
+		this.playerId = playerId;
 	}
 	
 	public static void handle(PacketUpdateCarriedItemServer message, Supplier<Context> context) {
@@ -26,7 +29,7 @@ public class PacketUpdateCarriedItemServer {
 			if (world != null) {
 				GenericTile tile = (GenericTile) world.getBlockEntity(message.tilePos);
 				if (tile != null) {
-					tile.updateCarriedItemInContainer(message.carriedItem);
+					tile.updateCarriedItemInContainer(message.carriedItem, message.playerId);
 				}
 			}
 		});
@@ -36,10 +39,11 @@ public class PacketUpdateCarriedItemServer {
 	public static void encode(PacketUpdateCarriedItemServer pkt, FriendlyByteBuf buf) {
 		buf.writeItem(pkt.carriedItem);
 		buf.writeBlockPos(pkt.tilePos);
+		buf.writeUUID(pkt.playerId);
 	}
 
 	public static PacketUpdateCarriedItemServer decode(FriendlyByteBuf buf) {
-		return new PacketUpdateCarriedItemServer(buf.readItem(), buf.readBlockPos());
+		return new PacketUpdateCarriedItemServer(buf.readItem(), buf.readBlockPos(), buf.readUUID());
 	}
 
 }

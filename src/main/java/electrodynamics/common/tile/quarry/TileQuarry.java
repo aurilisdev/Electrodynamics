@@ -76,6 +76,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	private static final int CLEAR_SKIP = Math.max(Math.min(Constants.CLEARING_AIR_SKIP, 128), 0);
 
 	public static final BlockPos OUT_OF_REACH = new BlockPos(0, -1000, 0);
+	
+	public static final int DRILL_HEAD_INDEX = 0;
 
 	@Nullable
 	private UUID placedBy = null;
@@ -294,7 +296,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 		int fluidUse = (int) (complex.powerMultiplier.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
-		if (inv.getItem(0).getItem() instanceof ItemDrillHead head) {
+		if (inv.getItem(DRILL_HEAD_INDEX).getItem() instanceof ItemDrillHead head) {
 			hasHead.set(true);
 			writeHeadType(head.head);
 		} else {

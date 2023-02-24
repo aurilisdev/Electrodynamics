@@ -2,6 +2,7 @@ package electrodynamics.prefab.tile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.References;
@@ -43,12 +44,6 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	private Component[] components = new Component[ComponentType.values().length];
 	private ComponentProcessor[] processors = new ComponentProcessor[5];
 	private PropertyManager propertyManager = new PropertyManager();
-	
-	//I only put this here as it seems useful for any tile to have this ability
-	//and I don't want to start coupling things
-	
-	private boolean updateCarriedItem = false;
-	private ItemStack carriedStack = ItemStack.EMPTY;
 
 	// use this for manually setting the change flag
 	public boolean isChanged = false;
@@ -132,9 +127,6 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 			}
 		}
 		
-		updateCarriedItem = compound.getBoolean("carrieditemflag");
-		carriedStack = ItemStack.of(compound.getCompound("carrieditemdata"));
-		
 	}
 
 	@Override
@@ -156,10 +148,6 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 				pr.saveToNBT(compound);
 			}
 		}
-		compound.putBoolean("carrieditemflag", updateCarriedItem);
-		CompoundTag carriedData = new CompoundTag();
-		carriedData = carriedStack.save(carriedData);
-		compound.put("carrieditemdata", carriedData);
 		super.saveAdditional(compound);
 	}
 
@@ -345,20 +333,11 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 
 	}
 	
-	public void updateCarriedItemInContainer(ItemStack stack) {
-		carriedStack = stack.copy();
-		updateCarriedFlag(true);
+	public void updateCarriedItemInContainer(ItemStack stack, UUID playerId) {
+		Player player = getLevel().getPlayerByUUID(playerId);
+		if(player.hasContainerOpen()) {
+			player.containerMenu.setCarried(stack);
+		}
 	}
 	
-	public void updateCarriedFlag(boolean flag) {
-		updateCarriedItem = flag;
-	}
-
-	public boolean shouldUpdateCarriedItem() {
-		return updateCarriedItem;
-	}
-	
-	public ItemStack getNewCarriedItem() {
-		return carriedStack;
-	}
 }
