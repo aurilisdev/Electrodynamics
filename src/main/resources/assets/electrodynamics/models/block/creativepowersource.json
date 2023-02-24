@@ -9,7 +9,7 @@
 	"textures": {
 		"0": "electrodynamics:model/creativepowersource",
 		"1" : "electrodynamics:block/nether_portal",
-		"particle": "electrodynamics:model/creativepowersource"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{
