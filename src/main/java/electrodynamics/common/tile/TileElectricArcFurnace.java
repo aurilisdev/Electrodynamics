@@ -21,6 +21,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
@@ -37,7 +38,8 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class TileElectricArcFurnace extends GenericTile implements ITickableSound {
 
-	protected BlastingRecipe cachedRecipe = null;
+	protected BlastingRecipe[] cachedRecipe = null;
+	
 	private List<BlastingRecipe> cachedRecipes = null;
 
 	private boolean isSoundPlaying = false;
@@ -49,34 +51,28 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 	public TileElectricArcFurnace(SubtypeMachine machine, int extra, BlockPos worldPosition, BlockState blockState) {
 		super(extra == 1 ? ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACEDOUBLE.get() : extra == 2 ? ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACETRIPLE.get() : ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACE.get(), worldPosition, blockState);
 
-		int processorInputs = 1;
 		int processorCount = extra + 1;
-		int inputCount = processorInputs * (extra + 1);
-		int outputCount = 1 * (extra + 1);
-		int invSize = 3 + inputCount + outputCount;
+		int inputsPerProc = 1;
+		int outputPerProc = 1;
 
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * Math.pow(2, extra)).maxJoules(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK * 20 * (extra + 1)));
-
-		int[] ints = new int[extra + 1];
-		for (int i = 0; i <= extra; i++) {
-			ints[i] = i * 2;
-		}
-
-		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount).processorInputs(processorInputs).validUpgrades(ContainerElectricArcFurnace.VALID_UPGRADES).valid(machineValidator(ints)).setMachineSlots(extra));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().processors(processorCount, inputsPerProc, outputPerProc, 0).upgrades(3)).validUpgrades(ContainerElectricArcFurnace.VALID_UPGRADES).valid(machineValidator()).setMachineSlots(extra));
 		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> (extra == 0 ? new ContainerElectricArcFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerElectricArcFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerElectricArcFurnaceTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 		for (int i = 0; i <= extra; i++) {
-			addProcessor(new ComponentProcessor(this, i, extra + 1).canProcess(this::canProcess).failed(component -> cachedRecipe = null).process(this::process).requiredTicks(Constants.ELECTRICARCFURNACE_REQUIRED_TICKS).usage(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK));
+			addProcessor(new ComponentProcessor(this, i, extra + 1).canProcess(this::canProcess).failed(component -> cachedRecipe[component.getProcessorNumber()] = null).process(this::process).requiredTicks(Constants.ELECTRICARCFURNACE_REQUIRED_TICKS).usage(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK));
 		}
+		cachedRecipe = new BlastingRecipe[extra + 1];
 	}
 
 	protected void process(ComponentProcessor component) {
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
-		ItemStack output = inv.getOutputContents().get(component.getProcessorNumber());
-		ItemStack result = cachedRecipe.getResultItem();
+		ItemStack input = inv.getInputsForProcessor(component.getProcessorNumber()).get(0);
+		ItemStack output = inv.getOutputsForProcessor(component.getProcessorNumber()).get(0);
+		ItemStack result = cachedRecipe[component.getProcessorNumber()].getResultItem();
 		int index = inv.getOutputSlots().get(component.getProcessorNumber());
 		if (!output.isEmpty()) {
 			output.setCount(output.getCount() + result.getCount());
@@ -84,11 +80,12 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 		} else {
 			inv.setItem(index, result.copy());
 		}
-		inv.getInputContents().get(component.getProcessorNumber()).get(0).shrink(1);
+		input.shrink(1);
+		inv.setItem(inv.getInputSlotsForProcessor(component.getProcessorNumber()).get(0), input.copy());
 		for (ItemStack stack : inv.getUpgradeContents()) {
 			if (!stack.isEmpty() && ((ItemUpgrade) stack.getItem()).subtype == SubtypeItemUpgrade.experience) {
 				CompoundTag tag = stack.getOrCreateTag();
-				tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + cachedRecipe.getExperience());
+				tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + cachedRecipe[component.getProcessorNumber()].getExperience());
 				break;
 			}
 		}
@@ -109,7 +106,7 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 			return false;
 		}
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
-		ItemStack input = inv.getInputContents().get(component.getProcessorNumber()).get(0);
+		ItemStack input = inv.getInputsForProcessor(component.getProcessorNumber()).get(0);
 		if (input.isEmpty()) {
 			return false;
 		}
@@ -117,22 +114,26 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 		if (cachedRecipes == null) {
 			cachedRecipes = level.getRecipeManager().getAllRecipesFor(RecipeType.BLASTING);
 		}
+		
+		if(cachedRecipe == null) {
+			return false;
+		}
 
-		if (cachedRecipe == null) {
-			cachedRecipe = getMatchedRecipe(input);
-			if (cachedRecipe == null) {
+		if (cachedRecipe[component.getProcessorNumber()] == null) {
+			cachedRecipe[component.getProcessorNumber()] = getMatchedRecipe(input);
+			if (cachedRecipe[component.getProcessorNumber()] == null) {
 				return false;
 			}
 			component.operatingTicks.set(0.0);
 		}
 
-		if (!cachedRecipe.matches(new SimpleContainer(input), level)) {
-			cachedRecipe = null;
+		if (!cachedRecipe[component.getProcessorNumber()].matches(new SimpleContainer(input), level)) {
+			cachedRecipe[component.getProcessorNumber()] = null;
 			return false;
 		}
 
 		ItemStack output = inv.getOutputContents().get(component.getProcessorNumber());
-		ItemStack result = cachedRecipe.getResultItem();
+		ItemStack result = cachedRecipe[component.getProcessorNumber()].getResultItem();
 		return (output.isEmpty() || ItemStack.isSame(output, result)) && output.getCount() + result.getCount() <= output.getMaxStackSize();
 
 	}

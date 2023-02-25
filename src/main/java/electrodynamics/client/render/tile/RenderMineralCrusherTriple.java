@@ -37,7 +37,7 @@ public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineral
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
 		ComponentInventory inv = tileEntityIn.getComponent(ComponentType.Inventory);
-		ItemStack stack = inv.getInputContents().get(1).get(0);
+		ItemStack stack = inv.getInputsForProcessor(1).get(0);
 		if (!stack.isEmpty()) {
 			Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			matrixStackIn.pushPose();
@@ -53,7 +53,7 @@ public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineral
 			Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
 			matrixStackIn.popPose();
 		}
-		stack = inv.getInputContents().get(0).get(0);
+		stack = inv.getInputsForProcessor(0).get(0);
 		if (!stack.isEmpty()) {
 			Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			matrixStackIn.pushPose();
@@ -69,7 +69,7 @@ public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineral
 			Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
 			matrixStackIn.popPose();
 		}
-		stack = inv.getInputContents().get(2).get(0);
+		stack = inv.getInputsForProcessor(2).get(0);
 		if (!stack.isEmpty()) {
 			Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			matrixStackIn.pushPose();

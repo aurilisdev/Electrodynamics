@@ -49,7 +49,7 @@ public abstract class Item2ItemRecipe extends ElectrodynamicsRecipe {
 
 	@Override
 	public boolean matchesRecipe(ComponentProcessor pr) {
-		Pair<List<Integer>, Boolean> pair = areItemsValid(getCountedIngredients(), ((ComponentInventory) pr.getHolder().getComponent(ComponentType.Inventory)).getInputContents().get(pr.getProcessorNumber()));
+		Pair<List<Integer>, Boolean> pair = areItemsValid(getCountedIngredients(), ((ComponentInventory) pr.getHolder().getComponent(ComponentType.Inventory)).getInputsForProcessor(pr.getProcessorNumber()));
 		if (pair.getSecond()) {
 			setItemArrangement(pr.getProcessorNumber(), pair.getFirst());
 			return true;

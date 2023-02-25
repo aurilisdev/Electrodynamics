@@ -37,7 +37,7 @@ public class RenderMineralCrusher extends AbstractTileRenderer<TileMineralCrushe
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
 		ComponentInventory inv = tileEntityIn.getComponent(ComponentType.Inventory);
-		ItemStack stack = inv.getInputContents().get(0).get(0);
+		ItemStack stack = inv.getInputsForProcessor(0).get(0);
 		if (!stack.isEmpty()) {
 			Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			matrixStackIn.pushPose();

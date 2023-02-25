@@ -55,7 +55,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	/*
 	 * IMPORTANT DEFINITIONS:
 	 * 
-	 * SLOT ORDER: 1. Item Input Slots 2. Item Output Slot 3. Item Biproduct Slots 4. Bucket Input Slots 5. Bucket Output Slots 6. Upgrade Slots
+	 * SLOT ORDER: 1. Item Input Slots 2. Item Output Slot 3. Item Biproduct Slots
+	 * 4. Bucket Input Slots 5. Bucket Output Slots 6. Upgrade Slots
 	 * 
 	 */
 
@@ -66,8 +67,10 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	private int bucketInputs = 0;
 	private int bucketOutputs = 0;
 
-	private int processors = 0;
-	private int processorInputs = 0;
+	private int inputsPerProc = 0;
+	private int outputsPerProc = 0;
+	private int biprodsPerProc = 0;
+
 	private BiConsumer<ComponentInventory, Integer> onChanged = (componentInventory, slot) -> {
 		if (holder != null) {
 			holder.onInventoryChange(componentInventory, slot);
@@ -77,7 +80,34 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	protected SubtypeItemUpgrade[] validUpgrades = SubtypeItemUpgrade.values();
 
 	public ComponentInventory(GenericTile holder) {
+		this(holder, InventoryBuilder.EMPTY);
+	}
+	
+	public ComponentInventory(GenericTile holder, InventoryBuilder builder) {
 		holder(holder);
+
+		if (builder.builderSize > 0) {
+			inventorySize = builder.builderSize;
+		} else {
+
+			inputs = builder.builderInputs;
+			outputs = builder.builderOutputs;
+			upgrades = builder.builderUpgrades;
+			biproducts = builder.builderBiproducts;
+			bucketInputs = builder.builderBucketInputs;
+			bucketOutputs = builder.builderBucketOutputs;
+			upgrades = builder.builderUpgrades;
+
+			inventorySize = inputs + outputs + upgrades + biproducts + bucketInputs + bucketOutputs + upgrades;
+
+			inputsPerProc = builder.builderInputsPerProc;
+			outputsPerProc = builder.builderOutputsPerProc;
+			biprodsPerProc = builder.builderBiprodsPerProc;
+
+		}
+
+		items = holder.property(new Property<>(PropertyType.InventoryItems, "itemproperty", NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY)));
+
 	}
 
 	public ComponentInventory onChanged(BiConsumer<ComponentInventory, Integer> onChanged) {
@@ -87,12 +117,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	public ComponentInventory getSlots(Function<Direction, Collection<Integer>> getSlotsFunction) {
 		this.getSlotsFunction = getSlotsFunction;
-		return this;
-	}
-
-	public ComponentInventory size(int inventorySize) {
-		this.inventorySize = inventorySize;
-		items = holder.property(new Property<>(PropertyType.InventoryItems, "itemproperty", NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY)));
 		return this;
 	}
 
@@ -138,17 +162,22 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	public ComponentInventory setMachineSlots(int extra) {
-		if (biproducts > 0) {
-			// extra outputs
-			for (int i = getItemBiproductStartIndex(); i < getItemBiproductStartIndex() + biproducts; i++) {
-				relativeFaceSlots(Direction.WEST, i);
-				relativeFaceSlots(Direction.DOWN, i);
-			}
+		ComponentInventory inv = this;
+
+		for (int i : getInputSlots()) {
+			inv = inv.relativeFaceSlots(Direction.EAST, i).relativeFaceSlots(Direction.UP, i);
 		}
-		// inputs
-		return relativeFaceSlots(Direction.EAST, 0, extra == 1 ? 2 : 0, extra == 2 ? 4 : 0).relativeFaceSlots(Direction.UP, extra == 1 ? 2 : 0, extra == 2 ? 4 : 0)
-				// outputs
-				.relativeFaceSlots(Direction.WEST, 1, extra == 1 || extra == 2 ? 3 : 1, extra == 2 ? 5 : 1).relativeFaceSlots(Direction.DOWN, 1, extra == 1 || extra == 2 ? 3 : 1, extra == 2 ? 5 : 1);
+
+		for (int i : getOutputSlots()) {
+			inv = inv.relativeFaceSlots(Direction.WEST, i).relativeFaceSlots(Direction.DOWN, i);
+		}
+
+		for (int i = 0; i < biproducts; i++) {
+			inv = inv.relativeFaceSlots(Direction.WEST, i).relativeFaceSlots(Direction.DOWN, i);
+		}
+
+		return inv;
+
 	}
 
 	public ComponentInventory valid(TriPredicate<Integer, ItemStack, ComponentInventory> itemValidPredicate) {
@@ -301,27 +330,12 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		}
 	}
 
-	public ComponentInventory inputs(int par) {
-		inputs = par;
-		return this;
-	}
-
 	public int inputs() {
 		return inputs;
 	}
 
-	public ComponentInventory outputs(int par) {
-		outputs = par;
-		return this;
-	}
-
 	public int outputs() {
 		return outputs;
-	}
-
-	public ComponentInventory upgrades(int par) {
-		upgrades = par;
-		return this;
 	}
 
 	public int upgrades() {
@@ -337,49 +351,16 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return validUpgrades;
 	}
 
-	public ComponentInventory biproducts(int par) {
-		biproducts = par;
-		return this;
-	}
-
 	public int biproducts() {
 		return biproducts;
-	}
-
-	public ComponentInventory bucketInputs(int par) {
-		bucketInputs = par;
-		return this;
 	}
 
 	public int bucketInputs() {
 		return bucketInputs;
 	}
 
-	public ComponentInventory bucketOutputs(int par) {
-		bucketOutputs = par;
-		return this;
-	}
-
 	public int bucketOutputs() {
 		return bucketOutputs;
-	}
-
-	public ComponentInventory processors(int par) {
-		processors = par;
-		return this;
-	}
-
-	public int processors() {
-		return processors;
-	}
-
-	public ComponentInventory processorInputs(int par) {
-		processorInputs = par;
-		return this;
-	}
-
-	public int processorInputs() {
-		return processorInputs;
 	}
 
 	/*
@@ -410,108 +391,82 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return getOutputBucketStartIndex() + bucketOutputs;
 	}
 
-	public List<List<ItemStack>> getInputContents() {
-		List<List<ItemStack>> combinedList = new ArrayList<>();
-		if (processors == 0) {
-			List<ItemStack> newList = new ArrayList<>();
-			for (int i = 0; i < inputs; i++) {
-				newList.add(getItem(i));
-			}
-			combinedList.add(newList);
-
-			return combinedList;
-		}
-		for (int i = 0; i < processors; i++) {
-			List<ItemStack> newList = new ArrayList<>();
-			for (int j = 0; j < processorInputs; j++) {
-				newList.add(getItem(j + i * (processorInputs + 1)));
-			}
-			combinedList.add(newList);
-		}
-		return combinedList;
+	public List<ItemStack> getInputContents() {
+		return items.get().subList(getInputStartIndex(), getOutputStartIndex());
 	}
 
 	public List<ItemStack> getOutputContents() {
-		if (processors == 0) {
-			List<ItemStack> list = new ArrayList<>();
-			for (int i = 0; i < outputs; i++) {
-				list.add(getItem(getOutputStartIndex() + i));
-			}
-			return list;
-		}
-		List<ItemStack> list = new ArrayList<>();
-		for (int i = 0; i < processors; i++) {
-			list.add(getItem((processorInputs + 1) * (i + 1) - 1));
-		}
-		return list;
+		return items.get().subList(getOutputStartIndex(), getItemBiproductStartIndex());
 	}
 
 	public List<ItemStack> getItemBiContents() {
-		List<ItemStack> list = new ArrayList<>();
-		for (int i = 0; i < biproducts; i++) {
-			list.add(getItem(getItemBiproductStartIndex() + i));
-		}
-		return list;
+		return items.get().subList(getItemBiproductStartIndex(), getInputBucketStartIndex());
 	}
 
 	public List<ItemStack> getInputBucketContents() {
-		List<ItemStack> list = new ArrayList<>();
-		for (int i = 0; i < bucketInputs; i++) {
-			list.add(getItem(getInputBucketStartIndex() + i));
-		}
-		return list;
+		return items.get().subList(getInputBucketStartIndex(), getOutputBucketStartIndex());
 	}
 
 	public List<ItemStack> getOutputBucketContents() {
-		List<ItemStack> list = new ArrayList<>();
-		for (int i = 0; i < bucketOutputs; i++) {
-			list.add(getItem(getOutputBucketStartIndex() + i));
-		}
-		return list;
+		return items.get().subList(getOutputBucketStartIndex(), getUpgradeSlotStartIndex());
 	}
 
 	public List<ItemStack> getUpgradeContents() {
-		List<ItemStack> list = new ArrayList<>();
-		for (int i = 0; i < upgrades; i++) {
-			list.add(getItem(getUpgradeSlotStartIndex() + i));
-		}
-		return list;
+		return items.get().subList(getUpgradeSlotStartIndex(), items.get().size());
 	}
 
-	public List<List<Integer>> getInputSlots() {
-		List<List<Integer>> combined = new ArrayList<>();
-		if (processors == 0) {
-			List<Integer> list = new ArrayList<>();
-			for (int i = 0; i < inputs; i++) {
-				list.add(getInputStartIndex() + i);
-			}
-			combined.add(list);
-			return combined;
-		}
-		for (int i = 0; i < processors; i++) {
-			List<Integer> list = new ArrayList<>();
-			for (int j = 0; j < processorInputs; j++) {
-				list.add(j + i * (processorInputs + 1));
-			}
-			combined.add(list);
-		}
-		return combined;
+	// processor number is indexed at zero
+	public List<ItemStack> getInputsForProcessor(int processor) {
+		return getInputContents().subList(inputsPerProc * processor, inputsPerProc * (processor + 1));
 	}
 
-	// you're making me break out a sheet of paper for this!
-	public List<Integer> getOutputSlots() {
-		if (processors == 0) {
-			List<Integer> list = new ArrayList<>();
-			for (int i = 0; i < outputs; i++) {
-				list.add(getOutputStartIndex() + i);
-			}
-			return list;
-		}
+	// processor number is indexed at zero
+	public List<ItemStack> getOutputsForProcessor(int processor) {
+		return getOutputContents().subList(outputsPerProc * processor, outputsPerProc * (processor + 1));
+	}
+
+	// processor number is indexed at zero
+	public List<ItemStack> getBiprodsForProcessor(int processor) {
+		return getInputContents().subList(biprodsPerProc * processor, biprodsPerProc * (processor + 1));
+	}
+
+	public List<Integer> getInputSlots() {
 		List<Integer> list = new ArrayList<>();
-		for (int i = 0; i < processors; i++) {
-			list.add((processorInputs + 1) * (i + 1) - 1);
+		for (int i = 0; i < inputs; i++) {
+			list.add(getInputStartIndex() + i);
 		}
 		return list;
+	}
+
+	public List<Integer> getOutputSlots() {
+		List<Integer> list = new ArrayList<>();
+		for (int i = 0; i < outputs; i++) {
+			list.add(getOutputStartIndex() + i);
+		}
+		return list;
+	}
+
+	public List<Integer> getBiproductSlots() {
+		List<Integer> list = new ArrayList<>();
+		for (int i = 0; i < biproducts; i++) {
+			list.add(getItemBiproductStartIndex() + i);
+		}
+		return list;
+	}
+
+	// processor number is indexed at zero
+	public List<Integer> getInputSlotsForProcessor(int processor) {
+		return getInputSlots().subList(inputsPerProc * processor, inputsPerProc * (processor + 1));
+	}
+
+	// processor number is indexed at zero
+	public List<Integer> getOutputSlotsForProcessor(int processor) {
+		return getOutputSlots().subList(outputsPerProc * processor, outputsPerProc * (processor + 1));
+	}
+
+	// processor number is indexed at zero
+	public List<Integer> getBiprodSlotsForProcessor(int processor) {
+		return getBiproductSlots().subList(biprodsPerProc * processor, biprodsPerProc * (processor + 1));
 	}
 
 	public boolean areOutputsEmpty() {
@@ -550,24 +505,19 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return false;
 	}
 
-	// specialized case of hasInputRoom()
 	public boolean areInputsEmpty() {
-		for (List<ItemStack> stacks : getInputContents()) {
-			for (ItemStack stack : stacks) {
-				if (stack.isEmpty()) {
-					return true;
-				}
+		for (ItemStack stack : getInputContents()) {
+			if (stack.isEmpty()) {
+				return false;
 			}
 		}
 		return false;
 	}
 
 	public boolean hasInputRoom() {
-		for (List<ItemStack> stacks : getInputContents()) {
-			for (ItemStack stack : stacks) {
-				if (stack.getMaxStackSize() > stack.getCount()) {
-					return true;
-				}
+		for (ItemStack stack : getInputContents()) {
+			if (stack.getMaxStackSize() > stack.getCount()) {
+				return true;
 			}
 		}
 		return false;
@@ -580,6 +530,82 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			}
 		}
 		return false;
+	}
+
+	public static class InventoryBuilder {
+		
+		private static final InventoryBuilder EMPTY = new InventoryBuilder();
+
+		private int builderSize = 0;
+
+		private int builderInputs = 0;
+		private int builderOutputs = 0;
+		private int builderBiproducts = 0;
+		private int builderBucketInputs = 0;
+		private int builderBucketOutputs = 0;
+		private int builderUpgrades = 0;
+
+		private int builderInputsPerProc = 0;
+		private int builderOutputsPerProc = 0;
+		private int builderBiprodsPerProc = 0;
+
+		private InventoryBuilder() {
+
+		}
+
+		public InventoryBuilder inputs(int inputs) {
+			this.builderInputs = inputs;
+			return this;
+		}
+
+		public InventoryBuilder outputs(int outputs) {
+			this.builderOutputs = outputs;
+			return this;
+		}
+
+		public InventoryBuilder biproducts(int biproducts) {
+			this.builderBiproducts = biproducts;
+			return this;
+		}
+
+		public InventoryBuilder bucketInputs(int bucketInputs) {
+			this.builderBucketInputs = bucketInputs;
+			return this;
+		}
+
+		public InventoryBuilder bucketOutputs(int bucketOutputs) {
+			this.builderBucketOutputs = bucketOutputs;
+			return this;
+		}
+
+		public InventoryBuilder upgrades(int upgrades) {
+			this.builderUpgrades = upgrades;
+			return this;
+		}
+
+		public InventoryBuilder processors(int procCount, int inputsPerProc, int outputsPerProc, int biprodsPerProc) {
+
+			this.builderInputsPerProc = inputsPerProc;
+			this.builderOutputsPerProc = outputsPerProc;
+			this.builderBiprodsPerProc = biprodsPerProc;
+
+			this.builderInputs = procCount * inputsPerProc;
+			this.builderOutputs = procCount * outputsPerProc;
+			this.builderBiproducts = procCount * biprodsPerProc;
+
+			return this;
+		}
+
+		// create an inventory without any specified slot layout
+		public InventoryBuilder forceSize(int size) {
+			this.builderSize = size;
+			return this;
+		}
+
+		public static InventoryBuilder newInv() {
+			return new InventoryBuilder();
+		}
+
 	}
 
 }

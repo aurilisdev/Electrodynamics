@@ -1,7 +1,5 @@
 package electrodynamics.prefab.tile;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import electrodynamics.api.IWrenchItem;
@@ -249,18 +247,6 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		return false;
 	}
 
-	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator() {
-		return (x, y, i) -> x < i.getOutputStartIndex() || x >= i.getInputBucketStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade upgrade && i.isUpgradeValid(upgrade.subtype);
-	}
-
-	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator(int[] ints) {
-		List<Integer> list = new ArrayList<>();
-		for (int i : ints) {
-			list.add(i);
-		}
-		return (x, y, i) -> list.contains(x) || x >= i.getInputBucketStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade upgrade && i.isUpgradeValid(upgrade.subtype);
-	}
-
 	public void onEnergyChange(ComponentElectrodynamic cap) {
 		// hook method for now
 	}
@@ -338,6 +324,10 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		if(player.hasContainerOpen()) {
 			player.containerMenu.setCarried(stack);
 		}
+	}
+	
+	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator() {
+		return (x, y, i) -> x < i.getOutputStartIndex() || x >= i.getInputBucketStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade upgrade && i.isUpgradeValid(upgrade.subtype);
 	}
 	
 }

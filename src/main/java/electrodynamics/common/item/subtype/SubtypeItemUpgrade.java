@@ -71,14 +71,14 @@ public enum SubtypeItemUpgrade implements ISubtype {
 
 		if (tag.getBoolean(NBTUtils.SMART)) {
 
-			int slot;
+			int index = 0;
 			Direction dir = Direction.DOWN;
-			for (int i = 0; i < inv.getInputSlots().get(processor.getProcessorNumber()).size(); i++) {
-				slot = inv.getInputSlots().get(processor.getProcessorNumber()).get(i);
-				if (i < dirs.size()) {
-					dir = dirs.get(i);
+			for (int slot : inv.getInputSlotsForProcessor(processor.getProcessorNumber())) {
+				if (index < dirs.size()) {
+					dir = dirs.get(index);
 				}
 				inputSmartMode(getBlockEntity(holder, dir), inv, slot, processor.getProcessorNumber(), dir);
+				index++;
 			}
 		} else {
 			for (Direction dir : dirs) {
@@ -215,7 +215,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 
 		IItemHandler handler = lazy.resolve().get();
 
-		for (int slot : inv.getInputSlots().get(procNumber)) {
+		for (int slot : inv.getInputSlotsForProcessor(procNumber)) {
 			removeItemFromHandler(handler, inv, slot);
 		}
 

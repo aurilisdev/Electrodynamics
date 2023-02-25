@@ -29,8 +29,8 @@ public class ContainerElectricFurnaceDouble extends GenericContainerBlockEntity<
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
 		addSlot(new SlotGeneric(inv, nextIndex(), 56, 24));
-		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 24));
 		addSlot(new SlotGeneric(inv, nextIndex(), 56, 44));
+		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 24));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116, 44));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, ContainerElectricFurnace.VALID_UPGRADES));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, ContainerElectricFurnace.VALID_UPGRADES));

@@ -15,6 +15,7 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
@@ -40,24 +41,16 @@ public class TileMineralCrusher extends GenericTile implements ITickableSound {
 	public TileMineralCrusher(SubtypeMachine machine, int extra, BlockPos pos, BlockState state) {
 		super(extra == 1 ? ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERDOUBLE.get() : extra == 2 ? ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERTRIPLE.get() : ElectrodynamicsBlockTypes.TILE_MINERALCRUSHER.get(), pos, state);
 
-		int processorInputs = 1;
 		int processorCount = extra + 1;
-		int inputCount = processorInputs * (extra + 1);
-		int outputCount = 1 * (extra + 1);
-		int biproducts = 1 + extra;
-		int invSize = 3 + inputCount + outputCount + biproducts;
+		int inputsPerProc = 1;
+		int outputPerProc = 1;
+		int biprodsPerProc = 1;
 
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2 * Math.pow(2, extra)));
-
-		int[] ints = new int[extra + 1];
-		for (int i = 0; i <= extra; i++) {
-			ints[i] = i * 2;
-		}
-
-		addComponent(new ComponentInventory(this).size(invSize).inputs(inputCount).outputs(outputCount).upgrades(3).processors(processorCount).processorInputs(processorInputs).biproducts(biproducts).validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator(ints)).setMachineSlots(extra));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().processors(processorCount, inputsPerProc, outputPerProc, biprodsPerProc).upgrades(3)).validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator()).setMachineSlots(extra));
 		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> (extra == 0 ? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 		for (int i = 0; i <= extra; i++) {
@@ -88,7 +81,7 @@ public class TileMineralCrusher extends GenericTile implements ITickableSound {
 			int amount = getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERDOUBLE.get() ? 2 : getType() == ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERTRIPLE.get() ? 3 : 0;
 			for (int in = 0; in < amount; in++) {
 				ComponentInventory inv = getComponent(ComponentType.Inventory);
-				ItemStack stack = inv.getInputContents().get(getProcessor(in).getProcessorNumber()).get(0);
+				ItemStack stack = inv.getInputsForProcessor(getProcessor(in).getProcessorNumber()).get(0);
 				if (stack.getItem() instanceof BlockItem it) {
 					Block block = it.getBlock();
 					for (int i = 0; i < 5; i++) {

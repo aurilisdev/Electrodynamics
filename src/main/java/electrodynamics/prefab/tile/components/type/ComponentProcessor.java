@@ -477,12 +477,15 @@ public class ComponentProcessor implements Component {
 	 * 
 	 * Biproducts will be output in the order they appear in the recipe JSON
 	 * 
-	 * The output FluidTanks will contain both the recipe output tank and the biproduct tanks The first tank is ALWAYS the main output tank, and the following tanks will be filled in the order of the fluid biproducts
+	 * The output FluidTanks will contain both the recipe output tank and the
+	 * biproduct tanks The first tank is ALWAYS the main output tank, and the
+	 * following tanks will be filled in the order of the fluid biproducts
 	 * 
 	 * 
 	 * 
 	 * 
-	 * Also, no checks outside of the null recipe check will be performed in these methods All validity checks will take place in the recipe validator methods
+	 * Also, no checks outside of the null recipe check will be performed in these
+	 * methods All validity checks will take place in the recipe validator methods
 	 * 
 	 */
 
@@ -529,9 +532,9 @@ public class ComponentProcessor implements Component {
 				inv.setItem(outputSlot, stack);
 
 			}
-			List<List<Integer>> inputs = inv.getInputSlots();
-			for (int i = 0; i < inputs.get(procNumber).size(); i++) {
-				int index = inputs.get(pr.getProcessorNumber()).get(slotOrientation.get(i));
+			List<Integer> inputs = inv.getInputSlotsForProcessor(procNumber);
+			for (int i = 0; i < inputs.size(); i++) {
+				int index = inputs.get(slotOrientation.get(i));
 				ItemStack stack = inv.getItem(index);
 				stack.shrink(locRecipe.getCountedIngredients().get(i).getStackSize());
 				inv.setItem(index, stack);
@@ -574,9 +577,9 @@ public class ComponentProcessor implements Component {
 
 			handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.EXECUTE);
 
-			List<List<Integer>> inputs = inv.getInputSlots();
-			for (int i = 0; i < inputs.get(procNumber).size(); i++) {
-				int index = inputs.get(pr.getProcessorNumber()).get(slotOrientation.get(i));
+			List<Integer> inputs = inv.getInputSlotsForProcessor(procNumber);
+			for (int i = 0; i < inputs.size(); i++) {
+				int index = inputs.get(slotOrientation.get(i));
 				ItemStack stack = inv.getItem(index);
 				stack.shrink(locRecipe.getCountedIngredients().get(i).getStackSize());
 				inv.setItem(index, stack);
@@ -630,9 +633,9 @@ public class ComponentProcessor implements Component {
 				inv.getOutputContents().get(procNumber).grow(locRecipe.getResultItem().getCount());
 			}
 
-			List<List<Integer>> inputs = inv.getInputSlots();
-			for (int i = 0; i < inputs.get(procNumber).size(); i++) {
-				int index = inputs.get(pr.getProcessorNumber()).get(slotOrientation.get(i));
+			List<Integer> inputs = inv.getInputSlotsForProcessor(procNumber);
+			for (int i = 0; i < inputs.size(); i++) {
+				int index = inputs.get(slotOrientation.get(i));
 				ItemStack stack = inv.getItem(index);
 				stack.shrink(locRecipe.getCountedIngredients().get(i).getStackSize());
 				inv.setItem(index, stack);
@@ -741,10 +744,8 @@ public class ComponentProcessor implements Component {
 
 	private void dispenseExperience(ComponentInventory inv, double experience) {
 		storedXp += experience;
-		int start = inv.getUpgradeSlotStartIndex();
-		int count = inv.upgrades();
-		for (int i = start; i < start + count; i++) {
-			ItemStack stack = inv.getItem(i);
+		for (ItemStack stack : inv.getUpgradeContents()) {
+
 			if (!stack.isEmpty()) {
 				ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
 				if (upgrade.subtype == SubtypeItemUpgrade.experience) {
@@ -754,6 +755,7 @@ public class ComponentProcessor implements Component {
 					break;
 				}
 			}
+
 		}
 	}
 
