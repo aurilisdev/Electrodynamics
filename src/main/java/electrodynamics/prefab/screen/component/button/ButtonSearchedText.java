@@ -50,7 +50,7 @@ public class ButtonSearchedText extends ButtonSpecificPage {
 
 	public static void drawCenteredStringNoShadow(PoseStack pPoseStack, Font pFont, Component pText, int pX, int pY, int pColor) {
 		FormattedCharSequence formattedcharsequence = pText.getVisualOrderText();
-		pFont.draw(pPoseStack, formattedcharsequence, (float) (pX - pFont.width(formattedcharsequence) / 2), (float) pY, pColor);
+		pFont.draw(pPoseStack, formattedcharsequence, pX - pFont.width(formattedcharsequence) / 2, pY, pColor);
 	}
 
 }
