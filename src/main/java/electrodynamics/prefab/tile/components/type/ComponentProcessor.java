@@ -221,7 +221,7 @@ public class ComponentProcessor implements Component {
 		}
 
 		if (locRecipe.hasItemBiproducts()) {
-			boolean itemBiRoom = roomInItemBiSlots(inv.getItemBiContents(), locRecipe.getFullItemBiStacks());
+			boolean itemBiRoom = roomInItemBiSlots(inv.getBiprodsForProcessor(pr.getProcessorNumber()), locRecipe.getFullItemBiStacks());
 			if (!itemBiRoom) {
 				return false;
 			}
@@ -273,7 +273,7 @@ public class ComponentProcessor implements Component {
 			return false;
 		}
 		if (locRecipe.hasItemBiproducts()) {
-			boolean itemBiRoom = roomInItemBiSlots(inv.getItemBiContents(), locRecipe.getFullItemBiStacks());
+			boolean itemBiRoom = roomInItemBiSlots(inv.getBiprodsForProcessor(pr.getProcessorNumber()), locRecipe.getFullItemBiStacks());
 			if (!itemBiRoom) {
 				return false;
 			}
@@ -318,7 +318,7 @@ public class ComponentProcessor implements Component {
 		}
 		if (locRecipe.hasItemBiproducts()) {
 			ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-			boolean itemBiRoom = roomInItemBiSlots(inv.getItemBiContents(), locRecipe.getFullItemBiStacks());
+			boolean itemBiRoom = roomInItemBiSlots(inv.getBiprodsForProcessor(pr.getProcessorNumber()), locRecipe.getFullItemBiStacks());
 			if (!itemBiRoom) {
 				return false;
 			}
@@ -362,7 +362,7 @@ public class ComponentProcessor implements Component {
 		}
 		if (locRecipe.hasItemBiproducts()) {
 			ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-			boolean itemBiRoom = roomInItemBiSlots(inv.getItemBiContents(), locRecipe.getFullItemBiStacks());
+			boolean itemBiRoom = roomInItemBiSlots(inv.getBiprodsForProcessor(pr.getProcessorNumber()), locRecipe.getFullItemBiStacks());
 			if (!itemBiRoom) {
 				return false;
 			}
@@ -406,7 +406,7 @@ public class ComponentProcessor implements Component {
 		}
 		if (locRecipe.hasItemBiproducts()) {
 			ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-			boolean itemBiRoom = roomInItemBiSlots(inv.getItemBiContents(), locRecipe.getFullItemBiStacks());
+			boolean itemBiRoom = roomInItemBiSlots(inv.getBiprodsForProcessor(pr.getProcessorNumber()), locRecipe.getFullItemBiStacks());
 			if (!itemBiRoom) {
 				return false;
 			}
@@ -457,7 +457,7 @@ public class ComponentProcessor implements Component {
 			return false;
 		}
 		if (locRecipe.hasItemBiproducts()) {
-			boolean itemBiRoom = roomInItemBiSlots(inv.getItemBiContents(), locRecipe.getFullItemBiStacks());
+			boolean itemBiRoom = roomInItemBiSlots(inv.getBiprodsForProcessor(pr.getProcessorNumber()), locRecipe.getFullItemBiStacks());
 			if (!itemBiRoom) {
 				return false;
 			}
@@ -497,19 +497,21 @@ public class ComponentProcessor implements Component {
 			List<Integer> slotOrientation = locRecipe.getItemArrangment(procNumber);
 
 			if (locRecipe.hasItemBiproducts()) {
-				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
-				List<ItemStack> invBi = inv.getItemBiContents();
 
-				for (int i = 0; i < locRecipe.getItemBiproductCount(); i++) {
-					int index = inv.getItemBiproductStartIndex() + procNumber;
-					if (invBi.get(i).isEmpty()) {
-						inv.setItem(index, itemBi[i].roll().copy());
+				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
+				int index = 0;
+
+				for (int slot : inv.getBiprodSlotsForProcessor(procNumber)) {
+
+					ItemStack stack = inv.getItem(slot);
+					if (stack.isEmpty()) {
+						inv.setItem(slot, itemBi[index].roll().copy());
 					} else {
-						ItemStack stack = inv.getItem(index);
-						stack.grow(itemBi[i].roll().getCount());
-						inv.setItem(index, stack);
+						stack.grow(itemBi[index].roll().getCount());
+						inv.setItem(slot, stack);
 					}
 				}
+
 			}
 
 			if (locRecipe.hasFluidBiproducts()) {
@@ -552,19 +554,21 @@ public class ComponentProcessor implements Component {
 			List<Integer> slotOrientation = locRecipe.getItemArrangment(pr.getProcessorNumber());
 			int procNumber = pr.getProcessorNumber();
 			if (locRecipe.hasItemBiproducts()) {
-				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
-				List<ItemStack> invBi = inv.getItemBiContents();
 
-				for (int i = 0; i < locRecipe.getItemBiproductCount(); i++) {
-					int index = inv.getItemBiproductStartIndex() + procNumber;
-					if (invBi.get(i).isEmpty()) {
-						inv.setItem(index, itemBi[i].roll().copy());
+				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
+				int index = 0;
+
+				for (int slot : inv.getBiprodSlotsForProcessor(procNumber)) {
+
+					ItemStack stack = inv.getItem(slot);
+					if (stack.isEmpty()) {
+						inv.setItem(slot, itemBi[index].roll().copy());
 					} else {
-						ItemStack stack = inv.getItem(index);
-						stack.grow(itemBi[i].roll().getCount());
-						inv.setItem(index, stack);
+						stack.grow(itemBi[index].roll().getCount());
+						inv.setItem(slot, stack);
 					}
 				}
+
 			}
 
 			if (locRecipe.hasFluidBiproducts()) {
@@ -605,19 +609,21 @@ public class ComponentProcessor implements Component {
 			List<Integer> slotOrientation = locRecipe.getItemArrangment(procNumber);
 
 			if (locRecipe.hasItemBiproducts()) {
-				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
-				List<ItemStack> invBi = inv.getItemBiContents();
 
-				for (int i = 0; i < locRecipe.getItemBiproductCount(); i++) {
-					int index = inv.getItemBiproductStartIndex() + procNumber;
-					if (invBi.get(i).isEmpty()) {
-						inv.setItem(index, itemBi[i].roll().copy());
+				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
+				int index = 0;
+
+				for (int slot : inv.getBiprodSlotsForProcessor(procNumber)) {
+
+					ItemStack stack = inv.getItem(slot);
+					if (stack.isEmpty()) {
+						inv.setItem(slot, itemBi[index].roll().copy());
 					} else {
-						ItemStack stack = inv.getItem(index);
-						stack.grow(itemBi[i].roll().getCount());
-						inv.setItem(index, stack);
+						stack.grow(itemBi[index].roll().getCount());
+						inv.setItem(slot, stack);
 					}
 				}
+
 			}
 
 			if (locRecipe.hasFluidBiproducts()) {
@@ -660,19 +666,21 @@ public class ComponentProcessor implements Component {
 			ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
 
 			if (locRecipe.hasItemBiproducts()) {
-				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
-				List<ItemStack> invBi = inv.getItemBiContents();
 
-				for (int i = 0; i < locRecipe.getItemBiproductCount(); i++) {
-					int index = inv.getItemBiproductStartIndex() + procNumber;
-					if (invBi.get(i).isEmpty()) {
-						inv.setItem(index, itemBi[i].roll().copy());
+				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
+				int index = 0;
+
+				for (int slot : inv.getBiprodSlotsForProcessor(procNumber)) {
+
+					ItemStack stack = inv.getItem(slot);
+					if (stack.isEmpty()) {
+						inv.setItem(slot, itemBi[index].roll().copy());
 					} else {
-						ItemStack stack = inv.getItem(index);
-						stack.grow(itemBi[i].roll().getCount());
-						inv.setItem(index, stack);
+						stack.grow(itemBi[index].roll().getCount());
+						inv.setItem(slot, stack);
 					}
 				}
+
 			}
 
 			if (locRecipe.hasFluidBiproducts()) {
@@ -706,19 +714,21 @@ public class ComponentProcessor implements Component {
 			ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
 
 			if (locRecipe.hasItemBiproducts()) {
+
 				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
-				List<ItemStack> invBi = inv.getItemBiContents();
-				int procNumber = pr.getProcessorNumber();
-				for (int i = 0; i < locRecipe.getItemBiproductCount(); i++) {
-					int index = inv.getItemBiproductStartIndex() + procNumber;
-					if (invBi.get(i).isEmpty()) {
-						inv.setItem(index, itemBi[i].roll().copy());
+				int index = 0;
+
+				for (int slot : inv.getBiprodSlotsForProcessor(pr.getProcessorNumber())) {
+
+					ItemStack stack = inv.getItem(slot);
+					if (stack.isEmpty()) {
+						inv.setItem(slot, itemBi[index].roll().copy());
 					} else {
-						ItemStack stack = inv.getItem(index);
-						stack.grow(itemBi[i].roll().getCount());
-						inv.setItem(index, stack);
+						stack.grow(itemBi[index].roll().getCount());
+						inv.setItem(slot, stack);
 					}
 				}
+
 			}
 
 			if (locRecipe.hasFluidBiproducts()) {
@@ -763,11 +773,7 @@ public class ComponentProcessor implements Component {
 		for (int i = 0; i < slots.size(); i++) {
 			ItemStack slotStack = slots.get(i);
 			ItemStack biStack = biproducts[Math.min(i, biproducts.length - 1)];
-			if (slotStack.isEmpty() || ItemUtils.testItems(slotStack.getItem(), biStack.getItem())) {
-				if (slotStack.getCount() + biStack.getCount() > slotStack.getMaxStackSize()) {
-					return false;
-				}
-			} else {
+			if (!slotStack.isEmpty() && ItemUtils.testItems(slotStack.getItem(), biStack.getItem()) && (slotStack.getCount() + biStack.getCount() > slotStack.getMaxStackSize())) {
 				return false;
 			}
 		}
