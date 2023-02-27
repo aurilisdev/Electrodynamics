@@ -11,6 +11,7 @@ import electrodynamics.common.packet.types.PacketModeSwitchServer;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
 import electrodynamics.common.packet.types.PacketPowerSetting;
 import electrodynamics.common.packet.types.PacketRenderJetpackParticles;
+import electrodynamics.common.packet.types.PacketResetGuidebookPages;
 import electrodynamics.common.packet.types.PacketSendUpdatePropertiesClient;
 import electrodynamics.common.packet.types.PacketSendUpdatePropertiesServer;
 import electrodynamics.common.packet.types.PacketServerUpdateTile;
@@ -47,6 +48,7 @@ public class NetworkHandler {
 		CHANNEL.registerMessage(disc++, PacketRenderJetpackParticles.class, PacketRenderJetpackParticles::encode, PacketRenderJetpackParticles::decode, PacketRenderJetpackParticles::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		CHANNEL.registerMessage(disc++, PacketSetClientCombustionFuel.class, PacketSetClientCombustionFuel::encode, PacketSetClientCombustionFuel::decode, PacketSetClientCombustionFuel::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		CHANNEL.registerMessage(disc++, PacketSetClientCoalGenFuels.class, PacketSetClientCoalGenFuels::encode, PacketSetClientCoalGenFuels::decode, PacketSetClientCoalGenFuels::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
+		CHANNEL.registerMessage(disc++, PacketResetGuidebookPages.class, PacketResetGuidebookPages::encode, PacketResetGuidebookPages::decode, PacketResetGuidebookPages::handle, Optional.of(NetworkDirection.PLAY_TO_CLIENT));
 		CHANNEL.registerMessage(disc++, PacketUpdateCarriedItemServer.class, PacketUpdateCarriedItemServer::encode, PacketUpdateCarriedItemServer::decode, PacketUpdateCarriedItemServer::handle, Optional.of(NetworkDirection.PLAY_TO_SERVER));
 	}
 
