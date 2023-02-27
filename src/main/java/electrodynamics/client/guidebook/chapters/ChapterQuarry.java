@@ -106,7 +106,8 @@ public class ChapterQuarry extends Chapter {
 		//Step 8
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step", 8).withStyle(ChatFormatting.BOLD)).setSeparateStart());
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step8l1")).setIndentions(1).setSeparateStart());
-		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, new ResourceLocation(References.ID, "textures/screen/guidebook/logisticalmanager2.png")));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/logisticalmanager1.png")));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/logisticalmanager2.png")));
 		
 		
 		

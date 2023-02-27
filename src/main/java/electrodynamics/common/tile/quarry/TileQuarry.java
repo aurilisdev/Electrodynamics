@@ -520,8 +520,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				pickaxe.enchant(Enchantments.BLOCK_FORTUNE, fortuneLevel.get());
 			}
 			List<ItemStack> lootItems = Block.getDrops(state, (ServerLevel) world, pos, null, null, pickaxe);
-			List<ItemStack> voidItemStacks = inv.getInputContents();
-			voidItemStacks.remove(0);
+			List<ItemStack> voidItemStacks = inv.getInputContents().subList(1, inv.getInputContents().size());
 			List<Item> voidItems = new ArrayList<>();
 			voidItemStacks.forEach(h -> voidItems.add(h.getItem()));
 			List<ItemStack> items = new ArrayList<>();

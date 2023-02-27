@@ -36,7 +36,6 @@ import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.Button.OnPress;
 import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -100,12 +99,12 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	private static final ResourceLocation PAGE_TEXTURE_LEFT = new ResourceLocation(References.ID, "textures/screen/guidebook/resources/guidebookpageleft.png");
 	private static final ResourceLocation PAGE_TEXTURE_RIGHT = new ResourceLocation(References.ID, "textures/screen/guidebook/resources/guidebookpageright.png");
 
-	private PageButton forward;
-	private PageButton back;
+	private static PageButton forward;
+	private static PageButton back;
 
-	private ButtonGuidebook home;
-	private ButtonGuidebook chapters;
-	private ButtonGuidebook search;
+	private static ButtonGuidebook home;
+	private static ButtonGuidebook chapters;
+	private static ButtonGuidebook search;
 
 	private static EditBoxSpecificPage searchBox;
 
@@ -184,16 +183,25 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 			genSearchPages();
 			
+			initPageButtons();
+			
 			hasInitHappened = true;
 		}
 		
-		initPageButtons();
+		
 
 		addButtons();
 
 	}
 	
 	private void addButtons() {
+		
+		addRenderableWidget(forward);
+		addRenderableWidget(back);
+		addRenderableWidget(home);
+		addRenderableWidget(chapters);
+		addRenderableWidget(search);
+		
 		for(Button button : buttons) {
 			addRenderableWidget(button);
 		}
@@ -246,11 +254,6 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		home = new ButtonGuidebook(guiWidth + 115 - 186, guiHeight + 202, button -> goToModulePage(), GuidebookButtonType.HOME);
 		chapters = new ButtonGuidebook(guiWidth + 50 - 100, guiHeight + 202, button -> goToChapterPage(), GuidebookButtonType.CHAPTERS);
 		search = new ButtonGuidebook(guiWidth + 235, guiHeight + 202, button -> goToSearchPage(), GuidebookButtonType.SEARCH);
-		addRenderableWidget(forward);
-		addRenderableWidget(back);
-		addRenderableWidget(home);
-		addRenderableWidget(chapters);
-		addRenderableWidget(search);
 	}
 
 	private void genModuelPages() {
@@ -326,6 +329,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 				currentPage.associatedChapter = chapter;
 				nextPageNumber++;
 
+				int counter = 0;
 				for (Object data : chapter.pageData) {
 
 					if (data instanceof TextWrapperObject textWrapper) {
@@ -424,7 +428,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 							imagePixelHeightLeft -= trueHeight;
 						}
 
-						if (imagePixelHeightLeft == 0) {
+						if (imagePixelHeightLeft == 0 && counter < module.chapters.size() - 1) {
 							currentPage = resetToNewPage(currentPage, chapter);
 							previousHeight = 0;
 						}
@@ -478,12 +482,14 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 						}
 
-						if (imagePixelHeightLeft == 0) {
+						if (imagePixelHeightLeft == 0 && counter < module.chapters.size() - 1) {
 							currentPage = resetToNewPage(currentPage, chapter);
 							previousHeight = 0;
 						}
 
 					}
+					
+					counter++;
 
 				}
 
@@ -1035,6 +1041,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	}
 	
 	public static void setInitNotHappened() {
+		currPageNumber = 0;
 		hasInitHappened = false;
 	}
 

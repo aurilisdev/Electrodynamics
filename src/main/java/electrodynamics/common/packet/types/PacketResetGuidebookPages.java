@@ -2,7 +2,6 @@ package electrodynamics.common.packet.types;
 
 import java.util.function.Supplier;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.common.packet.BarrierMethods;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -17,7 +16,6 @@ public class PacketResetGuidebookPages {
 			Minecraft minecraft = Minecraft.getInstance();
 			ClientLevel world = minecraft.level;
 			if (world != null && minecraft.player != null) {
-				Electrodynamics.LOGGER.info("recieved reset packet from server");
 				BarrierMethods.handlerSetGuidebookInitFlag();
 			}
 		});

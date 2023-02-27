@@ -6,6 +6,7 @@ import java.util.List;
 import electrodynamics.client.guidebook.ScreenGuidebook;
 import electrodynamics.client.keys.event.AbstractKeyPressHandler;
 import electrodynamics.client.keys.event.HandlerModeSwitchJetpack;
+import electrodynamics.client.keys.event.HandlerModeSwitchServoLegs;
 import electrodynamics.client.keys.event.HandlerToggleNVGoggles;
 import electrodynamics.client.keys.event.HandlerToggleServoLegs;
 import electrodynamics.client.reloadlistener.ReloadListenerResetGuidebook;
@@ -36,7 +37,7 @@ public class ClientEvents {
 	public static void init() {
 		KEY_PRESS_HANDLERS.add(new HandlerToggleNVGoggles());
 		KEY_PRESS_HANDLERS.add(new HandlerToggleServoLegs());
-		KEY_PRESS_HANDLERS.add(new HandlerToggleServoLegs());
+		KEY_PRESS_HANDLERS.add(new HandlerModeSwitchServoLegs());
 		KEY_PRESS_HANDLERS.add(new HandlerModeSwitchJetpack());
 
 		LEVEL_STAGE_RENDER_HANDLERS.add(HandlerQuarryArm.INSTANCE);
