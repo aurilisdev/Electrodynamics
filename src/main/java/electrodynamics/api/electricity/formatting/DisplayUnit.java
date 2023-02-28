@@ -11,9 +11,9 @@ public enum DisplayUnit {
 	JOULES("Joule", "J"),
 	BUCKETS("Bucket", "B");
 
-	protected String symbol;
+	final String symbol;
 
-	protected String name;
+	final String name;
 
 	DisplayUnit(String name, String symbol) {
 		this.name = name;

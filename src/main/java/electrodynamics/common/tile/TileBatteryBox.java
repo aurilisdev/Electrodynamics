@@ -30,6 +30,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
+import org.jetbrains.annotations.NotNull;
 
 public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
@@ -80,7 +81,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction face) {
+	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> capability, Direction face) {
 		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 		ComponentElectrodynamic electro = this.getComponent(ComponentType.Electrodynamic);
 		if (electro.hasCapability(capability, face)) {

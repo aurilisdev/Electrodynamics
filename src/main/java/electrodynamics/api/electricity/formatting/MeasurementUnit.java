@@ -6,10 +6,10 @@ public enum MeasurementUnit {
 	KILO("Kilo", "k", 1000.0D),
 	MEGA("Mega", "M", 1000000.0D);
 
-	protected double value;
+	final double value;
 
-	protected String symbol;
-	protected String name;
+	final String symbol;
+	final String name;
 
 	MeasurementUnit(String name, String symbol, double value) {
 		this.name = name;
