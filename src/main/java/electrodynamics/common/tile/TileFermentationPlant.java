@@ -50,8 +50,8 @@ public class TileFermentationPlant extends GenericFluidTile {
 				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 			}
 			Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().getClockWise();
-			double x = worldPosition.getX() + 0.55 + dir.getStepX() * 0.2;
-			double z = worldPosition.getZ() + 0.55 + dir.getStepZ() * 0.2;
+			double x = worldPosition.getX() + 0.55 - dir.getStepX() * 0.2;
+			double z = worldPosition.getZ() + 0.55 - dir.getStepZ() * 0.2;
 			level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, worldPosition.getY() + 0.4, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
