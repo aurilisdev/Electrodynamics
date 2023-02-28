@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderCoolantResavoir extends AbstractTileRenderer<TileCoolantResavoir> {
 
@@ -28,7 +29,7 @@ public class RenderCoolantResavoir extends AbstractTileRenderer<TileCoolantResav
 	}
 
 	@Override
-	public void render(TileCoolantResavoir entity, float tick, PoseStack stack, MultiBufferSource source, int light, int overlay) {
+	public void render(TileCoolantResavoir entity, float tick, @NotNull PoseStack stack, @NotNull MultiBufferSource source, int light, int overlay) {
 		ComponentFluidHandlerSimple tank = entity.getComponent(ComponentType.FluidHandler);
 		if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
 			FluidStack fluid = tank.getFluid();

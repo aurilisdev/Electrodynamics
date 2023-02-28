@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderWindmill extends AbstractTileRenderer<TileWindmill> {
 
@@ -18,7 +19,7 @@ public class RenderWindmill extends AbstractTileRenderer<TileWindmill> {
 	}
 
 	@Override
-	public void render(TileWindmill tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(@NotNull TileWindmill tileEntityIn, float partialTicks, @NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		BakedModel ibakedmodel = getModel(ClientRegister.MODEL_WINDMILLBLADES);
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		matrixStackIn.translate(0, 22.0 / 16.0, 0);

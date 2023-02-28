@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * A basic abstract class for BlockEntityRenderer that allows for the storage of utility methods amongst other things
@@ -47,6 +48,6 @@ public abstract class AbstractTileRenderer<T extends GenericTile> implements Blo
 	}
 
 	@Override
-	public abstract void render(T tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int ppackedOverlay);
+	public abstract void render(@NotNull T tile, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int ppackedOverlay);
 
 }

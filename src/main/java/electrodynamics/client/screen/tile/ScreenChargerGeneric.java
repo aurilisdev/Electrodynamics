@@ -24,7 +24,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric> {
 
-	private static DecimalFormat DECIMAL_FORMATTER = new DecimalFormat("#0.0");
+	private static final DecimalFormat DECIMAL_FORMATTER = new DecimalFormat("#0.0");
 
 	public ScreenChargerGeneric(ContainerChargerGeneric screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);

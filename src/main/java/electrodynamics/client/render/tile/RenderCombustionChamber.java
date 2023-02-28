@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderCombustionChamber extends AbstractTileRenderer<TileCombustionChamber> {
 
@@ -23,7 +24,7 @@ public class RenderCombustionChamber extends AbstractTileRenderer<TileCombustion
 	}
 
 	@Override
-	public void render(TileCombustionChamber tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(TileCombustionChamber tileEntityIn, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		matrixStackIn.pushPose();
 		FluidStack fuel = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getFluidInTank(0, true);
 		float prog = fuel.getAmount() / (float) TileCombustionChamber.TANK_CAPACITY;

@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBlock> {
 
@@ -23,25 +24,17 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 	}
 
 	@Override
-	public void render(TileMultimeterBlock tilemultimeter, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(@NotNull TileMultimeterBlock tilemultimeter, float partialTicks, @NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		for (Direction dir : Direction.values()) {
 			if (dir != Direction.UP && dir != Direction.DOWN && dir != tilemultimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
 				matrixStackIn.pushPose();
 				matrixStackIn.translate(0.5 + dir.getStepX() / 1.999, 0.85 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);
 				switch (dir) {
-				case EAST:
-					matrixStackIn.mulPose(new Quaternion(0, -90, 0, true));
-					break;
-				case NORTH:
-					break;
-				case SOUTH:
-					matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
-					break;
-				case WEST:
-					matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
-					break;
-				default:
-					break;
+					case EAST -> matrixStackIn.mulPose(new Quaternion(0, -90, 0, true));
+					case SOUTH -> matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
+					case WEST -> matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
+					default -> {
+					}
 				}
 				Component displayNameIn = Component.literal("Transfer: " + ChatFormatter.getDisplayShort(tilemultimeter.joules.get() * 20, DisplayUnit.WATT, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
@@ -58,19 +51,11 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 				matrixStackIn.pushPose();
 				matrixStackIn.translate(0.5 + dir.getStepX() / 1.999, 0.65 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);
 				switch (dir) {
-				case EAST:
-					matrixStackIn.mulPose(new Quaternion(0, -90, 0, true));
-					break;
-				case NORTH:
-					break;
-				case SOUTH:
-					matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
-					break;
-				case WEST:
-					matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
-					break;
-				default:
-					break;
+					case EAST -> matrixStackIn.mulPose(new Quaternion(0, -90, 0, true));
+					case SOUTH -> matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
+					case WEST -> matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
+					default -> {
+					}
 				}
 				Component displayNameIn = Component.literal("Voltage: " + ChatFormatter.getDisplayShort(tilemultimeter.voltage.get(), DisplayUnit.VOLTAGE, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
@@ -87,19 +72,11 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 				matrixStackIn.pushPose();
 				matrixStackIn.translate(0.5 + dir.getStepX() / 1.999, 0.45 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);
 				switch (dir) {
-				case EAST:
-					matrixStackIn.mulPose(new Quaternion(0, -90, 0, true));
-					break;
-				case NORTH:
-					break;
-				case SOUTH:
-					matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
-					break;
-				case WEST:
-					matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
-					break;
-				default:
-					break;
+					case EAST -> matrixStackIn.mulPose(new Quaternion(0, -90, 0, true));
+					case SOUTH -> matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
+					case WEST -> matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
+					default -> {
+					}
 				}
 				Component displayNameIn = Component.literal("Resistance: " + ChatFormatter.getDisplayShort(tilemultimeter.resistance.get(), DisplayUnit.RESISTANCE, 2));
 				Font fontrenderer = Minecraft.getInstance().font;
@@ -116,19 +93,11 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 				matrixStackIn.pushPose();
 				matrixStackIn.translate(0.5 + dir.getStepX() / 1.999, 0.25 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);
 				switch (dir) {
-				case EAST:
-					matrixStackIn.mulPose(new Quaternion(0, -90, 0, true));
-					break;
-				case NORTH:
-					break;
-				case SOUTH:
-					matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
-					break;
-				case WEST:
-					matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
-					break;
-				default:
-					break;
+					case EAST -> matrixStackIn.mulPose(new Quaternion(0, -90, 0, true));
+					case SOUTH -> matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
+					case WEST -> matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
+					default -> {
+					}
 				}
 				Component displayNameIn = Component.literal("Loss: " + ChatFormatter.getDisplayShort(tilemultimeter.loss.get() * 20, DisplayUnit.WATT, 2));
 				Font fontrenderer = Minecraft.getInstance().font;

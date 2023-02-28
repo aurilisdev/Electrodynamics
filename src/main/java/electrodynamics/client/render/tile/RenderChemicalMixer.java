@@ -19,6 +19,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer> {
 
@@ -27,7 +28,7 @@ public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer>
 	}
 
 	@Override
-	public void render(TileChemicalMixer tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(@NotNull TileChemicalMixer tileEntityIn, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
 		BakedModel ibakedmodel = getModel(ClientRegister.MODEL_CHEMICALMIXERBASE);
 		matrixStackIn.pushPose();
@@ -53,7 +54,7 @@ public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer>
 		matrixStackIn.popPose();
 
 		matrixStackIn.pushPose();
-		ComponentFluidHandlerMulti multi = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(ComponentType.FluidHandler);
 		FluidStack fluid = null;
 		for (FluidTank tank : multi.getInputTanks()) {
 			if (!tank.isEmpty()) {

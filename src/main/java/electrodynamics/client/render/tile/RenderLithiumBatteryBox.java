@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderLithiumBatteryBox extends AbstractTileRenderer<TileLithiumBatteryBox> {
 
@@ -21,7 +22,7 @@ public class RenderLithiumBatteryBox extends AbstractTileRenderer<TileLithiumBat
 	}
 
 	@Override
-	public void render(TileLithiumBatteryBox tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(TileLithiumBatteryBox tileEntityIn, float partialTicks, @NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		BakedModel ibakedmodel;
 		ComponentElectrodynamic el = tileEntityIn.getComponent(ComponentType.Electrodynamic);
 		int stored = (int) (el.getJoulesStored() / el.getMaxJoulesStored() * 6);
@@ -37,20 +38,20 @@ public class RenderLithiumBatteryBox extends AbstractTileRenderer<TileLithiumBat
 		};
 
 		switch (tileEntityIn.getBlockState().getValue(GenericEntityBlock.FACING)) {
-		case NORTH:
-			matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
-			matrixStackIn.translate(-1, 0, 0);
-			break;
-		case SOUTH:
-			matrixStackIn.mulPose(new Quaternion(0, 270, 0, true));
-			matrixStackIn.translate(0, 0, -1);
-			break;
-		case WEST:
-			matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
-			matrixStackIn.translate(-1, 0, -1);
-			break;
-		default:
-			break;
+			case NORTH -> {
+				matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
+				matrixStackIn.translate(-1, 0, 0);
+			}
+			case SOUTH -> {
+				matrixStackIn.mulPose(new Quaternion(0, 270, 0, true));
+				matrixStackIn.translate(0, 0, -1);
+			}
+			case WEST -> {
+				matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
+				matrixStackIn.translate(-1, 0, -1);
+			}
+			default -> {
+			}
 		}
 		matrixStackIn.translate(0.5, 0.5, 0.5);
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);

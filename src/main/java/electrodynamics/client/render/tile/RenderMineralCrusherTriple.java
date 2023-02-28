@@ -18,6 +18,7 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineralCrusherTriple> {
 
@@ -26,7 +27,7 @@ public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineral
 	}
 
 	@Override
-	public void render(TileMineralCrusherTriple tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(@NotNull TileMineralCrusherTriple tileEntityIn, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		matrixStackIn.pushPose();
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		matrixStackIn.translate(0, 1.0 / 16.0, 0);

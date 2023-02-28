@@ -15,6 +15,7 @@ import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ModelNightVisionGoggles<T extends LivingEntity> extends GenericArmorModel<T> {
 
@@ -51,7 +52,7 @@ public class ModelNightVisionGoggles<T extends LivingEntity> extends GenericArmo
 	}
 
 	@Override
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		parentHead.render(poseStack, buffer, packedLight, packedOverlay);
 	}
 }
