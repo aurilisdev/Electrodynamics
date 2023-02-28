@@ -3,8 +3,7 @@ package electrodynamics.api.screen;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * Simple wrapper interface allowing for basic compatibility between different textures
- * 
+ * Simple wrapper interface allowing for basic compatibility between different textures.
  * Textures are assumed to be 256 x 256
  * 
  * @author skip999
@@ -26,7 +25,7 @@ public interface ITexture {
 
 	ResourceLocation getLocation();
 
-	public enum Textures implements ITexture {
+	enum Textures implements ITexture {
 		NONE(0, 0, 0, 0, 0, 0, null);
 
 		private final int textureWidth;

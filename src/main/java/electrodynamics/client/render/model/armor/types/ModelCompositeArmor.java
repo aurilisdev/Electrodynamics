@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ModelCompositeArmor<T extends LivingEntity> extends GenericArmorModel<T> {
 
@@ -29,32 +30,32 @@ public class ModelCompositeArmor<T extends LivingEntity> extends GenericArmorMod
 		parentHat.visible = false;
 
 		switch (slot) {
-		case HEAD:
-			parentHead.visible = true;
-			parentChest.visible = false;
-			parentRightArm.visible = false;
-			parentLeftArm.visible = false;
-			parentRightLeg.visible = false;
-			parentLeftLeg.visible = false;
-			break;
-		case CHEST:
-			parentHead.visible = false;
-			parentChest.visible = true;
-			parentRightArm.visible = true;
-			parentLeftArm.visible = true;
-			parentRightLeg.visible = false;
-			parentLeftLeg.visible = false;
-			break;
-		case LEGS, FEET:
-			parentHead.visible = false;
-			parentChest.visible = false;
-			parentRightArm.visible = false;
-			parentLeftArm.visible = false;
-			parentRightLeg.visible = true;
-			parentLeftLeg.visible = true;
-			break;
-		default:
-			break;
+			case HEAD -> {
+				parentHead.visible = true;
+				parentChest.visible = false;
+				parentRightArm.visible = false;
+				parentLeftArm.visible = false;
+				parentRightLeg.visible = false;
+				parentLeftLeg.visible = false;
+			}
+			case CHEST -> {
+				parentHead.visible = false;
+				parentChest.visible = true;
+				parentRightArm.visible = true;
+				parentLeftArm.visible = true;
+				parentRightLeg.visible = false;
+				parentLeftLeg.visible = false;
+			}
+			case LEGS, FEET -> {
+				parentHead.visible = false;
+				parentChest.visible = false;
+				parentRightArm.visible = false;
+				parentLeftArm.visible = false;
+				parentRightLeg.visible = true;
+				parentLeftLeg.visible = true;
+			}
+			default -> {
+			}
 		}
 	}
 
@@ -80,28 +81,28 @@ public class ModelCompositeArmor<T extends LivingEntity> extends GenericArmorMod
 		part.addOrReplaceChild(LEFT_ARM, CubeListBuilder.create().texOffs(24, 51).addBox(-1.0F, -2.0F, -2.0F, 0.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(13, 51).addBox(3.0F, -2.0F, -2.0F, 1.0F, 12.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(22, 68).addBox(-1.0F, -2.0F, -3.0F, 4.0F, 12.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(11, 68).addBox(-1.0F, -2.0F, 2.0F, 4.0F, 12.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(57, 28).addBox(-1.0F, -3.0F, -2.0F, 4.0F, 1.0F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(5.0F, 2.0F, 0.0F));
 
 		switch (modelType) {
-		case 1:
-			// right leg only
-			part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create().texOffs(77, 43).addBox(-2.1F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(77, 17).addBox(-2.1F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(66, 41).addBox(-3.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(71, 55).addBox(2.0F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(51, 79).addBox(-1.6F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 107).addBox(-2.0F, -0.05F, -2.0F, 4.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.9F, 12.0F, 0.0F));
-			// left leg only
-			part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create().texOffs(74, 32).addBox(-1.9F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(71, 73).addBox(-1.9F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(33, 71).addBox(-2F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(60, 55).addBox(2.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(42, 79).addBox(-1.4F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 113).addBox(-2.0F, -0.05F, -2.0F, 4.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(1.9F, 12.0F, 0.0F));
-			break;
-		case 2:
-			// right shoe only
-			part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create().texOffs(70, 22).addBox(2.0F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(57, 13).addBox(-3.0F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(76, 54).addBox(-2.0F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(42, 72).addBox(-2.0F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).texOffs(45, 48).addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(1.9F, 17.0F, 0.0F));
-			// left shoe only
-			part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create().texOffs(57, 3).addBox(2.2F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(66, 7).addBox(-2F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(11, 27).addBox(-1.8F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).texOffs(55, 41).addBox(-1.8F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(30, 47).addBox(-1.8F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.9F, 17.0F, 0.0F));
-			break;
-		case 3:
-			// right leg combined
-			part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create().texOffs(77, 43).addBox(-2.1F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(77, 17).addBox(-2.1F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(66, 41).addBox(-3.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(71, 55).addBox(2.0F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(51, 79).addBox(-1.6F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 107).addBox(-2.0F, -0.05F, -2.0F, 4.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)).texOffs(70, 22).addBox(2.0F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(57, 13).addBox(-3.0F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(76, 54).addBox(-2.0F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(42, 72).addBox(-2.0F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).texOffs(45, 48).addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.9F, 12.0F, 0.0F));
-			// left leg combined
-			part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create().texOffs(74, 32).addBox(-1.9F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(71, 73).addBox(-1.9F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(33, 71).addBox(-2F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(60, 55).addBox(2.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(42, 79).addBox(-1.4F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 113).addBox(-2.0F, -0.05F, -2.0F, 4.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)).texOffs(30, 47).addBox(-1.8F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(55, 41).addBox(-1.8F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(11, 27).addBox(-1.8F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).texOffs(66, 7).addBox(-2F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(57, 3).addBox(2.2F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(1.9F, 12.0F, 0.0F));
-			break;
-		default:
-			part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
-			part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
-			break;
+			case 1 -> {
+				// right leg only
+				part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create().texOffs(77, 43).addBox(-2.1F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(77, 17).addBox(-2.1F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(66, 41).addBox(-3.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(71, 55).addBox(2.0F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(51, 79).addBox(-1.6F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 107).addBox(-2.0F, -0.05F, -2.0F, 4.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.9F, 12.0F, 0.0F));
+				// left leg only
+				part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create().texOffs(74, 32).addBox(-1.9F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(71, 73).addBox(-1.9F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(33, 71).addBox(-2F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(60, 55).addBox(2.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(42, 79).addBox(-1.4F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 113).addBox(-2.0F, -0.05F, -2.0F, 4.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)), PartPose.offset(1.9F, 12.0F, 0.0F));
+			}
+			case 2 -> {
+				// right shoe only
+				part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create().texOffs(70, 22).addBox(2.0F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(57, 13).addBox(-3.0F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(76, 54).addBox(-2.0F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(42, 72).addBox(-2.0F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).texOffs(45, 48).addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(1.9F, 17.0F, 0.0F));
+				// left shoe only
+				part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create().texOffs(57, 3).addBox(2.2F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(66, 7).addBox(-2F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(11, 27).addBox(-1.8F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).texOffs(55, 41).addBox(-1.8F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(30, 47).addBox(-1.8F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.9F, 17.0F, 0.0F));
+			}
+			case 3 -> {
+				// right leg combined
+				part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create().texOffs(77, 43).addBox(-2.1F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(77, 17).addBox(-2.1F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(66, 41).addBox(-3.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(71, 55).addBox(2.0F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(51, 79).addBox(-1.6F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 107).addBox(-2.0F, -0.05F, -2.0F, 4.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)).texOffs(70, 22).addBox(2.0F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(57, 13).addBox(-3.0F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(76, 54).addBox(-2.0F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(42, 72).addBox(-2.0F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).texOffs(45, 48).addBox(-2.0F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(-1.9F, 12.0F, 0.0F));
+				// left leg combined
+				part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create().texOffs(74, 32).addBox(-1.9F, 0.0F, -3.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(71, 73).addBox(-1.9F, 0.0F, 2.0F, 4.0F, 9.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(33, 71).addBox(-2F, 0.0F, -2.0F, 0.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(60, 55).addBox(2.1F, 0.0F, -2.0F, 1.0F, 9.0F, 4.0F, new CubeDeformation(0.0F)).texOffs(42, 79).addBox(-1.4F, 3.0F, -4.0F, 3.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(0, 113).addBox(-2.0F, -0.05F, -2.0F, 4.0F, 0.1F, 4.0F, new CubeDeformation(0.0F)).texOffs(30, 47).addBox(-1.8F, 12.1F, -4.0F, 4.0F, 0.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(55, 41).addBox(-1.8F, 9.0F, 2.0F, 4.0F, 3.0F, 1.0F, new CubeDeformation(0.0F)).texOffs(11, 27).addBox(-1.8F, 9.0F, -4.0F, 4.0F, 3.0F, 3.0F, new CubeDeformation(0.0F)).texOffs(66, 7).addBox(-2F, 9.0F, -4.0F, 0.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)).texOffs(57, 3).addBox(2.2F, 9.0F, -4.0F, 1.0F, 3.0F, 6.0F, new CubeDeformation(0.0F)), PartPose.offset(1.9F, 12.0F, 0.0F));
+			}
+			default -> {
+				part.addOrReplaceChild(RIGHT_LEG, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
+				part.addOrReplaceChild(LEFT_LEG, CubeListBuilder.create(), PartPose.offset(0, 0, 0));
+			}
 		}
 
 		return LayerDefinition.create(mesh, 128, 128);
@@ -109,7 +110,7 @@ public class ModelCompositeArmor<T extends LivingEntity> extends GenericArmorMod
 
 	@Override
 	// Call me a butcher, because I am hacking this game
-	public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+	public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
 		if (parentHead.visible) {
 			parentHead.render(poseStack, getCustomConsumer(RenderType.entityTranslucent(new ResourceLocation(ItemCompositeArmor.ARMOR_TEXTURE_LOCATION))), packedLight, packedOverlay);
 		}

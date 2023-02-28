@@ -12,25 +12,26 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
+import org.jetbrains.annotations.NotNull;
 
 public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapEmpty {
 
 	private boolean hasInitHappened = false;
-	private List<ResourceLocation> tags;
-	private List<Fluid> fluids;
+	private final List<ResourceLocation> tags;
+	private final List<Fluid> fluids;
 
 	public RestrictedFluidHandlerItemStack(ItemStack container, ItemStack emptyContainer, int capacity, Pair<List<ResourceLocation>, List<Fluid>> whitelistedFluids) {
 		super(container, emptyContainer, capacity);
 		tags = new ArrayList<>();
-		whitelistedFluids.getFirst().forEach(h -> tags.add(h));
+		tags.addAll(whitelistedFluids.getFirst());
 
 		fluids = new ArrayList<>();
-		whitelistedFluids.getSecond().forEach(h -> fluids.add(h));
+		fluids.addAll(whitelistedFluids.getSecond());
 
 	}
 
 	@Override
-	public boolean isFluidValid(int tank, FluidStack stack) {
+	public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
 		// check tags first
 		for (ResourceLocation loc : tags) {
 			for (Fluid fluid : ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(loc)).stream().toList()) {
@@ -74,8 +75,7 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 
 	/**
 	 * DO NOT CALL THIS
-	 * 
-	 * @param resource
+	 *
 	 */
 	public void fillInit(FluidStack resource) {
 		if (hasInitHappened) {
@@ -107,12 +107,11 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 
 	/**
 	 * Can only set to true smartass
-	 * 
-	 * @param initHappened
+	 *
 	 */
 	public void hasInitHappened(boolean initHappened) {
 		if (initHappened) {
-			hasInitHappened = initHappened;
+			hasInitHappened = true;
 		} else {
 			throw new UnsupportedOperationException("What did I tell you, don't call that method");
 		}

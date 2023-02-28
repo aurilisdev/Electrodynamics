@@ -34,12 +34,14 @@ public class PropertyFluidTank extends FluidTank {
 
 	public PropertyFluidTank(int capacity, Predicate<FluidStack> validator, GenericTile holder, String key) {
 		super(capacity, validator);
+		this.holder = holder;
 		fluidStackProperty = holder.property(new Property<>(PropertyType.Fluidstack, "propertyfluidtankstack" + key, FluidStack.EMPTY));
 		capacityProperty = holder.property(new Property<>(PropertyType.Integer, "propertyfluidtankcapacity" + key, capacity));
 	}
 
 	protected PropertyFluidTank(PropertyFluidTank other) {
 		super(other.capacity, other.validator);
+		holder = other.holder;
 		fluidStackProperty = other.fluidStackProperty;
 		capacityProperty = other.capacityProperty;
 	}

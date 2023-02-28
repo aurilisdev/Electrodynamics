@@ -1,35 +1,25 @@
 package electrodynamics.client.guidebook;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.References;
 import electrodynamics.api.screen.component.IGuiComponent;
-import electrodynamics.client.guidebook.utils.components.Module;
 import electrodynamics.client.guidebook.utils.components.Chapter;
+import electrodynamics.client.guidebook.utils.components.Module;
 import electrodynamics.client.guidebook.utils.components.Page;
-import electrodynamics.client.guidebook.utils.components.Page.ChapterPage;
-import electrodynamics.client.guidebook.utils.components.Page.CoverPage;
-import electrodynamics.client.guidebook.utils.components.Page.ImageWrapper;
-import electrodynamics.client.guidebook.utils.components.Page.ItemWrapper;
-import electrodynamics.client.guidebook.utils.components.Page.ModulePage;
-import electrodynamics.client.guidebook.utils.components.Page.TextWrapper;
+import electrodynamics.client.guidebook.utils.components.Page.*;
 import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject.ImageTextDescriptor;
 import electrodynamics.client.guidebook.utils.pagedata.ItemWrapperObject;
 import electrodynamics.client.guidebook.utils.pagedata.TextWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject.ImageTextDescriptor;
 import electrodynamics.common.inventory.container.item.ContainerGuidebook;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentGuidebookArrow;
 import electrodynamics.prefab.screen.component.ScreenComponentGuidebookArrow.ArrowTextures;
 import electrodynamics.prefab.screen.component.button.ButtonGuidebook;
+import electrodynamics.prefab.screen.component.button.ButtonGuidebook.GuidebookButtonType;
 import electrodynamics.prefab.screen.component.button.ButtonModuleSelector;
 import electrodynamics.prefab.screen.component.button.ButtonSearchedText;
-import electrodynamics.prefab.screen.component.button.ButtonGuidebook.GuidebookButtonType;
 import electrodynamics.prefab.screen.component.button.ButtonSpecificPage;
 import electrodynamics.prefab.screen.component.editbox.EditBoxSpecificPage;
 import electrodynamics.prefab.utilities.RenderingUtils;
@@ -45,6 +35,9 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A basic implementation of a Guidebook that allows for variable length text
@@ -94,7 +87,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 	private int nextPageNumber = 0;
 
-	private static List<Page> pages = new ArrayList<>();
+	private static final List<Page> pages = new ArrayList<>();
 
 	private static final ResourceLocation PAGE_TEXTURE_LEFT = new ResourceLocation(References.ID, "textures/screen/guidebook/resources/guidebookpageleft.png");
 	private static final ResourceLocation PAGE_TEXTURE_RIGHT = new ResourceLocation(References.ID, "textures/screen/guidebook/resources/guidebookpageright.png");
@@ -113,11 +106,11 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 	private static ButtonModuleSelector caseSensitive;
 
-	private static List<ButtonModuleSelector> moduleParameters = new ArrayList<>();
+	private static final List<ButtonModuleSelector> moduleParameters = new ArrayList<>();
 
-	private static List<SearchHit> searches = new ArrayList<>();
+	private static final List<SearchHit> searches = new ArrayList<>();
 
-	private static List<ButtonSearchedText> searchButtons = new ArrayList<>();
+	private static final List<ButtonSearchedText> searchButtons = new ArrayList<>();
 
 	private int lineY = TEXT_START_Y;
 
@@ -136,7 +129,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	
 	private static boolean hasInitHappened = false;
 
-	private static List<Button> buttons = new ArrayList<>();
+	private static final List<Button> buttons = new ArrayList<>();
 	
 	public ScreenGuidebook(ContainerGuidebook screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
@@ -152,7 +145,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		/*
 		 * we want to do this every time init is called to deal with the font reloading
 		 * 
-		 * for all of the chapters, take their lang keys and convert them into formatted
+		 * for all the chapters, take their lang keys and convert them into formatted
 		 * char arrays
 		 * 
 		 * then split them based upon the page width
@@ -177,7 +170,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			pages.add(getCoverPage());
 			nextPageNumber++;
 			
-			genModuelPages();
+			genModulePages();
 
 			genPages();
 
@@ -229,7 +222,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		for (Module mod : temp) {
 			cats.add(mod.getTitle());
 		}
-		Collections.sort(cats, (component1, component2) -> component1.toString().compareToIgnoreCase(component2.toString()));
+		cats.sort((component1, component2) -> component1.toString().compareToIgnoreCase(component2.toString()));
 		for (MutableComponent cat : cats) {
 			for (int i = 0; i < temp.size(); i++) {
 				Module mod = temp.get(i);
@@ -256,7 +249,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		search = new ButtonGuidebook(guiWidth + 235, guiHeight + 202, button -> goToSearchPage(), GuidebookButtonType.SEARCH);
 	}
 
-	private void genModuelPages() {
+	private void genModulePages() {
 		int guiWidth = (width - imageWidth) / 2;
 		int guiHeight = (height - imageHeight) / 2;
 
@@ -524,8 +517,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			imagePixelHeightLeft = TEXT_END_Y + LINE_HEIGHT - lineY;
 		}
 
-		List<FormattedText> text = new ArrayList<>();
-		text.addAll(font.getSplitter().splitLines(mergedText, TEXT_WIDTH, Style.EMPTY));
+		List<FormattedText> text = new ArrayList<>(font.getSplitter().splitLines(mergedText, TEXT_WIDTH, Style.EMPTY));
 		mergedText = Component.empty();
 
 		while (text.size() > 0) {
@@ -897,9 +889,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		searchBox.setMaxLength(100);
 
 		for (int i = 0; i < SEARCH_BUTTON_COUNT; i++) {
-			ButtonSearchedText search = new ButtonSearchedText(guiWidth + 92, guiHeight + 35 + 35 * i, TEXT_WIDTH, nextPageNumber, button -> {
-				setPageNumber(((ButtonSearchedText) button).page);
-			});
+			ButtonSearchedText search = new ButtonSearchedText(guiWidth + 92, guiHeight + 35 + 35 * i, TEXT_WIDTH, nextPageNumber, button -> setPageNumber(((ButtonSearchedText) button).page));
 			searchButtons.add(search);
 			search.setShouldShow(false);
 		}
@@ -1008,7 +998,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			scrollIndex = maxScroll;
 		}
 
-		int listSize = SEARCH_BUTTON_COUNT > searches.size() ? searches.size() : SEARCH_BUTTON_COUNT;
+		int listSize = Math.min(SEARCH_BUTTON_COUNT, searches.size());
 		
 		for (int i = 0; i < listSize; i++) {
 
@@ -1045,7 +1035,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		hasInitHappened = false;
 	}
 
-	private static record SearchHit(FormattedText text, int page, Chapter chapter) {
+	private record SearchHit(FormattedText text, int page, Chapter chapter) {
 
 	}
 

@@ -5,6 +5,7 @@ import electrodynamics.client.guidebook.ScreenGuidebook;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Avert your eyes kids
@@ -15,18 +16,18 @@ import net.minecraft.util.profiling.ProfilerFiller;
 public class ReloadListenerResetGuidebook extends SimplePreparableReloadListener<Integer> {
 
 	@Override
-	protected Integer prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
+	protected @NotNull Integer prepare(@NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profiler) {
 		return 0;
 	}
 
 	@Override
-	protected void apply(Integer number, ResourceManager resourceManager, ProfilerFiller profiler) {
+	protected void apply(@NotNull Integer number, @NotNull ResourceManager resourceManager, @NotNull ProfilerFiller profiler) {
 		Electrodynamics.LOGGER.info("Resetting from client");
 		ScreenGuidebook.setInitNotHappened();
 	}
 
 	@Override
-	public String getName() {
+	public @NotNull String getName() {
 		return "Electrodynamics Guidebook Listener";
 	}
 
