@@ -3,10 +3,13 @@ package electrodynamics.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import electrodynamics.client.guidebook.ScreenGuidebook;
 import electrodynamics.client.keys.event.AbstractKeyPressHandler;
 import electrodynamics.client.keys.event.HandlerModeSwitchJetpack;
+import electrodynamics.client.keys.event.HandlerModeSwitchServoLegs;
 import electrodynamics.client.keys.event.HandlerToggleNVGoggles;
 import electrodynamics.client.keys.event.HandlerToggleServoLegs;
+import electrodynamics.client.reloadlistener.ReloadListenerResetGuidebook;
 import electrodynamics.client.render.event.guipost.AbstractPostGuiOverlayHandler;
 import electrodynamics.client.render.event.guipost.HandlerRailgunTemperature;
 import electrodynamics.client.render.event.levelstage.AbstractLevelStageHandler;
@@ -18,6 +21,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.InputEvent.Key;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -33,7 +37,7 @@ public class ClientEvents {
 	public static void init() {
 		KEY_PRESS_HANDLERS.add(new HandlerToggleNVGoggles());
 		KEY_PRESS_HANDLERS.add(new HandlerToggleServoLegs());
-		KEY_PRESS_HANDLERS.add(new HandlerToggleServoLegs());
+		KEY_PRESS_HANDLERS.add(new HandlerModeSwitchServoLegs());
 		KEY_PRESS_HANDLERS.add(new HandlerModeSwitchJetpack());
 
 		LEVEL_STAGE_RENDER_HANDLERS.add(HandlerQuarryArm.INSTANCE);
@@ -59,6 +63,7 @@ public class ClientEvents {
 
 	@SubscribeEvent
 	public static void wipeRenderHashes(ClientPlayerNetworkEvent.LoggingOut event) {
+		ScreenGuidebook.setInitNotHappened();
 		Player player = event.getPlayer();
 		if (player != null) {
 			LEVEL_STAGE_RENDER_HANDLERS.forEach(AbstractLevelStageHandler::clear);
@@ -68,6 +73,13 @@ public class ClientEvents {
 	@SubscribeEvent
 	public static void handleKeyPress(Key event) {
 		KEY_PRESS_HANDLERS.forEach(handler -> handler.handler(event, Minecraft.getInstance()));
+	}
+	
+	@SubscribeEvent
+	public static void handleClientDatapackReloads(RegisterClientReloadListenersEvent event) {
+		
+		event.registerReloadListener(new ReloadListenerResetGuidebook());
+		
 	}
 
 }

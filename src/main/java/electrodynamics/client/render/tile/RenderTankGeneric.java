@@ -11,6 +11,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -32,7 +33,7 @@ public class RenderTankGeneric extends AbstractTileRenderer<GenericTileTank> {
 		ComponentFluidHandlerSimple tank = entity.getComponent(ComponentType.FluidHandler);
 		if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
 			FluidStack fluid = tank.getFluid();
-			float yHeight = Math.max(Math.min((float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y), MIN_Y);
+			float yHeight = Mth.clamp(MIN_Y + 0.065F, (float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y);
 			AABB aabb = new AABB(MIN_X, MIN_Y, MIN_Z, MAX_X, yHeight, MAX_Z);
 			VertexConsumer builder = source.getBuffer(Sheets.translucentCullBlockSheet());
 			RenderingUtils.renderFluidBox(stack, Minecraft.getInstance(), builder, aabb, fluid, light, overlay);

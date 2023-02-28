@@ -8,6 +8,7 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.tile.types.GenericFluidTile;
@@ -28,7 +29,7 @@ public class GenericTileTank extends GenericFluidTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentFluidHandlerSimple(capacity, this, "").setInputDirections(Direction.UP).setOutputDirections(Direction.DOWN));
-		addComponent(new ComponentInventory(this).size(2).bucketInputs(1).bucketOutputs(1).valid(machineValidator()));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1).bucketOutputs(1)).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> new ContainerTankGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 

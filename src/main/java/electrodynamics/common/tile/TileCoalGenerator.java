@@ -16,6 +16,7 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
@@ -49,7 +50,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickClient(this::tickClient).tickServer(this::tickServer));
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
-		addComponent(new ComponentInventory(this).size(1).slotFaces(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH).valid((index, stack, i) -> getValidItems().contains(stack.getItem())));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(1)).slotFaces(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH).valid((index, stack, i) -> getValidItems().contains(stack.getItem())));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.coalgenerator).createMenu((id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 

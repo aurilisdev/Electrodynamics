@@ -12,6 +12,7 @@ import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -40,7 +41,7 @@ public class TileSeismicRelay extends GenericTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler().addCustomPacketWriter(this::createPacket).addGuiPacketWriter(this::createPacket).addCustomPacketReader(this::readPacket).addGuiPacketReader(this::readPacket));
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
-		addComponent(new ComponentInventory(this).size(1).outputs(1).valid((slot, stack, i) -> ItemUtils.testItems(stack.getItem(), ElectrodynamicsItems.ITEM_SEISMICMARKER.get())));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().outputs(1)).valid((slot, stack, i) -> ItemUtils.testItems(stack.getItem(), ElectrodynamicsItems.ITEM_SEISMICMARKER.get())));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.seismicrelay).createMenu((id, player) -> new ContainerSeismicRelay(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 

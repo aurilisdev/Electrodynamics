@@ -7,6 +7,7 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.tile.types.GenericFluidTile;
@@ -28,7 +29,7 @@ public class TileFluidVoid extends GenericFluidTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentFluidHandlerSimple(128000, this, "").setInputDirections(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.UP, Direction.WEST, Direction.DOWN));
-		addComponent(new ComponentInventory(this).size(1).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1)).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.fluidvoid).createMenu((id, player) -> new ContainerFluidVoid(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 

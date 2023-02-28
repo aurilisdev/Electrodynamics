@@ -15,6 +15,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.types.GenericFluidTile;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
@@ -37,7 +38,7 @@ public class TileMineralWasher extends GenericFluidTile {
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 4));
 		addComponent(new ComponentFluidHandlerMulti(this).setTanks(1, 1, MAX_TANK_CAPACITY).setInputDirections(Direction.EAST).setOutputDirections(Direction.WEST).setRecipeType(ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE.get()));
-		addComponent(new ComponentInventory(this).size(6).relativeSlotFaces(0, Direction.values()).inputs(1).bucketInputs(1).bucketOutputs(1).upgrades(3).processors(1).processorInputs(1).validUpgrades(ContainerMineralWasher.VALID_UPGRADES).valid(machineValidator()));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().processors(1, 1, 0, 0).bucketInputs(1).bucketOutputs(1).upgrades(3)).relativeSlotFaces(0, Direction.values()).validUpgrades(ContainerMineralWasher.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentProcessor(this).canProcess(component -> component.outputToPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component, ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE.get())).process(component -> component.processFluidItem2FluidRecipe(component)));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.mineralwasher).createMenu((id, player) -> new ContainerMineralWasher(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
@@ -53,7 +54,7 @@ public class TileMineralWasher extends GenericFluidTile {
 				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 			}
 			ComponentInventory inv = getComponent(ComponentType.Inventory);
-			ItemStack input = inv.getInputContents().get(0).get(0);
+			ItemStack input = inv.getInputContents().get(0);
 			Vector3f color;
 			if (input.getItem() instanceof BlockItem block && block.getBlock().defaultBlockState().is(Blocks.MAGMA_BLOCK)) {
 				color = new Vector3f(1f, 0.64706f, 0);

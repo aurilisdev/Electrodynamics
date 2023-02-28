@@ -9,6 +9,7 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
@@ -37,7 +38,7 @@ public class TileCreativeFluidSource extends GenericTile {
 		addComponent(new ComponentDirection());
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentFluidHandlerSimple(128000, this, "").universalOutput());
-		addComponent(new ComponentInventory(this).size(2).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1).bucketOutputs(1)).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.creativefluidsource).createMenu((id, player) -> new ContainerCreativeFluidSource(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 

@@ -22,7 +22,7 @@ public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher>
 
 	@Override
 	public void render(TileMineralWasher tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-		ItemStack stack = tileEntityIn.<ComponentInventory>getComponent(ComponentType.Inventory).getInputContents().get(0).get(0);
+		ItemStack stack = tileEntityIn.<ComponentInventory>getComponent(ComponentType.Inventory).getInputsForProcessor(0).get(0);
 		if (!stack.isEmpty()) {
 			Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			matrixStackIn.pushPose();

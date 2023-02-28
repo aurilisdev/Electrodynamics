@@ -30,8 +30,8 @@ public class ContainerO2OProcessorDouble extends GenericContainerBlockEntity<Gen
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
 		addSlot(new SlotGeneric(inv, nextIndex(), 56 - ContainerO2OProcessor.startXOffset, 24));
-		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset, 24));
 		addSlot(new SlotGeneric(inv, nextIndex(), 56 - ContainerO2OProcessor.startXOffset, 44));
+		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset, 24));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset, 44));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset + 20, 24));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset + 20, 44));

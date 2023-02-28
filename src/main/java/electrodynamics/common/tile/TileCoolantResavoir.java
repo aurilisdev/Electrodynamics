@@ -11,6 +11,7 @@ import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.types.GenericFluidTile;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
@@ -27,7 +28,7 @@ public class TileCoolantResavoir extends GenericFluidTile {
 		addComponent(new ComponentTickable().tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentFluidHandlerSimple(Constants.QUARRY_WATERUSAGE_PER_BLOCK * 1000, this, "").setInputDirections(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST).setValidFluids(Fluids.WATER));
-		addComponent(new ComponentInventory(this).size(1).bucketInputs(1).valid(machineValidator()));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1)).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.coolantresavoir).createMenu((id, player) -> new ContainerCoolantResavoir(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 

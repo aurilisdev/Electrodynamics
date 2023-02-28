@@ -39,7 +39,7 @@ public class RenderLathe extends AbstractTileRenderer<TileLathe> {
 		BakedModel lathe = getModel(ClientRegister.MODEL_LATHESHAFT);
 		RenderingUtils.renderModel(lathe, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
-		ItemStack stack = tileEntityIn.<ComponentInventory>getComponent(ComponentType.Inventory).getInputContents().get(0).get(0);
+		ItemStack stack = tileEntityIn.<ComponentInventory>getComponent(ComponentType.Inventory).getInputsForProcessor(0).get(0);
 		if (!stack.isEmpty()) {
 			matrixStackIn.pushPose();
 			matrixStackIn.translate(0.5f, 0.78f, 0.5f);

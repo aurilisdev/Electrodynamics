@@ -18,6 +18,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
@@ -47,7 +48,7 @@ public class TileMotorComplex extends GenericTile implements ITickableSound {
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.SOUTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.MOTORCOMPLEX_USAGE_PER_TICK * 10000));
-		addComponent(new ComponentInventory(this).size(3).upgrades(3).validUpgrades(ContainerMotorComplex.VALID_UPGRADES).valid(machineValidator()));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(3)).validUpgrades(ContainerMotorComplex.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.motorcomplex).createMenu((id, player) -> new ContainerMotorComplex(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 

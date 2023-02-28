@@ -11,6 +11,7 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.object.TransferPack;
@@ -39,7 +40,7 @@ public abstract class GenericTileCharger extends GenericTile {
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickCommon(this::tickCommon));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * voltageMultiplier).maxJoules(2000.0 * voltageMultiplier));
-		addComponent(new ComponentInventory(this).size(2 + BATTERY_COUNT).inputs(1 + BATTERY_COUNT).outputs(1).valid(machineValidator()));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(BATTERY_COUNT + 1).outputs(1)).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> new ContainerChargerGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
 	}

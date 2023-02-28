@@ -3,8 +3,10 @@ package electrodynamics.common.packet;
 import java.util.HashSet;
 import java.util.UUID;
 
+import electrodynamics.client.guidebook.ScreenGuidebook;
 import electrodynamics.common.item.gear.armor.types.ItemCombatArmor;
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
+import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.prefab.sound.TickableSoundJetpack;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
@@ -52,8 +54,14 @@ public class BarrierMethods {
 	}
 
 	public static void handlerClientCoalGenFuels(HashSet<Item> fuels) {
-		// TODO Auto-generated method stub
-
+		Minecraft minecraft = Minecraft.getInstance();
+		if (minecraft.level != null && minecraft.player != null) {
+			CoalGeneratorFuelRegister.INSTANCE.setClientValues(fuels);
+		}
+	}
+	
+	public static void handlerSetGuidebookInitFlag() {
+		ScreenGuidebook.setInitNotHappened();
 	}
 
 }

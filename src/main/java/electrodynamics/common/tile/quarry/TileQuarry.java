@@ -35,6 +35,7 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.InventoryUtils;
@@ -197,7 +198,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		addComponent(new ComponentPacketHandler());
 		addComponent(new ComponentTickable().tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.QUARRY_USAGE_PER_TICK * CAPACITY));
-		addComponent(new ComponentInventory(this).size(19).inputs(7).outputs(9).upgrades(3).validUpgrades(ContainerQuarry.VALID_UPGRADES).valid(machineValidator()));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(7).outputs(9).upgrades(3)).validUpgrades(ContainerQuarry.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.quarry).createMenu((id, player) -> new ContainerQuarry(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
@@ -519,8 +520,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				pickaxe.enchant(Enchantments.BLOCK_FORTUNE, fortuneLevel.get());
 			}
 			List<ItemStack> lootItems = Block.getDrops(state, (ServerLevel) world, pos, null, null, pickaxe);
-			List<ItemStack> voidItemStacks = inv.getInputContents().get(0);
-			voidItemStacks.remove(0);
+			List<ItemStack> voidItemStacks = inv.getInputContents().subList(1, inv.getInputContents().size());
 			List<Item> voidItems = new ArrayList<>();
 			voidItemStacks.forEach(h -> voidItems.add(h.getItem()));
 			List<ItemStack> items = new ArrayList<>();

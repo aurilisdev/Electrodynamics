@@ -31,16 +31,14 @@ public class ContainerO2OProcessorTriple extends GenericContainerBlockEntity<Gen
 	public void addInventorySlots(Container inv, Inventory playerinv) {
 		playerInvOffset = 20;
 		addSlot(new SlotGeneric(inv, nextIndex(), 56 - ContainerO2OProcessor.startXOffset, 24));
-		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset, 24));
 		addSlot(new SlotGeneric(inv, nextIndex(), 56 - ContainerO2OProcessor.startXOffset, 44));
-		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset, 44));
 		addSlot(new SlotGeneric(inv, nextIndex(), 56 - ContainerO2OProcessor.startXOffset, 64));
+		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset, 24));
+		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset, 44));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset, 64));
-
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset + 20, 24));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset + 20, 44));
 		addSlot(new FurnaceResultSlot(playerinv.player, inv, nextIndex(), 116 - ContainerO2OProcessor.startXOffset + 20, 64));
-
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 24, ContainerO2OProcessor.VALID_UPGRADES));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 44, ContainerO2OProcessor.VALID_UPGRADES));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 64, ContainerO2OProcessor.VALID_UPGRADES));
