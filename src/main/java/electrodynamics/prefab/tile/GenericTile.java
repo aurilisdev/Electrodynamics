@@ -1,7 +1,5 @@
 package electrodynamics.prefab.tile;
 
-import java.util.UUID;
-
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
@@ -10,11 +8,7 @@ import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyManager;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentName;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
+import electrodynamics.prefab.tile.components.type.*;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.Scheduler;
@@ -38,6 +32,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
 
 public class GenericTile extends BlockEntity implements Nameable, IPropertyHolderTile {
 	private final Component[] components = new Component[ComponentType.values().length];

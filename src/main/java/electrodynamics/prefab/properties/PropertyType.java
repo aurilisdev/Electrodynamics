@@ -1,12 +1,5 @@
 package electrodynamics.prefab.properties;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.function.BiPredicate;
-
-import javax.annotation.Nullable;
-
 import electrodynamics.prefab.utilities.object.Location;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -16,6 +9,12 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.BiPredicate;
 
 public enum PropertyType {
 	Byte,
@@ -197,8 +196,7 @@ public enum PropertyType {
 			tag.putUUID(prop.getName(), (UUID) val);
 			break;
 		case BlockPos:
-			net.minecraft.core.BlockPos pos = (net.minecraft.core.BlockPos) val;
-			if (pos != null) {
+			if (val instanceof BlockPos pos) {
 				tag.putInt(prop.getName() + "X", pos.getX());
 				tag.putInt(prop.getName() + "Y", pos.getY());
 				tag.putInt(prop.getName() + "Z", pos.getZ());
