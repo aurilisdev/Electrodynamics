@@ -62,9 +62,9 @@ public class ScreenComponentFluid extends AbstractScreenComponentGauge {
 		if (tank != null) {
 			FluidStack fluidStack = tank.getFluid();
 			if (fluidStack.getAmount() > 0) {
-				return Component.translatable(fluidStack.getTranslationKey()).append(Component.literal(" " + tank.getFluidAmount() + " mB"));
+				return Component.translatable(fluidStack.getTranslationKey()).append(Component.literal(" " + tank.getFluidAmount() + " / " + tank.getCapacity() + " mB"));
 			}
 		}
-		return FluidStack.EMPTY.getDisplayName();
+		return Component.literal( "0 / " + tank.getCapacity() + " mB");
 	}
 }

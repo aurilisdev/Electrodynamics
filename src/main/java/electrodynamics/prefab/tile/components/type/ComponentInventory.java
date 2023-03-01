@@ -1,16 +1,5 @@
 package electrodynamics.prefab.tile.components.type;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.stream.Stream;
-
-import org.apache.commons.lang3.ArrayUtils;
-
 import electrodynamics.api.capability.types.itemhandler.IndexedSidedInvWrapper;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.properties.Property;
@@ -31,6 +20,12 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 public class ComponentInventory implements Component, WorldlyContainer {
 	protected GenericTile holder = null;
@@ -96,7 +91,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			biproducts = builder.builderBiproducts;
 			bucketInputs = builder.builderBucketInputs;
 			bucketOutputs = builder.builderBucketOutputs;
-			upgrades = builder.builderUpgrades;
 
 			inventorySize = inputs + outputs + upgrades + biproducts + bucketInputs + bucketOutputs + upgrades;
 
@@ -106,7 +100,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 		}
 
-		items = holder.property(new Property<>(PropertyType.InventoryItems, "itemproperty", NonNullList.<ItemStack>withSize(getContainerSize(), ItemStack.EMPTY)));
+		items = holder.property(new Property<>(PropertyType.InventoryItems, "itemproperty", NonNullList.withSize(getContainerSize(), ItemStack.EMPTY)));
 
 	}
 
@@ -161,7 +155,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return this;
 	}
 
-	public ComponentInventory setMachineSlots(int extra) {
+	public ComponentInventory implementMachineInputsAndOutputs() {
 		ComponentInventory inv = this;
 
 		for (int i : getInputSlots()) {
@@ -298,7 +292,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return test.contains(index);
 	}
 
-	@Deprecated(forRemoval = false, since = "Only call this if absolutely nessisary. You want to call getItem() so NBT can be saved")
 	public NonNullList<ItemStack> getItems() {
 		return items.get();
 	}
