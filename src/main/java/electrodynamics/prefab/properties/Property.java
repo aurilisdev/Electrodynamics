@@ -1,5 +1,7 @@
 package electrodynamics.prefab.properties;
 
+import java.util.function.Consumer;
+
 public class Property<T> {
     private PropertyManager manager;
     private final PropertyType type;
@@ -8,6 +10,11 @@ public class Property<T> {
     private String name;
     private T value;
     private T rawValue;
+
+    private Consumer<Property<T>> onChange = t -> {
+    };
+    private Consumer<Property<T>> onLoad = t -> {
+    };
 
     public Property(PropertyType type, String name, T defaultValue) {
         this.type = type;
@@ -51,6 +58,17 @@ public class Property<T> {
         return isDirty;
     }
 
+
+    public Property<T> onChange(Consumer<Property<T>> event) {
+        onChange = onChange.andThen(event);
+        return this;
+    }
+
+    public Property<T> onLoad(Consumer<Property<T>> event) {
+        onLoad = onLoad.andThen(event);
+        return this;
+    }
+
     @Deprecated(forRemoval = false)
     public void forceDirty() {
         isDirty = true;
@@ -72,6 +90,7 @@ public class Property<T> {
         verify(updated);
         value = (T) type.attemptCast(updated);
         rawValue = value;
+        onChange.accept(this);
         return this;
     }
 
@@ -94,6 +113,7 @@ public class Property<T> {
     public void load(Object val) {
         value = (T) type.attemptCast(val);
         rawValue = value;
+        onLoad.accept(this);
     }
 
     public boolean shouldSave() {
