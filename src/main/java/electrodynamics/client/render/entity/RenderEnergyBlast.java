@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 
@@ -19,7 +20,7 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 	}
 
 	@Override
-	public void render(EntityEnergyBlast entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int packedLightIn) {
+	public void render(EntityEnergyBlast entityIn, float entityYaw, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int packedLightIn) {
 		matrixStackIn.pushPose();
 		matrixStackIn.translate(entityIn.getX(), entityIn.getY(), entityIn.getX());
 		matrixStackIn.mulPoseMatrix(matrixStackIn.last().pose());
@@ -32,7 +33,7 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(EntityEnergyBlast entity) {
+	public @NotNull ResourceLocation getTextureLocation(@NotNull EntityEnergyBlast entity) {
 		return InventoryMenu.BLOCK_ATLAS;
 	}
 

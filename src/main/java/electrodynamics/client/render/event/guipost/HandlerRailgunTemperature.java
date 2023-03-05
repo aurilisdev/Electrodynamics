@@ -34,7 +34,7 @@ public class HandlerRailgunTemperature extends AbstractPostGuiOverlayHandler {
 
 		ItemRailgun railgun = (ItemRailgun) item.getItem();
 		double temperature = railgun.getTemperatureStored(item);
-		String correction = "";
+		String correction;
 
 		stack.pushPose();
 

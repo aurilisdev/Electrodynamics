@@ -51,6 +51,7 @@ public class ButtonGuidebook extends Button {
 
 	}
 
+	@Override
 	public void playDownSound(SoundManager pHandler) {
 		pHandler.play(SimpleSoundInstance.forUI(SoundEvents.BOOK_PAGE_TURN, 1.0F));
 

@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
+import org.jetbrains.annotations.NotNull;
 
 public class CapabilityLocationStorage implements ILocationStorage, ICapabilitySerializable<CompoundTag> {
 
@@ -23,7 +24,7 @@ public class CapabilityLocationStorage implements ILocationStorage, ICapabilityS
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
 		if (cap == ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY) {
 			return holder.cast();
 		}
@@ -53,7 +54,7 @@ public class CapabilityLocationStorage implements ILocationStorage, ICapabilityS
 		}
 	}
 
-	private List<Location> locations = new ArrayList<>();
+	private final List<Location> locations = new ArrayList<>();
 
 	@Override
 	public void setLocation(int index, double x, double y, double z) {

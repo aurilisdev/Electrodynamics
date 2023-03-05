@@ -9,6 +9,7 @@ import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class TilePipe extends GenericTilePipe {
 	public Property<Double> transmit = property(new Property<>(PropertyType.Double, "transmit", 0.0));
@@ -28,13 +29,13 @@ public class TilePipe extends GenericTilePipe {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
+	public void saveAdditional(@NotNull CompoundTag compound) {
 		compound.putInt("ord", getPipeType().ordinal());
 		super.saveAdditional(compound);
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
+	public void load(@NotNull CompoundTag compound) {
 		super.load(compound);
 		pipe = SubtypePipe.values()[compound.getInt("ord")];
 	}

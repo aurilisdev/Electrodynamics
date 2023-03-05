@@ -1,7 +1,7 @@
 package electrodynamics.api.capability.types.electrodynamic;
 
 public class ElectrodynamicStorage implements ICapabilityElectrodynamic {
-	private double max;
+	private final double max;
 	private double joules;
 
 	public ElectrodynamicStorage(double max, double val) {

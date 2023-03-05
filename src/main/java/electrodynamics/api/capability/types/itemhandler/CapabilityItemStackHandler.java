@@ -8,10 +8,11 @@ import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class CapabilityItemStackHandler implements ICapabilitySerializable<CompoundTag> {
 
-	private ItemStackHandler handler;
+	private final ItemStackHandler handler;
 	public final LazyOptional<IItemHandler> holder = LazyOptional.of(this::getHandler);
 
 	public CapabilityItemStackHandler(int slotCount) {
@@ -27,7 +28,7 @@ public class CapabilityItemStackHandler implements ICapabilitySerializable<Compo
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
 		if (cap == ForgeCapabilities.ITEM_HANDLER) {
 			return holder.cast();
 		}

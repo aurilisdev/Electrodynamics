@@ -28,16 +28,16 @@ public class KeyBinds {
 
 	@SubscribeEvent
 	public static void keyEVent(RegisterKeyMappingsEvent event) {
-		jetpackAscend = registerKey("jetpackascend", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_SPACE, event);
-		switchJetpackMode = registerKey("jetpackmode", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_M, event);
-		toggleNvgs = registerKey("togglenvgs", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_N, event);
-		switchServoLeggingsMode = registerKey("servoleggingsmode", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_L, event);
-		toggleServoLeggings = registerKey("toggleservoleggings", ELECTRODYNAMICS_CATEGORY, InputConstants.KEY_K, event);
+		jetpackAscend = registerKey("jetpackascend", InputConstants.KEY_SPACE, event);
+		switchJetpackMode = registerKey("jetpackmode", InputConstants.KEY_M, event);
+		toggleNvgs = registerKey("togglenvgs", InputConstants.KEY_N, event);
+		switchServoLeggingsMode = registerKey("servoleggingsmode", InputConstants.KEY_L, event);
+		toggleServoLeggings = registerKey("toggleservoleggings", InputConstants.KEY_K, event);
 
 	}
 
-	private static KeyMapping registerKey(String name, String category, int keyCode, RegisterKeyMappingsEvent event) {
-		final var key = new KeyMapping("key." + References.ID + "." + name, keyCode, category);
+	private static KeyMapping registerKey(String name, int keyCode, RegisterKeyMappingsEvent event) {
+		final var key = new KeyMapping("key." + References.ID + "." + name, keyCode, KeyBinds.ELECTRODYNAMICS_CATEGORY);
 		event.register(key);
 		return key;
 	}

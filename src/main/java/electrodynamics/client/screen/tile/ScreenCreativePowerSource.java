@@ -12,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import org.jetbrains.annotations.NotNull;
 
 public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePowerSource> {
 
@@ -81,7 +82,7 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 	}
 
 	@Override
-	public void resize(Minecraft minecraft, int width, int height) {
+	public void resize(@NotNull Minecraft minecraft, int width, int height) {
 		String volt = voltage.getValue();
 		String pow = power.getValue();
 		init(minecraft, width, height);

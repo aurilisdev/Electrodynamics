@@ -40,7 +40,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PacketDistributor.PacketTarget;
-import net.minecraftforge.network.simple.SimpleChannel;
 
 @Mod(References.ID)
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
@@ -70,7 +69,7 @@ public class Electrodynamics {
 		NetworkHandler.init();
 		CombustionFuelRegister.INSTANCE = new CombustionFuelRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
 		CoalGeneratorFuelRegister.INSTANCE = new CoalGeneratorFuelRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
-		MinecraftForge.EVENT_BUS.addListener(getGuidebookListener(NetworkHandler.CHANNEL));
+		MinecraftForge.EVENT_BUS.addListener(getGuidebookListener());
 		ElectrodynamicsTags.init();
 		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to 1.19.2
 	}
@@ -93,12 +92,12 @@ public class Electrodynamics {
 	}
 
 	// Don't really have a better place to put this for now
-	private static Consumer<OnDatapackSyncEvent> getGuidebookListener(final SimpleChannel channel) {
+	private static Consumer<OnDatapackSyncEvent> getGuidebookListener() {
 
 		return event -> {
 			ServerPlayer player = event.getPlayer();
 			PacketTarget target = player == null ? PacketDistributor.ALL.noArg() : PacketDistributor.PLAYER.with(() -> player);
-			channel.send(target, new PacketResetGuidebookPages());
+			NetworkHandler.CHANNEL.send(target, new PacketResetGuidebookPages());
 		};
 
 	}

@@ -16,6 +16,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderFermentationPlant extends AbstractTileRenderer<TileFermentationPlant> {
 
@@ -24,7 +25,7 @@ public class RenderFermentationPlant extends AbstractTileRenderer<TileFermentati
 	}
 
 	@Override
-	public void render(TileFermentationPlant tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(TileFermentationPlant tileEntityIn, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		matrixStackIn.pushPose();
 		ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(ComponentType.FluidHandler);
 

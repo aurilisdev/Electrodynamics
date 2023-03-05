@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderMineralGrinderTriple extends AbstractTileRenderer<TileMineralGrinder> {
 
@@ -18,7 +19,7 @@ public class RenderMineralGrinderTriple extends AbstractTileRenderer<TileMineral
 	}
 
 	@Override
-	public void render(TileMineralGrinder tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(TileMineralGrinder tileEntityIn, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		double progress = (tileEntityIn.clientRunningTicks + (tileEntityIn.getProcessor(0).operatingTicks.get() > 0 ? partialTicks : 0)) * 10;
 		BakedModel ibakedmodel = getModel(ClientRegister.MODEL_MINERALGRINDERWHEEL);
 		matrixStackIn.pushPose();

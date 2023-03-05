@@ -124,7 +124,7 @@ public class ClientRegister {
 
 	public static HashMap<ResourceLocation, TextureAtlasSprite> CACHED_TEXTUREATLASSPRITES = new HashMap<>();
 	// for registration purposes only!
-	private static List<ResourceLocation> customBlockTextures = new ArrayList<>();
+	private static final List<ResourceLocation> customBlockTextures = new ArrayList<>();
 
 	public static final ResourceLocation ON = new ResourceLocation("on");
 
@@ -310,7 +310,7 @@ public class ClientRegister {
 	@SubscribeEvent
 	public static void addCustomTextureAtlases(TextureStitchEvent.Pre event) {
 		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-			customBlockTextures.forEach(h -> event.addSprite(h));
+			customBlockTextures.forEach(event::addSprite);
 		}
 	}
 

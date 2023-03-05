@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.TextureSheetParticle;
 import net.minecraft.client.renderer.LevelRenderer;
@@ -13,6 +12,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.NotNull;
 
 @OnlyIn(Dist.CLIENT)
 public class GrindedParticle extends TextureSheetParticle {
@@ -36,7 +36,7 @@ public class GrindedParticle extends TextureSheetParticle {
 	}
 
 	@Override
-	public ParticleRenderType getRenderType() {
+	public @NotNull ParticleRenderType getRenderType() {
 		return ParticleRenderType.TERRAIN_SHEET;
 	}
 
@@ -93,10 +93,9 @@ public class GrindedParticle extends TextureSheetParticle {
 		return i == 0 ? j : i;
 	}
 
-	private Particle updateSprite(BlockPos pos) {
+	private void updateSprite(BlockPos pos) {
 		if (pos != null) {
 			setSprite(Minecraft.getInstance().getBlockRenderer().getBlockModelShaper().getTexture(sourceState, level, pos));
 		}
-		return this;
 	}
 }

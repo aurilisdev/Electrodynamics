@@ -1,7 +1,5 @@
 package electrodynamics.prefab.tile;
 
-import java.util.UUID;
-
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
@@ -10,11 +8,7 @@ import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyManager;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentName;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
+import electrodynamics.prefab.tile.components.type.*;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.Scheduler;
@@ -37,11 +31,14 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.UUID;
 
 public class GenericTile extends BlockEntity implements Nameable, IPropertyHolderTile {
-	private Component[] components = new Component[ComponentType.values().length];
-	private ComponentProcessor[] processors = new ComponentProcessor[5];
-	private PropertyManager propertyManager = new PropertyManager();
+	private final Component[] components = new Component[ComponentType.values().length];
+	private final ComponentProcessor[] processors = new ComponentProcessor[5];
+	private final PropertyManager propertyManager = new PropertyManager();
 
 	// use this for manually setting the change flag
 	public boolean isChanged = false;
@@ -97,7 +94,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		return this;
 	}
 
-	@Deprecated(forRemoval = false, since = "Try not using this method.")
+	@Deprecated(since = "Try not using this method.")
 	public GenericTile forceComponent(Component component) {
 		component.holder(this);
 		components[component.getType().ordinal()] = component;
@@ -105,7 +102,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
+	public void load(@NotNull CompoundTag compound) {
 		super.load(compound);
 		for (Property<?> prop : propertyManager.getProperties()) {
 			if (prop.shouldSave()) {
@@ -128,7 +125,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
+	public void saveAdditional(@NotNull CompoundTag compound) {
 		for (Property<?> prop : propertyManager.getProperties()) {
 			if (prop.shouldSave()) {
 				prop.getType().save(prop, compound);
@@ -165,7 +162,8 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 
 		if (hasComponent(ComponentType.PacketHandler)) {
-			Scheduler.schedule(1, () -> {
+			Scheduler.schedule(2, () -> {
+				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendProperties();
 				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
 			});
@@ -174,12 +172,13 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	}
 
 	@Override
-	public net.minecraft.network.chat.Component getName() {
+	public net.minecraft.network.chat.@NotNull Component getName() {
 		return hasComponent(ComponentType.Name) ? this.<ComponentName>getComponent(ComponentType.Name).getName() : net.minecraft.network.chat.Component.literal(References.ID + ".default.tile.name");
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
+	@NotNull
+	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
 		if (cap == ElectrodynamicsCapabilities.ELECTRODYNAMIC && components[ComponentType.Electrodynamic.ordinal()] != null) {
 			return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side);
 		}
@@ -210,7 +209,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	}
 
 	@Override
-	public CompoundTag getUpdateTag() {
+	public @NotNull CompoundTag getUpdateTag() {
 		CompoundTag tag = super.getUpdateTag();
 		saveAdditional(tag);
 		return tag;

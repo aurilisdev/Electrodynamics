@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 public class TileWire extends GenericTileWire {
 	public Property<Double> transmit = property(new Property<>(PropertyType.Double, "transmit", 0.0));
@@ -33,13 +34,13 @@ public class TileWire extends GenericTileWire {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
+	public void saveAdditional(@NotNull CompoundTag compound) {
 		compound.putInt("ord", getWireType().ordinal());
 		super.saveAdditional(compound);
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
+	public void load(@NotNull CompoundTag compound) {
 		super.load(compound);
 		wire = SubtypeWire.values()[compound.getInt("ord")];
 	}

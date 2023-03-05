@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 
@@ -29,7 +30,7 @@ public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 	}
 
 	@Override
-	public void render(TileSeismicRelay tile, float tick, PoseStack stack, MultiBufferSource source, int light, int overlay) {
+	public void render(TileSeismicRelay tile, float tick, @NotNull PoseStack stack, @NotNull MultiBufferSource source, int light, int overlay) {
 		if (tile.clientLocs.size() > 3) {
 			Minecraft minecraft = Minecraft.getInstance();
 			VertexConsumer sheetBuilder = source.getBuffer(RenderingUtils.beaconType());
@@ -42,11 +43,11 @@ public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 
 			boolean doesQuarryHaveRing = false;
 			BlockEntity entity = level().getBlockEntity(tile.getBlockPos().relative(facing.getClockWise()));
-			if (entity != null && entity instanceof TileQuarry quarry) {
+			if (entity instanceof TileQuarry quarry) {
 				doesQuarryHaveRing = quarry.hasRing.get();
 			}
 			entity = level().getBlockEntity(tile.getBlockPos().relative(facing.getCounterClockWise()));
-			if (entity != null && entity instanceof TileQuarry quarry) {
+			if (entity instanceof TileQuarry quarry) {
 				doesQuarryHaveRing = quarry.hasRing.get();
 			}
 

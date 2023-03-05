@@ -17,6 +17,7 @@ public class ButtonSpecificPage extends Button {
 		this.page = page;
 	}
 
+	@Override
 	public void render(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
 		if (isVisible()) {
 			this.isHovered = pMouseX >= this.x && pMouseY >= this.y && pMouseX < this.x + this.width && pMouseY < this.y + this.height;
@@ -24,6 +25,7 @@ public class ButtonSpecificPage extends Button {
 		}
 	}
 
+	@Override
 	public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
 		if (this.active && isVisible()) {
 			if (this.isValidClickButton(pButton)) {
@@ -36,25 +38,24 @@ public class ButtonSpecificPage extends Button {
 			}
 
 			return false;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
+	@Override
 	public boolean keyPressed(int pKeyCode, int pScanCode, int pModifiers) {
 		if (this.active && isVisible()) {
 			if (pKeyCode != 257 && pKeyCode != 32 && pKeyCode != 335) {
 				return false;
-			} else {
-				this.playDownSound(Minecraft.getInstance().getSoundManager());
-				this.onPress();
-				return true;
 			}
-		} else {
-			return false;
+			this.playDownSound(Minecraft.getInstance().getSoundManager());
+			this.onPress();
+			return true;
 		}
+		return false;
 	}
 
+	@Override
 	public boolean changeFocus(boolean pFocus) {
 		if (isVisible()) {
 			return super.changeFocus(pFocus);
@@ -62,14 +63,17 @@ public class ButtonSpecificPage extends Button {
 		return false;
 	}
 
+	@Override
 	protected boolean clicked(double pMouseX, double pMouseY) {
-		return this.active && isVisible() && pMouseX >= (double) this.x && pMouseY >= (double) this.y && pMouseX < (double) (this.x + this.width) && pMouseY < (double) (this.y + this.height);
+		return this.active && isVisible() && pMouseX >= this.x && pMouseY >= this.y && pMouseX < this.x + this.width && pMouseY < this.y + this.height;
 	}
 
+	@Override
 	public boolean isMouseOver(double pMouseX, double pMouseY) {
-		return this.active && isVisible() && pMouseX >= (double) this.x && pMouseY >= (double) this.y && pMouseX < (double) (this.x + this.width) && pMouseY < (double) (this.y + this.height);
+		return this.active && isVisible() && pMouseX >= this.x && pMouseY >= this.y && pMouseX < this.x + this.width && pMouseY < this.y + this.height;
 	}
 
+	@Override
 	public boolean isActive() {
 		return isVisible() && this.active;
 	}

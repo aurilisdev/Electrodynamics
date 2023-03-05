@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderMotorComplex extends AbstractTileRenderer<TileMotorComplex> {
 
@@ -23,7 +24,7 @@ public class RenderMotorComplex extends AbstractTileRenderer<TileMotorComplex> {
 	}
 
 	@Override
-	public void render(TileMotorComplex tile, float ticks, PoseStack stack, MultiBufferSource source, int light, int overlay) {
+	public void render(TileMotorComplex tile, float ticks, PoseStack stack, @NotNull MultiBufferSource source, int light, int overlay) {
 
 		stack.pushPose();
 
@@ -38,26 +39,26 @@ public class RenderMotorComplex extends AbstractTileRenderer<TileMotorComplex> {
 		BakedModel shaft = getModel(ClientRegister.MODEL_MOTORCOMPLEXROTOR);
 
 		switch (facing) {
-		case EAST:
-			stack.translate(0.5, 0.5, 0.5);
-			stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
-			break;
-		case WEST:
-			stack.translate(0.9375, 0.5, 0.5);
-			stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
-			break;
-		case SOUTH:
-			stack.translate(0.5, 0.5, 0.0625);
-			stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
-			stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
-			break;
-		case NORTH:
-			stack.translate(0.5, 0.5, 0.5);
-			stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
-			stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
-			break;
-		default:
-			break;
+			case EAST -> {
+				stack.translate(0.5, 0.5, 0.5);
+				stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
+			}
+			case WEST -> {
+				stack.translate(0.9375, 0.5, 0.5);
+				stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
+			}
+			case SOUTH -> {
+				stack.translate(0.5, 0.5, 0.0625);
+				stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
+				stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
+			}
+			case NORTH -> {
+				stack.translate(0.5, 0.5, 0.5);
+				stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
+				stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
+			}
+			default -> {
+			}
 		}
 
 		RenderingUtils.renderModel(shaft, tile, RenderType.solid(), stack, source, light, overlay);

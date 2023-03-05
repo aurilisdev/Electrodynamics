@@ -63,6 +63,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Loosely based on Quarry concept from Buildcraft with aspects of Extra Utilities's Ender Quarry
@@ -173,7 +174,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		cornerOnRight = property(new Property<>(PropertyType.Boolean, "corneronright", false));
 		isAreaCleared = property(new Property<>(PropertyType.Boolean, "areaClear", false));
 
-		corners = property(new Property<List<BlockPos>>(PropertyType.BlockPosList, "corners", List.of(OUT_OF_REACH, OUT_OF_REACH, OUT_OF_REACH, OUT_OF_REACH)));
+		corners = property(new Property<>(PropertyType.BlockPosList, "corners", List.of(OUT_OF_REACH, OUT_OF_REACH, OUT_OF_REACH, OUT_OF_REACH)));
 		miningPos = property(new Property<>(PropertyType.BlockPos, "miningpos", OUT_OF_REACH));
 		prevMiningPos = property(new Property<>(PropertyType.BlockPos, "prevminingpos", OUT_OF_REACH));
 
@@ -882,7 +883,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
+	public void saveAdditional(@NotNull CompoundTag compound) {
 		super.saveAdditional(compound);
 
 		CompoundTag data = new CompoundTag();
@@ -948,7 +949,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
+	public void load(@NotNull CompoundTag compound) {
 		super.load(compound);
 
 		CompoundTag data = compound.getCompound("quarrydata");

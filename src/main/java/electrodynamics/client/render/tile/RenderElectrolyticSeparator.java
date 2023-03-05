@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderElectrolyticSeparator extends AbstractTileRenderer<TileElectrolyticSeparator> {
 
@@ -29,7 +30,7 @@ public class RenderElectrolyticSeparator extends AbstractTileRenderer<TileElectr
 	}
 
 	@Override
-	public void render(TileElectrolyticSeparator entity, float ticks, PoseStack stack, MultiBufferSource source, int light, int overlay) {
+	public void render(TileElectrolyticSeparator entity, float ticks, @NotNull PoseStack stack, @NotNull MultiBufferSource source, int light, int overlay) {
 		FluidTank tank = entity.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks()[0];
 		if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
 			FluidStack fluid = tank.getFluid();

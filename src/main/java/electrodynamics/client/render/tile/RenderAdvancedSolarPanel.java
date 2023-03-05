@@ -11,6 +11,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
+import org.jetbrains.annotations.NotNull;
 
 public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedSolarPanel> {
 
@@ -19,7 +20,7 @@ public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedS
 	}
 
 	@Override
-	public void render(TileAdvancedSolarPanel tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(TileAdvancedSolarPanel tileEntityIn, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		matrixStackIn.translate(0.5, 2, 0.5);
 		matrixStackIn.mulPose(new Quaternion(new Vector3f(0, 1, 0), 90, true));
 		long time = tileEntityIn.getLevel().getLevelData().getDayTime();

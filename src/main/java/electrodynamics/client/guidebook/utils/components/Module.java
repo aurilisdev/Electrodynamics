@@ -31,10 +31,7 @@ public abstract class Module {
 	}
 
 	public boolean isCat(MutableComponent cat) {
-		if (getTitle().getString().equals(cat.getString())) {
-			return true;
-		}
-		return false;
+		return getTitle().getString().equals(cat.getString());
 	}
 
 	public abstract void addChapters();

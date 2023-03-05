@@ -9,7 +9,7 @@ import net.minecraft.network.chat.FormattedText;
 
 public class Page {
 
-	private int pageNumber = 0;
+	private final int pageNumber;
 	public List<TextWrapper> text = new ArrayList<>();
 	public List<ImageWrapper> images = new ArrayList<>();
 	public List<ItemWrapper> items = new ArrayList<>();
@@ -23,15 +23,15 @@ public class Page {
 		return pageNumber;
 	}
 
-	public static record TextWrapper(int x, int y, FormattedText characters, int color, boolean centered) {
+	public record TextWrapper(int x, int y, FormattedText characters, int color, boolean centered) {
 
 	}
 
-	public static record ImageWrapper(int x, int y, ImageWrapperObject image) {
+	public record ImageWrapper(int x, int y, ImageWrapperObject image) {
 
 	}
 
-	public static record ItemWrapper(int x, int y, ItemWrapperObject item) {
+	public record ItemWrapper(int x, int y, ItemWrapperObject item) {
 
 	}
 

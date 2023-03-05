@@ -6,10 +6,9 @@ import net.minecraft.resources.ResourceLocation;
 
 /**
  * A simple wrapper class that contains render data for an image on the
- * Guidebook screen
- * 
+ * Guidebook screen.
  * The class is capable of displaying images as well as text descriptors for
- * said image
+ * said image.
  * 
  * @author skip999
  *

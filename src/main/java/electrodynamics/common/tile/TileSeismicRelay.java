@@ -26,6 +26,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 //TODO: Make this use the property system...
 public class TileSeismicRelay extends GenericTile {
@@ -129,7 +130,7 @@ public class TileSeismicRelay extends GenericTile {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag compound) {
+	public void saveAdditional(@NotNull CompoundTag compound) {
 		super.saveAdditional(compound);
 		compound.putInt("size", markerLocs.size());
 		for (int i = 0; i < markerLocs.size(); i++) {
@@ -142,7 +143,7 @@ public class TileSeismicRelay extends GenericTile {
 	}
 
 	@Override
-	public void load(CompoundTag compound) {
+	public void load(@NotNull CompoundTag compound) {
 		super.load(compound);
 		int size = compound.getInt("size");
 		for (int i = 0; i < size; i++) {
