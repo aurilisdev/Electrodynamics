@@ -576,6 +576,15 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			return this;
 		}
 
+		/**
+		 * Specialized method for machines that use ComponentProcessors. It removed the need to individually set input, output, and biproduct slots.
+		 * 
+		 * @param procCount How many ComponentProcessors the machine has
+		 * @param inputsPerProc How many inputs are assigned to a processor
+		 * @param outputsPerProc How many outputs are assigned to a processor
+		 * @param biprodsPerProc how many biproducts are assigned to a processor
+		 * @return The mutated inventory builder
+		 */
 		public InventoryBuilder processors(int procCount, int inputsPerProc, int outputsPerProc, int biprodsPerProc) {
 
 			this.builderInputsPerProc = inputsPerProc;
@@ -589,7 +598,11 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			return this;
 		}
 
-		// create an inventory without any specified slot layout
+		/**
+		 * This method should not be used in tandem with other individual mutator methods and is designed for inventories that have no specified slot types
+		 * @param size The desired size of the inventory
+		 * @return The mutated builder
+		 */
 		public InventoryBuilder forceSize(int size) {
 			this.builderSize = size;
 			return this;
