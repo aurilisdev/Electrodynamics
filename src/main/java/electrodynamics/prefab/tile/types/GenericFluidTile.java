@@ -42,7 +42,7 @@ public class GenericFluidTile extends GenericTile {
 				for (FluidTank tank : handler.getInputTanks()) {
 					int amtTaken = tank.fill(containedFluid, FluidAction.SIMULATE);
 					FluidStack taken = new FluidStack(containedFluid.getFluid(), amtTaken);
-					if (amtTaken == 1000) {
+					if (isBucket && amtTaken == 1000 && (taken.getFluid().isSame(Fluids.WATER) || taken.getFluid().isSame(Fluids.LAVA))) {
 						CapabilityUtils.drain(stack, taken);
 						tank.fill(taken, FluidAction.EXECUTE);
 						if (!player.isCreative()) {
@@ -51,7 +51,9 @@ public class GenericFluidTile extends GenericTile {
 						world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 1, 1);
 						return InteractionResult.FAIL;
 					} else if (amtTaken > 0 && !isBucket) {
-						CapabilityUtils.drain(stack, taken);
+						if(!player.isCreative()) {
+							CapabilityUtils.drain(stack, taken);
+						}
 						tank.fill(taken, FluidAction.EXECUTE);
 						world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 1, 1);
 						return InteractionResult.FAIL;
