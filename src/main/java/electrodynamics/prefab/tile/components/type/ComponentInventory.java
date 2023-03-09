@@ -166,7 +166,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			inv = inv.relativeFaceSlots(Direction.WEST, i).relativeFaceSlots(Direction.DOWN, i);
 		}
 
-		for (int i = 0; i < biproducts; i++) {
+		for (int i : getBiproductSlots()) {
 			inv = inv.relativeFaceSlots(Direction.WEST, i).relativeFaceSlots(Direction.DOWN, i);
 		}
 
