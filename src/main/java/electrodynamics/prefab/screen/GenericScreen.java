@@ -166,5 +166,14 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 	public Font getFontRenderer() {
 		return font;
 	}
+	
+	public int getGuiWidth() {
+		return (width - imageWidth) / 2;
+	}
+	
+	public int getGuiHeight() {
+		return (height - imageHeight) / 2;
+	}
+
 
 }
