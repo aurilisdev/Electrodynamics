@@ -258,7 +258,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		for (int i = 0; i < numPages; i++) {
 			final ModulePage page = new ModulePage(nextPageNumber);
 
-			for (int j = 0; i < MODULES_PER_PAGE; j++) {
+			for (int j = 0; j < MODULES_PER_PAGE; j++) {
 
 				if (index >= GUIDEBOOK_MODULES.size()) {
 					break;
