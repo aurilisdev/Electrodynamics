@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import electrodynamics.client.guidebook.ScreenGuidebook;
 import electrodynamics.client.screen.tile.ScreenChemicalCrystallizer;
 import electrodynamics.client.screen.tile.ScreenChemicalMixer;
 import electrodynamics.client.screen.tile.ScreenDO2OProcessor;
@@ -47,6 +48,7 @@ import electrodynamics.compatibility.jei.recipecategories.item2item.specificmach
 import electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines.WireMillRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmachines.ElectricArcFurnaceRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmachines.ElectricFurnaceRecipeCategory;
+import electrodynamics.compatibility.jei.screenhandlers.ScreenHandlerGuidebook;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import mezz.jei.api.IModPlugin;
@@ -213,6 +215,8 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registry.addRecipeClickArea(ScreenMineralWasher.class, 97, 31, 22, 15, MineralWasherRecipeCategory.RECIPE_TYPE);
 		registry.addRecipeClickArea(ScreenChemicalCrystallizer.class, 41, 35, 22, 15, ChemicalCrystallizerRecipeCategory.RECIPE_TYPE);
 		registry.addRecipeClickArea(ScreenElectrolyticSeparator.class, 38, 30, 22, 15, ElectrolyticSeparatorRecipeCategory.RECIPE_TYPE);
+		
+		registry.addGenericGuiContainerHandler(ScreenGuidebook.class, new ScreenHandlerGuidebook());
 	}
 
 	private static void electrodynamicsInfoTabs(IRecipeRegistration registration) {

@@ -48,24 +48,24 @@ import java.util.List;
  */
 public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
-	private static final List<Module> GUIDEBOOK_MODULES = new ArrayList<>();
+	public static final List<Module> GUIDEBOOK_MODULES = new ArrayList<>();
 
 	// 0 is defined as the starting page
-	private static final int GUIDEBOOK_STARTING_PAGE = 0;
+	public static final int GUIDEBOOK_STARTING_PAGE = 0;
 
-	private static final int MODULES_PER_PAGE = 4;
-	private static final int CHAPTERS_PER_PAGE = 4;
+	public static final int MODULES_PER_PAGE = 4;
+	public static final int CHAPTERS_PER_PAGE = 4;
 
-	private static final int LEFT_TEXTURE_WIDTH = 171;
-	private static final int LEFT_TEXTURE_HEIGHT = 224;
+	public static final int LEFT_TEXTURE_WIDTH = 171;
+	public static final int LEFT_TEXTURE_HEIGHT = 224;
 
-	private static final int RIGHT_TEXTURE_WIDTH = 171;
-	private static final int RIGHT_TEXTURE_HEIGHT = 224;
+	public static final int RIGHT_TEXTURE_WIDTH = 171;
+	public static final int RIGHT_TEXTURE_HEIGHT = 224;
 
-	private static final int OLD_TEXTURE_WIDTH = 171;
+	public static final int OLD_TEXTURE_WIDTH = 171;
 
-	private static final int LEFT_X_SHIFT = -OLD_TEXTURE_WIDTH / 2 + 2;
-	private static final int RIGHT_X_SHIFT = OLD_TEXTURE_WIDTH / 2 + 3;
+	public static final int LEFT_X_SHIFT = -OLD_TEXTURE_WIDTH / 2 + 2;
+	public static final int RIGHT_X_SHIFT = OLD_TEXTURE_WIDTH / 2 + 3;
 
 	public static final int TEXT_START_Y = 40;
 	public static final int TEXT_END_Y = 180;
@@ -258,7 +258,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		for (int i = 0; i < numPages; i++) {
 			final ModulePage page = new ModulePage(nextPageNumber);
 
-			for (int j = 0; i < MODULES_PER_PAGE; j++) {
+			for (int j = 0; j < MODULES_PER_PAGE; j++) {
 
 				if (index >= GUIDEBOOK_MODULES.size()) {
 					break;
