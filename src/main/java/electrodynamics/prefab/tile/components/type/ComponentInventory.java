@@ -196,7 +196,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		return hasCapability(capability, side) ? (LazyOptional<T>) sideWrappers[side.ordinal()] : LazyOptional.empty();
+		return hasCapability(capability, side) ? (LazyOptional<T>) sideWrappers[side == null ? Direction.UP.ordinal() : side.ordinal()] : LazyOptional.empty();
 	}
 
 	@Override
