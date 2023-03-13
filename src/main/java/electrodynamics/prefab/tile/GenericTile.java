@@ -3,6 +3,7 @@ package electrodynamics.prefab.tile;
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.gas.GasTank;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyManager;
@@ -265,6 +266,10 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 
 	public void onFluidTankChange(FluidTank tank) {
 		// hook method for now
+	}
+	
+	public void onGasTankChange(GasTank tank) {
+		
 	}
 
 	// This is ceded to the tile to allow for greater control with the use function

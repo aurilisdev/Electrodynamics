@@ -3,22 +3,19 @@ package electrodynamics.common.item.gear.tools;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.datafixers.util.Pair;
-
-import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
+import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
+import electrodynamics.api.inventory.InventoryTickConsumer;
 import electrodynamics.prefab.utilities.CapabilityUtils;
-import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -35,6 +32,7 @@ import net.minecraft.world.phys.HitResult.Type;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -43,7 +41,7 @@ public class ItemCanister extends Item {
 	public static final int MAX_FLUID_CAPACITY = 5000;
 	public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 
-	public static List<ResourceLocation> TAG_NAMES = new ArrayList<>();
+	public static final List<InventoryTickConsumer> INVENTORY_TICK_CONSUMERS = new ArrayList<>();
 
 	public ItemCanister(Item.Properties itemProperty) {
 		super(itemProperty);
@@ -54,21 +52,25 @@ public class ItemCanister extends Item {
 		if (allowedIn(group)) {
 			items.add(new ItemStack(this));
 			if (!CapabilityUtils.isFluidItemNull()) {
-				for (Fluid liq : getWhitelistedFluids().getSecond()) {
+				for (Fluid liq : ForgeRegistries.FLUIDS.getValues()) {
 					ItemStack temp = new ItemStack(this);
-					// For init only; do not use anywhere else!
-					temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(liq, MAX_FLUID_CAPACITY)));
-					temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
+					temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((FluidHandlerItemStack.SwapEmpty) h).fill(new FluidStack(liq, MAX_FLUID_CAPACITY), FluidAction.EXECUTE));
 					items.add(temp);
 
 				}
 			}
 		}
 	}
+	
+	@Override
+	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
+		super.inventoryTick(stack, level, entity, slot, isSelected);
+		INVENTORY_TICK_CONSUMERS.forEach(consumer -> consumer.apply(stack, level, entity, slot, isSelected));
+	}
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_FLUID_CAPACITY, getWhitelistedFluids());
+		return new FluidHandlerItemStack.SwapEmpty(stack, stack, MAX_FLUID_CAPACITY);
 	}
 
 	@Override
@@ -124,22 +126,6 @@ public class ItemCanister extends Item {
 				}
 			}
 		}
-	}
-
-	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
-		List<Fluid> whitelisted = new ArrayList<>();
-		for (Fluid fluid : ForgeRegistries.FLUIDS.getValues()) {
-			if (fluid.getBucket() != null && fluid.getBucket().builtInRegistryHolder().key().location().equals(ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get().builtInRegistryHolder().key().location())) {
-				whitelisted.add(fluid);
-			}
-		}
-		whitelisted.add(Fluids.WATER);
-		whitelisted.add(Fluids.LAVA);
-		return Pair.of(TAG_NAMES, whitelisted);
-	}
-
-	public static void addTag(TagKey<Fluid> tag) {
-		TAG_NAMES.add(tag.location());
 	}
 
 }

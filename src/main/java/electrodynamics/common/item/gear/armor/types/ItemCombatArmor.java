@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import electrodynamics.api.References;
+import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelCombatArmor;
@@ -130,7 +130,6 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 					ItemStack full = new ItemStack(this);
 					Fluid fluid = ItemJetpack.staticGetWhitelistedFluids().getSecond().get(0);
 					full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemJetpack.MAX_CAPACITY)));
-					full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
 					CompoundTag tag = full.getOrCreateTag();
 					tag.putInt(NBTUtils.PLATES, 2);
 					items.add(full);
@@ -142,7 +141,6 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 					ItemStack full = new ItemStack(this);
 					Fluid fluid = ItemHydraulicBoots.staticGetWhitelistedFluids().getSecond().get(0);
 					full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemHydraulicBoots.MAX_CAPACITY)));
-					full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
 					items.add(full);
 				}
 				break;

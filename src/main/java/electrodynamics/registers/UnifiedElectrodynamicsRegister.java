@@ -22,6 +22,7 @@ public class UnifiedElectrodynamicsRegister {
 		ElectrodynamicsFeatures.PLACED_FEATURES.register(bus);
 		ElectrodynamicsMenuTypes.MENU_TYPES.register(bus);
 		ElectrodynamicsSounds.SOUNDS.register(bus);
+		ElectrodynamicsGases.GAS_REGISTER.register(bus);
 	}
 
 	static {

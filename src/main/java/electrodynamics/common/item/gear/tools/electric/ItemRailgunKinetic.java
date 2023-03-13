@@ -6,8 +6,8 @@ import java.util.List;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
+import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.sounds.SoundSource;
@@ -86,9 +86,9 @@ public class ItemRailgunKinetic extends ItemRailgun {
 	 */
 	public List<Ingredient> getRailgunAmmo() {
 		List<Ingredient> railgunAmmo = new ArrayList<>();
-		railgunAmmo.add(ItemUtils.getIngredientFromTag("forge", "rods/steel"));
-		railgunAmmo.add(ItemUtils.getIngredientFromTag("forge", "rods/stainlesssteel"));
-		railgunAmmo.add(ItemUtils.getIngredientFromTag("forge", "rods/hslasteel"));
+		railgunAmmo.add(Ingredient.of(ElectrodynamicsTags.Items.ROD_STEEL));
+		railgunAmmo.add(Ingredient.of(ElectrodynamicsTags.Items.ROD_STAINLESSSTEEL));
+		railgunAmmo.add(Ingredient.of(ElectrodynamicsTags.Items.ROD_HSLASTEEL));
 		return railgunAmmo;
 	}
 }

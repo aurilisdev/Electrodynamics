@@ -175,10 +175,8 @@ public class PropertyFluidTank extends FluidTank {
 	@Override
 	protected void onContentsChanged() {
 		fluidStackProperty.forceDirty();
-		if (fluidStackProperty != null) {
-			if (holder != null) {
-				holder.onFluidTankChange(this);
-			}
+		if (holder != null) {
+			holder.onFluidTankChange(this);
 		}
 	}
 	

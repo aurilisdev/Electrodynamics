@@ -1,4 +1,4 @@
-package electrodynamics.api.fluid;
+package electrodynamics.api.capability.types.fluid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapEmpty {
 
-	private boolean hasInitHappened = false;
 	private final List<ResourceLocation> tags;
 	private final List<Fluid> fluids;
 
@@ -73,14 +72,7 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 		return 0;
 	}
 
-	/**
-	 * DO NOT CALL THIS
-	 *
-	 */
 	public void fillInit(FluidStack resource) {
-		if (hasInitHappened) {
-			throw new UnsupportedOperationException("Do not call this method!");
-		}
 		setFluid(resource);
 	}
 
@@ -103,18 +95,6 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 		valid.addAll(unique);
 
 		return valid;
-	}
-
-	/**
-	 * Can only set to true smartass
-	 *
-	 */
-	public void hasInitHappened(boolean initHappened) {
-		if (initHappened) {
-			hasInitHappened = true;
-		} else {
-			throw new UnsupportedOperationException("What did I tell you, don't call that method");
-		}
 	}
 
 }
