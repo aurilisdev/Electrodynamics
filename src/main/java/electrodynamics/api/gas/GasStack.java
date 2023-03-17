@@ -160,6 +160,10 @@ public class GasStack {
 		return pressure == VACUUM;
 	}
 	
+	public boolean isCondensed() {
+		return temperature <= gas.getCondensationTemp();
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof GasStack other) {

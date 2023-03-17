@@ -88,23 +88,25 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 	protected boolean canProcess(ComponentProcessor component) {
 		boolean canProcess = checkConditions(component);
 
-		if (BlockEntityUtils.isLit(this) ^ canProcess) {
-			BlockEntityUtils.updateLit(this, canProcess);
+		if (BlockEntityUtils.isLit(this) ^ canProcess || isProcessorActive()) {
+			BlockEntityUtils.updateLit(this, canProcess || isProcessorActive());
 		}
 
 		return canProcess;
 	}
 
 	private boolean checkConditions(ComponentProcessor component) {
-		if (this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() < component.getUsage() * component.operatingSpeed.get()) {
+		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		if (electro.getJoulesStored() < component.getUsage() * component.operatingSpeed.get()) {
 			return false;
 		}
+		electro.maxJoules(component.getUsage() * component.operatingSpeed.get() * 10 * component.totalProcessors);
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		ItemStack input = inv.getInputsForProcessor(component.getProcessorNumber()).get(0);
 		if (input.isEmpty()) {
 			return false;
 		}
-
+		
 		if (cachedRecipes == null) {
 			cachedRecipes = level.getRecipeManager().getAllRecipesFor(RecipeType.BLASTING);
 		}

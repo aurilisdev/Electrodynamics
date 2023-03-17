@@ -1,6 +1,7 @@
 package electrodynamics.prefab.tile.components.type;
 
 import java.util.HashSet;
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
@@ -12,6 +13,7 @@ import electrodynamics.api.capability.types.gas.IGasHandler;
 import electrodynamics.api.gas.Gas;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
+import electrodynamics.api.gas.GasTank;
 import electrodynamics.api.gas.PropertyGasTank;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -26,8 +28,8 @@ import net.minecraftforge.common.util.LazyOptional;
 /**
  * Extension of the PropertyGasTank making it usable as a ComponentGasHandler
  * 
- * This ComponentGasHandler has only one tank with programmable inputs and outputs
- * where as ComponentGasHandlerMulti has distinct input and output tanks
+ * This ComponentGasHandler has only one tank with programmable inputs and
+ * outputs where as ComponentGasHandlerMulti has distinct input and output tanks
  * 
  * @author skip999
  *
@@ -82,6 +84,11 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 		return (ComponentGasHandlerSimple) super.setValidator(predicate);
 	}
 
+	@Override
+	public ComponentGasHandlerSimple setOnGasCondensed(BiConsumer<GasTank, GenericTile> onGasCondensed) {
+		return (ComponentGasHandlerSimple) super.setOnGasCondensed(onGasCondensed);
+	}
+
 	public ComponentGasHandlerSimple setValidFluids(Gas... fluids) {
 		validGases = fluids;
 		return this;
@@ -106,7 +113,7 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 	public ComponentType getType() {
 		return ComponentType.GasHandler;
 	}
-	
+
 	@Override
 	public void holder(GenericTile holder) {
 		this.holder = holder;
@@ -116,7 +123,7 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 	public boolean hasCapability(Capability<?> capability, Direction side) {
 		return capability == ElectrodynamicsCapabilities.GAS_HANDLER;
 	}
-	
+
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
 		if (!hasCapability(capability, side)) {
@@ -152,7 +159,7 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 			isGasValid = gasStack -> validatorGases.contains(gasStack.getGas());
 		}
 	}
-	
+
 	private boolean hasInputDir(Direction dir) {
 		if (inputDirections == null) {
 			return false;
@@ -160,7 +167,7 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 		Direction facing = holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 		return ArrayUtils.contains(inputDirections, BlockEntityUtils.getRelativeSide(facing, dir));
 	}
-	
+
 	private boolean hasOutputDir(Direction dir) {
 		if (outputDirections == null) {
 			return false;
@@ -168,18 +175,18 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 		Direction facing = holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 		return ArrayUtils.contains(outputDirections, BlockEntityUtils.getRelativeSide(facing, dir));
 	}
-	
+
 	private class InputTank extends ComponentGasHandlerSimple {
 
 		public InputTank(ComponentGasHandlerSimple property) {
 			super(property);
 		}
-		
+
 		@Override
 		public GasStack drain(double amount, GasAction action) {
 			return GasStack.EMPTY;
 		}
-		
+
 		@Override
 		public GasStack drain(GasStack resource, GasAction action) {
 			return GasStack.EMPTY;
@@ -192,7 +199,7 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 		public OutputTank(ComponentGasHandlerSimple property) {
 			super(property);
 		}
-		
+
 		@Override
 		public double fill(GasStack resource, GasAction action) {
 			return 0;

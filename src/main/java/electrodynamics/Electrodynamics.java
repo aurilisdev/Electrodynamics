@@ -40,6 +40,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PacketDistributor.PacketTarget;
+import net.minecraftforge.registries.NewRegistryEvent;
+import net.minecraftforge.registries.RegistryBuilder;
 
 @Mod(References.ID)
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
@@ -99,6 +101,11 @@ public class Electrodynamics {
 			PacketTarget target = player == null ? PacketDistributor.ALL.noArg() : PacketDistributor.PLAYER.with(() -> player);
 			NetworkHandler.CHANNEL.send(target, new PacketResetGuidebookPages());
 		};
+
+	}
+	
+	@SubscribeEvent
+	public static void registerNewRegistries(NewRegistryEvent event) {
 
 	}
 }

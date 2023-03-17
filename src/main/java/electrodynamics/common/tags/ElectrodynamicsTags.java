@@ -1,5 +1,6 @@
 package electrodynamics.common.tags;
 
+import electrodynamics.api.gas.Gas;
 import electrodynamics.common.fluid.types.gas.FluidHydrogen;
 import electrodynamics.common.fluid.types.gas.FluidOxygen;
 import electrodynamics.common.fluid.types.liquid.FluidClay;
@@ -9,6 +10,7 @@ import electrodynamics.common.fluid.types.liquid.FluidHydrogenFluoride;
 import electrodynamics.common.fluid.types.liquid.FluidPolyethylene;
 import electrodynamics.common.fluid.types.liquid.FluidSulfate;
 import electrodynamics.common.fluid.types.liquid.FluidSulfuricAcid;
+import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.FluidTags;
@@ -261,6 +263,21 @@ public class ElectrodynamicsTags {
 			return FluidTags.create(new ResourceLocation("forge", name));
 		}
 
+	}
+	
+	public static class Gases {
+		
+		private static void init() {
+			
+		}
+		
+		private static TagKey<Gas> forgeTag(String name) {
+			return create(new ResourceLocation("forge", name));
+		}
+		
+		public static TagKey<Gas> create(ResourceLocation loc) {
+			return TagKey.create(ElectrodynamicsGases.GAS_REGISTRY_KEY, loc);
+		}
 	}
 
 }

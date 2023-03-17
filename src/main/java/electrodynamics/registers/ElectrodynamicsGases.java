@@ -11,8 +11,10 @@ import net.minecraftforge.registries.RegistryManager;
 
 public class ElectrodynamicsGases {
 
-	private static final ResourceKey<Registry<Gas>> GAS_REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(References.ID, "gases"));
+	public static final ResourceKey<Registry<Gas>> GAS_REGISTRY_KEY = ResourceKey.createRegistryKey(new ResourceLocation(References.ID, "gases"));
 	public static final IForgeRegistry<Gas> GASES = RegistryManager.ACTIVE.getRegistry(GAS_REGISTRY_KEY);
-	public static final DeferredRegister<Gas> GAS_REGISTER = DeferredRegister.create(GASES, References.ID);
+	public static final DeferredRegister<Gas> GAS_REGISTER = DeferredRegister.create(GAS_REGISTRY_KEY, References.ID);
+	
+	
 
 }

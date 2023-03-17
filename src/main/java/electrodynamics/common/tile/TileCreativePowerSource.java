@@ -55,7 +55,7 @@ public class TileCreativePowerSource extends GenericTile {
 			}
 		}
 		electro.voltage(power.get());
-		TransferPack output = TransferPack.joulesVoltage(power.get() * POWER_MULTIPLIER, voltage.get());
+		TransferPack output = TransferPack.joulesVoltage((double) (power.get() * POWER_MULTIPLIER) / 20.0, voltage.get());
 		for (int i = 0; i < outputs.size(); i++) {
 			CachedTileOutput cache = outputs.get(i);
 			Direction dir = Direction.values()[i];

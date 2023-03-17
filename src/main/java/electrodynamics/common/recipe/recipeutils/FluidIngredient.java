@@ -76,12 +76,12 @@ public class FluidIngredient extends Ingredient {
 	}
 
 	/**
-	 * Specialized constructor for pre-server load JSON loading
+	 * Constructor is designed to defer loading tag value until ingredient is referenced
 	 * 
 	 * @param resource
 	 * @param amount
 	 */
-	private FluidIngredient(ResourceLocation resource, int amount) {
+	public FluidIngredient(ResourceLocation resource, int amount) {
 		this(FluidTags.create(resource), amount);
 	}
 

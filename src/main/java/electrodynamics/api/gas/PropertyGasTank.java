@@ -1,5 +1,6 @@
 package electrodynamics.api.gas;
 
+import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import electrodynamics.common.packet.NetworkHandler;
@@ -13,7 +14,8 @@ import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.block.Blocks;
 
 /**
- * An extension of the GasTank class incorporating the Electrodynamics property system
+ * An extension of the GasTank class incorporating the Electrodynamics property
+ * system
  * 
  * @author skip999
  *
@@ -26,6 +28,9 @@ public class PropertyGasTank extends GasTank {
 	protected Property<Double> capacityProperty;
 	protected Property<Double> maxTemperatureProperty;
 	protected Property<Double> maxPressureProperty;
+
+	protected BiConsumer<GasTank, GenericTile> onGasCondensed = (gas, tile) -> {
+	};
 
 	public PropertyGasTank(GenericTile holder, String key, double capacity, double maxTemperature, double maxPressure) {
 		super(capacity, maxTemperature, maxPressure);
@@ -60,6 +65,16 @@ public class PropertyGasTank extends GasTank {
 		maxTemperatureProperty = other.maxTemperatureProperty;
 		maxPressureProperty = other.maxPressureProperty;
 
+	}
+
+	@Override
+	public PropertyGasTank setValidator(Predicate<GasStack> predicate) {
+		return (PropertyGasTank) super.setValidator(predicate);
+	}
+	
+	public PropertyGasTank setOnGasCondensed(BiConsumer<GasTank, GenericTile> onGasCondensed) {
+		this.onGasCondensed = onGasCondensed;
+		return this;
 	}
 
 	@Override
@@ -112,7 +127,7 @@ public class PropertyGasTank extends GasTank {
 
 	@Override
 	public void onOverheat() {
-		if(holder != null) {
+		if (holder != null) {
 			Level world = holder.getLevel();
 			BlockPos pos = holder.getBlockPos();
 			world.setBlockAndUpdate(pos, Blocks.LAVA.defaultBlockState());
@@ -121,14 +136,21 @@ public class PropertyGasTank extends GasTank {
 
 	@Override
 	public void onOverpressure() {
-		if(holder != null) {
+		if (holder != null) {
 			Level world = holder.getLevel();
 			BlockPos pos = holder.getBlockPos();
 			world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			world.explode(null, pos.getX(), pos.getY(), pos.getZ(), 2.0F, BlockInteraction.DESTROY);
 		}
 	}
-	
+
+	@Override
+	public void onGasCondensed() {
+		if (holder != null) {
+			onGasCondensed.accept(this, holder);
+		}
+	}
+
 	public PropertyGasTank[] asArray() {
 		return new PropertyGasTank[] { this };
 	}

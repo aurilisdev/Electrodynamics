@@ -33,7 +33,6 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemCanister extends Item {
@@ -54,7 +53,7 @@ public class ItemCanister extends Item {
 			if (!CapabilityUtils.isFluidItemNull()) {
 				for (Fluid liq : ForgeRegistries.FLUIDS.getValues()) {
 					ItemStack temp = new ItemStack(this);
-					temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((FluidHandlerItemStack.SwapEmpty) h).fill(new FluidStack(liq, MAX_FLUID_CAPACITY), FluidAction.EXECUTE));
+					temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fill(new FluidStack(liq, MAX_FLUID_CAPACITY), FluidAction.EXECUTE));
 					items.add(temp);
 
 				}
@@ -70,15 +69,15 @@ public class ItemCanister extends Item {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new FluidHandlerItemStack.SwapEmpty(stack, stack, MAX_FLUID_CAPACITY);
+		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_FLUID_CAPACITY, null);
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		if (!CapabilityUtils.isFluidItemNull()) {
 			stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> {
-				if (!((FluidHandlerItemStack.SwapEmpty) h).getFluid().getFluid().isSame(EMPTY_FLUID)) {
-					FluidHandlerItemStack.SwapEmpty cap = (FluidHandlerItemStack.SwapEmpty) h;
+				if (!((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID)) {
+					RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
 					tooltip.add(Component.literal(cap.getFluidInTank(0).getAmount() + " / " + MAX_FLUID_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
 					tooltip.add(cap.getFluid().getDisplayName().copy().withStyle(ChatFormatting.DARK_GRAY));
 				}

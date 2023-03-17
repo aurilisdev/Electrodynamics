@@ -3,6 +3,8 @@ package electrodynamics.api.capability.types.fluid;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.mojang.datafixers.util.Pair;
 
 import net.minecraft.resources.ResourceLocation;
@@ -16,21 +18,31 @@ import org.jetbrains.annotations.NotNull;
 
 public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapEmpty {
 
+	@Nullable
 	private final List<ResourceLocation> tags;
+	@Nullable
 	private final List<Fluid> fluids;
 
-	public RestrictedFluidHandlerItemStack(ItemStack container, ItemStack emptyContainer, int capacity, Pair<List<ResourceLocation>, List<Fluid>> whitelistedFluids) {
+	public RestrictedFluidHandlerItemStack(ItemStack container, ItemStack emptyContainer, int capacity, @Nullable Pair<List<ResourceLocation>, List<Fluid>> whitelistedFluids) {
 		super(container, emptyContainer, capacity);
-		tags = new ArrayList<>();
-		tags.addAll(whitelistedFluids.getFirst());
+		if(whitelistedFluids != null) {
+			tags = new ArrayList<>();
+			tags.addAll(whitelistedFluids.getFirst());
 
-		fluids = new ArrayList<>();
-		fluids.addAll(whitelistedFluids.getSecond());
+			fluids = new ArrayList<>();
+			fluids.addAll(whitelistedFluids.getSecond());
 
+		} else {
+			tags = null;
+			fluids = null;
+		}
 	}
 
 	@Override
 	public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
+		if(tags == null && fluids == null) {
+			return super.isFluidValid(tank, stack);
+		}
 		// check tags first
 		for (ResourceLocation loc : tags) {
 			for (Fluid fluid : ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(loc)).stream().toList()) {

@@ -87,7 +87,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 						//
 						.addItemTagInput(raw.tag, 1)
 						//
-						.addItemBiproduct(new ProbableItem(Items.COBBLESTONE, 1, 0.1))
+						.addItemBiproduct(new ProbableItem(new ItemStack(Items.COBBLESTONE), 0.1))
 						//
 						.complete(consumer);
 			}
@@ -97,7 +97,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(Tags.Items.RAW_MATERIALS_COPPER, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COBBLESTONE, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COBBLESTONE), 0.1))
 				//
 				.complete(consumer);
 
@@ -105,7 +105,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(Tags.Items.RAW_MATERIALS_IRON, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COBBLESTONE, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COBBLESTONE), 0.1))
 				//
 				.complete(consumer);
 
@@ -113,7 +113,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(Tags.Items.RAW_MATERIALS_GOLD, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COBBLESTONE, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COBBLESTONE), 0.1))
 				//
 				.complete(consumer);
 
@@ -121,7 +121,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ItemTags.COPPER_ORES, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COBBLESTONE, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COBBLESTONE), 0.1))
 				//
 				.complete(consumer);
 
@@ -129,7 +129,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ItemTags.GOLD_ORES, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COBBLESTONE, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COBBLESTONE), 0.1))
 				//
 				.complete(consumer);
 
@@ -137,7 +137,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ItemTags.IRON_ORES, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COBBLESTONE, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COBBLESTONE), 0.1))
 				//
 				.complete(consumer);
 
@@ -145,7 +145,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.ORE_LEAD, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COBBLESTONE, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COBBLESTONE), 0.1))
 				//
 				.complete(consumer);
 
@@ -153,7 +153,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.ORE_MOLYBDENUM, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COBBLESTONE, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COBBLESTONE), 0.1))
 				//
 				.complete(consumer);
 
@@ -161,7 +161,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(Tags.Items.ORES_NETHERITE_SCRAP, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COBBLESTONE, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COBBLESTONE), 0.1))
 				//
 				.complete(consumer);
 
@@ -169,7 +169,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.ORE_SILVER, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COBBLESTONE, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COBBLESTONE), 0.1))
 				//
 				.complete(consumer);
 
@@ -177,7 +177,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.ORE_TIN, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COBBLESTONE, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COBBLESTONE), 0.1))
 				//
 				.complete(consumer);
 
@@ -185,7 +185,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.ORE_VANADIUM, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COBBLESTONE, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COBBLESTONE), 0.1))
 				//
 				.complete(consumer);
 
@@ -193,7 +193,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ItemTags.COAL_ORES, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.DIAMOND, 1, 0.05))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.DIAMOND), 0.05))
 				//
 				.complete(consumer);
 
@@ -201,7 +201,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ItemTags.DIAMOND_ORES, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COAL, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COAL), 0.1))
 				//
 				.complete(consumer);
 
@@ -209,7 +209,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ItemTags.EMERALD_ORES, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.DIAMOND, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.DIAMOND), 0.1))
 				//
 				.complete(consumer);
 
@@ -217,7 +217,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ItemTags.LAPIS_ORES, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.DIAMOND, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.DIAMOND), 0.1))
 				//
 				.complete(consumer);
 
@@ -225,7 +225,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(Tags.Items.ORES_QUARTZ, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COAL, 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COAL), 0.1))
 				//
 				.complete(consumer);
 
@@ -251,7 +251,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ItemTags.REDSTONE_ORES, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.DIAMOND, 1, 0.05))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.DIAMOND), 0.05))
 				//
 				.complete(consumer);
 
@@ -259,7 +259,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.ORE_SULFUR, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COAL, 1, 0.05))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COAL), 0.05))
 				//
 				.complete(consumer);
 
@@ -267,7 +267,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(Tags.Items.STONE, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.GRAVEL, 1, 0.4))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.GRAVEL), 0.4))
 				//
 				.complete(consumer);
 
@@ -275,7 +275,7 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(Tags.Items.COBBLESTONE, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.SAND, 1, 0.4))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.SAND), 0.4))
 				//
 				.complete(consumer);
 

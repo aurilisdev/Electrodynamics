@@ -21,16 +21,18 @@ import net.minecraft.world.item.Items;
  */
 public class Gas {
 	
-	public static final Gas EMPTY = new Gas(() -> Items.AIR, null, TextUtils.gas("empty"));
+	public static final Gas EMPTY = new Gas(() -> Items.AIR, null, TextUtils.gas("empty"), 0);
 	
 	private final Supplier<Item> container;
 	private final TagKey<Gas> tag;
 	private final Component description;
+	private final double condensationTemp;
 	
-	public Gas(Supplier<Item> container, @Nullable TagKey<Gas> tag, Component description) {
+	public Gas(Supplier<Item> container, @Nullable TagKey<Gas> tag, Component description, double condensationTemp) {
 		this.container = container;
 		this.tag = tag;
 		this.description = description;
+		this.condensationTemp = condensationTemp;
 	}
 	
 	public Component getDescription() {
@@ -47,6 +49,10 @@ public class Gas {
 	
 	public boolean isEmpty() {
 		return this == EMPTY;
+	}
+	
+	public double getCondensationTemp() {
+		return condensationTemp;
 	}
 	
 	@Override

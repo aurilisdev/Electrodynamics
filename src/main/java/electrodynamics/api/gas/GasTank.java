@@ -17,7 +17,7 @@ public class GasTank implements IGasTank, IGasHandler {
 	private double maxPressure;
 	@Nonnull
 	private GasStack gas = GasStack.EMPTY;
-
+	
 	public GasTank(double capacity, double maxTemperature, double maxPressure) {
 		this(capacity, maxTemperature, maxPressure, gas -> true);
 	}
@@ -112,6 +112,12 @@ public class GasTank implements IGasTank, IGasHandler {
 					onOverpressure();
 
 				}
+				
+				if(resource.isCondensed()) {
+					
+					onGasCondensed();
+					
+				}
 
 			}
 
@@ -151,6 +157,12 @@ public class GasTank implements IGasTank, IGasHandler {
 
 					onOverpressure();
 
+				}
+				
+				if(getGas().isCondensed()) {
+					
+					onGasCondensed();
+					
 				}
 
 			}
@@ -279,6 +291,10 @@ public class GasTank implements IGasTank, IGasHandler {
 
 	public void onOverpressure() {
 
+	}
+	
+	public void onGasCondensed() {
+		
 	}
 
 	public boolean isEmpty() {

@@ -50,7 +50,7 @@ public class ComponentProcessor implements Component {
 	private Consumer<ComponentProcessor> process;
 	private Consumer<ComponentProcessor> failed;
 	private int processorNumber = 0;
-	private int totalProcessors = 1;
+	public int totalProcessors = 1;
 
 	private List<ElectrodynamicsRecipe> cachedRecipes = new ArrayList<>();
 	private ElectrodynamicsRecipe recipe;

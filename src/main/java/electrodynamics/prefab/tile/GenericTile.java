@@ -12,7 +12,6 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.*;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ItemUtils;
-import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -163,11 +162,11 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 
 		if (hasComponent(ComponentType.PacketHandler)) {
-			Scheduler.schedule(2, () -> {
-				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendProperties();
-				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
-				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-			});
+			//we shouldn't need to schedule this
+			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendProperties();
+			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
+			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+		
 		}
 
 	}

@@ -5,10 +5,11 @@ import java.util.List;
 
 import com.mojang.datafixers.util.Pair;
 
-import electrodynamics.common.recipe.recipeutils.AbstractFluidRecipe;
+import electrodynamics.common.recipe.recipeutils.AbstractMaterialRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
+import electrodynamics.common.recipe.recipeutils.ProbableGas;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
@@ -18,32 +19,14 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.fluids.FluidStack;
 
-public abstract class Item2FluidRecipe extends AbstractFluidRecipe {
+public abstract class Item2FluidRecipe extends AbstractMaterialRecipe {
 
 	private CountableIngredient[] ITEM_INPUTS;
 	private FluidStack FLUID_OUTPUT;
 
-	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidStack fluidOutput, double experience, int ticks, double usagePerTick) {
-		super(recipeID, experience, ticks, usagePerTick);
+	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidStack fluidOutput, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, ProbableGas[] gasBiproducts) {
+		super(recipeID, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
 		ITEM_INPUTS = itemInputs;
-		FLUID_OUTPUT = fluidOutput;
-	}
-
-	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, FluidStack fluidOutput, ProbableItem[] itemBiproducts, double experience, int ticks, double usagePerTick) {
-		super(recipeID, itemBiproducts, experience, ticks, usagePerTick);
-		ITEM_INPUTS = inputs;
-		FLUID_OUTPUT = fluidOutput;
-	}
-
-	public Item2FluidRecipe(CountableIngredient[] inputs, FluidStack fluidOutput, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience, int ticks, double usagePerTick) {
-		super(fluidBiproducts, recipeID, experience, ticks, usagePerTick);
-		ITEM_INPUTS = inputs;
-		FLUID_OUTPUT = fluidOutput;
-	}
-
-	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, FluidStack fluidOutput, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience, int ticks, double usagePerTick) {
-		super(recipeID, itemBiproducts, fluidBiproducts, experience, ticks, usagePerTick);
-		ITEM_INPUTS = inputs;
 		FLUID_OUTPUT = fluidOutput;
 	}
 

@@ -37,7 +37,7 @@ public class ElectrodynamicsLatheRecipes extends AbstractRecipeGenerator {
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_HSLASTEEL, 2)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeNugget.hslasteel), 2, 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeNugget.hslasteel), 2), 1))
 				//
 				.complete(consumer);
 
@@ -45,7 +45,7 @@ public class ElectrodynamicsLatheRecipes extends AbstractRecipeGenerator {
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_STAINLESSSTEEL, 2)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeNugget.stainlesssteel), 2, 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeNugget.stainlesssteel), 2), 1))
 				//
 				.complete(consumer);
 
@@ -53,7 +53,7 @@ public class ElectrodynamicsLatheRecipes extends AbstractRecipeGenerator {
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_STEEL, 2)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeNugget.steel), 2, 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeNugget.steel), 2), 1))
 				//
 				.complete(consumer);
 
@@ -61,7 +61,7 @@ public class ElectrodynamicsLatheRecipes extends AbstractRecipeGenerator {
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_TITANIUMCARBIDE, 2)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeNugget.titaniumcarbide), 2, 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeNugget.titaniumcarbide), 2), 1))
 				//
 				.complete(consumer);
 
