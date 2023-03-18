@@ -286,11 +286,11 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
 			if (amt > gaugeCap) {
 
-				gaugeCap = gaugeCap / IComponentFluidHandler.TANK_MULTIPLER + IComponentFluidHandler.TANK_MULTIPLER;
+				gaugeCap = (amt / IComponentFluidHandler.TANK_MULTIPLER) * IComponentFluidHandler.TANK_MULTIPLER + IComponentFluidHandler.TANK_MULTIPLER;
 
 			}
 
-			int height = (int) Math.ceil(amt / (float) gaugeCap * wrapper.getFluidTextHeight());
+			int height = (int) Math.ceil((float) amt / (float) gaugeCap * wrapper.getFluidTextHeight());
 
 			builder.addSlot(role, wrapper.getFluidXPos(), wrapper.getFluidYPos() - height).setFluidRenderer(stack.getAmount(), false, wrapper.getFluidTextWidth(), height).addIngredients(ForgeTypes.FLUID_STACK, inputs.get(i));
 		}
@@ -310,11 +310,11 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 
 			if (amt > gaugeCap) {
 
-				gaugeCap = gaugeCap / IComponentFluidHandler.TANK_MULTIPLER + IComponentFluidHandler.TANK_MULTIPLER;
+				gaugeCap = (amt / IComponentFluidHandler.TANK_MULTIPLER) * IComponentFluidHandler.TANK_MULTIPLER + IComponentFluidHandler.TANK_MULTIPLER;
 
 			}
 
-			int height = (int) Math.ceil(amt / (float) gaugeCap * wrapper.getFluidTextHeight());
+			int height = (int) Math.ceil((float) amt / (float) gaugeCap * wrapper.getFluidTextHeight());
 			builder.addSlot(role, wrapper.getFluidXPos(), wrapper.getFluidYPos() - height).setFluidRenderer(stack.getAmount(), false, wrapper.getFluidTextWidth(), height).addIngredient(ForgeTypes.FLUID_STACK, stack);
 		}
 	}

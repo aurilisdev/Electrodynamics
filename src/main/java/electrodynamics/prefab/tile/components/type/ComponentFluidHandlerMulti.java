@@ -286,7 +286,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 			outputValidatorFluids.addAll(outputFluidHohlder);
 			if(maxFluidInput > 0) {
 				
-				maxFluidInput = maxFluidInput / TANK_MULTIPLER + TANK_MULTIPLER;
+				maxFluidInput = (maxFluidInput / TANK_MULTIPLER) * TANK_MULTIPLER + TANK_MULTIPLER;
 				
 				for(PropertyFluidTank tank : inputTanks) {
 					if(tank.getCapacity() < maxFluidInput) {
@@ -297,7 +297,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 			int offset = 0;
 			if(maxFluidOutput > 0) {
 				
-				maxFluidOutput = maxFluidOutput / TANK_MULTIPLER + TANK_MULTIPLER;
+				maxFluidOutput = (maxFluidOutput / TANK_MULTIPLER) * TANK_MULTIPLER + TANK_MULTIPLER;
 				
 				if(outputTanks[0].getCapacity() < maxFluidOutput) {
 					outputTanks[0].setCapacity(maxFluidOutput);
@@ -307,7 +307,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 			}
 			if(maxFluidBiproduct > 0) {
 				
-				maxFluidBiproduct = maxFluidBiproduct / TANK_MULTIPLER + TANK_MULTIPLER;
+				maxFluidBiproduct = (maxFluidBiproduct / TANK_MULTIPLER) * TANK_MULTIPLER + TANK_MULTIPLER;
 				
 				for(int i = 0; i < outputTanks.length - offset; i++) {
 					
