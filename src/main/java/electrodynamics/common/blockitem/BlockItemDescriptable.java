@@ -45,9 +45,6 @@ public class BlockItemDescriptable extends BlockItem {
 		return block.get();
 	}
 
-	/*
-	 * @Override public InteractionResult place(BlockPlaceContext p) { ItemStack stack = p.getItemInHand().copy(); InteractionResult result = super.place(p); if (stack.hasTag()) { double joules = stack.getTag().getDouble("joules"); BlockEntity entity = p.getLevel().getBlockEntity(p.getClickedPos()); if (entity != null && stack.hasTag() && entity instanceof GenericTile gen && gen.hasComponent(ComponentType.Electrodynamic)) { ComponentElectrodynamic electrodynamic = gen.getComponent(ComponentType.Electrodynamic); electrodynamic.setJoulesStored(joules); } } return result; }
-	 */
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
@@ -77,6 +74,6 @@ public class BlockItemDescriptable extends BlockItem {
 	}
 
 	public static void addDescription(Supplier<Block> block, MutableComponent description) {
-		cachedDescriptions.add(new Pair<>(block, description));
+		createDescription(block.get(), description);
 	}
 }
