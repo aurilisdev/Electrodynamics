@@ -162,11 +162,8 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 
 		if (hasComponent(ComponentType.PacketHandler)) {
-			//we shouldn't need to schedule this
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendProperties();
 			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-		
 		}
 
 	}
