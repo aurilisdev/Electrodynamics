@@ -91,6 +91,11 @@ public class TileElectricPump extends GenericTile implements ITickableSound {
 	public boolean shouldPlaySound() {
 		return isGenerating.get();
 	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return isGenerating.get() ? 15 : 0;
+	}
 
 	static {
 		VoxelShape shape = Shapes.empty();

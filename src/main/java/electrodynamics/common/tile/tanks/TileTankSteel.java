@@ -1,7 +1,6 @@
-package electrodynamics.common.tile;
+package electrodynamics.common.tile.tanks;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.tile.generic.GenericTileTank;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;

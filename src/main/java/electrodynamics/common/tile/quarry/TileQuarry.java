@@ -1226,5 +1226,10 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		}
 		return false;
 	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return isFinished.get() ? 15 : 0;
+	}
 
 }

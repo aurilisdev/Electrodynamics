@@ -73,6 +73,11 @@ public class TileSolarPanel extends GenericGeneratorTile {
 		double lerped = Mth.lerp((temp + 1) / 3.0, 1.5, 3) / 3.0;
 		return TransferPack.ampsVoltage(getMultiplier() * Constants.SOLARPANEL_AMPERAGE * lerped * mod * (level.isRaining() || level.isThundering() ? 0.8f : 1), this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return generating.get() ? 15 : 0;
+	}
 
 	static {
 		VoxelShape shape = Shapes.empty();

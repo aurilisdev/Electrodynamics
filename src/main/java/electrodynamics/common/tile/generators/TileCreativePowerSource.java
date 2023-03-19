@@ -65,4 +65,9 @@ public class TileCreativePowerSource extends GenericTile {
 		}
 
 	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return power.get() > 0 ? 15 : 0;
+	}
 }

@@ -1,4 +1,4 @@
-package electrodynamics.common.tile.generic;
+package electrodynamics.common.tile.tanks;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerTankGeneric;
@@ -60,5 +60,11 @@ public class GenericTileTank extends GenericFluidTile {
 				}
 			}
 		}
+	}
+	
+	@Override
+	public int getComparatorSignal() {
+		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(ComponentType.FluidHandler);
+		return (handler.getFluidAmount() / Math.max(1, handler.getCapacity())) * 15;
 	}
 }

@@ -170,5 +170,10 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 		}
 		return null;
 	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return (getNumActiveProcessors() / Math.max(1, getNumProcessors())) * 15;
+	}
 
 }

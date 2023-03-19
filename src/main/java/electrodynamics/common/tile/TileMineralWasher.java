@@ -69,5 +69,10 @@ public class TileMineralWasher extends GenericFluidTile {
 			}
 		}
 	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0 ? 15 : 0;
+	}
 
 }

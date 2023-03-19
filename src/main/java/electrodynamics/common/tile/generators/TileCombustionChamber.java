@@ -134,4 +134,10 @@ public class TileCombustionChamber extends GenericFluidTile implements IElectric
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 		return TransferPack.joulesVoltage(Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * fuelMultiplier * multiplier.get(), electro.getVoltage());
 	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return running.get() ? 15 : 0;
+	}
+	
 }

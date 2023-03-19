@@ -94,4 +94,9 @@ public class TileMineralGrinder extends GenericTile implements ITickableSound {
 	public boolean shouldPlaySound() {
 		return isProcessorActive();
 	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return (getNumActiveProcessors() / Math.max(1, getNumProcessors())) * 15;
+	}
 }

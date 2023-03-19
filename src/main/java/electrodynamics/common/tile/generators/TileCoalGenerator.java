@@ -123,4 +123,5 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 	public int getComparatorSignal() {
 		return (int) (heat.getValue().get() / 3000.0) * 15;
 	}
+	
 }

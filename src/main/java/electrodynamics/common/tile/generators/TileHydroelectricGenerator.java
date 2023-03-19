@@ -143,6 +143,10 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 
 	}
 	
+	@Override
+	public int getComparatorSignal() {
+		return isGenerating.get() ? 15 : 0;
+	}
 
 	static {
 		VoxelShape shape = Shapes.empty();

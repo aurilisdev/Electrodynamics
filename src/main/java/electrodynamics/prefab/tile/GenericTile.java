@@ -242,6 +242,26 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 		return false;
 	}
+	
+	public int getNumActiveProcessors() {
+		int count = 0;
+		for (ComponentProcessor pr : processors) {
+			if (pr != null && pr.operatingTicks.get() > 0) {
+				count++;
+			}
+		}
+		return count;
+	}
+	
+	public int getNumProcessors() {
+		 int count = 0;
+		 for (ComponentProcessor pr : processors) {
+				if (pr != null) {
+					count++;
+				}
+			}
+			return count;
+	}
 
 	public void onEnergyChange(ComponentElectrodynamic cap) {
 		// hook method for now

@@ -75,5 +75,10 @@ public class TileOxidationFurnace extends GenericTile implements ITickableSound 
 	public boolean shouldPlaySound() {
 		return this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0;
 	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0 ? 15 : 0;
+	}
 
 }

@@ -55,4 +55,10 @@ public class TileFermentationPlant extends GenericFluidTile {
 			level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, worldPosition.getY() + 0.4, z, 0.0D, 0.0D, 0.0D);
 		}
 	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0 ? 15 : 0;
+	}
+	
 }
