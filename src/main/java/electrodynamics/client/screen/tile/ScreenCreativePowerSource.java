@@ -3,7 +3,7 @@ package electrodynamics.client.screen.tile;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
-import electrodynamics.common.tile.TileCreativePowerSource;
+import electrodynamics.common.tile.generators.TileCreativePowerSource;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentTextInputBar;
 import electrodynamics.prefab.screen.component.ScreenComponentTextInputBar.TextInputTextures;

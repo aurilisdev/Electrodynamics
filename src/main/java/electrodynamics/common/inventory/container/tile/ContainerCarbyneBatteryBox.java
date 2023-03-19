@@ -1,6 +1,6 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.common.tile.TileCarbyneBatteryBox;
+import electrodynamics.common.tile.battery.TileCarbyneBatteryBox;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotCharging;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;

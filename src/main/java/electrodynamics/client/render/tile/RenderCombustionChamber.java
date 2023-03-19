@@ -3,7 +3,7 @@ package electrodynamics.client.render.tile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import electrodynamics.common.tile.TileCombustionChamber;
+import electrodynamics.common.tile.generators.TileCombustionChamber;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;

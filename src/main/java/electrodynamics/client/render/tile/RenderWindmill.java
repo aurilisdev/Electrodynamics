@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.TileWindmill;
+import electrodynamics.common.tile.generators.TileWindmill;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

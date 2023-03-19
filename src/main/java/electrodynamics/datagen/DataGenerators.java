@@ -14,6 +14,7 @@ import electrodynamics.datagen.server.ElectrodynamicsBlockTagsProvider;
 import electrodynamics.datagen.server.ElectrodynamicsFluidTagsProvider;
 import electrodynamics.datagen.server.ElectrodynamicsItemTagsProvider;
 import electrodynamics.datagen.server.ElectrodynamicsLootTablesProvider;
+import electrodynamics.datagen.server.ThermoelectricGenHeatSourceProvider;
 import electrodynamics.datagen.server.recipe.ElectrodynamicsRecipeProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -37,6 +38,7 @@ public class DataGenerators {
 			generator.addProvider(true, new ElectrodynamicsBiomeFeaturesProvider(generator));
 			generator.addProvider(true, new CombustionChamberFuelSourceProvider(generator));
 			generator.addProvider(true, new CoalGeneratorFuelSourceProvider(generator));
+			generator.addProvider(true, new ThermoelectricGenHeatSourceProvider(generator));
 		}
 		if (event.includeClient()) {
 			generator.addProvider(true, new ElectrodynamicsBlockStateProvider(generator, event.getExistingFileHelper()));

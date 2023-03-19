@@ -17,6 +17,7 @@ import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
+import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
@@ -79,11 +80,13 @@ public class ServerEventHandler {
 	public static void addReloadListeners(AddReloadListenerEvent event) {
 		event.addListener(CombustionFuelRegister.INSTANCE);
 		event.addListener(CoalGeneratorFuelRegister.INSTANCE);
+		event.addListener(ThermoelectricGeneratorHeatRegister.INSTANCE);
 	}
 
 	@SubscribeEvent
 	public static void serverStartedHandler(ServerStartedEvent event) {
 		CoalGeneratorFuelRegister.INSTANCE.generateTagValues();
+		ThermoelectricGeneratorHeatRegister.INSTANCE.generateTagValues();
 	}
 
 	// TODO: Why was this commented?

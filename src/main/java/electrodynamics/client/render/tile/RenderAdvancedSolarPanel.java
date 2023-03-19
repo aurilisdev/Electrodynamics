@@ -5,7 +5,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.TileAdvancedSolarPanel;
+import electrodynamics.common.tile.generators.TileAdvancedSolarPanel;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;

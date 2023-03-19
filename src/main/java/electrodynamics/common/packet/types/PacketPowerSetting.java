@@ -2,7 +2,7 @@ package electrodynamics.common.packet.types;
 
 import java.util.function.Supplier;
 
-import electrodynamics.common.tile.TileCreativePowerSource;
+import electrodynamics.common.tile.generators.TileCreativePowerSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;

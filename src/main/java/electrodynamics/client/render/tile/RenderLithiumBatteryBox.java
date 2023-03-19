@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.TileLithiumBatteryBox;
+import electrodynamics.common.tile.battery.TileLithiumBatteryBox;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;

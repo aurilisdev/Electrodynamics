@@ -1,4 +1,4 @@
-package electrodynamics.common.tile.generic;
+package electrodynamics.common.tile.generators;
 
 import javax.annotation.Nullable;
 

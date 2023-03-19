@@ -1,4 +1,4 @@
-package electrodynamics.common.tile;
+package electrodynamics.common.tile.battery;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;

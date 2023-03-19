@@ -150,5 +150,19 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		}
 
 	}
+	
+	@Override
+	public boolean hasAnalogOutputSignal(BlockState pState) {
+		return true;
+	}
+	
+	@Override
+	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
+		BlockEntity entity = level.getBlockEntity(pos);
+		if (entity != null && entity instanceof GenericTile generic) {
+			return generic.getComparatorSignal();
+		}
+		return super.getAnalogOutputSignal(state, level, pos);
+	}
 
 }

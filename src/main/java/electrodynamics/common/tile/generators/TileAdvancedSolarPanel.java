@@ -1,4 +1,4 @@
-package electrodynamics.common.tile;
+package electrodynamics.common.tile.generators;
 
 import java.util.HashSet;
 
@@ -10,7 +10,6 @@ import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.multiblock.IMultiblockTileNode;
 import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.generic.GenericGeneratorTile;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -90,4 +89,11 @@ public class TileAdvancedSolarPanel extends GenericGeneratorTile implements IMul
 	public HashSet<Subnode> getSubNodes() {
 		return BlockMachine.advancedsolarpanelsubnodes;
 	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return generating.get() ? 15 : 0;
+	}
+	
+	
 }

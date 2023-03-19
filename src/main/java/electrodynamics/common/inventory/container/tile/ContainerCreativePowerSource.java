@@ -2,7 +2,7 @@ package electrodynamics.common.inventory.container.tile;
 
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketPowerSetting;
-import electrodynamics.common.tile.TileCreativePowerSource;
+import electrodynamics.common.tile.generators.TileCreativePowerSource;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;

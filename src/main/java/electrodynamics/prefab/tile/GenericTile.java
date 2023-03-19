@@ -319,6 +319,10 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 
 	}
 	
+	public int getComparatorSignal() {
+		return 0;
+	}
+	
 	public void updateCarriedItemInContainer(ItemStack stack, UUID playerId) {
 		Player player = getLevel().getPlayerByUUID(playerId);
 		if(player.hasContainerOpen()) {

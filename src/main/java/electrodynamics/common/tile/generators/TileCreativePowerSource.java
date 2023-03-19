@@ -1,4 +1,4 @@
-package electrodynamics.common.tile;
+package electrodynamics.common.tile.generators;
 
 import java.util.ArrayList;
 import java.util.List;

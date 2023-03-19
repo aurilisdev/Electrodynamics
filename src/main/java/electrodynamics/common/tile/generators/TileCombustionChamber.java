@@ -1,4 +1,4 @@
-package electrodynamics.common.tile;
+package electrodynamics.common.tile.generators;
 
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.subtype.SubtypeMachine;

@@ -11,6 +11,7 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
+import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
@@ -19,8 +20,8 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ChapterGenerators extends Chapter {
 
@@ -52,8 +53,16 @@ public class ChapterGenerators extends Chapter {
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.thermoelectricgeneratoruse")).setSeparateStart());
 		blankLine();
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.heatsource").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
-		pageData.add(new TextWrapperObject(Fluids.LAVA.getFluidType().getDescription()).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.multiplier", 1.0)).setSeparateStart().setIndentions(1));
+		
+		ThermoelectricGeneratorHeatRegister.INSTANCE.getHeatSources().forEach((fluid, multiplier) -> {
+			if(ForgeRegistries.FLUIDS.getKey(fluid).toString().toLowerCase().contains("flow")) {
+				return;
+			}
+			pageData.add(new TextWrapperObject(fluid.getFluidType().getDescription()).setSeparateStart());
+			pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.multiplier", multiplier)).setSeparateStart().setIndentions(1));
+		});
+		
+		
 
 		// Solar Panel
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeMachine.solarpanel).getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setSeparateStart().setNewPage());
