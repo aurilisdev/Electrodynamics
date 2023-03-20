@@ -181,7 +181,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	@Override
 	public int getComparatorSignal() {
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		return (int) (electro.getJoulesStored() / Math.max(1, electro.getMaxJoulesStored())) * 15;
+		return (int) ((electro.getJoulesStored() / Math.max(1, electro.getMaxJoulesStored())) * 15.0);
 	}
 
 }

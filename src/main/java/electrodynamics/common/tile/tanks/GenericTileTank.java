@@ -21,7 +21,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class GenericTileTank extends GenericFluidTile {
-	// done :D
 
 	public GenericTileTank(BlockEntityType<?> tile, int capacity, SubtypeMachine machine, BlockPos pos, BlockState state) {
 		super(tile, pos, state);
@@ -65,6 +64,6 @@ public class GenericTileTank extends GenericFluidTile {
 	@Override
 	public int getComparatorSignal() {
 		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(ComponentType.FluidHandler);
-		return (handler.getFluidAmount() / Math.max(1, handler.getCapacity())) * 15;
+		return (int) ((double) handler.getFluidAmount() / (double) Math.max(1, handler.getCapacity()) * 15.0);
 	}
 }

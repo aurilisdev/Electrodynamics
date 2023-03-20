@@ -112,7 +112,7 @@ public class TileMineralCrusher extends GenericTile implements ITickableSound {
 	
 	@Override
 	public int getComparatorSignal() {
-		return (getNumActiveProcessors() / Math.max(1, getNumProcessors())) * 15;
+		return (int) (((double) getNumActiveProcessors() / (double) Math.max(1, getNumProcessors())) * 15.0);
 	}
 
 }

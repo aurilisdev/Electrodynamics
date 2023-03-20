@@ -49,7 +49,7 @@ public class TileCoolantResavoir extends GenericFluidTile {
 	@Override
 	public int getComparatorSignal() {
 		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(ComponentType.FluidHandler);
-		return (handler.getFluidAmount() / Math.max(1, handler.getCapacity())) * 15;
+		return (int) (((double) handler.getFluidAmount() / (double) Math.max(1, handler.getCapacity())) * 15.0);
 	}
 
 }
