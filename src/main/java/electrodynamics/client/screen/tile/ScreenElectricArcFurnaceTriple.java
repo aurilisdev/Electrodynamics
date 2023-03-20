@@ -22,7 +22,7 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
-				if (processor.operatingTicks.get() > 0) {
+				if (processor.isActive()) {
 					return processor.operatingTicks.get() / processor.requiredTicks.get();
 				}
 			}
@@ -32,7 +32,7 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
-				if (processor.operatingTicks.get() > 0) {
+				if (processor.isActive()) {
 					return 1;
 				}
 			}
@@ -42,7 +42,7 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(1);
-				if (processor.operatingTicks.get() > 0) {
+				if (processor.isActive()) {
 					return processor.operatingTicks.get() / processor.requiredTicks.get();
 				}
 			}
@@ -52,7 +52,7 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(1);
-				if (processor.operatingTicks.get() > 0) {
+				if (processor.isActive()) {
 					return 1;
 				}
 			}
@@ -62,7 +62,7 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(2);
-				if (processor.operatingTicks.get() > 0) {
+				if (processor.isActive()) {
 					return processor.operatingTicks.get() / processor.requiredTicks.get();
 				}
 			}
@@ -72,7 +72,7 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(2);
-				if (processor.operatingTicks.get() > 0) {
+				if (processor.isActive()) {
 					return 1;
 				}
 			}

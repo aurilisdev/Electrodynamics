@@ -49,7 +49,7 @@ public class TileMineralWasher extends GenericFluidTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if (this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0) {
+		if (this.<ComponentProcessor>getComponent(ComponentType.Processor).isActive()) {
 			if (level.random.nextDouble() < 0.15) {
 				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 			}
@@ -72,7 +72,7 @@ public class TileMineralWasher extends GenericFluidTile {
 	
 	@Override
 	public int getComparatorSignal() {
-		return this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0 ? 15 : 0;
+		return this.<ComponentProcessor>getComponent(ComponentType.Processor).isActive() ? 15 : 0;
 	}
 
 }

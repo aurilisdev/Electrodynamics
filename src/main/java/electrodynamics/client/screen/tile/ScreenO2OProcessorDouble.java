@@ -22,7 +22,7 @@ public class ScreenO2OProcessorDouble extends GenericScreen<ContainerO2OProcesso
 			GenericTile furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
-				if (processor.operatingTicks.get() > 0) {
+				if (processor.isActive()) {
 					return processor.operatingTicks.get() / processor.requiredTicks.get();
 				}
 			}
@@ -32,7 +32,7 @@ public class ScreenO2OProcessorDouble extends GenericScreen<ContainerO2OProcesso
 			GenericTile furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(1);
-				if (processor.operatingTicks.get() > 0) {
+				if (processor.isActive()) {
 					return processor.operatingTicks.get() / processor.requiredTicks.get();
 				}
 			}

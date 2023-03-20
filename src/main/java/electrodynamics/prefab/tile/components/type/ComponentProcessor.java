@@ -56,6 +56,9 @@ public class ComponentProcessor implements Component {
 	private ElectrodynamicsRecipe recipe;
 	private double storedXp = 0.0;
 
+	private Property<Boolean> isActive;
+	private Property<Boolean> shouldKeepProgress;
+
 	public ComponentProcessor(GenericTile source) {
 		this(source, 0, 1);
 	}
@@ -68,6 +71,8 @@ public class ComponentProcessor implements Component {
 		operatingTicks = holder.property(new Property<>(PropertyType.Double, "operatingTicks" + processorNumber, 0.0));
 		usage = holder.property(new Property<>(PropertyType.Double, "recipeUsage" + processorNumber, 0.0));
 		requiredTicks = holder.property(new Property<>(PropertyType.Double, "requiredTicks" + processorNumber, 0.0));
+		isActive = holder.property(new Property<>(PropertyType.Boolean, "isprocactive" + processorNumber, false));
+		shouldKeepProgress = holder.property(new Property<>(PropertyType.Boolean, "shouldprockeepprogress" + processorNumber, false));
 		if (!holder.hasComponent(ComponentType.Inventory)) {
 			throw new UnsupportedOperationException("You need to implement an inventory component to use the processor component!");
 		}
@@ -88,6 +93,7 @@ public class ComponentProcessor implements Component {
 			}
 		}
 		if (canProcess.test(this)) {
+			isActive.set(true);
 			operatingTicks.set(operatingTicks.get() + operatingSpeed.get());
 			if (operatingTicks.get() >= requiredTicks.get()) {
 				if (process != null) {
@@ -99,13 +105,20 @@ public class ComponentProcessor implements Component {
 				ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
 				electro.joules(electro.getJoulesStored() - usage.get() * operatingSpeed.get());
 			}
-		} else if (operatingTicks.get() > 0) {
-			// TODO look at keeping progress if the recipe is unchanged
-			operatingTicks.set(0.0);
+		} else if (isActive()) {
+			isActive.set(false);
+			if(!shouldKeepProgress.get()) {
+				operatingTicks.set(0.0);
+			}
+			
 			if (failed != null) {
 				failed.accept(this);
 			}
 		}
+
+		
+
+
 	}
 
 	public ComponentProcessor process(Consumer<ComponentProcessor> process) {
@@ -182,16 +195,26 @@ public class ComponentProcessor implements Component {
 		return storedXp;
 	}
 
+	public boolean isActive() {
+		return isActive.get();
+	}
+	
+	public void setShouldKeepProgress(boolean should) {
+		shouldKeepProgress.set(should);
+	}
+
 	// Instead of checking all at once, we check one at a time; more efficient
 	public boolean canProcessItem2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 		Item2ItemRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
+			setShouldKeepProgress(false);
 			pr.operatingTicks.set(0.0);
 			locRecipe = (Item2ItemRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
 			}
 		} else {
+			setShouldKeepProgress(true);
 			locRecipe = (Item2ItemRecipe) recipe;
 		}
 
@@ -239,12 +262,14 @@ public class ComponentProcessor implements Component {
 	public boolean canProcessFluid2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 		Fluid2ItemRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
+			setShouldKeepProgress(false);
 			pr.operatingTicks.set(0.0);
 			locRecipe = (Fluid2ItemRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
 			}
 		} else {
+			setShouldKeepProgress(true);
 			locRecipe = (Fluid2ItemRecipe) recipe;
 		}
 		setRecipe(locRecipe);
@@ -291,12 +316,14 @@ public class ComponentProcessor implements Component {
 	public boolean canProcessFluid2FluidRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 		Fluid2FluidRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
+			setShouldKeepProgress(false);
 			pr.operatingTicks.set(0.0);
 			locRecipe = (Fluid2FluidRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
 			}
 		} else {
+			setShouldKeepProgress(true);
 			locRecipe = (Fluid2FluidRecipe) recipe;
 		}
 		setRecipe(locRecipe);
@@ -335,12 +362,14 @@ public class ComponentProcessor implements Component {
 	public boolean canProcessItem2FluidRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 		Item2FluidRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
+			setShouldKeepProgress(false);
 			pr.operatingTicks.set(0.0);
 			locRecipe = (Item2FluidRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
 			}
 		} else {
+			setShouldKeepProgress(true);
 			locRecipe = (Item2FluidRecipe) recipe;
 		}
 		setRecipe(locRecipe);
@@ -379,12 +408,14 @@ public class ComponentProcessor implements Component {
 	public boolean canProcessFluidItem2FluidRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 		FluidItem2FluidRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
+			setShouldKeepProgress(false);
 			pr.operatingTicks.set(0.0);
 			locRecipe = (FluidItem2FluidRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
 			}
 		} else {
+			setShouldKeepProgress(true);
 			locRecipe = (FluidItem2FluidRecipe) recipe;
 		}
 		setRecipe(locRecipe);
@@ -423,12 +454,14 @@ public class ComponentProcessor implements Component {
 	public boolean canProcessFluidItem2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 		FluidItem2ItemRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
+			setShouldKeepProgress(false);
 			pr.operatingTicks.set(0.0);
 			locRecipe = (FluidItem2ItemRecipe) getRecipe(pr, typeIn);
 			if (locRecipe == null) {
 				return false;
 			}
 		} else {
+			setShouldKeepProgress(true);
 			locRecipe = (FluidItem2ItemRecipe) recipe;
 		}
 		setRecipe(locRecipe);

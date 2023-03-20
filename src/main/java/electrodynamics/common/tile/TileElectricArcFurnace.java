@@ -57,7 +57,7 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> (extra == 0 ? new ContainerElectricArcFurnace(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerElectricArcFurnaceDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerElectricArcFurnaceTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
 
 		for (int i = 0; i <= extra; i++) {
-			addProcessor(new ComponentProcessor(this, i, extra + 1).canProcess(this::canProcess).failed(component -> cachedRecipe[component.getProcessorNumber()] = null).process(this::process).requiredTicks(Constants.ELECTRICARCFURNACE_REQUIRED_TICKS).usage(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK));
+			addProcessor(new ComponentProcessor(this, i, extra + 1).canProcess(this::canProcess).process(this::process).requiredTicks(Constants.ELECTRICARCFURNACE_REQUIRED_TICKS).usage(Constants.ELECTRICARCFURNACE_USAGE_PER_TICK));
 		}
 		cachedRecipe = new BlastingRecipe[extra + 1];
 	}
@@ -96,11 +96,7 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 	}
 
 	private boolean checkConditions(ComponentProcessor component) {
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		if (electro.getJoulesStored() < component.getUsage() * component.operatingSpeed.get()) {
-			return false;
-		}
-		electro.maxJoules(component.getUsage() * component.operatingSpeed.get() * 10 * component.totalProcessors);
+		component.setShouldKeepProgress(true);
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		ItemStack input = inv.getInputsForProcessor(component.getProcessorNumber()).get(0);
 		if (input.isEmpty()) {
@@ -112,12 +108,14 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 		}
 		
 		if(cachedRecipe == null) {
+			component.setShouldKeepProgress(false);
 			return false;
 		}
 
 		if (cachedRecipe[component.getProcessorNumber()] == null) {
 			cachedRecipe[component.getProcessorNumber()] = getMatchedRecipe(input);
 			if (cachedRecipe[component.getProcessorNumber()] == null) {
+				component.setShouldKeepProgress(false);
 				return false;
 			}
 			component.operatingTicks.set(0.0);
@@ -125,8 +123,15 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 
 		if (!cachedRecipe[component.getProcessorNumber()].matches(new SimpleContainer(input), level)) {
 			cachedRecipe[component.getProcessorNumber()] = null;
+			component.setShouldKeepProgress(false);
 			return false;
 		}
+		
+		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		if (electro.getJoulesStored() < component.getUsage() * component.operatingSpeed.get()) {
+			return false;
+		}
+		electro.maxJoules(component.getUsage() * component.operatingSpeed.get() * 10 * component.totalProcessors);
 
 		ItemStack output = inv.getOutputContents().get(component.getProcessorNumber());
 		ItemStack result = cachedRecipe[component.getProcessorNumber()].getResultItem();

@@ -45,17 +45,19 @@ public class TileChemicalMixer extends GenericFluidTile {
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		boolean running = this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0;
-		if (running) {
-			if (level.random.nextDouble() < 0.15) {
-				level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
-			}
+		if (!this.<ComponentProcessor>getComponent(ComponentType.Processor).isActive()) {
+			return;
 		}
+
+		if (level.random.nextDouble() < 0.15) {
+			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
+		}
+
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
-		return this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0 ? 15 : 0;
+		return this.<ComponentProcessor>getComponent(ComponentType.Processor).isActive() ? 15 : 0;
 	}
 
 }

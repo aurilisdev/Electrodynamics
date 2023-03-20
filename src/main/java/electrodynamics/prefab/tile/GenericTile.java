@@ -236,7 +236,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 
 	public boolean isProcessorActive() {
 		for (ComponentProcessor pr : processors) {
-			if (pr != null && pr.operatingTicks.get() > 0) {
+			if (pr != null && pr.isActive()) {
 				return true;
 			}
 		}
@@ -246,7 +246,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	public int getNumActiveProcessors() {
 		int count = 0;
 		for (ComponentProcessor pr : processors) {
-			if (pr != null && pr.operatingTicks.get() > 0) {
+			if (pr != null && pr.isActive()) {
 				count++;
 			}
 		}

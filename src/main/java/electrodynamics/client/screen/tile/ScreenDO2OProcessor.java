@@ -23,7 +23,7 @@ public class ScreenDO2OProcessor extends GenericScreen<ContainerDO2OProcessor> {
 			GenericTile furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
-				if (processor.operatingTicks.get() > 0) {
+				if (processor.isActive()) {
 					return processor.operatingTicks.get() / processor.requiredTicks.get();
 				}
 			}
