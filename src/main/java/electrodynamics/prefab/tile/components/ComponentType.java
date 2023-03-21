@@ -11,5 +11,6 @@ public enum ComponentType {
 	Direction,
 	FluidHandler,
 	Processor,
-	GasHandler;
+	GasHandler,
+	UpgradeHandler;
 }

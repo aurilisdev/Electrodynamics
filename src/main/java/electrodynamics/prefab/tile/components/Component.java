@@ -26,7 +26,7 @@ public interface Component {
 	}
 
 	default <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		return null;
+		return LazyOptional.empty();
 	}
 
 	default void onLoad() {

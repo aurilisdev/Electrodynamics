@@ -9,6 +9,7 @@ import electrodynamics.common.event.types.living.equipmentchange.HandlerJetpackE
 import electrodynamics.common.event.types.living.hurt.AbstractLivingHurtHandler;
 import electrodynamics.common.event.types.living.hurt.HandlerCompositeArmor;
 import electrodynamics.common.event.types.living.hurt.HandlerHydraulicBoots;
+import electrodynamics.common.event.types.living.hurt.HandlerJetpackDamage;
 import electrodynamics.common.event.types.player.rightclick.AbstractRightClickBlockHandler;
 import electrodynamics.common.event.types.player.rightclick.HandlerRightClickWires;
 import electrodynamics.common.event.types.player.starttracking.AbstractPlayerStartTrackingHandler;
@@ -43,6 +44,7 @@ public class ServerEventHandler {
 
 		LIVING_HURT_HANDLERS.add(new HandlerCompositeArmor());
 		LIVING_HURT_HANDLERS.add(new HandlerHydraulicBoots());
+		LIVING_HURT_HANDLERS.add(new HandlerJetpackDamage());
 
 		EQUIPMENT_CHANGE_HANDLERS.add(new HandlerJetpackEquiped());
 

@@ -37,7 +37,7 @@ public class QuarryRenderManger {
 	public void render(TileQuarry quarry) {
 		BlockPos pos = quarry.getBlockPos();
 		HandlerQuarryArm.removeRenderData(pos);
-		if (!quarry.hasCorners() || quarry.miningPos.get().equals(TileQuarry.OUT_OF_REACH)) {
+		if (!quarry.hasCorners() || quarry.miningPos.get() == null || quarry.miningPos.get().equals(TileQuarry.OUT_OF_REACH)) {
 			return;
 		}
 		onRight = quarry.cornerOnRight.get();

@@ -3,6 +3,7 @@ package electrodynamics.common.packet.types;
 import java.util.UUID;
 import java.util.function.Supplier;
 
+import electrodynamics.common.item.gear.armor.types.ItemJetpack;
 import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -18,10 +19,12 @@ public class PacketJetpackFlightServer {
 
 	private final UUID playerId;
 	private final boolean bool;
+	private final double prevDeltaY;
 
-	public PacketJetpackFlightServer(UUID uuid, boolean bool) {
+	public PacketJetpackFlightServer(UUID uuid, boolean bool, double prevDeltaY) {
 		playerId = uuid;
 		this.bool = bool;
+		this.prevDeltaY = prevDeltaY;
 	}
 
 	public static void handle(PacketJetpackFlightServer message, Supplier<Context> context) {
@@ -34,6 +37,8 @@ public class PacketJetpackFlightServer {
 				if (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
 					CompoundTag tag = chest.getOrCreateTag();
 					tag.putBoolean(NBTUtils.USED, message.bool);
+					tag.putBoolean(ItemJetpack.WAS_HURT_KEY, false);
+					tag.putDouble(ItemJetpack.DELTA_Y_KEY, message.prevDeltaY);
 				}
 			}
 		});
@@ -43,10 +48,11 @@ public class PacketJetpackFlightServer {
 	public static void encode(PacketJetpackFlightServer message, FriendlyByteBuf buf) {
 		buf.writeUUID(message.playerId);
 		buf.writeBoolean(message.bool);
+		buf.writeDouble(message.prevDeltaY);
 	}
 
 	public static PacketJetpackFlightServer decode(FriendlyByteBuf buf) {
-		return new PacketJetpackFlightServer(buf.readUUID(), buf.readBoolean());
+		return new PacketJetpackFlightServer(buf.readUUID(), buf.readBoolean(), buf.readDouble());
 	}
 
 }
