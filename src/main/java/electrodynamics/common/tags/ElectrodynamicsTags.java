@@ -169,6 +169,17 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Item> STORAGE_BLOCK_TITANIUM = forgeTag("storage_blocks/titanium");
 		public static final TagKey<Item> STORAGE_BLOCK_TITANIUMCARBIDE = forgeTag("storage_blocks/titaniumcarbide");
 		public static final TagKey<Item> STORAGE_BLOCK_VANADIUMSTEEL = forgeTag("storage_blocks/vanadiumsteel");
+		
+		public static final TagKey<Item> BLOCK_RAW_ORE_CHROMIUM = forgeTag("storage_blocks/rawchromium");
+		public static final TagKey<Item> BLOCK_RAW_ORE_FLUORITE = forgeTag("storage_blocks/rawfluorite");
+		public static final TagKey<Item> BLOCK_RAW_ORE_LEAD = forgeTag("storage_blocks/rawlead");
+		public static final TagKey<Item> BLOCK_RAW_ORE_LEPIDOLITE = forgeTag("storage_blocks/rawlepidolite");
+		public static final TagKey<Item> BLOCK_RAW_ORE_SILVER = forgeTag("storage_blocks/rawsilver");
+		public static final TagKey<Item> BLOCK_RAW_ORE_THORIUM = forgeTag("storage_blocks/rawthorium");
+		public static final TagKey<Item> BLOCK_RAW_ORE_TIN = forgeTag("storage_blocks/rawtin");
+		public static final TagKey<Item> BLOCK_RAW_ORE_TITANIUM = forgeTag("storage_blocks/rawtitanium");
+		public static final TagKey<Item> BLOCK_RAW_ORE_URANIUM = forgeTag("storage_blocks/rawuranium");
+		public static final TagKey<Item> BLOCK_RAW_ORE_VANADIUM = forgeTag("storage_blocks/rawvanadinite");
 
 		public static final TagKey<Item> COAL_COKE = forgeTag("coal_coke");
 		public static final TagKey<Item> PLASTIC = forgeTag("plastic");
@@ -221,6 +232,17 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Block> STORAGE_BLOCK_TITANIUM = forgeTag("storage_blocks/titanium");
 		public static final TagKey<Block> STORAGE_BLOCK_TITANIUMCARBIDE = forgeTag("storage_blocks/titaniumcarbide");
 		public static final TagKey<Block> STORAGE_BLOCK_VANADIUMSTEEL = forgeTag("storage_blocks/vanadiumsteel");
+		
+		public static final TagKey<Block> BLOCK_RAW_ORE_CHROMIUM = forgeTag("storage_blocks/rawchromium");
+		public static final TagKey<Block> BLOCK_RAW_ORE_FLUORITE = forgeTag("storage_blocks/rawfluorite");
+		public static final TagKey<Block> BLOCK_RAW_ORE_LEAD = forgeTag("storage_blocks/rawlead");
+		public static final TagKey<Block> BLOCK_RAW_ORE_LEPIDOLITE = forgeTag("storage_blocks/rawlepidolite");
+		public static final TagKey<Block> BLOCK_RAW_ORE_SILVER = forgeTag("storage_blocks/rawsilver");
+		public static final TagKey<Block> BLOCK_RAW_ORE_THORIUM = forgeTag("storage_blocks/rawthorium");
+		public static final TagKey<Block> BLOCK_RAW_ORE_TIN = forgeTag("storage_blocks/rawtin");
+		public static final TagKey<Block> BLOCK_RAW_ORE_TITANIUM = forgeTag("storage_blocks/rawtitanium");
+		public static final TagKey<Block> BLOCK_RAW_ORE_URANIUM = forgeTag("storage_blocks/rawuranium");
+		public static final TagKey<Block> BLOCK_RAW_ORE_VANADIUM = forgeTag("storage_blocks/rawvanadinite");
 
 		public static final TagKey<Block> ORES = forgeTag("ores");
 
