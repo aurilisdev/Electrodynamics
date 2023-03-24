@@ -1,6 +1,6 @@
 package electrodynamics.api.gas;
 
-import electrodynamics.registers.ElectrodynamicsGases;
+import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -13,12 +13,12 @@ import net.minecraft.resources.ResourceLocation;
  */
 public class GasStack {
 	
-	public static final GasStack EMPTY = new GasStack(Gas.EMPTY);
+	public static final GasStack EMPTY = new GasStack(Gas.empty());
 	
 	public static final int ABSOLUTE_ZERO = 1; //zero technically, but that makes volumes a pain in the ass
 	public static final double VACUUM = 0.001; // zero technically, but that makes volumes a pain in the ass
 	
-	private Gas gas = Gas.EMPTY;
+	private Gas gas = Gas.empty();
 	private double amount = 0; //mB
 	private double temperature = 257; //Kelvin room temperature (20 C)
 	private double pressure = 1; //ATM
@@ -27,7 +27,7 @@ public class GasStack {
 	
 	public GasStack(Gas gas) {
 		this.gas = gas;
-		if(gas == Gas.EMPTY) {
+		if(gas == Gas.empty()) {
 			isEmpty = true;
 		}
 	}
@@ -74,7 +74,7 @@ public class GasStack {
 			this.amount -= amount;
 		}
 		if(amount == 0) {
-			gas = Gas.EMPTY;
+			gas = Gas.empty();
 			isEmpty = true;
 		}
 	}
@@ -180,7 +180,7 @@ public class GasStack {
 	//This is assumed to be a new tag
 	public CompoundTag writeToNbt() {
 		CompoundTag tag = new CompoundTag();
-		tag.putString("name", ElectrodynamicsGases.GASES.getKey(this.gas).toString());
+		tag.putString("name", ElectrodynamicsRegistries.gasRegistry().getKey(this.gas).toString());
 		tag.putDouble("amount", amount);
 		tag.putDouble("temperature", temperature);
 		tag.putDouble("pressure", pressure);
@@ -188,7 +188,7 @@ public class GasStack {
 	}
 	
 	public static GasStack readFromNbt(CompoundTag tag) {
-		Gas gas = ElectrodynamicsGases.GASES.getValue(new ResourceLocation(tag.getString("name")));
+		Gas gas = ElectrodynamicsRegistries.gasRegistry().getValue(new ResourceLocation(tag.getString("name")));
 		double amount = tag.getDouble("amount");
 		double temperature = tag.getDouble("temperature");
 		double pressure = tag.getDouble("pressure");
@@ -196,7 +196,7 @@ public class GasStack {
 	}
 	
 	public void writeToBuffer(FriendlyByteBuf buffer) {
-		buffer.writeRegistryId(ElectrodynamicsGases.GASES, gas);
+		buffer.writeRegistryId(ElectrodynamicsRegistries.gasRegistry(), gas);
 		buffer.writeDouble(amount);
 		buffer.writeDouble(temperature);
 		buffer.writeDouble(pressure);

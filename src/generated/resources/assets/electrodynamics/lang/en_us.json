@@ -213,6 +213,7 @@
   "fluid.electrodynamics.fluidsulfatetin": "Tin Sulfate",
   "fluid.electrodynamics.fluidsulfatevanadium": "Vanadium Sulfate",
   "fluid.electrodynamics.fluidsulfuricacid": "Sulfuric Acid",
+  "gas.electrodynamics.empty": "Empty",
   "gui.electrodynamics.coalgenerator.timeleft": "Time Left: %s",
   "gui.electrodynamics.creativefluidsource.setfluid": "Set Fluid",
   "gui.electrodynamics.creativepowersource.power": "Power: ",

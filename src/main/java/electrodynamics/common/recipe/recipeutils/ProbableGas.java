@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.api.gas.GasStack;
-import electrodynamics.registers.ElectrodynamicsGases;
+import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
@@ -44,7 +44,7 @@ public class ProbableGas {
 
 	public static ProbableGas deserialize(JsonObject json) {
 		ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(json, "gas"));
-		GasStack gas = new GasStack(ElectrodynamicsGases.GASES.getValue(resourceLocation), GsonHelper.getAsDouble(json, "amount"), GsonHelper.getAsDouble(json, "temp"), GsonHelper.getAsDouble(json, "pressure"));
+		GasStack gas = new GasStack(ElectrodynamicsRegistries.gasRegistry().getValue(resourceLocation), GsonHelper.getAsDouble(json, "amount"), GsonHelper.getAsDouble(json, "temp"), GsonHelper.getAsDouble(json, "pressure"));
 		double chance = json.get("chance").getAsDouble();
 		return new ProbableGas(gas, chance);
 	}

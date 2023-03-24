@@ -5,11 +5,10 @@ import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 
 /**
  * Basic implementation of a Gas mirroring certain aspects of fluids
@@ -21,12 +20,10 @@ import net.minecraft.world.item.Items;
  */
 public class Gas {
 	
-	public static final Gas EMPTY = new Gas(() -> Items.AIR, null, TextUtils.gas("empty"), 0);
-	
 	private final Supplier<Item> container;
 	private final TagKey<Gas> tag;
 	private final Component description;
-	private final double condensationTemp;
+	private final double condensationTemp; // Degrees Kelvin
 	
 	public Gas(Supplier<Item> container, @Nullable TagKey<Gas> tag, Component description, double condensationTemp) {
 		this.container = container;
@@ -48,7 +45,7 @@ public class Gas {
 	}
 	
 	public boolean isEmpty() {
-		return this == EMPTY;
+		return this == empty();
 	}
 	
 	public double getCondensationTemp() {
@@ -65,7 +62,11 @@ public class Gas {
 	
 	@Override
 	public String toString() {
-		return description.getString();
+		return description.getString() + ",\tcondensation temp : " + condensationTemp + " K";
+	}
+	
+	public static Gas empty() {
+		return ElectrodynamicsGases.EMPTY.get();
 	}
 
 }

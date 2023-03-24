@@ -12,6 +12,7 @@ import electrodynamics.datagen.server.CombustionChamberFuelSourceProvider;
 import electrodynamics.datagen.server.ElectrodynamicsBiomeFeaturesProvider;
 import electrodynamics.datagen.server.ElectrodynamicsBlockTagsProvider;
 import electrodynamics.datagen.server.ElectrodynamicsFluidTagsProvider;
+import electrodynamics.datagen.server.ElectrodynamicsGasTagsProvider;
 import electrodynamics.datagen.server.ElectrodynamicsItemTagsProvider;
 import electrodynamics.datagen.server.ElectrodynamicsLootTablesProvider;
 import electrodynamics.datagen.server.ThermoelectricGenHeatSourceProvider;
@@ -33,6 +34,7 @@ public class DataGenerators {
 			generator.addProvider(true, blockProvider);
 			generator.addProvider(true, new ElectrodynamicsItemTagsProvider(generator, blockProvider, event.getExistingFileHelper()));
 			generator.addProvider(true, new ElectrodynamicsFluidTagsProvider(generator, event.getExistingFileHelper()));
+			generator.addProvider(true, new ElectrodynamicsGasTagsProvider(generator, event.getExistingFileHelper()));
 			generator.addProvider(true, new ElectrodynamicsLootTablesProvider(generator));
 			generator.addProvider(true, new ElectrodynamicsRecipeProvider(generator));
 			generator.addProvider(true, new ElectrodynamicsBiomeFeaturesProvider(generator));

@@ -9,9 +9,13 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonObject;
 import com.mojang.datafixers.util.Pair;
 
+import electrodynamics.api.gas.Gas;
+import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeSerializer;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
+import electrodynamics.common.recipe.recipeutils.ProbableGas;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
+import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -29,11 +33,14 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 
 	private List<ProbableItem> itemBiproducts = new ArrayList<>();
 	private List<ProbableFluid> fluidBiproducts = new ArrayList<>();
+	private List<ProbableGas> gasBiproducts = new ArrayList<>();
 
 	private List<ItemStack> itemIngredients = new ArrayList<>();
 	private List<Pair<TagKey<Item>, Integer>> tagItemIngredients = new ArrayList<>();
 	private List<FluidStack> fluidIngredients = new ArrayList<>();
 	private List<Pair<TagKey<Fluid>, Integer>> tagFluidIngredients = new ArrayList<>();
+	private List<GasStack> gasIngredients = new ArrayList<>();
+	private List<Pair<TagKey<Gas>, GasIngWrapper>> tagGasIngredients = new ArrayList<>();
 
 	private double experience = 0.0;
 	private int processTime = 0;
@@ -70,6 +77,16 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 		tagFluidIngredients.add(Pair.of(tag, count));
 		return this;
 	}
+	
+	public AbstractElectrodynamicsFinishedRecipe addGasStackInput(GasStack stack) {
+		gasIngredients.add(stack);
+		return this;
+	}
+	
+	public AbstractElectrodynamicsFinishedRecipe addGasTagInput(TagKey<Gas> tag, double amt, double temp, double pressure) {
+		tagGasIngredients.add(Pair.of(tag, new GasIngWrapper(amt, temp, pressure)));
+		return this;
+	}
 
 	public AbstractElectrodynamicsFinishedRecipe addItemBiproduct(ProbableItem biproudct) {
 		itemBiproducts.add(biproudct);
@@ -78,6 +95,11 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 
 	public AbstractElectrodynamicsFinishedRecipe addFluidBiproduct(ProbableFluid biproduct) {
 		fluidBiproducts.add(biproduct);
+		return this;
+	}
+	
+	public AbstractElectrodynamicsFinishedRecipe addGasBiproduct(ProbableGas biproduct) {
+		gasBiproducts.add(biproduct);
 		return this;
 	}
 
@@ -130,18 +152,47 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 				fluidInputs.add(index + "", fluidJson);
 				index++;
 			}
-			for (Pair<TagKey<Fluid>, Integer> itemTags : tagFluidIngredients) {
+			for (Pair<TagKey<Fluid>, Integer> fluidTags : tagFluidIngredients) {
 				fluidJson = new JsonObject();
-				fluidJson.addProperty("tag", itemTags.getFirst().location().toString());
-				fluidJson.addProperty("amount", itemTags.getSecond());
+				fluidJson.addProperty("tag", fluidTags.getFirst().location().toString());
+				fluidJson.addProperty("amount", fluidTags.getSecond());
 				fluidInputs.add(index + "", fluidJson);
 				index++;
 			}
 			recipeJson.add(ElectrodynamicsRecipeSerializer.FLUID_INPUTS, fluidInputs);
 		}
+		
+		int gasInputsCount = gasIngredients.size() + tagGasIngredients.size();
+		if (gasInputsCount > 0) {
+			inputsFlag = true;
+			JsonObject gasInputs = new JsonObject();
+			gasInputs.addProperty(ElectrodynamicsRecipeSerializer.COUNT, gasInputsCount);
+			JsonObject gasJson;
+			int index = 0;
+			for (GasStack stack : gasIngredients) {
+				gasJson = new JsonObject();
+				gasJson.addProperty("gas", ElectrodynamicsRegistries.gasRegistry().getKey(stack.getGas()).toString());
+				gasJson.addProperty("amount", stack.getAmount());
+				gasJson.addProperty("temp", stack.getTemperature());
+				gasJson.addProperty("pressure", stack.getPressure());
+				gasInputs.add(index + "", gasJson);
+				index++;
+			}
+			for (Pair<TagKey<Gas>, GasIngWrapper> gasTags : tagGasIngredients) {
+				gasJson = new JsonObject();
+				gasJson.addProperty("tag", gasTags.getFirst().location().toString());
+				gasJson.addProperty("amount", gasTags.getSecond().amt());
+				gasJson.addProperty("temp", gasTags.getSecond().temp());
+				gasJson.addProperty("pressure", gasTags.getSecond().pressure());
+				gasInputs.add(index + "", gasJson);
+				index++;
+			}
+			recipeJson.add(ElectrodynamicsRecipeSerializer.GAS_INPUTS, gasInputs);
+		}
+		
 
 		if (!inputsFlag) {
-			throw new RuntimeException("You must specify at least one item or fluid input");
+			throw new RuntimeException("You must specify at least one item, fluid, or gas input");
 		}
 
 		writeOutput(recipeJson);
@@ -183,6 +234,26 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 			}
 			recipeJson.add(ElectrodynamicsRecipeSerializer.FLUID_BIPRODUCTS, fluidBiproducts);
 		}
+		
+		if (gasBiproducts.size() > 0) {
+			JsonObject gasBiproducts = new JsonObject();
+			gasBiproducts.addProperty(ElectrodynamicsRecipeSerializer.COUNT, this.gasBiproducts.size());
+			JsonObject gasJson;
+			GasStack stack;
+			int index = 0;
+			for (ProbableGas biproduct : this.gasBiproducts) {
+				gasJson = new JsonObject();
+				stack = biproduct.getFullStack();
+				gasJson.addProperty("gas", ElectrodynamicsRegistries.gasRegistry().getKey(stack.getGas()).toString());
+				gasJson.addProperty("amount", stack.getAmount());
+				gasJson.addProperty("temp", stack.getTemperature());
+				gasJson.addProperty("pressure", stack.getPressure());
+				gasJson.addProperty("chance", biproduct.getChance());
+				gasBiproducts.add(index + "", gasJson);
+				index++;
+			}
+			recipeJson.add(ElectrodynamicsRecipeSerializer.GAS_BIPRODUCTS, gasBiproducts);
+		}
 
 	}
 
@@ -221,6 +292,10 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 		public String category() {
 			return toString().toLowerCase().replaceAll("_", "");
 		}
+	}
+	
+	public static record GasIngWrapper(double amt, double temp, double pressure) {
+		
 	}
 
 }

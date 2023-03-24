@@ -12,6 +12,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 public class UnifiedElectrodynamicsRegister {
 
 	public static void register(IEventBus bus) {
+		ElectrodynamicsRegistries.init();
 		ElectrodynamicsBlocks.BLOCKS.register(bus);
 		ElectrodynamicsBlockTypes.BLOCK_ENTITY_TYPES.register(bus);
 		ElectrodynamicsItems.ITEMS.register(bus);
@@ -22,7 +23,7 @@ public class UnifiedElectrodynamicsRegister {
 		ElectrodynamicsFeatures.PLACED_FEATURES.register(bus);
 		ElectrodynamicsMenuTypes.MENU_TYPES.register(bus);
 		ElectrodynamicsSounds.SOUNDS.register(bus);
-		ElectrodynamicsGases.GAS_REGISTER.register(bus);
+		ElectrodynamicsGases.GASES.register(bus);
 	}
 
 	static {

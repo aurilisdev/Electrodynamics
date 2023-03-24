@@ -22,7 +22,7 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.utils.IComponentGasHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.registers.ElectrodynamicsGases;
+import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -291,7 +291,7 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
 			}
 			if (validInputGasTags != null) {
 				for (TagKey<Gas> tag : validInputGasTags) {
-					for (Gas fluid : ElectrodynamicsGases.GASES.tags().getTag(tag).stream().toList()) {
+					for (Gas fluid : ElectrodynamicsRegistries.gasRegistry().tags().getTag(tag).stream().toList()) {
 						inputValidatorGases.add(fluid);
 					}
 				}
@@ -303,7 +303,7 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
 			}
 			if (validOutputGasTags != null) {
 				for (TagKey<Gas> tag : validOutputGasTags) {
-					for (Gas fluid : ElectrodynamicsGases.GASES.tags().getTag(tag).stream().toList()) {
+					for (Gas fluid : ElectrodynamicsRegistries.gasRegistry().tags().getTag(tag).stream().toList()) {
 						outputValidatorGases.add(fluid);
 					}
 				}

@@ -10,10 +10,11 @@ import com.google.gson.JsonObject;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
+import electrodynamics.common.recipe.recipeutils.GasIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import electrodynamics.common.recipe.recipeutils.ProbableGas;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
-import electrodynamics.registers.ElectrodynamicsGases;
+import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.ItemStack;
@@ -27,6 +28,7 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 	public static final String COUNT = "count";
 	public static final String ITEM_INPUTS = "iteminputs";
 	public static final String FLUID_INPUTS = "fluidinputs";
+	public static final String GAS_INPUTS = "gasinputs";
 	public static final String ITEM_BIPRODUCTS = "itembi";
 	public static final String FLUID_BIPRODUCTS = "fluidbi";
 	public static final String GAS_BIPRODUCTS = "gasbi";
@@ -77,7 +79,6 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 			throw new UnsupportedOperationException(recipeId.toString() + ": You must include a count field");
 		}
 		int count = fluidInputs.get(COUNT).getAsInt();
-		// Electrodynamics.LOGGER.info(count);
 		List<FluidIngredient> fluidIngredients = new ArrayList<>();
 		for (int i = 0; i < count; i++) {
 			if (!fluidInputs.has(i + "")) {
@@ -88,6 +89,29 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		FluidIngredient[] ings = new FluidIngredient[fluidIngredients.size()];
 		for (int i = 0; i < ings.length; i++) {
 			ings[i] = fluidIngredients.get(i);
+		}
+		return ings;
+	}
+	
+	public static GasIngredient[] getGasIngredients(ResourceLocation recipeId, JsonObject json) {
+		if (!json.has(GAS_INPUTS)) {
+			throw new UnsupportedOperationException(recipeId.toString() + ": There are no Gas Inputs!");
+		}
+		JsonObject fluidInputs = GsonHelper.getAsJsonObject(json, GAS_INPUTS);
+		if (!fluidInputs.has(COUNT)) {
+			throw new UnsupportedOperationException(recipeId.toString() + ": You must include a count field");
+		}
+		int count = fluidInputs.get(COUNT).getAsInt();
+		List<GasIngredient> gasIngredients = new ArrayList<>();
+		for (int i = 0; i < count; i++) {
+			if (!fluidInputs.has(i + "")) {
+				throw new UnsupportedOperationException(recipeId.toString() + ": The count field does not match the input count");
+			}
+			gasIngredients.add(GasIngredient.deserialize(fluidInputs.get(i + "").getAsJsonObject()));
+		}
+		GasIngredient[] ings = new GasIngredient[gasIngredients.size()];
+		for (int i = 0; i < ings.length; i++) {
+			ings[i] = gasIngredients.get(i);
 		}
 		return ings;
 	}
@@ -190,7 +214,7 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		double amount = GsonHelper.getAsDouble(json, "amount");
 		double temperature = GsonHelper.getAsDouble(json, "temp");
 		double pressure = GsonHelper.getAsDouble(json, "pressure");
-		return new GasStack(ElectrodynamicsGases.GASES.getValue(resourceLocation), amount, temperature, pressure);
+		return new GasStack(ElectrodynamicsRegistries.gasRegistry().getValue(resourceLocation), amount, temperature, pressure);
 	}
 
 	public static double getExperience(JsonObject json) {

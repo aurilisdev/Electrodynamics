@@ -14,7 +14,7 @@ import electrodynamics.Electrodynamics;
 import electrodynamics.api.gas.Gas;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.registers.ElectrodynamicsGases;
+import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
@@ -61,13 +61,13 @@ public class GasIngredient extends Ingredient {
 	public GasIngredient(ResourceLocation gasLoc, boolean isTag, double amount, double temperature, double pressure) {
 		super(Stream.empty());
 		if(isTag) {
-			List<Gas> gases = ElectrodynamicsGases.GASES.tags().getTag(ElectrodynamicsTags.Gases.create(gasLoc)).stream().toList();
+			List<Gas> gases = ElectrodynamicsRegistries.gasRegistry().tags().getTag(ElectrodynamicsTags.Gases.create(gasLoc)).stream().toList();
 			gasStacks = new ArrayList<>();
 			for(Gas gas : gases) {
 				gasStacks.add(new GasStack(gas, amount, temperature, pressure));
 			}
 		} else {
-			gasStacks = List.of(new GasStack(ElectrodynamicsGases.GASES.getValue(gasLoc), amount, temperature, pressure));
+			gasStacks = List.of(new GasStack(ElectrodynamicsRegistries.gasRegistry().getValue(gasLoc), amount, temperature, pressure));
 		}
 		if(gasStacks.isEmpty()) {
 			throw new UnsupportedOperationException("No gases returned from " + gasLoc);
@@ -143,7 +143,7 @@ public class GasIngredient extends Ingredient {
 	public List<GasStack> getMatchingGases() {
 		
 		if(gasStacks.isEmpty() && tag != null) {
-			ElectrodynamicsGases.GASES.tags().getTag(tag).forEach(h -> {
+			ElectrodynamicsRegistries.gasRegistry().tags().getTag(tag).forEach(h -> {
 				gasStacks.add(new GasStack(h, amount, temperature, pressure));
 			});
 		}
