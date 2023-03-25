@@ -36,7 +36,7 @@ public class GasIngredient extends Ingredient {
 	private TagKey<Gas> tag;
 	private double amount;
 	private double temperature;
-	private double pressure;
+	private int pressure;
 	
 	public GasIngredient(GasStack stack) {
 		super(Stream.empty());
@@ -58,7 +58,7 @@ public class GasIngredient extends Ingredient {
 	 * @param pressure
 	 * @param temperature
 	 */
-	public GasIngredient(ResourceLocation gasLoc, boolean isTag, double amount, double temperature, double pressure) {
+	public GasIngredient(ResourceLocation gasLoc, boolean isTag, double amount, double temperature, int pressure) {
 		super(Stream.empty());
 		if(isTag) {
 			List<Gas> gases = ElectrodynamicsRegistries.gasRegistry().tags().getTag(ElectrodynamicsTags.Gases.create(gasLoc)).stream().toList();
@@ -75,7 +75,7 @@ public class GasIngredient extends Ingredient {
 		
 	}
 	
-	public GasIngredient(TagKey<Gas> tag, double amount, double temperature, double pressure) {
+	public GasIngredient(TagKey<Gas> tag, double amount, double temperature, int pressure) {
 		super(Stream.empty());
 		this.tag = tag;
 		this.amount = amount;
@@ -84,7 +84,7 @@ public class GasIngredient extends Ingredient {
 		gasStacks = new ArrayList<>();
 	}
 	
-	public GasIngredient(ResourceLocation tag, double amount, double temperature, double pressure) {
+	public GasIngredient(ResourceLocation tag, double amount, double temperature, int pressure) {
 		this(ElectrodynamicsTags.Gases.create(tag), amount, temperature, pressure);
 	}
 	
@@ -95,13 +95,13 @@ public class GasIngredient extends Ingredient {
 				ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(jsonObject, "gas"));
 				double amount = GsonHelper.getAsDouble(jsonObject, "amount");
 				double temperature = GsonHelper.getAsDouble(jsonObject, "temp");
-				double pressure = GsonHelper.getAsDouble(jsonObject, "pressure");
+				int pressure = GsonHelper.getAsInt(jsonObject, "pressure");
 				return new GasIngredient(resourceLocation, false, amount, temperature, pressure);
 			} else if (GsonHelper.isValidNode(jsonObject, "tag")) {
 				ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(jsonObject, "tag"));
 				double amount = GsonHelper.getAsDouble(jsonObject, "amount");
 				double temperature = GsonHelper.getAsDouble(jsonObject, "temp");
-				double pressure = GsonHelper.getAsDouble(jsonObject, "pressure");
+				int pressure = GsonHelper.getAsInt(jsonObject, "pressure");
 				return new GasIngredient(resourceLocation, amount, temperature, pressure);
 			}
 		} catch (Exception e) {

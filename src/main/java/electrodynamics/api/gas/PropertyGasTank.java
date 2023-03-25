@@ -27,12 +27,12 @@ public class PropertyGasTank extends GasTank {
 	protected Property<GasStack> gasProperty;
 	protected Property<Double> capacityProperty;
 	protected Property<Double> maxTemperatureProperty;
-	protected Property<Double> maxPressureProperty;
+	protected Property<Integer> maxPressureProperty;
 
 	protected BiConsumer<GasTank, GenericTile> onGasCondensed = (gas, tile) -> {
 	};
 
-	public PropertyGasTank(GenericTile holder, String key, double capacity, double maxTemperature, double maxPressure) {
+	public PropertyGasTank(GenericTile holder, String key, double capacity, double maxTemperature, int maxPressure) {
 		super(capacity, maxTemperature, maxPressure);
 
 		this.holder = holder;
@@ -40,10 +40,10 @@ public class PropertyGasTank extends GasTank {
 		gasProperty = holder.property(new Property<>(PropertyType.Gasstack, "propertygastankstack" + key, GasStack.EMPTY));
 		capacityProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankcapacity" + key, capacity));
 		maxTemperatureProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankmaxtemperature" + key, maxTemperature));
-		maxPressureProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankmaxpressure", maxPressure));
+		maxPressureProperty = holder.property(new Property<>(PropertyType.Integer, "propertygastankmaxpressure", maxPressure));
 	}
 
-	public PropertyGasTank(GenericTile holder, String key, double capacity, double maxTemperature, double maxPressure, Predicate<GasStack> isGasValid) {
+	public PropertyGasTank(GenericTile holder, String key, double capacity, double maxTemperature, int maxPressure, Predicate<GasStack> isGasValid) {
 		super(capacity, maxTemperature, maxPressure, isGasValid);
 
 		this.holder = holder;
@@ -51,7 +51,7 @@ public class PropertyGasTank extends GasTank {
 		gasProperty = holder.property(new Property<>(PropertyType.Gasstack, "propertygastankstack" + key, GasStack.EMPTY));
 		capacityProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankcapacity" + key, capacity));
 		maxTemperatureProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankmaxtemperature" + key, maxTemperature));
-		maxPressureProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankmaxpressure", maxPressure));
+		maxPressureProperty = holder.property(new Property<>(PropertyType.Integer, "propertygastankmaxpressure", maxPressure));
 
 	}
 
@@ -93,8 +93,8 @@ public class PropertyGasTank extends GasTank {
 	}
 
 	@Override
-	public void setMaxPressure(double pressure) {
-		maxPressureProperty.set(pressure);
+	public void setMaxPressure(int atm) {
+		maxPressureProperty.set(atm);
 	}
 
 	@Override
@@ -113,7 +113,7 @@ public class PropertyGasTank extends GasTank {
 	}
 
 	@Override
-	public double getMaxPressure() {
+	public int getMaxPressure() {
 		return maxPressureProperty.get();
 	}
 

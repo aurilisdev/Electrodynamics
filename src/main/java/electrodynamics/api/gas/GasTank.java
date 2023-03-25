@@ -14,15 +14,15 @@ public class GasTank implements IGasTank, IGasHandler {
 	protected Predicate<GasStack> isGasValid;
 	private double capacity;
 	private double maxTemperature;
-	private double maxPressure;
+	private int maxPressure;
 	@Nonnull
 	private GasStack gas = GasStack.EMPTY;
 	
-	public GasTank(double capacity, double maxTemperature, double maxPressure) {
+	public GasTank(double capacity, double maxTemperature, int maxPressure) {
 		this(capacity, maxTemperature, maxPressure, gas -> true);
 	}
 
-	public GasTank(double capacity, double maxTemperature, double maxPressure, Predicate<GasStack> isGasValid) {
+	public GasTank(double capacity, double maxTemperature, int maxPressure, Predicate<GasStack> isGasValid) {
 		this.capacity = capacity;
 		this.maxTemperature = maxTemperature;
 		this.maxPressure = maxPressure;
@@ -66,12 +66,12 @@ public class GasTank implements IGasTank, IGasHandler {
 		return maxTemperature;
 	}
 
-	public void setMaxPressure(double pressure) {
+	public void setMaxPressure(int pressure) {
 		maxPressure = pressure;
 	}
 
 	@Override
-	public double getMaxPressure() {
+	public int getMaxPressure() {
 		return maxPressure;
 	}
 
@@ -247,15 +247,15 @@ public class GasTank implements IGasTank, IGasHandler {
 	}
 
 	@Override
-	public double pressureize(double deltaPressure, GasAction action) {
+	public double bringPressureTo(int atm, GasAction action) {
 
-		if (getGas().isVacuum() && deltaPressure < 0) {
+		if (getGas().isVacuum() && atm < GasStack.VACUUM) {
 			return -1;
 		}
 
 		GasStack updated = getGas().copy();
 
-		updated.pressurize(deltaPressure);
+		updated.bringPressureTo(atm);
 
 		if (updated.getAmount() > getCapacity()) {
 
@@ -306,7 +306,7 @@ public class GasTank implements IGasTank, IGasHandler {
 		tag.put("gasstack", getGas().writeToNbt());
 		tag.putDouble("capacity", getCapacity());
 		tag.putDouble("maxtemp", getMaxTemperature());
-		tag.putDouble("maxpres", getMaxPressure());
+		tag.putInt("maxpres", getMaxPressure());
 		return tag;
 	}
 
@@ -314,7 +314,7 @@ public class GasTank implements IGasTank, IGasHandler {
 
 		GasStack stack = GasStack.readFromNbt(tag.getCompound("gasstack"));
 
-		GasTank tank = new GasTank(tag.getDouble("capacity"), tag.getDouble("maxtemp"), tag.getDouble("maxpres"));
+		GasTank tank = new GasTank(tag.getDouble("capacity"), tag.getDouble("maxtemp"), tag.getInt("maxpres"));
 
 		tank.setGas(stack);
 
@@ -330,7 +330,7 @@ public class GasTank implements IGasTank, IGasHandler {
 
 		buffer.writeDouble(getMaxTemperature());
 
-		buffer.writeDouble(getMaxPressure());
+		buffer.writeInt(getMaxPressure());
 
 	}
 
@@ -338,7 +338,7 @@ public class GasTank implements IGasTank, IGasHandler {
 
 		GasStack stack = GasStack.readFromBuffer(buffer);
 
-		GasTank tank = new GasTank(buffer.readDouble(), buffer.readDouble(), buffer.readDouble());
+		GasTank tank = new GasTank(buffer.readDouble(), buffer.readDouble(), buffer.readInt());
 
 		tank.setGas(stack);
 
@@ -382,7 +382,7 @@ public class GasTank implements IGasTank, IGasHandler {
 	}
 
 	@Override
-	public double getTankMaxPressure(int tank) {
+	public int getTankMaxPressure(int tank) {
 		return getMaxPressure();
 	}
 
@@ -412,8 +412,8 @@ public class GasTank implements IGasTank, IGasHandler {
 	}
 
 	@Override
-	public double pressureize(int tank, double deltaPressure, GasAction action) {
-		return pressureize(deltaPressure, action);
+	public double bringPressureTo(int tank, int atm, GasAction action) {
+		return bringPressureTo(atm, action);
 	}
 
 }

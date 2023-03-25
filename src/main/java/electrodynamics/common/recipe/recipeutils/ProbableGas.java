@@ -44,7 +44,7 @@ public class ProbableGas {
 
 	public static ProbableGas deserialize(JsonObject json) {
 		ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(json, "gas"));
-		GasStack gas = new GasStack(ElectrodynamicsRegistries.gasRegistry().getValue(resourceLocation), GsonHelper.getAsDouble(json, "amount"), GsonHelper.getAsDouble(json, "temp"), GsonHelper.getAsDouble(json, "pressure"));
+		GasStack gas = new GasStack(ElectrodynamicsRegistries.gasRegistry().getValue(resourceLocation), GsonHelper.getAsDouble(json, "amount"), GsonHelper.getAsDouble(json, "temp"), GsonHelper.getAsInt(json, "pressure"));
 		double chance = json.get("chance").getAsDouble();
 		return new ProbableGas(gas, chance);
 	}

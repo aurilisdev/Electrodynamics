@@ -34,7 +34,7 @@ public interface IGasTank {
 	/**
 	 * @return The maximum pressure in ATM that the tank can handle
 	 */
-	double getMaxPressure();
+	int getMaxPressure();
 	
 	/**
 	 * @param other: The gas to be tested.
@@ -73,10 +73,10 @@ public interface IGasTank {
 	
 	/**
 	 * 
-	 * @param deltaPressure : The amount the pressure should change.
+	 * @param deltaPressure : The new pressure the GasTank should have
 	 * @param action : If SIMULATE, the pressurizing will only be simulated.
 	 * @return how much room is left in the tank after the gas is pressurized. A VALUE OF NEGATIVE ONE INDICATES THERE IS NOT ENOUGH ROOM.
 	 */
-	double pressureize(double deltaPressure, GasAction action);
+	double bringPressureTo(int atm, GasAction action);
 	
 }

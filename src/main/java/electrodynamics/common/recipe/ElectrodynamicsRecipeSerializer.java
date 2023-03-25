@@ -213,7 +213,7 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(gas, "gas"));
 		double amount = GsonHelper.getAsDouble(json, "amount");
 		double temperature = GsonHelper.getAsDouble(json, "temp");
-		double pressure = GsonHelper.getAsDouble(json, "pressure");
+		int pressure = GsonHelper.getAsInt(json, "pressure");
 		return new GasStack(ElectrodynamicsRegistries.gasRegistry().getValue(resourceLocation), amount, temperature, pressure);
 	}
 

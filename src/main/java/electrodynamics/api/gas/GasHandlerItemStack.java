@@ -30,9 +30,9 @@ public class GasHandlerItemStack implements IGasHandlerItem, ICapabilityProvider
 	protected ItemStack container;
 	protected double capacity;
 	protected double maxTemperature;
-	protected double maxPressure;
+	protected int maxPressure;
 
-	public GasHandlerItemStack(ItemStack container, double capacity, double maxTemperature, double maxPressure) {
+	public GasHandlerItemStack(ItemStack container, double capacity, double maxTemperature, int maxPressure) {
 		this.container = container;
 		this.capacity = capacity;
 		this.maxTemperature = maxTemperature;
@@ -87,7 +87,7 @@ public class GasHandlerItemStack implements IGasHandlerItem, ICapabilityProvider
 	}
 
 	@Override
-	public double getTankMaxPressure(int tank) {
+	public int getTankMaxPressure(int tank) {
 		return maxPressure;
 	}
 
@@ -250,17 +250,17 @@ public class GasHandlerItemStack implements IGasHandlerItem, ICapabilityProvider
 	}
 
 	@Override
-	public double pressureize(int tank, double deltaPressure, GasAction action) {
+	public double bringPressureTo(int tank, int atm, GasAction action) {
 
 		GasStack gas = getGasInTank(0);
 
-		if (gas.isVacuum() && deltaPressure < 0) {
+		if (gas.isVacuum() && atm < GasStack.VACUUM) {
 			return -1;
 		}
 
 		GasStack updated = gas.copy();
 
-		updated.pressurize(deltaPressure);
+		updated.bringPressureTo(atm);
 
 		if (updated.getAmount() > capacity) {
 
@@ -309,7 +309,7 @@ public class GasHandlerItemStack implements IGasHandlerItem, ICapabilityProvider
 	 */
 	public static class Consumable extends GasHandlerItemStack {
 
-		public Consumable(ItemStack container, double capacity, double maxTemperature, double maxPressure) {
+		public Consumable(ItemStack container, double capacity, double maxTemperature, int maxPressure) {
 			super(container, capacity, maxTemperature, maxPressure);
 		}
 
@@ -327,7 +327,7 @@ public class GasHandlerItemStack implements IGasHandlerItem, ICapabilityProvider
 
 		protected final ItemStack emptyContainer;
 
-		public SwapEmpty(ItemStack container, ItemStack emptyContainer, double capacity, double maxTemperature, double maxPressure) {
+		public SwapEmpty(ItemStack container, ItemStack emptyContainer, double capacity, double maxTemperature, int maxPressure) {
 			super(container, capacity, maxTemperature, maxPressure);
 			this.emptyContainer = emptyContainer;
 		}

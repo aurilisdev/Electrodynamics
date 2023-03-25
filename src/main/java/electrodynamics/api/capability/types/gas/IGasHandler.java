@@ -40,7 +40,7 @@ public interface IGasHandler {
 	 * @param tank : The tank to check
 	 * @return A double representing the maximum pressure (in ATM) of the checked tank
 	 */
-	double getTankMaxPressure(int tank);
+	int getTankMaxPressure(int tank);
 	
 	/**
 	 * @param tank : The tank to check
@@ -83,10 +83,10 @@ public interface IGasHandler {
 	
 	/**
 	 * @param tank : the tank to pressurize
-	 * @param deltaPressure : The amount the pressure should change.
+	 * @param deltaPressure : The new pressure the GasHandler should have
 	 * @param action : If SIMULATE, the pressurizing will only be simulated.
 	 * @return How much room is left in the tank after the gas is pressurized. A VALUE OF NEGATIVE ONE INDICATES THERE IS NOT ENOUGH ROOM.
 	 */
-	double pressureize(int tank, double deltaPressure, GasAction action);
+	double bringPressureTo(int tank, int atm, GasAction action);
 
 }

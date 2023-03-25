@@ -47,11 +47,11 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 
 	private HashSet<Gas> validatorGases = new HashSet<>();
 
-	public ComponentGasHandlerSimple(GenericTile holder, String key, double capacity, double maxTemperature, double maxPressure) {
+	public ComponentGasHandlerSimple(GenericTile holder, String key, double capacity, double maxTemperature, int maxPressure) {
 		super(holder, key, capacity, maxTemperature, maxPressure);
 	}
 
-	public ComponentGasHandlerSimple(GenericTile holder, String key, double capacity, double maxTemperature, double maxPressure, Predicate<GasStack> isGasValid) {
+	public ComponentGasHandlerSimple(GenericTile holder, String key, double capacity, double maxTemperature, int maxPressure, Predicate<GasStack> isGasValid) {
 		super(holder, key, capacity, maxTemperature, maxPressure, isGasValid);
 	}
 
