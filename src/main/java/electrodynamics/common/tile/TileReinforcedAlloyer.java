@@ -73,7 +73,12 @@ public class TileReinforcedAlloyer extends GenericTile implements ITickableSound
 
 	@Override
 	public boolean shouldPlaySound() {
-		return this.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks.get() > 0;
+		return this.<ComponentProcessor>getComponent(ComponentType.Processor).isActive();
+	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return this.<ComponentProcessor>getComponent(ComponentType.Processor).isActive() ? 15 : 0;
 	}
 
 }

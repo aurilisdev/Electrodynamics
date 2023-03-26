@@ -10,23 +10,28 @@ import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 public enum SubtypeRawOreBlock implements ISubtype {
-	tin(1, ElectrodynamicsTags.Items.RAW_ORE_TIN, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.tin)),
-	lead(2, ElectrodynamicsTags.Items.RAW_ORE_LEAD, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.lead)),
-	silver(2, ElectrodynamicsTags.Items.RAW_ORE_SILVER, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.silver)),
-	chromium(3, ElectrodynamicsTags.Items.RAW_ORE_CHROMIUM, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.chromium)),
-	titanium(3, ElectrodynamicsTags.Items.RAW_ORE_TITANIUM, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.titanium)),
-	uranium(3, ElectrodynamicsTags.Items.RAW_ORE_URANIUM, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.uranium)),
-	thorium(3, ElectrodynamicsTags.Items.RAW_ORE_THORIUM, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.thorium));
+	tin(1, ElectrodynamicsTags.Items.BLOCK_RAW_ORE_TIN, ElectrodynamicsTags.Blocks.BLOCK_RAW_ORE_TIN, ElectrodynamicsTags.Items.RAW_ORE_TIN, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.tin)),
+	lead(2, ElectrodynamicsTags.Items.BLOCK_RAW_ORE_LEAD, ElectrodynamicsTags.Blocks.BLOCK_RAW_ORE_LEAD, ElectrodynamicsTags.Items.RAW_ORE_LEAD, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.lead)),
+	silver(2, ElectrodynamicsTags.Items.BLOCK_RAW_ORE_SILVER, ElectrodynamicsTags.Blocks.BLOCK_RAW_ORE_SILVER, ElectrodynamicsTags.Items.RAW_ORE_SILVER, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.silver)),
+	chromium(3, ElectrodynamicsTags.Items.BLOCK_RAW_ORE_CHROMIUM, ElectrodynamicsTags.Blocks.BLOCK_RAW_ORE_CHROMIUM, ElectrodynamicsTags.Items.RAW_ORE_CHROMIUM, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.chromium)),
+	titanium(3, ElectrodynamicsTags.Items.BLOCK_RAW_ORE_TITANIUM, ElectrodynamicsTags.Blocks.BLOCK_RAW_ORE_TITANIUM, ElectrodynamicsTags.Items.RAW_ORE_TITANIUM, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.titanium)),
+	uranium(3, ElectrodynamicsTags.Items.BLOCK_RAW_ORE_URANIUM, ElectrodynamicsTags.Blocks.BLOCK_RAW_ORE_URANIUM, ElectrodynamicsTags.Items.RAW_ORE_URANIUM, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.uranium)),
+	thorium(3, ElectrodynamicsTags.Items.BLOCK_RAW_ORE_THORIUM, ElectrodynamicsTags.Blocks.BLOCK_RAW_ORE_THORIUM, ElectrodynamicsTags.Items.RAW_ORE_THORIUM, () -> ElectrodynamicsItems.getItem(SubtypeRawOre.thorium));
 
 	// 0 = wood, 1 = stone, 2 = iron, 3 = diamond
 	public final int miningLevel;
+	public final TagKey<Item> itemTag;
+	public final TagKey<Block> blockTag;
 	public final TagKey<Item> sourceRawOre;
 	public final Supplier<Item> productRawOre;
 
-	SubtypeRawOreBlock(int miningLevel, TagKey<Item> sourceRawOre, Supplier<Item> productRawOre) {
+	SubtypeRawOreBlock(int miningLevel, TagKey<Item> itemTag, TagKey<Block> blockTag, TagKey<Item> sourceRawOre, Supplier<Item> productRawOre) {
 		this.miningLevel = miningLevel;
+		this.itemTag = itemTag;
+		this.blockTag = blockTag;
 		this.sourceRawOre = sourceRawOre;
 		this.productRawOre = productRawOre;
 	}

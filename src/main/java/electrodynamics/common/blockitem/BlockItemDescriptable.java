@@ -1,12 +1,9 @@
 package electrodynamics.common.blockitem;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.function.Supplier;
-
-import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
@@ -20,44 +17,30 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 
 public class BlockItemDescriptable extends BlockItem {
-	private static HashMap<Block, HashSet<MutableComponent>> descriptionMappings = new HashMap<>();
-	private static List<Pair<Supplier<Block>, MutableComponent>> cachedDescriptions = new ArrayList<>();
 
-	private final Supplier<Block> block;
+	private static HashMap<Supplier<Block>, HashSet<MutableComponent>> descriptionMappings = new HashMap<>();
+	private static HashMap<Block, HashSet<MutableComponent>> processedDescriptionMappings = new HashMap<>();
 
-	private static boolean initialized;
-
-	private static void createDescription(Block block, MutableComponent description) {
-		HashSet<MutableComponent> gotten = descriptionMappings.containsKey(block) ? descriptionMappings.get(block) : new HashSet<>();
-		if (!descriptionMappings.containsKey(block)) {
-			descriptionMappings.put(block, gotten);
-		}
-		gotten.add(description);
-	}
+	private static boolean initialized = false;
 
 	public BlockItemDescriptable(Supplier<Block> block, Properties builder) {
 		super(block.get(), builder);
-		this.block = block;
 	}
 
-	@Override
-	public Block getBlock() {
-		return block.get();
-	}
-
-	/*
-	 * @Override public InteractionResult place(BlockPlaceContext p) { ItemStack stack = p.getItemInHand().copy(); InteractionResult result = super.place(p); if (stack.hasTag()) { double joules = stack.getTag().getDouble("joules"); BlockEntity entity = p.getLevel().getBlockEntity(p.getClickedPos()); if (entity != null && stack.hasTag() && entity instanceof GenericTile gen && gen.hasComponent(ComponentType.Electrodynamic)) { ComponentElectrodynamic electrodynamic = gen.getComponent(ComponentType.Electrodynamic); electrodynamic.setJoulesStored(joules); } } return result; }
-	 */
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		if (!initialized) {
 			BlockItemDescriptable.initialized = true;
-			for (Pair<Supplier<Block>, MutableComponent> pair : cachedDescriptions) {
-				createDescription(pair.getFirst().get(), pair.getSecond());
-			}
+
+			descriptionMappings.forEach((supplier, set) -> {
+
+				processedDescriptionMappings.put(supplier.get(), set);
+
+			});
+
 		}
-		HashSet<MutableComponent> gotten = descriptionMappings.get(block.get());
+		HashSet<MutableComponent> gotten = processedDescriptionMappings.get(getBlock());
 		if (gotten != null) {
 			for (MutableComponent s : gotten) {
 				tooltip.add(s.withStyle(ChatFormatting.GRAY));
@@ -77,6 +60,11 @@ public class BlockItemDescriptable extends BlockItem {
 	}
 
 	public static void addDescription(Supplier<Block> block, MutableComponent description) {
-		cachedDescriptions.add(new Pair<>(block, description));
+
+		HashSet<MutableComponent> set = descriptionMappings.getOrDefault(block, new HashSet<>());
+
+		set.add(description);
+
 	}
+
 }

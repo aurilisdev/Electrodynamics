@@ -10,5 +10,7 @@ public enum ComponentType {
 	MultiblockSource,
 	Direction,
 	FluidHandler,
-	Processor
+	Processor,
+	GasHandler,
+	UpgradeHandler;
 }

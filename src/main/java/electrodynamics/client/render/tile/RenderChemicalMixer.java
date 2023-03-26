@@ -45,7 +45,7 @@ public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer>
 
 		float degrees = 0.0F;
 
-		if (proc.operatingTicks.get() > 0) {
+		if (proc.isActive()) {
 			degrees = proc.operatingTicks.get().floatValue() / Math.max(proc.requiredTicks.get().floatValue(), 1.0F) * 360.0F * proc.operatingSpeed.get().floatValue() * 2.0F;
 		}
 

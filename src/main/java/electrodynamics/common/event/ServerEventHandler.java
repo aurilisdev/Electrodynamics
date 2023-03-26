@@ -3,12 +3,14 @@ package electrodynamics.common.event;
 import java.util.ArrayList;
 import java.util.List;
 
+import electrodynamics.Electrodynamics;
 import electrodynamics.api.References;
 import electrodynamics.common.event.types.living.equipmentchange.AbstractEquipmentChangeHandler;
 import electrodynamics.common.event.types.living.equipmentchange.HandlerJetpackEquiped;
 import electrodynamics.common.event.types.living.hurt.AbstractLivingHurtHandler;
 import electrodynamics.common.event.types.living.hurt.HandlerCompositeArmor;
 import electrodynamics.common.event.types.living.hurt.HandlerHydraulicBoots;
+import electrodynamics.common.event.types.living.hurt.HandlerJetpackDamage;
 import electrodynamics.common.event.types.player.rightclick.AbstractRightClickBlockHandler;
 import electrodynamics.common.event.types.player.rightclick.HandlerRightClickWires;
 import electrodynamics.common.event.types.player.starttracking.AbstractPlayerStartTrackingHandler;
@@ -17,6 +19,8 @@ import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketPlayerInformation;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
+import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
+import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
@@ -42,6 +46,7 @@ public class ServerEventHandler {
 
 		LIVING_HURT_HANDLERS.add(new HandlerCompositeArmor());
 		LIVING_HURT_HANDLERS.add(new HandlerHydraulicBoots());
+		LIVING_HURT_HANDLERS.add(new HandlerJetpackDamage());
 
 		EQUIPMENT_CHANGE_HANDLERS.add(new HandlerJetpackEquiped());
 
@@ -79,11 +84,14 @@ public class ServerEventHandler {
 	public static void addReloadListeners(AddReloadListenerEvent event) {
 		event.addListener(CombustionFuelRegister.INSTANCE);
 		event.addListener(CoalGeneratorFuelRegister.INSTANCE);
+		event.addListener(ThermoelectricGeneratorHeatRegister.INSTANCE);
 	}
 
 	@SubscribeEvent
 	public static void serverStartedHandler(ServerStartedEvent event) {
 		CoalGeneratorFuelRegister.INSTANCE.generateTagValues();
+		ThermoelectricGeneratorHeatRegister.INSTANCE.generateTagValues();
+		Electrodynamics.LOGGER.info(ElectrodynamicsGases.EMPTY.get());
 	}
 
 	// TODO: Why was this commented?

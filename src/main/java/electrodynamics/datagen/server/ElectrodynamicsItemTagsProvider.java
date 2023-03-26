@@ -3,6 +3,7 @@ package electrodynamics.datagen.server;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
+import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeDust;
@@ -85,6 +86,10 @@ public class ElectrodynamicsItemTagsProvider extends ItemTagsProvider {
 
 		for (SubtypeResourceBlock storage : SubtypeResourceBlock.values()) {
 			tag(storage.itemTag).add(ElectrodynamicsItems.getItem(storage));
+		}
+
+		for (SubtypeRawOreBlock block : SubtypeRawOreBlock.values()) {
+			tag(block.itemTag).add(ElectrodynamicsItems.getItem(block));
 		}
 
 		TagAppender<Item> gears = tag(ElectrodynamicsTags.Items.GEARS);

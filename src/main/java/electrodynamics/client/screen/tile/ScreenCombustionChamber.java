@@ -1,7 +1,7 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerCombustionChamber;
-import electrodynamics.common.tile.TileCombustionChamber;
+import electrodynamics.common.tile.generators.TileCombustionChamber;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.ScreenComponentFluidInput;

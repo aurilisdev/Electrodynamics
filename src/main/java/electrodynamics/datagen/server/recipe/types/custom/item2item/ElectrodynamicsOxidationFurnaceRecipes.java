@@ -43,7 +43,7 @@ public class ElectrodynamicsOxidationFurnaceRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.DUST_SALTPETER, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.SLAG.get(), 1, 0.5))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.5))
 				//
 				.complete(consumer);
 
@@ -69,7 +69,7 @@ public class ElectrodynamicsOxidationFurnaceRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.OXIDE_CALCIUMCARBONATE, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.SLAG.get(), 1, 0.75))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.75))
 				//
 				.complete(consumer);
 
@@ -119,7 +119,7 @@ public class ElectrodynamicsOxidationFurnaceRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.DUST_SALT, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.SLAG.get(), 1, 0.75))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.75))
 				//
 				.complete(consumer);
 

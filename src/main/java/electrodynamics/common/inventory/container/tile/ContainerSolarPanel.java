@@ -1,7 +1,7 @@
 package electrodynamics.common.inventory.container.tile;
 
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.common.tile.TileSolarPanel;
+import electrodynamics.common.tile.generators.TileSolarPanel;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;

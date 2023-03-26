@@ -41,7 +41,7 @@ public class ElectrodynamicsEnergizedAlloyerRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.DUST_SALTPETER, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.SLAG.get(), 1, 0.25))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.25))
 				//
 				.complete(consumer);
 
@@ -51,7 +51,7 @@ public class ElectrodynamicsEnergizedAlloyerRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(Tags.Items.INGOTS_COPPER, 4)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.SLAG.get(), 1, 0.5))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.5))
 				//
 				.complete(consumer);
 
@@ -61,7 +61,7 @@ public class ElectrodynamicsEnergizedAlloyerRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(Tags.Items.INGOTS_GOLD, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.SLAG.get(), 1, 0.75))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.75))
 				//
 				.complete(consumer);
 
@@ -79,7 +79,7 @@ public class ElectrodynamicsEnergizedAlloyerRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_STEEL, 3)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.SLAG.get(), 1, 0.75))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.75))
 				//
 				.complete(consumer);
 
@@ -89,7 +89,7 @@ public class ElectrodynamicsEnergizedAlloyerRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.COAL_COKE, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.SLAG.get(), 1, 0.5))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.5))
 				//
 				.complete(consumer);
 
@@ -99,7 +99,7 @@ public class ElectrodynamicsEnergizedAlloyerRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_VANADIUM, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.SLAG.get(), 1, 0.75))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.75))
 				//
 				.complete(consumer);
 

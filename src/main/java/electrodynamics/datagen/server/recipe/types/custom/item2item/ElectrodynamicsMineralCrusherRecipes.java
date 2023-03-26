@@ -54,7 +54,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 						//
 						.addItemStackInput(new ItemStack(CRYSTALS[crystal.ordinal()]))
 						//
-						.addItemBiproduct(new ProbableItem(OXIDES[SubtypeOxide.trisulfur.ordinal()], 1, 0.19))
+						.addItemBiproduct(new ProbableItem(new ItemStack(OXIDES[SubtypeOxide.trisulfur.ordinal()]), 0.19))
 						//
 						.complete(consumer);
 			}
@@ -74,7 +74,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 							//
 							.addItemTagInput(raw.tag, 1)
 							//
-							.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.iron), 1, 0.3))
+							.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeImpureDust.iron)), 0.3))
 							//
 							.complete(consumer);
 				} else {
@@ -110,7 +110,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.ORE_CHROMIUM, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.iron), 1, 0.4))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeImpureDust.iron)), 0.4))
 				//
 				.complete(consumer);
 
@@ -118,7 +118,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ItemTags.COPPER_ORES, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.gold), 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeImpureDust.gold)), 0.1))
 				//
 				.complete(consumer);
 
@@ -126,7 +126,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ItemTags.GOLD_ORES, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.silver), 1, 0.2))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeImpureDust.silver)), 0.2))
 				//
 				.complete(consumer);
 
@@ -140,7 +140,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.ORE_LEAD, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.silver), 1, 0.4))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeImpureDust.silver)), 0.4))
 				//
 				.complete(consumer);
 
@@ -148,7 +148,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.ORE_MOLYBDENUM, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeDust.sulfur), 1, 0.3))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeDust.sulfur)), 0.3))
 				//
 				.complete(consumer);
 
@@ -156,7 +156,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(Tags.Items.ORES_NETHERITE_SCRAP, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.COAL, 1, 0.3))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COAL), 0.3))
 				//
 				.complete(consumer);
 
@@ -164,7 +164,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.ORE_SILVER, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.gold), 1, 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeImpureDust.gold)), 0.1))
 				//
 				.complete(consumer);
 
@@ -172,7 +172,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.ORE_TIN, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.QUARTZ, 1, 0.3))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.QUARTZ), 0.3))
 				//
 				.complete(consumer);
 
@@ -180,7 +180,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.ORE_VANADIUM, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeDust.lead), 1, 0.2))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeDust.lead)), 0.2))
 				//
 				.complete(consumer);
 
@@ -200,7 +200,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.ORE_TITANIUM, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.iron), 1, 0.3))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeImpureDust.iron)), 0.3))
 				//
 				.complete(consumer);
 
@@ -220,7 +220,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.addItemTagInput(Tags.Items.GRAVEL, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.SAND, 1, 0.2))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.SAND), 0.2))
 				//
 				.complete(consumer);
 

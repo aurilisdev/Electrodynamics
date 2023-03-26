@@ -111,6 +111,9 @@ public class Property<T> {
     }
 
     public void load(Object val) {
+    	if(val == null) {
+    		val = value;
+    	}
         value = (T) type.attemptCast(val);
         rawValue = value;
         onLoad.accept(this);

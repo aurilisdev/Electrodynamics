@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 
 import electrodynamics.api.fluid.PropertyFluidTank;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
-import electrodynamics.common.recipe.recipeutils.AbstractFluidRecipe;
+import electrodynamics.common.recipe.recipeutils.AbstractMaterialRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -50,7 +50,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 	private PropertyFluidTank[] outputTanks;
 
 	@Nullable
-	private RecipeType<? extends AbstractFluidRecipe> recipeType;
+	private RecipeType<? extends AbstractMaterialRecipe> recipeType;
 
 	@Nullable
 	private TagKey<Fluid>[] validInputFluidTags;
@@ -68,24 +68,30 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 		this.holder = holder;
 	}
 
-	public ComponentFluidHandlerMulti setInputTanks(int count, int capacity) {
+	public ComponentFluidHandlerMulti setInputTanks(int count, int... capacity) {
 		inputTanks = new PropertyFluidTank[count];
+		if(capacity.length < count) {
+			throw new UnsupportedOperationException("The number of capacities does not match the number of input tanks");
+		}
 		for (int i = 0; i < count; i++) {
-			inputTanks[i] = new PropertyFluidTank(capacity, holder, "input" + i);
+			inputTanks[i] = new PropertyFluidTank(capacity[i], holder, "input" + i);
 		}
 		return this;
 	}
 
-	public ComponentFluidHandlerMulti setOutputTanks(int count, int capacity) {
+	public ComponentFluidHandlerMulti setOutputTanks(int count, int... capacity) {
 		outputTanks = new PropertyFluidTank[count];
+		if(capacity.length < count) {
+			throw new UnsupportedOperationException("The number of capacities does not match the number of output tanks");
+		}
 		for (int i = 0; i < count; i++) {
-			outputTanks[i] = new PropertyFluidTank(capacity, holder, "output" + i);
+			outputTanks[i] = new PropertyFluidTank(capacity[i], holder, "output" + i);
 		}
 		return this;
 	}
 
-	public ComponentFluidHandlerMulti setTanks(int inputCount, int outputCount, int capacity) {
-		return setInputTanks(inputCount, capacity).setOutputTanks(outputCount, capacity);
+	public ComponentFluidHandlerMulti setTanks(int inputCount, int outputCount, int[] inputCapacity, int[] outputCapacity) {
+		return setInputTanks(inputCount, inputCapacity).setOutputTanks(outputCount, outputCapacity);
 	}
 
 	public ComponentFluidHandlerMulti setInputFluids(Fluid... fluids) {
@@ -128,7 +134,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 		return this;
 	}
 
-	public ComponentFluidHandlerMulti setRecipeType(RecipeType<? extends AbstractFluidRecipe> recipeType) {
+	public ComponentFluidHandlerMulti setRecipeType(RecipeType<? extends AbstractMaterialRecipe> recipeType) {
 		this.recipeType = recipeType;
 		return this;
 	}
@@ -244,40 +250,75 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 		if (recipeType != null) {
 			List<ElectrodynamicsRecipe> recipes = ElectrodynamicsRecipe.findRecipesbyType(recipeType, holder.getLevel());
 
-			int inTankCount = 0;
-			int outTankCount = 0;
 			List<Fluid> inputFluidHolder = new ArrayList<>();
 			List<Fluid> outputFluidHohlder = new ArrayList<>();
+			int maxFluidInput = 0;
+			int maxFluidOutput = 0;
+			int maxFluidBiproduct = 0;
 
 			for (ElectrodynamicsRecipe iRecipe : recipes) {
-				AbstractFluidRecipe recipe = (AbstractFluidRecipe) iRecipe;
+				AbstractMaterialRecipe recipe = (AbstractMaterialRecipe) iRecipe;
 				if (inputTanks != null) {
-					int ingCount = recipe.getFluidIngredients().size();
-					if (ingCount > inTankCount) {
-						inTankCount = ingCount;
-					}
 					for (FluidIngredient ing : recipe.getFluidIngredients()) {
 						ing.getMatchingFluids().forEach(h -> inputFluidHolder.add(h.getFluid()));
+						if(ing.getFluidStack().getAmount() > maxFluidInput) {
+							maxFluidInput = ing.getFluidStack().getAmount();
+						}
 					}
 				}
 
-				int length = 0;
 				if (outputTanks != null) {
 					outputFluidHohlder.add(recipe.getFluidRecipeOutput().getFluid());
-					length++;
+					if(recipe.getFluidRecipeOutput().getAmount() > maxFluidOutput) {
+						maxFluidOutput = recipe.getFluidRecipeOutput().getAmount();
+					}
 				}
 				if (recipe.hasFluidBiproducts()) {
 					for (FluidStack stack : recipe.getFullFluidBiStacks()) {
 						outputFluidHohlder.add(stack.getFluid());
+						if(stack.getAmount() > maxFluidBiproduct) {
+							maxFluidBiproduct = stack.getAmount();
+						}
 					}
-					length += recipe.getFluidBiproductCount();
-				}
-				if (length > outTankCount) {
-					outTankCount = length;
 				}
 			}
 			inputValidatorFluids.addAll(inputFluidHolder);
 			outputValidatorFluids.addAll(outputFluidHohlder);
+			if(maxFluidInput > 0) {
+				
+				maxFluidInput = (maxFluidInput / TANK_MULTIPLER) * TANK_MULTIPLER + TANK_MULTIPLER;
+				
+				for(PropertyFluidTank tank : inputTanks) {
+					if(tank.getCapacity() < maxFluidInput) {
+						tank.setCapacity(maxFluidInput);
+					}
+				}
+			}
+			int offset = 0;
+			if(maxFluidOutput > 0) {
+				
+				maxFluidOutput = (maxFluidOutput / TANK_MULTIPLER) * TANK_MULTIPLER + TANK_MULTIPLER;
+				
+				if(outputTanks[0].getCapacity() < maxFluidOutput) {
+					outputTanks[0].setCapacity(maxFluidOutput);
+				}
+				
+				offset = 1;
+			}
+			if(maxFluidBiproduct > 0) {
+				
+				maxFluidBiproduct = (maxFluidBiproduct / TANK_MULTIPLER) * TANK_MULTIPLER + TANK_MULTIPLER;
+				
+				for(int i = 0; i < outputTanks.length - offset; i++) {
+					
+					if(outputTanks[i + offset].getCapacity() < maxFluidBiproduct) {
+						outputTanks[i + offset].setCapacity(maxFluidBiproduct);
+					}
+					
+				}
+			}
+			
+			
 		} else {
 			if (validInputFluids != null) {
 				for (Fluid fluid : validInputFluids) {

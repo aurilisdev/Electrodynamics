@@ -39,7 +39,7 @@ public class ElectrodynamicsWireMillRecipes extends AbstractRecipeGenerator {
 				//
 				.addItemTagInput(Tags.Items.INGOTS_COPPER, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeNugget.copper), 1, 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeNugget.copper)), 1))
 				//
 				.complete(consumer);
 
@@ -47,7 +47,7 @@ public class ElectrodynamicsWireMillRecipes extends AbstractRecipeGenerator {
 				//
 				.addItemTagInput(Tags.Items.INGOTS_GOLD, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.GOLD_NUGGET, 1, 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.GOLD_NUGGET), 1))
 				//
 				.complete(consumer);
 
@@ -55,7 +55,7 @@ public class ElectrodynamicsWireMillRecipes extends AbstractRecipeGenerator {
 				//
 				.addItemTagInput(Tags.Items.INGOTS_IRON, 1)
 				//
-				.addItemBiproduct(new ProbableItem(Items.IRON_NUGGET, 1, 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.IRON_NUGGET), 1))
 				//
 				.complete(consumer);
 
@@ -63,7 +63,7 @@ public class ElectrodynamicsWireMillRecipes extends AbstractRecipeGenerator {
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_SILVER, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeNugget.silver), 1, 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeNugget.silver)), 1))
 				//
 				.complete(consumer);
 
@@ -71,7 +71,7 @@ public class ElectrodynamicsWireMillRecipes extends AbstractRecipeGenerator {
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_SUPERCONDUCTIVE, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeNugget.superconductive), 1, 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeNugget.superconductive)), 1))
 				//
 				.complete(consumer);
 
@@ -79,7 +79,7 @@ public class ElectrodynamicsWireMillRecipes extends AbstractRecipeGenerator {
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_TIN, 1)
 				//
-				.addItemBiproduct(new ProbableItem(ElectrodynamicsItems.getItem(SubtypeNugget.tin), 1, 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeNugget.tin)), 1))
 				//
 				.complete(consumer);
 

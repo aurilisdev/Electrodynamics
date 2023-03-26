@@ -82,6 +82,11 @@ public class TileWireMill extends GenericTile implements ITickableSound {
 	public boolean shouldPlaySound() {
 		return isProcessorActive();
 	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return (int) (((double) getNumActiveProcessors() / (double) Math.max(1, getNumProcessors())) * 15.0);
+	}
 
 	static {
 		VoxelShape shape = Shapes.empty();

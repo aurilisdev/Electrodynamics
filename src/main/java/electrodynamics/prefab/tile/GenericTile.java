@@ -3,6 +3,7 @@ package electrodynamics.prefab.tile;
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.gas.GasTank;
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyManager;
@@ -11,7 +12,6 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.*;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ItemUtils;
-import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -164,7 +164,6 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		if (hasComponent(ComponentType.PacketHandler)) {
 			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
 			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-			
 		}
 
 	}
@@ -237,11 +236,31 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 
 	public boolean isProcessorActive() {
 		for (ComponentProcessor pr : processors) {
-			if (pr != null && pr.operatingTicks.get() > 0) {
+			if (pr != null && pr.isActive()) {
 				return true;
 			}
 		}
 		return false;
+	}
+	
+	public int getNumActiveProcessors() {
+		int count = 0;
+		for (ComponentProcessor pr : processors) {
+			if (pr != null && pr.isActive()) {
+				count++;
+			}
+		}
+		return count;
+	}
+	
+	public int getNumProcessors() {
+		 int count = 0;
+		 for (ComponentProcessor pr : processors) {
+				if (pr != null) {
+					count++;
+				}
+			}
+			return count;
 	}
 
 	public void onEnergyChange(ComponentElectrodynamic cap) {
@@ -263,6 +282,10 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 
 	public void onFluidTankChange(FluidTank tank) {
 		// hook method for now
+	}
+	
+	public void onGasTankChange(GasTank tank) {
+		
 	}
 
 	// This is ceded to the tile to allow for greater control with the use function
@@ -314,6 +337,10 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 
 	public void onPlace(BlockState oldState, boolean isMoving) {
 
+	}
+	
+	public int getComparatorSignal() {
+		return 0;
 	}
 	
 	public void updateCarriedItemInContainer(ItemStack stack, UUID playerId) {

@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.api.References;
-import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
+import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.keys.KeyBinds;
 import electrodynamics.client.render.model.armor.types.ModelJetpack;
@@ -65,6 +65,9 @@ public class ItemJetpack extends ArmorItem {
 
 	public static final float OFFSET = 0.1F;
 
+	public static final String DELTA_Y_KEY = "prevdeltay";
+	public static final String WAS_HURT_KEY = "washurt";
+
 	public ItemJetpack() {
 		super(Jetpack.JETPACK, EquipmentSlot.CHEST, new Item.Properties().tab(References.CORETAB).stacksTo(1));
 	}
@@ -100,7 +103,6 @@ public class ItemJetpack extends ArmorItem {
 				ItemStack full = new ItemStack(this);
 				Fluid fluid = getWhitelistedFluids().getSecond().get(0);
 				full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, MAX_CAPACITY)));
-				full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
 				items.add(full);
 
 			}
@@ -147,26 +149,26 @@ public class ItemJetpack extends ArmorItem {
 				boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
 				if (enoughFuel) {
 					if (mode == 0 && isDown) {
-						moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY, player);
+						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY, player, stack);
 						renderClientParticles(world, player, particleZ);
-						sendPacket(player, true);
+						sendPacket(player, true, deltaY);
 					} else if (mode == 1 && isDown) {
-						moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2, player);
+						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2, player, stack);
 						renderClientParticles(world, player, particleZ);
-						sendPacket(player, true);
+						sendPacket(player, true, deltaY);
 
 					} else if (mode == 1 && player.getFeetBlockState().isAir()) {
-						hoverWithJetpack(player);
+						double deltaY = hoverWithJetpack(player, stack);
 						renderClientParticles(world, player, particleZ);
-						sendPacket(player, true);
+						sendPacket(player, true, deltaY);
 					} else {
-						sendPacket(player, false);
+						sendPacket(player, false, player.getDeltaMovement().y);
 					}
 				} else {
-					sendPacket(player, false);
+					sendPacket(player, false, player.getDeltaMovement().y);
 				}
 			} else {
-				sendPacket(player, false);
+				sendPacket(player, false, player.getDeltaMovement().y);
 			}
 		} else {
 			CompoundTag tag = stack.getOrCreateTag();
@@ -236,28 +238,42 @@ public class ItemJetpack extends ArmorItem {
 		return Pair.of(tags, fluids);
 	}
 
-	protected static void moveWithJetpack(double speed, double termVelocity, Player player) {
+	protected static double moveWithJetpack(double speed, double termVelocity, Player player, ItemStack jetpack) {
+
 		Vec3 movement = player.getDeltaMovement();
 
-		double ySum = player.getDeltaMovement().y + speed;
+		if (player.hasImpulse && wasEntityHurt(jetpack)) {
+			movement = new Vec3(movement.x, getPrevDeltaY(jetpack), movement.z);
+		}
+
+		double ySum = movement.y + speed;
 		double absY = Math.min(Math.abs(ySum), termVelocity);
 		double newY = Math.signum(ySum) * absY;
 		Vec3 currMovement = new Vec3(movement.x, newY, movement.z);
 
 		player.setDeltaMovement(currMovement);
 		player.resetFallDistance();
+		// we keep track of the previous delta y for impulses
+		return currMovement.y;
 	}
 
-	protected static void hoverWithJetpack(Player player) {
-		Vec3 currMovement = player.getDeltaMovement();
+	protected static double hoverWithJetpack(Player player, ItemStack jetpack) {
+
+		Vec3 movement = player.getDeltaMovement();
+
+		if (player.hasImpulse && wasEntityHurt(jetpack)) {
+			movement = new Vec3(movement.x, getPrevDeltaY(jetpack), movement.z);
+		}
 
 		if (player.isShiftKeyDown()) {
-			currMovement = new Vec3(currMovement.x, -0.3, currMovement.z);
+			movement = new Vec3(movement.x, -0.3, movement.z);
 		} else {
-			currMovement = new Vec3(currMovement.x, 0, currMovement.z);
+			movement = new Vec3(movement.x, 0, movement.z);
 		}
-		player.setDeltaMovement(currMovement);
+		player.setDeltaMovement(movement);
 		player.resetFallDistance();
+		// we keep track of the previous delta y for impulses
+		return movement.y;
 	}
 
 	public static void renderClientParticles(Level world, Player player, float particleZ) {
@@ -276,11 +292,13 @@ public class ItemJetpack extends ArmorItem {
 		double y = worldPosition.y + (player.isShiftKeyDown() ? 0.5 : 0.8);
 		for (int i = 0; i < 10; i++) {
 			world.addParticle(ParticleTypes.FLAME, xRight, y, zRight, 0, -2D, 0);
-			// world.sendParticles(ParticleTypes.FLAME, xRight, y , zRight, 0, 0.0D, -2D, 0.0D, 2D);
+			// world.sendParticles(ParticleTypes.FLAME, xRight, y , zRight, 0, 0.0D, -2D,
+			// 0.0D, 2D);
 		}
 		for (int i = 0; i < 10; i++) {
 			world.addParticle(ParticleTypes.FLAME, xLeft, y, zLeft, 0, -2D, 0);
-			// world.sendParticles(ParticleTypes.FLAME, xLeft, y, zLeft, 0, 0.0D, -2D, 0.0D, 2D);
+			// world.sendParticles(ParticleTypes.FLAME, xLeft, y, zLeft, 0, 0.0D, -2D, 0.0D,
+			// 2D);
 		}
 	}
 
@@ -288,8 +306,16 @@ public class ItemJetpack extends ArmorItem {
 		stack.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(ItemJetpack.USAGE_PER_TICK, FluidAction.EXECUTE));
 	}
 
-	protected static void sendPacket(Player player, boolean state) {
-		NetworkHandler.CHANNEL.sendToServer(new PacketJetpackFlightServer(player.getUUID(), state));
+	protected static void sendPacket(Player player, boolean state, double prevDeltaMove) {
+		NetworkHandler.CHANNEL.sendToServer(new PacketJetpackFlightServer(player.getUUID(), state, prevDeltaMove));
+	}
+
+	protected static double getPrevDeltaY(ItemStack stack) {
+		return stack.getOrCreateTag().getDouble(DELTA_Y_KEY);
+	}
+
+	protected static boolean wasEntityHurt(ItemStack stack) {
+		return stack.getOrCreateTag().getBoolean(WAS_HURT_KEY);
 	}
 
 	@Override

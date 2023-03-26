@@ -22,7 +22,7 @@ public class ScreenElectricArcFurnace extends GenericScreen<ContainerElectricArc
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
-				if (processor.operatingTicks.get() > 0) {
+				if (processor.isActive()) {
 					return processor.operatingTicks.get() / processor.requiredTicks.get();
 				}
 			}
@@ -32,7 +32,7 @@ public class ScreenElectricArcFurnace extends GenericScreen<ContainerElectricArc
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
-				if (processor.operatingTicks.get() > 0) {
+				if (processor.isActive()) {
 					return 1;
 				}
 			}

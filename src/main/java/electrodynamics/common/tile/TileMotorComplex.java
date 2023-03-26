@@ -106,6 +106,11 @@ public class TileMotorComplex extends GenericTile implements ITickableSound {
 	public boolean shouldPlaySound() {
 		return isPowered.get();
 	}
+	
+	@Override
+	public int getComparatorSignal() {
+		return isPowered.get() ? 15 : 0;
+	}
 
 	static {
 		VoxelShape shape = Shapes.empty();

@@ -8,6 +8,7 @@ import com.mojang.datafixers.util.Pair;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
+import electrodynamics.common.recipe.recipeutils.ProbableGas;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
@@ -23,26 +24,8 @@ public abstract class Item2ItemRecipe extends ElectrodynamicsRecipe {
 	private CountableIngredient[] ITEM_INPUTS;
 	private ItemStack OUTPUT;
 
-	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, double experience, int ticks, double usagePerTick) {
-		super(recipeID, experience, ticks, usagePerTick);
-		ITEM_INPUTS = inputs;
-		OUTPUT = output;
-	}
-
-	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts, double experience, int ticks, double usagePerTick) {
-		super(recipeID, itemBiproducts, experience, ticks, usagePerTick);
-		ITEM_INPUTS = inputs;
-		OUTPUT = output;
-	}
-
-	public Item2ItemRecipe(CountableIngredient[] inputs, ItemStack output, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience, int ticks, double usagePerTick) {
-		super(fluidBiproducts, recipeID, experience, ticks, usagePerTick);
-		ITEM_INPUTS = inputs;
-		OUTPUT = output;
-	}
-
-	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience, int ticks, double usagePerTick) {
-		super(recipeID, itemBiproducts, fluidBiproducts, experience, ticks, usagePerTick);
+	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, ProbableGas[] gasBiproducts) {
+		super(recipeID, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
 		ITEM_INPUTS = inputs;
 		OUTPUT = output;
 	}

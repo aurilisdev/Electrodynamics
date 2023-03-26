@@ -1,6 +1,7 @@
 package electrodynamics.datagen.client;
 
 import electrodynamics.api.References;
+import electrodynamics.api.gas.Gas;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
@@ -26,7 +27,9 @@ import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsFluids;
+import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsRegistries;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.sounds.SoundEvent;
@@ -422,6 +425,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.silver), "Silver Sulfate");
 			addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.tin), "Tin Sulfate");
 			addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.vanadium), "Vanadium Sulfate");
+			
+			addGas(ElectrodynamicsGases.EMPTY, "Empty");
 
 			addContainer(SubtypeMachine.advancedsolarpanel, "Advanced Solar Panel");
 			addContainer(SubtypeMachine.batterybox, "Battery Box");
@@ -951,6 +956,14 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 	public void addFluid(Fluid fluid, String translation) {
 		add("fluid." + modID + "." + ForgeRegistries.FLUIDS.getKey(fluid).getPath(), translation);
+	}
+	
+	public void addGas(RegistryObject<Gas> gas, String translation) {
+		addGas(gas.get(), translation);
+	}
+	
+	public void addGas(Gas gas, String translation) {
+		add("gas." + modID + "." + ElectrodynamicsRegistries.gasRegistry().getKey(gas).getPath(), translation);
 	}
 
 	public void addContainer(SubtypeMachine key, String translation) {
