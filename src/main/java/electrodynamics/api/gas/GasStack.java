@@ -122,7 +122,7 @@ public class GasStack {
 			return 0;
 		}
 		
-		if(change < 1) {
+		if(change > 1) {
 			change *= -1;
 		}
 		
@@ -282,7 +282,7 @@ public class GasStack {
 		
 		double deltaP1 = (double) rulingPressure / (double) stack1.pressure;
 		
-		if(deltaP1 < 1) {
+		if(deltaP1 > 1) {
 			deltaP1 *= -1;
 		} else if (deltaP1 == 1) {
 			deltaP1 = 0;
@@ -296,7 +296,7 @@ public class GasStack {
 		
 		double deltaP2 = (double) rulingPressure / (double) stack2.pressure;
 		
-		if(deltaP2 < 1) {
+		if(deltaP2 > 1) {
 			deltaP2 *= -1;
 		} else if (deltaP2 == 1) {
 			deltaP2 = 0;
