@@ -269,6 +269,7 @@ public enum PropertyType {
 			break;
 		case InventoryItems:
 			int size = tag.getInt(prop.getName() + "_size");
+			if (size == 0) { size = ((NonNullList<ItemStack>)prop.get()).size(); }
 			NonNullList<ItemStack> toBeFilled = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
 			ContainerHelper.loadAllItems(tag, toBeFilled);
 			val = toBeFilled;
