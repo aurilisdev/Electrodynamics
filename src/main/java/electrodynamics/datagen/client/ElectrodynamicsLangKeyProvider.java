@@ -508,7 +508,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addTooltip("itemcanister", "1000 mB");
 			addTooltip("railguntemp", "Temperature %s");
 			addTooltip("railgunmaxtemp", "Max Temp: %s");
-			addTooltip("railgunoverheat", "WARNING , OVERHEATING");
+			addTooltip("railgunoverheat", "WARNING : OVERHEATING");
 			addTooltip("ceramicplatecount", "Plates Remaining: %s");
 			addTooltip("tanksteel.capacity", "Capacity , 8000 mB");
 			addTooltip("tankreinforced.capacity", "Capacity , 32000 mB");

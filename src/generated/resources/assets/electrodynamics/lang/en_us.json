@@ -703,7 +703,7 @@
   "tooltip.electrodynamics.nightvisiongoggles.status": "Status: ",
   "tooltip.electrodynamics.quarry.power": "Upgrades require power to work",
   "tooltip.electrodynamics.railgunmaxtemp": "Max Temp: %s",
-  "tooltip.electrodynamics.railgunoverheat": "WARNING , OVERHEATING",
+  "tooltip.electrodynamics.railgunoverheat": "WARNING : OVERHEATING",
   "tooltip.electrodynamics.railguntemp": "Temperature %s",
   "tooltip.electrodynamics.seismicmarker.redstone": "Apply redstone for guide lines",
   "tooltip.electrodynamics.seismicrelay.use": "Detects and stores Marker rings",

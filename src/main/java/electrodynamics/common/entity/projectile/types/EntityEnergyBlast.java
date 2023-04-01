@@ -55,9 +55,6 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 	@Override
 	public void onHitEntity(EntityHitResult hit) {
 		hit.getEntity().hurt(DamageSources.PLASMA_BOLT, 40F / (tickCount / 40.0f + 1));
-		if (!level.isClientSide) {
-			level.explode(null, hit.getLocation().x(), hit.getLocation().y(), hit.getLocation().z(), 4f / (tickCount / 40.0f + 1), true, BlockInteraction.DESTROY);
-		}
 		super.onHitEntity(hit);
 	}
 
