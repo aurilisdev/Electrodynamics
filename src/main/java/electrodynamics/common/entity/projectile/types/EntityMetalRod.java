@@ -43,6 +43,11 @@ public class EntityMetalRod extends EntityCustomProjectile {
 		super(ElectrodynamicsEntities.ENTITY_METALROD.get(), x, y, z, worldIn);
 		this.number = number;
 	}
+	
+	@Override
+	public void setPos(double x, double y, double z) {
+		super.setPos(x, y, z);
+	}
 
 	@Override
 	public void tick() {
@@ -51,7 +56,8 @@ public class EntityMetalRod extends EntityCustomProjectile {
 			entityData.set(NUMBER, number);
 		} else if (!entityData.isEmpty()) {
 			number = entityData.get(NUMBER);
-		}
+		} 
+		
 	}
 
 	@Override

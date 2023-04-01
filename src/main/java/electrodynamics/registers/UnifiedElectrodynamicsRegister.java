@@ -24,6 +24,7 @@ public class UnifiedElectrodynamicsRegister {
 		ElectrodynamicsMenuTypes.MENU_TYPES.register(bus);
 		ElectrodynamicsSounds.SOUNDS.register(bus);
 		ElectrodynamicsGases.GASES.register(bus);
+		ElectrodynamicsParticles.PARTICLES.register(bus);
 	}
 
 	static {

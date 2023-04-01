@@ -35,24 +35,27 @@ public class ItemRailgunPlasma extends ItemRailgun {
 			gunStack = playerIn.getOffhandItem();
 		}
 
-		if (!worldIn.isClientSide) {
-			ItemRailgunPlasma railgun = (ItemRailgunPlasma) gunStack.getItem();
-
-			if (railgun.getJoulesStored(gunStack) >= JOULES_PER_SHOT && railgun.getTemperatureStored(gunStack) <= OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
-
-				EntityCustomProjectile projectile = new EntityEnergyBlast(playerIn, worldIn);
-				projectile.setNoGravity(true);
-				projectile.setOwner(playerIn);
-				projectile.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), 0F, 5f, 1.0F);
-				worldIn.addFreshEntity(projectile);
-
-				railgun.extractPower(gunStack, JOULES_PER_SHOT, false);
-				worldIn.playSound(null, playerIn.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNPLASMA.get(), SoundSource.PLAYERS, 1, 1);
-				railgun.recieveHeat(gunStack, TransferPack.temperature(TEMPERATURE_PER_SHOT), false);
-			} else {
-				worldIn.playSound(null, playerIn.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
-			}
+		if (worldIn.isClientSide) {
+			return InteractionResultHolder.pass(gunStack);
 		}
+
+		ItemRailgunPlasma railgun = (ItemRailgunPlasma) gunStack.getItem();
+
+		if (railgun.getJoulesStored(gunStack) < JOULES_PER_SHOT || railgun.getTemperatureStored(gunStack) > OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
+			worldIn.playSound(null, playerIn.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+			return InteractionResultHolder.pass(gunStack);
+		}
+
+		EntityCustomProjectile projectile = new EntityEnergyBlast(playerIn, worldIn);
+		projectile.setNoGravity(true);
+		projectile.setOwner(playerIn);
+		projectile.shootFromRotation(playerIn, playerIn.getXRot(), playerIn.getYRot(), 0F, 5f, 1.0F);
+		worldIn.addFreshEntity(projectile);
+
+		railgun.extractPower(gunStack, JOULES_PER_SHOT, false);
+		worldIn.playSound(null, playerIn.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNPLASMA.get(), SoundSource.PLAYERS, 1, 1);
+		railgun.recieveHeat(gunStack, TransferPack.temperature(TEMPERATURE_PER_SHOT), false);
+
 		return InteractionResultHolder.pass(gunStack);
 	}
 

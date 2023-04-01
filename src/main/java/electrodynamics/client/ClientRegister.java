@@ -7,6 +7,7 @@ import java.util.List;
 import electrodynamics.api.References;
 import electrodynamics.client.guidebook.ModuleElectrodynamics;
 import electrodynamics.client.guidebook.ScreenGuidebook;
+import electrodynamics.client.particle.plasmaball.ParticlePlasmaBall;
 import electrodynamics.client.render.entity.RenderEnergyBlast;
 import electrodynamics.client.render.entity.RenderMetalRod;
 import electrodynamics.client.render.model.armor.types.ModelCombatArmor;
@@ -78,6 +79,7 @@ import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsEntities;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
+import electrodynamics.registers.ElectrodynamicsParticles;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.RenderType;
@@ -89,6 +91,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent.RegisterAdditional;
+import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -124,7 +127,7 @@ public class ClientRegister {
 
 	public static HashMap<ResourceLocation, TextureAtlasSprite> CACHED_TEXTUREATLASSPRITES = new HashMap<>();
 	// for registration purposes only!
-	private static final List<ResourceLocation> customBlockTextures = new ArrayList<>();
+	private static final List<ResourceLocation> customTextures = new ArrayList<>();
 
 	public static final ResourceLocation ON = new ResourceLocation("on");
 
@@ -218,6 +221,8 @@ public class ClientRegister {
 	public static final ResourceLocation TEXTURE_QUARRYARM_DARK = new ResourceLocation(CUSTOM_LOC + "quarrydark");
 	public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation("forge", "white");
 
+	public static final ResourceLocation TEXTURE_PLASMA_BALL = new ResourceLocation(CUSTOM_LOC + "plasmaorb");
+
 	public static void setup() {
 		ClientEvents.init();
 
@@ -302,25 +307,31 @@ public class ClientRegister {
 	}
 
 	static {
-		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM);
-		customBlockTextures.add(ClientRegister.TEXTURE_QUARRYARM_DARK);
-		customBlockTextures.add(ClientRegister.TEXTURE_WHITE);
+		customTextures.add(ClientRegister.TEXTURE_QUARRYARM);
+		customTextures.add(ClientRegister.TEXTURE_QUARRYARM_DARK);
+		customTextures.add(ClientRegister.TEXTURE_WHITE);
+		customTextures.add(ClientRegister.TEXTURE_PLASMA_BALL);
 	}
 
 	@SubscribeEvent
 	public static void addCustomTextureAtlases(TextureStitchEvent.Pre event) {
 		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-			customBlockTextures.forEach(event::addSprite);
+			customTextures.forEach(event::addSprite);
 		}
 	}
 
 	@SubscribeEvent
 	public static void cacheCustomTextureAtlases(TextureStitchEvent.Post event) {
 		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-			for (ResourceLocation loc : customBlockTextures) {
+			for (ResourceLocation loc : customTextures) {
 				ClientRegister.CACHED_TEXTUREATLASSPRITES.put(loc, event.getAtlas().getSprite(loc));
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public static void registerParticles(RegisterParticleProvidersEvent event) {
+		event.register(ElectrodynamicsParticles.PARTICLE_PLASMA_BALL.get(), ParticlePlasmaBall.Factory::new);
 	}
 
 }

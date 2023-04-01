@@ -31,7 +31,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.OnDatapackSyncEvent;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -42,8 +41,6 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PacketDistributor.PacketTarget;
-import net.minecraftforge.registries.NewRegistryEvent;
-
 
 @Mod(References.ID)
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
@@ -90,10 +87,13 @@ public class Electrodynamics {
 //		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
 //	}
 
+	// I wonder how long this bug has been there
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
 	public static void onClientSetup(FMLClientSetupEvent event) {
-		ClientRegister.setup();
+		event.enqueueWork(() -> {
+			ClientRegister.setup();
+		});
 	}
 
 	// Don't really have a better place to put this for now
@@ -106,9 +106,5 @@ public class Electrodynamics {
 		};
 
 	}
-	
-	@SubscribeEvent(priority = EventPriority.LOW)
-	public static void registerNewRegistries(NewRegistryEvent event) {
-		
-	}
+
 }
