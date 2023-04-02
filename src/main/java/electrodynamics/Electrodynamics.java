@@ -82,11 +82,6 @@ public class Electrodynamics {
 
 	}
 
-//	@SubscribeEvent
-//	public static void registerRecipeSerialziers(Register<RecipeSerializer<?>> event) {
-//		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
-//	}
-
 	// I wonder how long this bug has been there
 	@SubscribeEvent
 	@OnlyIn(Dist.CLIENT)
