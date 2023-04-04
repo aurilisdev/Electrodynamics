@@ -2,6 +2,7 @@ package electrodynamics.api.capability.types.fluid;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.annotation.Nullable;
 
@@ -94,7 +95,7 @@ public class RestrictedFluidHandlerItemStack extends FluidHandlerItemStack.SwapE
 		for (ResourceLocation loc : tags) {
 			List<Fluid> fluids = ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(loc)).stream().toList();
 			for (Fluid fluid : fluids) {
-				if (!fluid.builtInRegistryHolder().key().location().toString().toLowerCase().contains("flow")) {
+				if (!fluid.builtInRegistryHolder().key().location().toString().toLowerCase(Locale.ROOT).contains("flow")) {
 					valid.add(fluid);
 				}
 			}

@@ -1,5 +1,7 @@
 package electrodynamics.datagen.client;
 
+import java.util.Locale;
+
 import javax.annotation.Nullable;
 
 import electrodynamics.api.References;
@@ -274,7 +276,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		}
 
 		public ResourceLocation loc() {
-			return loc == null ? new ResourceLocation(toString().toLowerCase()) : loc;
+			return loc == null ? new ResourceLocation(toString().toLowerCase(Locale.ROOT)) : loc;
 		}
 	}
 

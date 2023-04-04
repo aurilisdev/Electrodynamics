@@ -38,6 +38,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * A basic implementation of a Guidebook that allows for variable length text
@@ -940,7 +941,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 								
 								found.add(new SearchHit(wrapper.characters(), page.getPage(), page.associatedChapter));
 								
-							} else if (!caseSensitive.isSelected() && wrapper.characters().getString().toLowerCase().contains(text.toLowerCase())) {
+							} else if (!caseSensitive.isSelected() && wrapper.characters().getString().toLowerCase(Locale.ROOT).contains(text.toLowerCase())) {
 								
 								found.add(new SearchHit(wrapper.characters(), page.getPage(), page.associatedChapter));
 								

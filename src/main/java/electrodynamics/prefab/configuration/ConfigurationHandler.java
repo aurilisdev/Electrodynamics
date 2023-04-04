@@ -8,6 +8,7 @@ import java.io.FileWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
+import java.util.Locale;
 
 import electrodynamics.api.References;
 import electrodynamics.api.configuration.BooleanValue;
@@ -47,7 +48,7 @@ public class ConfigurationHandler {
 	public static void load() {
 		for (Class<?> clazz : configurationMappings) {
 			Configuration config = clazz.getAnnotation(Configuration.class);
-			File file = new File(FMLPaths.GAMEDIR.get().resolve(FMLConfig.defaultConfigPath()).toFile(), config.name().toLowerCase() + ".txt");
+			File file = new File(FMLPaths.GAMEDIR.get().resolve(FMLConfig.defaultConfigPath()).toFile(), config.name().toLowerCase(Locale.ROOT) + ".txt");
 			Field[] declaredFields = clazz.getDeclaredFields();
 			try {
 				if (!file.exists()) {

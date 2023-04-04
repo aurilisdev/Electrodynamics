@@ -2,6 +2,7 @@ package electrodynamics.datagen.utils.recipe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
@@ -290,7 +291,7 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 		FLUID_2_FLUID;
 
 		public String category() {
-			return toString().toLowerCase().replaceAll("_", "");
+			return toString().toLowerCase(Locale.ROOT).replaceAll("_", "");
 		}
 	}
 	

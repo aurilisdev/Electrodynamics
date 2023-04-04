@@ -1,5 +1,7 @@
 package electrodynamics.client.guidebook.chapters;
 
+import java.util.Locale;
+
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.client.guidebook.ScreenGuidebook;
@@ -55,7 +57,7 @@ public class ChapterGenerators extends Chapter {
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.heatsource").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		
 		ThermoelectricGeneratorHeatRegister.INSTANCE.getHeatSources().forEach((fluid, multiplier) -> {
-			if(ForgeRegistries.FLUIDS.getKey(fluid).toString().toLowerCase().contains("flow")) {
+			if(ForgeRegistries.FLUIDS.getKey(fluid).toString().toLowerCase(Locale.ROOT).contains("flow")) {
 				return;
 			}
 			pageData.add(new TextWrapperObject(fluid.getFluidType().getDescription()).setSeparateStart());

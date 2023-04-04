@@ -3,6 +3,7 @@ package electrodynamics.compatibility.jei.recipecategories.fluid2item;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
@@ -36,7 +37,7 @@ public abstract class Fluid2ItemRecipeCategory<T extends Fluid2ItemRecipe> exten
 		for (FluidIngredient ing : recipe.getFluidIngredients()) {
 			List<FluidStack> fluids = new ArrayList<>();
 			for (FluidStack stack : ing.getMatchingFluids()) {
-				if (!ForgeRegistries.FLUIDS.getKey(stack.getFluid()).toString().toLowerCase().contains("flow")) {
+				if (!ForgeRegistries.FLUIDS.getKey(stack.getFluid()).toString().toLowerCase(Locale.ROOT).contains("flow")) {
 					fluids.add(stack);
 				}
 			}

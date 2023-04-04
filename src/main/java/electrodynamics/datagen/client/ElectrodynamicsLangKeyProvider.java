@@ -1019,7 +1019,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 		@Override
 		public String toString() {
-			return super.toString().toLowerCase();
+			return super.toString().toLowerCase(java.util.Locale.ROOT);
 		}
 	}
 
