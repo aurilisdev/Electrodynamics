@@ -39,6 +39,10 @@ public class ChapterTips extends Chapter {
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.tips.tip", 2).withStyle(ChatFormatting.UNDERLINE)).setNewPage());
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.tips.tip2")).setIndentions(1).setSeparateStart());
 
+		// Tool Battery Replacement Tip
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.tips.tip", 3).withStyle(ChatFormatting.UNDERLINE)).setNewPage());
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.tips.tip3")).setIndentions(1).setSeparateStart());
+
 	}
 
 }
