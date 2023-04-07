@@ -12,6 +12,7 @@ import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -31,7 +32,7 @@ public class ItemRailgunKinetic extends ItemRailgun {
 	private static final double OVERHEAT_WARNING_THRESHOLD = 0.75;
 
 	public ItemRailgunKinetic(ElectricItemProperties properties) {
-		super(properties, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK);
+		super(properties, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK, item -> ElectrodynamicsItems.ITEM_LITHIUMBATTERY.get());
 	}
 
 	@Override

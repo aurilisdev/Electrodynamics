@@ -86,7 +86,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	private static final int FULL_FLUID_SQUARE = 1600;
 
-	private static JeiRuntime RUNTIME = null;
+	private static IJeiRuntime RUNTIME = null;
 	
 	@Override
 	public ResourceLocation getPluginUid() {
@@ -99,7 +99,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	}
 	
 	@Nullable
-	public static JeiRuntime getJeiRuntime() {
+	public static IJeiRuntime getJeiRuntime() {
 		return RUNTIME;
 	}
 

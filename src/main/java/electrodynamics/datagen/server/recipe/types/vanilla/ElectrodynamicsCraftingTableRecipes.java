@@ -2171,7 +2171,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 
 		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_KINETICRAILGUN.get(), 1)
 				//
-				.addPattern("LXS")
+				.addPattern("CXS")
 				//
 				.addPattern("LPR")
 				//
@@ -2195,7 +2195,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 
 		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_PLASMARAILGUN.get(), 1)
 				//
-				.addPattern("LXS")
+				.addPattern("CXS")
 				//
 				.addPattern("LPR")
 				//

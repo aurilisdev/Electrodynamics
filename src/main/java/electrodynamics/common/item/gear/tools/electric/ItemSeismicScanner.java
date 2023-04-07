@@ -13,6 +13,7 @@ import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.prefab.utilities.WorldUtils;
 import electrodynamics.prefab.utilities.object.Location;
+import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
@@ -52,7 +53,7 @@ public class ItemSeismicScanner extends ItemElectric {
 	public static final String BLOCK_LOC = "block";
 
 	public ItemSeismicScanner(ElectricItemProperties properties) {
-		super(properties);
+		super(properties, item -> ElectrodynamicsItems.ITEM_BATTERY.get());
 		this.properties = properties;
 	}
 

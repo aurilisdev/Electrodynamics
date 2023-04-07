@@ -541,6 +541,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addTooltip("servolegs.both", "BOTH");
 			addTooltip("servolegs.speed", "SPEED");
 			addTooltip("servolegs.none", "NONE");
+			addTooltip("currbattery", "Battery: %s");
 
 			addGuiLabel("creativepowersource.voltage", "Voltage: ");
 			addGuiLabel("creativepowersource.power", "Power: ");
@@ -624,6 +625,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addKeyLabel("jetpackmode", "Switch Jetpack Mode");
 			addKeyLabel("servoleggingsmode", "Switch Servo Leggings Mode");
 			addKeyLabel("toggleservoleggings", "Toggle Servo Leggings");
+			addKeyLabel("swapbattery", "Swap Battery");
 
 			addJei("guilabel.power", "%1$sV %2$skW");
 			addJei("info.item.coalgeneratorfuelsource", "Coal Generator Fuel:\n    Burn Time: %ss");
@@ -659,6 +661,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addSubtitle(ElectrodynamicsSounds.SOUND_HYDRAULICBOOTS, "Hydraulic piston fires");
 			addSubtitle(ElectrodynamicsSounds.SOUND_JETPACKSWITCHMODE, "Equipment cycles mode");
 			addSubtitle(ElectrodynamicsSounds.SOUND_JETPACK, "Jetpack engine runs");
+			addSubtitle(ElectrodynamicsSounds.SOUND_BATTERY_SWAP, "Battery is swapped");
 
 			addGuidebook("title", "Electrodynamics Electric Code 1st Edition");
 			addGuidebook("titlequote", "\"There is nothing more permanent than a temporary solution.\"");

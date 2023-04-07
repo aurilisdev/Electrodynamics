@@ -11,6 +11,7 @@ import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
@@ -26,6 +27,7 @@ import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ProjectileWeaponItem;
@@ -148,6 +150,7 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		tooltip.add(TextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
 		tooltip.add(TextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
+		IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
 	}
 
 	@Override
@@ -163,6 +166,11 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	@Override
 	public int getDefaultProjectileRange() {
 		return PROJECTILE_RANGE;
+	}
+
+	@Override
+	public Item getDefaultStorageBattery() {
+		return ElectrodynamicsItems.ITEM_BATTERY.get();
 	}
 
 }

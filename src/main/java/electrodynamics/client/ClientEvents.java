@@ -7,6 +7,7 @@ import electrodynamics.client.guidebook.ScreenGuidebook;
 import electrodynamics.client.keys.event.AbstractKeyPressHandler;
 import electrodynamics.client.keys.event.HandlerModeSwitchJetpack;
 import electrodynamics.client.keys.event.HandlerModeSwitchServoLegs;
+import electrodynamics.client.keys.event.HandlerSwapBattery;
 import electrodynamics.client.keys.event.HandlerToggleNVGoggles;
 import electrodynamics.client.keys.event.HandlerToggleServoLegs;
 import electrodynamics.client.reloadlistener.ReloadListenerResetGuidebook;
@@ -39,6 +40,7 @@ public class ClientEvents {
 		KEY_PRESS_HANDLERS.add(new HandlerToggleServoLegs());
 		KEY_PRESS_HANDLERS.add(new HandlerModeSwitchServoLegs());
 		KEY_PRESS_HANDLERS.add(new HandlerModeSwitchJetpack());
+		KEY_PRESS_HANDLERS.add(new HandlerSwapBattery());
 
 		LEVEL_STAGE_RENDER_HANDLERS.add(HandlerQuarryArm.INSTANCE);
 		LEVEL_STAGE_RENDER_HANDLERS.add(HandlerMarkerLines.INSTANCE);

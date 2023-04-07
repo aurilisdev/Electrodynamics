@@ -1,4 +1,10 @@
 {
+  "batteryswap": {
+    "sounds": [
+      "electrodynamics:batteryswap"
+    ],
+    "subtitle": "subtitles.electrodynamics.batteryswap"
+  },
   "ceramicplateadded": {
     "sounds": [
       "electrodynamics:ceramicplateadded"

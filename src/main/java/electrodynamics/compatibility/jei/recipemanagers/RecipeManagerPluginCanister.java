@@ -31,7 +31,7 @@ public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 	@Override
 	public <V> List<RecipeType<?>> getRecipeTypes(IFocus<V> focus) {
 
-		JeiRuntime runtime = ElectrodynamicsJEIPlugin.getJeiRuntime();
+		JeiRuntime runtime = (JeiRuntime) ElectrodynamicsJEIPlugin.getJeiRuntime();
 
 		if (runtime == null) {
 			return Collections.emptyList();
@@ -74,7 +74,7 @@ public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 
 	@Override
 	public <T, V> List<T> getRecipes(IRecipeCategory<T> recipeCategory, IFocus<V> focus) {
-		JeiRuntime runtime = ElectrodynamicsJEIPlugin.getJeiRuntime();
+		JeiRuntime runtime = (JeiRuntime) ElectrodynamicsJEIPlugin.getJeiRuntime();
 
 		if (runtime == null) {
 			return Collections.emptyList();
@@ -117,7 +117,7 @@ public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 
 	@Override
 	public <T> List<T> getRecipes(IRecipeCategory<T> recipeCategory) {
-		JeiRuntime runtime = ElectrodynamicsJEIPlugin.getJeiRuntime();
+		JeiRuntime runtime = (JeiRuntime) ElectrodynamicsJEIPlugin.getJeiRuntime();
 
 		if (runtime == null) {
 			return Collections.emptyList();

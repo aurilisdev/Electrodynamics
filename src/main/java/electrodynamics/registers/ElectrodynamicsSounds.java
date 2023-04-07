@@ -34,6 +34,7 @@ public class ElectrodynamicsSounds {
 	public static final RegistryObject<SoundEvent> SOUND_JETPACKSWITCHMODE = sound("jetpackswitchmode");
 	public static final RegistryObject<SoundEvent> SOUND_JETPACK = sound("jetpack");
 	public static final RegistryObject<SoundEvent> SOUND_MOTORRUNNING = sound("motorrunning");
+	public static final RegistryObject<SoundEvent> SOUND_BATTERY_SWAP = sound("batteryswap");
 
 	private static RegistryObject<SoundEvent> sound(String name) {
 		return SOUNDS.register(name, () -> new SoundEvent(new ResourceLocation(References.ID + ":" + name)));
