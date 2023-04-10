@@ -6,9 +6,7 @@ import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.registers.ElectrodynamicsEntities;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -27,7 +25,6 @@ public class EntityMetalRod extends EntityCustomProjectile {
 	/*
 	 * 0 = Steel 1 = Stainless Steel 2 = HSLA Steel
 	 */
-	private static final EntityDataAccessor<Integer> NUMBER = SynchedEntityData.defineId(EntityMetalRod.class, EntityDataSerializers.INT);
 	private int number = 0;
 
 	public EntityMetalRod(EntityType<? extends ThrowableItemProjectile> type, Level world) {
@@ -43,15 +40,10 @@ public class EntityMetalRod extends EntityCustomProjectile {
 		super(ElectrodynamicsEntities.ENTITY_METALROD.get(), x, y, z, worldIn);
 		this.number = number;
 	}
-
+	
 	@Override
-	public void tick() {
-		super.tick();
-		if (!level.isClientSide) {
-			entityData.set(NUMBER, number);
-		} else if (!entityData.isEmpty()) {
-			number = entityData.get(NUMBER);
-		}
+	public void setPos(double x, double y, double z) {
+		super.setPos(x, y, z);
 	}
 
 	@Override
@@ -67,12 +59,6 @@ public class EntityMetalRod extends EntityCustomProjectile {
 			}
 			remove(Entity.RemovalReason.DISCARDED);
 		}
-	}
-
-	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(NUMBER, number);
 	}
 
 	@Override
@@ -108,6 +94,18 @@ public class EntityMetalRod extends EntityCustomProjectile {
 
 	public int getNumber() {
 		return number;
+	}
+	
+	@Override
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		super.writeSpawnData(buffer);
+		buffer.writeInt(number);
+	}
+	
+	@Override
+	public void readSpawnData(FriendlyByteBuf additionalData) {
+		super.readSpawnData(additionalData);
+		number = additionalData.readInt();
 	}
 
 }

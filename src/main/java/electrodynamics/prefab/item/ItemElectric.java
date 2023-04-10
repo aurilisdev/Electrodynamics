@@ -1,6 +1,7 @@
 package electrodynamics.prefab.item;
 
 import java.util.List;
+import java.util.function.Function;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
@@ -9,19 +10,26 @@ import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
 public class ItemElectric extends Item implements IItemElectric {
 
 	private final ElectricItemProperties properties;
+	private final Function<Item, Item> getBatteryItem;
 
-	public ItemElectric(ElectricItemProperties properties) {
+	public ItemElectric(ElectricItemProperties properties, Function<Item, Item> getBatteryItem) {
 		super(properties);
 		this.properties = properties;
+		this.getBatteryItem = getBatteryItem;
 	}
 
 	@Override
@@ -51,11 +59,30 @@ public class ItemElectric extends Item implements IItemElectric {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		tooltip.add(TextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
 		tooltip.add(TextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
+		if(getDefaultStorageBattery() != Items.AIR) {
+			IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
+		}
 	}
 
 	@Override
 	public ElectricItemProperties getElectricProperties() {
 		return properties;
+	}
+
+	@Override
+	public Item getDefaultStorageBattery() {
+		return getBatteryItem.apply(this);
+	}
+	
+	@Override
+	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+		
+		if(!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
+		}
+		
+		return true;
+		
 	}
 
 }

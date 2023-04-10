@@ -1,5 +1,7 @@
 package electrodynamics.common.item.gear.tools.electric.utils;
 
+import java.util.Locale;
+
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -50,7 +52,7 @@ public enum ElectricItemTier implements Tier {
 	}
 
 	public String tag() {
-		return name().toLowerCase();
+		return name().toLowerCase(Locale.ROOT);
 	}
 
 }

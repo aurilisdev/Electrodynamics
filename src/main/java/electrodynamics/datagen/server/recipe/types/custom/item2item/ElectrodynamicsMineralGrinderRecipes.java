@@ -285,6 +285,30 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 				//
 				.complete(consumer);
 
+		newRecipe(new ItemStack(CRYSTALS[SubtypeCrystal.halite.ordinal()], 3), 0.1F, 200, 350.0, "halite_cystal_from_halite_ore")
+				//
+				.addItemTagInput(ElectrodynamicsTags.Items.ORE_SALT, 1)
+				//
+				.complete(consumer);
+
+		newRecipe(new ItemStack(RAW_ORES[SubtypeRawOre.uranium.ordinal()]), 0.1F, 200, 350.0, "raw_uranium_from_uranium_ore")
+				//
+				.addItemTagInput(ElectrodynamicsTags.Items.ORE_URANIUM, 1)
+				//
+				.complete(consumer);
+
+		newRecipe(new ItemStack(RAW_ORES[SubtypeRawOre.thorium.ordinal()]), 0.1F, 200, 350.0, "raw_thorium_from_thorium_ore")
+				//
+				.addItemTagInput(ElectrodynamicsTags.Items.ORE_THORIUM, 1)
+				//
+				.complete(consumer);
+
+		newRecipe(new ItemStack(RAW_ORES[SubtypeRawOre.fluorite.ordinal()]), 0.1F, 200, 350.0, "fluorite_crystal_from_fluorite_ore")
+				//
+				.addItemTagInput(ElectrodynamicsTags.Items.ORE_FLUORITE, 1)
+				//
+				.complete(consumer);
+
 	}
 
 	public FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {

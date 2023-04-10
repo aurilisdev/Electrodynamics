@@ -87,24 +87,24 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 
 			}
 		}
-		
+
 		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.iron.ordinal()], 3), 0.3F, 200, 450.0, "imp_dust_iron_from_raw_ore")
-		//
-		.addItemTagInput(Tags.Items.RAW_MATERIALS_IRON, 1)
-		//
-		.complete(consumer);
-		
+				//
+				.addItemTagInput(Tags.Items.RAW_MATERIALS_IRON, 1)
+				//
+				.complete(consumer);
+
 		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.gold.ordinal()], 3), 0.3F, 200, 450.0, "imp_dust_gold_from_raw_ore")
-		//
-		.addItemTagInput(Tags.Items.RAW_MATERIALS_GOLD, 1)
-		//
-		.complete(consumer);
-		
+				//
+				.addItemTagInput(Tags.Items.RAW_MATERIALS_GOLD, 1)
+				//
+				.complete(consumer);
+
 		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.copper.ordinal()], 3), 0.3F, 200, 450.0, "imp_dust_copper_from_raw_ore")
-		//
-		.addItemTagInput(Tags.Items.RAW_MATERIALS_COPPER, 1)
-		//
-		.complete(consumer);
+				//
+				.addItemTagInput(Tags.Items.RAW_MATERIALS_COPPER, 1)
+				//
+				.complete(consumer);
 
 		newRecipe(new ItemStack(OXIDES[SubtypeOxide.chromite.ordinal()], 3), 0.3F, 200, 450.0, "oxide_chromite_from_ore")
 				//
@@ -221,6 +221,18 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				.addItemTagInput(Tags.Items.GRAVEL, 1)
 				//
 				.addItemBiproduct(new ProbableItem(new ItemStack(Items.SAND), 0.2))
+				//
+				.complete(consumer);
+
+		newRecipe(new ItemStack(DUSTS[SubtypeDust.salt.ordinal()], 5), 0.1F, 200, 450.0, "salt_from_halite_ore")
+				//
+				.addItemTagInput(ElectrodynamicsTags.Items.ORE_SALT, 1)
+				//
+				.complete(consumer);
+
+		newRecipe(new ItemStack(RAW_ORES[SubtypeRawOre.fluorite.ordinal()], 2), 0.1F, 200, 450.0, "fluorite_crystal_from_fluorite_ore")
+				//
+				.addItemTagInput(ElectrodynamicsTags.Items.ORE_FLUORITE, 1)
 				//
 				.complete(consumer);
 

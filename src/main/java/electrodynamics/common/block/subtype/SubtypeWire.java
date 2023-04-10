@@ -36,12 +36,12 @@ public enum SubtypeWire implements ISubtype {
 	highlyinsulatedgold(WireMaterial.GOLD, 4, 3000, WireClass.HIGHLY_INSULATED, WireType.HIGHLY_INSULATED),
 	highlyinsulatedsuperconductive(WireMaterial.SUPERCONDUCTIVE, Long.MAX_VALUE, WireClass.HIGHLY_INSULATED, WireType.HIGHLY_INSULATED),
 	/* CERAMIC INSULATED */
-	ceramicinsulatedtin(WireMaterial.TIN, 60, WireClass.WELL_INSULATED, WireType.CERAMIC),
-	ceramicinsulatediron(WireMaterial.IRON, 100, WireClass.WELL_INSULATED, WireType.CERAMIC),
-	ceramicinsulatedcopper(WireMaterial.COPPER, 360, WireClass.WELL_INSULATED, WireType.CERAMIC),
-	ceramicinsulatedsilver(WireMaterial.SILVER, 600, WireClass.WELL_INSULATED, WireType.CERAMIC),
-	ceramicinsulatedgold(WireMaterial.GOLD, 1000, WireClass.WELL_INSULATED, WireType.CERAMIC),
-	ceramicinsulatedsuperconductive(WireMaterial.SUPERCONDUCTIVE, Long.MAX_VALUE, WireClass.WELL_INSULATED, WireType.CERAMIC),
+	ceramicinsulatedtin(WireMaterial.TIN, 60, WireClass.CERAMIC, WireType.CERAMIC),
+	ceramicinsulatediron(WireMaterial.IRON, 100, WireClass.CERAMIC, WireType.CERAMIC),
+	ceramicinsulatedcopper(WireMaterial.COPPER, 360, WireClass.CERAMIC, WireType.CERAMIC),
+	ceramicinsulatedsilver(WireMaterial.SILVER, 600, WireClass.CERAMIC, WireType.CERAMIC),
+	ceramicinsulatedgold(WireMaterial.GOLD, 1000, WireClass.CERAMIC, WireType.CERAMIC),
+	ceramicinsulatedsuperconductive(WireMaterial.SUPERCONDUCTIVE, Long.MAX_VALUE, WireClass.CERAMIC, WireType.CERAMIC),
 	/* LOGISTICAL */
 	logisticstin(WireMaterial.TIN, 60, WireClass.INSULATED, WireType.LOGISTICAL),
 	logisticsiron(WireMaterial.IRON, 100, WireClass.INSULATED, WireType.LOGISTICAL),
@@ -111,7 +111,7 @@ public enum SubtypeWire implements ISubtype {
 		BARE(false, true, 0),
 		INSULATED(true, false, 240),
 		HIGHLY_INSULATED(true, false, 960),
-		WELL_INSULATED(true, true, 480);
+		CERAMIC(true, true, 480);
 
 		public final boolean insulated;
 		public final boolean fireProof;

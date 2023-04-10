@@ -24,10 +24,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
@@ -162,6 +167,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			} else {
 				tooltip.add(TextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
 			}
+			IItemElectric.addBatteryTooltip(stack, level, tooltip);
 			break;
 		case CHEST:
 			ItemJetpack.staticAppendHoverText(stack, level, tooltip, flagin);
@@ -171,6 +177,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			tooltip.add(TextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
 			tooltip.add(TextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
 			ItemServoLeggings.staticAppendTooltips(stack, level, tooltip, flagin);
+			IItemElectric.addBatteryTooltip(stack, level, tooltip);
 			break;
 		case FEET:
 			if (!CapabilityUtils.isFluidItemNull()) {
@@ -259,6 +266,29 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	@Override
 	public ElectricItemProperties getElectricProperties() {
 		return properties;
+	}
+
+	@Override
+	public Item getDefaultStorageBattery() {
+		return switch(getSlot()) {
+		case HEAD, LEGS -> ElectrodynamicsItems.ITEM_BATTERY.get();
+		default -> Items.AIR;
+		};
+	}
+	
+	@Override
+	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+		
+		if(getSlot() == EquipmentSlot.CHEST || getSlot() == EquipmentSlot.FEET) {
+			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
+		}
+		
+		if(!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
+		}
+		
+		return true;
+		
 	}
 
 }

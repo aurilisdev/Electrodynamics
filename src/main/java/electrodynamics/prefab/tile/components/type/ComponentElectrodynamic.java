@@ -186,9 +186,8 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		if (holder.hasComponent(ComponentType.Inventory)) {
 			ComponentInventory inventory = holder.getComponent(ComponentType.Inventory);
 			ItemStack stack = inventory.getItem(slot);
-			if (stack.getItem() instanceof ItemElectric) {
-				IItemElectric el = (IItemElectric) stack.getItem();
-				TransferPack pack = functionReceivePower.apply(el.extractPower(stack, maxJoules.get() - joules.get(), false), false);
+			if (stack.getItem() instanceof IItemElectric electric) {
+				TransferPack pack = functionReceivePower.apply(electric.extractPower(stack, maxJoules.get() - joules.get(), false), false);
 				if (pack != TransferPack.EMPTY) {
 					onChange();
 				}
@@ -201,9 +200,8 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		if (holder.hasComponent(ComponentType.Inventory)) {
 			ComponentInventory inventory = holder.getComponent(ComponentType.Inventory);
 			ItemStack stack = inventory.getItem(slot);
-			if (stack.getItem() instanceof ItemElectric) {
-				IItemElectric el = (IItemElectric) stack.getItem();
-				functionExtractPower.apply(el.receivePower(stack, TransferPack.joulesVoltage(joules.get(), voltage.get()), false), false);
+			if (stack.getItem() instanceof IItemElectric electric) {
+				functionExtractPower.apply(electric.receivePower(stack, TransferPack.joulesVoltage(joules.get(), voltage.get()), false), false);
 			}
 		}
 		return this;

@@ -105,9 +105,9 @@ public class TileLogisticalManager extends GenericTile {
 
             if (!stack.isEmpty() && stack.getItem() instanceof ItemDrillHead) {
                 quarryInventory.setItem(TileQuarry.DRILL_HEAD_INDEX, stack.copy());
+                handler.extractItem(i, stack.getMaxStackSize(), false);
+                break;
             }
-
-            handler.extractItem(i, stack.getMaxStackSize(), false);
 
         }
 

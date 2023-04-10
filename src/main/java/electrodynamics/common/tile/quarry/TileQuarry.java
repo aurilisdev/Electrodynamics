@@ -1042,6 +1042,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		isChanged = true;
 		progressCounter.set(0);
 		running.set(false);
+		brokenFrames.clear();
+		repairedFrames.clear();
 		handleFramesDecayNoVarUpdate();
 	}
 

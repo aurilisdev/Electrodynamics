@@ -226,18 +226,36 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 			BlockEntity tile = worldIn.getBlockEntity(pos);
 			if (tile instanceof IConductor c) {
 				c.refreshNetwork();
+				BlockState acc = state;
+				for (Direction d : Direction.values()) {
+					BlockEntity facingTile = worldIn.getBlockEntity(pos.relative(d));
+					if (ElectricityUtils.isConductor(facingTile)) {
+						acc = acc.setValue(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.WIRE);
+					} else if (ElectricityUtils.isElectricReceiver(facingTile, d.getOpposite())) {
+						acc = acc.setValue(FACING_TO_PROPERTY_MAP.get(d), EnumConnectType.INVENTORY);
+					}
+				}
+				worldIn.setBlockAndUpdate(pos, acc);
 			}
 		}
 	}
 
 	@Override
 	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return wire.wireClass.fireProof ? state.hasProperty(BlockStateProperties.WATERLOGGED) && Boolean.TRUE.equals(state.getValue(BlockStateProperties.WATERLOGGED)) ? 0 : 150 : 0;
+		if(wire.wireClass.fireProof) {
+			return 0;
+		}
+		
+		return state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED) ? 0 : 150;
 	}
 
 	@Override
 	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return wire.wireClass.fireProof ? state.hasProperty(BlockStateProperties.WATERLOGGED) && Boolean.TRUE.equals(state.getValue(BlockStateProperties.WATERLOGGED)) ? 0 : 400 : 0;
+		if(wire.wireClass.fireProof) {
+			return 0;
+		}
+		
+		return state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED) ? 0 : 400;
 	}
 
 	@Override
@@ -254,7 +272,7 @@ public class BlockWire extends GenericEntityBlockWaterloggable {
 	@Override
 	public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
 		super.onCaughtFire(state, world, pos, face, igniter);
-		Scheduler.schedule(5, () -> world.setBlock(pos, ElectrodynamicsBlocks.getBlock(SubtypeWire.getWireForType(WireType.UNINSULATED, wire.material)).defaultBlockState(), UPDATE_ALL));
+		Scheduler.schedule(5, () -> world.setBlockAndUpdate(pos, ElectrodynamicsBlocks.getBlock(SubtypeWire.getWireForType(WireType.UNINSULATED, wire.material)).defaultBlockState()));
 	}
 
 	@Override

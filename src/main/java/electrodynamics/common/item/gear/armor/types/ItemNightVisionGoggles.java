@@ -13,6 +13,7 @@ import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
@@ -25,9 +26,13 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -126,6 +131,7 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 		} else {
 			tooltip.add(TextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
 		}
+		IItemElectric.addBatteryTooltip(stack, world, tooltip);
 	}
 
 	@Override
@@ -187,6 +193,22 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 		public float getKnockbackResistance() {
 			return 0.0F;
 		}
+
+	}
+
+	@Override
+	public Item getDefaultStorageBattery() {
+		return ElectrodynamicsItems.ITEM_BATTERY.get();
+	}
+
+	@Override
+	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+
+		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
+		}
+
+		return true;
 
 	}
 

@@ -22,6 +22,7 @@ public class KeyBinds {
 	public static KeyMapping toggleNvgs;
 	public static KeyMapping switchServoLeggingsMode;
 	public static KeyMapping toggleServoLeggings;
+	public static KeyMapping swapBattery;
 
 	private KeyBinds() {
 	}
@@ -33,6 +34,7 @@ public class KeyBinds {
 		toggleNvgs = registerKey("togglenvgs", InputConstants.KEY_N, event);
 		switchServoLeggingsMode = registerKey("servoleggingsmode", InputConstants.KEY_L, event);
 		toggleServoLeggings = registerKey("toggleservoleggings", InputConstants.KEY_K, event);
+		swapBattery = registerKey("swapbatter", InputConstants.KEY_R, event);
 
 	}
 
