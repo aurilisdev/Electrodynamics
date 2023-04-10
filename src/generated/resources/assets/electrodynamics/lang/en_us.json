@@ -349,6 +349,7 @@
   "guidebook.electrodynamics.chapter.generators.use": "Use:",
   "guidebook.electrodynamics.chapter.gettingstarted": "Getting Started",
   "guidebook.electrodynamics.chapter.gettingstarted.l1": "Electrodynamics is a mod based around realistic electricity and more realistic concepts in general. As a result, you will find it plays very differently than other tech mods you're used to. The main difference will be that Electro is much more involved, as that is the price that comes with realism. Keep this in mind as you progress in the mod! If you are brand new to this mod, I highly recommend you read the section on Electricity, as it will help you immensely. Another important concept to note is that Electrodynamics is not designed to stand on its own. It is based on the concept of the old Universal Electricity mod, in which you have a mod with basic concepts and technology, and then have several addon mods that hook into those concepts.",
+  "guidebook.electrodynamics.chapter.gettingstarted.l2": "In terms of actually getting started with Electrodynamics, you will need Steel and a source of power. Steel is created by smelting Iron Ingots in a Blast Furnace. The first power source you will use is the Thermoelectric Generator. I highly encourage installing a mod like JEI, as it will make finding recipes much easier!",
   "guidebook.electrodynamics.chapter.machines": "Machines",
   "guidebook.electrodynamics.chapter.machines.basespecs": "Base: %1$s kW at %2$s V",
   "guidebook.electrodynamics.chapter.machines.chargeformula": "Vcharger / Vitem",

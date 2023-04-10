@@ -140,7 +140,9 @@ public class BlockFrame extends BaseEntityBlock {
 
 	public static void writeToNbt(CompoundTag tag, String key, BlockState state) {
 		CompoundTag data = new CompoundTag();
-		data.putString("facing", state.getValue(FACING).name());
+		
+		data.putInt("facing", state.getValue(FACING).ordinal());
+		//data.putString("facing", state.getValue(FACING).name());
 		data.putBoolean("waterlogged", state.getValue(BlockStateProperties.WATERLOGGED));
 		data.putBoolean("decay", state.getValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY));
 		tag.put(key, data);
@@ -148,7 +150,21 @@ public class BlockFrame extends BaseEntityBlock {
 
 	public static BlockState readFromNbt(CompoundTag tag) {
 		BlockState state = ElectrodynamicsBlocks.blockFrame.defaultBlockState();
-		state.setValue(FACING, Direction.byName(tag.getString("facing")));
+		int dir = 0;
+		if(tag.contains("facing", 8)) {
+			String name = tag.getString("facing");
+			dir = switch(name) {
+			case "DOWN" -> 0;
+			case "UP" -> 1;
+			case "NORTH" -> 2;
+			case "SOUTH" -> 3;
+			case "WEST" -> 4;
+			default -> 5;
+			};
+		} else {
+			dir = tag.getInt("facing");
+		}
+		state.setValue(FACING, Direction.values()[dir]);
 		state.setValue(BlockStateProperties.WATERLOGGED, tag.getBoolean("waterlogged"));
 		state.setValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY, tag.getBoolean("decay"));
 		return state;

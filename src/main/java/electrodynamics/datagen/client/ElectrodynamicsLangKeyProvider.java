@@ -425,7 +425,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.silver), "Silver Sulfate");
 			addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.tin), "Tin Sulfate");
 			addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.vanadium), "Vanadium Sulfate");
-			
+
 			addGas(ElectrodynamicsGases.EMPTY, "Empty");
 
 			addContainer(SubtypeMachine.advancedsolarpanel, "Advanced Solar Panel");
@@ -676,7 +676,11 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.gettingstarted.l1",
 					"Electrodynamics is a mod based around realistic electricity and more realistic concepts in general. As a result, you will find it plays very differently than other tech mods you're used to. The main difference will be that Electro "
 							+ "is much more involved, as that is the price that comes with realism. Keep this in mind as you progress in the mod! If you are brand new to this mod, I highly recommend you read the section on Electricity, as it will help you "
-							+ "immensely. Another important concept to note is that Electrodynamics is not designed to stand on its own. It is based on the concept of the old Universal Electricity mod, in which you have a mod with basic concepts and technology, " + "and then have several addon mods that hook into those concepts.");
+							+ "immensely. Another important concept to note is that Electrodynamics is not designed to stand on its own. It is based on the concept of the old Universal Electricity mod, in which you have a mod with basic concepts and technology, " 
+							+ "and then have several addon mods that hook into those concepts.");
+			addGuidebook("chapter.gettingstarted.l2", 
+					"In terms of actually getting started with Electrodynamics, you will need Steel and a source of power. Steel is created by smelting Iron Ingots in a Blast Furnace. The first power source you will use is the Thermoelectric Generator. I highly encourage installing a mod like JEI, "
+					+ "as it will make finding recipes much easier!");
 
 			addGuidebook("chapter.ores", "Ores");
 			addGuidebook("chapter.ores.spawnrange", "Y = %1$s to Y = %2$s");
@@ -849,7 +853,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.quarry.carbidehead", "Carbide");
 			addGuidebook("chapter.quarry.infinitedurability", "Infinite");
 
-			addGuidebook("chapter.quarry.step7l2", "Take the Drill Head of your choice and place it in the bottom left slot of the Quarry GUI. Now direct your attention to the 3 upgrade slots in the GUI. The Quarry itself will not passively use power after setup. However, if you add upgrades, it will begin to, and depending on the " + "upgrade, this can be a substantial amount! Your 4 upgrade options are:");
+			addGuidebook("chapter.quarry.step7l2",
+					"Take the Drill Head of your choice and place it in the bottom left slot of the Quarry GUI. Now direct your attention to the 3 upgrade slots in the GUI. The Quarry itself will not passively use power after setup. However, if you add upgrades, it will begin to, and depending on the " + "upgrade, this can be a substantial amount! Your 4 upgrade options are:");
 
 			addGuidebook("chapter.quarry.step7the", "The ");
 
@@ -886,7 +891,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.upgrades.l7", "It is important to note that indexes for Electrodynamics output slots come before biproduct slots in the inventory. For example, if there are 3 output slots and 2 biproduct slots, the card would empty all 3 output slots before it empties the 2 biproduct slots.");
 
 			addGuidebook("chapter.tools", "Tools");
-			
+
 			addGuidebook("chapter.tools.ammo", "Ammo:");
 			addGuidebook("chapter.tools.damage", "Damage:");
 
@@ -928,14 +933,12 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.tips.tip2", "Transmit at High Voltage. This is mentioned in the Electricity chapter, but you should transmit large amounts of power at high voltage and then step it down for distribution. This will help reduce the need for heavy-duty cables as well as the " + "amount of power lost due to the cable's own resistance!");
 
-			addGuidebook("chapter.tips.tip3", "If you are using an electric tool from Electrodynamics or one of its surrounding mods, there is a good chance that the tool can have its battery replaced. This can be especially useful when you need to recharge a tool and don't have ready access to a charger. A battery can be replaced in one of two ways. "
-					+ 
-					"The first way is to hold the tool in question in your main hand and press the \"R\" key. A battery with a matching voltage will then be selected from your inventory and placed inside of the tool. The current battery inside the tool will be then placed in your inventory. Note, this method will use the first battery it finds in your "
-					+ 
-					"inventory, which might mean the battery you want may not be the one that gets used. The second and more precise way to replace a tool's battery is to hover over the tool in question with the battery in your inventory. Then, Right-Click the tool with the battery. If the voltage of the tool matches the voltage of the battery, the "
-					+ 
-					"new battery will replace the old battery, and you will be left holding the old battery.");
-			
+			addGuidebook("chapter.tips.tip3",
+					"If you are using an electric tool from Electrodynamics or one of its surrounding mods, there is a good chance that the tool can have its battery replaced. This can be especially useful when you need to recharge a tool and don't have ready access to a charger. A battery can be replaced in one of two ways. "
+							+ "The first way is to hold the tool in question in your main hand and press the \"R\" key. A battery with a matching voltage will then be selected from your inventory and placed inside of the tool. The current battery inside the tool will be then placed in your inventory. Note, this method will use the first battery it finds in your "
+							+ "inventory, which might mean the battery you want may not be the one that gets used. The second and more precise way to replace a tool's battery is to hover over the tool in question with the battery in your inventory. Then, Right-Click the tool with the battery. If the voltage of the tool matches the voltage of the battery, the "
+							+ "new battery will replace the old battery, and you will be left holding the old battery.");
+
 			addGuidebook("searchparameters", "Parameters");
 			addGuidebook("selectall", "All");
 			addGuidebook("selectnone", "None");
@@ -968,11 +971,11 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 	public void addFluid(Fluid fluid, String translation) {
 		add("fluid." + modID + "." + ForgeRegistries.FLUIDS.getKey(fluid).getPath(), translation);
 	}
-	
+
 	public void addGas(RegistryObject<Gas> gas, String translation) {
 		addGas(gas.get(), translation);
 	}
-	
+
 	public void addGas(Gas gas, String translation) {
 		add("gas." + modID + "." + ElectrodynamicsRegistries.gasRegistry().getKey(gas).getPath(), translation);
 	}

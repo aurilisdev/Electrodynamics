@@ -29,6 +29,7 @@ public class ChapterGettingStarted extends Chapter {
 	@Override
 	public void addData() {
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.gettingstarted.l1")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.gettingstarted.l2")).setIndentions(1).setSeparateStart());
 	}
 
 }
