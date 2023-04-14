@@ -1,45 +1,42 @@
 AURILISDEV LICENSE
-Version 1.0.1, January 2021
+Version 1.0.2, April 2023
 
-Copyright (C) 2021 Sebastian Siljuholtet Johansen
+Copyright (C) 2023 Sebastian Siljuholtet Johansen
 
 All Rights Reserved unless otherwise explicitly stated.
 
-“The software” refers to any copyrightable work licensed under this License.
+ï¿½The softwareï¿½ refers to any copyrightable work licensed under this License.
 
 The present license is subject to change at any time with or without notice and will take effect immediately.
 
 By using this license, you agree to all the terms included in this document.
 
-If you wish to request permission to distribute a version of the software publicly please send an e-mail to aurilisdev@gmail.com or contact aurilisdev#4673 on discord.
-
 You are allowed to:
 
 > Install the software and use the binaries
 > Decompile the binaries
-> Modify the source code for personal use. This does not apply for server use where other users interact with the software as special rules apply in this case. In such case, the users who interact with the software must be informed that they are interacting with a modified version of the software
+> Modify the source code for personal use.
+> Modify the source code for server use. In such cases, where users interact with the software, they must be informed that they are interacting with a modified version of the software.
 > Look at the source code, decompile it and learn from it.
 > Modify the source code for educational purposes
 > Install the software and use it without restriction
 
-You are not allowed to: 
+Special permissions:
+> Redistribute the original source code or its binary form. NB! This is only allowed under terms stated below! Specifically under "Special Terms:"
+> Redistribute modified source code or its binary form. NB! This is only allowed under terms stated below! Specifically under "Special Terms:"
+> Copy any part of the software's source code and redistribute publish or any means of public distribution. NB! This is only allowed under terms stated below! Specifically under "Special Terms:"
 
-> Copy any part of the software's source code and redistribute publish or any means of public distribution.
-> Redistribute the original source code or its binary form without the licencor’s permission.
-> Redistribute your modified changes or derivative work either its binary form or in source code form without the licensor's permission.
+Special terms:
+> You may only use the special permissions above, if you provide proper attribution to the Owner of this software "Sebastian Siljuholtet Johansen" (in the form of credit) and an URL to this Softwareï¿½s official download page were the pack is accessed.
 
-The term “Distribution” refers to the act of distributing, redistributing and or providing the software to any third party in any form including the following forms:
-
+The term ï¿½Distributionï¿½ refers to the act of distributing, redistributing and or providing the software to any third party in any form including the following forms:
 > Source forms of the software's files or original binary
 > Modified versions of the software's source file or binaries, including any binaries resulting from source modifications
 > Any copy of a portion of it's binary or source files
 > Any of the acts above are subject to the distribution terms of the Program.
 > Original binary or source forms of the Program files
 
-An exception to the restrictions of distribution is a private modpack.
-> Private mod packs are defined as a set of mods distributed as a bundle to provide access to game servers with ease. In which the pack is only distrubuted for personal use or small server usage. The User is allowed to distribute this Mod as part of a private mod pack if and only if the User provides proper attribution to the Owner (in the form of credit) and a URL to the Mod’s official download page were the pack is accessed. The user is warned that the pack should never be publically accessible for download if considered as private. If the pack can be downloaded publically then it is defined as a public mod pack.
-
-The software is provided ‘as is’ with no warranties, implied or otherwise. The owner of the software takes no responsibility for any damages incurred from the use of the software. All damages caused by the use or misuse of the software fall on the user.
+The software is provided ï¿½as isï¿½ with no warranties, implied or otherwise. The owner of the software takes no responsibility for any damages incurred from the use of the software. All damages caused by the use or misuse of the software fall on the user.
 
 Contributions
 
