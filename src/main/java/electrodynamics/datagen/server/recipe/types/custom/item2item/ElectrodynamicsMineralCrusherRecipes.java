@@ -54,7 +54,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 						//
 						.addItemStackInput(new ItemStack(CRYSTALS[crystal.ordinal()]))
 						//
-						.addItemBiproduct(new ProbableItem(new ItemStack(OXIDES[SubtypeOxide.trisulfur.ordinal()]), 0.19))
+						.addItemBiproduct(new ProbableItem(new ItemStack(OXIDES[SubtypeOxide.trisulfur.ordinal()]), 0.05))
 						//
 						.complete(consumer);
 			}
