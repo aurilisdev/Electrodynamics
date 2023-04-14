@@ -3,7 +3,7 @@
   "experience": 0.0,
   "itembi": {
     "0": {
-      "chance": 0.19,
+      "chance": 0.05,
       "count": 1,
       "item": "electrodynamics:oxidetrisulfur"
     },
