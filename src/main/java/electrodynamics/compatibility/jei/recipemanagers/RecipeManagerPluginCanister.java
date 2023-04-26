@@ -1,36 +1,37 @@
 package electrodynamics.compatibility.jei.recipemanagers;
 
-import java.lang.reflect.Field;
-import java.util.Collections;
+//import java.lang.reflect.Field;
+//import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
+//import java.util.Optional;
 
-import electrodynamics.Electrodynamics;
-import electrodynamics.compatibility.jei.ElectrodynamicsJEIPlugin;
-import electrodynamics.prefab.utilities.CapabilityUtils;
-import mezz.jei.api.forge.ForgeTypes;
+//import electrodynamics.Electrodynamics;
+//import electrodynamics.compatibility.jei.ElectrodynamicsJEIPlugin;
+//import electrodynamics.prefab.utilities.CapabilityUtils;
+//import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.recipe.IFocus;
-import mezz.jei.api.recipe.IRecipeManager;
-import mezz.jei.api.recipe.RecipeIngredientRole;
+//import mezz.jei.api.recipe.IRecipeManager;
+//import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.advanced.IRecipeManagerPlugin;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.common.focus.Focus;
-import mezz.jei.common.recipes.InternalRecipeManagerPlugin;
-import mezz.jei.common.recipes.PluginManager;
-import mezz.jei.common.recipes.RecipeManager;
-import mezz.jei.common.recipes.RecipeManagerInternal;
-import mezz.jei.common.runtime.JeiRuntime;
-import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+//import mezz.jei.common.focus.Focus;
+//import mezz.jei.common.recipes.InternalRecipeManagerPlugin;
+//import mezz.jei.common.recipes.PluginManager;
+//import mezz.jei.common.recipes.RecipeManager;
+//import mezz.jei.common.recipes.RecipeManagerInternal;
+//import mezz.jei.common.runtime.JeiRuntime;
+//import net.minecraft.world.item.ItemStack;
+//import net.minecraftforge.fluids.FluidStack;
 
 public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 
-	private InternalRecipeManagerPlugin jeiDefaultManager = null;
+	//private InternalRecipeManagerPlugin jeiDefaultManager = null;
 
 	@Override
 	public <V> List<RecipeType<?>> getRecipeTypes(IFocus<V> focus) {
 
+		/*
 		JeiRuntime runtime = (JeiRuntime) ElectrodynamicsJEIPlugin.getJeiRuntime();
 
 		if (runtime == null) {
@@ -70,10 +71,13 @@ public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 		Focus<FluidStack> newFocus = new Focus<>(focus.getRole(), runtime.createTypedIngredient(ForgeTypes.FLUID_STACK, fluidStack));
 
 		return jeiDefaultManager.getRecipeTypes(newFocus);
+		*/
+		return null;
 	}
 
 	@Override
 	public <T, V> List<T> getRecipes(IRecipeCategory<T> recipeCategory, IFocus<V> focus) {
+		/*
 		JeiRuntime runtime = (JeiRuntime) ElectrodynamicsJEIPlugin.getJeiRuntime();
 
 		if (runtime == null) {
@@ -113,10 +117,13 @@ public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 		Focus<FluidStack> newFocus = new Focus<>(focus.getRole(), runtime.createTypedIngredient(ForgeTypes.FLUID_STACK, fluidStack));
 
 		return jeiDefaultManager.getRecipes(recipeCategory, newFocus);
+		*/
+		return null;
 	}
 
 	@Override
 	public <T> List<T> getRecipes(IRecipeCategory<T> recipeCategory) {
+		/*
 		JeiRuntime runtime = (JeiRuntime) ElectrodynamicsJEIPlugin.getJeiRuntime();
 
 		if (runtime == null) {
@@ -132,8 +139,11 @@ public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 		}
 
 		return jeiDefaultManager.getRecipes(recipeCategory);
+		*/
+		return null;
 	}
 
+	/*
 	// Lord forgive me for what I must do
 	private void handleRelection(JeiRuntime runtime) {
 		IRecipeManager generic = runtime.getRecipeManager();
@@ -187,5 +197,6 @@ public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 			Electrodynamics.LOGGER.info("Failed to get RecipeManagerInternal field from JEI RecipeManager");
 		}
 	}
+	*/
 
 }

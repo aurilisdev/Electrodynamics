@@ -115,9 +115,9 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
 	minecraft 'net.minecraftforge:forge:1.19.2-43.1.52'
-    implementation(fg.deobf("mezz.jei:jei-1.19.2-common-api:11.3.0.271"))
-    implementation(fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.3.0.271"))
-    implementation(fg.deobf("mezz.jei:jei-1.19.2-forge:11.3.0.271"))
+    compileOnly(fg.deobf("mezz.jei:jei-1.19.2-common-api:11.3.0.271"))
+    compileOnly(fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.3.0.271"))
+    runtimeOnly(fg.deobf("mezz.jei:jei-1.19.2-forge:11.3.0.271"))
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
 
