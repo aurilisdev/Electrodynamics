@@ -6,6 +6,8 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
+import electrodynamics.api.electricity.formatting.ChatFormatter;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.client.guidebook.ScreenGuidebook;
 import electrodynamics.client.screen.tile.ScreenChemicalCrystallizer;
 import electrodynamics.client.screen.tile.ScreenChemicalMixer;
@@ -21,7 +23,7 @@ import electrodynamics.client.screen.tile.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.tile.ScreenO2OProcessorTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.fluid2fluid.specificmachines.ElectrolyticSeparatorRecipe;
+import electrodynamics.common.recipe.categories.fluid2gas.specificmachines.ElectrolyticSeparatorRecipe;
 import electrodynamics.common.recipe.categories.fluid2item.specificmachines.ChemicalCrystalizerRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.ChemicalMixerRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.FermentationPlantRecipe;
@@ -129,7 +131,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registration.addRecipeCatalyst(ChemicalMixerRecipeCategory.INPUT_MACHINE, ChemicalMixerRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeCatalyst(FermentationPlantRecipeCategory.INPUT_MACHINE, FermentationPlantRecipeCategory.RECIPE_TYPE);
 		registration.addRecipeCatalyst(ReinforcedAlloyerRecipeCategory.INPUT_MACHINE, ReinforcedAlloyerRecipeCategory.RECIPE_TYPE);
-		registration.addRecipeCatalyst(ElectrolyticSeparatorRecipeCategory.INPUT_MACHINE, ElectrolyticSeparatorRecipeCategory.RECIPE_TYPE);
+		//registration.addRecipeCatalyst(ElectrolyticSeparatorRecipeCategory.INPUT_MACHINE, ElectrolyticSeparatorRecipeCategory.RECIPE_TYPE);
 
 	}
 
@@ -191,8 +193,8 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registration.addRecipes(ReinforcedAlloyerRecipeCategory.RECIPE_TYPE, reinforcedAlloyerRecipes);
 
 		// Electrolytic Separator
-		List<ElectrolyticSeparatorRecipe> electrolyticSeparatorRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE.get());
-		registration.addRecipes(ElectrolyticSeparatorRecipeCategory.RECIPE_TYPE, electrolyticSeparatorRecipes);
+		//List<ElectrolyticSeparatorRecipe> electrolyticSeparatorRecipes = recipeManager.getAllRecipesFor(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE.get());
+		//registration.addRecipes(ElectrolyticSeparatorRecipeCategory.RECIPE_TYPE, electrolyticSeparatorRecipes);
 
 		electrodynamicsInfoTabs(registration);
 
@@ -215,7 +217,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registration.addRecipeCategories(new ChemicalMixerRecipeCategory(guiHelper));
 		registration.addRecipeCategories(new FermentationPlantRecipeCategory(guiHelper));
 		registration.addRecipeCategories(new ReinforcedAlloyerRecipeCategory(guiHelper));
-		registration.addRecipeCategories(new ElectrolyticSeparatorRecipeCategory(guiHelper));
+		//registration.addRecipeCategories(new ElectrolyticSeparatorRecipeCategory(guiHelper));
 
 	}
 
@@ -232,7 +234,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registry.addRecipeClickArea(ScreenFermentationPlant.class, 97, 31, 22, 15, FermentationPlantRecipeCategory.RECIPE_TYPE);
 		registry.addRecipeClickArea(ScreenMineralWasher.class, 97, 31, 22, 15, MineralWasherRecipeCategory.RECIPE_TYPE);
 		registry.addRecipeClickArea(ScreenChemicalCrystallizer.class, 41, 35, 22, 15, ChemicalCrystallizerRecipeCategory.RECIPE_TYPE);
-		registry.addRecipeClickArea(ScreenElectrolyticSeparator.class, 38, 30, 22, 15, ElectrolyticSeparatorRecipeCategory.RECIPE_TYPE);
+		//registry.addRecipeClickArea(ScreenElectrolyticSeparator.class, 38, 30, 22, 15, ElectrolyticSeparatorRecipeCategory.RECIPE_TYPE);
 		
 		registry.addGenericGuiContainerHandler(ScreenGuidebook.class, new ScreenHandlerGuidebook());
 	}
@@ -241,13 +243,13 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		// Items
 		for (Item item : TileCoalGenerator.getValidItems()) {
 			ItemStack fuelStack = new ItemStack(item);
-			registration.addIngredientInfo(fuelStack, VanillaTypes.ITEM_STACK, TextUtils.jeiItemTranslated("coalgeneratorfuelsource", ForgeHooks.getBurnTime(fuelStack, null) / 20));
+			registration.addIngredientInfo(fuelStack, VanillaTypes.ITEM_STACK, TextUtils.jeiItemTranslated("coalgeneratorfuelsource", ChatFormatter.getChatDisplayShort((double) ForgeHooks.getBurnTime(fuelStack, null) / 20.0, DisplayUnit.TIME_SECONDS)));
 		}
 
 		// Fluids
 		for (CombustionFuelSource fuel : CombustionFuelRegister.INSTANCE.getFuels()) {
 			for (FluidStack fluid : fuel.getFuels()) {
-				registration.addIngredientInfo(new FluidStack(fluid, FULL_FLUID_SQUARE), ForgeTypes.FLUID_STACK, TextUtils.jeiFluidTranslated("combustionchamberfuel", fluid.getAmount(), fuel.getPowerMultiplier() * Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20 / 1000.0));
+				registration.addIngredientInfo(new FluidStack(fluid, FULL_FLUID_SQUARE), ForgeTypes.FLUID_STACK, TextUtils.jeiFluidTranslated("combustionchamberfuel", ChatFormatter.getChatDisplayShort(fuel.getPowerMultiplier() * Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20 / 1000.0, DisplayUnit.WATT), ChatFormatter.formatFluidMilibuckets(fluid.getAmount())));
 			}
 		}
 

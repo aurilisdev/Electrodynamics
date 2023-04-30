@@ -81,7 +81,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 			if (!CapabilityUtils.isFluidItemNull()) {
 				ItemStack full = new ItemStack(this);
 				Fluid fluid = getWhitelistedFluids().getSecond().get(0);
-				full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, MAX_CAPACITY)));
+				full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, MAX_CAPACITY)));
 				items.add(full);
 
 			}
@@ -117,7 +117,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 	}
 
 	protected static boolean staticIsBarVisible(ItemStack stack) {
-		return stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> {
+		return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(m -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0;
 		}).orElse(false);
@@ -129,7 +129,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 	}
 
 	protected static int staticGetBarWidth(ItemStack stack) {
-		return (int) Math.round(stack.getCapability(CapabilityUtils.getFluidItemCap()).map(h -> {
+		return (int) Math.round(stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(h -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
 		}).orElse(13.0));

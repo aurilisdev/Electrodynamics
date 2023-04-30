@@ -76,7 +76,9 @@ public class ScreenComponentProgress extends ScreenComponentGeneric {
 		FLAME_ON(14, 14, 0, 0, 14, 28, "flame"),
 		FLAME_OFF(14, 14, 0, 14, 14, 28, "flame"),
 		BATTER_CHARGE_RIGHT_OFF(19, 10, 0, 0, 38, 10, "battery_charge"),
-		BATTER_CHARGE_RIGHT_ON(19, 10, 19, 0, 38, 10, "battery_charge");
+		BATTER_CHARGE_RIGHT_ON(19, 10, 19, 0, 38, 10, "battery_charge"),
+		COMPRESS_ARROW_OFF(15, 9, 0, 0, 15, 9, "compressarrow"),
+		DECOMPRESS_ARROW_OFF(15, 9, 0, 0, 15, 9, "decompressarrow");
 
 		private final int textureWidth;
 		private final int textureHeight;

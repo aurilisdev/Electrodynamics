@@ -12,6 +12,7 @@ import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import mezz.jei.api.helpers.IGuiHelper;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public abstract class Item2ItemRecipeCategory<T extends Item2ItemRecipe> extends ElectrodynamicsRecipeCategory<T> {
 
@@ -46,7 +47,7 @@ public abstract class Item2ItemRecipeCategory<T extends Item2ItemRecipe> extends
 		if (recipe.hasFluidBiproducts()) {
 			for (ProbableFluid fluid : recipe.getFluidBiproducts()) {
 				ItemStack canister = new ItemStack(fluid.getFullStack().getFluid().getBucket(), 1);
-				CapabilityUtils.fill(canister, fluid.getFullStack());
+				CapabilityUtils.fillFluidItem(canister, fluid.getFullStack(), FluidAction.EXECUTE);
 				outputs.add(canister);
 			}
 		}

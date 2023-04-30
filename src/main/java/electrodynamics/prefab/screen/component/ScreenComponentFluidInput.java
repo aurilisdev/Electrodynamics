@@ -6,6 +6,7 @@ import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketUpdateCarriedItemServer;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.screen.GenericScreen;
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -46,6 +47,12 @@ public class ScreenComponentFluidInput extends ScreenComponentFluid {
 
 		GenericScreen<?> screen = (GenericScreen<?>) gui;
 		
+		GenericTile owner = (GenericTile) ((GenericContainerBlockEntity<?>) screen.getMenu()).getHostFromIntArray();
+		
+		if(owner == null) {
+			return;
+		}
+		
 		ItemStack stack = screen.getMenu().getCarried();
 
 		if (!CapabilityUtils.hasFluidItemCap(stack)) {
@@ -56,7 +63,7 @@ public class ScreenComponentFluidInput extends ScreenComponentFluid {
 		
 		FluidStack tankFluid = tank.getFluid();
 		
-		int amtTaken = CapabilityUtils.simFill(stack, tankFluid);
+		int amtTaken = CapabilityUtils.fillFluidItem(stack, tankFluid, FluidAction.SIMULATE);
 		
 		FluidStack taken = new FluidStack(tankFluid.getFluid(), amtTaken);
 		
@@ -69,7 +76,7 @@ public class ScreenComponentFluidInput extends ScreenComponentFluid {
 		
 		} else if (amtTaken > 0 && !isBucket) {
 			
-			CapabilityUtils.fill(stack, taken);
+			CapabilityUtils.fillFluidItem(stack, tankFluid, FluidAction.EXECUTE);
 			tank.drain(taken, FluidAction.EXECUTE);
 			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
 			tank.updateServer();

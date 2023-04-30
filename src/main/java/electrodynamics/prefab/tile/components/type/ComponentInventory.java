@@ -5,6 +5,7 @@ import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.CapabilityInputType;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
@@ -61,6 +62,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	private int biproducts = 0;
 	private int bucketInputs = 0;
 	private int bucketOutputs = 0;
+	private int gasInputs = 0;
+	private int gasOutputs = 0;
 
 	private int inputsPerProc = 0;
 	private int outputsPerProc = 0;
@@ -91,8 +94,10 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			biproducts = builder.builderBiproducts;
 			bucketInputs = builder.builderBucketInputs;
 			bucketOutputs = builder.builderBucketOutputs;
+			gasInputs = builder.builderGasInputs;
+			gasOutputs = builder.builderGasOutputs;
 
-			inventorySize = inputs + outputs + upgrades + biproducts + bucketInputs + bucketOutputs + upgrades;
+			inventorySize = inputs + outputs + upgrades + biproducts + bucketInputs + bucketOutputs + gasInputs + gasOutputs + upgrades;
 
 			inputsPerProc = builder.builderInputsPerProc;
 			outputsPerProc = builder.builderOutputsPerProc;
@@ -190,13 +195,13 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, Direction side) {
+	public boolean hasCapability(Capability<?> capability, Direction side, CapabilityInputType inputType) {
 		return (side == null || directionMappings.containsKey(side) || holder.hasComponent(ComponentType.Direction) && relativeDirectionMappings.containsKey(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))) && capability == ForgeCapabilities.ITEM_HANDLER;
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		return side != null && hasCapability(capability, side) ? (LazyOptional<T>) sideWrappers[side.ordinal()] : LazyOptional.empty();
+	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side, CapabilityInputType inputType) {
+		return side != null && hasCapability(capability, side, inputType) ? (LazyOptional<T>) sideWrappers[side.ordinal()] : LazyOptional.empty();
 	}
 
 	@Override
@@ -270,7 +275,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public boolean canPlaceItem(int index, ItemStack stack) {
-		// Electrodynamics.LOGGER.info(itemValidTest.test(index, stack, this));
 		return itemValidTest.test(index, stack, this);
 	}
 
@@ -355,6 +359,14 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	public int bucketOutputs() {
 		return bucketOutputs;
 	}
+	
+	public int gasInputs() {
+		return gasInputs;
+	}
+	
+	public int gasOutputs() {
+		return gasOutputs;
+	}
 
 	/*
 	 * Utility methods so you don't have to think as much
@@ -379,9 +391,17 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	public int getOutputBucketStartIndex() {
 		return getInputBucketStartIndex() + bucketInputs;
 	}
+	
+	public int getInputGasStartIndex() {
+		return getOutputBucketStartIndex() + bucketOutputs;
+	}
+	
+	public int getOutputGasStartIndex() {
+		return getInputGasStartIndex() + gasInputs;
+	}
 
 	public int getUpgradeSlotStartIndex() {
-		return getOutputBucketStartIndex() + bucketOutputs;
+		return getOutputGasStartIndex() + gasOutputs;
 	}
 
 	public List<ItemStack> getInputContents() {
@@ -402,6 +422,14 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	public List<ItemStack> getOutputBucketContents() {
 		return items.get().subList(getOutputBucketStartIndex(), getUpgradeSlotStartIndex());
+	}
+	
+	public List<ItemStack> getInputGasContents() {
+		return items.get().subList(getInputGasStartIndex(), getOutputGasStartIndex());
+	}
+	
+	public List<ItemStack> getOutputGasContents() {
+		return items.get().subList(getOutputGasStartIndex(), getUpgradeSlotStartIndex());
 	}
 
 	public List<ItemStack> getUpgradeContents() {
@@ -537,6 +565,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		private int builderBucketInputs = 0;
 		private int builderBucketOutputs = 0;
 		private int builderUpgrades = 0;
+		private int builderGasInputs = 0;
+		private int builderGasOutputs = 0;
 
 		private int builderInputsPerProc = 0;
 		private int builderOutputsPerProc = 0;
@@ -568,6 +598,16 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 		public InventoryBuilder bucketOutputs(int bucketOutputs) {
 			this.builderBucketOutputs = bucketOutputs;
+			return this;
+		}
+		
+		public InventoryBuilder gasInputs(int gasInputs) {
+			this.builderGasInputs = gasInputs;
+			return this;
+		}
+
+		public InventoryBuilder gasOutputs(int gasOutputs) {
+			this.builderGasOutputs = gasOutputs;
 			return this;
 		}
 

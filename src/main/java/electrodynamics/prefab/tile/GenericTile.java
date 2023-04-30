@@ -121,7 +121,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 				pr.loadFromNBT(compound);
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -177,15 +177,18 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	@NotNull
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
 		if (cap == ElectrodynamicsCapabilities.ELECTRODYNAMIC && components[ComponentType.Electrodynamic.ordinal()] != null) {
-			return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side);
+			return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side, null);
 		}
 		if (cap == ForgeCapabilities.FLUID_HANDLER && components[ComponentType.FluidHandler.ordinal()] != null) {
-			return components[ComponentType.FluidHandler.ordinal()].getCapability(cap, side);
+			return components[ComponentType.FluidHandler.ordinal()].getCapability(cap, side, null);
 		}
 		if (cap == ForgeCapabilities.ITEM_HANDLER && components[ComponentType.Inventory.ordinal()] != null) {
-			return components[ComponentType.Inventory.ordinal()].getCapability(cap, side);
+			return components[ComponentType.Inventory.ordinal()].getCapability(cap, side, null);
 		}
-		return super.getCapability(cap, side);
+		if(cap == ElectrodynamicsCapabilities.GAS_HANDLER && components[ComponentType.GasHandler.ordinal()] != null) {
+			return components[ComponentType.GasHandler.ordinal()].getCapability(cap, side, null);
+		}
+		return LazyOptional.empty();
 	}
 
 	@Override
@@ -242,7 +245,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 		return false;
 	}
-	
+
 	public int getNumActiveProcessors() {
 		int count = 0;
 		for (ComponentProcessor pr : processors) {
@@ -252,15 +255,15 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 		return count;
 	}
-	
+
 	public int getNumProcessors() {
-		 int count = 0;
-		 for (ComponentProcessor pr : processors) {
-				if (pr != null) {
-					count++;
-				}
+		int count = 0;
+		for (ComponentProcessor pr : processors) {
+			if (pr != null) {
+				count++;
 			}
-			return count;
+		}
+		return count;
 	}
 
 	public void onEnergyChange(ComponentElectrodynamic cap) {
@@ -283,9 +286,9 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	public void onFluidTankChange(FluidTank tank) {
 		// hook method for now
 	}
-	
+
 	public void onGasTankChange(GasTank tank) {
-		
+
 	}
 
 	// This is ceded to the tile to allow for greater control with the use function
@@ -338,20 +341,28 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	public void onPlace(BlockState oldState, boolean isMoving) {
 
 	}
-	
+
 	public int getComparatorSignal() {
 		return 0;
 	}
-	
+
 	public void updateCarriedItemInContainer(ItemStack stack, UUID playerId) {
 		Player player = getLevel().getPlayerByUUID(playerId);
-		if(player.hasContainerOpen()) {
+		if (player.hasContainerOpen()) {
 			player.containerMenu.setCarried(stack);
 		}
 	}
-	
+
 	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator() {
-		return (x, y, i) -> x < i.getOutputStartIndex() || x >= i.getInputBucketStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade upgrade && i.isUpgradeValid(upgrade.subtype);
+		return (x, y, i) -> x < i.getOutputStartIndex() || x >= i.getInputBucketStartIndex() && x < i.getInputGasStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getInputGasStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasGasItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade upgrade && i.isUpgradeValid(upgrade.subtype);
 	}
 	
+	public static double[] arr(double...values) {
+		return values;
+	}
+	
+	public static int[] arr(int...values) {
+		return values;
+	}
+
 }

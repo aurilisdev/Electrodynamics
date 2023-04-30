@@ -7,7 +7,8 @@ import javax.annotation.Nullable;
 import electrodynamics.api.References;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.block.subtype.SubtypeWire.WireType;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
@@ -162,8 +163,12 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 			}
 		}
 
-		for (SubtypePipe pipe : SubtypePipe.values()) {
+		for (SubtypeFluidPipe pipe : SubtypeFluidPipe.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(pipe), Parent.GENERATED, itemLoc("pipe/" + pipe.tag()));
+		}
+		
+		for(SubtypeGasPipe pipe : SubtypeGasPipe.values()) {
+			layeredItem(ElectrodynamicsItems.getItem(pipe), Parent.GENERATED, itemLoc("gaspipe/" + pipe.tag()));
 		}
 
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedsolarpanel), existingBlock(blockLoc("advancedsolarpanelitem"))).transforms().transform(TransformType.THIRD_PERSON_RIGHT_HAND).rotation(35, 45, 0).translation(0, 2.5F, 0).scale(0.375F).end().transform(TransformType.THIRD_PERSON_LEFT_HAND).rotation(35, 45, 0).translation(0, 2.5F, 0).scale(0.375F).end().transform(TransformType.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).scale(0.4F).end().transform(TransformType.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4F).end().transform(TransformType.GUI).rotation(30, 225, 0).translation(0, -3F, 0).scale(0.265F).end();
@@ -176,6 +181,9 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrindertriple), existingBlock(blockLoc("mineralgrindertripleitem")));
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.motorcomplex), existingBlock(blockLoc("motorcomplexitem")));
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.windmill), existingBlock(blockLoc("windmillitem")));
+		simpleBlockItem(ElectrodynamicsBlocks.blockCompressor, existingBlock(blockLoc("compressoritem"))).transforms().transform(TransformType.GUI).scale(0.3333F).rotation(30.0F, 225.0F, 0.0F).end();
+		simpleBlockItem(ElectrodynamicsBlocks.blockDecompressor, existingBlock(blockLoc("decompressoritem"))).transforms().transform(TransformType.GUI).rotation(30.0F, 225.0F, 0.0F).scale(0.3333F).end();
+		simpleBlockItem(ElectrodynamicsBlocks.blockThermoelectricManipulator, existingBlock(blockLoc("thermoelectricmanipulatoritem"))).transforms().transform(TransformType.GUI).rotation(30.0F, 225.0F, 0.0F).scale(0.3333F).end();
 
 	}
 

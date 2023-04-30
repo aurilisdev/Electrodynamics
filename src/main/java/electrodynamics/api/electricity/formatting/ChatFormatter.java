@@ -75,4 +75,17 @@ public class ChatFormatter {
 	public static double roundDecimals(double d) {
 		return roundDecimals(d, 2);
 	}
+
+	public static String formatFluidMilibuckets(double amount) {
+
+		if (amount > 1000) {
+
+			return getChatDisplayShort(amount / 1000.0, DisplayUnit.BUCKETS);
+
+		} else {
+			return amount + " mB";
+
+		}
+
+	}
 }

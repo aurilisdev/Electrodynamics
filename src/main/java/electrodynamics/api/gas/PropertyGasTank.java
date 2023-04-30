@@ -14,8 +14,7 @@ import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.block.Blocks;
 
 /**
- * An extension of the GasTank class incorporating the Electrodynamics property
- * system
+ * An extension of the GasTank class incorporating the Electrodynamics property system
  * 
  * @author skip999
  *
@@ -40,7 +39,7 @@ public class PropertyGasTank extends GasTank {
 		gasProperty = holder.property(new Property<>(PropertyType.Gasstack, "propertygastankstack" + key, GasStack.EMPTY));
 		capacityProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankcapacity" + key, capacity));
 		maxTemperatureProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankmaxtemperature" + key, maxTemperature));
-		maxPressureProperty = holder.property(new Property<>(PropertyType.Integer, "propertygastankmaxpressure", maxPressure));
+		maxPressureProperty = holder.property(new Property<>(PropertyType.Integer, "propertygastankmaxpressure" + key, maxPressure));
 	}
 
 	public PropertyGasTank(GenericTile holder, String key, double capacity, double maxTemperature, int maxPressure, Predicate<GasStack> isGasValid) {
@@ -51,7 +50,7 @@ public class PropertyGasTank extends GasTank {
 		gasProperty = holder.property(new Property<>(PropertyType.Gasstack, "propertygastankstack" + key, GasStack.EMPTY));
 		capacityProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankcapacity" + key, capacity));
 		maxTemperatureProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankmaxtemperature" + key, maxTemperature));
-		maxPressureProperty = holder.property(new Property<>(PropertyType.Integer, "propertygastankmaxpressure", maxPressure));
+		maxPressureProperty = holder.property(new Property<>(PropertyType.Integer, "propertygastankmaxpressure" + key, maxPressure));
 
 	}
 
@@ -71,7 +70,7 @@ public class PropertyGasTank extends GasTank {
 	public PropertyGasTank setValidator(Predicate<GasStack> predicate) {
 		return (PropertyGasTank) super.setValidator(predicate);
 	}
-	
+
 	public PropertyGasTank setOnGasCondensed(BiConsumer<GasTank, GenericTile> onGasCondensed) {
 		this.onGasCondensed = onGasCondensed;
 		return this;
@@ -100,6 +99,11 @@ public class PropertyGasTank extends GasTank {
 	@Override
 	public GasStack getGas() {
 		return gasProperty.get();
+	}
+
+	@Override
+	public double getGasAmount() {
+		return getGas().getAmount();
 	}
 
 	@Override

@@ -3,6 +3,8 @@ package electrodynamics.prefab.utilities;
 import java.text.DecimalFormat;
 
 import electrodynamics.api.References;
+import electrodynamics.api.electricity.formatting.ChatFormatter;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -72,28 +74,9 @@ public class TextUtils {
 	public static boolean translationExists(String base, String key) {
 		return I18n.exists(base + "." + References.ID + "." + key);
 	}
-
-	public static String formatFluidValue(int fluidLevel) {
-		double fluidDouble = fluidLevel;
-		if (fluidLevel >= 1000) {
-			return FORMATTER.format(fluidDouble / 1000.0) + " B";
-		} else if (fluidLevel >= 1000000) {
-			return FORMATTER.format(fluidDouble / 1000000) + " kB";
-		} else if (fluidLevel >= 1000000000) {
-			return FORMATTER.format(fluidDouble / 1000000000) + " MB";
-		}
-
-		return fluidLevel + " mB";
-	}
-
-	public static String formatTicksToTimeValue(int ticks) {
-		double time = ticks / 20;
-		if (time > 0.1) {
-			return FORMATTER.format(time) + " s";
-		}
-
-		time = time * 1000;
-		return FORMATTER.format(time) + " ms";
+	
+	public static MutableComponent voltageTooltip(int voltage) {
+		return tooltip("machine.voltage", ChatFormatter.getChatDisplayShort(voltage, DisplayUnit.VOLTAGE));
 	}
 
 }

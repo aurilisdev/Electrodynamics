@@ -2,13 +2,19 @@ package electrodynamics.registers;
 
 import com.google.common.collect.Sets;
 import electrodynamics.api.References;
-import electrodynamics.common.block.connect.BlockPipe;
+import electrodynamics.common.block.connect.BlockFluidPipe;
+import electrodynamics.common.block.connect.BlockGasPipe;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.tile.*;
 import electrodynamics.common.tile.battery.TileBatteryBox;
 import electrodynamics.common.tile.battery.TileCarbyneBatteryBox;
 import electrodynamics.common.tile.battery.TileLithiumBatteryBox;
+import electrodynamics.common.tile.gastransformer.TileGasTransformerAddonTank;
+import electrodynamics.common.tile.gastransformer.compressor.TileCompressor;
+import electrodynamics.common.tile.gastransformer.compressor.TileDecompressor;
+import electrodynamics.common.tile.gastransformer.thermoelectricmanipulator.TileThermoelectricManipulator;
+import electrodynamics.common.tile.gastransformer.TileGasTransformerSideBlock;
 import electrodynamics.common.tile.generators.TileAdvancedSolarPanel;
 import electrodynamics.common.tile.generators.TileCoalGenerator;
 import electrodynamics.common.tile.generators.TileCombustionChamber;
@@ -18,13 +24,17 @@ import electrodynamics.common.tile.generators.TileSolarPanel;
 import electrodynamics.common.tile.generators.TileThermoelectricGenerator;
 import electrodynamics.common.tile.generators.TileWindmill;
 import electrodynamics.common.tile.network.TileLogisticalWire;
-import electrodynamics.common.tile.network.TilePipe;
+import electrodynamics.common.tile.network.TileFluidPipe;
+import electrodynamics.common.tile.network.TileGasPipe;
 import electrodynamics.common.tile.network.TileWire;
 import electrodynamics.common.tile.quarry.TileFrame;
 import electrodynamics.common.tile.quarry.TileQuarry;
-import electrodynamics.common.tile.tanks.TileTankHSLA;
-import electrodynamics.common.tile.tanks.TileTankReinforced;
-import electrodynamics.common.tile.tanks.TileTankSteel;
+import electrodynamics.common.tile.tanks.fluid.TileFluidTankHSLA;
+import electrodynamics.common.tile.tanks.fluid.TileFluidTankReinforced;
+import electrodynamics.common.tile.tanks.fluid.TileFluidTankSteel;
+import electrodynamics.common.tile.tanks.gas.TileGasTankHSLA;
+import electrodynamics.common.tile.tanks.gas.TileGasTankReinforced;
+import electrodynamics.common.tile.tanks.gas.TileGasTankSteel;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -67,9 +77,9 @@ public class ElectrodynamicsBlockTypes {
     public static final RegistryObject<BlockEntityType<TileChargerMV>> TILE_CHARGERMV = BLOCK_ENTITY_TYPES.register(SubtypeMachine.chargermv.tag(), () -> new BlockEntityType<>(TileChargerMV::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.chargermv)), null));
     public static final RegistryObject<BlockEntityType<TileChargerHV>> TILE_CHARGERHV = BLOCK_ENTITY_TYPES.register(SubtypeMachine.chargerhv.tag(), () -> new BlockEntityType<>(TileChargerHV::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.chargerhv)), null));
 
-    public static final RegistryObject<BlockEntityType<TileTankSteel>> TILE_TANKSTEEL = BLOCK_ENTITY_TYPES.register(SubtypeMachine.tanksteel.tag(), () -> new BlockEntityType<>(TileTankSteel::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.tanksteel)), null));
-    public static final RegistryObject<BlockEntityType<TileTankReinforced>> TILE_TANKREINFORCED = BLOCK_ENTITY_TYPES.register(SubtypeMachine.tankreinforced.tag(), () -> new BlockEntityType<>(TileTankReinforced::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.tankreinforced)), null));
-    public static final RegistryObject<BlockEntityType<TileTankHSLA>> TILE_TANKHSLA = BLOCK_ENTITY_TYPES.register(SubtypeMachine.tankhsla.tag(), () -> new BlockEntityType<>(TileTankHSLA::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.tankhsla)), null));
+    public static final RegistryObject<BlockEntityType<TileFluidTankSteel>> TILE_TANKSTEEL = BLOCK_ENTITY_TYPES.register(SubtypeMachine.tanksteel.tag(), () -> new BlockEntityType<>(TileFluidTankSteel::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.tanksteel)), null));
+    public static final RegistryObject<BlockEntityType<TileFluidTankReinforced>> TILE_TANKREINFORCED = BLOCK_ENTITY_TYPES.register(SubtypeMachine.tankreinforced.tag(), () -> new BlockEntityType<>(TileFluidTankReinforced::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.tankreinforced)), null));
+    public static final RegistryObject<BlockEntityType<TileFluidTankHSLA>> TILE_TANKHSLA = BLOCK_ENTITY_TYPES.register(SubtypeMachine.tankhsla.tag(), () -> new BlockEntityType<>(TileFluidTankHSLA::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.tankhsla)), null));
 
     public static final RegistryObject<BlockEntityType<TileTransformer>> TILE_TRANSFORMER = BLOCK_ENTITY_TYPES.register("transformer", () -> new BlockEntityType<>(TileTransformer::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.downgradetransformer), getSafeBlock(SubtypeMachine.upgradetransformer)), null));
     public static final RegistryObject<BlockEntityType<TileEnergizedAlloyer>> TILE_ENERGIZEDALLOYER = BLOCK_ENTITY_TYPES.register(SubtypeMachine.energizedalloyer.tag(), () -> new BlockEntityType<>(TileEnergizedAlloyer::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.energizedalloyer)), null));
@@ -91,15 +101,27 @@ public class ElectrodynamicsBlockTypes {
     public static final RegistryObject<BlockEntityType<TileMultiSubnode>> TILE_MULTI = BLOCK_ENTITY_TYPES.register("multisubnode", () -> new BlockEntityType<>(TileMultiSubnode::new, Sets.newHashSet(ElectrodynamicsBlocks.multi), null));
     public static final RegistryObject<BlockEntityType<TileWire>> TILE_WIRE = BLOCK_ENTITY_TYPES.register("wiregenerictile", () -> new BlockEntityType<>(TileWire::new, BlockWire.WIRESET, null));
     public static final RegistryObject<BlockEntityType<TileLogisticalWire>> TILE_LOGISTICALWIRE = BLOCK_ENTITY_TYPES.register("wirelogisticaltile", () -> new BlockEntityType<>(TileLogisticalWire::new, BlockWire.WIRESET, null));
-    public static final RegistryObject<BlockEntityType<TilePipe>> TILE_PIPE = BLOCK_ENTITY_TYPES.register("pipegenerictile", () -> new BlockEntityType<>(TilePipe::new, BlockPipe.PIPESET, null));
+    public static final RegistryObject<BlockEntityType<TileFluidPipe>> TILE_PIPE = BLOCK_ENTITY_TYPES.register("pipegenerictile", () -> new BlockEntityType<>(TileFluidPipe::new, BlockFluidPipe.PIPESET, null));
     public static final RegistryObject<BlockEntityType<TileElectrolyticSeparator>> TILE_ELECTROLYTICSEPARATOR = BLOCK_ENTITY_TYPES.register(SubtypeMachine.electrolyticseparator.tag(), () -> new BlockEntityType<>(TileElectrolyticSeparator::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.electrolyticseparator)), null));
     public static final RegistryObject<BlockEntityType<TileCreativeFluidSource>> TILE_CREATIVEFLUIDSOURCE = BLOCK_ENTITY_TYPES.register(SubtypeMachine.creativefluidsource.tag(), () -> new BlockEntityType<>(TileCreativeFluidSource::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.creativefluidsource)), null));
     public static final RegistryObject<BlockEntityType<TileFluidVoid>> TILE_FLUIDVOID = BLOCK_ENTITY_TYPES.register(SubtypeMachine.fluidvoid.tag(), () -> new BlockEntityType<>(TileFluidVoid::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.fluidvoid)), null));
-    public static final RegistryObject<BlockEntityType<TileSeismicMarker>> TILE_SEISMICMARKER = BLOCK_ENTITY_TYPES.register("seismicmarker", () -> new BlockEntityType<>(TileSeismicMarker::new, Sets.newHashSet(ElectrodynamicsBlocks.blockSeismicMarker), null));
+	public static final RegistryObject<BlockEntityType<TileSeismicMarker>> TILE_SEISMICMARKER = BLOCK_ENTITY_TYPES.register("seismicmarker", () -> new BlockEntityType<>(TileSeismicMarker::new, Sets.newHashSet(ElectrodynamicsBlocks.blockSeismicMarker), null));
     public static final RegistryObject<BlockEntityType<TileSeismicRelay>> TILE_SEISMICRELAY = BLOCK_ENTITY_TYPES.register(SubtypeMachine.seismicrelay.tag(), () -> new BlockEntityType<>(TileSeismicRelay::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.seismicrelay)), null));
     public static final RegistryObject<BlockEntityType<TileQuarry>> TILE_QUARRY = BLOCK_ENTITY_TYPES.register(SubtypeMachine.quarry.tag(), () -> new BlockEntityType<>(TileQuarry::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.quarry)), null));
     public static final RegistryObject<BlockEntityType<TileCoolantResavoir>> TILE_COOLANTRESAVOIR = BLOCK_ENTITY_TYPES.register(SubtypeMachine.coolantresavoir.tag(), () -> new BlockEntityType<>(TileCoolantResavoir::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.coolantresavoir)), null));
     public static final RegistryObject<BlockEntityType<TileMotorComplex>> TILE_MOTORCOMPLEX = BLOCK_ENTITY_TYPES.register(SubtypeMachine.motorcomplex.tag(), () -> new BlockEntityType<>(TileMotorComplex::new, Sets.newHashSet(getSafeBlock(SubtypeMachine.motorcomplex)), null));
     public static final RegistryObject<BlockEntityType<TileLogisticalManager>> TILE_LOGISTICALMANAGER = BLOCK_ENTITY_TYPES.register("logisticalmanager", () -> new BlockEntityType<>(TileLogisticalManager::new, Sets.newHashSet(ElectrodynamicsBlocks.blockLogisticalManager), null));
     public static final RegistryObject<BlockEntityType<TileFrame>> TILE_QUARRY_FRAME = BLOCK_ENTITY_TYPES.register("quarryframe", () -> new BlockEntityType<>(TileFrame::new, Sets.newHashSet(ElectrodynamicsBlocks.blockFrame), null));
+    public static final RegistryObject<BlockEntityType<TileGasPipe>> TILE_GAS_PIPE = BLOCK_ENTITY_TYPES.register("gaspipe", () -> new BlockEntityType<>(TileGasPipe::new, Sets.newHashSet(BlockGasPipe.PIPESET), null));
+    
+    public static final RegistryObject<BlockEntityType<TileGasTankSteel>> TILE_GASTANK_STEEL = BLOCK_ENTITY_TYPES.register("gastanksteel", () -> new BlockEntityType<>(TileGasTankSteel::new, Sets.newHashSet(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastanksteel)), null));
+    public static final RegistryObject<BlockEntityType<TileGasTankReinforced>> TILE_GASTANK_REINFORCED = BLOCK_ENTITY_TYPES.register("gastankreinforced", () -> new BlockEntityType<>(TileGasTankReinforced::new, Sets.newHashSet(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankreinforced)), null));
+    public static final RegistryObject<BlockEntityType<TileGasTankHSLA>> TILE_GASTANK_HSLA = BLOCK_ENTITY_TYPES.register("gastankhsla", () -> new BlockEntityType<>(TileGasTankHSLA::new, Sets.newHashSet(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankhsla)), null));
+    
+    public static final RegistryObject<BlockEntityType<TileCompressor>> TILE_COMPRESSOR = BLOCK_ENTITY_TYPES.register("compressor", () -> new BlockEntityType<>(TileCompressor::new, Sets.newHashSet(ElectrodynamicsBlocks.blockCompressor), null));
+    public static final RegistryObject<BlockEntityType<TileDecompressor>> TILE_DECOMPRESSOR = BLOCK_ENTITY_TYPES.register("decompressor", () -> new BlockEntityType<>(TileDecompressor::new, Sets.newHashSet(ElectrodynamicsBlocks.blockDecompressor), null));
+    public static final RegistryObject<BlockEntityType<TileGasTransformerSideBlock>> TILE_COMPRESSOR_SIDE = BLOCK_ENTITY_TYPES.register("compressorside", () -> new BlockEntityType<>(TileGasTransformerSideBlock::new, Sets.newHashSet(ElectrodynamicsBlocks.blockGasTransformerSide), null));
+    public static final RegistryObject<BlockEntityType<TileGasTransformerAddonTank>> TILE_COMPRESSOR_ADDONTANK = BLOCK_ENTITY_TYPES.register("compressoraddontank", () -> new BlockEntityType<>(TileGasTransformerAddonTank::new, Sets.newHashSet(ElectrodynamicsBlocks.blockGasTransformerAddonTank), null));
+    public static final RegistryObject<BlockEntityType<TileGasVent>> TILE_GASVENT = BLOCK_ENTITY_TYPES.register("gasvent", () -> new BlockEntityType<>(TileGasVent::new, Sets.newHashSet(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gasvent)), null));
+    public static final RegistryObject<BlockEntityType<TileThermoelectricManipulator>> TILE_THERMOELECTRIC_MANIPULATOR = BLOCK_ENTITY_TYPES.register("thermoelectricmanipulator", () -> new BlockEntityType<>(TileThermoelectricManipulator::new, Sets.newHashSet(ElectrodynamicsBlocks.blockThermoelectricManipulator), null));
 }

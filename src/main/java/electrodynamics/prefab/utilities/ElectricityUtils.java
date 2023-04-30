@@ -2,7 +2,7 @@ package electrodynamics.prefab.utilities;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.api.network.conductor.IConductor;
+import electrodynamics.api.network.cable.type.IConductor;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.object.TransferPack;

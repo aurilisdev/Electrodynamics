@@ -16,7 +16,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryB
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.types.GenericFluidTile;
+import electrodynamics.prefab.tile.types.GenericMaterialTile;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
@@ -24,7 +24,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileChemicalCrystallizer extends GenericFluidTile implements ITickableSound {
+public class TileChemicalCrystallizer extends GenericMaterialTile implements ITickableSound {
 	public static final int MAX_TANK_CAPACITY = 5000;
 	// client-exclusive variable that is never saved
 	private boolean isSoundPlaying = false;

@@ -1,0 +1,7 @@
+{
+  "parent": "electrodynamics:parent/gaspipeuninsulatedplasticside",
+  "textures": {
+    "particle": "#texture",
+    "texture": "electrodynamics:block/gaspipe/gaspipeuninsulatedplasticside"
+  }
+}

@@ -21,15 +21,16 @@ public interface Component {
 	default void remove() {
 	}
 
-	default boolean hasCapability(Capability<?> capability, Direction side) {
+	default boolean hasCapability(Capability<?> capability, Direction side, CapabilityInputType inputType) {
 		return false;
 	}
 
-	default <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
+	default <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side, CapabilityInputType inputType) {
 		return LazyOptional.empty();
 	}
 
 	default void onLoad() {
 
 	}
+
 }

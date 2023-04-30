@@ -205,15 +205,15 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		return new FluidStack(ForgeRegistries.FLUIDS.getValue(resourceLocation), amount);
 	}
 	
-	public static GasStack getGasOUtput(ResourceLocation recipeId, JsonObject json) {
+	public static GasStack getGasOutput(ResourceLocation recipeId, JsonObject json) {
 		if(!json.has(OUTPUT)) {
 			throw new UnsupportedOperationException(recipeId.toString() + ": You must include a Gas output!");
 		}
 		JsonObject gas = json.get(OUTPUT).getAsJsonObject();
 		ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(gas, "gas"));
-		double amount = GsonHelper.getAsDouble(json, "amount");
-		double temperature = GsonHelper.getAsDouble(json, "temp");
-		int pressure = GsonHelper.getAsInt(json, "pressure");
+		double amount = GsonHelper.getAsDouble(gas, "amount");
+		double temperature = GsonHelper.getAsDouble(gas, "temp");
+		int pressure = GsonHelper.getAsInt(gas, "pressure");
 		return new GasStack(ElectrodynamicsRegistries.gasRegistry().getValue(resourceLocation), amount, temperature, pressure);
 	}
 

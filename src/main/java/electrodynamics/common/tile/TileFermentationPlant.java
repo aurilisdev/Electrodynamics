@@ -14,7 +14,7 @@ import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.types.GenericFluidTile;
+import electrodynamics.prefab.tile.types.GenericMaterialTile;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,7 +22,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class TileFermentationPlant extends GenericFluidTile {
+public class TileFermentationPlant extends GenericMaterialTile {
 
 	public static final int MAX_TANK_CAPACITY = 5000;
 
@@ -34,7 +34,7 @@ public class TileFermentationPlant extends GenericFluidTile {
 		addComponent(new ComponentElectrodynamic(this).input(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE));
 		addComponent(new ComponentFluidHandlerMulti(this).setTanks(1, 1, new int[] { MAX_TANK_CAPACITY }, new int[] { MAX_TANK_CAPACITY }).setInputDirections(Direction.WEST).setOutputDirections(Direction.EAST).setRecipeType(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE.get()));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().processors(1, 1, 0, 0).bucketInputs(1).bucketOutputs(1).upgrades(3)).faceSlots(Direction.DOWN, 1).relativeSlotFaces(0, Direction.EAST, Direction.UP).validUpgrades(ContainerFermentationPlant.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentProcessor(this).canProcess(processor -> processor.outputToPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE.get())).process(component -> component.processFluidItem2FluidRecipe(component)));
+		addComponent(new ComponentProcessor(this).canProcess(processor -> processor.outputToFluidPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE.get())).process(component -> component.processFluidItem2FluidRecipe(component)));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.fermentationplant).createMenu((id, player) -> new ContainerFermentationPlant(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
 	}

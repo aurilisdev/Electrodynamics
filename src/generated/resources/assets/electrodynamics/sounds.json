@@ -23,6 +23,18 @@
     ],
     "subtitle": "subtitles.electrodynamics.combustionchamber"
   },
+  "compressorrunning": {
+    "sounds": [
+      "electrodynamics:compressorrunning"
+    ],
+    "subtitle": "subtitles.electrodynamics.compressorrunning"
+  },
+  "decompressorrunning": {
+    "sounds": [
+      "electrodynamics:decompressorrunning"
+    ],
+    "subtitle": "subtitles.electrodynamics.decompressorrunning"
+  },
   "electricpump": {
     "sounds": [
       "electrodynamics:electricpump"
@@ -106,6 +118,12 @@
       "electrodynamics:nightvisiongoggleson"
     ],
     "subtitle": "subtitles.electrodynamics.nightvisiongoggleson"
+  },
+  "pressurerelease": {
+    "sounds": [
+      "electrodynamics:pressurerelease"
+    ],
+    "subtitle": "subtitles.electrodynamics.pressurerelease"
   },
   "railgunkinetic": {
     "sounds": [

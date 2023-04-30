@@ -23,6 +23,7 @@ import mezz.jei.common.recipes.RecipeManagerInternal;
 import mezz.jei.common.runtime.JeiRuntime;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 
@@ -53,7 +54,7 @@ public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 			return Collections.emptyList();
 		}
 
-		FluidStack fluidStack = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
+		FluidStack fluidStack = CapabilityUtils.drainFluidItem(stack, Integer.MAX_VALUE, FluidAction.SIMULATE);
 
 		if (fluidStack.isEmpty()) {
 			return Collections.emptyList();
@@ -96,7 +97,7 @@ public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 			return Collections.emptyList();
 		}
 
-		FluidStack fluidStack = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
+		FluidStack fluidStack = CapabilityUtils.drainFluidItem(stack, Integer.MAX_VALUE, FluidAction.SIMULATE);
 
 		if (fluidStack.isEmpty()) {
 			return Collections.emptyList();

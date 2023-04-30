@@ -6,7 +6,8 @@ import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
-import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
@@ -315,6 +316,13 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremill), "Wire Mill");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilldouble), "Double Wire Mill");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilltriple), "Triple Wire Mill");
+			
+			addBlock(ElectrodynamicsBlocks.blockCompressor, "Compressor");
+			addBlock(ElectrodynamicsBlocks.blockDecompressor, "Decompressor");
+			addBlock(ElectrodynamicsBlocks.blockGasTransformerAddonTank, "Pressurized Tank");
+			addBlock(ElectrodynamicsBlocks.blockGasTransformerSide, "Compressor Side");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gasvent), "Gas Vent");
+			addBlock(ElectrodynamicsBlocks.blockThermoelectricManipulator, "Thermoelectric Manipulator");
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.aluminum), "Bauxite Ore");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.chromite), "Chromite Ore");
@@ -352,8 +360,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOreDeepslate.uraninite), "Deep Uraninite Ore");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOreDeepslate.vanadinite), "Deep Vanadinite Ore");
 
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypePipe.copper), "Copper Pipe");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypePipe.steel), "Steel Pipe");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeFluidPipe.copper), "Copper Pipe");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeFluidPipe.steel), "Steel Pipe");
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeRawOreBlock.chromium), "Block of Raw Chromite");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeRawOreBlock.lead), "Block of Raw Galena");
@@ -406,6 +414,20 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsilver), "Thick Silver Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsuperconductive), "Thick Superconductive Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedtin), "Thick Tin Wire");
+			
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.UNINSULATEDCOPPER), "Copper Gas Pipe");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.UNINSULATEDSTEEL), "Steel Gas Pipe");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.UNINSULATEDPLASTIC), "Plastic Gas Pipe");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.WOOLINSULATEDCOPPER), "Woolen Copper Gas Pipe");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.WOOLINSULATEDSTEEL), "Woolen Steel Gas Pipe");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.WOOLINSULATEDPLASTIC), "Woolen Plastic Gas Pipe");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.CERAMICINSULATEDCOPPER), "Ceramic Copper Gas Pipe");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.CERAMICINSULATEDSTEEL), "Ceramic Steel Gas Pipe");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.CERAMICINSULATEDPLASTIC), "Ceramic Plastic Gas Pipe");
+			
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastanksteel), "Steel Gas Cylinder");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankreinforced), "Reinforced Gas Cylinder");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankhsla), "HSLA Gas Cylinder");
 
 			addFluid(ElectrodynamicsFluids.fluidClay, "Clay Slurry");
 			addFluid(ElectrodynamicsFluids.fluidEthanol, "Ethanol");
@@ -427,6 +449,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.vanadium), "Vanadium Sulfate");
 
 			addGas(ElectrodynamicsGases.EMPTY, "Empty");
+			addGas(ElectrodynamicsGases.HYDROGEN, "Hydrogen");
+			addGas(ElectrodynamicsGases.OXYGEN, "Oxygen");
 
 			addContainer(SubtypeMachine.advancedsolarpanel, "Advanced Solar Panel");
 			addContainer(SubtypeMachine.batterybox, "Battery Box");
@@ -475,10 +499,18 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addContainer(SubtypeMachine.wiremilldouble, "Double Wire Mill");
 			addContainer(SubtypeMachine.wiremilltriple, "Triple Wire Mill");
 			addContainer("guidebook", "Guidebook");
+			
+			addContainer(SubtypeMachine.gastanksteel, "Steel Gas Cylinder");
+			addContainer(SubtypeMachine.gastankreinforced, "Reinforced Gas Cylinder");
+			addContainer(SubtypeMachine.gastankhsla, "HSLA Gas Cylinder");
+			addContainer("compressor", "Compressor");
+			addContainer("decompressor", "Decompressor");
+			addContainer(SubtypeMachine.gasvent, "Gas Vent");
+			addContainer("thermoelectricmanipulator", "Thermoelectric Manipulator");
 
 			addTooltip("itemwire.resistance", "Resistance: %s");
 			addTooltip("itemwire.maxamps", "Ampacity: %s");
-			addTooltip("itemwire.info.insulationrating", "Insulation Rating: %sV");
+			addTooltip("itemwire.info.insulationrating", "Insulation Rating: %s");
 			addTooltip("itemwire.info.uninsulated", "Uninsulated!");
 			addTooltip("itemwire.info.fireproof", "Fire-proof");
 			addTooltip("itemwire.info.redstone", "Conducts Redstone");
@@ -499,10 +531,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addTooltip("info.range", "Increases raduis by 1");
 			addTooltip("info.broken", "NOT WORKING");
 			addTooltip("transformer.energyloss", "Efficiency: 99.25%");
-			addTooltip("machine.voltage.120", "Voltage: 120 Volts");
-			addTooltip("machine.voltage.240", "Voltage: 240 Volts");
-			addTooltip("machine.voltage.480", "Voltage: 480 Volts");
-			addTooltip("machine.voltage.960", "Voltage: 960 Volts");
+			addTooltip("machine.voltage", "Voltage: %s");
 			addTooltip("item.electric.info", "Energy Stored: %s");
 			addTooltip("item.electric.voltage", "I/O Voltage: %s");
 			addTooltip("itemcanister", "1000 mB");
@@ -510,12 +539,10 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addTooltip("railgunmaxtemp", "Max Temp: %s");
 			addTooltip("railgunoverheat", "WARNING : OVERHEATING");
 			addTooltip("ceramicplatecount", "Plates Remaining: %s");
-			addTooltip("tanksteel.capacity", "Capacity , 8000 mB");
-			addTooltip("tankreinforced.capacity", "Capacity , 32000 mB");
-			addTooltip("tankhsla.capacity", "Capacity , 120000 mB");
+			addTooltip("fluidtank.capacity", "Capacity: %s");
 			addTooltip("creativepowersource.joke", "\"Unlimited Power\" - Buck Rogers from Star Trek");
 			addTooltip("creativefluidsource.joke", "\"More\" - Crylo Ren");
-			addTooltip("fluidvoid", "Voids fluids and gasses");
+			addTooltip("fluidvoid", "Voids fluids");
 			addTooltip("seismicscanner.use", "Scans for ores in a 16 block radius");
 			addTooltip("seismicscanner.opengui", "Right-Click to view status");
 			addTooltip("seismicscanner.oncooldown", "COOLDOWN");
@@ -542,6 +569,31 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addTooltip("servolegs.speed", "SPEED");
 			addTooltip("servolegs.none", "NONE");
 			addTooltip("currbattery", "Battery: %s");
+			addTooltip("gasvent", "Voids gases");
+			
+			addTooltip("pipematerial", "Material: %s");
+			addTooltip("pipeinsulationmaterial", "Insulation: %s");
+			addTooltip("pipemaximumpressure", "Max Pressure: %s");
+			addTooltip("pipeheatloss", "Heat Loss: -%s / block");
+			
+			addTooltip("pipematerialcopper", "Copper");
+			addTooltip("pipematerialsteel", "Steel");
+			addTooltip("pipematerialplastic", "Plastic");
+			
+			addTooltip("pipeinsulationnone", "None");
+			addTooltip("pipeinsulationwool", "Wool");
+			addTooltip("pipeinsulationceramic", "Ceramic");
+			
+			addTooltip("currentgas", "Gas: %s");
+			addTooltip("gasamount", "Amount: %1$s / %2$s");
+			addTooltip("gastemperature", "Temp: %s");
+			addTooltip("gaspressure", "Pressure: %s");
+			
+			addTooltip("tankmaxin", "In %1$s : %2$s");
+			addTooltip("tankmaxout", "Out %1$s : %2$s");
+			
+			addTooltip("addontankcap", "Increases capacity by %s");
+			addTooltip("gastank.capacity", "Capacity : %s");
 
 			addGuiLabel("creativepowersource.voltage", "Voltage: ");
 			addGuiLabel("creativepowersource.power", "Power: ");
@@ -628,8 +680,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addKeyLabel("swapbattery", "Swap Battery");
 
 			addJei("guilabel.power", "%1$sV %2$skW");
-			addJei("info.item.coalgeneratorfuelsource", "Coal Generator Fuel:\n    Burn Time: %ss");
-			addJei("info.fluid.combustionchamberfuel", "Combustion Chamber Fuel:\n    Produces: %2$s kW\n    Cost: %1$s mb.");
+			addJei("info.item.coalgeneratorfuelsource", "Coal Generator Fuel:\n    Burn Time: %s");
+			addJei("info.fluid.combustionchamberfuel", "Combustion Chamber Fuel:\n    Produces: %1$s \n    Cost: %2$s.");
 
 			addDamageSource("electricity", "%s was electrocuted");
 			addDamageSource("accelerated_bolt", "%1$s was perforated by %2$s");
@@ -662,6 +714,9 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addSubtitle(ElectrodynamicsSounds.SOUND_JETPACKSWITCHMODE, "Equipment cycles mode");
 			addSubtitle(ElectrodynamicsSounds.SOUND_JETPACK, "Jetpack engine runs");
 			addSubtitle(ElectrodynamicsSounds.SOUND_BATTERY_SWAP, "Battery is swapped");
+			addSubtitle(ElectrodynamicsSounds.SOUND_PRESSURERELEASE, "Gas hisses");
+			addSubtitle(ElectrodynamicsSounds.SOUND_COMPRESSORRUNNING, "Compressor pressurizes gas");
+			addSubtitle(ElectrodynamicsSounds.SOUND_DECOMPRESSORRUNNING, "Decompressor depressurizes gas");
 
 			addGuidebook("title", "Electrodynamics Electric Code 1st Edition");
 			addGuidebook("titlequote", "\"There is nothing more permanent than a temporary solution.\"");

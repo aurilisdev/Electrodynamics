@@ -10,9 +10,9 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import electrodynamics.api.network.AbstractNetworkFinder;
-import electrodynamics.api.network.IAbstractConductor;
 import electrodynamics.api.network.ITickableNetwork;
+import electrodynamics.api.network.cable.IAbstractConductor;
+import electrodynamics.api.network.util.AbstractNetworkFinder;
 import electrodynamics.common.network.NetworkRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

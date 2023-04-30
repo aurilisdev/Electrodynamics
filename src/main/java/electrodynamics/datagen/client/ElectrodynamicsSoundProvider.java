@@ -51,6 +51,9 @@ public class ElectrodynamicsSoundProvider extends SoundDefinitionsProvider {
 		add(ElectrodynamicsSounds.SOUND_SEISMICSCANNER);
 		add(ElectrodynamicsSounds.SOUND_WINDMILL);
 		add(ElectrodynamicsSounds.SOUND_BATTERY_SWAP);
+		add(ElectrodynamicsSounds.SOUND_PRESSURERELEASE);
+		add(ElectrodynamicsSounds.SOUND_COMPRESSORRUNNING);
+		add(ElectrodynamicsSounds.SOUND_DECOMPRESSORRUNNING);
 	}
 
 	private void add(RegistryObject<SoundEvent> sound) {

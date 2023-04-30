@@ -14,13 +14,19 @@ import electrodynamics.common.block.BlockLogisticalManager;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockMultiSubnode;
 import electrodynamics.common.block.BlockSeismicMarker;
-import electrodynamics.common.block.connect.BlockPipe;
+import electrodynamics.common.block.connect.BlockFluidPipe;
+import electrodynamics.common.block.connect.BlockGasPipe;
 import electrodynamics.common.block.connect.BlockWire;
+import electrodynamics.common.block.gastransformer.BlockGasTransformerSide;
+import electrodynamics.common.block.gastransformer.compressor.BlockCompressor;
+import electrodynamics.common.block.gastransformer.thermoelectricmanipulator.BlockThermoelectricManipulator;
+import electrodynamics.common.block.gastransformer.BlockGasTransformerAddonTank;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
-import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
@@ -43,6 +49,14 @@ public class ElectrodynamicsBlocks {
 	public static BlockFrame blockFrame;
 	public static BlockFrame blockFrameCorner;
 	public static BlockLogisticalManager blockLogisticalManager;
+	
+	public static BlockCompressor blockCompressor;
+	public static BlockCompressor blockDecompressor;
+	
+	public static BlockThermoelectricManipulator blockThermoelectricManipulator;
+	
+	public static BlockGasTransformerSide blockGasTransformerSide;
+	public static BlockGasTransformerAddonTank blockGasTransformerAddonTank;
 
 	static {
 		for (SubtypeOre subtype : SubtypeOre.values()) {
@@ -60,14 +74,17 @@ public class ElectrodynamicsBlocks {
 		for (SubtypeWire subtype : SubtypeWire.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockWire(subtype), subtype)));
 		}
-		for (SubtypePipe subtype : SubtypePipe.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockPipe(subtype), subtype)));
+		for (SubtypeFluidPipe subtype : SubtypeFluidPipe.values()) {
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockFluidPipe(subtype), subtype)));
 		}
 		for (SubtypeGlass subtype : SubtypeGlass.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockCustomGlass(subtype), subtype)));
 		}
 		for (SubtypeResourceBlock subtype : SubtypeResourceBlock.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new Block(Properties.of(subtype.getMaterial()).strength(subtype.getHardness(), subtype.getResistance()).sound(subtype.getSoundType())), subtype)));
+		}
+		for(SubtypeGasPipe pipe : SubtypeGasPipe.values()) {
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(pipe, BLOCKS.register(pipe.tag(), () -> new BlockGasPipe(pipe)));
 		}
 	}
 
@@ -76,6 +93,11 @@ public class ElectrodynamicsBlocks {
 	public static final RegistryObject<Block> FRAME = BLOCKS.register("frame", supplier(() -> blockFrame = new BlockFrame(0)));
 	public static final RegistryObject<Block> FRAME_CORNER = BLOCKS.register("framecorner", supplier(() -> blockFrameCorner = new BlockFrame(1)));
 	public static final RegistryObject<Block> LOGISTICAL_MANAGER = BLOCKS.register("logisticalmanager", supplier(() -> blockLogisticalManager = new BlockLogisticalManager()));
+	public static final RegistryObject<Block> COMPRESSOR = BLOCKS.register("compressor", () -> blockCompressor = new BlockCompressor(false));
+	public static final RegistryObject<Block> DECOMPRESSOR = BLOCKS.register("decompressor", () -> blockDecompressor = new BlockCompressor(true));
+	public static final RegistryObject<Block> COMPRESSOR_SIDE = BLOCKS.register("compressorside", () -> blockGasTransformerSide = new BlockGasTransformerSide());
+	public static final RegistryObject<Block> COMPRESSOR_ADDONTANK = BLOCKS.register("compressoraddontank", () -> blockGasTransformerAddonTank = new BlockGasTransformerAddonTank());
+	public static final RegistryObject<Block> THERMOELECTRIC_MANIPULATOR = BLOCKS.register("thermoelectricmanipulator", () -> blockThermoelectricManipulator = new BlockThermoelectricManipulator());
 
 	public static Block[] getAllBlockForSubtype(ISubtype[] values) {
 		List<Block> list = new ArrayList<>();

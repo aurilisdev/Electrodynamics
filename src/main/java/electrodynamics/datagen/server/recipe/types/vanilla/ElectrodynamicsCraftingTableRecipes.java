@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
@@ -401,7 +401,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(References.ID, "motor_stainlesssteel", consumer);
 
-		for (SubtypePipe pipe : SubtypePipe.values()) {
+		for (SubtypeFluidPipe pipe : SubtypeFluidPipe.values()) {
 			ElectrodynamicsShapedCraftingRecipe.start(PIPES[pipe.ordinal()], 6)
 					//
 					.addPattern("III")
@@ -1561,7 +1561,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE)
 				//
-				.addKey('P', PIPES[SubtypePipe.steel.ordinal()])
+				.addKey('P', PIPES[SubtypeFluidPipe.steel.ordinal()])
 				//
 				.addKey('E', MACHINES[SubtypeMachine.electricpump.ordinal()])
 				//
@@ -2099,7 +2099,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.addKey('T', MACHINES[SubtypeMachine.tanksteel.ordinal()])
 				//
-				.addKey('P', PIPES[SubtypePipe.steel.ordinal()])
+				.addKey('P', PIPES[SubtypeFluidPipe.steel.ordinal()])
 				//
 				.complete(References.ID, "jetpack", consumer);
 

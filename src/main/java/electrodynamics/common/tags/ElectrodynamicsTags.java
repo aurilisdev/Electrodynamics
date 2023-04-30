@@ -26,6 +26,7 @@ public class ElectrodynamicsTags {
 		Items.init();
 		Blocks.init();
 		Fluids.init();
+		Gases.init();
 	}
 
 	public static class Items {
@@ -288,6 +289,9 @@ public class ElectrodynamicsTags {
 	}
 	
 	public static class Gases {
+		
+		public static final TagKey<Gas> HYDROGEN = forgeTag("hydrogen");
+		public static final TagKey<Gas> OXYGEN = forgeTag("oxygen");
 		
 		private static void init() {
 			

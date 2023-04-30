@@ -77,7 +77,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		if (complex == null) {
 			text = "N/A";
 		} else {
-			text = TextUtils.formatFluidValue(complex.speed.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
+			text = ChatFormatter.getChatDisplayShort(complex.speed.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK, DisplayUnit.BUCKETS);
 		}
 		list.add(TextUtils.gui("quarry.wateruse", Component.literal(text).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		return list;

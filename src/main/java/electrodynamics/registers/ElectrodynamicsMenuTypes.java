@@ -15,6 +15,7 @@ import electrodynamics.common.inventory.container.tile.ContainerCoolantResavoir;
 import electrodynamics.common.inventory.container.tile.ContainerCreativeFluidSource;
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
 import electrodynamics.common.inventory.container.tile.ContainerDO2OProcessor;
+import electrodynamics.common.inventory.container.tile.ContainerDecompressor;
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnace;
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnaceDouble;
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnaceTriple;
@@ -24,6 +25,9 @@ import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceT
 import electrodynamics.common.inventory.container.tile.ContainerElectrolyticSeparator;
 import electrodynamics.common.inventory.container.tile.ContainerFermentationPlant;
 import electrodynamics.common.inventory.container.tile.ContainerFluidVoid;
+import electrodynamics.common.inventory.container.tile.ContainerGasTankGeneric;
+import electrodynamics.common.inventory.container.tile.ContainerGasVent;
+import electrodynamics.common.inventory.container.tile.ContainerCompressor;
 import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
 import electrodynamics.common.inventory.container.tile.ContainerLithiumBatteryBox;
 import electrodynamics.common.inventory.container.tile.ContainerMineralWasher;
@@ -34,7 +38,8 @@ import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorTrip
 import electrodynamics.common.inventory.container.tile.ContainerQuarry;
 import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
-import electrodynamics.common.inventory.container.tile.ContainerTankGeneric;
+import electrodynamics.common.inventory.container.tile.ContainerThermoelectricManipulator;
+import electrodynamics.common.inventory.container.tile.ContainerFluidTankGeneric;
 import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.registries.DeferredRegister;
@@ -62,7 +67,7 @@ public class ElectrodynamicsMenuTypes {
 	public static final RegistryObject<MenuType<ContainerChemicalMixer>> CONTAINER_CHEMICALMIXER = MENU_TYPES.register(SubtypeMachine.chemicalmixer.tag(), () -> new MenuType<>(ContainerChemicalMixer::new));
 	public static final RegistryObject<MenuType<ContainerChemicalCrystallizer>> CONTAINER_CHEMICALCRYSTALLIZER = MENU_TYPES.register(SubtypeMachine.chemicalcrystallizer.tag(), () -> new MenuType<>(ContainerChemicalCrystallizer::new));
 	public static final RegistryObject<MenuType<ContainerChargerGeneric>> CONTAINER_CHARGER = MENU_TYPES.register("genericcharger", () -> new MenuType<>(ContainerChargerGeneric::new));
-	public static final RegistryObject<MenuType<ContainerTankGeneric>> CONTAINER_TANK = MENU_TYPES.register("generictank", () -> new MenuType<>(ContainerTankGeneric::new));
+	public static final RegistryObject<MenuType<ContainerFluidTankGeneric>> CONTAINER_TANK = MENU_TYPES.register("generictank", () -> new MenuType<>(ContainerFluidTankGeneric::new));
 	public static final RegistryObject<MenuType<ContainerCombustionChamber>> CONTAINER_COMBUSTION_CHAMBER = MENU_TYPES.register("combustionchamber", () -> new MenuType<>(ContainerCombustionChamber::new));
 	public static final RegistryObject<MenuType<ContainerSolarPanel>> CONTAINER_SOLARPANEL = MENU_TYPES.register("solarpanel", () -> new MenuType<>(ContainerSolarPanel::new));
 	public static final RegistryObject<MenuType<ContainerWindmill>> CONTAINER_WINDMILL = MENU_TYPES.register("windmill", () -> new MenuType<>(ContainerWindmill::new));
@@ -78,5 +83,9 @@ public class ElectrodynamicsMenuTypes {
 	public static final RegistryObject<MenuType<ContainerMotorComplex>> CONTAINER_MOTORCOMPLEX = MENU_TYPES.register("motorcomplex", () -> new MenuType<>(ContainerMotorComplex::new));
 	public static final RegistryObject<MenuType<ContainerQuarry>> CONTAINER_QUARRY = MENU_TYPES.register("quarry", () -> new MenuType<>(ContainerQuarry::new));
 	public static final RegistryObject<MenuType<ContainerGuidebook>> CONTAINER_GUIDEBOOK = MENU_TYPES.register("guidebook", () -> new MenuType<>(ContainerGuidebook::new));
-
+	public static final RegistryObject<MenuType<ContainerGasTankGeneric>> CONTAINER_GASTANK = MENU_TYPES.register("gastank", () -> new MenuType<>(ContainerGasTankGeneric::new));
+	public static final RegistryObject<MenuType<ContainerCompressor>> CONTAINER_COMPRESSOR = MENU_TYPES.register("compressor", () -> new MenuType<>(ContainerCompressor::new));
+	public static final RegistryObject<MenuType<ContainerDecompressor>> CONTAINER_DECOMPRESSOR = MENU_TYPES.register("decompressor", () -> new MenuType<>(ContainerDecompressor::new));
+	public static final RegistryObject<MenuType<ContainerGasVent>> CONTAINER_GASVENT = MENU_TYPES.register("gasvent", () -> new MenuType<>(ContainerGasVent::new));
+	public static final RegistryObject<MenuType<ContainerThermoelectricManipulator>> CONTAINER_THERMOELECTRICMANIPULATOR = MENU_TYPES.register("thermoelectricmanipulator", () -> new MenuType<>(ContainerThermoelectricManipulator::new));
 }

@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCreativeFluidSource;
-import electrodynamics.common.tile.generic.GenericTilePipe;
+import electrodynamics.common.tile.generic.GenericTileFluidPipe;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -51,17 +51,17 @@ public class TileCreativeFluidSource extends GenericTile {
 		handler.setFluid(new FluidStack(handler.getFluid(), handler.getCapacity()));
 
 		// set tank fluid from slot 1
-		if (!input.isEmpty() && CapabilityUtils.hasFluidItemCap(input)) {
-			handler.setFluid(new FluidStack(CapabilityUtils.simDrain(input, Integer.MAX_VALUE).getFluid(), handler.getCapacity()));
+		if (!input.isEmpty()) {
+			handler.setFluid(new FluidStack(CapabilityUtils.drainFluidItem(input, Integer.MAX_VALUE, FluidAction.SIMULATE).getFluid(), handler.getCapacity()));
 		}
 		// fill item in slot 2
-		if (!output.isEmpty() && CapabilityUtils.hasFluidItemCap(output)) {
+		if (!output.isEmpty()) {
 			boolean isBucket = output.getItem() instanceof BucketItem;
 			FluidStack tankFluid = handler.getFluidInTank(0);
-			int amtTaken = CapabilityUtils.simFill(output, handler.getFluidInTank(0));
+			int amtTaken = CapabilityUtils.fillFluidItem(output, handler.getFluidInTank(0), FluidAction.SIMULATE);
 			Fluid fluid = tankFluid.getFluid();
 			if (amtTaken > 0 && !isBucket) {
-				CapabilityUtils.fill(output, new FluidStack(fluid, amtTaken));
+				CapabilityUtils.fillFluidItem(output, tankFluid, FluidAction.EXECUTE);
 			} else if (amtTaken >= 1000 && isBucket && (fluid.isSame(Fluids.WATER) || fluid.isSame(Fluids.LAVA))) {
 				if (fluid.isSame(Fluids.WATER)) {
 					inv.setItem(1, new ItemStack(Items.WATER_BUCKET, 1));
@@ -77,7 +77,7 @@ public class TileCreativeFluidSource extends GenericTile {
 			BlockPos face = getBlockPos().relative(direction.getOpposite());
 			BlockEntity faceTile = getLevel().getBlockEntity(face);
 			if (faceTile != null) {
-				boolean electroPipe = faceTile instanceof GenericTilePipe;
+				boolean electroPipe = faceTile instanceof GenericTileFluidPipe;
 				LazyOptional<IFluidHandler> cap = faceTile.getCapability(ForgeCapabilities.FLUID_HANDLER, direction);
 				if (cap.isPresent()) {
 					IFluidHandler fHandler = cap.resolve().get();

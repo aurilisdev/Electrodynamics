@@ -8,17 +8,20 @@ import java.util.List;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.References;
+import electrodynamics.common.block.connect.BlockGasPipe;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
-import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.blockitem.BlockItemDescriptable;
 import electrodynamics.common.blockitem.BlockItemWire;
+import electrodynamics.common.blockitem.BlockItemGasPipe;
 import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemDrillHead;
 import electrodynamics.common.item.ItemUpgrade;
@@ -79,8 +82,11 @@ public class ElectrodynamicsItems {
 		for (SubtypeWire subtype : SubtypeWire.values()) {
 			SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), supplier(() -> new BlockItemWire((BlockWire) ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(subtype).get(), new Item.Properties().tab(References.CORETAB)), subtype)));
 		}
-		for (SubtypePipe subtype : SubtypePipe.values()) {
+		for (SubtypeFluidPipe subtype : SubtypeFluidPipe.values()) {
 			SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(subtype).get(), new Item.Properties().tab(References.CORETAB)), subtype)));
+		}
+		for (SubtypeGasPipe subtype : SubtypeGasPipe.values()) {
+			SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), supplier(() -> new BlockItemGasPipe((BlockGasPipe) ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(subtype).get(), new Item.Properties().tab(References.CORETAB)), subtype)));
 		}
 		registerSubtypeItem(SubtypeRawOre.values());
 		registerSubtypeItem(SubtypeIngot.values());
@@ -111,6 +117,13 @@ public class ElectrodynamicsItems {
 	public static final RegistryObject<Item> ITEM_FRAME = ITEMS.register("frame", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrame, new Item.Properties().stacksTo(64))));
 	public static final RegistryObject<Item> ITEM_FRAMECORNER = ITEMS.register("framecorner", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrameCorner, new Item.Properties().stacksTo(64))));
 	public static final RegistryObject<Item> ITEM_LOGISTICALMANAGER = ITEMS.register("logisticalmanager", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockLogisticalManager, new Item.Properties().tab(References.CORETAB))));
+	
+	public static final RegistryObject<Item> ITEM_COMPRESRSOR = ITEMS.register("compressor", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockCompressor, new Item.Properties().tab(References.CORETAB))));
+	public static final RegistryObject<Item> ITEM_DECOMPRESSOR = ITEMS.register("decompressor", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockDecompressor, new Item.Properties().tab(References.CORETAB))));;
+	
+	public static final RegistryObject<Item> ITEM_THERMOELECTRIC_MANIPULATOR = ITEMS.register("thermoelectricmanipulator", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockThermoelectricManipulator, new Item.Properties().tab(References.CORETAB))));
+	
+	public static final RegistryObject<Item> ITEM_COMPRESSOR_ADDONTANK = ITEMS.register("compressoraddontank", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockGasTransformerAddonTank, new Item.Properties().tab(References.CORETAB))));
 
 	public static final RegistryObject<Item> ITEM_SEISMICMARKER = ITEMS.register("seismicmarker", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockSeismicMarker, new Item.Properties().tab(References.CORETAB))));
 

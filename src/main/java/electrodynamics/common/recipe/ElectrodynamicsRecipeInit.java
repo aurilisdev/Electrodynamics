@@ -1,7 +1,7 @@
 package electrodynamics.common.recipe;
 
-import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipeTypes;
-import electrodynamics.common.recipe.categories.fluid2fluid.specificmachines.ElectrolyticSeparatorRecipe;
+import electrodynamics.common.recipe.categories.fluid2gas.Fluid2GasRecipeTypes;
+import electrodynamics.common.recipe.categories.fluid2gas.specificmachines.ElectrolyticSeparatorRecipe;
 import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipeTypes;
 import electrodynamics.common.recipe.categories.fluid2item.specificmachines.ChemicalCrystalizerRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipeTypes;
@@ -48,7 +48,7 @@ public class ElectrodynamicsRecipeInit {
 	// Fluid2Item
 	public static final RegistryObject<RecipeType<ChemicalCrystalizerRecipe>> CHEMICAL_CRYSTALIZER_TYPE = RECIPE_TYPES.register(ChemicalCrystalizerRecipe.RECIPE_GROUP, CustomRecipeType::new);
 
-	// Fluid2Fluid
+	// Fluid2Gas
 	public static final RegistryObject<RecipeType<ElectrolyticSeparatorRecipe>> ELECTROLYTIC_SEPERATOR_TYPE = RECIPE_TYPES.register(ElectrolyticSeparatorRecipe.RECIPE_GROUP, CustomRecipeType::new);
 
 	/* SERIALIZERS */
@@ -70,8 +70,8 @@ public class ElectrodynamicsRecipeInit {
 	// Fluid2Item
 	public static final RegistryObject<RecipeSerializer<?>> CHEMICAL_CRYSTALIZER_SERIALIZER = RECIPE_SERIALIZER.register(ChemicalCrystalizerRecipe.RECIPE_GROUP, () -> Fluid2ItemRecipeTypes.CHEMICAL_CRYSTALIZER_JSON_SERIALIZER);
 
-	// Fluid2Fluid
-	public static final RegistryObject<RecipeSerializer<?>> ELECTROLYTIC_SEPARATOR_SERIALIZER = RECIPE_SERIALIZER.register(ElectrolyticSeparatorRecipe.RECIPE_GROUP, () -> Fluid2FluidRecipeTypes.ELECTROLYTIC_SEPARATOR_RECIPE_SERIALIZER);
+	// Fluid2Gas
+	public static final RegistryObject<RecipeSerializer<?>> ELECTROLYTIC_SEPARATOR_SERIALIZER = RECIPE_SERIALIZER.register(ElectrolyticSeparatorRecipe.RECIPE_GROUP, () -> Fluid2GasRecipeTypes.ELECTROLYTIC_SEPARATOR_RECIPE_SERIALIZER);
 
 	/* Functional Methods */
 

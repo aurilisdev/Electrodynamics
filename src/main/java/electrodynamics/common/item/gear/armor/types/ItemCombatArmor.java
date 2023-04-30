@@ -134,7 +134,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 				if (!CapabilityUtils.isFluidItemNull()) {
 					ItemStack full = new ItemStack(this);
 					Fluid fluid = ItemJetpack.staticGetWhitelistedFluids().getSecond().get(0);
-					full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemJetpack.MAX_CAPACITY)));
+					full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemJetpack.MAX_CAPACITY)));
 					CompoundTag tag = full.getOrCreateTag();
 					tag.putInt(NBTUtils.PLATES, 2);
 					items.add(full);
@@ -145,7 +145,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 				if (!CapabilityUtils.isFluidItemNull()) {
 					ItemStack full = new ItemStack(this);
 					Fluid fluid = ItemHydraulicBoots.staticGetWhitelistedFluids().getSecond().get(0);
-					full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemHydraulicBoots.MAX_CAPACITY)));
+					full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemHydraulicBoots.MAX_CAPACITY)));
 					items.add(full);
 				}
 				break;

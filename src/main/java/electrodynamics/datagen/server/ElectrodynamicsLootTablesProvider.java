@@ -4,7 +4,8 @@ import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
-import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
@@ -28,12 +29,16 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 	@Override
 	protected void addTables() {
 
-		for (SubtypePipe pipe : SubtypePipe.values()) {
+		for (SubtypeFluidPipe pipe : SubtypeFluidPipe.values()) {
 			addSimpleBlock(ElectrodynamicsBlocks.getBlock(pipe));
 		}
 
 		for (SubtypeWire wire : SubtypeWire.values()) {
 			addSimpleBlock(ElectrodynamicsBlocks.getBlock(wire));
+		}
+		
+		for(SubtypeGasPipe pipe : SubtypeGasPipe.values()) {
+			addSimpleBlock(ElectrodynamicsBlocks.getBlock(pipe));
 		}
 
 		for (SubtypeGlass glass : SubtypeGlass.values()) {

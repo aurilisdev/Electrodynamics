@@ -3,7 +3,7 @@ package electrodynamics.client.render.tile;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import electrodynamics.common.tile.tanks.GenericTileTank;
+import electrodynamics.common.tile.tanks.fluid.GenericTileFluidTank;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.utilities.RenderingUtils;
@@ -16,7 +16,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
-public class RenderTankGeneric extends AbstractTileRenderer<GenericTileTank> {
+public class RenderTankGeneric extends AbstractTileRenderer<GenericTileFluidTank> {
 
     private static final float MIN_X = 2.0F / 16.0F;
     private static final float MAX_X = 14.0F / 16.0F;
@@ -30,7 +30,7 @@ public class RenderTankGeneric extends AbstractTileRenderer<GenericTileTank> {
     }
 
     @Override
-    public void render(GenericTileTank entity, float ticks, @NotNull PoseStack stack, @NotNull MultiBufferSource source, int light, int overlay) {
+    public void render(GenericTileFluidTank entity, float ticks, @NotNull PoseStack stack, @NotNull MultiBufferSource source, int light, int overlay) {
         ComponentFluidHandlerSimple tank = entity.getComponent(ComponentType.FluidHandler);
         if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
             FluidStack fluid = tank.getFluid();

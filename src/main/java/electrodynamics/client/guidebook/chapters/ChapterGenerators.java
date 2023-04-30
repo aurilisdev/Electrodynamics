@@ -116,7 +116,7 @@ public class ChapterGenerators extends Chapter {
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.fuels").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		for (Item item : CoalGeneratorFuelRegister.INSTANCE.getFuels()) {
 			pageData.add(new TextWrapperObject(item.getDescription()).setSeparateStart());
-			pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.burntime", TextUtils.formatTicksToTimeValue(ForgeHooks.getBurnTime(new ItemStack(item), null)))).setIndentions(1).setSeparateStart());
+			pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.burntime", ChatFormatter.getChatDisplayShort((double) ForgeHooks.getBurnTime(new ItemStack(item), null) / 20.0, DisplayUnit.TIME_SECONDS))).setIndentions(1).setSeparateStart());
 		}
 
 		// Hydroelectric Generator

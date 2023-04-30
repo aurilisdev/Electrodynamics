@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCoolantResavoir;
-import electrodynamics.common.network.FluidUtilities;
+import electrodynamics.common.network.utils.FluidUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -12,7 +12,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.types.GenericFluidTile;
+import electrodynamics.prefab.tile.types.GenericMaterialTile;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
-public class TileCoolantResavoir extends GenericFluidTile {
+public class TileCoolantResavoir extends GenericMaterialTile {
 
 	public TileCoolantResavoir(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_COOLANTRESAVOIR.get(), pos, state);

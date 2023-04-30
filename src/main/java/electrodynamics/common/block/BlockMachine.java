@@ -30,11 +30,14 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class BlockMachine extends GenericMachineBlock implements IMultiblockNode {
 
 	public static final BooleanProperty ON = BlockStateProperties.LIT;
 	public static final IntegerProperty BATTERY_CHARGE = BlockStateProperties.AGE_7;
+	
+	public static final VoxelShape[] STANDARD_CUBE = new VoxelShape[] { Shapes.block(), Shapes.block(), Shapes.block(), Shapes.block(), Shapes.block(), Shapes.block() };
 
 	public static final HashSet<Subnode> advancedsolarpanelsubnodes = new HashSet<>();
 	public static final HashSet<Subnode> windmillsubnodes = new HashSet<>();
@@ -61,6 +64,14 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 			registerDefaultState(stateDefinition.any().setValue(ON, false));
 		}
 
+	}
+	
+	@Override
+	public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+		if(machine.propogateLightDown) {
+			return true;
+		}
+		return super.propagatesSkylightDown(pState, pLevel, pPos);
 	}
 
 	@Override

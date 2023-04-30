@@ -2,7 +2,7 @@ package electrodynamics.common.item.gear.tools;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.common.network.ElectricNetwork;
+import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.common.tile.network.TileWire;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionResult;

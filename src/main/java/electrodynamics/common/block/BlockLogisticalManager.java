@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 
-import electrodynamics.common.block.connect.EnumConnectType;
+import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.common.tile.TileLogisticalManager;
 import electrodynamics.prefab.block.GenericEntityBlockWaterloggable;
 import net.minecraft.Util;

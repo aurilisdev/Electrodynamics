@@ -84,8 +84,8 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> capability, Direction face) {
 		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 		ComponentElectrodynamic electro = this.getComponent(ComponentType.Electrodynamic);
-		if (electro.hasCapability(capability, face)) {
-			return electro.getCapability(capability, face);
+		if (electro.hasCapability(capability, face, null)) {
+			return electro.getCapability(capability, face, null);
 		}
 		if (capability == ForgeCapabilities.ENERGY && (face == facing || face == facing.getOpposite())) {
 			return (LazyOptional<T>) LazyOptional.of(() -> this);

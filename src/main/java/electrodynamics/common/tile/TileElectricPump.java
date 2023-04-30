@@ -2,7 +2,7 @@ package electrodynamics.common.tile;
 
 import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.network.FluidUtilities;
+import electrodynamics.common.network.utils.FluidUtilities;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;

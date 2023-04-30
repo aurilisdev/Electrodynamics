@@ -3,7 +3,7 @@ package electrodynamics.common.tile.generators;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCombustionChamber;
-import electrodynamics.common.network.FluidUtilities;
+import electrodynamics.common.network.utils.FluidUtilities;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.properties.Property;
@@ -19,7 +19,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.types.GenericFluidTile;
+import electrodynamics.prefab.tile.types.GenericMaterialTile;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
@@ -35,7 +35,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class TileCombustionChamber extends GenericFluidTile implements IElectricGenerator, ITickableSound {
+public class TileCombustionChamber extends GenericMaterialTile implements IElectricGenerator, ITickableSound {
 
 	public static final int TICKS_PER_MILLIBUCKET = 200;
 	public static final int TANK_CAPACITY = 1000;

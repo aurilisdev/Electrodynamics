@@ -5,8 +5,10 @@ import electrodynamics.prefab.tile.components.Component;
 
 public interface IComponentGasHandler extends Component {
 	
+	public static final int TANK_MULTIPLIER = 1000;
+	
 	PropertyGasTank[] getInputTanks();
 	
-	PropertyGasTank[] getOUtputTanks();
+	PropertyGasTank[] getOutputTanks();
 
 }

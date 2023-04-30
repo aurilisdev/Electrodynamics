@@ -2,7 +2,7 @@ package electrodynamics.compatibility.jei.recipecategories.fluid2fluid.specificm
 
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.recipe.categories.fluid2fluid.specificmachines.ElectrolyticSeparatorRecipe;
+import electrodynamics.common.recipe.categories.fluid2gas.specificmachines.ElectrolyticSeparatorRecipe;
 import electrodynamics.compatibility.jei.recipecategories.fluid2fluid.Fluid2FluidRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowRightAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;

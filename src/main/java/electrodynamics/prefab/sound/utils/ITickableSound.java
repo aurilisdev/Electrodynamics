@@ -6,6 +6,4 @@ public interface ITickableSound {
 
 	boolean shouldPlaySound();
 
-	boolean isRemoved();
-
 }

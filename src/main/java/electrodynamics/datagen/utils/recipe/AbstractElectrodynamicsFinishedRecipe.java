@@ -288,7 +288,8 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 		FLUID_ITEM_2_ITEM,
 		FLUID_ITEM_2_FLUID,
 		FLUID_2_ITEM,
-		FLUID_2_FLUID;
+		FLUID_2_FLUID,
+		FLUID_2_GAS;
 
 		public String category() {
 			return toString().toLowerCase(Locale.ROOT).replaceAll("_", "");

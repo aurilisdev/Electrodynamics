@@ -4,6 +4,8 @@ import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.api.References;
 import electrodynamics.api.gas.Gas;
+import electrodynamics.common.tags.ElectrodynamicsTags;
+import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -21,7 +23,8 @@ public class ElectrodynamicsGasTagsProvider extends ForgeRegistryTagsProvider<Ga
 
 	@Override
 	public void addTags() {
-		
+		tag(ElectrodynamicsTags.Gases.HYDROGEN).add(ElectrodynamicsGases.HYDROGEN.get());
+		tag(ElectrodynamicsTags.Gases.OXYGEN).add(ElectrodynamicsGases.OXYGEN.get());
 	}
 
 }

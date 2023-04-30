@@ -16,6 +16,7 @@ import electrodynamics.prefab.utilities.CapabilityUtils;
 import mezz.jei.api.helpers.IGuiHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class FluidItem2ItemRecipeCategory<T extends FluidItem2ItemRecipe> extends ElectrodynamicsRecipeCategory<T> {
@@ -60,7 +61,7 @@ public abstract class FluidItem2ItemRecipeCategory<T extends FluidItem2ItemRecip
 			List<ItemStack> buckets = new ArrayList<>();
 			for (FluidStack stack : ing.getMatchingFluids()) {
 				ItemStack bucket = new ItemStack(stack.getFluid().getBucket(), 1);
-				CapabilityUtils.fill(bucket, stack);
+				CapabilityUtils.fillFluidItem(bucket, stack, FluidAction.EXECUTE);
 				buckets.add(bucket);
 			}
 			ingredients.add(buckets);
@@ -83,7 +84,7 @@ public abstract class FluidItem2ItemRecipeCategory<T extends FluidItem2ItemRecip
 		if (recipe.hasFluidBiproducts()) {
 			for (ProbableFluid stack : recipe.getFluidBiproducts()) {
 				ItemStack temp = new ItemStack(stack.getFullStack().getFluid().getBucket(), 1);
-				CapabilityUtils.fill(temp, stack.getFullStack());
+				CapabilityUtils.fillFluidItem(temp, stack.getFullStack(), FluidAction.EXECUTE);
 				outputItems.add(temp);
 			}
 		}

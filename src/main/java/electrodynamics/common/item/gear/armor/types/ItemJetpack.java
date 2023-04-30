@@ -102,7 +102,7 @@ public class ItemJetpack extends ArmorItem {
 			if (!CapabilityUtils.isFluidItemNull()) {
 				ItemStack full = new ItemStack(this);
 				Fluid fluid = getWhitelistedFluids().getSecond().get(0);
-				full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, MAX_CAPACITY)));
+				full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, MAX_CAPACITY)));
 				items.add(full);
 
 			}
@@ -146,7 +146,7 @@ public class ItemJetpack extends ArmorItem {
 			if (item.getSlot() == EquipmentSlot.CHEST && stack.hasTag()) {
 				boolean isDown = KeyBinds.jetpackAscend.isDown();
 				int mode = stack.hasTag() ? stack.getTag().getInt(NBTUtils.MODE) : 0;
-				boolean enoughFuel = stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
+				boolean enoughFuel = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
 				if (enoughFuel) {
 					if (mode == 0 && isDown) {
 						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY, player, stack);
@@ -203,7 +203,7 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	protected static boolean staticIsBarVisible(ItemStack stack) {
-		return stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> {
+		return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(m -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0;
 		}).orElse(false);
@@ -215,7 +215,7 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	protected static int staticGetBarWidth(ItemStack stack) {
-		return (int) Math.round(stack.getCapability(CapabilityUtils.getFluidItemCap()).map(h -> {
+		return (int) Math.round(stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(h -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
 		}).orElse(13.0));
@@ -303,7 +303,7 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	protected static void drainHydrogen(ItemStack stack) {
-		stack.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> h.drain(ItemJetpack.USAGE_PER_TICK, FluidAction.EXECUTE));
+		stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> h.drain(ItemJetpack.USAGE_PER_TICK, FluidAction.EXECUTE));
 	}
 
 	protected static void sendPacket(Player player, boolean state, double prevDeltaMove) {

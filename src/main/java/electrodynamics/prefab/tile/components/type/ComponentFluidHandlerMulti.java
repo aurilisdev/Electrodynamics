@@ -14,6 +14,7 @@ import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.AbstractMaterialRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.CapabilityInputType;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.utils.IComponentFluidHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
@@ -30,7 +31,9 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.registries.ForgeRegistries;
 
 /**
- * This class is separate from ComponentFluidHandlerSimple as it has segregated input and output tanks. These tanks are then dispatched when the Capability is requested. The only way to fill an output tank or drain an input tank is through internal tile logic.
+ * This class is separate from ComponentFluidHandlerSimple as it has segregated input and output tanks. These tanks are then
+ * dispatched when the Capability is requested. The only way to fill an output tank or drain an input tank is through internal
+ * tile logic.
  * 
  * This class also allows for RecipeTypes to be used as filters, as Recipes inherently have segregated inputs and outputs.
  * 
@@ -46,8 +49,8 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 	@Nullable
 	public Direction[] outputDirections;
 
-	private PropertyFluidTank[] inputTanks;
-	private PropertyFluidTank[] outputTanks;
+	private PropertyFluidTank[] inputTanks = new PropertyFluidTank[0];
+	private PropertyFluidTank[] outputTanks = new PropertyFluidTank[0];
 
 	@Nullable
 	private RecipeType<? extends AbstractMaterialRecipe> recipeType;
@@ -70,7 +73,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 
 	public ComponentFluidHandlerMulti setInputTanks(int count, int... capacity) {
 		inputTanks = new PropertyFluidTank[count];
-		if(capacity.length < count) {
+		if (capacity.length < count) {
 			throw new UnsupportedOperationException("The number of capacities does not match the number of input tanks");
 		}
 		for (int i = 0; i < count; i++) {
@@ -81,7 +84,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 
 	public ComponentFluidHandlerMulti setOutputTanks(int count, int... capacity) {
 		outputTanks = new PropertyFluidTank[count];
-		if(capacity.length < count) {
+		if (capacity.length < count) {
 			throw new UnsupportedOperationException("The number of capacities does not match the number of output tanks");
 		}
 		for (int i = 0; i < count; i++) {
@@ -222,13 +225,13 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, Direction side) {
+	public boolean hasCapability(Capability<?> capability, Direction side, CapabilityInputType inputType) {
 		return capability == ForgeCapabilities.FLUID_HANDLER;
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		if (!hasCapability(capability, side)) {
+	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side, CapabilityInputType inputType) {
+		if (!hasCapability(capability, side, inputType)) {
 			return LazyOptional.empty();
 		}
 		if (hasInputDir(side)) {
@@ -261,7 +264,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 				if (inputTanks != null) {
 					for (FluidIngredient ing : recipe.getFluidIngredients()) {
 						ing.getMatchingFluids().forEach(h -> inputFluidHolder.add(h.getFluid()));
-						if(ing.getFluidStack().getAmount() > maxFluidInput) {
+						if (ing.getFluidStack().getAmount() > maxFluidInput) {
 							maxFluidInput = ing.getFluidStack().getAmount();
 						}
 					}
@@ -269,56 +272,56 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 
 				if (outputTanks != null) {
 					outputFluidHohlder.add(recipe.getFluidRecipeOutput().getFluid());
-					if(recipe.getFluidRecipeOutput().getAmount() > maxFluidOutput) {
+					if (recipe.getFluidRecipeOutput().getAmount() > maxFluidOutput) {
 						maxFluidOutput = recipe.getFluidRecipeOutput().getAmount();
 					}
-				}
-				if (recipe.hasFluidBiproducts()) {
-					for (FluidStack stack : recipe.getFullFluidBiStacks()) {
-						outputFluidHohlder.add(stack.getFluid());
-						if(stack.getAmount() > maxFluidBiproduct) {
-							maxFluidBiproduct = stack.getAmount();
+
+					if (recipe.hasFluidBiproducts()) {
+						for (FluidStack stack : recipe.getFullFluidBiStacks()) {
+							outputFluidHohlder.add(stack.getFluid());
+							if (stack.getAmount() > maxFluidBiproduct) {
+								maxFluidBiproduct = stack.getAmount();
+							}
 						}
 					}
 				}
 			}
 			inputValidatorFluids.addAll(inputFluidHolder);
 			outputValidatorFluids.addAll(outputFluidHohlder);
-			if(maxFluidInput > 0) {
-				
+			if (maxFluidInput > 0) {
+
 				maxFluidInput = (maxFluidInput / TANK_MULTIPLER) * TANK_MULTIPLER + TANK_MULTIPLER;
-				
-				for(PropertyFluidTank tank : inputTanks) {
-					if(tank.getCapacity() < maxFluidInput) {
+
+				for (PropertyFluidTank tank : inputTanks) {
+					if (tank.getCapacity() < maxFluidInput) {
 						tank.setCapacity(maxFluidInput);
 					}
 				}
 			}
 			int offset = 0;
-			if(maxFluidOutput > 0) {
-				
+			if (maxFluidOutput > 0) {
+
 				maxFluidOutput = (maxFluidOutput / TANK_MULTIPLER) * TANK_MULTIPLER + TANK_MULTIPLER;
-				
-				if(outputTanks[0].getCapacity() < maxFluidOutput) {
+
+				if (outputTanks[0].getCapacity() < maxFluidOutput) {
 					outputTanks[0].setCapacity(maxFluidOutput);
 				}
-				
+
 				offset = 1;
 			}
-			if(maxFluidBiproduct > 0) {
-				
+			if (maxFluidBiproduct > 0) {
+
 				maxFluidBiproduct = (maxFluidBiproduct / TANK_MULTIPLER) * TANK_MULTIPLER + TANK_MULTIPLER;
-				
-				for(int i = 0; i < outputTanks.length - offset; i++) {
-					
-					if(outputTanks[i + offset].getCapacity() < maxFluidBiproduct) {
+
+				for (int i = 0; i < outputTanks.length - offset; i++) {
+
+					if (outputTanks[i + offset].getCapacity() < maxFluidBiproduct) {
 						outputTanks[i + offset].setCapacity(maxFluidBiproduct);
 					}
-					
+
 				}
 			}
-			
-			
+
 		} else {
 			if (validInputFluids != null) {
 				for (Fluid fluid : validInputFluids) {
@@ -499,6 +502,36 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 		@Override
 		public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
 			return FluidStack.EMPTY;
+		}
+
+	}
+
+	/**
+	 * A modified variant of the ComponentFluidHandlerMulti that allows for inputs and outputs to share the same side
+	 * 
+	 * Note, the calling tile is responsible for providing the non-null CapabilityInputType
+	 * 
+	 * @author skip999
+	 *
+	 */
+	public class ComponentFluidHandlerMultiBiDirec extends ComponentFluidHandlerMulti {
+
+		public ComponentFluidHandlerMultiBiDirec(GenericTile holder) {
+			super(holder);
+		}
+
+		@Override
+		public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side, CapabilityInputType inputType) {
+			if (!hasCapability(capability, side, inputType)) {
+				return LazyOptional.empty();
+			}
+			if (hasInputDir(side) && inputType == CapabilityInputType.INPUT) {
+				return LazyOptional.<IFluidHandler>of(() -> new InputTankDispatcher(inputTanks)).cast();
+			} else if (hasOutputDir(side) && inputType == CapabilityInputType.OUTPUT) {
+				return LazyOptional.<IFluidHandler>of(() -> new OutputTankDispatcher(outputTanks)).cast();
+			} else {
+				return super.getCapability(capability, side, inputType);
+			}
 		}
 
 	}

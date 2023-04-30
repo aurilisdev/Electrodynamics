@@ -9,7 +9,12 @@ public enum DisplayUnit {
 	RESISTANCE("Ohm", "Ω"),
 	CONDUCTANCE("Siemen", "S"),
 	JOULES("Joule", "J"),
-	BUCKETS("Bucket", "B");
+	BUCKETS("Bucket", "B"),
+	TEMPERATURE_KELVIN("Kelvin", "K"),
+	TEMPERATURE_CELCIUS("Celcius", "C"),
+	TEMPERATURE_FAHRENHEIT("Fahrenheit", "F"),
+	TIME_SECONDS("Second", "s"),
+	PRESSURE_ATM("Pressure", "ATM");
 
 	final String symbol;
 

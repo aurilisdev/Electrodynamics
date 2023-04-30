@@ -1,7 +1,7 @@
 package electrodynamics.common.tile;
 
-import electrodynamics.api.network.conductor.IConductor;
-import electrodynamics.common.network.ElectricNetwork;
+import electrodynamics.api.network.cable.type.IConductor;
+import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;

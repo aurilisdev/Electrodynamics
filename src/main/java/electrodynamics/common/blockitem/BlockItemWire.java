@@ -30,7 +30,7 @@ public class BlockItemWire extends BlockItem {
 		if (wire.wire.wireClass.shockVoltage == 0) {
 			tooltip.add(TextUtils.tooltip("itemwire.info.uninsulated"));
 		} else {
-			tooltip.add(TextUtils.tooltip("itemwire.info.insulationrating", wire.wire.wireClass.shockVoltage));
+			tooltip.add(TextUtils.tooltip("itemwire.info.insulationrating", ChatFormatter.getChatDisplayShort(wire.wire.wireClass.shockVoltage, DisplayUnit.VOLTAGE)));
 		}
 		if (wire.wire.wireClass.fireProof) {
 			TextUtils.tooltip("itemwire.info.fireproof");

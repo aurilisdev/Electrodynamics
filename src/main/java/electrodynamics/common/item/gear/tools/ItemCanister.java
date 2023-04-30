@@ -53,7 +53,7 @@ public class ItemCanister extends Item {
 			if (!CapabilityUtils.isFluidItemNull()) {
 				for (Fluid liq : ForgeRegistries.FLUIDS.getValues()) {
 					ItemStack temp = new ItemStack(this);
-					temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fill(new FluidStack(liq, MAX_FLUID_CAPACITY), FluidAction.EXECUTE));
+					temp.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fill(new FluidStack(liq, MAX_FLUID_CAPACITY), FluidAction.EXECUTE));
 					items.add(temp);
 
 				}
@@ -114,14 +114,11 @@ public class ItemCanister extends Item {
 			BlockState state = world.getBlockState(pos);
 			if (state.getFluidState().isSource() && !state.getFluidState().getType().isSame(Fluids.EMPTY)) {
 				FluidStack sourceFluid = new FluidStack(state.getFluidState().getType(), 1000);
-				boolean validFluid = CapabilityUtils.canFillItemStack(stack, sourceFluid);
-				if (validFluid) {
-					int amtFilled = CapabilityUtils.simFill(stack, sourceFluid);
-					if (amtFilled >= 1000) {
-						CapabilityUtils.fill(stack, sourceFluid);
-						world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-						world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
-					}
+				int accepted = CapabilityUtils.fillFluidItem(stack, sourceFluid, FluidAction.SIMULATE);
+				if(accepted >= 1000) {
+					CapabilityUtils.fillFluidItem(stack, sourceFluid, FluidAction.EXECUTE);
+					world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+					world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
 				}
 			}
 		}

@@ -28,4 +28,8 @@ public class MathUtils {
 
 		return rayHit.getType() != Type.BLOCK ? null : new Location(rayHit.getBlockPos());
 	}
+
+	public static int logBase2(int value) {
+		return (int) (Math.log(value) / Math.log(2) + 1e-10);
+	}
 }
