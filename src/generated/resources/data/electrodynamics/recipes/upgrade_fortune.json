@@ -4,7 +4,7 @@
     "B": {
       "type": "forge:partial_nbt",
       "item": "minecraft:enchanted_book",
-      "nbt": "{Enchantments:[{id:\"minecraft:fortune\",lvl:1s}]}"
+      "nbt": "{StoredEnchantments:[{id:\"minecraft:fortune\",lvl:1s}]}"
     },
     "C": {
       "tag": "forge:circuits/elite"

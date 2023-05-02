@@ -98,7 +98,6 @@ public class FluidUtilities {
 
 	public static void drainItem(GenericTile tile, FluidTank[] tanks) {
 		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
-		// should stop the crashes now
 		List<ItemStack> buckets = inv.getInputBucketContents();
 		if (tanks.length >= buckets.size()) {
 			for (int i = 0; i < buckets.size(); i++) {
