@@ -27,8 +27,10 @@ import electrodynamics.datagen.utils.recipe.ElectrodynamicsShapelessCraftingReci
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentInstance;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.common.crafting.PartialNBTIngredient;
@@ -594,7 +596,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				.complete(References.ID, "upgrade_experience", consumer);
 
 		ItemStack fortuneBook = new ItemStack(Items.ENCHANTED_BOOK);
-		fortuneBook.enchant(Enchantments.BLOCK_FORTUNE, 1);
+		EnchantedBookItem.addEnchantment(fortuneBook, new EnchantmentInstance(Enchantments.BLOCK_FORTUNE, 1));
 		ElectrodynamicsShapedCraftingRecipe.start(UPGRADES[SubtypeItemUpgrade.fortune.ordinal()], 1)
 				//
 				.addPattern("PCP")
@@ -694,7 +696,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				.complete(References.ID, "upgrade_range", consumer);
 
 		ItemStack silkTouchBook = new ItemStack(Items.ENCHANTED_BOOK);
-		silkTouchBook.enchant(Enchantments.SILK_TOUCH, 1);
+		EnchantedBookItem.addEnchantment(silkTouchBook, new EnchantmentInstance(Enchantments.SILK_TOUCH, 1));
 		ElectrodynamicsShapedCraftingRecipe.start(UPGRADES[SubtypeItemUpgrade.silktouch.ordinal()], 1)
 				//
 				.addPattern("PCP")
@@ -728,7 +730,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				.complete(References.ID, "upgrade_stator", consumer);
 
 		ItemStack unbreakingBook = new ItemStack(Items.ENCHANTED_BOOK);
-		unbreakingBook.enchant(Enchantments.UNBREAKING, 1);
+		EnchantedBookItem.addEnchantment(unbreakingBook, new EnchantmentInstance(Enchantments.UNBREAKING, 1));
 		ElectrodynamicsShapedCraftingRecipe.start(UPGRADES[SubtypeItemUpgrade.unbreaking.ordinal()], 1)
 				//
 				.addPattern("PCP")
