@@ -13,7 +13,7 @@ public class TileCarbyneBatteryBox extends TileBatteryBox {
 
 	public TileCarbyneBatteryBox(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_CARBYNEBATTERYBOX.get(), SubtypeMachine.carbynebatterybox, 480, 359.0 * (4 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) / 20.0, 80000000, worldPosition, blockState);
-		forceComponent(new ComponentContainerProvider("container.carbynebatterybox").createMenu((id, player) -> new ContainerCarbyneBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		forceComponent(new ComponentContainerProvider("container.carbynebatterybox", this).createMenu((id, player) -> new ContainerCarbyneBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 }

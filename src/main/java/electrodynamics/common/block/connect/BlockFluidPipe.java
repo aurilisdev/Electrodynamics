@@ -8,7 +8,7 @@ import electrodynamics.common.block.connect.util.AbstractRefreshingConnectBlock;
 import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.network.utils.FluidUtilities;
-import electrodynamics.common.tile.network.TileFluidPipe;
+import electrodynamics.common.tile.network.fluid.TileFluidPipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;

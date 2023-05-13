@@ -23,12 +23,13 @@ public class ComponentContainerProvider implements Component, MenuProvider {
 	protected BiFunction<Integer, Inventory, AbstractContainerMenu> createMenuFunction;
 	protected String name = "";
 
-	public ComponentContainerProvider(String name) {
+	public ComponentContainerProvider(String name, GenericTile holder) {
 		this.name = name;
+		this.holder = holder;
 	}
 
-	public ComponentContainerProvider(SubtypeMachine machine) {
-		name = "container." + machine.name();
+	public ComponentContainerProvider(SubtypeMachine machine, GenericTile holder) {
+		this("container." + machine.name(), holder);
 	}
 
 	public ComponentContainerProvider createMenu(BiFunction<Integer, Inventory, AbstractContainerMenu> createMenuFunction) {

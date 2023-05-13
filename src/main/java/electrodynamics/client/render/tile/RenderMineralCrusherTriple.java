@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.TileMineralCrusherTriple;
+import electrodynamics.common.tile.mineralcrusher.TileMineralCrusherTriple;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;

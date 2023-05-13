@@ -514,7 +514,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 	 * @author skip999
 	 *
 	 */
-	public class ComponentFluidHandlerMultiBiDirec extends ComponentFluidHandlerMulti {
+	public static class ComponentFluidHandlerMultiBiDirec extends ComponentFluidHandlerMulti {
 
 		public ComponentFluidHandlerMultiBiDirec(GenericTile holder) {
 			super(holder);
@@ -525,10 +525,10 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 			if (!hasCapability(capability, side, inputType)) {
 				return LazyOptional.empty();
 			}
-			if (hasInputDir(side) && inputType == CapabilityInputType.INPUT) {
-				return LazyOptional.<IFluidHandler>of(() -> new InputTankDispatcher(inputTanks)).cast();
-			} else if (hasOutputDir(side) && inputType == CapabilityInputType.OUTPUT) {
-				return LazyOptional.<IFluidHandler>of(() -> new OutputTankDispatcher(outputTanks)).cast();
+			if (super.hasInputDir(side) && inputType == CapabilityInputType.INPUT) {
+				return LazyOptional.<IFluidHandler>of(() -> new InputTankDispatcher(super.inputTanks)).cast();
+			} else if (super.hasOutputDir(side) && inputType == CapabilityInputType.OUTPUT) {
+				return LazyOptional.<IFluidHandler>of(() -> new OutputTankDispatcher(super.outputTanks)).cast();
 			} else {
 				return super.getCapability(capability, side, inputType);
 			}

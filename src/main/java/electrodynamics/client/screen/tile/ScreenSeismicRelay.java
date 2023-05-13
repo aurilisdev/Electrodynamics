@@ -5,7 +5,7 @@ import java.util.List;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
-import electrodynamics.common.tile.TileSeismicRelay;
+import electrodynamics.common.tile.quarry.TileSeismicRelay;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.core.BlockPos;

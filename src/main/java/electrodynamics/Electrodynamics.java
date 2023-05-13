@@ -13,6 +13,7 @@ import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.condition.ConfigCondition;
 import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
 import electrodynamics.common.event.ServerEventHandler;
+import electrodynamics.common.eventbus.RegisterFluidToGasMapEvent;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketResetGuidebookPages;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
@@ -23,6 +24,7 @@ import electrodynamics.common.settings.Constants;
 import electrodynamics.common.settings.OreConfig;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.configuration.ConfigurationHandler;
+import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -74,6 +76,11 @@ public class Electrodynamics {
 		MinecraftForge.EVENT_BUS.addListener(getGuidebookListener());
 		ElectrodynamicsTags.init();
 		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to 1.19.2
+		
+		RegisterFluidToGasMapEvent map = new RegisterFluidToGasMapEvent();
+		MinecraftForge.EVENT_BUS.post(map);
+		ElectrodynamicsGases.MAPPED_GASSES.putAll(map.fluidToGasMap);
+		
 	}
 
 	@SubscribeEvent

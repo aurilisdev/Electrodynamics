@@ -130,6 +130,16 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.quarry), ElectrodynamicsBlockTypes.TILE_QUARRY);
 		addIFTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coolantresavoir), ElectrodynamicsBlockTypes.TILE_COOLANTRESAVOIR);
 		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.motorcomplex), ElectrodynamicsBlockTypes.TILE_MOTORCOMPLEX);
+		
+		//TODO
+		//compressor
+		//decompressor
+		//thermo manip
+		//gas tanks
+		addSimpleBlock(ElectrodynamicsBlocks.blockGasTransformerAddonTank);
+		
+		addSimpleBlock(ElectrodynamicsBlocks.blockGasValve);
+		addSimpleBlock(ElectrodynamicsBlocks.blockFluidValve);
 
 	}
 

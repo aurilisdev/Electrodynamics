@@ -1,13 +1,18 @@
 package electrodynamics.common.item.gear.armor.types;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
-import com.mojang.datafixers.util.Pair;
+import java.util.function.Predicate;
 
 import electrodynamics.api.References;
-import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.capability.types.gas.IGasHandlerItem;
+import electrodynamics.api.electricity.formatting.ChatFormatter;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
+import electrodynamics.api.gas.Gas;
+import electrodynamics.api.gas.GasAction;
+import electrodynamics.api.gas.GasHandlerItemStack;
+import electrodynamics.api.gas.GasStack;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.keys.KeyBinds;
 import electrodynamics.client.render.model.armor.types.ModelJetpack;
@@ -15,18 +20,16 @@ import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.PacketJetpackFlightServer;
 import electrodynamics.common.packet.types.PacketRenderJetpackParticles;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.TextUtils;
-import electrodynamics.registers.ElectrodynamicsFluids;
+import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -40,26 +43,23 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.network.PacketDistributor;
 
 public class ItemJetpack extends ArmorItem {
 
-	public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
+	// public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 	public static final int MAX_CAPACITY = 30000;
 
 	public static final int USAGE_PER_TICK = 1;
 	public static final double VERT_SPEED_INCREASE = 0.5;
 	public static final double TERMINAL_VERTICAL_VELOCITY = 1;
+	public static final int MAX_PRESSURE = 4;
+	public static final double MAX_TEMPERATURE = Gas.ROOM_TEMPERATURE;
 
 	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/jetpack.png";
 
@@ -92,17 +92,20 @@ public class ItemJetpack extends ArmorItem {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY, getWhitelistedFluids());
+		return new GasHandlerItemStack(stack, MAX_CAPACITY, MAX_TEMPERATURE, MAX_PRESSURE).setPredicate(getGasValidator());
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
 		if (allowedIn(tab)) {
 			items.add(new ItemStack(this));
-			if (!CapabilityUtils.isFluidItemNull()) {
+			if (!CapabilityUtils.isGasItemNull()) {
 				ItemStack full = new ItemStack(this);
-				Fluid fluid = getWhitelistedFluids().getSecond().get(0);
-				full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, MAX_CAPACITY)));
+
+				GasStack gas = new GasStack(ElectrodynamicsGases.HYDROGEN.get(), MAX_CAPACITY, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL);
+
+				full.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> cap.fillTank(0, gas, GasAction.EXECUTE));
+
 				items.add(full);
 
 			}
@@ -115,9 +118,21 @@ public class ItemJetpack extends ArmorItem {
 		super.appendHoverText(stack, world, tooltip, flagIn);
 	}
 
-	protected static void staticAppendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
-		if (!CapabilityUtils.isFluidItemNull()) {
-			stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> tooltip.add(Component.literal(h.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY)));
+	public static void staticAppendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flagIn) {
+		if (!CapabilityUtils.isGasItemNull()) {
+
+			stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> {
+				GasStack gas = cap.getGasInTank(0);
+				// tooltips.add(gas.getGas().getDescription());
+				if (gas.isEmpty()) {
+					tooltips.add(Component.literal("0" + " / " + ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)));
+				} else {
+					tooltips.add(Component.literal(ChatFormatter.formatFluidMilibuckets(gas.getAmount()) + " / " + ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)));
+					tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN)));
+					tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnit.PRESSURE_ATM)));
+				}
+
+			});
 		}
 		// cheesing sync issues one line of code at a time
 		if (stack.hasTag()) {
@@ -128,9 +143,9 @@ public class ItemJetpack extends ArmorItem {
 			case 2 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.modeoff").withStyle(ChatFormatting.RED));
 			default -> Component.literal("");
 			};
-			tooltip.add(modeTip);
+			tooltips.add(modeTip);
 		} else {
-			tooltip.add(TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.moderegular").withStyle(ChatFormatting.GREEN)));
+			tooltips.add(TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.moderegular").withStyle(ChatFormatting.GREEN)));
 		}
 	}
 
@@ -140,25 +155,27 @@ public class ItemJetpack extends ArmorItem {
 		armorTick(stack, world, player, OFFSET, false);
 	}
 
-	protected static void armorTick(ItemStack stack, Level world, Player player, float particleZ, boolean isCombat) {
+	public static void armorTick(ItemStack stack, Level world, Player player, float particleZ, boolean isCombat) {
 		if (world.isClientSide) {
 			ArmorItem item = (ArmorItem) stack.getItem();
 			if (item.getSlot() == EquipmentSlot.CHEST && stack.hasTag()) {
 				boolean isDown = KeyBinds.jetpackAscend.isDown();
 				int mode = stack.hasTag() ? stack.getTag().getInt(NBTUtils.MODE) : 0;
-				boolean enoughFuel = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(m -> m.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
+				boolean enoughFuel = stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> cap.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
 				if (enoughFuel) {
+					IGasHandlerItem handler = (IGasHandlerItem) stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).cast().resolve().get();
+					int pressure = handler.getGasInTank(0).getPressure();
 					if (mode == 0 && isDown) {
-						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY, player, stack);
+						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY * pressure, player, stack);
 						renderClientParticles(world, player, particleZ);
 						sendPacket(player, true, deltaY);
 					} else if (mode == 1 && isDown) {
-						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2, player, stack);
+						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2 * pressure, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2 * pressure, player, stack);
 						renderClientParticles(world, player, particleZ);
 						sendPacket(player, true, deltaY);
 
 					} else if (mode == 1 && player.getFeetBlockState().isAir()) {
-						double deltaY = hoverWithJetpack(player, stack);
+						double deltaY = hoverWithJetpack(pressure, player, stack);
 						renderClientParticles(world, player, particleZ);
 						sendPacket(player, true, deltaY);
 					} else {
@@ -202,10 +219,9 @@ public class ItemJetpack extends ArmorItem {
 		return staticIsBarVisible(stack);
 	}
 
-	protected static boolean staticIsBarVisible(ItemStack stack) {
-		return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(m -> {
-			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
-			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0;
+	public static boolean staticIsBarVisible(ItemStack stack) {
+		return stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> {
+			return 13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0;
 		}).orElse(false);
 	}
 
@@ -214,10 +230,9 @@ public class ItemJetpack extends ArmorItem {
 		return staticGetBarWidth(stack);
 	}
 
-	protected static int staticGetBarWidth(ItemStack stack) {
-		return (int) Math.round(stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(h -> {
-			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
-			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
+	public static int staticGetBarWidth(ItemStack stack) {
+		return (int) Math.round(stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> {
+			return 13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0);
 		}).orElse(13.0));
 	}
 
@@ -226,16 +241,8 @@ public class ItemJetpack extends ArmorItem {
 		return slotChanged;
 	}
 
-	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
-		return staticGetWhitelistedFluids();
-	}
-
-	protected static Pair<List<ResourceLocation>, List<Fluid>> staticGetWhitelistedFluids() {
-		List<ResourceLocation> tags = new ArrayList<>();
-		List<Fluid> fluids = new ArrayList<>();
-		tags.add(ElectrodynamicsTags.Fluids.HYDROGEN.location());
-		fluids.add(ElectrodynamicsFluids.fluidHydrogen);
-		return Pair.of(tags, fluids);
+	public static Predicate<GasStack> getGasValidator() {
+		return gas -> gas.getGas().equals(ElectrodynamicsGases.HYDROGEN.get());
 	}
 
 	protected static double moveWithJetpack(double speed, double termVelocity, Player player, ItemStack jetpack) {
@@ -257,7 +264,7 @@ public class ItemJetpack extends ArmorItem {
 		return currMovement.y;
 	}
 
-	protected static double hoverWithJetpack(Player player, ItemStack jetpack) {
+	protected static double hoverWithJetpack(double multiplier, Player player, ItemStack jetpack) {
 
 		Vec3 movement = player.getDeltaMovement();
 
@@ -266,7 +273,7 @@ public class ItemJetpack extends ArmorItem {
 		}
 
 		if (player.isShiftKeyDown()) {
-			movement = new Vec3(movement.x, -0.3, movement.z);
+			movement = new Vec3(movement.x, -0.3 * multiplier, movement.z);
 		} else {
 			movement = new Vec3(movement.x, 0, movement.z);
 		}
@@ -303,7 +310,7 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	protected static void drainHydrogen(ItemStack stack) {
-		stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> h.drain(ItemJetpack.USAGE_PER_TICK, FluidAction.EXECUTE));
+		stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> cap.drainTank(0, ItemJetpack.USAGE_PER_TICK, GasAction.EXECUTE));
 	}
 
 	protected static void sendPacket(Player player, boolean state, double prevDeltaMove) {

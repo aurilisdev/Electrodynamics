@@ -5,9 +5,14 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import electrodynamics.api.References;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
+import electrodynamics.api.gas.Gas;
+import electrodynamics.api.gas.GasAction;
+import electrodynamics.api.gas.GasHandlerItemStack;
+import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelCombatArmor;
@@ -15,6 +20,7 @@ import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
@@ -108,7 +114,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 		ArmorItem armor = (ArmorItem) stack.getItem();
 		switch (armor.getSlot()) {
 		case CHEST:
-			return new RestrictedFluidHandlerItemStack(stack, stack, ItemJetpack.MAX_CAPACITY, ItemJetpack.staticGetWhitelistedFluids());
+			return new GasHandlerItemStack(stack, ItemJetpack.MAX_CAPACITY, ItemJetpack.MAX_TEMPERATURE, ItemJetpack.MAX_PRESSURE).setPredicate(ItemJetpack.getGasValidator());
 		case FEET:
 			return new RestrictedFluidHandlerItemStack(stack, stack, ItemHydraulicBoots.MAX_CAPACITY, ItemHydraulicBoots.staticGetWhitelistedFluids());
 		default:
@@ -131,13 +137,15 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 				break;
 			case CHEST:
 				items.add(new ItemStack(this));
-				if (!CapabilityUtils.isFluidItemNull()) {
+				if (!CapabilityUtils.isGasItemNull()) {
 					ItemStack full = new ItemStack(this);
-					Fluid fluid = ItemJetpack.staticGetWhitelistedFluids().getSecond().get(0);
-					full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemJetpack.MAX_CAPACITY)));
-					CompoundTag tag = full.getOrCreateTag();
-					tag.putInt(NBTUtils.PLATES, 2);
+					
+					GasStack gas = new GasStack(ElectrodynamicsGases.HYDROGEN.get(), ItemJetpack.MAX_CAPACITY, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL);
+					
+					full.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> cap.fillTank(0, gas, GasAction.EXECUTE));
+
 					items.add(full);
+
 				}
 				break;
 			case FEET:

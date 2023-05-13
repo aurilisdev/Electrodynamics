@@ -255,11 +255,11 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addItem(ElectrodynamicsItems.getItem(SubtypeRod.steel), "Steel Rod");
 			addItem(ElectrodynamicsItems.getItem(SubtypeRod.titaniumcarbide), "Titanium Carbide Rod");
 
-			addBlock(ElectrodynamicsBlocks.FRAME, "Quarry Frame");
-			addBlock(ElectrodynamicsBlocks.FRAME_CORNER, "Quarry Frame Corner");
-			addBlock(ElectrodynamicsBlocks.LOGISTICAL_MANAGER, "Logistical Manager");
-			addBlock(ElectrodynamicsBlocks.SEISMIC_MARKER, "Seismic Marker");
-			addBlock(ElectrodynamicsBlocks.MULTI_SUBNODE, "Multiblock Subnode");
+			addBlock(ElectrodynamicsBlocks.BLOCK_FRAME, "Quarry Frame");
+			addBlock(ElectrodynamicsBlocks.BLOCK_FRAME_CORNER, "Quarry Frame Corner");
+			addBlock(ElectrodynamicsBlocks.BLOCK_LOGISTICALMANAGER, "Logistical Manager");
+			addBlock(ElectrodynamicsBlocks.BLOCK_SEISMICMARKER, "Seismic Marker");
+			addBlock(ElectrodynamicsBlocks.BLOCK_MULTISUBNODE, "Multiblock Subnode");
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGlass.aluminum), "ALON");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGlass.clear), "Clear Glass");
@@ -323,6 +323,9 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.blockGasTransformerSide, "Compressor Side");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gasvent), "Gas Vent");
 			addBlock(ElectrodynamicsBlocks.blockThermoelectricManipulator, "Thermoelectric Manipulator");
+			
+			addBlock(ElectrodynamicsBlocks.blockGasValve, "Gas Valve");
+			addBlock(ElectrodynamicsBlocks.blockFluidValve, "Fluid Valve");
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.aluminum), "Bauxite Ore");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.chromite), "Chromite Ore");
@@ -432,7 +435,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addFluid(ElectrodynamicsFluids.fluidClay, "Clay Slurry");
 			addFluid(ElectrodynamicsFluids.fluidEthanol, "Ethanol");
 			addFluid(ElectrodynamicsFluids.fluidHydraulic, "Hydraulic Fluid");
-			addFluid(ElectrodynamicsFluids.fluidHydrogen, "Condensed Hydrogen");
+			addFluid(ElectrodynamicsFluids.fluidHydrogen, "Liquid Hydrogen");
 			addFluid(ElectrodynamicsFluids.fluidHydrogenFluoride, "Hydrofluoric Acid");
 			addFluid(ElectrodynamicsFluids.fluidOxygen, "Liquid Oxygen");
 			addFluid(ElectrodynamicsFluids.fluidPolyethylene, "Molten Polyethylene");
@@ -670,6 +673,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("quarry.miningframe", "Active Frame");
 			addGuiLabel("quarry.nocoolant", "Coolant Levels");
 			addGuiLabel("quarry.inventoryroom", "Inventory Full");
+			
+			addGuiLabel("thermoelectricmanipulator.temp", "Temperature:");
 
 			add("keycategory.electrodynamics", "Electrodynamics");
 			addKeyLabel("jetpackascend", "Ascend with Jetpack");

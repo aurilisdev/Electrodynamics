@@ -23,12 +23,12 @@ public class GenericTileGasTank extends GenericGasTile {
 
 	public GenericTileGasTank(BlockEntityType<?> type, BlockPos pos, BlockState state, SubtypeMachine machine, double capacity, int maxPressure, double maxTemperature) {
 		super(type, pos, state);
-		addComponent(new ComponentTickable().tickServer(this::tickServer));
-		addComponent(new ComponentDirection());
-		addComponent(new ComponentPacketHandler());
+		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
+		addComponent(new ComponentDirection(this));
+		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentGasHandlerSimple(this, "", capacity, maxTemperature, maxPressure).setInputDirections(Direction.UP).setOutputDirections(Direction.DOWN).setOnGasCondensed(getCondensedHandler()));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().gasInputs(1).gasOutputs(1)).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> new ContainerGasTankGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> new ContainerGasTankGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	public void tickServer(ComponentTickable tick) {

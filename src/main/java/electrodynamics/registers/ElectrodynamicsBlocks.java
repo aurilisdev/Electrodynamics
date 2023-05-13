@@ -14,6 +14,7 @@ import electrodynamics.common.block.BlockLogisticalManager;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockMultiSubnode;
 import electrodynamics.common.block.BlockSeismicMarker;
+import electrodynamics.common.block.BlockValve;
 import electrodynamics.common.block.connect.BlockFluidPipe;
 import electrodynamics.common.block.connect.BlockGasPipe;
 import electrodynamics.common.block.connect.BlockWire;
@@ -57,6 +58,9 @@ public class ElectrodynamicsBlocks {
 	
 	public static BlockGasTransformerSide blockGasTransformerSide;
 	public static BlockGasTransformerAddonTank blockGasTransformerAddonTank;
+	
+	public static BlockValve blockGasValve;
+	public static BlockValve blockFluidValve;
 
 	static {
 		for (SubtypeOre subtype : SubtypeOre.values()) {
@@ -88,16 +92,18 @@ public class ElectrodynamicsBlocks {
 		}
 	}
 
-	public static final RegistryObject<Block> MULTI_SUBNODE = BLOCKS.register("multisubnode", supplier(() -> multi = new BlockMultiSubnode()));
-	public static final RegistryObject<Block> SEISMIC_MARKER = BLOCKS.register("seismicmarker", supplier(() -> blockSeismicMarker = new BlockSeismicMarker()));
-	public static final RegistryObject<Block> FRAME = BLOCKS.register("frame", supplier(() -> blockFrame = new BlockFrame(0)));
-	public static final RegistryObject<Block> FRAME_CORNER = BLOCKS.register("framecorner", supplier(() -> blockFrameCorner = new BlockFrame(1)));
-	public static final RegistryObject<Block> LOGISTICAL_MANAGER = BLOCKS.register("logisticalmanager", supplier(() -> blockLogisticalManager = new BlockLogisticalManager()));
-	public static final RegistryObject<Block> COMPRESSOR = BLOCKS.register("compressor", () -> blockCompressor = new BlockCompressor(false));
-	public static final RegistryObject<Block> DECOMPRESSOR = BLOCKS.register("decompressor", () -> blockDecompressor = new BlockCompressor(true));
-	public static final RegistryObject<Block> COMPRESSOR_SIDE = BLOCKS.register("compressorside", () -> blockGasTransformerSide = new BlockGasTransformerSide());
-	public static final RegistryObject<Block> COMPRESSOR_ADDONTANK = BLOCKS.register("compressoraddontank", () -> blockGasTransformerAddonTank = new BlockGasTransformerAddonTank());
-	public static final RegistryObject<Block> THERMOELECTRIC_MANIPULATOR = BLOCKS.register("thermoelectricmanipulator", () -> blockThermoelectricManipulator = new BlockThermoelectricManipulator());
+	public static final RegistryObject<Block> BLOCK_MULTISUBNODE = BLOCKS.register("multisubnode", supplier(() -> multi = new BlockMultiSubnode()));
+	public static final RegistryObject<Block> BLOCK_SEISMICMARKER = BLOCKS.register("seismicmarker", supplier(() -> blockSeismicMarker = new BlockSeismicMarker()));
+	public static final RegistryObject<Block> BLOCK_FRAME = BLOCKS.register("frame", supplier(() -> blockFrame = new BlockFrame(0)));
+	public static final RegistryObject<Block> BLOCK_FRAME_CORNER = BLOCKS.register("framecorner", supplier(() -> blockFrameCorner = new BlockFrame(1)));
+	public static final RegistryObject<Block> BLOCK_LOGISTICALMANAGER = BLOCKS.register("logisticalmanager", supplier(() -> blockLogisticalManager = new BlockLogisticalManager()));
+	public static final RegistryObject<Block> BLOCK_COMPRESSOR = BLOCKS.register("compressor", () -> blockCompressor = new BlockCompressor(false));
+	public static final RegistryObject<Block> BLOCK_DECOMPRESSOR = BLOCKS.register("decompressor", () -> blockDecompressor = new BlockCompressor(true));
+	public static final RegistryObject<Block> BLOCK_COMPRESSOR_SIDE = BLOCKS.register("compressorside", () -> blockGasTransformerSide = new BlockGasTransformerSide());
+	public static final RegistryObject<Block> BLOCK_COMPRESSOR_ADDONTANK = BLOCKS.register("compressoraddontank", () -> blockGasTransformerAddonTank = new BlockGasTransformerAddonTank());
+	public static final RegistryObject<Block> BLOCK_THERMOELECTRICMANIPULATOR = BLOCKS.register("thermoelectricmanipulator", () -> blockThermoelectricManipulator = new BlockThermoelectricManipulator());
+	public static final RegistryObject<Block> BLOCK_GASVALVE = BLOCKS.register("gasvalve", supplier(() -> blockGasValve = new BlockValve(true)));
+	public static final RegistryObject<Block> BLOCK_FLUIDVALVE = BLOCKS.register("fluidvalve", () -> blockFluidValve = new BlockValve(false));
 
 	public static Block[] getAllBlockForSubtype(ISubtype[] values) {
 		List<Block> list = new ArrayList<>();

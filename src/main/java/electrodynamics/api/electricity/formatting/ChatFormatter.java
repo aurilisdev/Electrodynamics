@@ -1,5 +1,8 @@
 package electrodynamics.api.electricity.formatting;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
 public class ChatFormatter {
 
 	public static String getChatDisplay(double value, DisplayUnit unit, int decimalPlaces, boolean isShort) {
@@ -19,23 +22,21 @@ public class ChatFormatter {
 			return value + " " + unitName;
 		}
 
-		if (value <= MeasurementUnit.MILLI.value) {
-			return roundDecimals(MeasurementUnit.MICRO.process(value), decimalPlaces) + " " + MeasurementUnit.MICRO.getName(isShort) + unitName;
+		for (MeasurementUnit measurement : MeasurementUnit.values()) {
+
+			if (value < measurement.value) {
+
+				if (measurement.ordinal() == 0) {
+					return formatDecimals(measurement.process(value), decimalPlaces) + unit.distanceFromValue + measurement.getName(isShort) + unitName;
+				} else {
+					measurement = MeasurementUnit.values()[measurement.ordinal() - 1];
+					return formatDecimals(measurement.process(value), decimalPlaces) + unit.distanceFromValue + measurement.getName(isShort) + unitName;
+				}
+			}
 		}
 
-		if (value < 1.0D) {
-			return roundDecimals(MeasurementUnit.MILLI.process(value), decimalPlaces) + " " + MeasurementUnit.MILLI.getName(isShort) + unitName;
-		}
-
-		if (value > MeasurementUnit.MEGA.value) {
-			return roundDecimals(MeasurementUnit.MEGA.process(value), decimalPlaces) + " " + MeasurementUnit.MEGA.getName(isShort) + unitName;
-		}
-
-		if (value > MeasurementUnit.KILO.value) {
-			return roundDecimals(MeasurementUnit.KILO.process(value), decimalPlaces) + " " + MeasurementUnit.KILO.getName(isShort) + unitName;
-		}
-
-		return roundDecimals(value, decimalPlaces) + " " + unitName;
+		MeasurementUnit measurement = MeasurementUnit.values()[MeasurementUnit.values().length - 1];
+		return formatDecimals(measurement.process(value), decimalPlaces) + unit.distanceFromValue + measurement.getName(isShort) + unitName;
 	}
 
 	public static String getChatDisplay(double value, DisplayUnit unit) {
@@ -54,17 +55,17 @@ public class ChatFormatter {
 		if (value > 1.0D) {
 
 			if (decimalPlaces < 1) {
-				return (int) value + " " + unit.getPlural();
+				return (int) value + unit.distanceFromValue + unit.getPlural();
 			}
 
-			return roundDecimals(value, decimalPlaces) + " " + unit.getPlural();
+			return formatDecimals(value, decimalPlaces) + unit.distanceFromValue + unit.getPlural();
 		}
 
 		if (decimalPlaces < 1) {
-			return (int) value + " " + unit.name;
+			return (int) value + unit.distanceFromValue + unit.name;
 		}
 
-		return roundDecimals(value, decimalPlaces) + " " + unit.name;
+		return formatDecimals(value, decimalPlaces) + unit.distanceFromValue + unit.name;
 	}
 
 	public static double roundDecimals(double d, int decimalPlaces) {
@@ -72,8 +73,10 @@ public class ChatFormatter {
 		return j / Math.pow(10.0D, decimalPlaces);
 	}
 
-	public static double roundDecimals(double d) {
-		return roundDecimals(d, 2);
+	public static String formatDecimals(double d, int decimalPlaces) {
+		DecimalFormat format = new DecimalFormat("#" + getDecimals(decimalPlaces));
+		format.setRoundingMode(RoundingMode.HALF_EVEN);
+		return format.format(roundDecimals(d, decimalPlaces));
 	}
 
 	public static String formatFluidMilibuckets(double amount) {
@@ -83,9 +86,21 @@ public class ChatFormatter {
 			return getChatDisplayShort(amount / 1000.0, DisplayUnit.BUCKETS);
 
 		} else {
-			return amount + " mB";
+			return formatDecimals(amount, 2) + " mB";
 
 		}
 
+	}
+
+	private static String getDecimals(int num) {
+		if (num <= 0) {
+			return ".";
+		}
+		num--;
+		String key = ".0";
+		for (int i = 0; i < num; i++) {
+			key += "#";
+		}
+		return key;
 	}
 }

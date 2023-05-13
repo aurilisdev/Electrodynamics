@@ -44,9 +44,9 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		TileCoalGenerator box = menu.getHostFromIntArray();
 		if (box != null) {
-			list.add(TextUtils.gui("coalgenerator.timeleft", Component.literal(box.burnTime.get() / 20 + "s").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(TextUtils.gui("machine.temperature", Component.literal(ChatFormatter.roundDecimals(box.heat.getValue().get() * (2500.0 / 3000.0)) + " C").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(TextUtils.gui("machine.heat", Component.literal(ChatFormatter.roundDecimals((box.heat.getValue().get() - 27.0) / (3000.0 - 27.0) * 100) + "%").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("coalgenerator.timeleft", Component.literal(ChatFormatter.getChatDisplayShort(box.burnTime.get() / 20, DisplayUnit.TIME_SECONDS)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("machine.temperature", Component.literal(ChatFormatter.getChatDisplayShort(box.heat.getValue().get() * (2500.0 / 3000.0), DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(TextUtils.gui("machine.heat", Component.literal(ChatFormatter.getChatDisplayShort((box.heat.getValue().get() - 27.0) / (3000.0 - 27.0) * 100, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}

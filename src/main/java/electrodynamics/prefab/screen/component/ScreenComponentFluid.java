@@ -1,11 +1,15 @@
 package electrodynamics.prefab.screen.component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.FluidTankSupplier;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentGauge;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -57,14 +61,18 @@ public class ScreenComponentFluid extends AbstractScreenComponentGauge {
 	}
 
 	@Override
-	protected Component getTooltip() {
+	protected List<? extends FormattedCharSequence> getTooltips() {
+		List<FormattedCharSequence> tooltips = new ArrayList<>();
 		IFluidTank tank = fluidInfoHandler.getTank();
 		if (tank != null) {
 			FluidStack fluidStack = tank.getFluid();
 			if (fluidStack.getAmount() > 0) {
-				return Component.translatable(fluidStack.getTranslationKey()).append(Component.literal(" " + tank.getFluidAmount() + " / " + tank.getCapacity() + " mB"));
+				tooltips.add(Component.translatable(fluidStack.getTranslationKey()).getVisualOrderText());
+				tooltips.add(Component.literal(tank.getFluidAmount() + " / " + tank.getCapacity() + " mB").getVisualOrderText());
+			} else {
+				tooltips.add(Component.literal( "0 / " + tank.getCapacity() + " mB").getVisualOrderText());
 			}
-		}
-		return Component.literal( "0 / " + tank.getCapacity() + " mB");
+		} 
+		return tooltips;
 	}
 }

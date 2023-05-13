@@ -1,7 +1,7 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerCoolantResavoir;
-import electrodynamics.common.tile.TileCoolantResavoir;
+import electrodynamics.common.tile.quarry.TileCoolantResavoir;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentFluidInput;
 import electrodynamics.prefab.screen.component.ScreenComponentGeneric;

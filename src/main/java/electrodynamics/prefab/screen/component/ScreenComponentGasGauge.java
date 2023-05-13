@@ -73,7 +73,6 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 
 			if (gas.isEmpty()) {
 
-				//tooltips.add(gas.getGas().getDescription().getVisualOrderText());
 				tooltips.add(Component.literal( "0 / " + ChatFormatter.formatFluidMilibuckets(tank.getCapacity())).getVisualOrderText());
 
 			} else {

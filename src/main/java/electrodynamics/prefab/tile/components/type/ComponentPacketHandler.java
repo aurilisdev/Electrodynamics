@@ -20,6 +20,10 @@ import net.minecraftforge.network.NetworkDirection;
 public class ComponentPacketHandler implements Component {
     private GenericTile holder;
 
+    public ComponentPacketHandler(GenericTile holder) {
+    	this.holder = holder;
+    }
+    
     @Override
     public void holder(GenericTile holder) {
         this.holder = holder;

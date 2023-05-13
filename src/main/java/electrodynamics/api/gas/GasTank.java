@@ -97,7 +97,11 @@ public class GasTank implements IGasTank, IGasHandler {
 
 			if (action == GasAction.EXECUTE) {
 
-				setGas(resource.copy());
+				GasStack taken = resource.copy();
+				
+				taken.setAmount(accepted);
+				
+				setGas(taken);
 
 				onChange();
 

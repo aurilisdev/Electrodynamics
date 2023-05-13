@@ -9,7 +9,7 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerMotorComplex;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.TileMotorComplex;
+import electrodynamics.common.tile.quarry.TileMotorComplex;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;

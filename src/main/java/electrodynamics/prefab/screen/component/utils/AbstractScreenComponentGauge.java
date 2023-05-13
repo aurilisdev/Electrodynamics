@@ -1,5 +1,7 @@
 package electrodynamics.prefab.screen.component.utils;
 
+import java.util.List;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -11,8 +13,8 @@ import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -60,10 +62,10 @@ public abstract class AbstractScreenComponentGauge extends ScreenComponentGeneri
 	@Override
 	public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
 		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(), super.texture.textureHeight())) {
-			Component tooltip = getTooltip();
+			List<? extends FormattedCharSequence> tooltips = getTooltips();
 
-			if (tooltip != null && !tooltip.getString().isEmpty()) {
-				gui.displayTooltip(stack, tooltip, xAxis, yAxis);
+			if (!tooltips.isEmpty()) {
+				gui.displayTooltips(stack, tooltips, xAxis, yAxis);
 			}
 		}
 	}
@@ -72,7 +74,7 @@ public abstract class AbstractScreenComponentGauge extends ScreenComponentGeneri
 
 	protected abstract ResourceLocation getTexture();
 
-	protected abstract Component getTooltip();
+	protected abstract List<? extends FormattedCharSequence> getTooltips();
 
 	public enum GaugeTextures implements ITexture {
 		BACKGROUND_DEFAULT(14, 49, 0, 0, 256, 256, TEXTURE),

@@ -27,7 +27,7 @@ public class TileTransformer extends GenericTile {
 
 	public TileTransformer(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_TRANSFORMER.get(), worldPosition, blockState);
-		addComponent(new ComponentDirection());
+		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH));
 	}
 

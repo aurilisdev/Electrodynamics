@@ -6,7 +6,6 @@ import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSou
 import electrodynamics.common.tile.generators.TileCreativePowerSource;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentTextInputBar;
-import electrodynamics.prefab.screen.component.ScreenComponentTextInputBar.TextInputTextures;
 import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.EditBox;
@@ -23,8 +22,8 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 
 	public ScreenCreativePowerSource(ContainerCreativePowerSource container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
-		components.add(new ScreenComponentTextInputBar(TextInputTextures.TEXT_INPUT_SMALL, this, 80, 27));
-		components.add(new ScreenComponentTextInputBar(TextInputTextures.TEXT_INPUT_SMALL, this, 80, 45));
+		components.add(new ScreenComponentTextInputBar(this, 80, 27, 49, 16));
+		components.add(new ScreenComponentTextInputBar(this, 80, 45, 49, 16));
 	}
 
 	@Override

@@ -2,11 +2,11 @@ package electrodynamics.prefab.network;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
@@ -21,8 +21,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> implements ITickableNetwork {
 	public HashSet<C> conductorSet = new HashSet<>();
 	public HashSet<A> acceptorSet = new HashSet<>();
-	public HashMap<A, HashSet<Direction>> acceptorInputMap = new HashMap<>();
-	public HashMap<T, HashSet<C>> conductorTypeMap = new HashMap<>();
+	public ConcurrentHashMap<A, HashSet<Direction>> acceptorInputMap = new ConcurrentHashMap<>();
+	public ConcurrentHashMap<T, HashSet<C>> conductorTypeMap = new ConcurrentHashMap<>();
 	public double networkMaxTransfer;
 	public double transmittedLastTick;
 	public double transmittedThisTick;

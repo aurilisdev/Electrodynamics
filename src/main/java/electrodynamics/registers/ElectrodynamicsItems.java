@@ -119,13 +119,13 @@ public class ElectrodynamicsItems {
 	public static final RegistryObject<Item> ITEM_LOGISTICALMANAGER = ITEMS.register("logisticalmanager", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockLogisticalManager, new Item.Properties().tab(References.CORETAB))));
 	
 	public static final RegistryObject<Item> ITEM_COMPRESRSOR = ITEMS.register("compressor", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockCompressor, new Item.Properties().tab(References.CORETAB))));
-	public static final RegistryObject<Item> ITEM_DECOMPRESSOR = ITEMS.register("decompressor", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockDecompressor, new Item.Properties().tab(References.CORETAB))));;
-	
+	public static final RegistryObject<Item> ITEM_DECOMPRESSOR = ITEMS.register("decompressor", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockDecompressor, new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_THERMOELECTRIC_MANIPULATOR = ITEMS.register("thermoelectricmanipulator", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockThermoelectricManipulator, new Item.Properties().tab(References.CORETAB))));
-	
 	public static final RegistryObject<Item> ITEM_COMPRESSOR_ADDONTANK = ITEMS.register("compressoraddontank", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockGasTransformerAddonTank, new Item.Properties().tab(References.CORETAB))));
-
 	public static final RegistryObject<Item> ITEM_SEISMICMARKER = ITEMS.register("seismicmarker", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockSeismicMarker, new Item.Properties().tab(References.CORETAB))));
+	
+	public static final RegistryObject<Item> ITEM_GASVALVE = ITEMS.register("gasvalve", supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockGasValve, new Item.Properties().tab(References.CORETAB))));
+	public static final RegistryObject<Item> ITEM_FLUIDVALVE = ITEMS.register("fluidvalve", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFluidValve, new Item.Properties().tab(References.CORETAB)));
 
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation", supplier(() -> new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_CERAMICINSULATION = ITEMS.register("insulationceramic", supplier(() -> new Item(new Item.Properties().tab(References.CORETAB))));

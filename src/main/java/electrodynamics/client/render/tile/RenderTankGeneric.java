@@ -34,7 +34,7 @@ public class RenderTankGeneric extends AbstractTileRenderer<GenericTileFluidTank
         ComponentFluidHandlerSimple tank = entity.getComponent(ComponentType.FluidHandler);
         if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
             FluidStack fluid = tank.getFluid();
-            float yHeight = Mth.clamp(MIN_Y + 0.065F, (float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y);
+            float yHeight = Mth.clamp((float) tank.getFluidAmount() / (float) tank.getCapacity(), MIN_Y + 0.065F, MAX_Y);
             AABB aabb = new AABB(MIN_X, MIN_Y, MIN_Z, MAX_X, yHeight, MAX_Z);
             VertexConsumer builder = source.getBuffer(Sheets.translucentCullBlockSheet());
             RenderingUtils.renderFluidBox(stack, Minecraft.getInstance(), builder, aabb, fluid, light, overlay);

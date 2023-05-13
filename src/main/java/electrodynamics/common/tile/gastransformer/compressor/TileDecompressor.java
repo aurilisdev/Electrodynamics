@@ -15,7 +15,7 @@ public class TileDecompressor extends GenericTileCompressor {
 
 	@Override
 	public ComponentContainerProvider getContainerProvider() {
-		return new ComponentContainerProvider("container.decompressor").createMenu((id, inv) -> new ContainerDecompressor(id, inv, getComponent(ComponentType.Inventory), getCoordsArray()));
+		return new ComponentContainerProvider("container.decompressor", this).createMenu((id, inv) -> new ContainerDecompressor(id, inv, getComponent(ComponentType.Inventory), getCoordsArray()));
 	}
 
 }

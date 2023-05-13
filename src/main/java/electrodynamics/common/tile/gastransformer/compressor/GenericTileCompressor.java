@@ -135,11 +135,15 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 		
 		int newPressure = isDecompressor ? currPressure / 2 : currPressure * 2;
 		
-		GasStack toTake = new GasStack(inputTank.getGas().getGas(), Math.min(conversionRate, inputTank.getGasAmount()), inputTank.getGas().getTemperature(), newPressure);
+		GasStack toTake = new GasStack(inputTank.getGas().getGas(), Math.min(conversionRate, inputTank.getGasAmount()), inputTank.getGas().getTemperature(), inputTank.getGas().getPressure());
 		
 		toTake.bringPressureTo(newPressure);
 		
 		double taken = outputTank.fill(toTake.copy(), GasAction.EXECUTE);
+		
+		if(taken == 0) {
+			return;
+		}
 		
 		toTake.setAmount(taken);
 		

@@ -5,7 +5,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import electrodynamics.api.item.IItemElectric;
-import electrodynamics.common.tile.generic.GenericTileCharger;
+import electrodynamics.common.tile.charger.GenericTileCharger;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;

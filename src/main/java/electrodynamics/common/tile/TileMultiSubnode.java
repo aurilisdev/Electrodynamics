@@ -19,7 +19,7 @@ public class TileMultiSubnode extends GenericTile {
 
 	public TileMultiSubnode(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_MULTI.get(), worldPosition, blockState);
-		addComponent(new ComponentPacketHandler());
+		addComponent(new ComponentPacketHandler(this));
 	}
 
 	public VoxelShape getShape() {

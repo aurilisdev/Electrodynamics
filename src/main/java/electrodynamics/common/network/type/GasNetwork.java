@@ -3,9 +3,9 @@ package electrodynamics.common.network.type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
-
-import com.google.common.collect.Sets;
+import java.util.concurrent.ConcurrentHashMap;
 
 import electrodynamics.api.gas.Gas;
 import electrodynamics.api.gas.GasAction;
@@ -46,7 +46,7 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 		refresh();
 		NetworkRegistry.register(this);
 	}
-	
+
 	public GasNetwork(Set<GasNetwork> networks, boolean sep) {
 		for (GasNetwork network : networks) {
 			if (network != null) {
@@ -63,87 +63,93 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 	 * Returns a GasStack representing how much fluid was actually emitted through the network
 	 * 
 	 * @param transfer: The gas stack to be transfered
-	 * @param ignored: By convention, the first tile in the ignored list will be the transmitting tile, and will be the point used to determine the heat loss
-	 * @param debug: Whether or not this should be simulated
+	 * @param ignored:  By convention, the first tile in the ignored list will be the transmitting tile, and will be the point used to
+	 *                  determine the heat loss
+	 * @param debug:    Whether or not this should be simulated
 	 * 
-	 * @return Empty if the transmitted pack is empty or if there is no transmitting tile (i.e. ignored is empty). All gas will be used if the network exploded
+	 * @return Empty if the transmitted pack is empty or if there is no transmitting tile (i.e. ignored is empty). All gas will be
+	 *         used if the network exploded
 	 */
 	public GasStack emit(GasStack transfer, ArrayList<BlockEntity> ignored, boolean debug) {
 
 		if (transfer.getAmount() <= 0 || ignored.isEmpty()) {
 			return GasStack.EMPTY;
 		}
-		
-		if(checkForOverloadAndHandle(transfer, !debug)) {
+
+		if (checkForOverloadAndHandle(transfer, !debug)) {
 			return transfer;
 		}
+
+		Set<BlockEntity> recievingTiles = ConcurrentHashMap.newKeySet();
 		
-		HashSet<BlockEntity> recievingTiles = Sets.newHashSet(acceptorSet);
-		
+		recievingTiles.addAll(acceptorSet);
+
 		recievingTiles.removeAll(ignored);
-		
-		if(recievingTiles.isEmpty()) {
+
+		if (recievingTiles.isEmpty()) {
 			return GasStack.EMPTY;
 		}
-		
+
 		GasStack copy = transfer.copy();
-		
+
 		BlockPos senderPos = ignored.get(0).getBlockPos();
 		GasStack taken = new GasStack(transfer.getGas(), 0, transfer.getTemperature(), transfer.getPressure());
-		
+
 		GasStack gasPerTile;
 		GasStack preGasPerTile;
 		GasStack gasPerConnection;
 		GasStack preGasPerConnection;
-		
+
 		double deltaT = copy.getTemperature() != Gas.ROOM_TEMPERATURE ? -Math.signum(copy.getTemperature() - Gas.ROOM_TEMPERATURE) : 0;
-		
-		for(BlockEntity tile : recievingTiles) {
-			
+
+		for (BlockEntity tile : recievingTiles) {
+
 			gasPerTile = new GasStack(copy.getGas(), copy.getAmount() / (double) recievingTiles.size(), copy.getTemperature(), copy.getPressure());
 			preGasPerTile = gasPerTile.copy();
-			
+
 			double deltaDegreesKelvin = ((double) (Math.abs(tile.getBlockPos().getX() - senderPos.getX()) + Math.abs(tile.getBlockPos().getY() - senderPos.getY()) + Math.abs(tile.getBlockPos().getZ() - senderPos.getZ()))) * heatLossPerBlock * gasPerTile.getTemperature() * deltaT;
-			
+
 			double newTemperature = gasPerTile.getTemperature() + deltaDegreesKelvin;
-			
-			if(deltaT < 0 && newTemperature < Gas.ROOM_TEMPERATURE) {
+
+			if (deltaT < 0 && newTemperature < Gas.ROOM_TEMPERATURE) {
 				newTemperature = Gas.ROOM_TEMPERATURE;
 			}
-			
+
 			deltaDegreesKelvin = newTemperature - gasPerTile.getTemperature();
-			
+
 			HashSet<Direction> connections = acceptorInputMap.get(tile);
-			
+
 			int connectionCount = connections.size();
-			
-			for(Direction dir : connections) {
-				
+
+			for (Direction dir : connections) {
+
 				gasPerConnection = new GasStack(gasPerTile.getGas(), gasPerTile.getAmount() / (double) connectionCount, gasPerTile.getTemperature(), gasPerTile.getPressure());
 				preGasPerConnection = gasPerConnection.copy();
-				
+
 				gasPerConnection.heat(deltaDegreesKelvin);
-				
-				gasPerConnection.shrink(GasUtilities.recieveGas(tile, dir, gasPerConnection, GasAction.EXECUTE));
-				
-				if(gasPerConnection.getAmount() > 0) {
+
+				double amtTaken = GasUtilities.recieveGas(tile, dir, gasPerConnection, GasAction.EXECUTE);
+
+				gasPerConnection.shrink(amtTaken);
+
+				if (gasPerConnection.getAmount() > 0) {
 					gasPerConnection.heat(-deltaDegreesKelvin);
-				} 
-				
+				}
+
 				gasPerTile.shrink(preGasPerConnection.getAmount() - gasPerConnection.getAmount());
-				
-				connectionCount --;
+
+				connectionCount--;
 			}
-			
+
 			double takenAmt = preGasPerTile.getAmount() - gasPerTile.getAmount();
-			
+
 			copy.shrink(takenAmt);
-			
+
 			taken.setAmount(taken.getAmount() + takenAmt);
-			
+
 			recievingTiles.remove(tile);
 		}
-		
+
 		transmittedThisTick = taken.getAmount();
 		temperatureOfTransmitted = taken.getTemperature();
 		pressureOfTransmitted = taken.getPressure();
@@ -171,7 +177,7 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 		}
 		for (SubtypeGasPipe pipe : overloadedPipes) {
 			for (IGasPipe gasPipe : conductorTypeMap.get(pipe)) {
-				if(live) {
+				if (live) {
 					gasPipe.destroyViolently();
 				}
 				exploded = true;
@@ -179,7 +185,7 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 		}
 
 		return exploded;
-		
+
 	}
 
 	@Override
@@ -208,6 +214,23 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 		super.tick();
 		pressureOfTransmitted = 0;
 		temperatureOfTransmitted = 0;
+
+		Iterator<IGasPipe> it = conductorSet.iterator();
+		boolean broken = false;
+		while (it.hasNext()) {
+			IGasPipe conductor = it.next();
+			if (conductor instanceof BlockEntity entity && entity.isRemoved() || conductor.getNetwork() != this) {
+				broken = true;
+				break;
+			}
+		}
+		if (broken) {
+			refresh();
+		}
+		if (getSize() == 0) {
+			deregister();
+		}
+
 	}
 
 	@Override

@@ -11,6 +11,10 @@ import java.util.function.Consumer;
 public class ComponentTickable implements Component {
     private GenericTile holder;
 
+    public ComponentTickable(GenericTile holder) {
+    	this.holder = holder;
+    }
+    
     @Override
     public void holder(GenericTile holder) {
         this.holder = holder;

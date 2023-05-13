@@ -20,8 +20,8 @@ public class GasStack {
 
 	private Gas gas = Gas.empty();
 	private double amount = 0; // mB
-	private double temperature = 257; // Kelvin room temperature (20 C)
-	private int pressure = 1; // ATM
+	private double temperature = Gas.ROOM_TEMPERATURE; 
+	private int pressure = Gas.PRESSURE_AT_SEA_LEVEL; // ATM
 
 	private boolean isEmpty = false;
 

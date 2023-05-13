@@ -15,7 +15,7 @@ public class TileCompressor extends GenericTileCompressor {
 
 	@Override
 	public ComponentContainerProvider getContainerProvider() {
-		return new ComponentContainerProvider("container.compressor").createMenu((id, inv) -> new ContainerCompressor(id, inv, getComponent(ComponentType.Inventory), getCoordsArray()));
+		return new ComponentContainerProvider("container.compressor", this).createMenu((id, inv) -> new ContainerCompressor(id, inv, getComponent(ComponentType.Inventory), getCoordsArray()));
 	}
 
 }

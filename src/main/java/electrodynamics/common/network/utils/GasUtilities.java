@@ -4,6 +4,7 @@ import java.util.List;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.gas.IGasHandler;
+import electrodynamics.api.capability.types.gas.IGasHandlerItem;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.gas.GasTank;
@@ -15,6 +16,8 @@ import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.util.LazyOptional;
@@ -97,10 +100,16 @@ public class GasUtilities {
 				ItemStack stack = cylinders.get(i);
 				GasTank tank = tanks[i];
 				if (!stack.isEmpty() && !CapabilityUtils.isGasItemNull()) {
+					IGasHandlerItem handler = (IGasHandlerItem) stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).cast().resolve().get();
 					GasStack gas = tank.getGas();
-				    double amtFilled = CapabilityUtils.fillGasItem(stack, gas, GasAction.SIMULATE);
-					GasStack taken = new GasStack(gas.getGas(), amtFilled, gas.getTemperature(), gas.getPressure());
-					CapabilityUtils.fillGasItem(stack, gas, GasAction.EXECUTE);
+					GasStack taken;
+					if(gas.getTemperature() > handler.getTankMaxTemperature(0) || gas.getPressure() > handler.getTankMaxPressure(0)) {
+						taken = gas.copy();
+						tile.getLevel().playSound(null, tile.getBlockPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
+					} else {
+						double amtFilled = CapabilityUtils.fillGasItem(stack, gas, GasAction.EXECUTE);
+						taken = new GasStack(gas.getGas(), amtFilled, gas.getTemperature(), gas.getPressure());
+					}
 					tank.drain(taken, GasAction.EXECUTE);
 
 				}

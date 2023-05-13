@@ -38,9 +38,9 @@ public abstract class GenericTileGasTransformer extends GenericGasTile implement
 	
 	public GenericTileGasTransformer(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
 		super(tileEntityTypeIn, worldPos, blockState);
-		addComponent(new ComponentDirection());
-		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentTickable().tickClient(this::tickClient));
+		addComponent(new ComponentDirection(this));
+		addComponent(new ComponentPacketHandler(this));
+		addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 		addComponent(getInventory());
 		addComponent(new ComponentProcessor(this).canProcess(this::canProcess).process(this::process).usage(USAGE_PER_TICK));
 		addComponent(new ComponentGasHandlerMulti(this).setTanks(1, arr(BASE_INPUT_CAPACITY), arr(INPUT_TEMPERATURE), arr(INPUT_PRESSURE), 1, arr(BASE_OUTPUT_CAPACITY), arr(OUTPUT_TEMPERATURE), arr(OUTPUT_PRESSURE)).setInputDirections(Direction.EAST).setOutputDirections(Direction.WEST).setCondensedHandler(getCondensedHandler()));

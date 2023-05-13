@@ -27,7 +27,7 @@ public class ContainerThermoelectricManipulator extends GenericContainerBlockEnt
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		playerInvOffset = 20;
+		playerInvOffset = 30;
 		addSlot(new SlotFluid(inv, nextIndex(), 27, 19));
 		addSlot(new SlotFluid(inv, nextIndex(), 113, 19));
 		addSlot(new SlotGas(inv, nextIndex(), 27, 50));

@@ -142,6 +142,9 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		genCompressorSide();
 		simpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gasvent), blockLoc("gasvent"), true);
 		genThermoelectricManipulator();
+		
+		horrRotatedLitBlock(ElectrodynamicsBlocks.blockGasValve, existingBlock(ElectrodynamicsBlocks.blockGasValve), existingBlock(blockLoc("gasvalveon")), 90, 0, true);
+		horrRotatedLitBlock(ElectrodynamicsBlocks.blockFluidValve, existingBlock(ElectrodynamicsBlocks.blockFluidValve), existingBlock(blockLoc("fluidvalveon")), 90, 0, true);
 
 		genWires();
 		genPipes();
@@ -259,9 +262,9 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	private void genCompressorAddonTank() {
 		getVariantBuilder(ElectrodynamicsBlocks.blockGasTransformerAddonTank).partialState().with(ElectrodynamicsBlockStates.ADDONTANK_NEIGHBOR_STATUS, AddonTankNeighborType.BOTTOMANDTOPTANK).modelForState().modelFile(existingBlock(blockLoc("compressoraddontanktab"))).addModel().partialState().with(ElectrodynamicsBlockStates.ADDONTANK_NEIGHBOR_STATUS, AddonTankNeighborType.TOPTANK).modelForState()
 				.modelFile(existingBlock(blockLoc("compressoraddontankt"))).addModel().partialState().with(ElectrodynamicsBlockStates.ADDONTANK_NEIGHBOR_STATUS, AddonTankNeighborType.BOTTOMTANK).modelForState().modelFile(existingBlock(blockLoc("compressoraddontankb"))).addModel().partialState().with(ElectrodynamicsBlockStates.ADDONTANK_NEIGHBOR_STATUS, AddonTankNeighborType.NONE).modelForState()
-				.modelFile(existingBlock(ElectrodynamicsBlocks.COMPRESSOR_ADDONTANK)).addModel();
+				.modelFile(existingBlock(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK)).addModel();
 
-		blockItem(ElectrodynamicsBlocks.blockGasTransformerAddonTank, existingBlock(ElectrodynamicsBlocks.COMPRESSOR_ADDONTANK));
+		blockItem(ElectrodynamicsBlocks.blockGasTransformerAddonTank, existingBlock(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK));
 	}
 
 	private void genCompressorSide() {
