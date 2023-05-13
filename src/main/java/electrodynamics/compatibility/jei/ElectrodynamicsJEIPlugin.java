@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import javax.annotation.Nullable;
+//import javax.annotation.Nullable;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
@@ -52,7 +52,7 @@ import electrodynamics.compatibility.jei.recipecategories.item2item.specificmach
 import electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines.WireMillRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmachines.ElectricArcFurnaceRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmachines.ElectricFurnaceRecipeCategory;
-import electrodynamics.compatibility.jei.recipemanagers.RecipeManagerPluginCanister;
+//import electrodynamics.compatibility.jei.recipemanagers.RecipeManagerPluginCanister;
 import electrodynamics.compatibility.jei.screenhandlers.ScreenHandlerGuidebook;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
@@ -66,8 +66,8 @@ import mezz.jei.api.registration.IGuiHandlerRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
-import mezz.jei.api.runtime.IJeiRuntime;
-import mezz.jei.common.runtime.JeiRuntime;
+//import mezz.jei.api.runtime.IJeiRuntime;
+//import mezz.jei.common.runtime.JeiRuntime;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
@@ -88,13 +88,14 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	private static final int FULL_FLUID_SQUARE = 1600;
 
-	private static IJeiRuntime RUNTIME = null;
+	//private static IJeiRuntime RUNTIME = null;
 	
 	@Override
 	public ResourceLocation getPluginUid() {
 		return new ResourceLocation(electrodynamics.api.References.ID, "jei");
 	}
 	
+	/*
 	@Override
 	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
 		RUNTIME = (JeiRuntime) jeiRuntime;
@@ -104,6 +105,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	public static IJeiRuntime getJeiRuntime() {
 		return RUNTIME;
 	}
+	*/
 
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
@@ -266,7 +268,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	@Override
 	public void registerAdvanced(IAdvancedRegistration registration) {
 		
-		registration.addRecipeManagerPlugin(new RecipeManagerPluginCanister());
+		//registration.addRecipeManagerPlugin(new RecipeManagerPluginCanister());
 		
 	}
 
