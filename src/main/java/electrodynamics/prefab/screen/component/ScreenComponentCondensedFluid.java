@@ -5,8 +5,8 @@ import java.util.function.Supplier;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketSendUpdatePropertiesServer;
-import electrodynamics.common.packet.types.PacketUpdateCarriedItemServer;
+import electrodynamics.common.packet.types.server.PacketSendUpdatePropertiesServer;
+import electrodynamics.common.packet.types.server.PacketUpdateCarriedItemServer;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.screen.GenericScreen;

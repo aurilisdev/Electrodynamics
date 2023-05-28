@@ -3,7 +3,7 @@ package electrodynamics.client.keys.event;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.client.keys.KeyBinds;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketSwapBattery;
+import electrodynamics.common.packet.types.server.PacketSwapBattery;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;

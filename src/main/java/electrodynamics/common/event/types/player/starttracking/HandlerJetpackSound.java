@@ -1,7 +1,7 @@
 package electrodynamics.common.event.types.player.starttracking;
 
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketJetpackEquipedSound;
+import electrodynamics.common.packet.types.client.PacketJetpackEquipedSound;
 import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.server.level.ServerPlayer;

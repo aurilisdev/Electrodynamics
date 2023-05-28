@@ -43,6 +43,7 @@ import electrodynamics.common.tile.mineralgrinder.TileMineralGrinder;
 import electrodynamics.common.tile.mineralgrinder.TileMineralGrinderDouble;
 import electrodynamics.common.tile.mineralgrinder.TileMineralGrinderTriple;
 import electrodynamics.common.tile.network.electric.TileCircuitBreaker;
+import electrodynamics.common.tile.network.electric.TileRelay;
 import electrodynamics.common.tile.network.fluid.TileFluidVoid;
 import electrodynamics.common.tile.network.gas.TileGasVent;
 import electrodynamics.common.tile.quarry.TileCoolantResavoir;
@@ -120,7 +121,8 @@ public enum SubtypeMachine implements ISubtype {
 	gastanksteel(true, TileGasTankSteel.class),
 	gastankreinforced(true, TileGasTankReinforced.class),
 	gastankhsla(true, TileGasTankHSLA.class),
-	gasvent(true, TileGasVent.class);
+	gasvent(true, TileGasVent.class),
+	relay(true, TileRelay.class);
 
 	public final Class<? extends BlockEntity> tileclass;
 	public final boolean showInItemGroup;

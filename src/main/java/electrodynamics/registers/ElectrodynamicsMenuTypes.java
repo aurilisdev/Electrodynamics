@@ -2,6 +2,7 @@ package electrodynamics.registers;
 
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.inventory.container.ContainerGasPipeFilter;
 import electrodynamics.common.inventory.container.item.ContainerGuidebook;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
@@ -24,7 +25,10 @@ import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceD
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceTriple;
 import electrodynamics.common.inventory.container.tile.ContainerElectrolyticSeparator;
 import electrodynamics.common.inventory.container.tile.ContainerFermentationPlant;
+import electrodynamics.common.inventory.container.tile.ContainerFluidPipeFilter;
+import electrodynamics.common.inventory.container.tile.ContainerFluidPipePump;
 import electrodynamics.common.inventory.container.tile.ContainerFluidVoid;
+import electrodynamics.common.inventory.container.tile.ContainerGasPipePump;
 import electrodynamics.common.inventory.container.tile.ContainerGasTankGeneric;
 import electrodynamics.common.inventory.container.tile.ContainerGasVent;
 import electrodynamics.common.inventory.container.tile.ContainerCompressor;
@@ -88,4 +92,8 @@ public class ElectrodynamicsMenuTypes {
 	public static final RegistryObject<MenuType<ContainerDecompressor>> CONTAINER_DECOMPRESSOR = MENU_TYPES.register("decompressor", () -> new MenuType<>(ContainerDecompressor::new));
 	public static final RegistryObject<MenuType<ContainerGasVent>> CONTAINER_GASVENT = MENU_TYPES.register("gasvent", () -> new MenuType<>(ContainerGasVent::new));
 	public static final RegistryObject<MenuType<ContainerThermoelectricManipulator>> CONTAINER_THERMOELECTRICMANIPULATOR = MENU_TYPES.register("thermoelectricmanipulator", () -> new MenuType<>(ContainerThermoelectricManipulator::new));
+	public static final RegistryObject<MenuType<ContainerGasPipePump>> CONTAINER_GASPIPEPUMP = MENU_TYPES.register("gaspipepump", () -> new MenuType<>(ContainerGasPipePump::new));
+	public static final RegistryObject<MenuType<ContainerFluidPipePump>> CONTAINER_FLUIDPIPEPUMP = MENU_TYPES.register("fluidpipepump", () -> new MenuType<>(ContainerFluidPipePump::new));
+	public static final RegistryObject<MenuType<ContainerGasPipeFilter>> CONTAINER_GASPIPEFILTER = MENU_TYPES.register("gaspipefilter", () -> new MenuType<>(ContainerGasPipeFilter::new));
+	public static final RegistryObject<MenuType<ContainerFluidPipeFilter>> CONTAINER_FLUIDPIPEFILTER = MENU_TYPES.register("fluidpipefilter", () -> new MenuType<>(ContainerFluidPipeFilter::new));
 }

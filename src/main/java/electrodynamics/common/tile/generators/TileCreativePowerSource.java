@@ -28,6 +28,7 @@ public class TileCreativePowerSource extends GenericTile {
 
 	public Property<Integer> voltage = property(new Property<>(PropertyType.Integer, "setvoltage", 0));
 	public Property<Integer> power = property(new Property<>(PropertyType.Integer, "setpower", 0));
+	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
 
 	protected List<CachedTileOutput> outputs;
 
@@ -41,6 +42,9 @@ public class TileCreativePowerSource extends GenericTile {
 	}
 
 	private void tickServer(ComponentTickable tick) {
+		if(hasRedstoneSignal.get()) {
+			return;
+		}
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 		if (outputs == null) {
 			outputs = new ArrayList<>();
@@ -69,5 +73,10 @@ public class TileCreativePowerSource extends GenericTile {
 	@Override
 	public int getComparatorSignal() {
 		return power.get() > 0 ? 15 : 0;
+	}
+	
+	@Override
+	public void onNeightborChanged(BlockPos neighbor) {
+		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
 	}
 }

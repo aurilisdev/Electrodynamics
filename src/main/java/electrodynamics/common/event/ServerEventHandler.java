@@ -16,7 +16,7 @@ import electrodynamics.common.event.types.player.rightclick.HandlerRightClickWir
 import electrodynamics.common.event.types.player.starttracking.AbstractPlayerStartTrackingHandler;
 import electrodynamics.common.event.types.player.starttracking.HandlerJetpackSound;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketPlayerInformation;
+import electrodynamics.common.packet.types.server.PacketPlayerInformation;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;

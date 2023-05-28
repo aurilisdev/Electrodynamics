@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketSendUpdatePropertiesClient;
-import electrodynamics.common.packet.types.PacketUpdateTile;
+import electrodynamics.common.packet.types.client.PacketSendUpdatePropertiesClient;
+import electrodynamics.common.packet.types.client.PacketUpdateTile;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;

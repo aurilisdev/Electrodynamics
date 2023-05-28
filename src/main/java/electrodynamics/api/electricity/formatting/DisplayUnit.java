@@ -6,7 +6,7 @@ public enum DisplayUnit {
 	VOLTAGE("Volt", "V"),
 	WATT("Watt", "W"),
 	WATT_HOUR("Watt Hour", "Wh"),
-	RESISTANCE("Ohm", "Ω"),
+	RESISTANCE("Ohm", '\u03A9' + ""),//swapped to unicode so it works
 	CONDUCTANCE("Siemen", "S"),
 	JOULES("Joule", "J"),
 	BUCKETS("Bucket", "B"),

@@ -3,7 +3,7 @@ package electrodynamics.prefab.screen.component;
 import electrodynamics.api.fluid.PropertyFluidTank;
 import electrodynamics.api.screen.component.FluidTankSupplier;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketUpdateCarriedItemServer;
+import electrodynamics.common.packet.types.server.PacketUpdateCarriedItemServer;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.tile.GenericTile;

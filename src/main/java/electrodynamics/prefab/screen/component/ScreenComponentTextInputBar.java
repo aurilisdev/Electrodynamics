@@ -1,5 +1,7 @@
 package electrodynamics.prefab.screen.component;
 
+import java.util.function.Predicate;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
@@ -12,12 +14,18 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-/*
- * Class could be condensed to ScreenComponentGeneric, but is left to allow for future potential expansion
+/**
+ * @author skip999
  */
 public class ScreenComponentTextInputBar extends ScreenComponentGeneric {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(References.ID + ":textures/screen/component/textinputbar.png");
+	
+	public static final char[] POSITIVE_DECIMAL = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'};
+	public static final char[] DECIMAL = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '-'};
+	
+	public static final char[] POSITIVE_INTEGER = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+	public static final char[] INTEGER = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-'};
 
 	public final int width;
 	public final int height;
@@ -159,6 +167,31 @@ public class ScreenComponentTextInputBar extends ScreenComponentGeneric {
 
 	private static void draw(PoseStack stack, int x, int y, int widthOffset, int heightOffset, int textXOffset, int textYOffset, int width, int height) {
 		Screen.blit(stack, x + widthOffset, y + heightOffset, width, height, textXOffset, textYOffset, width, height, 18, 18);
+	}
+	
+	public static Predicate<String> getValidator(char[] validChars) {
+		return string -> {
+			
+			if(string.isEmpty()) {
+				return true;
+			}
+			
+			boolean flag = false;
+			
+			for(char character : string.toCharArray()) {
+				for(char valid : validChars) {
+					if(valid == character) {
+						flag = true;
+						break;
+					}
+				}
+				if(!flag) {
+					return false;
+				}
+				flag = false;
+			}
+			return true;
+		};
 	}
 
 	public enum TextInputTextures implements ITexture {

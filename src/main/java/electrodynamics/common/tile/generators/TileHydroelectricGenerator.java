@@ -39,6 +39,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 	public Property<Boolean> isGenerating = property(new Property<>(PropertyType.Boolean, "isGenerating", false));
 	public Property<Boolean> directionFlag = property(new Property<>(PropertyType.Boolean, "directionFlag", false));
 	public Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
+	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
 	public double savedTickRotation;
 	public double rotationSpeed;
 
@@ -62,6 +63,10 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
+		if(hasRedstoneSignal.get()) {
+			isGenerating.set(false);
+			return;
+		}
 		ComponentDirection direction = getComponent(ComponentType.Direction);
 		Direction facing = direction.getDirection();
 		if (output == null) {
@@ -96,7 +101,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 
 	protected void tickCommon(ComponentTickable tickable) {
 		savedTickRotation += (directionFlag.get() ? 1 : -1) * rotationSpeed;
-		rotationSpeed = Mth.clamp(rotationSpeed + 0.05 * (isGenerating.get() == Boolean.TRUE ? 1 : -1), 0.0, 1.0);
+		rotationSpeed = Mth.clamp(rotationSpeed + 0.05 * (isGenerating.get() ? 1 : -1), 0.0, 1.0);
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
@@ -146,6 +151,11 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 	@Override
 	public int getComparatorSignal() {
 		return isGenerating.get() ? 15 : 0;
+	}
+	
+	@Override
+	public void onNeightborChanged(BlockPos neighbor) {
+		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
 	}
 
 	static {

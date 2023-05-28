@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 public class NBTUtils {
 
@@ -21,6 +25,7 @@ public class NBTUtils {
 	public static final String PLATES = "plates";
 	public static final String SUCESS = "sucess";
 	public static final String PLAYING_SOUND = "false";
+	public static final String DIMENSION = "dimension";
 
 	public static List<Direction> readDirectionList(ItemStack item) {
 		List<Direction> dirs = new ArrayList<>();
@@ -48,6 +53,16 @@ public class NBTUtils {
 			tag.remove(DIRECTION + i);
 		}
 		tag.remove(SIZE + DIRECTION);
+	}
+
+	public static CompoundTag writeDimensionToTag(ResourceKey<Level> level) {
+		CompoundTag tag = new CompoundTag();
+		tag.putString(DIMENSION, level.location().toString());
+		return tag;
+	}
+
+	public static ResourceKey<Level> readDimensionFromTag(CompoundTag tag) {
+		return ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(tag.getString(DIMENSION)));
 	}
 
 }

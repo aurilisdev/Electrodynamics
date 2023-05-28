@@ -184,6 +184,9 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		simpleBlockItem(ElectrodynamicsBlocks.blockCompressor, existingBlock(blockLoc("compressoritem"))).transforms().transform(TransformType.GUI).scale(0.3333F).rotation(30.0F, 225.0F, 0.0F).end();
 		simpleBlockItem(ElectrodynamicsBlocks.blockDecompressor, existingBlock(blockLoc("decompressoritem"))).transforms().transform(TransformType.GUI).rotation(30.0F, 225.0F, 0.0F).scale(0.3333F).end();
 		simpleBlockItem(ElectrodynamicsBlocks.blockThermoelectricManipulator, existingBlock(blockLoc("thermoelectricmanipulatoritem"))).transforms().transform(TransformType.GUI).rotation(30.0F, 225.0F, 0.0F).scale(0.3333F).end();
+		
+		simpleBlockItem(ElectrodynamicsBlocks.blockGasPipePump, existingBlock(blockLoc("gaspipepumpitem")));
+		simpleBlockItem(ElectrodynamicsBlocks.blockFluidPipePump, existingBlock(blockLoc("fluidpipepumpitem")));
 
 	}
 

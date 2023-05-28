@@ -326,6 +326,12 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			
 			addBlock(ElectrodynamicsBlocks.blockGasValve, "Gas Valve");
 			addBlock(ElectrodynamicsBlocks.blockFluidValve, "Fluid Valve");
+			addBlock(ElectrodynamicsBlocks.blockGasPipePump, "Gas Pipe Pump");
+			addBlock(ElectrodynamicsBlocks.blockFluidPipePump, "Fluid Pipe Pump");
+			addBlock(ElectrodynamicsBlocks.blockGasPipeFilter, "Gas Pipe Filter");
+			addBlock(ElectrodynamicsBlocks.blockFluidPipeFilter, "Fluid Pipe Filter");
+			
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay), "Relay");
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.aluminum), "Bauxite Ore");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.chromite), "Chromite Ore");
@@ -363,8 +369,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOreDeepslate.uraninite), "Deep Uraninite Ore");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOreDeepslate.vanadinite), "Deep Vanadinite Ore");
 
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeFluidPipe.copper), "Copper Pipe");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeFluidPipe.steel), "Steel Pipe");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeFluidPipe.copper), "Copper Fluid Pipe");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeFluidPipe.steel), "Steel Fluid Pipe");
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeRawOreBlock.chromium), "Block of Raw Chromite");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeRawOreBlock.lead), "Block of Raw Galena");
@@ -510,6 +516,11 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addContainer("decompressor", "Decompressor");
 			addContainer(SubtypeMachine.gasvent, "Gas Vent");
 			addContainer("thermoelectricmanipulator", "Thermoelectric Manipulator");
+			
+			addContainer("gaspipepump", "Gas Pipe Pump");
+			addContainer("fluidpipepump" ,"Fluid Pipe Pump");
+			addContainer("gaspipefilter", "Gas Pipe Filter");
+			addContainer("fluidpipefilter", "Fluid Pipe Filter");
 
 			addTooltip("itemwire.resistance", "Resistance: %s");
 			addTooltip("itemwire.maxamps", "Ampacity: %s");
@@ -597,6 +608,9 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			
 			addTooltip("addontankcap", "Increases capacity by %s");
 			addTooltip("gastank.capacity", "Capacity : %s");
+			
+			addTooltip("gasvalve", "Blocks gases when powered with redstone");
+			addTooltip("fluidvalve", "Blocks fluids when powered with redstone");
 
 			addGuiLabel("creativepowersource.voltage", "Voltage: ");
 			addGuiLabel("creativepowersource.power", "Power: ");
@@ -675,6 +689,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("quarry.inventoryroom", "Inventory Full");
 			
 			addGuiLabel("thermoelectricmanipulator.temp", "Temperature:");
+			
+			addGuiLabel("prioritypump.priority", "Priority");
 
 			add("keycategory.electrodynamics", "Electrodynamics");
 			addKeyLabel("jetpackascend", "Ascend with Jetpack");

@@ -42,6 +42,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 	public Property<Integer> maxBurnTime = property(new Property<>(PropertyType.Integer, "maxBurnTime", 1));
 	// for future planned upgrades
 	private Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
+	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
 
 	public TileCoalGenerator(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_COALGENERATOR.get(), worldPosition, blockState, 1.0);
@@ -56,6 +57,9 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 	protected void tickServer(ComponentTickable tickable) {
 		if (burnTime.get() > 0) {
 			burnTime.set(burnTime.get() - 1);
+		}
+		if(hasRedstoneSignal.get()) {
+			return;
 		}
 		ComponentDirection direction = getComponent(ComponentType.Direction);
 		if (output == null) {
@@ -122,6 +126,11 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 	@Override
 	public int getComparatorSignal() {
 		return (int) ((heat.getValue().get() / 3000.0) * 15.0);
+	}
+	
+	@Override
+	public void onNeightborChanged(BlockPos neighbor) {
+		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
 	}
 	
 }

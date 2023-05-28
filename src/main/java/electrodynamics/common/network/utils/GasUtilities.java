@@ -32,6 +32,9 @@ public class GasUtilities {
 	}
 
 	public static double recieveGas(BlockEntity reciever, Direction dir, GasStack gas, GasAction action) {
+		if(gas.isEmpty() || gas.getAmount() <= 0) {
+			return 0;
+		}
 		GasStack copy = gas.copy();
 		return reciever.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER, dir).map(cap -> {
 			double taken = 0;

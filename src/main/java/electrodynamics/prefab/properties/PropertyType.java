@@ -11,21 +11,32 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 public enum PropertyType {
-	Byte, 
-	Boolean, 
-	Integer, 
-	Float, 
-	Double, 
-	UUID, 
-	CompoundTag, 
-	BlockPos, 
+	Byte((prop, buf) -> buf.writeByte((Byte) prop.get()), buf -> buf.readByte(), (prop, tag) -> tag.putByte(prop.getName(), (Byte) prop.get()), (prop, tag) -> tag.getByte(prop.getName()), val -> ((Number) val).byteValue()),
+	//
+	Boolean((prop, buf) -> buf.writeBoolean((Boolean) prop.get()), buf -> buf.readBoolean(), (prop, tag) -> tag.putBoolean(prop.getName(), (Boolean) prop.get()), (prop, tag) -> tag.getBoolean(prop.getName())),
+	//
+	Integer((prop, buf) -> buf.writeInt((Integer) prop.get()), buf -> buf.readInt(), (prop, tag) -> tag.putInt(prop.getName(), (Integer) prop.get()), (prop, tag) -> tag.getInt(prop.getName()), val -> ((Number) val).intValue()),
+	//
+	Float((prop, buf) -> buf.writeFloat((Float) prop.get()), buf -> buf.readFloat(), (prop, tag) -> tag.putFloat(prop.getName(), (Float) prop.get()), (prop, tag) -> tag.getFloat(prop.getName()), val -> ((Number) val).floatValue()),
+	//
+	Double((prop, buf) -> buf.writeDouble((Double) prop.get()), buf -> buf.readDouble(), (prop, tag) -> tag.putDouble(prop.getName(), (Double) prop.get()), (prop, tag) -> tag.getDouble(prop.getName()), val -> ((Number) val).doubleValue()),
+	//
+	UUID((prop, buf) -> buf.writeUUID((UUID) prop.get()), buf -> buf.readUUID(), (prop, tag) -> tag.putUUID(prop.getName(), (UUID) prop.get()), (prop, tag) -> tag.getUUID(prop.getName())),
+	//
+	CompoundTag((prop, buf) -> buf.writeNbt((CompoundTag) prop.get()), buf -> buf.readNbt(), (prop, tag) -> tag.put(prop.getName(), (CompoundTag) prop.get()), (prop, tag) -> tag.getCompound(prop.getName())),
+	//
+	BlockPos((prop, buf) -> buf.writeBlockPos((BlockPos) prop.get()), buf -> buf.readBlockPos(), (prop, tag) -> tag.put(prop.getName(), NbtUtils.writeBlockPos((BlockPos) prop.get())), (prop, tag) -> NbtUtils.readBlockPos(tag.getCompound(prop.getName()))),
+	//
 	InventoryItems((thisList, otherList) -> {
 		NonNullList<ItemStack> thisCasted = (NonNullList<ItemStack>) thisList;
 		NonNullList<ItemStack> otherCasted = (NonNullList<ItemStack>) otherList;
@@ -41,7 +52,37 @@ public enum PropertyType {
 			}
 		}
 		return true;
-	}), 
+	}, (prop, buf) -> {
+		//
+		NonNullList<ItemStack> list = (NonNullList<ItemStack>) prop.get();
+		int size = list.size();
+		buf.writeInt(size);
+		CompoundTag tag = new CompoundTag();
+		ContainerHelper.saveAllItems(tag, list);
+		buf.writeNbt(tag);
+	}, buf -> {
+		//
+		int size = buf.readInt();
+		NonNullList<ItemStack> toBeFilled = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
+		ContainerHelper.loadAllItems(buf.readNbt(), toBeFilled);
+		return toBeFilled;
+	}, (prop, tag) -> {
+		//
+		NonNullList<ItemStack> list = (NonNullList<ItemStack>) prop.get();
+		tag.putInt(prop.getName() + "_size", list.size());
+		ContainerHelper.saveAllItems(tag, list);
+	}, (prop, tag) -> {
+		//
+		int size = tag.getInt(prop.getName() + "_size");
+		if (size == 0) {
+			NonNullList<ItemStack> propVal = (NonNullList<ItemStack>) prop.get();
+			size = propVal != null ? propVal.size() : 0;
+		}
+		NonNullList<ItemStack> toBeFilled = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
+		ContainerHelper.loadAllItems(tag, toBeFilled);
+		return toBeFilled;
+	}),
+	//
 	Fluidstack((thisStack, otherStack) -> {
 		FluidStack thisCasted = (FluidStack) thisStack;
 		FluidStack otherCasted = (FluidStack) otherStack;
@@ -49,7 +90,12 @@ public enum PropertyType {
 			return false;
 		}
 		return thisCasted.getFluid().isSame(otherCasted.getFluid());
-	}), 
+	}, (prop, buf) -> buf.writeFluidStack((FluidStack) prop.get()), buf -> buf.readFluidStack(), (prop, tag) -> {
+		CompoundTag fluidTag = new CompoundTag();
+		((FluidStack) prop.get()).writeToNBT(fluidTag);
+		tag.put(prop.getName(), fluidTag);
+	}, (prop, tag) -> FluidStack.loadFluidStackFromNBT(tag.getCompound(prop.getName()))),
+	//
 	BlockPosList((thisList, otherList) -> {
 		List<BlockPos> thisCasted = (List<BlockPos>) thisList;
 		List<BlockPos> otherCasted = (List<BlockPos>) otherList;
@@ -65,22 +111,81 @@ public enum PropertyType {
 			}
 		}
 		return true;
-	}), 
-	Location, 
-	Gasstack;
+	}, (prop, buf) -> {
+		List<BlockPos> posList = (List<BlockPos>) prop.get();
+		buf.writeInt(posList.size());
+		posList.forEach(pos -> buf.writeBlockPos(pos));
+	}, buf -> {
+		List<BlockPos> list = new ArrayList<>();
+		int size = buf.readInt();
+		for (int i = 0; i < size; i++) {
+			list.add(buf.readBlockPos());
+		}
+		return list;
+	}, (prop, tag) -> {
+		List<BlockPos> posList = (List<BlockPos>) prop.get();
+		CompoundTag data = new CompoundTag();
+		data.putInt("size", posList.size());
+		for (int i = 0; i < posList.size(); i++) {
+			data.put("pos" + i, NbtUtils.writeBlockPos(posList.get(i)));
+		}
+		tag.put(prop.getName(), data);
+	}, (prop, tag) -> {
+		List<BlockPos> list = new ArrayList<>();
+		CompoundTag data = tag.getCompound(prop.getName());
+		int size = data.getInt("size");
+		for (int i = 0; i < size; i++) {
+			list.add(NbtUtils.readBlockPos(data.getCompound("pos" + i)));
+		}
+		return list;
+	}),
+	//
+	Location((prop, buf) -> ((Location) prop.get()).toBuffer(buf), buf -> electrodynamics.prefab.utilities.object.Location.fromBuffer(buf), (prop, tag) -> ((Location) prop.get()).writeToNBT(tag, prop.getName()), (prop, tag) -> electrodynamics.prefab.utilities.object.Location.readFromNBT(tag, prop.getName())),
+	//
+	Gasstack((prop, buf) -> ((GasStack) prop.get()).writeToBuffer(buf), buf -> GasStack.readFromBuffer(buf), (prop, tag) -> tag.put(prop.getName(), ((GasStack) prop.get()).writeToNbt()), (prop, tag) -> GasStack.readFromNbt(tag.getCompound(prop.getName()))),
+	//
+	Itemstack((prop, buf) -> buf.writeItem((ItemStack) prop.get()), buf -> buf.readItem(), (prop, tag) -> tag.put(prop.getName(), ((ItemStack) prop.get()).save(new CompoundTag())), (prop, tag) -> ItemStack.of(tag.getCompound(prop.getName())));
 
-	// this allows us to deal with classes that don't implement the equals method
-	@Nullable
-	public BiPredicate<Object, Object> predicate = Object::equals;
+	@Nonnull
+	public final BiPredicate<Object, Object> predicate;
 
-	PropertyType() {
+	@Nonnull
+	public final BiConsumer<Property<?>, FriendlyByteBuf> writeToBuffer;
+	@Nonnull
+	public final Function<FriendlyByteBuf, Object> readFromBuffer;
+
+	@Nonnull
+	public final BiConsumer<Property<?>, CompoundTag> writeToNbt;
+	@Nonnull
+	public final BiFunction<Property<?>, CompoundTag, Object> readFromNbt;
+
+	@Nonnull
+	public final Function<Object, Object> attemptCast;
+
+	private PropertyType(@Nonnull BiPredicate<Object, Object> predicate, @Nonnull BiConsumer<Property<?>, FriendlyByteBuf> writeToBuffer, @Nonnull Function<FriendlyByteBuf, Object> readFromBuffer, @Nonnull BiConsumer<Property<?>, CompoundTag> writeToNbt, @Nonnull BiFunction<Property<?>, CompoundTag, Object> readFromNbt) {
+		this(predicate, writeToBuffer, readFromBuffer, writeToNbt, readFromNbt, val -> val);
 	}
 
-	PropertyType(BiPredicate<Object, Object> predicate) {
+	private PropertyType(@Nonnull BiConsumer<Property<?>, FriendlyByteBuf> writeToBuffer, @Nonnull Function<FriendlyByteBuf, Object> readFromBuffer, @Nonnull BiConsumer<Property<?>, CompoundTag> writeToNbt, @Nonnull BiFunction<Property<?>, CompoundTag, Object> readFromNbt) {
+		this(writeToBuffer, readFromBuffer, writeToNbt, readFromNbt, val -> val);
+	}
+
+	private PropertyType(@Nonnull BiConsumer<Property<?>, FriendlyByteBuf> writeToBuffer, @Nonnull Function<FriendlyByteBuf, Object> readFromBuffer, @Nonnull BiConsumer<Property<?>, CompoundTag> writeToNbt, @Nonnull BiFunction<Property<?>, CompoundTag, Object> readFromNbt, @Nonnull Function<Object, Object> attemptCast) {
+		this(Object::equals, writeToBuffer, readFromBuffer, writeToNbt, readFromNbt, attemptCast);
+	}
+
+	private PropertyType(@Nonnull BiPredicate<Object, Object> predicate, @Nonnull BiConsumer<Property<?>, FriendlyByteBuf> writeToBuffer, @Nonnull Function<FriendlyByteBuf, Object> readFromBuffer, @Nonnull BiConsumer<Property<?>, CompoundTag> writeToNbt, @Nonnull BiFunction<Property<?>, CompoundTag, Object> readFromNbt, @Nonnull Function<Object, Object> attemptCast) {
 		this.predicate = predicate;
+		this.writeToBuffer = writeToBuffer;
+		this.readFromBuffer = readFromBuffer;
+		this.writeToNbt = writeToNbt;
+		this.readFromNbt = readFromNbt;
+		this.attemptCast = attemptCast;
 	}
 
-	public void write(Property<?> prop, FriendlyByteBuf buf) {
+	// Leave this all for now until we are ABSOLUTELY certain there are no crashing issues
+
+	public void writeOld(Property<?> prop, FriendlyByteBuf buf) {
 		Object val = prop.get();
 		switch (this) {
 		case Boolean:
@@ -137,7 +242,7 @@ public enum PropertyType {
 
 	}
 
-	public Object read(FriendlyByteBuf buf) {
+	public Object readOld(FriendlyByteBuf buf) {
 		switch (this) {
 		case Boolean:
 			return buf.readBoolean();
@@ -179,7 +284,7 @@ public enum PropertyType {
 		return null;
 	}
 
-	public void save(Property<?> prop, CompoundTag tag) {
+	public void saveOld(Property<?> prop, CompoundTag tag) {
 		Object val = prop.get();
 		switch (this) {
 		case Boolean:
@@ -238,7 +343,7 @@ public enum PropertyType {
 		}
 	}
 
-	public void load(Property<?> prop, CompoundTag tag) {
+	public void loadOld(Property<?> prop, CompoundTag tag) {
 		Object val = null;
 		switch (this) {
 		case Boolean:
@@ -302,7 +407,7 @@ public enum PropertyType {
 		prop.load(val);
 	}
 
-	Object attemptCast(Object updated) {
+	Object attemptCastOld(Object updated) {
 		// This is done so we remove some issues between different number types.
 		switch (this) {
 		case Byte:
@@ -331,4 +436,5 @@ public enum PropertyType {
 		return updated;
 
 	}
+
 }

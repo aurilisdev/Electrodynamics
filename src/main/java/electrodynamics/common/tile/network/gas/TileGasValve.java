@@ -10,6 +10,7 @@ import electrodynamics.common.tile.network.GenericTileValve;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
+import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,65 +20,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class TileGasValve extends GenericTileValve {
-	
-	private static final IGasHandler EMPTY = new IGasHandler() {
-
-		@Override
-		public int getTanks() {
-			return 1;
-		}
-
-		@Override
-		public GasStack getGasInTank(int tank) {
-			return GasStack.EMPTY;
-		}
-
-		@Override
-		public double getTankCapacity(int tank) {
-			return 0;
-		}
-
-		@Override
-		public double getTankMaxTemperature(int tank) {
-			return 0;
-		}
-
-		@Override
-		public int getTankMaxPressure(int tank) {
-			return 0;
-		}
-
-		@Override
-		public boolean isGasValid(int tank, GasStack gas) {
-			return false;
-		}
-
-		@Override
-		public double fillTank(int tank, GasStack gas, GasAction action) {
-			return 0;
-		}
-
-		@Override
-		public GasStack drainTank(int tank, GasStack gas, GasAction action) {
-			return GasStack.EMPTY;
-		}
-
-		@Override
-		public GasStack drainTank(int tank, double maxFill, GasAction action) {
-			return GasStack.EMPTY;
-		}
-
-		@Override
-		public double heat(int tank, double deltaTemperature, GasAction action) {
-			return -1;
-		}
-
-		@Override
-		public double bringPressureTo(int tank, int atm, GasAction action) {
-			return -1;
-		}
-		
-	};
 	
 	public TileGasValve(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_GASVALVE.get(), pos, state);
@@ -98,7 +40,7 @@ public class TileGasValve extends GenericTileValve {
 			BlockEntity relative = level.getBlockEntity(worldPosition.relative(side.getOpposite()));
 			
 			if(relative == null) {
-				return LazyOptional.of(() -> EMPTY).cast();
+				return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
 			}
 			
 			LazyOptional<IGasHandler> handler = relative.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER, side);
@@ -107,7 +49,7 @@ public class TileGasValve extends GenericTileValve {
 				return LazyOptional.of(() -> new CapDispatcher(handler.resolve().get())).cast();
 			}
 		}
-		return LazyOptional.of(() -> EMPTY).cast();
+		return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
 	}
 	
 	private class CapDispatcher implements IGasHandler {

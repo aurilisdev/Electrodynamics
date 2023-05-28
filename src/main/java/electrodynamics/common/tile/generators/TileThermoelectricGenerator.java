@@ -29,6 +29,7 @@ public class TileThermoelectricGenerator extends GenericTile {
 	
 	public Property<Boolean> hasHeat = property(new Property<>(PropertyType.Boolean, "hasheat", false));
 	public Property<Double> heatMultipler = property(new Property<>(PropertyType.Double, "multiplier", 0.0)); 
+	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
 
 	public TileThermoelectricGenerator(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_THERMOELECTRICGENERATOR.get(), worldPosition, blockState);
@@ -38,6 +39,9 @@ public class TileThermoelectricGenerator extends GenericTile {
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
+		if(hasRedstoneSignal.get()) {
+			return;
+		}
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(Direction.UP));
 		}
@@ -57,6 +61,11 @@ public class TileThermoelectricGenerator extends GenericTile {
 	@Override
 	public int getComparatorSignal() {
 		return hasHeat.get() ? 15 : 0;
+	}
+	
+	@Override
+	public void onNeightborChanged(BlockPos neighbor) {
+		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
 	}
 
 	static {

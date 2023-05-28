@@ -3,7 +3,7 @@ package electrodynamics.common.block;
 import java.util.HashMap;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.registers.UnifiedElectrodynamicsRegister;
+import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -13,7 +13,7 @@ public class VoxelShapes {
 	public static HashMap<Block, VoxelShape[]> shapesHashMap = new HashMap<>();
 
 	public static VoxelShape getShape(SubtypeMachine machine, Direction currentDirection) {
-		return getShape(UnifiedElectrodynamicsRegister.getSafeBlock(machine), currentDirection);
+		return getShape(ElectrodynamicsBlocks.getBlock(machine), currentDirection);
 	}
 
 	public static VoxelShape getShape(Block block, Direction currentDirection) {
@@ -38,7 +38,7 @@ public class VoxelShapes {
 	}
 
 	public static void registerShape(SubtypeMachine machine, VoxelShape shape, Direction baseDirection) {
-		registerShape(UnifiedElectrodynamicsRegister.getSafeBlock(machine), shape, baseDirection);
+		registerShape(ElectrodynamicsBlocks.getBlock(machine), shape, baseDirection);
 	}
 
 	public static void registerShape(Block block, VoxelShape shape, Direction baseDirection) {

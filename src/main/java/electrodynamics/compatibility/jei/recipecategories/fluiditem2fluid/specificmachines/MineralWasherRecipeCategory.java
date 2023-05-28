@@ -12,7 +12,7 @@ import electrodynamics.compatibility.jei.utils.gui.item.BucketSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
 import electrodynamics.compatibility.jei.utils.label.TimeLabelWrapper;
-import electrodynamics.registers.UnifiedElectrodynamicsRegister;
+import electrodynamics.registers.ElectrodynamicsBlocks;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.resources.ResourceLocation;
@@ -42,7 +42,7 @@ public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory<M
 	private static String MOD_ID = References.ID;
 	private static String RECIPE_GROUP = SubtypeMachine.mineralwasher.tag();
 
-	public static ItemStack INPUT_MACHINE = new ItemStack(UnifiedElectrodynamicsRegister.getSafeBlock(SubtypeMachine.mineralwasher));
+	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralwasher));
 
 	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 

@@ -26,13 +26,8 @@
                 },
                 {
                   "op": "replace",
-                  "source": "fluid",
-                  "target": "BlockEntityTag"
-                },
-                {
-                  "op": "replace",
-                  "source": "additional",
-                  "target": "BlockEntityTag.additional"
+                  "source": "joules",
+                  "target": "BlockEntityTag.joules"
                 }
               ],
               "source": "block_entity"

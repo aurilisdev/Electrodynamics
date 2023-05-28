@@ -6,7 +6,7 @@ import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandl
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketAddClientRenderInfo;
+import electrodynamics.common.packet.types.client.PacketAddClientRenderInfo;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.utilities.NBTUtils;

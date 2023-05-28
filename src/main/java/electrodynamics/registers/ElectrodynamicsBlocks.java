@@ -1,7 +1,5 @@
 package electrodynamics.registers;
 
-import static electrodynamics.registers.UnifiedElectrodynamicsRegister.supplier;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,6 +11,8 @@ import electrodynamics.common.block.BlockFrame;
 import electrodynamics.common.block.BlockLogisticalManager;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockMultiSubnode;
+import electrodynamics.common.block.BlockPipeFilter;
+import electrodynamics.common.block.BlockPipePump;
 import electrodynamics.common.block.BlockSeismicMarker;
 import electrodynamics.common.block.BlockValve;
 import electrodynamics.common.block.connect.BlockFluidPipe;
@@ -61,49 +61,59 @@ public class ElectrodynamicsBlocks {
 	
 	public static BlockValve blockGasValve;
 	public static BlockValve blockFluidValve;
+	
+	public static BlockPipePump blockGasPipePump;
+	public static BlockPipePump blockFluidPipePump;
+	
+	public static BlockPipeFilter blockGasPipeFilter;
+	public static BlockPipeFilter blockFluidPipeFilter;
 
 	static {
 		for (SubtypeOre subtype : SubtypeOre.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new DropExperienceBlock(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(subtype.hardness, subtype.resistance), UniformInt.of(subtype.minXP, subtype.maxXP)), subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new DropExperienceBlock(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(subtype.hardness, subtype.resistance), UniformInt.of(subtype.minXP, subtype.maxXP))));
 		}
 		for (SubtypeOreDeepslate subtype : SubtypeOreDeepslate.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new DropExperienceBlock(Properties.of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(subtype.hardness + 1.5f, subtype.resistance + 1.5f), UniformInt.of(subtype.minXP, subtype.maxXP)), subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new DropExperienceBlock(Properties.of(Material.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(subtype.hardness + 1.5f, subtype.resistance + 1.5f), UniformInt.of(subtype.minXP, subtype.maxXP))));
 		}
 		for (SubtypeRawOreBlock subtype : SubtypeRawOreBlock.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F)), subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new Block(Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F))));
 		}
 		for (SubtypeMachine subtype : SubtypeMachine.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockMachine(subtype), subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new BlockMachine(subtype)));
 		}
 		for (SubtypeWire subtype : SubtypeWire.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockWire(subtype), subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new BlockWire(subtype)));
 		}
 		for (SubtypeFluidPipe subtype : SubtypeFluidPipe.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockFluidPipe(subtype), subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new BlockFluidPipe(subtype)));
 		}
 		for (SubtypeGlass subtype : SubtypeGlass.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new BlockCustomGlass(subtype), subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new BlockCustomGlass(subtype)));
 		}
 		for (SubtypeResourceBlock subtype : SubtypeResourceBlock.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), supplier(() -> new Block(Properties.of(subtype.getMaterial()).strength(subtype.getHardness(), subtype.getResistance()).sound(subtype.getSoundType())), subtype)));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new Block(Properties.of(subtype.getMaterial()).strength(subtype.getHardness(), subtype.getResistance()).sound(subtype.getSoundType()))));
 		}
 		for(SubtypeGasPipe pipe : SubtypeGasPipe.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(pipe, BLOCKS.register(pipe.tag(), () -> new BlockGasPipe(pipe)));
 		}
 	}
 
-	public static final RegistryObject<Block> BLOCK_MULTISUBNODE = BLOCKS.register("multisubnode", supplier(() -> multi = new BlockMultiSubnode()));
-	public static final RegistryObject<Block> BLOCK_SEISMICMARKER = BLOCKS.register("seismicmarker", supplier(() -> blockSeismicMarker = new BlockSeismicMarker()));
-	public static final RegistryObject<Block> BLOCK_FRAME = BLOCKS.register("frame", supplier(() -> blockFrame = new BlockFrame(0)));
-	public static final RegistryObject<Block> BLOCK_FRAME_CORNER = BLOCKS.register("framecorner", supplier(() -> blockFrameCorner = new BlockFrame(1)));
-	public static final RegistryObject<Block> BLOCK_LOGISTICALMANAGER = BLOCKS.register("logisticalmanager", supplier(() -> blockLogisticalManager = new BlockLogisticalManager()));
+	public static final RegistryObject<Block> BLOCK_MULTISUBNODE = BLOCKS.register("multisubnode", () -> multi = new BlockMultiSubnode());
+	public static final RegistryObject<Block> BLOCK_SEISMICMARKER = BLOCKS.register("seismicmarker", () -> blockSeismicMarker = new BlockSeismicMarker());
+	public static final RegistryObject<Block> BLOCK_FRAME = BLOCKS.register("frame", () -> blockFrame = new BlockFrame(0));
+	public static final RegistryObject<Block> BLOCK_FRAME_CORNER = BLOCKS.register("framecorner", () -> blockFrameCorner = new BlockFrame(1));
+	public static final RegistryObject<Block> BLOCK_LOGISTICALMANAGER = BLOCKS.register("logisticalmanager", () -> blockLogisticalManager = new BlockLogisticalManager());
 	public static final RegistryObject<Block> BLOCK_COMPRESSOR = BLOCKS.register("compressor", () -> blockCompressor = new BlockCompressor(false));
 	public static final RegistryObject<Block> BLOCK_DECOMPRESSOR = BLOCKS.register("decompressor", () -> blockDecompressor = new BlockCompressor(true));
 	public static final RegistryObject<Block> BLOCK_COMPRESSOR_SIDE = BLOCKS.register("compressorside", () -> blockGasTransformerSide = new BlockGasTransformerSide());
 	public static final RegistryObject<Block> BLOCK_COMPRESSOR_ADDONTANK = BLOCKS.register("compressoraddontank", () -> blockGasTransformerAddonTank = new BlockGasTransformerAddonTank());
 	public static final RegistryObject<Block> BLOCK_THERMOELECTRICMANIPULATOR = BLOCKS.register("thermoelectricmanipulator", () -> blockThermoelectricManipulator = new BlockThermoelectricManipulator());
-	public static final RegistryObject<Block> BLOCK_GASVALVE = BLOCKS.register("gasvalve", supplier(() -> blockGasValve = new BlockValve(true)));
+	public static final RegistryObject<Block> BLOCK_GASVALVE = BLOCKS.register("gasvalve", () -> blockGasValve = new BlockValve(true));
 	public static final RegistryObject<Block> BLOCK_FLUIDVALVE = BLOCKS.register("fluidvalve", () -> blockFluidValve = new BlockValve(false));
+	public static final RegistryObject<Block> BLOCK_GASPIPEPUMP = BLOCKS.register("gaspipepump", () -> blockGasPipePump = new BlockPipePump(true));
+	public static final RegistryObject<Block> BLOCK_FLUIDPIPEPUMP = BLOCKS.register("fluidpipepump", () -> blockFluidPipePump = new BlockPipePump(false));
+	public static final RegistryObject<Block> BLOCK_GASPIPEFILTER = BLOCKS.register("gaspipefilter", () -> blockGasPipeFilter = new BlockPipeFilter(false));
+	public static final RegistryObject<Block> BLOCK_FLUIDPIPEFILTER = BLOCKS.register("fluidpipefilter", () -> blockFluidPipeFilter = new BlockPipeFilter(true));
 
 	public static Block[] getAllBlockForSubtype(ISubtype[] values) {
 		List<Block> list = new ArrayList<>();

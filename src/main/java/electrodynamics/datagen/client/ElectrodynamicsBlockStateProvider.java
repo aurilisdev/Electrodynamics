@@ -145,6 +145,14 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		
 		horrRotatedLitBlock(ElectrodynamicsBlocks.blockGasValve, existingBlock(ElectrodynamicsBlocks.blockGasValve), existingBlock(blockLoc("gasvalveon")), 90, 0, true);
 		horrRotatedLitBlock(ElectrodynamicsBlocks.blockFluidValve, existingBlock(ElectrodynamicsBlocks.blockFluidValve), existingBlock(blockLoc("fluidvalveon")), 90, 0, true);
+		
+		horrRotatedBlock(ElectrodynamicsBlocks.blockGasPipePump, existingBlock(ElectrodynamicsBlocks.blockGasPipePump), false);
+		horrRotatedBlock(ElectrodynamicsBlocks.blockFluidPipePump, existingBlock(ElectrodynamicsBlocks.blockFluidPipePump), false);
+		
+		horrRotatedBlock(ElectrodynamicsBlocks.blockGasPipeFilter, existingBlock(ElectrodynamicsBlocks.blockGasPipeFilter), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.blockFluidPipeFilter, existingBlock(ElectrodynamicsBlocks.blockFluidPipeFilter), true);
+		
+		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay)), existingBlock(blockLoc("relayon")), 180, 0, true);
 
 		genWires();
 		genPipes();

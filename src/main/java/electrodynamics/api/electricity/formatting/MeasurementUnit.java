@@ -3,7 +3,7 @@ package electrodynamics.api.electricity.formatting;
 public enum MeasurementUnit {
 	PICO("Pico", "p", 1.0E-12D),
 	NANO("Nano", "n", 1.0E-9D),
-	MICRO("Micro", "u", 1.0E-6D),
+	MICRO("Micro", '\u00B5' + "", 1.0E-6D), //unicode for micro
 	MILLI("Milli", "m", 1.0E-3D),
 	NONE("", "", 1.0),
 	KILO("Kilo", "k", 1.0E3D),

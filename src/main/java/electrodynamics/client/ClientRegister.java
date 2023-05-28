@@ -25,6 +25,8 @@ import electrodynamics.client.render.tile.RenderCombustionChamber;
 import electrodynamics.client.render.tile.RenderCoolantResavoir;
 import electrodynamics.client.render.tile.RenderElectrolyticSeparator;
 import electrodynamics.client.render.tile.RenderFermentationPlant;
+import electrodynamics.client.render.tile.RenderFluidPipePump;
+import electrodynamics.client.render.tile.RenderGasPipePump;
 import electrodynamics.client.render.tile.RenderHydroelectricGenerator;
 import electrodynamics.client.render.tile.RenderLathe;
 import electrodynamics.client.render.tile.RenderLithiumBatteryBox;
@@ -61,7 +63,11 @@ import electrodynamics.client.screen.tile.ScreenElectricFurnaceDouble;
 import electrodynamics.client.screen.tile.ScreenElectricFurnaceTriple;
 import electrodynamics.client.screen.tile.ScreenElectrolyticSeparator;
 import electrodynamics.client.screen.tile.ScreenFermentationPlant;
+import electrodynamics.client.screen.tile.ScreenFluidPipeFilter;
+import electrodynamics.client.screen.tile.ScreenFluidPipePump;
 import electrodynamics.client.screen.tile.ScreenFluidVoid;
+import electrodynamics.client.screen.tile.ScreenGasPipeFilter;
+import electrodynamics.client.screen.tile.ScreenGasPipePump;
 import electrodynamics.client.screen.tile.ScreenGasTankGeneric;
 import electrodynamics.client.screen.tile.ScreenGasVent;
 import electrodynamics.client.screen.tile.ScreenCompressor;
@@ -270,6 +276,10 @@ public class ClientRegister {
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_DECOMPRESSOR.get(), ScreenDecompressor::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_GASVENT.get(), ScreenGasVent::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_THERMOELECTRICMANIPULATOR.get(), ScreenThermoelectricManipulator::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_GASPIPEPUMP.get(), ScreenGasPipePump::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEPUMP.get(), ScreenFluidPipePump::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_GASPIPEFILTER.get(), ScreenGasPipeFilter::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEFILTER.get(), ScreenFluidPipeFilter::new);
 
 		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICDRILL.get(), ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricDrill) stack.getItem()).getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW.get(), ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
@@ -310,6 +320,8 @@ public class ClientRegister {
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_TANKSTEEL.get(), RenderTankGeneric::new);
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_MOTORCOMPLEX.get(), RenderMotorComplex::new);
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_ELECTROLYTICSEPARATOR.get(), RenderElectrolyticSeparator::new);
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_GASPIPEPUMP.get(), RenderGasPipePump::new);
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_FLUIDPIPEPUMP.get(), RenderFluidPipePump::new);
 	}
 
 	public static boolean shouldMultilayerRender(RenderType type) {

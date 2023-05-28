@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.mojang.datafixers.util.Pair;
+
 import electrodynamics.api.gas.Gas;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
@@ -14,6 +16,7 @@ import electrodynamics.api.network.cable.type.IGasPipe;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.network.NetworkRegistry;
 import electrodynamics.common.network.utils.GasUtilities;
+import electrodynamics.common.tile.network.gas.TileGasPipePump;
 import electrodynamics.prefab.network.AbstractNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,6 +29,8 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 
 	public double pressureOfTransmitted = 0;
 	public double temperatureOfTransmitted = 0;
+
+	public ConcurrentHashMap<Integer, HashSet<TileGasPipePump>> priorityPumpMap = new ConcurrentHashMap<>();
 
 	public GasNetwork() {
 		this(new HashSet<IGasPipe>());
@@ -59,6 +64,12 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 	}
 
 	@Override
+	public void refresh() {
+		priorityPumpMap.clear();
+		super.refresh();
+	}
+
+	@Override
 	/**
 	 * Returns a GasStack representing how much fluid was actually emitted through the network
 	 * 
@@ -80,36 +91,52 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 			return transfer;
 		}
 
-		Set<BlockEntity> recievingTiles = ConcurrentHashMap.newKeySet();
-		
-		recievingTiles.addAll(acceptorSet);
-
-		recievingTiles.removeAll(ignored);
-
-		if (recievingTiles.isEmpty()) {
-			return GasStack.EMPTY;
-		}
-
 		GasStack copy = transfer.copy();
 
 		BlockPos senderPos = ignored.get(0).getBlockPos();
 		GasStack taken = new GasStack(transfer.getGas(), 0, transfer.getTemperature(), transfer.getPressure());
 
-		GasStack gasPerTile;
-		GasStack preGasPerTile;
-		GasStack gasPerConnection;
-		GasStack preGasPerConnection;
+		Pair<GasStack, Set<TileGasPipePump>> priorityTaken = emitToPumps(transfer, ignored);
+
+		copy.shrink(priorityTaken.getFirst().getAmount());
+		taken.grow(priorityTaken.getFirst().getAmount());
+		
+		if(copy.isEmpty()) {
+			return taken;
+		}
+
+		Set<BlockEntity> recievingTiles = ConcurrentHashMap.newKeySet();
+
+		recievingTiles.addAll(acceptorSet);
+
+		recievingTiles.removeAll(ignored);
+		recievingTiles.removeAll(priorityTaken.getSecond());
+
+		if (recievingTiles.isEmpty()) {
+			return GasStack.EMPTY;
+		}
+
+		GasStack gasPerTile, preGasPerTile, gasPerConnection, preGasPerConnection;
 
 		double deltaT = copy.getTemperature() != Gas.ROOM_TEMPERATURE ? -Math.signum(copy.getTemperature() - Gas.ROOM_TEMPERATURE) : 0;
-
-		for (BlockEntity tile : recievingTiles) {
-
-			gasPerTile = new GasStack(copy.getGas(), copy.getAmount() / (double) recievingTiles.size(), copy.getTemperature(), copy.getPressure());
+		
+		int size = recievingTiles.size();
+		
+		HashSet<Direction> connections;
+		double deltaDegreesKelvin, newTemperature, takenAmt, amtTaken;
+		int connectionCount;
+		
+		//pre-defining all vars to eek out a little more performance since this method is already beefy
+		
+		// This algorithm is not perfect, but it helps deal with tiles that do not accept the full amount allotted to them
+		
+		for(BlockEntity tile : recievingTiles) {
+			gasPerTile = new GasStack(copy.getGas(), copy.getAmount() / (double) size, copy.getTemperature(), copy.getPressure());
 			preGasPerTile = gasPerTile.copy();
 
-			double deltaDegreesKelvin = ((double) (Math.abs(tile.getBlockPos().getX() - senderPos.getX()) + Math.abs(tile.getBlockPos().getY() - senderPos.getY()) + Math.abs(tile.getBlockPos().getZ() - senderPos.getZ()))) * heatLossPerBlock * gasPerTile.getTemperature() * deltaT;
+			deltaDegreesKelvin = ((double) (Math.abs(tile.getBlockPos().getX() - senderPos.getX()) + Math.abs(tile.getBlockPos().getY() - senderPos.getY()) + Math.abs(tile.getBlockPos().getZ() - senderPos.getZ()))) * heatLossPerBlock * gasPerTile.getTemperature() * deltaT;
 
-			double newTemperature = gasPerTile.getTemperature() + deltaDegreesKelvin;
+			newTemperature = gasPerTile.getTemperature() + deltaDegreesKelvin;
 
 			if (deltaT < 0 && newTemperature < Gas.ROOM_TEMPERATURE) {
 				newTemperature = Gas.ROOM_TEMPERATURE;
@@ -117,9 +144,9 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 
 			deltaDegreesKelvin = newTemperature - gasPerTile.getTemperature();
 
-			HashSet<Direction> connections = acceptorInputMap.get(tile);
+			connections = acceptorInputMap.getOrDefault(tile, new HashSet<>());
 
-			int connectionCount = connections.size();
+			connectionCount = connections.size();
 
 			for (Direction dir : connections) {
 
@@ -128,7 +155,7 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 
 				gasPerConnection.heat(deltaDegreesKelvin);
 
-				double amtTaken = GasUtilities.recieveGas(tile, dir, gasPerConnection, GasAction.EXECUTE);
+				amtTaken = GasUtilities.recieveGas(tile, dir, gasPerConnection, GasAction.EXECUTE);
 
 				gasPerConnection.shrink(amtTaken);
 
@@ -141,13 +168,12 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 				connectionCount--;
 			}
 
-			double takenAmt = preGasPerTile.getAmount() - gasPerTile.getAmount();
+			takenAmt = preGasPerTile.getAmount() - gasPerTile.getAmount();
 
 			copy.shrink(takenAmt);
 
 			taken.setAmount(taken.getAmount() + takenAmt);
-
-			recievingTiles.remove(tile);
+			size--;
 		}
 
 		transmittedThisTick = taken.getAmount();
@@ -155,6 +181,140 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 		pressureOfTransmitted = taken.getPressure();
 
 		return taken;
+	}
+
+	/**
+	 * 
+	 * @param stack The gas being emited
+	 * @return how much gas was taken and the pumps that accepted gas
+	 */
+	private Pair<GasStack, Set<TileGasPipePump>> emitToPumps(GasStack transfer, ArrayList<BlockEntity> ignored) {
+
+		GasStack taken = new GasStack(transfer.getGas(), 0, transfer.getTemperature(), transfer.getPressure());
+
+		Set<TileGasPipePump> acceptedPumps = ConcurrentHashMap.newKeySet();
+
+		if (priorityPumpMap.isEmpty()) {
+			return Pair.of(taken, acceptedPumps);
+		}
+
+		Pair<GasStack, Set<TileGasPipePump>> accepted;
+
+		Set<TileGasPipePump> prioritySet;
+
+		GasStack copy = transfer.copy();
+
+		for (int i = 9; i >= 0; i--) {
+
+			if(copy.isEmpty()) {
+				return Pair.of(taken, acceptedPumps);
+			}
+			
+			prioritySet = priorityPumpMap.getOrDefault(i, new HashSet<>());
+
+			if (prioritySet.isEmpty()) {
+				continue;
+			}
+			
+			accepted = emitToPumpSet(copy, prioritySet, ignored);
+
+			acceptedPumps.addAll(accepted.getSecond());
+
+			taken.grow(accepted.getFirst().getAmount());
+
+			copy.shrink(accepted.getFirst().getAmount());
+
+		}
+
+		return Pair.of(taken, acceptedPumps);
+
+	}
+
+	private Pair<GasStack, Set<TileGasPipePump>> emitToPumpSet(GasStack transfer, Set<TileGasPipePump> recievingTiles, ArrayList<BlockEntity> ignored) {
+
+		GasStack copy = transfer.copy();
+		GasStack taken = new GasStack(transfer.getGas(), 0, transfer.getTemperature(), transfer.getPressure());
+
+		GasStack gasPerTile, preGasPerTile, gasPerConnection, preGasPerConnection;
+
+		Set<TileGasPipePump> filledPumps = ConcurrentHashMap.newKeySet();
+
+		BlockPos senderPos = ignored.get(0).getBlockPos();
+		
+		double deltaT = copy.getTemperature() != Gas.ROOM_TEMPERATURE ? -Math.signum(copy.getTemperature() - Gas.ROOM_TEMPERATURE) : 0;
+
+		double deltaDegreesKelvin, newTemperature, amtTaken, takenAmt;
+		
+		int connectionCount;
+		
+		HashSet<Direction> connections;
+		
+		int size = recievingTiles.size();
+		
+		for(TileGasPipePump tile : recievingTiles) {
+			
+			if (!tile.isPowered() || ignored.contains(tile)) {
+				size--;
+				continue;
+			}
+
+			gasPerTile = new GasStack(copy.getGas(), copy.getAmount() / (double) size, copy.getTemperature(), copy.getPressure());
+			preGasPerTile = gasPerTile.copy();
+
+			deltaDegreesKelvin = ((double) (Math.abs(tile.getBlockPos().getX() - senderPos.getX()) + Math.abs(tile.getBlockPos().getY() - senderPos.getY()) + Math.abs(tile.getBlockPos().getZ() - senderPos.getZ()))) * heatLossPerBlock * gasPerTile.getTemperature() * deltaT;
+
+			newTemperature = gasPerTile.getTemperature() + deltaDegreesKelvin;
+
+			if (deltaT < 0 && newTemperature < Gas.ROOM_TEMPERATURE) {
+				newTemperature = Gas.ROOM_TEMPERATURE;
+			}
+
+			deltaDegreesKelvin = newTemperature - gasPerTile.getTemperature();
+
+			connections = acceptorInputMap.getOrDefault(tile, new HashSet<>());
+
+			connectionCount = connections.size();
+
+			for (Direction dir : connections) {
+
+				gasPerConnection = new GasStack(gasPerTile.getGas(), gasPerTile.getAmount() / (double) connectionCount, gasPerTile.getTemperature(), gasPerTile.getPressure());
+				preGasPerConnection = gasPerConnection.copy();
+
+				gasPerConnection.heat(deltaDegreesKelvin);
+
+				amtTaken = GasUtilities.recieveGas(tile, dir, gasPerConnection, GasAction.EXECUTE);
+
+				gasPerConnection.shrink(amtTaken);
+
+				if (gasPerConnection.getAmount() > 0) {
+					gasPerConnection.heat(-deltaDegreesKelvin);
+				}
+
+				gasPerTile.shrink(preGasPerConnection.getAmount() - gasPerConnection.getAmount());
+
+				connectionCount--;
+			}
+
+			takenAmt = preGasPerTile.getAmount() - gasPerTile.getAmount();
+
+			copy.shrink(takenAmt);
+
+			taken.setAmount(taken.getAmount() + takenAmt);
+
+			if (takenAmt > 0) {
+				filledPumps.add(tile);
+			}
+
+			filledPumps.add(tile);
+			
+			size--;
+		}
+
+		transmittedThisTick = taken.getAmount();
+		temperatureOfTransmitted = taken.getTemperature();
+		pressureOfTransmitted = taken.getPressure();
+
+		return Pair.of(taken, filledPumps);
 	}
 
 	private boolean checkForOverloadAndHandle(GasStack stack, boolean live) {
@@ -189,7 +349,7 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 	}
 
 	@Override
-	public void updateStatistics(IGasPipe cable) {
+	public void updateConductorStatistics(IGasPipe cable) {
 
 		SubtypeGasPipe pipe = cable.getPipeType();
 
@@ -207,6 +367,29 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 			maxPressure = pipe.pipeMaterial.maxPressure;
 		}
 
+	}
+
+	@Override
+	public void updateRecieverStatistics(BlockEntity reciever, Direction dir) {
+
+		if (reciever instanceof TileGasPipePump pump) {
+			int priority = pump.priority.get();
+			HashSet<TileGasPipePump> set = priorityPumpMap.getOrDefault(priority, new HashSet<>());
+			set.add(pump);
+			priorityPumpMap.put(priority, set);
+
+		}
+
+	}
+
+	public void updateGasPipePumpStats(TileGasPipePump changedPump, int newPriority, int prevPriority) {
+		HashSet<TileGasPipePump> oldSet = priorityPumpMap.getOrDefault(prevPriority, new HashSet<>());
+		oldSet.remove(changedPump);
+		priorityPumpMap.put(prevPriority, oldSet);
+
+		HashSet<TileGasPipePump> newSet = priorityPumpMap.getOrDefault(newPriority, new HashSet<>());
+		newSet.add(changedPump);
+		priorityPumpMap.put(newPriority, newSet);
 	}
 
 	@Override

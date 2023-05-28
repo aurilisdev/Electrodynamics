@@ -106,7 +106,8 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		super.load(compound);
 		for (Property<?> prop : propertyManager.getProperties()) {
 			if (prop.shouldSave()) {
-				prop.getType().load(prop, compound);
+				prop.load(prop.getType().readFromNbt.apply(prop, compound));
+				compound.remove(prop.getName());
 			}
 		}
 		for (Component component : components) {
@@ -128,7 +129,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	public void saveAdditional(@NotNull CompoundTag compound) {
 		for (Property<?> prop : propertyManager.getProperties()) {
 			if (prop.shouldSave()) {
-				prop.getType().save(prop, compound);
+				prop.getType().writeToNbt.accept(prop, compound);
 			}
 		}
 		for (Component component : components) {
@@ -146,7 +147,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		super.saveAdditional(compound);
 	}
 
-	protected GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
+	public GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
 		super(tileEntityTypeIn, worldPos, blockState);
 	}
 

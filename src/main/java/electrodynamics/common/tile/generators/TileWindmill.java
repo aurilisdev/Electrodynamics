@@ -39,6 +39,7 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockTil
 	public Property<Boolean> directionFlag = property(new Property<>(PropertyType.Boolean, "directionFlag", false));
 	public Property<Double> generating = property(new Property<>(PropertyType.Double, "generating", 0.0));
 	private Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
+	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
 	public double savedTickRotation;
 	public double rotationSpeed;
 
@@ -61,6 +62,10 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockTil
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
+		if(hasRedstoneSignal.get()) {
+			generating.set(false);
+			return;
+		}
 		ComponentDirection direction = getComponent(ComponentType.Direction);
 		Direction facing = direction.getDirection();
 		if (tickable.getTicks() % 40 == 0) {
@@ -88,6 +93,11 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockTil
 			isSoundPlaying = true;
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HUM.get(), this, true);
 		}
+	}
+	
+	@Override
+	public void onNeightborChanged(BlockPos neighbor) {
+		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
 	}
 
 	@Override

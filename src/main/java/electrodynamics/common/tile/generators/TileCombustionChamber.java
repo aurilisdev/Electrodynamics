@@ -45,6 +45,7 @@ public class TileCombustionChamber extends GenericMaterialTile implements IElect
 	private CachedTileOutput output;
 	// for future upgrades
 	private Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
+	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
 
 	private boolean isSoundPlaying = false;
 
@@ -60,6 +61,10 @@ public class TileCombustionChamber extends GenericMaterialTile implements IElect
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
+		if(hasRedstoneSignal.get()) {
+			running.set(false);
+			return;
+		}
 		ComponentDirection direction = getComponent(ComponentType.Direction);
 		Direction facing = direction.getDirection();
 		if (output == null) {
@@ -138,6 +143,11 @@ public class TileCombustionChamber extends GenericMaterialTile implements IElect
 	@Override
 	public int getComparatorSignal() {
 		return running.get() ? 15 : 0;
+	}
+	
+	@Override
+	public void onNeightborChanged(BlockPos neighbor) {
+		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
 	}
 	
 }

@@ -2,11 +2,11 @@ package electrodynamics.prefab.network;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.Nonnull;
 
@@ -21,8 +21,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> implements ITickableNetwork {
 	public HashSet<C> conductorSet = new HashSet<>();
 	public HashSet<A> acceptorSet = new HashSet<>();
-	public ConcurrentHashMap<A, HashSet<Direction>> acceptorInputMap = new ConcurrentHashMap<>();
-	public ConcurrentHashMap<T, HashSet<C>> conductorTypeMap = new ConcurrentHashMap<>();
+	public HashMap<A, HashSet<Direction>> acceptorInputMap = new HashMap<>();
+	public HashMap<T, HashSet<C>> conductorTypeMap = new HashMap<>();
 	public double networkMaxTransfer;
 	public double transmittedLastTick;
 	public double transmittedThisTick;
@@ -48,6 +48,7 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 					if (isAcceptor(acceptor, direction)) {
 						if (canConnect(acceptor, direction)) {
 							acceptorSet.add((A) acceptor);
+							updateRecieverStatistics((A) acceptor, direction);
 							HashSet<Direction> directions = acceptorInputMap.containsKey(acceptor) ? acceptorInputMap.get(acceptor) : new HashSet<>();
 							directions.add(direction.getOpposite());
 							acceptorInputMap.put((A) acceptor, directions);
@@ -71,7 +72,12 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 		for (C wire : conductorSet) {
 			conductorTypeMap.get(wire.getConductorType()).add(wire);
 			networkMaxTransfer = networkMaxTransfer == 0 ? wire.getMaxTransfer() : Math.min(networkMaxTransfer, wire.getMaxTransfer());
-			updateStatistics(wire);
+			updateConductorStatistics(wire);
+		}
+		for(A reciever : acceptorSet) {
+			for(Direction dir : acceptorInputMap.getOrDefault(reciever, new HashSet<>())) {
+				updateRecieverStatistics(reciever, dir);
+			}
 		}
 	}
 
@@ -80,8 +86,17 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	 * 
 	 * @param cable
 	 */
-	public void updateStatistics(C cable) {
+	public void updateConductorStatistics(C cable) {
 		// Just a default method
+	}
+	
+	/**
+	 * Override method to define statistics per-receiver
+	 *  
+	 * @param reciever
+	 */
+	public void updateRecieverStatistics(A reciever, Direction dir) {
+		
 	}
 
 	public void split(@Nonnull C splitPoint) {
@@ -182,4 +197,5 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	public abstract AbstractNetwork<C, T, A, P> createInstance(Set<AbstractNetwork<C, T, A, P>> networks);
 
 	public abstract T[] getConductorTypes();
+
 }

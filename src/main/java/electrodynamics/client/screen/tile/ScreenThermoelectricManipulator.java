@@ -1,6 +1,5 @@
 package electrodynamics.client.screen.tile;
 
-import com.google.common.base.Predicate;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.electricity.formatting.DisplayUnit;
@@ -9,7 +8,7 @@ import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.screen.ITexture.Textures;
 import electrodynamics.common.inventory.container.tile.ContainerThermoelectricManipulator;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketSendUpdatePropertiesServer;
+import electrodynamics.common.packet.types.server.PacketSendUpdatePropertiesServer;
 import electrodynamics.common.tile.gastransformer.GenericTileGasTransformer;
 import electrodynamics.common.tile.gastransformer.thermoelectricmanipulator.TileThermoelectricManipulator;
 import electrodynamics.prefab.screen.GenericScreen;
@@ -37,31 +36,6 @@ public class ScreenThermoelectricManipulator extends GenericScreen<ContainerTher
 	private EditBox temperature;
 	
 	private boolean needsUpdate = true;
-	
-	private static final char[] VALID_CHARACTERS = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'};
-	
-	private static final Predicate<String> TEXT_FILTER = string -> {
-		
-		if(string.isEmpty()) {
-			return true;
-		}
-		
-		boolean flag = false;
-		
-		for(char character : string.toCharArray()) {
-			for(char valid : VALID_CHARACTERS) {
-				if(valid == character) {
-					flag = true;
-					break;
-				}
-			}
-			if(!flag) {
-				return false;
-			}
-			flag = false;
-		}
-		return true;
-	};
 	
 	public ScreenThermoelectricManipulator(ContainerThermoelectricManipulator container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
@@ -105,6 +79,7 @@ public class ScreenThermoelectricManipulator extends GenericScreen<ContainerTher
 	@Override
 	protected void containerTick() {
 		super.containerTick();
+		temperature.tick();
 	}
 	
 	@Override
@@ -125,7 +100,7 @@ public class ScreenThermoelectricManipulator extends GenericScreen<ContainerTher
 		temperature.setBordered(false);
 		temperature.setMaxLength(20);
 		temperature.setResponder(this::setTemperature);
-		temperature.setFilter(TEXT_FILTER);
+		temperature.setFilter(ScreenComponentTextInputBar.getValidator(ScreenComponentTextInputBar.POSITIVE_DECIMAL));
 		
 		addWidget(temperature);
 	}

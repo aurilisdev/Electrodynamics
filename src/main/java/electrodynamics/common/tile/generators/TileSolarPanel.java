@@ -33,6 +33,7 @@ public class TileSolarPanel extends GenericGeneratorTile {
 	public TargetValue currentRotation = new TargetValue(property(new Property<>(PropertyType.Double, "currentRotation", 1.0)));
 	private Property<Boolean> generating = property(new Property<>(PropertyType.Boolean, "generating", false));
 	private Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
+	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
 
 	@Override
 	public double getMultiplier() {
@@ -54,6 +55,10 @@ public class TileSolarPanel extends GenericGeneratorTile {
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
+		if(hasRedstoneSignal.get()) {
+			generating.set(false);
+			return;
+		}
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(Direction.DOWN));
 		}
@@ -77,6 +82,11 @@ public class TileSolarPanel extends GenericGeneratorTile {
 	@Override
 	public int getComparatorSignal() {
 		return generating.get() ? 15 : 0;
+	}
+	
+	@Override
+	public void onNeightborChanged(BlockPos neighbor) {
+		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
 	}
 
 	static {

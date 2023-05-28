@@ -8,7 +8,7 @@ import electrodynamics.api.gas.GasTank;
 import electrodynamics.api.gas.PropertyGasTank;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketUpdateCarriedItemServer;
+import electrodynamics.common.packet.types.server.PacketUpdateCarriedItemServer;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.tile.GenericTile;

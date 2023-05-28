@@ -14,6 +14,8 @@ public class Constants {
 	public static float TRANSFORMER_EFFICIENCY = 0.9925f;
 	@FloatValue(def = 0.995f)
 	public static float CIRCUITBREAKER_EFFICIENCY = 0.995f;
+	@FloatValue(def = 1.0F)
+	public static float RELAY_EFFICIENCY = 1.0F; //the relay is a dumb switch; no need to penalize its use
 	@DoubleValue(def = 34)
 	public static double COALGENERATOR_AMPERAGE = 34.0;
 	@DoubleValue(def = 4.5)
@@ -52,6 +54,8 @@ public class Constants {
 	public static double COBBLE_GEN_USAGE_PER_TICK = 100;
 	@DoubleValue(def = 100)
 	public static double MOTORCOMPLEX_USAGE_PER_TICK = 100.0;
+	@DoubleValue(def = 10)
+	public static double PIPE_PUMP_USAGE_PER_TICK = 10.0;
 	@DoubleValue(def = 100)
 	public static double QUARRY_USAGE_PER_TICK = 100.0;
 	@IntValue(def = 10)

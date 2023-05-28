@@ -48,6 +48,7 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 		voltage.setTextColorUneditable(-1);
 		voltage.setBordered(false);
 		voltage.setMaxLength(6);
+		voltage.setFilter(ScreenComponentTextInputBar.getValidator(ScreenComponentTextInputBar.POSITIVE_INTEGER));
 		voltage.setResponder(this::setVoltage);
 
 		power = new EditBox(font, i + 85, j + 31 + 18, 46, 13, TextUtils.gui("creativepowersource.power"));
@@ -55,6 +56,7 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 		power.setTextColorUneditable(-1);
 		power.setBordered(false);
 		power.setMaxLength(6);
+		power.setFilter(ScreenComponentTextInputBar.getValidator(ScreenComponentTextInputBar.POSITIVE_DECIMAL));
 		power.setResponder(this::setPower);
 
 		addWidget(voltage);

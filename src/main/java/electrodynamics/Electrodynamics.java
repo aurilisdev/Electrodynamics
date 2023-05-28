@@ -15,7 +15,7 @@ import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
 import electrodynamics.common.event.ServerEventHandler;
 import electrodynamics.common.eventbus.RegisterFluidToGasMapEvent;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketResetGuidebookPages;
+import electrodynamics.common.packet.types.client.PacketResetGuidebookPages;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;

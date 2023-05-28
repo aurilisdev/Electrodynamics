@@ -38,6 +38,7 @@ public class TileAdvancedSolarPanel extends GenericGeneratorTile implements IMul
 	public TargetValue currentRotation = new TargetValue(property(new Property<>(PropertyType.Double, "currentRotation", 0.0)));
 	private Property<Boolean> generating = property(new Property<>(PropertyType.Boolean, "generating", false));
 	private Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
+	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
 
 	@Override
 	public double getMultiplier() {
@@ -59,6 +60,10 @@ public class TileAdvancedSolarPanel extends GenericGeneratorTile implements IMul
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
+		if(hasRedstoneSignal.get()) {
+			generating.set(false);
+			return;
+		}
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(Direction.DOWN));
 		}
@@ -95,5 +100,9 @@ public class TileAdvancedSolarPanel extends GenericGeneratorTile implements IMul
 		return generating.get() ? 15 : 0;
 	}
 	
+	@Override
+	public void onNeightborChanged(BlockPos neighbor) {
+		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
+	}
 	
 }

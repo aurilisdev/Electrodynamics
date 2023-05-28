@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.cable.type.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
@@ -28,13 +29,16 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	private double transferBuffer = 0;
 	private double maxTransferBuffer;
 
+	private double minimumVoltage = 0;
+	private long minimumAmpacity = 0;
+
 	public double getLastEnergyLoss() {
 		return lastEnergyLoss;
 	}
 
 	@Override
 	public double getVoltage() {
-		return -1;
+		return minimumVoltage;
 	}
 
 	public double getActiveVoltage() {
@@ -77,51 +81,54 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	}
 
 	private TransferPack sendToReceivers(TransferPack maxTransfer, ArrayList<BlockEntity> ignored, boolean debug) {
-		if (maxTransfer.getJoules() > 0 && maxTransfer.getVoltage() > 0) {
-			Set<BlockEntity> availableAcceptors = getEnergyAcceptors();
-			double joulesSent = 0;
-			availableAcceptors.removeAll(ignored);
-			if (!availableAcceptors.isEmpty()) {
-				Iterator<BlockEntity> it = availableAcceptors.iterator();
-				double totalUsage = 0;
-				HashMap<BlockEntity, Double> usage = new HashMap<>();
-				while (it.hasNext()) {
-					BlockEntity receiver = it.next();
-					double localUsage = 0;
-					if (acceptorInputMap.containsKey(receiver)) {
-						boolean shouldRemove = true;
-						for (Direction connection : acceptorInputMap.get(receiver)) {
-							TransferPack pack = ElectricityUtils.receivePower(receiver, connection, TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()), true);
-							if (pack.getJoules() != 0) {
-								shouldRemove = false;
-								totalUsage += pack.getJoules();
-								localUsage += pack.getJoules();
-								break;
-							}
-						}
-						if (shouldRemove) {
-							it.remove();
-						}
+		if (maxTransfer.getJoules() <= 0 || maxTransfer.getVoltage() <= 0) {
+			return TransferPack.EMPTY;
+		}
+		Set<BlockEntity> availableAcceptors = getEnergyAcceptors();
+		double joulesSent = 0;
+		availableAcceptors.removeAll(ignored);
+		
+		if (availableAcceptors.isEmpty()) {
+			return TransferPack.EMPTY;
+		}
+		
+		Iterator<BlockEntity> it = availableAcceptors.iterator();
+		double totalUsage = 0;
+		HashMap<BlockEntity, Double> usage = new HashMap<>();
+		while (it.hasNext()) {
+			BlockEntity receiver = it.next();
+			double localUsage = 0;
+			if (acceptorInputMap.containsKey(receiver)) {
+				boolean shouldRemove = true;
+				for (Direction connection : acceptorInputMap.get(receiver)) {
+					TransferPack pack = ElectricityUtils.receivePower(receiver, connection, TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()), true);
+					if (pack.getJoules() != 0) {
+						shouldRemove = false;
+						totalUsage += pack.getJoules();
+						localUsage += pack.getJoules();
+						break;
 					}
-					usage.put(receiver, localUsage);
 				}
-				for (BlockEntity receiver : availableAcceptors) {
-					TransferPack dedicated = TransferPack.joulesVoltage(maxTransfer.getJoules() * (usage.get(receiver) / totalUsage), maxTransfer.getVoltage());
-					if (acceptorInputMap.containsKey(receiver)) {
-						TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(), maxTransfer.getVoltage());
-						for (Direction connection : acceptorInputMap.get(receiver)) {
-							TransferPack pack = ElectricityUtils.receivePower(receiver, connection, perConnection, debug);
-							joulesSent += pack.getJoules();
-							if (!debug) {
-								transmittedThisTick += pack.getJoules();
-							}
-						}
+				if (shouldRemove) {
+					it.remove();
+				}
+			}
+			usage.put(receiver, localUsage);
+		}
+		for (BlockEntity receiver : availableAcceptors) {
+			TransferPack dedicated = TransferPack.joulesVoltage(maxTransfer.getJoules() * (usage.get(receiver) / totalUsage), maxTransfer.getVoltage());
+			if (acceptorInputMap.containsKey(receiver)) {
+				TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(), maxTransfer.getVoltage());
+				for (Direction connection : acceptorInputMap.get(receiver)) {
+					TransferPack pack = ElectricityUtils.receivePower(receiver, connection, perConnection, debug);
+					joulesSent += pack.getJoules();
+					if (!debug) {
+						transmittedThisTick += pack.getJoules();
 					}
 				}
 			}
-			return TransferPack.joulesVoltage(Math.min(maxTransfer.getJoules(), joulesSent), maxTransfer.getVoltage());
 		}
-		return TransferPack.EMPTY;
+		return TransferPack.joulesVoltage(Math.min(maxTransfer.getJoules(), joulesSent), maxTransfer.getVoltage());
 	}
 
 	public Set<BlockEntity> getEnergyAcceptors() {
@@ -132,7 +139,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		if (networkMaxTransfer * voltage - transmittedThisTick <= 0 && voltage > 0) {
 			HashSet<SubtypeWire> checkList = new HashSet<>();
 			for (SubtypeWire type : SubtypeWire.values()) {
-				if (type != SubtypeWire.superconductive && type != SubtypeWire.insulatedsuperconductive && type != SubtypeWire.logisticssuperconductive && type.capacity <= transmittedLastTick / voltage * 20 && type.capacity <= transmittedThisTick / voltage * 20) {
+				if (type.capacity <= transmittedLastTick / voltage * 20 && type.capacity <= transmittedThisTick / voltage * 20) {
 					checkList.add(type);
 				}
 			}
@@ -147,9 +154,25 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	}
 
 	@Override
-	public void updateStatistics(IConductor cable) {
-		super.updateStatistics(cable);
+	public void updateConductorStatistics(IConductor cable) {
+		super.updateConductorStatistics(cable);
 		resistance += cable.getWireType().resistance;
+
+	}
+
+	@Override
+	public void updateRecieverStatistics(BlockEntity reciever, Direction dir) {
+		reciever.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).ifPresent(cap -> {
+			if (cap.getVoltage() < 10) {
+				return;
+			}
+
+			if (minimumVoltage <= 0) {
+				minimumVoltage = cap.getVoltage();
+			} else if (cap.getVoltage() < minimumVoltage) {
+				minimumVoltage = cap.getVoltage();
+			}
+		});
 	}
 
 	@Override
@@ -275,5 +298,13 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	@Override
 	public void onChange() {
 
+	}
+
+	public double getMinimumVoltage() {
+		return minimumVoltage;
+	}
+
+	public long getMinimumAmpacity() {
+		return minimumAmpacity;
 	}
 }
