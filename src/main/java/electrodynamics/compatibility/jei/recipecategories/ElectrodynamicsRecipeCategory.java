@@ -1,7 +1,6 @@
 package electrodynamics.compatibility.jei.recipecategories;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -11,16 +10,23 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.compatibility.jei.utils.gui.ScreenObjectWrapper;
 import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowAnimatedWrapper;
 import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
 import electrodynamics.compatibility.jei.utils.gui.fluid.GenericFluidGaugeWrapper;
+import electrodynamics.compatibility.jei.utils.gui.gas.GenericGasGaugeWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.BucketSlotWrapper;
 import electrodynamics.compatibility.jei.utils.gui.item.GenericItemSlotWrapper;
+import electrodynamics.compatibility.jei.utils.ingredients.ElectrodynamicsJeiTypes;
+import electrodynamics.compatibility.jei.utils.ingredients.IngredientRendererGasStack;
+import electrodynamics.compatibility.jei.utils.ingredients.IngredientRendererGasStack.GasGaugeTextureWrapper;
+import electrodynamics.compatibility.jei.utils.ingredients.IngredientRendererGasStack.GasTextureWrapper;
 import electrodynamics.compatibility.jei.utils.label.AbstractLabelWrapper;
 import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
 import electrodynamics.prefab.tile.components.utils.IComponentFluidHandler;
+import electrodynamics.prefab.tile.components.utils.IComponentGasHandler;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -35,71 +41,71 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
 public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRecipe> implements IRecipeCategory<T> {
 
-	private int ANIMATION_LENGTH;
+	private int animationTime;
 
-	private String RECIPE_GROUP;
-	private String MOD_ID;
+	private String recipeGroup;
 
-	private IDrawable BACKGROUND;
-	private IDrawable ICON;
+	private IDrawable background;
+	private IDrawable icon;
 
-	private Class<T> RECIPE_CATEGORY_CLASS;
+	private Class<T> recipeCategoryClass;
 
-	public AbstractLabelWrapper[] LABELS;
+	public AbstractLabelWrapper[] labels;
 
 	public int itemBiLabelFirstIndex;
-	public int fluidBiLabelFirstIndex;
 
-	private LoadingCache<Integer, List<IDrawableAnimated>> ANIMATED_ARROWS;
-	private LoadingCache<Integer, List<IDrawableStatic>> STATIC_ARROWS;
-	private LoadingCache<Integer, List<IDrawableStatic>> INPUT_SLOTS;
-	private LoadingCache<Integer, List<IDrawableStatic>> OUTPUT_SLOTS;
-	private LoadingCache<Integer, List<IDrawableStatic>> FLUID_INPUTS;
-	private LoadingCache<Integer, List<IDrawableStatic>> FLUID_OUTPUTS;
+	private LoadingCache<Integer, List<IDrawableAnimated>> animatedArrowDrawables;
+	private LoadingCache<Integer, List<IDrawableStatic>> staticArrowDrawables;
+	private LoadingCache<Integer, List<IDrawableStatic>> inputSlotDrawables;
+	private LoadingCache<Integer, List<IDrawableStatic>> outputSlotDrawables;
+	private LoadingCache<Integer, List<IDrawableStatic>> fluidInputDawables;
+	private LoadingCache<Integer, List<IDrawableStatic>> fluidOutputDrawables;
+	private LoadingCache<Integer, List<IDrawableStatic>> gasInputDrawables;
+	private LoadingCache<Integer, List<IDrawableStatic>> gasOutputDrawables;
 
-	private GenericItemSlotWrapper[] inSlots = new GenericItemSlotWrapper[0];
-	private GenericItemSlotWrapper[] outSlots = new GenericItemSlotWrapper[0];
-	private GenericFluidGaugeWrapper[] fluidInputs = new GenericFluidGaugeWrapper[0];
-	private GenericFluidGaugeWrapper[] fluidOutputs = new GenericFluidGaugeWrapper[0];
-	private ArrowAnimatedWrapper[] animArrows = new ArrowAnimatedWrapper[0];
-	private ScreenObjectWrapper[] staticArrows = new ScreenObjectWrapper[0];
+	private GenericItemSlotWrapper[] inputSlotWrappers = new GenericItemSlotWrapper[0];
+	private GenericItemSlotWrapper[] outputSlotWrappers = new GenericItemSlotWrapper[0];
+	private GenericFluidGaugeWrapper[] fluidInputWrappers = new GenericFluidGaugeWrapper[0];
+	private GenericFluidGaugeWrapper[] fluidOutputWrappers = new GenericFluidGaugeWrapper[0];
+	private GenericGasGaugeWrapper[] gasInputWrappers = new GenericGasGaugeWrapper[0];
+	private GenericGasGaugeWrapper[] gasOutputWrappers = new GenericGasGaugeWrapper[0];
+	private ArrowAnimatedWrapper[] animatedArrowWrappers = new ArrowAnimatedWrapper[0];
+	private ScreenObjectWrapper[] staticArrowWrappers = new ScreenObjectWrapper[0];
 
-	protected ElectrodynamicsRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeCategoryClass, int animationTime) {
+	public ElectrodynamicsRecipeCategory(IGuiHelper guiHelper, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeCategoryClass, int animationTime) {
 
-		RECIPE_GROUP = recipeGroup;
-		MOD_ID = modID;
+		this.recipeGroup = recipeGroup;
 
-		RECIPE_CATEGORY_CLASS = recipeCategoryClass;
+		this.recipeCategoryClass = recipeCategoryClass;
 
-		ICON = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, inputMachine);
-		BACKGROUND = guiHelper.createDrawable(new ResourceLocation(modID, wrapper.getTexture()), wrapper.getTextX(), wrapper.getTextY(), wrapper.getLength(), wrapper.getWidth());
+		icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, inputMachine);
+		background = guiHelper.createDrawable(wrapper.getTexture(), wrapper.getTextX(), wrapper.getTextY(), wrapper.getWidth(), wrapper.getHeight());
 
-		ANIMATION_LENGTH = animationTime;
+		this.animationTime = animationTime;
 	}
 
 	public Class<T> getRecipeClass() {
-		return RECIPE_CATEGORY_CLASS;
+		return recipeCategoryClass;
 	}
 
 	@Override
 	public Component getTitle() {
-		return Component.translatable("container." + RECIPE_GROUP);
+		return Component.translatable("container." + recipeGroup);
 	}
 
 	@Override
 	public IDrawable getBackground() {
-		return BACKGROUND;
+		return background;
 	}
 
 	@Override
 	public IDrawable getIcon() {
-		return ICON;
+		return icon;
 	}
 
 	@Override
@@ -109,6 +115,8 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		drawStaticArrows(matrixStack);
 		drawFluidInputs(matrixStack);
 		drawFluidOutputs(matrixStack);
+		drawGasInputs(matrixStack);
+		drawGasOutputs(matrixStack);
 		drawAnimatedArrows(matrixStack);
 
 		addDescriptions(matrixStack, recipe);
@@ -120,15 +128,17 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		setFluidInputs(getFluidInputs(recipe), builder);
 		setItemOutputs(getItemOutputs(recipe), builder);
 		setFluidOutputs(getFluidOutputs(recipe), builder);
+		setGasInputs(getGasInputs(recipe), builder);
+		setGasOutputs(getGasOutputs(recipe), builder);
 	}
 
 	public String getRecipeGroup() {
-		return RECIPE_GROUP;
+		return recipeGroup;
 	}
 
 	public void addDescriptions(PoseStack stack, ElectrodynamicsRecipe recipe) {
 		Font fontRenderer = Minecraft.getInstance().font;
-		for (AbstractLabelWrapper wrap : LABELS) {
+		for (AbstractLabelWrapper wrap : labels) {
 			Component text = wrap.getComponent(this, recipe);
 			if (wrap.xIsEnd()) {
 				fontRenderer.draw(stack, text, wrap.getXPos() - fontRenderer.width(text.getVisualOrderText()), wrap.getYPos(), wrap.getColor());
@@ -139,11 +149,11 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	}
 
 	public int getAnimationTime() {
-		return ANIMATION_LENGTH;
+		return animationTime;
 	}
 
 	public void setLabels(AbstractLabelWrapper... labels) {
-		LABELS = labels;
+		this.labels = labels;
 		AbstractLabelWrapper wrap;
 		boolean firstItemBi = false;
 		for (int i = 0; i < labels.length; i++) {
@@ -157,13 +167,13 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	}
 
 	public void setInputSlots(IGuiHelper guiHelper, GenericItemSlotWrapper... inputSlots) {
-		inSlots = inputSlots;
-		INPUT_SLOTS = CacheBuilder.newBuilder().maximumSize(inputSlots.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
+		inputSlotWrappers = inputSlots;
+		inputSlotDrawables = CacheBuilder.newBuilder().maximumSize(inputSlots.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
 			@Override
 			public List<IDrawableStatic> load(Integer time) {
 				List<IDrawableStatic> slots = new ArrayList<>();
 				for (ScreenObjectWrapper slot : inputSlots) {
-					slots.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, slot.getTexture()), slot.getTextX(), slot.getTextY(), slot.getLength(), slot.getWidth()).build());
+					slots.add(guiHelper.drawableBuilder(slot.getTexture(), slot.getTextX(), slot.getTextY(), slot.getWidth(), slot.getHeight()).build());
 				}
 				return slots;
 			}
@@ -171,13 +181,13 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	}
 
 	public void setOutputSlots(IGuiHelper guiHelper, GenericItemSlotWrapper... outputSlots) {
-		outSlots = outputSlots;
-		OUTPUT_SLOTS = CacheBuilder.newBuilder().maximumSize(outputSlots.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
+		outputSlotWrappers = outputSlots;
+		outputSlotDrawables = CacheBuilder.newBuilder().maximumSize(outputSlots.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
 			@Override
 			public List<IDrawableStatic> load(Integer time) {
 				List<IDrawableStatic> slots = new ArrayList<>();
 				for (ScreenObjectWrapper slot : outputSlots) {
-					slots.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, slot.getTexture()), slot.getTextX(), slot.getTextY(), slot.getLength(), slot.getWidth()).build());
+					slots.add(guiHelper.drawableBuilder(slot.getTexture(), slot.getTextX(), slot.getTextY(), slot.getWidth(), slot.getHeight()).build());
 				}
 				return slots;
 			}
@@ -185,13 +195,13 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	}
 
 	public void setFluidInputs(IGuiHelper guiHelper, GenericFluidGaugeWrapper... gauges) {
-		fluidInputs = gauges;
-		FLUID_INPUTS = CacheBuilder.newBuilder().maximumSize(fluidInputs.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
+		fluidInputWrappers = gauges;
+		fluidInputDawables = CacheBuilder.newBuilder().maximumSize(fluidInputWrappers.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
 			@Override
 			public List<IDrawableStatic> load(Integer time) {
 				List<IDrawableStatic> gauges = new ArrayList<>();
-				for (ScreenObjectWrapper gauge : fluidInputs) {
-					gauges.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, gauge.getTexture()), gauge.getTextX(), gauge.getTextY(), gauge.getLength(), gauge.getWidth()).build());
+				for (ScreenObjectWrapper gauge : fluidInputWrappers) {
+					gauges.add(guiHelper.drawableBuilder(gauge.getTexture(), gauge.getTextX(), gauge.getTextY(), gauge.getWidth(), gauge.getHeight()).build());
 				}
 				return gauges;
 			}
@@ -199,31 +209,71 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	}
 
 	public void setFluidOutputs(IGuiHelper guiHelper, GenericFluidGaugeWrapper... gauges) {
-		fluidOutputs = gauges;
-		FLUID_OUTPUTS = CacheBuilder.newBuilder().maximumSize(fluidOutputs.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
+		fluidOutputWrappers = gauges;
+		fluidOutputDrawables = CacheBuilder.newBuilder().maximumSize(fluidOutputWrappers.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
 			@Override
 			public List<IDrawableStatic> load(Integer time) {
 				List<IDrawableStatic> gauges = new ArrayList<>();
-				for (ScreenObjectWrapper gauge : fluidOutputs) {
-					gauges.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, gauge.getTexture()), gauge.getTextX(), gauge.getTextY(), gauge.getLength(), gauge.getWidth()).build());
+				for (ScreenObjectWrapper gauge : fluidOutputWrappers) {
+					gauges.add(guiHelper.drawableBuilder(gauge.getTexture(), gauge.getTextX(), gauge.getTextY(), gauge.getWidth(), gauge.getHeight()).build());
 				}
 				return gauges;
 			}
 		});
 	}
 
+	public void setGasInputs(IGuiHelper guiHelper, GenericGasGaugeWrapper... gauges) {
+		gasInputWrappers = gauges;
+		gasInputDrawables = CacheBuilder.newBuilder().maximumSize(gasInputWrappers.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
+
+			@Override
+			public List<IDrawableStatic> load(Integer key) {
+				List<IDrawableStatic> gauges = new ArrayList<>();
+
+				for (GenericGasGaugeWrapper gauge : gasInputWrappers) {
+
+					gauges.add(guiHelper.drawableBuilder(gauge.getTexture(), gauge.getTextX(), gauge.getTextY(), gauge.getWidth(), gauge.getHeight()).build());
+
+				}
+
+				return gauges;
+			}
+
+		});
+	}
+
+	public void setGasOutputs(IGuiHelper guiHelper, GenericGasGaugeWrapper... gauges) {
+		gasOutputWrappers = gauges;
+		gasOutputDrawables = CacheBuilder.newBuilder().maximumSize(gasOutputWrappers.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
+
+			@Override
+			public List<IDrawableStatic> load(Integer key) {
+				List<IDrawableStatic> gauges = new ArrayList<>();
+
+				for (GenericGasGaugeWrapper gauge : gasOutputWrappers) {
+
+					gauges.add(guiHelper.drawableBuilder(gauge.getTexture(), gauge.getTextX(), gauge.getTextY(), gauge.getWidth(), gauge.getHeight()).build());
+
+				}
+
+				return gauges;
+			}
+
+		});
+	}
+
 	public void setStaticArrows(IGuiHelper guiHelper, ScreenObjectWrapper... arrows) {
-		if (staticArrows.length == 0) {
-			staticArrows = arrows;
+		if (staticArrowWrappers.length == 0) {
+			staticArrowWrappers = arrows;
 		} else {
-			staticArrows = ArrayUtils.addAll(staticArrows, arrows);
+			staticArrowWrappers = ArrayUtils.addAll(staticArrowWrappers, arrows);
 		}
-		STATIC_ARROWS = CacheBuilder.newBuilder().maximumSize(staticArrows.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
+		staticArrowDrawables = CacheBuilder.newBuilder().maximumSize(staticArrowWrappers.length).build(new CacheLoader<Integer, List<IDrawableStatic>>() {
 			@Override
 			public List<IDrawableStatic> load(Integer time) {
 				List<IDrawableStatic> arrows = new ArrayList<>();
-				for (ScreenObjectWrapper arrow : staticArrows) {
-					arrows.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, arrow.getTexture()), arrow.getTextX(), arrow.getTextY(), arrow.getLength(), arrow.getWidth()).build());
+				for (ScreenObjectWrapper arrow : staticArrowWrappers) {
+					arrows.add(guiHelper.drawableBuilder(arrow.getTexture(), arrow.getTextX(), arrow.getTextY(), arrow.getWidth(), arrow.getHeight()).build());
 				}
 				return arrows;
 			}
@@ -236,13 +286,13 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			temp[i] = arrows[i].getStaticArrow();
 		}
 		setStaticArrows(guiHelper, temp);
-		animArrows = arrows;
-		ANIMATED_ARROWS = CacheBuilder.newBuilder().maximumSize(animArrows.length).build(new CacheLoader<Integer, List<IDrawableAnimated>>() {
+		animatedArrowWrappers = arrows;
+		animatedArrowDrawables = CacheBuilder.newBuilder().maximumSize(animatedArrowWrappers.length).build(new CacheLoader<Integer, List<IDrawableAnimated>>() {
 			@Override
 			public List<IDrawableAnimated> load(Integer time) {
 				List<IDrawableAnimated> arrows = new ArrayList<>();
-				for (ArrowAnimatedWrapper arrow : animArrows) {
-					arrows.add(guiHelper.drawableBuilder(new ResourceLocation(MOD_ID, arrow.getTexture()), arrow.getTextX(), arrow.getTextY(), arrow.getLength(), arrow.getWidth()).buildAnimated(time, arrow.getStartDirection(), false));
+				for (ArrowAnimatedWrapper arrow : animatedArrowWrappers) {
+					arrows.add(guiHelper.drawableBuilder(arrow.getTexture(), arrow.getTextX(), arrow.getTextY(), arrow.getWidth(), arrow.getHeight()).buildAnimated(time, arrow.getStartDirection(), false));
 				}
 
 				return arrows;
@@ -253,8 +303,8 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	public void setItemInputs(List<List<ItemStack>> inputs, IRecipeLayoutBuilder builder) {
 		GenericItemSlotWrapper wrapper;
 		RecipeIngredientRole role;
-		for (int i = 0; i < inSlots.length; i++) {
-			wrapper = inSlots[i];
+		for (int i = 0; i < inputSlotWrappers.length; i++) {
+			wrapper = inputSlotWrappers[i];
 			role = wrapper instanceof BucketSlotWrapper ? RecipeIngredientRole.RENDER_ONLY : RecipeIngredientRole.INPUT;
 			builder.addSlot(role, wrapper.itemXStart(), wrapper.itemYStart()).addItemStacks(inputs.get(i));
 		}
@@ -263,8 +313,8 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	public void setItemOutputs(List<ItemStack> outputs, IRecipeLayoutBuilder builder) {
 		GenericItemSlotWrapper wrapper;
 		RecipeIngredientRole role;
-		for (int i = 0; i < outSlots.length; i++) {
-			wrapper = outSlots[i];
+		for (int i = 0; i < outputSlotWrappers.length; i++) {
+			wrapper = outputSlotWrappers[i];
 			role = wrapper instanceof BucketSlotWrapper ? RecipeIngredientRole.RENDER_ONLY : RecipeIngredientRole.OUTPUT;
 			if (i < outputs.size()) {
 				builder.addSlot(role, wrapper.itemXStart(), wrapper.itemYStart()).addItemStack(outputs.get(i));
@@ -276,8 +326,8 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		GenericFluidGaugeWrapper wrapper;
 		RecipeIngredientRole role = RecipeIngredientRole.INPUT;
 		FluidStack stack;
-		for (int i = 0; i < fluidInputs.length; i++) {
-			wrapper = fluidInputs[i];
+		for (int i = 0; i < fluidInputWrappers.length; i++) {
+			wrapper = fluidInputWrappers[i];
 			stack = inputs.get(i).get(0);
 
 			int amt = stack.getAmount();
@@ -300,8 +350,8 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		GenericFluidGaugeWrapper wrapper;
 		RecipeIngredientRole role = RecipeIngredientRole.OUTPUT;
 		FluidStack stack;
-		for (int i = 0; i < fluidOutputs.length; i++) {
-			wrapper = fluidOutputs[i];
+		for (int i = 0; i < fluidOutputWrappers.length; i++) {
+			wrapper = fluidOutputWrappers[i];
 			stack = outputs.get(i);
 
 			int amt = stack.getAmount();
@@ -319,98 +369,199 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		}
 	}
 
-	public void drawInputSlots(PoseStack matrixStack) {
-		if (INPUT_SLOTS != null) {
-			List<IDrawableStatic> inputSlots = INPUT_SLOTS.getUnchecked(getAnimationTime());
-			IDrawableStatic image;
-			ScreenObjectWrapper wrapper;
-			for (int i = 0; i < inputSlots.size(); i++) {
-				image = inputSlots.get(i);
-				wrapper = inSlots[i];
-				image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+	public void setGasInputs(List<GasStack> inputs, IRecipeLayoutBuilder builder) {
+		
+		GenericGasGaugeWrapper wrapper;
+		RecipeIngredientRole role = RecipeIngredientRole.INPUT;
+		GasStack stack;
+		GasTextureWrapper gasWrapper;
+		GasGaugeTextureWrapper gasGaugeWrapper;
+		for(int i = 0; i < gasInputWrappers.length; i++) {
+			
+			wrapper = gasInputWrappers[i];
+			stack = inputs.get(i);
+			
+			double amt = stack.getAmount();
+			
+			double gaugeCap = wrapper.getAmount();
+			
+			if(amt > gaugeCap) {
+				gaugeCap = (((int) Math.ceil(amt)) * IComponentGasHandler.TANK_MULTIPLIER) * IComponentGasHandler.TANK_MULTIPLIER + IComponentGasHandler.TANK_MULTIPLIER;
 			}
+			
+			int height = (int) (Math.ceil(amt / gaugeCap * wrapper.getHeight()));
+			
+			gasWrapper = new GasTextureWrapper(wrapper.getTexture(), wrapper.getMercuryOffset(), wrapper.getTextY() + (wrapper.getHeight() - height), wrapper.getWidth(), height);
+			gasGaugeWrapper = new GasGaugeTextureWrapper(wrapper.getTexture(), 0, 0, wrapper.getGaugeOffset(), wrapper.getTextY(), wrapper.getWidth(), wrapper.getHeight());
+			
+			builder.addSlot(role, wrapper.getXPos(), wrapper.getYPos() + height).addIngredient(ElectrodynamicsJeiTypes.GAS_STACK, stack).setCustomRenderer(ElectrodynamicsJeiTypes.GAS_STACK, new IngredientRendererGasStack(gasWrapper, gasGaugeWrapper));
+		}
+		
+	}
+
+	public void setGasOutputs(List<GasStack> outputs, IRecipeLayoutBuilder builder) {
+		
+		GenericGasGaugeWrapper wrapper;
+		RecipeIngredientRole role = RecipeIngredientRole.INPUT;
+		GasStack stack;
+		GasTextureWrapper gasWrapper;
+		GasGaugeTextureWrapper gasGaugeWrapper;
+		for(int i = 0; i < gasOutputWrappers.length; i++) {
+			
+			wrapper = gasOutputWrappers[i];
+			stack = outputs.get(i);
+			
+			double amt = stack.getAmount();
+			
+			double gaugeCap = wrapper.getAmount();
+			
+			if(amt > gaugeCap) {
+				gaugeCap = (((int) Math.ceil(amt)) * IComponentGasHandler.TANK_MULTIPLIER) * IComponentGasHandler.TANK_MULTIPLIER + IComponentGasHandler.TANK_MULTIPLIER;
+			}
+			
+			int height = (int) (Math.ceil(amt / gaugeCap * (wrapper.getHeight() - 2)));
+			
+			gasWrapper = new GasTextureWrapper(wrapper.getTexture(), wrapper.getMercuryOffset(), wrapper.getTextY() + (wrapper.getHeight() - height), wrapper.getWidth() - 2, height);
+			gasGaugeWrapper = new GasGaugeTextureWrapper(wrapper.getTexture(), -1, height - wrapper.getHeight(), wrapper.getGaugeOffset(), wrapper.getTextY(), wrapper.getWidth(), wrapper.getHeight());
+			
+			builder.addSlot(role, wrapper.getXPos() + 1, wrapper.getYPos() + wrapper.getHeight() - height).addIngredient(ElectrodynamicsJeiTypes.GAS_STACK, stack).setCustomRenderer(ElectrodynamicsJeiTypes.GAS_STACK, new IngredientRendererGasStack(gasWrapper, gasGaugeWrapper));
+		}
+	}
+
+	public void drawInputSlots(PoseStack matrixStack) {
+		if (inputSlotDrawables == null) {
+			return;
+		}
+		List<IDrawableStatic> inputSlots = inputSlotDrawables.getUnchecked(getAnimationTime());
+		IDrawableStatic image;
+		ScreenObjectWrapper wrapper;
+		for (int i = 0; i < inputSlots.size(); i++) {
+			image = inputSlots.get(i);
+			wrapper = inputSlotWrappers[i];
+			image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
 		}
 	}
 
 	public void drawOutputSlots(PoseStack matrixStack) {
-		if (OUTPUT_SLOTS != null) {
-			List<IDrawableStatic> outputSlots = OUTPUT_SLOTS.getUnchecked(getAnimationTime());
-			IDrawableStatic image;
-			ScreenObjectWrapper wrapper;
-			for (int i = 0; i < outputSlots.size(); i++) {
-				image = outputSlots.get(i);
-				wrapper = outSlots[i];
-				image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
-			}
+		if (outputSlotDrawables == null) {
+			return;
+		}
+		List<IDrawableStatic> outputSlots = outputSlotDrawables.getUnchecked(getAnimationTime());
+		IDrawableStatic image;
+		ScreenObjectWrapper wrapper;
+		for (int i = 0; i < outputSlots.size(); i++) {
+			image = outputSlots.get(i);
+			wrapper = outputSlotWrappers[i];
+			image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
 		}
 	}
 
 	public void drawFluidInputs(PoseStack matrixStack) {
-		if (FLUID_INPUTS != null) {
-			List<IDrawableStatic> inFluidGauges = FLUID_INPUTS.getUnchecked(getAnimationTime());
-			IDrawableStatic image;
-			ScreenObjectWrapper wrapper;
-			for (int i = 0; i < inFluidGauges.size(); i++) {
-				image = inFluidGauges.get(i);
-				wrapper = fluidInputs[i];
-				image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
-			}
+		if (fluidInputDawables == null) {
+			return;
+		}
+		List<IDrawableStatic> inFluidGauges = fluidInputDawables.getUnchecked(getAnimationTime());
+		IDrawableStatic image;
+		ScreenObjectWrapper wrapper;
+		for (int i = 0; i < inFluidGauges.size(); i++) {
+			image = inFluidGauges.get(i);
+			wrapper = fluidInputWrappers[i];
+			image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
 		}
 	}
 
 	public void drawFluidOutputs(PoseStack matrixStack) {
-		if (FLUID_OUTPUTS != null) {
-			List<IDrawableStatic> fluidGauges = FLUID_OUTPUTS.getUnchecked(getAnimationTime());
-			IDrawableStatic image;
-			ScreenObjectWrapper wrapper;
-			for (int i = 0; i < fluidGauges.size(); i++) {
-				image = fluidGauges.get(i);
-				wrapper = fluidOutputs[i];
-				image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
-			}
+		if (fluidOutputDrawables == null) {
+			return;
+		}
+		List<IDrawableStatic> fluidGauges = fluidOutputDrawables.getUnchecked(getAnimationTime());
+		IDrawableStatic image;
+		ScreenObjectWrapper wrapper;
+		for (int i = 0; i < fluidGauges.size(); i++) {
+			image = fluidGauges.get(i);
+			wrapper = fluidOutputWrappers[i];
+			image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+		}
+	}
+
+	public void drawGasInputs(PoseStack matrixStack) {
+		if (gasInputDrawables == null) {
+			return;
+		}
+		List<IDrawableStatic> gasGauges = gasInputDrawables.getUnchecked(getAnimationTime());
+		IDrawableStatic image;
+		ScreenObjectWrapper wrapper;
+		for (int i = 0; i < gasGauges.size(); i++) {
+			image = gasGauges.get(i);
+			wrapper = gasInputWrappers[i];
+			image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
+		}
+	}
+
+	public void drawGasOutputs(PoseStack matrixStack) {
+		if (gasOutputDrawables == null) {
+			return;
+		}
+		List<IDrawableStatic> gasGauges = gasOutputDrawables.getUnchecked(getAnimationTime());
+		IDrawableStatic image;
+		ScreenObjectWrapper wrapper;
+		for (int i = 0; i < gasGauges.size(); i++) {
+			image = gasGauges.get(i);
+			wrapper = gasOutputWrappers[i];
+			image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
 		}
 	}
 
 	public void drawStaticArrows(PoseStack matrixStack) {
-		if (STATIC_ARROWS != null) {
-			List<IDrawableStatic> arrows = STATIC_ARROWS.getUnchecked(getAnimationTime());
-			IDrawableStatic image;
-			ScreenObjectWrapper wrapper;
-			for (int i = 0; i < arrows.size(); i++) {
-				image = arrows.get(i);
-				wrapper = staticArrows[i];
-				image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
-			}
+		if (staticArrowDrawables == null) {
+			return;
+		}
+		List<IDrawableStatic> arrows = staticArrowDrawables.getUnchecked(getAnimationTime());
+		IDrawableStatic image;
+		ScreenObjectWrapper wrapper;
+		for (int i = 0; i < arrows.size(); i++) {
+			image = arrows.get(i);
+			wrapper = staticArrowWrappers[i];
+			image.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
 		}
 	}
 
 	public void drawAnimatedArrows(PoseStack matrixStack) {
-		if (ANIMATED_ARROWS != null) {
-			List<IDrawableAnimated> arrows = ANIMATED_ARROWS.getUnchecked(getAnimationTime());
-			IDrawableAnimated arrow;
-			ScreenObjectWrapper wrapper;
-			for (int i = 0; i < arrows.size(); i++) {
-				arrow = arrows.get(i);
-				wrapper = animArrows[i];
-				arrow.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
-			}
+		if (animatedArrowDrawables == null) {
+			return;
+		}
+		List<IDrawableAnimated> arrows = animatedArrowDrawables.getUnchecked(getAnimationTime());
+		IDrawableAnimated arrow;
+		ScreenObjectWrapper wrapper;
+		for (int i = 0; i < arrows.size(); i++) {
+			arrow = arrows.get(i);
+			wrapper = animatedArrowWrappers[i];
+			arrow.draw(matrixStack, wrapper.getXPos(), wrapper.getYPos());
 		}
 	}
 
 	public List<List<ItemStack>> getItemInputs(ElectrodynamicsRecipe electro) {
-		return Collections.emptyList();
-	}
-
-	public List<List<FluidStack>> getFluidInputs(ElectrodynamicsRecipe electro) {
-		return Collections.emptyList();
+		return new ArrayList<>();
 	}
 
 	public List<ItemStack> getItemOutputs(ElectrodynamicsRecipe electro) {
-		return Collections.emptyList();
+		return new ArrayList<>();
+	}
+
+	public List<List<FluidStack>> getFluidInputs(ElectrodynamicsRecipe electro) {
+		return new ArrayList<>();
 	}
 
 	public List<FluidStack> getFluidOutputs(ElectrodynamicsRecipe electro) {
-		return Collections.emptyList();
+		return new ArrayList<>();
+	}
+
+	public List<GasStack> getGasInputs(ElectrodynamicsRecipe electro) {
+		return new ArrayList<>();
+	}
+
+	public List<GasStack> getGasOutputs(ElectrodynamicsRecipe electro) {
+		return new ArrayList<>();
 	}
 
 }

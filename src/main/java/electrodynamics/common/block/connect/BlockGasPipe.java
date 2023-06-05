@@ -3,7 +3,7 @@ package electrodynamics.common.block.connect;
 import java.util.HashSet;
 
 import electrodynamics.api.gas.Gas;
-import electrodynamics.api.network.cable.IRefreshableConductor;
+import electrodynamics.api.network.cable.IRefreshableCable;
 import electrodynamics.api.network.cable.type.IGasPipe;
 import electrodynamics.common.block.connect.util.AbstractRefreshingConnectBlock;
 import electrodynamics.common.block.connect.util.EnumConnectType;
@@ -99,7 +99,7 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock {
 	}
 
 	@Override
-	public BlockState refreshConnections(BlockEntity tile, BlockState state, Direction dir) {
+	public BlockState refreshConnections(BlockState otherState, BlockEntity tile, BlockState state, Direction dir) {
 		EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(dir);
 		if (tile instanceof IGasPipe) {
 			return state.setValue(property, EnumConnectType.WIRE);
@@ -113,7 +113,7 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock {
 	}
 
 	@Override
-	public IRefreshableConductor getCableIfValid(BlockEntity tile) {
+	public IRefreshableCable getCableIfValid(BlockEntity tile) {
 		if (tile instanceof IGasPipe pipe) {
 			return pipe;
 		}

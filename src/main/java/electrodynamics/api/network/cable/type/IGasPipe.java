@@ -1,9 +1,9 @@
 package electrodynamics.api.network.cable.type;
 
-import electrodynamics.api.network.cable.IRefreshableConductor;
+import electrodynamics.api.network.cable.IRefreshableCable;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
 
-public interface IGasPipe extends IRefreshableConductor {
+public interface IGasPipe extends IRefreshableCable {
 
 	SubtypeGasPipe getPipeType();
 

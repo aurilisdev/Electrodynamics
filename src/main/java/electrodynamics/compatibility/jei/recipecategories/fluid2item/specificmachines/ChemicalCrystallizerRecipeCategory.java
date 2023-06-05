@@ -20,34 +20,32 @@ import net.minecraft.world.item.ItemStack;
 
 public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory<ChemicalCrystalizerRecipe> {
 
-	// JEI Window Parameters
-	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 64);
+	private static final BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 64);
 
-	private static BucketSlotWrapper IN_BUCKET_SLOT = new BucketSlotWrapper(58, 36);
+	private static final BucketSlotWrapper IN_BUCKET_SLOT = new BucketSlotWrapper(58, 36);
 
-	private static DefaultItemSlotWrapper OUT_SLOT = new DefaultItemSlotWrapper(100, 16);
+	private static final DefaultItemSlotWrapper OUT_SLOT = new DefaultItemSlotWrapper(100, 16);
 
-	private static ArrowRightBigAnimatedWrapper ANIM_RIGHT_ARROW = new ArrowRightBigAnimatedWrapper(32, 17);
-	private static ArrowLeftAnimatedWrapper ANIM_LEFT_ARROW = new ArrowLeftAnimatedWrapper(32, 37);
+	private static final ArrowRightBigAnimatedWrapper ANIM_RIGHT_ARROW = new ArrowRightBigAnimatedWrapper(32, 17);
+	private static final ArrowLeftAnimatedWrapper ANIM_LEFT_ARROW = new ArrowLeftAnimatedWrapper(32, 37);
 
-	private static DefaultFluidGaugeWrapper IN_GAUGE = new DefaultFluidGaugeWrapper(14, 5, 5000);
+	private static final DefaultFluidGaugeWrapper IN_GAUGE = new DefaultFluidGaugeWrapper(14, 5, 5000);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, 240);
-	private static TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 55);
+	private static final PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, 240);
+	private static final TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 55);
 
-	private static int ANIM_TIME = 50;
+	private static final int ANIM_TIME = 50;
 
-	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = SubtypeMachine.chemicalcrystallizer.tag();
+	private static final String RECIPE_GROUP = SubtypeMachine.chemicalcrystallizer.tag();
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalcrystallizer));
 
-	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
+	public final static ResourceLocation UID = new ResourceLocation(References.ID, RECIPE_GROUP);
 
 	public static final RecipeType<ChemicalCrystalizerRecipe> RECIPE_TYPE = RecipeType.create(References.ID, ChemicalCrystalizerRecipe.RECIPE_GROUP, ChemicalCrystalizerRecipe.class);
 
 	public ChemicalCrystallizerRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ChemicalCrystalizerRecipe.class, ANIM_TIME);
+		super(guiHelper, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ChemicalCrystalizerRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, IN_BUCKET_SLOT);
 		setOutputSlots(guiHelper, OUT_SLOT);
 		setFluidInputs(guiHelper, IN_GAUGE);

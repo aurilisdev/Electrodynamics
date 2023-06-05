@@ -34,7 +34,7 @@ public class BiproductPercentWrapper extends AbstractLabelWrapper {
 			Component.literal(percentage * 100 + "%");
 		} else {
 			ElectrodynamicsRecipeCategory<?> electroCat = (ElectrodynamicsRecipeCategory<?>) category;
-			List<AbstractLabelWrapper> labels = Arrays.asList(electroCat.LABELS);
+			List<AbstractLabelWrapper> labels = Arrays.asList(electroCat.labels);
 			int biPos = labels.indexOf(this) - electroCat.itemBiLabelFirstIndex;
 			ElectrodynamicsRecipe electro = (ElectrodynamicsRecipe) recipe;
 			if (electro.hasItemBiproducts()) {

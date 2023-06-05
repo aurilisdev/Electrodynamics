@@ -1,16 +1,13 @@
 package electrodynamics.prefab.tile.components.type;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.client.PacketSendUpdatePropertiesClient;
-import electrodynamics.common.packet.types.client.PacketUpdateTile;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
@@ -29,6 +26,7 @@ public class ComponentPacketHandler implements Component {
         this.holder = holder;
     }
 
+    /*
     protected Consumer<CompoundTag> customPacketWriter;
     protected Consumer<CompoundTag> guiPacketWriter;
     protected Consumer<CompoundTag> customPacketReader;
@@ -117,7 +115,7 @@ public class ComponentPacketHandler implements Component {
             }
         }
     }
-
+	*/
     public void sendProperties() {
         Level world = holder.getLevel();
         if (world != null) {

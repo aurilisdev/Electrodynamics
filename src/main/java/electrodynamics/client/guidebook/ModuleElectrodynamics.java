@@ -6,6 +6,7 @@ import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject;
 import electrodynamics.client.guidebook.chapters.ChapterArmor;
 import electrodynamics.client.guidebook.chapters.ChapterElectricity;
 import electrodynamics.client.guidebook.chapters.ChapterFluids;
+import electrodynamics.client.guidebook.chapters.ChapterGases;
 import electrodynamics.client.guidebook.chapters.ChapterGenerators;
 import electrodynamics.client.guidebook.chapters.ChapterGettingStarted;
 import electrodynamics.client.guidebook.chapters.ChapterMachines;
@@ -39,6 +40,7 @@ public final class ModuleElectrodynamics extends Module {
 		chapters.add(new ChapterOre(this));
 		chapters.add(new ChapterElectricity(this));
 		chapters.add(new ChapterFluids(this));
+		chapters.add(new ChapterGases(this));
 		chapters.add(new ChapterGenerators(this));
 		chapters.add(new ChapterMachines(this));
 		chapters.add(new ChapterQuarry(this));

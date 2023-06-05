@@ -20,32 +20,30 @@ import net.minecraft.world.item.ItemStack;
 
 public class WireMillRecipeCategory extends Item2ItemRecipeCategory<WireMillRecipe> {
 
-	// JEI Window Parameters
-	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
+	private static final BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
 
-	private static DefaultItemSlotWrapper INPUT_SLOT = new DefaultItemSlotWrapper(17, 20);
-	private static BigItemSlotWrapper OUTPUT_SLOT = new BigItemSlotWrapper(69, 16);
-	private static DefaultItemSlotWrapper BIPRODUCT_SLOT = new DefaultItemSlotWrapper(100, 20);
+	private static final DefaultItemSlotWrapper INPUT_SLOT = new DefaultItemSlotWrapper(17, 20);
+	private static final BigItemSlotWrapper OUTPUT_SLOT = new BigItemSlotWrapper(69, 16);
+	private static final DefaultItemSlotWrapper BIPRODUCT_SLOT = new DefaultItemSlotWrapper(100, 20);
 
-	private static ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(41, 23);
+	private static final ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(41, 23);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 48, 120);
-	private static BiproductPercentWrapper ITEM_LABEL = new BiproductPercentWrapper(100, 40, false);
-	private static TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 48);
+	private static final PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 48, 120);
+	private static final BiproductPercentWrapper ITEM_LABEL = new BiproductPercentWrapper(100, 40, false);
+	private static final TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 48);
 
-	private static int ANIM_TIME = 50;
+	private static final int ANIM_TIME = 50;
 
-	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = SubtypeMachine.wiremill.tag();
+	private static final String RECIPE_GROUP = SubtypeMachine.wiremill.tag();
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremill));
 
-	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
+	public static final ResourceLocation UID = new ResourceLocation(References.ID, RECIPE_GROUP);
 
 	public static final RecipeType<WireMillRecipe> RECIPE_TYPE = RecipeType.create(References.ID, WireMillRecipe.RECIPE_GROUP, WireMillRecipe.class);
 
 	public WireMillRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, WireMillRecipe.class, ANIM_TIME);
+		super(guiHelper, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, WireMillRecipe.class, ANIM_TIME);
 		ElectrodynamicsJEIPlugin.addO2OClickArea(RECIPE_TYPE);
 		setInputSlots(guiHelper, INPUT_SLOT);
 		setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);

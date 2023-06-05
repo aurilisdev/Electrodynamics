@@ -15,6 +15,8 @@ public class ButtonSearchedText extends ButtonSpecificPage {
 
 	private Component chapter = Component.empty();
 	private FormattedText line = Component.empty();
+	
+	public int specifiedPage;
 
 	private boolean shouldShow = false;
 
@@ -37,6 +39,10 @@ public class ButtonSearchedText extends ButtonSpecificPage {
 
 	public void setLine(FormattedText line) {
 		this.line = line;
+	}
+	
+	public void setPage(int page) {
+		specifiedPage = page;
 	}
 
 	public void setShouldShow(boolean show) {

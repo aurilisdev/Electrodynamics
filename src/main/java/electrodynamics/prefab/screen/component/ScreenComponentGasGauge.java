@@ -4,7 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
+import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.math.Matrix4f;
 
 import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
@@ -13,7 +20,10 @@ import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.gas.GasTank;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.ITexture;
+import electrodynamics.client.ClientRegister;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -41,11 +51,38 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 
 			texture = GasGaugeTextures.MERCURY_FLUID;
 
-			RenderingUtils.bindTexture(texture.getLocation());
+			TextureAtlasSprite mercury = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(texture.getLocation());
+			Matrix4f matrix = stack.last().pose();
 
-			int progress = (int) ((tank.getGas().getAmount() / tank.getCapacity()) * texture.textureHeight());
+			RenderSystem.setShaderTexture(0, mercury.atlas().getId());
 
-			gui.drawTexturedRect(stack, guiWidth + xLocation + 1, guiHeight + yLocation + texture.textureHeight() - progress, texture.textureU(), texture.textureV() + texture.textureHeight() - progress, texture.textureWidth(), progress, texture.imageWidth(), texture.imageHeight());
+			float progress = (float) tank.getGasAmount() / (float) tank.getCapacity();
+			int height = (int) (progress * texture.textureHeight());
+
+			int x1 = guiWidth + xLocation + 1;
+			int x2 = x1 + 12;
+
+			int y1 = guiHeight + yLocation + 1 + texture.textureHeight() - Math.min(height, texture.textureHeight());
+			int y2 = y1 + height;
+
+			float minU = mercury.getU0();
+			float maxU = mercury.getU1();
+
+			float minV = mercury.getV0();
+			float maxV = mercury.getV1();
+
+			float deltaV = maxV - minV;
+
+			minV = maxV - deltaV * progress;
+
+			RenderSystem.setShader(GameRenderer::getPositionTexShader);
+			BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+			bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+			bufferbuilder.vertex(matrix, x1, y2, 0).uv(minU, maxV).endVertex();
+			bufferbuilder.vertex(matrix, x2, y2, 0).uv(maxU, maxV).endVertex();
+			bufferbuilder.vertex(matrix, x2, y1, 0).uv(maxU, minV).endVertex();
+			bufferbuilder.vertex(matrix, x1, y1, 0).uv(minU, minV).endVertex();
+			BufferUploader.drawWithShader(bufferbuilder.end());
 
 		}
 
@@ -53,7 +90,7 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 
 		RenderingUtils.bindTexture(texture.getLocation());
 
-		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
+		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation + 1, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
 
 	}
 
@@ -73,7 +110,7 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 
 			if (gas.isEmpty()) {
 
-				tooltips.add(Component.literal( "0 / " + ChatFormatter.formatFluidMilibuckets(tank.getCapacity())).getVisualOrderText());
+				tooltips.add(Component.literal("0 / " + ChatFormatter.formatFluidMilibuckets(tank.getCapacity())).getVisualOrderText());
 
 			} else {
 
@@ -90,7 +127,7 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 	}
 
 	public enum GasGaugeTextures implements ITexture {
-		BACKGROUND_DEFAULT(14, 49, 0, 0, 256, 256, TEXTURE), LEVEL_DEFAULT(14, 49, 14, 0, 256, 256, TEXTURE), MERCURY_FLUID(14, 49, 28, 0, 256, 256, TEXTURE);
+		BACKGROUND_DEFAULT(14, 49, 0, 0, 256, 256, TEXTURE), LEVEL_DEFAULT(14, 49, 14, 0, 256, 256, TEXTURE), MERCURY_FLUID(12, 47, 0, 0, 12, 47, ClientRegister.TEXTURE_MERCURY);
 
 		private final int textureWidth;
 		private final int textureHeight;

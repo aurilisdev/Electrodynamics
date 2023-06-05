@@ -35,8 +35,8 @@ public abstract class BlockGenericGasTransformer extends GenericMachineBlock {
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, placer, stack);
 		Direction facing = state.getValue(GenericMachineBlock.FACING);
-		level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)), ElectrodynamicsBlocks.blockGasTransformerSide.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false));
-		level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)), ElectrodynamicsBlocks.blockGasTransformerSide.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false));
+		level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)), ElectrodynamicsBlocks.blockGasTransformerSide.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false).setValue(GenericMachineBlock.FACING, facing));
+		level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)), ElectrodynamicsBlocks.blockGasTransformerSide.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false).setValue(GenericMachineBlock.FACING, facing));
 	}
 
 }

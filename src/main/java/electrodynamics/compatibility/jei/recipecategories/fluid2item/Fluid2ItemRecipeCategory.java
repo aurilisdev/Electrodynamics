@@ -26,9 +26,9 @@ public abstract class Fluid2ItemRecipeCategory<T extends Fluid2ItemRecipe> exten
 	 * > Items supercede bucket slots in position > All biproducts will be included with the outputSlots field > All fluid bucket output slots will be incled with the outputSlots field
 	 */
 
-	protected Fluid2ItemRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper bWrap, Class<T> recipeClass, int animTime) {
+	protected Fluid2ItemRecipeCategory(IGuiHelper guiHelper, String recipeGroup, ItemStack inputMachine, BackgroundWrapper bWrap, Class<T> recipeClass, int animTime) {
 
-		super(guiHelper, modID, recipeGroup, inputMachine, bWrap, recipeClass, animTime);
+		super(guiHelper, recipeGroup, inputMachine, bWrap, recipeClass, animTime);
 	}
 
 	@Override

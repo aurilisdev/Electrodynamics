@@ -16,7 +16,10 @@ import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.block.subtype.SubtypeWire.WireType;
+import electrodynamics.common.block.subtype.SubtypeWire.Conductor;
+import electrodynamics.common.block.subtype.SubtypeWire.InsulationMaterial;
+import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
+import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
@@ -165,33 +168,45 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		String parent = "parent/";
 		String name = "block/wire/";
 		String texture = "wire/";
-
-		BlockModelBuilder logisticalNone = models().withExistingParent(name + "logisticswire_none", modLoc(parent + "logisticswire_none")).texture("texture", blockLoc(texture + "logisticswire_base")).texture("particle", "#texture");
-		BlockModelBuilder logisticalSide = models().withExistingParent(name + "logisticswire_side", modLoc(parent + "logisticswire_side")).texture("texture", blockLoc(texture + "logisticswire_base")).texture("particle", "#texture");
-
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.UNINSULATED)) {
-			wire(ElectrodynamicsBlocks.getBlock(wire), models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "wire_none")).texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "wire_side")).texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"),
+		
+		//bare
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.BARE, WireClass.STANDARD, WireColor.BLACK)) {
+			wire(ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "wire_none")).texture("conductor", blockLoc(texture + wire.conductor.toString())).texture("particle", "#conductor"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "wire_side")).texture("conductor", blockLoc(texture + wire.conductor.toString())).texture("particle", "#conductor"), 
 					false);
 		}
 
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.INSULATED)) {
-			wire(ElectrodynamicsBlocks.getBlock(wire), models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "insulatedwire_none")).texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"),
-					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "insulatedwire_side")).texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), false);
+		//insulated
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.STANDARD, WireColor.values())) {
+			wire(ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "insulatedwire_none")).texture("conductor", blockLoc(texture + wire.conductor.toString() + "_center")).texture("insulation", blockLoc(texture + "insulationwool_center")).texture("particle", "#insulation").renderType("cutout"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "insulatedwire_side")).texture("insulation", blockLoc(texture + "insulationwool")).texture("particle", "#insulation"), 
+					false);
 		}
 
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.LOGISTICAL)) {
-			wire(ElectrodynamicsBlocks.getBlock(wire), logisticalNone, logisticalSide, false);
+		//logistical
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.LOGISTICAL, WireColor.BLACK)) {
+			wire(ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "logisticswire_none")).texture("conductor", blockLoc(texture + "logisticswire" + wire.conductor.toString())).texture("insulation", blockLoc(texture + "logisticswireinsulation_center")).texture("particle", "#insulation").texture("redstone", blockLoc(texture + "logisticswireredstone_center")).renderType("cutout"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "logisticswire_side")).texture("insulation", blockLoc(texture + "logisticswireinsulation_side")).texture("particle", "#insulation").texture("redstone", blockLoc(texture + "logisticswireredstone_side")).renderType("cutout"), 
+					false);
 		}
 
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.CERAMIC)) {
-			wire(ElectrodynamicsBlocks.getBlock(wire), models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "ceramicinsulatedwire_none")).texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"),
-					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "ceramicinsulatedwire_side")).texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), false);
+		//ceramic
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.CERAMIC, WireClass.STANDARD, WireColor.values())) {
+			wire(ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "ceramicinsulatedwire_none")).texture("conductor", blockLoc(texture + wire.conductor.toString() + "_center")).texture("insulation", blockLoc(texture + "insulationceramic_center")).texture("particle", "#insulation").renderType("cutout"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "ceramicinsulatedwire_side")).texture("insulation", blockLoc(texture + "insulationceramic")).texture("particle", "#insulation"), 
+					false);
 		}
 
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.HIGHLY_INSULATED)) {
-			wire(ElectrodynamicsBlocks.getBlock(wire), models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "highlyinsulatedwire_none")).texture("texture", blockLoc(texture + wire.tag().replaceFirst("highly", ""))).texture("particle", "#texture"),
-					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "highlyinsulatedwire_side")).texture("texture", blockLoc(texture + wire.tag().replaceFirst("highly", ""))).texture("particle", "#texture"), false);
-
+		//highly insulated
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.THICK_WOOL, WireClass.STANDARD, WireColor.values())) {
+			wire(ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "highlyinsulatedwire_none")).texture("conductor", blockLoc(texture + wire.conductor.toString() + "_center")).texture("insulation", blockLoc(texture + "insulationwool_center")).texture("particle", "#insulation").renderType("cutout"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "highlyinsulatedwire_side")).texture("insulation", blockLoc(texture + "insulationwool")).texture("particle", "#insulation"), 
+					false);
 		}
 
 	}
@@ -214,13 +229,13 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		gasPipeUninsulated(SubtypeGasPipe.UNINSULATEDSTEEL);
 		gasPipeUninsulatedPlastic(SubtypeGasPipe.UNINSULATEDPLASTIC);
 
-		gasPipeWoolInsulated(SubtypeGasPipe.WOOLINSULATEDCOPPER);
-		gasPipeWoolInsulated(SubtypeGasPipe.WOOLINSULATEDSTEEL);
-		gasPipeWoolInsulatedPlastic(SubtypeGasPipe.WOOLINSULATEDPLASTIC);
+		//gasPipeWoolInsulated(SubtypeGasPipe.WOOLINSULATEDCOPPER);
+		//gasPipeWoolInsulated(SubtypeGasPipe.WOOLINSULATEDSTEEL);
+		//gasPipeWoolInsulatedPlastic(SubtypeGasPipe.WOOLINSULATEDPLASTIC);
 
-		gasPipeCeramicInsulated(SubtypeGasPipe.CERAMICINSULATEDCOPPER);
-		gasPipeCeramicInsulated(SubtypeGasPipe.CERAMICINSULATEDSTEEL);
-		gasPipeCeramicInsulatedPlastic(SubtypeGasPipe.CERAMICINSULATEDPLASTIC);
+		//gasPipeCeramicInsulated(SubtypeGasPipe.CERAMICINSULATEDCOPPER);
+		//gasPipeCeramicInsulated(SubtypeGasPipe.CERAMICINSULATEDSTEEL);
+		//gasPipeCeramicInsulatedPlastic(SubtypeGasPipe.CERAMICINSULATEDPLASTIC);
 	}
 
 	private void gasPipeUninsulated(SubtypeGasPipe pipe) {
@@ -281,10 +296,15 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		ModelFile none = existingBlock(block);
 		ModelFile top = existingBlock(blockLoc("compressorsidet"));
 
-		getVariantBuilder(block).partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false).modelForState().modelFile(none).rotationY(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false).modelForState().modelFile(none).rotationY(0).addModel().partialState()
-				.with(GenericEntityBlock.FACING, Direction.SOUTH).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false).modelForState().modelFile(none).rotationY(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false).modelForState().modelFile(none).rotationY(180).addModel().partialState().with(GenericEntityBlock.FACING, Direction.NORTH)
-				.with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true).modelForState().modelFile(top).rotationY(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true).modelForState().modelFile(top).rotationY(0).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true).modelForState().modelFile(top)
-				.rotationY(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true).modelForState().modelFile(top).rotationY(180).addModel();
+		getVariantBuilder(block)
+			.partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false).modelForState().modelFile(none).rotationY(0).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false).modelForState().modelFile(none).rotationY(90).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false).modelForState().modelFile(none).rotationY(180).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false).modelForState().modelFile(none).rotationY(270).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true).modelForState().modelFile(top).rotationY(0).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true).modelForState().modelFile(top).rotationY(90).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true).modelForState().modelFile(top).rotationY(180).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true).modelForState().modelFile(top).rotationY(270).addModel();
 	}
 	
 	private void genThermoelectricManipulator() {

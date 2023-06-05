@@ -11,6 +11,7 @@ import com.google.common.collect.Sets;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.cable.type.IConductor;
+import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
 import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.prefab.network.AbstractNetwork;
 import electrodynamics.prefab.tile.GenericTile;
@@ -31,6 +32,13 @@ import org.jetbrains.annotations.NotNull;
 public abstract class GenericTileWire extends GenericTile implements IConductor {
 
 	public ElectricNetwork electricNetwork;
+
+	private boolean[] connections = new boolean[6];
+	private BlockEntity[] tileConnections = new BlockEntity[6];
+
+	private ArrayList<ICapabilityElectrodynamic> handler = new ArrayList<>();
+
+	private boolean isQueued = false;
 
 	protected GenericTileWire(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
@@ -65,8 +73,6 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 		addComponent(new ComponentPacketHandler(this));
 	}
 
-	private ArrayList<ICapabilityElectrodynamic> handler = new ArrayList<>();
-
 	@Override
 	@Nonnull
 	public <T> @NotNull LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction facing) {
@@ -86,8 +92,8 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 
 		for (Direction dir : Direction.values()) {
 			BlockEntity facing = level.getBlockEntity(worldPosition.relative(dir));
-			if (facing instanceof IConductor cond) {
-				set.add(cond);
+			if (facing instanceof IConductor conductor && checkColor(conductor)) {
+				set.add(conductor);
 			}
 		}
 		return set;
@@ -125,8 +131,6 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 		}
 	}
 
-	private boolean isQueued = false;
-
 	@Override
 	public void refreshNetwork() {
 		if (level != null) {
@@ -136,8 +140,8 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 				ArrayList<ElectricNetwork> foundNetworks = new ArrayList<>();
 				for (Direction dir : Direction.values()) {
 					BlockEntity facing = level.getBlockEntity(worldPosition.relative(dir));
-					if (facing instanceof IConductor c && c.getNetwork() instanceof ElectricNetwork el) {
-						foundNetworks.add(el);
+					if (facing instanceof IConductor conductor && checkColor(conductor) && conductor.getNetwork() instanceof ElectricNetwork network) {
+						foundNetworks.add(network);
 					}
 				}
 				if (!foundNetworks.isEmpty() && getNetwork(false) == null) {
@@ -159,14 +163,12 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 		}
 	}
 
-	private boolean[] connections = new boolean[6];
-	private BlockEntity[] tileConnections = new BlockEntity[6];
-
 	public boolean updateAdjacent() {
 		boolean flag = false;
 		for (Direction dir : Direction.values()) {
 			BlockEntity tile = level.getBlockEntity(worldPosition.relative(dir));
-			boolean is = ElectricityUtils.isElectricReceiver(tile, dir.getOpposite());
+			boolean isElectricityReciever = ElectricityUtils.isElectricReceiver(tile, dir.getOpposite());
+			boolean is = (ElectricityUtils.isConductor(tile, this) && isElectricityReciever) || (!(tile instanceof IConductor) && isElectricityReciever);
 			if (connections[dir.ordinal()] != is) {
 				connections[dir.ordinal()] = is;
 				tileConnections[dir.ordinal()] = tile;
@@ -218,5 +220,9 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 	public void onLoad() {
 		super.onLoad();
 		Scheduler.schedule(1, this::refreshNetwork);
+	}
+
+	private boolean checkColor(IConductor conductor) {
+		return conductor.getWireColor() == WireColor.BLACK || getWireColor() == WireColor.BLACK || conductor.getWireColor() == getWireColor();
 	}
 }

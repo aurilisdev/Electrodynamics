@@ -41,8 +41,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * A basic implementation of a Guidebook that allows for variable length text
- * and images along with some basic formatting options.
+ * A basic implementation of a Guidebook that allows for variable length text and images along with some basic formatting options.
  * 
  * @author skip999
  *
@@ -127,11 +126,11 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	private MutableComponent mergedText = Component.empty();
 
 	private boolean previousWasText = false;
-	
+
 	private static boolean hasInitHappened = false;
 
 	private static final List<Button> buttons = new ArrayList<>();
-	
+
 	public ScreenGuidebook(ContainerGuidebook screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
 		imageHeight += 58;
@@ -146,8 +145,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		/*
 		 * we want to do this every time init is called to deal with the font reloading
 		 * 
-		 * for all the chapters, take their lang keys and convert them into formatted
-		 * char arrays
+		 * for all the chapters, take their lang keys and convert them into formatted char arrays
 		 * 
 		 * then split them based upon the page width
 		 * 
@@ -158,58 +156,56 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		 * then assign those pages to the chapter
 		 */
 
-		if(!hasInitHappened ) {
-			
+		if (!hasInitHappened) {
+
 			buttons.clear();
 			moduleParameters.clear();
 			searchButtons.clear();
 			searches.clear();
 			pages.clear();
-			
+
 			sortModules();
-			
+
 			pages.add(getCoverPage());
 			nextPageNumber++;
-			
+
 			genModulePages();
 
 			genPages();
 
 			genSearchPages();
-			
+
 			initPageButtons();
-			
-			hasInitHappened = true;
+
+			// hasInitHappened = true;
 		}
-		
-		
 
 		addButtons();
 
 	}
-	
+
 	private void addButtons() {
-		
+
 		addRenderableWidget(forward);
 		addRenderableWidget(back);
 		addRenderableWidget(home);
 		addRenderableWidget(chapters);
 		addRenderableWidget(search);
-		
-		for(Button button : buttons) {
+
+		for (Button button : buttons) {
 			addRenderableWidget(button);
 		}
-		for(ButtonModuleSelector button : moduleParameters) {
+		for (ButtonModuleSelector button : moduleParameters) {
 			addRenderableWidget(button);
 		}
-		for(ButtonSearchedText button : searchButtons) {
+		for (ButtonSearchedText button : searchButtons) {
 			addRenderableWidget(button);
 		}
-		
+
 		addRenderableWidget(caseSensitive);
-		
+
 		addRenderableWidget(searchBox);
-		
+
 		components.add(up);
 		components.add(down);
 	}
@@ -482,7 +478,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 						}
 
 					}
-					
+
 					counter++;
 
 				}
@@ -890,7 +886,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		searchBox.setMaxLength(100);
 
 		for (int i = 0; i < SEARCH_BUTTON_COUNT; i++) {
-			ButtonSearchedText search = new ButtonSearchedText(guiWidth + 92, guiHeight + 35 + 35 * i, TEXT_WIDTH, nextPageNumber, button -> setPageNumber(((ButtonSearchedText) button).page));
+			ButtonSearchedText search = new ButtonSearchedText(guiWidth + 92, guiHeight + 35 + 35 * i, TEXT_WIDTH, nextPageNumber, button -> setPageNumber(((ButtonSearchedText) button).specifiedPage));
 			searchButtons.add(search);
 			search.setShouldShow(false);
 		}
@@ -938,15 +934,43 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 						for (TextWrapper wrapper : page.text) {
 
 							if (caseSensitive.isSelected() && wrapper.characters().getString().contains(text)) {
-								
+
 								found.add(new SearchHit(wrapper.characters(), page.getPage(), page.associatedChapter));
-								
+
 							} else if (!caseSensitive.isSelected() && wrapper.characters().getString().toLowerCase(Locale.ROOT).contains(text.toLowerCase())) {
-								
+
 								found.add(new SearchHit(wrapper.characters(), page.getPage(), page.associatedChapter));
-								
+
 							}
 
+						}
+
+						for (ImageWrapper image : page.images) {
+							for (ImageTextDescriptor descriptor : image.image().descriptors) {
+								if (caseSensitive.isSelected() && descriptor.text.getString().contains(text)) {
+
+									found.add(new SearchHit(descriptor.text, page.getPage(), page.associatedChapter));
+
+								} else if (!caseSensitive.isSelected() && descriptor.text.getString().toLowerCase(Locale.ROOT).contains(text.toLowerCase())) {
+
+									found.add(new SearchHit(descriptor.text, page.getPage(), page.associatedChapter));
+
+								}
+							}
+						}
+
+						for (ItemWrapper item : page.items) {
+							for (ImageTextDescriptor descriptor : item.item().descriptors) {
+								if (caseSensitive.isSelected() && descriptor.text.getString().contains(text)) {
+
+									found.add(new SearchHit(descriptor.text, page.getPage(), page.associatedChapter));
+
+								} else if (!caseSensitive.isSelected() && descriptor.text.getString().toLowerCase(Locale.ROOT).contains(text.toLowerCase())) {
+
+									found.add(new SearchHit(descriptor.text, page.getPage(), page.associatedChapter));
+
+								}
+							}
 						}
 					}
 				}
@@ -988,19 +1012,19 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	private void updateSearchButtons() {
 		up.setShouldRender(scrollIndex > minScroll);
 		down.setShouldRender(scrollIndex < maxScroll);
-		
+
 		resetSearchButtons();
 
 		if (searches.size() == 0) {
 			return;
 		}
-		
+
 		if (scrollIndex > maxScroll) {
 			scrollIndex = maxScroll;
 		}
 
 		int listSize = Math.min(SEARCH_BUTTON_COUNT, searches.size());
-		
+
 		for (int i = 0; i < listSize; i++) {
 
 			ButtonSearchedText searched = searchButtons.get(i);
@@ -1009,6 +1033,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			searched.setShouldShow(true);
 			searched.setChapter(hit.chapter.getTitle());
 			searched.setLine(hit.text);
+			searched.setPage(hit.page);
 
 		}
 
@@ -1019,6 +1044,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			button.setLine(Component.empty());
 			button.setChapter(Component.empty());
 			button.setShouldShow(false);
+			button.setPage(0);
 		}
 	}
 
@@ -1030,7 +1056,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		}
 		return super.keyPressed(pKeyCode, pScanCode, pModifiers);
 	}
-	
+
 	public static void setInitNotHappened() {
 		currPageNumber = 0;
 		hasInitHappened = false;

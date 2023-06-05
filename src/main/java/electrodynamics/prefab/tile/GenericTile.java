@@ -161,12 +161,11 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 				component.onLoad();
 			}
 		}
-
-		if (hasComponent(ComponentType.PacketHandler)) {
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-		}
-
+		/*
+		 * if (hasComponent(ComponentType.PacketHandler)) {
+		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
+		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
+		 */
 	}
 
 	@Override
@@ -186,7 +185,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		if (cap == ForgeCapabilities.ITEM_HANDLER && components[ComponentType.Inventory.ordinal()] != null) {
 			return components[ComponentType.Inventory.ordinal()].getCapability(cap, side, null);
 		}
-		if(cap == ElectrodynamicsCapabilities.GAS_HANDLER && components[ComponentType.GasHandler.ordinal()] != null) {
+		if (cap == ElectrodynamicsCapabilities.GAS_HANDLER && components[ComponentType.GasHandler.ordinal()] != null) {
 			return components[ComponentType.GasHandler.ordinal()].getCapability(cap, side, null);
 		}
 		return LazyOptional.empty();
@@ -357,12 +356,12 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator() {
 		return (x, y, i) -> x < i.getOutputStartIndex() || x >= i.getInputBucketStartIndex() && x < i.getInputGasStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getInputGasStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasGasItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade upgrade && i.isUpgradeValid(upgrade.subtype);
 	}
-	
-	public static double[] arr(double...values) {
+
+	public static double[] arr(double... values) {
 		return values;
 	}
-	
-	public static int[] arr(int...values) {
+
+	public static int[] arr(int... values) {
 		return values;
 	}
 

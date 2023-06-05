@@ -5,6 +5,11 @@ import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
+import electrodynamics.common.block.subtype.SubtypeWire;
+import electrodynamics.common.block.subtype.SubtypeWire.Conductor;
+import electrodynamics.common.block.subtype.SubtypeWire.InsulationMaterial;
+import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
+import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
@@ -117,6 +122,30 @@ public class ElectrodynamicsItemTagsProvider extends ItemTagsProvider {
 		tag(ElectrodynamicsTags.Items.SLAG).add(ElectrodynamicsItems.SLAG.get());
 
 		tag(ElectrodynamicsTags.Items.INSULATES_PLAYER_FEET).add(ElectrodynamicsItems.ITEM_RUBBERBOOTS.get(), ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get(), ElectrodynamicsItems.ITEM_COMBATBOOTS.get());
+
+		tag(ElectrodynamicsTags.Items.INSULATED_TIN_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.TIN }, InsulationMaterial.WOOL, WireClass.STANDARD, WireColor.values())));
+
+		tag(ElectrodynamicsTags.Items.INSULATED_SILVER_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.SILVER }, InsulationMaterial.WOOL, WireClass.STANDARD, WireColor.values())));
+
+		tag(ElectrodynamicsTags.Items.INSULATED_COPPER_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.COPPER }, InsulationMaterial.WOOL, WireClass.STANDARD, WireColor.values())));
+
+		tag(ElectrodynamicsTags.Items.INSULATED_GOLD_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.GOLD }, InsulationMaterial.WOOL, WireClass.STANDARD, WireColor.values())));
+
+		tag(ElectrodynamicsTags.Items.INSULATED_IRON_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.IRON }, InsulationMaterial.WOOL, WireClass.STANDARD, WireColor.values())));
+
+		tag(ElectrodynamicsTags.Items.INSULATED_SUPERCONDUCTIVE_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.SUPERCONDUCTIVE }, InsulationMaterial.WOOL, WireClass.STANDARD, WireColor.values())));
+
+		tag(ElectrodynamicsTags.Items.THICK_TIN_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.TIN }, InsulationMaterial.THICK_WOOL, WireClass.STANDARD, WireColor.values())));
+
+		tag(ElectrodynamicsTags.Items.THICK_SILVER_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.SILVER }, InsulationMaterial.THICK_WOOL, WireClass.STANDARD, WireColor.values())));
+
+		tag(ElectrodynamicsTags.Items.THICK_COPPER_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.COPPER }, InsulationMaterial.THICK_WOOL, WireClass.STANDARD, WireColor.values())));
+
+		tag(ElectrodynamicsTags.Items.THICK_GOLD_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.GOLD }, InsulationMaterial.THICK_WOOL, WireClass.STANDARD, WireColor.values())));
+
+		tag(ElectrodynamicsTags.Items.THICK_IRON_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.IRON }, InsulationMaterial.THICK_WOOL, WireClass.STANDARD, WireColor.values())));
+
+		tag(ElectrodynamicsTags.Items.THICK_SUPERCONDUCTIVE_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.SUPERCONDUCTIVE }, InsulationMaterial.THICK_WOOL, WireClass.STANDARD, WireColor.values())));
 
 	}
 

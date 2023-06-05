@@ -1,23 +1,27 @@
 package electrodynamics.compatibility.jei.utils.gui;
 
+import electrodynamics.api.References;
+import net.minecraft.resources.ResourceLocation;
+
 public abstract class ScreenObjectWrapper {
 
-	protected static final String BACKGROUND = "background";
-	protected static final String ITEM_SLOTS = "itemslots";
-	protected static final String FLUID_GAUGES = "fluidgauges";
-	protected static final String ARROWS = "arrows";
+	protected static final ResourceLocation BACKGROUND = new ResourceLocation(References.ID, "textures/screen/jei/background.png");
+	protected static final ResourceLocation ITEM_SLOTS = new ResourceLocation(References.ID, "textures/screen/jei/itemslots.png");
+	protected static final ResourceLocation FLUID_GAUGES = new ResourceLocation(References.ID, "textures/screen/jei/fluidgauges.png");
+	protected static final ResourceLocation ARROWS = new ResourceLocation(References.ID, "textures/screen/jei/arrows.png");
+	protected static final ResourceLocation GAS_GAUGES = new ResourceLocation(References.ID, "textures/screen/jei/gasgauges.png");
 
-	private String texture;
+	private ResourceLocation texture;
 
 	private int xPos;
 	private int yPos;
 
 	private int textX;
 	private int textY;
-	private int length;
+	private int height;
 	private int width;
 
-	public ScreenObjectWrapper(String texture, int xStart, int yStart, int textX, int textY, int height, int width) {
+	public ScreenObjectWrapper(ResourceLocation texture, int xStart, int yStart, int textX, int textY, int width, int height) {
 		this.texture = texture;
 
 		xPos = xStart;
@@ -25,7 +29,7 @@ public abstract class ScreenObjectWrapper {
 
 		this.textX = textX;
 		this.textY = textY;
-		length = height;
+		this.height = height;
 		this.width = width;
 	}
 
@@ -45,16 +49,16 @@ public abstract class ScreenObjectWrapper {
 		return textY;
 	}
 
-	public int getLength() {
-		return length;
+	public int getHeight() {
+		return height;
 	}
 
 	public int getWidth() {
 		return width;
 	}
 
-	public String getTexture() {
-		return "textures/screen/jei/" + texture + ".png";
+	public ResourceLocation getTexture() {
+		return texture;
 	}
 
 }

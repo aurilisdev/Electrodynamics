@@ -32,6 +32,7 @@ import electrodynamics.common.item.gear.armor.types.ItemRubberArmor;
 import electrodynamics.common.item.gear.armor.types.ItemServoLeggings;
 import electrodynamics.common.item.gear.tools.ItemCanister;
 import electrodynamics.common.item.gear.tools.ItemGuidebook;
+import electrodynamics.common.item.gear.tools.ItemPortableCylinder;
 import electrodynamics.common.item.gear.tools.ItemMultimeter;
 import electrodynamics.common.item.gear.tools.ItemWrench;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
@@ -70,24 +71,73 @@ public class ElectrodynamicsItems {
 	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, References.ID);
 	public static final HashMap<ISubtype, RegistryObject<Item>> SUBTYPEITEMREGISTER_MAPPINGS = new HashMap<>();
 
+	//yes this is dirty but it works
+	public static RegistryObject<Item> ITEM_COMPRESSOR;
+	public static RegistryObject<Item> ITEM_DECOMPRESSOR;
+	public static RegistryObject<Item> ITEM_THERMOELECTRIC_MANIPULATOR;
+	
+	public static RegistryObject<Item> ITEM_COMPRESSOR_ADDONTANK;
+	
+	public static RegistryObject<Item> ITEM_FRAME;
+	public static RegistryObject<Item> ITEM_FRAMECORNER;
+	public static RegistryObject<Item> ITEM_LOGISTICALMANAGER;
+	public static RegistryObject<Item> ITEM_SEISMICMARKER;
+	
+	public static RegistryObject<Item> ITEM_FLUIDVALVE;
+	public static RegistryObject<Item> ITEM_FLUIDPIPEPUMP;
+	public static RegistryObject<Item> ITEM_FLUIDPIPEFILTER;
+	
+	public static RegistryObject<Item> ITEM_GASVALVE;
+	public static RegistryObject<Item> ITEM_GASPIPEPUMP;
+	public static RegistryObject<Item> ITEM_GASPIPEFILTER;
+	
 	static {
+		//Blocks
 		registerSubtypeBlockItem(SubtypeOre.values());
 		registerSubtypeBlockItem(SubtypeOreDeepslate.values());
 		registerSubtypeBlockItem(SubtypeRawOreBlock.values());
-		registerSubtypeBlockItem(SubtypeMachine.values());
-		registerSubtypeBlockItem(SubtypeGlass.values());
 		registerSubtypeBlockItem(SubtypeResourceBlock.values());
-		for (SubtypeWire subtype : SubtypeWire.values()) {
-			SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), () -> new BlockItemWire((BlockWire) ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(subtype).get(), new Item.Properties().tab(References.CORETAB))));
+		registerSubtypeBlockItem(SubtypeGlass.values());
+		for(SubtypeMachine machine : SubtypeMachine.values()) {
+			if(machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer || machine == SubtypeMachine.multimeterblock || machine == SubtypeMachine.circuitbreaker || machine == SubtypeMachine.relay) {
+				SUBTYPEITEMREGISTER_MAPPINGS.put(machine, ITEMS.register(machine.tag(), () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(machine).get(), new Item.Properties().tab(References.GRIDTAB))));
+			} else {
+				SUBTYPEITEMREGISTER_MAPPINGS.put(machine, ITEMS.register(machine.tag(), () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(machine).get(), new Item.Properties().tab(References.CORETAB))));
+			}
+			
 		}
+		ITEM_FRAME = ITEMS.register("frame", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrame, new Item.Properties().stacksTo(64)));
+		ITEM_FRAMECORNER = ITEMS.register("framecorner", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrameCorner, new Item.Properties().stacksTo(64)));
+		ITEM_LOGISTICALMANAGER = ITEMS.register("logisticalmanager", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockLogisticalManager, new Item.Properties().tab(References.CORETAB)));
+		ITEM_SEISMICMARKER = ITEMS.register("seismicmarker", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockSeismicMarker, new Item.Properties().tab(References.CORETAB)));
+		
+		ITEM_COMPRESSOR = ITEMS.register("compressor", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockCompressor, new Item.Properties().tab(References.CORETAB)));
+		ITEM_DECOMPRESSOR = ITEMS.register("decompressor", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockDecompressor, new Item.Properties().tab(References.CORETAB)));
+		ITEM_THERMOELECTRIC_MANIPULATOR = ITEMS.register("thermoelectricmanipulator", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockThermoelectricManipulator, new Item.Properties().tab(References.CORETAB)));
+		ITEM_COMPRESSOR_ADDONTANK = ITEMS.register("compressoraddontank", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockGasTransformerAddonTank, new Item.Properties().tab(References.CORETAB)));
+		
+		for (SubtypeWire subtype : SubtypeWire.values()) {
+			SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), () -> new BlockItemWire((BlockWire) ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(subtype).get(), new Item.Properties().tab(References.GRIDTAB))));
+		}
+		
 		for (SubtypeFluidPipe subtype : SubtypeFluidPipe.values()) {
 			SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(subtype).get(), new Item.Properties().tab(References.CORETAB))));
 		}
+		ITEM_FLUIDVALVE = ITEMS.register("fluidvalve", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFluidValve, new Item.Properties().tab(References.CORETAB)));
+		ITEM_FLUIDPIPEPUMP = ITEMS.register("fluidpipepump", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFluidPipePump, new Item.Properties().tab(References.CORETAB)));
+		ITEM_FLUIDPIPEFILTER = ITEMS.register("fluidpipefilter", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFluidPipeFilter, new Item.Properties().tab(References.CORETAB)));
+		
 		for (SubtypeGasPipe subtype : SubtypeGasPipe.values()) {
 			SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), () -> new BlockItemGasPipe((BlockGasPipe) ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(subtype).get(), new Item.Properties().tab(References.CORETAB))));
 		}
+		ITEM_GASVALVE = ITEMS.register("gasvalve", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockGasValve, new Item.Properties().tab(References.CORETAB)));
+		ITEM_GASPIPEPUMP = ITEMS.register("gaspipepump", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockGasPipePump, new Item.Properties().tab(References.CORETAB)));
+		ITEM_GASPIPEFILTER = ITEMS.register("gaspipefilter", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockGasPipeFilter, new Item.Properties().tab(References.CORETAB)));
+		
+		//Items
 		registerSubtypeItem(SubtypeRawOre.values());
 		registerSubtypeItem(SubtypeIngot.values());
+		registerSubtypeItem(SubtypeNugget.values());
 		registerSubtypeItem(SubtypeDust.values());
 		registerSubtypeItem(SubtypeImpureDust.values());
 		registerSubtypeItem(SubtypeCrystal.values());
@@ -96,7 +146,6 @@ public class ElectrodynamicsItems {
 		registerSubtypeItem(SubtypePlate.values());
 		registerSubtypeItem(SubtypeCircuit.values());
 		registerSubtypeItem(SubtypeRod.values());
-		registerSubtypeItem(SubtypeNugget.values());
 		for (SubtypeItemUpgrade subtype : SubtypeItemUpgrade.values()) {
 			SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), () -> new ItemUpgrade(new Item.Properties().tab(References.CORETAB), subtype)));
 		}
@@ -108,35 +157,30 @@ public class ElectrodynamicsItems {
 		}
 	}
 
-	public static final RegistryObject<Item> ITEM_COMPOSITEPLATING = ITEMS.register("compositeplating", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
+	public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke", () -> new Item(new Item.Properties().tab(References.CORETAB)));
+	public static final RegistryObject<Item> SLAG = ITEMS.register("slag", () -> new Item(new Item.Properties().tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_SHEETPLASTIC = ITEMS.register("sheetplastic", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_RAWCOMPOSITEPLATING = ITEMS.register("compositeplatingraw", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
+	public static final RegistryObject<Item> ITEM_COMPOSITEPLATING = ITEMS.register("compositeplating", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_MOLYBDENUMFERTILIZER = ITEMS.register("molybdenumfertilizer", () -> new BoneMealItem(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
-	public static final RegistryObject<Item> ITEM_FRAME = ITEMS.register("frame", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrame, new Item.Properties().stacksTo(64)));
-	public static final RegistryObject<Item> ITEM_FRAMECORNER = ITEMS.register("framecorner", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrameCorner, new Item.Properties().stacksTo(64)));
-	public static final RegistryObject<Item> ITEM_LOGISTICALMANAGER = ITEMS.register("logisticalmanager", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockLogisticalManager, new Item.Properties().tab(References.CORETAB)));
-	
-	public static final RegistryObject<Item> ITEM_COMPRESRSOR = ITEMS.register("compressor", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockCompressor, new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> ITEM_DECOMPRESSOR = ITEMS.register("decompressor", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockDecompressor, new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> ITEM_THERMOELECTRIC_MANIPULATOR = ITEMS.register("thermoelectricmanipulator", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockThermoelectricManipulator, new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> ITEM_COMPRESSOR_ADDONTANK = ITEMS.register("compressoraddontank", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockGasTransformerAddonTank, new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> ITEM_SEISMICMARKER = ITEMS.register("seismicmarker", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockSeismicMarker, new Item.Properties().tab(References.CORETAB)));
-	
-	public static final RegistryObject<Item> ITEM_GASVALVE = ITEMS.register("gasvalve", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockGasValve, new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> ITEM_FLUIDVALVE = ITEMS.register("fluidvalve", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFluidValve, new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> ITEM_GASPIPEPUMP = ITEMS.register("gaspipepump", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockGasPipePump, new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> ITEM_FLUIDPIPEPUMP = ITEMS.register("fluidpipepump", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFluidPipePump, new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> ITEM_GASPIPEFILTER = ITEMS.register("gaspipefilter", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockGasPipeFilter, new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> ITEM_FLUIDPIPEFILTER = ITEMS.register("fluidpipefilter", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFluidPipeFilter, new Item.Properties().tab(References.CORETAB)));
-
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation", () -> new Item(new Item.Properties().tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_CERAMICINSULATION = ITEMS.register("insulationceramic", () -> new Item(new Item.Properties().tab(References.CORETAB)));
+	public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", () -> new Item(new Item.Properties().tab(References.CORETAB)));
+	public static final RegistryObject<Item> ITEM_TITANIUM_COIL = ITEMS.register("titaniumheatcoil", () -> new Item(new Item.Properties().tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_MOTOR = ITEMS.register("motor", () -> new Item(new Item.Properties().tab(References.CORETAB)));
+	public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate", () -> new Item(new Item.Properties().tab(References.CORETAB)));
+
 	public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery", () -> new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667).extract(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).receive(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).setIsEnergyStorageOnly().tab(References.CORETAB).stacksTo(1), item -> Items.AIR));
 	public static final RegistryObject<Item> ITEM_LITHIUMBATTERY = ITEMS.register("lithiumbattery", () -> new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(4 * 1666666.66667).extract(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240)).receive(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240)).setIsEnergyStorageOnly().tab(References.CORETAB).stacksTo(1), item -> Items.AIR));
 	public static final RegistryObject<Item> ITEM_CARBYNEBATTERY = ITEMS.register("carbynebattery", () -> new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(8 * 1666666.66667).extract(TransferPack.joulesVoltage(8 * 1666666.66667 / (120.0 * 20.0), 480)).receive(TransferPack.joulesVoltage(8 * 1666666.66667 / (120.0 * 20.0), 480)).setIsEnergyStorageOnly().tab(References.CORETAB).stacksTo(1), item -> Items.AIR));
-	public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", () -> new Item(new Item.Properties().tab(References.CORETAB)));
+	
+	public static final RegistryObject<Item> ITEM_WRENCH = ITEMS.register("wrench", () -> new ItemWrench(new Item.Properties().tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_MULTIMETER = ITEMS.register("multimeter", () -> new ItemMultimeter(new Item.Properties().tab(References.CORETAB).stacksTo(1)));
+	public static final RegistryObject<Item> ITEM_CANISTERREINFORCED = ITEMS.register("canisterreinforced", () -> new ItemCanister(new Item.Properties().stacksTo(1).tab(References.CORETAB)));
+	public static final RegistryObject<Item> ITEM_PORTABLECYLINDER = ITEMS.register("portablecylinder", () -> new ItemPortableCylinder(new Item.Properties().tab(References.CORETAB).stacksTo(1)));
+
+	public static final RegistryObject<Item> GUIDEBOOK = ITEMS.register("guidebook", () -> new ItemGuidebook(new Item.Properties().tab(References.CORETAB)));
+	
 	public static final RegistryObject<Item> ITEM_ELECTRICDRILL = ITEMS.register("electricdrill", () -> new ItemElectricDrill((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667).extract(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).receive(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).tab(References.CORETAB).stacksTo(1)));
 	public static final RegistryObject<Item> ITEM_ELECTRICCHAINSAW = ITEMS.register("electricchainsaw", () -> new ItemElectricChainsaw((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667).extract(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).receive(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).tab(References.CORETAB).stacksTo(1)));
 	public static final RegistryObject<Item> ITEM_ELECTRICBATON = ITEMS.register("electricbaton", () -> new ItemElectricBaton((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667 * 4).extract(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240)).receive(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240)).tab(References.CORETAB).stacksTo(1)));
@@ -144,13 +188,6 @@ public class ElectrodynamicsItems {
 	public static final RegistryObject<Item> ITEM_PLASMARAILGUN = ITEMS.register("railgunplasma", () -> new ItemRailgunPlasma((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667 * 8).extract(TransferPack.joulesVoltage(8 * 1666666.66667, 480)).receive(TransferPack.joulesVoltage(8 * 1666666.66667 / (120.0 * 20.0), 480)).tab(References.CORETAB).stacksTo(1)));
 	public static final RegistryObject<Item> ITEM_SEISMICSCANNER = ITEMS.register("seismicscanner", () -> new ItemSeismicScanner((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667).extract(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).receive(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).tab(References.CORETAB).stacksTo(1)));
 	public static final RegistryObject<Item> ITEM_MECHANIZEDCROSSBOW = ITEMS.register("mechanizedcrossbow", () -> new ItemMechanizedCrossbow((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667).extract(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).receive(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).tab(References.CORETAB).stacksTo(1)));
-	public static final RegistryObject<Item> ITEM_WRENCH = ITEMS.register("wrench", () -> new ItemWrench(new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate", () -> new Item(new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> ITEM_CANISTERREINFORCED = ITEMS.register("canisterreinforced", () -> new ItemCanister(new Item.Properties().stacksTo(1).tab(References.CORETAB)));
-	public static final RegistryObject<Item> ITEM_TITANIUM_COIL = ITEMS.register("titaniumheatcoil", () -> new Item(new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke", () -> new Item(new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> SLAG = ITEMS.register("slag", () -> new Item(new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> GUIDEBOOK = ITEMS.register("guidebook", () -> new ItemGuidebook(new Item.Properties().tab(References.CORETAB)));
 
 	public static final RegistryObject<Item> ITEM_COMPOSITEHELMET = ITEMS.register("compositearmorhelmet", () -> new ItemCompositeArmor(EquipmentSlot.HEAD));
 	public static final RegistryObject<Item> ITEM_COMPOSITECHESTPLATE = ITEMS.register("compositearmorchestplate", () -> new ItemCompositeArmor(EquipmentSlot.CHEST));

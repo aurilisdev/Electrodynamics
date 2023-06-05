@@ -265,7 +265,12 @@ public class FluidNetwork extends AbstractNetwork<IFluidPipe, SubtypeFluidPipe, 
 	 */
 
 	@Override
-	public boolean isConductor(BlockEntity tile) {
+	public boolean isConductor(BlockEntity tile, IFluidPipe requsterCable) {
+		return tile instanceof IFluidPipe;
+	}
+	
+	@Override
+	public boolean isConductorClass(BlockEntity tile) {
 		return tile instanceof IFluidPipe;
 	}
 

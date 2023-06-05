@@ -27,31 +27,29 @@ import net.minecraft.world.item.crafting.SmeltingRecipe;
 
 public class ElectricFurnaceRecipeCategory extends ModFurnaceRecipeCategory<SmeltingRecipe> {
 
-	// JEI Window Parameters
-	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
+	private static final BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
 
-	private static DefaultItemSlotWrapper INPUT_SLOT = new DefaultItemSlotWrapper(22, 20);
-	private static BigItemSlotWrapper OUTPUT_SLOT = new BigItemSlotWrapper(83, 16);
+	private static final DefaultItemSlotWrapper INPUT_SLOT = new DefaultItemSlotWrapper(22, 20);
+	private static final BigItemSlotWrapper OUTPUT_SLOT = new BigItemSlotWrapper(83, 16);
 
-	private static ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(50, 23);
-	private static FlameStaticWrapper FLAME = new FlameStaticWrapper(5, 23);
+	private static final ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(50, 23);
+	private static final FlameStaticWrapper FLAME = new FlameStaticWrapper(5, 23);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 48, Constants.ELECTRICFURNACE_USAGE_PER_TICK, 120);
-	private static TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 48, Constants.ELECTRICFURNACE_REQUIRED_TICKS);
+	private static final PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 48, Constants.ELECTRICFURNACE_USAGE_PER_TICK, 120);
+	private static final TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 48, Constants.ELECTRICFURNACE_REQUIRED_TICKS);
 
-	private static int ANIM_TIME = 50;
+	private static final int ANIM_TIME = 50;
 
-	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = SubtypeMachine.electricfurnace.tag();
+	private static final String RECIPE_GROUP = SubtypeMachine.electricfurnace.tag();
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnace));
 
-	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
+	public static final ResourceLocation UID = new ResourceLocation(References.ID, RECIPE_GROUP);
 
 	public static final RecipeType<SmeltingRecipe> RECIPE_TYPE = RecipeType.create(ModIds.MINECRAFT_ID, "smelting", SmeltingRecipe.class);
 
 	public ElectricFurnaceRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, SmeltingRecipe.class, ANIM_TIME);
+		super(guiHelper, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, SmeltingRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, INPUT_SLOT);
 		setOutputSlots(guiHelper, OUTPUT_SLOT);
 		setStaticArrows(guiHelper, FLAME);

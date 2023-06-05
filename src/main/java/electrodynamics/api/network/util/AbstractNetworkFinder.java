@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import electrodynamics.api.network.cable.IAbstractConductor;
+import electrodynamics.api.network.cable.IAbstractCable;
 import electrodynamics.prefab.network.AbstractNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class AbstractNetworkFinder {
+public class AbstractNetworkFinder<C extends IAbstractCable> {
 	public Level worldObj;
 	public BlockPos start;
-	public AbstractNetwork<?, ?, ?, ?> net;
+	public AbstractNetwork<C, ?, ?, ?> net;
 	public List<BlockEntity> iteratedTiles = new ArrayList<>();
 	public List<BlockPos> toIgnore = new ArrayList<>();
 
-	public AbstractNetworkFinder(Level world, BlockPos location, AbstractNetwork<?, ?, ?, ?> net, BlockPos... ignore) {
+	public AbstractNetworkFinder(Level world, BlockPos location, AbstractNetwork<C, ?, ?, ?> net, BlockPos... ignore) {
 		worldObj = world;
 		start = location;
 		this.net = net;
@@ -29,7 +29,7 @@ public class AbstractNetworkFinder {
 
 	public void loopAll(BlockPos location) {
 		BlockEntity curr = worldObj.getBlockEntity(location);
-		if (net.isConductor(curr)) {
+		if (net.isConductor(curr, (C) curr)) {
 			iteratedTiles.add(curr);
 		}
 		for (Direction direction : Direction.values()) {
@@ -37,8 +37,8 @@ public class AbstractNetworkFinder {
 			if (!(toIgnore.size() == 1 ? toIgnore.get(0) == obj : toIgnore.contains(obj))) {
 				if (worldObj.hasChunkAt(obj)) {
 					BlockEntity tileEntity = worldObj.getBlockEntity(obj);
-					if (!iteratedTiles.contains(tileEntity) && net.isConductor(tileEntity)) {
-						loopAll((IAbstractConductor) tileEntity);
+					if (!iteratedTiles.contains(tileEntity) && net.isConductor(tileEntity, (C) curr)) {
+						loopAll((IAbstractCable) tileEntity);
 					}
 				}
 			}
@@ -46,14 +46,14 @@ public class AbstractNetworkFinder {
 
 	}
 
-	public void loopAll(IAbstractConductor conductor) {
+	public void loopAll(IAbstractCable conductor) {
 		iteratedTiles.add((BlockEntity) conductor);
 		for (BlockEntity connections : conductor.getAdjacentConnections()) {
 			if (connections != null) {
 				BlockPos pos = connections.getBlockPos();
 				if (!iteratedTiles.contains(connections) && !(toIgnore.size() == 1 ? toIgnore.get(0) == pos : toIgnore.contains(pos))) {
-					if (net.isConductor(connections)) {
-						loopAll((IAbstractConductor) connections);
+					if (net.isConductor(connections, (C) conductor)) {
+						loopAll((IAbstractCable) connections);
 					}
 				}
 			}

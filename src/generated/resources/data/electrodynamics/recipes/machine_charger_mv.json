@@ -11,7 +11,7 @@
       "tag": "forge:plates/stainlesssteel"
     },
     "W": {
-      "item": "electrodynamics:wirehighlyinsulatedgold"
+      "tag": "forge:wires/thick_gold"
     }
   },
   "pattern": [

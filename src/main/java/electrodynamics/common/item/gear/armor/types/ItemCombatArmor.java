@@ -20,6 +20,7 @@ import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
@@ -41,7 +42,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
@@ -116,7 +116,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 		case CHEST:
 			return new GasHandlerItemStack(stack, ItemJetpack.MAX_CAPACITY, ItemJetpack.MAX_TEMPERATURE, ItemJetpack.MAX_PRESSURE).setPredicate(ItemJetpack.getGasValidator());
 		case FEET:
-			return new RestrictedFluidHandlerItemStack(stack, stack, ItemHydraulicBoots.MAX_CAPACITY, ItemHydraulicBoots.staticGetWhitelistedFluids());
+			return new RestrictedFluidHandlerItemStack(stack, ItemHydraulicBoots.MAX_CAPACITY).setValidator(ItemHydraulicBoots.getPredicate());
 		default:
 			return super.initCapabilities(stack, nbt);
 		}
@@ -152,8 +152,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 				items.add(new ItemStack(this));
 				if (!CapabilityUtils.isFluidItemNull()) {
 					ItemStack full = new ItemStack(this);
-					Fluid fluid = ItemHydraulicBoots.staticGetWhitelistedFluids().getSecond().get(0);
-					full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemHydraulicBoots.MAX_CAPACITY)));
+					full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).setFluid(new FluidStack(ElectrodynamicsFluids.fluidHydraulic, ItemHydraulicBoots.MAX_CAPACITY)));
 					items.add(full);
 				}
 				break;
@@ -274,6 +273,16 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	@Override
 	public ElectricItemProperties getElectricProperties() {
 		return properties;
+	}
+	
+	@Override
+	public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
+		return ItemJetpack.staticCanElytraFly(stack, entity);
+	}
+	
+	@Override
+	public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
+		return ItemJetpack.staticElytraFlightTick(stack, entity, flightTicks);
 	}
 
 	@Override

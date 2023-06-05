@@ -20,33 +20,31 @@ import net.minecraft.world.item.ItemStack;
 
 public class ReinforcedAlloyerRecipeCategory extends Item2ItemRecipeCategory<ReinforcedAlloyerRecipe> {
 
-	// JEI Window Parameters
-	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
+	private static final BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 58);
 
-	private static DefaultItemSlotWrapper INPUT_SLOT_1 = new DefaultItemSlotWrapper(17, 11);
-	private static DefaultItemSlotWrapper INPUT_SLOT_2 = new DefaultItemSlotWrapper(17, 30);
-	private static BigItemSlotWrapper OUTPUT_SLOT = new BigItemSlotWrapper(69, 16);
-	private static DefaultItemSlotWrapper BIPRODUCT_SLOT = new DefaultItemSlotWrapper(100, 20);
+	private static final DefaultItemSlotWrapper INPUT_SLOT_1 = new DefaultItemSlotWrapper(17, 11);
+	private static final DefaultItemSlotWrapper INPUT_SLOT_2 = new DefaultItemSlotWrapper(17, 30);
+	private static final BigItemSlotWrapper OUTPUT_SLOT = new BigItemSlotWrapper(69, 16);
+	private static final DefaultItemSlotWrapper BIPRODUCT_SLOT = new DefaultItemSlotWrapper(100, 20);
 
-	private static ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(41, 23);
+	private static final ArrowRightAnimatedWrapper ANIM_ARROW = new ArrowRightAnimatedWrapper(41, 23);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 49, 960);
-	private static BiproductPercentWrapper ITEM_LABEL = new BiproductPercentWrapper(100, 40, false);
-	private static TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 49);
+	private static final PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 49, 960);
+	private static final BiproductPercentWrapper ITEM_LABEL = new BiproductPercentWrapper(100, 40, false);
+	private static final TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 49);
 
-	private static int ANIM_TIME = 50;
+	private static final int ANIM_TIME = 50;
 
-	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = SubtypeMachine.reinforcedalloyer.tag();
+	private static final String RECIPE_GROUP = SubtypeMachine.reinforcedalloyer.tag();
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.reinforcedalloyer));
 
-	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
+	public static ResourceLocation UID = new ResourceLocation(References.ID, RECIPE_GROUP);
 
 	public static final RecipeType<ReinforcedAlloyerRecipe> RECIPE_TYPE = RecipeType.create(References.ID, ReinforcedAlloyerRecipe.RECIPE_GROUP, ReinforcedAlloyerRecipe.class);
 
 	public ReinforcedAlloyerRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ReinforcedAlloyerRecipe.class, ANIM_TIME);
+		super(guiHelper, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, ReinforcedAlloyerRecipe.class, ANIM_TIME);
 		ElectrodynamicsJEIPlugin.addDO2OClickArea(RECIPE_TYPE);
 		setInputSlots(guiHelper, INPUT_SLOT_1, INPUT_SLOT_2);
 		setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);

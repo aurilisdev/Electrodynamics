@@ -65,9 +65,11 @@ public class ComponentTickable implements Component {
         }
         // TODO remove
 
+        /*
         if (ticks % 3 == 0 && holder.hasComponent(ComponentType.PacketHandler) && holder.hasComponent(ComponentType.Inventory) && !holder.<ComponentInventory>getComponent(ComponentType.Inventory).getViewing().isEmpty()) {
             holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
         }
+        */
 
     }
 

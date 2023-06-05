@@ -20,36 +20,34 @@ import net.minecraft.world.item.ItemStack;
 
 public class FermentationPlantRecipeCategory extends FluidItem2FluidRecipeCategory<FermentationPlantRecipe> {
 
-	// JEI Window Parameters
-	private static BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 64);
+	private static final BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 64);
 
-	private static DefaultItemSlotWrapper INPUT_SLOT = new DefaultItemSlotWrapper(57, 16);
-	private static BucketSlotWrapper INPUT_BUCKET_SLOT = new BucketSlotWrapper(57, 36);
-	private static BucketSlotWrapper OUTPUT_BUCKET_SLOT = new BucketSlotWrapper(88, 36);
+	private static final DefaultItemSlotWrapper INPUT_SLOT = new DefaultItemSlotWrapper(57, 16);
+	private static final BucketSlotWrapper INPUT_BUCKET_SLOT = new BucketSlotWrapper(57, 36);
+	private static final BucketSlotWrapper OUTPUT_BUCKET_SLOT = new BucketSlotWrapper(88, 36);
 
-	private static ArrowRightAnimatedWrapper ANIM_RIGHT_ARROW_1 = new ArrowRightAnimatedWrapper(30, 17);
-	private static ArrowRightAnimatedWrapper ANIM_RIGHT_ARROW_2 = new ArrowRightAnimatedWrapper(80, 17);
-	private static ArrowLeftAnimatedWrapper ANIM_LEFT_ARROW = new ArrowLeftAnimatedWrapper(30, 37);
+	private static final ArrowRightAnimatedWrapper ANIM_RIGHT_ARROW_1 = new ArrowRightAnimatedWrapper(30, 17);
+	private static final ArrowRightAnimatedWrapper ANIM_RIGHT_ARROW_2 = new ArrowRightAnimatedWrapper(80, 17);
+	private static final ArrowLeftAnimatedWrapper ANIM_LEFT_ARROW = new ArrowLeftAnimatedWrapper(30, 37);
 
-	private static DefaultFluidGaugeWrapper IN_GAUGE = new DefaultFluidGaugeWrapper(10, 5, 5000);
-	private static DefaultFluidGaugeWrapper OUT_GAUGE = new DefaultFluidGaugeWrapper(108, 5, 5000);
+	private static final DefaultFluidGaugeWrapper IN_GAUGE = new DefaultFluidGaugeWrapper(10, 5, 5000);
+	private static final DefaultFluidGaugeWrapper OUT_GAUGE = new DefaultFluidGaugeWrapper(108, 5, 5000);
 
-	private static PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, 120);
-	private static TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 55);
+	private static final PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, 120);
+	private static final TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 55);
 
-	private static int ANIM_TIME = 50;
+	private static final int ANIM_TIME = 50;
 
-	private static String MOD_ID = References.ID;
-	private static String RECIPE_GROUP = SubtypeMachine.fermentationplant.tag();
+	private static final String RECIPE_GROUP = SubtypeMachine.fermentationplant.tag();
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.fermentationplant));
 
-	public static ResourceLocation UID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
+	public static final ResourceLocation UID = new ResourceLocation(References.ID, RECIPE_GROUP);
 
 	public static final RecipeType<FermentationPlantRecipe> RECIPE_TYPE = RecipeType.create(References.ID, FermentationPlantRecipe.RECIPE_GROUP, FermentationPlantRecipe.class);
 
 	public FermentationPlantRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, MOD_ID, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, FermentationPlantRecipe.class, ANIM_TIME);
+		super(guiHelper, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, FermentationPlantRecipe.class, ANIM_TIME);
 		setInputSlots(guiHelper, INPUT_SLOT, INPUT_BUCKET_SLOT);
 		setOutputSlots(guiHelper, OUTPUT_BUCKET_SLOT);
 		setFluidInputs(guiHelper, IN_GAUGE);

@@ -1,0 +1,9 @@
+{
+  "parent": "electrodynamics:parent/highlyinsulatedwire_none",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "conductor": "electrodynamics:block/wire/superconductive_center",
+    "insulation": "electrodynamics:block/wire/insulationwool_center",
+    "particle": "#insulation"
+  }
+}

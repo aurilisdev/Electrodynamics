@@ -25,6 +25,7 @@ import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
@@ -133,6 +134,10 @@ public class ItemJetpack extends ArmorItem {
 				}
 
 			});
+			if(Screen.hasShiftDown()) {
+				tooltips.add(TextUtils.tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
+				tooltips.add(TextUtils.tooltip("maxtemperature", ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
+			}
 		}
 		// cheesing sync issues one line of code at a time
 		if (stack.hasTag()) {
@@ -140,8 +145,9 @@ public class ItemJetpack extends ArmorItem {
 			Component modeTip = switch (mode) {
 			case 0 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.moderegular").withStyle(ChatFormatting.GREEN));
 			case 1 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.modehover").withStyle(ChatFormatting.AQUA));
-			case 2 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.modeoff").withStyle(ChatFormatting.RED));
-			default -> Component.literal("");
+			case 2 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.modeelytra").withStyle(ChatFormatting.YELLOW));
+			case 3 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.modeoff").withStyle(ChatFormatting.RED));
+			default -> Component.empty();
 			};
 			tooltips.add(modeTip);
 		} else {
@@ -173,11 +179,15 @@ public class ItemJetpack extends ArmorItem {
 						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2 * pressure, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2 * pressure, player, stack);
 						renderClientParticles(world, player, particleZ);
 						sendPacket(player, true, deltaY);
-
 					} else if (mode == 1 && player.getFeetBlockState().isAir()) {
 						double deltaY = hoverWithJetpack(pressure, player, stack);
 						renderClientParticles(world, player, particleZ);
 						sendPacket(player, true, deltaY);
+					} else if (mode == 2 && player.getFeetBlockState().isAir()) {
+
+						// TODO elytra particles?
+						sendPacket(player, false, player.getDeltaMovement().y);
+
 					} else {
 						sendPacket(player, false, player.getDeltaMovement().y);
 					}
@@ -243,6 +253,37 @@ public class ItemJetpack extends ArmorItem {
 
 	public static Predicate<GasStack> getGasValidator() {
 		return gas -> gas.getGas().equals(ElectrodynamicsGases.HYDROGEN.get());
+	}
+
+	@Override
+	public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
+		return staticCanElytraFly(stack, entity);
+	}
+
+	public static boolean staticCanElytraFly(ItemStack stack, LivingEntity entity) {
+		int mode = stack.hasTag() ? stack.getTag().getInt(NBTUtils.MODE) : 0;
+		return mode == 2 && stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> cap.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
+	}
+
+	@Override
+	public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
+		return staticElytraFlightTick(stack, entity, flightTicks);
+	}
+
+	public static boolean staticElytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
+		if (entity.level.isClientSide) {
+			return true;
+		}
+		int nextFlightTick = flightTicks + 1;
+		if (nextFlightTick % 10 == 0) {
+			if (nextFlightTick % 20 == 0) {
+
+				drainHydrogen(stack);
+
+			}
+			entity.gameEvent(net.minecraft.world.level.gameevent.GameEvent.ELYTRA_GLIDE);
+		}
+		return true;
 	}
 
 	protected static double moveWithJetpack(double speed, double termVelocity, Player player, ItemStack jetpack) {

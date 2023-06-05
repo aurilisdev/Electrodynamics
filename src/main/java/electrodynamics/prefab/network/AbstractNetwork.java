@@ -11,14 +11,14 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import electrodynamics.api.network.ITickableNetwork;
-import electrodynamics.api.network.cable.IAbstractConductor;
+import electrodynamics.api.network.cable.IAbstractCable;
 import electrodynamics.api.network.util.AbstractNetworkFinder;
 import electrodynamics.common.network.NetworkRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> implements ITickableNetwork {
+public abstract class AbstractNetwork<C extends IAbstractCable, T, A, P> implements ITickableNetwork {
 	public HashSet<C> conductorSet = new HashSet<>();
 	public HashSet<A> acceptorSet = new HashSet<>();
 	public HashMap<A, HashSet<Direction>> acceptorInputMap = new HashMap<>();
@@ -44,16 +44,13 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 			BlockEntity tileEntity = (BlockEntity) conductor;
 			for (Direction direction : Direction.values()) {
 				BlockEntity acceptor = tileEntity.getLevel().getBlockEntity(new BlockPos(tileEntity.getBlockPos()).offset(direction.getNormal()));
-				if (acceptor != null && !isConductor(acceptor)) {
-					if (isAcceptor(acceptor, direction)) {
-						if (canConnect(acceptor, direction)) {
-							acceptorSet.add((A) acceptor);
-							updateRecieverStatistics((A) acceptor, direction);
-							HashSet<Direction> directions = acceptorInputMap.containsKey(acceptor) ? acceptorInputMap.get(acceptor) : new HashSet<>();
-							directions.add(direction.getOpposite());
-							acceptorInputMap.put((A) acceptor, directions);
-						}
-					}
+				if (acceptor != null && !isConductorClass(acceptor) && isAcceptor(acceptor, direction) && canConnect(acceptor, direction)) {
+					acceptorSet.add((A) acceptor);
+					updateRecieverStatistics((A) acceptor, direction);
+					HashSet<Direction> directions = acceptorInputMap.containsKey(acceptor) ? acceptorInputMap.get(acceptor) : new HashSet<>();
+					directions.add(direction.getOpposite());
+					acceptorInputMap.put((A) acceptor, directions);
+
 				}
 			}
 		}
@@ -74,8 +71,8 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 			networkMaxTransfer = networkMaxTransfer == 0 ? wire.getMaxTransfer() : Math.min(networkMaxTransfer, wire.getMaxTransfer());
 			updateConductorStatistics(wire);
 		}
-		for(A reciever : acceptorSet) {
-			for(Direction dir : acceptorInputMap.getOrDefault(reciever, new HashSet<>())) {
+		for (A reciever : acceptorSet) {
+			for (Direction dir : acceptorInputMap.getOrDefault(reciever, new HashSet<>())) {
 				updateRecieverStatistics(reciever, dir);
 			}
 		}
@@ -89,14 +86,14 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 	public void updateConductorStatistics(C cable) {
 		// Just a default method
 	}
-	
+
 	/**
 	 * Override method to define statistics per-receiver
-	 *  
+	 * 
 	 * @param reciever
 	 */
 	public void updateRecieverStatistics(A reciever, Direction dir) {
-		
+
 	}
 
 	public void split(@Nonnull C splitPoint) {
@@ -116,12 +113,12 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 			for (int countOne = 0; countOne < connectedTiles.length; countOne++) {
 				BlockEntity connectedBlockA = connectedTiles[countOne];
 				if (connectedBlockA != null) {
-					if (isConductor(connectedBlockA) && !dealtWith[countOne]) {
-						AbstractNetworkFinder finder = new AbstractNetworkFinder(blockentity.getLevel(), connectedBlockA.getBlockPos(), this, blockentity.getBlockPos());
+					if (isConductor(connectedBlockA, splitPoint) && !dealtWith[countOne]) {
+						AbstractNetworkFinder<C> finder = new AbstractNetworkFinder<>(blockentity.getLevel(), connectedBlockA.getBlockPos(), this, blockentity.getBlockPos());
 						List<BlockEntity> partNetwork = finder.exploreNetwork();
 						for (int countTwo = countOne + 1; countTwo < connectedTiles.length; countTwo++) {
 							BlockEntity connectedBlockB = connectedTiles[countTwo];
-							if (isConductor(connectedBlockB) && !dealtWith[countTwo] && partNetwork.contains(connectedBlockB)) {
+							if (isConductor(connectedBlockB, (C) connectedBlockA) && !dealtWith[countTwo] && partNetwork.contains(connectedBlockB)) {
 								dealtWith[countTwo] = true;
 							}
 						}
@@ -184,7 +181,9 @@ public abstract class AbstractNetwork<C extends IAbstractConductor, T, A, P> imp
 		return null;
 	}
 
-	public abstract boolean isConductor(BlockEntity tile);
+	public abstract boolean isConductor(BlockEntity tile, C requestingCable);
+
+	public abstract boolean isConductorClass(BlockEntity tile);
 
 	public abstract boolean isAcceptor(BlockEntity acceptor, Direction orientation);
 

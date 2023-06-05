@@ -38,7 +38,7 @@ public class PacketModeSwitchServer {
 					if (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
 						CompoundTag tag = chest.getOrCreateTag();
 						int curMode = tag.getInt(NBTUtils.MODE);
-						if (curMode < 2) {
+						if (curMode < 3) {
 							curMode++;
 						} else {
 							curMode = 0;
@@ -52,7 +52,7 @@ public class PacketModeSwitchServer {
 					if (ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
 						CompoundTag tag = legs.getOrCreateTag();
 						int curMode = tag.getInt(NBTUtils.MODE);
-						if (curMode < 3) {
+						if (curMode < 2) {
 							curMode++;
 						} else {
 							curMode = 0;

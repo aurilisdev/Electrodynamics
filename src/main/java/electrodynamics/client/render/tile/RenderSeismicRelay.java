@@ -31,7 +31,7 @@ public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 
 	@Override
 	public void render(TileSeismicRelay tile, float tick, @NotNull PoseStack stack, @NotNull MultiBufferSource source, int light, int overlay) {
-		if (tile.clientLocs.size() > 3) {
+		if (tile.markerLocs.get().size() > 3) {
 			Minecraft minecraft = Minecraft.getInstance();
 			VertexConsumer sheetBuilder = source.getBuffer(RenderingUtils.beaconType());
 			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, LEFT, 1.0F, 0F, 0F, 1.0F, 255, 0);

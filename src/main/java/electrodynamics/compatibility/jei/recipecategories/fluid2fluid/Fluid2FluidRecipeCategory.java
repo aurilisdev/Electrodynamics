@@ -20,8 +20,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class Fluid2FluidRecipeCategory<T extends ElectrodynamicsRecipe> extends ElectrodynamicsRecipeCategory<T> {
 
-	protected Fluid2FluidRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeCategoryClass, int animationTime) {
-		super(guiHelper, modID, recipeGroup, inputMachine, wrapper, recipeCategoryClass, animationTime);
+	protected Fluid2FluidRecipeCategory(IGuiHelper guiHelper, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeCategoryClass, int animationTime) {
+		super(guiHelper, recipeGroup, inputMachine, wrapper, recipeCategoryClass, animationTime);
 	}
 
 	@Override

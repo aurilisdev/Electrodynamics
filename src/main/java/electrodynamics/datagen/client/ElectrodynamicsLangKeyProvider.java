@@ -64,6 +64,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		default:
 
 			add("itemGroup.itemgroup" + References.ID, "Electrodynamics");
+			add("itemGroup.itemgroupelectrogrid", "Electrodynamics Grid");
 
 			addItem(ElectrodynamicsItems.ITEM_BATTERY, "Battery");
 			addItem(ElectrodynamicsItems.ITEM_LITHIUMBATTERY, "Lithium Battery");
@@ -88,6 +89,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addItem(ElectrodynamicsItems.ITEM_KINETICRAILGUN, "Kinetic Rail Gun");
 			addItem(ElectrodynamicsItems.GUIDEBOOK, "EEC 1st Edition");
 			addItem(ElectrodynamicsItems.ITEM_CANISTERREINFORCED, "Reinforced Canister");
+			addItem(ElectrodynamicsItems.ITEM_PORTABLECYLINDER, "Portable Gas Cylinder");
 			addItem(ElectrodynamicsItems.ITEM_WRENCH, "Wrench");
 			addItem(ElectrodynamicsItems.ITEM_MECHANIZEDCROSSBOW, "Mechanized Crossbow");
 			addItem(ElectrodynamicsItems.ITEM_MULTIMETER, "Handheld Multimeter");
@@ -399,12 +401,42 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.silver), "Silver Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.superconductive), "Superconductive Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.tin), "Tin Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedcopper), "Insulated Copper Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedgold), "Insulated Gold Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatediron), "Insulated Iron Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsilver), "Insulated Silver Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsuperconductive), "Insulated Superconductive Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedtin), "Insulated Tin Wire");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedcopperblack), "Insulated Copper Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedgoldblack), "Insulated Gold Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedironblack), "Insulated Iron Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsilverblack), "Insulated Silver Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsuperconductiveblack), "Insulated Superconductive Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedtinblack), "Insulated Tin Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedcopperred), "Insulated Copper Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedgoldred), "Insulated Gold Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedironred), "Insulated Iron Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsilverred), "Insulated Silver Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsuperconductivered), "Insulated Superconductive Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedtinred), "Insulated Tin Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedcoppergreen), "Insulated Copper Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedgoldgreen), "Insulated Gold Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedirongreen), "Insulated Iron Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsilvergreen), "Insulated Silver Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsuperconductivegreen), "Insulated Superconductive Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedtingreen), "Insulated Tin Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedcopperblue), "Insulated Copper Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedgoldblue), "Insulated Gold Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedironblue), "Insulated Iron Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsilverblue), "Insulated Silver Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsuperconductiveblue), "Insulated Superconductive Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedtinblue), "Insulated Tin Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedcopperwhite), "Insulated Copper Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedgoldwhite), "Insulated Gold Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedironwhite), "Insulated Iron Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsilverwhite), "Insulated Silver Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsuperconductivewhite), "Insulated Superconductive Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedtinwhite), "Insulated Tin Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedcopperyellow), "Insulated Copper Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedgoldyellow), "Insulated Gold Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedironyellow), "Insulated Iron Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsilveryellow), "Insulated Silver Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsuperconductiveyellow), "Insulated Superconductive Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedtinyellow), "Insulated Tin Wire (Yellow)");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedcopper), "Ceramic Copper Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedgold), "Ceramic Gold Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatediron), "Ceramic Iron Wire");
@@ -417,22 +449,52 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssilver), "Logistical Silver Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssuperconductive), "Logistical Superconductive Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticstin), "Logistical Tin Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedcopper), "Thick Copper Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedgold), "Thick Gold Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatediron), "Thick Iron Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsilver), "Thick Silver Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsuperconductive), "Thick Superconductive Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedtin), "Thick Tin Wire");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedcopperblack), "Thick Copper Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedgoldblack), "Thick Gold Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedironblack), "Thick Iron Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsilverblack), "Thick Silver Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsuperconductiveblack), "Thick Superconductive Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedtinblack), "Thick Tin Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedcopperred), "Thick Copper Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedgoldred), "Thick Gold Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedironred), "Thick Iron Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsilverred), "Thick Silver Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsuperconductivered), "Thick Superconductive Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedtinred), "Thick Tin Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedcoppergreen), "Thick Copper Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedgoldgreen), "Thick Gold Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedirongreen), "Thick Iron Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsilvergreen), "Thick Silver Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsuperconductivegreen), "Thick Superconductive Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedtingreen), "Thick Tin Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedcopperblue), "Thick Copper Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedgoldblue), "Thick Gold Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedironblue), "Thick Iron Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsilverblue), "Thick Silver Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsuperconductiveblue), "Thick Superconductive Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedtinblue), "Thick Tin Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedcopperwhite), "Thick Copper Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedgoldwhite), "Thick Gold Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedironwhite), "Thick Iron Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsilverwhite), "Thick Silver Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsuperconductivewhite), "Thick Superconductive Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedtinwhite), "Thick Tin Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedcopperyellow), "Thick Copper Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedgoldyellow), "Thick Gold Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedironyellow), "Thick Iron Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsilveryellow), "Thick Silver Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsuperconductiveyellow), "Thick Superconductive Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedtinyellow), "Thick Tin Wire (Yellow)");
 			
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.UNINSULATEDCOPPER), "Copper Gas Pipe");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.UNINSULATEDSTEEL), "Steel Gas Pipe");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.UNINSULATEDPLASTIC), "Plastic Gas Pipe");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.WOOLINSULATEDCOPPER), "Woolen Copper Gas Pipe");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.WOOLINSULATEDSTEEL), "Woolen Steel Gas Pipe");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.WOOLINSULATEDPLASTIC), "Woolen Plastic Gas Pipe");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.CERAMICINSULATEDCOPPER), "Ceramic Copper Gas Pipe");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.CERAMICINSULATEDSTEEL), "Ceramic Steel Gas Pipe");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.CERAMICINSULATEDPLASTIC), "Ceramic Plastic Gas Pipe");
+			//addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.WOOLINSULATEDCOPPER), "Woolen Copper Gas Pipe");
+			//addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.WOOLINSULATEDSTEEL), "Woolen Steel Gas Pipe");
+			//addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.WOOLINSULATEDPLASTIC), "Woolen Plastic Gas Pipe");
+			//addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.CERAMICINSULATEDCOPPER), "Ceramic Copper Gas Pipe");
+			//addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.CERAMICINSULATEDSTEEL), "Ceramic Steel Gas Pipe");
+			//addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.CERAMICINSULATEDPLASTIC), "Ceramic Plastic Gas Pipe");
 			
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastanksteel), "Steel Gas Cylinder");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankreinforced), "Reinforced Gas Cylinder");
@@ -569,6 +631,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addTooltip("jetpack.mode", "Mode: ");
 			addTooltip("jetpack.moderegular", "Regular");
 			addTooltip("jetpack.modehover", "Hover");
+			addTooltip("jetpack.modeelytra", "Elytra");
 			addTooltip("jetpack.modeoff", "Off");
 			addTooltip("countdown.tickstillcheck", "Ticks left: %s");
 			addTooltip("seismicmarker.redstone", "Apply redstone for guide lines");
@@ -602,6 +665,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addTooltip("gasamount", "Amount: %1$s / %2$s");
 			addTooltip("gastemperature", "Temp: %s");
 			addTooltip("gaspressure", "Pressure: %s");
+			addTooltip("maxpressure", "Max Pressure: %s");
+			addTooltip("maxtemperature", "Max Temp: %s");
 			
 			addTooltip("tankmaxin", "In %1$s : %2$s");
 			addTooltip("tankmaxout", "Out %1$s : %2$s");
@@ -761,6 +826,9 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.ores", "Ores");
 			addGuidebook("chapter.ores.spawnrange", "Y = %1$s to Y = %2$s");
 			addGuidebook("chapter.ores.material", "Material: %s");
+			addGuidebook("chapter.ores.veinsperchunk", "Veins per Chunk: %s");
+			addGuidebook("chapter.ores.veinsize", "Vein Size: %s");
+			addGuidebook("chapter.ores.miningteir", "Mining Teir: %s");
 			addGuidebook("chapter.ores.material_aluminum", "Aluminum");
 			addGuidebook("chapter.ores.material_chromium", "Chromium");
 			addGuidebook("chapter.ores.material_fluorite", "Fluorite");
@@ -782,7 +850,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.electricity", "Electricity");
 
 			addGuidebook("chapter.electricity.l1", "Understanding how energy and electricity work is key if you want to do well in Electrodynamics. Energy is what machines use to do work, and it is measured in units of Joules (J). However, the energy needs to be \"flowing\" in order to do work. The rate "
-					+ "of flow is measured in units of Volts (V). The pressure or force of the flow in measured in units of Amperes or Amps for short (A or I). The amount of energy transfered in one second is known as the Power and is measured in units of " + "Watts (W). Power can easily be found through the formula P = IV, where I is the current and V is the voltage.");
+					+ "of flow is measured in units of Volts (V). The pressure or force of the flow in measured in units of Amperes or Amps for short (A or I). The amount of energy transfered in one second is known as the Power and is measured in units of " + "Watts (W). Power can easily be found through the formula P = I*V, where I is the current and V is the voltage.");
 
 			addGuidebook("chapter.electricity.l2", "Now, how does this impact you and what do you need to pay attention to? All machines require energy at a specific voltage to function. The voltage will be displayed in the tooltip usually. However, " + "if you do not have access to this, there are a couple of methods of checking.");
 
@@ -815,18 +883,64 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.electricity.l9",
 					"However, what is connected to these ports? Now it's time to discuss how electricity is transfered: Wires. Wires in this mod function a little differently than what you're used to. If you hover over a "
-							+ "wire in your inventory, you will notice it has a resistance and a maximum rated current. The resistance determines how much energy is lost over the wire. You can use P = I*I*R to to calculate the exact amount "
-							+ "lost. The longer a wire, the greater the energy loss. In order to minimize power loss, ideal cable networks will have short segments with high curent and long segments with low current. This design is "
-							+ "highlighted by the maximum current rating of a wire, known as its Ampacity. If this limit is reached, the cable will catch on fire and be destroyed! You will also notice that there are insulated and non-insulated wires. "
-							+ "Non-insulated wires will shock the player on contact, while the insulated variant will protect the player up to a rated voltage (also displayed in the wire's tooltip). It is important to note that wires do " + "not store energy like Univeral Cables or Flux Ducts!");
+							+ "wire in your inventory, you will notice it has a Resistance and a maximum rated current, known as its Ampacity:");
+			
+			addGuidebook("chapter.electricity.l10", "The Resistance determines how much energy is lost when a current is developed over the wire. You can use P = I*I*R to to calculate the exact amount of power lost. This means the more wires you connect together, the higher the overall resistance will be. However, "
+					+ "it is important to note from this formula that the power lost is based on the square of the current. It is crucial to keep this in mind when designing complex wire layouts, as you might loose a great deal of usable energy to the wires alone. It should also be noted here that wires do not store "
+					+ "energy as you may be accustomed to in other mods.");
+			
+			addGuidebook("chapter.electricity.l11.1", "If you were paying attention, you may have also noticed that the wire tooltip will display an insulation rating. The insulation rating of a wire determines what voltage the wire can handle before it shocks you if touched. You can mitigate the danger of being shocked by "
+					+ "wearing ");
+			
+			addGuidebook("chapter.electricity.l11.2", ". You will still take damage wearing them if you are being shocked, however you will be able to survive the encounter at the price of boot durability.");
+			
+			addGuidebook("chapter.electricity.l12.1", "Different insulation types also come with pros and cons. Wool-based insulation is flammable, but has the ability to be colored:");
+			
+			addGuidebook("chapter.electricity.l12.2", "Black is the default wire color, with a black wire being able to connect to any wire color or type. A yellow wire on the other hand "
+					+ "is only able to connect to black and other yellow wires. This is especially useful if you need to run multiple lines in parallel, as it means you can have two different-colored wires next to each other and not have them connect. This can be very helpful if you are dealing with machine setups where "
+					+ "multiple voltages are involved in tight quarters. A specialzed variant of a wool-insulated wire is the Logistical Wire:");
+			
+			addGuidebook("chapter.electricity.l12.3", "It sacrifices the ability to be colored in exchange for the ability to emit a redstone signal when power is flowing through it.");
+			
+			addGuidebook("chapter.electricity.l13.1", "Ceramic insulation on the other hand loses the ability to be colored, but gains the advantage of being fire-proof:");
+			
+			addGuidebook("chapter.electricity.l13.2", "This makes ceramicly insulated wires especially useful when working around fluids like lava. It should be noted though that ceramic insulation is not as effective as "
+					+ "woolen insulation, meaning that if you want to insulate high voltages, you will need to take the risk of fire!");
+			
+			
+			addGuidebook("chapter.electricity.l14", "One final note while on the topic of wires is the ability to field-modify them. If you right-click any insulated wire with Shears (excluding thick wires), it will remove the insulation from the wire. You can also apply woolen and ceramic insulation to an existing wire "
+					+ "by right-clicking the insulation on the wire. A woolen wire can be converted to a logistical wire by right-clicking a piece of redstone on it. You can also dye woolen wires by right-clicking the respective dye onto the wire. Note that this is a less-efficiant way to color wires than crafting them to "
+					+ "the respective color!");
 
-			addGuidebook("chapter.electricity.l10",
-					"Now that we know how to get energy to a machine and understand it must be at a specific voltage, you're probably wondering how that voltage is achieved. Most power sources in Electrodynamics are 120V or 240V, which works well for some basic machines, " + "but that simply won't cut it for higher voltage machines. This is where the Upgrade and Downgrade Transformers come "
-							+ "in. The Upgrade Transformer will take any input voltage at any current and output double voltage at half the current. The Downgrade Transformer takes any input voltage at any current and outputs half the voltage at "
+			addGuidebook("chapter.electricity.l15",
+					"Now that we know how to get energy to a machine and understand it must be at a specific voltage, you're probably wondering how that voltage is achieved. Most power sources in Electrodynamics are 120V or 240V, which works well for some basic machines, but that simply won't cut it for higher voltage "
+					+ "machines. This is where the Upgrade and Downgrade Transformers come in. The Upgrade Transformer will take any input voltage at any current and output double voltage at half the current. The Downgrade Transformer takes any input voltage at any current and outputs half the voltage at "
 							+ "double the current. Note, Transformers are not 100% efficient, so be wise with your use of them. Also, Transformers will instantly kill you if you walk over them while energized!");
+			
+			addGuidebook("chapter.electricity.l16.1", "By now, you are feeling overwhelmed most likely. How are you supposed to keep track of what voltage your wire network is operating at? How are you supposed to keep track of the overall resistance? Fear not, for Electrodynamics offers several tools and blocks "
+					+ "to help you out along the way. The first and most important is the ");
+			
+			addGuidebook("chapter.electricity.l16.2", ". Right-clicking a wire network with one will display several imporant data points about that network:");
+			
+			addGuidebook("chapter.electricity.l16.3", "The first data point is the current power being transmitted in Amps in proportion to the Ampacity of the wire network. The second data point shows the current operating voltage of the wire network. The third data point shows the current power transfer "
+					+ "in watts. The fourth data point shows the total resistance of the network, with the fifth data point showing the power loss due to resistance. The final data point shows the lowest voltage machine connected to the network. If you wish to view the data points for a longer period of time, "
+					+ "you can craft a ");
+			
+			addGuidebook("chapter.electricity.l16.4", ", which offers the same functionality, but will display the relevant data constantly.");
+			
+			addGuidebook("chapter.electricity.l17.1", "The next useful block Electrodynamics adds is the %1$s, which will stop the flow of electricity when powered with a redstone signal:");
+			
+			addGuidebook("chapter.electricity.l17.2", "This is particularly useful, as it means that you can turn machines off and on without having to break a wire or waiting for them to fill up. The %1$s also does not impose a power loss when power flows across it. This comes at a price however, as it is also a dumb switch, "
+					+ "meaning the only way it will open is when manually activated. This means the %1$s is a useful logistical tool, but will not really be effective at protecting your downstream equipment.");
+			
+			addGuidebook("chapter.electricity.l18.1", "For a true protective device, you will need to upgrade the %1$s into a %2$s. The %3$s not only is able to be manually opened with redstone like its predecessor, but will also open automatically if it senses that the transmitting voltage will damage a machine of if the "
+					+ "transmitting current will damage a wire:");
+			
+			addGuidebook("chapter.electricity.l18.2", "However, this protective nature comes at a price, as the %1$s has a small power loss. This means you will need to be somewhat more thoughtful with your use of them!");
 
-			addGuidebook("chapter.electricity.l11", "In summary, machines need energy at a specific voltage to work. There are multiple methods of finding this voltage. Machines have specific colored ports for energy input and output. Energy is transfered into machines using wires, with the type of wire "
-					+ "used determining how the cable network performs. Voltages can be stepped up and stepped down using transformers. The following are a set of equations that can be useful when working with Joules:");
+			
+			addGuidebook("chapter.electricity.l19", "In summary, machines need energy at a specific voltage to work. There are multiple methods of finding this voltage. Machines have specific colored ports for energy input and output. Energy is transfered into machines using wires, with the type of wire "
+					+ "used determining how the cable network performs. Voltages can be stepped up and stepped down using transformers. There are multiple methods for monitoring and controling a wire network. The following are a set of equations that can be useful when working with Joules:");
 
 			addGuidebook("chapter.electricity.powerfromenergy", "P = E / time");
 			addGuidebook("chapter.electricity.powerfromvoltage", "P = V * I");
@@ -836,7 +950,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.fluids", "Fluids");
 
-			addGuidebook("chapter.fluids.l1", "Fluids play an important role just like energy in Electrodynamics. They're used for crafting various materials and for cooling machinery. Fortunately, if you have been able to grasp energy, then fluid mechanics should be a breeze, as they are very similar " + "to how other mods work.");
+			addGuidebook("chapter.fluids.l1", "Fluids play an important role just like energy in Electrodynamics. They're used for crafting various materials and for cooling machinery. Fortunately, if you have been able to grasp energy, then fluid mechanics should be a breeze, as they are very similar to how other mods work.");
 
 			addGuidebook("chapter.fluids.l2", "As with energy, fluids have their own I/O ports. These ports are universal to any machine that uses or produces fluid. They are:");
 			addGuidebook("chapter.fluids.fluidinput", "Input: Blue");
@@ -851,12 +965,113 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.fluids.pipecapacity", "%1$s : %2$s mB ");
 			addGuidebook("chapter.fluids.pipecopper", "Copper");
 			addGuidebook("chapter.fluids.pipesteel", "Steel");
+			
+			addGuidebook("chapter.fluids.l5.1" ,"Electrodynamics also offers a few modified fluid pipes which give you greater control over transmitting and receiving fluids. The first of these is the %1$s. The %2$s is a simple bi-directional switch. In the off-position, it will allow fluids to flow both ways through it like a "
+					+ "standard pipe:");
+			addGuidebook("chapter.fluids.l5.2", "In the on position however, it prevents all fluids from flowing. This ability is passive and does not require power. The %1$s is also compatible with other mods' fluid pipes.");
+			
+			addGuidebook("chapter.fluids.l6.1", "The next control block offered is the %1$s. The %2$s has a passive ability and an active ability. Passively, the block acts like a diode, allowing fluids to only flow in one direction: ");
+			addGuidebook("chapter.fluids.l6.2", "This ability is compatible with all other mods. The active ability requires the pump to be powered, and has the downside of only working with Electrodynamics fluid pipes due to the limitations of the game. When powered and connected to an Electrodynamics pipe network, the "
+					+ "pump has the ability to take priority on the transmitted fluids. The priority can be programmed in its GUI:");
+			addGuidebook("chapter.fluids.l6.3", "The minimum priority is 0 and the maximum is 9. If multiple pumps have the same priority, then the fluid will be split evenly among them.");
+			
+			addGuidebook("chapter.fluids.l7.1", "Another block offered is the %1$s. As the name suggests, the %2$s is a monodirectional pipe and is able to filter what fluids are allowed through it:");
+			addGuidebook("chapter.fluids.l7.2", "This ability is passive and is compatible with other mods' pipes. To program a fluid, open the GUI:");
+			addGuidebook("chapter.fluids.l7.3", "The %1$s is capable of filtering up to 4 fluids at a time. Having no fluids selected means it will allow any fluid through like a normal pipe. To add a filtered fluid, take a bucket or otherwise item containing the desiered fluid, and click one of the filter slots:");
+			addGuidebook("chapter.fluids.l7.4", "The %1$s will only allow that specific fluid through. It should be noted that the %1$s is not tag-compatible, meaning Ethanol from Immersive Engineering will not be allowed through even though Ethanol from Electrodynamics is selected as a filtered fluid.");
 
-			addGuidebook("chapter.fluids.l5", "But what if I need to store a large amount of fluid? Fear not, as Electrodynamics has you covered there. Electrodynamics tanks accept fluid from the top and output fluid through the bottom. Furthermore, stack two tanks on top of eachother, " + "and the top one will automatically output into the bottom one.");
+			addGuidebook("chapter.fluids.l8", "While pipes may not be able to store fluid, Electrodynamics offers bulk fluid storage in the form of Tanks. Electrodynamics tanks accept fluid from the top and output fluid through the bottom. Furthermore, stack two tanks on top of eachother, and the top one will automatically "
+					+ "output into the bottom one.");
 
-			addGuidebook("chapter.fluids.l6", "One final thing to note is that Electrodynamics fluids cannot be carried by a bucket. For example, it simply doesn't make sense to transfer Sulfuric Acid in a bucket made out of Iron. If you need to manually move fluids such as Sulfuric Acid, you will need to "
+			addGuidebook("chapter.fluids.l9", "One final thing to note is that Electrodynamics fluids cannot be carried by a bucket. For example, it simply doesn't make sense to transfer Sulfuric Acid in a bucket made out of Iron. If you need to manually move fluids such as Sulfuric Acid, you will need to "
 					+ "use a Reinforced Canister! All fluid machines have input and output bucket slots that can be used for manually filling and draining the machine. If you need to manually empty an input tank, click a Reinforced Canister on it and the fluid will drain into the canister. To void any fluid, " + "either pipe or manually transfer it into ");
 
+			addGuidebook("chapter.gases", "Gases");
+			
+			addGuidebook("chapter.gases.l1", "While fluids in Electrodynamics may be similar to what you have seen before, gases are very much more complex and in depth. However, if you pay attention to a few key items, you will find that working with gases can be fairly painless and easy to do.");
+			
+			addGuidebook("chapter.gases.l2", "Right off the bat, gases in Electrodynamics cannot be seen. While certain gases may be colored or refractive in real life, a vast majority are clear. As a result, you will never actually see a gas. Instead, you will see its presence through montioring devices like a pressure gauge in "
+					+ "a GUI.");
+			
+			addGuidebook("chapter.gases.l3", "Gases in Electrodyanmics also have a pressure and temperature. We will first cover the mechanics of pressure. %1$s is measured in units of Atmospheres (ATM). The minimum pressure a gas can have is 1 ATM. A gas's pressure however will only be a whole number. In other words, you will "
+					+ "never see a gas with a 1.23601 ATM pressure. As a gas's pressure increases, its volume will decrease linearly. For example, if you double the pressure of a gas, its volume will halve.");
+			addGuidebook("chapter.gases.pressure", "Pressure");
+			addGuidebook("chapter.gases.l4.1", "All items and machines that work with gases have a maximum rated pressure. If this pressure is exceded, then the machine or item may be damaged or even explode! By convention, items with a pressure cap will display the cap when shift is held:");
+			addGuidebook("chapter.gases.l4.2", "Machines on the other hand will have a dedicated GUI data tab displaying the maximum pressure for input and output tanks:");
+			addGuidebook("chapter.gases.l4.3", "It should be noted that gas pipes will display their maximum pressure rating in their noraml tooltip.");
+			addGuidebook("chapter.gases.l5", "Another crucial aspect to keep in mind is that gases will seek equilibrium and equalize pressures when two amounts of the same gas at different pressures are mixed. As pressure is always a whole value, the gas with the lowest pressure will become the ruling pressure, and the higher "
+					+ "pressure amount will have its pressure lowered in kind.");
+			
+			addGuidebook("chapter.gases.l6", "Now we will cover the mechanics of %1$s. Temperature is measured in units of Kelvin (K), and the minimum temperature a gas can achieve is 1 degree Kelvin. Unlike pressure, temperature can take a non-whole value, meaning a gas can have a temperature of 273.163K. As a gas's temperatrure "
+					+ "increases, its volume increases linearly. For example, if you double the temperature of a gas, you will also double its volume.");
+			addGuidebook("chapter.gases.temperature", "Temperature");
+			addGuidebook("chapter.gases.l7.1", "As with pressure, all items and machines that work with gases have a maximum rated temperature. If this temperature is exceded, then the machine or item may be damaged or even melt! By convention, items with a temperature cap will display the cap when shift is held:");
+			addGuidebook("chapter.gases.l7.2", "Similarly to pressure, machines will have a dedicated GUI data tab displaying the maximum temperature for input and output tanks:");
+			addGuidebook("chapter.gases.l7.3", "It should be noted that gas pipes do not have a maximum rated temperature as of yet.");
+			addGuidebook("chapter.gases.l8", "Another crucial aspect to keep in mind is that gases will seek equilibrium and equalize temperature when two amounts of the same gas at different temperatures are mixed. As temperature is a non-whole value, the combined gases will take on the average temperature of the two combined "
+					+ "gases.");
+			
+			addGuidebook("chapter.gases.l9", "One final thing to note on the topic of temperature is that certain gases in Electrodynamics, like their real-life counterparts, will condense into a liquid below a certain temperature. The following gases have the ability to be condensed:");
+			
+			addGuidebook("chapter.gases.gas", "Gas: %s");
+			addGuidebook("chapter.gases.condensedfluid", "Fluid: %s");
+			addGuidebook("chapter.gases.condtemp", "Temp: %s");
+			
+			addGuidebook("chapter.gases.l10.1", "The immediate concern now is of course what happens to a gas if it condenses while contained within a machine? On machines that handle gases that also do not have a dedicated output fluid tank, you will notice a greyed out fluid dropplet:");
+			addGuidebook("chapter.gases.l10.2", "This represents the machine's runoff catch. When a gas condenses in one of these machines, the dropplet will light up indicating a gas has condensed into a fluid and has been caught. To extract this caught gas, simply click on the dropplet with a bucket or similar item. It is "
+					+ "important to note that the runoff catch can only handle one fluid at a time. If a gas condenses while a fluid is held, the existing fluid held by the catch will be lost! The runoff catch is only so large, so be mindful you don't let it get too full either.");
+			
+			addGuidebook("chapter.gases.l11", "Now that we are familiar with the basic mechanics of pressure and temperature, we can discuss how to manipulate gases. As with other machines, gases have a dedicated input and output port. The respective ports are represented as so:");
+			addGuidebook("chapter.gases.input", "Input: Green");
+			addGuidebook("chapter.gases.output", "Output: Orange");
+			addGuidebook("chapter.gases.l12", "As with other ports, these colors are universal to all gas ports. An example of each can be seen on the next page:");
+			
+			addGuidebook("chapter.gases.l13.1", "Like with fluids, gases are transfered between places through the use of pipes. Gas pipes do not store gases, and Electrodynamics machines will only accept gases that they can process with. Pipes have a maximum rated pressure and throughput capacity. If this pressure is exceded, "
+					+ "the pipe will explode, and the gas being transmitted will be lost. You have the following pipes to chose from:");
+			addGuidebook("chapter.gases.pipecapacity", "Max Throughput : %s");
+			addGuidebook("chapter.gases.pipepressure", "Max Pressure: %s");
+			addGuidebook("chapter.gases.pipecopper", "Copper");
+			addGuidebook("chapter.gases.pipesteel", "Steel");
+			addGuidebook("chapter.gases.pipeplastic", "Plastic");
+			addGuidebook("chapter.gases.l13.2", "The inclusion of plastic may seem strange, but it serves a very pratical and important role. Metal pipes can be corroded by certain gases, where as plastic cannot be. The following gases are considered corrosive, and will destroy metal pipes:");
+			addGuidebook("chapter.gases.l13.3", "Pay attention to this list, as it will save you valuable time and resources!");
+			
+			addGuidebook("chapter.gases.l14.1" ,"As with fluids, Electrodynamics also offers a few modified gas pipes which give you greater control over transmitting and receiving gases. The first of these is the %1$s. The %2$s is a simple bi-directional switch. In the off-position, it will allow gases to flow both ways "
+					+ "through it like a standard pipe:");
+			addGuidebook("chapter.gases.l14.2", "In the on position however, it prevents all gases from flowing. This ability is passive and does not require power. The %1$s is also compatible with other mods' gas pipes.");
+			
+			addGuidebook("chapter.gases.l15.1", "The next control block offered is the %1$s. The %2$s has a passive ability and an active ability. Passively, the block acts like a diode, allowing gases to only flow in one direction: ");
+			addGuidebook("chapter.gases.l15.2", "This ability is compatible with all other mods. The active ability requires the pump to be powered, and has the downside of only working with Electrodynamics gas pipes due to the limitations of the game. When powered and connected to an Electrodynamics pipe network, the "
+					+ "pump has the ability to take priority on the transmitted gases. The priority can be programmed in its GUI:");
+			addGuidebook("chapter.gases.l15.3", "The minimum priority is 0 and the maximum is 9. If multiple pumps have the same priority, then the gas will be split evenly among them.");
+			
+			addGuidebook("chapter.gases.l16.1", "Another block offered is the %1$s. As the name suggests, the %2$s is a monodirectional pipe and is able to filter what gases are allowed through it:");
+			addGuidebook("chapter.gases.l16.2", "This ability is passive and is compatible with other mods' pipes. To program a gas, open the GUI:");
+			addGuidebook("chapter.gases.l16.3", "The %1$s is capable of filtering up to 4 gases at a time. Having no gases selected means it will allow any gas through like a normal pipe. To add a filtered gas, take a gas cylinder or otherwise item containing the desiered gas, and click one of the filter slots:");
+			addGuidebook("chapter.gases.l16.4", "The %1$s will only allow that specific fluid through. It should be noted that the %1$s is not tag-compatible, meaning Hydrogen from Mekanism will not be allowed through even though Hydrogen from Electrodynamics is selected as a filtered gas.");
+
+			addGuidebook("chapter.gases.l17", "While pipes may not be able to store gas, Electrodynamics offers bulk gas storage in the form of Cylinders. Gas Cylinders accept gas from the top and output gas through the bottom like a fluid tank. Furthermore, stack two cylinders on top of eachother, and the top one "
+					+ "will automatically output into the bottom one.");
+			
+			addGuidebook("chapter.gases.l18", "Up until this point, there has been mention of gases at different temperatures and pressures, but no talk of how those values are actually achieved. Sure, some machines might produce a gas at a certain temperature and pressure, but what if another process calls for it to be "
+					+ "at twice the temperature and twice the pressure? We now come to what this chapter has been building towards: gas manipulation. Electrodynamics offers dedicated machines for manipulating a gas's pressure and temperature.");
+			
+			addGuidebook("chapter.gases.l19", "The first of these are the %1$s and %2$s. The %3$s will take any gas input to it and double the pressure. The %4$s conversely will take any gas input to it and halve the pressure. By convention, gases produced by machines will be a power of two. This means the %3$s and %4$s "
+					+ "effectively function as Upgrade and Downgrade Transformers.");
+			
+			addGuidebook("chapter.gases.l20.1", "You may notice however that the input and output tanks on these two blocks have a rather limited storage capacity. This can especially be a problem if you are decompressing a gas. Fortunately, the %1$s and %2$s can have thier storage tank capacities increased by the addition of "
+					+ "a %3$s. The %4$s is placed atop of the input and output tank like so:");
+			
+			addGuidebook("chapter.gases.l20.2", "A total of 5 can be stacked to increase the tank capacity.");
+			
+			addGuidebook("chapter.gases.l21.1", "The third block for manipulating gases is the %1$s. The %2$s is able to heat or cool a gas to any specified temperature. To program the temperature, open the GUI, and input it:");
+			
+			addGuidebook("chapter.gases.l21.2", "If you paid attention to the condensed gases list from earlier, you may also notice that the %1$s has a fluid input and output tank. If you program the temperature to the gas's condensation point, the Manipulator will in turn condense the gas into a fluid. The manipulator is also "
+					+ "capable of converting fluids into gases if the temperature is above the gas's condensation point. Also, like the %2$s and %3$s, the %1$s can have its tank capacity increased with a %4$s.");
+			
+			addGuidebook("chapter.gases.l22", "One final thing to note is that Electrodynamics gas can be caried by hand with a %s. Note that it does have a maximum rated temperature and pressure, so make sure the gas you are inputing to it won't destroy it!");
+
+			
 			addGuidebook("chapter.generators", "Generators");
 			addGuidebook("chapter.generators.generationbase", "Default: %1$s at %2$sV");
 			addGuidebook("chapter.generators.generationupgrade", "Upgraded: %1$s at %2$sV");

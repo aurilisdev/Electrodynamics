@@ -27,7 +27,7 @@ public class ScreenSeismicRelay extends GenericScreen<ContainerSeismicRelay> {
 		font.draw(stack, TextUtils.gui("seismicrelay.dataheader"), 70, 20, 4210752);
 
 		if (relay != null) {
-			List<BlockPos> markers = relay.clientLocs;
+			List<BlockPos> markers = relay.markerLocs.get();
 			if (!markers.isEmpty()) {
 				renderCoordinate(stack, markers.get(0), 0, 1);
 			} else {

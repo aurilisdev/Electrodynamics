@@ -1,7 +1,9 @@
 package electrodynamics.common.blockitem;
 
+import java.util.HashSet;
 import java.util.List;
 
+import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.block.connect.BlockWire;
@@ -12,31 +14,55 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 public class BlockItemWire extends BlockItem {
 
+	private static HashSet<BlockItemWire> WIRES = new HashSet<>();
+	
 	private final BlockWire wire;
 
 	public BlockItemWire(BlockWire wire, Properties builder) {
 		super(wire, builder);
 		this.wire = wire;
+		WIRES.add(this);
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(TextUtils.tooltip("itemwire.resistance", ChatFormatter.getChatDisplay(wire.wire.resistance, DisplayUnit.RESISTANCE)).withStyle(ChatFormatting.GRAY));
-		tooltip.add(TextUtils.tooltip("itemwire.maxamps", ChatFormatter.getChatDisplay(wire.wire.capacity, DisplayUnit.AMPERE)).withStyle(ChatFormatting.GRAY));
-		if (wire.wire.wireClass.shockVoltage == 0) {
+		tooltip.add(TextUtils.tooltip("itemwire.resistance", ChatFormatter.getChatDisplayShort(wire.wire.resistance, DisplayUnit.RESISTANCE)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(TextUtils.tooltip("itemwire.maxamps", ChatFormatter.getChatDisplayShort(wire.wire.conductor.ampacity, DisplayUnit.AMPERE)).withStyle(ChatFormatting.GRAY));
+		if (wire.wire.insulation.shockVoltage == 0) {
 			tooltip.add(TextUtils.tooltip("itemwire.info.uninsulated"));
 		} else {
-			tooltip.add(TextUtils.tooltip("itemwire.info.insulationrating", ChatFormatter.getChatDisplayShort(wire.wire.wireClass.shockVoltage, DisplayUnit.VOLTAGE)));
+			tooltip.add(TextUtils.tooltip("itemwire.info.insulationrating", ChatFormatter.getChatDisplayShort(wire.wire.insulation.shockVoltage, DisplayUnit.VOLTAGE)));
 		}
-		if (wire.wire.wireClass.fireProof) {
+		if (wire.wire.insulation.fireProof) {
 			TextUtils.tooltip("itemwire.info.fireproof");
 		}
-		if (wire.wire.wireType.conductsRedstone) {
+		if (wire.wire.wireClass.conductsRedstone) {
 			TextUtils.tooltip("itemwire.info.redstone");
 		}
 	}
+	
+	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = References.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+	private static class ColorHandler {
+		
+		@SubscribeEvent
+		public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
+			WIRES.forEach(item -> event.register((stack, index) -> {
+				if(index == 1) {
+					return item.wire.wire.color.color;
+				} else {
+					return 0xFFFFFFFF;
+				}
+			}, item));
+		}
+		
+	}
+	
 }

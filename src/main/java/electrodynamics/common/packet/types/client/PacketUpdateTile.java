@@ -13,6 +13,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.network.NetworkEvent.Context;
 
+@Deprecated
 public class PacketUpdateTile {
 
 	private final CompoundTag updateTag;
@@ -21,6 +22,7 @@ public class PacketUpdateTile {
 
 	public PacketUpdateTile(ComponentPacketHandler component, BlockPos pos, boolean isGUI, CompoundTag base) {
 		this(pos, base, isGUI);
+		/*
 		if (isGUI) {
 			if (component.getGuiPacketSupplier() != null) {
 				component.getGuiPacketSupplier().accept(base);
@@ -28,6 +30,7 @@ public class PacketUpdateTile {
 		} else if (component.getCustomPacketSupplier() != null) {
 			component.getCustomPacketSupplier().accept(base);
 		}
+		*/
 		this.isGUI = isGUI;
 	}
 
@@ -46,6 +49,7 @@ public class PacketUpdateTile {
 				if (tile instanceof GenericTile generic) {
 					if (generic.hasComponent(ComponentType.PacketHandler)) {
 						ComponentPacketHandler handler = generic.getComponent(ComponentType.PacketHandler);
+						/*
 						if (message.isGUI) {
 							if (handler.getGuiPacketConsumer() != null) {
 								handler.getGuiPacketConsumer().accept(message.updateTag);
@@ -53,6 +57,7 @@ public class PacketUpdateTile {
 						} else if (handler.getCustomPacketConsumer() != null) {
 							handler.getCustomPacketConsumer().accept(message.updateTag);
 						}
+						*/
 					}
 				}
 			}

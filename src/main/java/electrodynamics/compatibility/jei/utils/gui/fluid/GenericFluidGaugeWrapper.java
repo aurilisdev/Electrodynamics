@@ -1,13 +1,14 @@
 package electrodynamics.compatibility.jei.utils.gui.fluid;
 
 import electrodynamics.compatibility.jei.utils.gui.ScreenObjectWrapper;
+import net.minecraft.resources.ResourceLocation;
 
 public abstract class GenericFluidGaugeWrapper extends ScreenObjectWrapper {
 
 	private int amount;
 
-	public GenericFluidGaugeWrapper(String texture, int amount, int xStart, int yStart, int textX, int textY, int height, int width) {
-		super(texture, xStart, yStart, textX, textY, height, width);
+	public GenericFluidGaugeWrapper(ResourceLocation texture, int amount, int xStart, int yStart, int textX, int textY, int width, int height) {
+		super(texture, xStart, yStart, textX, textY, width, height);
 		this.amount = amount;
 	}
 
@@ -15,12 +16,12 @@ public abstract class GenericFluidGaugeWrapper extends ScreenObjectWrapper {
 		return amount;
 	}
 
-	public int getFluidTextHeight() {
+	public int getFluidTextWidth() {
 		return getWidth() - 2;
 	}
 
-	public int getFluidTextWidth() {
-		return getLength() - 2;
+	public int getFluidTextHeight() {
+		return getHeight() - 2;
 	}
 
 	public int getFluidXPos() {
@@ -28,7 +29,7 @@ public abstract class GenericFluidGaugeWrapper extends ScreenObjectWrapper {
 	}
 
 	public int getFluidYPos() {
-		return getYPos() + getWidth() - 1;
+		return getYPos() + getHeight() - 1;
 	}
 
 }

@@ -129,8 +129,8 @@ public enum SubtypeMachine implements ISubtype {
 	private RenderShape type = RenderShape.MODEL;
 	public final int litBrightness;
 	public final boolean propogateLightDown;
-
-	SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass){
+	
+	SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass) {
 		this(showInItemGroup, tileclass, RenderShape.MODEL, 0, false);
 	}
 	
@@ -140,7 +140,6 @@ public enum SubtypeMachine implements ISubtype {
 		this.litBrightness = litBrightness;
 		this.type = renderShape;
 		this.propogateLightDown = propogateLightDown;
-
 	}
 
 	public RenderShape getRenderType() {

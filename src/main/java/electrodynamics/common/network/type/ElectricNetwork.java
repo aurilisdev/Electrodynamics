@@ -139,7 +139,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		if (networkMaxTransfer * voltage - transmittedThisTick <= 0 && voltage > 0) {
 			HashSet<SubtypeWire> checkList = new HashSet<>();
 			for (SubtypeWire type : SubtypeWire.values()) {
-				if (type.capacity <= transmittedLastTick / voltage * 20 && type.capacity <= transmittedThisTick / voltage * 20) {
+				if (type.conductor.ampacity <= transmittedLastTick / voltage * 20 && type.conductor.ampacity <= transmittedThisTick / voltage * 20) {
 					checkList.add(type);
 				}
 			}
@@ -245,8 +245,13 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	}
 
 	@Override
-	public boolean isConductor(BlockEntity tile) {
-		return ElectricityUtils.isConductor(tile);
+	public boolean isConductor(BlockEntity tile, IConductor requesterCable) {
+		return ElectricityUtils.isConductor(tile, requesterCable);
+	}
+	
+	@Override
+	public boolean isConductorClass(BlockEntity tile) {
+		return tile instanceof IConductor;
 	}
 
 	@Override

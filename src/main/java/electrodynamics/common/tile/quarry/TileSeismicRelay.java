@@ -5,6 +5,8 @@ import java.util.List;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
@@ -28,29 +30,23 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-//TODO: Make this use the property system...
 public class TileSeismicRelay extends GenericTile {
 
-	public List<BlockPos> markerLocs = new ArrayList<>();
-
-	public List<BlockPos> clientLocs = new ArrayList<>();
+	public Property<List<BlockPos>> markerLocs = property(new Property<>(PropertyType.BlockPosList, "markerlocs", new ArrayList<>()));
 
 	public boolean cornerOnRight = false;
 
 	public TileSeismicRelay(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_SEISMICRELAY.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection(this));
-		addComponent(new ComponentPacketHandler(this).addCustomPacketWriter(this::createPacket).addGuiPacketWriter(this::createPacket).addCustomPacketReader(this::readPacket).addGuiPacketReader(this::readPacket));
+		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().outputs(1)).valid((slot, stack, i) -> ItemUtils.testItems(stack.getItem(), ElectrodynamicsItems.ITEM_SEISMICMARKER.get())));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.seismicrelay, this).createMenu((id, player) -> new ContainerSeismicRelay(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	private void tickServer(ComponentTickable tickable) {
-		if (tickable.getTicks() % 10 == 0) {
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-		}
-		if (markerLocs.size() < 4) {
+		if (markerLocs.get().size() < 4) {
 			ComponentDirection dir = getComponent(ComponentType.Direction);
 			Direction facing = dir.getDirection().getOpposite();
 			Level world = getLevel();
@@ -63,7 +59,7 @@ public class TileSeismicRelay extends GenericTile {
 	}
 
 	private void getMarkers(TileSeismicMarker marker, Direction facing) {
-		markerLocs.clear();
+		List<BlockPos> positions = new ArrayList<>();
 		BlockPos frontMarker = getMarker(facing, marker.getBlockPos(), marker.getLevel());
 		BlockPos sideMarker = null;
 		BlockPos cornerMarker = null;
@@ -79,18 +75,20 @@ public class TileSeismicRelay extends GenericTile {
 				}
 			}
 		}
-		markerLocs.add(marker.getBlockPos());
+		positions.add(marker.getBlockPos());
 		if (frontMarker != null) {
-			markerLocs.add(frontMarker);
+			positions.add(frontMarker);
 		}
 		if (sideMarker != null) {
-			markerLocs.add(sideMarker);
+			positions.add(sideMarker);
 		}
 		if (cornerMarker != null) {
-			markerLocs.add(cornerMarker);
+			positions.add(cornerMarker);
 		}
 
-		if (markerLocs.size() > 3) {
+		markerLocs.set(positions);
+		
+		if (markerLocs.get().size() > 3) {
 			collectMarkers();
 			getLevel().playSound(null, getBlockPos(), SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 		}
@@ -111,63 +109,34 @@ public class TileSeismicRelay extends GenericTile {
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		ItemStack input = inv.getOutputContents().get(0);
 		if (input.isEmpty()) {
-			inv.setItem(0, new ItemStack(ElectrodynamicsItems.ITEM_SEISMICMARKER.get(), markerLocs.size()).copy());
-			for (BlockPos pos : markerLocs) {
+			inv.setItem(0, new ItemStack(ElectrodynamicsItems.ITEM_SEISMICMARKER.get(), markerLocs.get().size()).copy());
+			for (BlockPos pos : markerLocs.get()) {
 				getLevel().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			}
 		} else if (ItemUtils.testItems(input.getItem(), ElectrodynamicsItems.ITEM_SEISMICMARKER.get())) {
 			int room = input.getMaxStackSize() - input.getCount();
-			int accepted = room > markerLocs.size() ? markerLocs.size() : room;
+			int accepted = room >= markerLocs.get().size() ? markerLocs.get().size() : room;
 			input.grow(accepted);
-			for (BlockPos pos : markerLocs) {
+			for (BlockPos pos : markerLocs.get()) {
 				getLevel().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			}
 		}
 	}
 
 	public boolean hasMarkers() {
-		return markerLocs.size() > 3;
+		return markerLocs.get().size() > 3;
 	}
 
 	@Override
 	public void saveAdditional(@NotNull CompoundTag compound) {
 		super.saveAdditional(compound);
-		compound.putInt("size", markerLocs.size());
-		for (int i = 0; i < markerLocs.size(); i++) {
-			BlockPos pos = markerLocs.get(i);
-			compound.putInt("x" + i, pos.getX());
-			compound.putInt("y" + i, pos.getY());
-			compound.putInt("z" + i, pos.getZ());
-		}
 		compound.putBoolean("onRight", cornerOnRight);
 	}
 
 	@Override
 	public void load(@NotNull CompoundTag compound) {
 		super.load(compound);
-		int size = compound.getInt("size");
-		for (int i = 0; i < size; i++) {
-			markerLocs.add(new BlockPos(compound.getInt("x" + i), compound.getInt("y" + i), compound.getInt("z" + i)));
-		}
 		cornerOnRight = compound.getBoolean("onRight");
-	}
-
-	private void createPacket(CompoundTag nbt) {
-		nbt.putInt("size", markerLocs.size());
-		for (int i = 0; i < markerLocs.size(); i++) {
-			BlockPos pos = markerLocs.get(i);
-			nbt.putInt("x" + i, pos.getX());
-			nbt.putInt("y" + i, pos.getY());
-			nbt.putInt("z" + i, pos.getZ());
-		}
-	}
-
-	private void readPacket(CompoundTag nbt) {
-		clientLocs.clear();
-		int size = nbt.getInt("size");
-		for (int i = 0; i < size; i++) {
-			clientLocs.add(new BlockPos(nbt.getInt("x" + i), nbt.getInt("y" + i), nbt.getInt("z" + i)));
-		}
 	}
 
 }

@@ -2,7 +2,7 @@ package electrodynamics.common.block.connect.util;
 
 import javax.annotation.Nullable;
 
-import electrodynamics.api.network.cable.IRefreshableConductor;
+import electrodynamics.api.network.cable.IRefreshableCable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,8 +23,10 @@ public abstract class AbstractRefreshingConnectBlock extends AbstractConnectBloc
 
 	@Override
 	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState stateIn, @Nullable LivingEntity placer, ItemStack stack) {
+		BlockPos relPos;
 		for (Direction dir : Direction.values()) {
-			stateIn = refreshConnections(worldIn.getBlockEntity(pos.relative(dir)), stateIn, dir);
+			relPos = pos.relative(dir);
+			stateIn = refreshConnections(worldIn.getBlockState(relPos), worldIn.getBlockEntity(relPos), stateIn, dir);
 		}
 		worldIn.setBlockAndUpdate(pos, stateIn);
 	}
@@ -34,7 +36,7 @@ public abstract class AbstractRefreshingConnectBlock extends AbstractConnectBloc
 		if (stateIn.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
 			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
-		return refreshConnections(world.getBlockEntity(facingPos), stateIn, facing);
+		return refreshConnections(facingState, world.getBlockEntity(facingPos), stateIn, facing);
 	}
 
 	@Override
@@ -44,13 +46,15 @@ public abstract class AbstractRefreshingConnectBlock extends AbstractConnectBloc
 			return;
 		}
 		BlockEntity tile = worldIn.getBlockEntity(pos);
-		IRefreshableConductor conductor = getCableIfValid(tile);
+		IRefreshableCable conductor = getCableIfValid(tile);
 		if (conductor == null) {
 			return;
 		}
 		conductor.refreshNetwork();
+		BlockPos relPos;
 		for (Direction dir : Direction.values()) {
-			state = refreshConnections(worldIn.getBlockEntity(pos.relative(dir)), state, dir);
+			relPos = pos.relative(dir);
+			state = refreshConnections(worldIn.getBlockState(relPos), worldIn.getBlockEntity(relPos), state, dir);
 		}
 		worldIn.setBlockAndUpdate(pos, state);
 	}
@@ -62,16 +66,16 @@ public abstract class AbstractRefreshingConnectBlock extends AbstractConnectBloc
 			return;
 		}
 		BlockEntity tile = world.getBlockEntity(pos);
-		IRefreshableConductor conductor = getCableIfValid(tile);
+		IRefreshableCable conductor = getCableIfValid(tile);
 		if (conductor == null) {
 			return;
 		}
 		conductor.refreshNetworkIfChange();
 	}
 
-	public abstract BlockState refreshConnections(BlockEntity tile, BlockState state, Direction dir);
+	public abstract BlockState refreshConnections(BlockState otherState, BlockEntity tile, BlockState thisState, Direction dir);
 
 	@Nullable
-	public abstract IRefreshableConductor getCableIfValid(BlockEntity tile);
+	public abstract IRefreshableCable getCableIfValid(BlockEntity tile);
 
 }

@@ -2,7 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "electrodynamics:block/wire/logisticswire_none"
+        "model": "electrodynamics:block/wire/wirelogisticstin_none"
       },
       "when": {
         "OR": [
@@ -29,7 +29,7 @@
     },
     {
       "apply": {
-        "model": "electrodynamics:block/wire/logisticswire_side",
+        "model": "electrodynamics:block/wire/wirelogisticstin_side",
         "x": 270
       },
       "when": {
@@ -42,7 +42,7 @@
     },
     {
       "apply": {
-        "model": "electrodynamics:block/wire/logisticswire_side",
+        "model": "electrodynamics:block/wire/wirelogisticstin_side",
         "x": 90
       },
       "when": {
@@ -55,7 +55,7 @@
     },
     {
       "apply": {
-        "model": "electrodynamics:block/wire/logisticswire_side"
+        "model": "electrodynamics:block/wire/wirelogisticstin_side"
       },
       "when": {
         "OR": [
@@ -67,7 +67,7 @@
     },
     {
       "apply": {
-        "model": "electrodynamics:block/wire/logisticswire_side",
+        "model": "electrodynamics:block/wire/wirelogisticstin_side",
         "y": 90
       },
       "when": {
@@ -80,7 +80,7 @@
     },
     {
       "apply": {
-        "model": "electrodynamics:block/wire/logisticswire_side",
+        "model": "electrodynamics:block/wire/wirelogisticstin_side",
         "y": 180
       },
       "when": {
@@ -93,7 +93,7 @@
     },
     {
       "apply": {
-        "model": "electrodynamics:block/wire/logisticswire_side",
+        "model": "electrodynamics:block/wire/wirelogisticstin_side",
         "y": 270
       },
       "when": {

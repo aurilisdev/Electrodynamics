@@ -138,7 +138,7 @@ public class ClientRegister {
 
 	public static HashMap<ResourceLocation, TextureAtlasSprite> CACHED_TEXTUREATLASSPRITES = new HashMap<>();
 	// for registration purposes only!
-	private static final List<ResourceLocation> customTextures = new ArrayList<>();
+	private static final List<ResourceLocation> CUSTOM_TEXTURES = new ArrayList<>();
 
 	public static final ResourceLocation ON = new ResourceLocation("on");
 
@@ -233,6 +233,8 @@ public class ClientRegister {
 	public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation("forge", "white");
 
 	public static final ResourceLocation TEXTURE_PLASMA_BALL = new ResourceLocation(CUSTOM_LOC + "plasmaorb");
+	
+	public static final ResourceLocation TEXTURE_MERCURY = new ResourceLocation(CUSTOM_LOC + "mercury");
 
 	public static void setup() {
 		ClientEvents.init();
@@ -329,23 +331,24 @@ public class ClientRegister {
 	}
 
 	static {
-		customTextures.add(ClientRegister.TEXTURE_QUARRYARM);
-		customTextures.add(ClientRegister.TEXTURE_QUARRYARM_DARK);
-		customTextures.add(ClientRegister.TEXTURE_WHITE);
-		customTextures.add(ClientRegister.TEXTURE_PLASMA_BALL);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_QUARRYARM);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_QUARRYARM_DARK);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_WHITE);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_PLASMA_BALL);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_MERCURY);
 	}
 
 	@SubscribeEvent
 	public static void addCustomTextureAtlases(TextureStitchEvent.Pre event) {
 		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-			customTextures.forEach(event::addSprite);
+			CUSTOM_TEXTURES.forEach(event::addSprite);
 		}
 	}
 
 	@SubscribeEvent
 	public static void cacheCustomTextureAtlases(TextureStitchEvent.Post event) {
 		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-			for (ResourceLocation loc : customTextures) {
+			for (ResourceLocation loc : CUSTOM_TEXTURES) {
 				ClientRegister.CACHED_TEXTUREATLASSPRITES.put(loc, event.getAtlas().getSprite(loc));
 			}
 		}

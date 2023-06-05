@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "electrodynamics:item/wire/wireinsulatedcopper",
+    "layer1": "electrodynamics:item/wire/wireinsulatedcoil"
+  }
+}

@@ -16,21 +16,21 @@ public enum SubtypeGasPipe implements ISubtype {
 	 */
 	UNINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.NONE, 10000, 2.5, Material.METAL, SoundType.METAL),//
 	UNINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.NONE, 30000, 2.5, Material.METAL, SoundType.METAL),//
-	UNINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.NONE, 1000, 2.5, Material.STONE, SoundType.STONE),//
+	UNINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.NONE, 1000, 2.5, Material.STONE, SoundType.STONE);//
 	
 	/*
 	 * CERAMIC INSULATED
 	 */
-	CERAMICINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.CERAMIC, 10000, 3, Material.METAL, SoundType.TUFF),//
-	CERAMICINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.CERAMIC, 30000, 3, Material.METAL, SoundType.TUFF),//
-	CERAMICINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.NONE, 1000, 3, Material.STONE, SoundType.TUFF),//
+	//CERAMICINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.CERAMIC, 10000, 3, Material.METAL, SoundType.TUFF),//
+	//CERAMICINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.CERAMIC, 30000, 3, Material.METAL, SoundType.TUFF),//
+	//CERAMICINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.NONE, 1000, 3, Material.STONE, SoundType.TUFF),//
 	
 	/*
 	 * WOOL INSULATED
 	 */
-	WOOLINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.WOOL, 10000, 3, Material.METAL, SoundType.WOOL),
-	WOOLINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.WOOL, 30000, 3, Material.METAL, SoundType.WOOL),
-	WOOLINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.WOOL, 1000, 3, Material.STONE, SoundType.WOOL);
+	//WOOLINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.WOOL, 10000, 3, Material.METAL, SoundType.WOOL),
+	//WOOLINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.WOOL, 30000, 3, Material.METAL, SoundType.WOOL),
+	//WOOLINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.WOOL, 1000, 3, Material.STONE, SoundType.WOOL);
 
 	public final PipeMaterial pipeMaterial;
 	public final InsulationMaterial insulationMaterial;

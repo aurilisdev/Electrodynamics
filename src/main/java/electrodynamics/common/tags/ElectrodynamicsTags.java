@@ -190,6 +190,20 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Item> INGOTS = forgeTag("ingots");
 		public static final TagKey<Item> ORES = forgeTag("ores");
 		public static final TagKey<Item> INSULATES_PLAYER_FEET = forgeTag("insulates_player_feet");
+		
+		public static final TagKey<Item> INSULATED_COPPER_WIRES = forgeTag("wires/insulated_copper");
+		public static final TagKey<Item> INSULATED_GOLD_WIRES = forgeTag("wires/insulated_gold");
+		public static final TagKey<Item> INSULATED_IRON_WIRES = forgeTag("wires/insulated_iron");
+		public static final TagKey<Item> INSULATED_SILVER_WIRES = forgeTag("wires/insulated_silver");
+		public static final TagKey<Item> INSULATED_SUPERCONDUCTIVE_WIRES = forgeTag("wires/insulated_superconductive");
+		public static final TagKey<Item> INSULATED_TIN_WIRES = forgeTag("wires/insulated_tin");
+		
+		public static final TagKey<Item> THICK_COPPER_WIRES = forgeTag("wires/thick_copper");
+		public static final TagKey<Item> THICK_GOLD_WIRES = forgeTag("wires/thick_gold");
+		public static final TagKey<Item> THICK_IRON_WIRES = forgeTag("wires/thick_iron");
+		public static final TagKey<Item> THICK_SILVER_WIRES = forgeTag("wires/thick_silver");
+		public static final TagKey<Item> THICK_SUPERCONDUCTIVE_WIRES = forgeTag("wires/thick_superconductive");
+		public static final TagKey<Item> THICK_TIN_WIRES = forgeTag("wires/thick_tin");
 
 		private static void init() {
 		}
@@ -292,6 +306,8 @@ public class ElectrodynamicsTags {
 		
 		public static final TagKey<Gas> HYDROGEN = forgeTag("hydrogen");
 		public static final TagKey<Gas> OXYGEN = forgeTag("oxygen");
+		
+		public static final TagKey<Gas> IS_CORROSIVE = forgeTag("iscorrosive");
 		
 		private static void init() {
 			
