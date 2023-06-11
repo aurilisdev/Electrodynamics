@@ -8,6 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.gas.GasStack;
+import electrodynamics.prefab.screen.component.ScreenComponentGasGauge;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
@@ -31,12 +32,16 @@ public class IngredientRendererGasStack implements IIngredientRenderer<GasStack>
 		
 	};
 	
-	private final GasTextureWrapper gasTextureWrapper;
+	private final int tankAmount;
+	private final int mercuryOffset;
+	private final int tooltipHeight;
 	private final GasGaugeTextureWrapper gasGaugeTextureWrapper;
 	
 	
-	public IngredientRendererGasStack(GasTextureWrapper gasTextureWrapper, GasGaugeTextureWrapper gasGaugeTextureWrapper) {
-		this.gasTextureWrapper = gasTextureWrapper;
+	public IngredientRendererGasStack(int tankAmount, int mercuryOffset, int tooltipHeight, GasGaugeTextureWrapper gasGaugeTextureWrapper) {
+		this.tankAmount = tankAmount;
+		this.mercuryOffset = mercuryOffset;
+		this.tooltipHeight = tooltipHeight;
 		this.gasGaugeTextureWrapper = gasGaugeTextureWrapper;
 	}
 	
@@ -47,8 +52,7 @@ public class IngredientRendererGasStack implements IIngredientRenderer<GasStack>
 		}
 		stack.pushPose();
 		
-		RenderingUtils.bindTexture(gasTextureWrapper.loc());
-		Screen.blit(stack, 0, 0, gasTextureWrapper.u(), gasTextureWrapper.v(), gasTextureWrapper.width(), gasTextureWrapper.height(), 256, 256);
+		ScreenComponentGasGauge.renderMercuryTexture(stack, 0, mercuryOffset, (float) ingredient.getAmount() / (float) tankAmount);
 		
 		RenderingUtils.bindTexture(gasGaugeTextureWrapper.loc());
 		Screen.blit(stack, gasGaugeTextureWrapper.xOffset(), gasGaugeTextureWrapper.yOffset(), gasGaugeTextureWrapper.u(), gasGaugeTextureWrapper.v(), gasGaugeTextureWrapper.width(), gasGaugeTextureWrapper.height(), 256, 256);
@@ -71,16 +75,12 @@ public class IngredientRendererGasStack implements IIngredientRenderer<GasStack>
 	
 	@Override
 	public int getWidth() {
-		return gasTextureWrapper.width();
+		return gasGaugeTextureWrapper.width() - 2;
 	}
 	
 	@Override
 	public int getHeight() {
-		return gasTextureWrapper.height() - 1;
-	}
-	
-	public static record GasTextureWrapper(ResourceLocation loc, int u, int v, int width, int height) {
-		
+		return tooltipHeight - 1;
 	}
 	
 	public static record GasGaugeTextureWrapper(ResourceLocation loc, int xOffset, int yOffset, int u, int v, int width, int height) {

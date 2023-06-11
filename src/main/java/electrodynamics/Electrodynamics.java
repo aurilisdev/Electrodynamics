@@ -43,6 +43,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PacketDistributor.PacketTarget;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 
 @Mod(References.ID)
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
@@ -75,7 +77,7 @@ public class Electrodynamics {
 		ThermoelectricGeneratorHeatRegister.INSTANCE = new ThermoelectricGeneratorHeatRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
 		MinecraftForge.EVENT_BUS.addListener(getGuidebookListener());
 		ElectrodynamicsTags.init();
-		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to 1.19.2
+		//CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to 1.19.2
 		
 		RegisterFluidToGasMapEvent map = new RegisterFluidToGasMapEvent();
 		MinecraftForge.EVENT_BUS.post(map);
@@ -87,6 +89,13 @@ public class Electrodynamics {
 	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 		ElectrodynamicsCapabilities.register(event);
 
+	}
+	
+	@SubscribeEvent
+	public static void registerConditions(RegisterEvent event) {
+		if (event.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
+			CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
+		}
 	}
 
 	// I wonder how long this bug has been there

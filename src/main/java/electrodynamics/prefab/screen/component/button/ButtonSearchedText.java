@@ -2,7 +2,7 @@ package electrodynamics.prefab.screen.component.button;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import electrodynamics.client.guidebook.utils.pagedata.TextWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.locale.Language;

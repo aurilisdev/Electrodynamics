@@ -144,6 +144,9 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 					
 					full.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> cap.fillTank(0, gas, GasAction.EXECUTE));
 
+					CompoundTag tag = full.getOrCreateTag();
+					tag.putInt(NBTUtils.PLATES, 2);
+					
 					items.add(full);
 
 				}
@@ -184,7 +187,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			tooltip.add(TextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
 			tooltip.add(TextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
 			ItemServoLeggings.staticAppendTooltips(stack, level, tooltip, flagin);
-			IItemElectric.addBatteryTooltip(stack, level, tooltip);
+			//IItemElectric.addBatteryTooltip(stack, level, tooltip);
 			break;
 		case FEET:
 			if (!CapabilityUtils.isFluidItemNull()) {

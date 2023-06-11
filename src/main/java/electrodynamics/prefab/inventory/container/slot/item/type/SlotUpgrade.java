@@ -14,7 +14,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class SlotUpgrade extends SlotGeneric {
 
-	private List<Item> items;
+	public List<Item> items;
 
 	public SlotUpgrade(Container inventory, int index, int x, int y, SubtypeItemUpgrade... upgrades) {
 		super(SlotType.NORMAL, IconType.UPGRADE_DARK, inventory, index, x, y);

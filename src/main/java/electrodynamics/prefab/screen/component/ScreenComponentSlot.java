@@ -1,6 +1,8 @@
 package electrodynamics.prefab.screen.component;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -9,10 +11,16 @@ import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.component.ISlotTexture;
 import electrodynamics.api.screen.component.TextSupplier;
+import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.TextUtils;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.Item;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -75,8 +83,22 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 		if (!slot.isActive()) {
 			return;
 		}
-		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, slotType.textureWidth(), slotType.textureHeight()) && tooltip != null && !tooltip.getText().getString().isEmpty()) {
-			gui.displayTooltip(stack, tooltip.getText(), xAxis, yAxis);
+		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, slotType.textureWidth(), slotType.textureHeight())) {
+			
+			if(tooltip != null && !tooltip.getText().getString().isEmpty()) {
+				gui.displayTooltip(stack, tooltip.getText(), xAxis, yAxis);
+			}
+			
+			
+			if(Screen.hasControlDown() && slot instanceof SlotUpgrade upgrade) {
+				
+				List<FormattedCharSequence> tooltips = new ArrayList<>();
+				tooltips.add(TextUtils.tooltip("validupgrades").getVisualOrderText());
+				for(Item item : upgrade.items) {
+					tooltips.add(item.getDescription().copy().withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				}
+				gui.displayTooltips(stack, tooltips, xAxis, yAxis);
+			}
 		}
 	}
 

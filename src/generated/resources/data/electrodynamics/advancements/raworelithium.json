@@ -1,0 +1,41 @@
+{
+  "parent": "electrodynamics:ores",
+  "criteria": {
+    "HasRawOre": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "electrodynamics:raworelepidolite"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.electrodynamics.rawlithium.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "electrodynamics:raworelepidolite"
+    },
+    "show_toast": true,
+    "title": {
+      "color": "gray",
+      "translate": "advancement.electrodynamics.rawlithium.title"
+    }
+  },
+  "requirements": [
+    [
+      "HasRawOre"
+    ]
+  ],
+  "rewards": {
+    "experience": 10
+  }
+}

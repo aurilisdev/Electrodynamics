@@ -22,7 +22,6 @@ import electrodynamics.compatibility.jei.utils.gui.item.GenericItemSlotWrapper;
 import electrodynamics.compatibility.jei.utils.ingredients.ElectrodynamicsJeiTypes;
 import electrodynamics.compatibility.jei.utils.ingredients.IngredientRendererGasStack;
 import electrodynamics.compatibility.jei.utils.ingredients.IngredientRendererGasStack.GasGaugeTextureWrapper;
-import electrodynamics.compatibility.jei.utils.ingredients.IngredientRendererGasStack.GasTextureWrapper;
 import electrodynamics.compatibility.jei.utils.label.AbstractLabelWrapper;
 import electrodynamics.compatibility.jei.utils.label.BiproductPercentWrapper;
 import electrodynamics.prefab.tile.components.utils.IComponentFluidHandler;
@@ -374,7 +373,6 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		GenericGasGaugeWrapper wrapper;
 		RecipeIngredientRole role = RecipeIngredientRole.INPUT;
 		GasStack stack;
-		GasTextureWrapper gasWrapper;
 		GasGaugeTextureWrapper gasGaugeWrapper;
 		for(int i = 0; i < gasInputWrappers.length; i++) {
 			
@@ -391,10 +389,11 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			
 			int height = (int) (Math.ceil(amt / gaugeCap * wrapper.getHeight()));
 			
-			gasWrapper = new GasTextureWrapper(wrapper.getTexture(), wrapper.getMercuryOffset(), wrapper.getTextY() + (wrapper.getHeight() - height), wrapper.getWidth(), height);
+			int oneMinusHeight = wrapper.getHeight() - height;
+			
 			gasGaugeWrapper = new GasGaugeTextureWrapper(wrapper.getTexture(), 0, 0, wrapper.getGaugeOffset(), wrapper.getTextY(), wrapper.getWidth(), wrapper.getHeight());
 			
-			builder.addSlot(role, wrapper.getXPos(), wrapper.getYPos() + height).addIngredient(ElectrodynamicsJeiTypes.GAS_STACK, stack).setCustomRenderer(ElectrodynamicsJeiTypes.GAS_STACK, new IngredientRendererGasStack(gasWrapper, gasGaugeWrapper));
+			builder.addSlot(role, wrapper.getXPos(), wrapper.getYPos() + height).addIngredient(ElectrodynamicsJeiTypes.GAS_STACK, stack).setCustomRenderer(ElectrodynamicsJeiTypes.GAS_STACK, new IngredientRendererGasStack((int) gaugeCap, -oneMinusHeight + 1, 0, gasGaugeWrapper));
 		}
 		
 	}
@@ -404,7 +403,6 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 		GenericGasGaugeWrapper wrapper;
 		RecipeIngredientRole role = RecipeIngredientRole.INPUT;
 		GasStack stack;
-		GasTextureWrapper gasWrapper;
 		GasGaugeTextureWrapper gasGaugeWrapper;
 		for(int i = 0; i < gasOutputWrappers.length; i++) {
 			
@@ -421,10 +419,11 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 			
 			int height = (int) (Math.ceil(amt / gaugeCap * (wrapper.getHeight() - 2)));
 			
-			gasWrapper = new GasTextureWrapper(wrapper.getTexture(), wrapper.getMercuryOffset(), wrapper.getTextY() + (wrapper.getHeight() - height), wrapper.getWidth() - 2, height);
+			int oneMinusHeight = wrapper.getHeight() - height;
+			
 			gasGaugeWrapper = new GasGaugeTextureWrapper(wrapper.getTexture(), -1, height - wrapper.getHeight(), wrapper.getGaugeOffset(), wrapper.getTextY(), wrapper.getWidth(), wrapper.getHeight());
 			
-			builder.addSlot(role, wrapper.getXPos() + 1, wrapper.getYPos() + wrapper.getHeight() - height).addIngredient(ElectrodynamicsJeiTypes.GAS_STACK, stack).setCustomRenderer(ElectrodynamicsJeiTypes.GAS_STACK, new IngredientRendererGasStack(gasWrapper, gasGaugeWrapper));
+			builder.addSlot(role, wrapper.getXPos() + 1, wrapper.getYPos() + wrapper.getHeight() - height).addIngredient(ElectrodynamicsJeiTypes.GAS_STACK, stack).setCustomRenderer(ElectrodynamicsJeiTypes.GAS_STACK, new IngredientRendererGasStack((int) gaugeCap, -oneMinusHeight + 1, height, gasGaugeWrapper));
 		}
 	}
 

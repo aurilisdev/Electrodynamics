@@ -42,19 +42,13 @@ public class ScreenComponentGasFilter extends ScreenComponentGeneric {
 
 		Property<GasStack> property = filter.filteredGases[index];
 
-		GasGaugeTextures texture;
-
 		if (!property.get().isEmpty()) {
 
-			texture = GasGaugeTextures.MERCURY_FLUID;
-
-			RenderingUtils.bindTexture(texture.getLocation());
-
-			gui.drawTexturedRect(stack, guiWidth + xLocation + 1, guiHeight + yLocation, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
+			ScreenComponentGasGauge.renderMercuryTexture(stack, guiWidth + xLocation + 1, guiHeight + yLocation + 1, 1);
 
 		}
 
-		texture = GasGaugeTextures.LEVEL_DEFAULT;
+		GasGaugeTextures texture = GasGaugeTextures.LEVEL_DEFAULT;
 
 		RenderingUtils.bindTexture(texture.getLocation());
 

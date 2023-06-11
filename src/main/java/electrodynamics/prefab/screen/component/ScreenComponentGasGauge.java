@@ -22,6 +22,7 @@ import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
@@ -45,48 +46,13 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 
 		GasTank tank = gasTank.get();
 
-		GasGaugeTextures texture;
-
 		if (tank != null) {
 
-			texture = GasGaugeTextures.MERCURY_FLUID;
-
-			TextureAtlasSprite mercury = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(texture.getLocation());
-			Matrix4f matrix = stack.last().pose();
-
-			RenderSystem.setShaderTexture(0, mercury.atlas().getId());
-
-			float progress = (float) tank.getGasAmount() / (float) tank.getCapacity();
-			int height = (int) (progress * texture.textureHeight());
-
-			int x1 = guiWidth + xLocation + 1;
-			int x2 = x1 + 12;
-
-			int y1 = guiHeight + yLocation + 1 + texture.textureHeight() - Math.min(height, texture.textureHeight());
-			int y2 = y1 + height;
-
-			float minU = mercury.getU0();
-			float maxU = mercury.getU1();
-
-			float minV = mercury.getV0();
-			float maxV = mercury.getV1();
-
-			float deltaV = maxV - minV;
-
-			minV = maxV - deltaV * progress;
-
-			RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
-			bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
-			bufferbuilder.vertex(matrix, x1, y2, 0).uv(minU, maxV).endVertex();
-			bufferbuilder.vertex(matrix, x2, y2, 0).uv(maxU, maxV).endVertex();
-			bufferbuilder.vertex(matrix, x2, y1, 0).uv(maxU, minV).endVertex();
-			bufferbuilder.vertex(matrix, x1, y1, 0).uv(minU, minV).endVertex();
-			BufferUploader.drawWithShader(bufferbuilder.end());
+			renderMercuryTexture(stack, guiWidth + xLocation + 1, guiHeight + yLocation +1, (float) tank.getGasAmount() / (float) tank.getCapacity());
 
 		}
 
-		texture = GasGaugeTextures.LEVEL_DEFAULT;
+		GasGaugeTextures texture = GasGaugeTextures.LEVEL_DEFAULT;
 
 		RenderingUtils.bindTexture(texture.getLocation());
 
@@ -115,15 +81,54 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 			} else {
 
 				tooltips.add(gas.getGas().getDescription().getVisualOrderText());
-				tooltips.add(Component.literal(ChatFormatter.formatFluidMilibuckets(tank.getGasAmount()) + " / " + ChatFormatter.formatFluidMilibuckets(tank.getCapacity())).getVisualOrderText());
-				tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN)).getVisualOrderText());
-				tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnit.PRESSURE_ATM)).getVisualOrderText());
+				tooltips.add(Component.literal(ChatFormatter.formatFluidMilibuckets(tank.getGasAmount()) + " / " + ChatFormatter.formatFluidMilibuckets(tank.getCapacity())).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 
 			}
 
 			gui.displayTooltips(stack, tooltips, xAxis, yAxis);
 
 		}
+	}
+
+	public static void renderMercuryTexture(PoseStack stack, int x, int y, float progress) {
+
+		GasGaugeTextures texture = GasGaugeTextures.MERCURY_FLUID;
+
+		TextureAtlasSprite mercury = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(texture.getLocation());
+
+		Matrix4f matrix = stack.last().pose();
+
+		RenderSystem.setShaderTexture(0, mercury.atlas().getId());
+
+		int height = (int) (progress * texture.textureHeight());
+
+		int x1 = x;
+		int x2 = x1 + 12;
+
+		int y1 = y + texture.textureHeight() - height;
+		int y2 = y1 + height;
+
+		float minU = mercury.getU0();
+		float maxU = mercury.getU1();
+
+		float minV = mercury.getV0();
+		float maxV = mercury.getV1();
+
+		float deltaV = maxV - minV;
+
+		minV = maxV - deltaV * progress;
+
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+		BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+		bufferbuilder.vertex(matrix, x1, y2, 0).uv(minU, maxV).endVertex();
+		bufferbuilder.vertex(matrix, x2, y2, 0).uv(maxU, maxV).endVertex();
+		bufferbuilder.vertex(matrix, x2, y1, 0).uv(maxU, minV).endVertex();
+		bufferbuilder.vertex(matrix, x1, y1, 0).uv(minU, minV).endVertex();
+		BufferUploader.drawWithShader(bufferbuilder.end());
+
 	}
 
 	public enum GasGaugeTextures implements ITexture {

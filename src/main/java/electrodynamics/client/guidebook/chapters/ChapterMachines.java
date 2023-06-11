@@ -3,9 +3,9 @@ package electrodynamics.client.guidebook.chapters;
 import electrodynamics.api.References;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Module;
-import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.ItemWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.TextWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -15,7 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class ChapterMachines extends Chapter {
 
-	private static final ItemWrapperObject LOGO = new ItemWrapperObject(7, 10, 2.0F, 32, 32, ElectrodynamicsItems.getItem(SubtypeMachine.electricfurnace));
+	private static final ItemWrapperObject LOGO = new ItemWrapperObject(7, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.getItem(SubtypeMachine.electricfurnace));
 
 	public ChapterMachines(Module module) {
 		super(module);

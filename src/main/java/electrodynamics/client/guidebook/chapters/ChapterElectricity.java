@@ -3,8 +3,8 @@ package electrodynamics.client.guidebook.chapters;
 import electrodynamics.api.References;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Module;
-import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.TextWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -115,10 +115,19 @@ public class ChapterElectricity extends Chapter {
 		
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l19")).setSeparateStart().setIndentions(1));
 		
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.symbols").withStyle(ChatFormatting.BOLD)).setNewPage());
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.symbvoltage")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.symbcurrent")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.symbresistance")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.symbpower")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.symbenergy")).setSeparateStart().setIndentions(1));
+		blankLine();
+		
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.equations").withStyle(ChatFormatting.BOLD)).setSeparateStart());
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.powerfromenergy")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.powerfromvoltage")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.energytickstoseconds")).setSeparateStart().setIndentions(1));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.voltagefromresistance")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.ohmslaw")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.powerfromcurrent")).setSeparateStart().setIndentions(1));
 
 	}

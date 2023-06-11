@@ -20,6 +20,7 @@ public class TextUtils {
 	public static final String JEI_INFO_FLUID = "info.fluid";
 	public static final String BLOCK_BASE = "block";
 	public static final String GAS_BASE = "gas";
+	public static final String ADVANCEMENT_BASE = "advancement";
 
 	public static final DecimalFormat FORMATTER = new DecimalFormat("0.0##");
 
@@ -57,6 +58,10 @@ public class TextUtils {
 	
 	public static MutableComponent gas(String key, Object...additional) {
 		return translated(GAS_BASE, key, additional);
+	}
+	
+	public static MutableComponent advancement(String key, Object...additional) {
+		return translated(ADVANCEMENT_BASE, key, additional);
 	}
 
 	public static MutableComponent translated(String base, String key, Object... additional) {

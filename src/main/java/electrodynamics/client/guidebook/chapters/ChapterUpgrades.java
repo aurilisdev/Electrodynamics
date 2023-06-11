@@ -1,19 +1,29 @@
 package electrodynamics.client.guidebook.chapters;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import electrodynamics.client.guidebook.ScreenGuidebook;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Module;
-import electrodynamics.client.guidebook.utils.pagedata.ItemWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.TextWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.OnKeyPress;
+import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
+import electrodynamics.compatibility.jei.JeiBuffer;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.item.ItemStack;
 
 public class ChapterUpgrades extends Chapter {
 
-	private static final ItemWrapperObject LOGO = new ItemWrapperObject(7, 10, 2.0F, 32, 32, ElectrodynamicsItems.getItem(SubtypeItemUpgrade.advancedspeed));
+	private static final ItemWrapperObject LOGO = new ItemWrapperObject(7, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.getItem(SubtypeItemUpgrade.advancedspeed));
 
 	public ChapterUpgrades(Module module) {
 		super(module);
@@ -33,7 +43,31 @@ public class ChapterUpgrades extends Chapter {
 	public void addData() {
 		// Injector Upgrade tutorial
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.iteminput).getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setSeparateStart());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 2.0F, 32, 30, ElectrodynamicsItems.getItem(SubtypeItemUpgrade.iteminput)));
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.getItem(SubtypeItemUpgrade.iteminput))
+				.onTooltip(new OnTooltip() {
+
+					@Override
+					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+						if (JeiBuffer.isJeiInstalled()) {
+							List<FormattedCharSequence> tooltips = new ArrayList<>();
+							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
+						}
+
+					}
+				}).onKeyPress(new OnKeyPress() {
+
+					@Override
+					public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
+
+					}
+
+					@Override
+					public Object getJeiLookup() {
+						return new ItemStack(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.iteminput));
+					}
+
+				}));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.l1")).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.default").withStyle(ChatFormatting.BOLD)));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.l2")));
@@ -42,7 +76,31 @@ public class ChapterUpgrades extends Chapter {
 
 		// Ejector Upgrade tutorial
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput).getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 2.0F, 32, 30, ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput)));
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput))
+				.onTooltip(new OnTooltip() {
+
+					@Override
+					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+						if (JeiBuffer.isJeiInstalled()) {
+							List<FormattedCharSequence> tooltips = new ArrayList<>();
+							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
+						}
+
+					}
+				}).onKeyPress(new OnKeyPress() {
+
+					@Override
+					public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
+
+					}
+
+					@Override
+					public Object getJeiLookup() {
+						return new ItemStack(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput));
+					}
+
+				}));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.l4")).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.default").withStyle(ChatFormatting.BOLD)));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.l5")));

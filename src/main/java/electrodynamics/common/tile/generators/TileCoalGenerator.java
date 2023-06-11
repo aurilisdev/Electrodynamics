@@ -75,12 +75,9 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 			fuel.shrink(1);
 			maxBurnTime.set(Math.max(burnTime.get(), 1));
 		}
-		BlockMachine machine = (BlockMachine) getBlockState().getBlock();
-		if (machine != null) {
-			boolean greaterBurnTime = burnTime.get() > 0;
-			if (BlockEntityUtils.isLit(this) ^ greaterBurnTime) {
-				BlockEntityUtils.updateLit(this, greaterBurnTime);
-			}
+		boolean greaterBurnTime = burnTime.get() > 0;
+		if (BlockEntityUtils.isLit(this) ^ greaterBurnTime) {
+			BlockEntityUtils.updateLit(this, greaterBurnTime);
 		}
 		if (heat.getValue().get() > 27 && output.valid()) {
 			ElectricityUtils.receivePower(output.getSafe(), direction.getDirection(), currentOutput, false);

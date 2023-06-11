@@ -176,7 +176,7 @@ public class ItemJetpack extends ArmorItem {
 						renderClientParticles(world, player, particleZ);
 						sendPacket(player, true, deltaY);
 					} else if (mode == 1 && isDown) {
-						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2 * pressure, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2 * pressure, player, stack);
+						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2.0 * pressure, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2.0 * pressure, player, stack);
 						renderClientParticles(world, player, particleZ);
 						sendPacket(player, true, deltaY);
 					} else if (mode == 1 && player.getFeetBlockState().isAir()) {
@@ -184,10 +184,9 @@ public class ItemJetpack extends ArmorItem {
 						renderClientParticles(world, player, particleZ);
 						sendPacket(player, true, deltaY);
 					} else if (mode == 2 && player.getFeetBlockState().isAir()) {
-
-						// TODO elytra particles?
-						sendPacket(player, false, player.getDeltaMovement().y);
-
+						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 4.0 * pressure, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 4.0 * pressure, player, stack);
+						sendPacket(player, true, deltaY);
+						//TODO elytra fuel particles?
 					} else {
 						sendPacket(player, false, player.getDeltaMovement().y);
 					}
