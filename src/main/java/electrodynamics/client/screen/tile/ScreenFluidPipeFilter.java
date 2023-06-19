@@ -36,7 +36,7 @@ public class ScreenFluidPipeFilter extends GenericScreen<ContainerFluidPipeFilte
 			filter.isWhitelist.set(!filter.isWhitelist.get());
 			filter.isWhitelist.updateServer();
 
-		}).setScreen(this));
+		}));
 
 	}
 

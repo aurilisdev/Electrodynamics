@@ -6,6 +6,7 @@ import electrodynamics.common.inventory.container.tile.ContainerGasPipePump;
 import electrodynamics.common.tile.network.gas.TileGasPipePump;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
 import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -20,6 +21,7 @@ public class ScreenGasPipePump extends GenericScreen<ContainerGasPipePump> {
 		super(screenContainer, inv, titleIn);
 
 		addComponent(priority = new ScreenComponentEditBox(94, 35, 59, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(1).setResponder(this::setPriority).setFilter(ScreenComponentEditBox.POSITIVE_INTEGER));
+		addComponent(new ScreenComponentSimpleLabel(20, 39, 10, 4210752, TextUtils.gui("prioritypump.priority")));
 	}
 	
 	private void setPriority(String prior) {
@@ -66,13 +68,6 @@ public class ScreenGasPipePump extends GenericScreen<ContainerGasPipePump> {
 				priority.setValue("" + pump.priority.get());
 			}
 		}
-		priority.render(matrixStack, mouseX, mouseY, partialTicks);
-	}
-
-	@Override
-	protected void renderLabels(PoseStack stack, int x, int y) {
-		super.renderLabels(stack, x, y);
-		font.draw(stack, TextUtils.gui("prioritypump.priority"), 20, 39, 4210752);
 	}
 
 }

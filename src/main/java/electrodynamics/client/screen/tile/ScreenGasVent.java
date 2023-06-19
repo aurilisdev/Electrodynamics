@@ -9,7 +9,6 @@ public class ScreenGasVent extends GenericScreen<ContainerGasVent> {
 
 	public ScreenGasVent(ContainerGasVent container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
-		// TODO Auto-generated constructor stub
 	}
 
 }

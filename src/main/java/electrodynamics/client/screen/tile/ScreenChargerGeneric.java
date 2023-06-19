@@ -1,15 +1,12 @@
 package electrodynamics.client.screen.tile;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.mojang.blaze3d.vertex.PoseStack;
-
+import electrodynamics.api.electricity.formatting.ChatFormatter;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
 import electrodynamics.common.tile.charger.GenericTileCharger;
 import electrodynamics.prefab.screen.GenericScreen;
+import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
 import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
 import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
@@ -23,8 +20,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric> {
-
-	private static final DecimalFormat DECIMAL_FORMATTER = new DecimalFormat("#0.0");
 
 	public ScreenChargerGeneric(ContainerChargerGeneric screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
@@ -41,27 +36,19 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 		}, 118, 37));
 
 		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2).wattage(e -> e.getMaxJoulesStored() * 20));
-	}
-
-	@Override
-	protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-		super.renderLabels(matrixStack, mouseX, mouseY);
-		List<? extends Component> screenOverlays = getChargerInfo();
-
-		if (!screenOverlays.isEmpty()) {
-			font.draw(matrixStack, screenOverlays.get(0), inventoryLabelX, 33f, 0);
-			font.draw(matrixStack, screenOverlays.get(1), inventoryLabelX, 43f, 0);
-		}
-	}
-
-	private List<? extends Component> getChargerInfo() {
-		ArrayList<Component> list = new ArrayList<>();
-		GenericTileCharger charger = menu.getHostFromIntArray();
-		if (charger != null) {
-
+		addComponent(new ScreenComponentMultiLabel(0, 0, stack -> {
+			
+			GenericTileCharger charger = menu.getHostFromIntArray();
+			
+			if(charger == null) {
+				return;
+			}
+			
 			ItemStack chargingItem = menu.getSlot(0).getItem();
+			
 			double chargingPercentage = 0;
 			double chargeCapable = 100.0;
+			
 			if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric electricItem) {
 
 				ComponentElectrodynamic electro = charger.getComponent(ComponentType.Electrodynamic);
@@ -70,22 +57,25 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 				chargeCapable = electro.getVoltage() / electricItem.getElectricProperties().receive.getVoltage() * 100;
 			}
 
-			list.add(TextUtils.gui("genericcharger.chargeperc", Component.literal(DECIMAL_FORMATTER.format(chargingPercentage) + "%").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+			font.draw(stack, TextUtils.gui("genericcharger.chargeperc", Component.literal(ChatFormatter.getChatDisplayShort(chargingPercentage, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.DARK_GRAY), inventoryLabelX, 33, 0);
 
+			Component capable = Component.empty();
+			
 			if (chargeCapable < 33) {
-				list.add(getChargeCapableFormatted(chargeCapable, ChatFormatting.RED));
+				capable = getChargeCapableFormatted(chargeCapable, ChatFormatting.RED);
 			} else if (chargeCapable < 66) {
-				list.add(getChargeCapableFormatted(chargeCapable, ChatFormatting.YELLOW));
+				capable = getChargeCapableFormatted(chargeCapable, ChatFormatting.YELLOW);
 			} else {
-				list.add(getChargeCapableFormatted(chargeCapable, ChatFormatting.GREEN));
+				capable = getChargeCapableFormatted(chargeCapable, ChatFormatting.GREEN);
 			}
-
-		}
-		return list;
+			
+			font.draw(stack, capable, inventoryLabelX, 43, 0);
+			
+		}));
 	}
 
-	private static Component getChargeCapableFormatted(double chargeCapable, ChatFormatting formatColor) {
-		return TextUtils.gui("genericcharger.chargecapable", Component.literal(DECIMAL_FORMATTER.format(chargeCapable) + "%").withStyle(formatColor)).withStyle(ChatFormatting.DARK_GRAY);
+	private Component getChargeCapableFormatted(double chargeCapable, ChatFormatting formatColor) {
+		return TextUtils.gui("genericcharger.chargecapable", Component.literal(ChatFormatter.getChatDisplayShort(chargeCapable, DisplayUnit.PERCENTAGE)).withStyle(formatColor)).withStyle(ChatFormatting.DARK_GRAY);
 	}
 
 }

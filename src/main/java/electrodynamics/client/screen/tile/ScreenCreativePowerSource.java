@@ -6,6 +6,7 @@ import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSou
 import electrodynamics.common.tile.generators.TileCreativePowerSource;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
 import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,24 +22,72 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 		super(container, inv, titleIn);
 		addComponent(voltage = new ScreenComponentEditBox(80, 27, 49, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(6).setFilter(ScreenComponentEditBox.POSITIVE_INTEGER).setResponder(this::setVoltage));
 		addComponent(power = new ScreenComponentEditBox(80, 45, 49, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setFilter(ScreenComponentEditBox.POSITIVE_INTEGER).setResponder(this::setPower));
-	}
-
-	private void setVals(String vals) {
-		if (!vals.isEmpty()) {
-			menu.setValues(voltage.getValue(), power.getValue());
-		}
+		addComponent(new ScreenComponentSimpleLabel(40, 31, 10, 4210752, TextUtils.gui("creativepowersource.voltage")));
+		addComponent(new ScreenComponentSimpleLabel(40, 49, 10, 4210752, TextUtils.gui("creativepowersource.power")));
+		addComponent(new ScreenComponentSimpleLabel(131, 31, 10, 4210752, TextUtils.gui("creativepowersource.voltunit")));
+		addComponent(new ScreenComponentSimpleLabel(131, 49, 10, 4210752, TextUtils.gui("creativepowersource.powerunit")));
 	}
 
 	private void setVoltage(String val) {
 		voltage.setFocus(true);
 		power.setFocus(false);
-		setVals(val);
+		handleVoltage(val);
+	}
+
+	private void handleVoltage(String val) {
+		if (val.isEmpty()) {
+			return;
+		}
+
+		Integer voltage = 0;
+
+		try {
+			voltage = Integer.parseInt(val);
+		} catch (Exception e) {
+
+		}
+
+		TileCreativePowerSource tile = menu.getHostFromIntArray();
+
+		if (tile == null) {
+			return;
+		}
+
+		tile.voltage.set(voltage);
+
+		tile.voltage.updateServer();
 	}
 
 	private void setPower(String val) {
 		voltage.setFocus(false);
 		power.setFocus(true);
-		setVals(val);
+		handlePower(val);
+	}
+
+	private void handlePower(String val) {
+
+		if (val.isEmpty()) {
+			return;
+		}
+
+		Integer power = 0;
+
+		try {
+			power = Integer.parseInt(val);
+		} catch (Exception e) {
+
+		}
+
+		TileCreativePowerSource tile = menu.getHostFromIntArray();
+
+		if (tile == null) {
+			return;
+		}
+		
+		tile.power.set(power);
+		
+		tile.power.updateServer();
+
 	}
 
 	@Override
@@ -52,15 +101,6 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 				power.setValue("" + source.power.get());
 			}
 		}
-	}
-
-	@Override
-	protected void renderLabels(PoseStack stack, int x, int y) {
-		super.renderLabels(stack, x, y);
-		font.draw(stack, TextUtils.gui("creativepowersource.voltage"), 40, 31, 4210752);
-		font.draw(stack, TextUtils.gui("creativepowersource.power"), 40, 49, 4210752);
-		font.draw(stack, TextUtils.gui("creativepowersource.voltunit"), 131, 31, 4210752);
-		font.draw(stack, TextUtils.gui("creativepowersource.powerunit"), 131, 49, 4210752);
 	}
 
 }

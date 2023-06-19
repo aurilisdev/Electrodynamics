@@ -36,7 +36,7 @@ public class ScreenGasPipeFilter extends GenericScreen<ContainerGasPipeFilter> {
 			filter.isWhitelist.set(!filter.isWhitelist.get());
 			filter.isWhitelist.updateServer();
 
-		}).setScreen(this));
+		}));
 
 	}
 

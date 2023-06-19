@@ -26,7 +26,7 @@ public abstract class AbstractScreenComponentInfo extends ScreenComponentGeneric
 
 	@Override
 	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, texture.textureWidth(), texture.textureHeight())) {
+		if (isHovered()) {
 			gui.displayTooltips(stack, getInfo(infoHandler.getInfo()), xAxis, yAxis);
 		}
 	}

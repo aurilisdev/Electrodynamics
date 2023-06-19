@@ -12,6 +12,7 @@ import electrodynamics.common.tile.gastransformer.thermoelectricmanipulator.Tile
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
 import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentFluidGauge;
 import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentFluidGaugeInput;
 import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
@@ -71,6 +72,9 @@ public class ScreenThermoelectricManipulator extends GenericScreen<ContainerTher
 		addComponent(new ScreenComponentGeneric(Textures.CONDENSER_COLUMN, 62, 19));
 		
 		addEditBox(temperature = new ScreenComponentEditBox(94, 75, 59, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(20).setResponder(this::setTemperature).setFilter(ScreenComponentEditBox.POSITIVE_DECIMAL));
+		
+		addComponent(new ScreenComponentSimpleLabel(10, 80, 10, 4210752, TextUtils.gui("thermoelectricmanipulator.temp")));
+		addComponent(new ScreenComponentSimpleLabel(155, 80, 10, 4210752, Component.literal(DisplayUnit.TEMPERATURE_KELVIN.symbol)));
 	}
 	
 	private void setTemperature(String temp) {
@@ -116,13 +120,6 @@ public class ScreenThermoelectricManipulator extends GenericScreen<ContainerTher
 				temperature.setValue("" + manipulator.targetTemperature.get());
 			}
 		}
-	}
-	
-	@Override
-	protected void renderLabels(PoseStack stack, int x, int y) {
-		super.renderLabels(stack, x, y);
-		font.draw(stack, TextUtils.gui("thermoelectricmanipulator.temp"), 10, 80, 4210752);
-		font.draw(stack, Component.literal(DisplayUnit.TEMPERATURE_KELVIN.symbol), 155, 80, 4210752);
 	}
 
 }

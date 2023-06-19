@@ -38,8 +38,8 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 	private Set<ScreenComponentEditBox> editBoxes = new HashSet<>();
 	protected int playerInvOffset = 0;
 
-	public GenericScreen(T screenContainer, Inventory inv, Component titleIn) {
-		super(screenContainer, inv, titleIn);
+	public GenericScreen(T container, Inventory inv, Component title) {
+		super(container, inv, title);
 		initializeComponents();
 	}
 
