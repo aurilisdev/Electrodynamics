@@ -29,15 +29,15 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 	public ScreenCoalGenerator(ContainerCoalGenerator container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
+		addComponent(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
 			TileCoalGenerator box = container.getHostFromIntArray();
 			if (box != null) {
 				return (double) box.burnTime.get() / (double) box.maxBurnTime.get();
 			}
 			return 0;
-		}, this, 25, 25));
-		components.add(new ScreenComponentTemperature(this::getTemperatureInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE));
-		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
+		}, 25, 25));
+		addComponent(new ScreenComponentTemperature(this::getTemperatureInformation, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE));
+		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 
 	private List<FormattedCharSequence> getTemperatureInformation() {

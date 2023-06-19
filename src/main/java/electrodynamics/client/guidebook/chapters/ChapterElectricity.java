@@ -1,8 +1,12 @@
 package electrodynamics.client.guidebook.chapters;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import electrodynamics.api.References;
+import electrodynamics.client.guidebook.ScreenGuidebook;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Module;
+import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
 import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
 import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -46,17 +50,45 @@ public class ChapterElectricity extends Chapter {
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l4")).setSeparateStart());
 
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.voltageexample", 120)).setCentered().setNewPage());
-		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/120vmachines.png")));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/120vmachines.png")).onTooltip(new OnTooltip() {
+
+			@Override
+			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+				screen.displayTooltip(stack, TextUtils.guidebook("chapter.electricity.120vtooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+			}
+			
+		}));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.voltageexamplenote")));
 
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.voltageexample", 240)).setCentered().setNewPage());
-		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/240vmachines.png")));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/240vmachines.png")).onTooltip(new OnTooltip() {
+
+			@Override
+			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+				screen.displayTooltip(stack, TextUtils.guidebook("chapter.electricity.240vtooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+			}
+			
+		}));
 
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.voltageexample", 480)).setCentered().setNewPage());
-		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/480vmachines.png")));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/480vmachines.png")).onTooltip(new OnTooltip() {
+
+			@Override
+			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+				screen.displayTooltip(stack, TextUtils.guidebook("chapter.electricity.480vtooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+			}
+			
+		}));
 
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.voltageexample", 960)).setCentered().setNewPage());
-		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/960vmachines.png")));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/960vmachines.png")).onTooltip(new OnTooltip() {
+
+			@Override
+			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+				screen.displayTooltip(stack, TextUtils.guidebook("chapter.electricity.960vtooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+			}
+			
+		}));
 
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l5")).setNewPage().setIndentions(1));
 
@@ -70,7 +102,14 @@ public class ChapterElectricity extends Chapter {
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.energyinput")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.energyoutput")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l8")).setSeparateStart());
-		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, new ResourceLocation(References.ID, "textures/screen/guidebook/energyio.png")));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, new ResourceLocation(References.ID, "textures/screen/guidebook/energyio.png")).onTooltip(new OnTooltip() {
+
+			@Override
+			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+				screen.displayTooltip(stack, TextUtils.guidebook("chapter.electricity.energyiotooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+			}
+			
+		}));
 
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l9")).setNewPage().setIndentions(1));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 72, 150, 72, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/wiretooltip1.png")));

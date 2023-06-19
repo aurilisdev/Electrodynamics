@@ -3,7 +3,6 @@ package electrodynamics.prefab.screen.component;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.FluidTankSupplier;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentGauge;
 import electrodynamics.prefab.utilities.RenderingUtils;
@@ -18,11 +17,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenComponentFluid extends AbstractScreenComponentGauge {
-	protected FluidTankSupplier fluidInfoHandler;
+public class ScreenComponentFluidGauge extends AbstractScreenComponentGauge {
+	public FluidTankSupplier fluidInfoHandler;
 
-	public ScreenComponentFluid(FluidTankSupplier fluidInfoHandler, IScreenWrapper gui, int x, int y) {
-		super(gui, x, y);
+	public ScreenComponentFluidGauge(FluidTankSupplier fluidInfoHandler, int x, int y) {
+		super(x, y);
 		this.fluidInfoHandler = fluidInfoHandler;
 	}
 

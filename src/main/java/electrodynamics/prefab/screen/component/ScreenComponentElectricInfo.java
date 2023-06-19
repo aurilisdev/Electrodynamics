@@ -30,12 +30,12 @@ public class ScreenComponentElectricInfo extends ScreenComponentGuiTab {
 
 	private Function<ComponentElectrodynamic, Double> wattage = null;
 
-	public ScreenComponentElectricInfo(final TextPropertySupplier infoHandler, final IScreenWrapper gui, final int x, final int y) {
-		super(GuiInfoTabTextures.REGULAR, IconType.ENERGY_GREEN, infoHandler, gui, x, y);
+	public ScreenComponentElectricInfo(TextPropertySupplier infoHandler, int x, int y) {
+		super(GuiInfoTabTextures.REGULAR, IconType.ENERGY_GREEN, infoHandler, x, y);
 	}
 
-	public ScreenComponentElectricInfo(final IScreenWrapper gui, final int x, final int y) {
-		this(AbstractScreenComponentInfo.EMPTY, gui, x, y);
+	public ScreenComponentElectricInfo(int x, int y) {
+		this(AbstractScreenComponentInfo.EMPTY, x, y);
 	}
 
 	public ScreenComponentElectricInfo wattage(double wattage) {

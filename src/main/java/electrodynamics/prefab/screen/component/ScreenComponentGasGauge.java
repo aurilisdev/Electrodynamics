@@ -17,8 +17,7 @@ import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.gas.GasStack;
-import electrodynamics.api.gas.GasTank;
-import electrodynamics.api.screen.IScreenWrapper;
+import electrodynamics.api.gas.utils.IGasTank;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.prefab.utilities.RenderingUtils;
@@ -33,10 +32,10 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(References.ID + ":textures/screen/component/gas.png");
 
-	protected final Supplier<GasTank> gasTank;
+	public final Supplier<IGasTank> gasTank;
 
-	public ScreenComponentGasGauge(Supplier<GasTank> gasStack, IScreenWrapper gui, int x, int y) {
-		super(GasGaugeTextures.BACKGROUND_DEFAULT, gui, x, y);
+	public ScreenComponentGasGauge(Supplier<IGasTank> gasStack, int x, int y) {
+		super(GasGaugeTextures.BACKGROUND_DEFAULT, x, y);
 		this.gasTank = gasStack;
 	}
 
@@ -44,7 +43,7 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
 
-		GasTank tank = gasTank.get();
+		IGasTank tank = gasTank.get();
 
 		if (tank != null) {
 
@@ -61,10 +60,10 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 	}
 
 	@Override
-	public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
+	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(), super.texture.textureHeight())) {
 
-			GasTank tank = gasTank.get();
+			IGasTank tank = gasTank.get();
 
 			List<FormattedCharSequence> tooltips = new ArrayList<>();
 

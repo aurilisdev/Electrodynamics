@@ -88,18 +88,10 @@ public class ChapterQuarry extends Chapter {
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.silktouch).getDescription()).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemvoid).getDescription()).setIndentions(1).setSeparateStart());
 		blankLine();
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7the")).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7unbreaking").withStyle(ChatFormatting.BOLD)));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7unbreakingdesc")));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7the")).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7fortune").withStyle(ChatFormatting.BOLD)));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7fortunedesc")));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7the")).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7silktouch").withStyle(ChatFormatting.BOLD)));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7silktouchdesc")));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7the")).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7void").withStyle(ChatFormatting.BOLD)));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7voiddesc")));
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7unbreaking", ElectrodynamicsItems.getItem(SubtypeItemUpgrade.unbreaking).getDescription().copy().withStyle(ChatFormatting.BOLD))).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7fortune", ElectrodynamicsItems.getItem(SubtypeItemUpgrade.fortune).getDescription().copy().withStyle(ChatFormatting.BOLD))).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7silktouch", ElectrodynamicsItems.getItem(SubtypeItemUpgrade.silktouch).getDescription().copy().withStyle(ChatFormatting.BOLD))).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.quarry.step7void", ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemvoid).getDescription().copy().withStyle(ChatFormatting.BOLD))).setIndentions(1).setSeparateStart());
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, new ResourceLocation(References.ID, "textures/screen/guidebook/quarrygui1.png")));
 		
 		//Step 8

@@ -3,6 +3,7 @@ package electrodynamics.registers;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.ContainerGasPipeFilter;
+import electrodynamics.common.inventory.container.item.ContainerElectricDrill;
 import electrodynamics.common.inventory.container.item.ContainerGuidebook;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
@@ -96,4 +97,5 @@ public class ElectrodynamicsMenuTypes {
 	public static final RegistryObject<MenuType<ContainerFluidPipePump>> CONTAINER_FLUIDPIPEPUMP = MENU_TYPES.register("fluidpipepump", () -> new MenuType<>(ContainerFluidPipePump::new));
 	public static final RegistryObject<MenuType<ContainerGasPipeFilter>> CONTAINER_GASPIPEFILTER = MENU_TYPES.register("gaspipefilter", () -> new MenuType<>(ContainerGasPipeFilter::new));
 	public static final RegistryObject<MenuType<ContainerFluidPipeFilter>> CONTAINER_FLUIDPIPEFILTER = MENU_TYPES.register("fluidpipefilter", () -> new MenuType<>(ContainerFluidPipeFilter::new));
+	public static final RegistryObject<MenuType<ContainerElectricDrill>> CONTAINER_ELECTRICDRILL = MENU_TYPES.register("electricdrill", () -> new MenuType<>(ContainerElectricDrill::new));
 }

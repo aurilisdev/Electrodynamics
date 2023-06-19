@@ -4,12 +4,13 @@ import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.component.ISlotTexture;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot.SlotType;
+import electrodynamics.prefab.screen.component.utils.SlotTextureProvider;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
-public class SlotGeneric extends Slot {
+public class SlotGeneric extends Slot implements SlotTextureProvider {
 
 	private final ISlotTexture slotType;
 	private final ITexture iconType;
@@ -29,10 +30,12 @@ public class SlotGeneric extends Slot {
 		return stack != null && container.canPlaceItem(getSlotIndex(), stack);
 	}
 
+	@Override
 	public ISlotTexture getSlotType() {
 		return slotType;
 	}
 
+	@Override
 	public ITexture getIconType() {
 		return iconType;
 	}

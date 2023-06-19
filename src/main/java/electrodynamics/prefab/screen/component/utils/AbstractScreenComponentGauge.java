@@ -6,7 +6,6 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
-import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
 import electrodynamics.prefab.utilities.RenderingUtils;
@@ -24,8 +23,8 @@ public abstract class AbstractScreenComponentGauge extends ScreenComponentGeneri
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(References.ID + ":textures/screen/component/fluid.png");
 
-	public AbstractScreenComponentGauge(IScreenWrapper gui, int x, int y) {
-		super(GaugeTextures.BACKGROUND_DEFAULT, gui, x, y);
+	public AbstractScreenComponentGauge(int x, int y) {
+		super(GaugeTextures.BACKGROUND_DEFAULT, x, y);
 	}
 
 	@Override
@@ -60,7 +59,7 @@ public abstract class AbstractScreenComponentGauge extends ScreenComponentGeneri
 	protected abstract void applyColor();
 
 	@Override
-	public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
+	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(), super.texture.textureHeight())) {
 			List<? extends FormattedCharSequence> tooltips = getTooltips();
 

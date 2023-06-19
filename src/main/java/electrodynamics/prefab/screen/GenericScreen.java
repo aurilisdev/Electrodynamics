@@ -1,5 +1,6 @@
 package electrodynamics.prefab.screen;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,14 +9,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
-import electrodynamics.api.screen.component.IGuiComponent;
 import electrodynamics.api.screen.component.ISlotTexture;
 import electrodynamics.prefab.inventory.container.GenericContainer;
-import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot.SlotType;
+import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponent;
+import electrodynamics.prefab.screen.component.utils.SlotTextureProvider;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -31,7 +34,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class GenericScreen<T extends GenericContainer> extends AbstractContainerScreen<T> implements IScreenWrapper {
 
 	protected ResourceLocation defaultResource = new ResourceLocation(References.ID + ":textures/screen/component/base.png");
-	protected Set<IGuiComponent> components = new HashSet<>();
+	private Set<AbstractScreenComponent> components = new HashSet<>();
+	private Set<ScreenComponentEditBox> editBoxes = new HashSet<>();
 	protected int playerInvOffset = 0;
 
 	public GenericScreen(T screenContainer, Inventory inv, Component titleIn) {
@@ -41,16 +45,35 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 
 	protected void initializeComponents() {
 		for (Slot slot : menu.slots) {
-			components.add(createScreenSlot(slot));
+			addComponent(createScreenSlot(slot));
 		}
 	}
 
 	protected ScreenComponentSlot createScreenSlot(Slot slot) {
-		if (slot instanceof SlotGeneric generic) {
-			ISlotTexture texture = generic.getSlotType();
-			return new ScreenComponentSlot(slot, texture, generic.getIconType(), this, slot.x + texture.xOffset(), slot.y + texture.yOffset());
+		if (slot instanceof SlotTextureProvider provider) {
+			ISlotTexture texture = provider.getSlotType();
+			return new ScreenComponentSlot(slot, texture, provider.getIconType(), slot.x + texture.xOffset(), slot.y + texture.yOffset());
 		}
-		return new ScreenComponentSlot(slot, SlotType.NORMAL, IconType.NONE, this, slot.x + SlotType.NORMAL.xOffset(), slot.y + SlotType.NORMAL.yOffset());
+		return new ScreenComponentSlot(slot, SlotType.NORMAL, IconType.NONE, slot.x + SlotType.NORMAL.xOffset(), slot.y + SlotType.NORMAL.yOffset());
+	}
+	
+	@Override
+	protected void containerTick() {
+		super.containerTick();
+		for(ScreenComponentEditBox box : editBoxes) {
+			box.tick();
+		}
+	}
+	
+	@Override
+	protected void init() {
+		super.init();
+		for(AbstractScreenComponent component : components) {
+			addRenderableWidget(component);
+		}
+		if(editBoxes.size() > 0) {
+			minecraft.keyboardHandler.setSendRepeatsToGui(true);
+		}
 	}
 
 	@Override
@@ -61,85 +84,35 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 	}
 
 	@Override
-	protected void renderLabels(PoseStack stack, int x, int y) {
-		super.renderLabels(stack, x, y);
-		int xAxis = x - (width - imageWidth) / 2;
-		int yAxis = y - (height - imageHeight) / 2;
-		for (IGuiComponent component : components) {
-			component.renderForeground(stack, xAxis, yAxis);
+	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
+		super.renderLabels(stack, mouseX, mouseY);
+		int guiWidth = (int) getGuiWidth();
+		int guiHeight = (int) getGuiHeight();
+		int xAxis = mouseX - guiWidth;
+		int yAxis = mouseY - guiHeight;
+		for (AbstractScreenComponent component : components) {
+			component.renderForeground(stack, xAxis, yAxis, guiWidth, guiHeight);
 		}
 	}
 
 	@Override
-	protected void renderBg(PoseStack stack, float partialTick, int x, int y) {
+	protected void renderBg(PoseStack stack, float partialTick, int mouseX, int mouseY) {
 		RenderingUtils.bindTexture(defaultResource);
-		int guiWidth = (width - imageWidth) / 2;
-		int guiHeight = (height - imageHeight) / 2;
+		int guiWidth = (int) getGuiWidth();
+		int guiHeight = (int) getGuiHeight();
 		blit(stack, guiWidth, guiHeight, 0, 248, imageWidth, 4);
 		blit(stack, guiWidth, guiHeight + 4, 0, 0, imageWidth, imageHeight - 8);
 		blit(stack, guiWidth, guiHeight + imageHeight - 4, 0, 252, imageWidth, 4);
-		int xAxis = x - guiWidth;
-		int yAxis = y - guiHeight;
-		for (IGuiComponent component : components) {
-			component.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
-		}
 	}
 
 	@Override
-	public boolean mouseClicked(double x, double y, int button) {
-		double xAxis = x - (width - imageWidth) / 2.0;
-		double yAxis = y - (height - imageHeight) / 2.0;
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 
-		for (IGuiComponent component : components) {
-			component.preMouseClicked(xAxis, yAxis, button);
+		for (AbstractScreenComponent component : components) {
+			component.preOnMouseClick(mouseX, mouseY, button);
 		}
 
-		boolean ret = super.mouseClicked(x, y, button);
-
-		for (IGuiComponent component : components) {
-			component.mouseClicked(xAxis, yAxis, button);
-		}
-		return ret;
-	}
-
-	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		double xAxis = mouseX - (width - imageWidth) / 2.0;
-		double yAxis = mouseY - (height - imageHeight) / 2.0;
-
-		for (IGuiComponent component : components) {
-			component.mouseClicked(xAxis, yAxis, button);
-		}
-		return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
-	}
-
-	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		boolean ret = super.mouseReleased(mouseX, mouseY, button);
-
-		double xAxis = mouseX - (width - imageWidth) / 2.0;
-		double yAxis = mouseY - (height - imageHeight) / 2.0;
-
-		for (IGuiComponent component : components) {
-			component.mouseReleased(xAxis, yAxis, button);
-		}
-		return ret;
-	}
-
-	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-		for (IGuiComponent component : components) {
-			component.mouseWheel(mouseX, mouseY, delta);
-		}
-		return super.mouseScrolled(mouseX, mouseY, delta);
-	}
-
-	public int getXPos() {
-		return (width - imageWidth) / 2;
-	}
-
-	public int getYPos() {
-		return (height - imageHeight) / 2;
+		return super.mouseClicked(mouseX, mouseY, button);
 	}
 
 	@Override
@@ -164,16 +137,58 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 
 	@Override
 	public Font getFontRenderer() {
-		return font;
+		return Minecraft.getInstance().font;
 	}
 	
-	public int getGuiWidth() {
-		return (width - imageWidth) / 2;
+	@Override
+	public void removed() {
+		super.removed();
+		if(editBoxes.size() > 0) {
+			minecraft.keyboardHandler.setSendRepeatsToGui(false);
+		}
 	}
 	
-	public int getGuiHeight() {
-		return (height - imageHeight) / 2;
+	@Override
+	public void resize(Minecraft pMinecraft, int pWidth, int pHeight) {
+		List<String> strings = new ArrayList<>();
+		List<ScreenComponentEditBox> boxes = new ArrayList<>(editBoxes);
+		for(ScreenComponentEditBox box : boxes) {
+			strings.add(box.getValue());
+		}
+		super.resize(pMinecraft, pWidth, pHeight);
+		for(int i = 0; i < boxes.size(); i++) {
+			boxes.get(i).setValue(strings.get(i));
+		}
 	}
 
+	public double getGuiWidth() {
+		return (width - imageWidth) / 2.0;
+	}
+
+	public double getGuiHeight() {
+		return (height - imageHeight) / 2.0;
+	}
+
+	public double getXAxis(double mouseX) {
+		return mouseX - getGuiWidth();
+	}
+
+	public double getYAxis(double mouseY) {
+		return mouseY - getGuiHeight();
+	}
+
+	public void addComponent(AbstractScreenComponent component) {
+		components.add(component);
+		component.setScreen(this);
+	}
+
+	public Set<AbstractScreenComponent> getComponents() {
+		return components;
+	}
+	
+	public void addEditBox(ScreenComponentEditBox box) {
+		editBoxes.add(box);
+		addComponent(box);
+	}
 
 }

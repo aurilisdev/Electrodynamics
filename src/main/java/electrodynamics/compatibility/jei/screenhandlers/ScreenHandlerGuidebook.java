@@ -22,14 +22,14 @@ public class ScreenHandlerGuidebook implements IGuiContainerHandler<ScreenGuideb
 		int refX = screen.getXRef();
 		int refY = screen.getYRef();
 
-		int guiWidth = screen.getXPos();
-		int guiHeight = screen.getYPos();
+		int guiWidth = (int) screen.getGuiWidth();
+		int guiHeight = (int) screen.getGuiHeight();
 
 		int xAxis = (int) (mouseX - guiWidth);
 		int yAxis = (int) (mouseY - guiHeight);
-		
+
 		Object returned = getJeiLookup(ScreenGuidebook.LEFT_X_SHIFT, (int) mouseX, (int) mouseY, refX, refY, xAxis, yAxis, guiWidth, guiHeight, screen.getCurrentPage(), screen);
-		if(returned != null) {
+		if (returned != null) {
 			return returned;
 		}
 		return getJeiLookup(ScreenGuidebook.RIGHT_X_SHIFT - 8, (int) mouseX, (int) mouseY, refX, refY, xAxis, yAxis, guiWidth, guiHeight, screen.getNextPage(), screen);
@@ -89,7 +89,7 @@ public class ScreenHandlerGuidebook implements IGuiContainerHandler<ScreenGuideb
 
 	@Override
 	public List<Rect2i> getGuiExtraAreas(ScreenGuidebook screen) {
-		Rect2i area1 = new Rect2i(screen.getGuiLeft() + screen.getXPos(), screen.getGuiTop(), ScreenGuidebook.LEFT_X_SHIFT + ScreenGuidebook.LEFT_TEXTURE_WIDTH + ScreenGuidebook.RIGHT_TEXTURE_WIDTH - screen.getXPos(), ScreenGuidebook.LEFT_TEXTURE_HEIGHT);
+		Rect2i area1 = new Rect2i(((int) (screen.getGuiLeft() + screen.getGuiWidth())), screen.getGuiTop(), ((int) (ScreenGuidebook.LEFT_X_SHIFT + ScreenGuidebook.LEFT_TEXTURE_WIDTH + ScreenGuidebook.RIGHT_TEXTURE_WIDTH - screen.getGuiHeight())), ScreenGuidebook.LEFT_TEXTURE_HEIGHT);
 		Rect2i area2 = new Rect2i(screen.getGuiLeft() + ScreenGuidebook.LEFT_X_SHIFT, screen.getGuiTop(), -ScreenGuidebook.LEFT_X_SHIFT, ScreenGuidebook.LEFT_TEXTURE_HEIGHT);
 		return Arrays.asList(area1, area2);
 	}

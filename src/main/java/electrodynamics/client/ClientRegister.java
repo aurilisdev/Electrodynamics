@@ -42,6 +42,7 @@ import electrodynamics.client.render.tile.RenderMultimeterBlock;
 import electrodynamics.client.render.tile.RenderSeismicRelay;
 import electrodynamics.client.render.tile.RenderTankGeneric;
 import electrodynamics.client.render.tile.RenderWindmill;
+import electrodynamics.client.screen.item.ScreenElectricDrill;
 import electrodynamics.client.screen.item.ScreenSeismicScanner;
 import electrodynamics.client.screen.tile.ScreenBatteryBox;
 import electrodynamics.client.screen.tile.ScreenCarbyneBatteryBox;
@@ -84,6 +85,7 @@ import electrodynamics.client.screen.tile.ScreenSolarPanel;
 import electrodynamics.client.screen.tile.ScreenThermoelectricManipulator;
 import electrodynamics.client.screen.tile.ScreenFluidTankGeneric;
 import electrodynamics.client.screen.tile.ScreenWindmill;
+import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
@@ -235,6 +237,8 @@ public class ClientRegister {
 	public static final ResourceLocation TEXTURE_PLASMA_BALL = new ResourceLocation(CUSTOM_LOC + "plasmaorb");
 	
 	public static final ResourceLocation TEXTURE_MERCURY = new ResourceLocation(CUSTOM_LOC + "mercury");
+	
+	public static final ResourceLocation TEXTURE_GAS = new ResourceLocation(CUSTOM_LOC + "gastexture"); // use this texture when needing to render a visual representation of a gas that is not a barometer
 
 	public static void setup() {
 		ClientEvents.init();
@@ -282,7 +286,9 @@ public class ClientRegister {
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEPUMP.get(), ScreenFluidPipePump::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_GASPIPEFILTER.get(), ScreenGasPipeFilter::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEFILTER.get(), ScreenFluidPipeFilter::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICDRILL.get(), ScreenElectricDrill::new);
 
+		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICBATON.get(), ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricBaton) stack.getItem()).getJoulesStored(stack) > ((ItemElectricBaton) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICDRILL.get(), ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricDrill) stack.getItem()).getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW.get(), ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 
@@ -336,6 +342,7 @@ public class ClientRegister {
 		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_WHITE);
 		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_PLASMA_BALL);
 		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_MERCURY);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_GAS);
 	}
 
 	@SubscribeEvent

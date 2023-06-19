@@ -19,7 +19,7 @@ public class ScreenDO2OProcessor extends GenericScreen<ContainerDO2OProcessor> {
 
 	public ScreenDO2OProcessor(ContainerDO2OProcessor container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
+		addComponent(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			GenericTile furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
@@ -28,8 +28,8 @@ public class ScreenDO2OProcessor extends GenericScreen<ContainerDO2OProcessor> {
 				}
 			}
 			return 0;
-		}, this, 84 - ContainerDO2OProcessor.startXOffset, 34));
-		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
+		}, 84 - ContainerDO2OProcessor.startXOffset, 34));
+		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 
 }

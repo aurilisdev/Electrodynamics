@@ -7,7 +7,6 @@ import java.util.function.DoubleSupplier;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
-import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.component.TextPropertySupplier;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
@@ -23,20 +22,20 @@ public class ScreenComponentCountdown extends AbstractScreenComponentInfo {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(References.ID + ":textures/screen/component/countdown.png");
 
-	public ScreenComponentCountdown(final TextPropertySupplier tooltip, DoubleSupplier progressInfoHandler, final IScreenWrapper gui, final int x, final int y) {
-		super(CountdownTextures.BACKGROUND_DEFAULT, AbstractScreenComponentInfo.EMPTY, gui, x, y);
+	public ScreenComponentCountdown(TextPropertySupplier tooltip, DoubleSupplier progressInfoHandler, int x, int y) {
+		super(CountdownTextures.BACKGROUND_DEFAULT, AbstractScreenComponentInfo.EMPTY, x, y);
 		this.progressInfoHandler = progressInfoHandler;
 		this.tooltip = tooltip;
 	}
 
-	public ScreenComponentCountdown(final DoubleSupplier progressInfoHandler, final IScreenWrapper gui, final int x, final int y) {
-		this(null, progressInfoHandler, gui, x, y);
+	public ScreenComponentCountdown(DoubleSupplier progressInfoHandler, int x, int y) {
+		this(null, progressInfoHandler, x, y);
 	}
 
 	@Override
-	public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
+	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, texture.textureWidth(), texture.textureHeight())) {
-			displayTooltips(stack, getInfo(infoHandler.getInfo()), xAxis, yAxis);
+			gui.displayTooltips(stack, getInfo(infoHandler.getInfo()), xAxis, yAxis);
 		}
 	}
 

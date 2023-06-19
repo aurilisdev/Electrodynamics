@@ -25,7 +25,7 @@ public class ScreenMotorComplex extends GenericScreen<ContainerMotorComplex> {
 
 	public ScreenMotorComplex(ContainerMotorComplex container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
-		components.add(new ScreenComponentElectricInfo(this::getElectricInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2));
+		addComponent(new ScreenComponentElectricInfo(this::getElectricInformation, -AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 
 	private List<? extends FormattedCharSequence> getElectricInformation() {

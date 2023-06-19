@@ -21,12 +21,12 @@ import net.minecraft.util.FormattedCharSequence;
 
 public class ScreenComponentGasPressure extends ScreenComponentGuiTab {
 
-	public ScreenComponentGasPressure(TextPropertySupplier infoHandler, IScreenWrapper gui, int x, int y) {
-		super(GuiInfoTabTextures.REGULAR, IconType.PRESSURE_GAUGE, infoHandler, gui, x, y);
+	public ScreenComponentGasPressure(TextPropertySupplier infoHandler, int x, int y) {
+		super(GuiInfoTabTextures.REGULAR, IconType.PRESSURE_GAUGE, infoHandler, x, y);
 	}
 
-	public ScreenComponentGasPressure(IScreenWrapper gui, int x, int y) {
-		super(GuiInfoTabTextures.REGULAR, IconType.PRESSURE_GAUGE, AbstractScreenComponentInfo.EMPTY, gui, x, y);
+	public ScreenComponentGasPressure(int x, int y) {
+		super(GuiInfoTabTextures.REGULAR, IconType.PRESSURE_GAUGE, AbstractScreenComponentInfo.EMPTY, x, y);
 	}
 
 	@Override

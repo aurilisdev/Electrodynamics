@@ -24,20 +24,14 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
  * @author skip999
  *
  */
-public class ScreenComponentFluidInput extends ScreenComponentFluid {
+public class ScreenComponentFluidGaugeInput extends ScreenComponentFluidGauge {
 
-	public ScreenComponentFluidInput(FluidTankSupplier fluidInfoHandler, GenericScreen<?> gui, int x, int y) {
-		super(fluidInfoHandler, gui, x, y);
+	public ScreenComponentFluidGaugeInput(FluidTankSupplier fluidInfoHandler, int x, int y) {
+		super(fluidInfoHandler, x, y);
 	}
 
 	@Override
-	public void mouseClicked(double xAxis, double yAxis, int button) {
-		super.mouseClicked(xAxis, yAxis, button);
-		
-		if(!isPointInRegion(xLocation, yLocation, xAxis, yAxis, texture.textureWidth(), texture.textureHeight())) {
-			return;
-		}
-		
+	public void onMouseClick(double mouseX, double mouseY) {
 		
 		PropertyFluidTank tank = (PropertyFluidTank) fluidInfoHandler.getTank();
 
@@ -84,7 +78,7 @@ public class ScreenComponentFluidInput extends ScreenComponentFluid {
 		}
 
 		NetworkHandler.CHANNEL.sendToServer(new PacketUpdateCarriedItemServer(stack.copy(), ((GenericContainerBlockEntity<?>) screen.getMenu()).getHostFromIntArray().getBlockPos(), Minecraft.getInstance().player.getUUID()));
-
+		
 	}
 
 }

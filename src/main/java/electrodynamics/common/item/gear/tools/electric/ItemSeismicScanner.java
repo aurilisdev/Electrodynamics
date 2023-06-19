@@ -26,7 +26,10 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -64,7 +67,7 @@ public class ItemSeismicScanner extends ItemElectric {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new CapabilityItemStackHandler(1);
+		return new CapabilityItemStackHandler(1, stack);
 	}
 
 	@Override
@@ -162,6 +165,17 @@ public class ItemSeismicScanner extends ItemElectric {
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
+	}
+	
+	@Override
+	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+
+		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
+		}
+
+		return true;
+
 	}
 
 }

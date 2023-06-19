@@ -26,7 +26,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ScreenCarbyneBatteryBox extends GenericScreen<ContainerCarbyneBatteryBox> {
 	public ScreenCarbyneBatteryBox(ContainerCarbyneBatteryBox container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentElectricInfo(this::getElectricInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2));
+		addComponent(new ScreenComponentElectricInfo(this::getElectricInformation, -AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 
 	private List<? extends FormattedCharSequence> getElectricInformation() {

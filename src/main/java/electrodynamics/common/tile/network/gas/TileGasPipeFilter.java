@@ -43,6 +43,8 @@ public class TileGasPipeFilter extends GenericTile {
 			property(new Property<>(PropertyType.Gasstack, "gasthree", GasStack.EMPTY)),
 			//
 			property(new Property<>(PropertyType.Gasstack, "gasfour", GasStack.EMPTY)) };
+	
+	public final Property<Boolean> isWhitelist = property(new Property<>(PropertyType.Boolean, "iswhitelist", false));
 
 	public TileGasPipeFilter(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_GASPIPEFILTER.get(), worldPos, blockState);
@@ -78,7 +80,7 @@ public class TileGasPipeFilter extends GenericTile {
 				return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
 			}
 
-			return LazyOptional.of(() -> new FilteredGasCap(lazy.resolve().get(), getFilteredGases())).cast();
+			return LazyOptional.of(() -> new FilteredGasCap(lazy.resolve().get(), getFilteredGases(), isWhitelist.get())).cast();
 
 		}
 
@@ -101,10 +103,12 @@ public class TileGasPipeFilter extends GenericTile {
 
 		private final IGasHandler outputCap;
 		private final List<Gas> validGases;
+		private final boolean whitelist;
 
-		private FilteredGasCap(IGasHandler outputCap, List<Gas> validGases) {
+		private FilteredGasCap(IGasHandler outputCap, List<Gas> validGases, boolean whitelist) {
 			this.outputCap = outputCap;
 			this.validGases = validGases;
+			this.whitelist = whitelist;
 		}
 
 		@Override
@@ -134,9 +138,24 @@ public class TileGasPipeFilter extends GenericTile {
 
 		@Override
 		public boolean isGasValid(int tank, GasStack gas) {
-			if (validGases.isEmpty() || validGases.contains(gas.getGas())) {
+			if (whitelist) {
+
+				if (validGases.isEmpty()) {
+					return false;
+				}
+
+				if (validGases.contains(gas.getGas())) {
+					return outputCap.isGasValid(tank, gas);
+				}
+
+				return false;
+
+			}
+
+			if (validGases.isEmpty() || !validGases.contains(gas.getGas())) {
 				return outputCap.isGasValid(tank, gas);
 			}
+
 			return false;
 		}
 

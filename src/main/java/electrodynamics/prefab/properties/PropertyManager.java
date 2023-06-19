@@ -2,13 +2,23 @@ package electrodynamics.prefab.properties;
 
 import java.util.ArrayList;
 
+import net.minecraft.world.level.block.entity.BlockEntity;
+
 public class PropertyManager {
+	
+	private final BlockEntity owner;
+	
 	private ArrayList<Property<?>> properties = new ArrayList<>();
 	private boolean isDirty = false;
 
+	public PropertyManager(BlockEntity owner) {
+		this.owner = owner;
+	}
+	
 	public <T> Property<T> addProperty(Property<T> prop) {
 		properties.add(prop);
 		prop.setManager(this);
+		prop.setIndex(properties.size() - 1); 
 		return prop;
 	}
 
@@ -52,5 +62,9 @@ public class PropertyManager {
 			string = string + i + ": " + properties.get(i).toString() + "\n";
 		}
 		return string;
+	}
+	
+	public BlockEntity getOwner() {
+		return owner;
 	}
 }

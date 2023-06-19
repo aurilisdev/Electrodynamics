@@ -2,6 +2,9 @@ package electrodynamics.prefab.properties;
 
 import java.util.function.BiConsumer;
 
+import electrodynamics.common.packet.NetworkHandler;
+import electrodynamics.common.packet.types.server.PacketSendUpdatePropertiesServer;
+
 public class Property<T> {
 	private PropertyManager manager;
 	private final PropertyType type;
@@ -9,6 +12,8 @@ public class Property<T> {
 	private boolean shouldSave = true;
 	private String name;
 	private T value;
+	
+	private int index = 0;
 
 	//property has old value and value is new value
 	private BiConsumer<Property<T>, T> onChange = (prop, val) -> {
@@ -103,6 +108,23 @@ public class Property<T> {
 
 	public PropertyManager getPropertyManager() {
 		return manager;
+	}
+	
+	public int getIndex() {
+		return index;
+	}
+	
+	public void setIndex(int index) {
+		this.index = index;
+	}
+	
+	public void updateServer() {
+		
+		if(manager.getOwner() != null) {
+			NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(index, this, manager.getOwner().getBlockPos()));
+		}
+		
+		
 	}
 
 }

@@ -33,7 +33,7 @@ public interface IItemElectric {
 		return stack.getOrCreateTag().getDouble(JOULES_STORED);
 	}
 
-	static void setEnergyStored(ItemStack stack, double amount) {
+	public static void setEnergyStored(ItemStack stack, double amount) {
 		stack.getOrCreateTag().putDouble(JOULES_STORED, amount);
 	}
 

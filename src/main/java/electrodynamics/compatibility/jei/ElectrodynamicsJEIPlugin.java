@@ -54,9 +54,11 @@ import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmac
 import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmachines.ElectricFurnaceRecipeCategory;
 //import electrodynamics.compatibility.jei.recipemanagers.RecipeManagerPluginCanister;
 import electrodynamics.compatibility.jei.screenhandlers.ScreenHandlerGuidebook;
+import electrodynamics.compatibility.jei.screenhandlers.ScreenHandlerMaterialScreen;
 import electrodynamics.compatibility.jei.utils.ingredients.ElectrodynamicsJeiTypes;
 import electrodynamics.compatibility.jei.utils.ingredients.IngredientHelperGasStack;
 import electrodynamics.compatibility.jei.utils.ingredients.IngredientRendererGasStack;
+import electrodynamics.prefab.screen.types.GenericMaterialScreen;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import electrodynamics.registers.ElectrodynamicsBlocks;
@@ -249,6 +251,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		registry.addRecipeClickArea(ScreenElectrolyticSeparator.class, 38, 30, 22, 15, ElectrolyticSeparatorRecipeCategory.RECIPE_TYPE);
 		
 		registry.addGenericGuiContainerHandler(ScreenGuidebook.class, new ScreenHandlerGuidebook());
+		registry.addGenericGuiContainerHandler(GenericMaterialScreen.class, new ScreenHandlerMaterialScreen());
 	}
 
 	private static void electrodynamicsInfoTabs(IRecipeRegistration registration) {

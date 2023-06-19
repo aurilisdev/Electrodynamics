@@ -43,6 +43,8 @@ public class TileFluidPipeFilter extends GenericTile {
 			//
 			property(new Property<>(PropertyType.Fluidstack, "fluidfour", FluidStack.EMPTY)) };
 
+	public final Property<Boolean> isWhitelist = property(new Property<>(PropertyType.Boolean, "iswhitelist", false));
+
 	public TileFluidPipeFilter(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_FLUIDPIPEFILTER.get(), worldPos, blockState);
 		addComponent(new ComponentDirection(this));
@@ -77,7 +79,7 @@ public class TileFluidPipeFilter extends GenericTile {
 				return LazyOptional.of(() -> CapabilityUtils.EMPTY_FLUID).cast();
 			}
 
-			return LazyOptional.of(() -> new FilteredFluidCap(lazy.resolve().get(), getFilteredFluids())).cast();
+			return LazyOptional.of(() -> new FilteredFluidCap(lazy.resolve().get(), getFilteredFluids(), isWhitelist.get())).cast();
 
 		}
 
@@ -98,10 +100,12 @@ public class TileFluidPipeFilter extends GenericTile {
 
 		private final IFluidHandler outputCap;
 		private final List<Fluid> validFluids;
+		private final boolean whitelist;
 
-		private FilteredFluidCap(IFluidHandler outputCap, List<Fluid> validFluids) {
+		private FilteredFluidCap(IFluidHandler outputCap, List<Fluid> validFluids, boolean whitelist) {
 			this.outputCap = outputCap;
 			this.validFluids = validFluids;
+			this.whitelist = whitelist;
 		}
 
 		@Override
@@ -121,17 +125,35 @@ public class TileFluidPipeFilter extends GenericTile {
 
 		@Override
 		public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
-			if (validFluids.isEmpty() || validFluids.contains(stack.getFluid())) {
+
+			if (whitelist) {
+
+				if (validFluids.isEmpty()) {
+					return false;
+				}
+
+				if (validFluids.contains(stack.getFluid())) {
+					return outputCap.isFluidValid(tank, stack);
+				}
+
+				return false;
+
+			}
+
+			if (validFluids.isEmpty() || !validFluids.contains(stack.getFluid())) {
 				return outputCap.isFluidValid(tank, stack);
 			}
+
 			return false;
 		}
 
 		@Override
-		public int fill(FluidStack resource, FluidAction action) {
-			if (validFluids.isEmpty() || validFluids.contains(resource.getFluid())) {
-				return outputCap.fill(resource, action);
+		public int fill(FluidStack stack, FluidAction action) {
+
+			if (isFluidValid(getTanks(), stack)) {
+				return outputCap.fill(stack, action);
 			}
+
 			return 0;
 		}
 

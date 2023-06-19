@@ -1,15 +1,27 @@
 package electrodynamics.client.guidebook.chapters;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.gas.Gas;
+import electrodynamics.api.gas.GasStack;
+import electrodynamics.client.guidebook.ScreenGuidebook;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Module;
+import electrodynamics.client.guidebook.utils.pagedata.OnKeyPress;
+import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.GasWrapperObject;
 import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper.GraphicTextDescriptor;
 import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.tags.ElectrodynamicsTags;
+import electrodynamics.compatibility.jei.JeiBuffer;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -17,6 +29,7 @@ import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.registries.RegistryObject;
 
 public class ChapterGases extends Chapter {
@@ -40,7 +53,42 @@ public class ChapterGases extends Chapter {
 	@Override
 	public void addData() {
 		//introduction
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.gases.l1")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.gases.l1.1")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.gases.l1.2")).setIndentions(1).setSeparateStart());
+		
+		for (RegistryObject<Gas> gas : ElectrodynamicsGases.GASES.getEntries()) {
+			if(gas.get().isEmpty()) {
+				continue;
+			}
+			pageData.add(new GasWrapperObject(0, 0, 32, 32, 36, gas.get(), new GraphicTextDescriptor(36, 11, gas.get().getDescription()))
+					
+			.onTooltip(new OnTooltip() {
+
+				@Override
+				public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+					if (JeiBuffer.isJeiInstalled()) {
+						List<FormattedCharSequence> tooltips = new ArrayList<>();
+						tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+						tooltips.add(TextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+						screen.displayTooltips(stack, tooltips, xAxis, yAxis);
+					}
+
+				}
+			}).onKeyPress(new OnKeyPress() {
+
+				@Override
+				public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
+
+				}
+
+				@Override
+				public Object getJeiLookup() {
+					return new GasStack(gas.get(), 1, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL);
+				}
+
+			}));
+		}
+		
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.gases.l2")).setIndentions(1).setSeparateStart());
 		
 		//pressure basics 
@@ -84,7 +132,14 @@ public class ChapterGases extends Chapter {
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.gases.output")).setIndentions(1).setSeparateStart());
 		blankLine();
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.gases.l12")).setSeparateStart());
-		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/gasio.png")).setNewPage());
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/gasio.png")).setNewPage().onTooltip(new OnTooltip() {
+
+			@Override
+			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+				screen.displayTooltip(stack, TextUtils.guidebook("chapter.gases.gasiotooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+			}
+			
+		}));
 		
 		//gas pipes
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.gases.l13.1")).setIndentions(1).setSeparateStart());

@@ -21,12 +21,12 @@ import net.minecraft.util.FormattedCharSequence;
 
 public class ScreenComponentGasTemperature  extends ScreenComponentGuiTab {
 
-	public ScreenComponentGasTemperature(TextPropertySupplier infoHandler, IScreenWrapper gui, int x, int y) {
-		super(GuiInfoTabTextures.REGULAR, IconType.THERMOMETER, infoHandler, gui, x, y);
+	public ScreenComponentGasTemperature(TextPropertySupplier infoHandler, int x, int y) {
+		super(GuiInfoTabTextures.REGULAR, IconType.THERMOMETER, infoHandler, x, y);
 	}
 
-	public ScreenComponentGasTemperature(IScreenWrapper gui, int x, int y) {
-		super(GuiInfoTabTextures.REGULAR, IconType.THERMOMETER, AbstractScreenComponentInfo.EMPTY, gui, x, y);
+	public ScreenComponentGasTemperature(int x, int y) {
+		super(GuiInfoTabTextures.REGULAR, IconType.THERMOMETER, AbstractScreenComponentInfo.EMPTY, x, y);
 	}
 
 	@Override

@@ -18,7 +18,7 @@ public class ScreenElectricArcFurnace extends GenericScreen<ContainerElectricArc
 
 	public ScreenElectricArcFurnace(ContainerElectricArcFurnace container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
+		addComponent(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
@@ -27,8 +27,8 @@ public class ScreenElectricArcFurnace extends GenericScreen<ContainerElectricArc
 				}
 			}
 			return 0;
-		}, this, 84, 34));
-		components.add(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
+		}, 84, 34));
+		addComponent(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
@@ -37,8 +37,9 @@ public class ScreenElectricArcFurnace extends GenericScreen<ContainerElectricArc
 				}
 			}
 			return 0;
-		}, this, 39, 36));
-		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
+		}, 39, 36));
+		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
-
+	
 }
+

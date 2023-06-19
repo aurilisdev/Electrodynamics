@@ -1,13 +1,10 @@
-package electrodynamics.prefab.screen.component.button;
+package electrodynamics.prefab.screen.component.button.type;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.prefab.utilities.RenderingUtils;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public class ButtonModuleSelector extends ButtonSpecificPage {
@@ -15,25 +12,25 @@ public class ButtonModuleSelector extends ButtonSpecificPage {
 	private boolean selected = false;
 
 	public ButtonModuleSelector(int x, int y, int page, boolean selected) {
-		super(x, y, 9, 9, page, Component.empty(), button -> {
+		super(GuidebookButtonTextures.CHECKBOX_OFF, x, y, page);
+		this.selected = selected;
+		onPress = button -> {
 			ButtonModuleSelector selector = (ButtonModuleSelector) button;
 			selector.selected = !selector.selected;
-		});
-		this.selected = selected;
+		};
 	}
 
 	@Override
-	public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-		RenderingUtils.resetColor();
+	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 
-		ITexture texture = GuidebookButtonTextures.CHECKBOX_OFF;
-
-		if (selected) {
-			texture = GuidebookButtonTextures.CHECKBOX_ON;
+		if (selected && isVisible()) {
+			ITexture texture = GuidebookButtonTextures.CHECKBOX_ON;
+			RenderingUtils.bindTexture(texture.getLocation());
+			gui.drawTexturedRect(stack, this.xLocation + guiWidth, this.yLocation + guiHeight, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
+		} else {
+			super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
 		}
-		RenderingUtils.bindTexture(texture.getLocation());
-		blit(pPoseStack, this.x, this.y, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
+
 	}
 
 	public void setSelected(boolean selected) {

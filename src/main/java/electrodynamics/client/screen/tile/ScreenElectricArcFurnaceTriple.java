@@ -18,7 +18,7 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 
 	public ScreenElectricArcFurnaceTriple(ContainerElectricArcFurnaceTriple container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
+		addComponent(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
@@ -27,8 +27,8 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 				}
 			}
 			return 0;
-		}, this, 84, 24));
-		components.add(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
+		}, 84, 24));
+		addComponent(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
@@ -37,8 +37,8 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 				}
 			}
 			return 0;
-		}, this, 39, 26));
-		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
+		}, 39, 26));
+		addComponent(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(1);
@@ -47,8 +47,8 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 				}
 			}
 			return 0;
-		}, this, 84, 44));
-		components.add(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
+		}, 84, 44));
+		addComponent(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(1);
@@ -57,8 +57,8 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 				}
 			}
 			return 0;
-		}, this, 39, 46));
-		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
+		}, 39, 46));
+		addComponent(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(2);
@@ -67,8 +67,8 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 				}
 			}
 			return 0;
-		}, this, 84, 64));
-		components.add(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
+		}, 84, 64));
+		addComponent(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(2);
@@ -77,9 +77,9 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 				}
 			}
 			return 0;
-		}, this, 39, 66));
+		}, 39, 66));
 		imageHeight += 20;
 		inventoryLabelY += 20;
-		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
+		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 }

@@ -569,8 +569,11 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addContainer(SubtypeMachine.wiremill, "Wire Mill");
 			addContainer(SubtypeMachine.wiremilldouble, "Double Wire Mill");
 			addContainer(SubtypeMachine.wiremilltriple, "Triple Wire Mill");
+			
 			addContainer("guidebook", "Guidebook");
-
+			addContainer("seismicscanner", "Seismic Scanner");
+			addContainer("electricdrill", "Electric Drill");
+			
 			addContainer(SubtypeMachine.gastanksteel, "Steel Gas Cylinder");
 			addContainer(SubtypeMachine.gastankreinforced, "Reinforced Gas Cylinder");
 			addContainer(SubtypeMachine.gastankhsla, "HSLA Gas Cylinder");
@@ -648,6 +651,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addTooltip("currbattery", "Battery: %s");
 			addTooltip("gasvent", "Voids gases");
 			addTooltip("validupgrades", "Valid Upgrades:");
+			addTooltip("electricdrill.miningspeed", "Mining Speed: %s");
 
 			addTooltip("pipematerial", "Material: %s");
 			addTooltip("pipeinsulationmaterial", "Insulation: %s");
@@ -680,6 +684,13 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			
 			addTooltip("guidebookjeiuse", "Press 'U' for uses");
 			addTooltip("guidebookjeirecipe", "Press 'R' for recipes");
+			
+			addTooltip("guidebookname", "AKA Guidebook");
+			
+			addTooltip("electricdrill.overclock", "Overclock: %s");
+			addTooltip("electricdrill.fortunelevel", "Fortune %s");
+			addTooltip("electricdrill.silktouch", "Silk Touch");
+			addTooltip("electricdrill.usage", "Use / Block: %s");
 
 			addGuiLabel("creativepowersource.voltage", "Voltage: ");
 			addGuiLabel("creativepowersource.power", "Power: ");
@@ -760,6 +771,9 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("thermoelectricmanipulator.temp", "Temperature:");
 
 			addGuiLabel("prioritypump.priority", "Priority");
+			
+			addGuiLabel("filter.blacklist",  "Blacklist");
+			addGuiLabel("filter.whitelist", "Whitelist");
 
 			add("keycategory.electrodynamics", "Electrodynamics");
 			addKeyLabel("jetpackascend", "Ascend with Jetpack");
@@ -991,7 +1005,11 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.electricity.l4", "The following pages contain examples of machines with these markings:");
 
 			addGuidebook("chapter.electricity.voltageexample", "Examples of %sV machines:");
+			addGuidebook("chapter.electricity.120vtooltip", "Left: Mineral Grinder, Middle: Battery Box, Right: Electric Furnace");
 			addGuidebook("chapter.electricity.voltageexamplenote", "Note the markings do not have to be at the base.");
+			addGuidebook("chapter.electricity.240vtooltip", "Left: Chemical Mixer, Middle: Lathe, Right: Chemical Furnace");
+			addGuidebook("chapter.electricity.480vtooltip", "Left: Mineral Washer, Middle: Energized Alloyer, Right: Carbyne Battery Box");
+			addGuidebook("chapter.electricity.960vtooltip", "Left: Reinforced Alloyer, Middle: Triple Mineral Crusher");
 
 			addGuidebook("chapter.electricity.l5", "The second method for checking a machine's voltage is to look at the voltage displayed by the energy tooltip in it's GUI. This tooltip will also tell you useful information such as the " + "wattage of the machine. The next page contains examples of this tooltip:");
 
@@ -1006,6 +1024,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.electricity.energyoutput", "Grey : Output");
 
 			addGuidebook("chapter.electricity.l8", "Here is an example of each:");
+			addGuidebook("chapter.electricity.energyiotooltip", "Left: Battery Box, Middle: Relay, Right: Downgrade Transformer");
 
 			addGuidebook("chapter.electricity.l9",
 					"However, what is connected to these ports? Now it's time to discuss how electricity is transfered: Wires. Wires in this mod function a little differently than what you're used to. If you hover over a " + "wire in your inventory, you will notice it has a Resistance measures in units of Ohms (" + '\u03A9' + ") and a maximum rated current, known as its Ampacity:");
@@ -1085,6 +1104,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.fluids.fluidinput", "Input: Blue");
 			addGuidebook("chapter.fluids.fluidoutput", "Output: Yellow");
 			addGuidebook("chapter.fluids.l3", "Here are some examples:");
+			addGuidebook("chapter.fluids.fluidiotooltip", "Left: Mineral Washer, Middle: Chemical Crystalizer, Right: Electric Pump");
 
 			addGuidebook("chapter.fluids.l4",
 					"However, what do we hook up to these ports? The answer is simple: Pipes! Unlike other mods, pipes in Electrodynamics have no internal storage buffer, which means they will not transfer a fluid unless it has somewhere to go. This means you don't have to worry about a machine "
@@ -1105,7 +1125,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.fluids.l7.1", "Another block offered is the %1$s. As the name suggests, the %2$s is a monodirectional pipe and is able to filter what fluids are allowed through it:");
 			addGuidebook("chapter.fluids.l7.2", "This ability is passive and is compatible with other mods' pipes. To program a fluid, open the GUI:");
-			addGuidebook("chapter.fluids.l7.3", "The %1$s is capable of filtering up to 4 fluids at a time. Having no fluids selected means it will allow any fluid through like a normal pipe. To add a filtered fluid, take a bucket or otherwise item containing the desiered fluid, and click one of the filter slots:");
+			addGuidebook("chapter.fluids.l7.3", "The %1$s is capable of filtering up to 4 fluids at a time. You will also note there is a \"Whitelist\" and \"Blacklist\" toggle button. In Blacklilst, the fluids in the filter list will be blocked from flowing through the pipe. Having no fluids selected means it will allow any "
+					+ "fluid through like a normal pipe. In Whitelist, the fluids in the filter will be the only fluids allowed to flow through. Having no fluids selected means it will allow no fluids through. To add a filtered fluid, take a bucket or otherwise item containing the desiered fluid, and click one of the filter slots:");
 			addGuidebook("chapter.fluids.l7.4", "The %1$s will only allow that specific fluid through. It should be noted that the %1$s is not tag-compatible, meaning Ethanol from Immersive Engineering will not be allowed through even though Ethanol from Electrodynamics is selected as a filtered fluid.");
 
 			addGuidebook("chapter.fluids.l8", "While pipes may not be able to store fluid, Electrodynamics offers bulk fluid storage in the form of Tanks. Electrodynamics tanks accept fluid from the top and output fluid through the bottom. Furthermore, stack two tanks on top of eachother, and the top one will automatically " + "output into the bottom one.");
@@ -1115,9 +1136,11 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.gases", "Gases");
 
-			addGuidebook("chapter.gases.l1", "While fluids in Electrodynamics may be similar to what you have seen before, gases are very much more complex and in depth. However, if you pay attention to a few key items, you will find that working with gases can be fairly painless and easy to do.");
+			addGuidebook("chapter.gases.l1.1", "While fluids in Electrodynamics may be similar to what you have seen before, gases are very much more complex and in depth. However, if you pay attention to a few key items, you will find that working with gases can be fairly painless and easy to do.");
+			addGuidebook("chapter.gases.l1.2", "Electrodynamics adds the following gases:");
 
-			addGuidebook("chapter.gases.l2", "Right off the bat, gases in Electrodynamics cannot be seen. While certain gases may be colored or refractive in real life, a vast majority are clear. As a result, you will never actually see a gas. Instead, you will see its presence through montioring devices like a pressure gauge in " + "a GUI.");
+			addGuidebook("chapter.gases.l2", "Right off the bat, gases in Electrodynamics cannot be seen. While certain gases may be colored or refractive in real life, a vast majority are clear. As a result, you will never actually see a gas (with the above visuals being manufactured for simplicity). Instead, you will see its "
+					+ "presence through montioring devices like a pressure gauge in " + "a GUI.");
 
 			addGuidebook("chapter.gases.l3", "Gases in Electrodyanmics also have a pressure and temperature. We will first cover the mechanics of pressure. %1$s is measured in units of Atmospheres (ATM). The minimum pressure a gas can have is 1 ATM. A gas's pressure however will only be a whole number. In other words, you will "
 					+ "never see a gas with a 1.23601 ATM pressure. As a gas's pressure increases, its volume will decrease linearly. For example, if you double the pressure of a gas, its volume will halve.");
@@ -1149,6 +1172,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.gases.input", "Input: Green");
 			addGuidebook("chapter.gases.output", "Output: Orange");
 			addGuidebook("chapter.gases.l12", "As with other ports, these colors are universal to all gas ports. An example of each can be seen on the next page:");
+			addGuidebook("chapter.gases.gasiotooltip", "Left: Gas Vent, Middle: Electrolytic Separator, Right: Gas Pipe Filter");
 
 			addGuidebook("chapter.gases.l13.1", "Like with fluids, gases are transfered between places through the use of pipes. Gas pipes do not store gases, and Electrodynamics machines will only accept gases that they can process with. Pipes have a maximum rated pressure and throughput capacity. If this pressure is exceded, "
 					+ "the pipe will explode, and the gas being transmitted will be lost. You have the following pipes to chose from:");
@@ -1170,7 +1194,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.gases.l16.1", "Another block offered is the %1$s. As the name suggests, the %2$s is a monodirectional pipe and is able to filter what gases are allowed through it:");
 			addGuidebook("chapter.gases.l16.2", "This ability is passive and is compatible with other mods' pipes. To program a gas, open the GUI:");
-			addGuidebook("chapter.gases.l16.3", "The %1$s is capable of filtering up to 4 gases at a time. Having no gases selected means it will allow any gas through like a normal pipe. To add a filtered gas, take a gas cylinder or otherwise item containing the desiered gas, and click one of the filter slots:");
+			addGuidebook("chapter.gases.l16.3", "The %1$s is capable of filtering up to 4 gases at a time. You will also note there is a \"Whitelist\" and \"Blacklist\" toggle button. In Blacklilst, the gases in the filter list will be blocked from flowing through the pipe. Having no gases selected means it will allow any "
+					+ "gas through like a normal pipe. In Whitelist, the gases in the filter will be the only gases allowed to flow through. Having no gases selected means it will allow no gases through. To add a filtered gas, take a gas cylinder or otherwise item containing the desiered gas, and click one of the filter slots:");
 			addGuidebook("chapter.gases.l16.4", "The %1$s will only allow that specific fluid through. It should be noted that the %1$s is not tag-compatible, meaning Hydrogen from Mekanism will not be allowed through even though Hydrogen from Electrodynamics is selected as a filtered gas.");
 
 			addGuidebook("chapter.gases.l17", "While pipes may not be able to store gas, Electrodynamics offers bulk gas storage in the form of Cylinders. Gas Cylinders accept gas from the top and output gas through the bottom like a fluid tank. Furthermore, stack two cylinders on top of eachother, and the top one " + "will automatically output into the bottom one.");
@@ -1268,20 +1293,11 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.quarry.step7l2",
 					"Take the Drill Head of your choice and place it in the bottom left slot of the Quarry GUI. Now direct your attention to the 3 upgrade slots in the GUI. The Quarry itself will not passively use power after setup. However, if you add upgrades, it will begin to, and depending on the " + "upgrade, this can be a substantial amount! Your 4 upgrade options are:");
 
-			addGuidebook("chapter.quarry.step7the", "The ");
-
-			addGuidebook("chapter.quarry.step7unbreaking", "Unbreaking");
-			addGuidebook("chapter.quarry.step7unbreakingdesc", " Upgrade reduces the durability used from the Drill Head when a block is mined. A maximum of 3 can be used for an effect of Unbreaking III, and it will cause the Quarry to draw a large amount of power when installed.");
-
-			addGuidebook("chapter.quarry.step7fortune", "Fortune");
-			addGuidebook("chapter.quarry.step7fortunedesc", " Upgrade applies the Fortune enchantment to the blocks mined by the Quarry. A maximum of 3 can be used for an effect of Fortune III and it cannot be used in tandem with the Silk Touch Upgrade. The upgrade draws a large amount of power.");
-
-			addGuidebook("chapter.quarry.step7silktouch", "Silk Touch");
-			addGuidebook("chapter.quarry.step7silktouchdesc", " Upgrade will apply the Silk Touch enchantment to the blocks mined by the Quarry. A maximum of 1 can be used and it cannot be used in tandem with the Fortune Upgrade. The upgrade will cause the Quarry to draw a huge amount of power.");
-
-			addGuidebook("chapter.quarry.step7void", "Void");
-			addGuidebook("chapter.quarry.step7voiddesc", " Upgrade will activate 6 otherwise hidden slots in the GUI. Any items placed in these slots will be voided by the Quarry when mined. The upgrade will cause the Quarry to start drawing its base usage.");
-
+			addGuidebook("chapter.quarry.step7unbreaking", "The %s reduces the durability used from the Drill Head when a block is mined. A maximum of 3 can be used for an effect of Unbreaking III, and it will cause the Quarry to draw a large amount of power when installed.");
+			addGuidebook("chapter.quarry.step7fortune", "The %s applies the Fortune enchantment to the blocks mined by the Quarry. A maximum of 3 can be used for an effect of Fortune III and it cannot be used in tandem with the Silk Touch Upgrade. The upgrade draws a large amount of power.");
+			addGuidebook("chapter.quarry.step7silktouch", "The %s will apply the Silk Touch enchantment to the blocks mined by the Quarry. A maximum of 1 can be used and it cannot be used in tandem with the Fortune Upgrade. The upgrade will cause the Quarry to draw a huge amount of power.");
+			addGuidebook("chapter.quarry.step7void", "The %s will activate 6 otherwise hidden slots in the GUI. Any items placed in these slots will be voided by the Quarry when mined. The upgrade will cause the Quarry to start drawing its base usage.");
+			
 			addGuidebook("chapter.quarry.step8l1", "This step is optional, but highly recommended. Place a Logistical Manager in front of the Quarry, then place a chest on any remaining side of the Manager. The Logistical Manager will automatically transfer items from the Quarry's inventory into an attached chest. "
 					+ "Furthermore, if you place a Drill Head in one of the attached chests, it will automatically be transfered to the Quarry when the existing one breaks.");
 
@@ -1323,6 +1339,13 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.tools.seismicl1", "The Seismic Scanner is a very useful item. It is able to scan for a selected block within a 16 block radius from the player. To use the Scanner, Right-Click to access it's GUI and insert the desired block into the scanning slot. Next, Shift + Right-Click to start a "
 					+ "scan. If the Scanner is able to find the block, it will list the coordinates in its GUI and temporarily highlight the block in the world. Note, you will not see the highlight if you can't see the block itself. The Scanner has a 10s cooldown between scans.");
 
+			addGuidebook("chapter.tools.electricdrilll1", "The Electric Drill is a useful mining tool indeed. Not only does it remove the need to constantly craft pickaxes, but it can also be upgraded to suit your needs. Firstly, the drill can have it's current head swapped out with another drill head. Steel is the default head. "
+					+ "The following heads provide the following speed boosts:");
+			addGuidebook("chapter.tools.electricdrilll2", "It should be noted this speed boost is passive and does not impact power consumption. To swap out a drill head, hover over the drill in your inventory with the drill head of choice, and Left-Click the drill. The new head will be installed, and you will be left holding "
+					+ "the previous drill head.");
+			addGuidebook("chapter.tools.electricdrilll3", "The drill also accepts various upgrades like a machine. Right-Click to open the drill's upgrade GUI to install upgrades. It should be noted that upgrades will increase power usage, so be wise with your usage of them!");
+
+			
 			addGuidebook("chapter.armor", "Armor");
 
 			addGuidebook("chapter.armor.jetpack", "The Jetpack uses Hydrogen Gas at 1ATM as fuel. It can be filled in either a Gas Cylinder or directly in the Electrolyzer. The Jetpack has 4 modes: Regular, Hover, Elytra, and Off. Elytra mode allows you to glide as if you had an Elytra on, and gives you the ability to slowly "
@@ -1352,6 +1375,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 							+ "The first way is to hold the tool in question in your main hand and press the \"R\" key. A battery with a matching voltage will then be selected from your inventory and placed inside of the tool. The current battery inside the tool will be then placed in your inventory. Note, this method will use the first battery it finds in your "
 							+ "inventory, which might mean the battery you want may not be the one that gets used. The second and more precise way to replace a tool's battery is to hover over the tool in question with the battery in your inventory. Then, Right-Click the tool with the battery. If the voltage of the tool matches the voltage of the battery, the "
 							+ "new battery will replace the old battery, and you will be left holding the old battery.");
+			
+			addGuidebook("chapter.tips.tip4", "Holding the Control key while hoving over an upgrade slot in a GUI will display what upgrades are valid for said slot.");
 
 			addGuidebook("searchparameters", "Parameters");
 			addGuidebook("selectall", "All");

@@ -7,7 +7,6 @@ import javax.annotation.Nonnull;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
-import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.component.TextPropertySupplier;
 import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
@@ -21,8 +20,8 @@ public class ScreenComponentGuiTab extends AbstractScreenComponentInfo {
 	public static final ResourceLocation TEXTURE = new ResourceLocation(References.ID + ":textures/screen/component/screentabs.png");
 	private final ITexture iconType;
 
-	public ScreenComponentGuiTab(ITexture texture, ITexture icon, @Nonnull TextPropertySupplier infoHandler, IScreenWrapper gui, int x, int y) {
-		super(texture, infoHandler, gui, x, y);
+	public ScreenComponentGuiTab(ITexture texture, ITexture icon, @Nonnull TextPropertySupplier infoHandler, int x, int y) {
+		super(texture, infoHandler, x, y);
 		iconType = icon;
 	}
 

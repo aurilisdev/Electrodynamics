@@ -98,9 +98,13 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		layeredItem(ElectrodynamicsItems.ITEM_CARBYNEBATTERY, Parent.GENERATED, itemLoc("carbynebattery"));
 		layeredItem(ElectrodynamicsItems.ITEM_PORTABLECYLINDER, Parent.GENERATED, itemLoc("portablecylinder"));
 		// TODO make this toggleable?
-		layeredItem(ElectrodynamicsItems.ITEM_ELECTRICBATON, Parent.HANDHELD, itemLoc("tools/electricbaton"));
+		toggleableItem(ElectrodynamicsItems.ITEM_ELECTRICBATON, "on", Parent.HANDHELD, Parent.HANDHELD, new ResourceLocation[] { itemLoc("tools/electricbaton") }, new ResourceLocation[] { itemLoc("tools/electricbatonon") });
 		toggleableItem(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW, "on", Parent.HANDHELD, Parent.HANDHELD, new ResourceLocation[] { itemLoc("tools/electricchainsaw") }, new ResourceLocation[] { itemLoc("tools/electricchainsawon") });
-		toggleableItem(ElectrodynamicsItems.ITEM_ELECTRICDRILL, "on", Parent.HANDHELD, Parent.HANDHELD, new ResourceLocation[] { itemLoc("tools/electricdrill") }, new ResourceLocation[] { itemLoc("tools/electricdrillon") });
+		
+		
+		toggleableItem(ElectrodynamicsItems.ITEM_ELECTRICDRILL, "on", Parent.HANDHELD, Parent.HANDHELD, new ResourceLocation[] { itemLoc("tools/electricdrilloffbase"), itemLoc("tools/electricdrilloffhead") }, new ResourceLocation[] { itemLoc("tools/electricdrillonbase"), itemLoc("tools/electricdrillonhead") });
+		
+		
 		layeredBuilder(name(ElectrodynamicsItems.ITEM_MECHANIZEDCROSSBOW), Parent.GENERATED, itemLoc("tools/mechanizedcrossbow")).transforms().transform(TransformType.THIRD_PERSON_RIGHT_HAND).rotation(-90, 0, -60).translation(2F, 0.1F, -3F).scale(0.9F).end().transform(TransformType.THIRD_PERSON_LEFT_HAND).rotation(-90, 0, 30).translation(2, 0.1F, -3).scale(0.9F).end().transform(TransformType.FIRST_PERSON_RIGHT_HAND).rotation(-90, 0, -55).translation(1.13F, 3.2F, 1.13F).scale(0.68F).end().transform(TransformType.FIRST_PERSON_LEFT_HAND).rotation(-90, 0, 35).translation(1.13F, 3.2F, 1.13F).scale(0.68F).end();
 
 		for (SubtypeCeramic ceramic : SubtypeCeramic.values()) {
@@ -116,7 +120,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		}
 
 		for (SubtypeDrillHead drill : SubtypeDrillHead.values()) {
-			layeredItem(ElectrodynamicsItems.getItem(drill), Parent.GENERATED, itemLoc("drillhead/" + drill.tag()));
+			layeredItem(ElectrodynamicsItems.getItem(drill), Parent.GENERATED, itemLoc("drillhead/drillhead"));
 		}
 
 		for (SubtypeDust dust : SubtypeDust.values()) {

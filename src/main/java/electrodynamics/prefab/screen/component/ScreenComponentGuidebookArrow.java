@@ -1,9 +1,6 @@
 package electrodynamics.prefab.screen.component;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.References;
-import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.client.guidebook.ScreenGuidebook;
 import net.minecraft.resources.ResourceLocation;
@@ -13,16 +10,9 @@ public class ScreenComponentGuidebookArrow extends ScreenComponentGeneric {
 	private boolean shouldRender = false;
 	private int page;
 
-	public ScreenComponentGuidebookArrow(ITexture texture, IScreenWrapper gui, int x, int y, int page) {
-		super(texture, gui, x, y);
+	public ScreenComponentGuidebookArrow(ITexture texture, int x, int y, int page) {
+		super(texture, x, y);
 		this.page = page;
-	}
-
-	@Override
-	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		if (isVisible()) {
-			super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
-		}
 	}
 
 	public void setShouldRender(boolean shouldRender) {

@@ -5,7 +5,6 @@ import java.util.function.DoubleSupplier;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
-import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.resources.ResourceLocation;
@@ -20,8 +19,8 @@ public class ScreenComponentProgress extends ScreenComponentGeneric {
 	private final DoubleSupplier progressInfoHandler;
 	private final ProgressBars bar;
 
-	public ScreenComponentProgress(ProgressBars progressBar, final DoubleSupplier progressInfoHandler, final IScreenWrapper gui, final int x, final int y) {
-		super(progressBar.off, gui, x, y);
+	public ScreenComponentProgress(ProgressBars progressBar, DoubleSupplier progressInfoHandler, int x, int y) {
+		super(progressBar.off, x, y);
 		this.progressInfoHandler = progressInfoHandler;
 		bar = progressBar;
 	}

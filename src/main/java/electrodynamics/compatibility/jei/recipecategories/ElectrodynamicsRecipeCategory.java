@@ -401,7 +401,7 @@ public abstract class ElectrodynamicsRecipeCategory<T extends ElectrodynamicsRec
 	public void setGasOutputs(List<GasStack> outputs, IRecipeLayoutBuilder builder) {
 		
 		GenericGasGaugeWrapper wrapper;
-		RecipeIngredientRole role = RecipeIngredientRole.INPUT;
+		RecipeIngredientRole role = RecipeIngredientRole.OUTPUT;
 		GasStack stack;
 		GasGaugeTextureWrapper gasGaugeWrapper;
 		for(int i = 0; i < gasOutputWrappers.length; i++) {

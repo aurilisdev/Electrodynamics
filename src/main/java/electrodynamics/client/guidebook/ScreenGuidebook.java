@@ -3,7 +3,6 @@ package electrodynamics.client.guidebook;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.References;
-import electrodynamics.api.screen.component.IGuiComponent;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Module;
 import electrodynamics.client.guidebook.utils.components.Page;
@@ -20,17 +19,16 @@ import electrodynamics.common.inventory.container.item.ContainerGuidebook;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentGuidebookArrow;
 import electrodynamics.prefab.screen.component.ScreenComponentGuidebookArrow.ArrowTextures;
-import electrodynamics.prefab.screen.component.button.ButtonGuidebook;
-import electrodynamics.prefab.screen.component.button.ButtonGuidebook.GuidebookButtonType;
-import electrodynamics.prefab.screen.component.button.ButtonModuleSelector;
-import electrodynamics.prefab.screen.component.button.ButtonSearchedText;
-import electrodynamics.prefab.screen.component.button.ButtonSpecificPage;
-import electrodynamics.prefab.screen.component.editbox.EditBoxSpecificPage;
+import electrodynamics.prefab.screen.component.button.ScreenComponentButton;
+import electrodynamics.prefab.screen.component.button.type.ButtonGuidebook;
+import electrodynamics.prefab.screen.component.button.type.ButtonModuleSelector;
+import electrodynamics.prefab.screen.component.button.type.ButtonSearchedText;
+import electrodynamics.prefab.screen.component.button.type.ButtonSpecificPage;
+import electrodynamics.prefab.screen.component.button.type.ButtonGuidebook.GuidebookButtonType;
+import electrodynamics.prefab.screen.component.editbox.type.EditBoxSpecificPage;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.screens.inventory.PageButton;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -99,8 +97,8 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	private static final ResourceLocation PAGE_TEXTURE_LEFT = new ResourceLocation(References.ID, "textures/screen/guidebook/resources/guidebookpageleft.png");
 	private static final ResourceLocation PAGE_TEXTURE_RIGHT = new ResourceLocation(References.ID, "textures/screen/guidebook/resources/guidebookpageright.png");
 
-	private static PageButton forward;
-	private static PageButton back;
+	private static ButtonGuidebook forward;
+	private static ButtonGuidebook back;
 
 	private static ButtonGuidebook home;
 	private static ButtonGuidebook chapters;
@@ -142,7 +140,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 	private static boolean hasInitHappened = false;
 
-	private static final List<Button> buttons = new ArrayList<>();
+	private static final List<ScreenComponentButton<?>> buttons = new ArrayList<>();
 
 	public ScreenGuidebook(ContainerGuidebook screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
@@ -152,22 +150,6 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 	@Override
 	protected void init() {
-
-		super.init();
-
-		/*
-		 * we want to do this every time init is called to deal with the font reloading
-		 * 
-		 * for all the chapters, take their lang keys and convert them into formatted char arrays
-		 * 
-		 * then split them based upon the page width
-		 * 
-		 * * we want images to be inserted between the text
-		 * 
-		 * then assign the split arrays to a page
-		 * 
-		 * then assign those pages to the chapter
-		 */
 
 		if (!hasInitHappened) {
 
@@ -190,37 +172,41 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 			initPageButtons();
 
-			// hasInitHappened = true;
+			hasInitHappened = true;
 		}
 
 		addButtons();
 
+		super.init();
+
+		
 	}
 
 	private void addButtons() {
 
-		addRenderableWidget(forward);
-		addRenderableWidget(back);
-		addRenderableWidget(home);
-		addRenderableWidget(chapters);
-		addRenderableWidget(search);
+		addComponent(forward);
+		addComponent(back);
 
-		for (Button button : buttons) {
-			addRenderableWidget(button);
+		addComponent(home);
+		addComponent(chapters);
+		addComponent(search);
+
+		for (ScreenComponentButton<?> button : buttons) {
+			addComponent(button);
 		}
 		for (ButtonModuleSelector button : moduleParameters) {
-			addRenderableWidget(button);
+			addComponent(button);
 		}
 		for (ButtonSearchedText button : searchButtons) {
-			addRenderableWidget(button);
+			addComponent(button);
 		}
 
-		addRenderableWidget(caseSensitive);
+		addComponent(caseSensitive);
 
-		addRenderableWidget(searchBox);
+		addEditBox(searchBox);
 
-		components.add(up);
-		components.add(down);
+		addComponent(up);
+		addComponent(down);
 	}
 
 	private void sortModules() {
@@ -250,18 +236,15 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	}
 
 	private void initPageButtons() {
-		int guiWidth = (width - imageWidth) / 2;
-		int guiHeight = (height - imageHeight) / 2;
-		forward = new PageButton(guiWidth + 142 - 45, guiHeight + 200, true, button -> pageForward(), true);
-		back = new PageButton(guiWidth + 10 + 44, guiHeight + 200, false, button -> pageBackward(), true);
-		home = new ButtonGuidebook(guiWidth + 115 - 186, guiHeight + 202, button -> goToModulePage(), GuidebookButtonType.HOME);
-		chapters = new ButtonGuidebook(guiWidth + 50 - 100, guiHeight + 202, button -> goToChapterPage(), GuidebookButtonType.CHAPTERS);
-		search = new ButtonGuidebook(guiWidth + 235, guiHeight + 202, button -> goToSearchPage(), GuidebookButtonType.SEARCH);
+		forward = new ButtonGuidebook(GuidebookButtonType.RIGHT, 142 - 45, 200).setOnPress(button -> pageForward());
+		back = new ButtonGuidebook(GuidebookButtonType.LEFT, 10 + 44, 200).setOnPress(button -> pageBackward());
+
+		home = new ButtonGuidebook(GuidebookButtonType.HOME, 115 - 186, 202).setOnPress(button -> goToModulePage());
+		chapters = new ButtonGuidebook(GuidebookButtonType.CHAPTERS, 50 - 100, 202).setOnPress(button -> goToChapterPage());
+		search = new ButtonGuidebook(GuidebookButtonType.SEARCH, 235, 202).setOnPress(button -> goToSearchPage());
 	}
 
 	private void genModulePages() {
-		int guiWidth = (width - imageWidth) / 2;
-		int guiHeight = (height - imageHeight) / 2;
 
 		int numPages = (int) Math.ceil((double) GUIDEBOOK_MODULES.size() / (double) MODULES_PER_PAGE);
 		int index = 0;
@@ -286,7 +269,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 					page.keyPressGraphics.add(wrapper);
 				}
 				int xShift = nextPageNumber % 2 == 0 ? LEFT_X_SHIFT : RIGHT_X_SHIFT - 8;
-				buttons.add(new ButtonSpecificPage(guiWidth + 45 + xShift, guiHeight + 43 + j * MODULE_SEPERATION, 120, 20, nextPageNumber, module.getTitle(), button -> setPageNumber(module.getPage())));
+				buttons.add(new ButtonSpecificPage(45 + xShift, 43 + j * MODULE_SEPERATION, 120, 20, nextPageNumber).setLabel(module.getTitle()).setOnPress(button -> setPageNumber(module.getPage())));
 				index++;
 			}
 
@@ -298,9 +281,6 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	}
 
 	private void genPages() {
-
-		int guiWidth = (width - imageWidth) / 2;
-		int guiHeight = (height - imageHeight) / 2;
 
 		for (Module module : GUIDEBOOK_MODULES) {
 
@@ -335,7 +315,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 					int xShift = nextPageNumber % 2 == 0 ? LEFT_X_SHIFT : RIGHT_X_SHIFT - 8;
 
-					buttons.add(new ButtonSpecificPage(guiWidth + 45 + xShift, guiHeight + 56 + j * CHAPTER_SEPERATION, 120, 20, nextPageNumber, chapter.getTitle(), button -> setPageNumber(chapter.getStartPage())));
+					buttons.add(new ButtonSpecificPage(45 + xShift, 56 + j * CHAPTER_SEPERATION, 120, 20, nextPageNumber).setLabel(chapter.getTitle()).setOnPress(button -> setPageNumber(chapter.getStartPage())));
 
 					index++;
 				}
@@ -600,13 +580,6 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		renderPageBackground(stack, LEFT_X_SHIFT, guiWidth, guiHeight, getCurrentPage());
 		renderPageBackground(stack, RIGHT_X_SHIFT - 8, guiWidth, guiHeight, getNextPage());
 
-		int xAxis = x - guiWidth;
-		int yAxis = y - guiHeight;
-
-		for (IGuiComponent component : components) {
-			component.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
-		}
-
 	}
 
 	private void renderPageBackground(PoseStack stack, int xShift, int guiWidth, int guiHeight, Page page) {
@@ -769,11 +742,11 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	}
 
 	private void updatePageArrowVis() {
-		forward.visible = currPageNumber < pages.size() - 4;
-		back.visible = currPageNumber > GUIDEBOOK_STARTING_PAGE && currPageNumber < pages.size() - 2;
-		home.visible = currPageNumber != 0;
-		chapters.visible = currPageNumber != 0 && currPageNumber < pages.size() - 4;
-		search.visible = currPageNumber < pages.size() - 3;
+		forward.setVisible(currPageNumber < pages.size() - 4);
+		back.setVisible(currPageNumber > GUIDEBOOK_STARTING_PAGE && currPageNumber < pages.size() - 2);
+		home.setVisible(currPageNumber != 0);
+		chapters.setVisible(currPageNumber != 0 && currPageNumber < pages.size() - 4);
+		search.setVisible(currPageNumber < pages.size() - 3);
 	}
 
 	public static void addGuidebookModule(Module module) {
@@ -837,14 +810,11 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 		y += 5;
 
-		int guiWidth = (width - imageWidth) / 2;
-		int guiHeight = (height - imageHeight) / 2;
-
 		for (Module module : GUIDEBOOK_MODULES) {
 
 			page.text.add(new TextWrapper(TEXT_START_X + 15, y, module.getTitle(), TextWrapperObject.DEFAULT_COLOR, false, null, null, null));
 
-			ButtonModuleSelector selector = new ButtonModuleSelector(guiWidth - 70, guiHeight - 1 + y, nextPageNumber, true);
+			ButtonModuleSelector selector = new ButtonModuleSelector(70, -1 + y, nextPageNumber, true);
 
 			moduleParameters.add(selector);
 
@@ -853,15 +823,15 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 		}
 
 		page.text.add(new TextWrapper(TEXT_START_X + 15, 165, TextUtils.guidebook("casesensitive"), TextWrapperObject.DEFAULT_COLOR, false, null, null, null));
-		caseSensitive = new ButtonModuleSelector(guiWidth - 70, guiHeight + 165, nextPageNumber, false);
+		caseSensitive = new ButtonModuleSelector(70, 165, nextPageNumber, false);
 
-		buttons.add(new ButtonSpecificPage(guiWidth - 71, guiHeight + 180, 75, 20, nextPageNumber, TextUtils.guidebook("selectall"), button -> {
+		buttons.add(new ButtonSpecificPage(-71, 180, 75, 20, nextPageNumber).setLabel(TextUtils.guidebook("selectall")).setOnPress(button -> {
 			for (ButtonModuleSelector selector : moduleParameters) {
 				selector.setSelected(true);
 			}
 		}));
 
-		buttons.add(new ButtonSpecificPage(guiWidth + 8, guiHeight + 180, 75, 20, nextPageNumber, TextUtils.guidebook("selectnone"), button -> {
+		buttons.add(new ButtonSpecificPage(8, 180, 75, 20, nextPageNumber).setLabel(TextUtils.guidebook("selectnone")).setOnPress(button -> {
 			for (ButtonModuleSelector selector : moduleParameters) {
 				selector.setSelected(false);
 			}
@@ -873,23 +843,20 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	private CoverPage getSeatchPageRight() {
 		CoverPage page = new CoverPage(nextPageNumber);
 
-		int guiWidth = (width - imageWidth) / 2;
-		int guiHeight = (height - imageHeight) / 2;
-
-		searchBox = new EditBoxSpecificPage(font, guiWidth + 92, guiHeight + 10, TEXT_WIDTH, 12, nextPageNumber, Component.empty());
+		searchBox = new EditBoxSpecificPage(92, 10, TEXT_WIDTH, 12, nextPageNumber, getFontRenderer());
 		searchBox.setResponder(this::onTextSearched);
 		searchBox.setTextColor(0xFFFFFFFF);
 		searchBox.setMaxLength(100);
 
 		for (int i = 0; i < SEARCH_BUTTON_COUNT; i++) {
-			ButtonSearchedText search = new ButtonSearchedText(guiWidth + 92, guiHeight + 35 + 35 * i, TEXT_WIDTH, nextPageNumber, button -> setPageNumber(((ButtonSearchedText) button).specifiedPage));
+			ButtonSearchedText search = (ButtonSearchedText) new ButtonSearchedText(92, 35 + 35 * i, TEXT_WIDTH, 20, nextPageNumber).setOnPress(button -> setPageNumber(((ButtonSearchedText) button).specifiedPage));
 			searchButtons.add(search);
 			search.setShouldShow(false);
 		}
 
-		down = new ScreenComponentGuidebookArrow(ArrowTextures.ARROW_DOWN, this, 174, 200, nextPageNumber);
+		down = new ScreenComponentGuidebookArrow(ArrowTextures.ARROW_DOWN, 174, 200, nextPageNumber);
 
-		up = new ScreenComponentGuidebookArrow(ArrowTextures.ARROW_UP, this, 154, 200, nextPageNumber);
+		up = new ScreenComponentGuidebookArrow(ArrowTextures.ARROW_UP, 154, 200, nextPageNumber);
 
 		return page;
 	}

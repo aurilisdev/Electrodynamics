@@ -3,8 +3,6 @@ package electrodynamics.api.gas;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
-import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.server.PacketSendUpdatePropertiesServer;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
@@ -162,10 +160,11 @@ public class PropertyGasTank extends GasTank {
 	// this must be called to update the server if interacted with on the client
 	public void updateServer() {
 
-		if (holder != null) {
-			NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(gasProperty.getPropertyManager().getProperties().indexOf(gasProperty), gasProperty, holder.getBlockPos()));
-		}
-
+		if(gasProperty.isDirty()) gasProperty.updateServer();
+		if(capacityProperty.isDirty()) capacityProperty.updateServer();
+		if(maxTemperatureProperty.isDirty()) maxTemperatureProperty.updateServer();
+		if(maxPressureProperty.isDirty()) maxPressureProperty.updateServer();
+		
 	}
 
 }

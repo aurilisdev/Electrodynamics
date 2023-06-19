@@ -1,8 +1,11 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.ContainerGasPipeFilter;
+import electrodynamics.common.tile.network.gas.TileGasPipeFilter;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentGasFilter;
+import electrodynamics.prefab.screen.component.button.type.ButtonSwappableLabel;
+import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -10,12 +13,31 @@ public class ScreenGasPipeFilter extends GenericScreen<ContainerGasPipeFilter> {
 
 	public ScreenGasPipeFilter(ContainerGasPipeFilter screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
-		
-		components.add(new ScreenComponentGasFilter(this, 30, 20, 0));
-		components.add(new ScreenComponentGasFilter(this, 64, 20, 1));
-		components.add(new ScreenComponentGasFilter(this, 99, 20, 2));
-		components.add(new ScreenComponentGasFilter(this, 132, 20, 3));
-		
+
+		imageHeight += 20;
+		inventoryLabelY += 20;
+
+		addComponent(new ScreenComponentGasFilter(30, 18, 0));
+		addComponent(new ScreenComponentGasFilter(64, 18, 1));
+		addComponent(new ScreenComponentGasFilter(99, 18, 2));
+		addComponent(new ScreenComponentGasFilter(132, 18, 3));
+
+		addComponent(new ButtonSwappableLabel(38, 70, 100, 20, TextUtils.gui("filter.blacklist"), TextUtils.gui("filter.whitelist"), () -> {
+			TileGasPipeFilter filter = menu.getHostFromIntArray();
+			if (filter == null) {
+				return false;
+			}
+			return filter.isWhitelist.get();
+		}).setOnPress(button -> {
+			TileGasPipeFilter filter = menu.getHostFromIntArray();
+			if (filter == null) {
+				return;
+			}
+			filter.isWhitelist.set(!filter.isWhitelist.get());
+			filter.isWhitelist.updateServer();
+
+		}).setScreen(this));
+
 	}
 
 }

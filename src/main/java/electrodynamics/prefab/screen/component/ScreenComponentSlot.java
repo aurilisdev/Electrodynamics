@@ -1,17 +1,15 @@
 package electrodynamics.prefab.screen.component;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
-import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.component.ISlotTexture;
 import electrodynamics.api.screen.component.TextSupplier;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import electrodynamics.prefab.inventory.container.slot.utils.IUpgradeSlot;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.TextUtils;
 import net.minecraft.ChatFormatting;
@@ -33,19 +31,19 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 
 	private final Slot slot;
 
-	public ScreenComponentSlot(Slot slot, final ISlotTexture type, final ITexture iconType, final IScreenWrapper gui, final int x, final int y) {
-		super(type, gui, x, y);
-		slotType = type;
+	public ScreenComponentSlot(Slot slot, ISlotTexture slotType, ITexture iconType, int x, int y) {
+		super(slotType, x, y);
+		this.slotType = slotType;
 		this.iconType = iconType;
 		this.slot = slot;
 	}
 
-	public ScreenComponentSlot(Slot slot, final IScreenWrapper gui, final int x, final int y) {
-		this(slot, SlotType.NORMAL, IconType.NONE, gui, x, y);
+	public ScreenComponentSlot(Slot slot, int x, int y) {
+		this(slot, SlotType.NORMAL, IconType.NONE, x, y);
 	}
 
-	public ScreenComponentSlot(Slot slot, final ISlotTexture type, final ITexture iconType, final IScreenWrapper gui, final int x, final int y, final TextSupplier tooltip) {
-		this(slot, type, iconType, gui, x, y);
+	public ScreenComponentSlot(Slot slot, ISlotTexture slotType, ITexture iconType, int x, int y, TextSupplier tooltip) {
+		this(slot, slotType, iconType, x, y);
 		this.tooltip = tooltip;
 	}
 
@@ -59,15 +57,7 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 	}
 
 	@Override
-	public Rectangle getBounds(final int guiWidth, final int guiHeight) {
-		return new Rectangle(guiWidth + xLocation, guiHeight + yLocation, slotType.textureWidth(), slotType.textureHeight());
-	}
-
-	@Override
 	public void renderBackground(PoseStack stack, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
-		if (!isVisible()) {
-			return;
-		}
 		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
 		if (iconType == IconType.NONE) {
 			return;
@@ -79,7 +69,7 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 	}
 
 	@Override
-	public void renderForeground(PoseStack stack, final int xAxis, final int yAxis) {
+	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		if (!slot.isActive()) {
 			return;
 		}
@@ -90,11 +80,11 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 			}
 			
 			
-			if(Screen.hasControlDown() && slot instanceof SlotUpgrade upgrade) {
+			if(Screen.hasControlDown() && slot instanceof IUpgradeSlot upgrade) {
 				
 				List<FormattedCharSequence> tooltips = new ArrayList<>();
 				tooltips.add(TextUtils.tooltip("validupgrades").getVisualOrderText());
-				for(Item item : upgrade.items) {
+				for(Item item : upgrade.getUpgrades()) {
 					tooltips.add(item.getDescription().copy().withStyle(ChatFormatting.GRAY).getVisualOrderText());
 				}
 				gui.displayTooltips(stack, tooltips, xAxis, yAxis);

@@ -1,16 +1,17 @@
-package electrodynamics.prefab.screen.component.button;
+package electrodynamics.prefab.screen.component.button.type;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.util.Mth;
 
+//height was 20
 public class ButtonSearchedText extends ButtonSpecificPage {
 
 	private Component chapter = Component.empty();
@@ -20,16 +21,16 @@ public class ButtonSearchedText extends ButtonSpecificPage {
 
 	private boolean shouldShow = false;
 
-	public ButtonSearchedText(int x, int y, int width, int page, OnPress onPress) {
-		super(x, y, width, 20, page, Component.empty(), onPress);
+	public ButtonSearchedText(int x, int y, int width, int height, int page) {
+		super(x, y, width, height, page);
 	}
 
 	@Override
-	public void renderButton(PoseStack pPoseStack, int pMouseX, int pMouseY, float pPartialTick) {
-		super.renderButton(pPoseStack, pMouseX, pMouseY, pPartialTick);
+	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
 		Font font = Minecraft.getInstance().font;
-		drawCenteredStringNoShadow(pPoseStack, font, chapter, this.x + this.width / 2, this.y - 10, TextWrapperObject.DEFAULT_COLOR);
-		drawCenteredString(pPoseStack, font, Language.getInstance().getVisualOrder(line), this.x + this.width / 2, this.y + (this.height - 8) / 2, getFGColor() | Mth.ceil(this.alpha * 255.0F) << 24);
+		drawCenteredStringNoShadow(stack, font, chapter, this.xLocation + this.width / 2 + guiWidth, this.yLocation + guiHeight - 10, TextWrapperObject.DEFAULT_COLOR);
+		GuiComponent.drawCenteredString(stack, font, Language.getInstance().getVisualOrder(line), this.xLocation + guiWidth + this.width / 2, this.yLocation + guiHeight + (this.height - 8) / 2, color);
 
 	}
 

@@ -21,7 +21,7 @@ public class ContainerFluidPipeFilter extends GenericContainerBlockEntity<TileFl
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		
+		playerInvOffset += 20;
 	}
 
 }

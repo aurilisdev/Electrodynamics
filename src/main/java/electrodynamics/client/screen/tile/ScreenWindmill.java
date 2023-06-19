@@ -21,7 +21,7 @@ public class ScreenWindmill extends GenericScreen<ContainerWindmill> {
 
 	public ScreenWindmill(ContainerWindmill container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
+		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 
 	@Override

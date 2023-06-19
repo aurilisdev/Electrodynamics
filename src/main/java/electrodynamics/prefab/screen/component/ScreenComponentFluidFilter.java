@@ -6,9 +6,6 @@ import java.util.List;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import electrodynamics.common.inventory.container.tile.ContainerFluidPipeFilter;
-import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.server.PacketSendUpdatePropertiesServer;
 import electrodynamics.common.tile.network.fluid.TileFluidPipeFilter;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.properties.Property;
@@ -32,8 +29,8 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 
 	private final int index;
 
-	public ScreenComponentFluidFilter(GenericScreen<ContainerFluidPipeFilter> gui, int x, int y, int index) {
-		super(GaugeTextures.BACKGROUND_DEFAULT, gui, x, y);
+	public ScreenComponentFluidFilter(int x, int y, int index) {
+		super(GaugeTextures.BACKGROUND_DEFAULT, x, y);
 		this.index = index;
 	}
 
@@ -88,7 +85,7 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 	}
 
 	@Override
-	public void renderForeground(PoseStack stack, int xAxis, int yAxis) {
+	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 
 		if (!isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(), super.texture.textureHeight())) {
 			return;
@@ -110,11 +107,7 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 	}
 
 	@Override
-	public void mouseClicked(double xAxis, double yAxis, int button) {
-
-		if (!isPointInRegion(xLocation, yLocation, xAxis, yAxis, texture.textureWidth(), texture.textureHeight())) {
-			return;
-		}
+	public void onMouseClick(double mouseX, double mouseY) {
 
 		GenericScreen<?> screen = (GenericScreen<?>) gui;
 
@@ -132,7 +125,7 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 
 			if (Screen.hasShiftDown()) {
 				property.set(FluidStack.EMPTY);
-				NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(property.getPropertyManager().getProperties().indexOf(property), property, filter.getBlockPos()));
+				property.updateServer();
 			} else {
 				return;
 			}
@@ -146,8 +139,8 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 		}
 
 		property.set(taken);
-		NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(property.getPropertyManager().getProperties().indexOf(property), property, filter.getBlockPos()));
-
+		property.updateServer();
+		
 	}
 
 }

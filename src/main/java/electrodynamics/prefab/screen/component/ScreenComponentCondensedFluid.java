@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.server.PacketSendUpdatePropertiesServer;
 import electrodynamics.common.packet.types.server.PacketUpdateCarriedItemServer;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.properties.Property;
@@ -27,8 +26,8 @@ public class ScreenComponentCondensedFluid extends ScreenComponentGeneric {
 
 	private final Supplier<Property<FluidStack>> fluidPropertySupplier;
 
-	public ScreenComponentCondensedFluid(GenericScreen<?> gui, Supplier<Property<FluidStack>> fluidStackSupplier, int x, int y) {
-		super(IconType.FLUID_DARK, gui, x, y);
+	public ScreenComponentCondensedFluid(Supplier<Property<FluidStack>> fluidStackSupplier, int x, int y) {
+		super(IconType.FLUID_DARK, x, y);
 		this.fluidPropertySupplier = fluidStackSupplier;
 	}
 
@@ -51,12 +50,7 @@ public class ScreenComponentCondensedFluid extends ScreenComponentGeneric {
 	}
 
 	@Override
-	public void mouseClicked(double xAxis, double yAxis, int button) {
-		super.mouseClicked(xAxis, yAxis, button);
-
-		if (!isPointInRegion(xLocation, yLocation, xAxis, yAxis, texture.textureWidth(), texture.textureHeight())) {
-			return;
-		}
+	public void onMouseClick(double mouseX, double mouseY) {
 
 		Property<FluidStack> fluidProperty = fluidPropertySupplier.get();
 
@@ -91,19 +85,19 @@ public class ScreenComponentCondensedFluid extends ScreenComponentGeneric {
 			stack = new ItemStack(taken.getFluid().getBucket(), 1);
 			fluidStack.shrink(amtTaken);
 			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
-			NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(fluidProperty.getPropertyManager().getProperties().indexOf(fluidProperty), fluidProperty, owner.getBlockPos()));
+			fluidProperty.updateServer();
 
 		} else if (amtTaken > 0 && !isBucket) {
 
 			CapabilityUtils.fillFluidItem(stack, fluidStack, FluidAction.EXECUTE);
 			fluidStack.shrink(amtTaken);
 			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
-			NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(fluidProperty.getPropertyManager().getProperties().indexOf(fluidProperty), fluidProperty, owner.getBlockPos()));
+			fluidProperty.updateServer();
 
 		}
 
 		NetworkHandler.CHANNEL.sendToServer(new PacketUpdateCarriedItemServer(stack.copy(), owner.getBlockPos(), Minecraft.getInstance().player.getUUID()));
-
+		
 	}
 
 }

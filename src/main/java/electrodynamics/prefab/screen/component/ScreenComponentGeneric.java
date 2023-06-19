@@ -1,11 +1,9 @@
 package electrodynamics.prefab.screen.component;
 
-import java.awt.Rectangle;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.ITexture;
+import electrodynamics.api.screen.ITexture.Textures;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponent;
 import electrodynamics.prefab.utilities.RenderingUtils;
 
@@ -17,10 +15,18 @@ import electrodynamics.prefab.utilities.RenderingUtils;
  */
 public class ScreenComponentGeneric extends AbstractScreenComponent {
 
-	private int color = RenderingUtils.WHITE;
+	public ITexture texture;
+	
+	public int color = RenderingUtils.WHITE;
 
-	public ScreenComponentGeneric(ITexture texture, IScreenWrapper gui, int x, int y) {
-		super(texture, gui, x, y);
+	public ScreenComponentGeneric(ITexture texture, int x, int y) {
+		super(x, y, texture.textureWidth(), texture.textureHeight());
+		this.texture = texture;
+	}
+	
+	public ScreenComponentGeneric(int x, int y, int width, int height) {
+		super(x, y, width, height);
+		texture = Textures.NONE;
 	}
 
 	public ScreenComponentGeneric setColor(int color) {
@@ -29,12 +35,10 @@ public class ScreenComponentGeneric extends AbstractScreenComponent {
 	}
 
 	@Override
-	public Rectangle getBounds(int guiWidth, int guiHeight) {
-		return new Rectangle(guiWidth + xLocation, guiHeight + yLocation, texture.textureWidth(), texture.textureHeight());
-	}
-
-	@Override
 	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		if(!isVisible()) {
+			return;
+		}
 		RenderingUtils.bindTexture(texture.getLocation());
 		RenderingUtils.color(color);
 		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());

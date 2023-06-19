@@ -25,7 +25,7 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 
 	public ScreenSeismicScanner(ContainerSeismicScanner screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
-		components.add(new ScreenComponentElectricInfo(this::getElectricInformation, this, -AbstractScreenComponentInfo.SIZE + 1, 2));
+		addComponent(new ScreenComponentElectricInfo(this::getElectricInformation, -AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 
 	@Override

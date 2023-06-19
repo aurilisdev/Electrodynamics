@@ -85,7 +85,14 @@ public class ChapterFluids extends Chapter {
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.fluidinput")).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.fluidoutput")).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l3")).setSeparateStart());
-		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/fluidio.png")));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/fluidio.png")).onTooltip(new OnTooltip() {
+
+			@Override
+			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+				screen.displayTooltip(stack, TextUtils.guidebook("chapter.fluids.fluidiotooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+			}
+			
+		}));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l4")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.pipecapacity", TextUtils.guidebook("chapter.fluids.pipecopper"), SubtypeFluidPipe.copper.maxTransfer)).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.pipecapacity", TextUtils.guidebook("chapter.fluids.pipesteel"), SubtypeFluidPipe.steel.maxTransfer)).setSeparateStart().setIndentions(1));

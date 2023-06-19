@@ -4,9 +4,8 @@ import java.util.function.Supplier;
 
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
-import electrodynamics.api.gas.GasTank;
 import electrodynamics.api.gas.PropertyGasTank;
-import electrodynamics.api.screen.IScreenWrapper;
+import electrodynamics.api.gas.utils.IGasTank;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.server.PacketUpdateCarriedItemServer;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
@@ -18,21 +17,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.world.item.ItemStack;
 
-public class ScreenComponentGasInput extends ScreenComponentGasGauge {
+public class ScreenComponentGasGaugeInput extends ScreenComponentGasGauge {
 
-	public ScreenComponentGasInput(Supplier<GasTank> gasStack, IScreenWrapper gui, int x, int y) {
-		super(gasStack, gui, x, y);
+	public ScreenComponentGasGaugeInput(Supplier<IGasTank> gasStack, int x, int y) {
+		super(gasStack, x, y);
 	}
 	
 	@Override
-	public void mouseClicked(double xAxis, double yAxis, int button) {
-		super.mouseClicked(xAxis, yAxis, button);
-		
-		if(!isPointInRegion(xLocation, yLocation, xAxis, yAxis, texture.textureWidth(), texture.textureHeight())) {
-			return;
-		}
-		
-		
+	public void onMouseClick(double mouseX, double mouseY) {
+
 		PropertyGasTank tank = (PropertyGasTank) gasTank.get();
 
 		if (tank == null) {
@@ -68,7 +61,7 @@ public class ScreenComponentGasInput extends ScreenComponentGasGauge {
 		}
 
 		NetworkHandler.CHANNEL.sendToServer(new PacketUpdateCarriedItemServer(stack.copy(), ((GenericContainerBlockEntity<?>) screen.getMenu()).getHostFromIntArray().getBlockPos(), Minecraft.getInstance().player.getUUID()));
-
+		
 	}
 
 }

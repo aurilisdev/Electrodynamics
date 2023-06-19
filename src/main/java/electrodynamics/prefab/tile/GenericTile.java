@@ -38,7 +38,7 @@ import java.util.UUID;
 public class GenericTile extends BlockEntity implements Nameable, IPropertyHolderTile {
 	private final Component[] components = new Component[ComponentType.values().length];
 	private final ComponentProcessor[] processors = new ComponentProcessor[5];
-	private final PropertyManager propertyManager = new PropertyManager();
+	private final PropertyManager propertyManager = new PropertyManager(this);
 
 	// use this for manually setting the change flag
 	public boolean isChanged = false;

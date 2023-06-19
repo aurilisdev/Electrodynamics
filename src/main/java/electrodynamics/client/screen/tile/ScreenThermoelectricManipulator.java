@@ -7,33 +7,29 @@ import electrodynamics.api.gas.Gas;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.screen.ITexture.Textures;
 import electrodynamics.common.inventory.container.tile.ContainerThermoelectricManipulator;
-import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.server.PacketSendUpdatePropertiesServer;
 import electrodynamics.common.tile.gastransformer.GenericTileGasTransformer;
 import electrodynamics.common.tile.gastransformer.thermoelectricmanipulator.TileThermoelectricManipulator;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentFluid;
-import electrodynamics.prefab.screen.component.ScreenComponentFluidInput;
+import electrodynamics.prefab.screen.component.ScreenComponentFluidGauge;
+import electrodynamics.prefab.screen.component.ScreenComponentFluidGaugeInput;
 import electrodynamics.prefab.screen.component.ScreenComponentGasGauge;
-import electrodynamics.prefab.screen.component.ScreenComponentGasInput;
+import electrodynamics.prefab.screen.component.ScreenComponentGasGaugeInput;
 import electrodynamics.prefab.screen.component.ScreenComponentGasPressure;
 import electrodynamics.prefab.screen.component.ScreenComponentGasTemperature;
 import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
-import electrodynamics.prefab.screen.component.ScreenComponentTextInputBar;
+import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
 import electrodynamics.prefab.utilities.TextUtils;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ScreenThermoelectricManipulator extends GenericScreen<ContainerThermoelectricManipulator> {
 
-	private EditBox temperature;
+	private ScreenComponentEditBox temperature;
 	
 	private boolean needsUpdate = true;
 	
@@ -41,68 +37,40 @@ public class ScreenThermoelectricManipulator extends GenericScreen<ContainerTher
 		super(container, inv, titleIn);
 		imageHeight += 30;
 		inventoryLabelY += 30;
-		components.add(new ScreenComponentFluidInput(() -> {
+		addComponent(new ScreenComponentFluidGaugeInput(() -> {
 			TileThermoelectricManipulator boiler = container.getHostFromIntArray();
 			if (boiler != null) {
 				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks()[0];
 			}
 			return null;
-		}, this, 10, 18));
-		components.add(new ScreenComponentFluid(() -> {
+		}, 10, 18));
+		addComponent(new ScreenComponentFluidGauge(() -> {
 			TileThermoelectricManipulator boiler = container.getHostFromIntArray();
 			if (boiler != null) {
 				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getOutputTanks()[0];
 			}
 			return null;
-		}, this, 96, 18));
-		components.add(new ScreenComponentGasInput(() -> {
+		}, 96, 18));
+		addComponent(new ScreenComponentGasGaugeInput(() -> {
 			TileThermoelectricManipulator boiler = container.getHostFromIntArray();
 			if (boiler != null) {
 				return boiler.<ComponentGasHandlerMulti>getComponent(ComponentType.GasHandler).getInputTanks()[0];
 			}
 			return null;
-		}, this, 46, 18));
-		components.add(new ScreenComponentGasGauge(() -> {
+		}, 46, 18));
+		addComponent(new ScreenComponentGasGauge(() -> {
 			TileThermoelectricManipulator boiler = container.getHostFromIntArray();
 			if (boiler != null) {
 				return boiler.<ComponentGasHandlerMulti>getComponent(ComponentType.GasHandler).getOutputTanks()[0];
 			}
 			return null;
-		}, this, 132, 18));
-		components.add(new ScreenComponentGasTemperature(this, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 2));
-		components.add(new ScreenComponentGasPressure(this, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE));
-		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
-		components.add(new ScreenComponentTextInputBar(this, 94, 75, 59, 16));
-		components.add(new ScreenComponentGeneric(Textures.CONDENSER_COLUMN, this, 62, 19));
-	}
-	
-	@Override
-	protected void containerTick() {
-		super.containerTick();
-		temperature.tick();
-	}
-	
-	@Override
-	protected void init() {
-		super.init();
-		initFields();
-	}
-	
-	private void initFields() {
+		}, 132, 18));
+		addComponent(new ScreenComponentGasTemperature(-AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 2));
+		addComponent(new ScreenComponentGasPressure(-AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE));
+		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
+		addComponent(new ScreenComponentGeneric(Textures.CONDENSER_COLUMN, 62, 19));
 		
-		minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		int i = (width - imageWidth) / 2;
-		int j = (height - imageHeight) / 2;
-		temperature = new EditBox(font, i + 97, j + 80, 55, 13, Component.empty());
-		
-		temperature.setTextColor(-1);
-		temperature.setTextColorUneditable(-1);
-		temperature.setBordered(false);
-		temperature.setMaxLength(20);
-		temperature.setResponder(this::setTemperature);
-		temperature.setFilter(ScreenComponentTextInputBar.getValidator(ScreenComponentTextInputBar.POSITIVE_DECIMAL));
-		
-		addWidget(temperature);
+		addEditBox(temperature = new ScreenComponentEditBox(94, 75, 59, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(20).setResponder(this::setTemperature).setFilter(ScreenComponentEditBox.POSITIVE_DECIMAL));
 	}
 	
 	private void setTemperature(String temp) {
@@ -134,21 +102,8 @@ public class ScreenThermoelectricManipulator extends GenericScreen<ContainerTher
 		
 		manipulator.targetTemperature.set(temperature);
 		
-		NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(manipulator.targetTemperature.getPropertyManager().getProperties().indexOf(manipulator.targetTemperature), manipulator.targetTemperature, manipulator.getBlockPos()));
+		manipulator.targetTemperature.updateServer();
 		
-	}
-	
-	@Override
-	public void resize(Minecraft minecraft, int width, int height) {
-		String temp = temperature.getValue();
-		init(minecraft, width, height);
-		temperature.setValue(temp);
-	}
-	
-	@Override
-	public void removed() {
-		super.removed();
-		minecraft.keyboardHandler.setSendRepeatsToGui(false);
 	}
 	
 	@Override
@@ -161,7 +116,6 @@ public class ScreenThermoelectricManipulator extends GenericScreen<ContainerTher
 				temperature.setValue("" + manipulator.targetTemperature.get());
 			}
 		}
-		temperature.render(matrixStack, mouseX, mouseY, partialTicks);
 	}
 	
 	@Override

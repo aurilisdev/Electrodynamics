@@ -21,7 +21,7 @@ public class ScreenSolarPanel extends GenericScreen<ContainerSolarPanel> {
 
 	public ScreenSolarPanel(ContainerSolarPanel container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
+		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 
 	@Override

@@ -2,7 +2,9 @@ package electrodynamics.common.inventory.container.item;
 
 import electrodynamics.common.item.gear.tools.electric.ItemSeismicScanner;
 import electrodynamics.prefab.inventory.container.GenericContainerItem;
-import electrodynamics.prefab.inventory.container.slot.itemhandler.SlotItemHandlerRestricted;
+import electrodynamics.prefab.inventory.container.slot.itemhandler.type.SlotItemHandlerRestricted;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
+import electrodynamics.prefab.screen.component.ScreenComponentSlot.SlotType;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,9 +24,12 @@ public class ContainerSeismicScanner extends GenericContainerItem {
 
 	@Override
 	public void addItemInventorySlots(Container inv, Inventory playerinv) {
-		if (getHandler() != null) {
-			addSlot(new SlotItemHandlerRestricted(getHandler(), nextIndex(), 25, 42, true, BlockItem.class));
+		if (getHandler() == null) {
+			return;
 		}
+		addSlot(new SlotItemHandlerRestricted(SlotType.NORMAL, IconType.NONE, getHandler(), nextIndex(), 25, 42).setRestriction(stack -> {
+			return stack != null && stack.getItem().getClass().isInstance(BlockItem.class);
+		}));
 	}
 
 }
