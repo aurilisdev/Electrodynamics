@@ -1005,11 +1005,10 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.electricity.l4", "The following pages contain examples of machines with these markings:");
 
 			addGuidebook("chapter.electricity.voltageexample", "Examples of %sV machines:");
-			addGuidebook("chapter.electricity.120vtooltip", "Left: Mineral Grinder, Middle: Battery Box, Right: Electric Furnace");
+			addGuidebook("chapter.electricity.left", "Left: %s");
+			addGuidebook("chapter.electricity.middle", "Middle: %s");
+			addGuidebook("chapter.electricity.right", "Right: %s");
 			addGuidebook("chapter.electricity.voltageexamplenote", "Note the markings do not have to be at the base.");
-			addGuidebook("chapter.electricity.240vtooltip", "Left: Chemical Mixer, Middle: Lathe, Right: Chemical Furnace");
-			addGuidebook("chapter.electricity.480vtooltip", "Left: Mineral Washer, Middle: Energized Alloyer, Right: Carbyne Battery Box");
-			addGuidebook("chapter.electricity.960vtooltip", "Left: Reinforced Alloyer, Middle: Triple Mineral Crusher");
 
 			addGuidebook("chapter.electricity.l5", "The second method for checking a machine's voltage is to look at the voltage displayed by the energy tooltip in it's GUI. This tooltip will also tell you useful information such as the " + "wattage of the machine. The next page contains examples of this tooltip:");
 
@@ -1024,7 +1023,6 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.electricity.energyoutput", "Grey : Output");
 
 			addGuidebook("chapter.electricity.l8", "Here is an example of each:");
-			addGuidebook("chapter.electricity.energyiotooltip", "Left: Battery Box, Middle: Relay, Right: Downgrade Transformer");
 
 			addGuidebook("chapter.electricity.l9",
 					"However, what is connected to these ports? Now it's time to discuss how electricity is transfered: Wires. Wires in this mod function a little differently than what you're used to. If you hover over a " + "wire in your inventory, you will notice it has a Resistance measures in units of Ohms (" + '\u03A9' + ") and a maximum rated current, known as its Ampacity:");
@@ -1104,7 +1102,6 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.fluids.fluidinput", "Input: Blue");
 			addGuidebook("chapter.fluids.fluidoutput", "Output: Yellow");
 			addGuidebook("chapter.fluids.l3", "Here are some examples:");
-			addGuidebook("chapter.fluids.fluidiotooltip", "Left: Mineral Washer, Middle: Chemical Crystalizer, Right: Electric Pump");
 
 			addGuidebook("chapter.fluids.l4",
 					"However, what do we hook up to these ports? The answer is simple: Pipes! Unlike other mods, pipes in Electrodynamics have no internal storage buffer, which means they will not transfer a fluid unless it has somewhere to go. This means you don't have to worry about a machine "
@@ -1172,7 +1169,6 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.gases.input", "Input: Green");
 			addGuidebook("chapter.gases.output", "Output: Orange");
 			addGuidebook("chapter.gases.l12", "As with other ports, these colors are universal to all gas ports. An example of each can be seen on the next page:");
-			addGuidebook("chapter.gases.gasiotooltip", "Left: Gas Vent, Middle: Electrolytic Separator, Right: Gas Pipe Filter");
 
 			addGuidebook("chapter.gases.l13.1", "Like with fluids, gases are transfered between places through the use of pipes. Gas pipes do not store gases, and Electrodynamics machines will only accept gases that they can process with. Pipes have a maximum rated pressure and throughput capacity. If this pressure is exceded, "
 					+ "the pipe will explode, and the gas being transmitted will be lost. You have the following pipes to chose from:");

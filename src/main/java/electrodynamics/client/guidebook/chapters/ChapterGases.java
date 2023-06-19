@@ -20,6 +20,7 @@ import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObje
 import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper.GraphicTextDescriptor;
 import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.compatibility.jei.JeiBuffer;
 import electrodynamics.prefab.utilities.TextUtils;
@@ -136,7 +137,12 @@ public class ChapterGases extends Chapter {
 
 			@Override
 			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				screen.displayTooltip(stack, TextUtils.guidebook("chapter.gases.gasiotooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+				List<FormattedCharSequence> tooltips = new ArrayList<>();
+				tooltips.add(TextUtils.guidebook("chapter.electricity.left", ElectrodynamicsItems.getItem(SubtypeMachine.gasvent).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(TextUtils.guidebook("chapter.electricity.middle", ElectrodynamicsItems.getItem(SubtypeMachine.electrolyticseparator).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(TextUtils.guidebook("chapter.electricity.right", ElectrodynamicsItems.ITEM_GASPIPEFILTER.get().getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				
+				screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 			}
 			
 		}));

@@ -16,6 +16,7 @@ import electrodynamics.client.guidebook.utils.pagedata.graphics.FluidWrapperObje
 import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
 import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.compatibility.jei.JeiBuffer;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.registers.ElectrodynamicsFluids;
@@ -89,7 +90,12 @@ public class ChapterFluids extends Chapter {
 
 			@Override
 			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				screen.displayTooltip(stack, TextUtils.guidebook("chapter.fluids.fluidiotooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+				List<FormattedCharSequence> tooltips = new ArrayList<>();
+				tooltips.add(TextUtils.guidebook("chapter.electricity.left", ElectrodynamicsItems.getItem(SubtypeMachine.mineralwasher).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(TextUtils.guidebook("chapter.electricity.middle", ElectrodynamicsItems.getItem(SubtypeMachine.chemicalcrystallizer).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(TextUtils.guidebook("chapter.electricity.right", ElectrodynamicsItems.getItem(SubtypeMachine.electricpump).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				
+				screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 			}
 			
 		}));

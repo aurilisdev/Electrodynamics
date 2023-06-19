@@ -1,5 +1,8 @@
 package electrodynamics.client.guidebook.chapters;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
@@ -15,6 +18,7 @@ import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.FormattedCharSequence;
 
 public class ChapterElectricity extends Chapter {
 
@@ -54,9 +58,14 @@ public class ChapterElectricity extends Chapter {
 
 			@Override
 			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				screen.displayTooltip(stack, TextUtils.guidebook("chapter.electricity.120vtooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+				List<FormattedCharSequence> tooltips = new ArrayList<>();
+				tooltips.add(TextUtils.guidebook("chapter.electricity.left", ElectrodynamicsItems.getItem(SubtypeMachine.mineralgrinder).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(TextUtils.guidebook("chapter.electricity.middle", ElectrodynamicsItems.getItem(SubtypeMachine.batterybox).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(TextUtils.guidebook("chapter.electricity.right", ElectrodynamicsItems.getItem(SubtypeMachine.electricfurnace).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+
+				screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 			}
-			
+
 		}));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.voltageexamplenote")));
 
@@ -65,9 +74,15 @@ public class ChapterElectricity extends Chapter {
 
 			@Override
 			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				screen.displayTooltip(stack, TextUtils.guidebook("chapter.electricity.240vtooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+
+				List<FormattedCharSequence> tooltips = new ArrayList<>();
+				tooltips.add(TextUtils.guidebook("chapter.electricity.left", ElectrodynamicsItems.getItem(SubtypeMachine.chemicalmixer).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(TextUtils.guidebook("chapter.electricity.middle", ElectrodynamicsItems.getItem(SubtypeMachine.lathe).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(TextUtils.guidebook("chapter.electricity.right", ElectrodynamicsItems.getItem(SubtypeMachine.oxidationfurnace).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+
+				screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 			}
-			
+
 		}));
 
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.voltageexample", 480)).setCentered().setNewPage());
@@ -75,9 +90,14 @@ public class ChapterElectricity extends Chapter {
 
 			@Override
 			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				screen.displayTooltip(stack, TextUtils.guidebook("chapter.electricity.480vtooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+				List<FormattedCharSequence> tooltips = new ArrayList<>();
+				tooltips.add(TextUtils.guidebook("chapter.electricity.left", ElectrodynamicsItems.getItem(SubtypeMachine.mineralwasher).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(TextUtils.guidebook("chapter.electricity.middle", ElectrodynamicsItems.getItem(SubtypeMachine.energizedalloyer).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(TextUtils.guidebook("chapter.electricity.right", ElectrodynamicsItems.getItem(SubtypeMachine.carbynebatterybox).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				
+				screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 			}
-			
+
 		}));
 
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.voltageexample", 960)).setCentered().setNewPage());
@@ -85,9 +105,13 @@ public class ChapterElectricity extends Chapter {
 
 			@Override
 			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				screen.displayTooltip(stack, TextUtils.guidebook("chapter.electricity.960vtooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+				List<FormattedCharSequence> tooltips = new ArrayList<>();
+				tooltips.add(TextUtils.guidebook("chapter.electricity.left", ElectrodynamicsItems.getItem(SubtypeMachine.reinforcedalloyer).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(TextUtils.guidebook("chapter.electricity.middle", ElectrodynamicsItems.getItem(SubtypeMachine.mineralcrushertriple).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				
+				screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 			}
-			
+
 		}));
 
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l5")).setNewPage().setIndentions(1));
@@ -106,34 +130,39 @@ public class ChapterElectricity extends Chapter {
 
 			@Override
 			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				screen.displayTooltip(stack, TextUtils.guidebook("chapter.electricity.energyiotooltip").withStyle(ChatFormatting.GRAY), xAxis, yAxis);
+				List<FormattedCharSequence> tooltips = new ArrayList<>();
+				tooltips.add(TextUtils.guidebook("chapter.electricity.left", ElectrodynamicsItems.getItem(SubtypeMachine.batterybox).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(TextUtils.guidebook("chapter.electricity.middle", ElectrodynamicsItems.getItem(SubtypeMachine.relay).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(TextUtils.guidebook("chapter.electricity.right", ElectrodynamicsItems.getItem(SubtypeMachine.downgradetransformer).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				
+				screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 			}
-			
+
 		}));
 
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l9")).setNewPage().setIndentions(1));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 72, 150, 72, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/wiretooltip1.png")));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l10")).setSeparateStart());
-		
+
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l11.1")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_RUBBERBOOTS.get().getDescription().copy().withStyle(ChatFormatting.BOLD)));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l11.2")));
-		
-		//Wires
+
+		// Wires
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l12.1")).setSeparateStart().setIndentions(1));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, new ResourceLocation(References.ID, "textures/screen/guidebook/coloredwires.png")));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l12.2")).setSeparateStart());
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, new ResourceLocation(References.ID, "textures/screen/guidebook/logisticalwire.png")));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l12.3")).setSeparateStart());
-		
+
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l13.1")).setSeparateStart().setIndentions(1));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, new ResourceLocation(References.ID, "textures/screen/guidebook/ceramicwire.png")));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l13.2")).setSeparateStart());
-		
+
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l14")).setSeparateStart().setIndentions(1));
-		
+
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l15")).setSeparateStart().setIndentions(1));
-		
+
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l16.1")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_MULTIMETER.get().getDescription().copy().withStyle(ChatFormatting.BOLD)));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l16.2")));
@@ -141,19 +170,19 @@ public class ChapterElectricity extends Chapter {
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l16.3")).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeMachine.multimeterblock).getDescription().copy().withStyle(ChatFormatting.BOLD)));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l16.4")));
-		
+
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l17.1", ElectrodynamicsItems.getItem(SubtypeMachine.relay).getDescription().copy().withStyle(ChatFormatting.BOLD))).setSeparateStart().setIndentions(1));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/relayoff.png")));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/relayon.png")));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l17.2", ElectrodynamicsItems.getItem(SubtypeMachine.relay).getDescription(), ElectrodynamicsItems.getItem(SubtypeMachine.relay).getDescription())).setSeparateStart());
-		
+
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l18.1", ElectrodynamicsItems.getItem(SubtypeMachine.relay).getDescription(), ElectrodynamicsItems.getItem(SubtypeMachine.circuitbreaker).getDescription().copy().withStyle(ChatFormatting.BOLD), ElectrodynamicsItems.getItem(SubtypeMachine.circuitbreaker).getDescription())).setSeparateStart().setIndentions(1));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/breakeroff.png")));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/breakeron.png")));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l18.2", ElectrodynamicsItems.getItem(SubtypeMachine.circuitbreaker).getDescription())));
-		
+
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.l19")).setSeparateStart().setIndentions(1));
-		
+
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.symbols").withStyle(ChatFormatting.BOLD)).setNewPage());
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.symbvoltage")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.symbcurrent")).setSeparateStart().setIndentions(1));
@@ -161,7 +190,7 @@ public class ChapterElectricity extends Chapter {
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.symbpower")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.symbenergy")).setSeparateStart().setIndentions(1));
 		blankLine();
-		
+
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.equations").withStyle(ChatFormatting.BOLD)).setSeparateStart());
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.powerfromenergy")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.electricity.powerfromvoltage")).setSeparateStart().setIndentions(1));

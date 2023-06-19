@@ -19,6 +19,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 
+/**
+ * A modification of the vanilla button to integrate it with the Electrodynamics system of doing GUI components
+ * as the Button class has several annoying issues
+ * 
+ * @author skip999
+ *
+ * @param <T>
+ */
 public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends ScreenComponentGeneric {
 
 	public final boolean isVanillaRender;
