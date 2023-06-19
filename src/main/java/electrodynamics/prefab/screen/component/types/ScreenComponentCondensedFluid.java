@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.types;
 
 import java.util.function.Supplier;
 
@@ -9,7 +9,7 @@ import electrodynamics.common.packet.types.server.PacketUpdateCarriedItemServer;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.RenderingUtils;

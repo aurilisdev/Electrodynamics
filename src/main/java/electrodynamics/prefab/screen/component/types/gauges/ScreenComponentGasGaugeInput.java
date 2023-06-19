@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.types.gauges;
 
 import java.util.function.Supplier;
 

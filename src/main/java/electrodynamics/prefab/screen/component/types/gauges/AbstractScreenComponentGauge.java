@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component.utils;
+package electrodynamics.prefab.screen.component.types.gauges;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.ITexture;
-import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
+import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiComponent;

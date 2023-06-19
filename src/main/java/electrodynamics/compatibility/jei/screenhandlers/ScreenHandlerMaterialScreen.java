@@ -4,8 +4,8 @@ import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.gas.utils.IGasTank;
-import electrodynamics.prefab.screen.component.ScreenComponentFluidGauge;
-import electrodynamics.prefab.screen.component.ScreenComponentGasGauge;
+import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentFluidGauge;
+import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
 import electrodynamics.prefab.screen.types.GenericMaterialScreen;
 import mezz.jei.api.gui.handlers.IGuiContainerHandler;
 import net.minecraftforge.fluids.FluidStack;

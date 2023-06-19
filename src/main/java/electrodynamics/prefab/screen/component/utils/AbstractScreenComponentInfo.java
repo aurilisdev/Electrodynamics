@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.component.TextPropertySupplier;
-import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
+import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;

@@ -17,7 +17,7 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.ITexture;
-import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
+import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.Util;

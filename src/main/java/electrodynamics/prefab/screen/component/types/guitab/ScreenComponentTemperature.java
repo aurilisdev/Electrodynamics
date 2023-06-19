@@ -1,7 +1,7 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.types.guitab;
 
 import electrodynamics.api.screen.component.TextPropertySupplier;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 

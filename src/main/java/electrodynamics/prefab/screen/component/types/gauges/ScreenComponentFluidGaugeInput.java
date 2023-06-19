@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.types.gauges;
 
 import electrodynamics.api.fluid.PropertyFluidTank;
 import electrodynamics.api.screen.component.FluidTankSupplier;

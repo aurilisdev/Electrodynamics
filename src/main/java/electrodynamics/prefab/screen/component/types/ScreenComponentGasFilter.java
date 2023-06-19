@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.types;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,8 @@ import electrodynamics.common.tile.network.gas.TileGasPipeFilter;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.ScreenComponentGasGauge.GasGaugeTextures;
+import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
+import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge.GasGaugeTextures;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.gui.screens.Screen;

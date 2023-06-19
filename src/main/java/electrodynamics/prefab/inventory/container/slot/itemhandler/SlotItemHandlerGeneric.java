@@ -2,8 +2,8 @@ package electrodynamics.prefab.inventory.container.slot.itemhandler;
 
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.component.ISlotTexture;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.SlotType;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.SlotType;
 import electrodynamics.prefab.screen.component.utils.SlotTextureProvider;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;

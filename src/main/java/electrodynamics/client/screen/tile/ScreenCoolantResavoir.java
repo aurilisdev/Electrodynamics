@@ -2,9 +2,9 @@ package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerCoolantResavoir;
 import electrodynamics.common.tile.quarry.TileCoolantResavoir;
-import electrodynamics.prefab.screen.component.ScreenComponentFluidGaugeInput;
-import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
-import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressTextures;
+import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressTextures;
+import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentFluidGaugeInput;
 import electrodynamics.prefab.screen.types.GenericMaterialScreen;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;

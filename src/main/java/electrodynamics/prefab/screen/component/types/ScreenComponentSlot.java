@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.types;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.types.guitab;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.References;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.component.TextPropertySupplier;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.resources.ResourceLocation;

@@ -10,7 +10,7 @@ import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerLithiumBatteryBox;
 import electrodynamics.common.tile.battery.TileLithiumBatteryBox;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;

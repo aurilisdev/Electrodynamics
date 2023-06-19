@@ -1,10 +1,9 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.types.gauges;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.api.screen.component.FluidTankSupplier;
-import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentGauge;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;

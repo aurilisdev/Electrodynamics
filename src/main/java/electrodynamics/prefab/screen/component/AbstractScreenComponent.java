@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component.utils;
+package electrodynamics.prefab.screen.component;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 

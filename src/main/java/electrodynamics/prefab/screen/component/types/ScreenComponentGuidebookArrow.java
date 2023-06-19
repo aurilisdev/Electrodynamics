@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.types;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.ITexture;

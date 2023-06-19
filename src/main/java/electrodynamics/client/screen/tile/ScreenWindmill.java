@@ -7,7 +7,7 @@ import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.electricity.generator.IElectricGenerator;
 import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.utilities.TextUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;

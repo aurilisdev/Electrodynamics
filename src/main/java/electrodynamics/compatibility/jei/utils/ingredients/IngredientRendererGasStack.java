@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.gas.GasStack;
-import electrodynamics.prefab.screen.component.ScreenComponentGasGauge;
+import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;

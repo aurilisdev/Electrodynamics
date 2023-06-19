@@ -1,10 +1,10 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.types;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.ITexture.Textures;
-import electrodynamics.prefab.screen.component.utils.AbstractScreenComponent;
+import electrodynamics.prefab.screen.component.AbstractScreenComponent;
 import electrodynamics.prefab.utilities.RenderingUtils;
 
 /**

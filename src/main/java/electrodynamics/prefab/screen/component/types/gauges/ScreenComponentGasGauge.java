@@ -1,4 +1,4 @@
-package electrodynamics.prefab.screen.component;
+package electrodynamics.prefab.screen.component.types.gauges;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +20,7 @@ import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.gas.utils.IGasTank;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.client.ClientRegister;
+import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.GameRenderer;
