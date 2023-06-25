@@ -9,7 +9,7 @@ import electrodynamics.common.tile.quarry.TileSeismicRelay;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,7 +18,7 @@ public class ScreenSeismicRelay extends GenericScreen<ContainerSeismicRelay> {
 
 	public ScreenSeismicRelay(ContainerSeismicRelay container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
-		addComponent(new ScreenComponentSimpleLabel(70, 20, 10, 4210752, TextUtils.gui("seismicrelay.dataheader")));
+		addComponent(new ScreenComponentSimpleLabel(70, 20, 10, 4210752, ElectroTextUtils.gui("seismicrelay.dataheader")));
 		addComponent(new ScreenComponentMultiLabel(0, 0, stack -> {
 
 			TileSeismicRelay relay = menu.getHostFromIntArray();
@@ -55,11 +55,11 @@ public class ScreenSeismicRelay extends GenericScreen<ContainerSeismicRelay> {
 	}
 
 	private void renderNotFound(PoseStack stack, int offset, int index) {
-		font.draw(stack, TextUtils.gui("seismicrelay.posnotfound", index), 80, 30 + offset, 4210752);
+		font.draw(stack, ElectroTextUtils.gui("seismicrelay.posnotfound", index), 80, 30 + offset, 4210752);
 	}
 
 	private void renderCoordinate(PoseStack stack, BlockPos pos, int offset, int index) {
-		font.draw(stack, TextUtils.gui("seismicrelay.posfound", index, pos.toShortString()), 80, 30 + offset, 4210752);
+		font.draw(stack, ElectroTextUtils.gui("seismicrelay.posfound", index, pos.toShortString()), 80, 30 + offset, 4210752);
 	}
 
 }

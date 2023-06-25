@@ -12,7 +12,7 @@ import electrodynamics.api.gas.Gas;
 import electrodynamics.api.gas.GasHandlerItemStack;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.inventory.InventoryTickConsumer;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -88,8 +88,8 @@ public class ItemPortableCylinder extends Item {
 
 		});
 		if (Screen.hasShiftDown()) {
-			tooltips.add(TextUtils.tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
-			tooltips.add(TextUtils.tooltip("maxtemperature", ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
+			tooltips.add(ElectroTextUtils.tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
+			tooltips.add(ElectroTextUtils.tooltip("maxtemperature", ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
 		}
 		super.appendHoverText(stack, level, tooltips, isAdvanced);
 	}

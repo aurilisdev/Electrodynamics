@@ -7,7 +7,7 @@ import electrodynamics.common.tile.network.fluid.TileFluidPipePump;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -21,7 +21,7 @@ public class ScreenFluidPipePump extends GenericScreen<ContainerFluidPipePump> {
 		super(screenContainer, inv, titleIn);
 
 		addComponent(priority = new ScreenComponentEditBox(94, 35, 59, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(1).setResponder(this::setPriority).setFilter(ScreenComponentEditBox.POSITIVE_INTEGER));
-		addComponent(new ScreenComponentSimpleLabel(20, 39, 10, 4210752, TextUtils.gui("prioritypump.priority")));
+		addComponent(new ScreenComponentSimpleLabel(20, 39, 10, 4210752, ElectroTextUtils.gui("prioritypump.priority")));
 		
 	}
 

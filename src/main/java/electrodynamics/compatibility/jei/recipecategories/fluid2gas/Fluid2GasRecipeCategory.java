@@ -7,30 +7,29 @@ import java.util.Locale;
 
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
-import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.fluid2gas.Fluid2GasRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableGas;
-import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeCategory;
-import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
+import electrodynamics.compatibility.jei.recipecategories.utils.AbstractRecipeCategory;
+import electrodynamics.compatibility.jei.utils.gui.types.BackgroundObject;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public abstract class Fluid2GasRecipeCategory<T extends Fluid2GasRecipe> extends ElectrodynamicsRecipeCategory<T> {
+public abstract class Fluid2GasRecipeCategory<T extends Fluid2GasRecipe> extends AbstractRecipeCategory<T> {
 
-	public Fluid2GasRecipeCategory(IGuiHelper guiHelper, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeCategoryClass, int animationTime) {
-		super(guiHelper, recipeGroup, inputMachine, wrapper, recipeCategoryClass, animationTime);
+	public Fluid2GasRecipeCategory(IGuiHelper guiHelper, String recipeGroup, ItemStack inputMachine, BackgroundObject wrapper, RecipeType<T> recipeType, int animationTime) {
+		super(guiHelper, recipeGroup, inputMachine, wrapper, recipeType, animationTime);
 	}
 
 	@Override
-	public List<List<FluidStack>> getFluidInputs(ElectrodynamicsRecipe electro) {
-		Fluid2GasRecipe recipe = (Fluid2GasRecipe) electro;
+	public List<List<FluidStack>> getFluidInputs(Fluid2GasRecipe recipe) {
 		List<List<FluidStack>> ingredients = new ArrayList<>();
 		for (FluidIngredient ing : recipe.getFluidIngredients()) {
 			List<FluidStack> fluids = new ArrayList<>();
@@ -45,8 +44,7 @@ public abstract class Fluid2GasRecipeCategory<T extends Fluid2GasRecipe> extends
 	}
 
 	@Override
-	public List<List<ItemStack>> getItemInputs(ElectrodynamicsRecipe electro) {
-		Fluid2GasRecipe recipe = (Fluid2GasRecipe) electro;
+	public List<List<ItemStack>> getItemInputs(Fluid2GasRecipe recipe) {
 		List<List<ItemStack>> ingredients = new ArrayList<>();
 
 		for (FluidIngredient ing : recipe.getFluidIngredients()) {
@@ -63,8 +61,7 @@ public abstract class Fluid2GasRecipeCategory<T extends Fluid2GasRecipe> extends
 	}
 
 	@Override
-	public List<ItemStack> getItemOutputs(ElectrodynamicsRecipe electro) {
-		Fluid2GasRecipe recipe = (Fluid2GasRecipe) electro;
+	public List<ItemStack> getItemOutputs(Fluid2GasRecipe recipe) {
 		List<ItemStack> outputItems = new ArrayList<>();
 
 		ItemStack output = new ItemStack(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
@@ -92,8 +89,7 @@ public abstract class Fluid2GasRecipeCategory<T extends Fluid2GasRecipe> extends
 	}
 
 	@Override
-	public List<GasStack> getGasOutputs(ElectrodynamicsRecipe electro) {
-		Fluid2GasRecipe recipe = (Fluid2GasRecipe) electro;
+	public List<GasStack> getGasOutputs(Fluid2GasRecipe recipe) {
 		List<GasStack> outputs = new ArrayList<>();
 		outputs.add(recipe.getGasRecipeOutput());
 		if(recipe.hasGasBiproducts()) {

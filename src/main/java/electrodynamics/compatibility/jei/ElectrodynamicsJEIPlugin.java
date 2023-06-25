@@ -50,8 +50,8 @@ import electrodynamics.compatibility.jei.recipecategories.item2item.specificmach
 import electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines.OxidationFurnaceRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines.ReinforcedAlloyerRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.item2item.specificmachines.WireMillRecipeCategory;
-import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmachines.ElectricArcFurnaceRecipeCategory;
-import electrodynamics.compatibility.jei.recipecategories.modfurnace.specificmachines.ElectricFurnaceRecipeCategory;
+import electrodynamics.compatibility.jei.recipecategories.modfurnace.ElectricArcFurnaceRecipeCategory;
+import electrodynamics.compatibility.jei.recipecategories.modfurnace.ElectricFurnaceRecipeCategory;
 //import electrodynamics.compatibility.jei.recipemanagers.RecipeManagerPluginCanister;
 import electrodynamics.compatibility.jei.screenhandlers.ScreenHandlerGuidebook;
 import electrodynamics.compatibility.jei.screenhandlers.ScreenHandlerMaterialScreen;
@@ -59,7 +59,7 @@ import electrodynamics.compatibility.jei.utils.ingredients.ElectrodynamicsJeiTyp
 import electrodynamics.compatibility.jei.utils.ingredients.IngredientHelperGasStack;
 import electrodynamics.compatibility.jei.utils.ingredients.IngredientRendererGasStack;
 import electrodynamics.prefab.screen.types.GenericMaterialScreen;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import mezz.jei.api.IModPlugin;
@@ -258,13 +258,13 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		// Items
 		for (Item item : TileCoalGenerator.getValidItems()) {
 			ItemStack fuelStack = new ItemStack(item);
-			registration.addIngredientInfo(fuelStack, VanillaTypes.ITEM_STACK, TextUtils.jeiItemTranslated("coalgeneratorfuelsource", ChatFormatter.getChatDisplayShort((double) ForgeHooks.getBurnTime(fuelStack, null) / 20.0, DisplayUnit.TIME_SECONDS)));
+			registration.addIngredientInfo(fuelStack, VanillaTypes.ITEM_STACK, ElectroTextUtils.jeiItemTranslated("coalgeneratorfuelsource", ChatFormatter.getChatDisplayShort((double) ForgeHooks.getBurnTime(fuelStack, null) / 20.0, DisplayUnit.TIME_SECONDS)));
 		}
 
 		// Fluids
 		for (CombustionFuelSource fuel : CombustionFuelRegister.INSTANCE.getFuels()) {
 			for (FluidStack fluid : fuel.getFuels()) {
-				registration.addIngredientInfo(new FluidStack(fluid, FULL_FLUID_SQUARE), ForgeTypes.FLUID_STACK, TextUtils.jeiFluidTranslated("combustionchamberfuel", ChatFormatter.getChatDisplayShort(fuel.getPowerMultiplier() * Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20 / 1000.0, DisplayUnit.WATT), ChatFormatter.formatFluidMilibuckets(fluid.getAmount())));
+				registration.addIngredientInfo(new FluidStack(fluid, FULL_FLUID_SQUARE), ForgeTypes.FLUID_STACK, ElectroTextUtils.jeiFluidTranslated("combustionchamberfuel", ChatFormatter.getChatDisplayShort(fuel.getPowerMultiplier() * Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20 / 1000.0, DisplayUnit.WATT), ChatFormatter.formatFluidMilibuckets(fluid.getAmount())));
 			}
 		}
 

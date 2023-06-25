@@ -13,7 +13,7 @@ import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElect
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
@@ -33,10 +33,10 @@ public class ScreenCarbyneBatteryBox extends GenericScreen<ContainerCarbyneBatte
 				return;
 			}
 			ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
-			font.draw(stack, TextUtils.gui("machine.current", ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get() / electro.getVoltage(), DisplayUnit.AMPERE)), inventoryLabelX, inventoryLabelY - 55f, 4210752);
-			font.draw(stack, TextUtils.gui("machine.transfer", ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get(), DisplayUnit.WATT)), inventoryLabelX, inventoryLabelY - 42f, 4210752);
-			font.draw(stack, TextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)), inventoryLabelX, inventoryLabelY - 29f, 4210752);
-			font.draw(stack, TextUtils.gui("machine.stored", ChatFormatter.getChatDisplayShort(electro.getJoulesStored(), DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(box.maxJoules.get() * box.currentCapacityMultiplier.get(), DisplayUnit.JOULES)), inventoryLabelX, inventoryLabelY - 16f, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("machine.current", ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get() / electro.getVoltage(), DisplayUnit.AMPERE)), inventoryLabelX, inventoryLabelY - 55f, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("machine.transfer", ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get(), DisplayUnit.WATT)), inventoryLabelX, inventoryLabelY - 42f, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)), inventoryLabelX, inventoryLabelY - 29f, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("machine.stored", ChatFormatter.getChatDisplayShort(electro.getJoulesStored(), DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(box.maxJoules.get() * box.currentCapacityMultiplier.get(), DisplayUnit.JOULES)), inventoryLabelX, inventoryLabelY - 16f, 4210752);
 		}));
 
 	}
@@ -49,10 +49,10 @@ public class ScreenCarbyneBatteryBox extends GenericScreen<ContainerCarbyneBatte
 		}
 
 		ComponentElectrodynamic el = box.getComponent(ComponentType.Electrodynamic);
-		list.add(TextUtils.gui("machine.current", Component.literal(ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get() / el.getVoltage(), DisplayUnit.AMPERE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		list.add(TextUtils.gui("machine.transfer", Component.literal(ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get(), DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		list.add(TextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(el.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		list.add(TextUtils.gui("machine.stored", Component.literal(ChatFormatter.getChatDisplayShort(el.getJoulesStored(), DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(box.maxJoules.get() * box.currentCapacityMultiplier.get(), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("machine.current", Component.literal(ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get() / el.getVoltage(), DisplayUnit.AMPERE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("machine.transfer", Component.literal(ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get(), DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(el.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("machine.stored", Component.literal(ChatFormatter.getChatDisplayShort(el.getJoulesStored(), DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(box.maxJoules.get() * box.currentCapacityMultiplier.get(), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 
 		return list;
 	}

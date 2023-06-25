@@ -14,7 +14,7 @@ import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElect
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
@@ -31,7 +31,7 @@ public class ScreenMotorComplex extends GenericScreen<ContainerMotorComplex> {
 			if (motor != null && motor.isPowered.get()) {
 				blocksPerTick = motor.speed.get();
 			}
-			return TextUtils.gui("motorcomplex.speed", blocksPerTick);
+			return ElectroTextUtils.gui("motorcomplex.speed", blocksPerTick);
 		}));
 	}
 
@@ -43,8 +43,8 @@ public class ScreenMotorComplex extends GenericScreen<ContainerMotorComplex> {
 		}
 
 		ComponentElectrodynamic electro = motor.getComponent(ComponentType.Electrodynamic);
-		list.add(TextUtils.gui("machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(Constants.MOTORCOMPLEX_USAGE_PER_TICK * motor.powerMultiplier.get() * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		list.add(TextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(Constants.MOTORCOMPLEX_USAGE_PER_TICK * motor.powerMultiplier.get() * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 
 		return list;
 	}

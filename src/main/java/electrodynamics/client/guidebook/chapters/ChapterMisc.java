@@ -5,7 +5,7 @@ import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Module;
 import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
 import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
@@ -24,12 +24,12 @@ public class ChapterMisc extends Chapter {
 
 	@Override
 	public MutableComponent getTitle() {
-		return TextUtils.guidebook("chapter.misc");
+		return ElectroTextUtils.guidebook("chapter.misc");
 	}
 
 	@Override
 	public void addData() {
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.misc.l1")).setCentered().setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.misc.l1")).setCentered().setSeparateStart());
 	}
 
 }

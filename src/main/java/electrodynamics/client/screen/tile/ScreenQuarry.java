@@ -22,7 +22,7 @@ import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
@@ -46,9 +46,9 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		TileQuarry quarry = menu.getHostFromIntArray();
 		if (quarry != null) {
 			ComponentElectrodynamic electro = quarry.getComponent(ComponentType.Electrodynamic);
-			list.add(TextUtils.gui("quarry.ringusage", Component.literal(ChatFormatter.getChatDisplayShort(quarry.setupPowerUsage.get() * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(TextUtils.gui("quarry.miningusage", Component.literal(ChatFormatter.getChatDisplayShort(quarry.quarryPowerUsage.get() * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(TextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("quarry.ringusage", Component.literal(ChatFormatter.getChatDisplayShort(quarry.setupPowerUsage.get() * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("quarry.miningusage", Component.literal(ChatFormatter.getChatDisplayShort(quarry.quarryPowerUsage.get() * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}
@@ -59,9 +59,9 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		if (quarry == null) {
 			return list;
 		}
-		list.add(TextUtils.gui("quarry.fortune", Component.literal(quarry.fortuneLevel.get() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		list.add(TextUtils.gui("quarry.silktouch", Component.literal(quarry.silkTouchLevel.get() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		list.add(TextUtils.gui("quarry.unbreaking", Component.literal(quarry.unbreakingLevel.get() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("quarry.fortune", Component.literal(quarry.fortuneLevel.get() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("quarry.silktouch", Component.literal(quarry.silkTouchLevel.get() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("quarry.unbreaking", Component.literal(quarry.unbreakingLevel.get() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		return list;
 
 	}
@@ -79,7 +79,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		} else {
 			text = ChatFormatter.getChatDisplayShort(complex.speed.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK, DisplayUnit.BUCKETS);
 		}
-		list.add(TextUtils.gui("quarry.wateruse", Component.literal(text).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("quarry.wateruse", Component.literal(text).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		return list;
 
 	}
@@ -103,7 +103,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 				formatting = ChatFormatting.YELLOW;
 			}
 		}
-		list.add(TextUtils.gui("quarry.motorcomplex").withStyle(formatting).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("quarry.motorcomplex").withStyle(formatting).getVisualOrderText());
 
 		TileSeismicRelay relay = quarry.getSeismicRelay();
 
@@ -115,7 +115,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 			formatting = ChatFormatting.YELLOW;
 		}
 
-		list.add(TextUtils.gui("quarry.seismicrelay").withStyle(formatting).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("quarry.seismicrelay").withStyle(formatting).getVisualOrderText());
 
 		TileCoolantResavoir resavoir = quarry.getFluidResavoir();
 
@@ -127,7 +127,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 			formatting = ChatFormatting.YELLOW;
 		}
 
-		list.add(TextUtils.gui("quarry.coolantresavoir").withStyle(formatting).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("quarry.coolantresavoir").withStyle(formatting).getVisualOrderText());
 
 		return list;
 
@@ -142,20 +142,20 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 
 		Component location;
 		if (quarry.miningPos.get().equals(TileQuarry.OUT_OF_REACH)) {
-			location = TextUtils.gui("quarry.notavailable").withStyle(ChatFormatting.RED);
+			location = ElectroTextUtils.gui("quarry.notavailable").withStyle(ChatFormatting.RED);
 		} else {
 			location = Component.literal(quarry.miningPos.get().toShortString()).withStyle(ChatFormatting.GRAY);
 		}
 
-		list.add(TextUtils.gui("quarry.miningposition", location).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("quarry.miningposition", location).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 
 		if (quarry.hasHead.get()) {
-			location = TextUtils.gui("quarry.hashead").withStyle(ChatFormatting.GRAY);
+			location = ElectroTextUtils.gui("quarry.hashead").withStyle(ChatFormatting.GRAY);
 		} else {
-			location = TextUtils.gui("quarry.nohead").withStyle(ChatFormatting.RED);
+			location = ElectroTextUtils.gui("quarry.nohead").withStyle(ChatFormatting.RED);
 		}
 
-		list.add(TextUtils.gui("quarry.drillhead", location).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("quarry.drillhead", location).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 
 		return list;
 
@@ -170,32 +170,32 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		}
 		// void card
 		if (quarry.hasItemVoid.get()) {
-			font.draw(stack, TextUtils.gui("quarry.voiditems"), 85, 14, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("quarry.voiditems"), 85, 14, 4210752);
 		} else {
-			font.draw(stack, TextUtils.gui("quarry.needvoidcard"), 85, 14, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("quarry.needvoidcard"), 85, 14, 4210752);
 		}
 
 		/* STATUS */
 
-		font.draw(stack, TextUtils.gui("quarry.status"), 5, 32, 4210752);
+		font.draw(stack, ElectroTextUtils.gui("quarry.status"), 5, 32, 4210752);
 
 		int height = 42;
 		if (!quarry.isAreaCleared.get()) {
-			font.draw(stack, TextUtils.gui("quarry.clearingarea"), 10, height, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("quarry.clearingarea"), 10, height, 4210752);
 		} else if (!quarry.hasRing.get()) {
-			font.draw(stack, TextUtils.gui("quarry.setup"), 10, height, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("quarry.setup"), 10, height, 4210752);
 		} else if (quarry.running.get()) {
-			font.draw(stack, TextUtils.gui("quarry.mining"), 10, height, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("quarry.mining"), 10, height, 4210752);
 		} else if (quarry.isFinished.get()) {
-			font.draw(stack, TextUtils.gui("quarry.finished"), 10, height, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("quarry.finished"), 10, height, 4210752);
 		} else {
-			font.draw(stack, TextUtils.gui("quarry.notmining"), 10, height, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("quarry.notmining"), 10, height, 4210752);
 		}
 
 		/* ERRORS */
 
-		font.draw(stack, TextUtils.gui("quarry.errors"), 5, 65, 4210752);
-		font.draw(stack, TextUtils.gui(getErrorKey(quarry)), 10, 75, 4210752);
+		font.draw(stack, ElectroTextUtils.gui("quarry.errors"), 5, 65, 4210752);
+		font.draw(stack, ElectroTextUtils.gui(getErrorKey(quarry)), 10, 75, 4210752);
 
 	}
 

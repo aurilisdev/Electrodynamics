@@ -5,20 +5,20 @@ import java.util.ArrayList;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class PropertyManager {
-	
+
 	private final BlockEntity owner;
-	
+
 	private ArrayList<Property<?>> properties = new ArrayList<>();
 	private boolean isDirty = false;
 
 	public PropertyManager(BlockEntity owner) {
 		this.owner = owner;
 	}
-	
+
 	public <T> Property<T> addProperty(Property<T> prop) {
 		properties.add(prop);
 		prop.setManager(this);
-		prop.setIndex(properties.size() - 1); 
+		prop.setIndex(properties.size() - 1);
 		return prop;
 	}
 
@@ -26,16 +26,48 @@ public class PropertyManager {
 		return properties;
 	}
 
-	public ArrayList<Property<?>> getDirtyProperties() {
-		ArrayList<Property<?>> dirty = new ArrayList<>();
+	public ArrayList<Property<?>> getPropertiesToSave() {
+
+		ArrayList<Property<?>> toSave = new ArrayList<>();
+
 		for (Property<?> prop : properties) {
-			if (prop.isDirty()) {
-				dirty.add(prop);
+
+			if (prop.isDirty() && prop.shouldSave()) {
+
+				toSave.add(prop);
+
 			} else {
-				dirty.add(null);
+
+				toSave.add(null);
+
 			}
+
 		}
-		return dirty;
+		
+		return toSave;
+		
+	}
+	
+	public ArrayList<Property<?>> getClientUpdateProperties() {
+		
+		ArrayList<Property<?>> toClient = new ArrayList<>();
+		
+		for(Property<?> prop : properties) {
+			
+			if(prop.isDirty() && prop.shouldUpdateClient()) {
+				
+				toClient.add(prop);
+				
+			} else {
+				
+				toClient.add(null);
+				
+			}
+			
+		}
+		
+		return toClient;
+		
 	}
 
 	public void clean() {
@@ -63,7 +95,7 @@ public class PropertyManager {
 		}
 		return string;
 	}
-	
+
 	public BlockEntity getOwner() {
 		return owner;
 	}

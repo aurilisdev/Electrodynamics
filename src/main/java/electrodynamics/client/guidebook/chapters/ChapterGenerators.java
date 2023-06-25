@@ -22,7 +22,7 @@ import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.compatibility.jei.JeiBuffer;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
@@ -48,13 +48,13 @@ public class ChapterGenerators extends Chapter {
 
 	@Override
 	public MutableComponent getTitle() {
-		return TextUtils.guidebook("chapter.generators");
+		return ElectroTextUtils.guidebook("chapter.generators");
 	}
 
 	@Override
 	public void addData() {
 
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.l1")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.l1")));
 		
 		// Thermoelectric Generator
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeMachine.thermoelectricgenerator).getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setSeparateStart().setNewPage());
@@ -65,7 +65,7 @@ public class ChapterGenerators extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -83,19 +83,19 @@ public class ChapterGenerators extends Chapter {
 					}
 
 				}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.THERMOELECTRICGENERATOR_AMPERAGE * 120, DisplayUnit.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.THERMOELECTRICGENERATOR_AMPERAGE * 120, DisplayUnit.WATT), 120)).setSeparateStart());
 		blankLine();
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.use").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.thermoelectricgeneratoruse")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.use").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.thermoelectricgeneratoruse")).setSeparateStart());
 		blankLine();
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.heatsource").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.heatsource").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		
 		ThermoelectricGeneratorHeatRegister.INSTANCE.getHeatSources().forEach((fluid, multiplier) -> {
 			if(ForgeRegistries.FLUIDS.getKey(fluid).toString().toLowerCase(Locale.ROOT).contains("flow")) {
 				return;
 			}
 			pageData.add(new TextWrapperObject(fluid.getFluidType().getDescription()).setSeparateStart());
-			pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.multiplier", multiplier)).setSeparateStart().setIndentions(1));
+			pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.multiplier", multiplier)).setSeparateStart().setIndentions(1));
 		});
 		
 		
@@ -109,7 +109,7 @@ public class ChapterGenerators extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -127,14 +127,14 @@ public class ChapterGenerators extends Chapter {
 					}
 
 				}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.SOLARPANEL_AMPERAGE * 120, DisplayUnit.WATT), 120)).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(Constants.SOLARPANEL_AMPERAGE * 120 * 2.25, DisplayUnit.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.SOLARPANEL_AMPERAGE * 120, DisplayUnit.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(Constants.SOLARPANEL_AMPERAGE * 120 * 2.25, DisplayUnit.WATT), 120)).setSeparateStart());
 		blankLine();
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.tips").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.tipsolarweather")).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.tipsolartemperature")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tips").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipsolarweather")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipsolartemperature")).setSeparateStart());
 		blankLine();
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.upgrades").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.upgrades").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.improvedsolarcell).getDescription()).setIndentions(1).setSeparateStart());
 
 		// Advanced Solar Panel
@@ -146,7 +146,7 @@ public class ChapterGenerators extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -164,14 +164,14 @@ public class ChapterGenerators extends Chapter {
 					}
 
 				}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.ADVANCEDSOLARPANEL_AMPERAGE * 240, DisplayUnit.WATT), 240)).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(Constants.ADVANCEDSOLARPANEL_AMPERAGE * 240 * 2.25, DisplayUnit.WATT), 240)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.ADVANCEDSOLARPANEL_AMPERAGE * 240, DisplayUnit.WATT), 240)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(Constants.ADVANCEDSOLARPANEL_AMPERAGE * 240 * 2.25, DisplayUnit.WATT), 240)).setSeparateStart());
 		blankLine();
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.tips").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.tipsolarweather")).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.tipsolartemperature")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tips").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipsolarweather")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipsolartemperature")).setSeparateStart());
 		blankLine();
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.upgrades").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.upgrades").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.improvedsolarcell).getDescription()).setIndentions(1).setSeparateStart());
 
 		// Windmill
@@ -183,7 +183,7 @@ public class ChapterGenerators extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -201,14 +201,14 @@ public class ChapterGenerators extends Chapter {
 					}
 
 				}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.WINDMILL_MAX_AMPERAGE * 120, DisplayUnit.WATT), 120)).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(Constants.WINDMILL_MAX_AMPERAGE * 120 * 2.25, DisplayUnit.WATT), 120)).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.tipminy", 0)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.WINDMILL_MAX_AMPERAGE * 120, DisplayUnit.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(Constants.WINDMILL_MAX_AMPERAGE * 120 * 2.25, DisplayUnit.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipminy", 0)).setSeparateStart());
 		blankLine();
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.tips").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.tipidealy", 319)).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tips").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipidealy", 319)).setIndentions(1).setSeparateStart());
 		blankLine();
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.upgrades").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.upgrades").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.stator).getDescription()).setIndentions(1).setSeparateStart());
 
 		// Coal Generator
@@ -220,7 +220,7 @@ public class ChapterGenerators extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -239,14 +239,14 @@ public class ChapterGenerators extends Chapter {
 
 				}));
 		blankLine();
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.COALGENERATOR_AMPERAGE * 120, DisplayUnit.WATT), 120)).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.tiptemprange", 27, 2500)).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.tipidealtemp", 2500)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.COALGENERATOR_AMPERAGE * 120, DisplayUnit.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tiptemprange", 27, 2500)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipidealtemp", 2500)).setSeparateStart());
 		blankLine();
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.fuels").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.fuels").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		for (Item item : CoalGeneratorFuelRegister.INSTANCE.getFuels()) {
 			pageData.add(new TextWrapperObject(item.getDescription()).setSeparateStart());
-			pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.burntime", ChatFormatter.getChatDisplayShort((double) ForgeHooks.getBurnTime(new ItemStack(item), null) / 20.0, DisplayUnit.TIME_SECONDS))).setIndentions(1).setSeparateStart());
+			pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.burntime", ChatFormatter.getChatDisplayShort((double) ForgeHooks.getBurnTime(new ItemStack(item), null) / 20.0, DisplayUnit.TIME_SECONDS))).setIndentions(1).setSeparateStart());
 		}
 
 		// Hydroelectric Generator
@@ -258,7 +258,7 @@ public class ChapterGenerators extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -276,10 +276,10 @@ public class ChapterGenerators extends Chapter {
 					}
 
 				}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.HYDROELECTRICGENERATOR_AMPERAGE * 120, DisplayUnit.WATT), 120)).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(Constants.HYDROELECTRICGENERATOR_AMPERAGE * 120 * 2.25, DisplayUnit.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.HYDROELECTRICGENERATOR_AMPERAGE * 120, DisplayUnit.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(Constants.HYDROELECTRICGENERATOR_AMPERAGE * 120 * 2.25, DisplayUnit.WATT), 120)).setSeparateStart());
 		blankLine();
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.upgrades").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.upgrades").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.stator).getDescription()).setIndentions(1).setSeparateStart());
 
 		// Combustion Chamber
@@ -291,7 +291,7 @@ public class ChapterGenerators extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -309,13 +309,13 @@ public class ChapterGenerators extends Chapter {
 					}
 
 				}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20, DisplayUnit.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20, DisplayUnit.WATT), 120)).setSeparateStart());
 		blankLine();
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.fuels").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.fuels").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		for (CombustionFuelSource fuel : CombustionFuelRegister.INSTANCE.getFuels()) {
 			pageData.add(new TextWrapperObject(fuel.getFuels().get(0).getFluid().getFluidType().getDescription()).setSeparateStart());
-			pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.combustionchamberburn", fuel.getFuelUsage())).setIndentions(1).setSeparateStart());
-			pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.generators.multiplier", fuel.getPowerMultiplier())).setIndentions(1).setSeparateStart());
+			pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.combustionchamberburn", fuel.getFuelUsage())).setIndentions(1).setSeparateStart());
+			pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.multiplier", fuel.getPowerMultiplier())).setIndentions(1).setSeparateStart());
 		}
 
 	}

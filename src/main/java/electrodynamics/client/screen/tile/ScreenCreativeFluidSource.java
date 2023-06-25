@@ -9,7 +9,7 @@ import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentFluid
 import electrodynamics.prefab.screen.types.GenericMaterialScreen;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -25,7 +25,7 @@ public class ScreenCreativeFluidSource extends GenericMaterialScreen<ContainerCr
 			}
 			return null;
 		}, 81, 18));
-		addComponent(new ScreenComponentSimpleLabel(13, 38.5F, 10, 4210752, TextUtils.gui("creativefluidsource.setfluid")));
+		addComponent(new ScreenComponentSimpleLabel(13, 38.5F, 10, 4210752, ElectroTextUtils.gui("creativefluidsource.setfluid")));
 	}
 
 }

@@ -41,7 +41,7 @@ public class ScreenComponentProgress extends ScreenComponentGeneric {
 			progress = (int) (progressInfoHandler.getAsDouble() * on.textureHeight());
 			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation + on.textureHeight() - progress, on.textureU(), on.textureV() + on.textureHeight() - progress, on.textureWidth(), progress, on.imageWidth(), on.imageHeight());
 			break;
-		case PROGRESS_ARROW_RIGHT, BATTERY_CHARGE_RIGHT:
+		case PROGRESS_ARROW_RIGHT, BATTERY_CHARGE_RIGHT, PROGRESS_ARROW_RIGHT_BIG:
 			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, on.textureU(), on.textureV(), (int) (progressInfoHandler.getAsDouble() * on.textureWidth()), on.textureHeight(), on.imageWidth(), on.imageHeight());
 			break;
 		default:
@@ -55,7 +55,8 @@ public class ScreenComponentProgress extends ScreenComponentGeneric {
 		PROGRESS_ARROW_RIGHT(ProgressTextures.ARROW_RIGHT_OFF, ProgressTextures.ARROW_RIGHT_ON),
 		PROGRESS_ARROW_LEFT(ProgressTextures.ARROW_LEFT_OFF, ProgressTextures.ARROW_LEFT_ON),
 		COUNTDOWN_FLAME(ProgressTextures.FLAME_OFF, ProgressTextures.FLAME_ON),
-		BATTERY_CHARGE_RIGHT(ProgressTextures.BATTER_CHARGE_RIGHT_OFF, ProgressTextures.BATTER_CHARGE_RIGHT_ON);
+		BATTERY_CHARGE_RIGHT(ProgressTextures.BATTER_CHARGE_RIGHT_OFF, ProgressTextures.BATTER_CHARGE_RIGHT_ON),
+		PROGRESS_ARROW_RIGHT_BIG(ProgressTextures.ARROW_RIGHT_BIG_OFF, ProgressTextures.ARROW_RIGHT_BIG_ON);
 
 		public final ProgressTextures off;
 		public final ProgressTextures on;
@@ -70,6 +71,8 @@ public class ScreenComponentProgress extends ScreenComponentGeneric {
 	public enum ProgressTextures implements ITexture {
 		ARROW_RIGHT_OFF(22, 16, 0, 0, 44, 16, "arrow_right"),
 		ARROW_RIGHT_ON(22, 16, 22, 0, 44, 16, "arrow_right"),
+		ARROW_RIGHT_BIG_OFF(64, 15, 0, 0, 64, 30, "arrow_right_big"),
+		ARROW_RIGHT_BIG_ON(64, 15, 0, 15, 64, 30, "arrow_right_big"),
 		ARROW_LEFT_ON(22, 16, 0, 0, 44, 16, "arrow_left"),
 		ARROW_LEFT_OFF(22, 16, 22, 0, 44, 16, "arrow_left"),
 		FLAME_ON(14, 14, 0, 0, 14, 28, "flame"),
@@ -77,7 +80,9 @@ public class ScreenComponentProgress extends ScreenComponentGeneric {
 		BATTER_CHARGE_RIGHT_OFF(19, 10, 0, 0, 38, 10, "battery_charge"),
 		BATTER_CHARGE_RIGHT_ON(19, 10, 19, 0, 38, 10, "battery_charge"),
 		COMPRESS_ARROW_OFF(15, 9, 0, 0, 15, 9, "compressarrow"),
-		DECOMPRESS_ARROW_OFF(15, 9, 0, 0, 15, 9, "decompressarrow");
+		DECOMPRESS_ARROW_OFF(15, 9, 0, 0, 15, 9, "decompressarrow"),
+		FEYNMAN_DIAGRAM_OFF(65, 49, 0, 0, 65, 91, "feynman_diagram"),
+		FEYNMAN_DIAGRAM_ON(65, 42, 0, 49, 65, 91, "feynman_diagram");
 
 		private final int textureWidth;
 		private final int textureHeight;

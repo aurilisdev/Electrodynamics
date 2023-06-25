@@ -14,7 +14,7 @@ import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.utils.IComponentGasHandler;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.util.FormattedCharSequence;
 
@@ -52,7 +52,7 @@ public class ScreenComponentGasPressure extends ScreenComponentGuiTab {
 
 		for (PropertyGasTank tank : handler.getInputTanks()) {
 
-			tooltips.add(TextUtils.tooltip("tankmaxin", index, ChatFormatter.getChatDisplayShort(tank.getMaxPressure(), DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+			tooltips.add(ElectroTextUtils.tooltip("tankmaxin", index, ChatFormatter.getChatDisplayShort(tank.getMaxPressure(), DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 
 			index++;
 		}
@@ -61,7 +61,7 @@ public class ScreenComponentGasPressure extends ScreenComponentGuiTab {
 
 		for (PropertyGasTank tank : handler.getOutputTanks()) {
 			
-			tooltips.add(TextUtils.tooltip("tankmaxout", index, ChatFormatter.getChatDisplayShort(tank.getMaxPressure(), DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			tooltips.add(ElectroTextUtils.tooltip("tankmaxout", index, ChatFormatter.getChatDisplayShort(tank.getMaxPressure(), DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			
 			index++;
 			

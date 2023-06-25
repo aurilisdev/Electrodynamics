@@ -24,7 +24,7 @@ public class TileRelay extends GenericTile {
 	public TileRelay(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_RELAY.get(), worldPos, blockState);
 		addComponent(new ComponentDirection(this));
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1));
 	}
 
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
@@ -66,6 +66,14 @@ public class TileRelay extends GenericTile {
 
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
+		recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
+		if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
+			BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
+		}
+	}
+	
+	@Override
+	public void onPlace(BlockState oldState, boolean isMoving) {
 		recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
 		if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
 			BlockEntityUtils.updateLit(this, recievedRedstoneSignal);

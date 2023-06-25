@@ -14,7 +14,7 @@ import electrodynamics.client.guidebook.utils.pagedata.graphics.ItemWrapperObjec
 import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.compatibility.jei.JeiBuffer;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
@@ -36,7 +36,7 @@ public class ChapterUpgrades extends Chapter {
 
 	@Override
 	public MutableComponent getTitle() {
-		return TextUtils.guidebook("chapter.upgrades");
+		return ElectroTextUtils.guidebook("chapter.upgrades");
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class ChapterUpgrades extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -68,11 +68,11 @@ public class ChapterUpgrades extends Chapter {
 					}
 
 				}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.l1")).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.default").withStyle(ChatFormatting.BOLD)));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.l2")));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.smart").withStyle(ChatFormatting.BOLD)));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.l3")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l1")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.default").withStyle(ChatFormatting.BOLD)));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l2")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.smart").withStyle(ChatFormatting.BOLD)));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l3")));
 
 		// Ejector Upgrade tutorial
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput).getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
@@ -83,7 +83,7 @@ public class ChapterUpgrades extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -101,12 +101,12 @@ public class ChapterUpgrades extends Chapter {
 					}
 
 				}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.l4")).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.default").withStyle(ChatFormatting.BOLD)));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.l5")));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.smart").withStyle(ChatFormatting.BOLD)));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.l6")));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.upgrades.l7")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l4")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.default").withStyle(ChatFormatting.BOLD)));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l5")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.smart").withStyle(ChatFormatting.BOLD)));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l6")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l7")).setIndentions(1).setSeparateStart());
 
 	}
 

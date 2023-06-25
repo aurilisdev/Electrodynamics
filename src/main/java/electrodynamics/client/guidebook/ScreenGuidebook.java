@@ -27,7 +27,7 @@ import electrodynamics.prefab.screen.component.editbox.type.EditBoxSpecificPage;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGuidebookArrow;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGuidebookArrow.ArrowTextures;
 import electrodynamics.prefab.utilities.RenderingUtils;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -762,7 +762,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 		CoverPage page = new CoverPage(nextPageNumber);
 
-		List<FormattedText> split = font.getSplitter().splitLines(TextUtils.guidebook("title").withStyle(ChatFormatting.BOLD), TEXT_WIDTH, Style.EMPTY);
+		List<FormattedText> split = font.getSplitter().splitLines(ElectroTextUtils.guidebook("title").withStyle(ChatFormatting.BOLD), TEXT_WIDTH, Style.EMPTY);
 
 		int y = 16;
 
@@ -781,7 +781,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 		y += 105;
 
-		split = font.getSplitter().splitLines(TextUtils.guidebook("titlequote"), TEXT_WIDTH, Style.EMPTY);
+		split = font.getSplitter().splitLines(ElectroTextUtils.guidebook("titlequote"), TEXT_WIDTH, Style.EMPTY);
 
 		for (FormattedText text : split) {
 
@@ -797,7 +797,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	private CoverPage getSearchPageLeft() {
 		CoverPage page = new CoverPage(nextPageNumber);
 
-		List<FormattedText> split = font.getSplitter().splitLines(TextUtils.guidebook("searchparameters").withStyle(ChatFormatting.BOLD), TEXT_WIDTH, Style.EMPTY);
+		List<FormattedText> split = font.getSplitter().splitLines(ElectroTextUtils.guidebook("searchparameters").withStyle(ChatFormatting.BOLD), TEXT_WIDTH, Style.EMPTY);
 
 		int y = 16;
 
@@ -822,16 +822,16 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 		}
 
-		page.text.add(new TextWrapper(TEXT_START_X + 15, 165, TextUtils.guidebook("casesensitive"), TextWrapperObject.DEFAULT_COLOR, false, null, null, null));
+		page.text.add(new TextWrapper(TEXT_START_X + 15, 165, ElectroTextUtils.guidebook("casesensitive"), TextWrapperObject.DEFAULT_COLOR, false, null, null, null));
 		caseSensitive = new ButtonModuleSelector(70, 165, nextPageNumber, false);
 
-		buttons.add(new ButtonSpecificPage(-71, 180, 75, 20, nextPageNumber).setLabel(TextUtils.guidebook("selectall")).setOnPress(button -> {
+		buttons.add(new ButtonSpecificPage(-71, 180, 75, 20, nextPageNumber).setLabel(ElectroTextUtils.guidebook("selectall")).setOnPress(button -> {
 			for (ButtonModuleSelector selector : moduleParameters) {
 				selector.setSelected(true);
 			}
 		}));
 
-		buttons.add(new ButtonSpecificPage(8, 180, 75, 20, nextPageNumber).setLabel(TextUtils.guidebook("selectnone")).setOnPress(button -> {
+		buttons.add(new ButtonSpecificPage(8, 180, 75, 20, nextPageNumber).setLabel(ElectroTextUtils.guidebook("selectnone")).setOnPress(button -> {
 			for (ButtonModuleSelector selector : moduleParameters) {
 				selector.setSelected(false);
 			}

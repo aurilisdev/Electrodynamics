@@ -24,7 +24,7 @@ import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -73,7 +73,7 @@ public class ScreenThermoelectricManipulator extends GenericScreen<ContainerTher
 		
 		addEditBox(temperature = new ScreenComponentEditBox(94, 75, 59, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(20).setResponder(this::setTemperature).setFilter(ScreenComponentEditBox.POSITIVE_DECIMAL));
 		
-		addComponent(new ScreenComponentSimpleLabel(10, 80, 10, 4210752, TextUtils.gui("thermoelectricmanipulator.temp")));
+		addComponent(new ScreenComponentSimpleLabel(10, 80, 10, 4210752, ElectroTextUtils.gui("thermoelectricmanipulator.temp")));
 		addComponent(new ScreenComponentSimpleLabel(155, 80, 10, 4210752, Component.literal(DisplayUnit.TEMPERATURE_KELVIN.symbol)));
 	}
 	

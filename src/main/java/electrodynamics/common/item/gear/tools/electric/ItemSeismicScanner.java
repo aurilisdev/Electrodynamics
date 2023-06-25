@@ -10,7 +10,7 @@ import electrodynamics.common.packet.types.client.PacketAddClientRenderInfo;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.WorldUtils;
 import electrodynamics.prefab.utilities.object.Location;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -73,13 +73,13 @@ public class ItemSeismicScanner extends ItemElectric {
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
 		super.appendHoverText(stack, world, tooltips, flag);
-		tooltips.add(TextUtils.tooltip("seismicscanner.use"));
-		tooltips.add(TextUtils.tooltip("seismicscanner.opengui").withStyle(ChatFormatting.GRAY));
+		tooltips.add(ElectroTextUtils.tooltip("seismicscanner.use"));
+		tooltips.add(ElectroTextUtils.tooltip("seismicscanner.opengui").withStyle(ChatFormatting.GRAY));
 		boolean onCooldown = stack.hasTag() && stack.getTag().getInt(NBTUtils.TIMER) > 0;
 		if (onCooldown) {
-			tooltips.add(TextUtils.tooltip("seismicscanner.oncooldown").withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
+			tooltips.add(ElectroTextUtils.tooltip("seismicscanner.oncooldown").withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
 		} else {
-			tooltips.add(TextUtils.tooltip("seismicscanner.showuse").withStyle(ChatFormatting.GRAY));
+			tooltips.add(ElectroTextUtils.tooltip("seismicscanner.showuse").withStyle(ChatFormatting.GRAY));
 		}
 
 	}

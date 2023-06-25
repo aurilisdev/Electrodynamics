@@ -213,7 +213,7 @@ public class RenderingUtils {
 
 	}
 
-	public static void renderItemScaled(Item item, int x, int y, float scale) {
+	public static void renderItemScaled(PoseStack posestack, Item item, int x, int y, float scale) {
 		ItemStack stack = new ItemStack(item);
 		Minecraft minecraft = Minecraft.getInstance();
 		ItemRenderer itemRenderer = minecraft.getItemRenderer();
@@ -225,7 +225,6 @@ public class RenderingUtils {
 		RenderSystem.enableBlend();
 		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		PoseStack posestack = RenderSystem.getModelViewStack();
 		posestack.pushPose();
 		posestack.translate(x, y, 100.0F + itemRenderer.blitOffset);
 		posestack.translate(8.0D, 8.0D, 0.0D);
@@ -249,6 +248,11 @@ public class RenderingUtils {
 
 		posestack.popPose();
 		RenderSystem.applyModelViewMatrix();
+
+	}
+	
+	public static void renderItemScaled(Item item, int x, int y, float scale) {
+		renderItemScaled(RenderSystem.getModelViewStack(), item, x, y, scale);
 
 	}
 

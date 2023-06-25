@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeCategory;
-import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
+import electrodynamics.compatibility.jei.recipecategories.utils.AbstractRecipeCategory;
+import electrodynamics.compatibility.jei.utils.gui.types.BackgroundObject;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
-public abstract class Item2ItemRecipeCategory<T extends Item2ItemRecipe> extends ElectrodynamicsRecipeCategory<T> {
+public abstract class Item2ItemRecipeCategory<T extends Item2ItemRecipe> extends AbstractRecipeCategory<T> {
 
 	/*
 	 * DOCUMENTATION NOTES:
@@ -22,21 +22,19 @@ public abstract class Item2ItemRecipeCategory<T extends Item2ItemRecipe> extends
 	 * > Output items supercede buckets in position > All biproducts will be included with the outputSlots field > All fluid bucket output slots will be incled with the outputSlots field
 	 */
 
-	protected Item2ItemRecipeCategory(IGuiHelper guiHelper, String recipeGroup, ItemStack inputMachine, BackgroundWrapper bWrap, Class<T> recipeClass, int animTime) {
-		super(guiHelper, recipeGroup, inputMachine, bWrap, recipeClass, animTime);
+	protected Item2ItemRecipeCategory(IGuiHelper guiHelper, String recipeGroup, ItemStack inputMachine, BackgroundObject bWrap, RecipeType<T> recipeType, int animTime) {
+		super(guiHelper, recipeGroup, inputMachine, bWrap, recipeType, animTime);
 	}
 
 	@Override
-	public List<List<ItemStack>> getItemInputs(ElectrodynamicsRecipe electro) {
-		Item2ItemRecipe recipe = (Item2ItemRecipe) electro;
+	public List<List<ItemStack>> getItemInputs(Item2ItemRecipe recipe) {
 		List<List<ItemStack>> inputs = new ArrayList<>();
 		recipe.getCountedIngredients().forEach(h -> inputs.add(h.fetchCountedStacks()));
 		return inputs;
 	}
 
 	@Override
-	public List<ItemStack> getItemOutputs(ElectrodynamicsRecipe electro) {
-		Item2ItemRecipe recipe = (Item2ItemRecipe) electro;
+	public List<ItemStack> getItemOutputs(Item2ItemRecipe recipe) {
 		List<ItemStack> outputs = new ArrayList<>();
 		outputs.add(recipe.getResultItem());
 

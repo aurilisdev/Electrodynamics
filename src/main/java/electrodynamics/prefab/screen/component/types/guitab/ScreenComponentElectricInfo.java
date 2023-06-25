@@ -16,7 +16,7 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -61,9 +61,9 @@ public class ScreenComponentElectricInfo extends ScreenComponentGuiTab {
 				if (tile.getComponent(ComponentType.Electrodynamic) instanceof ComponentElectrodynamic electro) {
 					if (tile instanceof IElectricGenerator generator) {
 						TransferPack transfer = generator.getProduced();
-						list.add(TextUtils.gui("machine.current", Component.literal(ChatFormatter.getChatDisplayShort(transfer.getAmps(), DisplayUnit.AMPERE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-						list.add(TextUtils.gui("machine.output", Component.literal(ChatFormatter.getChatDisplayShort(transfer.getWatts(), DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-						list.add(TextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(transfer.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+						list.add(ElectroTextUtils.gui("machine.current", Component.literal(ChatFormatter.getChatDisplayShort(transfer.getAmps(), DisplayUnit.AMPERE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+						list.add(ElectroTextUtils.gui("machine.output", Component.literal(ChatFormatter.getChatDisplayShort(transfer.getWatts(), DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+						list.add(ElectroTextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(transfer.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 					} else {
 						if (wattage == null) {
 							double usage = tile.getComponent(ComponentType.Processor) instanceof ComponentProcessor proc ? proc.getUsage() * 20 : 0;
@@ -72,11 +72,11 @@ public class ScreenComponentElectricInfo extends ScreenComponentGuiTab {
 									usage += proc.getUsage() * 20;
 								}
 							}
-							list.add(TextUtils.gui("machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(usage, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+							list.add(ElectroTextUtils.gui("machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(usage, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 						} else {
-							list.add(TextUtils.gui("machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(wattage.apply(electro), DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+							list.add(ElectroTextUtils.gui("machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(wattage.apply(electro), DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 						}
-						list.add(TextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+						list.add(ElectroTextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 					}
 				}
 			}

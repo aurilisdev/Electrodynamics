@@ -5,7 +5,7 @@ import electrodynamics.common.tile.network.gas.TileGasPipeFilter;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.button.type.ButtonSwappableLabel;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGasFilter;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -22,7 +22,7 @@ public class ScreenGasPipeFilter extends GenericScreen<ContainerGasPipeFilter> {
 		addComponent(new ScreenComponentGasFilter(99, 18, 2));
 		addComponent(new ScreenComponentGasFilter(132, 18, 3));
 
-		addComponent(new ButtonSwappableLabel(38, 70, 100, 20, TextUtils.gui("filter.blacklist"), TextUtils.gui("filter.whitelist"), () -> {
+		addComponent(new ButtonSwappableLabel(38, 70, 100, 20, ElectroTextUtils.gui("filter.blacklist"), ElectroTextUtils.gui("filter.whitelist"), () -> {
 			TileGasPipeFilter filter = menu.getHostFromIntArray();
 			if (filter == null) {
 				return false;

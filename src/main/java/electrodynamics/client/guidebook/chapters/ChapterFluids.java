@@ -18,7 +18,7 @@ import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.compatibility.jei.JeiBuffer;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
@@ -44,13 +44,13 @@ public class ChapterFluids extends Chapter {
 
 	@Override
 	public MutableComponent getTitle() {
-		return TextUtils.guidebook("chapter.fluids");
+		return ElectroTextUtils.guidebook("chapter.fluids");
 	}
 
 	@Override
 	public void addData() {
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l1.1")).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l1.2")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l1.1")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l1.2")).setIndentions(1).setSeparateStart());
 
 		for (RegistryObject<Fluid> fluid : ElectrodynamicsFluids.FLUIDS.getEntries()) {
 			pageData.add(new FluidWrapperObject(0, 0, 32, 32, 36, fluid.get(), new GraphicTextDescriptor(36, 11, fluid.get().getFluidType().getDescription()))
@@ -61,8 +61,8 @@ public class ChapterFluids extends Chapter {
 				public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 					if (JeiBuffer.isJeiInstalled()) {
 						List<FormattedCharSequence> tooltips = new ArrayList<>();
-						tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-						tooltips.add(TextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+						tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+						tooltips.add(ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 						screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 					}
 
@@ -82,50 +82,50 @@ public class ChapterFluids extends Chapter {
 			}));
 		}
 
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l2")).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.fluidinput")).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.fluidoutput")).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l3")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l2")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.fluidinput")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.fluidoutput")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l3")).setSeparateStart());
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/fluidio.png")).onTooltip(new OnTooltip() {
 
 			@Override
 			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 				List<FormattedCharSequence> tooltips = new ArrayList<>();
-				tooltips.add(TextUtils.guidebook("chapter.electricity.left", ElectrodynamicsItems.getItem(SubtypeMachine.mineralwasher).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
-				tooltips.add(TextUtils.guidebook("chapter.electricity.middle", ElectrodynamicsItems.getItem(SubtypeMachine.chemicalcrystallizer).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
-				tooltips.add(TextUtils.guidebook("chapter.electricity.right", ElectrodynamicsItems.getItem(SubtypeMachine.electricpump).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.left", ElectrodynamicsItems.getItem(SubtypeMachine.mineralwasher).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.middle", ElectrodynamicsItems.getItem(SubtypeMachine.chemicalcrystallizer).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.right", ElectrodynamicsItems.getItem(SubtypeMachine.electricpump).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 				
 				screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 			}
 			
 		}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l4")).setSeparateStart().setIndentions(1));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.pipecapacity", TextUtils.guidebook("chapter.fluids.pipecopper"), SubtypeFluidPipe.copper.maxTransfer)).setSeparateStart().setIndentions(1));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.pipecapacity", TextUtils.guidebook("chapter.fluids.pipesteel"), SubtypeFluidPipe.steel.maxTransfer)).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l4")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.pipecapacity", ElectroTextUtils.guidebook("chapter.fluids.pipecopper"), SubtypeFluidPipe.copper.maxTransfer)).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.pipecapacity", ElectroTextUtils.guidebook("chapter.fluids.pipesteel"), SubtypeFluidPipe.steel.maxTransfer)).setSeparateStart().setIndentions(1));
 		blankLine();
 
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l5.1", ElectrodynamicsItems.ITEM_FLUIDVALVE.get().getDescription().copy().withStyle(ChatFormatting.BOLD), ElectrodynamicsItems.ITEM_FLUIDVALVE.get().getDescription())).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l5.1", ElectrodynamicsItems.ITEM_FLUIDVALVE.get().getDescription().copy().withStyle(ChatFormatting.BOLD), ElectrodynamicsItems.ITEM_FLUIDVALVE.get().getDescription())).setSeparateStart().setIndentions(1));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/fluidvalveoff.png")));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/fluidvalveon.png")));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l5.2", ElectrodynamicsItems.ITEM_FLUIDVALVE.get().getDescription())).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l5.2", ElectrodynamicsItems.ITEM_FLUIDVALVE.get().getDescription())).setSeparateStart());
 
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l6.1", ElectrodynamicsItems.ITEM_FLUIDPIPEPUMP.get().getDescription().copy().withStyle(ChatFormatting.BOLD), ElectrodynamicsItems.ITEM_FLUIDPIPEPUMP.get().getDescription())).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l6.1", ElectrodynamicsItems.ITEM_FLUIDPIPEPUMP.get().getDescription().copy().withStyle(ChatFormatting.BOLD), ElectrodynamicsItems.ITEM_FLUIDPIPEPUMP.get().getDescription())).setSeparateStart().setIndentions(1));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, new ResourceLocation(References.ID, "textures/screen/guidebook/fluidpipepump.png")));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l6.2")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l6.2")).setSeparateStart());
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, new ResourceLocation(References.ID, "textures/screen/guidebook/fluidpipepumpgui.png")));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l6.3")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l6.3")).setSeparateStart());
 
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l7.1", ElectrodynamicsItems.ITEM_FLUIDPIPEFILTER.get().getDescription().copy().withStyle(ChatFormatting.BOLD), ElectrodynamicsItems.ITEM_FLUIDPIPEFILTER.get().getDescription())).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l7.1", ElectrodynamicsItems.ITEM_FLUIDPIPEFILTER.get().getDescription().copy().withStyle(ChatFormatting.BOLD), ElectrodynamicsItems.ITEM_FLUIDPIPEFILTER.get().getDescription())).setSeparateStart().setIndentions(1));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, new ResourceLocation(References.ID, "textures/screen/guidebook/fluidfilterpipe.png")));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l7.2")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l7.2")).setSeparateStart());
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, new ResourceLocation(References.ID, "textures/screen/guidebook/fluidfilterpipegui1.png")));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l7.3", ElectrodynamicsItems.ITEM_FLUIDPIPEFILTER.get().getDescription())).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l7.3", ElectrodynamicsItems.ITEM_FLUIDPIPEFILTER.get().getDescription())).setSeparateStart());
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/fluidfilterpipegui2.png")));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/fluidfilterpipegui3.png")));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l7.4", ElectrodynamicsItems.ITEM_FLUIDPIPEFILTER.get().getDescription())).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l7.4", ElectrodynamicsItems.ITEM_FLUIDPIPEFILTER.get().getDescription())).setSeparateStart());
 
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l8")).setSeparateStart().setIndentions(1));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.fluids.l9")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l8")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l9")).setSeparateStart().setIndentions(1));
 
 	}
 

@@ -17,7 +17,7 @@ import electrodynamics.client.guidebook.chapters.ChapterQuarry;
 import electrodynamics.client.guidebook.chapters.ChapterTips;
 import electrodynamics.client.guidebook.chapters.ChapterTools;
 import electrodynamics.client.guidebook.chapters.ChapterUpgrades;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
@@ -32,7 +32,7 @@ public final class ModuleElectrodynamics extends Module {
 
 	@Override
 	public MutableComponent getTitle() {
-		return TextUtils.guidebook(References.ID);
+		return ElectroTextUtils.guidebook(References.ID);
 	}
 
 	@Override

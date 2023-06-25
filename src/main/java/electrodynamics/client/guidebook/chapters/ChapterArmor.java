@@ -14,7 +14,7 @@ import electrodynamics.client.guidebook.utils.pagedata.graphics.ItemWrapperObjec
 import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.compatibility.jei.JeiBuffer;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
@@ -36,7 +36,7 @@ public class ChapterArmor extends Chapter {
 
 	@Override
 	public MutableComponent getTitle() {
-		return TextUtils.guidebook("chapter.armor");
+		return ElectroTextUtils.guidebook("chapter.armor");
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class ChapterArmor extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -69,7 +69,7 @@ public class ChapterArmor extends Chapter {
 					}
 
 				}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.armor.jetpack")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.armor.jetpack")).setSeparateStart());
 
 		// Hydraulic Boots
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get().getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
@@ -80,7 +80,7 @@ public class ChapterArmor extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -98,7 +98,7 @@ public class ChapterArmor extends Chapter {
 					}
 
 				}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.armor.hydraulicboots")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.armor.hydraulicboots")).setSeparateStart());
 
 		// Combat Chestplate
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get().getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
@@ -109,7 +109,7 @@ public class ChapterArmor extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -127,7 +127,7 @@ public class ChapterArmor extends Chapter {
 					}
 
 				}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.armor.combatchestplate")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.armor.combatchestplate")).setSeparateStart());
 
 		// Combat Boots
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_COMBATBOOTS.get().getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
@@ -138,7 +138,7 @@ public class ChapterArmor extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -156,10 +156,10 @@ public class ChapterArmor extends Chapter {
 					}
 
 				}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.armor.combatboots")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.armor.combatboots")).setSeparateStart());
 
 		// Ceramic Plate Protection
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.armor.ceramicheader").withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.armor.ceramicheader").withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
 		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.getItem(SubtypeCeramic.plate))
 				.onTooltip(new OnTooltip() {
 
@@ -167,7 +167,7 @@ public class ChapterArmor extends Chapter {
 					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
 						if (JeiBuffer.isJeiInstalled()) {
 							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(TextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 						}
 
@@ -185,8 +185,8 @@ public class ChapterArmor extends Chapter {
 					}
 
 				}));
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.armor.ceramicl1")).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.armor.ceramicl2")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.armor.ceramicl1")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.armor.ceramicl2")).setIndentions(1).setSeparateStart());
 
 	}
 

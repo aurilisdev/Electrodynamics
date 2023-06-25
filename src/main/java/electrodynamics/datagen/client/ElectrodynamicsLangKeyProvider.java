@@ -617,7 +617,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addTooltip("railguntemp", "Temperature %s");
 			addTooltip("railgunmaxtemp", "Max Temp: %s");
 			addTooltip("railgunoverheat", "WARNING : OVERHEATING");
-			addTooltip("ceramicplatecount", "Plates Remaining: %s");
+			addTooltip("ceramicplatecount", "Plates: %s");
 			addTooltip("fluidtank.capacity", "Capacity: %s");
 			addTooltip("creativepowersource.joke", "\"Unlimited Power\" - Buck Rogers from Star Trek");
 			addTooltip("creativefluidsource.joke", "\"More\" - Crylo Ren");
@@ -774,6 +774,12 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			
 			addGuiLabel("filter.blacklist",  "Blacklist");
 			addGuiLabel("filter.whitelist", "Whitelist");
+			
+			addGuiLabel("multimeterblock.transfer", "Transfer: %s");
+			addGuiLabel("multimeterblock.voltage", "Voltage: %s");
+			addGuiLabel("multimeterblock.resistance", "Resistance: %s");
+			addGuiLabel("multimeterblock.loss", "Loss: %s");
+			addGuiLabel("multimeterblock.minvoltage", "Min Voltage: %s");
 
 			add("keycategory.electrodynamics", "Electrodynamics");
 			addKeyLabel("jetpackascend", "Ascend with Jetpack");
@@ -989,8 +995,10 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.electricity", "Electricity");
 
-			addGuidebook("chapter.electricity.l1", "Understanding how energy and electricity work is key if you want to do well in Electrodynamics. Energy is what machines use to do work, and it is measured in units of Joules (J). However, the energy needs to be \"flowing\" in order to do work. The rate "
-					+ "of flow is measured in units of Volts (V). The pressure or force of the flow in measured in units of Amperes or Amps for short (A or I). The amount of energy transfered in one second is known as the Power and is measured in units of " + "Watts (W). Power can easily be found through the formula P = I*V, where I is the current and V is the voltage.");
+			addGuidebook("chapter.electricity.l1.1", "Understanding how energy and electricity work is key if you want to do well in Electrodynamics. Energy is what machines use to do work, and it is measured in units of Joules (J). However, the energy needs to be \"flowing\" in order to do work. The rate "
+					+ "of flow is measured in units of Volts (V). The pressure or force of the flow in measured in units of Amperes or Amps for short (A or I). The amount of energy transfered in one second is known as the Power and is measured in units of " + "Watts (W). Power can easily be found through following the formula:");
+			addGuidebook("chapter.electricity.powerformula", "P = I * V");
+			addGuidebook("chapter.electricity.l1.2", "where I is the current and V is the voltage.");
 
 			addGuidebook("chapter.electricity.l2", "Now, how does this impact you and what do you need to pay attention to? All machines require energy at a specific voltage to function. The voltage will be displayed in the tooltip usually. However, " + "if you do not have access to this, there are a couple of methods of checking.");
 
@@ -1161,8 +1169,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.gases.condensedfluid", "Fluid: %s");
 			addGuidebook("chapter.gases.condtemp", "Temp: %s");
 
-			addGuidebook("chapter.gases.l10.1", "The immediate concern now is of course what happens to a gas if it condenses while contained within a machine? On machines that handle gases that also do not have a dedicated output fluid tank, you will notice a greyed out fluid dropplet:");
-			addGuidebook("chapter.gases.l10.2", "This represents the machine's runoff catch. When a gas condenses in one of these machines, the dropplet will light up indicating a gas has condensed into a fluid and has been caught. To extract this caught gas, simply click on the dropplet with a bucket or similar item. It is "
+			addGuidebook("chapter.gases.l10.1", "The immediate concern now is of course what happens to a gas if it condenses while contained within a machine? On machines that handle gases that also do not have a dedicated output fluid tank, you will notice a greyed out fluid droplet:");
+			addGuidebook("chapter.gases.l10.2", "This represents the machine's runoff catch. When a gas condenses in one of these machines, the dropplet will light up indicating a gas has condensed into a fluid and has been caught. To extract this caught gas, simply click on the droplet with a bucket or similar item. It is "
 					+ "important to note that the runoff catch can only handle one fluid at a time. If a gas condenses while a fluid is held, the existing fluid held by the catch will be lost! The runoff catch is only so large, so be mindful you don't let it get too full either.");
 
 			addGuidebook("chapter.gases.l11", "Now that we are familiar with the basic mechanics of pressure and temperature, we can discuss how to manipulate gases. As with other machines, gases have a dedicated input and output port. The respective ports are represented as so:");
@@ -1248,7 +1256,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.machines.chargerheader", "Understanding the Charger:");
 			addGuidebook("chapter.machines.l1", "The Charger does what the name suggests and charges items. When charging an item, it's crucial to select a Charger with the correct voltage. If the charger's voltage is less than the item's, the item will only be charged to a percentage of it's full charge. This can be " + "calculated by the formula:");
-			addGuidebook("chapter.machines.chargeformula", "Vcharger / Vitem");
+			addGuidebook("chapter.machines.chargeformula", "V(charger) / V(item)");
 
 			addGuidebook("chapter.machines.l2", "If the charger's voltage is greater than the item's, it will explode!");
 			addGuidebook("chapter.machines.l3", "It is possible to operate a charger with battery power using the 3 battery slots:");

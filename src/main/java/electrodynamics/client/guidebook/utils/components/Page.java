@@ -9,7 +9,7 @@ import electrodynamics.client.guidebook.utils.pagedata.OnClick;
 import electrodynamics.client.guidebook.utils.pagedata.OnKeyPress;
 import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
 import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Component;
@@ -81,7 +81,7 @@ public class Page {
 			int xShift = (textWidth - font.width(moduleTitle)) / 2;
 			font.draw(stack, moduleTitle, refX + xShift + textStartX + xPageShift, refY + 16, 4210752);
 
-			Component chapTitle = TextUtils.guidebook("chapters").withStyle(ChatFormatting.UNDERLINE);
+			Component chapTitle = ElectroTextUtils.guidebook("chapters").withStyle(ChatFormatting.UNDERLINE);
 			xShift = (textWidth - font.width(chapTitle)) / 2;
 			font.draw(stack, chapTitle, refX + textStartX + xShift + xPageShift, refY + 31, 4210752);
 		}
@@ -96,7 +96,7 @@ public class Page {
 		
 		@Override
 		public void renderAdditionalText(PoseStack stack, int refX, int refY, int xPageShift, Font font, int textWidth, int textStartX) {
-			Component modTitle = TextUtils.guidebook("availablemodules").withStyle(ChatFormatting.BOLD);
+			Component modTitle = ElectroTextUtils.guidebook("availablemodules").withStyle(ChatFormatting.BOLD);
 			int xShift = (textWidth - font.width(modTitle)) / 2;
 			font.draw(stack, modTitle, refX + textStartX + xShift + xPageShift, refY + 16, 4210752);
 		}

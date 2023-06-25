@@ -15,7 +15,7 @@ import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.Pro
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentTemperature;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -43,10 +43,10 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 				return;
 			}
 			TransferPack output = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * Math.min((coal.heat.getValue().get() - 27.0) / (3000.0 - 27.0), 1), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
-			font.draw(stack, TextUtils.gui("coalgenerator.timeleft", coal.burnTime.get() / 20 + "s"), inventoryLabelX + 60f, inventoryLabelY - 53f, 4210752);
-			font.draw(stack, TextUtils.gui("machine.current", ChatFormatter.getChatDisplayShort(output.getAmps(), DisplayUnit.AMPERE)), inventoryLabelX + 60f, inventoryLabelY - 40f, 4210752);
-			font.draw(stack, TextUtils.gui("machine.output", ChatFormatter.getChatDisplayShort(output.getWatts(), DisplayUnit.WATT)), inventoryLabelX + 60f, inventoryLabelY - 27f, 4210752);
-			font.draw(stack, TextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(output.getVoltage(), DisplayUnit.VOLTAGE)), inventoryLabelX + 60f, inventoryLabelY - 14f, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("coalgenerator.timeleft", coal.burnTime.get() / 20 + "s"), inventoryLabelX + 60f, inventoryLabelY - 53f, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("machine.current", ChatFormatter.getChatDisplayShort(output.getAmps(), DisplayUnit.AMPERE)), inventoryLabelX + 60f, inventoryLabelY - 40f, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("machine.output", ChatFormatter.getChatDisplayShort(output.getWatts(), DisplayUnit.WATT)), inventoryLabelX + 60f, inventoryLabelY - 27f, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(output.getVoltage(), DisplayUnit.VOLTAGE)), inventoryLabelX + 60f, inventoryLabelY - 14f, 4210752);
 		}));
 	}
 
@@ -57,9 +57,9 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 			return list;
 		}
 
-		list.add(TextUtils.gui("coalgenerator.timeleft", Component.literal(ChatFormatter.getChatDisplayShort(box.burnTime.get() / 20, DisplayUnit.TIME_SECONDS)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		list.add(TextUtils.gui("machine.temperature", Component.literal(ChatFormatter.getChatDisplayShort(box.heat.getValue().get() * (2500.0 / 3000.0), DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		list.add(TextUtils.gui("machine.heat", Component.literal(ChatFormatter.getChatDisplayShort((box.heat.getValue().get() - 27.0) / (3000.0 - 27.0) * 100, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("coalgenerator.timeleft", Component.literal(ChatFormatter.getChatDisplayShort(box.burnTime.get() / 20, DisplayUnit.TIME_SECONDS)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("machine.temperature", Component.literal(ChatFormatter.getChatDisplayShort(box.heat.getValue().get() * (2500.0 / 3000.0), DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("machine.heat", Component.literal(ChatFormatter.getChatDisplayShort((box.heat.getValue().get() - 27.0) / (3000.0 - 27.0) * 100, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 
 		return list;
 	}

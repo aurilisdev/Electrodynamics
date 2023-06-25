@@ -53,6 +53,22 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 				public double getJoulesStored() {
 					return 0;
 				}
+				
+				@Override
+				public double getVoltage() {
+					if(getNetwork() != null) {
+						return getNetwork().getVoltage();
+					}
+					return -1;
+				}
+				
+				@Override
+				public double getMinimumVoltage() {
+					if(getNetwork() != null) {
+						return getNetwork().getMinimumVoltage();
+					}
+					return -1;
+				}
 
 				@Override
 				public TransferPack receivePower(TransferPack transfer, boolean debug) {

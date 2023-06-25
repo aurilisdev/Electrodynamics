@@ -7,7 +7,7 @@ import electrodynamics.common.tile.generators.TileCreativePowerSource;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -21,11 +21,11 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 	public ScreenCreativePowerSource(ContainerCreativePowerSource container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
 		addComponent(voltage = new ScreenComponentEditBox(80, 27, 49, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(6).setFilter(ScreenComponentEditBox.POSITIVE_INTEGER).setResponder(this::setVoltage));
-		addComponent(power = new ScreenComponentEditBox(80, 45, 49, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setFilter(ScreenComponentEditBox.POSITIVE_INTEGER).setResponder(this::setPower));
-		addComponent(new ScreenComponentSimpleLabel(40, 31, 10, 4210752, TextUtils.gui("creativepowersource.voltage")));
-		addComponent(new ScreenComponentSimpleLabel(40, 49, 10, 4210752, TextUtils.gui("creativepowersource.power")));
-		addComponent(new ScreenComponentSimpleLabel(131, 31, 10, 4210752, TextUtils.gui("creativepowersource.voltunit")));
-		addComponent(new ScreenComponentSimpleLabel(131, 49, 10, 4210752, TextUtils.gui("creativepowersource.powerunit")));
+		addComponent(power = new ScreenComponentEditBox(80, 45, 49, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setFilter(ScreenComponentEditBox.POSITIVE_DECIMAL).setResponder(this::setPower));
+		addComponent(new ScreenComponentSimpleLabel(40, 31, 10, 4210752, ElectroTextUtils.gui("creativepowersource.voltage")));
+		addComponent(new ScreenComponentSimpleLabel(40, 49, 10, 4210752, ElectroTextUtils.gui("creativepowersource.power")));
+		addComponent(new ScreenComponentSimpleLabel(131, 31, 10, 4210752, ElectroTextUtils.gui("creativepowersource.voltunit")));
+		addComponent(new ScreenComponentSimpleLabel(131, 49, 10, 4210752, ElectroTextUtils.gui("creativepowersource.powerunit")));
 	}
 
 	private void setVoltage(String val) {
@@ -70,10 +70,10 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 			return;
 		}
 
-		Integer power = 0;
+		Double power = 0.0;
 
 		try {
-			power = Integer.parseInt(val);
+			power = Double.parseDouble(val);
 		} catch (Exception e) {
 
 		}

@@ -13,7 +13,7 @@ import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.object.Location;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -26,8 +26,8 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 	public ScreenSeismicScanner(ContainerSeismicScanner screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
 		addComponent(new ScreenComponentElectricInfo(this::getElectricInformation, -AbstractScreenComponentInfo.SIZE + 1, 2));
-		addComponent(new ScreenComponentSimpleLabel(15, 32, 10, 4210752, TextUtils.gui("seismicscanner.material")));
-		addComponent(new ScreenComponentSimpleLabel(85, 25, 10, 4210752, TextUtils.gui("seismicscanner.dataheader")));
+		addComponent(new ScreenComponentSimpleLabel(15, 32, 10, 4210752, ElectroTextUtils.gui("seismicscanner.material")));
+		addComponent(new ScreenComponentSimpleLabel(85, 25, 10, 4210752, ElectroTextUtils.gui("seismicscanner.dataheader")));
 		addComponent(new ScreenComponentMultiLabel(0, 0, stack -> {
 			ItemStack ownerItem = menu.getOwnerItem();
 
@@ -35,13 +35,13 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 			Location blockLoc = ownerItem.hasTag() ? Location.readFromNBT(ownerItem.getTag(), NBTUtils.LOCATION + ItemSeismicScanner.BLOCK_LOC) : new Location(0, 0, 0);
 
 			if (blockLoc.equals(playerLoc)) {
-				font.draw(stack, TextUtils.gui("seismicscanner.xcoordna"), 95, 35, 4210752);
-				font.draw(stack, TextUtils.gui("seismicscanner.ycoordna"), 95, 45, 4210752);
-				font.draw(stack, TextUtils.gui("seismicscanner.zcoordna"), 95, 55, 4210752);
+				font.draw(stack, ElectroTextUtils.gui("seismicscanner.xcoordna"), 95, 35, 4210752);
+				font.draw(stack, ElectroTextUtils.gui("seismicscanner.ycoordna"), 95, 45, 4210752);
+				font.draw(stack, ElectroTextUtils.gui("seismicscanner.zcoordna"), 95, 55, 4210752);
 			} else {
-				font.draw(stack, TextUtils.gui("seismicscanner.xcoord", blockLoc.intX()), 95, 35, 4210752);
-				font.draw(stack, TextUtils.gui("seismicscanner.ycoord", blockLoc.intY()), 95, 45, 4210752);
-				font.draw(stack, TextUtils.gui("seismicscanner.zcoord", blockLoc.intZ()), 95, 55, 4210752);
+				font.draw(stack, ElectroTextUtils.gui("seismicscanner.xcoord", blockLoc.intX()), 95, 35, 4210752);
+				font.draw(stack, ElectroTextUtils.gui("seismicscanner.ycoord", blockLoc.intY()), 95, 45, 4210752);
+				font.draw(stack, ElectroTextUtils.gui("seismicscanner.zcoord", blockLoc.intZ()), 95, 55, 4210752);
 			}
 		}));
 		
@@ -51,9 +51,9 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		ItemStack ownerItem = menu.getOwnerItem();
 		if (ownerItem.getItem() instanceof ItemSeismicScanner scanner) {
-			list.add(TextUtils.gui("machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20.0, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(TextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(120, DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(TextUtils.gui("machine.stored", Component.literal(ChatFormatter.getChatDisplayShort(scanner.getJoulesStored(ownerItem), DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN * 30, DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20.0, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(120, DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("machine.stored", Component.literal(ChatFormatter.getChatDisplayShort(scanner.getJoulesStored(ownerItem), DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN * 30, DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}

@@ -43,6 +43,10 @@ public class Gas {
 		this.description = description;
 		this.condensationTemp = condensationTemp;
 		this.condensedFluid = condensedFluid;
+		
+		if(!condensedFluid.isSame(Fluids.EMPTY)) {
+			ElectrodynamicsGases.MAPPED_GASSES.put(condensedFluid, this);
+		}
 	}
 	
 	public Component getDescription() {

@@ -12,6 +12,7 @@ import electrodynamics.client.keys.event.HandlerToggleNVGoggles;
 import electrodynamics.client.keys.event.HandlerToggleServoLegs;
 import electrodynamics.client.reloadlistener.ReloadListenerResetGuidebook;
 import electrodynamics.client.render.event.guipost.AbstractPostGuiOverlayHandler;
+import electrodynamics.client.render.event.guipost.HandlerArmorData;
 import electrodynamics.client.render.event.guipost.HandlerRailgunTemperature;
 import electrodynamics.client.render.event.levelstage.AbstractLevelStageHandler;
 import electrodynamics.client.render.event.levelstage.HandlerMarkerLines;
@@ -47,6 +48,7 @@ public class ClientEvents {
 		LEVEL_STAGE_RENDER_HANDLERS.add(HandlerSeismicScanner.INSTANCE);
 
 		POST_GUI_OVERLAY_HANDLERS.add(new HandlerRailgunTemperature());
+		POST_GUI_OVERLAY_HANDLERS.add(new HandlerArmorData());
 	}
 
 	@SubscribeEvent

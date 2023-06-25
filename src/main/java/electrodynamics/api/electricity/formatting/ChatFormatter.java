@@ -74,7 +74,7 @@ public class ChatFormatter {
 	}
 
 	public static String formatDecimals(double d, int decimalPlaces) {
-		DecimalFormat format = new DecimalFormat("#" + getDecimals(decimalPlaces));
+		DecimalFormat format = new DecimalFormat("0" + getDecimals(decimalPlaces));
 		format.setRoundingMode(RoundingMode.HALF_EVEN);
 		return format.format(roundDecimals(d, decimalPlaces));
 	}

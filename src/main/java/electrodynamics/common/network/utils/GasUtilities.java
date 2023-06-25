@@ -109,6 +109,7 @@ public class GasUtilities {
 					if(gas.getTemperature() > handler.getTankMaxTemperature(0) || gas.getPressure() > handler.getTankMaxPressure(0)) {
 						taken = gas.copy();
 						tile.getLevel().playSound(null, tile.getBlockPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
+						CapabilityUtils.fillGasItem(stack, gas, GasAction.EXECUTE);
 					} else {
 						double amtFilled = CapabilityUtils.fillGasItem(stack, gas, GasAction.EXECUTE);
 						taken = new GasStack(gas.getGas(), amtFilled, gas.getTemperature(), gas.getPressure());

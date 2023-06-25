@@ -51,6 +51,9 @@ public class ItemCanister extends Item {
 			items.add(new ItemStack(this));
 			if (!CapabilityUtils.isFluidItemNull()) {
 				for (Fluid liq : ForgeRegistries.FLUIDS.getValues()) {
+					if(liq.isSame(Fluids.EMPTY)) {
+						continue;
+					}
 					ItemStack temp = new ItemStack(this);
 					temp.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).setFluid(new FluidStack(liq, MAX_FLUID_CAPACITY)));
 					items.add(temp);

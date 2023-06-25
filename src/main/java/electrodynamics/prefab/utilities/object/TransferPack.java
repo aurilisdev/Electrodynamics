@@ -1,27 +1,21 @@
 package electrodynamics.prefab.utilities.object;
 
 public class TransferPack {
-	public static final TransferPack EMPTY = new TransferPack(0, 0, 0);
+	public static final TransferPack EMPTY = new TransferPack(0, 0);
 	private double joules;
 	private double voltage;
-	private double temperature;
 
-	private TransferPack(double joules, double voltage, double temperature) {
+	private TransferPack(double joules, double voltage) {
 		this.joules = joules;
 		this.voltage = voltage;
-		this.temperature = temperature;
 	}
 
 	public static TransferPack ampsVoltage(double amps, double voltage) {
-		return new TransferPack(amps / 20.0 * voltage, voltage, 0);
+		return new TransferPack(amps / 20.0 * voltage, voltage);
 	}
 
 	public static TransferPack joulesVoltage(double joules, double voltage) {
-		return new TransferPack(joules, voltage, 0);
-	}
-
-	public static TransferPack temperature(double temp) {
-		return new TransferPack(0, 0, temp);
+		return new TransferPack(joules, voltage);
 	}
 
 	public double getAmps() {
@@ -40,12 +34,8 @@ public class TransferPack {
 		return joules * 20.0;
 	}
 
-	public double getTemperature() {
-		return temperature;
-	}
-
 	public boolean valid() {
-		return (int) voltage != 0 || (int) temperature != 0;
+		return (int) voltage != 0;
 	}
 
 }

@@ -19,7 +19,7 @@ import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemMultiDigger;
 import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
@@ -193,21 +193,21 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(TextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
-		tooltip.add(TextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
 		IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
-		tooltip.add(TextUtils.tooltip("electricdrill.miningspeed", Component.literal(ChatFormatter.getChatDisplayShort(getHead(stack).speedBoost * 100, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
-		tooltip.add(TextUtils.tooltip("electricdrill.usage", Component.literal(ChatFormatter.getChatDisplayShort(Math.max(getPowerUsage(stack), POWER_USAGE), DisplayUnit.JOULES)).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(ElectroTextUtils.tooltip("electricdrill.miningspeed", Component.literal(ChatFormatter.getChatDisplayShort(getHead(stack).speedBoost * 100, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(ElectroTextUtils.tooltip("electricdrill.usage", Component.literal(ChatFormatter.getChatDisplayShort(Math.max(getPowerUsage(stack), POWER_USAGE), DisplayUnit.JOULES)).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
 		double speedboost = getSpeedBoost(stack);
 		if (speedboost > 1) {
-			tooltip.add(TextUtils.tooltip("electricdrill.overclock", Component.literal(ChatFormatter.getChatDisplayShort(speedboost * 100, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY));
+			tooltip.add(ElectroTextUtils.tooltip("electricdrill.overclock", Component.literal(ChatFormatter.getChatDisplayShort(speedboost * 100, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY));
 		}
 		int fortune = getFortuneLevel(stack);
 		if (fortune > 0) {
-			tooltip.add(TextUtils.tooltip("electricdrill.fortunelevel", fortune).withStyle(ChatFormatting.DARK_PURPLE));
+			tooltip.add(ElectroTextUtils.tooltip("electricdrill.fortunelevel", fortune).withStyle(ChatFormatting.DARK_PURPLE));
 		}
 		if (hasSilkTouch(stack)) {
-			tooltip.add(TextUtils.tooltip("electricdrill.silktouch").withStyle(ChatFormatting.DARK_PURPLE));
+			tooltip.add(ElectroTextUtils.tooltip("electricdrill.silktouch").withStyle(ChatFormatting.DARK_PURPLE));
 		}
 	}
 

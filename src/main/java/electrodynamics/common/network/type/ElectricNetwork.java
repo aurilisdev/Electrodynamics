@@ -20,16 +20,16 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, BlockEntity, TransferPack> implements ICapabilityElectrodynamic {
-	private double resistance;
-	private double energyLoss;
+	private double resistance = 0;
+	private double energyLoss = 0;
 	private double voltage = 0.0;
-	private double lastEnergyLoss;
+	private double lastEnergyLoss = 0;
 	private double lastVoltage = 0.0;
-	private ArrayList<BlockEntity> currentProducers = new ArrayList<>();
+	private HashSet<BlockEntity> currentProducers = new HashSet<>();
 	private double transferBuffer = 0;
-	private double maxTransferBuffer;
+	private double maxTransferBuffer = 0;
 
-	private double minimumVoltage = 0;
+	private double minimumVoltage = -1;
 	private long minimumAmpacity = 0;
 
 	public double getLastEnergyLoss() {
@@ -38,7 +38,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 
 	@Override
 	public double getVoltage() {
-		return minimumVoltage;
+		return voltage;
 	}
 
 	public double getActiveVoltage() {
@@ -78,6 +78,23 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		}
 		refresh();
 		NetworkRegistry.register(this);
+	}
+	
+	@Override
+	public void refresh() {
+		resistance = 0;
+		energyLoss = 0;
+		voltage = 0.0;
+		lastEnergyLoss = 0;
+		lastVoltage = 0.0;
+		currentProducers.clear();
+		transferBuffer = 0;
+		maxTransferBuffer = 0;
+
+		minimumVoltage = -1;
+		minimumAmpacity = 0;
+		
+		super.refresh();
 	}
 
 	private TransferPack sendToReceivers(TransferPack maxTransfer, ArrayList<BlockEntity> ignored, boolean debug) {
@@ -136,21 +153,24 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	}
 
 	private boolean checkForOverload() {
-		if (networkMaxTransfer * voltage - transmittedThisTick <= 0 && voltage > 0) {
-			HashSet<SubtypeWire> checkList = new HashSet<>();
-			for (SubtypeWire type : SubtypeWire.values()) {
-				if (type.conductor.ampacity <= transmittedLastTick / voltage * 20 && type.conductor.ampacity <= transmittedThisTick / voltage * 20) {
-					checkList.add(type);
-				}
-			}
-			for (SubtypeWire index : checkList) {
-				for (IConductor conductor : conductorTypeMap.get(index)) {
-					Scheduler.schedule(1, conductor::destroyViolently);
-				}
-			}
-			return true;
+		
+		if(voltage <= 0 || networkMaxTransfer * voltage - transmittedThisTick > 0) {
+			return false;
 		}
-		return false;
+		
+		HashSet<SubtypeWire> checkList = new HashSet<>();
+		for (SubtypeWire type : SubtypeWire.values()) {
+			if (type.conductor.ampacity <= transmittedLastTick / voltage * 20 && type.conductor.ampacity <= transmittedThisTick / voltage * 20) {
+				checkList.add(type);
+			}
+		}
+		for (SubtypeWire index : checkList) {
+			for (IConductor conductor : conductorTypeMap.get(index)) {
+				Scheduler.schedule(1, conductor::destroyViolently);
+			}
+		}
+		return true;
+		
 	}
 
 	@Override
@@ -163,7 +183,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	@Override
 	public void updateRecieverStatistics(BlockEntity reciever, Direction dir) {
 		reciever.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).ifPresent(cap -> {
-			if (cap.getVoltage() < 10) {
+			if (cap.getVoltage() < 0) {
 				return;
 			}
 
@@ -182,9 +202,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	}
 
 	public void addProducer(BlockEntity tile, double d) {
-		if (!currentProducers.contains(tile)) {
-			currentProducers.add(tile);
-		}
+		currentProducers.add(tile);
 		voltage = Math.max(voltage, d);
 	}
 
@@ -192,6 +210,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	public void tick() {
 		super.tick();
 		if (transferBuffer > 0) {
+			ArrayList<BlockEntity> producersList = new ArrayList<>(currentProducers);
 			if ((int) voltage != 0 && voltage > 0) {
 				if (resistance > 0) {
 					double bufferAsWatts = transferBuffer * 20; // buffer as watts
@@ -199,14 +218,14 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 					double maxPerTick = maxWatts / 20.0;
 					// above is power as watts when powerSend + powerLossToWires = m
 					TransferPack send = TransferPack.joulesVoltage(maxPerTick, voltage);
-					double sent = sendToReceivers(send, currentProducers, false).getJoules();
+					double sent = sendToReceivers(send, producersList, false).getJoules();
 					double lossPerTick = send.getAmps() * send.getAmps() * resistance / 20.0;
 					transferBuffer -= sent + lossPerTick;
 					energyLoss += lossPerTick;
 					transmittedThisTick += lossPerTick;
 					checkForOverload();
 				} else {
-					transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), currentProducers, false).getJoules();
+					transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), producersList, false).getJoules();
 				}
 			}
 		}
@@ -214,8 +233,10 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		voltage = 0;
 		lastEnergyLoss = energyLoss;
 		energyLoss = 0;
-		currentProducers.clear();
+		
 		maxTransferBuffer = 0;
+		currentProducers.clear();
+		
 		for (BlockEntity tile : acceptorSet) {
 			if (acceptorInputMap.containsKey(tile)) {
 				for (Direction connection : acceptorInputMap.get(tile)) {
@@ -242,6 +263,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		if (getSize() == 0) {
 			deregister();
 		}
+		
 	}
 
 	@Override
@@ -305,6 +327,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 
 	}
 
+	@Override
 	public double getMinimumVoltage() {
 		return minimumVoltage;
 	}

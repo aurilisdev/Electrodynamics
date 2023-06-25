@@ -9,19 +9,20 @@ import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeCategory;
-import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
+import electrodynamics.compatibility.jei.recipecategories.utils.AbstractRecipeCategory;
+import electrodynamics.compatibility.jei.utils.gui.types.BackgroundObject;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public abstract class Fluid2FluidRecipeCategory<T extends ElectrodynamicsRecipe> extends ElectrodynamicsRecipeCategory<T> {
+public abstract class Fluid2FluidRecipeCategory<T extends ElectrodynamicsRecipe> extends AbstractRecipeCategory<T> {
 
-	protected Fluid2FluidRecipeCategory(IGuiHelper guiHelper, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeCategoryClass, int animationTime) {
-		super(guiHelper, recipeGroup, inputMachine, wrapper, recipeCategoryClass, animationTime);
+	protected Fluid2FluidRecipeCategory(IGuiHelper guiHelper, String recipeGroup, ItemStack inputMachine, BackgroundObject wrapper, RecipeType<T> recipeType, int animationTime) {
+		super(guiHelper, recipeGroup, inputMachine, wrapper, recipeType, animationTime);
 	}
 
 	@Override

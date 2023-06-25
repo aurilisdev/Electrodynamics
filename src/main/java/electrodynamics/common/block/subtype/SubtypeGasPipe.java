@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.gas.Gas;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
@@ -143,7 +143,7 @@ public enum SubtypeGasPipe implements ISubtype {
 		}
 		
 		public Component getTranslatedName() {
-			return TextUtils.tooltip(tooltipName);
+			return ElectroTextUtils.tooltip(tooltipName);
 		}
 
 	}
@@ -173,7 +173,7 @@ public enum SubtypeGasPipe implements ISubtype {
 		}
 		
 		public Component getTranslatedName() {
-			return TextUtils.tooltip(tooltipName);
+			return ElectroTextUtils.tooltip(tooltipName);
 		}
 
 	}

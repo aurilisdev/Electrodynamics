@@ -1,6 +1,5 @@
 package electrodynamics.common.tile.gastransformer.thermoelectricmanipulator;
 
-import java.util.HashSet;
 import java.util.function.BiConsumer;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
@@ -69,6 +68,9 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
 		processor.consumeGasCylinder();
 		processor.dispenseGasCylinder();
+		
+		processor.consumeBucket();
+		processor.dispenseBucket();
 
 		ComponentDirection dir = getComponent(ComponentType.Direction);
 
@@ -245,13 +247,7 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
 		}
 
-		HashSet<Gas> evaporatedGases = ElectrodynamicsGases.MAPPED_GASSES.getOrDefault(inputTank.getFluid().getFluid(), new HashSet<>());
-
-		if (evaporatedGases.isEmpty()) {
-			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-		}
-
-		evaporatedGas = evaporatedGases.iterator().next();
+		evaporatedGas = ElectrodynamicsGases.MAPPED_GASSES.getOrDefault(inputTank.getFluid().getFluid(), Gas.empty());
 
 		if (evaporatedGas.isEmpty()) {
 			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);

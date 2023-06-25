@@ -10,6 +10,7 @@ public class Property<T> {
 	private final PropertyType type;
 	private boolean isDirty = true;
 	private boolean shouldSave = true;
+	private boolean shouldUpdateClient = true;
 	private String name;
 	private T value;
 	
@@ -99,6 +100,20 @@ public class Property<T> {
 
 	public boolean shouldSave() {
 		return shouldSave;
+	}
+	
+	public Property<T> setNoSave() {
+		shouldSave = false;
+		return this;
+	}
+	
+	public boolean shouldUpdateClient() {
+		return shouldUpdateClient;
+	}
+	
+	public Property<T> setNoUpdateClient() {
+		shouldUpdateClient = false;
+		return this;
 	}
 
 	@Override

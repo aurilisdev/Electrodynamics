@@ -19,7 +19,7 @@ import electrodynamics.client.render.model.armor.types.ModelCombatArmor;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -170,12 +170,12 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 		super.appendHoverText(stack, level, tooltip, flagin);
 		switch (((ArmorItem) stack.getItem()).getSlot()) {
 		case HEAD:
-			tooltip.add(TextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
-			tooltip.add(TextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
+			tooltip.add(ElectroTextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
+			tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
 			if (stack.hasTag() && stack.getTag().getBoolean(NBTUtils.ON)) {
-				tooltip.add(TextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
+				tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
 			} else {
-				tooltip.add(TextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
+				tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
 			}
 			IItemElectric.addBatteryTooltip(stack, level, tooltip);
 			break;
@@ -184,8 +184,8 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			ItemCompositeArmor.staticAppendHoverText(stack, level, tooltip, flagin);
 			break;
 		case LEGS:
-			tooltip.add(TextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
-			tooltip.add(TextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
+			tooltip.add(ElectroTextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
+			tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
 			ItemServoLeggings.staticAppendTooltips(stack, level, tooltip, flagin);
 			//IItemElectric.addBatteryTooltip(stack, level, tooltip);
 			break;

@@ -27,7 +27,7 @@ public class TileCreativePowerSource extends GenericTile {
 	private static final int POWER_MULTIPLIER = 1000000;
 
 	public Property<Integer> voltage = property(new Property<>(PropertyType.Integer, "setvoltage", 0));
-	public Property<Integer> power = property(new Property<>(PropertyType.Integer, "setpower", 0));
+	public Property<Double> power = property(new Property<>(PropertyType.Double, "setpower", 0.0));
 	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
 
 	protected List<CachedTileOutput> outputs;
@@ -36,7 +36,7 @@ public class TileCreativePowerSource extends GenericTile {
 		super(ElectrodynamicsBlockTypes.TILE_CREATIVEPOWERSOURCE.get(), worldPos, blockState);
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).output(Direction.UP).output(Direction.NORTH).output(Direction.SOUTH).output(Direction.EAST).output(Direction.WEST));
+		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).output(Direction.UP).output(Direction.NORTH).output(Direction.SOUTH).output(Direction.EAST).output(Direction.WEST).voltage(-1));
 		addComponent(new ComponentInventory(this));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.creativepowersource, this).createMenu((id, player) -> new ContainerCreativePowerSource(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
@@ -45,7 +45,7 @@ public class TileCreativePowerSource extends GenericTile {
 		if(hasRedstoneSignal.get()) {
 			return;
 		}
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		//ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 		if (outputs == null) {
 			outputs = new ArrayList<>();
 			for (Direction dir : Direction.values()) {
@@ -58,7 +58,12 @@ public class TileCreativePowerSource extends GenericTile {
 				cache.update(worldPosition.relative(Direction.values()[i]));
 			}
 		}
-		electro.voltage(power.get());
+		
+		if(voltage.get() <= 0) {
+			return;
+		}
+		
+		//electro.voltage(power.get());
 		TransferPack output = TransferPack.joulesVoltage((double) (power.get() * POWER_MULTIPLIER) / 20.0, voltage.get());
 		for (int i = 0; i < outputs.size(); i++) {
 			CachedTileOutput cache = outputs.get(i);

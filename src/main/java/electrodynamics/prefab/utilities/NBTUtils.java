@@ -26,6 +26,7 @@ public class NBTUtils {
 	public static final String SUCESS = "sucess";
 	public static final String PLAYING_SOUND = "false";
 	public static final String DIMENSION = "dimension";
+	public static final String TEMPERATURE = "temperature";
 	
 	public static final String FORTUNE_ENCHANT = "fortuneenchant";
 	public static final String SILK_TOUCH_ENCHANT = "silktouchenchant";

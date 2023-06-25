@@ -110,6 +110,9 @@ public class GenericMaterialTile extends GenericTile {
 				// now try to fill it
 				for (GasTank tank : handler.getOutputTanks()) {
 					GasStack tankGas = tank.getGas();
+					
+					
+					
 					double amtTaken = CapabilityUtils.fillGasItem(stack, tankGas, GasAction.SIMULATE);
 					GasStack taken = new GasStack(tankGas.getGas(), amtTaken, tankGas.getTemperature(), tankGas.getPressure());
 					if (amtTaken > 0) {

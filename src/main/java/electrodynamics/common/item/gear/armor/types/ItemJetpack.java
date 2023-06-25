@@ -22,7 +22,7 @@ import electrodynamics.common.packet.types.client.PacketRenderJetpackParticles;
 import electrodynamics.common.packet.types.server.PacketJetpackFlightServer;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -135,24 +135,26 @@ public class ItemJetpack extends ArmorItem {
 
 			});
 			if(Screen.hasShiftDown()) {
-				tooltips.add(TextUtils.tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
-				tooltips.add(TextUtils.tooltip("maxtemperature", ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
+				tooltips.add(ElectroTextUtils.tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
+				tooltips.add(ElectroTextUtils.tooltip("maxtemperature", ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
 			}
 		}
 		// cheesing sync issues one line of code at a time
 		if (stack.hasTag()) {
-			int mode = stack.getTag().getInt(NBTUtils.MODE);
-			Component modeTip = switch (mode) {
-			case 0 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.moderegular").withStyle(ChatFormatting.GREEN));
-			case 1 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.modehover").withStyle(ChatFormatting.AQUA));
-			case 2 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.modeelytra").withStyle(ChatFormatting.YELLOW));
-			case 3 -> TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.modeoff").withStyle(ChatFormatting.RED));
-			default -> Component.empty();
-			};
-			tooltips.add(modeTip);
+			tooltips.add(getModeText(stack.getTag().getInt(NBTUtils.MODE)));
 		} else {
-			tooltips.add(TextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("jetpack.moderegular").withStyle(ChatFormatting.GREEN)));
+			tooltips.add(ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("jetpack.moderegular").withStyle(ChatFormatting.GREEN)));
 		}
+	}
+	
+	public static Component getModeText(int mode) {
+		return switch (mode) {
+		case 0 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("jetpack.moderegular").withStyle(ChatFormatting.GREEN));
+		case 1 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("jetpack.modehover").withStyle(ChatFormatting.AQUA));
+		case 2 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("jetpack.modeelytra").withStyle(ChatFormatting.YELLOW));
+		case 3 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("jetpack.modeoff").withStyle(ChatFormatting.RED));
+		default -> Component.empty();
+		};
 	}
 
 	@Override
@@ -183,7 +185,7 @@ public class ItemJetpack extends ArmorItem {
 						double deltaY = hoverWithJetpack(pressure, player, stack);
 						renderClientParticles(world, player, particleZ);
 						sendPacket(player, true, deltaY);
-					} else if (mode == 2 && player.getFeetBlockState().isAir()) {
+					} else if (mode == 2 && isDown) {
 						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 4.0 * pressure, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 4.0 * pressure, player, stack);
 						sendPacket(player, true, deltaY);
 						//TODO elytra fuel particles?

@@ -90,7 +90,7 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock {
 
 			entityIn.hurt(DamageSource.IN_FIRE, 1.0F);
 
-		} else if (network.temperatureOfTransmitted <= Gas.MINIMUM_FREEZE_TEMP / multipler) {
+		} else if (network.temperatureOfTransmitted > 0 && network.temperatureOfTransmitted <= Gas.MINIMUM_FREEZE_TEMP / multipler) {
 
 			entityIn.hurt(DamageSource.FREEZE, 1.0F);
 

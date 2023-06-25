@@ -4,37 +4,39 @@ import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.MineralWasherRecipe;
 import electrodynamics.compatibility.jei.recipecategories.fluiditem2fluid.FluidItem2FluidRecipeCategory;
-import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowLeftAnimatedWrapper;
-import electrodynamics.compatibility.jei.utils.gui.arrows.animated.ArrowRightAnimatedWrapper;
-import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
-import electrodynamics.compatibility.jei.utils.gui.fluid.DefaultFluidGaugeWrapper;
-import electrodynamics.compatibility.jei.utils.gui.item.BucketSlotWrapper;
-import electrodynamics.compatibility.jei.utils.gui.item.DefaultItemSlotWrapper;
-import electrodynamics.compatibility.jei.utils.label.PowerLabelWrapper;
-import electrodynamics.compatibility.jei.utils.label.TimeLabelWrapper;
+import electrodynamics.compatibility.jei.utils.gui.types.ArrowAnimatedObject;
+import electrodynamics.compatibility.jei.utils.gui.types.BackgroundObject;
+import electrodynamics.compatibility.jei.utils.gui.types.ItemSlotObject;
+import electrodynamics.compatibility.jei.utils.gui.types.fluidgauge.FluidGaugeObject;
+import electrodynamics.compatibility.jei.utils.label.types.PowerLabelWrapperElectroRecipe;
+import electrodynamics.compatibility.jei.utils.label.types.TimeLabelWrapperElectroRecipe;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.SlotType;
 import electrodynamics.registers.ElectrodynamicsBlocks;
+import mezz.jei.api.gui.drawable.IDrawableAnimated.StartDirection;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 
 public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory<MineralWasherRecipe> {
 
-	private static final BackgroundWrapper BACK_WRAP = new BackgroundWrapper(132, 64);
+	private static final BackgroundObject BACK_WRAP = new BackgroundObject(132, 64);
 
-	private static final DefaultItemSlotWrapper INPUT_SLOT = new DefaultItemSlotWrapper(57, 16);
-	private static final BucketSlotWrapper INPUT_BUCKET_SLOT = new BucketSlotWrapper(57, 36);
-	private static final BucketSlotWrapper OUTPUT_BUCKET_SLOT = new BucketSlotWrapper(88, 36);
+	private static final ItemSlotObject INPUT_SLOT = new ItemSlotObject(SlotType.NORMAL, 57, 16, RecipeIngredientRole.INPUT);
+	private static final ItemSlotObject INPUT_BUCKET_SLOT = new ItemSlotObject(SlotType.NORMAL, IconType.FLUID_DARK, 57, 36, RecipeIngredientRole.INPUT);
+	private static final ItemSlotObject OUTPUT_BUCKET_SLOT = new ItemSlotObject(SlotType.NORMAL, IconType.FLUID_DARK, 88, 36, RecipeIngredientRole.OUTPUT);
 
-	private static final ArrowRightAnimatedWrapper ANIM_RIGHT_ARROW_1 = new ArrowRightAnimatedWrapper(30, 17);
-	private static final ArrowRightAnimatedWrapper ANIM_RIGHT_ARROW_2 = new ArrowRightAnimatedWrapper(80, 17);
-	private static final ArrowLeftAnimatedWrapper ANIM_LEFT_ARROW = new ArrowLeftAnimatedWrapper(30, 37);
+	private static final ArrowAnimatedObject ANIM_RIGHT_ARROW_1 = new ArrowAnimatedObject(ProgressBars.PROGRESS_ARROW_RIGHT, 30, 17, StartDirection.LEFT);
+	private static final ArrowAnimatedObject ANIM_RIGHT_ARROW_2 = new ArrowAnimatedObject(ProgressBars.PROGRESS_ARROW_RIGHT, 80, 17, StartDirection.LEFT);
+	private static final ArrowAnimatedObject ANIM_LEFT_ARROW = new ArrowAnimatedObject(ProgressBars.PROGRESS_ARROW_LEFT, 30, 37, StartDirection.RIGHT);
 
-	private static final DefaultFluidGaugeWrapper IN_GAUGE = new DefaultFluidGaugeWrapper(10, 5, 5000);
-	private static final DefaultFluidGaugeWrapper OUT_GAUGE = new DefaultFluidGaugeWrapper(108, 5, 5000);
+	private static final FluidGaugeObject IN_GAUGE = new FluidGaugeObject(10, 5, 5000);
+	private static final FluidGaugeObject OUT_GAUGE = new FluidGaugeObject(108, 5, 5000);
 
-	private static final PowerLabelWrapper POWER_LABEL = new PowerLabelWrapper(2, 55, 480);
-	private static final TimeLabelWrapper TIME_LABEL = new TimeLabelWrapper(130, 55);
+	private static final PowerLabelWrapperElectroRecipe POWER_LABEL = new PowerLabelWrapperElectroRecipe(2, 55, 480);
+	private static final TimeLabelWrapperElectroRecipe TIME_LABEL = new TimeLabelWrapperElectroRecipe(130, 55);
 
 	private static final int ANIM_TIME = 50;
 
@@ -42,27 +44,16 @@ public class MineralWasherRecipeCategory extends FluidItem2FluidRecipeCategory<M
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralwasher));
 
-	public static final ResourceLocation UID = new ResourceLocation(References.ID, RECIPE_GROUP);
-
 	public static RecipeType<MineralWasherRecipe> RECIPE_TYPE = RecipeType.create(References.ID, MineralWasherRecipe.RECIPE_GROUP, MineralWasherRecipe.class);
 
 	public MineralWasherRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, MineralWasherRecipe.class, ANIM_TIME);
+		super(guiHelper, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
 		setInputSlots(guiHelper, INPUT_SLOT, INPUT_BUCKET_SLOT);
 		setOutputSlots(guiHelper, OUTPUT_BUCKET_SLOT);
 		setFluidInputs(guiHelper, IN_GAUGE);
 		setFluidOutputs(guiHelper, OUT_GAUGE);
 		setAnimatedArrows(guiHelper, ANIM_LEFT_ARROW, ANIM_RIGHT_ARROW_1, ANIM_RIGHT_ARROW_2);
 		setLabels(POWER_LABEL, TIME_LABEL);
-	}
-
-	public ResourceLocation getUid() {
-		return UID;
-	}
-
-	@Override
-	public RecipeType<MineralWasherRecipe> getRecipeType() {
-		return RECIPE_TYPE;
 	}
 
 }

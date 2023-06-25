@@ -11,7 +11,7 @@ import electrodynamics.api.screen.component.ISlotTexture;
 import electrodynamics.api.screen.component.TextSupplier;
 import electrodynamics.prefab.inventory.container.slot.utils.IUpgradeSlot;
 import electrodynamics.prefab.utilities.RenderingUtils;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -74,17 +74,16 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 			return;
 		}
 		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, slotType.textureWidth(), slotType.textureHeight())) {
-			
-			if(tooltip != null && !tooltip.getText().getString().isEmpty()) {
+
+			if (tooltip != null && !tooltip.getText().getString().isEmpty()) {
 				gui.displayTooltip(stack, tooltip.getText(), xAxis, yAxis);
 			}
-			
-			
-			if(Screen.hasControlDown() && slot instanceof IUpgradeSlot upgrade) {
-				
+
+			if (Screen.hasControlDown() && slot instanceof IUpgradeSlot upgrade) {
+
 				List<FormattedCharSequence> tooltips = new ArrayList<>();
-				tooltips.add(TextUtils.tooltip("validupgrades").getVisualOrderText());
-				for(Item item : upgrade.getUpgrades()) {
+				tooltips.add(ElectroTextUtils.tooltip("validupgrades").getVisualOrderText());
+				for (Item item : upgrade.getUpgrades()) {
 					tooltips.add(item.getDescription().copy().withStyle(ChatFormatting.GRAY).getVisualOrderText());
 				}
 				gui.displayTooltips(stack, tooltips, xAxis, yAxis);
@@ -97,9 +96,30 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 		return slot.isActive();
 	}
 
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		return false;
+	}
+
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		return false;
+	}
+
+	@Override
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
+		return false;
+	}
+
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+		return false;
+	}
+
 	public enum SlotType implements ISlotTexture {
 
-		NORMAL(18, 18, 0, 0, 18, 18, "slot_regular");
+		NORMAL(18, 18, 0, 0, 18, 18, "slot_regular"),
+		BIG(26, 26, 0, 0, 26, 26, "slot_big", -5, -5);
 
 		private final int textureWidth;
 		private final int textureHeight;
@@ -178,21 +198,9 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 
 	public enum IconType implements ITexture {
 
-		NONE(0, 0, 0, 0, 0, 0, null),
-		ENERGY_DARK(10, 10, 0, 0, 10, 10, "electricity_dark"),
-		FLUID_DARK(14, 14, 0, 0, 14, 14, "fluid_dark"),
-		GAS_DARK(16, 16, 0, 0, 16, 16, "gas_dark"),
-		UPGRADE_DARK(12, 12, 0, 0, 12, 12, "upgrade_dark"),
-		DRILL_HEAD_DARK(12, 12, 0, 0, 12, 12, "drill_head_dark"),
-		TRASH_CAN_DARK(10, 10, 0, 0, 10, 10, "trash_can_dark"),
+		NONE(0, 0, 0, 0, 0, 0, null), ENERGY_DARK(10, 10, 0, 0, 10, 10, "electricity_dark"), FLUID_DARK(14, 14, 0, 0, 14, 14, "fluid_dark"), GAS_DARK(16, 16, 0, 0, 16, 16, "gas_dark"), UPGRADE_DARK(12, 12, 0, 0, 12, 12, "upgrade_dark"), DRILL_HEAD_DARK(12, 12, 0, 0, 12, 12, "drill_head_dark"), TRASH_CAN_DARK(10, 10, 0, 0, 10, 10, "trash_can_dark"),
 
-		ENERGY_GREEN(14, 14, 0, 0, 14, 14, "electricity_green"),
-		ENCHANTMENT(16, 16, 0, 0, 16, 16, "enchantment"),
-		FLUID_BLUE(16, 16, 0, 0, 16, 16, "fluid_blue"),
-		MINING_LOCATION(18, 18, 0, 0, 18, 18, "mining_location"),
-		QUARRY_COMPONENTS(18, 18, 0, 0, 18, 18, "quarry_components"),
-		TEMPERATURE(14, 14, 0, 0, 14, 14, "temperature"),
-		THERMOMETER(16, 16, 0, 0, 16, 16, "thermometer"),
+		ENERGY_GREEN(14, 14, 0, 0, 14, 14, "electricity_green"), ENCHANTMENT(16, 16, 0, 0, 16, 16, "enchantment"), FLUID_BLUE(16, 16, 0, 0, 16, 16, "fluid_blue"), MINING_LOCATION(18, 18, 0, 0, 18, 18, "mining_location"), QUARRY_COMPONENTS(18, 18, 0, 0, 18, 18, "quarry_components"), TEMPERATURE(14, 14, 0, 0, 14, 14, "temperature"), THERMOMETER(16, 16, 0, 0, 16, 16, "thermometer"),
 		PRESSURE_GAUGE(10, 10, 0, 0, 10, 10, "pressuredial");
 
 		private final int textureWidth;

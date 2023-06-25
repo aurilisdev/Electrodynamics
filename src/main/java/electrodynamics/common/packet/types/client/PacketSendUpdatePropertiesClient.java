@@ -20,7 +20,7 @@ public class PacketSendUpdatePropertiesClient {
 	private final ArrayList<Object> objects;
 
 	public PacketSendUpdatePropertiesClient(IPropertyHolderTile tile) {
-		this(tile.getTile().getBlockPos(), tile.getPropertyManager().getDirtyProperties());
+		this(tile.getTile().getBlockPos(), tile.getPropertyManager().getClientUpdateProperties());
 	}
 
 	public PacketSendUpdatePropertiesClient(BlockPos pos, ArrayList<Property<?>> dirtyProperties) {

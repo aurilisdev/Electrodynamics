@@ -24,7 +24,7 @@ public class TileCircuitBreaker extends GenericTile {
 	public TileCircuitBreaker(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_CIRCUITBREAKER.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection(this));
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1));
 	}
 
 	// will not transfer power if is recieving redstone signal, voltage exceeds recieving end voltage, or if current exceeds recieving
@@ -39,13 +39,13 @@ public class TileCircuitBreaker extends GenericTile {
 
 		BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
 
-		if(tile == null) {
+		if (tile == null) {
 			return TransferPack.EMPTY;
 		}
-		
+
 		return tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> {
 
-			if(transfer.getVoltage() <= 0 && debug) {
+			if (debug) {
 				TransferPack accepted = cap.receivePower(transfer, debug);
 
 				if (accepted.getJoules() > 0) {
@@ -53,26 +53,23 @@ public class TileCircuitBreaker extends GenericTile {
 				} else {
 					return TransferPack.EMPTY;
 				}
+
 			}
-			
-			if (cap.getVoltage() < transfer.getVoltage()) {
+
+			if (cap.getMinimumVoltage() > -1 && cap.getMinimumVoltage() < transfer.getVoltage()) {
 				return TransferPack.EMPTY;
 			}
 
-			if (tile instanceof GenericTileWire wire && wire.electricNetwork != null) {
+			if (tile instanceof GenericTileWire wire && wire.electricNetwork != null && wire.electricNetwork.networkMaxTransfer < transfer.getAmps()) {
 
-				if (wire.electricNetwork.networkMaxTransfer < transfer.getAmps()) {
-					return TransferPack.EMPTY;
-				}
+				return TransferPack.EMPTY;
 
-				TransferPack accepted = cap.receivePower(transfer, debug);
+			}
 
-				if (accepted.getJoules() > 0) {
-					return TransferPack.joulesVoltage(accepted.getJoules() + transfer.getJoules() * (1.0 - Constants.CIRCUITBREAKER_EFFICIENCY), transfer.getVoltage());
-				} else {
-					return TransferPack.EMPTY;
-				}
+			TransferPack accepted = cap.receivePower(transfer, debug);
 
+			if (accepted.getJoules() > 0) {
+				return TransferPack.joulesVoltage(accepted.getJoules() + transfer.getJoules() * (1.0 - Constants.CIRCUITBREAKER_EFFICIENCY), transfer.getVoltage());
 			} else {
 				return TransferPack.EMPTY;
 			}

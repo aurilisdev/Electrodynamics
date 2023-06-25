@@ -7,7 +7,7 @@ import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.block.connect.BlockWire;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -34,18 +34,18 @@ public class BlockItemWire extends BlockItem {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(TextUtils.tooltip("itemwire.resistance", ChatFormatter.getChatDisplayShort(wire.wire.resistance, DisplayUnit.RESISTANCE)).withStyle(ChatFormatting.GRAY));
-		tooltip.add(TextUtils.tooltip("itemwire.maxamps", ChatFormatter.getChatDisplayShort(wire.wire.conductor.ampacity, DisplayUnit.AMPERE)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(ElectroTextUtils.tooltip("itemwire.resistance", ChatFormatter.getChatDisplayShort(wire.wire.resistance, DisplayUnit.RESISTANCE)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(ElectroTextUtils.tooltip("itemwire.maxamps", ChatFormatter.getChatDisplayShort(wire.wire.conductor.ampacity, DisplayUnit.AMPERE)).withStyle(ChatFormatting.GRAY));
 		if (wire.wire.insulation.shockVoltage == 0) {
-			tooltip.add(TextUtils.tooltip("itemwire.info.uninsulated"));
+			tooltip.add(ElectroTextUtils.tooltip("itemwire.info.uninsulated"));
 		} else {
-			tooltip.add(TextUtils.tooltip("itemwire.info.insulationrating", ChatFormatter.getChatDisplayShort(wire.wire.insulation.shockVoltage, DisplayUnit.VOLTAGE)));
+			tooltip.add(ElectroTextUtils.tooltip("itemwire.info.insulationrating", ChatFormatter.getChatDisplayShort(wire.wire.insulation.shockVoltage, DisplayUnit.VOLTAGE)));
 		}
 		if (wire.wire.insulation.fireProof) {
-			TextUtils.tooltip("itemwire.info.fireproof");
+			ElectroTextUtils.tooltip("itemwire.info.fireproof");
 		}
 		if (wire.wire.wireClass.conductsRedstone) {
-			TextUtils.tooltip("itemwire.info.redstone");
+			ElectroTextUtils.tooltip("itemwire.info.redstone");
 		}
 	}
 	
