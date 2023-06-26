@@ -49,12 +49,12 @@ public enum JeiTextures implements ITexture {
 
 	@Override
 	public int imageWidth() {
-		return imageHeight;
+		return imageWidth;
 	}
 
 	@Override
 	public int imageHeight() {
-		return imageWidth;
+		return imageHeight;
 	}
 
 	@Override
