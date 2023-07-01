@@ -207,7 +207,7 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 						level.getChunkSource().getLightEngine().checkBlock(pos);
 					}
 					return InteractionResult.CONSUME;
-				} else if (!(blockitem.getBlock() instanceof BlockScaffold) && !connect.getCamoBlock().is(blockitem.getBlock())) {
+				} else if (!connect.getCamoBlock().is(blockitem.getBlock())) {
 					if (!level.isClientSide) {
 						if (!player.addItem(new ItemStack(connect.getCamoBlock().getBlock()))) {
 							level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), new ItemStack(connect.getCamoBlock().getBlock())));
