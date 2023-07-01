@@ -91,12 +91,16 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 
+		VoxelShape camoShape = Shapes.empty();
+		
 		if (state.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING) && worldIn.getBlockEntity(pos) instanceof GenericConnectTile connect) {
 
 			if (connect.isCamoAir()) {
-				return connect.getScaffoldBlock().getBlock().getShape(connect.getScaffoldBlock(), worldIn, pos, context);
+				camoShape =  connect.getScaffoldBlock().getBlock().getShape(connect.getScaffoldBlock(), worldIn, pos, context);
+			} else {
+				camoShape = connect.getCamoBlock().getBlock().getShape(connect.getCamoBlock(), worldIn, pos, context);
 			}
-			return connect.getCamoBlock().getBlock().getShape(connect.getCamoBlock(), worldIn, pos, context);
+			
 		}
 
 		VoxelShape shape = boundingBoxes[6];
@@ -112,7 +116,7 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 		locked = true;
 		if (shapestates.containsKey(checked)) {
 			locked = false;
-			return shapestates.get(checked);
+			return Shapes.join(shapestates.get(checked), camoShape, BooleanOp.OR);
 		}
 		locked = false;
 		for (Direction dir : checked) {
@@ -127,7 +131,7 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 		if (shape == null) {
 			return Shapes.empty();
 		}
-		return shape;
+		return Shapes.join(camoShape, shape, BooleanOp.OR);
 	}
 
 	@Override
