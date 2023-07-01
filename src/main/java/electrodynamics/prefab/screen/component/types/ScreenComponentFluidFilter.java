@@ -105,6 +105,27 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 
 		gui.displayTooltips(stack, tooltips, xAxis, yAxis);
 	}
+	
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
+
+			onMouseClick(mouseX, mouseY);
+
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		if (isValidClick(button)) {
+			onMouseRelease(mouseX, mouseY);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	@Override
 	public void onMouseClick(double mouseX, double mouseY) {

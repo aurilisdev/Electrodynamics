@@ -17,7 +17,7 @@ import electrodynamics.api.network.cable.type.IGasPipe;
 import electrodynamics.common.network.type.GasNetwork;
 import electrodynamics.common.network.utils.GasUtilities;
 import electrodynamics.prefab.network.AbstractNetwork;
-import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.types.GenericConnectTile;
 import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
-public abstract class GenericTileGasPipe extends GenericTile implements IGasPipe {
+public abstract class GenericTileGasPipe extends GenericConnectTile implements IGasPipe {
 
 	public GasNetwork gasNetwork;
 	private IGasHandler[] capability = new IGasHandler[Direction.values().length];

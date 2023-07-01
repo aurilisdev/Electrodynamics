@@ -1,6 +1,6 @@
 package electrodynamics.compatibility.jei.utils.gui.types.fluidgauge;
 
-import electrodynamics.compatibility.jei.utils.JeiTextures;
+import electrodynamics.compatibility.jei.utils.gui.JeiTextures;
 
 public class FluidGaugeObject extends AbstractFluidGaugeObject {
 

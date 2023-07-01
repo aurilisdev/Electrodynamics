@@ -34,6 +34,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -50,17 +51,17 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 	public static final HashSet<Block> WIRESET = new HashSet<>();
 
+	private static final HashSet<BlockWire> WIRES = new HashSet<>();
+
 	public final SubtypeWire wire;
 
 	public BlockWire(SubtypeWire wire) {
-		super(Properties.of(wire.insulation.material).sound(wire.insulation.soundType).strength(0.15f).dynamicShape(), wire.insulation.radius);
+		super(Properties.of(wire.insulation.material).sound(wire.insulation.soundType).strength(0.15f).dynamicShape().noOcclusion(), wire.insulation.radius);
 		this.wire = wire;
 		WIRESET.add(this);
-	}
-
-	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
-		return true;
+		if (wire.wireClass != WireClass.LOGISTICAL) {
+			WIRES.add(this);
+		}
 	}
 
 	@Override
@@ -111,7 +112,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 			if (wire.insulation == InsulationMaterial.WOOL) {
 
 				if (isServerSide) {
-					player.level.setBlockAndUpdate(pos, Block.updateFromNeighbourShapes(ElectrodynamicsBlocks.getBlock(SubtypeWire.getWire(wire.conductor, InsulationMaterial.BARE, WireClass.STANDARD, WireColor.BLACK)).defaultBlockState(), player.level, pos));
+					player.level.setBlockAndUpdate(pos, Block.updateFromNeighbourShapes(ElectrodynamicsBlocks.getBlock(SubtypeWire.getWire(wire.conductor, InsulationMaterial.BARE, WireClass.BARE, WireColor.NONE)).defaultBlockState(), player.level, pos));
 					handlePlayerItemDrops(player, ElectrodynamicsItems.ITEM_INSULATION.get());
 
 					if (wire.wireClass == WireClass.LOGISTICAL) {
@@ -123,7 +124,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 					stack.hurtAndBreak(1, player, pl -> {
 					});
 					level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
-					
+
 				}
 
 				return InteractionResult.CONSUME;
@@ -139,7 +140,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 			if (wire.insulation == InsulationMaterial.BARE) {
 
 				if (isServerSide) {
-					player.level.setBlockAndUpdate(pos, Block.updateFromNeighbourShapes(ElectrodynamicsBlocks.getBlock(SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.STANDARD, WireColor.BLACK)).defaultBlockState(), player.level, pos));
+					player.level.setBlockAndUpdate(pos, Block.updateFromNeighbourShapes(ElectrodynamicsBlocks.getBlock(SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.BLACK)).defaultBlockState(), player.level, pos));
 					stack.shrink(1);
 					level.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 				}
@@ -152,10 +153,10 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 		}
 
-		if (item == ElectrodynamicsItems.ITEM_CERAMICINSULATION.get() && wire.insulation == InsulationMaterial.WOOL && wire.wireClass == WireClass.STANDARD) {
+		if (item == ElectrodynamicsItems.ITEM_CERAMICINSULATION.get() && wire.insulation == InsulationMaterial.WOOL && wire.wireClass == WireClass.INSULATED) {
 
 			if (isServerSide) {
-				player.level.setBlockAndUpdate(pos, Block.updateFromNeighbourShapes(ElectrodynamicsBlocks.getBlock(SubtypeWire.getWire(wire.conductor, InsulationMaterial.CERAMIC, WireClass.STANDARD, WireColor.BLACK)).defaultBlockState(), player.level, pos));
+				player.level.setBlockAndUpdate(pos, Block.updateFromNeighbourShapes(ElectrodynamicsBlocks.getBlock(SubtypeWire.getWire(wire.conductor, InsulationMaterial.CERAMIC, WireClass.CERAMIC, WireColor.BLACK)).defaultBlockState(), player.level, pos));
 				stack.shrink(1);
 				level.playSound(null, pos, SoundEvents.TUFF_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			}
@@ -164,7 +165,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 		}
 
-		if (ForgeRegistries.ITEMS.tags().getTag(Tags.Items.DUSTS_REDSTONE).contains(item) && wire.insulation == InsulationMaterial.WOOL && wire.wireClass == WireClass.STANDARD) {
+		if (ForgeRegistries.ITEMS.tags().getTag(Tags.Items.DUSTS_REDSTONE).contains(item) && wire.insulation == InsulationMaterial.WOOL && wire.wireClass == WireClass.INSULATED) {
 
 			if (isServerSide) {
 				player.level.setBlockAndUpdate(pos, Block.updateFromNeighbourShapes(ElectrodynamicsBlocks.getBlock(SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.LOGISTICAL, WireColor.BLACK)).defaultBlockState(), player.level, pos));
@@ -178,10 +179,10 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 		WireColor dyeColor = WireColor.getColorFromDye(item);
 
-		if (dyeColor != null && wire.wireClass == WireClass.STANDARD && (wire.insulation == InsulationMaterial.WOOL || wire.insulation == InsulationMaterial.THICK_WOOL)) {
+		if (dyeColor != null && (wire.wireClass == WireClass.INSULATED || wire.wireClass == WireClass.THICK || wire.wireClass == WireClass.CERAMIC || wire.wireClass == WireClass.LOGISTICAL)) {
 
 			if (isServerSide) {
-				player.level.setBlockAndUpdate(pos, Block.updateFromNeighbourShapes(ElectrodynamicsBlocks.getBlock(SubtypeWire.getWire(wire.conductor, wire.insulation, WireClass.STANDARD, dyeColor)).defaultBlockState(), player.level, pos));
+				player.level.setBlockAndUpdate(pos, Block.updateFromNeighbourShapes(ElectrodynamicsBlocks.getBlock(SubtypeWire.getWire(wire.conductor, wire.insulation, wire.wireClass, dyeColor)).defaultBlockState(), player.level, pos));
 				stack.shrink(1);
 				level.playSound(null, pos, SoundEvents.DYE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			}
@@ -190,8 +191,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 		}
 
-		return InteractionResult.FAIL;
-
+		return super.use(state, level, pos, player, hand, hit);
 	}
 
 	private void handlePlayerItemDrops(Player player, Item... items) {
@@ -249,24 +249,32 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 	@Override
 	public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
 		super.onCaughtFire(state, world, pos, face, igniter);
-		Scheduler.schedule(5, () -> world.setBlockAndUpdate(pos, ElectrodynamicsBlocks.getBlock(SubtypeWire.getWire(wire.conductor, InsulationMaterial.BARE, WireClass.STANDARD, WireColor.BLACK)).defaultBlockState()));
+		Scheduler.schedule(5, () -> {
+			SubtypeWire wire = SubtypeWire.getWire(this.wire.conductor, InsulationMaterial.BARE, WireClass.BARE, WireColor.NONE);
+			if (wire == null) {
+				world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+			} else {
+				world.setBlockAndUpdate(pos, ElectrodynamicsBlocks.getBlock(wire).defaultBlockState());
+			}
+
+		});
 	}
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return ((BlockWire) state.getBlock()).wire.wireClass == WireClass.LOGISTICAL ? new TileLogisticalWire(pos, state) : new TileWire(pos, state);
+		return new TileWire(pos, state);
 	}
 
 	@Override
 	public BlockState refreshConnections(BlockState otherState, BlockEntity tile, BlockState state, Direction dir) {
 		EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(dir);
 		if (tile instanceof IConductor conductor) {
-			if (conductor.getWireColor() == WireColor.BLACK || wire.color == WireColor.BLACK || conductor.getWireColor() == wire.color) {
+			if (conductor.getWireType().isDefaultColor() || wire.isDefaultColor() || conductor.getWireColor() == wire.color) {
 				return state.setValue(property, EnumConnectType.WIRE);
 			} else {
 				return state.setValue(property, EnumConnectType.NONE);
 			}
-		} else if (ElectricityUtils.isElectricReceiver(tile, dir.getOpposite())/* || checkRedstone(otherState) */) {
+		} else if (ElectricityUtils.isElectricReceiver(tile, dir.getOpposite()) || checkRedstone(otherState)) {
 			return state.setValue(property, EnumConnectType.INVENTORY);
 		} else if (state.hasProperty(property)) {
 			return state.setValue(property, EnumConnectType.NONE);
@@ -281,20 +289,20 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 	@Override
 	public IRefreshableCable getCableIfValid(BlockEntity tile) {
-		if (tile instanceof IConductor conductor && (conductor.getWireColor() == WireColor.BLACK || wire.color == WireColor.BLACK || conductor.getWireColor() == wire.color)) {
+		if (tile instanceof IConductor conductor && (conductor.getWireType().isDefaultColor() || wire.isDefaultColor() || conductor.getWireColor() == wire.color)) {
 			return conductor;
 		}
 		return null;
 	}
 
 	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = References.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-	private static class ColorHandler {
+	private static class ColorHandlerInternal {
 
 		@SubscribeEvent
 		public static void registerColoredBlocks(RegisterColorHandlersEvent.Block event) {
-			WIRESET.forEach(block -> event.register((state, level, pos, tintIndex) -> {
+			WIRES.forEach(block -> event.register((state, level, pos, tintIndex) -> {
 				if (tintIndex == 0) {
-					return ((BlockWire) block).wire.color.color;
+					return block.wire.color.color;
 				} else {
 					return 0xFFFFFFFF;
 				}

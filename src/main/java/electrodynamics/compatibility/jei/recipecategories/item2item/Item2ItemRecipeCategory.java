@@ -11,6 +11,7 @@ import electrodynamics.compatibility.jei.utils.gui.types.BackgroundObject;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
@@ -22,8 +23,8 @@ public abstract class Item2ItemRecipeCategory<T extends Item2ItemRecipe> extends
 	 * > Output items supercede buckets in position > All biproducts will be included with the outputSlots field > All fluid bucket output slots will be incled with the outputSlots field
 	 */
 
-	protected Item2ItemRecipeCategory(IGuiHelper guiHelper, String recipeGroup, ItemStack inputMachine, BackgroundObject bWrap, RecipeType<T> recipeType, int animTime) {
-		super(guiHelper, recipeGroup, inputMachine, bWrap, recipeType, animTime);
+	public Item2ItemRecipeCategory(IGuiHelper guiHelper, Component title, ItemStack inputMachine, BackgroundObject bWrap, RecipeType<T> recipeType, int animTime) {
+		super(guiHelper, title, inputMachine, bWrap, recipeType, animTime);
 	}
 
 	@Override

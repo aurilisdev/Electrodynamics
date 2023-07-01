@@ -8,7 +8,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -144,7 +146,25 @@ public enum PropertyType {
 	//
 	Gasstack((prop, buf) -> ((GasStack) prop.get()).writeToBuffer(buf), buf -> GasStack.readFromBuffer(buf), (prop, tag) -> tag.put(prop.getName(), ((GasStack) prop.get()).writeToNbt()), (prop, tag) -> GasStack.readFromNbt(tag.getCompound(prop.getName()))),
 	//
-	Itemstack((prop, buf) -> buf.writeItem((ItemStack) prop.get()), buf -> buf.readItem(), (prop, tag) -> tag.put(prop.getName(), ((ItemStack) prop.get()).save(new CompoundTag())), (prop, tag) -> ItemStack.of(tag.getCompound(prop.getName())));
+	Itemstack((prop, buf) -> buf.writeItem((ItemStack) prop.get()), buf -> buf.readItem(), (prop, tag) -> tag.put(prop.getName(), ((ItemStack) prop.get()).save(new CompoundTag())), (prop, tag) -> ItemStack.of(tag.getCompound(prop.getName()))),
+	//
+	Block((prop, buf) -> {
+		buf.writeItem(new ItemStack(((net.minecraft.world.level.block.Block) prop.get()).asItem()));
+	}, buf -> {
+		ItemStack stack = buf.readItem();
+		if (stack.isEmpty()) {
+			return Blocks.AIR;
+		}
+		return ((BlockItem) stack.getItem()).getBlock();
+	}, (prop, tag) -> {
+		tag.put(prop.getName(), new ItemStack(((net.minecraft.world.level.block.Block) prop.get()).asItem()).save(new CompoundTag()));
+	}, (prop, tag) -> {
+		ItemStack stack = ItemStack.of(tag.getCompound(prop.getName()));
+		if (stack.isEmpty()) {
+			return Blocks.AIR;
+		}
+		return ((BlockItem) stack.getItem()).getBlock();
+	});
 
 	@Nonnull
 	public final BiPredicate<Object, Object> predicate;

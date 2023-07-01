@@ -52,10 +52,12 @@ public class IngredientRendererGasStack implements IIngredientRenderer<GasStack>
 		}
 		stack.pushPose();
 		
-		ScreenComponentGasGauge.renderMercuryTexture(stack, 0, mercuryOffset, (float) ingredient.getAmount() / (float) tankAmount);
+		float ratio = (float) ingredient.getAmount() / (float) tankAmount;
+		
+		ScreenComponentGasGauge.renderMercuryTexture(stack, 0, mercuryOffset, ratio);
 		
 		RenderingUtils.bindTexture(bars.getLocation());
-		Screen.blit(stack, bars.getXOffset(), bars.getYOffset(), bars.textureU(), bars.textureV(), bars.textureWidth(), bars.textureHeight(), bars.imageWidth(), bars.imageHeight());
+		Screen.blit(stack, bars.getXOffset(), mercuryOffset + bars.getYOffset(), bars.textureU(), bars.textureV(), bars.textureWidth(), bars.textureHeight(), bars.imageWidth(), bars.imageHeight());
 		
 		stack.popPose();
 	}

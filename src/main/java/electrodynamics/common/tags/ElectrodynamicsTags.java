@@ -204,6 +204,20 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Item> THICK_SILVER_WIRES = forgeTag("wires/thick_silver");
 		public static final TagKey<Item> THICK_SUPERCONDUCTIVE_WIRES = forgeTag("wires/thick_superconductive");
 		public static final TagKey<Item> THICK_TIN_WIRES = forgeTag("wires/thick_tin");
+		
+		public static final TagKey<Item> CERAMIC_COPPER_WIRES = forgeTag("wires/ceramic_copper");
+		public static final TagKey<Item> CERAMIC_GOLD_WIRES = forgeTag("wires/ceramic_gold");
+		public static final TagKey<Item> CERAMIC_IRON_WIRES = forgeTag("wires/ceramic_iron");
+		public static final TagKey<Item> CERAMIC_SILVER_WIRES = forgeTag("wires/ceramic_silver");
+		public static final TagKey<Item> CERAMIC_SUPERCONDUCTIVE_WIRES = forgeTag("wires/ceramic_superconductive");
+		public static final TagKey<Item> CERAMIC_TIN_WIRES = forgeTag("wires/ceramic_tin");
+		
+		public static final TagKey<Item> LOGISTICAL_COPPER_WIRES = forgeTag("wires/logistical_copper");
+		public static final TagKey<Item> LOGISTICAL_GOLD_WIRES = forgeTag("wires/logistical_gold");
+		public static final TagKey<Item> LOGISTICAL_IRON_WIRES = forgeTag("wires/logistical_iron");
+		public static final TagKey<Item> LOGISTICAL_SILVER_WIRES = forgeTag("wires/logistical_silver");
+		public static final TagKey<Item> LOGISTICAL_SUPERCONDUCTIVE_WIRES = forgeTag("wires/logistical_superconductive");
+		public static final TagKey<Item> LOGISTICAL_TIN_WIRES = forgeTag("wires/logistical_tin");
 
 		private static void init() {
 		}

@@ -116,6 +116,27 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 			onTooltip.onTooltip(stack, this, xAxis, yAxis);
 		}
 	}
+	
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button) {
+		if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
+
+			onMouseClick(mouseX, mouseY);
+
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean mouseReleased(double mouseX, double mouseY, int button) {
+		if (isValidClick(button)) {
+			onMouseRelease(mouseX, mouseY);
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	@Override
 	public void onMouseClick(double mouseX, double mouseY) {
@@ -124,6 +145,7 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 		}
 	}
 
+	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (isActiveAndVisible()) {
 			if (keyCode != 257 && keyCode != 32 && keyCode != 335) {

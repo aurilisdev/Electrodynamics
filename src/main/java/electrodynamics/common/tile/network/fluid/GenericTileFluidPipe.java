@@ -12,8 +12,7 @@ import electrodynamics.api.network.cable.type.IFluidPipe;
 import electrodynamics.common.network.type.FluidNetwork;
 import electrodynamics.common.network.utils.FluidUtilities;
 import electrodynamics.prefab.network.AbstractNetwork;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
+import electrodynamics.prefab.tile.types.GenericConnectTile;
 import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,7 +27,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class GenericTileFluidPipe extends GenericTile implements IFluidPipe {
+public abstract class GenericTileFluidPipe extends GenericConnectTile implements IFluidPipe {
 
 	public FluidNetwork fluidNetwork;
 	private ArrayList<IFluidHandler> handler = new ArrayList<>();
@@ -93,7 +92,6 @@ public abstract class GenericTileFluidPipe extends GenericTile implements IFluid
 				}
 			});
 		}
-		addComponent(new ComponentPacketHandler(this));
 	}
 
 	private HashSet<IFluidPipe> getConnectedConductors() {

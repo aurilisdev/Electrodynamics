@@ -22,6 +22,7 @@ import electrodynamics.client.render.tile.RenderCarbyneBatteryBox;
 import electrodynamics.client.render.tile.RenderChargerGeneric;
 import electrodynamics.client.render.tile.RenderChemicalMixer;
 import electrodynamics.client.render.tile.RenderCombustionChamber;
+import electrodynamics.client.render.tile.RenderConnectBlock;
 import electrodynamics.client.render.tile.RenderCoolantResavoir;
 import electrodynamics.client.render.tile.RenderElectrolyticSeparator;
 import electrodynamics.client.render.tile.RenderFermentationPlant;
@@ -30,6 +31,7 @@ import electrodynamics.client.render.tile.RenderGasPipePump;
 import electrodynamics.client.render.tile.RenderHydroelectricGenerator;
 import electrodynamics.client.render.tile.RenderLathe;
 import electrodynamics.client.render.tile.RenderLithiumBatteryBox;
+import electrodynamics.client.render.tile.RenderLogisticalWire;
 import electrodynamics.client.render.tile.RenderMineralCrusher;
 import electrodynamics.client.render.tile.RenderMineralCrusherDouble;
 import electrodynamics.client.render.tile.RenderMineralCrusherTriple;
@@ -330,6 +332,12 @@ public class ClientRegister {
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_ELECTROLYTICSEPARATOR.get(), RenderElectrolyticSeparator::new);
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_GASPIPEPUMP.get(), RenderGasPipePump::new);
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_FLUIDPIPEPUMP.get(), RenderFluidPipePump::new);
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_LOGISTICALWIRE.get(), RenderLogisticalWire::new);
+		
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_WIRE.get(), RenderConnectBlock::new);
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_LOGISTICALWIRE.get(), RenderConnectBlock::new);
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_PIPE.get(), RenderConnectBlock::new);
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_GAS_PIPE.get(), RenderConnectBlock::new);
 	}
 
 	public static boolean shouldMultilayerRender(RenderType type) {

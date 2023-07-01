@@ -6,7 +6,7 @@
         "items": [
           {
             "items": [
-              "electrodynamics:wireceramicinsulatedcopper"
+              "electrodynamics:wireceramicinsulatedcopperbrown"
             ]
           }
         ]
@@ -22,7 +22,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "electrodynamics:wireceramicinsulatedcopper"
+      "item": "electrodynamics:wireceramicinsulatedcopperbrown"
     },
     "show_toast": true,
     "title": {

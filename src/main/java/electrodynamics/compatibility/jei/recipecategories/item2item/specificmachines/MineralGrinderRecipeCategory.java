@@ -13,6 +13,7 @@ import electrodynamics.compatibility.jei.utils.label.types.PowerLabelWrapperElec
 import electrodynamics.compatibility.jei.utils.label.types.TimeLabelWrapperElectroRecipe;
 import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.SlotType;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import mezz.jei.api.gui.drawable.IDrawableAnimated.StartDirection;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -22,28 +23,26 @@ import net.minecraft.world.item.ItemStack;
 
 public class MineralGrinderRecipeCategory extends Item2ItemRecipeCategory<MineralGrinderRecipe> {
 
-	private static final BackgroundObject BACK_WRAP = new BackgroundObject(132, 58);
+	public static final BackgroundObject BACK_WRAP = new BackgroundObject(132, 58);
 
-	private static final ItemSlotObject INPUT_SLOT = new ItemSlotObject(SlotType.NORMAL, 17, 20, RecipeIngredientRole.INPUT);
-	private static final ItemSlotObject OUTPUT_SLOT = new ItemSlotObject(SlotType.BIG, 69, 16, RecipeIngredientRole.OUTPUT);
-	private static final ItemSlotObject BIPRODUCT_SLOT = new ItemSlotObject(SlotType.NORMAL, 100, 20, RecipeIngredientRole.OUTPUT);
+	public static final ItemSlotObject INPUT_SLOT = new ItemSlotObject(SlotType.NORMAL, 17, 20, RecipeIngredientRole.INPUT);
+	public static final ItemSlotObject OUTPUT_SLOT = new ItemSlotObject(SlotType.BIG, 69, 16, RecipeIngredientRole.OUTPUT);
+	public static final ItemSlotObject BIPRODUCT_SLOT = new ItemSlotObject(SlotType.NORMAL, 100, 20, RecipeIngredientRole.OUTPUT);
 
-	private static final ArrowAnimatedObject ANIM_ARROW = new ArrowAnimatedObject(ProgressBars.PROGRESS_ARROW_RIGHT, 41, 23, StartDirection.LEFT);
+	public static final ArrowAnimatedObject ANIM_ARROW = new ArrowAnimatedObject(ProgressBars.PROGRESS_ARROW_RIGHT, 41, 23, StartDirection.LEFT);
 
-	private static final PowerLabelWrapperElectroRecipe POWER_LABEL = new PowerLabelWrapperElectroRecipe(2, 48, 120);
-	private static final BiproductPercentWrapperElectroRecipe ITEM_LABEL = new BiproductPercentWrapperElectroRecipe(100, 40, false);
-	private static final TimeLabelWrapperElectroRecipe TIME_LABEL = new TimeLabelWrapperElectroRecipe(130, 48);
+	public static final PowerLabelWrapperElectroRecipe POWER_LABEL = new PowerLabelWrapperElectroRecipe(2, 48, 120);
+	public static final BiproductPercentWrapperElectroRecipe ITEM_LABEL = new BiproductPercentWrapperElectroRecipe(100, 40, false);
+	public static final TimeLabelWrapperElectroRecipe TIME_LABEL = new TimeLabelWrapperElectroRecipe(130, 48);
 
-	private static final int ANIM_TIME = 50;
-
-	private static final String RECIPE_GROUP = SubtypeMachine.mineralgrinder.tag();
+	public static final int ANIM_TIME = 50;
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrinder));
 
 	public static final RecipeType<MineralGrinderRecipe> RECIPE_TYPE = RecipeType.create(References.ID, MineralGrinderRecipe.RECIPE_GROUP, MineralGrinderRecipe.class);
 
 	public MineralGrinderRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, RECIPE_GROUP, INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
+		super(guiHelper, ElectroTextUtils.jeiTranslated(MineralGrinderRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
 		ElectrodynamicsJEIPlugin.addO2OClickArea(RECIPE_TYPE);
 		setInputSlots(guiHelper, INPUT_SLOT);
 		setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);

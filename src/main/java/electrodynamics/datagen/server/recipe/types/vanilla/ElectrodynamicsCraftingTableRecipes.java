@@ -1784,7 +1784,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.addKey('G', ElectrodynamicsTags.Items.GEAR_STEEL)
 				//
-				.addKey('W', WIRES[SubtypeWire.ceramicinsulatedsilver.ordinal()])
+				.addKey('W', ElectrodynamicsTags.Items.CERAMIC_SILVER_WIRES)
 				//
 				.addKey('M', MACHINES[SubtypeMachine.wiremilldouble.ordinal()])
 				//
@@ -2215,9 +2215,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 	private void addWires(Consumer<FinishedRecipe> consumer) {
 
 		// Insulated Wires
-		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.STANDARD, WireColor.BLACK)) {
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.BLACK)) {
 
-			SubtypeWire uninsulated = SubtypeWire.getWire(wire.conductor, InsulationMaterial.BARE, WireClass.STANDARD, WireColor.BLACK);
+			SubtypeWire uninsulated = SubtypeWire.getWire(wire.conductor, InsulationMaterial.BARE, WireClass.BARE, WireColor.NONE);
 
 			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
 					//
@@ -2232,7 +2232,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		// Logistics Wires
 		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.LOGISTICAL, WireColor.BLACK)) {
 
-			SubtypeWire insulated = SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.STANDARD, WireColor.BLACK);
+			SubtypeWire insulated = SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.BLACK);
 
 			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
 					//
@@ -2245,9 +2245,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		}
 
 		// Ceramic Insulated
-		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.CERAMIC, WireClass.STANDARD, WireColor.BLACK)) {
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.CERAMIC, WireClass.CERAMIC, WireColor.BROWN)) {
 
-			SubtypeWire insulated = SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.STANDARD, WireColor.BLACK);
+			SubtypeWire insulated = SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.BLACK);
 
 			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
 					//
@@ -2260,9 +2260,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		}
 
 		// Highly Insulated
-		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.THICK_WOOL, WireClass.STANDARD, WireColor.BLACK)) {
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.THICK_WOOL, WireClass.THICK, WireColor.BLACK)) {
 
-			SubtypeWire insulated = SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.STANDARD, WireColor.BLACK);
+			SubtypeWire insulated = SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.BLACK);
 
 			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 2)
 					//
@@ -2283,7 +2283,10 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		}
 
 		// Insulated Wires
-		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.STANDARD, WireColor.values())) {
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.values())) {
+			if (wire.color.dyeTag == null) {
+				continue;
+			}
 			ElectrodynamicsShapedCraftingRecipe.start(WIRES[wire.ordinal()], 8)
 					//
 					.addPattern("WWW")
@@ -2308,7 +2311,66 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		}
 
 		// Highly Insulated Wires
-		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.THICK_WOOL, WireClass.STANDARD, WireColor.values())) {
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.THICK_WOOL, WireClass.THICK, WireColor.values())) {
+			if (wire.color.dyeTag == null) {
+				continue;
+			}
+			ElectrodynamicsShapedCraftingRecipe.start(WIRES[wire.ordinal()], 8)
+					//
+					.addPattern("WWW")
+					//
+					.addPattern("WDW")
+					//
+					.addPattern("WWW")
+					//
+					.addKey('W', wire.itemTag)
+					//
+					.addKey('D', wire.color.dyeTag)
+					//
+					.complete(References.ID, "wire_" + wire.name() + "_multi", consumer);
+
+			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
+					//
+					.addIngredient(wire.itemTag)
+					//
+					.addIngredient(wire.color.dyeTag)
+					//
+					.complete(References.ID, "wire_" + wire.name() + "_single", consumer);
+		}
+
+		// Ceramic Insulated Wires
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.CERAMIC, WireClass.CERAMIC, WireColor.values())) {
+			if (wire.color.dyeTag == null) {
+				continue;
+			}
+			ElectrodynamicsShapedCraftingRecipe.start(WIRES[wire.ordinal()], 8)
+					//
+					.addPattern("WWW")
+					//
+					.addPattern("WDW")
+					//
+					.addPattern("WWW")
+					//
+					.addKey('W', wire.itemTag)
+					//
+					.addKey('D', wire.color.dyeTag)
+					//
+					.complete(References.ID, "wire_" + wire.name() + "_multi", consumer);
+
+			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
+					//
+					.addIngredient(wire.itemTag)
+					//
+					.addIngredient(wire.color.dyeTag)
+					//
+					.complete(References.ID, "wire_" + wire.name() + "_single", consumer);
+		}
+
+		// Ceramic Insulated Wires
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.LOGISTICAL, WireColor.values())) {
+			if (wire.color.dyeTag == null) {
+				continue;
+			}
 			ElectrodynamicsShapedCraftingRecipe.start(WIRES[wire.ordinal()], 8)
 					//
 					.addPattern("WWW")

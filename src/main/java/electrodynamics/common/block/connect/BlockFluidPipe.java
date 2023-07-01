@@ -26,16 +26,11 @@ public class BlockFluidPipe extends AbstractRefreshingConnectBlock {
 	public final SubtypeFluidPipe pipe;
 
 	public BlockFluidPipe(SubtypeFluidPipe pipe) {
-		super(Properties.of(Material.METAL).sound(SoundType.METAL).strength(0.15f).dynamicShape(), 3);
+		super(Properties.of(Material.METAL).sound(SoundType.METAL).strength(0.15f).dynamicShape().noOcclusion(), 3);
 		this.pipe = pipe;
 		PIPESET.add(this);
 	}
-
-	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
-		return true;
-	}
-
+	
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new TileFluidPipe(pos, state);

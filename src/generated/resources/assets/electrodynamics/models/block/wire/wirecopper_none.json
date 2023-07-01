@@ -1,9 +1,7 @@
 {
-  "parent": "electrodynamics:parent/ceramicinsulatedwire_none",
-  "render_type": "minecraft:cutout",
+  "parent": "electrodynamics:parent/wire_none",
   "textures": {
-    "conductor": "electrodynamics:block/wire/copper_center",
-    "insulation": "electrodynamics:block/wire/insulationceramic_center",
-    "particle": "#insulation"
+    "conductor": "electrodynamics:block/wire/copper",
+    "particle": "#conductor"
   }
 }

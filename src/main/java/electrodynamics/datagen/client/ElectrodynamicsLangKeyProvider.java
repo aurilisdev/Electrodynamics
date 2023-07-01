@@ -26,6 +26,18 @@ import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.item.subtype.SubtypeRod;
+import electrodynamics.common.recipe.categories.fluid2gas.specificmachines.ElectrolyticSeparatorRecipe;
+import electrodynamics.common.recipe.categories.fluid2item.specificmachines.ChemicalCrystalizerRecipe;
+import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.ChemicalMixerRecipe;
+import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.FermentationPlantRecipe;
+import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.MineralWasherRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.EnergizedAlloyerRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.LatheRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.MineralCrusherRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.MineralGrinderRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.OxidationFurnaceRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.ReinforcedAlloyerRecipe;
+import electrodynamics.common.recipe.categories.item2item.specificmachines.WireMillRecipe;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsGases;
@@ -401,6 +413,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.silver), "Silver Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.superconductive), "Superconductive Wire");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.tin), "Tin Wire");
+			
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedcopperblack), "Insulated Copper Wire (Black)");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedgoldblack), "Insulated Gold Wire (Black)");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedironblack), "Insulated Iron Wire (Black)");
@@ -437,18 +450,99 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsilveryellow), "Insulated Silver Wire (Yellow)");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsuperconductiveyellow), "Insulated Superconductive Wire (Yellow)");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedtinyellow), "Insulated Tin Wire (Yellow)");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedcopper), "Ceramic Copper Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedgold), "Ceramic Gold Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatediron), "Ceramic Iron Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsilver), "Ceramic Silver Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsuperconductive), "Ceramic Superconductive Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedtin), "Ceramic Tin Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticscopper), "Logistical Copper Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsgold), "Logistical Gold Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsiron), "Logistical Iron Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssilver), "Logistical Silver Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssuperconductive), "Logistical Superconductive Wire");
-			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticstin), "Logistical Tin Wire");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedcopperbrown), "Insulated Copper Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedgoldbrown), "Insulated Gold Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedironbrown), "Insulated Iron Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsilverbrown), "Insulated Silver Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsuperconductivebrown), "Insulated Superconductive Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedtinbrown), "Insulated Tin Wire (Brown)");
+			
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedcopperblack), "Ceramic Copper Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedgoldblack), "Ceramic Gold Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedironblack), "Ceramic Iron Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsilverblack), "Ceramic Silver Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsuperconductiveblack), "Ceramic Superconductive Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedtinblack), "Ceramic Tin Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedcopperred), "Ceramic Copper Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedgoldred), "Ceramic Gold Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedironred), "Ceramic Iron Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsilverred), "Ceramic Silver Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsuperconductivered), "Ceramic Superconductive Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedtinred), "Ceramic Tin Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedcopperwhite), "Ceramic Copper Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedgoldwhite), "Ceramic Gold Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedironwhite), "Ceramic Iron Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsilverwhite), "Ceramic Silver Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsuperconductivewhite), "Ceramic Superconductive Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedtinwhite), "Ceramic Tin Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedcoppergreen), "Ceramic Copper Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedgoldgreen), "Ceramic Gold Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedirongreen), "Ceramic Iron Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsilvergreen), "Ceramic Silver Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsuperconductivegreen), "Ceramic Superconductive Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedtingreen), "Ceramic Tin Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedcopperblue), "Ceramic Copper Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedgoldblue), "Ceramic Gold Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedironblue), "Ceramic Iron Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsilverblue), "Ceramic Silver Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsuperconductiveblue), "Ceramic Superconductive Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedtinblue), "Ceramic Tin Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedcopperyellow), "Ceramic Copper Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedgoldyellow), "Ceramic Gold Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedironyellow), "Ceramic Iron Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsilveryellow), "Ceramic Silver Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsuperconductiveyellow), "Ceramic Superconductive Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedtinyellow), "Ceramic Tin Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedcopperbrown), "Ceramic Copper Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedgoldbrown), "Ceramic Gold Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedironbrown), "Ceramic Iron Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsilverbrown), "Ceramic Silver Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsuperconductivebrown), "Ceramic Superconductive Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedtinbrown), "Ceramic Tin Wire (Brown)");
+			
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticscopperblack), "Logistical Copper Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsgoldblack), "Logistical Gold Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsironblack), "Logistical Iron Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssilverblack), "Logistical Silver Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssuperconductiveblack), "Logistical Superconductive Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticstinblack), "Logistical Tin Wire (Black)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticscopperred), "Logistical Copper Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsgoldred), "Logistical Gold Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsironred), "Logistical Iron Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssilverred), "Logistical Silver Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssuperconductivered), "Logistical Superconductive Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticstinred), "Logistical Tin Wire (Red)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticscopperwhite), "Logistical Copper Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsgoldwhite), "Logistical Gold Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsironwhite), "Logistical Iron Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssilverwhite), "Logistical Silver Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssuperconductivewhite), "Logistical Superconductive Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticstinwhite), "Logistical Tin Wire (White)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticscoppergreen), "Logistical Copper Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsgoldgreen), "Logistical Gold Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsirongreen), "Logistical Iron Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssilvergreen), "Logistical Silver Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssuperconductivegreen), "Logistical Superconductive Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticstingreen), "Logistical Tin Wire (Green)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticscopperblue), "Logistical Copper Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsgoldblue), "Logistical Gold Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsironblue), "Logistical Iron Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssilverblue), "Logistical Silver Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssuperconductiveblue), "Logistical Superconductive Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticstinblue), "Logistical Tin Wire (Blue)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticscopperyellow), "Logistical Copper Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsgoldyellow), "Logistical Gold Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsironyellow), "Logistical Iron Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssilveryellow), "Logistical Silver Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssuperconductiveyellow), "Logistical Superconductive Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticstinyellow), "Logistical Tin Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticscopperbrown), "Logistical Copper Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsgoldbrown), "Logistical Gold Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsironbrown), "Logistical Iron Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssilverbrown), "Logistical Silver Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssuperconductivebrown), "Logistical Superconductive Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticstinbrown), "Logistical Tin Wire (Brown)");
+			
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedcopperblack), "Thick Copper Wire (Black)");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedgoldblack), "Thick Gold Wire (Black)");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedironblack), "Thick Iron Wire (Black)");
@@ -485,6 +579,12 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsilveryellow), "Thick Silver Wire (Yellow)");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsuperconductiveyellow), "Thick Superconductive Wire (Yellow)");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedtinyellow), "Thick Tin Wire (Yellow)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedcopperbrown), "Thick Copper Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedgoldbrown), "Thick Gold Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedironbrown), "Thick Iron Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsilverbrown), "Thick Silver Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsuperconductivebrown), "Thick Superconductive Wire (Brown)");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedtinbrown), "Thick Tin Wire (Brown)");
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.UNINSULATEDCOPPER), "Copper Gas Pipe");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.UNINSULATEDSTEEL), "Steel Gas Pipe");
@@ -499,6 +599,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastanksteel), "Steel Gas Cylinder");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankreinforced), "Reinforced Gas Cylinder");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankhsla), "HSLA Gas Cylinder");
+			
+			addBlock(ElectrodynamicsBlocks.blockSteelScaffold, "Steel Scaffold");
 
 			addFluid(ElectrodynamicsFluids.fluidClay, "Clay Slurry");
 			addFluid(ElectrodynamicsFluids.fluidEthanol, "Ethanol");
@@ -792,6 +894,24 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addJei("guilabel.power", "%1$sV %2$skW");
 			addJei("info.item.coalgeneratorfuelsource", "Coal Generator Fuel:\n    Burn Time: %s");
 			addJei("info.fluid.combustionchamberfuel", "Combustion Chamber Fuel:\n    Produces: %1$s \n    Cost: %2$s.");
+			
+			addJei(ElectrolyticSeparatorRecipe.RECIPE_GROUP, "Electrolytic Separator");
+			addJei(ChemicalCrystalizerRecipe.RECIPE_GROUP, "Chemical Crystalizer");
+			addJei(MineralWasherRecipe.RECIPE_GROUP, "Mineral Washer");
+			addJei(FermentationPlantRecipe.RECIPE_GROUP, "Fermentation Plant");
+			addJei(ChemicalMixerRecipe.RECIPE_GROUP, "Chemical Mixer");
+			addJei(WireMillRecipe.RECIPE_GROUP, "Wire Mill");
+			addJei(ReinforcedAlloyerRecipe.RECIPE_GROUP, "Reinforced Alloyer");
+			addJei(OxidationFurnaceRecipe.RECIPE_GROUP, "Chemical Furnace");
+			addJei(MineralGrinderRecipe.RECIPE_GROUP, "Mineral Grinder");
+			addJei(MineralCrusherRecipe.RECIPE_GROUP, "Mineral Crusher");
+			addJei(LatheRecipe.RECIPE_GROUP, "Lathe");
+			addJei(EnergizedAlloyerRecipe.RECIPE_GROUP, "Energized Alloyer");
+			addJei("blasting", "Electric Arc Furnace");
+			addJei("smelting", "Electric Furnace");
+			addJei("gas_condensing", "Gas Condensation");
+			addJei("gas_evaporating", "Fluid Evaporation");
+			
 
 			addDamageSource("electricity", "%s was electrocuted");
 			addDamageSource("accelerated_bolt", "%1$s was perforated by %2$s");
@@ -1044,21 +1164,21 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.electricity.l11.2", ". You will still take damage wearing them if you are being shocked, however you will be able to survive the encounter at the price of boot durability.");
 
-			addGuidebook("chapter.electricity.l12.1", "Different insulation types also come with pros and cons. Wool-based insulation is flammable, but has the ability to be colored:");
+			addGuidebook("chapter.electricity.l12.1", "Different insulation types also come with pros and cons. Wool-based insulation is flammable, but is cheap has the ability to be colored:");
 
 			addGuidebook("chapter.electricity.l12.2",
-					"Black is the default wire color, with a black wire being able to connect to any wire color or type. A yellow wire on the other hand "
+					"Black is the default wire color for wool insulation, with a black wire being able to connect to any wire color or type. A yellow wire on the other hand "
 							+ "is only able to connect to black and other yellow wires. This is especially useful if you need to run multiple lines in parallel, as it means you can have two different-colored wires next to each other and not have them connect. This can be very helpful if you are dealing with machine setups where "
 							+ "multiple voltages are involved in tight quarters. A specialzed variant of a wool-insulated wire is the Logistical Wire:");
 
-			addGuidebook("chapter.electricity.l12.3", "It sacrifices the ability to be colored in exchange for the ability to emit a redstone signal when power is flowing through it.");
+			addGuidebook("chapter.electricity.l12.3", "It will emit a redstone signal when power is flowing through it.");
 
-			addGuidebook("chapter.electricity.l13.1", "Ceramic insulation on the other hand loses the ability to be colored, but gains the advantage of being fire-proof:");
+			addGuidebook("chapter.electricity.l13.1", "Ceramic insulation on the other hand is more expensive than wool, but gains the advantage of being fire-proof:");
 
 			addGuidebook("chapter.electricity.l13.2", "This makes ceramicly insulated wires especially useful when working around fluids like lava. It should be noted though that ceramic insulation is not as effective as " + "woolen insulation, meaning that if you want to insulate high voltages, you will need to take the risk of fire!");
 
 			addGuidebook("chapter.electricity.l14", "One final note while on the topic of wires is the ability to field-modify them. If you right-click any insulated wire with Shears (excluding thick wires), it will remove the insulation from the wire. You can also apply woolen and ceramic insulation to an existing wire "
-					+ "by right-clicking the insulation on the wire. A woolen wire can be converted to a logistical wire by right-clicking a piece of redstone on it. You can also dye woolen wires by right-clicking the respective dye onto the wire. Note that this is a less-efficiant way to color wires than crafting them to " + "the respective color!");
+					+ "by right-clicking the insulation on the wire. A woolen wire can be converted to a logistical wire by right-clicking a piece of redstone on it. You can also dye wires by right-clicking the respective dye onto the wire. Note that this is a less-efficiant way to color wires than crafting them to " + "the respective color!");
 
 			addGuidebook("chapter.electricity.l15",
 					"Now that we know how to get energy to a machine and understand it must be at a specific voltage, you're probably wondering how that voltage is achieved. Most power sources in Electrodynamics are 120V or 240V, which works well for some basic machines, but that simply won't cut it for higher voltage "

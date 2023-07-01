@@ -91,6 +91,8 @@ public class ElectrodynamicsItems {
 	public static RegistryObject<Item> ITEM_GASPIPEPUMP;
 	public static RegistryObject<Item> ITEM_GASPIPEFILTER;
 	
+	public static RegistryObject<Item> ITEM_STEELSCAFFOLD;
+	
 	static {
 		//Blocks
 		registerSubtypeBlockItem(SubtypeOre.values());
@@ -106,6 +108,7 @@ public class ElectrodynamicsItems {
 			}
 			
 		}
+		ITEM_STEELSCAFFOLD = ITEMS.register("steelscaffold", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockSteelScaffold, new Item.Properties().stacksTo(64).tab(References.CORETAB)));
 		ITEM_FRAME = ITEMS.register("frame", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrame, new Item.Properties().stacksTo(64)));
 		ITEM_FRAMECORNER = ITEMS.register("framecorner", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockFrameCorner, new Item.Properties().stacksTo(64)));
 		ITEM_LOGISTICALMANAGER = ITEMS.register("logisticalmanager", () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.blockLogisticalManager, new Item.Properties().tab(References.CORETAB)));

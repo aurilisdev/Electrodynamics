@@ -98,6 +98,7 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 		return isPointInRegion(xLocation, yLocation, mouseX - gui.getGuiWidth(), mouseY - gui.getGuiHeight(), width, height);
 	}
 
+	/*
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
@@ -139,6 +140,7 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 		}
 	}
 
+    */
 	public boolean isInClickRegion(double mouseX, double mouseY) {
 		return isMouseOver(mouseX, mouseY);
 	}
@@ -151,18 +153,30 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 		
 	}
 	
+	/*
+	 * You must return true on mouseClicked() to use
+	 */
 	public void onMouseClick(double mouseX, double mouseY) {
 
 	}
 
+	/*
+	 * You must return true on mouseReleased() to use
+	 */
 	public void onMouseRelease(double mouseX, double mouseY) {
 
 	}
 
+	/*
+	 * You must return true on mouseDragged() to use
+	 */
 	public void onMouseDrag(double mouseX, double mouseY, double dragX, double dragY) {
 
 	}
 	
+	/*
+	 * You must return true on mouseScrolled() to use
+	 */
 	public void onMouseScroll(double mouseX, double mouseY, double delta) {
 		
 	}

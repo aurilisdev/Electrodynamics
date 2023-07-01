@@ -37,18 +37,18 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-public class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
+public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 
 	private int animationTime;
 
-	private String recipeGroup;
+	private Component title;
 
 	private IDrawable background;
 	private IDrawable icon;
 
 	private RecipeType<T> recipeType;
 
-	public AbstractLabelWrapper[] labels;
+	public AbstractLabelWrapper[] labels = new AbstractLabelWrapper[0];
 
 	public int itemBiLabelFirstIndex;
 
@@ -62,9 +62,9 @@ public class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 	private AbstractGasGaugeObject[] gasInputWrappers = new AbstractGasGaugeObject[0];
 	private AbstractGasGaugeObject[] gasOutputWrappers = new AbstractGasGaugeObject[0];
 
-	public AbstractRecipeCategory(IGuiHelper guiHelper, String recipeGroup, ItemStack inputMachine, BackgroundObject wrapper, RecipeType<T> recipeType, int animationTime) {
+	public AbstractRecipeCategory(IGuiHelper guiHelper, Component title, ItemStack inputMachine, BackgroundObject wrapper, RecipeType<T> recipeType, int animationTime) {
 
-		this.recipeGroup = recipeGroup;
+		this.title = title;
 
 		this.recipeType = recipeType;
 
@@ -83,7 +83,7 @@ public class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 
 	@Override
 	public Component getTitle() {
-		return Component.translatable("container." + recipeGroup);
+		return title;
 	}
 
 	@Override
@@ -98,10 +98,19 @@ public class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 
 	@Override
 	public void draw(T recipe, IRecipeSlotsView recipeSlotsView, PoseStack matrixStack, double mouseX, double mouseY) {
+		
+		drawPre(matrixStack, recipe);
+		
 		drawStatic(matrixStack);
 		drawAnimated(matrixStack);
 
-		addDescriptions(matrixStack, recipe);
+		drawPost(matrixStack, recipe);
+		
+		preLabels(matrixStack, recipe);
+		
+		addLabels(matrixStack, recipe);
+		
+		postLabels(matrixStack, recipe);
 	}
 
 	@Override
@@ -112,22 +121,6 @@ public class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 		setFluidOutputs(getFluidOutputs(recipe), builder);
 		setGasInputs(getGasInputs(recipe), builder);
 		setGasOutputs(getGasOutputs(recipe), builder);
-	}
-
-	public String getRecipeGroup() {
-		return recipeGroup;
-	}
-
-	public void addDescriptions(PoseStack stack, T recipe) {
-		Font fontRenderer = Minecraft.getInstance().font;
-		for (AbstractLabelWrapper wrap : labels) {
-			Component text = wrap.getComponent(this, recipe);
-			if (wrap.xIsEnd()) {
-				fontRenderer.draw(stack, text, wrap.getXPos() - fontRenderer.width(text.getVisualOrderText()), wrap.getYPos(), wrap.getColor());
-			} else {
-				fontRenderer.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
-			}
-		}
 	}
 
 	public int getAnimationTime() {
@@ -328,11 +321,11 @@ public class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 				gaugeCap = (((int) Math.ceil(amt)) * IComponentGasHandler.TANK_MULTIPLIER) * IComponentGasHandler.TANK_MULTIPLIER + IComponentGasHandler.TANK_MULTIPLIER;
 			}
 
-			int height = (int) (Math.ceil(amt / gaugeCap * wrapper.getHeight()));
+			int height = (int) (Math.ceil(amt / gaugeCap * (wrapper.getHeight() - 2)));
 
 			int oneMinusHeight = wrapper.getHeight() - height;
 
-			builder.addSlot(role, wrapper.getX(), wrapper.getY() + height).addIngredient(ElectrodynamicsJeiTypes.GAS_STACK, stack).setCustomRenderer(ElectrodynamicsJeiTypes.GAS_STACK, new IngredientRendererGasStack((int) gaugeCap, -oneMinusHeight + 1, 0, wrapper.getBarsTexture()));
+			builder.addSlot(role, wrapper.getX() + 1, wrapper.getY() + wrapper.getHeight() - height).addIngredient(ElectrodynamicsJeiTypes.GAS_STACK, stack).setCustomRenderer(ElectrodynamicsJeiTypes.GAS_STACK, new IngredientRendererGasStack((int) gaugeCap, -oneMinusHeight + 1, height, wrapper.getBarsTexture()));
 		}
 
 	}
@@ -373,6 +366,38 @@ public class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 		for (AnimatedWrapper wrapper : animatedDrawables) {
 			wrapper.anim().draw(matrixStack, wrapper.x(), wrapper.y());
 		}
+	}
+
+	public void drawPre(PoseStack matrixStack, T recipe) {
+		
+		
+	}
+	
+	public void drawPost(PoseStack matrixStack, T recipe) {
+		
+		
+	}
+	
+	public void addLabels(PoseStack stack, T recipe) {
+		Font font = Minecraft.getInstance().font;
+		for (AbstractLabelWrapper wrap : labels) {
+			Component text = wrap.getComponent(this, recipe);
+			if (wrap.xIsEnd()) {
+				font.draw(stack, text, wrap.getXPos() - font.width(text.getVisualOrderText()), wrap.getYPos(), wrap.getColor());
+			} else {
+				font.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
+			}
+		}
+	}
+
+	public void preLabels(PoseStack matrixStack, T recipe) {
+		
+		
+	}
+	
+	public void postLabels(PoseStack matrixStack, T recipe) {
+		
+		
 	}
 
 	public List<List<ItemStack>> getItemInputs(T recipe) {

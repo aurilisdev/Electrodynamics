@@ -15,6 +15,7 @@ public class ElectrodynamicsBlockStates {
 	public static final EnumProperty<AddonTankNeighborType> ADDONTANK_NEIGHBOR_STATUS = EnumProperty.create("addontankneighborstatus", AddonTankNeighborType.class);
 	public static final BooleanProperty COMPRESSORSIDE_HAS_TOPTANK = BooleanProperty.create("compressorsidehastoptank");
 	public static final EnumProperty<ManipulatorHeatingStatus> MANIPULATOR_HEATING_STATUS = EnumProperty.create("manipulatorheatingstatus", ManipulatorHeatingStatus.class);
+	public static final BooleanProperty HAS_SCAFFOLDING = BooleanProperty.create("hasscaffolding");
 	
 	
 	public static enum AddonTankNeighborType implements StringRepresentable {

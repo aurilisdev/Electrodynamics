@@ -73,7 +73,7 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 		if (!slot.isActive()) {
 			return;
 		}
-		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, slotType.textureWidth(), slotType.textureHeight())) {
+		if (isHoveredOrFocused()) {
 
 			if (tooltip != null && !tooltip.getText().getString().isEmpty()) {
 				gui.displayTooltip(stack, tooltip.getText(), xAxis, yAxis);
@@ -94,26 +94,6 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 	@Override
 	public boolean isVisible() {
 		return slot.isActive();
-	}
-
-	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		return false;
-	}
-
-	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		return false;
-	}
-
-	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-		return false;
 	}
 
 	public enum SlotType implements ISlotTexture {

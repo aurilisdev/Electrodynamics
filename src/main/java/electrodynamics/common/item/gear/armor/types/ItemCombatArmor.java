@@ -124,45 +124,48 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (tab == References.CORETAB) {
-			switch (getSlot()) {
-			case HEAD, LEGS:
-				ItemStack empty = new ItemStack(this);
-				IItemElectric.setEnergyStored(empty, 0);
-				items.add(empty);
-
-				ItemStack charged = new ItemStack(this);
-				IItemElectric.setEnergyStored(charged, properties.capacity);
-				items.add(charged);
-				break;
-			case CHEST:
-				items.add(new ItemStack(this));
-				if (!CapabilityUtils.isGasItemNull()) {
-					ItemStack full = new ItemStack(this);
-					
-					GasStack gas = new GasStack(ElectrodynamicsGases.HYDROGEN.get(), ItemJetpack.MAX_CAPACITY, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL);
-					
-					full.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> cap.fillTank(0, gas, GasAction.EXECUTE));
-
-					CompoundTag tag = full.getOrCreateTag();
-					tag.putInt(NBTUtils.PLATES, 2);
-					
-					items.add(full);
-
-				}
-				break;
-			case FEET:
-				items.add(new ItemStack(this));
-				if (!CapabilityUtils.isFluidItemNull()) {
-					ItemStack full = new ItemStack(this);
-					full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).setFluid(new FluidStack(ElectrodynamicsFluids.fluidHydraulic, ItemHydraulicBoots.MAX_CAPACITY)));
-					items.add(full);
-				}
-				break;
-			default:
-				break;
-			}
+		
+		if(!allowedIn(tab)) {
+			return;
 		}
+		switch (getSlot()) {
+		case HEAD, LEGS:
+			ItemStack empty = new ItemStack(this);
+			IItemElectric.setEnergyStored(empty, 0);
+			items.add(empty);
+
+			ItemStack charged = new ItemStack(this);
+			IItemElectric.setEnergyStored(charged, properties.capacity);
+			items.add(charged);
+			break;
+		case CHEST:
+			items.add(new ItemStack(this));
+			if (!CapabilityUtils.isGasItemNull()) {
+				ItemStack full = new ItemStack(this);
+				
+				GasStack gas = new GasStack(ElectrodynamicsGases.HYDROGEN.get(), ItemJetpack.MAX_CAPACITY, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL);
+				
+				full.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> cap.fillTank(0, gas, GasAction.EXECUTE));
+
+				CompoundTag tag = full.getOrCreateTag();
+				tag.putInt(NBTUtils.PLATES, 2);
+				
+				items.add(full);
+
+			}
+			break;
+		case FEET:
+			items.add(new ItemStack(this));
+			if (!CapabilityUtils.isFluidItemNull()) {
+				ItemStack full = new ItemStack(this);
+				full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).setFluid(new FluidStack(ElectrodynamicsFluids.fluidHydraulic, ItemHydraulicBoots.MAX_CAPACITY)));
+				items.add(full);
+			}
+			break;
+		default:
+			break;
+		}
+		
 	}
 
 	@Override

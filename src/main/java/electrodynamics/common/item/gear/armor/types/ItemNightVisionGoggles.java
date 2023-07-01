@@ -135,13 +135,14 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (allowedIn(group)) {
-			ItemStack charged = new ItemStack(this);
-			IItemElectric.setEnergyStored(charged, properties.capacity);
-			items.add(charged);
 
 			ItemStack empty = new ItemStack(this);
 			IItemElectric.setEnergyStored(empty, 0);
 			items.add(empty);
+			
+			ItemStack charged = new ItemStack(this);
+			IItemElectric.setEnergyStored(charged, properties.capacity);
+			items.add(charged);
 		}
 	}
 

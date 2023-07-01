@@ -1,8 +1,7 @@
 {
-  "parent": "electrodynamics:parent/ceramicinsulatedwire_side",
+  "parent": "electrodynamics:parent/wire_side",
   "textures": {
     "conductor": "electrodynamics:block/wire/copper",
-    "insulation": "electrodynamics:block/wire/insulationceramic",
-    "particle": "#insulation"
+    "particle": "#conductor"
   }
 }

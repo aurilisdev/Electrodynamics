@@ -86,14 +86,14 @@ public class ItemCompositeArmor extends ArmorItem {
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (allowedIn(group)) {
+			ItemStack empty = new ItemStack(this);
+			items.add(empty);
 			ItemStack filled = new ItemStack(this);
 			if (getSlot() == EquipmentSlot.CHEST) {
 				CompoundTag tag = filled.getOrCreateTag();
 				tag.putInt(NBTUtils.PLATES, 2);
 				items.add(filled);
 			}
-			ItemStack empty = new ItemStack(this);
-			items.add(empty);
 		}
 	}
 

@@ -95,7 +95,7 @@
 						10
 					],
 					"texture": "#conductor",
-					"tintindex": 1
+					"tintindex": 2
 				},
 				"east": {
 					"uv": [
@@ -105,7 +105,7 @@
 						10
 					],
 					"texture": "#conductor",
-					"tintindex": 1
+					"tintindex": 2
 				},
 				"south": {
 					"uv": [
@@ -115,7 +115,7 @@
 						10
 					],
 					"texture": "#conductor",
-					"tintindex": 1
+					"tintindex": 2
 				},
 				"west": {
 					"uv": [
@@ -125,7 +125,7 @@
 						10
 					],
 					"texture": "#conductor",
-					"tintindex": 1
+					"tintindex": 2
 				},
 				"up": {
 					"uv": [
@@ -135,7 +135,7 @@
 						10
 					],
 					"texture": "#conductor",
-					"tintindex": 1
+					"tintindex": 2
 				},
 				"down": {
 					"uv": [
@@ -145,7 +145,7 @@
 						10
 					],
 					"texture": "#conductor",
-					"tintindex": 1
+					"tintindex": 2
 				}
 			}
 		}

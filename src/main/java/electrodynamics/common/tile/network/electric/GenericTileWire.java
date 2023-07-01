@@ -11,11 +11,9 @@ import com.google.common.collect.Sets;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.cable.type.IConductor;
-import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
 import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.prefab.network.AbstractNetwork;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
+import electrodynamics.prefab.tile.types.GenericConnectTile;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.TransferPack;
@@ -29,7 +27,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class GenericTileWire extends GenericTile implements IConductor {
+public abstract class GenericTileWire extends GenericConnectTile implements IConductor {
 
 	public ElectricNetwork electricNetwork;
 
@@ -86,7 +84,6 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 				}
 			});
 		}
-		addComponent(new ComponentPacketHandler(this));
 	}
 
 	@Override
@@ -239,6 +236,6 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 	}
 
 	private boolean checkColor(IConductor conductor) {
-		return conductor.getWireColor() == WireColor.BLACK || getWireColor() == WireColor.BLACK || conductor.getWireColor() == getWireColor();
+		return conductor.getWireType().isDefaultColor() || getWireType().isDefaultColor() || conductor.getWireColor() == getWireColor();
 	}
 }

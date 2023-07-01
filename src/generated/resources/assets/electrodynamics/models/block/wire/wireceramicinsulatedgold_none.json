@@ -1,9 +1,0 @@
-{
-  "parent": "electrodynamics:parent/ceramicinsulatedwire_none",
-  "render_type": "minecraft:cutout",
-  "textures": {
-    "conductor": "electrodynamics:block/wire/gold_center",
-    "insulation": "electrodynamics:block/wire/insulationceramic_center",
-    "particle": "#insulation"
-  }
-}

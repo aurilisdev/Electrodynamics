@@ -14,6 +14,7 @@ import electrodynamics.compatibility.jei.utils.gui.types.BackgroundObject;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
@@ -21,8 +22,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class Fluid2FluidRecipeCategory<T extends ElectrodynamicsRecipe> extends AbstractRecipeCategory<T> {
 
-	protected Fluid2FluidRecipeCategory(IGuiHelper guiHelper, String recipeGroup, ItemStack inputMachine, BackgroundObject wrapper, RecipeType<T> recipeType, int animationTime) {
-		super(guiHelper, recipeGroup, inputMachine, wrapper, recipeType, animationTime);
+	public Fluid2FluidRecipeCategory(IGuiHelper guiHelper, Component title, ItemStack inputMachine, BackgroundObject wrapper, RecipeType<T> recipeType, int animationTime) {
+		super(guiHelper, title, inputMachine, wrapper, recipeType, animationTime);
 	}
 
 	@Override

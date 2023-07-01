@@ -3,7 +3,6 @@ package electrodynamics.prefab.utilities;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.cable.type.IConductor;
-import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.object.TransferPack;
@@ -62,7 +61,7 @@ public class ElectricityUtils {
 
 	public static boolean isConductor(BlockEntity acceptor, IConductor requesterWire) {
 		if(acceptor instanceof IConductor conductor) {
-			return conductor.getWireColor() == WireColor.BLACK || requesterWire.getWireColor() == WireColor.BLACK || conductor.getWireColor() == requesterWire.getWireColor();
+			return conductor.getWireType().isDefaultColor() || requesterWire.getWireType().isDefaultColor() || conductor.getWireColor() == requesterWire.getWireColor();
 		}
 		return false;
 	}

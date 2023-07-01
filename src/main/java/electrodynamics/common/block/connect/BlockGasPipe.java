@@ -34,17 +34,12 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock {
 	public final SubtypeGasPipe pipe;
 
 	public BlockGasPipe(SubtypeGasPipe pipe) {
-		super(Properties.of(pipe.material).sound(pipe.soundType).strength(0.15f).dynamicShape(), pipe.radius);
+		super(Properties.of(pipe.material).sound(pipe.soundType).strength(0.15f).dynamicShape().noOcclusion(), pipe.radius);
 
 		this.pipe = pipe;
 
 		PIPESET.add(this);
 
-	}
-
-	@Override
-	public boolean propagatesSkylightDown(BlockState state, BlockGetter reader, BlockPos pos) {
-		return true;
 	}
 
 	@Override

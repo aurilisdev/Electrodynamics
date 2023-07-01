@@ -339,9 +339,9 @@ public class ElectrodynamicsAdvancementProvider implements DataProvider {
 
 		advancement("ceramicinsulatedwiring")
 				//
-				.display(ElectrodynamicsItems.getItem(SubtypeWire.ceramicinsulatedcopper), ElectroTextUtils.advancement("ceramicinsulatedwiring.title").withStyle(ChatFormatting.GRAY), ElectroTextUtils.advancement("ceramicinsulatedwiring.desc"), AdvancementBackgrounds.NONE, FrameType.TASK, true, true, false)
+				.display(ElectrodynamicsItems.getItem(SubtypeWire.ceramicinsulatedcopperbrown), ElectroTextUtils.advancement("ceramicinsulatedwiring.title").withStyle(ChatFormatting.GRAY), ElectroTextUtils.advancement("ceramicinsulatedwiring.desc"), AdvancementBackgrounds.NONE, FrameType.TASK, true, true, false)
 				//
-				.addCriterion("HasCeramicInsulatedCopperWire", InventoryChangeTrigger.TriggerInstance.hasItems(ElectrodynamicsItems.getItem(SubtypeWire.ceramicinsulatedcopper)))
+				.addCriterion("HasCeramicInsulatedCopperWire", InventoryChangeTrigger.TriggerInstance.hasItems(ElectrodynamicsItems.getItem(SubtypeWire.ceramicinsulatedcopperbrown)))
 				//
 				.rewards(Builder.experience(15))
 				//

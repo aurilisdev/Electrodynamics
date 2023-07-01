@@ -18,6 +18,8 @@ import electrodynamics.common.block.BlockValve;
 import electrodynamics.common.block.connect.BlockFluidPipe;
 import electrodynamics.common.block.connect.BlockGasPipe;
 import electrodynamics.common.block.connect.BlockWire;
+import electrodynamics.common.block.connect.util.BlockScaffold;
+import electrodynamics.common.block.connect.BlockLogisticalWire;
 import electrodynamics.common.block.gastransformer.BlockGasTransformerSide;
 import electrodynamics.common.block.gastransformer.compressor.BlockCompressor;
 import electrodynamics.common.block.gastransformer.thermoelectricmanipulator.BlockThermoelectricManipulator;
@@ -31,6 +33,7 @@ import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
+import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
@@ -67,6 +70,8 @@ public class ElectrodynamicsBlocks {
 	
 	public static BlockPipeFilter blockGasPipeFilter;
 	public static BlockPipeFilter blockFluidPipeFilter;
+	
+	public static BlockScaffold blockSteelScaffold;
 
 	static {
 		for (SubtypeOre subtype : SubtypeOre.values()) {
@@ -82,7 +87,11 @@ public class ElectrodynamicsBlocks {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new BlockMachine(subtype)));
 		}
 		for (SubtypeWire subtype : SubtypeWire.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new BlockWire(subtype)));
+			if(subtype.wireClass == WireClass.LOGISTICAL) {
+				SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new BlockLogisticalWire(subtype)));
+			} else {
+				SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new BlockWire(subtype)));
+			}
 		}
 		for (SubtypeFluidPipe subtype : SubtypeFluidPipe.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new BlockFluidPipe(subtype)));
@@ -114,6 +123,8 @@ public class ElectrodynamicsBlocks {
 	public static final RegistryObject<Block> BLOCK_FLUIDPIPEPUMP = BLOCKS.register("fluidpipepump", () -> blockFluidPipePump = new BlockPipePump(false));
 	public static final RegistryObject<Block> BLOCK_GASPIPEFILTER = BLOCKS.register("gaspipefilter", () -> blockGasPipeFilter = new BlockPipeFilter(false));
 	public static final RegistryObject<Block> BLOCK_FLUIDPIPEFILTER = BLOCKS.register("fluidpipefilter", () -> blockFluidPipeFilter = new BlockPipeFilter(true));
+	
+	public static final RegistryObject<Block> BLOCK_STEELSCAFFOLDING = BLOCKS.register("steelscaffold", () -> blockSteelScaffold = new BlockScaffold(Properties.of(Material.METAL).requiresCorrectToolForDrops().strength(2.0F, 3.0F).sound(SoundType.METAL).noOcclusion()));
 
 	public static Block[] getAllBlockForSubtype(ISubtype[] values) {
 		List<Block> list = new ArrayList<>();

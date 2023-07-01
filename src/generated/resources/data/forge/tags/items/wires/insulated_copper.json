@@ -5,6 +5,7 @@
     "electrodynamics:wireinsulatedcopperwhite",
     "electrodynamics:wireinsulatedcoppergreen",
     "electrodynamics:wireinsulatedcopperblue",
-    "electrodynamics:wireinsulatedcopperyellow"
+    "electrodynamics:wireinsulatedcopperyellow",
+    "electrodynamics:wireinsulatedcopperbrown"
   ]
 }

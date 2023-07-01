@@ -35,7 +35,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class GenericTile extends BlockEntity implements Nameable, IPropertyHolderTile {
+public abstract class GenericTile extends BlockEntity implements Nameable, IPropertyHolderTile {
 	private final Component[] components = new Component[ComponentType.values().length];
 	private final ComponentProcessor[] processors = new ComponentProcessor[5];
 	private final PropertyManager propertyManager = new PropertyManager(this);
@@ -43,6 +43,10 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	// use this for manually setting the change flag
 	public boolean isChanged = false;
 
+	public GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
+		super(tileEntityTypeIn, worldPos, blockState);
+	}
+	
 	public <T> Property<T> property(Property<T> prop) {
 		for (Property<?> existing : propertyManager.getProperties()) {
 			if (existing.getName().equals(prop.getName())) {
@@ -145,10 +149,6 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 			}
 		}
 		super.saveAdditional(compound);
-	}
-
-	public GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
-		super(tileEntityTypeIn, worldPos, blockState);
 	}
 
 	@Override

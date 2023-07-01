@@ -1,6 +1,6 @@
 package electrodynamics.compatibility.jei.utils.gui.types;
 
-import electrodynamics.compatibility.jei.utils.JeiTextures;
+import electrodynamics.compatibility.jei.utils.gui.JeiTextures;
 import electrodynamics.compatibility.jei.utils.gui.ScreenObject;
 
 public class BackgroundObject extends ScreenObject {
