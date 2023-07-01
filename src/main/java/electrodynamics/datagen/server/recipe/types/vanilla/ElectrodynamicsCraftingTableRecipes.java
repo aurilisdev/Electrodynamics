@@ -27,6 +27,7 @@ import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
 import electrodynamics.datagen.utils.recipe.ElectrodynamicsShapedCraftingRecipe;
 import electrodynamics.datagen.utils.recipe.ElectrodynamicsShapelessCraftingRecipe;
+import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.ItemTags;
@@ -350,6 +351,18 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 					//
 					.complete(References.ID, "raw_ore_block_" + block.name(), consumer);
 		}
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsBlocks.blockSteelScaffold.asItem(), 32)
+				//
+				.addPattern("SSS")
+				//
+				.addPattern("S S")
+				//
+				.addPattern("SSS")
+				//
+				.addKey('S', ElectrodynamicsTags.Items.ROD_STEEL)
+				//
+				.complete(References.ID, "steel_scaffold", consumer);
 
 		ElectrodynamicsShapedCraftingRecipe.start(WIRES[SubtypeWire.copper.ordinal()], 1)
 				//

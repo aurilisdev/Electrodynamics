@@ -16,7 +16,7 @@ public class Property<T> {
 	
 	private int index = 0;
 
-	//property has old value and value is new value
+	//property has new value and value is old value
 	private BiConsumer<Property<T>, T> onChange = (prop, val) -> {
 	};
 	private BiConsumer<Property<T>, T> onLoad = (prop, val) -> {
@@ -73,8 +73,11 @@ public class Property<T> {
 
 	public Property<T> set(Object updated) {
 		verify((T) updated);
-		onChange.accept(this, (T) updated);
+		T old = value;
 		value = (T) type.attemptCast.apply(updated);
+		if(isDirty()) {
+			onChange.accept(this, old);
+		}
 
 		return this;
 	}

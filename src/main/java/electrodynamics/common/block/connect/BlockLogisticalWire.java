@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.Mod;
 
 public class BlockLogisticalWire extends BlockWire {
 
-	private static final HashSet<BlockLogisticalWire> WIRES = new HashSet<>();
+	public static final HashSet<Block> WIRES = new HashSet<>();
 	
 	public BlockLogisticalWire(SubtypeWire wire) {
 		super(wire);
@@ -52,7 +52,7 @@ public class BlockLogisticalWire extends BlockWire {
 		public static void registerColoredBlocks(RegisterColorHandlersEvent.Block event) {
 			WIRES.forEach(block -> event.register((state, level, pos, tintIndex) -> {
 				if (tintIndex == 0) {
-					return block.wire.color.color;
+					return ((BlockLogisticalWire)block).wire.color.color;
 				} else if (tintIndex == 1) {
 					if(state.getValue(BlockMachine.ON)) {
 						return RenderingUtils.getRGBA(255, 211, 5, 5);

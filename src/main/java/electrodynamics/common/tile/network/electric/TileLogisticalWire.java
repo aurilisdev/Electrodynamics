@@ -12,7 +12,7 @@ public class TileLogisticalWire extends TileWire {
 
 	public TileLogisticalWire(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_LOGISTICALWIRE.get(), pos, state);
-		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
+		forceComponent(new ComponentTickable(this).tickServer(this::tickServer));
 	}
 
 	protected void tickServer(ComponentTickable component) {

@@ -3,6 +3,8 @@ package electrodynamics.common.block.connect.util;
 import javax.annotation.Nullable;
 
 import electrodynamics.api.network.cable.IRefreshableCable;
+import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
+import electrodynamics.prefab.tile.types.GenericConnectTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -58,6 +60,7 @@ public abstract class AbstractRefreshingConnectBlock extends AbstractConnectBloc
 			relPos = pos.relative(dir);
 			state = refreshConnections(worldIn.getBlockState(relPos), worldIn.getBlockEntity(relPos), state, dir);
 		}
+		state = state.setValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING, state.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING));
 		worldIn.setBlockAndUpdate(pos, state);
 	}
 

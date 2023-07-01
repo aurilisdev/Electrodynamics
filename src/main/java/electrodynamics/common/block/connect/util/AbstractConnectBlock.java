@@ -156,6 +156,7 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 		boolean set = false;
 		if (world.getBlockState(context.getClickedPos()).getBlock() instanceof BlockScaffold) {
 			superState = superState.setValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING, true);
+			set = true;
 		} else {
 			superState = superState.setValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING, false);
 		}
@@ -168,9 +169,9 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 	@Override
 	public void onPlace(BlockState newState, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
 		super.onPlace(newState, level, pos, oldState, isMoving);
-		if (newState.hasProperty(ElectrodynamicsBlockStates.HAS_SCAFFOLDING) && newState.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING) && level.getBlockEntity(pos) instanceof GenericConnectTile connect && oldState.getBlock() instanceof BlockScaffold scaffold) {
-			connect.setScaffoldBlock(oldState);
-		}
+		if (newState.hasProperty(ElectrodynamicsBlockStates.HAS_SCAFFOLDING) && oldState.hasProperty(ElectrodynamicsBlockStates.HAS_SCAFFOLDING)) {
+			newState = newState.setValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING, oldState.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING));
+		} 
 	}
 
 	@Override
@@ -212,6 +213,8 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 						if (!player.addItem(new ItemStack(connect.getCamoBlock().getBlock()))) {
 							level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), new ItemStack(connect.getCamoBlock().getBlock())));
 						}
+						stack.shrink(1);
+						player.setItemInHand(hand, stack);
 						connect.setCamoBlock(blockitem.getBlock().getStateForPlacement(newCtx));
 						level.playSound(null, pos, blockitem.getBlock().defaultBlockState().getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 						level.getChunkSource().getLightEngine().checkBlock(pos);

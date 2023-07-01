@@ -32,7 +32,7 @@ public class TileGasPipePump extends GenericTile {
 	public static final Direction INPUT_DIR = Direction.SOUTH;
 	public static final Direction OUTPUT_DIR = Direction.NORTH;
 
-	public final Property<Integer> priority = property(new Property<>(PropertyType.Integer, "pumppriority", 0).onChange((curprop, newval) -> {
+	public final Property<Integer> priority = property(new Property<>(PropertyType.Integer, "pumppriority", 0).onChange((prop, oldval) -> {
 		
 		if(level.isClientSide) {
 			return;
@@ -44,7 +44,7 @@ public class TileGasPipePump extends GenericTile {
 			GasNetwork network = pipe.getNetwork();
 			
 			if(network != null) {
-				network.updateGasPipePumpStats(this, newval, curprop.get());
+				network.updateGasPipePumpStats(this, prop.get(), oldval);
 			}
 		}
 		
