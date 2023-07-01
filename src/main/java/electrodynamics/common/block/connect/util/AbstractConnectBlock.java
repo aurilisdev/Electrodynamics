@@ -204,7 +204,9 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 						stack.shrink(1);
 						player.setItemInHand(hand, stack);
 						level.playSound(null, pos, blockitem.getBlock().defaultBlockState().getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
+						level.getChunkSource().getLightEngine().checkBlock(pos);
 					}
+					return InteractionResult.CONSUME;
 				} else if (!(blockitem.getBlock() instanceof BlockScaffold) && !connect.getCamoBlock().is(blockitem.getBlock())) {
 					if (!level.isClientSide) {
 						if (!player.addItem(new ItemStack(connect.getCamoBlock().getBlock()))) {
@@ -214,10 +216,9 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 						level.playSound(null, pos, blockitem.getBlock().defaultBlockState().getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 						level.getChunkSource().getLightEngine().checkBlock(pos);
 					}
-					// 
+					return InteractionResult.CONSUME;
 
 				}
-				return InteractionResult.CONSUME;
 			}
 
 		}
