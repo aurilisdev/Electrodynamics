@@ -11,6 +11,7 @@ import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.block.subtype.SubtypeWire.InsulationMaterial;
 import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
 import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
+import electrodynamics.common.tile.network.electric.GenericTileWire;
 import electrodynamics.common.tile.network.electric.TileLogisticalWire;
 import electrodynamics.common.tile.network.electric.TileWire;
 import electrodynamics.prefab.utilities.ElectricityUtils;
@@ -45,7 +46,6 @@ import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public class BlockWire extends AbstractRefreshingConnectBlock {
 
@@ -165,10 +165,23 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 		}
 
-		if (ForgeRegistries.ITEMS.tags().getTag(Tags.Items.DUSTS_REDSTONE).contains(item) && wire.insulation == InsulationMaterial.WOOL && wire.wireClass == WireClass.INSULATED) {
+		if (item.builtInRegistryHolder().is(Tags.Items.DUSTS_REDSTONE) && wire.insulation == InsulationMaterial.WOOL && wire.wireClass == WireClass.INSULATED) {
 
 			if (isServerSide) {
+				BlockState curCamo = Blocks.AIR.defaultBlockState();
+				BlockState curScaffold = Blocks.AIR.defaultBlockState();
+				BlockEntity entity = level.getBlockEntity(pos);
+				if(entity != null && entity instanceof GenericTileWire generic) {
+					curCamo = generic.getCamoBlock();
+					curScaffold = generic.getScaffoldBlock();
+				}
 				player.level.setBlockAndUpdate(pos, Block.updateFromNeighbourShapes(ElectrodynamicsBlocks.getBlock(SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.LOGISTICAL, WireColor.BLACK)).defaultBlockState(), player.level, pos));
+				if(level.getBlockEntity(pos) instanceof GenericTileWire generic) {
+					generic.camoflaugedBlock.set(curCamo);
+					if(!curScaffold.isAir()) {
+						generic.scaffoldBlock.set(curScaffold);
+					}
+				}
 				stack.shrink(1);
 				level.playSound(null, pos, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			}

@@ -11,6 +11,7 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -164,7 +165,8 @@ public enum PropertyType {
 			return Blocks.AIR;
 		}
 		return ((BlockItem) stack.getItem()).getBlock();
-	});
+	}),
+	Blockstate((prop, buf) -> buf.writeNbt(NbtUtils.writeBlockState((BlockState) prop.get())), buf -> NbtUtils.readBlockState(buf.readNbt()), (prop, tag) -> tag.put(prop.getName(), NbtUtils.writeBlockState((BlockState) prop.get())), (prop, tag) -> NbtUtils.readBlockState(tag.getCompound(prop.getName())));
 
 	@Nonnull
 	public final BiPredicate<Object, Object> predicate;

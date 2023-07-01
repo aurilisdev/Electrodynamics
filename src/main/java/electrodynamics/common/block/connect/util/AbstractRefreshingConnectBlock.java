@@ -23,6 +23,7 @@ public abstract class AbstractRefreshingConnectBlock extends AbstractConnectBloc
 
 	@Override
 	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState stateIn, @Nullable LivingEntity placer, ItemStack stack) {
+		super.setPlacedBy(worldIn, pos, stateIn, placer, stack);
 		BlockPos relPos;
 		for (Direction dir : Direction.values()) {
 			relPos = pos.relative(dir);
@@ -33,7 +34,8 @@ public abstract class AbstractRefreshingConnectBlock extends AbstractConnectBloc
 
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
+		stateIn = super.updateShape(stateIn, facing, facingState, world, currentPos, facingPos);
+		if (stateIn.getValue(BlockStateProperties.WATERLOGGED)) {
 			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
 		}
 		return refreshConnections(facingState, world.getBlockEntity(facingPos), stateIn, facing);

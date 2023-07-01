@@ -6,11 +6,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.prefab.tile.types.GenericConnectTile;
-import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class RenderConnectBlock extends AbstractTileRenderer<GenericConnectTile> {
@@ -27,15 +24,15 @@ public class RenderConnectBlock extends AbstractTileRenderer<GenericConnectTile>
 			return;
 		}
 		
-		Block blockToRender;
+		BlockState blockToRender;
 		
-		if(Blocks.AIR.defaultBlockState().is(tile.getBlock())) {
-			blockToRender = ElectrodynamicsBlocks.blockSteelScaffold;
+		if(tile.isCamoAir()) {
+			blockToRender = tile.getScaffoldBlock();
 		} else {
-			blockToRender = tile.getBlock();
+			blockToRender = tile.getCamoBlock();
 		}
 		
-		minecraft().getBlockRenderer().renderSingleBlock(blockToRender.defaultBlockState(), poseStack, bufferSource, packedLight, packedOverlay);
+		minecraft().getBlockRenderer().renderSingleBlock(blockToRender, poseStack, bufferSource, packedLight, packedOverlay);
 		
 	}
 

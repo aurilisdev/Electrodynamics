@@ -78,6 +78,14 @@ public class Property<T> {
 
 		return this;
 	}
+	
+	public void copy(Property<T> other) {
+		T otherVal = other.get();
+		if(otherVal == null) {
+			return;
+		}
+		set(otherVal);
+	}
 
 	public void verify(T updated) {
 		boolean shouldUpdate = value == null && updated != null;
