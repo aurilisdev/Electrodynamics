@@ -92,15 +92,15 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
 
 		VoxelShape camoShape = Shapes.empty();
-		
+
 		if (state.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING) && worldIn.getBlockEntity(pos) instanceof GenericConnectTile connect) {
 
 			if (connect.isCamoAir()) {
-				camoShape =  connect.getScaffoldBlock().getBlock().getShape(connect.getScaffoldBlock(), worldIn, pos, context);
+				camoShape = connect.getScaffoldBlock().getBlock().getShape(connect.getScaffoldBlock(), worldIn, pos, context);
 			} else {
 				camoShape = connect.getCamoBlock().getBlock().getShape(connect.getCamoBlock(), worldIn, pos, context);
 			}
-			
+
 		}
 
 		VoxelShape shape = boundingBoxes[6];
@@ -171,7 +171,7 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 		super.onPlace(newState, level, pos, oldState, isMoving);
 		if (newState.hasProperty(ElectrodynamicsBlockStates.HAS_SCAFFOLDING) && oldState.hasProperty(ElectrodynamicsBlockStates.HAS_SCAFFOLDING)) {
 			newState = newState.setValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING, oldState.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING));
-		} 
+		}
 	}
 
 	@Override
@@ -184,12 +184,14 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 		if (stack.getItem() instanceof BlockItem blockitem && level.getBlockEntity(pos) instanceof GenericConnectTile connect) {
 
 			BlockPlaceContext newCtx = new BlockPlaceContext(player, hand, stack, hit);
-			
+
 			if (blockitem.getBlock() instanceof BlockScaffold scaffold) {
 				if (!state.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING)) {
 					if (!level.isClientSide) {
-						stack.shrink(1);
-						player.setItemInHand(hand, stack);
+						if (!player.isCreative()) {
+							stack.shrink(1);
+							player.setItemInHand(hand, stack);
+						}
 						state = state.setValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING, true);
 						level.setBlockAndUpdate(pos, state);
 						connect.setScaffoldBlock(scaffold.getStateForPlacement(newCtx));
@@ -202,22 +204,25 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 				if (connect.isCamoAir()) {
 					if (!level.isClientSide) {
 						connect.setCamoBlock(blockitem.getBlock().getStateForPlacement(newCtx));
-						stack.shrink(1);
-						player.setItemInHand(hand, stack);
+						if (!player.isCreative()) {
+							stack.shrink(1);
+							player.setItemInHand(hand, stack);
+						}
 						level.playSound(null, pos, blockitem.getBlock().defaultBlockState().getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 						level.getChunkSource().getLightEngine().checkBlock(pos);
 					}
 					return InteractionResult.CONSUME;
 				} else if (!connect.getCamoBlock().is(blockitem.getBlock())) {
 					if (!level.isClientSide) {
-						if (!player.addItem(new ItemStack(connect.getCamoBlock().getBlock()))) {
-							level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), new ItemStack(connect.getCamoBlock().getBlock())));
+						if (!player.isCreative()) {
+							if (!player.addItem(new ItemStack(connect.getCamoBlock().getBlock()))) {
+								level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), new ItemStack(connect.getCamoBlock().getBlock())));
+							}
+							stack.shrink(1);
+							player.setItemInHand(hand, stack);
 						}
-						stack.shrink(1);
-						player.setItemInHand(hand, stack);
 						connect.setCamoBlock(blockitem.getBlock().getStateForPlacement(newCtx));
 						level.playSound(null, pos, blockitem.getBlock().defaultBlockState().getSoundType().getPlaceSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
-						level.getChunkSource().getLightEngine().checkBlock(pos);
 					}
 					return InteractionResult.CONSUME;
 
@@ -278,8 +283,8 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 		if (!state.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING)) {
 			return super.getVisualShape(state, level, pos, context);
 		}
-		if(level.getBlockEntity(pos) instanceof GenericConnectTile connect) {
-			if(connect.isCamoAir()) {
+		if (level.getBlockEntity(pos) instanceof GenericConnectTile connect) {
+			if (connect.isCamoAir()) {
 				return connect.getScaffoldBlock().getBlock().getVisualShape(connect.getScaffoldBlock(), level, pos, context);
 			}
 			return connect.getCamoBlock().getBlock().getVisualShape(connect.getCamoBlock(), level, pos, context);
@@ -288,17 +293,45 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 	}
 
 	@Override
-	public int getLightBlock(BlockState state, BlockGetter level, BlockPos pos) {
-		if (!state.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING)) {
-			return super.getLightBlock(state, level, pos);
+	public void onRotate(ItemStack stack, BlockPos pos, Player player) {
+		Level level = player.level;
+		if (level.isClientSide()) {
+			return;
 		}
-		if(level.getBlockEntity(pos) instanceof GenericConnectTile connect) {
-			if(connect.isCamoAir()) {
-				return connect.getScaffoldBlock().getBlock().getLightBlock(connect.getScaffoldBlock(), level, pos);
+		if (level.getBlockEntity(pos) instanceof GenericConnectTile connect) {
+
+			if (!connect.isCamoAir()) {
+				Block camo = connect.getCamoBlock().getBlock();
+
+				connect.setCamoBlock(Blocks.AIR.defaultBlockState());
+
+				if (!player.isCreative()) {
+					if (!player.addItem(new ItemStack(camo))) {
+						level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), new ItemStack(camo)));
+					}
+				}
+
+				return;
+			} else if (!connect.isScaffoldAir()) {
+				Block scaffold = connect.getScaffoldBlock().getBlock();
+
+				connect.setScaffoldBlock(Blocks.AIR.defaultBlockState());
+
+				level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING, false));
+
+				if (!player.isCreative()) {
+					if (!player.addItem(new ItemStack(scaffold))) {
+						level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), new ItemStack(scaffold)));
+					}
+				}
+
+				return;
 			}
-			return connect.getCamoBlock().getBlock().getLightBlock(connect.getCamoBlock(), level, pos);
+
 		}
-		return super.getLightBlock(state, level, pos);
+
+		super.onRotate(stack, pos, player);
+
 	}
 
 }

@@ -13,16 +13,10 @@ import net.minecraft.world.level.block.state.BlockState;
 public abstract class GenericConnectTile extends GenericTile {
 
 	public final Property<BlockState> camoflaugedBlock = property(new Property<>(PropertyType.Blockstate, "camoflaugedblock", Blocks.AIR.defaultBlockState())).onChange((property, block) -> {
-		if(!level.isClientSide ) {
-			return;
-		}
 		level.getChunkSource().getLightEngine().checkBlock(worldPosition);
 	});
 	
 	public final Property<BlockState> scaffoldBlock = property(new Property<>(PropertyType.Blockstate, "scaffoldblock", Blocks.AIR.defaultBlockState())).onChange((property, block) -> {
-		if(!level.isClientSide) {
-			return;
-		}
 		level.getChunkSource().getLightEngine().checkBlock(worldPosition);
 	});
 	

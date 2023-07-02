@@ -9,7 +9,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 
-public class HandlerRightClickWires extends AbstractRightClickBlockHandler {
+public class HandlerWrench extends AbstractRightClickBlockHandler {
 
 	@Override
 	public void handle(RightClickBlock event) {

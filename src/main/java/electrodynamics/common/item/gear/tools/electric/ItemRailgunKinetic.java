@@ -92,7 +92,10 @@ public class ItemRailgunKinetic extends ItemRailgun {
 		
 		world.addFreshEntity(projectile);
 		railgun.recieveHeat(gunStack, TEMPERATURE_PER_SHOT, false);
-		ammoStack.shrink(1);
+		
+		if(!player.isCreative()) {
+			ammoStack.shrink(1);
+		}
 
 		return InteractionResultHolder.pass(gunStack);
 	}

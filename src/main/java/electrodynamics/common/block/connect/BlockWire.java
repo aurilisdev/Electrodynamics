@@ -105,10 +105,15 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 					handleDataCopyAndSet(newWire.getStateForPlacement(newCtx), level, pos, player, hand, stack, state);
 
-					handlePlayerItemDrops(player, ElectrodynamicsItems.ITEM_CERAMICINSULATION.get());
-
-					stack.hurtAndBreak(1, player, pl -> {
-					});
+					if(!player.isCreative()) {
+						
+						handlePlayerItemDrops(player, ElectrodynamicsItems.ITEM_CERAMICINSULATION.get());
+						
+						stack.hurtAndBreak(1, player, pl -> {
+						});
+						
+					}
+					
 
 					level.playSound(null, pos, SoundEvents.TUFF_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
 				}
@@ -125,17 +130,21 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 					handleDataCopyAndSet(newWire.getStateForPlacement(newCtx), level, pos, player, hand, stack, state);
 
-					handlePlayerItemDrops(player, ElectrodynamicsItems.ITEM_INSULATION.get());
+					if(!player.isCreative()) {
+						
+						handlePlayerItemDrops(player, ElectrodynamicsItems.ITEM_INSULATION.get());
 
-					if (wire.wireClass == WireClass.LOGISTICAL) {
+						if (wire.wireClass == WireClass.LOGISTICAL) {
 
-						handlePlayerItemDrops(player, Items.REDSTONE);
+							handlePlayerItemDrops(player, Items.REDSTONE);
 
+						}
+
+						stack.hurtAndBreak(1, player, pl -> {
+						});
+						
 					}
-
-					stack.hurtAndBreak(1, player, pl -> {
-					});
-
+					
 					level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
 
 				}
@@ -157,10 +166,14 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 					Block newWire = ElectrodynamicsBlocks.getBlock(SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.BLACK));
 
 					handleDataCopyAndSet(newWire.getStateForPlacement(newCtx), level, pos, player, hand, stack, state);
+					
+					if(!player.isCreative()) {
+						
+						stack.shrink(1);
 
-					stack.shrink(1);
-
-					player.setItemInHand(hand, stack);
+						player.setItemInHand(hand, stack);
+						
+					}
 
 					level.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 				}
@@ -181,9 +194,13 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 				handleDataCopyAndSet(newWire.getStateForPlacement(newCtx), level, pos, player, hand, stack, state);
 
-				stack.shrink(1);
+				if(!player.isCreative()) {
+					
+					stack.shrink(1);
 
-				player.setItemInHand(hand, stack);
+					player.setItemInHand(hand, stack);
+					
+				}
 
 				level.playSound(null, pos, SoundEvents.TUFF_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			}
@@ -200,9 +217,13 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 				handleDataCopyAndSet(newWire.getStateForPlacement(newCtx), level, pos, player, hand, stack, state);
 
-				stack.shrink(1);
+				if(!player.isCreative()) {
+					
+					stack.shrink(1);
 
-				player.setItemInHand(hand, stack);
+					player.setItemInHand(hand, stack);
+					
+				}
 
 				level.playSound(null, pos, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			}
@@ -221,9 +242,13 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 				handleDataCopyAndSet(newWire.getStateForPlacement(newCtx), level, pos, player, hand, stack, state);
 
-				stack.shrink(1);
+				if(!player.isCreative()) {
+					
+					stack.shrink(1);
 
-				player.setItemInHand(hand, stack);
+					player.setItemInHand(hand, stack);
+					
+				}
 
 				level.playSound(null, pos, SoundEvents.DYE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
 			}

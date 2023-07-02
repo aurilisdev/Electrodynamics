@@ -1486,7 +1486,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.armor.ceramicl2", "For the ability to trigger, you must be wearing a full set of the armor type, and it must be a complete set. You must then take more than 16 damage. If these conditions are met, you will hear the plate break and a Ceramic Plate will be removed " + "from the chestplate. The damage dealt will then be reduced to its square root.");
 
 			addGuidebook("chapter.misc", "Misc");
-			addGuidebook("chapter.misc.l1", "Futurum Usui.");
+			addGuidebook("chapter.misc.l1", "Electrodynamics pipes and wires can be camouflaged to look like other blocks. This can be especially usefully if you have to run a wire through a wall but don't want to have an awkward hole in it. To hide the cable in question, you will first need to enhance it's structure. This can be accomplished "
+					+ "by right-clicking the cable with Scaffolding (not the vanilla kind):");
 
 			addGuidebook("chapter.tips", "Tips");
 			addGuidebook("chapter.tips.tip", "Tip %s:");

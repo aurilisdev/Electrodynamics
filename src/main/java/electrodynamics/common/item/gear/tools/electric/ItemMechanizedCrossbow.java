@@ -58,29 +58,47 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		ItemStack crossbow = player.getItemInHand(hand);
-		if (!world.isClientSide) {
-			ItemMechanizedCrossbow mechanized = (ItemMechanizedCrossbow) crossbow.getItem();
-			if (mechanized.getJoulesStored(crossbow) >= JOULES_PER_SHOT) {
-				ItemStack arrow = getAmmo(player);
-				Projectile projectile = getArrow(world, player, crossbow, arrow);
-				if (!arrow.isEmpty()) {
-					mechanized.extractPower(crossbow, JOULES_PER_SHOT, false);
-					arrow.shrink(1);
-					Vec3 playerUp = player.getUpVector(1.0F);
-					Quaternion quaternion = new Quaternion(new Vector3f(playerUp), 0, true);
-					Vec3 playerView = player.getViewVector(1.0F);
-					Vector3f viewVector = new Vector3f(playerView);
-					viewVector.transform(quaternion);
-					projectile.shoot(viewVector.x(), viewVector.y(), viewVector.z(), PROJECTILE_SPEED, 1);
-					world.addFreshEntity(projectile);
-					world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, 1);
-				} else {
-					world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
-				}
-			} else {
-				world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
-			}
+
+		if (world.isClientSide) {
+			return InteractionResultHolder.pass(crossbow);
 		}
+
+		ItemMechanizedCrossbow mechanized = (ItemMechanizedCrossbow) crossbow.getItem();
+		if (mechanized.getJoulesStored(crossbow) < JOULES_PER_SHOT) {
+			world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+			return InteractionResultHolder.pass(crossbow);
+		}
+
+		ItemStack arrow = getAmmo(player);
+		Projectile projectile = getArrow(world, player, crossbow, arrow);
+
+		if (arrow.isEmpty()) {
+			world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+			return InteractionResultHolder.pass(crossbow);
+		}
+
+		mechanized.extractPower(crossbow, JOULES_PER_SHOT, false);
+
+		if (!player.isCreative()) {
+			arrow.shrink(1);
+		}
+
+		Vec3 playerUp = player.getUpVector(1.0F);
+
+		Quaternion quaternion = new Quaternion(new Vector3f(playerUp), 0, true);
+
+		Vec3 playerView = player.getViewVector(1.0F);
+
+		Vector3f viewVector = new Vector3f(playerView);
+
+		viewVector.transform(quaternion);
+
+		projectile.shoot(viewVector.x(), viewVector.y(), viewVector.z(), PROJECTILE_SPEED, 1);
+
+		world.addFreshEntity(projectile);
+
+		world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, 1);
+
 		return InteractionResultHolder.pass(crossbow);
 	}
 
@@ -118,17 +136,20 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 				return stack;
 			}
 		}
+		if (player.isCreative()) {
+			return new ItemStack(Items.ARROW);
+		}
 		return ItemStack.EMPTY;
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (allowedIn(group)) {
-			
+
 			ItemStack empty = new ItemStack(this);
 			IItemElectric.setEnergyStored(empty, 0);
 			items.add(empty);
-			
+
 			ItemStack charged = new ItemStack(this);
 			IItemElectric.setEnergyStored(charged, properties.capacity);
 			items.add(charged);
@@ -177,7 +198,7 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	public Item getDefaultStorageBattery() {
 		return ElectrodynamicsItems.ITEM_BATTERY.get();
 	}
-	
+
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
 
