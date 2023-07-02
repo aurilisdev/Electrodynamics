@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
+import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.inventory.InventoryTickConsumer;
 import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -80,7 +82,7 @@ public class ItemCanister extends Item {
 			stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> {
 				if (!((RestrictedFluidHandlerItemStack) h).getFluid().isEmpty()) {
 					RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
-					tooltip.add(Component.literal(cap.getFluidInTank(0).getAmount() + " / " + MAX_FLUID_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
+					tooltip.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(cap.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_FLUID_CAPACITY)).withStyle(ChatFormatting.GRAY));
 					tooltip.add(cap.getFluid().getDisplayName().copy().withStyle(ChatFormatting.DARK_GRAY));
 				}
 			});

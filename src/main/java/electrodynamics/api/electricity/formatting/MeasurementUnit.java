@@ -1,27 +1,30 @@
 package electrodynamics.api.electricity.formatting;
 
+import electrodynamics.prefab.utilities.ElectroTextUtils;
+import net.minecraft.network.chat.Component;
+
 public enum MeasurementUnit {
-	PICO("Pico", "p", 1.0E-12D),
-	NANO("Nano", "n", 1.0E-9D),
-	MICRO("Micro", '\u00B5' + "", 1.0E-6D), //unicode for micro
-	MILLI("Milli", "m", 1.0E-3D),
-	NONE("", "", 1.0),
-	KILO("Kilo", "k", 1.0E3D),
-	MEGA("Mega", "M", 1.0E6D),
-	GIGA("Giga", "G", 1.0E9D);
+	PICO(ElectroTextUtils.gui("measurementunit.pico.name"), ElectroTextUtils.gui("measurementunit.pico.symbol"), 1.0E-12D),
+	NANO(ElectroTextUtils.gui("measurementunit.nano.name"), ElectroTextUtils.gui("measurementunit.nano.symbol"), 1.0E-9D),
+	MICRO(ElectroTextUtils.gui("measurementunit.micro.name"), ElectroTextUtils.gui("measurementunit.micro.symbol"), 1.0E-6D), 
+	MILLI(ElectroTextUtils.gui("measurementunit.milli.name"), ElectroTextUtils.gui("measurementunit.milli.symbol"), 1.0E-3D),
+	NONE(ElectroTextUtils.gui("measurementunit.none.name"), ElectroTextUtils.gui("measurementunit.none.symbol"), 1.0),
+	KILO(ElectroTextUtils.gui("measurementunit.kilo.name"), ElectroTextUtils.gui("measurementunit.kilo.symbol"), 1.0E3D),
+	MEGA(ElectroTextUtils.gui("measurementunit.mega.name"), ElectroTextUtils.gui("measurementunit.mega.symbol"), 1.0E6D),
+	GIGA(ElectroTextUtils.gui("measurementunit.giga.name"), ElectroTextUtils.gui("measurementunit.giga.symbol"), 1.0E9D);
 
-	final double value;
+	public final double value;
 
-	final String symbol;
-	final String name;
+	public final Component symbol;
+	public final Component name;
 
-	MeasurementUnit(String name, String symbol, double value) {
+	private MeasurementUnit(Component name, Component symbol, double value) {
 		this.name = name;
 		this.symbol = symbol;
 		this.value = value;
 	}
 
-	public String getName(boolean isSymbol) {
+	public Component getName(boolean isSymbol) {
 		if (isSymbol) {
 			return symbol;
 		}

@@ -158,6 +158,8 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay)), existingBlock(blockLoc("relayon")), 180, 0, true);
 		
 		glassBlock(ElectrodynamicsBlocks.blockSteelScaffold, blockLoc("steelscaffold"), true);
+		
+		simpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer)), true);
 
 		genWires();
 		genPipes();

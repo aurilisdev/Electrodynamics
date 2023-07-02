@@ -21,6 +21,7 @@ import electrodynamics.api.gas.utils.IGasTank;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.renderer.GameRenderer;
@@ -76,14 +77,14 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 
 			if (gas.isEmpty()) {
 
-				tooltips.add(Component.literal("0 / " + ChatFormatter.formatFluidMilibuckets(tank.getCapacity())).getVisualOrderText());
+				tooltips.add(ElectroTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(tank.getCapacity())).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 
 			} else {
 
 				tooltips.add(gas.getGas().getDescription().getVisualOrderText());
-				tooltips.add(Component.literal(ChatFormatter.formatFluidMilibuckets(tank.getGasAmount()) + " / " + ChatFormatter.formatFluidMilibuckets(tank.getCapacity())).withStyle(ChatFormatting.GRAY).getVisualOrderText());
-				tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
-				tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(tank.getGasAmount()), ChatFormatter.formatFluidMilibuckets(tank.getCapacity())).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnit.PRESSURE_ATM).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 
 			}
 

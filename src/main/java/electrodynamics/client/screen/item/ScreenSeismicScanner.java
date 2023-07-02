@@ -51,9 +51,9 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		ItemStack ownerItem = menu.getOwnerItem();
 		if (ownerItem.getItem() instanceof ItemSeismicScanner scanner) {
-			list.add(ElectroTextUtils.gui("machine.usage", Component.literal(ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20.0, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(ElectroTextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(120, DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(ElectroTextUtils.gui("machine.stored", Component.literal(ChatFormatter.getChatDisplayShort(scanner.getJoulesStored(ownerItem), DisplayUnit.JOULES) + " / " + ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN * 30, DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("machine.usage", ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20.0, DisplayUnit.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("machine.voltage",ChatFormatter.getChatDisplayShort(120, DisplayUnit.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("machine.stored", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(scanner.getJoulesStored(ownerItem), DisplayUnit.JOULES), ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN * 30, DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}

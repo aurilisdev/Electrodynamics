@@ -25,6 +25,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -46,9 +47,9 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		TileQuarry quarry = menu.getHostFromIntArray();
 		if (quarry != null) {
 			ComponentElectrodynamic electro = quarry.getComponent(ComponentType.Electrodynamic);
-			list.add(ElectroTextUtils.gui("quarry.ringusage", Component.literal(ChatFormatter.getChatDisplayShort(quarry.setupPowerUsage.get() * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(ElectroTextUtils.gui("quarry.miningusage", Component.literal(ChatFormatter.getChatDisplayShort(quarry.quarryPowerUsage.get() * 20, DisplayUnit.WATT)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(ElectroTextUtils.gui("machine.voltage", Component.literal(ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("quarry.ringusage", ChatFormatter.getChatDisplayShort(quarry.setupPowerUsage.get() * 20, DisplayUnit.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("quarry.miningusage", ChatFormatter.getChatDisplayShort(quarry.quarryPowerUsage.get() * 20, DisplayUnit.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}
@@ -73,13 +74,13 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 			return list;
 		}
 		TileMotorComplex complex = quarry.getMotorComplex();
-		String text;
+		MutableComponent text;
 		if (complex == null) {
-			text = "N/A";
+			text = Component.literal("N/A");
 		} else {
 			text = ChatFormatter.getChatDisplayShort(complex.speed.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK, DisplayUnit.BUCKETS);
 		}
-		list.add(ElectroTextUtils.gui("quarry.wateruse", Component.literal(text).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("quarry.wateruse", text.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		return list;
 
 	}

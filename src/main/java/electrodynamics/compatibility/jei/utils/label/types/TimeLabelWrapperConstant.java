@@ -18,7 +18,7 @@ public class TimeLabelWrapperConstant extends AbstractLabelWrapper {
 	@Override
 	public Component getComponent(AbstractRecipeCategory<?> category, Object recipe) {
 
-		return Component.literal(ChatFormatter.getChatDisplayShort((double) ticks / 20.0, DisplayUnit.TIME_SECONDS));
+		return ChatFormatter.getChatDisplayShort((double) ticks / 20.0, DisplayUnit.TIME_SECONDS);
 
 	}
 

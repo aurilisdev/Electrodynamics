@@ -73,7 +73,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 				mode = ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED));
 			}
 			GuiComponent.drawString(stack, minecraft.font, mode, 35, heightOffset - 30, 0);
-			GuiComponent.drawString(stack, minecraft.font, Component.literal(ChatFormatter.getChatDisplayShort(helmet.getOrCreateTag().getDouble(IItemElectric.JOULES_STORED), DisplayUnit.JOULES)), 35, heightOffset - 20, -1);
+			GuiComponent.drawString(stack, minecraft.font, ChatFormatter.getChatDisplayShort(helmet.getOrCreateTag().getDouble(IItemElectric.JOULES_STORED), DisplayUnit.JOULES), 35, heightOffset - 20, -1);
 		}
 
 		if (renderItem) {
@@ -95,10 +95,10 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 				GasStack gas = cap.getGasInTank(0);
 				if (gas.isEmpty()) {
 					GuiComponent.drawString(stack, minecraft.font, mode, 35, heightOffset - 30, 0);
-					GuiComponent.drawString(stack, minecraft.font, Component.literal("0" + " / " + ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 35, heightOffset - 20, -1);
+					GuiComponent.drawString(stack, minecraft.font, ElectroTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 35, heightOffset - 20, -1);
 				} else {
 					GuiComponent.drawString(stack, minecraft.font, mode, 35, heightOffset - 30, 0);
-					GuiComponent.drawString(stack, minecraft.font, Component.literal(ChatFormatter.formatFluidMilibuckets(gas.getAmount()) + " / " + ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 35, heightOffset - 20, -1);
+					GuiComponent.drawString(stack, minecraft.font, ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 35, heightOffset - 20, -1);
 				}
 
 			});
@@ -114,11 +114,11 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 				int x = (int) (35 / 0.8F);
 				if (gas.isEmpty()) {
 					GuiComponent.drawString(stack, minecraft.font, mode, x, (int) ((heightOffset - 34) / 0.8F), 0);
-					GuiComponent.drawString(stack, minecraft.font, Component.literal("0" + " / " + ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), x, (int) ((heightOffset - 25) / 0.8F), -1);
+					GuiComponent.drawString(stack, minecraft.font, ElectroTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), x, (int) ((heightOffset - 25) / 0.8F), -1);
 					GuiComponent.drawString(stack, minecraft.font, ElectroTextUtils.tooltip("ceramicplatecount", Component.literal((chestplate.hasTag() ? chestplate.getTag().getInt(NBTUtils.PLATES) : 0) + "")).withStyle(ChatFormatting.AQUA), x, (int) ((heightOffset - 16) / 0.8F), -1);
 				} else {
 					GuiComponent.drawString(stack, minecraft.font, mode, x, (int) ((heightOffset - 34) / 0.8F), 0);
-					GuiComponent.drawString(stack, minecraft.font, Component.literal(ChatFormatter.formatFluidMilibuckets(gas.getAmount()) + " / " + ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), x, (int) ((heightOffset - 25) / 0.8F), -1);
+					GuiComponent.drawString(stack, minecraft.font, ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), x, (int) ((heightOffset - 25) / 0.8F), -1);
 					GuiComponent.drawString(stack, minecraft.font, ElectroTextUtils.tooltip("ceramicplatecount", Component.literal((chestplate.hasTag() ? chestplate.getTag().getInt(NBTUtils.PLATES) : 0) + "")).withStyle(ChatFormatting.AQUA), x, (int) ((heightOffset - 16) / 0.8F), -1);
 				}
 
@@ -155,7 +155,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 			stack.scale(0.8F, 0.8F, 0.8F);
 			GuiComponent.drawString(stack, minecraft.font, on, x, (int) ((heightOffset - 34) / 0.8F), 0);
 			GuiComponent.drawString(stack, minecraft.font, ItemJetpack.getModeText(leggings.hasTag() ? leggings.getTag().getInt(NBTUtils.MODE) : -1), x, (int) ((heightOffset - 25) / 0.8F), 0);
-			GuiComponent.drawString(stack, minecraft.font, Component.literal(ChatFormatter.getChatDisplayShort(leggings.getOrCreateTag().getDouble(IItemElectric.JOULES_STORED), DisplayUnit.JOULES)), x, (int) ((heightOffset - 16) / 0.8F), -1);
+			GuiComponent.drawString(stack, minecraft.font, ChatFormatter.getChatDisplayShort(leggings.getOrCreateTag().getDouble(IItemElectric.JOULES_STORED), DisplayUnit.JOULES), x, (int) ((heightOffset - 16) / 0.8F), -1);
 			stack.popPose();
 		}
 		
@@ -172,7 +172,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 
 		if(ItemUtils.testItems(boots.getItem(), ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get(), ElectrodynamicsItems.ITEM_COMBATBOOTS.get())) {
 			renderItem = true;
-			boots.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> GuiComponent.drawString(stack, minecraft.font, Component.literal(h.getFluidInTank(0).getAmount() + " mB"), 35, heightOffset - 25, -1));
+			boots.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> GuiComponent.drawString(stack, minecraft.font, ChatFormatter.formatFluidMilibuckets(h.getFluidInTank(0).getAmount()), 35, heightOffset - 25, -1));
 		}
 		
 		if (renderItem) {

@@ -52,7 +52,7 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 	}
 
 	public ScreenComponentSlot setHoverText(Slot slot) {
-		tooltip = () -> slot.getItem().isEmpty() ? Component.literal("") : slot.getItem().getHoverName();
+		tooltip = () -> slot.getItem().isEmpty() ? Component.empty() : slot.getItem().getHoverName();
 		return this;
 	}
 

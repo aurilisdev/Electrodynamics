@@ -43,7 +43,7 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 				return;
 			}
 			TransferPack output = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * Math.min((coal.heat.getValue().get() - 27.0) / (3000.0 - 27.0), 1), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
-			font.draw(stack, ElectroTextUtils.gui("coalgenerator.timeleft", coal.burnTime.get() / 20 + "s"), inventoryLabelX + 60f, inventoryLabelY - 53f, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("coalgenerator.timeleft",  ChatFormatter.getChatDisplayShort((double) coal.burnTime.get() / 20.0, DisplayUnit.TIME_SECONDS)), inventoryLabelX + 60f, inventoryLabelY - 53f, 4210752);
 			font.draw(stack, ElectroTextUtils.gui("machine.current", ChatFormatter.getChatDisplayShort(output.getAmps(), DisplayUnit.AMPERE)), inventoryLabelX + 60f, inventoryLabelY - 40f, 4210752);
 			font.draw(stack, ElectroTextUtils.gui("machine.output", ChatFormatter.getChatDisplayShort(output.getWatts(), DisplayUnit.WATT)), inventoryLabelX + 60f, inventoryLabelY - 27f, 4210752);
 			font.draw(stack, ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(output.getVoltage(), DisplayUnit.VOLTAGE)), inventoryLabelX + 60f, inventoryLabelY - 14f, 4210752);
@@ -57,9 +57,9 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 			return list;
 		}
 
-		list.add(ElectroTextUtils.gui("coalgenerator.timeleft", Component.literal(ChatFormatter.getChatDisplayShort(box.burnTime.get() / 20, DisplayUnit.TIME_SECONDS)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		list.add(ElectroTextUtils.gui("machine.temperature", Component.literal(ChatFormatter.getChatDisplayShort(box.heat.getValue().get() * (2500.0 / 3000.0), DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		list.add(ElectroTextUtils.gui("machine.heat", Component.literal(ChatFormatter.getChatDisplayShort((box.heat.getValue().get() - 27.0) / (3000.0 - 27.0) * 100, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("coalgenerator.timeleft", ChatFormatter.getChatDisplayShort((double) box.burnTime.get() / 20.0, DisplayUnit.TIME_SECONDS).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("machine.temperature", ChatFormatter.getChatDisplayShort(box.heat.getValue().get() * (2500.0 / 3000.0), DisplayUnit.TEMPERATURE_CELCIUS).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("machine.heat", ChatFormatter.getChatDisplayShort((box.heat.getValue().get() - 27.0) / (3000.0 - 27.0) * 100, DisplayUnit.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 
 		return list;
 	}

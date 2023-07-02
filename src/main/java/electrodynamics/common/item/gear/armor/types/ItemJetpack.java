@@ -126,11 +126,11 @@ public class ItemJetpack extends ArmorItem {
 				GasStack gas = cap.getGasInTank(0);
 				// tooltips.add(gas.getGas().getDescription());
 				if (gas.isEmpty()) {
-					tooltips.add(Component.literal("0" + " / " + ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)));
+					tooltips.add(ElectroTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)));
 				} else {
-					tooltips.add(Component.literal(ChatFormatter.formatFluidMilibuckets(gas.getAmount()) + " / " + ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)));
-					tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN)));
-					tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnit.PRESSURE_ATM)));
+					tooltips.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)));
+					tooltips.add(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN));
+					tooltips.add(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnit.PRESSURE_ATM));
 				}
 
 			});

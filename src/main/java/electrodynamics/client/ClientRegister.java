@@ -81,6 +81,7 @@ import electrodynamics.client.screen.tile.ScreenMotorComplex;
 import electrodynamics.client.screen.tile.ScreenO2OProcessor;
 import electrodynamics.client.screen.tile.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.tile.ScreenO2OProcessorTriple;
+import electrodynamics.client.screen.tile.ScreenPotentiometer;
 import electrodynamics.client.screen.tile.ScreenQuarry;
 import electrodynamics.client.screen.tile.ScreenSeismicRelay;
 import electrodynamics.client.screen.tile.ScreenSolarPanel;
@@ -289,6 +290,7 @@ public class ClientRegister {
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_GASPIPEFILTER.get(), ScreenGasPipeFilter::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEFILTER.get(), ScreenFluidPipeFilter::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICDRILL.get(), ScreenElectricDrill::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_POTENTIOMETER.get(), ScreenPotentiometer::new);
 
 		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICBATON.get(), ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricBaton) stack.getItem()).getJoulesStored(stack) > ((ItemElectricBaton) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICDRILL.get(), ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricDrill) stack.getItem()).getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);

@@ -7,11 +7,12 @@ import java.util.function.DoubleSupplier;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
+import electrodynamics.api.electricity.formatting.ChatFormatter;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.component.TextPropertySupplier;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import net.minecraft.ChatFormatting;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 
@@ -58,7 +59,7 @@ public class ScreenComponentCountdown extends AbstractScreenComponentInfo {
 	private List<? extends FormattedCharSequence> getTooltips() {
 		List<FormattedCharSequence> tips = new ArrayList<>();
 		if (progressInfoHandler != null) {
-			tips.add(Component.literal((int) (100 * progressInfoHandler.getAsDouble()) + "%").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+			tips.add(ChatFormatter.getChatDisplayShort(100 * progressInfoHandler.getAsDouble(), DisplayUnit.PERCENTAGE).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 		}
 		return tips;
 	}

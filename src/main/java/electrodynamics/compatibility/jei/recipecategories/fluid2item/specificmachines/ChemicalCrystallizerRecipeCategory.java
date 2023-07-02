@@ -27,7 +27,7 @@ public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory
 
 	public static final ItemSlotObject IN_BUCKET_SLOT = new ItemSlotObject(SlotType.NORMAL, IconType.FLUID_DARK, 58, 36, RecipeIngredientRole.INPUT);
 
-	public static final ItemSlotObject OUT_SLOT = new ItemSlotObject(SlotType.NORMAL, IconType.FLUID_DARK, 100, 16, RecipeIngredientRole.OUTPUT);
+	public static final ItemSlotObject OUT_SLOT = new ItemSlotObject(SlotType.NORMAL, 100, 16, RecipeIngredientRole.OUTPUT);
 
 	public static final ArrowAnimatedObject ANIM_RIGHT_ARROW = new ArrowAnimatedObject(ProgressBars.PROGRESS_ARROW_RIGHT_BIG, 32, 17, StartDirection.LEFT);
 	public static final ArrowAnimatedObject ANIM_LEFT_ARROW = new ArrowAnimatedObject(ProgressBars.PROGRESS_ARROW_LEFT, 32, 37, StartDirection.RIGHT);

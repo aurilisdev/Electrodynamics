@@ -101,7 +101,7 @@ public class ElectrodynamicsItems {
 		registerSubtypeBlockItem(SubtypeResourceBlock.values());
 		registerSubtypeBlockItem(SubtypeGlass.values());
 		for(SubtypeMachine machine : SubtypeMachine.values()) {
-			if(machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer || machine == SubtypeMachine.multimeterblock || machine == SubtypeMachine.circuitbreaker || machine == SubtypeMachine.relay) {
+			if(machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer || machine == SubtypeMachine.multimeterblock || machine == SubtypeMachine.circuitbreaker || machine == SubtypeMachine.relay || machine == SubtypeMachine.potentiometer) {
 				SUBTYPEITEMREGISTER_MAPPINGS.put(machine, ITEMS.register(machine.tag(), () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(machine).get(), new Item.Properties().tab(References.GRIDTAB))));
 			} else {
 				SUBTYPEITEMREGISTER_MAPPINGS.put(machine, ITEMS.register(machine.tag(), () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(machine).get(), new Item.Properties().tab(References.CORETAB))));

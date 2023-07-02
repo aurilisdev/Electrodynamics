@@ -40,6 +40,7 @@ import electrodynamics.common.inventory.container.tile.ContainerMotorComplex;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorDouble;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorTriple;
+import electrodynamics.common.inventory.container.tile.ContainerPotentiometer;
 import electrodynamics.common.inventory.container.tile.ContainerQuarry;
 import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
@@ -98,4 +99,5 @@ public class ElectrodynamicsMenuTypes {
 	public static final RegistryObject<MenuType<ContainerGasPipeFilter>> CONTAINER_GASPIPEFILTER = MENU_TYPES.register("gaspipefilter", () -> new MenuType<>(ContainerGasPipeFilter::new));
 	public static final RegistryObject<MenuType<ContainerFluidPipeFilter>> CONTAINER_FLUIDPIPEFILTER = MENU_TYPES.register("fluidpipefilter", () -> new MenuType<>(ContainerFluidPipeFilter::new));
 	public static final RegistryObject<MenuType<ContainerElectricDrill>> CONTAINER_ELECTRICDRILL = MENU_TYPES.register("electricdrill", () -> new MenuType<>(ContainerElectricDrill::new));
+	public static final RegistryObject<MenuType<ContainerPotentiometer>> CONTAINER_POTENTIOMETER = MENU_TYPES.register("potentiometer", () -> new MenuType<>(ContainerPotentiometer::new));
 }

@@ -98,6 +98,7 @@
     "electrodynamics:gastankhsla",
     "electrodynamics:gasvent",
     "electrodynamics:relay",
+    "electrodynamics:potentiometer",
     "electrodynamics:wiretin",
     "electrodynamics:wireiron",
     "electrodynamics:wirecopper",

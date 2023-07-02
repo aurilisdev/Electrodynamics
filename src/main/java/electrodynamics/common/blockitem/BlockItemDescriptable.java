@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -49,7 +50,7 @@ public class BlockItemDescriptable extends BlockItem {
 		if (stack.hasTag()) {
 			double joules = stack.getTag().getDouble("joules");
 			if (joules > 0) {
-				tooltip.add(Component.literal("Stored: " + ChatFormatter.getChatDisplay(joules, DisplayUnit.JOULES, 2, false)));
+				tooltip.add(ElectroTextUtils.gui("machine.stored", ChatFormatter.getChatDisplayShort(joules, DisplayUnit.JOULES)));
 			}
 		}
 	}

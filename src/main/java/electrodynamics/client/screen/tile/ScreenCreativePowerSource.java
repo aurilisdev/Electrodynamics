@@ -2,6 +2,8 @@ package electrodynamics.client.screen.tile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import electrodynamics.api.electricity.formatting.DisplayUnit;
+import electrodynamics.api.electricity.formatting.MeasurementUnit;
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
 import electrodynamics.common.tile.generators.TileCreativePowerSource;
 import electrodynamics.prefab.screen.GenericScreen;
@@ -24,8 +26,8 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 		addComponent(power = new ScreenComponentEditBox(80, 45, 49, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setFilter(ScreenComponentEditBox.POSITIVE_DECIMAL).setResponder(this::setPower));
 		addComponent(new ScreenComponentSimpleLabel(40, 31, 10, 4210752, ElectroTextUtils.gui("creativepowersource.voltage")));
 		addComponent(new ScreenComponentSimpleLabel(40, 49, 10, 4210752, ElectroTextUtils.gui("creativepowersource.power")));
-		addComponent(new ScreenComponentSimpleLabel(131, 31, 10, 4210752, ElectroTextUtils.gui("creativepowersource.voltunit")));
-		addComponent(new ScreenComponentSimpleLabel(131, 49, 10, 4210752, ElectroTextUtils.gui("creativepowersource.powerunit")));
+		addComponent(new ScreenComponentSimpleLabel(131, 31, 10, 4210752, DisplayUnit.VOLTAGE.symbol));
+		addComponent(new ScreenComponentSimpleLabel(131, 49, 10, 4210752, MeasurementUnit.MEGA.symbol.copy().append(DisplayUnit.WATT.symbol)));
 	}
 
 	private void setVoltage(String val) {

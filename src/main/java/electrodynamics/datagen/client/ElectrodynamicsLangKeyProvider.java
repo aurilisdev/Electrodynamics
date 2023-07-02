@@ -346,6 +346,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.blockFluidPipeFilter, "Fluid Pipe Filter");
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay), "Relay");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer), "Potentiometer");
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.aluminum), "Bauxite Ore");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.chromium), "Chromite Ore");
@@ -688,6 +689,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addContainer("fluidpipepump", "Fluid Pipe Pump");
 			addContainer("gaspipefilter", "Gas Pipe Filter");
 			addContainer("fluidpipefilter", "Fluid Pipe Filter");
+			
+			addContainer(SubtypeMachine.potentiometer, "Potentiometer");
 
 			addTooltip("itemwire.resistance", "Resistance: %s");
 			addTooltip("itemwire.maxamps", "Ampacity: %s");
@@ -793,11 +796,11 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addTooltip("electricdrill.fortunelevel", "Fortune %s");
 			addTooltip("electricdrill.silktouch", "Silk Touch");
 			addTooltip("electricdrill.usage", "Use / Block: %s");
+			
+			addTooltip("potentiometer.use", "A programmable energy void");
 
 			addGuiLabel("creativepowersource.voltage", "Voltage: ");
 			addGuiLabel("creativepowersource.power", "Power: ");
-			addGuiLabel("creativepowersource.voltunit", "V");
-			addGuiLabel("creativepowersource.powerunit", "MW");
 			addGuiLabel("creativefluidsource.setfluid", "Set Fluid");
 			addGuiLabel("machine.usage", "Usage: %s");
 			addGuiLabel("machine.voltage", "Voltage: %s");
@@ -882,6 +885,80 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("multimeterblock.resistance", "Resistance: %s");
 			addGuiLabel("multimeterblock.loss", "Loss: %s");
 			addGuiLabel("multimeterblock.minvoltage", "Min Voltage: %s");
+			
+			addGuiLabel("potentiometer.watts", "W");
+			addGuiLabel("potentiometer.usage", "Usage");
+			
+			
+			
+			addGuiLabel("displayunit.infinity.name", "Infinite");
+			
+			addGuiLabel("displayunit.ampere.name", "Ampere");
+			addGuiLabel("displayunit.ampere.nameplural", "Amperes");
+			addGuiLabel("displayunit.ampere.symbol", "A");
+			addGuiLabel("displayunit.amphour.name", "Amp Hour");
+			addGuiLabel("displayunit.amphour.nameplural", "Amp Hours");
+			addGuiLabel("displayunit.amphour.symbol", "Ah");
+			addGuiLabel("displayunit.voltage.name", "Volt");
+			addGuiLabel("displayunit.voltage.nameplural", "Volts");
+			addGuiLabel("displayunit.voltage.symbol", "V");
+			addGuiLabel("displayunit.watt.name", "Watt");
+			addGuiLabel("displayunit.watt.nameplural", "Watts");
+			addGuiLabel("displayunit.watt.symbol", "W");
+			addGuiLabel("displayunit.watthour.name", "Watt Hour");
+			addGuiLabel("displayunit.watthour.nameplural", "Watt Hours");
+			addGuiLabel("displayunit.watthour.symbol", "Wh");
+			addGuiLabel("displayunit.resistance.name", "Ohm");
+			addGuiLabel("displayunit.resistance.nameplural", "Ohms");
+			addGuiLabel("displayunit.resistance.symbol", "" + '\u03A9');
+			addGuiLabel("displayunit.conductance.name", "Siemen");
+			addGuiLabel("displayunit.conductance.nameplural", "Siemens");
+			addGuiLabel("displayunit.conductance.symbol", "S");
+			addGuiLabel("displayunit.joules.name", "Joule");
+			addGuiLabel("displayunit.joules.nameplural", "Joules");
+			addGuiLabel("displayunit.joules.symbol", "J");
+			addGuiLabel("displayunit.buckets.name", "Bucket");
+			addGuiLabel("displayunit.buckets.nameplural", "Buckets");
+			addGuiLabel("displayunit.buckets.symbol", "B");
+			addGuiLabel("displayunit.tempkelvin.name", "Kelvin");
+			addGuiLabel("displayunit.tempkelvin.nameplural", "Kelvin");
+			addGuiLabel("displayunit.tempkelvin.symbol", "K");
+			addGuiLabel("displayunit.tempcelcius.name", "Celcius");
+			addGuiLabel("displayunit.tempcelcius.nameplural", "Celcius");
+			addGuiLabel("displayunit.tempcelcius.symbol", "C");
+			addGuiLabel("displayunit.tempfahrenheit.name", "Fahrenheit");
+			addGuiLabel("displayunit.tempfahrenheit.nameplural", "Fahrenheit");
+			addGuiLabel("displayunit.tempfahrenheit.symbol", "F");
+			addGuiLabel("displayunit.timeseconds.name", "Second");
+			addGuiLabel("displayunit.timeseconds.nameplural", "Seconds");
+			addGuiLabel("displayunit.timeseconds.symbol", "s");
+			addGuiLabel("displayunit.pressureatm.name", "Atmosphere");
+			addGuiLabel("displayunit.pressureatm.nameplural", "Atmospheres");
+			addGuiLabel("displayunit.pressureatm.symbol", "ATM");
+			addGuiLabel("displayunit.percentage.name", "Percent");
+			addGuiLabel("displayunit.percentage.nameplural", "Percent");
+			addGuiLabel("displayunit.percentage.symbol", "%");
+			
+			
+			addGuiLabel("measurementunit.pico.name", "Pico");
+			addGuiLabel("measurementunit.pico.symbol", "p");
+			addGuiLabel("measurementunit.nano.name", "Nano");
+			addGuiLabel("measurementunit.nano.symbol", "n");
+			addGuiLabel("measurementunit.micro.name", "Micro");
+			addGuiLabel("measurementunit.micro.symbol", "" + '\u00B5');
+			addGuiLabel("measurementunit.milli.name", "Milli");
+			addGuiLabel("measurementunit.milli.symbol", "m");
+			addGuiLabel("measurementunit.none.name", "");
+			addGuiLabel("measurementunit.none.symbol", "");
+			addGuiLabel("measurementunit.kilo.name", "Kilo");
+			addGuiLabel("measurementunit.kilo.symbol", "k");
+			addGuiLabel("measurementunit.mega.name", "Mega");
+			addGuiLabel("measurementunit.mega.symbol", "M");
+			addGuiLabel("measurementunit.giga.name", "Giga");
+			addGuiLabel("measurementunit.giga.symbol", "G");
+			
+			
+			
 
 			add("keycategory.electrodynamics", "Electrodynamics");
 			addKeyLabel("jetpackascend", "Ascend with Jetpack");
@@ -1488,6 +1565,16 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.misc", "Misc");
 			addGuidebook("chapter.misc.l1", "Electrodynamics pipes and wires can be camouflaged to look like other blocks. This can be especially usefully if you have to run a wire through a wall but don't want to have an awkward hole in it. To hide the cable in question, you will first need to enhance it's structure. This can be accomplished "
 					+ "by right-clicking the cable with Scaffolding (not the vanilla kind):");
+			
+			addGuidebook("chapter.misc.l2", "Once the Scaffolding has been applied, you can then place the block of your choice. Note that placing the Scaffolding and camouflage block will consume it, but you will also get it back when you break the cable:");
+			
+			addGuidebook("chapter.misc.l3", "You can also easily swap the disguising block by simply right-clicking again with a different block:");
+			
+			addGuidebook("chapter.misc.l4", "Note that while the cable might glow like the light source it is disguised as, it very much is still a cable. This is particularly important in the case of Wires, which not only can still shock you while hidden, but can also be upgraded still:");
+			
+			addGuidebook("chapter.misc.l5", "As mentioned earlier, the cable will drop the scaffolding and disguising block when broken with a pickaxe. However, there are a couple other methods to do this. You can remove the disguising block by right-clicking the cable with a wrench:");
+			
+			addGuidebook("chapter.misc.l6", "This will leave the scaffolding in place. To remove the Scaffolding with the wrench as well, right-click again:");
 
 			addGuidebook("chapter.tips", "Tips");
 			addGuidebook("chapter.tips.tip", "Tip %s:");

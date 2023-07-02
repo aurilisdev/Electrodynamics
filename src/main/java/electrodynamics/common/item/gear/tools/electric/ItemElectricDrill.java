@@ -194,14 +194,14 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
 		IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
-		tooltip.add(ElectroTextUtils.tooltip("electricdrill.miningspeed", Component.literal(ChatFormatter.getChatDisplayShort(getHead(stack).speedBoost * 100, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
-		tooltip.add(ElectroTextUtils.tooltip("electricdrill.usage", Component.literal(ChatFormatter.getChatDisplayShort(Math.max(getPowerUsage(stack), POWER_USAGE), DisplayUnit.JOULES)).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(ElectroTextUtils.tooltip("electricdrill.miningspeed", ChatFormatter.getChatDisplayShort(getHead(stack).speedBoost * 100, DisplayUnit.PERCENTAGE).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(ElectroTextUtils.tooltip("electricdrill.usage", ChatFormatter.getChatDisplayShort(Math.max(getPowerUsage(stack), POWER_USAGE), DisplayUnit.JOULES).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
 		double speedboost = getSpeedBoost(stack);
 		if (speedboost > 1) {
-			tooltip.add(ElectroTextUtils.tooltip("electricdrill.overclock", Component.literal(ChatFormatter.getChatDisplayShort(speedboost * 100, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY));
+			tooltip.add(ElectroTextUtils.tooltip("electricdrill.overclock", ChatFormatter.getChatDisplayShort(speedboost * 100, DisplayUnit.PERCENTAGE).withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY));
 		}
 		int fortune = getFortuneLevel(stack);
 		if (fortune > 0) {

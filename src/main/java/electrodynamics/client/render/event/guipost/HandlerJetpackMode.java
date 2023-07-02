@@ -11,6 +11,7 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -39,12 +40,12 @@ public class HandlerJetpackMode extends AbstractPostGuiOverlayHandler {
 				GasStack gas = cap.getGasInTank(0);
 				if (gas.isEmpty()) {
 					GuiComponent.drawString(stack, minecraft.font, mode, 10, height - 30, 0);
-					GuiComponent.drawString(stack, minecraft.font, Component.literal("0" + " / " + ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 10, height - 20, -1);
+					GuiComponent.drawString(stack, minecraft.font, ElectroTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 10, height - 20, -1);
 				} else {
 					GuiComponent.drawString(stack, minecraft.font, mode, 10, height - 50, 0);
-					GuiComponent.drawString(stack, minecraft.font, Component.literal(ChatFormatter.formatFluidMilibuckets(gas.getAmount()) + " / " + ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 10, height - 40, -1);
-					GuiComponent.drawString(stack, minecraft.font, Component.literal(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN)), 10, height - 30, -1);
-					GuiComponent.drawString(stack, minecraft.font, Component.literal(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnit.PRESSURE_ATM)), 10, height - 20, -1);
+					GuiComponent.drawString(stack, minecraft.font, ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 10, height - 40, -1);
+					GuiComponent.drawString(stack, minecraft.font, ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN), 10, height - 30, -1);
+					GuiComponent.drawString(stack, minecraft.font, ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnit.PRESSURE_ATM), 10, height - 20, -1);
 				}
 
 			});

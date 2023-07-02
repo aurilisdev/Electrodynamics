@@ -6,11 +6,13 @@ import java.util.function.Predicate;
 
 import electrodynamics.api.References;
 import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
+import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelHydraulicBoots;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
@@ -85,7 +87,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		if (!CapabilityUtils.isFluidItemNull()) {
-			stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> tooltip.add(Component.literal(h.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY)));
+			stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> tooltip.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(h.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY)));
 		}
 		super.appendHoverText(stack, world, tooltip, flagIn);
 	}

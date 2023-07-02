@@ -103,6 +103,7 @@ public class UnifiedElectrodynamicsRegister {
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.gasvent), ElectroTextUtils.tooltip("gasvent"));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockGasValve, ElectroTextUtils.tooltip("gasvalve"));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockFluidValve, ElectroTextUtils.tooltip("fluidvalve"));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer), ElectroTextUtils.tooltip("potentiometer.use"));
 	}
 
 }

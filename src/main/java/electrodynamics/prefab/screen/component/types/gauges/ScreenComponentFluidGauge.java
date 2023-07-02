@@ -3,7 +3,9 @@ package electrodynamics.prefab.screen.component.types.gauges;
 import java.util.ArrayList;
 import java.util.List;
 
+import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.screen.component.FluidTankSupplier;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -67,9 +69,9 @@ public class ScreenComponentFluidGauge extends AbstractScreenComponentGauge {
 			FluidStack fluidStack = tank.getFluid();
 			if (fluidStack.getAmount() > 0) {
 				tooltips.add(Component.translatable(fluidStack.getTranslationKey()).getVisualOrderText());
-				tooltips.add(Component.literal(tank.getFluidAmount() + " / " + tank.getCapacity() + " mB").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				tooltips.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(tank.getFluidAmount()), ChatFormatter.formatFluidMilibuckets(tank.getCapacity())).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 			} else {
-				tooltips.add(Component.literal( "0 / " + tank.getCapacity() + " mB").getVisualOrderText());
+				tooltips.add(ElectroTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(tank.getCapacity())).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 			}
 		} 
 		return tooltips;

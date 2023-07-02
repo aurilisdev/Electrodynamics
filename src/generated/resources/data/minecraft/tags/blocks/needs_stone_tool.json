@@ -57,6 +57,7 @@
     "electrodynamics:gastankhsla",
     "electrodynamics:gasvent",
     "electrodynamics:relay",
+    "electrodynamics:potentiometer",
     "electrodynamics:pipecopper",
     "electrodynamics:pipesteel",
     "electrodynamics:orefluorite",

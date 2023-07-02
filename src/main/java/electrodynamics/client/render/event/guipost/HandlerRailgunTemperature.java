@@ -3,6 +3,8 @@ package electrodynamics.client.render.event.guipost;
 import com.mojang.blaze3d.platform.Window;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import electrodynamics.api.electricity.formatting.ChatFormatter;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemTemperate;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
@@ -35,22 +37,13 @@ public class HandlerRailgunTemperature extends AbstractPostGuiOverlayHandler {
 
 		ItemRailgun railgun = (ItemRailgun) item.getItem();
 		double temperature = IItemTemperate.getTemperature(item);
-		String correction;
 
 		stack.pushPose();
 
-		if (temperature < 10) {
-			correction = "00";
-		} else if (temperature < 100) {
-			correction = "0";
-		} else {
-			correction = "";
-		}
-
 		//ElectroTextUtils.tooltip("railguntemp", Component.literal(temperature + correction + " C"));
 
-		Component currTempText = ElectroTextUtils.tooltip("railguntemp", Component.literal(temperature + correction + " C")).withStyle(ChatFormatting.YELLOW);
-		Component maxTempText = ElectroTextUtils.tooltip("railgunmaxtemp", Component.literal(railgun.getMaxTemp() + " C")).withStyle(ChatFormatting.YELLOW);
+		Component currTempText = ElectroTextUtils.tooltip("railguntemp", ChatFormatter.getChatDisplayShort(temperature, DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.YELLOW);
+		Component maxTempText = ElectroTextUtils.tooltip("railgunmaxtemp", ChatFormatter.getChatDisplayShort(railgun.getMaxTemp(), DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.YELLOW);
 
 		GuiComponent.drawString(stack, minecraft.font, currTempText, 2, 2, 0);
 		GuiComponent.drawString(stack, minecraft.font, maxTempText, 2, 12, 0);

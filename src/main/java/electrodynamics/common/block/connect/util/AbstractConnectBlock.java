@@ -1,5 +1,6 @@
 package electrodynamics.common.block.connect.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -236,7 +237,7 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 
 	@Override
 	public List<ItemStack> getDrops(BlockState state, Builder builder) {
-		List<ItemStack> drops = super.getDrops(state, builder);
+		ArrayList<ItemStack> drops = new ArrayList<>(super.getDrops(state, builder));
 		if (state.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING) && builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof GenericConnectTile connect) {
 			drops.add(new ItemStack(connect.getScaffoldBlock().getBlock()));
 			if (!connect.isCamoAir()) {

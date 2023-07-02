@@ -41,6 +41,7 @@ import electrodynamics.common.tile.mineralgrinder.TileMineralGrinderDouble;
 import electrodynamics.common.tile.mineralgrinder.TileMineralGrinderTriple;
 import electrodynamics.common.tile.network.electric.TileCircuitBreaker;
 import electrodynamics.common.tile.network.electric.TileLogisticalWire;
+import electrodynamics.common.tile.network.electric.TilePotentiometer;
 import electrodynamics.common.tile.network.electric.TileRelay;
 import electrodynamics.common.tile.network.electric.TileWire;
 import electrodynamics.common.tile.network.fluid.TileFluidPipe;
@@ -167,4 +168,5 @@ public class ElectrodynamicsBlockTypes {
     public static final RegistryObject<BlockEntityType<TileFluidPipeFilter>> TILE_FLUIDPIPEFILTER = BLOCK_ENTITY_TYPES.register("fluidpipefilter", () -> new BlockEntityType<>(TileFluidPipeFilter::new, Sets.newHashSet(ElectrodynamicsBlocks.blockFluidPipeFilter), null));
     
     public static final RegistryObject<BlockEntityType<TileRelay>> TILE_RELAY = BLOCK_ENTITY_TYPES.register("relay", () -> new BlockEntityType<>(TileRelay::new, Sets.newHashSet(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay)), null));
+    public static final RegistryObject<BlockEntityType<TilePotentiometer>> TILE_POTENTIOMETER = BLOCK_ENTITY_TYPES.register("potentiometer", () -> new BlockEntityType<>(TilePotentiometer::new, Sets.newHashSet(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer)), null));
 }

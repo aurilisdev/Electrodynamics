@@ -83,5 +83,9 @@ public class ElectroTextUtils {
 	public static MutableComponent voltageTooltip(int voltage) {
 		return tooltip("machine.voltage", ChatFormatter.getChatDisplayShort(voltage, DisplayUnit.VOLTAGE));
 	}
+	
+	public static MutableComponent ratio(Component numerator, Component denominator) {
+		return numerator.copy().append(" / ").append(denominator);
+	}
 
 }

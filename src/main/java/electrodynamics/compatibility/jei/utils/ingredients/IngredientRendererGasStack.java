@@ -67,9 +67,9 @@ public class IngredientRendererGasStack implements IIngredientRenderer<GasStack>
 		List<Component> tooltips = new ArrayList<>();
 		tooltips.add(ingredient.getGas().getDescription());
 		if(!ingredient.isEmpty()) {
-			tooltips.add(Component.literal(ChatFormatter.formatFluidMilibuckets(ingredient.getAmount())).withStyle(ChatFormatting.GRAY));
-			tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(ingredient.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
-			tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(ingredient.getPressure(), DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
+			tooltips.add(ChatFormatter.formatFluidMilibuckets(ingredient.getAmount()).withStyle(ChatFormatting.GRAY));
+			tooltips.add(ChatFormatter.getChatDisplayShort(ingredient.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN).withStyle(ChatFormatting.GRAY));
+			tooltips.add(ChatFormatter.getChatDisplayShort(ingredient.getPressure(), DisplayUnit.PRESSURE_ATM).withStyle(ChatFormatting.GRAY));
 		} 
 		
 		return tooltips;

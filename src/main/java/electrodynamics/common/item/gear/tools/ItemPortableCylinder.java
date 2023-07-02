@@ -78,12 +78,12 @@ public class ItemPortableCylinder extends Item {
 		stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> {
 			GasStack gas = cap.getGasInTank(0);
 			if (gas.isEmpty()) {
-				tooltips.add(Component.literal("0" + " / " + ChatFormatter.formatFluidMilibuckets(MAX_GAS_CAPCITY)).withStyle(ChatFormatting.GRAY));
+				tooltips.add(ElectroTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(MAX_GAS_CAPCITY)).withStyle(ChatFormatting.GRAY));
 			} else {
 				tooltips.add(gas.getGas().getDescription().copy().withStyle(ChatFormatting.GRAY));
-				tooltips.add(Component.literal(ChatFormatter.formatFluidMilibuckets(gas.getAmount()) + " / " + ChatFormatter.formatFluidMilibuckets(MAX_GAS_CAPCITY)).withStyle(ChatFormatting.DARK_GRAY));
-				tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.DARK_GRAY));
-				tooltips.add(Component.literal(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.DARK_GRAY));
+				tooltips.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_GAS_CAPCITY)).withStyle(ChatFormatting.DARK_GRAY));
+				tooltips.add(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN).withStyle(ChatFormatting.DARK_GRAY));
+				tooltips.add(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnit.PRESSURE_ATM).withStyle(ChatFormatting.DARK_GRAY));
 			}
 
 		});
