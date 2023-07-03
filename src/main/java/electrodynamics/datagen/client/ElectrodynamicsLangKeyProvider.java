@@ -114,15 +114,18 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addItem(ElectrodynamicsItems.ITEM_SHEETPLASTIC, "Polyethylene Sheet");
 			addItem(ElectrodynamicsItems.ITEM_SOLARPANELPLATE, "Solar Panel Plate");
 			addItem(ElectrodynamicsItems.ITEM_TITANIUM_COIL, "Titanium Coil");
-			addItem(ElectrodynamicsItems.SLAG, "Metallic Slag");
+			addItem(ElectrodynamicsItems.ITEM_SLAG, "Metallic Slag");
 			addItem(ElectrodynamicsItems.ITEM_CERAMICINSULATION, "Ceramic Insulation");
 			addItem(ElectrodynamicsItems.ITEM_COIL, "Copper Coil");
 			addItem(ElectrodynamicsItems.ITEM_MOLYBDENUMFERTILIZER, "Fertilizer");
 			addItem(ElectrodynamicsItems.ITEM_MOTOR, "Motor");
-			addItem(ElectrodynamicsItems.COAL_COKE, "Coal Coke");
+			addItem(ElectrodynamicsItems.ITEM_COAL_COKE, "Coal Coke");
 			addItem(ElectrodynamicsItems.ITEM_RAWCOMPOSITEPLATING, "Raw Composite Plating");
 			addItem(ElectrodynamicsItems.ITEM_COMPOSITEPLATING, "Composite Plating");
-
+			addItem(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS, "Polyethlyene Fibers");
+			addItem(ElectrodynamicsItems.ITEM_MECHANICALVALVE, "Mechanical Valve");
+			addItem(ElectrodynamicsItems.ITEM_PRESSUREGAGE, "Pressure Gauge");
+			
 			addItem(ElectrodynamicsItems.getItem(SubtypeCeramic.cooked), "Ceramic");
 			addItem(ElectrodynamicsItems.getItem(SubtypeCeramic.fuse), "Ceramic Fuse");
 			addItem(ElectrodynamicsItems.getItem(SubtypeCeramic.plate), "Ceramic Plate");
@@ -247,6 +250,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addItem(ElectrodynamicsItems.getItem(SubtypePlate.iron), "Iron Plate");
 			addItem(ElectrodynamicsItems.getItem(SubtypePlate.lead), "Lead Plate");
 			addItem(ElectrodynamicsItems.getItem(SubtypePlate.lithium), "Lithium Plate");
+			addItem(ElectrodynamicsItems.getItem(SubtypePlate.copper), "Copper Plate");
 			addItem(ElectrodynamicsItems.getItem(SubtypePlate.stainlesssteel), "Stainless Steel Plate");
 			addItem(ElectrodynamicsItems.getItem(SubtypePlate.steel), "Steel Plate");
 			addItem(ElectrodynamicsItems.getItem(SubtypePlate.titanium), "Titanium Plate");

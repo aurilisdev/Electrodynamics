@@ -5,10 +5,10 @@
       "tag": "forge:circuits/advanced"
     },
     "P": {
-      "tag": "forge:plates/steel"
+      "tag": "forge:plates/stainlesssteel"
     },
     "T": {
-      "item": "electrodynamics:tanksteel"
+      "item": "electrodynamics:gastanksteel"
     },
     "X": {
       "item": "electrodynamics:upgradetransformer"

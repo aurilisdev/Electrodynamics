@@ -105,7 +105,7 @@ public abstract class GenericTileCharger extends GenericTile {
 			if (!battery.isEmpty() && battery.getItem() instanceof IItemElectric electricItem) {
 				battVoltage = electricItem.getElectricProperties().receive.getVoltage();
 				if (battVoltage < machineVoltage) {
-					inv.setItem(i + 1, new ItemStack(ElectrodynamicsItems.SLAG.get()).copy());
+					inv.setItem(i + 1, new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()).copy());
 					getLevel().playSound(null, getBlockPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1F, 1F);
 				} else if (battVoltage > machineVoltage) {
 					electro.overVoltage(TransferPack.joulesVoltage(electro.getJoulesStored(), battVoltage));

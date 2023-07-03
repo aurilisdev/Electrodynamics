@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": {
+      "item": "electrodynamics:pipesteel"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "V": {
+      "item": "electrodynamics:mechanicalvalve"
+    }
+  },
+  "pattern": [
+    "VPR"
+  ],
+  "result": {
+    "item": "electrodynamics:fluidvalve"
+  }
+}

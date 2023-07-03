@@ -135,6 +135,7 @@ public class ElectrodynamicsTags {
 		public static final TagKey<Item> PLATE_IRON = forgeTag("plates/iron");
 		public static final TagKey<Item> PLATE_LEAD = forgeTag("plates/lead");
 		public static final TagKey<Item> PLATE_LITHIUM = forgeTag("plates/lithium");
+		public static final TagKey<Item> PLATE_COPPER = forgeTag("plates/copper");
 		public static final TagKey<Item> PLATE_STAINLESSSTEEL = forgeTag("plates/stainlesssteel");
 		public static final TagKey<Item> PLATE_STEEL = forgeTag("plates/steel");
 		public static final TagKey<Item> PLATE_TITANIUM = forgeTag("plates/titanium");

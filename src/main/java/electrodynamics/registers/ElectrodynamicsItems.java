@@ -160,8 +160,8 @@ public class ElectrodynamicsItems {
 		}
 	}
 
-	public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke", () -> new Item(new Item.Properties().tab(References.CORETAB)));
-	public static final RegistryObject<Item> SLAG = ITEMS.register("slag", () -> new Item(new Item.Properties().tab(References.CORETAB)));
+	public static final RegistryObject<Item> ITEM_COAL_COKE = ITEMS.register("coalcoke", () -> new Item(new Item.Properties().tab(References.CORETAB)));
+	public static final RegistryObject<Item> ITEM_SLAG = ITEMS.register("slag", () -> new Item(new Item.Properties().tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_SHEETPLASTIC = ITEMS.register("sheetplastic", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_RAWCOMPOSITEPLATING = ITEMS.register("compositeplatingraw", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_COMPOSITEPLATING = ITEMS.register("compositeplating", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
@@ -172,6 +172,10 @@ public class ElectrodynamicsItems {
 	public static final RegistryObject<Item> ITEM_TITANIUM_COIL = ITEMS.register("titaniumheatcoil", () -> new Item(new Item.Properties().tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_MOTOR = ITEMS.register("motor", () -> new Item(new Item.Properties().tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate", () -> new Item(new Item.Properties().tab(References.CORETAB)));
+	public static final RegistryObject<Item> ITEM_PLASTIC_FIBERS = ITEMS.register("plasticfibers", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
+	public static final RegistryObject<Item> ITEM_MECHANICALVALVE = ITEMS.register("mechanicalvalve", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
+	public static final RegistryObject<Item> ITEM_PRESSUREGAGE = ITEMS.register("pressuregauge", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
+	
 
 	public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery", () -> new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667).extract(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).receive(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).setIsEnergyStorageOnly().tab(References.CORETAB).stacksTo(1), item -> Items.AIR));
 	public static final RegistryObject<Item> ITEM_LITHIUMBATTERY = ITEMS.register("lithiumbattery", () -> new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(4 * 1666666.66667).extract(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240)).receive(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240)).setIsEnergyStorageOnly().tab(References.CORETAB).stacksTo(1), item -> Items.AIR));

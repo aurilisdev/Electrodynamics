@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "tag": "forge:plates/hslasteel"
+    },
+    "T": {
+      "item": "electrodynamics:gastankreinforced"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "STS",
+    "SSS"
+  ],
+  "result": {
+    "item": "electrodynamics:gastankhsla"
+  }
+}

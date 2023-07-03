@@ -61,7 +61,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 	@Override
 	protected void registerModels() {
 
-		layeredItem(ElectrodynamicsItems.COAL_COKE, Parent.GENERATED, itemLoc("coalcoke"));
+		layeredItem(ElectrodynamicsItems.ITEM_COAL_COKE, Parent.GENERATED, itemLoc("coalcoke"));
 		layeredItem(ElectrodynamicsItems.ITEM_CERAMICINSULATION, Parent.GENERATED, itemLoc("insulationceramic"));
 		layeredBuilder(name(ElectrodynamicsItems.ITEM_COIL), Parent.GENERATED, itemLoc("coil")).transforms().transform(TransformType.GUI).scale(0.8F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_INSULATION, Parent.GENERATED, itemLoc("insulation"));
@@ -69,9 +69,12 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		layeredItem(ElectrodynamicsItems.ITEM_MOTOR, Parent.GENERATED, itemLoc("motor"));
 		layeredItem(ElectrodynamicsItems.ITEM_RAWCOMPOSITEPLATING, Parent.GENERATED, itemLoc("compositeplatingraw"));
 		layeredItem(ElectrodynamicsItems.ITEM_SHEETPLASTIC, Parent.GENERATED, itemLoc("sheetplastic"));
-		layeredItem(ElectrodynamicsItems.SLAG, Parent.GENERATED, itemLoc("slag"));
+		layeredItem(ElectrodynamicsItems.ITEM_SLAG, Parent.GENERATED, itemLoc("slag"));
 		layeredBuilder(name(ElectrodynamicsItems.ITEM_SOLARPANELPLATE), Parent.GENERATED, itemLoc("solarpanelplate")).transforms().transform(TransformType.GUI).scale(0.8F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_TITANIUM_COIL, Parent.GENERATED, itemLoc("titaniumheatcoil"));
+		layeredItem(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS, Parent.GENERATED, itemLoc("plasticfibers"));
+		layeredItem(ElectrodynamicsItems.ITEM_MECHANICALVALVE, Parent.GENERATED, itemLoc("mechanicalvalve"));
+		layeredItem(ElectrodynamicsItems.ITEM_PRESSUREGAGE, Parent.GENERATED, itemLoc("pressuregauge"));
 
 		layeredItem(ElectrodynamicsItems.ITEM_COMBATHELMET, Parent.GENERATED, itemLoc("armor/combathelmet"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE, Parent.GENERATED, itemLoc("armor/combatchestplate"));

@@ -236,6 +236,14 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.complete(consumer);
 
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_SHEETPLASTIC.get(), 2), 0.1F, 200, 450.0, "plastic_sheet_from_plastic_fibers")
+				//
+				.addItemStackInput(new ItemStack(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS.get()))
+				//
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeOxide.chromiumdisilicide)), 1.0))
+				//
+				.complete(consumer);
+
 	}
 
 	public FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {

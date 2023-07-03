@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "I": {
-      "tag": "forge:ingots/copper"
+    "P": {
+      "tag": "forge:plastic"
     }
   },
   "pattern": [
-    "III",
+    "PPP",
     "   ",
-    "III"
+    "PPP"
   ],
   "result": {
     "count": 6,
-    "item": "electrodynamics:pipecopper"
+    "item": "electrodynamics:gaspipeuninsulatedplastic"
   }
 }

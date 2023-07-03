@@ -6,12 +6,10 @@
     }
   },
   "pattern": [
-    "I I",
-    "I I",
-    "I I"
+    "II",
+    "II"
   ],
   "result": {
-    "count": 6,
-    "item": "electrodynamics:pipecopper"
+    "item": "electrodynamics:platecopper"
   }
 }

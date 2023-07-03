@@ -6,6 +6,7 @@ import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
@@ -420,31 +421,125 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(References.ID, "motor_stainlesssteel", consumer);
 
-		for (SubtypeFluidPipe pipe : SubtypeFluidPipe.values()) {
-			ElectrodynamicsShapedCraftingRecipe.start(PIPES[pipe.ordinal()], 6)
-					//
-					.addPattern("III")
-					//
-					.addPattern("   ")
-					//
-					.addPattern("III")
-					//
-					.addKey('I', pipe.sourceIngot)
-					//
-					.complete(References.ID, "pipe_" + pipe.name() + "_horizontal", consumer);
+		ElectrodynamicsShapedCraftingRecipe.start(PIPES[SubtypeFluidPipe.copper.ordinal()], 10)
+				//
+				.addPattern("III")
+				//
+				.addPattern("   ")
+				//
+				.addPattern("III")
+				//
+				.addKey('I', Tags.Items.INGOTS_COPPER)
+				//
+				.complete(References.ID, "fluidpipe_copper_horizontal", consumer);
 
-			ElectrodynamicsShapedCraftingRecipe.start(PIPES[pipe.ordinal()], 6)
-					//
-					.addPattern("I I")
-					//
-					.addPattern("I I")
-					//
-					.addPattern("I I")
-					//
-					.addKey('I', pipe.sourceIngot)
-					//
-					.complete(References.ID, "pipe_" + pipe.name() + "_vertical", consumer);
-		}
+		ElectrodynamicsShapedCraftingRecipe.start(PIPES[SubtypeFluidPipe.copper.ordinal()], 10)
+				//
+				.addPattern("I I")
+				//
+				.addPattern("I I")
+				//
+				.addPattern("I I")
+				//
+				.addKey('I', Tags.Items.INGOTS_COPPER)
+				//
+				.complete(References.ID, "fluidpipe_copper_vertical", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(PIPES[SubtypeFluidPipe.steel.ordinal()], 4)
+				//
+				.addPattern("III")
+				//
+				.addPattern("   ")
+				//
+				.addPattern("III")
+				//
+				.addKey('I', ElectrodynamicsTags.Items.INGOT_STEEL)
+				//
+				.complete(References.ID, "fluidpipe_steel_horizontal", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(PIPES[SubtypeFluidPipe.steel.ordinal()], 4)
+				//
+				.addPattern("I I")
+				//
+				.addPattern("I I")
+				//
+				.addPattern("I I")
+				//
+				.addKey('I', ElectrodynamicsTags.Items.INGOT_STEEL)
+				//
+				.complete(References.ID, "fluidpipe_steel_vertical", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.getItem(SubtypeGasPipe.UNINSULATEDCOPPER), 10)
+				//
+				.addPattern("PPP")
+				//
+				.addPattern("   ")
+				//
+				.addPattern("PPP")
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLATE_COPPER)
+				//
+				.complete(References.ID, "gaspipe_copper_horizontal", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.getItem(SubtypeGasPipe.UNINSULATEDCOPPER), 10)
+				//
+				.addPattern("P P")
+				//
+				.addPattern("P P")
+				//
+				.addPattern("P P")
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLATE_COPPER)
+				//
+				.complete(References.ID, "gaspipe_copper_vertical", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.getItem(SubtypeGasPipe.UNINSULATEDSTEEL), 3)
+				//
+				.addPattern("PPP")
+				//
+				.addPattern("   ")
+				//
+				.addPattern("PPP")
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+				//
+				.complete(References.ID, "gaspipe_steel_horizontal", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.getItem(SubtypeGasPipe.UNINSULATEDSTEEL), 3)
+				//
+				.addPattern("P P")
+				//
+				.addPattern("P P")
+				//
+				.addPattern("P P")
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+				//
+				.complete(References.ID, "gaspipe_steel_vertical", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.getItem(SubtypeGasPipe.UNINSULATEDPLASTIC), 6)
+				//
+				.addPattern("PPP")
+				//
+				.addPattern("   ")
+				//
+				.addPattern("PPP")
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLASTIC)
+				//
+				.complete(References.ID, "gaspipe_plastic_horizontal", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.getItem(SubtypeGasPipe.UNINSULATEDPLASTIC), 6)
+				//
+				.addPattern("P P")
+				//
+				.addPattern("P P")
+				//
+				.addPattern("P P")
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLASTIC)
+				//
+				.complete(References.ID, "gaspipe_plastic_vertical", consumer);
 
 		ElectrodynamicsShapedCraftingRecipe.start(PLATES[SubtypePlate.bronze.ordinal()], 1)
 				//
@@ -455,6 +550,16 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				.addKey('I', ElectrodynamicsTags.Items.INGOT_BRONZE)
 				//
 				.complete(References.ID, "plate_bronze", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(PLATES[SubtypePlate.copper.ordinal()], 1)
+				//
+				.addPattern("II")
+				//
+				.addPattern("II")
+				//
+				.addKey('I', Tags.Items.INGOTS_COPPER)
+				//
+				.complete(References.ID, "plate_copper", consumer);
 
 		ElectrodynamicsShapedCraftingRecipe.start(PLATES[SubtypePlate.iron.ordinal()], 1)
 				//
@@ -863,6 +968,45 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(References.ID, "obsidian", consumer);
 
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_MECHANICALVALVE.get(), 1)
+				//
+				.addPattern("SLS")
+				//
+				.addPattern("BIB")
+				//
+				.addPattern("SSS")
+				//
+				.addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+				//
+				.addKey('L', Items.LEVER)
+				//
+				.addKey('B', ElectrodynamicsTags.Items.GEAR_BRONZE)
+				//
+				.addKey('I', ElectrodynamicsTags.Items.GEAR_IRON)
+				//
+				.complete(References.ID, "mechanical_valve", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_PRESSUREGAGE.get(), 1)
+				//
+				.addPattern("IPI")
+				//
+				.addPattern("CRD")
+				//
+				.addPattern("IGI")
+				//
+				.addKey('I', ElectrodynamicsTags.Items.PLATE_IRON)
+				//
+				.addKey('P', Tags.Items.GLASS_PANES)
+				//
+				.addKey('C', ElectrodynamicsItems.ITEM_COIL.get())
+				//
+				.addKey('R', ElectrodynamicsTags.Items.ROD_STEEL)
+				//
+				.addKey('D', Tags.Items.DUSTS_REDSTONE)
+				//
+				.addKey('G', ElectrodynamicsTags.Items.GEAR_TIN)
+				//
+				.complete(References.ID, "pressure_gauge", consumer);
 	}
 
 	private void addMachine(Consumer<FinishedRecipe> consumer) {
@@ -1009,21 +1153,57 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 
 		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.circuitbreaker.ordinal()], 1)
 				//
-				.addPattern("WCW")
+				.addPattern("SCS")
 				//
-				.addPattern("PFP")
+				.addPattern("FBF")
 				//
-				.addPattern("WCW")
+				.addPattern("SCS")
 				//
-				.addKey('W', WIRES[SubtypeWire.copper.ordinal()])
+				.addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
 				//
-				.addKey('C', ElectrodynamicsItems.ITEM_COIL.get())
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
 				//
-				.addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+				.addKey('B', ElectrodynamicsItems.getItem(SubtypeMachine.relay))
 				//
 				.addKey('F', CERAMICS[SubtypeCeramic.fuse.ordinal()])
 				//
 				.complete(References.ID, "machine_circuit_breaker", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.relay.ordinal()], 1)
+				//
+				.addPattern("SLS")
+				//
+				.addPattern("WIW")
+				//
+				.addPattern("SCS")
+				//
+				.addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+				//
+				.addKey('W', ElectrodynamicsItems.getItem(SubtypeWire.copper))
+				//
+				.addKey('I', Tags.Items.INGOTS_COPPER)
+				//
+				.addKey('L', Items.LEVER)
+				//
+				.addKey('C', ElectrodynamicsItems.getItem(SubtypeCeramic.plate))
+				//
+				.complete(References.ID, "machine_relay", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.potentiometer.ordinal()], 1)
+				//
+				.addPattern("ACA")
+				//
+				.addPattern("CGC")
+				//
+				.addPattern("ACA")
+				//
+				.addKey('A', ElectrodynamicsTags.Items.PLATE_ALUMINUM)
+				//
+				.addKey('C', CERAMICS[SubtypeCeramic.plate.ordinal()])
+				//
+				.addKey('G', ItemTags.COALS)
+				//
+				.complete(References.ID, "machine_potentiometer", consumer);
 
 		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.coalgenerator.ordinal()], 1)
 				//
@@ -1259,9 +1439,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.addPattern("PCP")
 				//
-				.addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+				.addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
 				//
-				.addKey('T', MACHINES[SubtypeMachine.tanksteel.ordinal()])
+				.addKey('T', MACHINES[SubtypeMachine.gastanksteel.ordinal()])
 				//
 				.addKey('X', MACHINES[SubtypeMachine.upgradetransformer.ordinal()])
 				//
@@ -1322,6 +1502,22 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				.addKey('C', Items.CACTUS)
 				//
 				.complete(References.ID, "machine_fluid_void", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.gasvent.ordinal()], 1)
+				//
+				.addPattern("SBS")
+				//
+				.addPattern("BCB")
+				//
+				.addPattern("SBS")
+				//
+				.addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+				//
+				.addKey('B', Items.IRON_BARS)
+				//
+				.addKey('C', Items.CACTUS)
+				//
+				.complete(References.ID, "machine_gas_vent", consumer);
 
 		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.lithiumbatterybox.ordinal()], 1)
 				//
@@ -1693,6 +1889,64 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(References.ID, "machine_tank_hsla", consumer);
 
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_COMPRESSOR_ADDONTANK.get(), 1)
+				//
+				.addPattern("SSS")
+				//
+				.addPattern("SCS")
+				//
+				.addPattern("SSS")
+				//
+				.addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+				//
+				.addKey('C', Items.CAULDRON)
+				//
+				.complete(References.ID, "pressurized_tank", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.gastanksteel.ordinal()], 1)
+				//
+				.addPattern(" V ")
+				//
+				.addPattern("SPS")
+				//
+				.addPattern(" S ")
+				//
+				.addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+				//
+				.addKey('P', ElectrodynamicsItems.ITEM_COMPRESSOR_ADDONTANK.get())
+				//
+				.addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
+				//
+				.complete(References.ID, "machine_gastank_steel", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.gastankreinforced.ordinal()], 1)
+				//
+				.addPattern("SSS")
+				//
+				.addPattern("STS")
+				//
+				.addPattern("SSS")
+				//
+				.addKey('S', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+				//
+				.addKey('T', MACHINES[SubtypeMachine.gastanksteel.ordinal()])
+				//
+				.complete(References.ID, "machine_gastank_reinforced", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.gastankhsla.ordinal()], 1)
+				//
+				.addPattern("SSS")
+				//
+				.addPattern("STS")
+				//
+				.addPattern("SSS")
+				//
+				.addKey('S', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
+				//
+				.addKey('T', MACHINES[SubtypeMachine.gastankreinforced.ordinal()])
+				//
+				.complete(References.ID, "machine_gastank_hsla", consumer);
+
 		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.thermoelectricgenerator.ordinal()], 1)
 				//
 				.addPattern("ISI")
@@ -1803,17 +2057,167 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(References.ID, "machine_wiremill_triple", consumer);
 
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsBlocks.blockCompressor.asItem(), 1)
+				//
+				.addPattern("PPP")
+				//
+				.addPattern("TVT")
+				//
+				.addPattern("CMG")
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+				//
+				.addKey('T', ElectrodynamicsItems.ITEM_COMPRESSOR_ADDONTANK.get())
+				//
+				.addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
+				//
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+				//
+				.addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
+				//
+				.addKey('G', ElectrodynamicsItems.ITEM_PRESSUREGAGE.get())
+				//
+				.complete(References.ID, "machine_compressor", consumer);
+
+		ElectrodynamicsShapelessCraftingRecipe.start(ElectrodynamicsItems.ITEM_DECOMPRESSOR.get(), 1)
+				//
+				.addIngredient(ElectrodynamicsItems.ITEM_COMPRESSOR.get())
+				//
+				.addIngredient(ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
+				//
+				.complete(References.ID, "machine_decompressor", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsBlocks.blockThermoelectricManipulator.asItem(), 1)
+				//
+				.addPattern("PGP")
+				//
+				.addPattern("TVT")
+				//
+				.addPattern("MOC")
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+				//
+				.addKey('T', ElectrodynamicsItems.ITEM_COMPRESSOR_ADDONTANK.get())
+				//
+				.addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
+				//
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+				//
+				.addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
+				//
+				.addKey('G', ElectrodynamicsItems.ITEM_PRESSUREGAGE.get())
+				//
+				.addKey('O', ElectrodynamicsItems.ITEM_COIL.get())
+				//
+				.complete(References.ID, "machine_thermoelectric_manipulator", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsBlocks.blockFluidValve.asItem(), 1)
+				//
+				.addPattern("VPR")
+				//
+				.addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
+				//
+				.addKey('P', ElectrodynamicsItems.getItem(SubtypeFluidPipe.steel))
+				//
+				.addKey('R', Tags.Items.DUSTS_REDSTONE)
+				//
+				.complete(References.ID, "pipe_fluidvalve", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsBlocks.blockGasValve.asItem(), 1)
+				//
+				.addPattern("VPR")
+				//
+				.addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
+				//
+				.addKey('P', ElectrodynamicsItems.getItem(SubtypeGasPipe.UNINSULATEDSTEEL))
+				//
+				.addKey('R', Tags.Items.DUSTS_REDSTONE)
+				//
+				.complete(References.ID, "pipe_gasvalve", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsBlocks.blockFluidPipePump.asItem(), 1)
+				//
+				.addPattern(" C ")
+				//
+				.addPattern("VPV")
+				//
+				.addPattern(" M ")
+				//
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+				//
+				.addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
+				//
+				.addKey('P', ElectrodynamicsItems.getItem(SubtypeFluidPipe.steel))
+				//
+				.addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
+				//
+				.complete(References.ID, "pipe_fluidpump", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsBlocks.blockGasPipePump.asItem(), 1)
+				//
+				.addPattern(" C ")
+				//
+				.addPattern("VPV")
+				//
+				.addPattern(" M ")
+				//
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+				//
+				.addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
+				//
+				.addKey('P', ElectrodynamicsItems.getItem(SubtypeGasPipe.UNINSULATEDSTEEL))
+				//
+				.addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
+				//
+				.complete(References.ID, "pipe_gaspump", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsBlocks.blockFluidPipeFilter.asItem(), 1)
+				//
+				.addPattern(" C ")
+				//
+				.addPattern("VPV")
+				//
+				.addPattern(" # ")
+				//
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+				//
+				.addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
+				//
+				.addKey('P', ElectrodynamicsItems.getItem(SubtypeFluidPipe.steel))
+				//
+				.addKey('#', Items.PAPER)
+				//
+				.complete(References.ID, "pipe_fluidfilter", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsBlocks.blockGasPipeFilter.asItem(), 1)
+				//
+				.addPattern(" C ")
+				//
+				.addPattern("VPV")
+				//
+				.addPattern(" # ")
+				//
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+				//
+				.addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
+				//
+				.addKey('P', ElectrodynamicsItems.getItem(SubtypeGasPipe.UNINSULATEDSTEEL))
+				//
+				.addKey('#', Items.PAPER)
+				//
+				.complete(References.ID, "pipe_gasfilter", consumer);
+
 	}
 
 	private void addGear(Consumer<FinishedRecipe> consumer) {
 
 		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), 4)
 				//
-				.addPattern("STS")
+				.addPattern("SSS")
 				//
 				.addPattern("A A")
 				//
-				.addPattern("STS")
+				.addPattern("SSS")
 				//
 				.addKey('S', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
 				//
@@ -1822,6 +2226,20 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				.addKey('A', CUSTOM_GLASS[SubtypeGlass.aluminum.ordinal()])
 				//
 				.complete(References.ID, "reinforced_canister", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get(), 4)
+				//
+				.addPattern("SVS")
+				//
+				.addPattern("S S")
+				//
+				.addPattern("SSS")
+				//
+				.addKey('S', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+				//
+				.addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
+				//
+				.complete(References.ID, "portable_cylinder", consumer);
 
 		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_COMBATBOOTS.get(), 1)
 				//
@@ -2051,9 +2469,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
 				//
-				.addKey('T', MACHINES[SubtypeMachine.tanksteel.ordinal()])
+				.addKey('T', MACHINES[SubtypeMachine.gastanksteel.ordinal()])
 				//
-				.addKey('P', PIPES[SubtypeFluidPipe.steel.ordinal()])
+				.addKey('P', ElectrodynamicsItems.getItem(SubtypeGasPipe.UNINSULATEDSTEEL))
 				//
 				.complete(References.ID, "jetpack", consumer);
 

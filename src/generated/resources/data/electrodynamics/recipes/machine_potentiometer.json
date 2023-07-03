@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "tag": "forge:plates/aluminum"
+    },
+    "C": {
+      "item": "electrodynamics:ceramicplate"
+    },
+    "G": {
+      "tag": "minecraft:coals"
+    }
+  },
+  "pattern": [
+    "ACA",
+    "CGC",
+    "ACA"
+  ],
+  "result": {
+    "item": "electrodynamics:potentiometer"
+  }
+}

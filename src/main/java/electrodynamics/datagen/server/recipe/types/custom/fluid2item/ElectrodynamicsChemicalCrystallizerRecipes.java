@@ -45,9 +45,9 @@ public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGe
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_SHEETPLASTIC.get()), 0, 200, 800.0, "plastic_sheet")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS.get()), 0, 200, 800.0, "plastic_fibers")
 				//
-				.addFluidTagInput(ElectrodynamicsTags.Fluids.POLYETHLYENE, 500)
+				.addFluidTagInput(ElectrodynamicsTags.Fluids.POLYETHLYENE, 1000)
 				//
 				.complete(consumer);
 

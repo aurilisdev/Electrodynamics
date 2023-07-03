@@ -29,7 +29,7 @@ public class GasHandlerItemStack implements IGasHandlerItem, ICapabilityProvider
 
 	private Predicate<GasStack> isGasValid = gas -> true;
 	protected ItemStack container;
-	private ItemStack slag = new ItemStack(ElectrodynamicsItems.SLAG.get(), 1);
+	private ItemStack slag = new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get(), 1);
 	protected double capacity;
 	protected double maxTemperature;
 	protected int maxPressure;

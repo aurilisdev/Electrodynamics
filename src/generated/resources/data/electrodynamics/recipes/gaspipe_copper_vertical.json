@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": {
+      "tag": "forge:plates/copper"
+    }
+  },
+  "pattern": [
+    "P P",
+    "P P",
+    "P P"
+  ],
+  "result": {
+    "count": 10,
+    "item": "electrodynamics:gaspipeuninsulatedcopper"
+  }
+}

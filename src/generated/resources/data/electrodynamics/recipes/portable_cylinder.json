@@ -1,23 +1,20 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "A": {
-      "item": "electrodynamics:glassaluminum"
-    },
     "S": {
       "tag": "forge:plates/stainlesssteel"
     },
-    "T": {
-      "tag": "forge:plates/titanium"
+    "V": {
+      "item": "electrodynamics:mechanicalvalve"
     }
   },
   "pattern": [
-    "SSS",
-    "A A",
+    "SVS",
+    "S S",
     "SSS"
   ],
   "result": {
     "count": 4,
-    "item": "electrodynamics:canisterreinforced"
+    "item": "electrodynamics:portablecylinder"
   }
 }

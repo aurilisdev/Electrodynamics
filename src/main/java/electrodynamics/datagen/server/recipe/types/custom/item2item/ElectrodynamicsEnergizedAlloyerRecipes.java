@@ -41,7 +41,7 @@ public class ElectrodynamicsEnergizedAlloyerRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.DUST_SALTPETER, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.25))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.25))
 				//
 				.complete(consumer);
 
@@ -51,7 +51,7 @@ public class ElectrodynamicsEnergizedAlloyerRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(Tags.Items.INGOTS_COPPER, 4)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.5))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.5))
 				//
 				.complete(consumer);
 
@@ -61,11 +61,11 @@ public class ElectrodynamicsEnergizedAlloyerRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(Tags.Items.INGOTS_GOLD, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.75))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.75))
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.0F, 50, 50.0, "slag")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.0F, 50, 50.0, "slag")
 				//
 				.addItemTagInput(Tags.Items.INGOTS, 1)
 				//
@@ -73,13 +73,13 @@ public class ElectrodynamicsEnergizedAlloyerRecipes extends AbstractRecipeGenera
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(INGOTS[SubtypeIngot.stainlesssteel.ordinal()], 4), 0.4F, 50, 50.0, "ingot_stainless_steel")
+		newRecipe(new ItemStack(INGOTS[SubtypeIngot.stainlesssteel.ordinal()], 32), 0.4F, 50, 50.0, "ingot_stainless_steel")
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_CHROMIUM, 1)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_STEEL, 3)
+				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_STEEL, 32)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.75))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.75))
 				//
 				.complete(consumer);
 
@@ -89,7 +89,7 @@ public class ElectrodynamicsEnergizedAlloyerRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.COAL_COKE, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.5))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.5))
 				//
 				.complete(consumer);
 
@@ -99,7 +99,7 @@ public class ElectrodynamicsEnergizedAlloyerRecipes extends AbstractRecipeGenera
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_VANADIUM, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.75))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.75))
 				//
 				.complete(consumer);
 
