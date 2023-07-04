@@ -10,7 +10,7 @@ import electrodynamics.api.capability.types.gas.IGasHandler;
 import electrodynamics.api.gas.Gas;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
-import electrodynamics.common.inventory.container.ContainerGasPipeFilter;
+import electrodynamics.common.inventory.container.tile.ContainerGasPipeFilter;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;

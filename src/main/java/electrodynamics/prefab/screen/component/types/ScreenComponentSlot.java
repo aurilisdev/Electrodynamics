@@ -98,7 +98,7 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 
 	public enum SlotType implements ISlotTexture {
 
-		NORMAL(18, 18, 0, 0, 18, 18, "slot_regular"),
+		NORMAL(18, 18, 0, 0, 18, 18, "slot_regular"), //
 		BIG(26, 26, 0, 0, 26, 26, "slot_big", -5, -5);
 
 		private final int textureWidth;
@@ -178,10 +178,23 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 
 	public enum IconType implements ITexture {
 
-		NONE(0, 0, 0, 0, 0, 0, null), ENERGY_DARK(10, 10, 0, 0, 10, 10, "electricity_dark"), FLUID_DARK(14, 14, 0, 0, 14, 14, "fluid_dark"), GAS_DARK(16, 16, 0, 0, 16, 16, "gas_dark"), UPGRADE_DARK(12, 12, 0, 0, 12, 12, "upgrade_dark"), DRILL_HEAD_DARK(12, 12, 0, 0, 12, 12, "drill_head_dark"), TRASH_CAN_DARK(10, 10, 0, 0, 10, 10, "trash_can_dark"),
+		NONE(0, 0, 0, 0, 0, 0, null), //
+		ENERGY_DARK(10, 10, 0, 0, 10, 10, "electricity_dark"), //
+		FLUID_DARK(14, 14, 0, 0, 14, 14, "fluid_dark"), //
+		GAS_DARK(16, 16, 0, 0, 16, 16, "gas_dark"), //
+		UPGRADE_DARK(12, 12, 0, 0, 12, 12, "upgrade_dark"), //
+		DRILL_HEAD_DARK(12, 12, 0, 0, 12, 12, "drill_head_dark"), //
+		TRASH_CAN_DARK(10, 10, 0, 0, 10, 10, "trash_can_dark"), //
+		FIBERGLASS_SHEET_DARK(16, 16, 0, 0, 16, 16, "fiberglasssheet_dark"), //
 
-		ENERGY_GREEN(14, 14, 0, 0, 14, 14, "electricity_green"), ENCHANTMENT(16, 16, 0, 0, 16, 16, "enchantment"), FLUID_BLUE(16, 16, 0, 0, 16, 16, "fluid_blue"), MINING_LOCATION(18, 18, 0, 0, 18, 18, "mining_location"), QUARRY_COMPONENTS(18, 18, 0, 0, 18, 18, "quarry_components"), TEMPERATURE(14, 14, 0, 0, 14, 14, "temperature"), THERMOMETER(16, 16, 0, 0, 16, 16, "thermometer"),
-		PRESSURE_GAUGE(10, 10, 0, 0, 10, 10, "pressuredial");
+		ENERGY_GREEN(14, 14, 0, 0, 14, 14, "electricity_green"), //
+		ENCHANTMENT(16, 16, 0, 0, 16, 16, "enchantment"), //
+		FLUID_BLUE(16, 16, 0, 0, 16, 16, "fluid_blue"), //
+		MINING_LOCATION(18, 18, 0, 0, 18, 18, "mining_location"), //
+		QUARRY_COMPONENTS(18, 18, 0, 0, 18, 18, "quarry_components"), //
+		TEMPERATURE(14, 14, 0, 0, 14, 14, "temperature"), //
+		THERMOMETER(16, 16, 0, 0, 16, 16, "thermometer"), //
+		PRESSURE_GAUGE(10, 10, 0, 0, 10, 10, "pressuredial");//
 
 		private final int textureWidth;
 		private final int textureHeight;

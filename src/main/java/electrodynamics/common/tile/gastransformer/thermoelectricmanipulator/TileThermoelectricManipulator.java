@@ -46,6 +46,10 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
+	/**
+	 * NOTE this value can NEVER be more than 90. This is because above 90, it becomes possible to create an infinite energy loop with the steam
+	 * turbine from Nuclear Science.
+	 */
 	private static final double HEAT_TRANSFER = 10.0; // degrees kelvin
 
 	public final Property<Double> targetTemperature = property(new Property<>(PropertyType.Double, "targettemperature", Gas.ROOM_TEMPERATURE));
@@ -436,13 +440,7 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 			return 1;
 		}
 
-		deltaT = Math.abs(deltaT);
-
-		if (deltaT <= HEAT_TRANSFER) {
-			return 1;
-		}
-
-		return Math.max(HEAT_TRANSFER / deltaT, 1);
+		return Math.abs(HEAT_TRANSFER / deltaT);
 
 	}
 

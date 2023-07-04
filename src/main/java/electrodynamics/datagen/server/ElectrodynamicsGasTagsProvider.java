@@ -25,6 +25,7 @@ public class ElectrodynamicsGasTagsProvider extends ForgeRegistryTagsProvider<Ga
 	public void addTags() {
 		tag(ElectrodynamicsTags.Gases.HYDROGEN).add(ElectrodynamicsGases.HYDROGEN.get());
 		tag(ElectrodynamicsTags.Gases.OXYGEN).add(ElectrodynamicsGases.OXYGEN.get());
+		tag(ElectrodynamicsTags.Gases.STEAM).add(ElectrodynamicsGases.STEAM.get());
 		
 		tag(ElectrodynamicsTags.Gases.IS_CORROSIVE);
 	}

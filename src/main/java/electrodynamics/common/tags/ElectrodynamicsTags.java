@@ -321,6 +321,7 @@ public class ElectrodynamicsTags {
 		
 		public static final TagKey<Gas> HYDROGEN = forgeTag("hydrogen");
 		public static final TagKey<Gas> OXYGEN = forgeTag("oxygen");
+		public static final TagKey<Gas> STEAM = forgeTag("steam");
 		
 		public static final TagKey<Gas> IS_CORROSIVE = forgeTag("iscorrosive");
 		

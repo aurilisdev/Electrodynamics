@@ -22,6 +22,7 @@ import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.tags.ElectrodynamicsTags;
+import electrodynamics.common.tile.tanks.gas.GenericTileGasTank;
 import electrodynamics.compatibility.jei.JeiBuffer;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsGases;
@@ -192,7 +193,8 @@ public class ChapterGases extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l16.4", ElectrodynamicsItems.ITEM_GASPIPEFILTER.get().getDescription())).setSeparateStart());
 		
 		//gas storage
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l17")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l17", ChatFormatter.getChatDisplayShort(GenericTileGasTank.HEAT_LOSS * 20, DisplayUnit.TEMPERATURE_KELVIN), ElectrodynamicsItems.ITEM_FIBERGLASSSHEET.get().getDescription().copy().withStyle(ChatFormatting.BOLD), ChatFormatter.getChatDisplayShort(GenericTileGasTank.INSULATION_EFFECTIVENESS * 100 - 100, DisplayUnit.PERCENTAGE), ChatFormatter.getChatDisplayShort(Math.pow(GenericTileGasTank.INSULATION_EFFECTIVENESS, 6) * 100 - 100, DisplayUnit.PERCENTAGE))).setIndentions(1).setSeparateStart());
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/fiberglasssheetuse.png")));
 		
 		//compressors
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l18")).setIndentions(1).setSeparateStart());

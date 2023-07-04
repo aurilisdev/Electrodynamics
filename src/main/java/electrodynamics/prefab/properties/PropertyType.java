@@ -77,9 +77,8 @@ public enum PropertyType {
 	}, (prop, tag) -> {
 		//
 		int size = tag.getInt(prop.getName() + "_size");
-		if (size == 0) {
-			NonNullList<ItemStack> propVal = (NonNullList<ItemStack>) prop.get();
-			size = propVal != null ? propVal.size() : 0;
+		if (size == 0 || ((NonNullList<ItemStack>) prop.get()).size() != size) {
+			return null; // null is handled in function method caller and signals a bad value to be ignored
 		}
 		NonNullList<ItemStack> toBeFilled = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
 		ContainerHelper.loadAllItems(tag, toBeFilled);
@@ -165,8 +164,7 @@ public enum PropertyType {
 			return Blocks.AIR;
 		}
 		return ((BlockItem) stack.getItem()).getBlock();
-	}),
-	Blockstate((prop, buf) -> buf.writeNbt(NbtUtils.writeBlockState((BlockState) prop.get())), buf -> NbtUtils.readBlockState(buf.readNbt()), (prop, tag) -> tag.put(prop.getName(), NbtUtils.writeBlockState((BlockState) prop.get())), (prop, tag) -> NbtUtils.readBlockState(tag.getCompound(prop.getName())));
+	}), Blockstate((prop, buf) -> buf.writeNbt(NbtUtils.writeBlockState((BlockState) prop.get())), buf -> NbtUtils.readBlockState(buf.readNbt()), (prop, tag) -> tag.put(prop.getName(), NbtUtils.writeBlockState((BlockState) prop.get())), (prop, tag) -> NbtUtils.readBlockState(tag.getCompound(prop.getName())));
 
 	@Nonnull
 	public final BiPredicate<Object, Object> predicate;

@@ -19,8 +19,8 @@ public class ScreenGasTankGeneric extends GenericMaterialScreen<ContainerGasTank
 
 	public ScreenGasTankGeneric(ContainerGasTankGeneric container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
-		addComponent(new ScreenComponentGeneric(ProgressTextures.ARROW_RIGHT_OFF, 52, 33));
-		addComponent(new ScreenComponentGeneric(ProgressTextures.ARROW_RIGHT_OFF, 102, 33));
+		addComponent(new ScreenComponentGeneric(ProgressTextures.ARROW_RIGHT_OFF, 52, 19));
+		addComponent(new ScreenComponentGeneric(ProgressTextures.ARROW_LEFT_OFF, 52, 49));
 		addComponent(new ScreenComponentGasGauge(() -> {
 			GenericTileGasTank boiler = menu.getHostFromIntArray();
 			if (boiler != null) {
@@ -38,7 +38,7 @@ public class ScreenGasTankGeneric extends GenericMaterialScreen<ContainerGasTank
 
 			return generic.condensedFluidFromGas;
 
-		}, 134, 55));
+		}, 105, 36));
 	}
 
 }

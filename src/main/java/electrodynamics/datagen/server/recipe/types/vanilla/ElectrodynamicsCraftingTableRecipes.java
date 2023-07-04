@@ -2221,8 +2221,6 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.addKey('S', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
 				//
-				.addKey('T', ElectrodynamicsTags.Items.PLATE_TITANIUM)
-				//
 				.addKey('A', CUSTOM_GLASS[SubtypeGlass.aluminum.ordinal()])
 				//
 				.complete(References.ID, "reinforced_canister", consumer);

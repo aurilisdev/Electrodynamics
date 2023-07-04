@@ -175,6 +175,7 @@ public class ElectrodynamicsItems {
 	public static final RegistryObject<Item> ITEM_PLASTIC_FIBERS = ITEMS.register("plasticfibers", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_MECHANICALVALVE = ITEMS.register("mechanicalvalve", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_PRESSUREGAGE = ITEMS.register("pressuregauge", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
+	public static final RegistryObject<Item> ITEM_FIBERGLASSSHEET = ITEMS.register("fiberglasssheet", () -> new Item(new Item.Properties().stacksTo(64).tab(References.CORETAB)));
 	
 
 	public static final RegistryObject<Item> ITEM_BATTERY = ITEMS.register("battery", () -> new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667).extract(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).receive(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).setIsEnergyStorageOnly().tab(References.CORETAB).stacksTo(1), item -> Items.AIR));

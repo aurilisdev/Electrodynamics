@@ -125,6 +125,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addItem(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS, "Polyethlyene Fibers");
 			addItem(ElectrodynamicsItems.ITEM_MECHANICALVALVE, "Mechanical Valve");
 			addItem(ElectrodynamicsItems.ITEM_PRESSUREGAGE, "Pressure Gauge");
+			addItem(ElectrodynamicsItems.ITEM_FIBERGLASSSHEET, "Fiberglass Sheet");
 			
 			addItem(ElectrodynamicsItems.getItem(SubtypeCeramic.cooked), "Ceramic");
 			addItem(ElectrodynamicsItems.getItem(SubtypeCeramic.fuse), "Ceramic Fuse");
@@ -629,6 +630,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGas(ElectrodynamicsGases.EMPTY, "Empty");
 			addGas(ElectrodynamicsGases.HYDROGEN, "Hydrogen");
 			addGas(ElectrodynamicsGases.OXYGEN, "Oxygen");
+			addGas(ElectrodynamicsGases.STEAM, "Steam");
 
 			addContainer(SubtypeMachine.advancedsolarpanel, "Advanced Solar Panel");
 			addContainer(SubtypeMachine.batterybox, "Battery Box");
@@ -1403,7 +1405,9 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 					+ "gas through like a normal pipe. In Whitelist, the gases in the filter will be the only gases allowed to flow through. Having no gases selected means it will allow no gases through. To add a filtered gas, take a gas cylinder or otherwise item containing the desiered gas, and click one of the filter slots:");
 			addGuidebook("chapter.gases.l16.4", "The %1$s will only allow that specific fluid through. It should be noted that the %1$s is not tag-compatible, meaning Hydrogen from Mekanism will not be allowed through even though Hydrogen from Electrodynamics is selected as a filtered gas.");
 
-			addGuidebook("chapter.gases.l17", "While pipes may not be able to store gas, Electrodynamics offers bulk gas storage in the form of Cylinders. Gas Cylinders accept gas from the top and output gas through the bottom like a fluid tank. Furthermore, stack two cylinders on top of eachother, and the top one " + "will automatically output into the bottom one.");
+			addGuidebook("chapter.gases.l17", "While pipes may not be able to store gas, Electrodynamics offers bulk gas storage in the form of Cylinders. Gas Cylinders accept gas from the top and output gas through the bottom like a fluid tank. Furthermore, stack two cylinders on top of eachother, and the top one " + "will automatically output into the bottom one. "
+					+ "An important thing to note about cylinders however is that they are not thermally adiabatic, and will slowly heat or cool the gas contained within to room temperature. Gas cylinders heat and cool at a rate of %1$s per second. You can help mitigate this by installing a %2$s in the cylinder. Each peice will reduce the rate by "
+					+ "%3$s for a maximum of 6 possible reduction of %4$s.");
 
 			addGuidebook("chapter.gases.l18", "Up until this point, there has been mention of gases at different temperatures and pressures, but no talk of how those values are actually achieved. Sure, some machines might produce a gas at a certain temperature and pressure, but what if another process calls for it to be "
 					+ "at twice the temperature and twice the pressure? We now come to what this chapter has been building towards: gas manipulation. Electrodynamics offers dedicated machines for manipulating a gas's pressure and temperature.");

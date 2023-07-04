@@ -92,7 +92,7 @@ public class ChatFormatter {
 			return getChatDisplayShort(amount / 1000.0, DisplayUnit.BUCKETS);
 
 		} else {
-			return Component.literal(formatDecimals(amount, 2) + " mB");
+			return formatDecimals(amount, 2).append(" mB");
 
 		}
 

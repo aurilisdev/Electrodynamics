@@ -6,9 +6,6 @@
     },
     "S": {
       "tag": "forge:plates/stainlesssteel"
-    },
-    "T": {
-      "tag": "forge:plates/titanium"
     }
   },
   "pattern": [

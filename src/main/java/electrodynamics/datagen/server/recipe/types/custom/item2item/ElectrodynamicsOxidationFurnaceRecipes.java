@@ -139,6 +139,14 @@ public class ElectrodynamicsOxidationFurnaceRecipes extends AbstractRecipeGenera
 				//
 				.complete(consumer);
 
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_FIBERGLASSSHEET.get(), 1), 0.1F, 200, 350.0, "fiberglass_sheet")
+				//
+				.addItemTagInput(ElectrodynamicsTags.Items.PLASTIC, 1)
+				//
+				.addItemTagInput(Tags.Items.GLASS, 1)
+				//
+				.complete(consumer);
+
 	}
 
 	public FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {

@@ -1,4 +1,4 @@
-package electrodynamics.common.inventory.container;
+package electrodynamics.common.inventory.container.tile;
 
 import electrodynamics.common.tile.network.gas.TileGasPipeFilter;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;

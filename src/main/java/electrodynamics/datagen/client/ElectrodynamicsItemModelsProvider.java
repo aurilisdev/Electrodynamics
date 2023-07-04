@@ -75,6 +75,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		layeredItem(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS, Parent.GENERATED, itemLoc("plasticfibers"));
 		layeredItem(ElectrodynamicsItems.ITEM_MECHANICALVALVE, Parent.GENERATED, itemLoc("mechanicalvalve"));
 		layeredItem(ElectrodynamicsItems.ITEM_PRESSUREGAGE, Parent.GENERATED, itemLoc("pressuregauge"));
+		layeredItem(ElectrodynamicsItems.ITEM_FIBERGLASSSHEET, Parent.GENERATED, itemLoc("fiberglasssheet"));
 
 		layeredItem(ElectrodynamicsItems.ITEM_COMBATHELMET, Parent.GENERATED, itemLoc("armor/combathelmet"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE, Parent.GENERATED, itemLoc("armor/combatchestplate"));

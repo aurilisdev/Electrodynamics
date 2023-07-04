@@ -2,7 +2,6 @@ package electrodynamics.registers;
 
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.inventory.container.ContainerGasPipeFilter;
 import electrodynamics.common.inventory.container.item.ContainerElectricDrill;
 import electrodynamics.common.inventory.container.item.ContainerGuidebook;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
@@ -29,6 +28,7 @@ import electrodynamics.common.inventory.container.tile.ContainerFermentationPlan
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipeFilter;
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipePump;
 import electrodynamics.common.inventory.container.tile.ContainerFluidVoid;
+import electrodynamics.common.inventory.container.tile.ContainerGasPipeFilter;
 import electrodynamics.common.inventory.container.tile.ContainerGasPipePump;
 import electrodynamics.common.inventory.container.tile.ContainerGasTankGeneric;
 import electrodynamics.common.inventory.container.tile.ContainerGasVent;
