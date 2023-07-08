@@ -102,22 +102,22 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
 		return setInputTanks(inputCount, inputCapacity, inputMaxTemperature, inputMaxPressure).setOutputTanks(outputCount, outputCapacity, outputMaxTemperature, outputMaxPressure);
 	}
 
-	public ComponentGasHandlerMulti setInputFluids(Gas... gases) {
+	public ComponentGasHandlerMulti setInputGases(Gas... gases) {
 		validInputGases = gases;
 		return this;
 	}
 
-	public ComponentGasHandlerMulti setInputFluidTags(TagKey<Gas>... gases) {
+	public ComponentGasHandlerMulti setInputGasTags(TagKey<Gas>... gases) {
 		validInputGasTags = gases;
 		return this;
 	}
 
-	public ComponentGasHandlerMulti setOutputFluids(Gas... gases) {
+	public ComponentGasHandlerMulti setOutputGases(Gas... gases) {
 		validOutputGases = gases;
 		return this;
 	}
 
-	public ComponentGasHandlerMulti setOutputFluidTags(TagKey<Gas>... gases) {
+	public ComponentGasHandlerMulti setOutputGasTags(TagKey<Gas>... gases) {
 		validOutputGasTags = gases;
 		return this;
 	}
@@ -173,7 +173,7 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
 	}
 
 	@Nullable
-	public PropertyGasTank getTankFromFluid(Gas gas, boolean isInput) {
+	public PropertyGasTank getTankFromGas(Gas gas, boolean isInput) {
 		if (isInput) {
 			for (PropertyGasTank tank : inputTanks) {
 				if (tank.getGas().getGas().equals(gas)) {

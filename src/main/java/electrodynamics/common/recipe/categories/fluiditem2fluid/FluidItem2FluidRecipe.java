@@ -37,9 +37,9 @@ public abstract class FluidItem2FluidRecipe extends AbstractMaterialRecipe {
 	public boolean matchesRecipe(ComponentProcessor pr) {
 
 		Pair<List<Integer>, Boolean> itemPair = areItemsValid(getCountedIngredients(), ((ComponentInventory) pr.getHolder().getComponent(ComponentType.Inventory)).getInputsForProcessor(pr.getProcessorNumber()));
-		if (Boolean.TRUE.equals(itemPair.getSecond())) {
+		if (itemPair.getSecond()) {
 			Pair<List<Integer>, Boolean> fluidPair = areFluidsValid(getFluidIngredients(), pr.getHolder().<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks());
-			if (Boolean.TRUE.equals(fluidPair.getSecond())) {
+			if (fluidPair.getSecond()) {
 				setItemArrangement(pr.getProcessorNumber(), itemPair.getFirst());
 				setFluidArrangement(fluidPair.getFirst());
 				return true;

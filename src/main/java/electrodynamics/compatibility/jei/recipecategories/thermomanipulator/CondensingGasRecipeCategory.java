@@ -71,12 +71,12 @@ public class CondensingGasRecipeCategory extends AbstractRecipeCategory<PsuedoGa
 	}
 	
 	@Override
-	public List<GasStack> getGasInputs(PsuedoGas2FluidRecipe recipe) {
+	public List<List<GasStack>> getGasInputs(PsuedoGas2FluidRecipe recipe) {
 		List<GasStack> gases = new ArrayList<>();
 		for(GasIngredient ing : recipe.inputs) {
 			gases.addAll(ing.getMatchingGases());
 		}
-		return gases;
+		return Arrays.asList(gases);
 	}
 	
 	@Override

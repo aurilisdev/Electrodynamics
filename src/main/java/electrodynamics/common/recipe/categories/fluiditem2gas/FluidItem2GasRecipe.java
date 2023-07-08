@@ -1,10 +1,11 @@
-package electrodynamics.common.recipe.categories.fluiditem2item;
+package electrodynamics.common.recipe.categories.fluiditem2gas;
 
 import java.util.Arrays;
 import java.util.List;
 
 import com.mojang.datafixers.util.Pair;
 
+import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.recipe.recipeutils.AbstractMaterialRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
@@ -17,21 +18,19 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
 
-public abstract class FluidItem2ItemRecipe extends AbstractMaterialRecipe {
+public abstract class FluidItem2GasRecipe extends AbstractMaterialRecipe {
 
-	private CountableIngredient[] ingredients;
 	private FluidIngredient[] fluidIngredients;
-	private ItemStack outputItemStack;
+	private CountableIngredient[] ingredients;
+	private GasStack outputStack;
 
-	public FluidItem2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidIngredient[] fluidInputs, ItemStack itemOutput, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, ProbableGas[] gasBiproducts) {
+	public FluidItem2GasRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, GasStack outputGas, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, ProbableGas[] gasBiproducts) {
 		super(recipeID, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
-		ingredients = itemInputs;
-		fluidIngredients = fluidInputs;
-		outputItemStack = itemOutput;
+		ingredients = inputItems;
+		fluidIngredients = inputFluids;
+		outputStack = outputGas;
 	}
 
 	@Override
@@ -47,17 +46,21 @@ public abstract class FluidItem2ItemRecipe extends AbstractMaterialRecipe {
 		}
 		return false;
 	}
-
+	
 	@Override
-	public ItemStack assemble(RecipeWrapper inv) {
-		return outputItemStack;
+	public List<FluidIngredient> getFluidIngredients() {
+		return Arrays.asList(fluidIngredients);
 	}
-
+	
 	@Override
-	public ItemStack getResultItem() {
-		return outputItemStack;
+	public GasStack getGasRecipeOutput() {
+		return outputStack;
 	}
-
+	
+	public List<CountableIngredient> getCountedIngredients() {
+		return Arrays.asList(ingredients);
+	}
+	
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
 		NonNullList<Ingredient> list = NonNullList.create();
@@ -68,15 +71,6 @@ public abstract class FluidItem2ItemRecipe extends AbstractMaterialRecipe {
 			list.add(ing);
 		}
 		return list;
-	}
-
-	@Override
-	public List<FluidIngredient> getFluidIngredients() {
-		return Arrays.asList(fluidIngredients);
-	}
-
-	public List<CountableIngredient> getCountedIngredients() {
-		return Arrays.asList(ingredients);
 	}
 
 }

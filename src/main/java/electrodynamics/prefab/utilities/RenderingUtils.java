@@ -1,12 +1,18 @@
 package electrodynamics.prefab.utilities;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.BufferBuilder;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
@@ -14,9 +20,11 @@ import com.mojang.math.Vector3f;
 
 import electrodynamics.prefab.block.GenericEntityBlock;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -250,7 +258,44 @@ public class RenderingUtils {
 		RenderSystem.applyModelViewMatrix();
 
 	}
-	
+
+	public static void blitCustomShader(PoseStack matrixStack, int x, int y, int u, int v, int textWidth, int textHeight, int imgWidth, int imgHeight, Supplier<ShaderInstance> shader) {
+		// blit(matrixStack, x, y, textWidth, textHeight, u, v, textWidth, textHeight, imgWidth, imgHeight);
+		// innerBlit(matrixStack, x, x + textWidth, y, y + textHeight, 0, textWidth, textHeight, u, v, imgWidth, imgHeight);
+		// innerBlit(matrixStack.last().pose(), x, x + textWidth, y, y + textHeight, 0, (u + 0.0F) / (float) imgWidth, (u + (float)
+		// textWidth) / (float) imgWidth, (v + 0.0F) / (float) imgHeight, (v + (float) textHeight) / (float) imgHeight);
+
+		float x0 = x;
+		float x1 = x + textWidth;
+		float y0 = y;
+		float y1 = y + textHeight;
+
+		float blitOffset = 0;
+
+		float minU = (u + 0.0F) / (float) imgWidth;
+		float maxU = (u + (float) textWidth) / (float) imgWidth;
+		float minV = (v + 0.0F) / (float) imgHeight;
+		float maxV = (v + (float) textHeight) / (float) imgHeight;
+
+		Matrix4f matrix = matrixStack.last().pose();
+
+		RenderSystem.setShader(shader);
+
+		BufferBuilder bufferbuilder = Tesselator.getInstance().getBuilder();
+
+		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+
+		bufferbuilder.vertex(matrix, x0, y1, blitOffset).uv(minU, maxV).endVertex();
+		bufferbuilder.vertex(matrix, x1, y1, blitOffset).uv(maxU, maxV).endVertex();
+		bufferbuilder.vertex(matrix, x1, y0, blitOffset).uv(maxU, minV).endVertex();
+		bufferbuilder.vertex(matrix, x0, y0, blitOffset).uv(minU, minV).endVertex();
+
+		BufferUploader.drawWithShader(bufferbuilder.end());
+
+		RenderSystem.setShader(GameRenderer::getPositionTexShader);
+
+	}
+
 	public static void renderItemScaled(Item item, int x, int y, float scale) {
 		renderItemScaled(RenderSystem.getModelViewStack(), item, x, y, scale);
 

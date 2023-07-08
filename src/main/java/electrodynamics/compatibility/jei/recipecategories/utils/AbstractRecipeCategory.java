@@ -303,17 +303,17 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 		}
 	}
 
-	public void setGasInputs(List<GasStack> inputs, IRecipeLayoutBuilder builder) {
+	public void setGasInputs(List<List<GasStack>> inputs, IRecipeLayoutBuilder builder) {
 
 		AbstractGasGaugeObject wrapper;
 		RecipeIngredientRole role = RecipeIngredientRole.INPUT;
-		GasStack stack;
+		List<GasStack> stacks;
 		for (int i = 0; i < gasInputWrappers.length; i++) {
 
 			wrapper = gasInputWrappers[i];
-			stack = inputs.get(i);
+			stacks = inputs.get(i);
 
-			double amt = stack.getAmount();
+			double amt = stacks.get(0).getAmount();
 
 			double gaugeCap = wrapper.getAmount();
 
@@ -325,7 +325,7 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 
 			int oneMinusHeight = wrapper.getHeight() - height;
 
-			builder.addSlot(role, wrapper.getX() + 1, wrapper.getY() + wrapper.getHeight() - height).addIngredient(ElectrodynamicsJeiTypes.GAS_STACK, stack).setCustomRenderer(ElectrodynamicsJeiTypes.GAS_STACK, new IngredientRendererGasStack((int) gaugeCap, -oneMinusHeight + 1, height, wrapper.getBarsTexture()));
+			builder.addSlot(role, wrapper.getX() + 1, wrapper.getY() + wrapper.getHeight() - height).addIngredients(ElectrodynamicsJeiTypes.GAS_STACK, stacks).setCustomRenderer(ElectrodynamicsJeiTypes.GAS_STACK, new IngredientRendererGasStack((int) gaugeCap, -oneMinusHeight + 1, height, wrapper.getBarsTexture()));
 		}
 
 	}
@@ -416,7 +416,7 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 		return new ArrayList<>();
 	}
 
-	public List<GasStack> getGasInputs(T recipe) {
+	public List<List<GasStack>> getGasInputs(T recipe) {
 		return new ArrayList<>();
 	}
 

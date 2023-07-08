@@ -11,9 +11,9 @@ public class ChatFormatter {
 
 	public static MutableComponent getChatDisplay(double value, DisplayUnit unit, int decimalPlaces, boolean isShort) {
 		if (value < Long.MIN_VALUE + 10000) {
-			return Component.literal("-").append(ElectroTextUtils.gui("displayunit.inifinit.name")).append((isShort ? unit.symbol : unit.namePlural));
+			return Component.literal("-").append(ElectroTextUtils.gui("displayunit.infinity.name")).append(" ").append((isShort ? unit.symbol : unit.namePlural));
 		} else if (value > Long.MAX_VALUE - 10000) {
-			return ElectroTextUtils.gui("displayunit.inifinit.name").append((isShort ? unit.symbol : unit.namePlural));
+			return ElectroTextUtils.gui("displayunit.infinity.name").append(" ").append((isShort ? unit.symbol : unit.namePlural));
 		}
 		Component unitName;
 		if (isShort) {
@@ -87,14 +87,7 @@ public class ChatFormatter {
 
 	public static MutableComponent formatFluidMilibuckets(double amount) {
 
-		if (amount > 1000) {
-
-			return getChatDisplayShort(amount / 1000.0, DisplayUnit.BUCKETS);
-
-		} else {
-			return formatDecimals(amount, 2).append(" mB");
-
-		}
+		return getChatDisplayShort(amount / 1000.0, DisplayUnit.BUCKETS);
 
 	}
 

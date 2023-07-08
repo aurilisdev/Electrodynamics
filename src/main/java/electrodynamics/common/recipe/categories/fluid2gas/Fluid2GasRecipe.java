@@ -32,7 +32,7 @@ public abstract class Fluid2GasRecipe extends AbstractMaterialRecipe {
 	@Override
 	public boolean matchesRecipe(ComponentProcessor pr) {
 		Pair<List<Integer>, Boolean> pair = areFluidsValid(getFluidIngredients(), pr.getHolder().<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks());
-		if (Boolean.TRUE.equals(pair.getSecond())) {
+		if (pair.getSecond()) {
 			setFluidArrangement(pair.getFirst());
 			return true;
 		}
