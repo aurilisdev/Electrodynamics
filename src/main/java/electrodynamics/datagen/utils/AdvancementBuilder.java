@@ -43,6 +43,10 @@ public class AdvancementBuilder implements IForgeAdvancementBuilder {
 	@Nullable
 	private String[][] requirements;
 	private RequirementsStrategy requirementsStrategy = RequirementsStrategy.AND;
+	@Nullable
+	private String comment;
+	@Nullable
+	private String author;
 
 	@Nullable
 	private List<ICondition> conditions;
@@ -125,6 +129,16 @@ public class AdvancementBuilder implements IForgeAdvancementBuilder {
 		conditions.add(condition);
 		return this;
 	}
+	
+	public AdvancementBuilder comment(String comment) {
+		this.comment = comment;
+		return this;
+	}
+	
+	public AdvancementBuilder author(String author) {
+		this.author = author;
+		return this;
+	}
 
 	/**
 	 * Tries to resolve the parent of this advancement, if possible. Returns {@code true} on success.
@@ -166,6 +180,15 @@ public class AdvancementBuilder implements IForgeAdvancementBuilder {
 		}
 
 		JsonObject jsonobject = new JsonObject();
+		
+		if(author != null) {
+			jsonobject.addProperty("__author", author);
+		}
+		
+		if(comment != null) {
+			jsonobject.addProperty("__comment", comment);
+		}
+		
 		if (this.parent != null) {
 			jsonobject.addProperty("parent", this.parent.getId().toString());
 		} else if (this.parentId != null) {
