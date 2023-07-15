@@ -345,6 +345,14 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	public int getComparatorSignal() {
 		return 0;
 	}
+	
+	public int getDirectSignal(Direction dir) {
+		return 0;
+	}
+	
+	public int getSignal(Direction dir) {
+		return 0;
+	}
 
 	public void updateCarriedItemInContainer(ItemStack stack, UUID playerId) {
 		Player player = getLevel().getPlayerByUUID(playerId);

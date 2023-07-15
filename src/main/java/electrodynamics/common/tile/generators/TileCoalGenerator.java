@@ -21,7 +21,7 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
-import electrodynamics.prefab.utilities.object.TargetValue;
+import electrodynamics.prefab.utilities.object.TargetValue.PropertyTargetValue;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
@@ -37,7 +37,7 @@ import net.minecraftforge.common.ForgeHooks;
 public class TileCoalGenerator extends GenericGeneratorTile {
 	protected CachedTileOutput output;
 	protected TransferPack currentOutput = TransferPack.EMPTY;
-	public TargetValue heat = new TargetValue(property(new Property<>(PropertyType.Double, "heat", 27.0)));
+	public PropertyTargetValue heat = new PropertyTargetValue(property(new Property<>(PropertyType.Double, "heat", 27.0)));
 	public Property<Integer> burnTime = property(new Property<>(PropertyType.Integer, "burnTime", 0));
 	public Property<Integer> maxBurnTime = property(new Property<>(PropertyType.Integer, "maxBurnTime", 1));
 	// for future planned upgrades
@@ -79,10 +79,10 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 		if (BlockEntityUtils.isLit(this) ^ greaterBurnTime) {
 			BlockEntityUtils.updateLit(this, greaterBurnTime);
 		}
-		if (heat.getValue().get() > 27 && output.valid()) {
+		if (heat.getValue() > 27 && output.valid()) {
 			ElectricityUtils.receivePower(output.getSafe(), direction.getDirection(), currentOutput, false);
 		}
-		heat.rangeParameterize(27, 3000, burnTime.get() > 0 ? 3000 : 27, heat.getValue().get(), 600).flush();
+		heat.rangeParameterize(27, 3000, burnTime.get() > 0 ? 3000 : 27, heat.getValue(), 600).flush();
 		currentOutput = getProduced();
 	}
 
@@ -113,7 +113,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 
 	@Override
 	public TransferPack getProduced() {
-		return TransferPack.ampsVoltage(multiplier.get() * Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.getValue().get() - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
+		return TransferPack.ampsVoltage(multiplier.get() * Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.getValue() - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 	}
 
 	public static List<Item> getValidItems() {
@@ -122,7 +122,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 	
 	@Override
 	public int getComparatorSignal() {
-		return (int) ((heat.getValue().get() / 3000.0) * 15.0);
+		return (int) ((heat.getValue() / 3000.0) * 15.0);
 	}
 	
 	@Override

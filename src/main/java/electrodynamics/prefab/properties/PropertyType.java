@@ -146,7 +146,11 @@ public enum PropertyType {
 	//
 	Gasstack((prop, buf) -> ((GasStack) prop.get()).writeToBuffer(buf), buf -> GasStack.readFromBuffer(buf), (prop, tag) -> tag.put(prop.getName(), ((GasStack) prop.get()).writeToNbt()), (prop, tag) -> GasStack.readFromNbt(tag.getCompound(prop.getName()))),
 	//
-	Itemstack((prop, buf) -> buf.writeItem((ItemStack) prop.get()), buf -> buf.readItem(), (prop, tag) -> tag.put(prop.getName(), ((ItemStack) prop.get()).save(new CompoundTag())), (prop, tag) -> ItemStack.of(tag.getCompound(prop.getName()))),
+	Itemstack((thisStack, otherStack) -> {
+		
+		return ((ItemStack)thisStack).equals((ItemStack) otherStack, false);
+		
+	}, (prop, buf) -> buf.writeItem((ItemStack) prop.get()), buf -> buf.readItem(), (prop, tag) -> tag.put(prop.getName(), ((ItemStack) prop.get()).save(new CompoundTag())), (prop, tag) -> ItemStack.of(tag.getCompound(prop.getName()))),
 	//
 	Block((prop, buf) -> {
 		buf.writeItem(new ItemStack(((net.minecraft.world.level.block.Block) prop.get()).asItem()));
@@ -164,7 +168,9 @@ public enum PropertyType {
 			return Blocks.AIR;
 		}
 		return ((BlockItem) stack.getItem()).getBlock();
-	}), Blockstate((prop, buf) -> buf.writeNbt(NbtUtils.writeBlockState((BlockState) prop.get())), buf -> NbtUtils.readBlockState(buf.readNbt()), (prop, tag) -> tag.put(prop.getName(), NbtUtils.writeBlockState((BlockState) prop.get())), (prop, tag) -> NbtUtils.readBlockState(tag.getCompound(prop.getName())));
+	}), 
+	//
+	Blockstate((prop, buf) -> buf.writeNbt(NbtUtils.writeBlockState((BlockState) prop.get())), buf -> NbtUtils.readBlockState(buf.readNbt()), (prop, tag) -> tag.put(prop.getName(), NbtUtils.writeBlockState((BlockState) prop.get())), (prop, tag) -> NbtUtils.readBlockState(tag.getCompound(prop.getName())));
 
 	@Nonnull
 	public final BiPredicate<Object, Object> predicate;
@@ -206,6 +212,9 @@ public enum PropertyType {
 	// Leave this all for now until we are ABSOLUTELY certain there are no crashing issues
 
 	public void writeOld(Property<?> prop, FriendlyByteBuf buf) {
+		
+		//new ItemStack(Items.air).qua
+		
 		Object val = prop.get();
 		switch (this) {
 		case Boolean:

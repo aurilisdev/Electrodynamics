@@ -1,79 +1,48 @@
 package electrodynamics.common.tile.generators;
 
-import java.util.HashSet;
-
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.multiblock.Subnode;
+import electrodynamics.api.multiblock.parent.IMultiblockParentTile;
 import electrodynamics.common.block.BlockMachine;
+import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.common.multiblock.IMultiblockTileNode;
-import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyType;
+import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
+import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.utilities.ElectricityUtils;
-import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TargetValue;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-public class TileAdvancedSolarPanel extends GenericGeneratorTile implements IMultiblockTileNode {
+public class TileAdvancedSolarPanel extends TileSolarPanel implements IMultiblockParentTile {
 
-	protected CachedTileOutput output;
-	public TargetValue currentRotation = new TargetValue(property(new Property<>(PropertyType.Double, "currentRotation", 0.0)));
-	private Property<Boolean> generating = property(new Property<>(PropertyType.Boolean, "generating", false));
-	private Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
-	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
-
-	@Override
-	public double getMultiplier() {
-		return multiplier.get();
-	}
-
-	@Override
-	public void setMultiplier(double val) {
-		multiplier.set(val);
-	}
+	public final TargetValue currentRotation = new TargetValue();
 
 	public TileAdvancedSolarPanel(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_ADVANCEDSOLARPANEL.get(), worldPosition, blockState, 2.25, SubtypeItemUpgrade.improvedsolarcell);
-		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerSolarPanel.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.advancedsolarpanel, this).createMenu((id, player) -> new ContainerSolarPanel(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-	}
-
-	protected void tickServer(ComponentTickable tickable) {
-		if(hasRedstoneSignal.get()) {
-			generating.set(false);
-			return;
-		}
-		if (output == null) {
-			output = new CachedTileOutput(level, worldPosition.relative(Direction.DOWN));
-		}
-		if (tickable.getTicks() % 40 == 0) {
-			output.update(worldPosition.relative(Direction.DOWN));
-			generating.set(level.canSeeSky(worldPosition.offset(0, 1, 0)));
-		}
-		if (level.isDay() && generating.get() && output.valid()) {
-			ElectricityUtils.receivePower(output.getSafe(), Direction.UP, getProduced(), false);
-		}
+		//addComponent(new ComponentTickable(this).tickServer(this::tickServer));
+		//addComponent(new ComponentPacketHandler(this));
+		//addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2));
+		//addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerSolarPanel.VALID_UPGRADES).valid(machineValidator()));
+		forceComponent(new ComponentContainerProvider(SubtypeMachine.advancedsolarpanel, this).createMenu((id, player) -> new ContainerSolarPanel(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	@Override
@@ -91,18 +60,38 @@ public class TileAdvancedSolarPanel extends GenericGeneratorTile implements IMul
 	}
 
 	@Override
-	public HashSet<Subnode> getSubNodes() {
+	public Subnode[] getSubNodes() {
 		return BlockMachine.advancedsolarpanelsubnodes;
 	}
 	
 	@Override
-	public int getComparatorSignal() {
-		return generating.get() ? 15 : 0;
+	public void onSubnodeDestroyed(TileMultiSubnode subnode) {
+		level.destroyBlock(worldPosition, true);
 	}
 	
 	@Override
-	public void onNeightborChanged(BlockPos neighbor) {
-		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
+	public InteractionResult onSubnodeUse(Player player, InteractionHand hand, BlockHitResult hit, TileMultiSubnode subnode) {
+		return use(player, hand, hit);
+	}
+	
+	@Override
+	public int getSubdnodeComparatorSignal(TileMultiSubnode subnode) {
+		return getComparatorSignal();
+	}
+	
+	@Override
+	public Direction getFacingDirection() {
+		return this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+	}
+	
+	static {
+		
+		VoxelShape shape = Block.box(0, 0, 0, 16, 2, 16);
+		shape = Shapes.join(shape, Block.box(2, 2, 2, 14, 3, 14), BooleanOp.OR);
+		shape = Shapes.join(shape, Block.box(3, 3, 3, 13, 7, 13), BooleanOp.OR);
+		shape = Shapes.join(shape, Block.box(6, 7, 6, 10, 16, 10), BooleanOp.OR);
+		
+		VoxelShapes.registerShape(SubtypeMachine.advancedsolarpanel, shape, Direction.NORTH);
 	}
 	
 }
