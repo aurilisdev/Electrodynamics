@@ -45,8 +45,10 @@ import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.data.LanguageProvider;
@@ -1030,6 +1032,10 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addSubtitle(ElectrodynamicsSounds.SOUND_PRESSURERELEASE, "Gas hisses");
 			addSubtitle(ElectrodynamicsSounds.SOUND_COMPRESSORRUNNING, "Compressor pressurizes gas");
 			addSubtitle(ElectrodynamicsSounds.SOUND_DECOMPRESSORRUNNING, "Decompressor depressurizes gas");
+			
+			addDimension(Level.OVERWORLD, "The Overworld");
+			addDimension(Level.NETHER, "The Nether");
+			addDimension(Level.END, "The End");
 
 			addAdvancement("root.title", "Electrodynamics");
 			addAdvancement("root.desc", "You have entered a world of electricity.");
@@ -1663,6 +1669,10 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		add("gui." + modID + "." + key, translation);
 	}
 
+	public void addDimension(ResourceKey<Level> dim, String translation) {
+		addDimension(dim.location().getPath(), translation);
+	}
+	
 	public void addDimension(String key, String translation) {
 		add("dimension." + modID + "." + key, translation);
 	}

@@ -1,13 +1,13 @@
 package electrodynamics.prefab.utilities;
 
-import java.text.DecimalFormat;
-
 import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
 
 public class ElectroTextUtils {
 
@@ -21,8 +21,7 @@ public class ElectroTextUtils {
 	public static final String BLOCK_BASE = "block";
 	public static final String GAS_BASE = "gas";
 	public static final String ADVANCEMENT_BASE = "advancement";
-
-	public static final DecimalFormat FORMATTER = new DecimalFormat("0.0##");
+	public static final String DIMENSION = "dimension";
 
 	public static MutableComponent tooltip(String key, Object... additional) {
 		return translated(TOOLTIP_BASE, key, additional);
@@ -63,6 +62,14 @@ public class ElectroTextUtils {
 	public static MutableComponent advancement(String key, Object...additional) {
 		return translated(ADVANCEMENT_BASE, key, additional);
 	}
+	
+	public static MutableComponent dimension(String key, Object... additional) {
+		return translated(DIMENSION, key, additional);
+	}
+	
+	public static MutableComponent dimension(ResourceKey<Level> level, Object...additional) {
+		return dimension(level.location().getPath(), additional);
+	}
 
 	public static MutableComponent translated(String base, String key, Object... additional) {
 		return Component.translatable(base + "." + References.ID + "." + key, additional);
@@ -74,6 +81,14 @@ public class ElectroTextUtils {
 
 	public static boolean tooltipExists(String key) {
 		return translationExists(TOOLTIP_BASE, key);
+	}
+	
+	public static boolean dimensionExistst(String key) {
+		return translationExists(DIMENSION, key);
+	}
+	
+	public static boolean dimensionExists(ResourceKey<Level> level) {
+		return dimensionExistst(level.location().getPath());
 	}
 
 	public static boolean translationExists(String base, String key) {

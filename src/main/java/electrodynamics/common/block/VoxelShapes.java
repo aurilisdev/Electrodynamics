@@ -24,7 +24,7 @@ public class VoxelShapes {
 		return shape;
 	}
 
-	private static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape) {
+	public static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape) {
 		VoxelShape[] buffer = new VoxelShape[] { shape, Shapes.empty() };
 
 		int times = (to.get2DDataValue() - from.get2DDataValue() + 4) % 4;
