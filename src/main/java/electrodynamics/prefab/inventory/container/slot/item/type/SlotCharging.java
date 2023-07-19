@@ -2,8 +2,8 @@ package electrodynamics.prefab.inventory.container.slot.item.type;
 
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.IconType;
-import electrodynamics.prefab.screen.component.ScreenComponentSlot.SlotType;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.SlotType;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
 

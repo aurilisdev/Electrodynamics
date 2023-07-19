@@ -16,6 +16,7 @@ import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.gas.GasTank;
 import electrodynamics.api.gas.PropertyGasTank;
 import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.CapabilityInputType;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.utils.IComponentGasHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
@@ -105,7 +106,7 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 	}
 
 	@Override
-	public PropertyGasTank[] getOUtputTanks() {
+	public PropertyGasTank[] getOutputTanks() {
 		return asArray();
 	}
 
@@ -120,13 +121,13 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, Direction side) {
+	public boolean hasCapability(Capability<?> capability, Direction side, CapabilityInputType inputType) {
 		return capability == ElectrodynamicsCapabilities.GAS_HANDLER;
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		if (!hasCapability(capability, side)) {
+	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side, CapabilityInputType inputType) {
+		if (!hasCapability(capability, side, inputType)) {
 			return LazyOptional.empty();
 		}
 		if (inputDirections == null && outputDirections == null) {

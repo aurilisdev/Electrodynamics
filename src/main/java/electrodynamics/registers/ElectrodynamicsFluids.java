@@ -1,7 +1,5 @@
 package electrodynamics.registers;
 
-import static electrodynamics.registers.UnifiedElectrodynamicsRegister.supplier;
-
 import java.util.HashMap;
 
 import electrodynamics.api.ISubtype;
@@ -40,18 +38,18 @@ public class ElectrodynamicsFluids {
 
 	static {
 		// Liquids
-		FLUIDS.register("fluidethanol", supplier(() -> fluidEthanol = new FluidEthanol()));
-		FLUIDS.register("fluidsulfuricacid", supplier(() -> fluidSulfuricAcid = new FluidSulfuricAcid()));
-		FLUIDS.register("fluidhydrogenfluoride", supplier(() -> fluidHydrogenFluoride = new FluidHydrogenFluoride()));
-		FLUIDS.register("fluidpolyethylene", supplier(() -> fluidPolyethylene = new FluidPolyethylene()));
-		FLUIDS.register("fluidclay", supplier(() -> fluidClay = new FluidClay()));
-		FLUIDS.register("fluidhydraulic", supplier(() -> fluidHydraulic = new FluidHydraulic()));
+		FLUIDS.register("fluidethanol", () -> fluidEthanol = new FluidEthanol());
+		FLUIDS.register("fluidsulfuricacid", () -> fluidSulfuricAcid = new FluidSulfuricAcid());
+		FLUIDS.register("fluidhydrogenfluoride", () -> fluidHydrogenFluoride = new FluidHydrogenFluoride());
+		FLUIDS.register("fluidpolyethylene", () -> fluidPolyethylene = new FluidPolyethylene());
+		FLUIDS.register("fluidclay", () -> fluidClay = new FluidClay());
+		FLUIDS.register("fluidhydraulic", () -> fluidHydraulic = new FluidHydraulic());
 		for (SubtypeSulfateFluid mineral : SubtypeSulfateFluid.values()) {
-			SUBTYPEFLUID_REGISTRY_MAP.put(mineral, FLUIDS.register("fluidsulfate" + mineral.name(), supplier(() -> new FluidSulfate(mineral))));
+			SUBTYPEFLUID_REGISTRY_MAP.put(mineral, FLUIDS.register("fluidsulfate" + mineral.name(), () -> new FluidSulfate(mineral)));
 		}
 		// Gasses
-		FLUIDS.register("fluidoxygen", supplier(() -> fluidOxygen = new FluidOxygen()));
-		FLUIDS.register("fluidhydrogen", supplier(() -> fluidHydrogen = new FluidHydrogen()));
+		FLUIDS.register("fluidoxygen", () -> fluidOxygen = new FluidOxygen());
+		FLUIDS.register("fluidhydrogen", () -> fluidHydrogen = new FluidHydrogen());
 
 	}
 

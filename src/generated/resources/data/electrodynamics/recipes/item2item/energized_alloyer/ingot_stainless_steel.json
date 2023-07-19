@@ -15,13 +15,13 @@
       "tag": "forge:ingots/chromium"
     },
     "1": {
-      "count": 3,
+      "count": 32,
       "tag": "forge:ingots/steel"
     },
     "count": 2
   },
   "output": {
-    "count": 4,
+    "count": 32,
     "item": "electrodynamics:ingotstainlesssteel"
   },
   "ticks": 50,

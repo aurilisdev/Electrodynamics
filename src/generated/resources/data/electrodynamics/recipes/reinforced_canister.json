@@ -6,15 +6,12 @@
     },
     "S": {
       "tag": "forge:plates/stainlesssteel"
-    },
-    "T": {
-      "tag": "forge:plates/titanium"
     }
   },
   "pattern": [
-    "STS",
+    "SSS",
     "A A",
-    "STS"
+    "SSS"
   ],
   "result": {
     "count": 4,

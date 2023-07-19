@@ -5,6 +5,7 @@ import java.util.List;
 
 import electrodynamics.api.References;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
+import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
@@ -26,26 +27,32 @@ public class ItemCeramic extends Item {
 	}
 
 	@Override
-	public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-		if (!worldIn.isClientSide) {
-			if (ItemStack.isSame(playerIn.getItemInHand(handIn), new ItemStack(ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeCeramic.plate).get()))) {
-				List<ItemStack> armorPieces = new ArrayList<>();
-				playerIn.getArmorSlots().forEach(armorPieces::add);
+	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 
-				ItemStack chestplate = armorPieces.get(2);
-				if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get())) || ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()))) {
-					CompoundTag tag = chestplate.getOrCreateTag();
-					int stored = tag.getInt(NBTUtils.PLATES);
-					if (stored < 2) {
-						playerIn.playNotifySound(ElectrodynamicsSounds.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1, 1);
-						tag.putInt(NBTUtils.PLATES, stored + 1);
-						playerIn.getItemInHand(handIn).shrink(1);
-					}
+		ItemStack handStack = player.getItemInHand(hand);
 
+		if (world.isClientSide || !ItemUtils.testItems(handStack.getItem(), ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeCeramic.plate).get())) {
+			return InteractionResultHolder.pass(player.getItemInHand(hand));
+		}
+
+		List<ItemStack> armorPieces = new ArrayList<>();
+		player.getArmorSlots().forEach(armorPieces::add);
+
+		ItemStack chestplate = armorPieces.get(2);
+		if (ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get())) || ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()))) {
+			CompoundTag tag = chestplate.getOrCreateTag();
+			int stored = tag.getInt(NBTUtils.PLATES);
+			if (stored < 2) {
+				world.playSound(null, player.getOnPos(), ElectrodynamicsSounds.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
+				tag.putInt(NBTUtils.PLATES, stored + 1);
+				if (!player.isCreative()) {
+					handStack.shrink(1);
+					player.setItemInHand(hand, handStack);
 				}
 			}
+
 		}
-		return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
+		return InteractionResultHolder.pass(player.getItemInHand(hand));
 	}
 
 }

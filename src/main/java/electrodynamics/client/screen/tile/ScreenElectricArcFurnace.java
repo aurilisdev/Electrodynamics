@@ -1,11 +1,11 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnace;
-import electrodynamics.common.tile.TileElectricArcFurnace;
+import electrodynamics.common.tile.arcfurnace.TileElectricArcFurnace;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentProgress;
-import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressBars;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;
+import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.network.chat.Component;
@@ -18,7 +18,7 @@ public class ScreenElectricArcFurnace extends GenericScreen<ContainerElectricArc
 
 	public ScreenElectricArcFurnace(ContainerElectricArcFurnace container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
+		addComponent(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
@@ -27,8 +27,8 @@ public class ScreenElectricArcFurnace extends GenericScreen<ContainerElectricArc
 				}
 			}
 			return 0;
-		}, this, 84, 34));
-		components.add(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
+		}, 84, 34));
+		addComponent(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
 			TileElectricArcFurnace furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
@@ -37,8 +37,9 @@ public class ScreenElectricArcFurnace extends GenericScreen<ContainerElectricArc
 				}
 			}
 			return 0;
-		}, this, 39, 36));
-		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
+		}, 39, 36));
+		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
-
+	
 }
+

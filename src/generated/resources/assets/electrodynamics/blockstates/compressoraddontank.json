@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "addontankneighborstatus=bottomandtoptank": {
+      "model": "electrodynamics:block/compressoraddontanktab"
+    },
+    "addontankneighborstatus=bottomtank": {
+      "model": "electrodynamics:block/compressoraddontankb"
+    },
+    "addontankneighborstatus=none": {
+      "model": "electrodynamics:block/compressoraddontank"
+    },
+    "addontankneighborstatus=toptank": {
+      "model": "electrodynamics:block/compressoraddontankt"
+    }
+  }
+}

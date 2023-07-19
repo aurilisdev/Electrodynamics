@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "tag": "forge:plates/stainlesssteel"
+    },
+    "V": {
+      "item": "electrodynamics:mechanicalvalve"
+    }
+  },
+  "pattern": [
+    "SVS",
+    "S S",
+    "SSS"
+  ],
+  "result": {
+    "count": 4,
+    "item": "electrodynamics:portablecylinder"
+  }
+}

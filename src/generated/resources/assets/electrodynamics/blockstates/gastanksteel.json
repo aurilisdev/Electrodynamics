@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/gastanksteel"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/gastanksteel",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/gastanksteel",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/gastanksteel",
+      "y": 180
+    }
+  }
+}

@@ -49,33 +49,31 @@ public abstract class AbstractLootTableProvider extends LootTableProvider {
 
 	protected abstract void addTables();
 
-	protected LootTable.Builder itemTable(String name, Block block, BlockEntityType<?> type) {
-		LootPool.Builder builder = LootPool.lootPool().name(name).setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(block).apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Items", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE).copy(ComponentInventory.SAVE_KEY + "_size", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE).copy("additional", "BlockEntityTag.additional", CopyNbtFunction.MergeStrategy.REPLACE)).apply(SetContainerContents.setContents(type).withEntry(DynamicLoot.dynamicEntry(new ResourceLocation("minecraft", "contents")))));
-		return LootTable.lootTable().withPool(builder);
-	}
+	public LootTable.Builder machineTable(String name, Block block, BlockEntityType<?> type, boolean items, boolean fluids, boolean gases, boolean energy, boolean additional) {
+		CopyNbtFunction.Builder function = CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY);
 
-	protected LootTable.Builder energyTable(String name, Block block, BlockEntityType<?> type) {
-		LootPool.Builder builder = LootPool.lootPool().name(name).setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(block).apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("joules", "BlockEntityTag.joules", CopyNbtFunction.MergeStrategy.REPLACE).copy("additional", "BlockEntityTag.additional", CopyNbtFunction.MergeStrategy.REPLACE)));
-		return LootTable.lootTable().withPool(builder);
-	}
+		if (items) {
+			function = function.copy("Items", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE);
+			function = function.copy(ComponentInventory.SAVE_KEY + "_size", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE);
+		}
 
-	protected LootTable.Builder fluidTable(String name, Block block, BlockEntityType<?> type) {
-		LootPool.Builder builder = LootPool.lootPool().name(name).setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(block).apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("fluid", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE).copy("additional", "BlockEntityTag.additional", CopyNbtFunction.MergeStrategy.REPLACE)));
-		return LootTable.lootTable().withPool(builder);
-	}
+		if (fluids) {
+			function = function.copy("fluid", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE);
+		}
 
-	protected LootTable.Builder itemEnergyTable(String name, Block block, BlockEntityType<?> type) {
-		LootPool.Builder builder = LootPool.lootPool().name(name).setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(block).apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Items", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE).copy(ComponentInventory.SAVE_KEY + "_size", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE).copy("joules", "BlockEntityTag.joules", CopyNbtFunction.MergeStrategy.REPLACE).copy("additional", "BlockEntityTag.additional", CopyNbtFunction.MergeStrategy.REPLACE)).apply(SetContainerContents.setContents(type).withEntry(DynamicLoot.dynamicEntry(new ResourceLocation("minecraft", "contents")))));
-		return LootTable.lootTable().withPool(builder);
-	}
+		if (gases) {
+			// function = function
+		}
 
-	protected LootTable.Builder itemFluidTable(String name, Block block, BlockEntityType<?> type) {
-		LootPool.Builder builder = LootPool.lootPool().name(name).setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(block).apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Items", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE).copy(ComponentInventory.SAVE_KEY + "_size", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE).copy("fluid", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE).copy("additional", "BlockEntityTag.additional", CopyNbtFunction.MergeStrategy.REPLACE)).apply(SetContainerContents.setContents(type).withEntry(DynamicLoot.dynamicEntry(new ResourceLocation("minecraft", "contents")))));
-		return LootTable.lootTable().withPool(builder);
-	}
+		if (energy) {
+			function = function.copy("joules", "BlockEntityTag.joules", CopyNbtFunction.MergeStrategy.REPLACE);
+		}
 
-	protected LootTable.Builder itemEnergyFluidTable(String name, Block block, BlockEntityType<?> type) {
-		LootPool.Builder builder = LootPool.lootPool().name(name).setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(block).apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)).apply(CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY).copy("Items", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE).copy(ComponentInventory.SAVE_KEY + "_size", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE).copy("joules", "BlockEntityTag.joules", CopyNbtFunction.MergeStrategy.REPLACE).copy("fluid", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE).copy("additional", "BlockEntityTag.additional", CopyNbtFunction.MergeStrategy.REPLACE)).apply(SetContainerContents.setContents(type).withEntry(DynamicLoot.dynamicEntry(new ResourceLocation("minecraft", "contents")))));
+		if (additional) {
+			function = function.copy("additional", "BlockEntityTag.additional", CopyNbtFunction.MergeStrategy.REPLACE);
+		}
+
+		LootPool.Builder builder = LootPool.lootPool().name(name).setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(block).apply(CopyNameFunction.copyName(CopyNameFunction.NameSource.BLOCK_ENTITY)).apply(function).apply(SetContainerContents.setContents(type).withEntry(DynamicLoot.dynamicEntry(new ResourceLocation("minecraft", "contents")))));
 		return LootTable.lootTable().withPool(builder);
 	}
 
@@ -90,7 +88,8 @@ public abstract class AbstractLootTableProvider extends LootTableProvider {
 	 * @param max      The maximum amount dropped
 	 */
 	protected LootTable.Builder createSilkTouchAndFortuneTable(String name, Block block, Item lootItem, float min, float max) {
-		LootPool.Builder builder = LootPool.lootPool().name(name).setRolls(ConstantValue.exactly(1)).add(AlternativesEntry.alternatives(LootItem.lootTableItem(block).when(MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))))), LootItem.lootTableItem(lootItem).apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 1)).apply(ApplyExplosionDecay.explosionDecay())));
+		LootPool.Builder builder = LootPool.lootPool().name(name).setRolls(ConstantValue.exactly(1)).add(AlternativesEntry.alternatives(LootItem.lootTableItem(block).when(MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))))),
+				LootItem.lootTableItem(lootItem).apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 1)).apply(ApplyExplosionDecay.explosionDecay())));
 		return LootTable.lootTable().withPool(builder);
 	}
 

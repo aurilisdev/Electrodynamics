@@ -54,7 +54,7 @@ public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 			return Collections.emptyList();
 		}
 
-		FluidStack fluidStack = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
+		FluidStack fluidStack = CapabilityUtils.drainFluidItem(stack, Integer.MAX_VALUE, FluidAction.SIMULATE);
 
 		if (fluidStack.isEmpty()) {
 			return Collections.emptyList();
@@ -100,7 +100,7 @@ public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 			return Collections.emptyList();
 		}
 
-		FluidStack fluidStack = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
+		FluidStack fluidStack = CapabilityUtils.drainFluidItem(stack, Integer.MAX_VALUE, FluidAction.SIMULATE);
 
 		if (fluidStack.isEmpty()) {
 			return Collections.emptyList();

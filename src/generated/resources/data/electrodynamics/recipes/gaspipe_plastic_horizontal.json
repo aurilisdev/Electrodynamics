@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "P": {
+      "tag": "forge:plastic"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "   ",
+    "PPP"
+  ],
+  "result": {
+    "count": 6,
+    "item": "electrodynamics:gaspipeuninsulatedplastic"
+  }
+}

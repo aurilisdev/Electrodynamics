@@ -3,6 +3,7 @@ package electrodynamics.prefab.tile.components.type;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 import javax.annotation.Nullable;
 
@@ -14,14 +15,17 @@ import electrodynamics.api.capability.types.gas.IGasHandler;
 import electrodynamics.api.gas.Gas;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
+import electrodynamics.api.gas.GasTank;
 import electrodynamics.api.gas.PropertyGasTank;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.AbstractMaterialRecipe;
 import electrodynamics.common.recipe.recipeutils.GasIngredient;
 import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.CapabilityInputType;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.utils.IComponentGasHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
+import electrodynamics.prefab.utilities.math.MathUtils;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.TagKey;
@@ -38,8 +42,8 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
 	@Nullable
 	public Direction[] outputDirections;
 
-	private PropertyGasTank[] inputTanks;
-	private PropertyGasTank[] outputTanks;
+	private PropertyGasTank[] inputTanks = new PropertyGasTank[0];
+	private PropertyGasTank[] outputTanks = new PropertyGasTank[0];
 
 	@Nullable
 	private RecipeType<? extends AbstractMaterialRecipe> recipeType;
@@ -98,22 +102,22 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
 		return setInputTanks(inputCount, inputCapacity, inputMaxTemperature, inputMaxPressure).setOutputTanks(outputCount, outputCapacity, outputMaxTemperature, outputMaxPressure);
 	}
 
-	public ComponentGasHandlerMulti setInputFluids(Gas... gases) {
+	public ComponentGasHandlerMulti setInputGases(Gas... gases) {
 		validInputGases = gases;
 		return this;
 	}
 
-	public ComponentGasHandlerMulti setInputFluidTags(TagKey<Gas>... gases) {
+	public ComponentGasHandlerMulti setInputGasTags(TagKey<Gas>... gases) {
 		validInputGasTags = gases;
 		return this;
 	}
 
-	public ComponentGasHandlerMulti setOutputFluids(Gas... gases) {
+	public ComponentGasHandlerMulti setOutputGases(Gas... gases) {
 		validOutputGases = gases;
 		return this;
 	}
 
-	public ComponentGasHandlerMulti setOutputFluidTags(TagKey<Gas>... gases) {
+	public ComponentGasHandlerMulti setOutputGasTags(TagKey<Gas>... gases) {
 		validOutputGasTags = gases;
 		return this;
 	}
@@ -143,6 +147,17 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
 		return this;
 	}
 
+	// It is assumed you have defined tanks when calling this method
+	public ComponentGasHandlerMulti setCondensedHandler(BiConsumer<GasTank, GenericTile> consumer) {
+		for (PropertyGasTank tank : inputTanks) {
+			tank.setOnGasCondensed(consumer);
+		}
+		for (PropertyGasTank tank : outputTanks) {
+			tank.setOnGasCondensed(consumer);
+		}
+		return this;
+	}
+
 	public int tankCount(boolean input) {
 		if (input) {
 			return inputTanks == null ? 0 : inputTanks.length;
@@ -158,7 +173,7 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
 	}
 
 	@Nullable
-	public PropertyGasTank getTankFromFluid(Gas gas, boolean isInput) {
+	public PropertyGasTank getTankFromGas(Gas gas, boolean isInput) {
 		if (isInput) {
 			for (PropertyGasTank tank : inputTanks) {
 				if (tank.getGas().getGas().equals(gas)) {
@@ -221,13 +236,13 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, Direction side) {
+	public boolean hasCapability(Capability<?> capability, Direction side, CapabilityInputType inputType) {
 		return capability == ElectrodynamicsCapabilities.GAS_HANDLER;
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		if (!hasCapability(capability, side)) {
+	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side, CapabilityInputType inputType) {
+		if (!hasCapability(capability, side, inputType)) {
 			return LazyOptional.empty();
 		}
 		if (hasInputDir(side)) {
@@ -249,40 +264,167 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
 		if (recipeType != null) {
 			List<ElectrodynamicsRecipe> recipes = ElectrodynamicsRecipe.findRecipesbyType(recipeType, holder.getLevel());
 
-			int inTankCount = 0;
-			int outTankCount = 0;
 			List<Gas> inputGasHolder = new ArrayList<>();
-			List<Gas> outputGasHohlder = new ArrayList<>();
+			List<Gas> outputGasHolder = new ArrayList<>();
+
+			double maxGasInputAmount = 0;
+			double maxGasInputTemperature = 0;
+			int maxGasInputPressure = 0;
+
+			double maxGasOutputAmount = 0;
+			double maxGasOutputTemperature = 0;
+			int maxGasOutputPressure = 0;
+
+			double maxGasBiproductAmount = 0;
+			double maxGasBiproductTemperature = 0;
+			int maxGasBiproudctPressure = 0;
 
 			for (ElectrodynamicsRecipe iRecipe : recipes) {
 				AbstractMaterialRecipe recipe = (AbstractMaterialRecipe) iRecipe;
 				if (inputTanks != null) {
-					int ingCount = recipe.getGasIngredients().size();
-					if (ingCount > inTankCount) {
-						inTankCount = ingCount;
-					}
 					for (GasIngredient ing : recipe.getGasIngredients()) {
 						ing.getMatchingGases().forEach(h -> inputGasHolder.add(h.getGas()));
+						GasStack gas = ing.getGasStack();
+						if (gas.getAmount() > maxGasInputAmount) {
+							maxGasInputAmount = gas.getAmount();
+						}
+						if (gas.getTemperature() > maxGasInputTemperature) {
+							maxGasInputTemperature = gas.getTemperature();
+						}
+						if (gas.getPressure() > maxGasInputPressure) {
+							maxGasInputPressure = gas.getPressure();
+						}
 					}
 				}
 
-				int length = 0;
 				if (outputTanks != null) {
-					outputGasHohlder.add(recipe.getGasRecipeOutput().getGas());
-					length++;
-				}
-				if (recipe.hasGasBiproducts()) {
-					for (GasStack stack : recipe.getFullGasBiStacks()) {
-						outputGasHohlder.add(stack.getGas());
+					GasStack output = recipe.getGasRecipeOutput();
+					outputGasHolder.add(output.getGas());
+					if (output.getAmount() > maxGasOutputAmount) {
+						maxGasOutputAmount = output.getAmount();
 					}
-					length += recipe.getGasBiproductCount();
+					if (output.getTemperature() > maxGasOutputTemperature) {
+						maxGasOutputTemperature = output.getTemperature();
+					}
+					if (output.getPressure() > maxGasOutputPressure) {
+						maxGasOutputPressure = output.getPressure();
+					}
+
+					if (recipe.hasGasBiproducts()) {
+
+						for (GasStack stack : recipe.getFullGasBiStacks()) {
+
+							outputGasHolder.add(stack.getGas());
+
+							if (stack.getAmount() > maxGasBiproductAmount) {
+								maxGasBiproductAmount = stack.getAmount();
+							}
+							if (stack.getTemperature() > maxGasBiproductTemperature) {
+								maxGasBiproductTemperature = stack.getTemperature();
+							}
+							if (stack.getPressure() > maxGasBiproudctPressure) {
+								maxGasBiproudctPressure = stack.getPressure();
+							}
+
+						}
+
+					}
+
 				}
-				if (length > outTankCount) {
-					outTankCount = length;
-				}
+
 			}
 			inputValidatorGases.addAll(inputGasHolder);
-			outputValidatorGases.addAll(outputGasHohlder);
+			outputValidatorGases.addAll(outputGasHolder);
+
+			if (maxGasInputAmount > 0) {
+
+				maxGasInputAmount = (maxGasInputAmount / TANK_MULTIPLIER) * TANK_MULTIPLIER + TANK_MULTIPLIER;
+				// if you are dumb enough to pass in 2^32 for the pressure the crash in on you pal
+				int logged = MathUtils.logBase2(maxGasInputPressure);
+				logged++;
+				maxGasInputPressure = (int) Math.pow(2, logged);
+
+				for (PropertyGasTank tank : inputTanks) {
+
+					if (tank.getCapacity() < maxGasInputAmount) {
+						tank.setCapacity(maxGasInputAmount);
+					}
+
+					if (tank.getMaxTemperature() < maxGasInputTemperature) {
+
+						tank.setMaxTemperature(maxGasInputTemperature + 10.0);
+
+					}
+
+					if (tank.getMaxPressure() < maxGasInputPressure) {
+
+						tank.setMaxPressure(maxGasInputPressure);
+
+					}
+
+				}
+
+			}
+
+			int offset = 0;
+
+			if (maxGasOutputAmount > 0) {
+
+				maxGasOutputAmount = (maxGasOutputAmount / TANK_MULTIPLIER) * TANK_MULTIPLIER + TANK_MULTIPLIER;
+
+				PropertyGasTank tank = outputTanks[0];
+
+				int logged = MathUtils.logBase2(maxGasOutputPressure);
+				logged++;
+				maxGasOutputPressure = (int) Math.pow(2, logged);
+
+				if (tank.getCapacity() < maxGasOutputAmount) {
+					tank.setCapacity(maxGasOutputAmount);
+				}
+
+				if (tank.getMaxTemperature() < maxGasOutputTemperature) {
+
+					tank.setMaxTemperature(maxGasOutputTemperature + 10.0);
+
+				}
+
+				if (tank.getMaxPressure() < maxGasOutputPressure) {
+
+					tank.setMaxPressure(maxGasOutputPressure);
+
+				}
+
+				offset = 1;
+
+			}
+
+			if (maxGasBiproductAmount > 0) {
+
+				maxGasBiproductAmount = (maxGasBiproductAmount / TANK_MULTIPLIER) * TANK_MULTIPLIER + TANK_MULTIPLIER;
+
+				int logged = MathUtils.logBase2(maxGasBiproudctPressure);
+				logged++;
+				maxGasBiproudctPressure = (int) Math.pow(2, logged);
+
+				for (int i = 0; i < outputTanks.length - offset; i++) {
+
+					PropertyGasTank tank = outputTanks[i + offset];
+
+					if (tank.getCapacity() < maxGasBiproductAmount) {
+						tank.setCapacity(maxGasBiproductAmount);
+					}
+
+					if (tank.getMaxTemperature() < maxGasBiproductTemperature) {
+						tank.setMaxTemperature(maxGasBiproductTemperature + 10.0);
+					}
+
+					if (tank.getMaxPressure() < maxGasBiproudctPressure) {
+						tank.setMaxPressure(maxGasBiproudctPressure);
+					}
+				}
+
+			}
+
 		} else {
 			if (validInputGases != null) {
 				for (Gas gas : validInputGases) {
@@ -328,14 +470,12 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
 
 	@Override
 	public PropertyGasTank[] getInputTanks() {
-		// TODO Auto-generated method stub
-		return null;
+		return inputTanks;
 	}
 
 	@Override
-	public PropertyGasTank[] getOUtputTanks() {
-		// TODO Auto-generated method stub
-		return null;
+	public PropertyGasTank[] getOutputTanks() {
+		return outputTanks;
 	}
 
 	private boolean hasOutputDir(Direction dir) {

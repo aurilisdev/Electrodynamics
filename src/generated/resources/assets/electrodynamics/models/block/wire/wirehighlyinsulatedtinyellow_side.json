@@ -1,0 +1,7 @@
+{
+  "parent": "electrodynamics:parent/highlyinsulatedwire_side",
+  "textures": {
+    "insulation": "electrodynamics:block/wire/insulationwool",
+    "particle": "#insulation"
+  }
+}

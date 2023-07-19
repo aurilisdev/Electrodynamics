@@ -4,6 +4,7 @@ import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.TileElectrolyticSeparator;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotFluid;
+import electrodynamics.prefab.inventory.container.slot.item.type.SlotGas;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
@@ -32,8 +33,8 @@ public class ContainerElectrolyticSeparator extends GenericContainerBlockEntity<
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
 		addSlot(new SlotFluid(inv, nextIndex(), 40, 51));
-		addSlot(new SlotFluid(inv, nextIndex(), 81, 51));
-		addSlot(new SlotFluid(inv, nextIndex(), 121, 51));
+		addSlot(new SlotGas(inv, nextIndex(), 81, 51));
+		addSlot(new SlotGas(inv, nextIndex(), 121, 51));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));

@@ -21,13 +21,13 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public abstract class Fluid2ItemRecipe extends AbstractMaterialRecipe {
 
-	private FluidIngredient[] INPUT_FLUIDS;
-	private ItemStack ITEM_OUTPUT;
+	private FluidIngredient[] inputFluids;
+	private ItemStack outputItem;
 
 	public Fluid2ItemRecipe(ResourceLocation recipeID, FluidIngredient[] fluidInputs, ItemStack itemOutput, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, ProbableGas[] gasBiproducts) {
 		super(recipeID, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
-		INPUT_FLUIDS = fluidInputs;
-		ITEM_OUTPUT = itemOutput;
+		inputFluids = fluidInputs;
+		outputItem = itemOutput;
 	}
 
 	@Override
@@ -42,18 +42,18 @@ public abstract class Fluid2ItemRecipe extends AbstractMaterialRecipe {
 
 	@Override
 	public ItemStack assemble(RecipeWrapper inv) {
-		return ITEM_OUTPUT;
+		return outputItem;
 	}
 
 	@Override
 	public ItemStack getResultItem() {
-		return ITEM_OUTPUT;
+		return outputItem;
 	}
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
 		NonNullList<Ingredient> list = NonNullList.create();
-		for (Ingredient ing : INPUT_FLUIDS) {
+		for (Ingredient ing : inputFluids) {
 			list.add(ing);
 		}
 		return list;
@@ -62,7 +62,7 @@ public abstract class Fluid2ItemRecipe extends AbstractMaterialRecipe {
 	@Override
 	public List<FluidIngredient> getFluidIngredients() {
 		List<FluidIngredient> list = new ArrayList<>();
-		for (FluidIngredient ing : INPUT_FLUIDS) {
+		for (FluidIngredient ing : inputFluids) {
 			list.add(ing);
 		}
 		return list;

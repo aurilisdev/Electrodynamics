@@ -3,7 +3,10 @@ package electrodynamics.client.guidebook.utils.components;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.OnClick;
+import electrodynamics.client.guidebook.utils.pagedata.OnKeyPress;
+import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper;
 import net.minecraft.network.chat.MutableComponent;
 
 /**
@@ -36,8 +39,20 @@ public abstract class Module {
 
 	public abstract void addChapters();
 
-	public abstract ImageWrapperObject getLogo();
+	public abstract AbstractGraphicWrapper<?> getLogo();
 
 	public abstract MutableComponent getTitle();
+	
+	public OnTooltip onTooltip() {
+		return null;
+	}
+	
+	public OnClick onClick() {
+		return null;
+	}
+	
+	public OnKeyPress onKeyPress() {
+		return null;
+	}
 
 }

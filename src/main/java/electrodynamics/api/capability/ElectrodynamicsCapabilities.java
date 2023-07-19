@@ -14,14 +14,16 @@ public class ElectrodynamicsCapabilities {
 	public static final double DEFAULT_VOLTAGE = 120.0;
 	public static final String LOCATION_KEY = "location";
 
-	public static Capability<ICapabilityElectrodynamic> ELECTRODYNAMIC = CapabilityManager.get(new CapabilityToken<>() {
+	public static final Capability<ICapabilityElectrodynamic> ELECTRODYNAMIC = CapabilityManager.get(new CapabilityToken<>() {
 	});
-	public static Capability<ILocationStorage> LOCATION_STORAGE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+	public static final Capability<ILocationStorage> LOCATION_STORAGE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
 	});
-	
-	public static Capability<IGasHandler> GAS_HANDLER = CapabilityManager.get(new CapabilityToken<>() {});
-	
-	public static Capability<IGasHandlerItem> GAS_HANDLER_ITEM = CapabilityManager.get(new CapabilityToken<>() {});
+
+	public static final Capability<IGasHandler> GAS_HANDLER = CapabilityManager.get(new CapabilityToken<>() {
+	});
+
+	public static final Capability<IGasHandlerItem> GAS_HANDLER_ITEM = CapabilityManager.get(new CapabilityToken<>() {
+	});
 
 	public static void register(RegisterCapabilitiesEvent event) {
 		event.register(ICapabilityElectrodynamic.class);

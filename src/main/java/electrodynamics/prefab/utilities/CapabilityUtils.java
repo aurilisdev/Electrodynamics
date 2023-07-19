@@ -1,15 +1,16 @@
 package electrodynamics.prefab.utilities;
 
+import org.jetbrains.annotations.NotNull;
+
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.capability.types.gas.IGasHandler;
+import electrodynamics.api.gas.GasAction;
+import electrodynamics.api.gas.GasStack;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStackSimple;
 
 public class CapabilityUtils {
 
@@ -20,66 +21,46 @@ public class CapabilityUtils {
 	public static boolean isFluidItemNull() {
 		return ForgeCapabilities.FLUID_HANDLER_ITEM == null;
 	}
-
-	public static Capability<IFluidHandlerItem> getFluidItemCap() {
-		return ForgeCapabilities.FLUID_HANDLER_ITEM;
-	}
-
+	
 	public static boolean hasFluidItemCap(ItemStack stack) {
-		return stack.getCapability(getFluidItemCap()).map(m -> true).orElse(false);
+		return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).isPresent();
 	}
-
-	public static int simFill(ItemStack stack, FluidStack fluid) {
-		return stack.getCapability(getFluidItemCap()).map(m -> m.fill(fluid, FluidAction.SIMULATE)).orElse(0);
+	
+	public static int fillFluidItem(ItemStack stack, FluidStack fluid, FluidAction action) {
+		return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(cap -> cap.fill(fluid, action)).orElse(0);
 	}
-
-	public static void fill(ItemStack stack, FluidStack fluid) {
-		stack.getCapability(getFluidItemCap()).ifPresent(h -> h.fill(fluid, FluidAction.EXECUTE));
+	
+	public static FluidStack drainFluidItem(ItemStack stack, int amt, FluidAction action) {
+		return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(cap -> cap.drain(amt, action)).orElse(FluidStack.EMPTY);
 	}
-
-	public static FluidStack simDrain(ItemStack stack, FluidStack fluid) {
-		return stack.getCapability(getFluidItemCap()).map(m -> m.drain(fluid, FluidAction.SIMULATE)).orElse(FluidStack.EMPTY);
-	}
-
-	public static FluidStack simDrain(ItemStack stack, int amount) {
-		return stack.getCapability(getFluidItemCap()).map(m -> m.drain(amount, FluidAction.SIMULATE)).orElse(FluidStack.EMPTY);
-	}
-
-	public static void drain(ItemStack stack, FluidStack fluid) {
-		stack.getCapability(getFluidItemCap()).ifPresent(h -> h.drain(fluid, FluidAction.EXECUTE));
-	}
-
-	public static boolean canFillItemStack(ItemStack stack, FluidStack fluid) {
-		return stack.getCapability(getFluidItemCap()).map(m -> {
-			if (m instanceof FluidHandlerItemStack f) {
-				return f.canFillFluidType(fluid);
-			} else if (m instanceof FluidHandlerItemStackSimple f2) {
-				return f2.canFillFluidType(fluid);
-			} else {
-				return false;
-			}
-		}).orElse(false);
-	}
-
-	public static FluidStack getItemStackFluid(ItemStack stack, int tank) {
-		return stack.getCapability(getFluidItemCap()).map(m -> {
-			if (m instanceof FluidHandlerItemStack || m instanceof FluidHandlerItemStackSimple) {
-				return m.getFluidInTank(tank);
-			}
-			return FluidStack.EMPTY;
-		}).orElse(FluidStack.EMPTY);
-	}
-
-	public static int getItemStackCapacity(ItemStack stack, int tank) {
-		return stack.getCapability(getFluidItemCap()).map(m -> {
-			if (m instanceof FluidHandlerItemStack || m instanceof FluidHandlerItemStackSimple) {
-				return m.getTankCapacity(tank);
-			}
-			return 0;
-		}).orElse(0);
+	
+	public static FluidStack drainFluidItem(ItemStack stack, FluidStack fluid, FluidAction action) {
+		return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(cap -> cap.drain(fluid, action)).orElse(FluidStack.EMPTY);
 	}
 
 	// ITEM
+
+	// GAS
+
+	public static boolean isGasItemNull() {
+		return ElectrodynamicsCapabilities.GAS_HANDLER_ITEM == null;
+	}
+	
+	public static boolean hasGasItemCap(ItemStack stack) {
+		return stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).isPresent();
+	}
+	
+	public static double fillGasItem(ItemStack stack, GasStack gas, GasAction action) {
+		return stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> cap.fillTank(0, gas, action)).orElse(0.0);
+	}
+	
+	public static GasStack drainGasItem(ItemStack stack, GasStack gas, GasAction action) {
+		return stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> cap.drainTank(0, gas, action)).orElse(GasStack.EMPTY);
+	}
+	
+	public static GasStack drainGasItem(ItemStack stack, double amount, GasAction action) {
+		return stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> cap.drainTank(0, amount, action)).orElse(GasStack.EMPTY);
+	}
 
 	/* Tiles */
 
@@ -88,29 +69,104 @@ public class CapabilityUtils {
 	public static boolean isFluidNull() {
 		return ForgeCapabilities.FLUID_HANDLER == null;
 	}
+	
+	
+	public static final IGasHandler EMPTY_GAS = new IGasHandler() {
 
-	public static Capability<IFluidHandler> getFluidCap() {
-		return ForgeCapabilities.FLUID_HANDLER;
-	}
+		@Override
+		public int getTanks() {
+			return 1;
+		}
 
-	public static boolean hasFluidCap(BlockEntity tile) {
-		return tile.getCapability(getFluidCap()).map(m -> true).orElse(false);
-	}
+		@Override
+		public GasStack getGasInTank(int tank) {
+			return GasStack.EMPTY;
+		}
 
-	public static int simFill(BlockEntity tile, FluidStack fluid) {
-		return tile.getCapability(getFluidCap()).map(m -> m.fill(fluid, FluidAction.SIMULATE)).orElse(0);
-	}
+		@Override
+		public double getTankCapacity(int tank) {
+			return 0;
+		}
 
-	public static void fill(BlockEntity tile, FluidStack fluid) {
-		tile.getCapability(getFluidCap()).ifPresent(h -> h.fill(fluid, FluidAction.EXECUTE));
-	}
+		@Override
+		public double getTankMaxTemperature(int tank) {
+			return 0;
+		}
 
-	public static FluidStack simDrain(BlockEntity tile, FluidStack fluid) {
-		return tile.getCapability(getFluidCap()).map(m -> m.drain(fluid, FluidAction.SIMULATE)).orElse(FluidStack.EMPTY);
-	}
+		@Override
+		public int getTankMaxPressure(int tank) {
+			return 0;
+		}
 
-	public static void drain(BlockEntity tile, FluidStack fluid) {
-		tile.getCapability(getFluidCap()).ifPresent(h -> h.drain(fluid, FluidAction.EXECUTE));
-	}
+		@Override
+		public boolean isGasValid(int tank, GasStack gas) {
+			return false;
+		}
+
+		@Override
+		public double fillTank(int tank, GasStack gas, GasAction action) {
+			return 0;
+		}
+
+		@Override
+		public GasStack drainTank(int tank, GasStack gas, GasAction action) {
+			return GasStack.EMPTY;
+		}
+
+		@Override
+		public GasStack drainTank(int tank, double maxFill, GasAction action) {
+			return GasStack.EMPTY;
+		}
+
+		@Override
+		public double heat(int tank, double deltaTemperature, GasAction action) {
+			return -1;
+		}
+
+		@Override
+		public double bringPressureTo(int tank, int atm, GasAction action) {
+			return -1;
+		}
+
+	};
+	
+	public static final IFluidHandler EMPTY_FLUID = new IFluidHandler() {
+
+		@Override
+		public int getTanks() {
+			return 1;
+		}
+
+		@Override
+		public @NotNull FluidStack getFluidInTank(int tank) {
+			return FluidStack.EMPTY;
+		}
+
+		@Override
+		public int getTankCapacity(int tank) {
+			return 0;
+		}
+
+		@Override
+		public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
+			return false;
+		}
+
+		@Override
+		public int fill(FluidStack resource, FluidAction action) {
+			return 0;
+		}
+
+		@Override
+		public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
+			return FluidStack.EMPTY;
+		}
+
+		@Override
+		public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
+			return FluidStack.EMPTY;
+		}
+
+	};
 
 }

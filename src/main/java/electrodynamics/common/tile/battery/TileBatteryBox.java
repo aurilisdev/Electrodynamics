@@ -53,11 +53,11 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		powerOutput = property(new Property<>(PropertyType.Double, "powerOutput", output));
 		maxJoules = property(new Property<>(PropertyType.Double, "maxJoulesStored", max));
 		receiveLimitLeft = property(new Property<>(PropertyType.Double, "receiveLimitLeft", output * currentCapacityMultiplier.get()));
-		addComponent(new ComponentDirection());
-		addComponent(new ComponentTickable().tickServer(this::tickServer));
-		addComponent(new ComponentPacketHandler());
+		addComponent(new ComponentDirection(this));
+		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
+		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(1).upgrades(3)).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid((i, s, c) -> i == 0 ? s.getItem() instanceof ItemElectric : machineValidator().test(i, s, c)));
-		addComponent(new ComponentContainerProvider(machine).createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 		addComponent(new ComponentElectrodynamic(this).voltage(baseVoltage).maxJoules(max).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH));
 
 	}
@@ -84,8 +84,8 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> capability, Direction face) {
 		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 		ComponentElectrodynamic electro = this.getComponent(ComponentType.Electrodynamic);
-		if (electro.hasCapability(capability, face)) {
-			return electro.getCapability(capability, face);
+		if (electro.hasCapability(capability, face, null)) {
+			return electro.getCapability(capability, face, null);
 		}
 		if (capability == ForgeCapabilities.ENERGY && (face == facing || face == facing.getOpposite())) {
 			return (LazyOptional<T>) LazyOptional.of(() -> this);

@@ -23,11 +23,6 @@
                   "op": "replace",
                   "source": "itemproperty_size",
                   "target": "BlockEntityTag"
-                },
-                {
-                  "op": "replace",
-                  "source": "additional",
-                  "target": "BlockEntityTag.additional"
                 }
               ],
               "source": "block_entity"

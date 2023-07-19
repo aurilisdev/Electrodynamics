@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
+import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.inventory.InventoryTickConsumer;
 import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -38,7 +40,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 public class ItemCanister extends Item {
 
 	public static final int MAX_FLUID_CAPACITY = 5000;
-	public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 
 	public static final List<InventoryTickConsumer> INVENTORY_TICK_CONSUMERS = new ArrayList<>();
 
@@ -52,8 +53,11 @@ public class ItemCanister extends Item {
 			items.add(new ItemStack(this));
 			if (!CapabilityUtils.isFluidItemNull()) {
 				for (Fluid liq : ForgeRegistries.FLUIDS.getValues()) {
+					if(liq.isSame(Fluids.EMPTY)) {
+						continue;
+					}
 					ItemStack temp = new ItemStack(this);
-					temp.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fill(new FluidStack(liq, MAX_FLUID_CAPACITY), FluidAction.EXECUTE));
+					temp.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).setFluid(new FluidStack(liq, MAX_FLUID_CAPACITY)));
 					items.add(temp);
 
 				}
@@ -69,16 +73,16 @@ public class ItemCanister extends Item {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_FLUID_CAPACITY, null);
+		return new RestrictedFluidHandlerItemStack.SwapEmpty(stack, stack, MAX_FLUID_CAPACITY);
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		if (!CapabilityUtils.isFluidItemNull()) {
 			stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> {
-				if (!((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID)) {
+				if (!((RestrictedFluidHandlerItemStack) h).getFluid().isEmpty()) {
 					RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
-					tooltip.add(Component.literal(cap.getFluidInTank(0).getAmount() + " / " + MAX_FLUID_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
+					tooltip.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(cap.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_FLUID_CAPACITY)).withStyle(ChatFormatting.GRAY));
 					tooltip.add(cap.getFluid().getDisplayName().copy().withStyle(ChatFormatting.DARK_GRAY));
 				}
 			});
@@ -96,7 +100,7 @@ public class ItemCanister extends Item {
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID)).orElse(false);
+		return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().isEmpty()).orElse(false);
 	}
 
 	@Override
@@ -114,14 +118,11 @@ public class ItemCanister extends Item {
 			BlockState state = world.getBlockState(pos);
 			if (state.getFluidState().isSource() && !state.getFluidState().getType().isSame(Fluids.EMPTY)) {
 				FluidStack sourceFluid = new FluidStack(state.getFluidState().getType(), 1000);
-				boolean validFluid = CapabilityUtils.canFillItemStack(stack, sourceFluid);
-				if (validFluid) {
-					int amtFilled = CapabilityUtils.simFill(stack, sourceFluid);
-					if (amtFilled >= 1000) {
-						CapabilityUtils.fill(stack, sourceFluid);
-						world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-						world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
-					}
+				int accepted = CapabilityUtils.fillFluidItem(stack, sourceFluid, FluidAction.SIMULATE);
+				if(accepted >= 1000) {
+					CapabilityUtils.fillFluidItem(stack, sourceFluid, FluidAction.EXECUTE);
+					world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+					world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
 				}
 			}
 		}

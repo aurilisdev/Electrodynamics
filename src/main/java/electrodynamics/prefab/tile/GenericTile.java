@@ -35,14 +35,18 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
-public class GenericTile extends BlockEntity implements Nameable, IPropertyHolderTile {
+public abstract class GenericTile extends BlockEntity implements Nameable, IPropertyHolderTile {
 	private final Component[] components = new Component[ComponentType.values().length];
 	private final ComponentProcessor[] processors = new ComponentProcessor[5];
-	private final PropertyManager propertyManager = new PropertyManager();
+	private final PropertyManager propertyManager = new PropertyManager(this);
 
 	// use this for manually setting the change flag
 	public boolean isChanged = false;
 
+	public GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
+		super(tileEntityTypeIn, worldPos, blockState);
+	}
+	
 	public <T> Property<T> property(Property<T> prop) {
 		for (Property<?> existing : propertyManager.getProperties()) {
 			if (existing.getName().equals(prop.getName())) {
@@ -106,7 +110,8 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		super.load(compound);
 		for (Property<?> prop : propertyManager.getProperties()) {
 			if (prop.shouldSave()) {
-				prop.getType().load(prop, compound);
+				prop.load(prop.getType().readFromNbt.apply(prop, compound));
+				compound.remove(prop.getName());
 			}
 		}
 		for (Component component : components) {
@@ -121,14 +126,14 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 				pr.loadFromNBT(compound);
 			}
 		}
-		
+
 	}
 
 	@Override
 	public void saveAdditional(@NotNull CompoundTag compound) {
 		for (Property<?> prop : propertyManager.getProperties()) {
 			if (prop.shouldSave()) {
-				prop.getType().save(prop, compound);
+				prop.getType().writeToNbt.accept(prop, compound);
 			}
 		}
 		for (Component component : components) {
@@ -146,10 +151,6 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		super.saveAdditional(compound);
 	}
 
-	protected GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
-		super(tileEntityTypeIn, worldPos, blockState);
-	}
-
 	@Override
 	public void onLoad() {
 		super.onLoad();
@@ -160,12 +161,11 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 				component.onLoad();
 			}
 		}
-
-		if (hasComponent(ComponentType.PacketHandler)) {
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
-			this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-		}
-
+		/*
+		 * if (hasComponent(ComponentType.PacketHandler)) {
+		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
+		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
+		 */
 	}
 
 	@Override
@@ -177,15 +177,18 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	@NotNull
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
 		if (cap == ElectrodynamicsCapabilities.ELECTRODYNAMIC && components[ComponentType.Electrodynamic.ordinal()] != null) {
-			return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side);
+			return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side, null);
 		}
 		if (cap == ForgeCapabilities.FLUID_HANDLER && components[ComponentType.FluidHandler.ordinal()] != null) {
-			return components[ComponentType.FluidHandler.ordinal()].getCapability(cap, side);
+			return components[ComponentType.FluidHandler.ordinal()].getCapability(cap, side, null);
 		}
 		if (cap == ForgeCapabilities.ITEM_HANDLER && components[ComponentType.Inventory.ordinal()] != null) {
-			return components[ComponentType.Inventory.ordinal()].getCapability(cap, side);
+			return components[ComponentType.Inventory.ordinal()].getCapability(cap, side, null);
 		}
-		return super.getCapability(cap, side);
+		if (cap == ElectrodynamicsCapabilities.GAS_HANDLER && components[ComponentType.GasHandler.ordinal()] != null) {
+			return components[ComponentType.GasHandler.ordinal()].getCapability(cap, side, null);
+		}
+		return LazyOptional.empty();
 	}
 
 	@Override
@@ -242,7 +245,7 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 		return false;
 	}
-	
+
 	public int getNumActiveProcessors() {
 		int count = 0;
 		for (ComponentProcessor pr : processors) {
@@ -252,15 +255,15 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 		}
 		return count;
 	}
-	
+
 	public int getNumProcessors() {
-		 int count = 0;
-		 for (ComponentProcessor pr : processors) {
-				if (pr != null) {
-					count++;
-				}
+		int count = 0;
+		for (ComponentProcessor pr : processors) {
+			if (pr != null) {
+				count++;
 			}
-			return count;
+		}
+		return count;
 	}
 
 	public void onEnergyChange(ComponentElectrodynamic cap) {
@@ -283,9 +286,9 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	public void onFluidTankChange(FluidTank tank) {
 		// hook method for now
 	}
-	
+
 	public void onGasTankChange(GasTank tank) {
-		
+
 	}
 
 	// This is ceded to the tile to allow for greater control with the use function
@@ -338,20 +341,36 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 	public void onPlace(BlockState oldState, boolean isMoving) {
 
 	}
-	
+
 	public int getComparatorSignal() {
 		return 0;
 	}
 	
+	public int getDirectSignal(Direction dir) {
+		return 0;
+	}
+	
+	public int getSignal(Direction dir) {
+		return 0;
+	}
+
 	public void updateCarriedItemInContainer(ItemStack stack, UUID playerId) {
 		Player player = getLevel().getPlayerByUUID(playerId);
-		if(player.hasContainerOpen()) {
+		if (player.hasContainerOpen()) {
 			player.containerMenu.setCarried(stack);
 		}
 	}
-	
+
 	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator() {
-		return (x, y, i) -> x < i.getOutputStartIndex() || x >= i.getInputBucketStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade upgrade && i.isUpgradeValid(upgrade.subtype);
+		return (x, y, i) -> x < i.getOutputStartIndex() || x >= i.getInputBucketStartIndex() && x < i.getInputGasStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getInputGasStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasGasItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade upgrade && i.isUpgradeValid(upgrade.subtype);
 	}
-	
+
+	public static double[] arr(double... values) {
+		return values;
+	}
+
+	public static int[] arr(int... values) {
+		return values;
+	}
+
 }

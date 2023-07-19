@@ -2,15 +2,15 @@ package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerChemicalMixer;
 import electrodynamics.common.tile.TileChemicalMixer;
-import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentFluid;
-import electrodynamics.prefab.screen.component.ScreenComponentFluidInput;
-import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
-import electrodynamics.prefab.screen.component.ScreenComponentProgress;
-import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressBars;
-import electrodynamics.prefab.screen.component.ScreenComponentProgress.ProgressTextures;
+import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressTextures;
+import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentFluidGauge;
+import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentFluidGaugeInput;
+import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
+import electrodynamics.prefab.screen.types.GenericMaterialScreen;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
@@ -21,10 +21,10 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
+public class ScreenChemicalMixer extends GenericMaterialScreen<ContainerChemicalMixer> {
 	public ScreenChemicalMixer(ContainerChemicalMixer container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
+		addComponent(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			GenericTile furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
@@ -33,8 +33,8 @@ public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
 				}
 			}
 			return 0;
-		}, this, 42, 30));
-		components.add(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
+		}, 42, 30));
+		addComponent(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			GenericTile furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
@@ -43,23 +43,23 @@ public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
 				}
 			}
 			return 0;
-		}, this, 98, 30));
-		components.add(new ScreenComponentGeneric(ProgressTextures.ARROW_LEFT_OFF, this, 42, 50));
-		components.add(new ScreenComponentFluidInput(() -> {
+		}, 98, 30));
+		addComponent(new ScreenComponentGeneric(ProgressTextures.ARROW_LEFT_OFF, 42, 50));
+		addComponent(new ScreenComponentFluidGaugeInput(() -> {
 			TileChemicalMixer boiler = container.getHostFromIntArray();
 			if (boiler != null) {
 				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks()[0];
 			}
 			return null;
-		}, this, 21, 18));
-		components.add(new ScreenComponentFluid(() -> {
+		}, 21, 18));
+		addComponent(new ScreenComponentFluidGauge(() -> {
 			TileChemicalMixer boiler = container.getHostFromIntArray();
 			if (boiler != null) {
 				return boiler.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getOutputTanks()[0];
 			}
 			return null;
-		}, this, 127, 18));
-		components.add(new ScreenComponentElectricInfo(this, -AbstractScreenComponentInfo.SIZE + 1, 2));
+		}, 127, 18));
+		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
 	}
 
 }

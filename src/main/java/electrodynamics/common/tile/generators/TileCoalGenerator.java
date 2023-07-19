@@ -21,7 +21,7 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
-import electrodynamics.prefab.utilities.object.TargetValue;
+import electrodynamics.prefab.utilities.object.TargetValue.PropertyTargetValue;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
@@ -37,25 +37,29 @@ import net.minecraftforge.common.ForgeHooks;
 public class TileCoalGenerator extends GenericGeneratorTile {
 	protected CachedTileOutput output;
 	protected TransferPack currentOutput = TransferPack.EMPTY;
-	public TargetValue heat = new TargetValue(property(new Property<>(PropertyType.Double, "heat", 27.0)));
+	public PropertyTargetValue heat = new PropertyTargetValue(property(new Property<>(PropertyType.Double, "heat", 27.0)));
 	public Property<Integer> burnTime = property(new Property<>(PropertyType.Integer, "burnTime", 0));
 	public Property<Integer> maxBurnTime = property(new Property<>(PropertyType.Integer, "maxBurnTime", 1));
 	// for future planned upgrades
 	private Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
+	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
 
 	public TileCoalGenerator(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_COALGENERATOR.get(), worldPosition, blockState, 1.0);
-		addComponent(new ComponentDirection());
-		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentTickable().tickClient(this::tickClient).tickServer(this::tickServer));
+		addComponent(new ComponentDirection(this));
+		addComponent(new ComponentPacketHandler(this));
+		addComponent(new ComponentTickable(this).tickClient(this::tickClient).tickServer(this::tickServer));
 		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(1)).slotFaces(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH).valid((index, stack, i) -> getValidItems().contains(stack.getItem())));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.coalgenerator).createMenu((id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.coalgenerator, this).createMenu((id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
 		if (burnTime.get() > 0) {
 			burnTime.set(burnTime.get() - 1);
+		}
+		if(hasRedstoneSignal.get()) {
+			return;
 		}
 		ComponentDirection direction = getComponent(ComponentType.Direction);
 		if (output == null) {
@@ -71,17 +75,14 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 			fuel.shrink(1);
 			maxBurnTime.set(Math.max(burnTime.get(), 1));
 		}
-		BlockMachine machine = (BlockMachine) getBlockState().getBlock();
-		if (machine != null) {
-			boolean greaterBurnTime = burnTime.get() > 0;
-			if (BlockEntityUtils.isLit(this) ^ greaterBurnTime) {
-				BlockEntityUtils.updateLit(this, greaterBurnTime);
-			}
+		boolean greaterBurnTime = burnTime.get() > 0;
+		if (BlockEntityUtils.isLit(this) ^ greaterBurnTime) {
+			BlockEntityUtils.updateLit(this, greaterBurnTime);
 		}
-		if (heat.getValue().get() > 27 && output.valid()) {
+		if (heat.getValue() > 27 && output.valid()) {
 			ElectricityUtils.receivePower(output.getSafe(), direction.getDirection(), currentOutput, false);
 		}
-		heat.rangeParameterize(27, 3000, burnTime.get() > 0 ? 3000 : 27, heat.getValue().get(), 600).flush();
+		heat.rangeParameterize(27, 3000, burnTime.get() > 0 ? 3000 : 27, heat.getValue(), 600).flush();
 		currentOutput = getProduced();
 	}
 
@@ -112,7 +113,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 
 	@Override
 	public TransferPack getProduced() {
-		return TransferPack.ampsVoltage(multiplier.get() * Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.getValue().get() - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
+		return TransferPack.ampsVoltage(multiplier.get() * Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * ((heat.getValue() - 27.0) / (3000.0 - 27.0)), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
 	}
 
 	public static List<Item> getValidItems() {
@@ -121,7 +122,12 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 	
 	@Override
 	public int getComparatorSignal() {
-		return (int) ((heat.getValue().get() / 3000.0) * 15.0);
+		return (int) ((heat.getValue() / 3000.0) * 15.0);
+	}
+	
+	@Override
+	public void onNeightborChanged(BlockPos neighbor) {
+		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
 	}
 	
 }

@@ -1,5 +1,6 @@
 package electrodynamics.api.screen;
 
+import electrodynamics.api.References;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -26,7 +27,8 @@ public interface ITexture {
 	ResourceLocation getLocation();
 
 	enum Textures implements ITexture {
-		NONE(0, 0, 0, 0, 0, 0, null);
+		NONE(0, 0, 0, 0, 0, 0, null),
+		CONDENSER_COLUMN(32, 47, 0, 0, 32, 47, new ResourceLocation(References.ID + ":textures/screen/component/condensercolumn.png"));
 
 		private final int textureWidth;
 		private final int textureHeight;

@@ -8,7 +8,7 @@
       "tag": "forge:plates/stainlesssteel"
     },
     "W": {
-      "item": "electrodynamics:wireinsulatedgold"
+      "tag": "forge:wires/insulated_gold"
     }
   },
   "pattern": [

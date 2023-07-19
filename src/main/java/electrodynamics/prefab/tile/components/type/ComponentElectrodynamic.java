@@ -9,10 +9,10 @@ import java.util.function.DoubleSupplier;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.item.IItemElectric;
-import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.CapabilityInputType;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
@@ -73,7 +73,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, Direction side) {
+	public boolean hasCapability(Capability<?> capability, Direction side, CapabilityInputType inputType) {
 		lastReturnedSide = side;
 		if (capability != ElectrodynamicsCapabilities.ELECTRODYNAMIC || !hasCapability.getAsBoolean()) {
 			return false;
@@ -89,9 +89,9 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
+	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side, CapabilityInputType inputType) {
 		lastReturnedSide = side;
-		return hasCapability(capability, side) ? (LazyOptional<T>) LazyOptional.of(() -> this) : LazyOptional.empty();
+		return hasCapability(capability, side, inputType) ? (LazyOptional<T>) LazyOptional.of(() -> this) : LazyOptional.empty();
 	}
 
 	@Override

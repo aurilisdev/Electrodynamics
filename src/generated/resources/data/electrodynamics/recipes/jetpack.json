@@ -5,13 +5,13 @@
       "tag": "forge:circuits/advanced"
     },
     "P": {
-      "item": "electrodynamics:pipesteel"
+      "item": "electrodynamics:gaspipeuninsulatedsteel"
     },
     "S": {
       "tag": "forge:plates/steel"
     },
     "T": {
-      "item": "electrodynamics:tanksteel"
+      "item": "electrodynamics:gastanksteel"
     }
   },
   "pattern": [

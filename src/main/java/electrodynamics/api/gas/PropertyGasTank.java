@@ -3,8 +3,6 @@ package electrodynamics.api.gas;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
-import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketSendUpdatePropertiesServer;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
@@ -14,8 +12,7 @@ import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.block.Blocks;
 
 /**
- * An extension of the GasTank class incorporating the Electrodynamics property
- * system
+ * An extension of the GasTank class incorporating the Electrodynamics property system
  * 
  * @author skip999
  *
@@ -40,7 +37,7 @@ public class PropertyGasTank extends GasTank {
 		gasProperty = holder.property(new Property<>(PropertyType.Gasstack, "propertygastankstack" + key, GasStack.EMPTY));
 		capacityProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankcapacity" + key, capacity));
 		maxTemperatureProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankmaxtemperature" + key, maxTemperature));
-		maxPressureProperty = holder.property(new Property<>(PropertyType.Integer, "propertygastankmaxpressure", maxPressure));
+		maxPressureProperty = holder.property(new Property<>(PropertyType.Integer, "propertygastankmaxpressure" + key, maxPressure));
 	}
 
 	public PropertyGasTank(GenericTile holder, String key, double capacity, double maxTemperature, int maxPressure, Predicate<GasStack> isGasValid) {
@@ -51,7 +48,7 @@ public class PropertyGasTank extends GasTank {
 		gasProperty = holder.property(new Property<>(PropertyType.Gasstack, "propertygastankstack" + key, GasStack.EMPTY));
 		capacityProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankcapacity" + key, capacity));
 		maxTemperatureProperty = holder.property(new Property<>(PropertyType.Double, "propertygastankmaxtemperature" + key, maxTemperature));
-		maxPressureProperty = holder.property(new Property<>(PropertyType.Integer, "propertygastankmaxpressure", maxPressure));
+		maxPressureProperty = holder.property(new Property<>(PropertyType.Integer, "propertygastankmaxpressure" + key, maxPressure));
 
 	}
 
@@ -71,7 +68,7 @@ public class PropertyGasTank extends GasTank {
 	public PropertyGasTank setValidator(Predicate<GasStack> predicate) {
 		return (PropertyGasTank) super.setValidator(predicate);
 	}
-	
+
 	public PropertyGasTank setOnGasCondensed(BiConsumer<GasTank, GenericTile> onGasCondensed) {
 		this.onGasCondensed = onGasCondensed;
 		return this;
@@ -100,6 +97,11 @@ public class PropertyGasTank extends GasTank {
 	@Override
 	public GasStack getGas() {
 		return gasProperty.get();
+	}
+
+	@Override
+	public double getGasAmount() {
+		return getGas().getAmount();
 	}
 
 	@Override
@@ -158,10 +160,11 @@ public class PropertyGasTank extends GasTank {
 	// this must be called to update the server if interacted with on the client
 	public void updateServer() {
 
-		if (holder != null) {
-			NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(gasProperty.getPropertyManager().getProperties().indexOf(gasProperty), gasProperty, holder.getBlockPos()));
-		}
-
+		if(gasProperty.isDirty()) gasProperty.updateServer();
+		if(capacityProperty.isDirty()) capacityProperty.updateServer();
+		if(maxTemperatureProperty.isDirty()) maxTemperatureProperty.updateServer();
+		if(maxPressureProperty.isDirty()) maxPressureProperty.updateServer();
+		
 	}
 
 }

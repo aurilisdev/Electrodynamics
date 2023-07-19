@@ -1,8 +1,5 @@
 {
 	"credit": "aurilisdev",
-	"textures": {
-		"particle": "#texture"
-	},
 	"elements": [
 		{
 			"from": [
@@ -23,7 +20,8 @@
 						4,
 						4
 					],
-					"texture": "#texture"
+					"texture": "#conductor",
+					"tintindex": 1
 				},
 				"east": {
 					"uv": [
@@ -32,7 +30,8 @@
 						4,
 						4
 					],
-					"texture": "#texture"
+					"texture": "#conductor",
+					"tintindex": 1
 				},
 				"south": {
 					"uv": [
@@ -41,7 +40,8 @@
 						4,
 						4
 					],
-					"texture": "#texture"
+					"texture": "#conductor",
+					"tintindex": 1
 				},
 				"west": {
 					"uv": [
@@ -50,7 +50,8 @@
 						4,
 						4
 					],
-					"texture": "#texture"
+					"texture": "#conductor",
+					"tintindex": 1
 				},
 				"up": {
 					"uv": [
@@ -59,7 +60,8 @@
 						4,
 						4
 					],
-					"texture": "#texture"
+					"texture": "#conductor",
+					"tintindex": 1
 				},
 				"down": {
 					"uv": [
@@ -68,7 +70,82 @@
 						4,
 						4
 					],
-					"texture": "#texture"
+					"texture": "#conductor",
+					"tintindex": 1
+				}
+			}
+		},
+		{
+			"from": [
+				5,
+				5,
+				5
+			],
+			"to": [
+				11,
+				11,
+				11
+			],
+			"faces": {
+				"north": {
+					"uv": [
+						0,
+						0,
+						4,
+						4
+					],
+					"texture": "#insulation",
+					"tintindex": 0
+				},
+				"east": {
+					"uv": [
+						0,
+						0,
+						4,
+						4
+					],
+					"texture": "#insulation",
+					"tintindex": 0
+				},
+				"south": {
+					"uv": [
+						0,
+						0,
+						4,
+						4
+					],
+					"texture": "#insulation",
+					"tintindex": 0
+				},
+				"west": {
+					"uv": [
+						0,
+						0,
+						4,
+						4
+					],
+					"texture": "#insulation",
+					"tintindex": 0
+				},
+				"up": {
+					"uv": [
+						0,
+						0,
+						4,
+						4
+					],
+					"texture": "#insulation",
+					"tintindex": 0
+				},
+				"down": {
+					"uv": [
+						0,
+						0,
+						4,
+						4
+					],
+					"texture": "#insulation",
+					"tintindex": 0
 				}
 			}
 		}

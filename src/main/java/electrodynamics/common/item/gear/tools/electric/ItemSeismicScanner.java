@@ -6,11 +6,11 @@ import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandl
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketAddClientRenderInfo;
+import electrodynamics.common.packet.types.client.PacketAddClientRenderInfo;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.WorldUtils;
 import electrodynamics.prefab.utilities.object.Location;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -26,7 +26,10 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -64,19 +67,19 @@ public class ItemSeismicScanner extends ItemElectric {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new CapabilityItemStackHandler(1);
+		return new CapabilityItemStackHandler(1, stack);
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
 		super.appendHoverText(stack, world, tooltips, flag);
-		tooltips.add(TextUtils.tooltip("seismicscanner.use"));
-		tooltips.add(TextUtils.tooltip("seismicscanner.opengui").withStyle(ChatFormatting.GRAY));
+		tooltips.add(ElectroTextUtils.tooltip("seismicscanner.use"));
+		tooltips.add(ElectroTextUtils.tooltip("seismicscanner.opengui").withStyle(ChatFormatting.GRAY));
 		boolean onCooldown = stack.hasTag() && stack.getTag().getInt(NBTUtils.TIMER) > 0;
 		if (onCooldown) {
-			tooltips.add(TextUtils.tooltip("seismicscanner.oncooldown").withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
+			tooltips.add(ElectroTextUtils.tooltip("seismicscanner.oncooldown").withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
 		} else {
-			tooltips.add(TextUtils.tooltip("seismicscanner.showuse").withStyle(ChatFormatting.GRAY));
+			tooltips.add(ElectroTextUtils.tooltip("seismicscanner.showuse").withStyle(ChatFormatting.GRAY));
 		}
 
 	}
@@ -84,13 +87,14 @@ public class ItemSeismicScanner extends ItemElectric {
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		if (allowedIn(group)) {
-			ItemStack charged = new ItemStack(this);
-			IItemElectric.setEnergyStored(charged, properties.capacity);
-			items.add(charged);
 
 			ItemStack empty = new ItemStack(this);
 			IItemElectric.setEnergyStored(empty, 0);
 			items.add(empty);
+			
+			ItemStack charged = new ItemStack(this);
+			IItemElectric.setEnergyStored(charged, properties.capacity);
+			items.add(charged);
 		}
 	}
 
@@ -162,6 +166,17 @@ public class ItemSeismicScanner extends ItemElectric {
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
+	}
+	
+	@Override
+	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+
+		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
+		}
+
+		return true;
+
 	}
 
 }

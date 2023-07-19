@@ -1,8 +1,7 @@
 package electrodynamics.compatibility.jei.utils.label;
 
-import mezz.jei.api.recipe.category.IRecipeCategory;
+import electrodynamics.compatibility.jei.recipecategories.utils.AbstractRecipeCategory;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.crafting.Recipe;
 
 public abstract class AbstractLabelWrapper {
 
@@ -34,5 +33,5 @@ public abstract class AbstractLabelWrapper {
 		return xIsEnd;
 	}
 
-	public abstract Component getComponent(IRecipeCategory<?> category, Recipe<?> recipe);
+	public abstract Component getComponent(AbstractRecipeCategory<?> category, Object recipe);
 }

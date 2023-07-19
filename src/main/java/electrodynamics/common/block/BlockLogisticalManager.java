@@ -8,8 +8,8 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Maps;
 
-import electrodynamics.common.block.connect.EnumConnectType;
-import electrodynamics.common.tile.TileLogisticalManager;
+import electrodynamics.common.block.connect.util.EnumConnectType;
+import electrodynamics.common.tile.quarry.TileLogisticalManager;
 import electrodynamics.prefab.block.GenericEntityBlockWaterloggable;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;

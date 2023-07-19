@@ -9,18 +9,21 @@ import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeCategory;
-import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
+import electrodynamics.compatibility.jei.recipecategories.utils.AbstractRecipeCategory;
+import electrodynamics.compatibility.jei.utils.gui.types.BackgroundObject;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public abstract class Fluid2FluidRecipeCategory<T extends ElectrodynamicsRecipe> extends ElectrodynamicsRecipeCategory<T> {
+public abstract class Fluid2FluidRecipeCategory<T extends ElectrodynamicsRecipe> extends AbstractRecipeCategory<T> {
 
-	protected Fluid2FluidRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper wrapper, Class<T> recipeCategoryClass, int animationTime) {
-		super(guiHelper, modID, recipeGroup, inputMachine, wrapper, recipeCategoryClass, animationTime);
+	public Fluid2FluidRecipeCategory(IGuiHelper guiHelper, Component title, ItemStack inputMachine, BackgroundObject wrapper, RecipeType<T> recipeType, int animationTime) {
+		super(guiHelper, title, inputMachine, wrapper, recipeType, animationTime);
 	}
 
 	@Override
@@ -48,7 +51,7 @@ public abstract class Fluid2FluidRecipeCategory<T extends ElectrodynamicsRecipe>
 			List<ItemStack> buckets = new ArrayList<>();
 			for (FluidStack stack : ing.getMatchingFluids()) {
 				ItemStack bucket = new ItemStack(stack.getFluid().getBucket(), 1);
-				CapabilityUtils.fill(bucket, stack);
+				CapabilityUtils.fillFluidItem(bucket, stack, FluidAction.EXECUTE);
 				buckets.add(bucket);
 			}
 			ingredients.add(buckets);
@@ -63,13 +66,13 @@ public abstract class Fluid2FluidRecipeCategory<T extends ElectrodynamicsRecipe>
 		List<ItemStack> outputItems = new ArrayList<>();
 
 		ItemStack bucket = new ItemStack(recipe.getFluidRecipeOutput().getFluid().getBucket(), 1);
-		CapabilityUtils.fill(bucket, recipe.getFluidRecipeOutput());
+		CapabilityUtils.fillFluidItem(bucket, recipe.getFluidRecipeOutput(), FluidAction.EXECUTE);
 		outputItems.add(bucket);
 
 		if (recipe.hasFluidBiproducts()) {
 			for (ProbableFluid stack : recipe.getFluidBiproducts()) {
 				ItemStack temp = new ItemStack(stack.getFullStack().getFluid().getBucket(), 1);
-				CapabilityUtils.fill(temp, stack.getFullStack());
+				CapabilityUtils.fillFluidItem(temp, stack.getFullStack(), FluidAction.EXECUTE);
 				outputItems.add(temp);
 			}
 		}

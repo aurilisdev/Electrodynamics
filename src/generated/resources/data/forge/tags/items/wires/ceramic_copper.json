@@ -1,0 +1,11 @@
+{
+  "values": [
+    "electrodynamics:wireceramicinsulatedcopperblack",
+    "electrodynamics:wireceramicinsulatedcopperred",
+    "electrodynamics:wireceramicinsulatedcopperwhite",
+    "electrodynamics:wireceramicinsulatedcoppergreen",
+    "electrodynamics:wireceramicinsulatedcopperblue",
+    "electrodynamics:wireceramicinsulatedcopperyellow",
+    "electrodynamics:wireceramicinsulatedcopperbrown"
+  ]
+}

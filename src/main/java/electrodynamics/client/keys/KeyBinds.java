@@ -34,7 +34,7 @@ public class KeyBinds {
 		toggleNvgs = registerKey("togglenvgs", InputConstants.KEY_N, event);
 		switchServoLeggingsMode = registerKey("servoleggingsmode", InputConstants.KEY_L, event);
 		toggleServoLeggings = registerKey("toggleservoleggings", InputConstants.KEY_K, event);
-		swapBattery = registerKey("swapbatter", InputConstants.KEY_R, event);
+		swapBattery = registerKey("swapbattery", InputConstants.KEY_R, event);
 
 	}
 

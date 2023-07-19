@@ -3,16 +3,23 @@ package electrodynamics.datagen.client;
 import javax.annotation.Nullable;
 
 import electrodynamics.api.References;
-import electrodynamics.common.block.connect.EnumConnectType;
+import electrodynamics.common.block.connect.util.EnumConnectType;
+import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
+import electrodynamics.common.block.states.ElectrodynamicsBlockStates.AddonTankNeighborType;
+import electrodynamics.common.block.states.ElectrodynamicsBlockStates.ManipulatorHeatingStatus;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
-import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.block.subtype.SubtypeWire.WireType;
+import electrodynamics.common.block.subtype.SubtypeWire.Conductor;
+import electrodynamics.common.block.subtype.SubtypeWire.InsulationMaterial;
+import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
+import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
@@ -128,8 +135,35 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilldouble), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilldouble)), true);
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilltriple), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilltriple)), true);
 
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastanksteel), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastanksteel)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankreinforced), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankreinforced)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankhsla), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankhsla)), true);
+
+		horrRotatedBlock(ElectrodynamicsBlocks.blockCompressor, existingBlock(ElectrodynamicsBlocks.blockCompressor), 180, 0, false);
+		horrRotatedBlock(ElectrodynamicsBlocks.blockDecompressor, existingBlock(ElectrodynamicsBlocks.blockDecompressor), 180, 0, false);
+		genCompressorAddonTank();
+		genCompressorSide();
+		simpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gasvent), blockLoc("gasvent"), true);
+		genThermoelectricManipulator();
+		
+		horrRotatedLitBlock(ElectrodynamicsBlocks.blockGasValve, existingBlock(ElectrodynamicsBlocks.blockGasValve), existingBlock(blockLoc("gasvalveon")), 90, 0, true);
+		horrRotatedLitBlock(ElectrodynamicsBlocks.blockFluidValve, existingBlock(ElectrodynamicsBlocks.blockFluidValve), existingBlock(blockLoc("fluidvalveon")), 90, 0, true);
+		
+		horrRotatedBlock(ElectrodynamicsBlocks.blockGasPipePump, existingBlock(ElectrodynamicsBlocks.blockGasPipePump), false);
+		horrRotatedBlock(ElectrodynamicsBlocks.blockFluidPipePump, existingBlock(ElectrodynamicsBlocks.blockFluidPipePump), false);
+		
+		horrRotatedBlock(ElectrodynamicsBlocks.blockGasPipeFilter, existingBlock(ElectrodynamicsBlocks.blockGasPipeFilter), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.blockFluidPipeFilter, existingBlock(ElectrodynamicsBlocks.blockFluidPipeFilter), true);
+		
+		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay)), existingBlock(blockLoc("relayon")), 180, 0, true);
+		
+		glassBlock(ElectrodynamicsBlocks.blockSteelScaffold, blockLoc("steelscaffold"), true);
+		
+		simpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer)), true);
+
 		genWires();
 		genPipes();
+		genGasPipes();
 
 	}
 
@@ -138,29 +172,45 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		String parent = "parent/";
 		String name = "block/wire/";
 		String texture = "wire/";
-
-		BlockModelBuilder logisticalNone = models().withExistingParent(name + "logisticswire_none", modLoc(parent + "logisticswire_none")).texture("texture", blockLoc(texture + "logisticswire_base")).texture("particle", "#texture");
-		BlockModelBuilder logisticalSide = models().withExistingParent(name + "logisticswire_side", modLoc(parent + "logisticswire_side")).texture("texture", blockLoc(texture + "logisticswire_base")).texture("particle", "#texture");
-
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.UNINSULATED)) {
-			wire(ElectrodynamicsBlocks.getBlock(wire), models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "wire_none")).texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "wire_side")).texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), false);
+		
+		//bare
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.BARE, WireClass.BARE, WireColor.NONE)) {
+			wire(ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "wire_none")).texture("conductor", blockLoc(texture + wire.conductor.toString())).texture("particle", "#conductor"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "wire_side")).texture("conductor", blockLoc(texture + wire.conductor.toString())).texture("particle", "#conductor"), 
+					false);
 		}
 
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.INSULATED)) {
-			wire(ElectrodynamicsBlocks.getBlock(wire), models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "insulatedwire_none")).texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "insulatedwire_side")).texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), false);
+		//insulated
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.values())) {
+			wire(ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "insulatedwire_none")).texture("conductor", blockLoc(texture + wire.conductor.toString() + "_center")).texture("insulation", blockLoc(texture + "insulationwool_center")).texture("particle", "#insulation").renderType("cutout"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "insulatedwire_side")).texture("insulation", blockLoc(texture + "insulationwool")).texture("particle", "#insulation"), 
+					false);
 		}
 
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.LOGISTICAL)) {
-			wire(ElectrodynamicsBlocks.getBlock(wire), logisticalNone, logisticalSide, false);
+		//logistical
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.LOGISTICAL, WireColor.values())) {
+			wire(ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "logisticswire_none")).texture("conductor", blockLoc(texture + "logisticswire" + wire.conductor.toString())).texture("insulation", blockLoc(texture + "logisticswireinsulation_center")).texture("particle", "#insulation").texture("redstone", blockLoc(texture + "logisticswireredstone_center")).renderType("cutout"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "logisticswire_side")).texture("insulation", blockLoc(texture + "logisticswireinsulation_side")).texture("particle", "#insulation").texture("redstone", blockLoc(texture + "logisticswireredstone_side")).renderType("cutout"), 
+					false);
 		}
 
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.CERAMIC)) {
-			wire(ElectrodynamicsBlocks.getBlock(wire), models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "ceramicinsulatedwire_none")).texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "ceramicinsulatedwire_side")).texture("texture", blockLoc(texture + wire.tag())).texture("particle", "#texture"), false);
+		//ceramic
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.CERAMIC, WireClass.CERAMIC, WireColor.values())) {
+			wire(ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "ceramicinsulatedwire_none")).texture("conductor", blockLoc(texture + wire.conductor.toString() + "_center")).texture("insulation", blockLoc(texture + "insulationceramic_center_base")).texture("particle", "#insulation").renderType("cutout"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "ceramicinsulatedwire_side")).texture("insulationbase", blockLoc(texture + "insulationceramic_base")).texture("insulationcolor", blockLoc(texture + "insulationceramic")).texture("particle", "#insulationcolor"), 
+					false);
 		}
 
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.HIGHLY_INSULATED)) {
-			wire(ElectrodynamicsBlocks.getBlock(wire), models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "highlyinsulatedwire_none")).texture("texture", blockLoc(texture + wire.tag().replaceFirst("highly", ""))).texture("particle", "#texture"), models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "highlyinsulatedwire_side")).texture("texture", blockLoc(texture + wire.tag().replaceFirst("highly", ""))).texture("particle", "#texture"), false);
-
+		//highly insulated
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.THICK_WOOL, WireClass.THICK, WireColor.values())) {
+			wire(ElectrodynamicsBlocks.getBlock(wire), 
+					models().withExistingParent(name + wire.tag() + "_none", modLoc(parent + "highlyinsulatedwire_none")).texture("conductor", blockLoc(texture + wire.conductor.toString() + "_center")).texture("insulation", blockLoc(texture + "insulationwool_center")).texture("particle", "#insulation").renderType("cutout"), 
+					models().withExistingParent(name + wire.tag() + "_side", modLoc(parent + "highlyinsulatedwire_side")).texture("insulation", blockLoc(texture + "insulationwool")).texture("particle", "#insulation"), 
+					false);
 		}
 
 	}
@@ -171,10 +221,119 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		String name = "block/pipe/";
 		String texture = "pipe/";
 
-		for (SubtypePipe pipe : SubtypePipe.values()) {
-			wire(ElectrodynamicsBlocks.getBlock(pipe), models().withExistingParent(name + pipe.tag() + "_none", modLoc(parent + "pipe_none")).texture("texture", blockLoc(texture + pipe.tag())).texture("particle", "#texture"), models().withExistingParent(name + pipe.tag() + "_side", modLoc(parent + "pipe_side")).texture("texture", blockLoc(texture + pipe.tag())).texture("particle", "#texture"), false);
+		for (SubtypeFluidPipe pipe : SubtypeFluidPipe.values()) {
+			wire(ElectrodynamicsBlocks.getBlock(pipe), models().withExistingParent(name + pipe.tag() + "_none", modLoc(parent + "pipe_none")).texture("texture", blockLoc(texture + pipe.tag())).texture("particle", "#texture"), models().withExistingParent(name + pipe.tag() + "_side", modLoc(parent + "pipe_side")).texture("texture", blockLoc(texture + pipe.tag())).texture("particle", "#texture"),
+					false);
 		}
 
+	}
+
+	private void genGasPipes() {
+		gasPipeUninsulated(SubtypeGasPipe.UNINSULATEDCOPPER);
+		gasPipeUninsulated(SubtypeGasPipe.UNINSULATEDSTEEL);
+		gasPipeUninsulatedPlastic(SubtypeGasPipe.UNINSULATEDPLASTIC);
+
+		//gasPipeWoolInsulated(SubtypeGasPipe.WOOLINSULATEDCOPPER);
+		//gasPipeWoolInsulated(SubtypeGasPipe.WOOLINSULATEDSTEEL);
+		//gasPipeWoolInsulatedPlastic(SubtypeGasPipe.WOOLINSULATEDPLASTIC);
+
+		//gasPipeCeramicInsulated(SubtypeGasPipe.CERAMICINSULATEDCOPPER);
+		//gasPipeCeramicInsulated(SubtypeGasPipe.CERAMICINSULATEDSTEEL);
+		//gasPipeCeramicInsulatedPlastic(SubtypeGasPipe.CERAMICINSULATEDPLASTIC);
+	}
+
+	private void gasPipeUninsulated(SubtypeGasPipe pipe) {
+		String parent = "parent/gaspipe";
+		String name = "block/gaspipe/";
+		String texture = "gaspipe/";
+		wire(ElectrodynamicsBlocks.getBlock(pipe), models().withExistingParent(name + pipe.tag() + "center", modLoc(parent + "uninsulatedcenter")).texture("texture", blockLoc(texture + pipe.tag() + "center")).texture("particle", "#texture"),
+				models().withExistingParent(name + pipe.tag() + "side", modLoc(parent + "uninsulatedside")).texture("texture", blockLoc(texture + pipe.tag() + "side")).texture("particle", "#texture"), false);
+	}
+
+	private void gasPipeUninsulatedPlastic(SubtypeGasPipe pipe) {
+		String parent = "parent/gaspipe";
+		String name = "block/gaspipe/";
+		String texture = "gaspipe/";
+		wire(ElectrodynamicsBlocks.getBlock(pipe), models().withExistingParent(name + pipe.tag() + "center", modLoc(parent + "uninsulatedcenter")).texture("texture", blockLoc(texture + pipe.tag() + "center")).texture("particle", "#texture"),
+				models().withExistingParent(name + pipe.tag() + "side", modLoc(parent + "uninsulatedplasticside")).texture("texture", blockLoc(texture + pipe.tag() + "side")).texture("particle", "#texture"), false);
+	}
+	
+	private void gasPipeWoolInsulated(SubtypeGasPipe pipe) {
+		String parent = "parent/gaspipe";
+		String name = "block/gaspipe/";
+		String texture = "gaspipe/";
+		wire(ElectrodynamicsBlocks.getBlock(pipe), models().getExistingFile(modLoc(parent + "woolinsulatedcenter")), models().withExistingParent(name + pipe.tag() + "side", modLoc(parent + "insulatedside")).texture("texture", blockLoc(texture + pipe.tag() + "side")).texture("particle", "#texture"), false);
+	}
+	
+	private void gasPipeWoolInsulatedPlastic(SubtypeGasPipe pipe) {
+		String parent = "parent/gaspipe";
+		String name = "block/gaspipe/";
+		String texture = "gaspipe/";
+		wire(ElectrodynamicsBlocks.getBlock(pipe), models().getExistingFile(modLoc(parent + "woolinsulatedcenter")), models().withExistingParent(name + pipe.tag() + "side", modLoc(parent + "insulatedplasticside")).texture("texture", blockLoc(texture + pipe.tag() + "side")).texture("particle", "#texture"), false);
+	}
+
+	private void gasPipeCeramicInsulated(SubtypeGasPipe pipe) {
+		String parent = "parent/gaspipe";
+		String name = "block/gaspipe/";
+		String texture = "gaspipe/";
+		wire(ElectrodynamicsBlocks.getBlock(pipe), models().getExistingFile(modLoc(parent + "ceramicinsulatedcenter")), models().withExistingParent(name + pipe.tag() + "side", modLoc(parent + "insulatedside")).texture("texture", blockLoc(texture + pipe.tag() + "side")).texture("particle", "#texture"), false);
+	}
+
+	private void gasPipeCeramicInsulatedPlastic(SubtypeGasPipe pipe) {
+		String parent = "parent/gaspipe";
+		String name = "block/gaspipe/";
+		String texture = "gaspipe/";
+		wire(ElectrodynamicsBlocks.getBlock(pipe), models().getExistingFile(modLoc(parent + "ceramicinsulatedcenter")), models().withExistingParent(name + pipe.tag() + "side", modLoc(parent + "insulatedplasticside")).texture("texture", blockLoc(texture + pipe.tag() + "side")).texture("particle", "#texture"), false);
+	}
+
+	private void genCompressorAddonTank() {
+		getVariantBuilder(ElectrodynamicsBlocks.blockGasTransformerAddonTank).partialState().with(ElectrodynamicsBlockStates.ADDONTANK_NEIGHBOR_STATUS, AddonTankNeighborType.BOTTOMANDTOPTANK).modelForState().modelFile(existingBlock(blockLoc("compressoraddontanktab"))).addModel().partialState().with(ElectrodynamicsBlockStates.ADDONTANK_NEIGHBOR_STATUS, AddonTankNeighborType.TOPTANK).modelForState()
+				.modelFile(existingBlock(blockLoc("compressoraddontankt"))).addModel().partialState().with(ElectrodynamicsBlockStates.ADDONTANK_NEIGHBOR_STATUS, AddonTankNeighborType.BOTTOMTANK).modelForState().modelFile(existingBlock(blockLoc("compressoraddontankb"))).addModel().partialState().with(ElectrodynamicsBlockStates.ADDONTANK_NEIGHBOR_STATUS, AddonTankNeighborType.NONE).modelForState()
+				.modelFile(existingBlock(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK)).addModel();
+
+		blockItem(ElectrodynamicsBlocks.blockGasTransformerAddonTank, existingBlock(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK));
+	}
+
+	private void genCompressorSide() {
+		Block block = ElectrodynamicsBlocks.blockGasTransformerSide;
+
+		ModelFile none = existingBlock(block);
+		ModelFile top = existingBlock(blockLoc("compressorsidet"));
+
+		getVariantBuilder(block)
+			.partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false).modelForState().modelFile(none).rotationY(0).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false).modelForState().modelFile(none).rotationY(90).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false).modelForState().modelFile(none).rotationY(180).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false).modelForState().modelFile(none).rotationY(270).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true).modelForState().modelFile(top).rotationY(0).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true).modelForState().modelFile(top).rotationY(90).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true).modelForState().modelFile(top).rotationY(180).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true).modelForState().modelFile(top).rotationY(270).addModel();
+	}
+	
+	private void genThermoelectricManipulator() {
+		Block block = ElectrodynamicsBlocks.blockThermoelectricManipulator;
+		
+		ModelFile off = existingBlock(block);
+		ModelFile cool = existingBlock(blockLoc("thermoelectricmanipulatorcool"));
+		ModelFile heat = existingBlock(blockLoc("thermoelectricmanipulatorheat"));
+		
+		getVariantBuilder(block)
+		
+			.partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ManipulatorHeatingStatus.OFF).modelForState().modelFile(off).rotationY(90).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ManipulatorHeatingStatus.OFF).modelForState().modelFile(off).rotationY(180).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ManipulatorHeatingStatus.OFF).modelForState().modelFile(off).rotationY(270).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ManipulatorHeatingStatus.OFF).modelForState().modelFile(off).rotationY(0).addModel()
+			
+			.partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ManipulatorHeatingStatus.COOL).modelForState().modelFile(cool).rotationY(90).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ManipulatorHeatingStatus.COOL).modelForState().modelFile(cool).rotationY(180).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ManipulatorHeatingStatus.COOL).modelForState().modelFile(cool).rotationY(270).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ManipulatorHeatingStatus.COOL).modelForState().modelFile(cool).rotationY(0).addModel()
+			
+			.partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ManipulatorHeatingStatus.HEAT).modelForState().modelFile(heat).rotationY(90).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ManipulatorHeatingStatus.HEAT).modelForState().modelFile(heat).rotationY(180).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ManipulatorHeatingStatus.HEAT).modelForState().modelFile(heat).rotationY(270).addModel()
+			.partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ManipulatorHeatingStatus.HEAT).modelForState().modelFile(heat).rotationY(0).addModel();
 	}
 
 	public ItemModelBuilder simpleBlock(Block block, ModelFile file, boolean registerItem) {
@@ -253,7 +412,8 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	}
 
 	public ItemModelBuilder horrRotatedBlock(Block block, ModelFile file, int yRotationOffset, int xRotation, boolean registerItem) {
-		getVariantBuilder(block).partialState().with(GenericEntityBlock.FACING, Direction.NORTH).modelForState().modelFile(file).rotationY((270 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST).modelForState().modelFile(file).rotationY((0 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).modelForState().modelFile(file).rotationY((90 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST).modelForState().modelFile(file).rotationY((180 + yRotationOffset) % 360).rotationX(xRotation).addModel();
+		getVariantBuilder(block).partialState().with(GenericEntityBlock.FACING, Direction.NORTH).modelForState().modelFile(file).rotationY((270 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST).modelForState().modelFile(file).rotationY((0 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState()
+				.with(GenericEntityBlock.FACING, Direction.SOUTH).modelForState().modelFile(file).rotationY((90 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST).modelForState().modelFile(file).rotationY((180 + yRotationOffset) % 360).rotationX(xRotation).addModel();
 		if (registerItem) {
 			return blockItem(block, file);
 		}
@@ -273,7 +433,11 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	}
 
 	public ItemModelBuilder horrRotatedLitBlock(Block block, ModelFile off, ModelFile on, int yRotationOffset, int xRotation, boolean registerItem) {
-		getVariantBuilder(block).partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(BlockStateProperties.LIT, false).modelForState().modelFile(off).rotationY((270 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(BlockStateProperties.LIT, false).modelForState().modelFile(off).rotationY((0 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(BlockStateProperties.LIT, false).modelForState().modelFile(off).rotationY((90 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(BlockStateProperties.LIT, false).modelForState().modelFile(off).rotationY((180 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(BlockStateProperties.LIT, true).modelForState().modelFile(on).rotationY((270 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(BlockStateProperties.LIT, true).modelForState().modelFile(on).rotationY((0 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(BlockStateProperties.LIT, true).modelForState().modelFile(on).rotationY((90 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(BlockStateProperties.LIT, true).modelForState().modelFile(on).rotationY((180 + yRotationOffset) % 360).rotationX(xRotation).addModel();
+		getVariantBuilder(block).partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(BlockStateProperties.LIT, false).modelForState().modelFile(off).rotationY((270 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST).with(BlockStateProperties.LIT, false).modelForState().modelFile(off)
+				.rotationY((0 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(BlockStateProperties.LIT, false).modelForState().modelFile(off).rotationY((90 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST).with(BlockStateProperties.LIT, false)
+				.modelForState().modelFile(off).rotationY((180 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.NORTH).with(BlockStateProperties.LIT, true).modelForState().modelFile(on).rotationY((270 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST)
+				.with(BlockStateProperties.LIT, true).modelForState().modelFile(on).rotationY((0 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH).with(BlockStateProperties.LIT, true).modelForState().modelFile(on).rotationY((90 + yRotationOffset) % 360).rotationX(xRotation).addModel().partialState()
+				.with(GenericEntityBlock.FACING, Direction.WEST).with(BlockStateProperties.LIT, true).modelForState().modelFile(on).rotationY((180 + yRotationOffset) % 360).rotationX(xRotation).addModel();
 		if (registerItem) {
 			return blockItem(block, off);
 		}
@@ -295,13 +459,39 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	}
 
 	/*
-	 * private void omniDirBlock(RegistryObject<Block> block, ModelFile model, boolean registerItem) { getVariantBuilder(block.get()).partialState().with(GenericEntityBlock.FACING, Direction.NORTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model) .rotationY(0).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model) .rotationY(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model) .rotationY(180).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model) .rotationY(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.NORTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.UP).modelForState().modelFile(model) .rotationY(0).rotationX(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST) .with(OverdriveBlockStates.VERTICAL_FACING,
-	 * VerticalFacing.UP).modelForState().modelFile(model) .rotationY(90).rotationX(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.UP).modelForState().modelFile(model) .rotationY(180).rotationX(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.UP).modelForState().modelFile(model) .rotationY(270).rotationX(270).addModel().partialState() .with(GenericEntityBlock.FACING, Direction.NORTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.DOWN).modelForState().modelFile(model) .rotationY(0).rotationX(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.DOWN).modelForState().modelFile(model) .rotationY(90).rotationX(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.DOWN).modelForState().modelFile(model) .rotationY(180).rotationX(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST)
-	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.DOWN).modelForState().modelFile(model) .rotationY(270).rotationX(90).addModel(); if (registerItem) simpleBlockItem(block.get(), model); }
+	 * private void omniDirBlock(RegistryObject<Block> block, ModelFile model, boolean registerItem) {
+	 * getVariantBuilder(block.get()).partialState().with(GenericEntityBlock.FACING, Direction.NORTH)
+	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model)
+	 * .rotationY(0).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST)
+	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model)
+	 * .rotationY(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH)
+	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model)
+	 * .rotationY(180).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST)
+	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model)
+	 * .rotationY(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.NORTH)
+	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.UP).modelForState().modelFile(model)
+	 * .rotationY(0).rotationX(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST)
+	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.UP).modelForState().modelFile(model)
+	 * .rotationY(90).rotationX(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH)
+	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.UP).modelForState().modelFile(model)
+	 * .rotationY(180).rotationX(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST)
+	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.UP).modelForState().modelFile(model)
+	 * .rotationY(270).rotationX(270).addModel().partialState() .with(GenericEntityBlock.FACING, Direction.NORTH)
+	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.DOWN).modelForState().modelFile(model)
+	 * .rotationY(0).rotationX(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST)
+	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.DOWN).modelForState().modelFile(model)
+	 * .rotationY(90).rotationX(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH)
+	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.DOWN).modelForState().modelFile(model)
+	 * .rotationY(180).rotationX(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST)
+	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.DOWN).modelForState().modelFile(model)
+	 * .rotationY(270).rotationX(90).addModel(); if (registerItem) simpleBlockItem(block.get(), model); }
 	 * 
 	 */
 	public void wire(Block block, ModelFile none, ModelFile side, boolean registerItem) {
-		getMultipartBuilder(block).part().modelFile(none).addModel().useOr().condition(EnumConnectType.UP, EnumConnectType.NONE).condition(EnumConnectType.DOWN, EnumConnectType.NONE).condition(EnumConnectType.NORTH, EnumConnectType.NONE).condition(EnumConnectType.EAST, EnumConnectType.NONE).condition(EnumConnectType.SOUTH, EnumConnectType.NONE).condition(EnumConnectType.WEST, EnumConnectType.NONE).end().part().rotationX(270).modelFile(side).addModel().useOr().condition(EnumConnectType.UP, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationX(90).modelFile(side).addModel().useOr().condition(EnumConnectType.DOWN, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(0).modelFile(side).addModel().useOr().condition(EnumConnectType.NORTH, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(90).modelFile(side).addModel().useOr().condition(EnumConnectType.EAST, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(180).modelFile(side).addModel().useOr().condition(EnumConnectType.SOUTH, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(270).modelFile(side).addModel().useOr().condition(EnumConnectType.WEST, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end();
+		getMultipartBuilder(block).part().modelFile(none).addModel().useOr().condition(EnumConnectType.UP, EnumConnectType.NONE).condition(EnumConnectType.DOWN, EnumConnectType.NONE).condition(EnumConnectType.NORTH, EnumConnectType.NONE).condition(EnumConnectType.EAST, EnumConnectType.NONE).condition(EnumConnectType.SOUTH, EnumConnectType.NONE).condition(EnumConnectType.WEST, EnumConnectType.NONE)
+				.end().part().rotationX(270).modelFile(side).addModel().useOr().condition(EnumConnectType.UP, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationX(90).modelFile(side).addModel().useOr().condition(EnumConnectType.DOWN, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(0).modelFile(side).addModel().useOr()
+				.condition(EnumConnectType.NORTH, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(90).modelFile(side).addModel().useOr().condition(EnumConnectType.EAST, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(180).modelFile(side).addModel().useOr().condition(EnumConnectType.SOUTH, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part()
+				.rotationY(270).modelFile(side).addModel().useOr().condition(EnumConnectType.WEST, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end();
 
 		if (registerItem) {
 			simpleBlockItem(block, none);

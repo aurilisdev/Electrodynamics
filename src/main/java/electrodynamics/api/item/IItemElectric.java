@@ -3,7 +3,7 @@ package electrodynamics.api.item;
 import java.util.List;
 
 import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
@@ -33,7 +33,7 @@ public interface IItemElectric {
 		return stack.getOrCreateTag().getDouble(JOULES_STORED);
 	}
 
-	static void setEnergyStored(ItemStack stack, double amount) {
+	public static void setEnergyStored(ItemStack stack, double amount) {
 		stack.getOrCreateTag().putDouble(JOULES_STORED, amount);
 	}
 
@@ -222,7 +222,7 @@ public interface IItemElectric {
 	Item getDefaultStorageBattery();
 
 	static void addBatteryTooltip(ItemStack stack, Level worldIn, List<Component> tooltip) {
-		tooltip.add(TextUtils.tooltip("currbattery", ((IItemElectric) stack.getItem()).getCurrentBattery(stack).getDisplayName()).withStyle(ChatFormatting.GRAY));
+		tooltip.add(ElectroTextUtils.tooltip("currbattery", ((IItemElectric) stack.getItem()).getCurrentBattery(stack).getDisplayName()).withStyle(ChatFormatting.GRAY));
 	}
 
 }

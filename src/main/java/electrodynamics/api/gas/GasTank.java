@@ -45,7 +45,7 @@ public class GasTank implements IGasTank, IGasHandler {
 
 	@Override
 	public double getGasAmount() {
-		return gas.getAmount();
+		return getGas().getAmount();
 	}
 
 	public void setCapacity(double capacity) {
@@ -97,7 +97,11 @@ public class GasTank implements IGasTank, IGasHandler {
 
 			if (action == GasAction.EXECUTE) {
 
-				setGas(resource.copy());
+				GasStack taken = resource.copy();
+				
+				taken.setAmount(accepted);
+				
+				setGas(taken);
 
 				onChange();
 
@@ -113,7 +117,7 @@ public class GasTank implements IGasTank, IGasHandler {
 
 				}
 				
-				if(resource.isCondensed()) {
+				if(getGas().isCondensed()) {
 					
 					onGasCondensed();
 					
@@ -239,6 +243,8 @@ public class GasTank implements IGasTank, IGasHandler {
 
 				onOverheat();
 
+			} else if (getGas().isCondensed()) {
+				onGasCondensed();
 			}
 
 		}
@@ -280,6 +286,10 @@ public class GasTank implements IGasTank, IGasHandler {
 		return getCapacity() - updated.getAmount();
 
 	}
+	
+	public double getSpace() {
+		return Math.max(getCapacity() - getGasAmount(), 0);
+	}
 
 	public void onChange() {
 
@@ -298,7 +308,7 @@ public class GasTank implements IGasTank, IGasHandler {
 	}
 
 	public boolean isEmpty() {
-		return gas.isEmpty();
+		return getGas().isEmpty();
 	}
 
 	public CompoundTag writeToNbt() {

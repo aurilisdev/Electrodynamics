@@ -21,13 +21,13 @@ import net.minecraftforge.fluids.FluidStack;
 
 public abstract class Item2FluidRecipe extends AbstractMaterialRecipe {
 
-	private CountableIngredient[] ITEM_INPUTS;
-	private FluidStack FLUID_OUTPUT;
+	private CountableIngredient[] inputItems;
+	private FluidStack outputFluid;
 
 	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidStack fluidOutput, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, ProbableGas[] gasBiproducts) {
 		super(recipeID, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
-		ITEM_INPUTS = itemInputs;
-		FLUID_OUTPUT = fluidOutput;
+		inputItems = itemInputs;
+		outputFluid = fluidOutput;
 	}
 
 	@Override
@@ -42,13 +42,13 @@ public abstract class Item2FluidRecipe extends AbstractMaterialRecipe {
 
 	@Override
 	public FluidStack getFluidRecipeOutput() {
-		return FLUID_OUTPUT;
+		return outputFluid;
 	}
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
 		NonNullList<Ingredient> list = NonNullList.create();
-		for (Ingredient ing : ITEM_INPUTS) {
+		for (Ingredient ing : inputItems) {
 			list.add(ing);
 		}
 		return list;
@@ -56,7 +56,7 @@ public abstract class Item2FluidRecipe extends AbstractMaterialRecipe {
 
 	public List<CountableIngredient> getCountedIngredients() {
 		List<CountableIngredient> list = new ArrayList<>();
-		for (CountableIngredient ing : ITEM_INPUTS) {
+		for (CountableIngredient ing : inputItems) {
 			list.add(ing);
 		}
 		return list;

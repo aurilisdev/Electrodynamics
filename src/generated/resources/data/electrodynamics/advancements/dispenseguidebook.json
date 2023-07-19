@@ -1,0 +1,23 @@
+{
+  "conditions": [
+    {
+      "type": "electrodynamics:config"
+    }
+  ],
+  "criteria": {
+    "SpawnIn": {
+      "conditions": {},
+      "trigger": "minecraft:tick"
+    }
+  },
+  "requirements": [
+    [
+      "SpawnIn"
+    ]
+  ],
+  "rewards": {
+    "loot": [
+      "minecraft:advancement_reward/electroguidebook"
+    ]
+  }
+}

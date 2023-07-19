@@ -1,135 +1,156 @@
 package electrodynamics.prefab.properties;
 
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
+
+import electrodynamics.common.packet.NetworkHandler;
+import electrodynamics.common.packet.types.server.PacketSendUpdatePropertiesServer;
 
 public class Property<T> {
-    private PropertyManager manager;
-    private final PropertyType type;
-    private boolean isDirty = true;
-    private boolean shouldSave = true;
-    private String name;
-    private T value;
-    private T rawValue;
+	private PropertyManager manager;
+	private final PropertyType type;
+	private boolean isDirty = true;
+	private boolean shouldSave = true;
+	private boolean shouldUpdateClient = true;
+	private String name;
+	private T value;
+	
+	private int index = 0;
 
-    private Consumer<Property<T>> onChange = t -> {
-    };
-    private Consumer<Property<T>> onLoad = t -> {
-    };
+	//property has new value and value is old value
+	private BiConsumer<Property<T>, T> onChange = (prop, val) -> {
+	};
+	private BiConsumer<Property<T>, T> onLoad = (prop, val) -> {
+	};
 
-    public Property(PropertyType type, String name, T defaultValue) {
-        this.type = type;
-        if (name == null || name.length() == 0) {
-            throw new RuntimeException("The property's name cannot be null or empty");
-        }
-        this.name = name;
-        value = defaultValue;
-        rawValue = defaultValue;
-    }
+	public Property(PropertyType type, String name, T defaultValue) {
+		this.type = type;
+		if (name == null || name.length() == 0) {
+			throw new RuntimeException("The property's name cannot be null or empty");
+		}
+		this.name = name;
+		value = defaultValue;
+	}
 
-    public T get() {
-        if (rawValue == null) {
-            switch (type) { // Fix some possible crashes
-                case Boolean:
-                    return (T) Boolean.FALSE;
-                case Byte:
-                    return (T) (Byte) (byte) 0;
-                case Double:
-                    return (T) (Double) 0.0;
-                case Float:
-                    return (T) (Float) 0.0f;
-                case Integer:
-                    return (T) (Integer) 0;
-                default:
-                    break;
-            }
-        }
-        return rawValue;
-    }
+	public T get() {
+		return value;
+	}
 
-    public PropertyType getType() {
-        return type;
-    }
+	public PropertyType getType() {
+		return type;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public boolean isDirty() {
-        return isDirty;
-    }
+	public boolean isDirty() {
+		return isDirty;
+	}
 
+	public Property<T> onChange(BiConsumer<Property<T>, T> event) {
+		onChange = onChange.andThen(event);
+		return this;
+	}
 
-    public Property<T> onChange(Consumer<Property<T>> event) {
-        onChange = onChange.andThen(event);
-        return this;
-    }
+	public Property<T> onLoad(BiConsumer<Property<T>, T> event) {
+		onLoad = onLoad.andThen(event);
+		return this;
+	}
 
-    public Property<T> onLoad(Consumer<Property<T>> event) {
-        onLoad = onLoad.andThen(event);
-        return this;
-    }
+	@Deprecated(forRemoval = false, since = "Only use this when absolutely nessisary")
+	public void forceDirty() {
+		isDirty = true;
+		manager.setDirty();
+	}
 
-    @Deprecated(forRemoval = false)
-    public void forceDirty() {
-        isDirty = true;
-        manager.setDirty();
-    }
+	public void clean() {
+		isDirty = false;
+	}
 
-    public void clean() {
-        isDirty = false;
-    }
+	public void setManager(PropertyManager manager) {
+		this.manager = manager;
+	}
 
-    public void setManager(PropertyManager manager) {
-        this.manager = manager;
-    }
+	public Property<T> set(Object updated) {
+		verify((T) updated);
+		T old = value;
+		value = (T) type.attemptCast.apply(updated);
+		if(isDirty()) {
+			onChange.accept(this, old);
+		}
 
-    // there is no benefit to delaying value verification. The marginal performance value is traded for potential desync issues
-    // you also don't need to set the values like the multiplier on the battery box to one at the beginning of every tick if
-    // you do an interrupt-type method of setting them. You can define a default value in the constructor that is saved to NBT
-    public Property<T> set(T updated) {
-        verify(updated);
-        value = (T) type.attemptCast(updated);
-        rawValue = value;
-        onChange.accept(this);
-        return this;
-    }
+		return this;
+	}
+	
+	public void copy(Property<T> other) {
+		T otherVal = other.get();
+		if(otherVal == null) {
+			return;
+		}
+		set(otherVal);
+	}
 
-    @Deprecated(forRemoval = false) // Try not using this at all and only if you must.
-    public void setAmbigous(Object val) {
-        this.set((T) val);
-    }
+	public void verify(T updated) {
+		boolean shouldUpdate = value == null && updated != null;
+		if (value != null && updated != null) {
+			shouldUpdate = !type.predicate.test(value, updated);
+		}
+		if (shouldUpdate) {
+			isDirty = true;
+			manager.setDirty();
+		}
+	}
 
-    public void verify(T updated) {
-        boolean shouldUpdate = value == null && updated != null;
-        if (value != null && updated != null) {
-            shouldUpdate = !type.predicate.test(value, updated);
-        }
-        if (shouldUpdate) {
-            isDirty = true;
-            manager.setDirty();
-        }
-    }
+	public void load(Object val) {
+		if (val == null) {
+			val = value;
+		}
+		value = (T) type.attemptCast.apply(val);
+		onLoad.accept(this, value);
+	}
 
-    public void load(Object val) {
-    	if(val == null) {
-    		val = value;
-    	}
-        value = (T) type.attemptCast(val);
-        rawValue = value;
-        onLoad.accept(this);
-    }
+	public boolean shouldSave() {
+		return shouldSave;
+	}
+	
+	public Property<T> setNoSave() {
+		shouldSave = false;
+		return this;
+	}
+	
+	public boolean shouldUpdateClient() {
+		return shouldUpdateClient;
+	}
+	
+	public Property<T> setNoUpdateClient() {
+		shouldUpdateClient = false;
+		return this;
+	}
 
-    public boolean shouldSave() {
-        return shouldSave;
-    }
+	@Override
+	public String toString() {
+		return value == null ? "null" : value.toString();
+	}
 
-    @Override
-    public String toString() {
-        return rawValue == null ? "null" : rawValue.toString();
-    }
-
-    public PropertyManager getPropertyManager() {
-        return manager;
-    }
+	public PropertyManager getPropertyManager() {
+		return manager;
+	}
+	
+	public int getIndex() {
+		return index;
+	}
+	
+	public void setIndex(int index) {
+		this.index = index;
+	}
+	
+	public void updateServer() {
+		
+		if(manager.getOwner() != null) {
+			NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(index, this, manager.getOwner().getBlockPos()));
+		}
+		
+		
+	}
 
 }

@@ -74,6 +74,9 @@ public class ElectrodynamicsShapedCraftingRecipe extends ShapedRecipeBuilder.Res
 		}
 
 		public Builder addPattern(String pattern) {
+			if(pattern.length() > 3) {
+				throw new UnsupportedOperationException("The pattern " + pattern + " is more than 3 characters long and is not valid!");
+			}
 			if (patterns.size() > 3) {
 				throw new UnsupportedOperationException("Already 3 patterns present");
 			}
@@ -111,7 +114,24 @@ public class ElectrodynamicsShapedCraftingRecipe extends ShapedRecipeBuilder.Res
 		}
 
 		public void complete(String parent, String name, Consumer<FinishedRecipe> consumer) {
+			for (Character character : keys.keySet()) {
+				if(isKeyNotUsed(character)) {
+					throw new UnsupportedOperationException("The key " + character + " is defined by never used!");
+				}
+			}
 			consumer.accept(new ElectrodynamicsShapedCraftingRecipe(new ResourceLocation(parent, name), item, count, patterns, keys, recipeConditions));
+		}
+
+		private boolean isKeyNotUsed(char character) {
+			for (String str : patterns) {
+				for (char ch : str.toCharArray()) {
+					if (ch == character) {
+						return false;
+					}
+				}
+			}
+			return true;
+
 		}
 
 		private TagKey<Item> itemTag(ResourceLocation tag) {

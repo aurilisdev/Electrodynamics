@@ -1,0 +1,8 @@
+{
+  "parent": "electrodynamics:parent/ceramicinsulatedwire_side",
+  "textures": {
+    "insulationbase": "electrodynamics:block/wire/insulationceramic_base",
+    "insulationcolor": "electrodynamics:block/wire/insulationceramic",
+    "particle": "#insulationcolor"
+  }
+}

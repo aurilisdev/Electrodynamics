@@ -5,7 +5,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.TileMotorComplex;
+import electrodynamics.common.tile.quarry.TileMotorComplex;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;

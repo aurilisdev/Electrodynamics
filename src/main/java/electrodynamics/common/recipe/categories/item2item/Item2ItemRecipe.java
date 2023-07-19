@@ -21,13 +21,13 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public abstract class Item2ItemRecipe extends ElectrodynamicsRecipe {
 
-	private CountableIngredient[] ITEM_INPUTS;
-	private ItemStack OUTPUT;
+	private CountableIngredient[] inputItems;
+	private ItemStack outputItem;
 
 	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, ProbableGas[] gasBiproducts) {
 		super(recipeID, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
-		ITEM_INPUTS = inputs;
-		OUTPUT = output;
+		inputItems = inputs;
+		outputItem = output;
 	}
 
 	@Override
@@ -47,13 +47,13 @@ public abstract class Item2ItemRecipe extends ElectrodynamicsRecipe {
 
 	@Override
 	public ItemStack getResultItem() {
-		return OUTPUT;
+		return outputItem;
 	}
 
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
 		NonNullList<Ingredient> list = NonNullList.create();
-		for (CountableIngredient ing : ITEM_INPUTS) {
+		for (CountableIngredient ing : inputItems) {
 			list.add(ing);
 		}
 		return list;
@@ -61,7 +61,7 @@ public abstract class Item2ItemRecipe extends ElectrodynamicsRecipe {
 
 	public List<CountableIngredient> getCountedIngredients() {
 		List<CountableIngredient> list = new ArrayList<>();
-		for (CountableIngredient ing : ITEM_INPUTS) {
+		for (CountableIngredient ing : inputItems) {
 			list.add(ing);
 		}
 		return list;

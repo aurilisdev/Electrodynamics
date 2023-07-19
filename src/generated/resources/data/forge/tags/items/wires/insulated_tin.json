@@ -1,0 +1,11 @@
+{
+  "values": [
+    "electrodynamics:wireinsulatedtinblack",
+    "electrodynamics:wireinsulatedtinred",
+    "electrodynamics:wireinsulatedtinwhite",
+    "electrodynamics:wireinsulatedtingreen",
+    "electrodynamics:wireinsulatedtinblue",
+    "electrodynamics:wireinsulatedtinyellow",
+    "electrodynamics:wireinsulatedtinbrown"
+  ]
+}

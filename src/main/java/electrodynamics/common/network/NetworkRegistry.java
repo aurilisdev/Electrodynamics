@@ -29,22 +29,24 @@ public class NetworkRegistry {
 
 	@SubscribeEvent
 	public static void update(ServerTickEvent event) {
-		if (event.phase == Phase.END) {
-			try {
-				networks.removeAll(remove);
-				remove.clear();
-				Iterator<ITickableNetwork> it = networks.iterator();
-				while (it.hasNext()) {
-					ITickableNetwork net = it.next();
-					if (net.getSize() == 0) {
-						deregister(net);
-					} else {
-						net.tick();
-					}
+		if (event.phase != Phase.END) {
+			return;
+		}
+
+		try {
+			networks.removeAll(remove);
+			remove.clear();
+			Iterator<ITickableNetwork> it = networks.iterator();
+			while (it.hasNext()) {
+				ITickableNetwork net = it.next();
+				if (net.getSize() == 0) {
+					deregister(net);
+				} else {
+					net.tick();
 				}
-			} catch (ConcurrentModificationException exception) {
-				exception.printStackTrace();
 			}
+		} catch (ConcurrentModificationException exception) {
+			exception.printStackTrace();
 		}
 	}
 

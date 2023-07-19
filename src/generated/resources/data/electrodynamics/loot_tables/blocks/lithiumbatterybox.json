@@ -28,11 +28,6 @@
                   "op": "replace",
                   "source": "joules",
                   "target": "BlockEntityTag.joules"
-                },
-                {
-                  "op": "replace",
-                  "source": "additional",
-                  "target": "BlockEntityTag.additional"
                 }
               ],
               "source": "block_entity"

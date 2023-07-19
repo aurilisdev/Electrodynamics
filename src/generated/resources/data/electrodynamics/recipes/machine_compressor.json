@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "forge:circuits/basic"
+    },
+    "G": {
+      "item": "electrodynamics:pressuregauge"
+    },
+    "M": {
+      "item": "electrodynamics:motor"
+    },
+    "P": {
+      "tag": "forge:plates/stainlesssteel"
+    },
+    "T": {
+      "item": "electrodynamics:compressoraddontank"
+    },
+    "V": {
+      "item": "electrodynamics:mechanicalvalve"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "TVT",
+    "CMG"
+  ],
+  "result": {
+    "item": "electrodynamics:compressor"
+  }
+}

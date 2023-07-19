@@ -22,12 +22,16 @@ import electrodynamics.client.render.tile.RenderCarbyneBatteryBox;
 import electrodynamics.client.render.tile.RenderChargerGeneric;
 import electrodynamics.client.render.tile.RenderChemicalMixer;
 import electrodynamics.client.render.tile.RenderCombustionChamber;
+import electrodynamics.client.render.tile.RenderConnectBlock;
 import electrodynamics.client.render.tile.RenderCoolantResavoir;
 import electrodynamics.client.render.tile.RenderElectrolyticSeparator;
 import electrodynamics.client.render.tile.RenderFermentationPlant;
+import electrodynamics.client.render.tile.RenderFluidPipePump;
+import electrodynamics.client.render.tile.RenderGasPipePump;
 import electrodynamics.client.render.tile.RenderHydroelectricGenerator;
 import electrodynamics.client.render.tile.RenderLathe;
 import electrodynamics.client.render.tile.RenderLithiumBatteryBox;
+import electrodynamics.client.render.tile.RenderLogisticalWire;
 import electrodynamics.client.render.tile.RenderMineralCrusher;
 import electrodynamics.client.render.tile.RenderMineralCrusherDouble;
 import electrodynamics.client.render.tile.RenderMineralCrusherTriple;
@@ -40,9 +44,9 @@ import electrodynamics.client.render.tile.RenderMultimeterBlock;
 import electrodynamics.client.render.tile.RenderSeismicRelay;
 import electrodynamics.client.render.tile.RenderTankGeneric;
 import electrodynamics.client.render.tile.RenderWindmill;
+import electrodynamics.client.screen.item.ScreenElectricDrill;
 import electrodynamics.client.screen.item.ScreenSeismicScanner;
 import electrodynamics.client.screen.tile.ScreenBatteryBox;
-import electrodynamics.client.screen.tile.ScreenCarbyneBatteryBox;
 import electrodynamics.client.screen.tile.ScreenChargerGeneric;
 import electrodynamics.client.screen.tile.ScreenChemicalCrystallizer;
 import electrodynamics.client.screen.tile.ScreenChemicalMixer;
@@ -52,6 +56,7 @@ import electrodynamics.client.screen.tile.ScreenCoolantResavoir;
 import electrodynamics.client.screen.tile.ScreenCreativeFluidSource;
 import electrodynamics.client.screen.tile.ScreenCreativePowerSource;
 import electrodynamics.client.screen.tile.ScreenDO2OProcessor;
+import electrodynamics.client.screen.tile.ScreenDecompressor;
 import electrodynamics.client.screen.tile.ScreenElectricArcFurnace;
 import electrodynamics.client.screen.tile.ScreenElectricArcFurnaceDouble;
 import electrodynamics.client.screen.tile.ScreenElectricArcFurnaceTriple;
@@ -60,19 +65,28 @@ import electrodynamics.client.screen.tile.ScreenElectricFurnaceDouble;
 import electrodynamics.client.screen.tile.ScreenElectricFurnaceTriple;
 import electrodynamics.client.screen.tile.ScreenElectrolyticSeparator;
 import electrodynamics.client.screen.tile.ScreenFermentationPlant;
+import electrodynamics.client.screen.tile.ScreenFluidPipeFilter;
+import electrodynamics.client.screen.tile.ScreenFluidPipePump;
 import electrodynamics.client.screen.tile.ScreenFluidVoid;
+import electrodynamics.client.screen.tile.ScreenGasPipeFilter;
+import electrodynamics.client.screen.tile.ScreenGasPipePump;
+import electrodynamics.client.screen.tile.ScreenGasTankGeneric;
+import electrodynamics.client.screen.tile.ScreenGasVent;
+import electrodynamics.client.screen.tile.ScreenCompressor;
 import electrodynamics.client.screen.tile.ScreenHydroelectricGenerator;
-import electrodynamics.client.screen.tile.ScreenLithiumBatteryBox;
 import electrodynamics.client.screen.tile.ScreenMineralWasher;
 import electrodynamics.client.screen.tile.ScreenMotorComplex;
 import electrodynamics.client.screen.tile.ScreenO2OProcessor;
 import electrodynamics.client.screen.tile.ScreenO2OProcessorDouble;
 import electrodynamics.client.screen.tile.ScreenO2OProcessorTriple;
+import electrodynamics.client.screen.tile.ScreenPotentiometer;
 import electrodynamics.client.screen.tile.ScreenQuarry;
 import electrodynamics.client.screen.tile.ScreenSeismicRelay;
 import electrodynamics.client.screen.tile.ScreenSolarPanel;
-import electrodynamics.client.screen.tile.ScreenTankGeneric;
+import electrodynamics.client.screen.tile.ScreenThermoelectricManipulator;
+import electrodynamics.client.screen.tile.ScreenFluidTankGeneric;
 import electrodynamics.client.screen.tile.ScreenWindmill;
+import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
@@ -127,7 +141,7 @@ public class ClientRegister {
 
 	public static HashMap<ResourceLocation, TextureAtlasSprite> CACHED_TEXTUREATLASSPRITES = new HashMap<>();
 	// for registration purposes only!
-	private static final List<ResourceLocation> customTextures = new ArrayList<>();
+	private static final List<ResourceLocation> CUSTOM_TEXTURES = new ArrayList<>();
 
 	public static final ResourceLocation ON = new ResourceLocation("on");
 
@@ -222,6 +236,10 @@ public class ClientRegister {
 	public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation("forge", "white");
 
 	public static final ResourceLocation TEXTURE_PLASMA_BALL = new ResourceLocation(CUSTOM_LOC + "plasmaorb");
+	
+	public static final ResourceLocation TEXTURE_MERCURY = new ResourceLocation(CUSTOM_LOC + "mercury");
+	
+	public static final ResourceLocation TEXTURE_GAS = new ResourceLocation(CUSTOM_LOC + "gastexture"); // use this texture when needing to render a visual representation of a gas that is not a barometer
 
 	public static void setup() {
 		ClientEvents.init();
@@ -238,14 +256,12 @@ public class ClientRegister {
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_O2OPROCESSORTRIPLE.get(), ScreenO2OProcessorTriple::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_DO2OPROCESSOR.get(), ScreenDO2OProcessor::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);
-		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_LITHIUMBATTERYBOX.get(), ScreenLithiumBatteryBox::new);
-		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_CARBYNEBATTERYBOX.get(), ScreenCarbyneBatteryBox::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_FERMENTATIONPLANT.get(), ScreenFermentationPlant::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_MINERALWASHER.get(), ScreenMineralWasher::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_CHEMICALMIXER.get(), ScreenChemicalMixer::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_CHEMICALCRYSTALLIZER.get(), ScreenChemicalCrystallizer::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_CHARGER.get(), ScreenChargerGeneric::new);
-		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_TANK.get(), ScreenTankGeneric::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_TANK.get(), ScreenFluidTankGeneric::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_COMBUSTION_CHAMBER.get(), ScreenCombustionChamber::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_SOLARPANEL.get(), ScreenSolarPanel::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_WINDMILL.get(), ScreenWindmill::new);
@@ -260,7 +276,19 @@ public class ClientRegister {
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_MOTORCOMPLEX.get(), ScreenMotorComplex::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_QUARRY.get(), ScreenQuarry::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_GUIDEBOOK.get(), ScreenGuidebook::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_GASTANK.get(), ScreenGasTankGeneric::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_COMPRESSOR.get(), ScreenCompressor::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_DECOMPRESSOR.get(), ScreenDecompressor::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_GASVENT.get(), ScreenGasVent::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_THERMOELECTRICMANIPULATOR.get(), ScreenThermoelectricManipulator::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_GASPIPEPUMP.get(), ScreenGasPipePump::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEPUMP.get(), ScreenFluidPipePump::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_GASPIPEFILTER.get(), ScreenGasPipeFilter::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEFILTER.get(), ScreenFluidPipeFilter::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICDRILL.get(), ScreenElectricDrill::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_POTENTIOMETER.get(), ScreenPotentiometer::new);
 
+		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICBATON.get(), ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricBaton) stack.getItem()).getJoulesStored(stack) > ((ItemElectricBaton) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICDRILL.get(), ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricDrill) stack.getItem()).getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW.get(), ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 
@@ -300,6 +328,14 @@ public class ClientRegister {
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_TANKSTEEL.get(), RenderTankGeneric::new);
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_MOTORCOMPLEX.get(), RenderMotorComplex::new);
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_ELECTROLYTICSEPARATOR.get(), RenderElectrolyticSeparator::new);
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_GASPIPEPUMP.get(), RenderGasPipePump::new);
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_FLUIDPIPEPUMP.get(), RenderFluidPipePump::new);
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_LOGISTICALWIRE.get(), RenderLogisticalWire::new);
+		
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_WIRE.get(), RenderConnectBlock::new);
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_LOGISTICALWIRE.get(), RenderConnectBlock::new);
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_PIPE.get(), RenderConnectBlock::new);
+		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_GAS_PIPE.get(), RenderConnectBlock::new);
 	}
 
 	public static boolean shouldMultilayerRender(RenderType type) {
@@ -307,23 +343,25 @@ public class ClientRegister {
 	}
 
 	static {
-		customTextures.add(ClientRegister.TEXTURE_QUARRYARM);
-		customTextures.add(ClientRegister.TEXTURE_QUARRYARM_DARK);
-		customTextures.add(ClientRegister.TEXTURE_WHITE);
-		customTextures.add(ClientRegister.TEXTURE_PLASMA_BALL);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_QUARRYARM);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_QUARRYARM_DARK);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_WHITE);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_PLASMA_BALL);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_MERCURY);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_GAS);
 	}
 
 	@SubscribeEvent
 	public static void addCustomTextureAtlases(TextureStitchEvent.Pre event) {
 		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-			customTextures.forEach(event::addSprite);
+			CUSTOM_TEXTURES.forEach(event::addSprite);
 		}
 	}
 
 	@SubscribeEvent
 	public static void cacheCustomTextureAtlases(TextureStitchEvent.Post event) {
 		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-			for (ResourceLocation loc : customTextures) {
+			for (ResourceLocation loc : CUSTOM_TEXTURES) {
 				ClientRegister.CACHED_TEXTUREATLASSPRITES.put(loc, event.getAtlas().getSprite(loc));
 			}
 		}

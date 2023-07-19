@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "S": {
+      "tag": "forge:plates/stainlesssteel"
+    },
+    "T": {
+      "item": "electrodynamics:gastanksteel"
+    }
+  },
+  "pattern": [
+    "SSS",
+    "STS",
+    "SSS"
+  ],
+  "result": {
+    "item": "electrodynamics:gastankreinforced"
+  }
+}

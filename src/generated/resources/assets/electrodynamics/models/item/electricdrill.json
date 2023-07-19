@@ -9,6 +9,7 @@
     }
   ],
   "textures": {
-    "layer0": "electrodynamics:item/tools/electricdrill"
+    "layer0": "electrodynamics:item/tools/electricdrilloffbase",
+    "layer1": "electrodynamics:item/tools/electricdrilloffhead"
   }
 }

@@ -9,6 +9,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+/*
+ * CONVENTION NOTE: A VOLTAGE OF -1 INDICATES THIS ENTITY SHOULD NOT HAVE VOLTAGE CONSIDERED WHEN INTERACTING WITH IT
+ */
+
 public interface ICapabilityElectrodynamic {
 	default void setJoulesStored(double joules) {
 	}
@@ -19,6 +23,10 @@ public interface ICapabilityElectrodynamic {
 
 	default double getVoltage() {
 		return ElectrodynamicsCapabilities.DEFAULT_VOLTAGE;
+	}
+	
+	default double getMinimumVoltage() {
+		return getVoltage();
 	}
 
 	default TransferPack extractPower(TransferPack transfer, boolean debug) {

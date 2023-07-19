@@ -7,9 +7,13 @@ import javax.annotation.Nullable;
 import electrodynamics.api.References;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.block.subtype.SubtypeWire.WireType;
+import electrodynamics.common.block.subtype.SubtypeWire.Conductor;
+import electrodynamics.common.block.subtype.SubtypeWire.InsulationMaterial;
+import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
+import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
@@ -57,7 +61,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 	@Override
 	protected void registerModels() {
 
-		layeredItem(ElectrodynamicsItems.COAL_COKE, Parent.GENERATED, itemLoc("coalcoke"));
+		layeredItem(ElectrodynamicsItems.ITEM_COAL_COKE, Parent.GENERATED, itemLoc("coalcoke"));
 		layeredItem(ElectrodynamicsItems.ITEM_CERAMICINSULATION, Parent.GENERATED, itemLoc("insulationceramic"));
 		layeredBuilder(name(ElectrodynamicsItems.ITEM_COIL), Parent.GENERATED, itemLoc("coil")).transforms().transform(TransformType.GUI).scale(0.8F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_INSULATION, Parent.GENERATED, itemLoc("insulation"));
@@ -65,9 +69,13 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		layeredItem(ElectrodynamicsItems.ITEM_MOTOR, Parent.GENERATED, itemLoc("motor"));
 		layeredItem(ElectrodynamicsItems.ITEM_RAWCOMPOSITEPLATING, Parent.GENERATED, itemLoc("compositeplatingraw"));
 		layeredItem(ElectrodynamicsItems.ITEM_SHEETPLASTIC, Parent.GENERATED, itemLoc("sheetplastic"));
-		layeredItem(ElectrodynamicsItems.SLAG, Parent.GENERATED, itemLoc("slag"));
+		layeredItem(ElectrodynamicsItems.ITEM_SLAG, Parent.GENERATED, itemLoc("slag"));
 		layeredBuilder(name(ElectrodynamicsItems.ITEM_SOLARPANELPLATE), Parent.GENERATED, itemLoc("solarpanelplate")).transforms().transform(TransformType.GUI).scale(0.8F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_TITANIUM_COIL, Parent.GENERATED, itemLoc("titaniumheatcoil"));
+		layeredItem(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS, Parent.GENERATED, itemLoc("plasticfibers"));
+		layeredItem(ElectrodynamicsItems.ITEM_MECHANICALVALVE, Parent.GENERATED, itemLoc("mechanicalvalve"));
+		layeredItem(ElectrodynamicsItems.ITEM_PRESSUREGAGE, Parent.GENERATED, itemLoc("pressuregauge"));
+		layeredItem(ElectrodynamicsItems.ITEM_FIBERGLASSSHEET, Parent.GENERATED, itemLoc("fiberglasssheet"));
 
 		layeredItem(ElectrodynamicsItems.ITEM_COMBATHELMET, Parent.GENERATED, itemLoc("armor/combathelmet"));
 		layeredItem(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE, Parent.GENERATED, itemLoc("armor/combatchestplate"));
@@ -92,10 +100,15 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		layeredItem(ElectrodynamicsItems.ITEM_BATTERY, Parent.GENERATED, itemLoc("battery"));
 		layeredItem(ElectrodynamicsItems.ITEM_LITHIUMBATTERY, Parent.GENERATED, itemLoc("lithiumbattery"));
 		layeredItem(ElectrodynamicsItems.ITEM_CARBYNEBATTERY, Parent.GENERATED, itemLoc("carbynebattery"));
+		layeredItem(ElectrodynamicsItems.ITEM_PORTABLECYLINDER, Parent.GENERATED, itemLoc("portablecylinder"));
 		// TODO make this toggleable?
-		layeredItem(ElectrodynamicsItems.ITEM_ELECTRICBATON, Parent.HANDHELD, itemLoc("tools/electricbaton"));
+		toggleableItem(ElectrodynamicsItems.ITEM_ELECTRICBATON, "on", Parent.HANDHELD, Parent.HANDHELD, new ResourceLocation[] { itemLoc("tools/electricbaton") }, new ResourceLocation[] { itemLoc("tools/electricbatonon") });
 		toggleableItem(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW, "on", Parent.HANDHELD, Parent.HANDHELD, new ResourceLocation[] { itemLoc("tools/electricchainsaw") }, new ResourceLocation[] { itemLoc("tools/electricchainsawon") });
-		toggleableItem(ElectrodynamicsItems.ITEM_ELECTRICDRILL, "on", Parent.HANDHELD, Parent.HANDHELD, new ResourceLocation[] { itemLoc("tools/electricdrill") }, new ResourceLocation[] { itemLoc("tools/electricdrillon") });
+		
+		
+		toggleableItem(ElectrodynamicsItems.ITEM_ELECTRICDRILL, "on", Parent.HANDHELD, Parent.HANDHELD, new ResourceLocation[] { itemLoc("tools/electricdrilloffbase"), itemLoc("tools/electricdrilloffhead") }, new ResourceLocation[] { itemLoc("tools/electricdrillonbase"), itemLoc("tools/electricdrillonhead") });
+		
+		
 		layeredBuilder(name(ElectrodynamicsItems.ITEM_MECHANIZEDCROSSBOW), Parent.GENERATED, itemLoc("tools/mechanizedcrossbow")).transforms().transform(TransformType.THIRD_PERSON_RIGHT_HAND).rotation(-90, 0, -60).translation(2F, 0.1F, -3F).scale(0.9F).end().transform(TransformType.THIRD_PERSON_LEFT_HAND).rotation(-90, 0, 30).translation(2, 0.1F, -3).scale(0.9F).end().transform(TransformType.FIRST_PERSON_RIGHT_HAND).rotation(-90, 0, -55).translation(1.13F, 3.2F, 1.13F).scale(0.68F).end().transform(TransformType.FIRST_PERSON_LEFT_HAND).rotation(-90, 0, 35).translation(1.13F, 3.2F, 1.13F).scale(0.68F).end();
 
 		for (SubtypeCeramic ceramic : SubtypeCeramic.values()) {
@@ -111,7 +124,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		}
 
 		for (SubtypeDrillHead drill : SubtypeDrillHead.values()) {
-			layeredItem(ElectrodynamicsItems.getItem(drill), Parent.GENERATED, itemLoc("drillhead/" + drill.tag()));
+			layeredItem(ElectrodynamicsItems.getItem(drill), Parent.GENERATED, itemLoc("drillhead/drillhead"));
 		}
 
 		for (SubtypeDust dust : SubtypeDust.values()) {
@@ -154,16 +167,37 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 			layeredItem(ElectrodynamicsItems.getItem(rod), Parent.GENERATED, itemLoc("rod/" + rod.tag()));
 		}
 
-		for (SubtypeWire wire : SubtypeWire.values()) {
-			if (wire.wireType == WireType.UNINSULATED) {
-				layeredBuilder(name(ElectrodynamicsItems.getItem(wire)), Parent.GENERATED, itemLoc("wire/" + wire.tag())).transforms().transform(TransformType.GUI).scale(0.7F).end();
-			} else {
-				layeredItem(ElectrodynamicsItems.getItem(wire), Parent.GENERATED, itemLoc("wire/" + wire.tag()));
-			}
+		//bare
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.BARE, WireClass.BARE, WireColor.NONE)) {
+			layeredBuilder(name(ElectrodynamicsItems.getItem(wire)), Parent.GENERATED, itemLoc("wire/" + wire.tag())).transforms().transform(TransformType.GUI).scale(0.7F).end();
 		}
 
-		for (SubtypePipe pipe : SubtypePipe.values()) {
+		//insulated
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.values())) {
+			layeredItem(ElectrodynamicsItems.getItem(wire), Parent.GENERATED, itemLoc("wire/wireinsulated" + wire.conductor.toString()), itemLoc("wire/wireinsulatedcoil"));
+		}
+
+		//logistical
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.LOGISTICAL, WireColor.values())) {
+			layeredItem(ElectrodynamicsItems.getItem(wire), Parent.GENERATED, itemLoc("wire/wirelogistics" + wire.conductor.toString()), itemLoc("wire/wirelogisticscoil"), itemLoc("wire/wirelogisticsredstone"));
+		}
+
+		//ceramic
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.CERAMIC, WireClass.CERAMIC, WireColor.values())) {
+			layeredItem(ElectrodynamicsItems.getItem(wire), Parent.GENERATED, itemLoc("wire/wireceramicinsulated" + wire.conductor.toString()), itemLoc("wire/wireceramicinsulatedcolortips"), itemLoc("wire/wireceramicinsulatedcoil"));
+		}
+
+		//highly insulated
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.THICK_WOOL, WireClass.THICK, WireColor.values())) {
+			layeredItem(ElectrodynamicsItems.getItem(wire), Parent.GENERATED, itemLoc("wire/wirehighlyinsulated" + wire.conductor.toString()), itemLoc("wire/wirehighlyinsulatedcoil"));
+		}
+
+		for (SubtypeFluidPipe pipe : SubtypeFluidPipe.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(pipe), Parent.GENERATED, itemLoc("pipe/" + pipe.tag()));
+		}
+		
+		for(SubtypeGasPipe pipe : SubtypeGasPipe.values()) {
+			layeredItem(ElectrodynamicsItems.getItem(pipe), Parent.GENERATED, itemLoc("gaspipe/" + pipe.tag()));
 		}
 
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedsolarpanel), existingBlock(blockLoc("advancedsolarpanelitem"))).transforms().transform(TransformType.THIRD_PERSON_RIGHT_HAND).rotation(35, 45, 0).translation(0, 2.5F, 0).scale(0.375F).end().transform(TransformType.THIRD_PERSON_LEFT_HAND).rotation(35, 45, 0).translation(0, 2.5F, 0).scale(0.375F).end().transform(TransformType.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).scale(0.4F).end().transform(TransformType.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4F).end().transform(TransformType.GUI).rotation(30, 225, 0).translation(0, -3F, 0).scale(0.265F).end();
@@ -176,6 +210,12 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrindertriple), existingBlock(blockLoc("mineralgrindertripleitem")));
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.motorcomplex), existingBlock(blockLoc("motorcomplexitem")));
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.windmill), existingBlock(blockLoc("windmillitem")));
+		simpleBlockItem(ElectrodynamicsBlocks.blockCompressor, existingBlock(blockLoc("compressoritem"))).transforms().transform(TransformType.GUI).scale(0.3333F).rotation(30.0F, 225.0F, 0.0F).end();
+		simpleBlockItem(ElectrodynamicsBlocks.blockDecompressor, existingBlock(blockLoc("decompressoritem"))).transforms().transform(TransformType.GUI).rotation(30.0F, 225.0F, 0.0F).scale(0.3333F).end();
+		simpleBlockItem(ElectrodynamicsBlocks.blockThermoelectricManipulator, existingBlock(blockLoc("thermoelectricmanipulatoritem"))).transforms().transform(TransformType.GUI).rotation(30.0F, 225.0F, 0.0F).scale(0.3333F).end();
+		
+		simpleBlockItem(ElectrodynamicsBlocks.blockGasPipePump, existingBlock(blockLoc("gaspipepumpitem")));
+		simpleBlockItem(ElectrodynamicsBlocks.blockFluidPipePump, existingBlock(blockLoc("fluidpipepumpitem")));
 
 	}
 

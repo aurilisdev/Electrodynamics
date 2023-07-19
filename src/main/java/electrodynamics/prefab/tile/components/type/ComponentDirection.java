@@ -11,6 +11,10 @@ public class ComponentDirection implements Component {
 	private Direction cachedDirection = null;
 	private long last = 0;
 
+	public ComponentDirection(GenericTile holder) {
+		this.holder = holder;
+	}
+	
 	@Override
 	public void holder(GenericTile holder) {
 		this.holder = holder;

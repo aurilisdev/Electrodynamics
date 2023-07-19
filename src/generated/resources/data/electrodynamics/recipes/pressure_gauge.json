@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "electrodynamics:coil"
+    },
+    "D": {
+      "tag": "forge:dusts/redstone"
+    },
+    "G": {
+      "tag": "forge:gears/tin"
+    },
+    "I": {
+      "tag": "forge:plates/iron"
+    },
+    "P": {
+      "tag": "forge:glass_panes"
+    },
+    "R": {
+      "tag": "forge:rods/steel"
+    }
+  },
+  "pattern": [
+    "IPI",
+    "CRD",
+    "IGI"
+  ],
+  "result": {
+    "item": "electrodynamics:pressuregauge"
+  }
+}

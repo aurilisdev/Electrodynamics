@@ -7,6 +7,7 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
 
 public enum SubtypePlate implements ISubtype {
+	copper(ElectrodynamicsTags.Items.PLATE_COPPER, Tags.Items.INGOTS_COPPER),
 	iron(ElectrodynamicsTags.Items.PLATE_IRON, Tags.Items.INGOTS_IRON),
 	steel(ElectrodynamicsTags.Items.PLATE_STEEL, ElectrodynamicsTags.Items.INGOT_STEEL),
 	lead(ElectrodynamicsTags.Items.PLATE_LEAD, ElectrodynamicsTags.Items.INGOT_LEAD),

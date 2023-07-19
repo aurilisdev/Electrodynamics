@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import electrodynamics.api.fluid.PropertyFluidTank;
 import electrodynamics.prefab.tile.GenericTile;
+import electrodynamics.prefab.tile.components.CapabilityInputType;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.utils.IComponentFluidHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
@@ -117,13 +118,13 @@ public class ComponentFluidHandlerSimple extends PropertyFluidTank implements IC
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, Direction side) {
+	public boolean hasCapability(Capability<?> capability, Direction side, CapabilityInputType inputType) {
 		return capability == ForgeCapabilities.FLUID_HANDLER;
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		if (!hasCapability(capability, side)) {
+	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side, CapabilityInputType inputType) {
+		if (!hasCapability(capability, side, inputType)) {
 			return LazyOptional.empty();
 		}
 		if (inputDirections == null && outputDirections == null) {

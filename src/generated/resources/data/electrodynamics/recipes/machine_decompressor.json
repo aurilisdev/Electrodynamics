@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "electrodynamics:compressor"
+    },
+    {
+      "item": "electrodynamics:mechanicalvalve"
+    }
+  ],
+  "result": {
+    "item": "electrodynamics:decompressor"
+  }
+}

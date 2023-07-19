@@ -3,9 +3,9 @@ package electrodynamics.client.guidebook.chapters;
 import electrodynamics.api.References;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Module;
-import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.TextWrapperObject;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 
@@ -24,12 +24,27 @@ public class ChapterMisc extends Chapter {
 
 	@Override
 	public MutableComponent getTitle() {
-		return TextUtils.guidebook("chapter.misc");
+		return ElectroTextUtils.guidebook("chapter.misc");
 	}
 
 	@Override
 	public void addData() {
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.misc.l1")).setCentered().setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.misc.l1")).setIndentions(1).setSeparateStart());
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/cablecamo1.png")));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/cablecamo2.png")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.misc.l2")).setSeparateStart());
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/cablecamo3.png")));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/cablecamo4.png")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.misc.l3")).setSeparateStart());
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/cablecamo5.png")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.misc.l4")).setSeparateStart());
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/cablecamo6.png")));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/cablecamo7.png")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.misc.l5")).setSeparateStart());
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/cablecamo8.png")));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/cablecamo9.png")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.misc.l6")).setSeparateStart());
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/cablecamo10.png")));
 	}
 
 }

@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.gas.IGasHandlerItem;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +29,7 @@ public class GasHandlerItemStack implements IGasHandlerItem, ICapabilityProvider
 
 	private Predicate<GasStack> isGasValid = gas -> true;
 	protected ItemStack container;
+	private ItemStack slag = new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get(), 1);
 	protected double capacity;
 	protected double maxTemperature;
 	protected int maxPressure;
@@ -112,7 +114,7 @@ public class GasHandlerItemStack implements IGasHandlerItem, ICapabilityProvider
 
 			if (action == GasAction.EXECUTE) {
 
-				setGas(resource.copy());
+				setGas(new GasStack(resource.getGas(), accepted, resource.getTemperature(), resource.getPressure()));
 
 				if (resource.getTemperature() > maxTemperature) {
 
@@ -289,11 +291,11 @@ public class GasHandlerItemStack implements IGasHandlerItem, ICapabilityProvider
 	}
 
 	public void onOverheat() {
-		container = ItemStack.EMPTY;
+		container = slag;
 	}
 
 	public void onOverpressure() {
-		container = ItemStack.EMPTY;
+		container.shrink(1);
 	}
 
 	public boolean isEmpty() {

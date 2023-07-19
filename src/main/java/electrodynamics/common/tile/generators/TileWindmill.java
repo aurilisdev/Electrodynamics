@@ -1,14 +1,14 @@
 package electrodynamics.common.tile.generators;
 
-import java.util.HashSet;
-
+import electrodynamics.api.multiblock.Subnode;
+import electrodynamics.api.multiblock.parent.IMultiblockParentTile;
 import electrodynamics.common.block.BlockMachine;
+import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.common.multiblock.IMultiblockTileNode;
-import electrodynamics.common.multiblock.Subnode;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
@@ -29,16 +29,25 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class TileWindmill extends GenericGeneratorTile implements IMultiblockTileNode, ITickableSound {
+public class TileWindmill extends GenericGeneratorTile implements IMultiblockParentTile, ITickableSound {
 
 	protected CachedTileOutput output;
 	private Property<Boolean> isGenerating = property(new Property<>(PropertyType.Boolean, "isGenerating", false));
 	public Property<Boolean> directionFlag = property(new Property<>(PropertyType.Boolean, "directionFlag", false));
 	public Property<Double> generating = property(new Property<>(PropertyType.Double, "generating", 0.0));
 	private Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
+	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
 	public double savedTickRotation;
 	public double rotationSpeed;
 
@@ -46,12 +55,12 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockTil
 
 	public TileWindmill(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_WINDMILL.get(), worldPosition, blockState, 2.25, SubtypeItemUpgrade.stator);
-		addComponent(new ComponentDirection());
-		addComponent(new ComponentPacketHandler());
-		addComponent(new ComponentTickable().tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
+		addComponent(new ComponentDirection(this));
+		addComponent(new ComponentPacketHandler(this));
+		addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerWindmill.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.windmill).createMenu((id, player) -> new ContainerWindmill(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.windmill, this).createMenu((id, player) -> new ContainerWindmill(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 
 	}
 
@@ -61,6 +70,10 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockTil
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
+		if(hasRedstoneSignal.get()) {
+			generating.set(false);
+			return;
+		}
 		ComponentDirection direction = getComponent(ComponentType.Direction);
 		Direction facing = direction.getDirection();
 		if (tickable.getTicks() % 40 == 0) {
@@ -89,6 +102,11 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockTil
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HUM.get(), this, true);
 		}
 	}
+	
+	@Override
+	public void onNeightborChanged(BlockPos neighbor) {
+		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
+	}
 
 	@Override
 	public void setNotPlaying() {
@@ -101,7 +119,7 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockTil
 	}
 
 	@Override
-	public HashSet<Subnode> getSubNodes() {
+	public Subnode[] getSubNodes() {
 		return BlockMachine.windmillsubnodes;
 	}
 
@@ -123,6 +141,35 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockTil
 	@Override
 	public int getComparatorSignal() {
 		return isGenerating.get() ? 15 : 0;
+	}
+
+	@Override
+	public void onSubnodeDestroyed(TileMultiSubnode subnode) {
+		level.destroyBlock(worldPosition, true);
+	}
+	
+	@Override
+	public int getSubdnodeComparatorSignal(TileMultiSubnode subnode) {
+		return getComparatorSignal();
+	}
+	
+	@Override
+	public InteractionResult onSubnodeUse(Player player, InteractionHand hand, BlockHitResult hit, TileMultiSubnode subnode) {
+		return use(player, hand, hit);
+	}
+	
+	@Override
+	public Direction getFacingDirection() {
+		return this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+	}
+	
+	static {
+		
+		VoxelShape shape = Block.box(2, 0, 2, 14, 2, 14);
+		shape = Shapes.join(shape, Block.box(3, 2, 3, 13, 3, 13), BooleanOp.OR);
+		shape = Shapes.join(shape, Block.box(5, 3, 5, 11, 16, 11), BooleanOp.OR);
+		VoxelShapes.registerShape(SubtypeMachine.windmill, shape, Direction.NORTH);
+		
 	}
 	
 }

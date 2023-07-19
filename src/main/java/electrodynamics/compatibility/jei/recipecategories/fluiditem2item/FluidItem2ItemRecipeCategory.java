@@ -5,20 +5,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2item.FluidItem2ItemRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.compatibility.jei.recipecategories.ElectrodynamicsRecipeCategory;
-import electrodynamics.compatibility.jei.utils.gui.backgroud.BackgroundWrapper;
+import electrodynamics.compatibility.jei.recipecategories.utils.AbstractRecipeCategory;
+import electrodynamics.compatibility.jei.utils.gui.types.BackgroundObject;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import mezz.jei.api.helpers.IGuiHelper;
+import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public abstract class FluidItem2ItemRecipeCategory<T extends FluidItem2ItemRecipe> extends ElectrodynamicsRecipeCategory<T> {
+public abstract class FluidItem2ItemRecipeCategory<T extends FluidItem2ItemRecipe> extends AbstractRecipeCategory<T> {
 
 	/*
 	 * DOCUMENTATION NOTES:
@@ -26,14 +28,13 @@ public abstract class FluidItem2ItemRecipeCategory<T extends FluidItem2ItemRecip
 	 * > Items supercede bucket slots in order > All biproducts will be included with the outputSlots field > All fluid bucket output slots will be incled with the outputSlots field
 	 */
 
-	protected FluidItem2ItemRecipeCategory(IGuiHelper guiHelper, String modID, String recipeGroup, ItemStack inputMachine, BackgroundWrapper bWrap, Class<T> recipeClass, int animTime) {
+	public FluidItem2ItemRecipeCategory(IGuiHelper guiHelper, Component title, ItemStack inputMachine, BackgroundObject bWrap, RecipeType<T> recipeType, int animTime) {
 
-		super(guiHelper, modID, recipeGroup, inputMachine, bWrap, recipeClass, animTime);
+		super(guiHelper, title, inputMachine, bWrap, recipeType, animTime);
 	}
 
 	@Override
-	public List<List<FluidStack>> getFluidInputs(ElectrodynamicsRecipe electro) {
-		FluidItem2ItemRecipe recipe = (FluidItem2ItemRecipe) electro;
+	public List<List<FluidStack>> getFluidInputs(FluidItem2ItemRecipe recipe) {
 		List<List<FluidStack>> ingredients = new ArrayList<>();
 		for (FluidIngredient ing : recipe.getFluidIngredients()) {
 			List<FluidStack> fluids = new ArrayList<>();
@@ -48,8 +49,7 @@ public abstract class FluidItem2ItemRecipeCategory<T extends FluidItem2ItemRecip
 	}
 
 	@Override
-	public List<List<ItemStack>> getItemInputs(ElectrodynamicsRecipe electro) {
-		FluidItem2ItemRecipe recipe = (FluidItem2ItemRecipe) electro;
+	public List<List<ItemStack>> getItemInputs(FluidItem2ItemRecipe recipe) {
 		List<List<ItemStack>> ingredients = new ArrayList<>();
 
 		for (CountableIngredient ing : recipe.getCountedIngredients()) {
@@ -60,7 +60,7 @@ public abstract class FluidItem2ItemRecipeCategory<T extends FluidItem2ItemRecip
 			List<ItemStack> buckets = new ArrayList<>();
 			for (FluidStack stack : ing.getMatchingFluids()) {
 				ItemStack bucket = new ItemStack(stack.getFluid().getBucket(), 1);
-				CapabilityUtils.fill(bucket, stack);
+				CapabilityUtils.fillFluidItem(bucket, stack, FluidAction.EXECUTE);
 				buckets.add(bucket);
 			}
 			ingredients.add(buckets);
@@ -70,8 +70,7 @@ public abstract class FluidItem2ItemRecipeCategory<T extends FluidItem2ItemRecip
 	}
 
 	@Override
-	public List<ItemStack> getItemOutputs(ElectrodynamicsRecipe electro) {
-		FluidItem2ItemRecipe recipe = (FluidItem2ItemRecipe) electro;
+	public List<ItemStack> getItemOutputs(FluidItem2ItemRecipe recipe) {
 		List<ItemStack> outputItems = new ArrayList<>();
 
 		outputItems.add(recipe.getResultItem());
@@ -83,7 +82,7 @@ public abstract class FluidItem2ItemRecipeCategory<T extends FluidItem2ItemRecip
 		if (recipe.hasFluidBiproducts()) {
 			for (ProbableFluid stack : recipe.getFluidBiproducts()) {
 				ItemStack temp = new ItemStack(stack.getFullStack().getFluid().getBucket(), 1);
-				CapabilityUtils.fill(temp, stack.getFullStack());
+				CapabilityUtils.fillFluidItem(temp, stack.getFullStack(), FluidAction.EXECUTE);
 				outputItems.add(temp);
 			}
 		}

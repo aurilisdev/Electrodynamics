@@ -184,5 +184,9 @@ public class GasIngredient extends Ingredient {
 			ing.write(buffer);
 		}
 	}
+	
+	public GasStack getGasStack() {
+		return getMatchingGases().get(0);
+	}
 
 }
