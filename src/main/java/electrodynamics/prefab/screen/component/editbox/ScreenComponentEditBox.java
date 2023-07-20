@@ -53,13 +53,7 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 
 	public static final int BACKWARDS = -1;
 	public static final int FORWARDS = 1;
-	private static final int CURSOR_INSERT_WIDTH = 1;
-	private static final int CURSOR_INSERT_COLOR = -3092272;
-	private static final String CURSOR_APPEND_CHARACTER = "_";
 	public static final int DEFAULT_TEXT_COLOR = 14737632;
-	private static final int BORDER_COLOR_FOCUSED = -1;
-	private static final int BORDER_COLOR = -6250336;
-	private static final int BACKGROUND_COLOR = -16777216;
 	private final Font font;
 	/** Has the current text being edited on the textbox. */
 	private String value = "";

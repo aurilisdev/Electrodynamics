@@ -240,6 +240,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		wire(ElectrodynamicsBlocks.getBlock(pipe), models().withExistingParent(name + pipe.tag() + "center", modLoc(parent + "uninsulatedcenter")).texture("texture", blockLoc(texture + pipe.tag() + "center")).texture("particle", "#texture"), models().withExistingParent(name + pipe.tag() + "side", modLoc(parent + "uninsulatedplasticside")).texture("texture", blockLoc(texture + pipe.tag() + "side")).texture("particle", "#texture"), false);
 	}
 
+	@SuppressWarnings("unused")
 	private void gasPipeWoolInsulated(SubtypeGasPipe pipe) {
 		String parent = "parent/gaspipe";
 		String name = "block/gaspipe/";
@@ -247,6 +248,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		wire(ElectrodynamicsBlocks.getBlock(pipe), models().getExistingFile(modLoc(parent + "woolinsulatedcenter")), models().withExistingParent(name + pipe.tag() + "side", modLoc(parent + "insulatedside")).texture("texture", blockLoc(texture + pipe.tag() + "side")).texture("particle", "#texture"), false);
 	}
 
+	@SuppressWarnings("unused")
 	private void gasPipeWoolInsulatedPlastic(SubtypeGasPipe pipe) {
 		String parent = "parent/gaspipe";
 		String name = "block/gaspipe/";
@@ -254,6 +256,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		wire(ElectrodynamicsBlocks.getBlock(pipe), models().getExistingFile(modLoc(parent + "woolinsulatedcenter")), models().withExistingParent(name + pipe.tag() + "side", modLoc(parent + "insulatedplasticside")).texture("texture", blockLoc(texture + pipe.tag() + "side")).texture("particle", "#texture"), false);
 	}
 
+	@SuppressWarnings("unused")
 	private void gasPipeCeramicInsulated(SubtypeGasPipe pipe) {
 		String parent = "parent/gaspipe";
 		String name = "block/gaspipe/";
@@ -261,6 +264,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		wire(ElectrodynamicsBlocks.getBlock(pipe), models().getExistingFile(modLoc(parent + "ceramicinsulatedcenter")), models().withExistingParent(name + pipe.tag() + "side", modLoc(parent + "insulatedside")).texture("texture", blockLoc(texture + pipe.tag() + "side")).texture("particle", "#texture"), false);
 	}
 
+	@SuppressWarnings("unused")
 	private void gasPipeCeramicInsulatedPlastic(SubtypeGasPipe pipe) {
 		String parent = "parent/gaspipe";
 		String name = "block/gaspipe/";

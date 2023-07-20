@@ -10,6 +10,7 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
+@SuppressWarnings("unused")
 public class ComponentUpgradeHandler implements Component {
 
 	public static final double BASIC_SPEED_BOOST = 1.5;
