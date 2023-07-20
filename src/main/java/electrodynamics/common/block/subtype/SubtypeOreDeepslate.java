@@ -31,16 +31,6 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	uranium(SubtypeOre.uranium.harvestLevel, SubtypeOre.uranium.veinsPerChunk, SubtypeOre.uranium.veinSize, SubtypeOre.uranium.minY, SubtypeOre.uranium.maxY, SubtypeOre.uranium.hardness, SubtypeOre.uranium.resistance, SubtypeOre.uranium.minDrop, SubtypeOre.uranium.maxDrop, SubtypeOre.uranium.nonSilkLootItem, SubtypeOre.uranium.smeltingItem, SubtypeOre.uranium.smeltingXp, SubtypeOre.uranium.smeltingTime, SubtypeOre.uranium.itemTag, SubtypeOre.uranium.blockTag),
 	vanadium(SubtypeOre.vanadium.harvestLevel, SubtypeOre.vanadium.veinsPerChunk, SubtypeOre.vanadium.veinSize, SubtypeOre.vanadium.minY, SubtypeOre.vanadium.maxY, SubtypeOre.vanadium.hardness, SubtypeOre.vanadium.resistance, SubtypeOre.vanadium.minDrop, SubtypeOre.vanadium.maxDrop, SubtypeOre.vanadium.nonSilkLootItem, SubtypeOre.vanadium.smeltingItem, SubtypeOre.vanadium.smeltingXp, SubtypeOre.vanadium.smeltingTime, SubtypeOre.vanadium.itemTag, SubtypeOre.vanadium.blockTag);
 
-
-
-
-
-
-
-
-
-
-
 	public final int harvestLevel;
 	public final int veinsPerChunk;
 	public final int veinSize;

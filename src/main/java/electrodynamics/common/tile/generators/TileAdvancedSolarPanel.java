@@ -38,10 +38,10 @@ public class TileAdvancedSolarPanel extends TileSolarPanel implements IMultibloc
 
 	public TileAdvancedSolarPanel(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_ADVANCEDSOLARPANEL.get(), worldPosition, blockState, 2.25, SubtypeItemUpgrade.improvedsolarcell);
-		//addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-		//addComponent(new ComponentPacketHandler(this));
-		//addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2));
-		//addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerSolarPanel.VALID_UPGRADES).valid(machineValidator()));
+		// addComponent(new ComponentTickable(this).tickServer(this::tickServer));
+		// addComponent(new ComponentPacketHandler(this));
+		// addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2));
+		// addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerSolarPanel.VALID_UPGRADES).valid(machineValidator()));
 		forceComponent(new ComponentContainerProvider(SubtypeMachine.advancedsolarpanel, this).createMenu((id, player) -> new ContainerSolarPanel(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 
@@ -63,35 +63,35 @@ public class TileAdvancedSolarPanel extends TileSolarPanel implements IMultibloc
 	public Subnode[] getSubNodes() {
 		return BlockMachine.advancedsolarpanelsubnodes;
 	}
-	
+
 	@Override
 	public void onSubnodeDestroyed(TileMultiSubnode subnode) {
 		level.destroyBlock(worldPosition, true);
 	}
-	
+
 	@Override
 	public InteractionResult onSubnodeUse(Player player, InteractionHand hand, BlockHitResult hit, TileMultiSubnode subnode) {
 		return use(player, hand, hit);
 	}
-	
+
 	@Override
 	public int getSubdnodeComparatorSignal(TileMultiSubnode subnode) {
 		return getComparatorSignal();
 	}
-	
+
 	@Override
 	public Direction getFacingDirection() {
 		return this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	}
-	
+
 	static {
-		
+
 		VoxelShape shape = Block.box(0, 0, 0, 16, 2, 16);
 		shape = Shapes.join(shape, Block.box(2, 2, 2, 14, 3, 14), BooleanOp.OR);
 		shape = Shapes.join(shape, Block.box(3, 3, 3, 13, 7, 13), BooleanOp.OR);
 		shape = Shapes.join(shape, Block.box(6, 7, 6, 10, 16, 10), BooleanOp.OR);
-		
+
 		VoxelShapes.registerShape(SubtypeMachine.advancedsolarpanel, shape, Direction.NORTH);
 	}
-	
+
 }

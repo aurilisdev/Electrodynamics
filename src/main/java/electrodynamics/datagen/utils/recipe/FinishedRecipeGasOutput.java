@@ -10,7 +10,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 public class FinishedRecipeGasOutput extends AbstractElectrodynamicsFinishedRecipe {
 
 	private GasStack output;
-	
+
 	private FinishedRecipeGasOutput(RecipeSerializer<?> serializer, GasStack output, double experience, int processTime, double usagePerTick) {
 		super(serializer, experience, processTime, usagePerTick);
 		this.output = output;
@@ -25,12 +25,12 @@ public class FinishedRecipeGasOutput extends AbstractElectrodynamicsFinishedReci
 		output.addProperty("pressure", this.output.getPressure());
 		recipeJson.add(ElectrodynamicsRecipeSerializer.OUTPUT, output);
 	}
-	
+
 	@Override
 	public FinishedRecipeGasOutput name(RecipeCategory category, String parent, String name) {
 		return (FinishedRecipeGasOutput) super.name(category, parent, name);
 	}
-	
+
 	public static FinishedRecipeGasOutput of(RecipeSerializer<?> serializer, GasStack output, double experience, int processTime, double usage) {
 		return new FinishedRecipeGasOutput(serializer, output, experience, processTime, usage);
 	}

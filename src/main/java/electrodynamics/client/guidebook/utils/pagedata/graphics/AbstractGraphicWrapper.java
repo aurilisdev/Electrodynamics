@@ -13,8 +13,7 @@ import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
 import net.minecraft.network.chat.Component;
 
 /**
- * A specialized version of AbstractWrapperObject for drawing images amongst other graphics to the guidebook screen. The image can
- * also have text associated with it.
+ * A specialized version of AbstractWrapperObject for drawing images amongst other graphics to the guidebook screen. The image can also have text associated with it.
  * 
  * @author skip999
  *
@@ -24,23 +23,23 @@ public abstract class AbstractGraphicWrapper<T extends AbstractGraphicWrapper<?>
 
 	public final int width;
 	public final int height;
-	
+
 	public final int trueHeight;
-	
+
 	public final int xOffset;// based upon location on page
 	public final int yOffset;// based upon location on page
-	
-	public final int lookupXOffset; //distinction due to issues with item renderer
+
+	public final int lookupXOffset; // distinction due to issues with item renderer
 	public final int lookupYOffset;
-	
+
 	public final int descriptorTopOffset;
 	public final int descriptorBottomOffset;
-	
+
 	public boolean allowNextToOthers = false; // allows the image to be placed horizontally next to another if space permits
 
 	public final GraphicTextDescriptor[] descriptors;
-	
-	public AbstractGraphicWrapper(int xOffset, int yOffset, int lookupXOffset, int lookupYOffset, int width, int height, int trueHeight, GraphicTextDescriptor...descriptors) {
+
+	public AbstractGraphicWrapper(int xOffset, int yOffset, int lookupXOffset, int lookupYOffset, int width, int height, int trueHeight, GraphicTextDescriptor... descriptors) {
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 		this.lookupXOffset = lookupXOffset;
@@ -48,7 +47,6 @@ public abstract class AbstractGraphicWrapper<T extends AbstractGraphicWrapper<?>
 		this.width = width;
 		this.height = height;
 		this.trueHeight = trueHeight;
-		
 
 		if (descriptors != null && descriptors.length > 0) {
 			this.descriptors = descriptors;
@@ -71,7 +69,8 @@ public abstract class AbstractGraphicWrapper<T extends AbstractGraphicWrapper<?>
 			descriptorBottomOffset = 0;
 		}
 	}
-	
+
+	@Override
 	public T setNewPage() {
 		newPage = true;
 		return (T) this;
@@ -81,16 +80,16 @@ public abstract class AbstractGraphicWrapper<T extends AbstractGraphicWrapper<?>
 		allowNextToOthers = true;
 		return (T) this;
 	}
-	
+
 	public abstract void render(PoseStack stack, int wrapperX, int wrapperY, int xShift, int guiWidth, int guiHeight, Page page);
-	
+
 	public static class GraphicTextDescriptor {
 
 		public int xOffsetFromImage;
 		public int yOffsetFromImage;
 		public Component text;
 		public int color;
-		
+
 		@Nullable
 		public OnTooltip onTooltip = null;
 		@Nullable
@@ -108,17 +107,17 @@ public abstract class AbstractGraphicWrapper<T extends AbstractGraphicWrapper<?>
 			this.text = text;
 			this.color = color;
 		}
-		
+
 		public GraphicTextDescriptor onTooltip(OnTooltip onTooltip) {
 			this.onTooltip = onTooltip;
 			return this;
 		}
-		
+
 		public GraphicTextDescriptor onClick(OnClick onClick) {
 			this.onClick = onClick;
 			return this;
 		}
-		
+
 		public GraphicTextDescriptor onKeyPress(OnKeyPress onKeyPress) {
 			this.onKeyPress = onKeyPress;
 			return this;

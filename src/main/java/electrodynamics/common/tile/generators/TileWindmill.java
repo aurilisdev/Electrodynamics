@@ -18,9 +18,9 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
@@ -70,7 +70,7 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
-		if(hasRedstoneSignal.get()) {
+		if (hasRedstoneSignal.get()) {
 			generating.set(false);
 			return;
 		}
@@ -102,7 +102,7 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HUM.get(), this, true);
 		}
 	}
-	
+
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
 		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
@@ -137,7 +137,7 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 	public TransferPack getProduced() {
 		return TransferPack.ampsVoltage(generating.get() * multiplier.get(), this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
 		return isGenerating.get() ? 15 : 0;
@@ -147,29 +147,29 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 	public void onSubnodeDestroyed(TileMultiSubnode subnode) {
 		level.destroyBlock(worldPosition, true);
 	}
-	
+
 	@Override
 	public int getSubdnodeComparatorSignal(TileMultiSubnode subnode) {
 		return getComparatorSignal();
 	}
-	
+
 	@Override
 	public InteractionResult onSubnodeUse(Player player, InteractionHand hand, BlockHitResult hit, TileMultiSubnode subnode) {
 		return use(player, hand, hit);
 	}
-	
+
 	@Override
 	public Direction getFacingDirection() {
 		return this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 	}
-	
+
 	static {
-		
+
 		VoxelShape shape = Block.box(2, 0, 2, 14, 2, 14);
 		shape = Shapes.join(shape, Block.box(3, 2, 3, 13, 3, 13), BooleanOp.OR);
 		shape = Shapes.join(shape, Block.box(5, 3, 5, 11, 16, 11), BooleanOp.OR);
 		VoxelShapes.registerShape(SubtypeMachine.windmill, shape, Direction.NORTH);
-		
+
 	}
-	
+
 }

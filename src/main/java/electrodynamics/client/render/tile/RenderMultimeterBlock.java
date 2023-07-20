@@ -1,5 +1,7 @@
 package electrodynamics.client.render.tile;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
@@ -17,7 +19,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
 
 public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBlock> {
 
@@ -81,9 +82,9 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 			font.drawInBatch(voltage, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, false, 0, combinedLight);
 
 			stack.popPose();
-			
+
 			/* MINIMUM VOLTAGE */
-			
+
 			stack.pushPose();
 
 			stack.translate(0.5 + dir.getStepX() / 1.999, 0.55 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);

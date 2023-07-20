@@ -14,54 +14,54 @@ public class GenericTileValve extends GenericTile {
 
 	public static final Direction INPUT_DIR = Direction.SOUTH;
 	public static final Direction OUTPUT_DIR = Direction.NORTH;
-	
+
 	public boolean isClosed = false;
-	
+
 	public GenericTileValve(BlockEntityType<?> tile, BlockPos pos, BlockState state) {
 		super(tile, pos, state);
 	}
-	
+
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
 		super.onNeightborChanged(neighbor);
-		
-		if(level.hasNeighborSignal(worldPosition)) {
+
+		if (level.hasNeighborSignal(worldPosition)) {
 			isClosed = true;
 		} else {
 			isClosed = false;
 		}
-		
+
 		if (BlockEntityUtils.isLit(this) ^ isClosed) {
 			BlockEntityUtils.updateLit(this, isClosed);
 		}
-		
+
 	}
-	
+
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
 		super.onPlace(oldState, isMoving);
-		if(level.hasNeighborSignal(worldPosition)) {
+		if (level.hasNeighborSignal(worldPosition)) {
 			isClosed = true;
 		} else {
 			isClosed = false;
 		}
-		
+
 		if (BlockEntityUtils.isLit(this) ^ isClosed) {
 			BlockEntityUtils.updateLit(this, isClosed);
 		}
 	}
-	
+
 	@Override
 	public void saveAdditional(@NotNull CompoundTag compound) {
 		super.saveAdditional(compound);
-		
+
 		compound.putBoolean("valveisclosed", isClosed);
 	}
-	
+
 	@Override
 	public void load(@NotNull CompoundTag compound) {
 		super.load(compound);
-		
+
 		isClosed = compound.getBoolean("valveisclosed");
 	}
 

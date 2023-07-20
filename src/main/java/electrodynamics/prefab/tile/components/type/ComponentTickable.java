@@ -1,12 +1,13 @@
 package electrodynamics.prefab.tile.components.type;
 
+import java.util.function.Consumer;
+
+import javax.annotation.Nonnull;
+
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
 import net.minecraft.world.level.Level;
-
-import javax.annotation.Nonnull;
-import java.util.function.Consumer;
 
 public class ComponentTickable implements Component {
 	private GenericTile holder;
@@ -66,9 +67,7 @@ public class ComponentTickable implements Component {
 		// TODO remove
 
 		/*
-		 * if (ticks % 3 == 0 && holder.hasComponent(ComponentType.PacketHandler) && holder.hasComponent(ComponentType.Inventory) &&
-		 * !holder.<ComponentInventory>getComponent(ComponentType.Inventory).getViewing().isEmpty()) {
-		 * holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
+		 * if (ticks % 3 == 0 && holder.hasComponent(ComponentType.PacketHandler) && holder.hasComponent(ComponentType.Inventory) && !holder.<ComponentInventory>getComponent(ComponentType.Inventory).getViewing().isEmpty()) { holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
 		 */
 
 	}
@@ -88,23 +87,23 @@ public class ComponentTickable implements Component {
 		if (level == null) {
 			return;
 		}
-		
+
 		tickCommon();
-		
+
 		if (level.isClientSide) {
-			
+
 			tickClient();
 
 		} else {
-			
+
 			tickServer();
-			
+
 			if (holder != null && (holder.getPropertyManager().isDirty() || holder.isChanged)) {
-				
+
 				holder.setChanged();
-				
+
 				holder.getPropertyManager().clean();
-				
+
 				holder.isChanged = false;
 			}
 		}

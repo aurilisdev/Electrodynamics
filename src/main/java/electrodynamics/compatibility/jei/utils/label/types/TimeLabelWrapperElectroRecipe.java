@@ -15,7 +15,7 @@ public class TimeLabelWrapperElectroRecipe extends AbstractLabelWrapper {
 
 	@Override
 	public Component getComponent(AbstractRecipeCategory<?> category, Object recipe) {
-		return ChatFormatter.getChatDisplayShort((double) ((ElectrodynamicsRecipe) recipe).getTicks() / 20.0, DisplayUnit.TIME_SECONDS);
+		return ChatFormatter.getChatDisplayShort(((ElectrodynamicsRecipe) recipe).getTicks() / 20.0, DisplayUnit.TIME_SECONDS);
 	}
 
 }

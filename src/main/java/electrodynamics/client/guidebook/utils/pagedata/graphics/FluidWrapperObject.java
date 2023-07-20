@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.client.guidebook.utils.components.Page;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -24,17 +24,17 @@ public class FluidWrapperObject extends AbstractGraphicWrapper<FluidWrapperObjec
 
 	@Override
 	public void render(PoseStack stack, int wrapperX, int wrapperY, int xShift, int guiWidth, int guiHeight, Page page) {
-		
+
 		ResourceLocation texture = IClientFluidTypeExtensions.of(fluid).getStillTexture();
-		
+
 		TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texture);
-		
+
 		RenderSystem.setShaderTexture(0, sprite.atlas().getId());
-		
+
 		RenderingUtils.color(IClientFluidTypeExtensions.of(fluid).getTintColor());
-		
-		Screen.blit(stack, guiWidth + wrapperX + xShift, guiHeight + wrapperY, 0, width, height, sprite);
-		
+
+		GuiComponent.blit(stack, guiWidth + wrapperX + xShift, guiHeight + wrapperY, 0, width, height, sprite);
+
 		RenderingUtils.resetColor();
 
 	}

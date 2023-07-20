@@ -22,7 +22,7 @@ public class ScreenFluidPipePump extends GenericScreen<ContainerFluidPipePump> {
 
 		addComponent(priority = new ScreenComponentEditBox(94, 35, 59, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(1).setResponder(this::setPriority).setFilter(ScreenComponentEditBox.POSITIVE_INTEGER));
 		addComponent(new ScreenComponentSimpleLabel(20, 39, 10, 4210752, ElectroTextUtils.gui("prioritypump.priority")));
-		
+
 	}
 
 	private void setPriority(String prior) {

@@ -100,7 +100,8 @@ public class FluidIngredient extends Ingredient {
 				ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(jsonObject, "fluid"));
 				int amount = GsonHelper.getAsInt(jsonObject, "amount");
 				return new FluidIngredient(resourceLocation, amount, false);
-			} else if (GsonHelper.isValidNode(jsonObject, "tag")) {
+			}
+			if (GsonHelper.isValidNode(jsonObject, "tag")) {
 				ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(jsonObject, "tag"));
 				int amount = GsonHelper.getAsInt(jsonObject, "amount");
 				// special constructor call for JSONs

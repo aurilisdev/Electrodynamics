@@ -7,8 +7,8 @@ import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Explosion.BlockInteraction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 
 /**
@@ -160,11 +160,19 @@ public class PropertyGasTank extends GasTank {
 	// this must be called to update the server if interacted with on the client
 	public void updateServer() {
 
-		if(gasProperty.isDirty()) gasProperty.updateServer();
-		if(capacityProperty.isDirty()) capacityProperty.updateServer();
-		if(maxTemperatureProperty.isDirty()) maxTemperatureProperty.updateServer();
-		if(maxPressureProperty.isDirty()) maxPressureProperty.updateServer();
-		
+		if (gasProperty.isDirty()) {
+			gasProperty.updateServer();
+		}
+		if (capacityProperty.isDirty()) {
+			capacityProperty.updateServer();
+		}
+		if (maxTemperatureProperty.isDirty()) {
+			maxTemperatureProperty.updateServer();
+		}
+		if (maxPressureProperty.isDirty()) {
+			maxPressureProperty.updateServer();
+		}
+
 	}
 
 }

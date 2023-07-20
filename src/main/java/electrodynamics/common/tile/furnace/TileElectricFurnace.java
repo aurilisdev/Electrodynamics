@@ -1,5 +1,7 @@
 package electrodynamics.common.tile.furnace;
 
+import java.util.List;
+
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnace;
@@ -12,8 +14,14 @@ import electrodynamics.prefab.sound.SoundBarrierMethods;
 import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.*;
+import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
+import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
+import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
+import electrodynamics.prefab.tile.components.type.ComponentProcessor;
+import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
@@ -27,8 +35,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.List;
 
 public class TileElectricFurnace extends GenericTile implements ITickableSound {
 
@@ -107,8 +113,8 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 		if (cachedRecipes == null) {
 			cachedRecipes = level.getRecipeManager().getAllRecipesFor(RecipeType.SMELTING);
 		}
-		
-		if(cachedRecipe == null) {
+
+		if (cachedRecipe == null) {
 			component.setShouldKeepProgress(false);
 			return false;
 		}
@@ -127,7 +133,7 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 			component.setShouldKeepProgress(false);
 			return false;
 		}
-		
+
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 		if (electro.getJoulesStored() < component.getUsage() * component.operatingSpeed.get()) {
 			return false;
@@ -176,7 +182,7 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 		}
 		return null;
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
 		return (int) (((double) getNumActiveProcessors() / (double) Math.max(1, getNumProcessors())) * 15.0);

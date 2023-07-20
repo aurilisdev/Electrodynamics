@@ -1,5 +1,7 @@
 package electrodynamics.common.tile.battery;
 
+import org.jetbrains.annotations.NotNull;
+
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
@@ -30,7 +32,6 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
-import org.jetbrains.annotations.NotNull;
 
 public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
@@ -177,7 +178,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 			electro.voltage(baseVoltage * currentVoltageMultiplier.get());
 		}
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);

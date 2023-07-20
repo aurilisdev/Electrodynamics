@@ -149,12 +149,12 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		}
 
 	}
-	
+
 	@Override
 	public boolean hasAnalogOutputSignal(BlockState pState) {
 		return true;
 	}
-	
+
 	@Override
 	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof GenericTile generic) {
@@ -162,7 +162,7 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		}
 		return super.getAnalogOutputSignal(state, level, pos);
 	}
-	
+
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		if (worldIn.isClientSide) {
@@ -174,18 +174,18 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 
 		return InteractionResult.FAIL;
 	}
-	
+
 	@Override
 	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-		if(level.getBlockEntity(pos) instanceof GenericTile generic) {
+		if (level.getBlockEntity(pos) instanceof GenericTile generic) {
 			return generic.getDirectSignal(direction);
 		}
 		return super.getDirectSignal(state, level, pos, direction);
 	}
-	
+
 	@Override
 	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-		if(level.getBlockEntity(pos) instanceof GenericTile generic) {
+		if (level.getBlockEntity(pos) instanceof GenericTile generic) {
 			return generic.getSignal(direction);
 		}
 		return super.getSignal(state, level, pos, direction);

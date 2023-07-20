@@ -28,5 +28,5 @@ public class PacketResetGuidebookPages {
 	public static PacketResetGuidebookPages decode(FriendlyByteBuf buf) {
 		return new PacketResetGuidebookPages();
 	}
-	
+
 }

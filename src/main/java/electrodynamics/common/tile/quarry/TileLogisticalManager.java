@@ -1,5 +1,7 @@
 package electrodynamics.common.tile.quarry;
 
+import java.util.Optional;
+
 import electrodynamics.common.item.ItemDrillHead;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -19,132 +21,129 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 
-import java.util.Optional;
-
 public class TileLogisticalManager extends GenericTile {
 
-    private TileQuarry[] quarries = new TileQuarry[6];
-    private BlockEntity[] inventories = new BlockEntity[6];
+	private TileQuarry[] quarries = new TileQuarry[6];
+	private BlockEntity[] inventories = new BlockEntity[6];
 
-    public TileLogisticalManager(BlockPos pos, BlockState state) {
-        super(ElectrodynamicsBlockTypes.TILE_LOGISTICALMANAGER.get(), pos, state);
-        addComponent(new ComponentDirection(this));
-        addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-    }
+	public TileLogisticalManager(BlockPos pos, BlockState state) {
+		super(ElectrodynamicsBlockTypes.TILE_LOGISTICALMANAGER.get(), pos, state);
+		addComponent(new ComponentDirection(this));
+		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
+	}
 
-    private void tickServer(ComponentTickable tick) {
-        for (int i = 0; i < 6; i++) {
-            BlockEntity inventory = inventories[i];
-            if (inventory != null) {
-                LazyOptional<IItemHandler> lazy = inventory.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.values()[i].getOpposite());
-                if (lazy.isPresent()) {
-                    Optional<IItemHandler> nonlazy = lazy.resolve();
-                    if (nonlazy.isPresent()) {
-                        IItemHandler handler = nonlazy.get();
-                        for (TileQuarry quarry : quarries) {
-                            if (quarry != null) {
-                                manipulateItems(quarry.getComponent(ComponentType.Inventory), handler);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+	private void tickServer(ComponentTickable tick) {
+		for (int i = 0; i < 6; i++) {
+			BlockEntity inventory = inventories[i];
+			if (inventory != null) {
+				LazyOptional<IItemHandler> lazy = inventory.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.values()[i].getOpposite());
+				if (lazy.isPresent()) {
+					Optional<IItemHandler> nonlazy = lazy.resolve();
+					if (nonlazy.isPresent()) {
+						IItemHandler handler = nonlazy.get();
+						for (TileQuarry quarry : quarries) {
+							if (quarry != null) {
+								manipulateItems(quarry.getComponent(ComponentType.Inventory), handler);
+							}
+						}
+					}
+				}
+			}
+		}
 
-    }
+	}
 
-    @Override
-    public void onNeightborChanged(BlockPos neighbor) {
-        refreshConnections();
-    }
+	@Override
+	public void onNeightborChanged(BlockPos neighbor) {
+		refreshConnections();
+	}
 
-    @Override
-    public void onPlace(BlockState oldState, boolean isMoving) {
-        refreshConnections();
-    }
+	@Override
+	public void onPlace(BlockState oldState, boolean isMoving) {
+		refreshConnections();
+	}
 
-    public void refreshConnections() {
-        quarries = new TileQuarry[6];
-        inventories = new BlockEntity[6];
-        for (Direction dir : Direction.values()) {
-            BlockEntity entity = level.getBlockEntity(getBlockPos().relative(dir));
-            if (entity != null) {
-                if (entity instanceof TileQuarry quarry) {
-                    quarries[dir.ordinal()] = quarry;
-                } else if (entity.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).isPresent()) {
-                    inventories[dir.ordinal()] = entity;
-                }
-            }
-        }
-    }
+	public void refreshConnections() {
+		quarries = new TileQuarry[6];
+		inventories = new BlockEntity[6];
+		for (Direction dir : Direction.values()) {
+			BlockEntity entity = level.getBlockEntity(getBlockPos().relative(dir));
+			if (entity != null) {
+				if (entity instanceof TileQuarry quarry) {
+					quarries[dir.ordinal()] = quarry;
+				} else if (entity.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).isPresent()) {
+					inventories[dir.ordinal()] = entity;
+				}
+			}
+		}
+	}
 
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        Scheduler.schedule(1, this::refreshConnections);
-    }
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		Scheduler.schedule(1, this::refreshConnections);
+	}
 
-    private void manipulateItems(ComponentInventory quarryInventory, IItemHandler handler) {
+	private void manipulateItems(ComponentInventory quarryInventory, IItemHandler handler) {
 
-        if (quarryInventory.getItem(TileQuarry.DRILL_HEAD_INDEX).isEmpty()) {
-            restockDrillHead(quarryInventory, handler);
-        }
+		if (quarryInventory.getItem(TileQuarry.DRILL_HEAD_INDEX).isEmpty()) {
+			restockDrillHead(quarryInventory, handler);
+		}
 
-        addItemsToInventory(quarryInventory, handler);
+		addItemsToInventory(quarryInventory, handler);
 
-    }
+	}
 
-    private void restockDrillHead(ComponentInventory quarryInventory, IItemHandler handler) {
+	private void restockDrillHead(ComponentInventory quarryInventory, IItemHandler handler) {
 
-        ItemStack stack;
+		ItemStack stack;
 
-        for (int i = 0; i < handler.getSlots(); i++) {
+		for (int i = 0; i < handler.getSlots(); i++) {
 
-            stack = handler.getStackInSlot(i);
+			stack = handler.getStackInSlot(i);
 
-            if (!stack.isEmpty() && stack.getItem() instanceof ItemDrillHead) {
-                quarryInventory.setItem(TileQuarry.DRILL_HEAD_INDEX, stack.copy());
-                handler.extractItem(i, stack.getMaxStackSize(), false);
-                break;
-            }
+			if (!stack.isEmpty() && stack.getItem() instanceof ItemDrillHead) {
+				quarryInventory.setItem(TileQuarry.DRILL_HEAD_INDEX, stack.copy());
+				handler.extractItem(i, stack.getMaxStackSize(), false);
+				break;
+			}
 
-        }
+		}
 
-    }
+	}
 
-    private void addItemsToInventory(ComponentInventory quarryInventory, IItemHandler handler) {
-        for (int i = 0; i < quarryInventory.outputs(); i++) {
-            int index = i + quarryInventory.getOutputStartIndex();
-            ItemStack mined = quarryInventory.getItem(index);
-            if (!mined.isEmpty()) {
-                for (int j = 0; j < handler.getSlots(); j++) {
-                    mined = handler.insertItem(j, mined, false);
-                    quarryInventory.setItem(index, mined);
-                    quarryInventory.setChanged(index);
-                    if (mined.isEmpty()) {
-                        break;
-                    }
-                }
-            }
-        }
+	private void addItemsToInventory(ComponentInventory quarryInventory, IItemHandler handler) {
+		for (int i = 0; i < quarryInventory.outputs(); i++) {
+			int index = i + quarryInventory.getOutputStartIndex();
+			ItemStack mined = quarryInventory.getItem(index);
+			if (!mined.isEmpty()) {
+				for (int j = 0; j < handler.getSlots(); j++) {
+					mined = handler.insertItem(j, mined, false);
+					quarryInventory.setItem(index, mined);
+					quarryInventory.setChanged(index);
+					if (mined.isEmpty()) {
+						break;
+					}
+				}
+			}
+		}
 
+	}
 
-    }
+	public static boolean isQuarry(BlockPos pos, LevelAccessor world) {
+		BlockEntity entity = world.getBlockEntity(pos);
+		return entity instanceof TileQuarry;
+	}
 
-    public static boolean isQuarry(BlockPos pos, LevelAccessor world) {
-        BlockEntity entity = world.getBlockEntity(pos);
-        return entity instanceof TileQuarry;
-    }
-
-    public static boolean isValidInventory(BlockPos pos, LevelAccessor world, Direction dir) {
-        BlockEntity entity = world.getBlockEntity(pos);
-        if (entity == null) {
-            return false;
-        }
-        if (entity.getCapability(ForgeCapabilities.ITEM_HANDLER, dir).isPresent()) {
-            return true;
-        }
-        return entity instanceof Container;
-    }
+	public static boolean isValidInventory(BlockPos pos, LevelAccessor world, Direction dir) {
+		BlockEntity entity = world.getBlockEntity(pos);
+		if (entity == null) {
+			return false;
+		}
+		if (entity.getCapability(ForgeCapabilities.ITEM_HANDLER, dir).isPresent()) {
+			return true;
+		}
+		return entity instanceof Container;
+	}
 
 }

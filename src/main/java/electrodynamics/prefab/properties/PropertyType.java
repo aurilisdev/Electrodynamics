@@ -1,5 +1,15 @@
 package electrodynamics.prefab.properties;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
+
+import javax.annotation.Nonnull;
+
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.prefab.utilities.object.Location;
 import net.minecraft.core.BlockPos;
@@ -14,31 +24,22 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 
-import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-
 public enum PropertyType {
-	Byte((prop, buf) -> buf.writeByte((Byte) prop.get()), buf -> buf.readByte(), (prop, tag) -> tag.putByte(prop.getName(), (Byte) prop.get()), (prop, tag) -> tag.getByte(prop.getName()), val -> ((Number) val).byteValue()),
+	Byte((prop, buf) -> buf.writeByte((Byte) prop.get()), FriendlyByteBuf::readByte, (prop, tag) -> tag.putByte(prop.getName(), (Byte) prop.get()), (prop, tag) -> tag.getByte(prop.getName()), val -> ((Number) val).byteValue()),
 	//
-	Boolean((prop, buf) -> buf.writeBoolean((Boolean) prop.get()), buf -> buf.readBoolean(), (prop, tag) -> tag.putBoolean(prop.getName(), (Boolean) prop.get()), (prop, tag) -> tag.getBoolean(prop.getName())),
+	Boolean((prop, buf) -> buf.writeBoolean((Boolean) prop.get()), FriendlyByteBuf::readBoolean, (prop, tag) -> tag.putBoolean(prop.getName(), (Boolean) prop.get()), (prop, tag) -> tag.getBoolean(prop.getName())),
 	//
-	Integer((prop, buf) -> buf.writeInt((Integer) prop.get()), buf -> buf.readInt(), (prop, tag) -> tag.putInt(prop.getName(), (Integer) prop.get()), (prop, tag) -> tag.getInt(prop.getName()), val -> ((Number) val).intValue()),
+	Integer((prop, buf) -> buf.writeInt((Integer) prop.get()), FriendlyByteBuf::readInt, (prop, tag) -> tag.putInt(prop.getName(), (Integer) prop.get()), (prop, tag) -> tag.getInt(prop.getName()), val -> ((Number) val).intValue()),
 	//
-	Float((prop, buf) -> buf.writeFloat((Float) prop.get()), buf -> buf.readFloat(), (prop, tag) -> tag.putFloat(prop.getName(), (Float) prop.get()), (prop, tag) -> tag.getFloat(prop.getName()), val -> ((Number) val).floatValue()),
+	Float((prop, buf) -> buf.writeFloat((Float) prop.get()), FriendlyByteBuf::readFloat, (prop, tag) -> tag.putFloat(prop.getName(), (Float) prop.get()), (prop, tag) -> tag.getFloat(prop.getName()), val -> ((Number) val).floatValue()),
 	//
-	Double((prop, buf) -> buf.writeDouble((Double) prop.get()), buf -> buf.readDouble(), (prop, tag) -> tag.putDouble(prop.getName(), (Double) prop.get()), (prop, tag) -> tag.getDouble(prop.getName()), val -> ((Number) val).doubleValue()),
+	Double((prop, buf) -> buf.writeDouble((Double) prop.get()), FriendlyByteBuf::readDouble, (prop, tag) -> tag.putDouble(prop.getName(), (Double) prop.get()), (prop, tag) -> tag.getDouble(prop.getName()), val -> ((Number) val).doubleValue()),
 	//
-	UUID((prop, buf) -> buf.writeUUID((UUID) prop.get()), buf -> buf.readUUID(), (prop, tag) -> tag.putUUID(prop.getName(), (UUID) prop.get()), (prop, tag) -> tag.getUUID(prop.getName())),
+	UUID((prop, buf) -> buf.writeUUID((UUID) prop.get()), FriendlyByteBuf::readUUID, (prop, tag) -> tag.putUUID(prop.getName(), (UUID) prop.get()), (prop, tag) -> tag.getUUID(prop.getName())),
 	//
-	CompoundTag((prop, buf) -> buf.writeNbt((CompoundTag) prop.get()), buf -> buf.readNbt(), (prop, tag) -> tag.put(prop.getName(), (CompoundTag) prop.get()), (prop, tag) -> tag.getCompound(prop.getName())),
+	CompoundTag((prop, buf) -> buf.writeNbt((CompoundTag) prop.get()), FriendlyByteBuf::readNbt, (prop, tag) -> tag.put(prop.getName(), (CompoundTag) prop.get()), (prop, tag) -> tag.getCompound(prop.getName())),
 	//
-	BlockPos((prop, buf) -> buf.writeBlockPos((BlockPos) prop.get()), buf -> buf.readBlockPos(), (prop, tag) -> tag.put(prop.getName(), NbtUtils.writeBlockPos((BlockPos) prop.get())), (prop, tag) -> NbtUtils.readBlockPos(tag.getCompound(prop.getName()))),
+	BlockPos((prop, buf) -> buf.writeBlockPos((BlockPos) prop.get()), FriendlyByteBuf::readBlockPos, (prop, tag) -> tag.put(prop.getName(), NbtUtils.writeBlockPos((BlockPos) prop.get())), (prop, tag) -> NbtUtils.readBlockPos(tag.getCompound(prop.getName()))),
 	//
 	InventoryItems((thisList, otherList) -> {
 		NonNullList<ItemStack> thisCasted = (NonNullList<ItemStack>) thisList;
@@ -92,7 +93,7 @@ public enum PropertyType {
 			return false;
 		}
 		return thisCasted.getFluid().isSame(otherCasted.getFluid());
-	}, (prop, buf) -> buf.writeFluidStack((FluidStack) prop.get()), buf -> buf.readFluidStack(), (prop, tag) -> {
+	}, (prop, buf) -> buf.writeFluidStack((FluidStack) prop.get()), FriendlyByteBuf::readFluidStack, (prop, tag) -> {
 		CompoundTag fluidTag = new CompoundTag();
 		((FluidStack) prop.get()).writeToNBT(fluidTag);
 		tag.put(prop.getName(), fluidTag);
@@ -142,15 +143,11 @@ public enum PropertyType {
 		return list;
 	}),
 	//
-	Location((prop, buf) -> ((Location) prop.get()).toBuffer(buf), buf -> electrodynamics.prefab.utilities.object.Location.fromBuffer(buf), (prop, tag) -> ((Location) prop.get()).writeToNBT(tag, prop.getName()), (prop, tag) -> electrodynamics.prefab.utilities.object.Location.readFromNBT(tag, prop.getName())),
+	Location((prop, buf) -> ((Location) prop.get()).toBuffer(buf), electrodynamics.prefab.utilities.object.Location::fromBuffer, (prop, tag) -> ((Location) prop.get()).writeToNBT(tag, prop.getName()), (prop, tag) -> electrodynamics.prefab.utilities.object.Location.readFromNBT(tag, prop.getName())),
 	//
-	Gasstack((prop, buf) -> ((GasStack) prop.get()).writeToBuffer(buf), buf -> GasStack.readFromBuffer(buf), (prop, tag) -> tag.put(prop.getName(), ((GasStack) prop.get()).writeToNbt()), (prop, tag) -> GasStack.readFromNbt(tag.getCompound(prop.getName()))),
+	Gasstack((prop, buf) -> ((GasStack) prop.get()).writeToBuffer(buf), GasStack::readFromBuffer, (prop, tag) -> tag.put(prop.getName(), ((GasStack) prop.get()).writeToNbt()), (prop, tag) -> GasStack.readFromNbt(tag.getCompound(prop.getName()))),
 	//
-	Itemstack((thisStack, otherStack) -> {
-		
-		return ((ItemStack)thisStack).equals((ItemStack) otherStack, false);
-		
-	}, (prop, buf) -> buf.writeItem((ItemStack) prop.get()), buf -> buf.readItem(), (prop, tag) -> tag.put(prop.getName(), ((ItemStack) prop.get()).save(new CompoundTag())), (prop, tag) -> ItemStack.of(tag.getCompound(prop.getName()))),
+	Itemstack((thisStack, otherStack) -> ((ItemStack) thisStack).equals((ItemStack) otherStack, false), (prop, buf) -> buf.writeItem((ItemStack) prop.get()), FriendlyByteBuf::readItem, (prop, tag) -> tag.put(prop.getName(), ((ItemStack) prop.get()).save(new CompoundTag())), (prop, tag) -> ItemStack.of(tag.getCompound(prop.getName()))),
 	//
 	Block((prop, buf) -> {
 		buf.writeItem(new ItemStack(((net.minecraft.world.level.block.Block) prop.get()).asItem()));
@@ -168,7 +165,7 @@ public enum PropertyType {
 			return Blocks.AIR;
 		}
 		return ((BlockItem) stack.getItem()).getBlock();
-	}), 
+	}),
 	//
 	Blockstate((prop, buf) -> buf.writeNbt(NbtUtils.writeBlockState((BlockState) prop.get())), buf -> NbtUtils.readBlockState(buf.readNbt()), (prop, tag) -> tag.put(prop.getName(), NbtUtils.writeBlockState((BlockState) prop.get())), (prop, tag) -> NbtUtils.readBlockState(tag.getCompound(prop.getName())));
 
@@ -212,9 +209,9 @@ public enum PropertyType {
 	// Leave this all for now until we are ABSOLUTELY certain there are no crashing issues
 
 	public void writeOld(Property<?> prop, FriendlyByteBuf buf) {
-		
-		//new ItemStack(Items.air).qua
-		
+
+		// new ItemStack(Items.air).qua
+
 		Object val = prop.get();
 		switch (this) {
 		case Boolean:

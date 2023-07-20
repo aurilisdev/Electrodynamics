@@ -54,20 +54,20 @@ public class ElectroTextUtils {
 	public static MutableComponent block(String key, Object... additional) {
 		return translated(BLOCK_BASE, key, additional);
 	}
-	
-	public static MutableComponent gas(String key, Object...additional) {
+
+	public static MutableComponent gas(String key, Object... additional) {
 		return translated(GAS_BASE, key, additional);
 	}
-	
-	public static MutableComponent advancement(String key, Object...additional) {
+
+	public static MutableComponent advancement(String key, Object... additional) {
 		return translated(ADVANCEMENT_BASE, key, additional);
 	}
-	
+
 	public static MutableComponent dimension(String key, Object... additional) {
 		return translated(DIMENSION, key, additional);
 	}
-	
-	public static MutableComponent dimension(ResourceKey<Level> level, Object...additional) {
+
+	public static MutableComponent dimension(ResourceKey<Level> level, Object... additional) {
 		return dimension(level.location().getPath(), additional);
 	}
 
@@ -82,11 +82,11 @@ public class ElectroTextUtils {
 	public static boolean tooltipExists(String key) {
 		return translationExists(TOOLTIP_BASE, key);
 	}
-	
+
 	public static boolean dimensionExistst(String key) {
 		return translationExists(DIMENSION, key);
 	}
-	
+
 	public static boolean dimensionExists(ResourceKey<Level> level) {
 		return dimensionExistst(level.location().getPath());
 	}
@@ -94,11 +94,11 @@ public class ElectroTextUtils {
 	public static boolean translationExists(String base, String key) {
 		return I18n.exists(base + "." + References.ID + "." + key);
 	}
-	
+
 	public static MutableComponent voltageTooltip(int voltage) {
 		return tooltip("machine.voltage", ChatFormatter.getChatDisplayShort(voltage, DisplayUnit.VOLTAGE));
 	}
-	
+
 	public static MutableComponent ratio(Component numerator, Component denominator) {
 		return numerator.copy().append(" / ").append(denominator);
 	}

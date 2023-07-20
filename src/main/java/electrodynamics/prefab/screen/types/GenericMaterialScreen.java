@@ -25,27 +25,27 @@ public class GenericMaterialScreen<T extends GenericContainer> extends GenericSc
 
 	private Set<ScreenComponentFluidGauge> fluidGauges = new HashSet<>();
 	private Set<ScreenComponentGasGauge> gasGauges = new HashSet<>();
-	
+
 	public GenericMaterialScreen(T screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
 	}
-	
+
 	@Override
 	public void addComponent(AbstractScreenComponent component) {
 		super.addComponent(component);
-		
-		if(component instanceof ScreenComponentFluidGauge gauge) {
+
+		if (component instanceof ScreenComponentFluidGauge gauge) {
 			fluidGauges.add(gauge);
 		} else if (component instanceof ScreenComponentGasGauge gauge) {
 			gasGauges.add(gauge);
 		}
-	
+
 	}
-	
+
 	public Set<ScreenComponentFluidGauge> getFluidGauges() {
 		return fluidGauges;
 	}
-	
+
 	public Set<ScreenComponentGasGauge> getGasGauges() {
 		return gasGauges;
 	}

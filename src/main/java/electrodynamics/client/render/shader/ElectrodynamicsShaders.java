@@ -10,16 +10,14 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat.Mode;
 
+import electrodynamics.api.References;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-
-import electrodynamics.api.References;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterShadersEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD, value = Dist.CLIENT)
@@ -41,30 +39,20 @@ public class ElectrodynamicsShaders extends RenderType {
 
 	private static final ShaderStateShard RENDERTYPE_PLASMA_ORB = new ShaderStateShard(() -> shaderPlasmaOrb);
 
-	public static final RenderType GREATER_ALPHA = RenderType.create(
-			GREATER_ALPHA_LOC.toString(), 
-			DefaultVertexFormat.NEW_ENTITY, 
-			VertexFormat.Mode.QUADS, 
-			256, 
-			false, 
-			false, 
-			CompositeState.builder().setLightmapState(LIGHTMAP).setShaderState(RENDERTYPE_EYES_SHADER).setTextureState(NO_TEXTURE).setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY).createCompositeState(false)
-			);
-	
-	//@SubscribeEvent
+	public static final RenderType GREATER_ALPHA = RenderType.create(GREATER_ALPHA_LOC.toString(), DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, false, CompositeState.builder().setLightmapState(LIGHTMAP).setShaderState(RENDERTYPE_EYES_SHADER).setTextureState(NO_TEXTURE).setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY).createCompositeState(false));
+
+	// @SubscribeEvent
 	public static void onRegisterShaders(final RegisterShadersEvent event) {
 		try {
-			event.registerShader(new ShaderInstance(
-							event.getResourceManager(),
-							GREATER_ALPHA_LOC,
-							DefaultVertexFormat.POSITION_COLOR_TEX),
-							shader -> { shaderPlasmaOrb = shader; uniformAlphaCutoff = shader.getUniform("AlphaCutoff");}
-			);
+			event.registerShader(new ShaderInstance(event.getResourceManager(), GREATER_ALPHA_LOC, DefaultVertexFormat.POSITION_COLOR_TEX), shader -> {
+				shaderPlasmaOrb = shader;
+				uniformAlphaCutoff = shader.getUniform("AlphaCutoff");
+			});
 		} catch (IOException err) {
 			LOGGER.warn(err.getMessage());
 		}
 	}
-	
+
 	public static RenderType getRenderTypeAlphaCutoff(float cutoff) {
 		setRenderTypeAlphaCutoff(cutoff);
 		return GREATER_ALPHA;

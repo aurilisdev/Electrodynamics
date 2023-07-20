@@ -24,7 +24,7 @@ public interface ICapabilityElectrodynamic {
 	default double getVoltage() {
 		return ElectrodynamicsCapabilities.DEFAULT_VOLTAGE;
 	}
-	
+
 	default double getMinimumVoltage() {
 		return getVoltage();
 	}

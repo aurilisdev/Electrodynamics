@@ -213,7 +213,8 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 						level.getChunkSource().getLightEngine().checkBlock(pos);
 					}
 					return InteractionResult.CONSUME;
-				} else if (!connect.getCamoBlock().is(blockitem.getBlock())) {
+				}
+				if (!connect.getCamoBlock().is(blockitem.getBlock())) {
 					if (!level.isClientSide) {
 						if (!player.isCreative()) {
 							if (!player.addItem(new ItemStack(connect.getCamoBlock().getBlock()))) {
@@ -313,7 +314,8 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 				}
 
 				return;
-			} else if (!connect.isScaffoldAir()) {
+			}
+			if (!connect.isScaffoldAir()) {
 				Block scaffold = connect.getScaffoldBlock().getBlock();
 
 				connect.setScaffoldBlock(Blocks.AIR.defaultBlockState());

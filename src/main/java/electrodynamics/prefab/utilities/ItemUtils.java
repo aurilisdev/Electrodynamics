@@ -21,11 +21,11 @@ public class ItemUtils {
 	public static boolean testItems(Item itemA, Item itemB) {
 		return ItemStack.isSame(new ItemStack(itemA), new ItemStack(itemB));
 	}
-	
+
 	public static boolean testItems(Item comparator, Item... itemsToCompare) {
 		ItemStack stack = new ItemStack(comparator);
-		for(Item item : itemsToCompare) {
-			if(ItemStack.isSame(stack, new ItemStack(item))) {
+		for (Item item : itemsToCompare) {
+			if (ItemStack.isSame(stack, new ItemStack(item))) {
 				return true;
 			}
 		}

@@ -93,7 +93,7 @@ public abstract class Fluid2GasRecipeCategory<T extends Fluid2GasRecipe> extends
 	public List<GasStack> getGasOutputs(Fluid2GasRecipe recipe) {
 		List<GasStack> outputs = new ArrayList<>();
 		outputs.add(recipe.getGasRecipeOutput());
-		if(recipe.hasGasBiproducts()) {
+		if (recipe.hasGasBiproducts()) {
 			outputs.addAll(Arrays.asList(recipe.getFullGasBiStacks()));
 		}
 		return outputs;

@@ -14,29 +14,29 @@ public enum SubtypeGasPipe implements ISubtype {
 	/*
 	 * UNINSULATED
 	 */
-	UNINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.NONE, 10000, 2.5, Material.METAL, SoundType.METAL),//
-	UNINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.NONE, 30000, 2.5, Material.METAL, SoundType.METAL),//
+	UNINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.NONE, 10000, 2.5, Material.METAL, SoundType.METAL), //
+	UNINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.NONE, 30000, 2.5, Material.METAL, SoundType.METAL), //
 	UNINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.NONE, 1000, 2.5, Material.STONE, SoundType.STONE);//
-	
+
 	/*
 	 * CERAMIC INSULATED
 	 */
-	//CERAMICINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.CERAMIC, 10000, 3, Material.METAL, SoundType.TUFF),//
-	//CERAMICINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.CERAMIC, 30000, 3, Material.METAL, SoundType.TUFF),//
-	//CERAMICINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.NONE, 1000, 3, Material.STONE, SoundType.TUFF),//
-	
+	// CERAMICINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.CERAMIC, 10000, 3, Material.METAL, SoundType.TUFF),//
+	// CERAMICINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.CERAMIC, 30000, 3, Material.METAL, SoundType.TUFF),//
+	// CERAMICINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.NONE, 1000, 3, Material.STONE, SoundType.TUFF),//
+
 	/*
 	 * WOOL INSULATED
 	 */
-	//WOOLINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.WOOL, 10000, 3, Material.METAL, SoundType.WOOL),
-	//WOOLINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.WOOL, 30000, 3, Material.METAL, SoundType.WOOL),
-	//WOOLINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.WOOL, 1000, 3, Material.STONE, SoundType.WOOL);
+	// WOOLINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.WOOL, 10000, 3, Material.METAL, SoundType.WOOL),
+	// WOOLINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.WOOL, 30000, 3, Material.METAL, SoundType.WOOL),
+	// WOOLINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.WOOL, 1000, 3, Material.STONE, SoundType.WOOL);
 
 	public final PipeMaterial pipeMaterial;
 	public final InsulationMaterial insulationMaterial;
 	public final double maxTransfer;
 	public final double effectivePipeHeatLoss;
-	
+
 	public final double radius;
 	public final Material material;
 	public final SoundType soundType;
@@ -46,7 +46,7 @@ public enum SubtypeGasPipe implements ISubtype {
 		this.insulationMaterial = insulationMaterial;
 		this.maxTransfer = maxTransfer;
 		effectivePipeHeatLoss = pipeMaterial.heatLoss * insulationMaterial.heatLoss;
-		
+
 		this.radius = radius;
 		this.material = material;
 		this.soundType = soundType;
@@ -66,10 +66,10 @@ public enum SubtypeGasPipe implements ISubtype {
 	public boolean isItem() {
 		return false;
 	}
-	
+
 	public static SubtypeGasPipe getPipeForType(PipeMaterial material, InsulationMaterial insulation) {
-		for(SubtypeGasPipe pipe : SubtypeGasPipe.values()) {
-			if(pipe.pipeMaterial == material && pipe.insulationMaterial == insulation) {
+		for (SubtypeGasPipe pipe : SubtypeGasPipe.values()) {
+			if (pipe.pipeMaterial == material && pipe.insulationMaterial == insulation) {
 				return pipe;
 			}
 		}
@@ -77,17 +77,15 @@ public enum SubtypeGasPipe implements ISubtype {
 	}
 
 	/**
-	 * Gets the effective heat loss through a pipe taking into account the temperature of the material with relation to room
-	 * temperature. As the gas temperature approaches room temperature, the heat loss approaches zero
+	 * Gets the effective heat loss through a pipe taking into account the temperature of the material with relation to room temperature. As the gas temperature approaches room temperature, the heat loss approaches zero
 	 * 
 	 * @param pipeHeatLoss
 	 * @param gasTemperature
-	 * @return A positive value if the material temperature is greater than room temperature i.e. it cools or a negative value if the
-	 *         gas temperature is less than room temperature i.e. it warms
+	 * @return A positive value if the material temperature is greater than room temperature i.e. it cools or a negative value if the gas temperature is less than room temperature i.e. it warms
 	 */
 	public static double getEffectiveHeatLoss(SubtypeGasPipe pipe, double gasTemperature) {
 
-		double tempDifference = 1;//Math.abs(gasTemperature - Gas.ROOM_TEMPERATURE) / ((gasTemperature + Gas.ROOM_TEMPERATURE) / 2.0);
+		double tempDifference = 1;// Math.abs(gasTemperature - Gas.ROOM_TEMPERATURE) / ((gasTemperature + Gas.ROOM_TEMPERATURE) / 2.0);
 
 		double aboveOrBelow = gasTemperature > Gas.ROOM_TEMPERATURE ? 1 : -1;
 
@@ -96,26 +94,18 @@ public enum SubtypeGasPipe implements ISubtype {
 
 	/**
 	 * 
-	 * Heat loss in material is dependent on many real-time factors, and involves performing a logarithm, which is an expensive
-	 * calculation when you consider it will have to be performed hundreds of times per tick. As a result, it is not feasible
-	 * performance-wise to accurately determine what the true heat loss in a material will be as it flows through a pipe. As a result,
-	 * these values are linear coefficients based upon the Thermal Conductivity of metals. In other words, you expect a material with
-	 * a higher conductivity to lose more heat.
+	 * Heat loss in material is dependent on many real-time factors, and involves performing a logarithm, which is an expensive calculation when you consider it will have to be performed hundreds of times per tick. As a result, it is not feasible performance-wise to accurately determine what the true heat loss in a material will be as it flows through a pipe. As a result, these values are linear coefficients based upon the Thermal Conductivity of metals. In other words, you expect a material with a higher conductivity to lose more heat.
 	 * 
 	 * Thermal Conductivity sources:
 	 * 
-	 * https://www.engineeringtoolbox.com/thermal-conductivity-metals-d_858.html
-	 * https://www.substech.com/dokuwiki/doku.php?id=thermoplastic_high_density_polyethylene_hdpe
+	 * https://www.engineeringtoolbox.com/thermal-conductivity-metals-d_858.html https://www.substech.com/dokuwiki/doku.php?id=thermoplastic_high_density_polyethylene_hdpe
 	 * 
 	 * 
-	 * The tensile strength of a material is not dependent on temperature. However, temperature affects the density of a metal,
-	 * reducing the effective tensile strength. This again would be dependent on real-time factors and thus would be too costly to
-	 * calculate accurately. As a result, the max pressure is based loosely off of the max yield strength of the material.
+	 * The tensile strength of a material is not dependent on temperature. However, temperature affects the density of a metal, reducing the effective tensile strength. This again would be dependent on real-time factors and thus would be too costly to calculate accurately. As a result, the max pressure is based loosely off of the max yield strength of the material.
 	 * 
 	 * Tensile Strength sources:
 	 * 
-	 * https://www.engineeringtoolbox.com/young-modulus-d_417.html
-	 * https://www.substech.com/dokuwiki/doku.php?id=thermoplastic_high_density_polyethylene_hdpe
+	 * https://www.engineeringtoolbox.com/young-modulus-d_417.html https://www.substech.com/dokuwiki/doku.php?id=thermoplastic_high_density_polyethylene_hdpe
 	 * 
 	 * @author skip999
 	 *
@@ -130,7 +120,7 @@ public enum SubtypeGasPipe implements ISubtype {
 		public final int maxPressure;// atm
 
 		public final boolean corrodedByAcid;
-		
+
 		private final String tooltipName;
 
 		private PipeMaterial(double heatLoss, int maxPressure, boolean corrodedByAcid, String tooltipName) {
@@ -141,7 +131,7 @@ public enum SubtypeGasPipe implements ISubtype {
 			this.tooltipName = tooltipName;
 
 		}
-		
+
 		public Component getTranslatedName() {
 			return ElectroTextUtils.tooltip(tooltipName);
 		}
@@ -165,13 +155,13 @@ public enum SubtypeGasPipe implements ISubtype {
 		public final double heatLoss;
 		public final boolean canCombust;
 		private final String tooltipName;
-		
+
 		private InsulationMaterial(double heatLoss, boolean canCombust, String tooltipName) {
 			this.heatLoss = heatLoss;
 			this.canCombust = canCombust;
 			this.tooltipName = tooltipName;
 		}
-		
+
 		public Component getTranslatedName() {
 			return ElectroTextUtils.tooltip(tooltipName);
 		}

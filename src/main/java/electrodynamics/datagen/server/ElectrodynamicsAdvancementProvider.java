@@ -1,13 +1,13 @@
 package electrodynamics.datagen.server;
 
+import static electrodynamics.datagen.utils.AdvancementBuilder.create;
+
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
 import java.util.function.Consumer;
 
 import com.google.common.collect.Sets;
-
-import static electrodynamics.datagen.utils.AdvancementBuilder.create;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.api.References;
@@ -55,15 +55,13 @@ public class ElectrodynamicsAdvancementProvider implements DataProvider {
 		Consumer<AdvancementBuilder> consumer = advancementBuilder -> {
 			if (!registeredAdvancements.add(advancementBuilder.id)) {
 				throw new IllegalStateException("Duplicate advancement " + advancementBuilder.id);
-			} else {
-				Path path = this.pathProvider.json(advancementBuilder.id);
+			}
+			Path path = this.pathProvider.json(advancementBuilder.id);
 
-				try {
-					DataProvider.saveStable(pOutput, advancementBuilder.serializeToJson(), path);
-				} catch (IOException ioexception) {
-					Electrodynamics.LOGGER.error("Couldn't save advancement {}", path, ioexception);
-				}
-
+			try {
+				DataProvider.saveStable(pOutput, advancementBuilder.serializeToJson(), path);
+			} catch (IOException ioexception) {
+				Electrodynamics.LOGGER.error("Couldn't save advancement {}", path, ioexception);
 			}
 		};
 

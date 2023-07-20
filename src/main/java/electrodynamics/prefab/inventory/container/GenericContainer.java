@@ -85,7 +85,5 @@ public abstract class GenericContainer extends AbstractContainerMenu {
 		super.removed(player);
 		inventory.stopOpen(player);
 	}
-	
-	
 
 }

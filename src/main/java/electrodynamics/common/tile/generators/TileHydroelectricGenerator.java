@@ -14,9 +14,9 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
@@ -63,7 +63,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
-		if(hasRedstoneSignal.get()) {
+		if (hasRedstoneSignal.get()) {
 			isGenerating.set(false);
 			return;
 		}
@@ -147,12 +147,12 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 		return TransferPack.ampsVoltage(Constants.HYDROELECTRICGENERATOR_AMPERAGE * (isGenerating.get() ? multiplier.get() : 0), this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
 		return isGenerating.get() ? 15 : 0;
 	}
-	
+
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
 		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));

@@ -20,8 +20,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 
 /**
- * A modification of the vanilla button to integrate it with the Electrodynamics system of doing GUI components
- * as the Button class has several annoying issues
+ * A modification of the vanilla button to integrate it with the Electrodynamics system of doing GUI components as the Button class has several annoying issues
  * 
  * @author skip999
  *
@@ -102,7 +101,8 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 	public int getVanillaYImage(boolean isMouseOver) {
 		if (!isVisible()) {
 			return 0;
-		} else if (isMouseOver) {
+		}
+		if (isMouseOver) {
 			return 2;
 		}
 
@@ -116,7 +116,7 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 			onTooltip.onTooltip(stack, this, xAxis, yAxis);
 		}
 	}
-	
+
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
@@ -133,9 +133,8 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 		if (isValidClick(button)) {
 			onMouseRelease(mouseX, mouseY);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -147,17 +146,15 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-		if (isActiveAndVisible()) {
-			if (keyCode != 257 && keyCode != 32 && keyCode != 335) {
-				return false;
-			} else {
-				this.playDownSound(Minecraft.getInstance().getSoundManager());
-				this.onPress();
-				return true;
-			}
-		} else {
+		if (!isActiveAndVisible()) {
 			return false;
 		}
+		if (keyCode != 257 && keyCode != 32 && keyCode != 335) {
+			return false;
+		}
+		this.playDownSound(Minecraft.getInstance().getSoundManager());
+		this.onPress();
+		return true;
 	}
 
 	public void onPress() {

@@ -55,12 +55,12 @@ public class Fluid2FluidRecipeSerializer<T extends Fluid2FluidRecipe> extends El
 		ProbableGas[] gasBi = null;
 		if (hasItemBi) {
 			itemBi = ProbableItem.readList(buffer);
-		} 
+		}
 		if (hasFluidBi) {
 			fluidBi = ProbableFluid.readList(buffer);
-			
+
 		}
-		if(hasGasBi) {
+		if (hasGasBi) {
 			gasBi = ProbableGas.readList(buffer);
 		}
 		try {
@@ -89,7 +89,7 @@ public class Fluid2FluidRecipeSerializer<T extends Fluid2FluidRecipe> extends El
 		if (recipe.hasFluidBiproducts()) {
 			ProbableFluid.writeList(buffer, recipe.getFluidBiproducts());
 		}
-		if(recipe.hasGasBiproducts()) {
+		if (recipe.hasGasBiproducts()) {
 			ProbableGas.writeList(buffer, recipe.getGasBiproducts());
 		}
 	}

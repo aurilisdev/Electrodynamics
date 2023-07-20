@@ -11,8 +11,8 @@ import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelServoLeggings;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
@@ -117,7 +117,7 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 			} else {
 				tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
 			}
-			
+
 			tooltip.add(getModeText(tag.getInt(NBTUtils.MODE)));
 		} else {
 			tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
@@ -125,7 +125,7 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 		}
 		IItemElectric.addBatteryTooltip(stack, world, tooltip);
 	}
-	
+
 	public static Component getModeText(int mode) {
 		return switch (mode) {
 		case 0 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("servolegs.step").withStyle(ChatFormatting.GREEN));
@@ -143,7 +143,7 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 			ItemStack empty = new ItemStack(this);
 			IItemElectric.setEnergyStored(empty, 0);
 			items.add(empty);
-			
+
 			ItemStack charged = new ItemStack(this);
 			IItemElectric.setEnergyStored(charged, properties.capacity);
 			items.add(charged);

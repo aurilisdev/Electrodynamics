@@ -2,6 +2,7 @@ package electrodynamics.common.block;
 
 import electrodynamics.common.tile.network.fluid.TileFluidPipePump;
 import electrodynamics.common.tile.network.gas.TileGasPipePump;
+import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -25,35 +26,34 @@ public class BlockPipePump extends GenericMachineBlock {
 		super(isGas ? TileGasPipePump::new : TileFluidPipePump::new);
 		this.isGas = isGas;
 	}
-	
+
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		
-		Direction facing = state.getValue(GenericMachineBlock.FACING);
-		
-		if(facing == Direction.EAST || facing == Direction.WEST) {
-			
-			if(isGas) {
+
+		Direction facing = state.getValue(GenericEntityBlock.FACING);
+
+		if (facing == Direction.EAST || facing == Direction.WEST) {
+
+			if (isGas) {
 				return GAS_EW;
 			}
-			
+
 			return FLUID_EW;
-			
-			
-		} else if (facing == Direction.NORTH || facing == Direction.SOUTH) {
-			
-			
-			if(isGas) {
+
+		}
+		if (facing == Direction.NORTH || facing == Direction.SOUTH) {
+
+			if (isGas) {
 				return GAS_NS;
 			}
-			
+
 			return FLUID_NS;
-			
+
 		}
 
 		return super.getShape(state, worldIn, pos, context);
 	}
-	
+
 	@Override
 	public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
 		return true;

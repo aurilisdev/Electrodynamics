@@ -15,42 +15,41 @@ import net.minecraft.world.entity.player.Inventory;
 public class ScreenPotentiometer extends GenericScreen<ContainerPotentiometer> {
 
 	private ScreenComponentEditBox consumption;
-	
+
 	private boolean needsUpdate = true;
-	
+
 	public ScreenPotentiometer(ContainerPotentiometer container, Inventory inv, Component title) {
 		super(container, inv, title);
 		addEditBox(consumption = new ScreenComponentEditBox(72, 35, 80, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(30).setFilter(ScreenComponentEditBox.DECIMAL).setResponder(this::setConsumption));
 		addComponent(new ScreenComponentSimpleLabel(10, 39, 10, 4210752, ElectroTextUtils.gui("potentiometer.usage")));
 		addComponent(new ScreenComponentSimpleLabel(155, 39, 10, 4210752, DisplayUnit.WATT.symbol));
 	}
-	
+
 	private void setConsumption(String value) {
-		
-		if(value.isEmpty()) {
+
+		if (value.isEmpty()) {
 			return;
 		}
-		
+
 		TilePotentiometer potentiometer = menu.getHostFromIntArray();
-		
-		if(potentiometer == null) {
+
+		if (potentiometer == null) {
 			return;
 		}
-		
+
 		double consumption = 0;
-		
+
 		try {
 			consumption = Double.parseDouble(value);
 		} catch (Exception e) {
-			
+
 		}
-		
+
 		potentiometer.powerConsumption.set(consumption);
 		potentiometer.powerConsumption.updateServer();
-		
-		
+
 	}
-	
+
 	@Override
 	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);

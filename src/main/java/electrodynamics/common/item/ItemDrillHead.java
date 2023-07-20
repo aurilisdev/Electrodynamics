@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.Mod;
 public class ItemDrillHead extends Item {
 
 	private static final List<ItemDrillHead> HEADS = new ArrayList<>();
-	
+
 	public SubtypeDrillHead head;
 
 	public ItemDrillHead(SubtypeDrillHead head) {
@@ -23,17 +23,15 @@ public class ItemDrillHead extends Item {
 		this.head = head;
 		HEADS.add(this);
 	}
-	
+
 	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = References.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 	private static class ColorHandler {
-		
+
 		@SubscribeEvent
 		public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
-			HEADS.forEach(item -> event.register((stack, index) -> {
-				return item.head.color;
-			}, item));
+			HEADS.forEach(item -> event.register((stack, index) -> item.head.color, item));
 		}
-		
+
 	}
 
 }

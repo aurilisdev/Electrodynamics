@@ -21,30 +21,30 @@ import net.minecraftforge.fml.common.Mod;
 public class BlockLogisticalWire extends BlockWire {
 
 	public static final HashSet<Block> WIRES = new HashSet<>();
-	
+
 	public BlockLogisticalWire(SubtypeWire wire) {
 		super(wire);
 		WIRES.add(this);
 		stateDefinition.any().setValue(BlockMachine.ON, false);
 	}
-	
+
 	@Override
 	public void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(BlockMachine.ON);
 	}
-	
+
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockState superState = super.getStateForPlacement(context);
 		return superState.setValue(BlockMachine.ON, false);
 	}
-	
+
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new TileLogisticalWire(pos, state);
 	}
-	
+
 	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = References.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 	private static class ColorHandler {
 
@@ -52,16 +52,15 @@ public class BlockLogisticalWire extends BlockWire {
 		public static void registerColoredBlocks(RegisterColorHandlersEvent.Block event) {
 			WIRES.forEach(block -> event.register((state, level, pos, tintIndex) -> {
 				if (tintIndex == 0) {
-					return ((BlockLogisticalWire)block).wire.color.color;
-				} else if (tintIndex == 1) {
-					if(state.getValue(BlockMachine.ON)) {
-						return RenderingUtils.getRGBA(255, 211, 5, 5);
-					} else {
-						return RenderingUtils.getRGBA(255, 124, 25, 25);
-					}
-				} else {
+					return ((BlockLogisticalWire) block).wire.color.color;
+				}
+				if (tintIndex != 1) {
 					return 0xFFFFFFFF;
 				}
+				if (state.getValue(BlockMachine.ON)) {
+					return RenderingUtils.getRGBA(255, 211, 5, 5);
+				}
+				return RenderingUtils.getRGBA(255, 124, 25, 25);
 			}, block));
 		}
 	}

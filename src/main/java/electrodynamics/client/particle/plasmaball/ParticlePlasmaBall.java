@@ -16,15 +16,15 @@ public class ParticlePlasmaBall extends TextureSheetParticle {
 		this.friction = 0.96F;
 		this.speedUpWhenYMotionIsBlocked = true;
 		this.sprites = sprites;
-		this.xd *= (double) 0.1F;
-		this.yd *= (double) 0.1F;
-		this.zd *= (double) 0.1F;
+		this.xd *= 0.1F;
+		this.yd *= 0.1F;
+		this.zd *= 0.1F;
 		this.gravity = options.gravity;
 		float f = this.random.nextFloat() * 0.4F + 0.6F;
-		this.rCol = this.randomizeColor((float) options.r / 255.0F, f);
-		this.gCol = this.randomizeColor((float) options.g / 255.0F, f);
-		this.bCol = this.randomizeColor((float) options.b / 255.0F, f);
-		this.alpha = (float) options.a / 255.0F;
+		this.rCol = this.randomizeColor(options.r / 255.0F, f);
+		this.gCol = this.randomizeColor(options.g / 255.0F, f);
+		this.bCol = this.randomizeColor(options.b / 255.0F, f);
+		this.alpha = options.a / 255.0F;
 		this.quadSize *= 0.75F * options.scale;
 		this.lifetime = options.maxAge;
 		this.setSpriteFromAge(sprites);
@@ -35,13 +35,12 @@ public class ParticlePlasmaBall extends TextureSheetParticle {
 		return (this.random.nextFloat() * 0.2F + 0.8F) * pCoordMultiplier * pMultiplier;
 	}
 
-	
 	@Override
 	public void tick() {
 		super.tick();
 		this.setSpriteFromAge(this.sprites);
 	}
-	
+
 	@Override
 	public ParticleRenderType getRenderType() {
 		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;

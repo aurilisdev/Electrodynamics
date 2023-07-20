@@ -40,7 +40,7 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 		}
 		if (tickCount > 100) {
 			remove(Entity.RemovalReason.DISCARDED);
-			
+
 		}
 	}
 

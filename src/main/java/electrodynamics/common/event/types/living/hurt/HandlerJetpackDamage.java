@@ -10,28 +10,28 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 public class HandlerJetpackDamage extends AbstractLivingHurtHandler {
 
-	//this way we know the impulse was because of the player being hurt
+	// this way we know the impulse was because of the player being hurt
 	@Override
 	public void handle(LivingHurtEvent event) {
-		
+
 		Entity entity = event.getEntity();
 		ArrayList<ItemStack> armor = new ArrayList<>();
 		entity.getArmorSlots().forEach(armor::add);
-		if(armor.size() < 3) {
+		if (armor.size() < 3) {
 			return;
 		}
 		ItemStack chestplate = armor.get(3);
-		
-		if(chestplate.isEmpty()) {
+
+		if (chestplate.isEmpty()) {
 			return;
 		}
-		
-		if(!ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(ElectrodynamicsItems.ITEM_JETPACK.get())) && !ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()))) {
+
+		if (!ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(ElectrodynamicsItems.ITEM_JETPACK.get())) && !ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()))) {
 			return;
 		}
-		
+
 		chestplate.getOrCreateTag().putBoolean(ItemJetpack.WAS_HURT_KEY, true);
-		
+
 	}
 
 }

@@ -42,7 +42,8 @@ public class ButtonModuleSelector extends ButtonSpecificPage {
 	}
 
 	public static enum GuidebookButtonTextures implements ITexture {
-		CHECKBOX_OFF(9, 9, 0, 0, 9, 9, "checkboxoff"), CHECKBOX_ON(9, 9, 0, 0, 9, 9, "checkboxon");
+		CHECKBOX_OFF(9, 9, 0, 0, 9, 9, "checkboxoff"),
+		CHECKBOX_ON(9, 9, 0, 0, 9, 9, "checkboxon");
 
 		private final int textureWidth;
 		private final int textureHeight;

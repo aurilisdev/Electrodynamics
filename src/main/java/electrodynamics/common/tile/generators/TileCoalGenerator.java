@@ -58,7 +58,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 		if (burnTime.get() > 0) {
 			burnTime.set(burnTime.get() - 1);
 		}
-		if(hasRedstoneSignal.get()) {
+		if (hasRedstoneSignal.get()) {
 			return;
 		}
 		ComponentDirection direction = getComponent(ComponentType.Direction);
@@ -119,15 +119,15 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 	public static List<Item> getValidItems() {
 		return new ArrayList<>(CoalGeneratorFuelRegister.INSTANCE.getFuels());
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
 		return (int) ((heat.getValue() / 3000.0) * 15.0);
 	}
-	
+
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
 		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
 	}
-	
+
 }

@@ -57,18 +57,17 @@ public class UnifiedElectrodynamicsRegister {
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnace), ElectroTextUtils.voltageTooltip(120));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacedouble), ElectroTextUtils.voltageTooltip(240));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacetriple), ElectroTextUtils.voltageTooltip(480));
-		
+
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockCompressor, ElectroTextUtils.voltageTooltip(120));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockDecompressor, ElectroTextUtils.voltageTooltip(120));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockGasTransformerAddonTank, ElectroTextUtils.tooltip("addontankcap", ChatFormatter.formatFluidMilibuckets(TileGasTransformerAddonTank.ADDITIONAL_CAPACITY)));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockThermoelectricManipulator, ElectroTextUtils.voltageTooltip(120));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockGasPipePump, ElectroTextUtils.voltageTooltip(120));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockFluidPipePump, ElectroTextUtils.voltageTooltip(120));
-		
+
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastanksteel), ElectroTextUtils.tooltip("gastank.capacity", ChatFormatter.getChatDisplayShort(8, DisplayUnit.BUCKETS)));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankreinforced), ElectroTextUtils.tooltip("gastank.capacity", ChatFormatter.getChatDisplayShort(32, DisplayUnit.BUCKETS)));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankhsla), ElectroTextUtils.tooltip("gastank.capacity", ChatFormatter.getChatDisplayShort(128, DisplayUnit.BUCKETS)));
-		
 
 		// generators
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.solarpanel), ElectroTextUtils.voltageTooltip(120));
@@ -99,7 +98,7 @@ public class UnifiedElectrodynamicsRegister {
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockFrameCorner, ElectroTextUtils.tooltip("blockframe.joke"));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.quarry), ElectroTextUtils.tooltip("quarry.power"));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockLogisticalManager, ElectroTextUtils.tooltip("logisticalmanager.use"));
-		
+
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.gasvent), ElectroTextUtils.tooltip("gasvent"));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockGasValve, ElectroTextUtils.tooltip("gasvalve"));
 		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockFluidValve, ElectroTextUtils.tooltip("fluidvalve"));

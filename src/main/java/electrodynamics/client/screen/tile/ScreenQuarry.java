@@ -203,11 +203,14 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 	private String getErrorKey(TileQuarry quarry) {
 		if (!quarry.hasSeismicRelay.get()) {
 			return "quarry.norelay";
-		} else if (!quarry.hasMotorComplex.get()) {
+		}
+		if (!quarry.hasMotorComplex.get()) {
 			return "quarry.nomotorcomplex";
-		} else if (!quarry.hasCoolantResavoir.get()) {
+		}
+		if (!quarry.hasCoolantResavoir.get()) {
 			return "quarry.nocoolantresavoir";
-		} else if (!quarry.hasCorners()) {
+		}
+		if (!quarry.hasCorners()) {
 			return "quarry.nocorners";
 		} else if (!quarry.isMotorComplexPowered()) {
 			return "quarry.motorcomplexnotpowered";

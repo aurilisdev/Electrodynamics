@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileGasPipe extends GenericTileGasPipe {
 
 	public SubtypeGasPipe pipe = null;
-	
+
 	public TileGasPipe(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_GAS_PIPE.get(), worldPos, blockState);
 	}
@@ -28,12 +28,12 @@ public class TileGasPipe extends GenericTileGasPipe {
 
 	@Override
 	public void destroyViolently() {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		level.explode(null, getBlockPos().getX(), getBlockPos().getY(), getBlockPos().getZ(), 2.0F, BlockInteraction.DESTROY);
 	}
-	
+
 	@Override
 	public void saveAdditional(@NotNull CompoundTag compound) {
 		compound.putInt("ord", getPipeType().ordinal());

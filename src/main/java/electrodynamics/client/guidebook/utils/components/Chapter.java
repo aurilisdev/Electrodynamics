@@ -12,8 +12,7 @@ import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import net.minecraft.network.chat.MutableComponent;
 
 /**
- * A simple data-wrapping class that contains a logo, a name, and the content
- * associated with it
+ * A simple data-wrapping class that contains a logo, a name, and the content associated with it
  * 
  * @author skip999
  *
@@ -46,15 +45,15 @@ public abstract class Chapter {
 	protected void blankLine() {
 		pageData.add(TextWrapperObject.BLANK_LINE);
 	}
-	
+
 	public OnTooltip onTooltip() {
 		return null;
 	}
-	
+
 	public OnClick onClick() {
 		return null;
 	}
-	
+
 	public OnKeyPress onKeyPress() {
 		return null;
 	}

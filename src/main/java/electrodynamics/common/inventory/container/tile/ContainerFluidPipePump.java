@@ -14,14 +14,14 @@ public class ContainerFluidPipePump extends GenericContainerBlockEntity<TileFlui
 	public ContainerFluidPipePump(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEPUMP.get(), id, playerinv, inventory, inventorydata);
 	}
-	
+
 	public ContainerFluidPipePump(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(0), new SimpleContainerData(3));
 	}
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		
+
 	}
 
 }

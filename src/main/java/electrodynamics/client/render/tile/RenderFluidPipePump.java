@@ -39,16 +39,16 @@ public class RenderFluidPipePump extends AbstractTileRenderer<TileFluidPipePump>
 		if (tile.isPowered()) {
 
 			offset2 = 3;
-			
+
 			long time = System.currentTimeMillis();
 
 			int time1 = (int) (time % 1000);
 			int time2 = (int) ((time + 500) % 1000);
 
-			offset1 -= Mth.sin((float) ((float) time1 * Math.PI / 1000.0F)) * 3.0D;
-			offset2 -= Mth.sin((float) ((float) time2 * Math.PI / 1000.0F)) * 3.0D;
+			offset1 -= Mth.sin((float) (time1 * Math.PI / 1000.0F)) * 3.0D;
+			offset2 -= Mth.sin((float) (time2 * Math.PI / 1000.0F)) * 3.0D;
 
-		} 
+		}
 
 		if (dir == Direction.NORTH) {
 			box1 = aabb(2, 13 - offset1, 5, 4, 17 - offset1, 7);

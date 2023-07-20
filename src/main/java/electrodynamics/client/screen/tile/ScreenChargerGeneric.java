@@ -37,18 +37,18 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 
 		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2).wattage(e -> e.getMaxJoulesStored() * 20));
 		addComponent(new ScreenComponentMultiLabel(0, 0, stack -> {
-			
+
 			GenericTileCharger charger = menu.getHostFromIntArray();
-			
-			if(charger == null) {
+
+			if (charger == null) {
 				return;
 			}
-			
+
 			ItemStack chargingItem = menu.getSlot(0).getItem();
-			
+
 			double chargingPercentage = 0;
 			double chargeCapable = 100.0;
-			
+
 			if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric electricItem) {
 
 				ComponentElectrodynamic electro = charger.getComponent(ComponentType.Electrodynamic);
@@ -60,7 +60,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 			font.draw(stack, ElectroTextUtils.gui("genericcharger.chargeperc", ChatFormatter.getChatDisplayShort(chargingPercentage, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.DARK_GRAY).withStyle(ChatFormatting.DARK_GRAY), inventoryLabelX, 33, 0);
 
 			Component capable = Component.empty();
-			
+
 			if (chargeCapable < 33) {
 				capable = getChargeCapableFormatted(chargeCapable, ChatFormatting.RED);
 			} else if (chargeCapable < 66) {
@@ -68,9 +68,9 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 			} else {
 				capable = getChargeCapableFormatted(chargeCapable, ChatFormatting.GREEN);
 			}
-			
+
 			font.draw(stack, capable, inventoryLabelX, 43, 0);
-			
+
 		}));
 	}
 

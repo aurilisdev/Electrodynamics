@@ -95,11 +95,11 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockPare
 
 		if (machine == SubtypeMachine.advancedsolarpanel) {
 			return isValidMultiblockPlacement(state, worldIn, pos, advancedsolarpanelsubnodes);
-		} else if (machine == SubtypeMachine.windmill) {
-			return isValidMultiblockPlacement(state, worldIn, pos, windmillsubnodes);
-		} else {
-			return super.canSurvive(state, worldIn, pos);
 		}
+		if (machine == SubtypeMachine.windmill) {
+			return isValidMultiblockPlacement(state, worldIn, pos, windmillsubnodes);
+		}
+		return super.canSurvive(state, worldIn, pos);
 
 	}
 

@@ -78,12 +78,12 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 		tagFluidIngredients.add(Pair.of(tag, count));
 		return this;
 	}
-	
+
 	public AbstractElectrodynamicsFinishedRecipe addGasStackInput(GasStack stack) {
 		gasIngredients.add(stack);
 		return this;
 	}
-	
+
 	public AbstractElectrodynamicsFinishedRecipe addGasTagInput(TagKey<Gas> tag, double amt, double temp, double pressure) {
 		tagGasIngredients.add(Pair.of(tag, new GasIngWrapper(amt, temp, pressure)));
 		return this;
@@ -98,7 +98,7 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 		fluidBiproducts.add(biproduct);
 		return this;
 	}
-	
+
 	public AbstractElectrodynamicsFinishedRecipe addGasBiproduct(ProbableGas biproduct) {
 		gasBiproducts.add(biproduct);
 		return this;
@@ -162,7 +162,7 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 			}
 			recipeJson.add(ElectrodynamicsRecipeSerializer.FLUID_INPUTS, fluidInputs);
 		}
-		
+
 		int gasInputsCount = gasIngredients.size() + tagGasIngredients.size();
 		if (gasInputsCount > 0) {
 			inputsFlag = true;
@@ -190,7 +190,6 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 			}
 			recipeJson.add(ElectrodynamicsRecipeSerializer.GAS_INPUTS, gasInputs);
 		}
-		
 
 		if (!inputsFlag) {
 			throw new RuntimeException("You must specify at least one item, fluid, or gas input");
@@ -235,7 +234,7 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 			}
 			recipeJson.add(ElectrodynamicsRecipeSerializer.FLUID_BIPRODUCTS, fluidBiproducts);
 		}
-		
+
 		if (gasBiproducts.size() > 0) {
 			JsonObject gasBiproducts = new JsonObject();
 			gasBiproducts.addProperty(ElectrodynamicsRecipeSerializer.COUNT, this.gasBiproducts.size());
@@ -296,9 +295,9 @@ public abstract class AbstractElectrodynamicsFinishedRecipe implements FinishedR
 			return toString().toLowerCase(Locale.ROOT).replaceAll("_", "");
 		}
 	}
-	
+
 	public static record GasIngWrapper(double amt, double temp, double pressure) {
-		
+
 	}
 
 }

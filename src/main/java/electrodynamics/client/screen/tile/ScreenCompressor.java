@@ -39,7 +39,7 @@ public class ScreenCompressor extends GenericMaterialScreen<ContainerCompressor>
 		addComponent(new ScreenComponentGasTemperature(-AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 2));
 		addComponent(new ScreenComponentGasPressure(-AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE));
 		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
-		
+
 		addComponent(new ScreenComponentCondensedFluid(() -> {
 			GenericTileCompressor generic = container.getHostFromIntArray();
 			if (generic == null) {

@@ -15,11 +15,11 @@ import net.minecraft.world.inventory.SimpleContainerData;
 public class ContainerDecompressor extends GenericContainerBlockEntity<TileDecompressor> {
 
 	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
-	
+
 	public ContainerDecompressor(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(ElectrodynamicsMenuTypes.CONTAINER_DECOMPRESSOR.get(), id, playerinv, inventory, inventorydata);
 	}
-	
+
 	public ContainerDecompressor(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(5), new SimpleContainerData(3));
 	}

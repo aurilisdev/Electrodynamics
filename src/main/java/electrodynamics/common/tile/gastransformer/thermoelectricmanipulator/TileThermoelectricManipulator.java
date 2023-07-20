@@ -25,9 +25,9 @@ import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti.ComponentFluidHandlerMultiBiDirec;
 import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsGases;
@@ -47,8 +47,7 @@ import net.minecraftforge.fluids.capability.templates.FluidTank;
 public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
 	/**
-	 * NOTE this value can NEVER be more than 90. This is because above 90, it becomes possible to create an infinite energy loop with the steam
-	 * turbine from Nuclear Science.
+	 * NOTE this value can NEVER be more than 90. This is because above 90, it becomes possible to create an infinite energy loop with the steam turbine from Nuclear Science.
 	 */
 	private static final double HEAT_TRANSFER = 10.0; // degrees kelvin
 
@@ -72,7 +71,7 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
 		processor.consumeGasCylinder();
 		processor.dispenseGasCylinder();
-		
+
 		processor.consumeBucket();
 		processor.dispenseBucket();
 
@@ -97,7 +96,7 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 		}
 
 		ComponentFluidHandlerMulti fluidHandler = getComponent(ComponentType.FluidHandler);
-		
+
 		face = getBlockPos().relative(direction.getOpposite()).relative(Direction.DOWN);
 		faceTile = getLevel().getBlockEntity(face);
 		if (faceTile != null) {
@@ -109,7 +108,7 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 				int amtAccepted = fHandler.fill(tankFluid, FluidAction.EXECUTE);
 				FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
 				fluidTank.drain(taken, FluidAction.EXECUTE);
-				
+
 			}
 		}
 
@@ -197,33 +196,31 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
 			return new ManipulatorStatusCheckWrapper(true, status, true);
 
-		} else {
-			GasTank outputTank = gasHandler.getOutputTanks()[0];
-			if (outputTank.getGasAmount() >= outputTank.getCapacity()) {
-				return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-			}
-
-			if (!outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas())) {
-				return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-			}
-
-			if (inputTank.getGas().getTemperature() <= GasStack.ABSOLUTE_ZERO) {
-				return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-			}
-
-			ManipulatorHeatingStatus status;
-
-			if (inputTank.getGas().getTemperature() < targetTemperature.get()) {
-				status = ManipulatorHeatingStatus.HEAT;
-			} else if (inputTank.getGas().getTemperature() > targetTemperature.get()) {
-				status = ManipulatorHeatingStatus.COOL;
-			} else {
-				status = ManipulatorHeatingStatus.OFF;
-			}
-
-			return new ManipulatorStatusCheckWrapper(true, status, false);
-
 		}
+		GasTank outputTank = gasHandler.getOutputTanks()[0];
+		if (outputTank.getGasAmount() >= outputTank.getCapacity()) {
+			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+		}
+
+		if (!outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas())) {
+			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+		}
+
+		if (inputTank.getGas().getTemperature() <= GasStack.ABSOLUTE_ZERO) {
+			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+		}
+
+		ManipulatorHeatingStatus status;
+
+		if (inputTank.getGas().getTemperature() < targetTemperature.get()) {
+			status = ManipulatorHeatingStatus.HEAT;
+		} else if (inputTank.getGas().getTemperature() > targetTemperature.get()) {
+			status = ManipulatorHeatingStatus.COOL;
+		} else {
+			status = ManipulatorHeatingStatus.OFF;
+		}
+
+		return new ManipulatorStatusCheckWrapper(true, status, false);
 
 	}
 
@@ -382,15 +379,16 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
 	}
 
+	@Override
 	public void updateAddonTanks(int count, boolean isLeft) {
 		ComponentGasHandlerMulti handler = getComponent(ComponentType.GasHandler);
 		ComponentFluidHandlerMulti multi = getComponent(ComponentType.FluidHandler);
 		if (isLeft) {
-			multi.getInputTanks()[0].setCapacity((int) (BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * (double) count));
-			handler.getInputTanks()[0].setCapacity(BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * (double) count);
+			multi.getInputTanks()[0].setCapacity((int) (BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count));
+			handler.getInputTanks()[0].setCapacity(BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count);
 		} else {
-			multi.getOutputTanks()[0].setCapacity((int) (BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * (double) count));
-			handler.getOutputTanks()[0].setCapacity(BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * (double) count);
+			multi.getOutputTanks()[0].setCapacity((int) (BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count));
+			handler.getOutputTanks()[0].setCapacity(BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count);
 		}
 	}
 

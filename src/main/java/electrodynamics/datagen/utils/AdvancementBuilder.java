@@ -106,10 +106,9 @@ public class AdvancementBuilder implements IForgeAdvancementBuilder {
 	public AdvancementBuilder addCriterion(String key, Criterion criterion) {
 		if (this.criteria.containsKey(key)) {
 			throw new IllegalArgumentException("Duplicate criterion " + key);
-		} else {
-			this.criteria.put(key, criterion);
-			return this;
 		}
+		this.criteria.put(key, criterion);
+		return this;
 	}
 
 	public AdvancementBuilder requirements(RequirementsStrategy strategy) {
@@ -129,12 +128,12 @@ public class AdvancementBuilder implements IForgeAdvancementBuilder {
 		conditions.add(condition);
 		return this;
 	}
-	
+
 	public AdvancementBuilder comment(String comment) {
 		this.comment = comment;
 		return this;
 	}
-	
+
 	public AdvancementBuilder author(String author) {
 		this.author = author;
 		return this;
@@ -146,27 +145,23 @@ public class AdvancementBuilder implements IForgeAdvancementBuilder {
 	public boolean canBuild(Function<ResourceLocation, Advancement> parentLookup) {
 		if (this.parentId == null) {
 			return true;
-		} else {
-			if (this.parent == null) {
-				this.parent = parentLookup.apply(this.parentId);
-			}
-
-			return this.parent != null;
 		}
+		if (this.parent == null) {
+			this.parent = parentLookup.apply(this.parentId);
+		}
+
+		return this.parent != null;
 	}
 
 	public Advancement build() {
-		if (!this.canBuild((resourceLocation) -> {
-			return null;
-		})) {
+		if (!this.canBuild(resourceLocation -> null)) {
 			throw new IllegalStateException("Tried to build incomplete advancement!");
-		} else {
-			if (this.requirements == null) {
-				this.requirements = this.requirementsStrategy.createRequirements(this.criteria.keySet());
-			}
-
-			return new Advancement(id, this.parent, this.display, this.rewards, this.criteria, this.requirements);
 		}
+		if (this.requirements == null) {
+			this.requirements = this.requirementsStrategy.createRequirements(this.criteria.keySet());
+		}
+
+		return new Advancement(id, this.parent, this.display, this.rewards, this.criteria, this.requirements);
 	}
 
 	public Advancement save(Consumer<AdvancementBuilder> consumer) {
@@ -180,15 +175,15 @@ public class AdvancementBuilder implements IForgeAdvancementBuilder {
 		}
 
 		JsonObject jsonobject = new JsonObject();
-		
-		if(author != null) {
+
+		if (author != null) {
 			jsonobject.addProperty("__author", author);
 		}
-		
-		if(comment != null) {
+
+		if (comment != null) {
 			jsonobject.addProperty("__comment", comment);
 		}
-		
+
 		if (this.parent != null) {
 			jsonobject.addProperty("parent", this.parent.getId().toString());
 		} else if (this.parentId != null) {
@@ -223,8 +218,9 @@ public class AdvancementBuilder implements IForgeAdvancementBuilder {
 
 		if (conditions != null) {
 			JsonArray conds = new JsonArray();
-			for (ICondition c : conditions)
+			for (ICondition c : conditions) {
 				conds.add(CraftingHelper.serialize(c));
+			}
 			jsonobject.add("conditions", conds);
 		}
 

@@ -75,12 +75,12 @@ public class Electrodynamics {
 		ThermoelectricGeneratorHeatRegister.INSTANCE = new ThermoelectricGeneratorHeatRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
 		MinecraftForge.EVENT_BUS.addListener(getGuidebookListener());
 		ElectrodynamicsTags.init();
-		//CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to 1.19.2
-		
-		//RegisterFluidToGasMapEvent map = new RegisterFluidToGasMapEvent();
-		//MinecraftForge.EVENT_BUS.post(map);
-		//ElectrodynamicsGases.MAPPED_GASSES.putAll(map.fluidToGasMap);
-		
+		// CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to 1.19.2
+
+		// RegisterFluidToGasMapEvent map = new RegisterFluidToGasMapEvent();
+		// MinecraftForge.EVENT_BUS.post(map);
+		// ElectrodynamicsGases.MAPPED_GASSES.putAll(map.fluidToGasMap);
+
 	}
 
 	@SubscribeEvent
@@ -88,7 +88,7 @@ public class Electrodynamics {
 		ElectrodynamicsCapabilities.register(event);
 
 	}
-	
+
 	@SubscribeEvent
 	public static void registerConditions(RegisterEvent event) {
 		if (event.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {

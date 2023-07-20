@@ -62,14 +62,14 @@ public class BarrierMethods {
 			CoalGeneratorFuelRegister.INSTANCE.setClientValues(fuels);
 		}
 	}
-	
+
 	public static void handlerSetGuidebookInitFlag() {
 		ScreenGuidebook.setInitNotHappened();
 	}
-	
+
 	public static void handlerClientThermoGenHeatSources(HashMap<Fluid, Double> heatSources) {
 		Minecraft minecraft = Minecraft.getInstance();
-		if(minecraft.level != null && minecraft.player != null) {
+		if (minecraft.level != null && minecraft.player != null) {
 			ThermoelectricGeneratorHeatRegister.INSTANCE.setClientValues(heatSources);
 		}
 	}

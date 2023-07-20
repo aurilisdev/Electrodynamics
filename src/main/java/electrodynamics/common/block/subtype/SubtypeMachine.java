@@ -54,8 +54,8 @@ import electrodynamics.common.tile.quarry.TileSeismicRelay;
 import electrodynamics.common.tile.tanks.fluid.TileFluidTankHSLA;
 import electrodynamics.common.tile.tanks.fluid.TileFluidTankReinforced;
 import electrodynamics.common.tile.tanks.fluid.TileFluidTankSteel;
-import electrodynamics.common.tile.tanks.gas.TileGasTankReinforced;
 import electrodynamics.common.tile.tanks.gas.TileGasTankHSLA;
+import electrodynamics.common.tile.tanks.gas.TileGasTankReinforced;
 import electrodynamics.common.tile.tanks.gas.TileGasTankSteel;
 import electrodynamics.common.tile.wiremill.TileWireMill;
 import electrodynamics.common.tile.wiremill.TileWireMillDouble;
@@ -131,11 +131,11 @@ public enum SubtypeMachine implements ISubtype {
 	private RenderShape type = RenderShape.MODEL;
 	public final int litBrightness;
 	public final boolean propogateLightDown;
-	
+
 	SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass) {
 		this(showInItemGroup, tileclass, RenderShape.MODEL, 0, false);
 	}
-	
+
 	SubtypeMachine(boolean showInItemGroup, Class<? extends BlockEntity> tileclass, RenderShape renderShape, int litBrightness, boolean propogateLightDown) {
 		this.showInItemGroup = showInItemGroup;
 		this.tileclass = tileclass;

@@ -53,7 +53,7 @@ public class ItemCanister extends Item {
 			items.add(new ItemStack(this));
 			if (!CapabilityUtils.isFluidItemNull()) {
 				for (Fluid liq : ForgeRegistries.FLUIDS.getValues()) {
-					if(liq.isSame(Fluids.EMPTY)) {
+					if (liq.isSame(Fluids.EMPTY)) {
 						continue;
 					}
 					ItemStack temp = new ItemStack(this);
@@ -64,7 +64,7 @@ public class ItemCanister extends Item {
 			}
 		}
 	}
-	
+
 	@Override
 	public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
 		super.inventoryTick(stack, level, entity, slot, isSelected);
@@ -119,7 +119,7 @@ public class ItemCanister extends Item {
 			if (state.getFluidState().isSource() && !state.getFluidState().getType().isSame(Fluids.EMPTY)) {
 				FluidStack sourceFluid = new FluidStack(state.getFluidState().getType(), 1000);
 				int accepted = CapabilityUtils.fillFluidItem(stack, sourceFluid, FluidAction.SIMULATE);
-				if(accepted >= 1000) {
+				if (accepted >= 1000) {
 					CapabilityUtils.fillFluidItem(stack, sourceFluid, FluidAction.EXECUTE);
 					world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 					world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);

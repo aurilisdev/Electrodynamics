@@ -19,7 +19,7 @@ public class ChemicalCrystalizerRecipe extends Fluid2ItemRecipe {
 
 	public ChemicalCrystalizerRecipe(ResourceLocation recipeID, FluidIngredient[] fluidInput, ItemStack itemOutput, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, ProbableGas[] gasBiproducts) {
 		super(recipeID, fluidInput, itemOutput, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
-		
+
 	}
 
 	@Override

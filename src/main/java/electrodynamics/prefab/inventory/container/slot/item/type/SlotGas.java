@@ -12,7 +12,7 @@ public class SlotGas extends SlotGeneric {
 	public SlotGas(Container inventory, int index, int x, int y) {
 		super(SlotType.NORMAL, IconType.GAS_DARK, inventory, index, x, y);
 	}
-	
+
 	@Override
 	public boolean mayPlace(ItemStack stack) {
 		return super.mayPlace(stack) && CapabilityUtils.hasGasItemCap(stack);

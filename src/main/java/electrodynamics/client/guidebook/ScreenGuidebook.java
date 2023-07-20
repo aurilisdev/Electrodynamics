@@ -1,33 +1,43 @@
 package electrodynamics.client.guidebook;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
+
 import electrodynamics.api.References;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Module;
 import electrodynamics.client.guidebook.utils.components.Page;
-import electrodynamics.client.guidebook.utils.components.Page.*;
+import electrodynamics.client.guidebook.utils.components.Page.ChapterPage;
+import electrodynamics.client.guidebook.utils.components.Page.CoverPage;
+import electrodynamics.client.guidebook.utils.components.Page.GraphicWrapper;
+import electrodynamics.client.guidebook.utils.components.Page.ModulePage;
+import electrodynamics.client.guidebook.utils.components.Page.TextWrapper;
 import electrodynamics.client.guidebook.utils.pagedata.AbstractWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper;
-import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper.GraphicTextDescriptor;
-import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.client.guidebook.utils.pagedata.OnClick;
 import electrodynamics.client.guidebook.utils.pagedata.OnKeyPress;
 import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper.GraphicTextDescriptor;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.inventory.container.item.ContainerGuidebook;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.button.ScreenComponentButton;
 import electrodynamics.prefab.screen.component.button.type.ButtonGuidebook;
+import electrodynamics.prefab.screen.component.button.type.ButtonGuidebook.GuidebookButtonType;
 import electrodynamics.prefab.screen.component.button.type.ButtonModuleSelector;
 import electrodynamics.prefab.screen.component.button.type.ButtonSearchedText;
 import electrodynamics.prefab.screen.component.button.type.ButtonSpecificPage;
-import electrodynamics.prefab.screen.component.button.type.ButtonGuidebook.GuidebookButtonType;
 import electrodynamics.prefab.screen.component.editbox.type.EditBoxSpecificPage;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGuidebookArrow;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGuidebookArrow.ArrowTextures;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -37,11 +47,6 @@ import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Inventory;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
 
 /**
  * A basic implementation of a Guidebook that allows for variable length text and images along with some basic formatting options.
@@ -179,7 +184,6 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 		super.init();
 
-		
 	}
 
 	private void addButtons() {
@@ -1001,8 +1005,8 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	@Override
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 
-		double mouseX = minecraft.mouseHandler.xpos() * (double) minecraft.getWindow().getGuiScaledWidth() / (double) minecraft.getWindow().getScreenWidth();
-		double mouseY = minecraft.mouseHandler.ypos() * (double) minecraft.getWindow().getGuiScaledHeight() / (double) minecraft.getWindow().getScreenHeight();
+		double mouseX = minecraft.mouseHandler.xpos() * minecraft.getWindow().getGuiScaledWidth() / minecraft.getWindow().getScreenWidth();
+		double mouseY = minecraft.mouseHandler.ypos() * minecraft.getWindow().getGuiScaledHeight() / minecraft.getWindow().getScreenHeight();
 
 		int refX = getXRef();
 		int refY = getYRef();

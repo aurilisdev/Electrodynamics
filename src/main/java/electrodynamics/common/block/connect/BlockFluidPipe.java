@@ -11,7 +11,6 @@ import electrodynamics.common.network.utils.FluidUtilities;
 import electrodynamics.common.tile.network.fluid.TileFluidPipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -30,7 +29,7 @@ public class BlockFluidPipe extends AbstractRefreshingConnectBlock {
 		this.pipe = pipe;
 		PIPESET.add(this);
 	}
-	
+
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new TileFluidPipe(pos, state);
@@ -41,13 +40,14 @@ public class BlockFluidPipe extends AbstractRefreshingConnectBlock {
 		EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(dir);
 		if (tile instanceof IFluidPipe) {
 			return state.setValue(property, EnumConnectType.WIRE);
-		} else if (FluidUtilities.isFluidReceiver(tile, dir.getOpposite())) {
-			return state.setValue(property, EnumConnectType.INVENTORY);
-		} else if (state.hasProperty(property)) {
-			return state.setValue(property, EnumConnectType.NONE);
-		} else {
-			return state;
 		}
+		if (FluidUtilities.isFluidReceiver(tile, dir.getOpposite())) {
+			return state.setValue(property, EnumConnectType.INVENTORY);
+		}
+		if (state.hasProperty(property)) {
+			return state.setValue(property, EnumConnectType.NONE);
+		}
+		return state;
 	}
 
 	@Override

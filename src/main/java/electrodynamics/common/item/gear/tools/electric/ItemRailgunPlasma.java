@@ -68,7 +68,7 @@ public class ItemRailgunPlasma extends ItemRailgun {
 		float velX = -Mth.sin(yRot * ((float) Math.PI / 180F)) * Mth.cos(xRot * ((float) Math.PI / 180F));
 		float velY = -Mth.sin((xRot + zRot) * ((float) Math.PI / 180F));
 		float velZ = Mth.cos(yRot * ((float) Math.PI / 180F)) * Mth.cos(xRot * ((float) Math.PI / 180F));
-		projectile.shoot((double) velX, (double) velY, (double) velZ, velocity, inaccuracy);
+		projectile.shoot(velX, velY, velZ, velocity, inaccuracy);
 		Vec3 deltaMove = shooter.getDeltaMovement();
 		projectile.setDeltaMovement(projectile.getDeltaMovement().add(deltaMove.x, 0.0D, deltaMove.z));
 	}

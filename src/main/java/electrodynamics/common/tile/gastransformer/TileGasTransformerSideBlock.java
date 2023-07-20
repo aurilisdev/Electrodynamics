@@ -29,50 +29,48 @@ public class TileGasTransformerSideBlock extends GenericTile {
 
 	private BlockPos ownerPos = TileQuarry.OUT_OF_REACH;
 	private boolean isLeft = false;
-	
-	
+
 	public TileGasTransformerSideBlock(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_COMPRESSOR_SIDE.get(), worldPos, blockState);
 	}
-	
+
 	public void setOwnerPos(BlockPos ownerPos) {
 		this.ownerPos = ownerPos;
 	}
-	
+
 	public void setIsLeft() {
 		isLeft = true;
 	}
-	
+
 	public boolean isLeft() {
 		return isLeft;
 	}
-	
+
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
 		updateTankCount();
 	}
-	
+
 	public void updateTankCount() {
 		BlockPos abovePos = getBlockPos().above();
 		BlockState aboveState = getLevel().getBlockState(abovePos);
 		BlockEntity aboveTile;
 		int tankCount = 0;
-		for(int i = 0; i < TileGasTransformerAddonTank.MAX_ADDON_TANKS; i++) {
-			if(!aboveState.is(ElectrodynamicsBlocks.blockGasTransformerAddonTank)) {
+		for (int i = 0; i < TileGasTransformerAddonTank.MAX_ADDON_TANKS; i++) {
+			if (!aboveState.is(ElectrodynamicsBlocks.blockGasTransformerAddonTank)) {
 				break;
 			}
 			aboveTile = getLevel().getBlockEntity(abovePos);
-			if(aboveTile != null && aboveTile instanceof TileGasTransformerAddonTank tank) {
-				abovePos = abovePos.above();
-				aboveState = getLevel().getBlockState(abovePos);
-				tank.setOwnerPos(getBlockPos());
-				tankCount++;
-			} else {
+			if ((aboveTile == null) || !(aboveTile instanceof TileGasTransformerAddonTank tank)) {
 				break;
 			}
+			abovePos = abovePos.above();
+			aboveState = getLevel().getBlockState(abovePos);
+			tank.setOwnerPos(getBlockPos());
+			tankCount++;
 		}
 		BlockEntity owner = getLevel().getBlockEntity(ownerPos);
-		if(owner != null && owner instanceof GenericTileGasTransformer compressor) {
+		if (owner != null && owner instanceof GenericTileGasTransformer compressor) {
 			compressor.updateAddonTanks(tankCount, isLeft);
 		}
 	}
@@ -101,21 +99,20 @@ public class TileGasTransformerSideBlock extends GenericTile {
 
 	@Override
 	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if(ownerPos == null || ownerPos.equals(TileQuarry.OUT_OF_REACH)) {
+		if (ownerPos == null || ownerPos.equals(TileQuarry.OUT_OF_REACH)) {
 			return LazyOptional.empty();
 		}
 		BlockEntity owner = getLevel().getBlockEntity(ownerPos);
-		if(cap == ElectrodynamicsCapabilities.ELECTRODYNAMIC) {
+		if (cap == ElectrodynamicsCapabilities.ELECTRODYNAMIC) {
 			return LazyOptional.empty();
 		}
 		if (owner != null && owner instanceof GenericTileGasTransformer compressor) {
-			
-			if(cap == ForgeCapabilities.FLUID_HANDLER) {
-				if(isLeft) {
+
+			if (cap == ForgeCapabilities.FLUID_HANDLER) {
+				if (isLeft) {
 					return compressor.getComponent(ComponentType.FluidHandler).getCapability(cap, side, CapabilityInputType.INPUT);
-				} else {
-					return compressor.getComponent(ComponentType.FluidHandler).getCapability(cap, side, CapabilityInputType.OUTPUT);
 				}
+				return compressor.getComponent(ComponentType.FluidHandler).getCapability(cap, side, CapabilityInputType.OUTPUT);
 			}
 			return compressor.getCapability(cap, side);
 		}

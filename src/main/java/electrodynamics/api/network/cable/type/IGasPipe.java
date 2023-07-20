@@ -16,15 +16,15 @@ public interface IGasPipe extends IRefreshableCable {
 	default double getMaxTransfer() {
 		return getPipeType().maxTransfer;
 	}
-	
+
 	default boolean isInsulationFlammable() {
 		return getPipeType().insulationMaterial.canCombust;
 	}
-	
+
 	default double getEffectiveHeatLoss() {
 		return getPipeType().effectivePipeHeatLoss;
 	}
-	
+
 	default boolean canCorrodeFromAcid() {
 		return getPipeType().pipeMaterial.corrodedByAcid;
 	}

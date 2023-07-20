@@ -16,26 +16,30 @@ public class ElectrodynamicsBlockStates {
 	public static final BooleanProperty COMPRESSORSIDE_HAS_TOPTANK = BooleanProperty.create("compressorsidehastoptank");
 	public static final EnumProperty<ManipulatorHeatingStatus> MANIPULATOR_HEATING_STATUS = EnumProperty.create("manipulatorheatingstatus", ManipulatorHeatingStatus.class);
 	public static final BooleanProperty HAS_SCAFFOLDING = BooleanProperty.create("hasscaffolding");
-	
-	
+
 	public static enum AddonTankNeighborType implements StringRepresentable {
-		NONE, BOTTOMTANK, TOPTANK, BOTTOMANDTOPTANK;
+		NONE,
+		BOTTOMTANK,
+		TOPTANK,
+		BOTTOMANDTOPTANK;
 
 		@Override
 		public String getSerializedName() {
 			return name().toLowerCase(Locale.ROOT);
 		}
-		
+
 	}
-	
+
 	public static enum ManipulatorHeatingStatus implements StringRepresentable {
-		OFF, COOL, HEAT;
+		OFF,
+		COOL,
+		HEAT;
 
 		@Override
 		public String getSerializedName() {
 			return name().toLowerCase(Locale.ROOT);
 		}
-		
+
 	}
 
 }

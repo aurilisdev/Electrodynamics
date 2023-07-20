@@ -4,8 +4,7 @@ import electrodynamics.api.References;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * Simple wrapper interface allowing for basic compatibility between different textures.
- * Textures are assumed to be 256 x 256
+ * Simple wrapper interface allowing for basic compatibility between different textures. Textures are assumed to be 256 x 256
  * 
  * @author skip999
  *

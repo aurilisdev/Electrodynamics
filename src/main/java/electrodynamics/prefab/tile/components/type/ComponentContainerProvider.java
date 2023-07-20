@@ -42,11 +42,10 @@ public class ComponentContainerProvider implements Component, MenuProvider {
 		if (createMenuFunction != null) {
 			if (holder.hasComponent(ComponentType.Inventory)) {
 				ComponentInventory componentinv = holder.getComponent(ComponentType.Inventory);
-				if (componentinv.stillValid(pl)) {
-					componentinv.startOpen(pl);
-				} else {
+				if (!componentinv.stillValid(pl)) {
 					return null;
 				}
+				componentinv.startOpen(pl);
 			}
 			return createMenuFunction.apply(id, inv);
 		}

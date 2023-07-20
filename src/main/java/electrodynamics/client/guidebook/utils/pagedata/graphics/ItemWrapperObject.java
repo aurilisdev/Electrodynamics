@@ -7,8 +7,7 @@ import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.world.item.Item;
 
 /**
- * A simple wrapper class that contains render data for an item or block on the Guidebook screen The class is capable of
- * displaying items/blocks as well as text descriptors for said items/blocks
+ * A simple wrapper class that contains render data for an item or block on the Guidebook screen The class is capable of displaying items/blocks as well as text descriptors for said items/blocks
  * 
  * @author skip999
  *

@@ -3,10 +3,10 @@ package electrodynamics.datagen.server.recipe.types.vanilla;
 import java.util.function.Consumer;
 
 import electrodynamics.api.References;
-import electrodynamics.common.block.subtype.SubtypeGlass;
-import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
+import electrodynamics.common.block.subtype.SubtypeGlass;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;

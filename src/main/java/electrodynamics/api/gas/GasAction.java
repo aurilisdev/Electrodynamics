@@ -8,6 +8,7 @@ package electrodynamics.api.gas;
  */
 public enum GasAction {
 
-	SIMULATE, EXECUTE;
-	
+	SIMULATE,
+	EXECUTE;
+
 }

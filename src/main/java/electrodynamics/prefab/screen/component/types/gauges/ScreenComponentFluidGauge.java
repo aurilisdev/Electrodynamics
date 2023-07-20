@@ -73,7 +73,7 @@ public class ScreenComponentFluidGauge extends AbstractScreenComponentGauge {
 			} else {
 				tooltips.add(ElectroTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(tank.getCapacity())).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 			}
-		} 
+		}
 		return tooltips;
 	}
 }

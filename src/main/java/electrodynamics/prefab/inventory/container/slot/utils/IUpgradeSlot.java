@@ -7,5 +7,5 @@ import net.minecraft.world.item.Item;
 public interface IUpgradeSlot {
 
 	public List<Item> getUpgrades();
-	
+
 }

@@ -24,32 +24,32 @@ public interface IMultiblockParentTile {
 	 * 
 	 * Yes, using an array is a little more confusing, however it gives a fixed index to a subnode
 	 * 
-	 * This is useful as it means a subnode can look itself up on the parent tile really quickly and reliably if there's a data point it needs to reference 
+	 * This is useful as it means a subnode can look itself up on the parent tile really quickly and reliably if there's a data point it needs to reference
 	 * 
 	 * 
 	 */
-	
+
 	default void onNodeReplaced(Level world, BlockPos pos, boolean update) {
-		
+
 		Subnode[] subnodes = getSubNodes();
-		
+
 		Subnode subnode;
-		
+
 		BlockPos offset, subnodePos;
-		
+
 		BlockState subnodeState;
-		
+
 		Block subnodeBlock;
-		
-		for(int i = 0; i < subnodes.length; i++) {
-			
+
+		for (int i = 0; i < subnodes.length; i++) {
+
 			subnode = subnodes[i];
-			
+
 			subnodePos = subnode.pos();
 			offset = pos.offset(subnodePos);
 			subnodeState = world.getBlockState(offset);
 			subnodeBlock = subnodeState.getBlock();
-			
+
 			if (update) {
 				if (subnodeState.getMaterial().isReplaceable()) {
 					world.setBlockAndUpdate(offset, ElectrodynamicsBlocks.multi.defaultBlockState());
@@ -64,36 +64,14 @@ public interface IMultiblockParentTile {
 					world.setBlockAndUpdate(offset, Blocks.AIR.defaultBlockState());
 				}
 			}
-			
-			
-			
+
 		}
-		
+
 		/*
-		
-		Iterator<Subnode> it = getSubNodes().iterator();
-		while (it.hasNext()) {
-			BlockPos inPos = it.next().pos();
-			BlockPos offset = pos.offset(inPos);
-			BlockState inState = world.getBlockState(offset);
-			Block inBlock = inState.getBlock();
-			if (update) {
-				if (inState.getMaterial().isReplaceable()) {
-					world.setBlockAndUpdate(offset, ElectrodynamicsBlocks.multi.defaultBlockState());
-				}
-				TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset);
-				if (subnode != null) {
-					subnode.nodePos.set(pos);
-				}
-			} else if (inBlock instanceof IMultiblockChildBlock) {
-				TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset);
-				if (subnode != null && subnode.nodePos.get().equals(pos)) {
-					world.setBlockAndUpdate(offset, Blocks.AIR.defaultBlockState());
-				}
-			}
-		}
-		
-		*/
+		 * 
+		 * Iterator<Subnode> it = getSubNodes().iterator(); while (it.hasNext()) { BlockPos inPos = it.next().pos(); BlockPos offset = pos.offset(inPos); BlockState inState = world.getBlockState(offset); Block inBlock = inState.getBlock(); if (update) { if (inState.getMaterial().isReplaceable()) { world.setBlockAndUpdate(offset, ElectrodynamicsBlocks.multi.defaultBlockState()); } TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset); if (subnode != null) { subnode.nodePos.set(pos); } } else if (inBlock instanceof IMultiblockChildBlock) { TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset); if (subnode != null && subnode.nodePos.get().equals(pos)) { world.setBlockAndUpdate(offset, Blocks.AIR.defaultBlockState()); } } }
+		 * 
+		 */
 	}
 
 	default void onNodePlaced(Level world, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
@@ -101,35 +79,35 @@ public interface IMultiblockParentTile {
 	}
 
 	Subnode[] getSubNodes();
-	
+
 	default void onSubnodeNeighborChange(TileMultiSubnode subnode, BlockPos subnodeChangingNeighbor) {
-		
+
 	}
-	
+
 	default InteractionResult onSubnodeUse(Player player, InteractionHand hand, BlockHitResult hit, TileMultiSubnode subnode) {
 		return InteractionResult.FAIL;
 	}
-	
+
 	default void onSubnodePlace(TileMultiSubnode subnode, BlockState oldSubnodeState, boolean isSubnodeMoving) {
-		
+
 	}
-	
+
 	default int getSubdnodeComparatorSignal(TileMultiSubnode subnode) {
 		return 0;
 	}
-	
+
 	void onSubnodeDestroyed(TileMultiSubnode subnode);
-	
+
 	default Direction getFacingDirection() {
 		return Direction.NORTH;
 	}
-	
+
 	default int getDirectSignal(TileMultiSubnode subnode, Direction dir) {
 		return 0;
 	}
-	
+
 	default int getSignal(TileMultiSubnode subnode, Direction dir) {
 		return 0;
 	}
-	
+
 }

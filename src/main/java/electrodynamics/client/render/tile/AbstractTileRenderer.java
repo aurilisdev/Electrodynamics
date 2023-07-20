@@ -2,6 +2,8 @@ package electrodynamics.client.render.tile;
 
 import java.util.Random;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.prefab.tile.GenericTile;
@@ -13,8 +15,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
-
-import org.jetbrains.annotations.NotNull;
 
 /**
  * A basic abstract class for BlockEntityRenderer that allows for the storage of utility methods amongst other things
@@ -55,5 +55,5 @@ public abstract class AbstractTileRenderer<T extends GenericTile> implements Blo
 	public AABB aabb(double x0, double y0, double z0, double x1, double y1, double z1) {
 		return new AABB(x0 / 16.0F, y0 / 16.0F, z0 / 16.0F, x1 / 16.0F, y1 / 16.0F, z1 / 16.0F);
 	}
-	
+
 }

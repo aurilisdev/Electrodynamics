@@ -79,7 +79,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		refresh();
 		NetworkRegistry.register(this);
 	}
-	
+
 	@Override
 	public void refresh() {
 		resistance = 0;
@@ -93,7 +93,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 
 		minimumVoltage = -1;
 		minimumAmpacity = 0;
-		
+
 		super.refresh();
 	}
 
@@ -104,11 +104,11 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		Set<BlockEntity> availableAcceptors = getEnergyAcceptors();
 		double joulesSent = 0;
 		availableAcceptors.removeAll(ignored);
-		
+
 		if (availableAcceptors.isEmpty()) {
 			return TransferPack.EMPTY;
 		}
-		
+
 		Iterator<BlockEntity> it = availableAcceptors.iterator();
 		double totalUsage = 0;
 		HashMap<BlockEntity, Double> usage = new HashMap<>();
@@ -153,11 +153,11 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	}
 
 	private boolean checkForOverload() {
-		
-		if(voltage <= 0 || networkMaxTransfer * voltage - transmittedThisTick > 0) {
+
+		if (voltage <= 0 || networkMaxTransfer * voltage - transmittedThisTick > 0) {
 			return false;
 		}
-		
+
 		HashSet<SubtypeWire> checkList = new HashSet<>();
 		for (SubtypeWire type : SubtypeWire.values()) {
 			if (type.conductor.ampacity <= transmittedLastTick / voltage * 20 && type.conductor.ampacity <= transmittedThisTick / voltage * 20) {
@@ -170,7 +170,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 			}
 		}
 		return true;
-		
+
 	}
 
 	@Override
@@ -233,10 +233,10 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		voltage = 0;
 		lastEnergyLoss = energyLoss;
 		energyLoss = 0;
-		
+
 		maxTransferBuffer = 0;
 		currentProducers.clear();
-		
+
 		for (BlockEntity tile : acceptorSet) {
 			if (acceptorInputMap.containsKey(tile)) {
 				for (Direction connection : acceptorInputMap.get(tile)) {
@@ -263,14 +263,14 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		if (getSize() == 0) {
 			deregister();
 		}
-		
+
 	}
 
 	@Override
 	public boolean isConductor(BlockEntity tile, IConductor requesterCable) {
 		return ElectricityUtils.isConductor(tile, requesterCable);
 	}
-	
+
 	@Override
 	public boolean isConductorClass(BlockEntity tile) {
 		return tile instanceof IConductor;

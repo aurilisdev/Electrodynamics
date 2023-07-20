@@ -27,7 +27,8 @@ public class ScreenComponentGuidebookArrow extends ScreenComponentGeneric {
 	}
 
 	public enum ArrowTextures implements ITexture {
-		ARROW_DOWN(11, 7, 0, 0, 11, 7, "arrowdown"), ARROW_UP(11, 7, 0, 0, 11, 7, "arrowup");
+		ARROW_DOWN(11, 7, 0, 0, 11, 7, "arrowdown"),
+		ARROW_UP(11, 7, 0, 0, 11, 7, "arrowup");
 
 		private final int textureWidth;
 		private final int textureHeight;

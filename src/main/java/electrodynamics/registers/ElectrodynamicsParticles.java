@@ -11,6 +11,6 @@ public class ElectrodynamicsParticles {
 
 	public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, References.ID);
 
-	public static final RegistryObject<ParticleOptionPlasmaBall> PARTICLE_PLASMA_BALL = PARTICLES.register("plasmaball", () -> new ParticleOptionPlasmaBall());
+	public static final RegistryObject<ParticleOptionPlasmaBall> PARTICLE_PLASMA_BALL = PARTICLES.register("plasmaball", ParticleOptionPlasmaBall::new);
 
 }

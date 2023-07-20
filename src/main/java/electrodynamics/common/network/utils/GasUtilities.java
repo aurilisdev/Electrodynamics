@@ -32,7 +32,7 @@ public class GasUtilities {
 	}
 
 	public static double recieveGas(BlockEntity reciever, Direction dir, GasStack gas, GasAction action) {
-		if(gas.isEmpty() || gas.getAmount() <= 0) {
+		if (gas.isEmpty() || gas.getAmount() <= 0) {
 			return 0;
 		}
 		GasStack copy = gas.copy();
@@ -73,7 +73,7 @@ public class GasUtilities {
 			}
 		}
 	}
-	
+
 	public static void drainItem(GenericTile tile, GasTank[] tanks) {
 		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
 		List<ItemStack> cylinders = inv.getInputGasContents();
@@ -94,7 +94,7 @@ public class GasUtilities {
 		}
 
 	}
-	
+
 	public static void fillItem(GenericTile tile, GasTank[] tanks) {
 		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
 		List<ItemStack> cylinders = inv.getOutputGasContents();
@@ -106,7 +106,7 @@ public class GasUtilities {
 					IGasHandlerItem handler = (IGasHandlerItem) stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).cast().resolve().get();
 					GasStack gas = tank.getGas();
 					GasStack taken;
-					if(gas.getTemperature() > handler.getTankMaxTemperature(0) || gas.getPressure() > handler.getTankMaxPressure(0)) {
+					if (gas.getTemperature() > handler.getTankMaxTemperature(0) || gas.getPressure() > handler.getTankMaxPressure(0)) {
 						taken = gas.copy();
 						tile.getLevel().playSound(null, tile.getBlockPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
 						CapabilityUtils.fillGasItem(stack, gas, GasAction.EXECUTE);

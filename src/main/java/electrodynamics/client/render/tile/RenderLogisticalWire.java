@@ -21,24 +21,23 @@ public class RenderLogisticalWire extends AbstractTileRenderer<TileLogisticalWir
 
 	@Override
 	public void render(@NotNull TileLogisticalWire tile, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-		
-		
-		if(!tile.getBlockState().getValue(BlockMachine.ON)) {
+
+		if (!tile.getBlockState().getValue(BlockMachine.ON)) {
 			return;
 		}
-		
+
 		Minecraft minecraft = minecraft();
-		
+
 		BlockPos pos = tile.getBlockPos();
-		
+
 		RandomSource random = minecraft.level.getRandom();
-		
-		if(random.nextFloat() > 0.02) {
+
+		if (random.nextFloat() > 0.02) {
 			return;
 		}
-		
+
 		minecraft.level.addParticle(new DustParticleOptions(DustParticleOptions.REDSTONE_PARTICLE_COLOR, random.nextFloat()), pos.getX() + random.nextDouble(), pos.getY() + random.nextDouble(), pos.getZ() + random.nextDouble(), 0, 0, 0);
-		
+
 	}
 
 }

@@ -22,7 +22,7 @@ public class ScreenComponentGasGaugeInput extends ScreenComponentGasGauge {
 	public ScreenComponentGasGaugeInput(Supplier<IGasTank> gasStack, int x, int y) {
 		super(gasStack, x, y);
 	}
-	
+
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
@@ -39,11 +39,10 @@ public class ScreenComponentGasGaugeInput extends ScreenComponentGasGauge {
 		if (isValidClick(button)) {
 			onMouseRelease(mouseX, mouseY);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
-	
+
 	@Override
 	public void onMouseClick(double mouseX, double mouseY) {
 
@@ -54,35 +53,35 @@ public class ScreenComponentGasGaugeInput extends ScreenComponentGasGauge {
 		}
 
 		GenericScreen<?> screen = (GenericScreen<?>) gui;
-		
+
 		GenericTile owner = (GenericTile) ((GenericContainerBlockEntity<?>) screen.getMenu()).getHostFromIntArray();
-		
-		if(owner == null) {
+
+		if (owner == null) {
 			return;
 		}
-		
+
 		ItemStack stack = screen.getMenu().getCarried();
 
 		if (!CapabilityUtils.hasGasItemCap(stack)) {
 			return;
 		}
-		
+
 		GasStack tankGas = tank.getGas();
-		
+
 		double amtTaken = CapabilityUtils.fillGasItem(stack, tankGas, GasAction.SIMULATE);
-		
+
 		GasStack taken = new GasStack(tankGas.getGas(), amtTaken, tankGas.getTemperature(), tankGas.getPressure());
 		if (amtTaken > 0) {
-			
+
 			CapabilityUtils.fillGasItem(stack, tankGas, GasAction.EXECUTE);
 			tank.drain(taken, GasAction.EXECUTE);
 			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), 1.0F));
 			tank.updateServer();
-			
+
 		}
 
 		NetworkHandler.CHANNEL.sendToServer(new PacketUpdateCarriedItemServer(stack.copy(), ((GenericContainerBlockEntity<?>) screen.getMenu()).getHostFromIntArray().getBlockPos(), Minecraft.getInstance().player.getUUID()));
-		
+
 	}
 
 }

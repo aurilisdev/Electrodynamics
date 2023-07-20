@@ -6,6 +6,8 @@ import java.util.HashSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.Sets;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
@@ -25,7 +27,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class GenericTileWire extends GenericConnectTile implements IConductor {
 
@@ -51,18 +52,18 @@ public abstract class GenericTileWire extends GenericConnectTile implements ICon
 				public double getJoulesStored() {
 					return 0;
 				}
-				
+
 				@Override
 				public double getVoltage() {
-					if(getNetwork() != null) {
+					if (getNetwork() != null) {
 						return getNetwork().getVoltage();
 					}
 					return -1;
 				}
-				
+
 				@Override
 				public double getMinimumVoltage() {
-					if(getNetwork() != null) {
+					if (getNetwork() != null) {
 						return getNetwork().getMinimumVoltage();
 					}
 					return -1;

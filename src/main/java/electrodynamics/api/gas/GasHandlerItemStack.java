@@ -132,47 +132,44 @@ public class GasHandlerItemStack implements IGasHandlerItem, ICapabilityProvider
 
 			return accepted;
 
-		} else {
+		}
+		GasStack gas = getGasInTank(0);
 
-			GasStack gas = getGasInTank(0);
+		if (!gas.isSameGas(resource)) {
+			return 0;
+		}
 
-			if (!gas.isSameGas(resource)) {
-				return 0;
-			}
+		double canTake = GasStack.getMaximumAcceptance(gas, resource, capacity);
 
-			double canTake = GasStack.getMaximumAcceptance(gas, resource, capacity);
+		if (canTake == 0) {
+			return 0;
+		}
 
-			if (canTake == 0) {
-				return 0;
-			}
+		if (action == GasAction.EXECUTE) {
 
-			if (action == GasAction.EXECUTE) {
+			GasStack accepted = resource.copy();
 
-				GasStack accepted = resource.copy();
+			accepted.setAmount(canTake);
 
-				accepted.setAmount(canTake);
+			GasStack equalized = GasStack.equalizePresrsureAndTemperature(gas, accepted);
 
-				GasStack equalized = GasStack.equalizePresrsureAndTemperature(gas, accepted);
+			setGas(equalized);
 
-				setGas(equalized);
+			if (gas.getTemperature() > maxTemperature) {
 
-				if (gas.getTemperature() > maxTemperature) {
-
-					onOverheat();
-
-				}
-
-				if (gas.getPressure() > maxPressure) {
-
-					onOverpressure();
-
-				}
+				onOverheat();
 
 			}
 
-			return canTake;
+			if (gas.getPressure() > maxPressure) {
+
+				onOverpressure();
+
+			}
 
 		}
+
+		return canTake;
 	}
 
 	@Override

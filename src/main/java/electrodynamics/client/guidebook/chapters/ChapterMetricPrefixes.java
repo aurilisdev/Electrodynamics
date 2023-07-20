@@ -11,7 +11,7 @@ import net.minecraft.world.item.Items;
 public class ChapterMetricPrefixes extends Chapter {
 
 	private static final ItemWrapperObject LOGO = new ItemWrapperObject(7, 10, 32, 32, 32, 2.0F, Items.NAME_TAG);
-	
+
 	public ChapterMetricPrefixes(Module module) {
 		super(module);
 	}
@@ -25,7 +25,7 @@ public class ChapterMetricPrefixes extends Chapter {
 	public MutableComponent getTitle() {
 		return ElectroTextUtils.guidebook("chapter.metricprefixes");
 	}
-	
+
 	@Override
 	public void addData() {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.metricprefixes.l1")).setIndentions(1).setSeparateStart());
@@ -40,7 +40,7 @@ public class ChapterMetricPrefixes extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.metricprefixes.tera")).setSeparateStart());
 		blankLine();
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.metricprefixes.l2")).setSeparateStart());
-		
+
 	}
 
 }

@@ -6,6 +6,8 @@ import java.util.HashSet;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.Sets;
 
 import electrodynamics.api.network.cable.type.IFluidPipe;
@@ -25,7 +27,6 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
 
 public abstract class GenericTileFluidPipe extends GenericConnectTile implements IFluidPipe {
 

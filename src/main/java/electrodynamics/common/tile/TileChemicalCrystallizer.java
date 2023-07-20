@@ -70,10 +70,10 @@ public class TileChemicalCrystallizer extends GenericMaterialTile implements ITi
 	public boolean shouldPlaySound() {
 		return this.<ComponentProcessor>getComponent(ComponentType.Processor).isActive();
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
 		return this.<ComponentProcessor>getComponent(ComponentType.Processor).isActive() ? 15 : 0;
 	}
-	
+
 }

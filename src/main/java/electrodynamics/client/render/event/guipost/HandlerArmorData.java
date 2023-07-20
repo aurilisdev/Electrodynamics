@@ -63,8 +63,8 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 	private boolean handleHelmet(ItemStack helmet, NamedGuiOverlay overlay, PoseStack stack, Window window, Minecraft minecraft, int heightOffset) {
 
 		boolean renderItem = false;
-		
-		if(ItemUtils.testItems(helmet.getItem(), ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get(), ElectrodynamicsItems.ITEM_COMBATHELMET.get())) {
+
+		if (ItemUtils.testItems(helmet.getItem(), ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get(), ElectrodynamicsItems.ITEM_COMBATHELMET.get())) {
 			renderItem = true;
 			Component mode;
 			if (helmet.hasTag() && helmet.getTag().getBoolean(NBTUtils.ON)) {
@@ -85,7 +85,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 	}
 
 	private boolean handleChestplate(ItemStack chestplate, NamedGuiOverlay overlay, PoseStack stack, Window window, Minecraft minecraft, int heightOffset) {
-		
+
 		boolean renderItem = false;
 
 		if (ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get())) {
@@ -103,7 +103,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 
 			});
 		}
-		
+
 		if (ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
 			stack.pushPose();
 			stack.scale(0.8F, 0.8F, 0.8F);
@@ -125,12 +125,12 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 			});
 			stack.popPose();
 		}
-		
-		if(ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get())) {
+
+		if (ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get())) {
 			renderItem = true;
 			GuiComponent.drawString(stack, minecraft.font, ElectroTextUtils.tooltip("ceramicplatecount", Component.literal((chestplate.hasTag() ? chestplate.getTag().getInt(NBTUtils.PLATES) : 0) + "")).withStyle(ChatFormatting.AQUA), 35, heightOffset - 25, -1);
 		}
-		
+
 		if (renderItem) {
 			RenderingUtils.renderItemScaled(chestplate.getItem(), 10, heightOffset - 30, 1.5F);
 		}
@@ -139,10 +139,10 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 	}
 
 	private boolean handleLeggings(ItemStack leggings, NamedGuiOverlay overlay, PoseStack stack, Window window, Minecraft minecraft, int heightOffset) {
-		
+
 		boolean renderItem = false;
 
-		if(ItemUtils.testItems(leggings.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
+		if (ItemUtils.testItems(leggings.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
 			renderItem = true;
 			Component on;
 			if (leggings.hasTag() && leggings.getTag().getBoolean(NBTUtils.ON)) {
@@ -158,7 +158,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 			GuiComponent.drawString(stack, minecraft.font, ChatFormatter.getChatDisplayShort(leggings.getOrCreateTag().getDouble(IItemElectric.JOULES_STORED), DisplayUnit.JOULES), x, (int) ((heightOffset - 16) / 0.8F), -1);
 			stack.popPose();
 		}
-		
+
 		if (renderItem) {
 			RenderingUtils.renderItemScaled(leggings.getItem(), 10, heightOffset - 30, 1.5F);
 		}
@@ -167,14 +167,14 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 	}
 
 	private boolean handleBoots(ItemStack boots, NamedGuiOverlay overlay, PoseStack stack, Window window, Minecraft minecraft, int heightOffset) {
-		
+
 		boolean renderItem = false;
 
-		if(ItemUtils.testItems(boots.getItem(), ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get(), ElectrodynamicsItems.ITEM_COMBATBOOTS.get())) {
+		if (ItemUtils.testItems(boots.getItem(), ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get(), ElectrodynamicsItems.ITEM_COMBATBOOTS.get())) {
 			renderItem = true;
 			boots.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> GuiComponent.drawString(stack, minecraft.font, ChatFormatter.formatFluidMilibuckets(h.getFluidInTank(0).getAmount()), 35, heightOffset - 25, -1));
 		}
-		
+
 		if (renderItem) {
 			RenderingUtils.renderItemScaled(boots.getItem(), 10, heightOffset - 30, 1.5F);
 		}

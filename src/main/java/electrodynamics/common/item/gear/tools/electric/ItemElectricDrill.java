@@ -18,8 +18,8 @@ import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemMultiDigger;
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
@@ -63,7 +63,7 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 	private static final Component CONTAINER_TITLE = Component.translatable("container.electricdrill");
 
 	public static final int SLOT_COUNT = 3;
-	
+
 	public static final double POWER_USAGE = 1666666.66667 / (120.0 * 20.0);
 
 	private static final String SUBTYPE = "subtype";
@@ -132,7 +132,7 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 			ItemStack empty = new ItemStack(this);
 			IItemElectric.setEnergyStored(empty, 0);
 			items.add(empty);
-			
+
 			ItemStack charged = new ItemStack(this);
 			IItemElectric.setEnergyStored(charged, properties.capacity);
 			items.add(charged);
@@ -177,7 +177,7 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 		if (fortune > 0) {
 			multiplier += fortune;
 		}
-		
+
 		return POWER_USAGE * multiplier;
 	}
 

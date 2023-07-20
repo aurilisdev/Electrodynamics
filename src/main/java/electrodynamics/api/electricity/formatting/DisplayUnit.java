@@ -28,7 +28,7 @@ public enum DisplayUnit {
 	private DisplayUnit(Component name, Component namePlural, Component symbol) {
 		this(name, namePlural, symbol, Component.literal(" "));
 	}
-	
+
 	private DisplayUnit(Component name, Component namePlural, Component symbol, Component distanceFromValue) {
 		this.name = name;
 		this.namePlural = namePlural;

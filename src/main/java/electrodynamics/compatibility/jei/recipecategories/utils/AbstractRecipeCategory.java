@@ -98,18 +98,18 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 
 	@Override
 	public void draw(T recipe, IRecipeSlotsView recipeSlotsView, PoseStack matrixStack, double mouseX, double mouseY) {
-		
+
 		drawPre(matrixStack, recipe);
-		
+
 		drawStatic(matrixStack);
 		drawAnimated(matrixStack);
 
 		drawPost(matrixStack, recipe);
-		
+
 		preLabels(matrixStack, recipe);
-		
+
 		addLabels(matrixStack, recipe);
-		
+
 		postLabels(matrixStack, recipe);
 	}
 
@@ -369,15 +369,13 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 	}
 
 	public void drawPre(PoseStack matrixStack, T recipe) {
-		
-		
+
 	}
-	
+
 	public void drawPost(PoseStack matrixStack, T recipe) {
-		
-		
+
 	}
-	
+
 	public void addLabels(PoseStack stack, T recipe) {
 		Font font = Minecraft.getInstance().font;
 		for (AbstractLabelWrapper wrap : labels) {
@@ -391,13 +389,11 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 	}
 
 	public void preLabels(PoseStack matrixStack, T recipe) {
-		
-		
+
 	}
-	
+
 	public void postLabels(PoseStack matrixStack, T recipe) {
-		
-		
+
 	}
 
 	public List<List<ItemStack>> getItemInputs(T recipe) {

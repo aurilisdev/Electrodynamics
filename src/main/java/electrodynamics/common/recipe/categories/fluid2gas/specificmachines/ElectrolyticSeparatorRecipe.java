@@ -19,7 +19,7 @@ public class ElectrolyticSeparatorRecipe extends Fluid2GasRecipe {
 
 	public ElectrolyticSeparatorRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, GasStack outputGas, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidbiproducts, ProbableGas[] gasBiproducts) {
 		super(recipeID, inputFluids, outputGas, experience, ticks, usagePerTick, itemBiproducts, fluidbiproducts, gasBiproducts);
-		
+
 	}
 
 	@Override

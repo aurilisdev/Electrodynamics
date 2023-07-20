@@ -18,7 +18,7 @@ import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.util.FormattedCharSequence;
 
-public class ScreenComponentGasTemperature  extends ScreenComponentGuiTab {
+public class ScreenComponentGasTemperature extends ScreenComponentGuiTab {
 
 	public ScreenComponentGasTemperature(TextPropertySupplier infoHandler, int x, int y) {
 		super(GuiInfoTabTextures.REGULAR, IconType.THERMOMETER, infoHandler, x, y);
@@ -60,11 +60,11 @@ public class ScreenComponentGasTemperature  extends ScreenComponentGuiTab {
 		index = 1;
 
 		for (PropertyGasTank tank : handler.getOutputTanks()) {
-			
+
 			tooltips.add(ElectroTextUtils.tooltip("tankmaxout", index, ChatFormatter.getChatDisplayShort(tank.getMaxTemperature(), DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			
+
 			index++;
-			
+
 		}
 
 		return tooltips;

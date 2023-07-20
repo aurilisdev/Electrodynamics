@@ -104,10 +104,10 @@ public abstract class GenericTileGasPipe extends GenericConnectTile implements I
 	public GasNetwork getNetwork() {
 		return getNetwork(true);
 	}
-	
+
 	@Override
 	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction dir) {
-		if(cap == ElectrodynamicsCapabilities.GAS_HANDLER) {
+		if (cap == ElectrodynamicsCapabilities.GAS_HANDLER) {
 			return LazyOptional.of(() -> capability[dir.ordinal()]).cast();
 		}
 		return LazyOptional.empty();
@@ -136,7 +136,7 @@ public abstract class GenericTileGasPipe extends GenericConnectTile implements I
 		}
 		return gasNetwork;
 	}
-	
+
 	private HashSet<IGasPipe> getConnectedPipes() {
 		HashSet<IGasPipe> set = new HashSet<>();
 		for (Direction dir : Direction.values()) {
@@ -150,7 +150,7 @@ public abstract class GenericTileGasPipe extends GenericConnectTile implements I
 
 	@Override
 	public void refreshNetwork() {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		updateAdjacent();
@@ -176,11 +176,11 @@ public abstract class GenericTileGasPipe extends GenericConnectTile implements I
 
 	@Override
 	public void refreshNetworkIfChange() {
-		if(updateAdjacent()) {
+		if (updateAdjacent()) {
 			refreshNetwork();
 		}
 	}
-	
+
 	public boolean updateAdjacent() {
 		boolean flag = false;
 		for (Direction dir : Direction.values()) {
@@ -198,7 +198,7 @@ public abstract class GenericTileGasPipe extends GenericConnectTile implements I
 
 	@Override
 	public void removeFromNetwork() {
-		if(gasNetwork != null) {
+		if (gasNetwork != null) {
 			gasNetwork.removeFromNetwork(this);
 		}
 
@@ -221,7 +221,7 @@ public abstract class GenericTileGasPipe extends GenericConnectTile implements I
 	public BlockEntity[] getAdjacentConnections() {
 		return tileConnections;
 	}
-	
+
 	@Override
 	public void setRemoved() {
 		if (!level.isClientSide && gasNetwork != null) {
@@ -229,7 +229,7 @@ public abstract class GenericTileGasPipe extends GenericConnectTile implements I
 		}
 		super.setRemoved();
 	}
-	
+
 	@Override
 	public void onChunkUnloaded() {
 		super.onChunkUnloaded();
@@ -237,7 +237,7 @@ public abstract class GenericTileGasPipe extends GenericConnectTile implements I
 			gasNetwork.split(this);
 		}
 	}
-	
+
 	@Override
 	public void onLoad() {
 		super.onLoad();

@@ -49,5 +49,5 @@ public class WireMillRecipeCategory extends Item2ItemRecipeCategory<WireMillReci
 		setAnimatedArrows(guiHelper, ANIM_ARROW);
 		setLabels(POWER_LABEL, ITEM_LABEL, TIME_LABEL);
 	}
-	
+
 }

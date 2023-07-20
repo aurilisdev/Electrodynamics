@@ -11,6 +11,8 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.tile.IPlayerStorable;
 import electrodynamics.client.render.event.levelstage.HandlerQuarryArm;
@@ -60,7 +62,6 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Loosely based on Quarry concept from Buildcraft with aspects of Extra Utilities's Ender Quarry
@@ -75,7 +76,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	private static final int CLEAR_SKIP = Math.max(Math.min(Constants.CLEARING_AIR_SKIP, 128), 0);
 
 	public static final BlockPos OUT_OF_REACH = new BlockPos(0, -1000, 0);
-	
+
 	public static final int DRILL_HEAD_INDEX = 0;
 
 	@Nullable
@@ -1225,7 +1226,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
 		return isFinished.get() ? 15 : 0;

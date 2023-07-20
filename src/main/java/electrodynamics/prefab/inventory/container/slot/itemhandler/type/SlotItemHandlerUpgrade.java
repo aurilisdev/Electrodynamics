@@ -16,17 +16,17 @@ import net.minecraftforge.items.IItemHandler;
 public class SlotItemHandlerUpgrade extends SlotItemHandlerGeneric implements IUpgradeSlot {
 
 	private final List<Item> items = new ArrayList<>();
-	
+
 	public SlotItemHandlerUpgrade(IItemHandler itemHandler, int index, int xPosition, int yPosition, SubtypeItemUpgrade... upgrades) {
 		super(SlotType.NORMAL, IconType.UPGRADE_DARK, itemHandler, index, xPosition, yPosition);
-		
+
 		items.clear();
 		for (SubtypeItemUpgrade upg : upgrades) {
 			items.add(ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(upg).get());
 		}
-		
+
 	}
-	
+
 	@Override
 	public boolean mayPlace(ItemStack stack) {
 		return items.contains(stack.getItem());

@@ -37,13 +37,13 @@ public class EvaporatingFluidRecipeCategory extends AbstractRecipeCategory<Psued
 
 	private static final FluidGaugeObject IN_FLUID_GAUGE = new FluidGaugeObject(10, 5, 5000);
 	private static final ScreenObject OUT_FLUID_GAUGE = new ScreenObject(JeiTextures.FLUID_GAUGE_DEFAULT, 88, 5);
-	
+
 	private static final ScreenObject IN_GAS_GAUGE = new ScreenObject(JeiTextures.FAKE_GAS_GAUGE, 30, 5);
 	private static final GasGaugeObject OUT_GAS_GAUGE = new GasGaugeObject(108, 5, 5000);
 
 	private static final PowerLabelWrapperConstant POWER_LABEL = new PowerLabelWrapperConstant(2, 60, TileThermoelectricManipulator.USAGE_PER_TICK, 120);
 	private static final AbstractLabelWrapper TEMPERATURE_LABEL = new AbstractLabelWrapper(0xFF808080, 60, 130, true) {
-		
+
 		@Override
 		public Component getComponent(AbstractRecipeCategory<?> category, Object recipe) {
 			PsuedoFluid2GasRecipe psuedo = (PsuedoFluid2GasRecipe) recipe;
@@ -58,46 +58,46 @@ public class EvaporatingFluidRecipeCategory extends AbstractRecipeCategory<Psued
 	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.blockThermoelectricManipulator);
 
 	public static final RecipeType<PsuedoFluid2GasRecipe> RECIPE_TYPE = RecipeType.create(References.ID, RECIPE_GROUP, PsuedoFluid2GasRecipe.class);
-	
+
 	public EvaporatingFluidRecipeCategory(IGuiHelper guiHelper) {
 		super(guiHelper, ElectroTextUtils.jeiTranslated(RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
-		
+
 		setFluidInputs(guiHelper, IN_FLUID_GAUGE);
 		setGasOutputs(guiHelper, OUT_GAS_GAUGE);
-		
+
 		setScreenObjects(guiHelper, IN_GAS_GAUGE, OUT_FLUID_GAUGE, CONDENSER_COLUMN);
-		
+
 		setLabels(POWER_LABEL, TEMPERATURE_LABEL);
 	}
-	
+
 	@Override
 	public List<List<FluidStack>> getFluidInputs(PsuedoFluid2GasRecipe recipe) {
 		List<FluidStack> gases = new ArrayList<>();
-		for(FluidIngredient ing : recipe.inputs) {
+		for (FluidIngredient ing : recipe.inputs) {
 			gases.addAll(ing.getMatchingFluids());
 		}
 		return Arrays.asList(gases);
 	}
-	
+
 	@Override
 	public List<GasStack> getGasOutputs(PsuedoFluid2GasRecipe recipe) {
 		return Arrays.asList(recipe.output);
 	}
-	
+
 	@Override
 	public List<List<ItemStack>> getItemInputs(PsuedoFluid2GasRecipe recipe) {
-		if(recipe.inputBucket.isEmpty()) {
+		if (recipe.inputBucket.isEmpty()) {
 			return Collections.emptyList();
 		}
 		return Arrays.asList(Arrays.asList(recipe.inputBucket));
 	}
-	
+
 	@Override
 	public List<ItemStack> getItemOutputs(PsuedoFluid2GasRecipe recipe) {
-		if(recipe.outputCylinder.isEmpty()) {
+		if (recipe.outputCylinder.isEmpty()) {
 			return Collections.emptyList();
 		}
 		return Arrays.asList(recipe.outputCylinder);
 	}
-	
+
 }

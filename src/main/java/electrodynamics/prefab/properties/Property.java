@@ -13,10 +13,10 @@ public class Property<T> {
 	private boolean shouldUpdateClient = true;
 	private String name;
 	private T value;
-	
+
 	private int index = 0;
 
-	//property has new value and value is old value
+	// property has new value and value is old value
 	private BiConsumer<Property<T>, T> onChange = (prop, val) -> {
 	};
 	private BiConsumer<Property<T>, T> onLoad = (prop, val) -> {
@@ -75,16 +75,16 @@ public class Property<T> {
 		verify((T) updated);
 		T old = value;
 		value = (T) type.attemptCast.apply(updated);
-		if(isDirty()) {
+		if (isDirty()) {
 			onChange.accept(this, old);
 		}
 
 		return this;
 	}
-	
+
 	public void copy(Property<T> other) {
 		T otherVal = other.get();
-		if(otherVal == null) {
+		if (otherVal == null) {
 			return;
 		}
 		set(otherVal);
@@ -112,16 +112,16 @@ public class Property<T> {
 	public boolean shouldSave() {
 		return shouldSave;
 	}
-	
+
 	public Property<T> setNoSave() {
 		shouldSave = false;
 		return this;
 	}
-	
+
 	public boolean shouldUpdateClient() {
 		return shouldUpdateClient;
 	}
-	
+
 	public Property<T> setNoUpdateClient() {
 		shouldUpdateClient = false;
 		return this;
@@ -135,22 +135,21 @@ public class Property<T> {
 	public PropertyManager getPropertyManager() {
 		return manager;
 	}
-	
+
 	public int getIndex() {
 		return index;
 	}
-	
+
 	public void setIndex(int index) {
 		this.index = index;
 	}
-	
+
 	public void updateServer() {
-		
-		if(manager.getOwner() != null) {
+
+		if (manager.getOwner() != null) {
 			NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(index, this, manager.getOwner().getBlockPos()));
 		}
-		
-		
+
 	}
 
 }

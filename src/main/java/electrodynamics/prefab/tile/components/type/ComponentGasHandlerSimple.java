@@ -29,8 +29,7 @@ import net.minecraftforge.common.util.LazyOptional;
 /**
  * Extension of the PropertyGasTank making it usable as a ComponentGasHandler
  * 
- * This ComponentGasHandler has only one tank with programmable inputs and
- * outputs where as ComponentGasHandlerMulti has distinct input and output tanks
+ * This ComponentGasHandler has only one tank with programmable inputs and outputs where as ComponentGasHandlerMulti has distinct input and output tanks
  * 
  * @author skip999
  *
@@ -135,11 +134,11 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 		}
 		if (hasInputDir(side)) {
 			return LazyOptional.<IGasHandler>of(() -> new InputTank(this)).cast();
-		} else if (hasOutputDir(side)) {
-			return LazyOptional.<IGasHandler>of(() -> new OutputTank(this)).cast();
-		} else {
-			return LazyOptional.empty();
 		}
+		if (hasOutputDir(side)) {
+			return LazyOptional.<IGasHandler>of(() -> new OutputTank(this)).cast();
+		}
+		return LazyOptional.empty();
 	}
 
 	@Override

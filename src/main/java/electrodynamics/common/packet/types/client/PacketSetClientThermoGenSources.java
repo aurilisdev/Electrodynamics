@@ -41,5 +41,5 @@ public class PacketSetClientThermoGenSources {
 		}
 		return new PacketSetClientThermoGenSources(values);
 	}
-	
+
 }

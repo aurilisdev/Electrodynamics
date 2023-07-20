@@ -83,11 +83,10 @@ public class ComponentProcessor implements Component {
 		if (!holder.hasComponent(ComponentType.Inventory)) {
 			throw new UnsupportedOperationException("You need to implement an inventory component to use the processor component!");
 		}
-		if (holder.hasComponent(ComponentType.Tickable)) {
-			holder.<ComponentTickable>getComponent(ComponentType.Tickable).tickServer(this::tickServer);
-		} else {
+		if (!holder.hasComponent(ComponentType.Tickable)) {
 			throw new UnsupportedOperationException("You need to implement a tickable component to use the processor component!");
 		}
+		holder.<ComponentTickable>getComponent(ComponentType.Tickable).tickServer(this::tickServer);
 	}
 
 	private void tickServer(ComponentTickable tickable) {
@@ -678,14 +677,12 @@ public class ComponentProcessor implements Component {
 	 * 
 	 * Biproducts will be output in the order they appear in the recipe JSON
 	 * 
-	 * The output FluidTanks will contain both the recipe output tank and the biproduct tanks The first tank is ALWAYS the main output
-	 * tank, and the following tanks will be filled in the order of the fluid biproducts
+	 * The output FluidTanks will contain both the recipe output tank and the biproduct tanks The first tank is ALWAYS the main output tank, and the following tanks will be filled in the order of the fluid biproducts
 	 * 
 	 * 
 	 * 
 	 * 
-	 * Also, no checks outside of the null recipe check will be performed in these methods All validity checks will take place in the
-	 * recipe validator methods
+	 * Also, no checks outside of the null recipe check will be performed in these methods All validity checks will take place in the recipe validator methods
 	 * 
 	 */
 
@@ -1057,7 +1054,7 @@ public class ComponentProcessor implements Component {
 		dispenseExperience(inv, locRecipe.getXp());
 		setChanged();
 	}
-	
+
 	public void processFluidItem2GasRecipe(ComponentProcessor pr) {
 		if (getRecipe() == null) {
 			return;

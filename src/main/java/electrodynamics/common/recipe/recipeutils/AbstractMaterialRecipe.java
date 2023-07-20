@@ -29,7 +29,7 @@ public abstract class AbstractMaterialRecipe extends ElectrodynamicsRecipe {
 	public FluidStack getFluidRecipeOutput() {
 		return FluidStack.EMPTY;
 	}
-	
+
 	public GasStack getGasRecipeOutput() {
 		return GasStack.EMPTY;
 	}
@@ -37,7 +37,7 @@ public abstract class AbstractMaterialRecipe extends ElectrodynamicsRecipe {
 	public List<FluidIngredient> getFluidIngredients() {
 		return Collections.emptyList();
 	}
-	
+
 	public List<GasIngredient> getGasIngredients() {
 		return Collections.emptyList();
 	}

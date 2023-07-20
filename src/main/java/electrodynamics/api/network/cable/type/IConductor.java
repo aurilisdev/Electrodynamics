@@ -7,7 +7,7 @@ import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
 public interface IConductor extends IRefreshableCable {
 
 	SubtypeWire getWireType();
-	
+
 	WireColor getWireColor();
 
 	@Override

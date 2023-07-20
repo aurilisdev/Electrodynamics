@@ -69,16 +69,8 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockChi
 	}
 
 	/*
-	@Override
-	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-		BlockEntity tile = worldIn.getBlockEntity(pos);
-		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos.get() != null) {
-			worldIn.getBlockState(subnode.nodePos.get()).getBlock().use(worldIn.getBlockState(subnode.nodePos.get()), worldIn, subnode.nodePos.get(), player, handIn, hit);
-		}
-		return InteractionResult.SUCCESS;
-	}
-	*/
-	
+	 * @Override public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) { BlockEntity tile = worldIn.getBlockEntity(pos); if (tile instanceof TileMultiSubnode subnode && subnode.nodePos.get() != null) { worldIn.getBlockState(subnode.nodePos.get()).getBlock().use(worldIn.getBlockState(subnode.nodePos.get()), worldIn, subnode.nodePos.get(), player, handIn, hit); } return InteractionResult.SUCCESS; }
+	 */
 
 	@Override
 	public boolean isSignalSource(BlockState state) {
@@ -86,58 +78,36 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockChi
 	}
 
 	/*
-	@Override
-	public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
-		BlockEntity tile = blockAccess.getBlockEntity(pos);
-		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos.get() != null) {
-			return blockAccess.getBlockState(subnode.nodePos.get()).getBlock().getDirectSignal(blockAccess.getBlockState(subnode.nodePos.get()), blockAccess, subnode.nodePos.get(), side);
-		}
-		return super.getDirectSignal(blockState, blockAccess, pos, side);
-	}
+	 * @Override public int getDirectSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) { BlockEntity tile = blockAccess.getBlockEntity(pos); if (tile instanceof TileMultiSubnode subnode && subnode.nodePos.get() != null) { return blockAccess.getBlockState(subnode.nodePos.get()).getBlock().getDirectSignal(blockAccess.getBlockState(subnode.nodePos.get()), blockAccess, subnode.nodePos.get(), side); } return super.getDirectSignal(blockState, blockAccess, pos, side); }
+	 * 
+	 * @Override public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) { BlockEntity tile = blockAccess.getBlockEntity(pos); if (tile instanceof TileMultiSubnode subnode && subnode.nodePos.get() != null) { return blockAccess.getBlockState(subnode.nodePos.get()).getBlock().getSignal(blockAccess.getBlockState(subnode.nodePos.get()), blockAccess, subnode.nodePos.get(), side); } return super.getSignal(blockState, blockAccess, pos, side); }
+	 */
 
 	@Override
-	public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
-		BlockEntity tile = blockAccess.getBlockEntity(pos);
-		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos.get() != null) {
-			return blockAccess.getBlockState(subnode.nodePos.get()).getBlock().getSignal(blockAccess.getBlockState(subnode.nodePos.get()), blockAccess, subnode.nodePos.get(), side);
-		}
-		return super.getSignal(blockState, blockAccess, pos, side);
-	}
-	*/
-	
-	@Override
 	public int getDirectSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-		if(level.getBlockEntity(pos) instanceof GenericTile generic) {
+		if (level.getBlockEntity(pos) instanceof GenericTile generic) {
 			return generic.getDirectSignal(direction);
 		}
 		return super.getDirectSignal(state, level, pos, direction);
 	}
-	
+
 	@Override
 	public int getSignal(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
-		if(level.getBlockEntity(pos) instanceof GenericTile generic) {
+		if (level.getBlockEntity(pos) instanceof GenericTile generic) {
 			return generic.getSignal(direction);
 		}
 		return super.getSignal(state, level, pos, direction);
 	}
-	
+
 	/*
-	@Override
-	public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) {
-		BlockEntity tile = worldIn.getBlockEntity(pos);
-		if (tile instanceof TileMultiSubnode subnode && subnode.nodePos.get() != null) {
-			worldIn.destroyBlock(subnode.nodePos.get(), true);
-		}
-		super.onRemove(state, worldIn, pos, newState, isMoving);
-	}
-	*/
+	 * @Override public void onRemove(BlockState state, Level worldIn, BlockPos pos, BlockState newState, boolean isMoving) { BlockEntity tile = worldIn.getBlockEntity(pos); if (tile instanceof TileMultiSubnode subnode && subnode.nodePos.get() != null) { worldIn.destroyBlock(subnode.nodePos.get(), true); } super.onRemove(state, worldIn, pos, newState, isMoving); }
+	 */
 
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new TileMultiSubnode(pos, state);
 	}
-	
-	
+
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (newState.isAir() && level.getBlockEntity(pos) instanceof GenericTile generic) {
@@ -145,7 +115,7 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockChi
 		}
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
-	
+
 	@Override
 	public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
 		super.onNeighborChange(state, level, pos, neighbor);
@@ -170,12 +140,12 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockChi
 		}
 
 	}
-	
+
 	@Override
 	public boolean hasAnalogOutputSignal(BlockState pState) {
 		return true;
 	}
-	
+
 	@Override
 	public int getAnalogOutputSignal(BlockState state, Level level, BlockPos pos) {
 		if (level.getBlockEntity(pos) instanceof GenericTile generic) {
@@ -183,7 +153,7 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockChi
 		}
 		return super.getAnalogOutputSignal(state, level, pos);
 	}
-	
+
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
 		if (worldIn.isClientSide) {

@@ -1,5 +1,6 @@
 package electrodynamics.common.block.gastransformer;
 
+import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.registers.ElectrodynamicsBlocks;
@@ -19,24 +20,24 @@ public abstract class BlockGenericGasTransformer extends GenericMachineBlock {
 	public BlockGenericGasTransformer(BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
 		super(blockEntitySupplier);
 	}
-	
+
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-		if (!state.hasProperty(GenericMachineBlock.FACING)) {
+		if (!state.hasProperty(GenericEntityBlock.FACING)) {
 			return false;
 		}
-		Direction facing = state.getValue(GenericMachineBlock.FACING);
+		Direction facing = state.getValue(GenericEntityBlock.FACING);
 		BlockState left = level.getBlockState(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
 		BlockState right = level.getBlockState(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
 		return left.isAir() && right.isAir() && super.canSurvive(state, level, pos);
 	}
-	
+
 	@Override
 	public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(level, pos, state, placer, stack);
-		Direction facing = state.getValue(GenericMachineBlock.FACING);
-		level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)), ElectrodynamicsBlocks.blockGasTransformerSide.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false).setValue(GenericMachineBlock.FACING, facing));
-		level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)), ElectrodynamicsBlocks.blockGasTransformerSide.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false).setValue(GenericMachineBlock.FACING, facing));
+		Direction facing = state.getValue(GenericEntityBlock.FACING);
+		level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)), ElectrodynamicsBlocks.blockGasTransformerSide.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false).setValue(GenericEntityBlock.FACING, facing));
+		level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)), ElectrodynamicsBlocks.blockGasTransformerSide.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, false).setValue(GenericEntityBlock.FACING, facing));
 	}
 
 }

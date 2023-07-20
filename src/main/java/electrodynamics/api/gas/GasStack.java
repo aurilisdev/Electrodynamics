@@ -20,7 +20,7 @@ public class GasStack {
 
 	private Gas gas = Gas.empty();
 	private double amount = 0; // mB
-	private double temperature = Gas.ROOM_TEMPERATURE; 
+	private double temperature = Gas.ROOM_TEMPERATURE;
 	private int pressure = Gas.PRESSURE_AT_SEA_LEVEL; // ATM
 
 	private boolean isEmpty = false;
@@ -214,8 +214,7 @@ public class GasStack {
 	}
 
 	/**
-	 * Equalizes the temperature of two gas stacks to their respective median values and adjusts the volume of the resulting stack
-	 * accordingly
+	 * Equalizes the temperature of two gas stacks to their respective median values and adjusts the volume of the resulting stack accordingly
 	 * 
 	 * The gas with the greater volume becomes the ruling pressure
 	 * 
@@ -229,7 +228,7 @@ public class GasStack {
 
 		int newPressure = stack1.getAmount() > stack2.getAmount() ? stack1.getPressure() : stack2.getPressure();
 
-		double medianTemperature = (double) (stack1.temperature + stack2.temperature) / 2.0;
+		double medianTemperature = (stack1.temperature + stack2.temperature) / 2.0;
 
 		double deltaT1 = medianTemperature - stack1.temperature;
 		double deltaT2 = medianTemperature - stack2.temperature;
@@ -251,8 +250,7 @@ public class GasStack {
 	}
 
 	/**
-	 * Determines how much gas from stack 2 could be accepted into a container once stack1 and stack2 have equalized temperatures and
-	 * pressures
+	 * Determines how much gas from stack 2 could be accepted into a container once stack1 and stack2 have equalized temperatures and pressures
 	 * 
 	 * The gas stack with the greater volume becomes the ruling pressure
 	 * 
@@ -266,7 +264,7 @@ public class GasStack {
 	public static double getMaximumAcceptance(GasStack stack1, GasStack stack2, double maximumAccept) {
 
 		int rulingPressure = stack1.getAmount() > stack2.getAmount() ? stack1.getPressure() : stack2.getPressure();
-		double medianTemperature = (double) (stack1.temperature + stack2.temperature) / 2.0;
+		double medianTemperature = (stack1.temperature + stack2.temperature) / 2.0;
 
 		double deltaT1 = medianTemperature - stack1.temperature;
 		double deltaT2 = medianTemperature - stack2.temperature;
@@ -284,13 +282,13 @@ public class GasStack {
 
 		double deltaP2Factor = (double) rulingPressure / (double) stack2.getPressure();
 		double deltaT2Factor = (deltaT2 + stack2.getTemperature()) / stack2.getTemperature();
-		
+
 		double newStack2Volume = stack2.getAmount() * deltaT2Factor / deltaP2Factor;
-		
-		if(newStack2Volume <= remaining) {
+
+		if (newStack2Volume <= remaining) {
 			return stack2.getAmount();
 		}
-		
+
 		return remaining / deltaT2Factor * deltaP2Factor;
 
 	}

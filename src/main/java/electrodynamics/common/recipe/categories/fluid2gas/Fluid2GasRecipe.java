@@ -19,7 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public abstract class Fluid2GasRecipe extends AbstractMaterialRecipe {
-	
+
 	private FluidIngredient inputFluidIngredients[];
 	private GasStack outputGasStack;
 
@@ -38,19 +38,19 @@ public abstract class Fluid2GasRecipe extends AbstractMaterialRecipe {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public GasStack getGasRecipeOutput() {
 		return outputGasStack;
 	}
-	
+
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
 		NonNullList<Ingredient> ings = NonNullList.create();
 		ings.addAll(Arrays.asList(inputFluidIngredients));
 		return ings;
 	}
-	
+
 	@Override
 	public List<FluidIngredient> getFluidIngredients() {
 		return Arrays.asList(inputFluidIngredients);

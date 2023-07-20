@@ -1,5 +1,9 @@
 package electrodynamics.prefab.tile;
 
+import java.util.UUID;
+
+import org.jetbrains.annotations.NotNull;
+
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
@@ -9,7 +13,11 @@ import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyManager;
 import electrodynamics.prefab.tile.components.Component;
 import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.*;
+import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentName;
+import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
+import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ItemUtils;
 import net.minecraft.core.BlockPos;
@@ -31,9 +39,6 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.UUID;
 
 public abstract class GenericTile extends BlockEntity implements Nameable, IPropertyHolderTile {
 	private final Component[] components = new Component[ComponentType.values().length];
@@ -46,7 +51,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	public GenericTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
 		super(tileEntityTypeIn, worldPos, blockState);
 	}
-	
+
 	public <T> Property<T> property(Property<T> prop) {
 		for (Property<?> existing : propertyManager.getProperties()) {
 			if (existing.getName().equals(prop.getName())) {
@@ -162,9 +167,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 			}
 		}
 		/*
-		 * if (hasComponent(ComponentType.PacketHandler)) {
-		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
-		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
+		 * if (hasComponent(ComponentType.PacketHandler)) { this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket(); this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
 		 */
 	}
 
@@ -307,7 +310,8 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 							inv.setItem(upgradeIndex + i, stack.copy());
 							stack.shrink(stack.getCount());
 							return InteractionResult.CONSUME;
-						} else if (ItemUtils.testItems(upgrade, upgradeStack.getItem())) {
+						}
+						if (ItemUtils.testItems(upgrade, upgradeStack.getItem())) {
 							int room = upgradeStack.getMaxStackSize() - upgradeStack.getCount();
 							if (room > 0) {
 								int accepted = room > stack.getCount() ? stack.getCount() : room;
@@ -345,11 +349,11 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	public int getComparatorSignal() {
 		return 0;
 	}
-	
+
 	public int getDirectSignal(Direction dir) {
 		return 0;
 	}
-	
+
 	public int getSignal(Direction dir) {
 		return 0;
 	}

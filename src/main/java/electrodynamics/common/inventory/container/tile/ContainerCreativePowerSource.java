@@ -28,6 +28,4 @@ public class ContainerCreativePowerSource extends GenericContainerBlockEntity<Ti
 	public void addInventorySlots(Container inv, Inventory playerinv) {
 	}
 
-	
-
 }

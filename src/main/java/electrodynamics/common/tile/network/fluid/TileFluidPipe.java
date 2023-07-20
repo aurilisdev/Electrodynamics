@@ -1,5 +1,7 @@
 package electrodynamics.common.tile.network.fluid;
 
+import org.jetbrains.annotations.NotNull;
+
 import electrodynamics.common.block.connect.BlockFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.prefab.properties.Property;
@@ -8,7 +10,6 @@ import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class TileFluidPipe extends GenericTileFluidPipe {
 	public Property<Double> transmit = property(new Property<>(PropertyType.Double, "transmit", 0.0));

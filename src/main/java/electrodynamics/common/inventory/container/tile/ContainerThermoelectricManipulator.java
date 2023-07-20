@@ -16,11 +16,11 @@ import net.minecraft.world.inventory.SimpleContainerData;
 public class ContainerThermoelectricManipulator extends GenericContainerBlockEntity<TileThermoelectricManipulator> {
 
 	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
-	
+
 	public ContainerThermoelectricManipulator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(ElectrodynamicsMenuTypes.CONTAINER_THERMOELECTRICMANIPULATOR.get(), id, playerinv, inventory, inventorydata);
 	}
-	
+
 	public ContainerThermoelectricManipulator(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(7), new SimpleContainerData(3));
 	}

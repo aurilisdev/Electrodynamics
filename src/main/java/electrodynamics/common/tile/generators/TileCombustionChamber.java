@@ -16,9 +16,9 @@ import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.types.GenericMaterialTile;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ElectricityUtils;
@@ -61,7 +61,7 @@ public class TileCombustionChamber extends GenericMaterialTile implements IElect
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
-		if(hasRedstoneSignal.get()) {
+		if (hasRedstoneSignal.get()) {
 			running.set(false);
 			return;
 		}
@@ -139,15 +139,15 @@ public class TileCombustionChamber extends GenericMaterialTile implements IElect
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 		return TransferPack.joulesVoltage(Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * fuelMultiplier * multiplier.get(), electro.getVoltage());
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
 		return running.get() ? 15 : 0;
 	}
-	
+
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
 		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
 	}
-	
+
 }

@@ -26,7 +26,7 @@ public class PacketSwapBattery {
 			if (world != null) {
 				Player player = world.getPlayerByUUID(message.playerId);
 				ItemStack handItem = player.getItemInHand(InteractionHand.MAIN_HAND);
-				if(!handItem.isEmpty() && handItem.getItem() instanceof IItemElectric electric) {
+				if (!handItem.isEmpty() && handItem.getItem() instanceof IItemElectric electric) {
 					electric.swapBatteryPackFirstItem(handItem, player);
 				}
 			}
@@ -41,5 +41,5 @@ public class PacketSwapBattery {
 	public static PacketSwapBattery decode(FriendlyByteBuf buf) {
 		return new PacketSwapBattery(buf.readUUID());
 	}
-	
+
 }

@@ -12,10 +12,10 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsSounds;
@@ -75,7 +75,7 @@ public class TileReinforcedAlloyer extends GenericTile implements ITickableSound
 	public boolean shouldPlaySound() {
 		return this.<ComponentProcessor>getComponent(ComponentType.Processor).isActive();
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
 		return this.<ComponentProcessor>getComponent(ComponentType.Processor).isActive() ? 15 : 0;

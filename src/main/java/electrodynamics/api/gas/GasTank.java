@@ -17,7 +17,7 @@ public class GasTank implements IGasTank, IGasHandler {
 	private int maxPressure;
 	@Nonnull
 	private GasStack gas = GasStack.EMPTY;
-	
+
 	public GasTank(double capacity, double maxTemperature, int maxPressure) {
 		this(capacity, maxTemperature, maxPressure, gas -> true);
 	}
@@ -98,9 +98,9 @@ public class GasTank implements IGasTank, IGasHandler {
 			if (action == GasAction.EXECUTE) {
 
 				GasStack taken = resource.copy();
-				
+
 				taken.setAmount(accepted);
-				
+
 				setGas(taken);
 
 				onChange();
@@ -116,64 +116,61 @@ public class GasTank implements IGasTank, IGasHandler {
 					onOverpressure();
 
 				}
-				
-				if(getGas().isCondensed()) {
-					
+
+				if (getGas().isCondensed()) {
+
 					onGasCondensed();
-					
+
 				}
 
 			}
 
 			return accepted;
 
-		} else {
+		}
+		if (!getGas().isSameGas(resource)) {
+			return 0;
+		}
 
-			if (!getGas().isSameGas(resource)) {
-				return 0;
-			}
+		double canTake = GasStack.getMaximumAcceptance(getGas(), resource, getCapacity());
 
-			double canTake = GasStack.getMaximumAcceptance(getGas(), resource, getCapacity());
+		if (canTake == 0) {
+			return 0;
+		}
 
-			if (canTake == 0) {
-				return 0;
-			}
+		if (action == GasAction.EXECUTE) {
 
-			if (action == GasAction.EXECUTE) {
+			GasStack accepted = resource.copy();
 
-				GasStack accepted = resource.copy();
+			accepted.setAmount(canTake);
 
-				accepted.setAmount(canTake);
+			GasStack equalized = GasStack.equalizePresrsureAndTemperature(getGas(), accepted);
 
-				GasStack equalized = GasStack.equalizePresrsureAndTemperature(getGas(), accepted);
+			setGas(equalized);
 
-				setGas(equalized);
+			onChange();
 
-				onChange();
+			if (getGas().getTemperature() > getMaxTemperature()) {
 
-				if (getGas().getTemperature() > getMaxTemperature()) {
-
-					onOverheat();
-
-				}
-
-				if (getGas().getPressure() > getMaxPressure()) {
-
-					onOverpressure();
-
-				}
-				
-				if(getGas().isCondensed()) {
-					
-					onGasCondensed();
-					
-				}
+				onOverheat();
 
 			}
 
-			return canTake;
+			if (getGas().getPressure() > getMaxPressure()) {
+
+				onOverpressure();
+
+			}
+
+			if (getGas().isCondensed()) {
+
+				onGasCondensed();
+
+			}
 
 		}
+
+		return canTake;
 
 	}
 
@@ -286,7 +283,7 @@ public class GasTank implements IGasTank, IGasHandler {
 		return getCapacity() - updated.getAmount();
 
 	}
-	
+
 	public double getSpace() {
 		return Math.max(getCapacity() - getGasAmount(), 0);
 	}
@@ -302,9 +299,9 @@ public class GasTank implements IGasTank, IGasHandler {
 	public void onOverpressure() {
 
 	}
-	
+
 	public void onGasCondensed() {
-		
+
 	}
 
 	public boolean isEmpty() {

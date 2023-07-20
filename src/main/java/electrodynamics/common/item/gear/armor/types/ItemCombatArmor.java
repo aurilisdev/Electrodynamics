@@ -18,8 +18,8 @@ import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelCombatArmor;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.CapabilityUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -124,8 +124,8 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		
-		if(!allowedIn(tab)) {
+
+		if (!allowedIn(tab)) {
 			return;
 		}
 		switch (getSlot()) {
@@ -142,14 +142,14 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			items.add(new ItemStack(this));
 			if (!CapabilityUtils.isGasItemNull()) {
 				ItemStack full = new ItemStack(this);
-				
+
 				GasStack gas = new GasStack(ElectrodynamicsGases.HYDROGEN.get(), ItemJetpack.MAX_CAPACITY, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL);
-				
+
 				full.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> cap.fillTank(0, gas, GasAction.EXECUTE));
 
 				CompoundTag tag = full.getOrCreateTag();
 				tag.putInt(NBTUtils.PLATES, 2);
-				
+
 				items.add(full);
 
 			}
@@ -165,7 +165,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 		default:
 			break;
 		}
-		
+
 	}
 
 	@Override
@@ -279,12 +279,12 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	public ElectricItemProperties getElectricProperties() {
 		return properties;
 	}
-	
+
 	@Override
 	public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
 		return ItemJetpack.staticCanElytraFly(stack, entity);
 	}
-	
+
 	@Override
 	public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
 		return ItemJetpack.staticElytraFlightTick(stack, entity, flightTicks);
@@ -292,25 +292,25 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 
 	@Override
 	public Item getDefaultStorageBattery() {
-		return switch(getSlot()) {
+		return switch (getSlot()) {
 		case HEAD, LEGS -> ElectrodynamicsItems.ITEM_BATTERY.get();
 		default -> Items.AIR;
 		};
 	}
-	
+
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-		
-		if(getSlot() == EquipmentSlot.CHEST || getSlot() == EquipmentSlot.FEET) {
+
+		if (getSlot() == EquipmentSlot.CHEST || getSlot() == EquipmentSlot.FEET) {
 			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
 		}
-		
-		if(!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+
+		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
 			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
 		}
-		
+
 		return true;
-		
+
 	}
 
 }

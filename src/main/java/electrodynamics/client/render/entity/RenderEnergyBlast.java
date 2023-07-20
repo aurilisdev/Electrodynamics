@@ -1,5 +1,7 @@
 package electrodynamics.client.render.entity;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
@@ -16,8 +18,6 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-
-import org.jetbrains.annotations.NotNull;
 
 public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 
@@ -41,7 +41,7 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 		int green = 120 - g;
 		int blue = 245 - b;
 		int alpha = 255;
-		matrixStack.translate(0.0D, (double) 0.1F, 0.0D);
+		matrixStack.translate(0.0D, 0.1F, 0.0D);
 		matrixStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
 		matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 		matrixStack.scale(2.0F, 2.0F, 2.0F);

@@ -14,14 +14,14 @@ public class ContainerGasPipePump extends GenericContainerBlockEntity<TileGasPip
 	public ContainerGasPipePump(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(ElectrodynamicsMenuTypes.CONTAINER_GASPIPEPUMP.get(), id, playerinv, inventory, inventorydata);
 	}
-	
+
 	public ContainerGasPipePump(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(0), new SimpleContainerData(3));
 	}
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		
+
 	}
 
 }

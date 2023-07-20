@@ -4,7 +4,6 @@ import javax.annotation.Nullable;
 
 import electrodynamics.api.network.cable.IRefreshableCable;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
-import electrodynamics.prefab.tile.types.GenericConnectTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;

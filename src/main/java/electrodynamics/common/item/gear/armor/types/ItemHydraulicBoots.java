@@ -140,8 +140,8 @@ public class ItemHydraulicBoots extends ArmorItem {
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
 	}
-	
-	public static Predicate<FluidStack> getPredicate(){
+
+	public static Predicate<FluidStack> getPredicate() {
 		return fluid -> ForgeRegistries.FLUIDS.tags().getTag(ElectrodynamicsTags.Fluids.HYDRAULIC_FLUID).contains(fluid.getFluid());
 	}
 

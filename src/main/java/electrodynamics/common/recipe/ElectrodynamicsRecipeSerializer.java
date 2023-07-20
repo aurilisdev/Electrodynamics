@@ -92,7 +92,7 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		}
 		return ings;
 	}
-	
+
 	public static GasIngredient[] getGasIngredients(ResourceLocation recipeId, JsonObject json) {
 		if (!json.has(GAS_INPUTS)) {
 			throw new UnsupportedOperationException(recipeId.toString() + ": There are no Gas Inputs!");
@@ -118,11 +118,11 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 
 	@Nullable
 	public static ProbableItem[] getItemBiproducts(ResourceLocation recipeId, JsonObject json) {
-		if(!json.has(ITEM_BIPRODUCTS)) {
+		if (!json.has(ITEM_BIPRODUCTS)) {
 			return null;
 		}
 		JsonObject itemBiproducts = GsonHelper.getAsJsonObject(json, ITEM_BIPRODUCTS);
-		
+
 		if (!itemBiproducts.has(COUNT)) {
 			throw new UnsupportedOperationException(recipeId.toString() + ": You must include a count field");
 		}
@@ -143,7 +143,7 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 
 	@Nullable
 	public static ProbableFluid[] getFluidBiproducts(ResourceLocation recipeId, JsonObject json) {
-		if(!json.has(FLUID_BIPRODUCTS)) {
+		if (!json.has(FLUID_BIPRODUCTS)) {
 			return null;
 		}
 		JsonObject fluidBiproducts = GsonHelper.getAsJsonObject(json, FLUID_BIPRODUCTS);
@@ -164,9 +164,9 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		}
 		return stacks;
 	}
-	
+
 	public static ProbableGas[] getGasBiproducts(ResourceLocation recipeId, JsonObject json) {
-		if(!json.has(GAS_BIPRODUCTS)) {
+		if (!json.has(GAS_BIPRODUCTS)) {
 			return null;
 		}
 		JsonObject gasBiproducts = GsonHelper.getAsJsonObject(json, GAS_BIPRODUCTS);
@@ -204,9 +204,9 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		int amount = GsonHelper.getAsInt(fluid, "amount");
 		return new FluidStack(ForgeRegistries.FLUIDS.getValue(resourceLocation), amount);
 	}
-	
+
 	public static GasStack getGasOutput(ResourceLocation recipeId, JsonObject json) {
-		if(!json.has(OUTPUT)) {
+		if (!json.has(OUTPUT)) {
 			throw new UnsupportedOperationException(recipeId.toString() + ": You must include a Gas output!");
 		}
 		JsonObject gas = json.get(OUTPUT).getAsJsonObject();

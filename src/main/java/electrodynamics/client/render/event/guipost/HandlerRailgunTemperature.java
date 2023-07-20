@@ -40,7 +40,7 @@ public class HandlerRailgunTemperature extends AbstractPostGuiOverlayHandler {
 
 		stack.pushPose();
 
-		//ElectroTextUtils.tooltip("railguntemp", Component.literal(temperature + correction + " C"));
+		// ElectroTextUtils.tooltip("railguntemp", Component.literal(temperature + correction + " C"));
 
 		Component currTempText = ElectroTextUtils.tooltip("railguntemp", ChatFormatter.getChatDisplayShort(temperature, DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.YELLOW);
 		Component maxTempText = ElectroTextUtils.tooltip("railgunmaxtemp", ChatFormatter.getChatDisplayShort(railgun.getMaxTemp(), DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.YELLOW);

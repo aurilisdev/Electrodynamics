@@ -46,7 +46,7 @@ public class ChapterTips extends Chapter {
 		// Ctrl hover over upgrade slots in GUI
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tips.tip", 4).withStyle(ChatFormatting.UNDERLINE)).setNewPage());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tips.tip4")).setIndentions(1).setSeparateStart());
-		
+
 	}
 
 }

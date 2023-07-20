@@ -12,9 +12,9 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
@@ -49,7 +49,7 @@ public class TileSolarPanel extends GenericGeneratorTile {
 	public TileSolarPanel(BlockPos worldPosition, BlockState blockState) {
 		this(ElectrodynamicsBlockTypes.TILE_SOLARPANEL.get(), worldPosition, blockState, 2.25, SubtypeItemUpgrade.improvedsolarcell);
 	}
-	
+
 	public TileSolarPanel(BlockEntityType<?> type, BlockPos worldPosition, BlockState blockState, double multiplier, SubtypeItemUpgrade... itemUpgrades) {
 		super(type, worldPosition, blockState, multiplier, itemUpgrades);
 		addComponent(new ComponentDirection(this));
@@ -61,7 +61,7 @@ public class TileSolarPanel extends GenericGeneratorTile {
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
-		if(hasRedstoneSignal.get()) {
+		if (hasRedstoneSignal.get()) {
 			generating.set(false);
 			return;
 		}
@@ -84,12 +84,12 @@ public class TileSolarPanel extends GenericGeneratorTile {
 		double lerped = Mth.lerp((temp + 1) / 3.0, 1.5, 3) / 3.0;
 		return TransferPack.ampsVoltage(getMultiplier() * Constants.SOLARPANEL_AMPERAGE * lerped * mod * (level.isRaining() || level.isThundering() ? 0.8f : 1), this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
 		return generating.get() ? 15 : 0;
 	}
-	
+
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
 		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));

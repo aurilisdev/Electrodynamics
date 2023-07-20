@@ -3,6 +3,8 @@ package electrodynamics.api.capability.types.locationstorage;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.prefab.utilities.object.Location;
 import net.minecraft.core.Direction;
@@ -10,7 +12,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
 
 public class CapabilityLocationStorage implements ILocationStorage, ICapabilitySerializable<CompoundTag> {
 

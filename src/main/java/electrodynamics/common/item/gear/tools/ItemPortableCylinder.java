@@ -48,7 +48,7 @@ public class ItemPortableCylinder extends Item {
 			if (ElectrodynamicsCapabilities.GAS_HANDLER_ITEM != null) {
 
 				for (Gas gas : ElectrodynamicsRegistries.gasRegistry().getValues()) {
-					if(gas.isEmpty()) {
+					if (gas.isEmpty()) {
 						continue;
 					}
 					ItemStack temp = new ItemStack(this);
@@ -96,16 +96,12 @@ public class ItemPortableCylinder extends Item {
 
 	@Override
 	public int getBarWidth(ItemStack stack) {
-		return (int) Math.round(stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> {
-			return 13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0);
-		}).orElse(13.0));
+		return (int) Math.round(stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> (13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0))).orElse(13.0));
 	}
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> {
-			return 13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0;
-		}).orElse(false);
+		return stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> (13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0)).orElse(false);
 	}
 
 }

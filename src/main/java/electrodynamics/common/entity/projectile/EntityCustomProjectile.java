@@ -16,7 +16,7 @@ import net.minecraftforge.entity.IEntityAdditionalSpawnData;
 import net.minecraftforge.network.NetworkHooks;
 
 public abstract class EntityCustomProjectile extends ThrowableItemProjectile implements IEntityAdditionalSpawnData {
-	
+
 	public Vec3 clientDeltaX = Vec3.ZERO;
 
 	protected EntityCustomProjectile(EntityType<? extends ThrowableItemProjectile> type, Level world) {
@@ -50,15 +50,15 @@ public abstract class EntityCustomProjectile extends ThrowableItemProjectile imp
 	protected Item getDefaultItem() {
 		return Items.COBBLESTONE;
 	}
-	
+
 	@Override
 	public void tick() {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			setDeltaMovement(clientDeltaX);
 		}
 		super.tick();
 	}
-	
+
 	@Override
 	public void writeSpawnData(FriendlyByteBuf buffer) {
 		buffer.writeDouble(getDeltaMovement().x);
@@ -67,7 +67,7 @@ public abstract class EntityCustomProjectile extends ThrowableItemProjectile imp
 		buffer.writeFloat(getXRot());
 		buffer.writeFloat(getYRot());
 	}
-	
+
 	@Override
 	public void readSpawnData(FriendlyByteBuf additionalData) {
 		clientDeltaX = new Vec3(additionalData.readDouble(), additionalData.readDouble(), additionalData.readDouble());

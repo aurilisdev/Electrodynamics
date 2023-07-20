@@ -10,8 +10,7 @@ import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicW
 import net.minecraft.network.chat.MutableComponent;
 
 /**
- * A simple data-wrapping class that contains a name, a logo, and the various
- * chapters associated with it
+ * A simple data-wrapping class that contains a name, a logo, and the various chapters associated with it
  * 
  * @author skip999
  *
@@ -42,15 +41,15 @@ public abstract class Module {
 	public abstract AbstractGraphicWrapper<?> getLogo();
 
 	public abstract MutableComponent getTitle();
-	
+
 	public OnTooltip onTooltip() {
 		return null;
 	}
-	
+
 	public OnClick onClick() {
 		return null;
 	}
-	
+
 	public OnKeyPress onKeyPress() {
 		return null;
 	}

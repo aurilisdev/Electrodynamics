@@ -31,9 +31,9 @@ import net.minecraft.world.entity.player.Inventory;
 public class ScreenThermoelectricManipulator extends GenericScreen<ContainerThermoelectricManipulator> {
 
 	private ScreenComponentEditBox temperature;
-	
+
 	private boolean needsUpdate = true;
-	
+
 	public ScreenThermoelectricManipulator(ContainerThermoelectricManipulator container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
 		imageHeight += 30;
@@ -70,46 +70,46 @@ public class ScreenThermoelectricManipulator extends GenericScreen<ContainerTher
 		addComponent(new ScreenComponentGasPressure(-AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE));
 		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
 		addComponent(new ScreenComponentGeneric(Textures.CONDENSER_COLUMN, 62, 19));
-		
+
 		addEditBox(temperature = new ScreenComponentEditBox(94, 75, 59, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(20).setResponder(this::setTemperature).setFilter(ScreenComponentEditBox.POSITIVE_DECIMAL));
-		
+
 		addComponent(new ScreenComponentSimpleLabel(10, 80, 10, 4210752, ElectroTextUtils.gui("thermoelectricmanipulator.temp")));
 		addComponent(new ScreenComponentSimpleLabel(155, 80, 10, 4210752, DisplayUnit.TEMPERATURE_KELVIN.symbol));
 	}
-	
+
 	private void setTemperature(String temp) {
-		
+
 		TileThermoelectricManipulator manipulator = menu.getHostFromIntArray();
-		
-		if(manipulator == null) {
+
+		if (manipulator == null) {
 			return;
 		}
-		
-		if(temp.isEmpty()) {
+
+		if (temp.isEmpty()) {
 			return;
 		}
-		
+
 		double temperature = Gas.ROOM_TEMPERATURE;
-		
+
 		try {
 			temperature = Double.parseDouble(temp);
 		} catch (Exception e) {
-			
+
 		}
-		
-		if(temperature < GasStack.ABSOLUTE_ZERO) {
+
+		if (temperature < GasStack.ABSOLUTE_ZERO) {
 			temperature = Gas.ROOM_TEMPERATURE;
 		} else if (temperature > GenericTileGasTransformer.OUTPUT_TEMPERATURE) {
 			temperature = GenericTileGasTransformer.OUTPUT_TEMPERATURE;
 			this.temperature.setValue("" + temperature);
 		}
-		
+
 		manipulator.targetTemperature.set(temperature);
-		
+
 		manipulator.targetTemperature.updateServer();
-		
+
 	}
-	
+
 	@Override
 	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
 		super.render(matrixStack, mouseX, mouseY, partialTicks);

@@ -35,19 +35,18 @@ public class TileRelay extends GenericTile {
 
 		BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
 
-		if(tile == null) {
+		if (tile == null) {
 			return TransferPack.EMPTY;
 		}
-		
+
 		return tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> {
 
 			TransferPack accepted = cap.receivePower(transfer, debug);
 
 			if (accepted.getJoules() > 0) {
 				return TransferPack.joulesVoltage(accepted.getJoules() + transfer.getJoules() * (1.0 - Constants.RELAY_EFFICIENCY), transfer.getVoltage());
-			} else {
-				return TransferPack.EMPTY;
 			}
+			return TransferPack.EMPTY;
 
 		}).orElse(TransferPack.EMPTY);
 	}
@@ -71,7 +70,7 @@ public class TileRelay extends GenericTile {
 			BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
 		}
 	}
-	
+
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
 		recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());

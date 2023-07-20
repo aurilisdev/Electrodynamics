@@ -272,10 +272,10 @@ public class RenderingUtils {
 
 		float blitOffset = 0;
 
-		float minU = (u + 0.0F) / (float) imgWidth;
-		float maxU = (u + (float) textWidth) / (float) imgWidth;
-		float minV = (v + 0.0F) / (float) imgHeight;
-		float maxV = (v + (float) textHeight) / (float) imgHeight;
+		float minU = (u + 0.0F) / imgWidth;
+		float maxU = (u + (float) textWidth) / imgWidth;
+		float minV = (v + 0.0F) / imgHeight;
+		float maxV = (v + (float) textHeight) / imgHeight;
 
 		Matrix4f matrix = matrixStack.last().pose();
 

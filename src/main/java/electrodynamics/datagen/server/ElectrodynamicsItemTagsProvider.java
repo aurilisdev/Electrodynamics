@@ -146,7 +146,7 @@ public class ElectrodynamicsItemTagsProvider extends ItemTagsProvider {
 		tag(ElectrodynamicsTags.Items.THICK_IRON_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.IRON }, InsulationMaterial.THICK_WOOL, WireClass.THICK, WireColor.values())));
 
 		tag(ElectrodynamicsTags.Items.THICK_SUPERCONDUCTIVE_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.SUPERCONDUCTIVE }, InsulationMaterial.THICK_WOOL, WireClass.THICK, WireColor.values())));
-		
+
 		tag(ElectrodynamicsTags.Items.CERAMIC_TIN_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.TIN }, InsulationMaterial.CERAMIC, WireClass.CERAMIC, WireColor.values())));
 
 		tag(ElectrodynamicsTags.Items.CERAMIC_SILVER_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.SILVER }, InsulationMaterial.CERAMIC, WireClass.CERAMIC, WireColor.values())));
@@ -158,7 +158,7 @@ public class ElectrodynamicsItemTagsProvider extends ItemTagsProvider {
 		tag(ElectrodynamicsTags.Items.CERAMIC_IRON_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.IRON }, InsulationMaterial.CERAMIC, WireClass.CERAMIC, WireColor.values())));
 
 		tag(ElectrodynamicsTags.Items.CERAMIC_SUPERCONDUCTIVE_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.SUPERCONDUCTIVE }, InsulationMaterial.CERAMIC, WireClass.CERAMIC, WireColor.values())));
-		
+
 		tag(ElectrodynamicsTags.Items.LOGISTICAL_TIN_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.TIN }, InsulationMaterial.WOOL, WireClass.LOGISTICAL, WireColor.values())));
 
 		tag(ElectrodynamicsTags.Items.LOGISTICAL_SILVER_WIRES).add(ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.getWires(new Conductor[] { Conductor.SILVER }, InsulationMaterial.WOOL, WireClass.LOGISTICAL, WireColor.values())));

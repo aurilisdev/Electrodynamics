@@ -21,8 +21,8 @@ import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.client.PacketRenderJetpackParticles;
 import electrodynamics.common.packet.types.server.PacketJetpackFlightServer;
 import electrodynamics.prefab.utilities.CapabilityUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -134,7 +134,7 @@ public class ItemJetpack extends ArmorItem {
 				}
 
 			});
-			if(Screen.hasShiftDown()) {
+			if (Screen.hasShiftDown()) {
 				tooltips.add(ElectroTextUtils.tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
 				tooltips.add(ElectroTextUtils.tooltip("maxtemperature", ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
 			}
@@ -146,7 +146,7 @@ public class ItemJetpack extends ArmorItem {
 			tooltips.add(ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("jetpack.moderegular").withStyle(ChatFormatting.GREEN)));
 		}
 	}
-	
+
 	public static Component getModeText(int mode) {
 		return switch (mode) {
 		case 0 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("jetpack.moderegular").withStyle(ChatFormatting.GREEN));
@@ -188,7 +188,7 @@ public class ItemJetpack extends ArmorItem {
 					} else if (mode == 2 && isDown) {
 						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 4.0 * pressure, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 4.0 * pressure, player, stack);
 						sendPacket(player, true, deltaY);
-						//TODO elytra fuel particles?
+						// TODO elytra fuel particles?
 					} else {
 						sendPacket(player, false, player.getDeltaMovement().y);
 					}
@@ -231,9 +231,7 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	public static boolean staticIsBarVisible(ItemStack stack) {
-		return stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> {
-			return 13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0;
-		}).orElse(false);
+		return stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> (13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0)).orElse(false);
 	}
 
 	@Override
@@ -242,9 +240,7 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	public static int staticGetBarWidth(ItemStack stack) {
-		return (int) Math.round(stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> {
-			return 13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0);
-		}).orElse(13.0));
+		return (int) Math.round(stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> (13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0))).orElse(13.0));
 	}
 
 	@Override
@@ -376,11 +372,11 @@ public class ItemJetpack extends ArmorItem {
 	private static float processDeg(float deg) {
 		if (deg > 180) {
 			return deg - 360;
-		} else if (deg < 180) {
-			return deg + 360;
-		} else {
-			return deg;
 		}
+		if (deg < 180) {
+			return deg + 360;
+		}
+		return deg;
 	}
 
 	public enum Jetpack implements ICustomArmor {

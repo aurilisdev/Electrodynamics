@@ -60,7 +60,7 @@ public class ElectricityUtils {
 	}
 
 	public static boolean isConductor(BlockEntity acceptor, IConductor requesterWire) {
-		if(acceptor instanceof IConductor conductor) {
+		if (acceptor instanceof IConductor conductor) {
 			return conductor.getWireType().isDefaultColor() || requesterWire.getWireType().isDefaultColor() || conductor.getWireColor() == requesterWire.getWireColor();
 		}
 		return false;

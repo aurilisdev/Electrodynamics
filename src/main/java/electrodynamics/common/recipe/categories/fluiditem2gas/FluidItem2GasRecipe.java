@@ -46,21 +46,21 @@ public abstract class FluidItem2GasRecipe extends AbstractMaterialRecipe {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public List<FluidIngredient> getFluidIngredients() {
 		return Arrays.asList(fluidIngredients);
 	}
-	
+
 	@Override
 	public GasStack getGasRecipeOutput() {
 		return outputStack;
 	}
-	
+
 	public List<CountableIngredient> getCountedIngredients() {
 		return Arrays.asList(ingredients);
 	}
-	
+
 	@Override
 	public NonNullList<Ingredient> getIngredients() {
 		NonNullList<Ingredient> list = NonNullList.create();

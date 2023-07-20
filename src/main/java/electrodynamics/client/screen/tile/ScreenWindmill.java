@@ -23,7 +23,7 @@ public class ScreenWindmill extends GenericScreen<ContainerWindmill> {
 		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
 		addComponent(new ScreenComponentMultiLabel(0, 0, stack -> {
 			TileWindmill windmill = menu.getHostFromIntArray();
-			if(windmill == null) {
+			if (windmill == null) {
 				return;
 			}
 			TransferPack transfer = windmill.getProduced();
@@ -32,5 +32,5 @@ public class ScreenWindmill extends GenericScreen<ContainerWindmill> {
 			font.draw(stack, ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(transfer.getVoltage(), DisplayUnit.VOLTAGE)), (float) inventoryLabelX + 60, (float) inventoryLabelY - 22, 4210752);
 		}));
 	}
-	
+
 }

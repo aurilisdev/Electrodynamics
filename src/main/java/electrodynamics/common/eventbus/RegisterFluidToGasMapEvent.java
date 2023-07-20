@@ -13,13 +13,13 @@ import net.minecraftforge.fml.event.IModBusEvent;
 public class RegisterFluidToGasMapEvent extends Event implements IModBusEvent {
 
 	public final ConcurrentHashMap<Fluid, HashSet<Gas>> fluidToGasMap = new ConcurrentHashMap<>();
-	
+
 	public void add(@Nonnull Fluid fluid, @Nonnull Gas gas) {
 		HashSet<Gas> existing = fluidToGasMap.getOrDefault(fluid, new HashSet<>());
-		
+
 		existing.add(gas);
-		
+
 		fluidToGasMap.put(fluid, existing);
 	}
-	
+
 }

@@ -56,7 +56,7 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric {
 			ItemStack empty = new ItemStack(this);
 			IItemElectric.setEnergyStored(empty, 0);
 			items.add(empty);
-			
+
 			ItemStack charged = new ItemStack(this);
 			IItemElectric.setEnergyStored(charged, properties.capacity);
 			items.add(charged);
@@ -101,7 +101,7 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric {
 	public Item getDefaultStorageBattery() {
 		return ElectrodynamicsItems.ITEM_LITHIUMBATTERY.get();
 	}
-	
+
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
 

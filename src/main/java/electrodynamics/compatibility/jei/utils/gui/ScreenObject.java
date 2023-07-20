@@ -21,23 +21,23 @@ public class ScreenObject {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	public ITexture getTexture() {
 		return texture;
 	}
-	
+
 	public int getX() {
 		return x;
 	}
-	
+
 	public int getY() {
 		return y;
 	}
-	
+
 	public int getWidth() {
 		return texture.textureWidth();
 	}
-	
+
 	public int getHeight() {
 		return texture.textureHeight();
 	}

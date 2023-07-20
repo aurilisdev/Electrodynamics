@@ -11,17 +11,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent.Context;
 
 public class PacketUpdateCarriedItemServer {
-	
+
 	private final ItemStack carriedItem;
 	private final BlockPos tilePos;
 	private final UUID playerId;
-	
+
 	public PacketUpdateCarriedItemServer(ItemStack carriedItem, BlockPos tilePos, UUID playerId) {
 		this.carriedItem = carriedItem;
 		this.tilePos = tilePos;
 		this.playerId = playerId;
 	}
-	
+
 	public static void handle(PacketUpdateCarriedItemServer message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {

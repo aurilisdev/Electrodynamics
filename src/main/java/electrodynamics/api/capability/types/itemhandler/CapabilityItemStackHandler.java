@@ -20,14 +20,15 @@ public class CapabilityItemStackHandler extends ItemStackHandler implements ICap
 
 	private final LazyOptional<IItemHandler> handler = LazyOptional.of(() -> this);
 	private final ItemStack owner;
-	
-	private TriConsumer<ItemStack, CapabilityItemStackHandler, Integer> onChange = (stack, handler, slot) -> {};
-	
+
+	private TriConsumer<ItemStack, CapabilityItemStackHandler, Integer> onChange = (stack, handler, slot) -> {
+	};
+
 	public CapabilityItemStackHandler(int size, ItemStack owner) {
 		super(size);
 		this.owner = owner;
 	}
-	
+
 	public CapabilityItemStackHandler setOnChange(TriConsumer<ItemStack, CapabilityItemStackHandler, Integer> onChange) {
 		this.onChange = onChange;
 		return this;
@@ -35,17 +36,17 @@ public class CapabilityItemStackHandler extends ItemStackHandler implements ICap
 
 	@Override
 	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-		if(cap == ForgeCapabilities.ITEM_HANDLER) {
+		if (cap == ForgeCapabilities.ITEM_HANDLER) {
 			return handler.cast();
 		}
 		return LazyOptional.empty();
 	}
-	
+
 	@Override
 	protected void onContentsChanged(int slot) {
 		onChange.accept(owner, this, slot);
 	}
-	
+
 	public List<ItemStack> getItems() {
 		return stacks;
 	}

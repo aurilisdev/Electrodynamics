@@ -19,21 +19,21 @@ public class RenderConnectBlock extends AbstractTileRenderer<GenericConnectTile>
 	@Override
 	public void render(@NotNull GenericConnectTile tile, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 		BlockState state = tile.getBlockState();
-		
-		if(!state.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING)) {
+
+		if (!state.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING)) {
 			return;
 		}
-		
+
 		BlockState blockToRender;
-		
-		if(tile.isCamoAir()) {
+
+		if (tile.isCamoAir()) {
 			blockToRender = tile.getScaffoldBlock();
 		} else {
 			blockToRender = tile.getCamoBlock();
 		}
-		
+
 		minecraft().getBlockRenderer().renderSingleBlock(blockToRender, poseStack, bufferSource, packedLight, packedOverlay);
-		
+
 	}
 
 }

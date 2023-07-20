@@ -18,7 +18,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileMultimeterBlock extends GenericTile {
-	
+
 	public Property<Double> voltage = property(new Property<>(PropertyType.Double, "voltageNew", 0.0).setNoSave());
 	public Property<Double> minVoltage = property(new Property<>(PropertyType.Double, "minvoltage", 0.0).setNoSave());
 	public Property<Double> joules = property(new Property<>(PropertyType.Double, "joulesNew", 0.0).setNoSave());
@@ -36,7 +36,7 @@ public class TileMultimeterBlock extends GenericTile {
 	}
 
 	public void tickServer(ComponentTickable tickable) {
-		
+
 		if (tickable.getTicks() % (minVoltage.get() == 0 ? 20 : 2) == 0) {
 			Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 			if (input == null) {

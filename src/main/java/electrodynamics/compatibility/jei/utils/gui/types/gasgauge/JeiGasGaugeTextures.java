@@ -4,8 +4,8 @@ import electrodynamics.api.References;
 import net.minecraft.resources.ResourceLocation;
 
 public enum JeiGasGaugeTextures implements IGasGaugeTexture {
-	
-	BACKGROUND_DEFAULT(14, 49, 0, 0, 41, 49, new ResourceLocation(References.ID, "textures/screen/jei/gas_gauge_default.png")), 
+
+	BACKGROUND_DEFAULT(14, 49, 0, 0, 41, 49, new ResourceLocation(References.ID, "textures/screen/jei/gas_gauge_default.png")),
 	LEVEL_DEFAULT(14, 49, 14, 0, 41, 49, new ResourceLocation(References.ID, "textures/screen/jei/gas_gauge_default.png"), -1, -1);
 
 	private final int textureWidth;
@@ -15,14 +15,14 @@ public enum JeiGasGaugeTextures implements IGasGaugeTexture {
 	private final int imageWidth;
 	private final int imageHeight;
 	private final ResourceLocation loc;
-	
+
 	private final int xOffset;
 	private final int yOffset;
 
 	private JeiGasGaugeTextures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc) {
 		this(textureWidth, textureHeight, textureU, textureV, imageWidth, imageHeight, loc, 0, 0);
 	}
-	
+
 	private JeiGasGaugeTextures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc, int xOffset, int yOffset) {
 		this.textureWidth = textureWidth;
 		this.textureHeight = textureHeight;
@@ -31,7 +31,7 @@ public enum JeiGasGaugeTextures implements IGasGaugeTexture {
 		this.imageWidth = imageWidth;
 		this.imageHeight = imageHeight;
 		this.loc = loc;
-		
+
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
 	}

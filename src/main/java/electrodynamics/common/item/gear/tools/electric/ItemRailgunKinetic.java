@@ -82,18 +82,18 @@ public class ItemRailgunKinetic extends ItemRailgun {
 		projectile.setItem(ammoStack);
 		projectile.setNoGravity(true);
 		projectile.setOwner(player);
-		
+
 		Vec3 vec31 = player.getUpVector(1.0F);
-        Quaternion quaternion = new Quaternion(new Vector3f(vec31), 0, true);
-        Vec3 vec3 = player.getViewVector(1.0F);
-        Vector3f vector3f = new Vector3f(vec3);
-        vector3f.transform(quaternion);
-        projectile.shoot((double)vector3f.x(), (double)vector3f.y(), (double)vector3f.z(), 20.0F, 0.0F);
-		
+		Quaternion quaternion = new Quaternion(new Vector3f(vec31), 0, true);
+		Vec3 vec3 = player.getViewVector(1.0F);
+		Vector3f vector3f = new Vector3f(vec3);
+		vector3f.transform(quaternion);
+		projectile.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 20.0F, 0.0F);
+
 		world.addFreshEntity(projectile);
 		railgun.recieveHeat(gunStack, TEMPERATURE_PER_SHOT, false);
-		
-		if(!player.isCreative()) {
+
+		if (!player.isCreative()) {
 			ammoStack.shrink(1);
 		}
 
@@ -101,8 +101,7 @@ public class ItemRailgunKinetic extends ItemRailgun {
 	}
 
 	/*
-	 * Allows easy addition of ammo types in the future Uses the Ingredient of the
-	 * item to allow cross-mod compatibility
+	 * Allows easy addition of ammo types in the future Uses the Ingredient of the item to allow cross-mod compatibility
 	 */
 	public List<Ingredient> getRailgunAmmo() {
 		List<Ingredient> railgunAmmo = new ArrayList<>();

@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.gas.Gas;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.guidebook.utils.components.Page;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.GuiComponent;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 
@@ -28,7 +28,7 @@ public class GasWrapperObject extends AbstractGraphicWrapper<GasWrapperObject> {
 
 		RenderSystem.setShaderTexture(0, sprite.atlas().getId());
 
-		Screen.blit(stack, guiWidth + wrapperX + xShift, guiHeight + wrapperY, 0, width, height, sprite);
+		GuiComponent.blit(stack, guiWidth + wrapperX + xShift, guiHeight + wrapperY, 0, width, height, sprite);
 
 	}
 

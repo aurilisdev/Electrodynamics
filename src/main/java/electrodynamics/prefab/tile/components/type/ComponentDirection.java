@@ -14,7 +14,7 @@ public class ComponentDirection implements Component {
 	public ComponentDirection(GenericTile holder) {
 		this.holder = holder;
 	}
-	
+
 	@Override
 	public void holder(GenericTile holder) {
 		this.holder = holder;

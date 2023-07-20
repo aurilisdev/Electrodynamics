@@ -16,13 +16,13 @@ public class ElectrodynamicsRegistries {
 	public static final ResourceLocation GAS_REGISTRY_LOC = new ResourceLocation(References.ID, "gases");
 	public static final ResourceKey<Registry<Gas>> GAS_REGISTRY_KEY = ResourceKey.createRegistryKey(GAS_REGISTRY_LOC);
 	private static Supplier<IForgeRegistry<Gas>> GAS_REGISTRY_SUPPLIER;
-	
+
 	public static void init() {
 		GAS_REGISTRY_SUPPLIER = ElectrodynamicsGases.GASES.makeRegistry(() -> new RegistryBuilder<Gas>().setName(GAS_REGISTRY_LOC).hasTags());
 	}
-	
+
 	public static IForgeRegistry<Gas> gasRegistry() {
 		return GAS_REGISTRY_SUPPLIER.get();
 	}
-	
+
 }

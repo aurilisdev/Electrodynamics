@@ -56,7 +56,8 @@ public class GenericMaterialTile extends GenericTile {
 						}
 						world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 1, 1);
 						return InteractionResult.FAIL;
-					} else if (amtTaken > 0 && !isBucket) {
+					}
+					if (amtTaken > 0 && !isBucket) {
 						if (!player.isCreative()) {
 							CapabilityUtils.drainFluidItem(stack, taken, FluidAction.EXECUTE);
 						}
@@ -75,7 +76,8 @@ public class GenericMaterialTile extends GenericTile {
 						tank.drain(taken, FluidAction.EXECUTE);
 						world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
 						return InteractionResult.FAIL;
-					} else if (amtTaken > 0 && !isBucket) {
+					}
+					if (amtTaken > 0 && !isBucket) {
 						CapabilityUtils.fillFluidItem(stack, taken, FluidAction.EXECUTE);
 						tank.drain(taken, FluidAction.EXECUTE);
 						world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
@@ -88,7 +90,8 @@ public class GenericMaterialTile extends GenericTile {
 			}
 			player.awardStat(Stats.INTERACT_WITH_FURNACE);
 			return InteractionResult.CONSUME;
-		} else if (CapabilityUtils.hasGasItemCap(stack)) {
+		}
+		if (CapabilityUtils.hasGasItemCap(stack)) {
 			if (hasComponent(ComponentType.GasHandler)) {
 
 				Level world = getLevel();
@@ -110,9 +113,7 @@ public class GenericMaterialTile extends GenericTile {
 				// now try to fill it
 				for (GasTank tank : handler.getOutputTanks()) {
 					GasStack tankGas = tank.getGas();
-					
-					
-					
+
 					double amtTaken = CapabilityUtils.fillGasItem(stack, tankGas, GasAction.SIMULATE);
 					GasStack taken = new GasStack(tankGas.getGas(), amtTaken, tankGas.getTemperature(), tankGas.getPressure());
 					if (amtTaken > 0) {

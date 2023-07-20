@@ -23,7 +23,7 @@ public class ScreenHydroelectricGenerator extends GenericScreen<ContainerHydroel
 		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
 		addComponent(new ScreenComponentMultiLabel(0, 0, stack -> {
 			TileHydroelectricGenerator hydro = menu.getHostFromIntArray();
-			if(hydro == null) {
+			if (hydro == null) {
 				return;
 			}
 			TransferPack transfer = hydro.getProduced();

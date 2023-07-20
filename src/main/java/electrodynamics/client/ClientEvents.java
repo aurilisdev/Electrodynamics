@@ -78,12 +78,12 @@ public class ClientEvents {
 	public static void handleKeyPress(Key event) {
 		KEY_PRESS_HANDLERS.forEach(handler -> handler.handler(event, Minecraft.getInstance()));
 	}
-	
+
 	@SubscribeEvent
 	public static void handleClientDatapackReloads(RegisterClientReloadListenersEvent event) {
-		
+
 		event.registerReloadListener(new ReloadListenerResetGuidebook());
-		
+
 	}
 
 }

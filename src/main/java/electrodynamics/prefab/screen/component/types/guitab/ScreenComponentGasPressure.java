@@ -60,11 +60,11 @@ public class ScreenComponentGasPressure extends ScreenComponentGuiTab {
 		index = 1;
 
 		for (PropertyGasTank tank : handler.getOutputTanks()) {
-			
+
 			tooltips.add(ElectroTextUtils.tooltip("tankmaxout", index, ChatFormatter.getChatDisplayShort(tank.getMaxPressure(), DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			
+
 			index++;
-			
+
 		}
 
 		return tooltips;

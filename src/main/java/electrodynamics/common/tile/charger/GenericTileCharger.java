@@ -90,11 +90,11 @@ public abstract class GenericTileCharger extends GenericTile {
 	private static float getRationalFunctionValue(float x) {
 		if (x >= 100.0F) {
 			return 0.0F;
-		} else if (x <= 1.0F) {
-			return 1.0F;
-		} else {
-			return 1 / x;
 		}
+		if (x <= 1.0F) {
+			return 1.0F;
+		}
+		return 1 / x;
 	}
 
 	private boolean drainBatterySlots(ComponentInventory inv, ComponentElectrodynamic electro) {

@@ -44,9 +44,7 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 	}
 
 	/*
-	 * By separating the GUI definition from the constructor, it allows us to define screen components that can be attached to a
-	 * screen at a later point. This is especially useful in GUIs that have components that do not change and thus can be made static
-	 * to improve efficiency
+	 * By separating the GUI definition from the constructor, it allows us to define screen components that can be attached to a screen at a later point. This is especially useful in GUIs that have components that do not change and thus can be made static to improve efficiency
 	 * 
 	 * Granted, the downside is you need to remember to set the owner screen
 	 */
@@ -99,48 +97,19 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 	}
 
 	/*
-	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
-
-			onMouseClick(mouseX, mouseY);
-
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		if (isValidClick(button)) {
-			onMouseRelease(mouseX, mouseY);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-		if (isValidClick(button)) {
-			onMouseDrag(mouseX, mouseY, dragX, dragY);
-			return true;
-		} else {
-			return false;
-		}
-	}
-	
-	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
-		if(isActiveAndVisible()) {
-			onMouseScroll(mouseX, mouseY, delta);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-    */
+	 * @Override public boolean mouseClicked(double mouseX, double mouseY, int button) { if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
+	 * 
+	 * onMouseClick(mouseX, mouseY);
+	 * 
+	 * return true; } return false; }
+	 * 
+	 * @Override public boolean mouseReleased(double mouseX, double mouseY, int button) { if (isValidClick(button)) { onMouseRelease(mouseX, mouseY); return true; } else { return false; } }
+	 * 
+	 * @Override public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) { if (isValidClick(button)) { onMouseDrag(mouseX, mouseY, dragX, dragY); return true; } else { return false; } }
+	 * 
+	 * @Override public boolean mouseScrolled(double mouseX, double mouseY, double delta) { if(isActiveAndVisible()) { onMouseScroll(mouseX, mouseY, delta); return true; } else { return false; } }
+	 * 
+	 */
 	public boolean isInClickRegion(double mouseX, double mouseY) {
 		return isMouseOver(mouseX, mouseY);
 	}
@@ -150,9 +119,9 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 	}
 
 	public void preOnMouseClick(double mouseX, double mouseY, int button) {
-		
+
 	}
-	
+
 	/*
 	 * You must return true on mouseClicked() to use
 	 */
@@ -173,12 +142,12 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 	public void onMouseDrag(double mouseX, double mouseY, double dragX, double dragY) {
 
 	}
-	
+
 	/*
 	 * You must return true on mouseScrolled() to use
 	 */
 	public void onMouseScroll(double mouseX, double mouseY, double delta) {
-		
+
 	}
 
 	public boolean isValidClick(int button) {
@@ -217,7 +186,7 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 	public boolean isFocused() {
 		return isFocused;
 	}
-	
+
 	public boolean isHoveredOrFocused() {
 		return isHovered() || isFocused();
 	}
@@ -230,9 +199,8 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 	public NarrationPriority narrationPriority() {
 		if (isFocused()) {
 			return NarratableEntry.NarrationPriority.FOCUSED;
-		} else {
-			return isHovered() ? NarratableEntry.NarrationPriority.HOVERED : NarratableEntry.NarrationPriority.NONE;
 		}
+		return isHovered() ? NarratableEntry.NarrationPriority.HOVERED : NarratableEntry.NarrationPriority.NONE;
 	}
 
 	@Override
@@ -241,9 +209,8 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 			setFocused(!isFocused());
 			onFocusChanged(isFocused());
 			return isFocused();
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	public void onFocusChanged(boolean isFocused) {

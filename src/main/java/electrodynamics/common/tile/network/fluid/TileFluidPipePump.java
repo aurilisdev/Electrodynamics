@@ -34,21 +34,21 @@ public class TileFluidPipePump extends GenericTile {
 	public static final Direction OUTPUT_DIR = Direction.NORTH;
 
 	public final Property<Integer> priority = property(new Property<>(PropertyType.Integer, "pumppriority", 0).onChange((prop, oldval) -> {
-		
-		if(level.isClientSide) {
+
+		if (level.isClientSide) {
 			return;
 		}
-		
-		BlockEntity entity = level.getBlockEntity(worldPosition.relative(BlockEntityUtils.getRelativeSide(((ComponentDirection)getComponent(ComponentType.Direction)).getDirection(), INPUT_DIR)));
-		
-		if(entity != null && entity instanceof TileFluidPipe pipe) {
+
+		BlockEntity entity = level.getBlockEntity(worldPosition.relative(BlockEntityUtils.getRelativeSide(((ComponentDirection) getComponent(ComponentType.Direction)).getDirection(), INPUT_DIR)));
+
+		if (entity != null && entity instanceof TileFluidPipe pipe) {
 			FluidNetwork network = pipe.getNetwork();
-			
-			if(network != null) {
+
+			if (network != null) {
 				network.updateFluidPipePumpStats(this, prop.get(), oldval);
 			}
 		}
-		
+
 	}));
 
 	public TileFluidPipePump(BlockPos pos, BlockState state) {
@@ -62,11 +62,11 @@ public class TileFluidPipePump extends GenericTile {
 	}
 
 	public void tickServer(ComponentTickable tick) {
-		
+
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		
+
 		electro.joules(Math.max(electro.getJoulesStored() - Constants.PIPE_PUMP_USAGE_PER_TICK, 0));
-		
+
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class TileFluidPipePump extends GenericTile {
 		}
 		return LazyOptional.empty();
 	}
-	
+
 	public boolean isPowered() {
 		return this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() >= Constants.PIPE_PUMP_USAGE_PER_TICK;
 	}

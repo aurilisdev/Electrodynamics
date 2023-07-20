@@ -13,9 +13,9 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentGasHandlerSimple;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.types.GenericGasTile;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
@@ -28,11 +28,11 @@ import net.minecraft.world.level.block.state.BlockState;
 public class GenericTileGasTank extends GenericGasTile {
 
 	public static final double INSULATION_EFFECTIVENESS = 1.05;
-	
+
 	public static final double HEAT_LOSS = 0.0025; // .05 / 20
-	
+
 	public final Property<Double> insulationBonus = property(new Property<>(PropertyType.Double, "insulationbonus", 1.0));
-	
+
 	public GenericTileGasTank(BlockEntityType<?> type, BlockPos pos, BlockState state, SubtypeMachine machine, double capacity, int maxPressure, double maxTemperature) {
 		super(type, pos, state);
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
@@ -48,17 +48,17 @@ public class GenericTileGasTank extends GenericGasTile {
 		GasUtilities.drainItem(this, handler.asArray());
 		GasUtilities.fillItem(this, handler.asArray());
 		GasUtilities.outputToPipe(this, handler.asArray(), handler.outputDirections);
-		
+
 		GasStack gasIn = handler.getGas();
-		
-		if(!gasIn.isEmpty() && gasIn.getTemperature() != Gas.ROOM_TEMPERATURE) {
-			
+
+		if (!gasIn.isEmpty() && gasIn.getTemperature() != Gas.ROOM_TEMPERATURE) {
+
 			double deltaT = Math.signum(Gas.ROOM_TEMPERATURE - gasIn.getTemperature());
-			
+
 			double temperatureDecrease = HEAT_LOSS / Math.max(1.0, insulationBonus.get()) * deltaT;
-			
+
 			handler.heat(temperatureDecrease, GasAction.EXECUTE);
-			
+
 		}
 
 		// Output to tank below
@@ -78,30 +78,30 @@ public class GenericTileGasTank extends GenericGasTile {
 	@Override
 	public int getComparatorSignal() {
 		ComponentGasHandlerSimple handler = getComponent(ComponentType.GasHandler);
-		return (int) ((double) handler.getGasAmount() / (double) Math.max(1, handler.getCapacity()) * 15.0);
+		return (int) (handler.getGasAmount() / Math.max(1, handler.getCapacity()) * 15.0);
 	}
-	
+
 	@Override
 	public void onInventoryChange(ComponentInventory inv, int slot) {
 		super.onInventoryChange(inv, slot);
-		if(slot > 5) {
+		if (slot > 5) {
 			return;
 		}
-		
+
 		double insulationBonus = 1.0;
-		
-		for(ItemStack item : inv.getInputContents()) {
-			
-			if(item.getItem() == ElectrodynamicsItems.ITEM_FIBERGLASSSHEET.get()) {
-				
+
+		for (ItemStack item : inv.getInputContents()) {
+
+			if (item.getItem() == ElectrodynamicsItems.ITEM_FIBERGLASSSHEET.get()) {
+
 				insulationBonus *= INSULATION_EFFECTIVENESS;
-				
+
 			}
-			
+
 		}
-		
+
 		this.insulationBonus.set(insulationBonus);
-		
+
 	}
 
 }

@@ -12,19 +12,19 @@ public class PsuedoFluid2GasRecipe {
 
 	public List<FluidIngredient> inputs;
 	public GasStack output;
-	
+
 	public ItemStack inputBucket;
 	public ItemStack outputCylinder;
-	
+
 	public PsuedoFluid2GasRecipe(List<FluidStack> inputs, GasStack output, ItemStack inputBucket, ItemStack outputCylinder) {
 		this.inputs = new ArrayList<>();
-		for(FluidStack stack : inputs) {
+		for (FluidStack stack : inputs) {
 			this.inputs.add(new FluidIngredient(stack));
 		}
 		this.output = output;
-		
+
 		this.inputBucket = inputBucket;
 		this.outputCylinder = outputCylinder;
 	}
-	
+
 }

@@ -65,7 +65,7 @@ public class BlockItemDescriptable extends BlockItem {
 		HashSet<MutableComponent> set = descriptionMappings.getOrDefault(block, new HashSet<>());
 
 		set.add(description);
-		
+
 		descriptionMappings.put(block, set);
 
 	}

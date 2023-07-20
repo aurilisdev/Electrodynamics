@@ -59,7 +59,7 @@ public class ItemElectric extends Item implements IItemElectric {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		tooltip.add(ElectroTextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)));
 		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
-		if(getDefaultStorageBattery() != Items.AIR) {
+		if (getDefaultStorageBattery() != Items.AIR) {
 			IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
 		}
 	}
@@ -73,16 +73,16 @@ public class ItemElectric extends Item implements IItemElectric {
 	public Item getDefaultStorageBattery() {
 		return getBatteryItem.apply(this);
 	}
-	
+
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-		
-		if(!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+
+		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
 			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
 		}
-		
+
 		return true;
-		
+
 	}
 
 }

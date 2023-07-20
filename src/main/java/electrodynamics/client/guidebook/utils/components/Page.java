@@ -21,13 +21,13 @@ public class Page {
 	public List<TextWrapper> text = new ArrayList<>();
 	public List<GraphicWrapper> graphics = new ArrayList<>();
 	public Chapter associatedChapter;
-	
+
 	public List<TextWrapper> tooltipText = new ArrayList<>();
 	public List<GraphicWrapper> tooltipGraphics = new ArrayList<>();
-	
+
 	public List<TextWrapper> clickText = new ArrayList<>();
 	public List<GraphicWrapper> clickGraphics = new ArrayList<>();
-	
+
 	public List<TextWrapper> keyPressText = new ArrayList<>();
 	public List<GraphicWrapper> keyPressGraphics = new ArrayList<>();
 
@@ -38,9 +38,9 @@ public class Page {
 	public int getPage() {
 		return pageNumber;
 	}
-	
+
 	public void renderAdditionalText(PoseStack stack, int refX, int refY, int xPageShift, Font font, int textWidth, int textStartX) {
-		
+
 		Module currMod = associatedChapter.module;
 		Component moduleTitle = currMod.getTitle().withStyle(ChatFormatting.BOLD);
 		int xShift = (textWidth - font.width(moduleTitle)) / 2;
@@ -53,7 +53,7 @@ public class Page {
 		Component pageNumber = Component.literal(getPage() + 1 + "");
 		xShift = (textWidth - font.width(pageNumber)) / 2;
 		font.draw(stack, pageNumber, refX + textStartX + xShift + xPageShift, refY + 200, 4210752);
-		
+
 	}
 
 	public record TextWrapper(int x, int y, FormattedText characters, int color, boolean centered, OnTooltip onTooltip, OnClick onClick, OnKeyPress onKeyPress) {
@@ -72,10 +72,10 @@ public class Page {
 			super(pageNumber);
 			associatedModule = module;
 		}
-		
+
 		@Override
 		public void renderAdditionalText(PoseStack stack, int refX, int refY, int xPageShift, Font font, int textWidth, int textStartX) {
-			
+
 			Module currMod = associatedModule;
 			Component moduleTitle = currMod.getTitle().withStyle(ChatFormatting.BOLD);
 			int xShift = (textWidth - font.width(moduleTitle)) / 2;
@@ -93,7 +93,7 @@ public class Page {
 		public ModulePage(int pageNumber) {
 			super(pageNumber);
 		}
-		
+
 		@Override
 		public void renderAdditionalText(PoseStack stack, int refX, int refY, int xPageShift, Font font, int textWidth, int textStartX) {
 			Component modTitle = ElectroTextUtils.guidebook("availablemodules").withStyle(ChatFormatting.BOLD);
@@ -102,18 +102,18 @@ public class Page {
 		}
 
 	}
-	
+
 	public static class CoverPage extends Page {
 
 		public CoverPage(int pageNumber) {
 			super(pageNumber);
 		}
-		
+
 		@Override
 		public void renderAdditionalText(PoseStack stack, int refX, int refY, int xPageShift, Font font, int textWidth, int textStartX) {
-			//Not used as of now
+			// Not used as of now
 		}
-		
+
 	}
 
 }

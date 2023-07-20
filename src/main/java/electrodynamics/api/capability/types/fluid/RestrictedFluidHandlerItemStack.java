@@ -2,6 +2,8 @@ package electrodynamics.api.capability.types.fluid;
 
 import java.util.function.Predicate;
 
+import org.jetbrains.annotations.NotNull;
+
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
@@ -12,11 +14,8 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
-import org.jetbrains.annotations.NotNull;
-
 /**
- * Almost carbon copy of Forge's FluidHandlerItemStack capability, except the way you validate fluids actually makes sense and I
- * don't have to bolt on a bunch of random crap to make it work
+ * Almost carbon copy of Forge's FluidHandlerItemStack capability, except the way you validate fluids actually makes sense and I don't have to bolt on a bunch of random crap to make it work
  * 
  * @author skip999
  */
@@ -79,20 +78,19 @@ public class RestrictedFluidHandlerItemStack implements IFluidHandlerItem, ICapa
 			}
 
 			return fillAmount;
-		} else {
-			if (contained.isFluidEqual(resource)) {
-				int fillAmount = Math.min(capacity - contained.getAmount(), resource.getAmount());
+		}
+		if (contained.isFluidEqual(resource)) {
+			int fillAmount = Math.min(capacity - contained.getAmount(), resource.getAmount());
 
-				if (action.execute() && fillAmount > 0) {
-					contained.grow(fillAmount);
-					setFluid(contained);
-				}
-
-				return fillAmount;
+			if (action.execute() && fillAmount > 0) {
+				contained.grow(fillAmount);
+				setFluid(contained);
 			}
 
-			return 0;
+			return fillAmount;
 		}
+
+		return 0;
 	}
 
 	@Override

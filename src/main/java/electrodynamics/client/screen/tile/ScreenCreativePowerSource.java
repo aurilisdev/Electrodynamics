@@ -85,9 +85,9 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 		if (tile == null) {
 			return;
 		}
-		
+
 		tile.power.set(power);
-		
+
 		tile.power.updateServer();
 
 	}

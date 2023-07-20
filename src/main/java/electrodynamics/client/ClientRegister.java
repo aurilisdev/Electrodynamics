@@ -52,6 +52,7 @@ import electrodynamics.client.screen.tile.ScreenChemicalCrystallizer;
 import electrodynamics.client.screen.tile.ScreenChemicalMixer;
 import electrodynamics.client.screen.tile.ScreenCoalGenerator;
 import electrodynamics.client.screen.tile.ScreenCombustionChamber;
+import electrodynamics.client.screen.tile.ScreenCompressor;
 import electrodynamics.client.screen.tile.ScreenCoolantResavoir;
 import electrodynamics.client.screen.tile.ScreenCreativeFluidSource;
 import electrodynamics.client.screen.tile.ScreenCreativePowerSource;
@@ -67,12 +68,12 @@ import electrodynamics.client.screen.tile.ScreenElectrolyticSeparator;
 import electrodynamics.client.screen.tile.ScreenFermentationPlant;
 import electrodynamics.client.screen.tile.ScreenFluidPipeFilter;
 import electrodynamics.client.screen.tile.ScreenFluidPipePump;
+import electrodynamics.client.screen.tile.ScreenFluidTankGeneric;
 import electrodynamics.client.screen.tile.ScreenFluidVoid;
 import electrodynamics.client.screen.tile.ScreenGasPipeFilter;
 import electrodynamics.client.screen.tile.ScreenGasPipePump;
 import electrodynamics.client.screen.tile.ScreenGasTankGeneric;
 import electrodynamics.client.screen.tile.ScreenGasVent;
-import electrodynamics.client.screen.tile.ScreenCompressor;
 import electrodynamics.client.screen.tile.ScreenHydroelectricGenerator;
 import electrodynamics.client.screen.tile.ScreenMineralWasher;
 import electrodynamics.client.screen.tile.ScreenMotorComplex;
@@ -84,7 +85,6 @@ import electrodynamics.client.screen.tile.ScreenQuarry;
 import electrodynamics.client.screen.tile.ScreenSeismicRelay;
 import electrodynamics.client.screen.tile.ScreenSolarPanel;
 import electrodynamics.client.screen.tile.ScreenThermoelectricManipulator;
-import electrodynamics.client.screen.tile.ScreenFluidTankGeneric;
 import electrodynamics.client.screen.tile.ScreenWindmill;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
@@ -236,9 +236,9 @@ public class ClientRegister {
 	public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation("forge", "white");
 
 	public static final ResourceLocation TEXTURE_PLASMA_BALL = new ResourceLocation(CUSTOM_LOC + "plasmaorb");
-	
+
 	public static final ResourceLocation TEXTURE_MERCURY = new ResourceLocation(CUSTOM_LOC + "mercury");
-	
+
 	public static final ResourceLocation TEXTURE_GAS = new ResourceLocation(CUSTOM_LOC + "gastexture"); // use this texture when needing to render a visual representation of a gas that is not a barometer
 
 	public static void setup() {
@@ -331,7 +331,7 @@ public class ClientRegister {
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_GASPIPEPUMP.get(), RenderGasPipePump::new);
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_FLUIDPIPEPUMP.get(), RenderFluidPipePump::new);
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_LOGISTICALWIRE.get(), RenderLogisticalWire::new);
-		
+
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_WIRE.get(), RenderConnectBlock::new);
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_LOGISTICALWIRE.get(), RenderConnectBlock::new);
 		event.registerBlockEntityRenderer(ElectrodynamicsBlockTypes.TILE_PIPE.get(), RenderConnectBlock::new);

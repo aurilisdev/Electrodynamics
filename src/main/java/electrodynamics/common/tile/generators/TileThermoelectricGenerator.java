@@ -24,11 +24,11 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileThermoelectricGenerator extends GenericTile {
-	
+
 	protected CachedTileOutput output;
-	
+
 	public Property<Boolean> hasHeat = property(new Property<>(PropertyType.Boolean, "hasheat", false));
-	public Property<Double> heatMultipler = property(new Property<>(PropertyType.Double, "multiplier", 0.0)); 
+	public Property<Double> heatMultipler = property(new Property<>(PropertyType.Double, "multiplier", 0.0));
 	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
 
 	public TileThermoelectricGenerator(BlockPos worldPosition, BlockState blockState) {
@@ -39,7 +39,7 @@ public class TileThermoelectricGenerator extends GenericTile {
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
-		if(hasRedstoneSignal.get()) {
+		if (hasRedstoneSignal.get()) {
 			return;
 		}
 		if (output == null) {
@@ -57,12 +57,12 @@ public class TileThermoelectricGenerator extends GenericTile {
 			ElectricityUtils.receivePower(output.getSafe(), Direction.UP, TransferPack.ampsVoltage(Constants.THERMOELECTRICGENERATOR_AMPERAGE * level.getFluidState(worldPosition.relative(direction.getDirection().getOpposite())).getAmount() / 16.0 * heatMultipler.get(), electro.getVoltage()), false);
 		}
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
 		return hasHeat.get() ? 15 : 0;
 	}
-	
+
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
 		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));

@@ -14,7 +14,7 @@ public class ContainerFluidPipeFilter extends GenericContainerBlockEntity<TileFl
 	public ContainerFluidPipeFilter(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEFILTER.get(), id, playerinv, inventory, inventorydata);
 	}
-	
+
 	public ContainerFluidPipeFilter(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(0), new SimpleContainerData(3));
 	}

@@ -40,7 +40,7 @@ public class EntityMetalRod extends EntityCustomProjectile {
 		super(ElectrodynamicsEntities.ENTITY_METALROD.get(), x, y, z, worldIn);
 		this.number = number;
 	}
-	
+
 	@Override
 	public void setPos(double x, double y, double z) {
 		super.setPos(x, y, z);
@@ -95,13 +95,13 @@ public class EntityMetalRod extends EntityCustomProjectile {
 	public int getNumber() {
 		return number;
 	}
-	
+
 	@Override
 	public void writeSpawnData(FriendlyByteBuf buffer) {
 		super.writeSpawnData(buffer);
 		buffer.writeInt(number);
 	}
-	
+
 	@Override
 	public void readSpawnData(FriendlyByteBuf additionalData) {
 		super.readSpawnData(additionalData);

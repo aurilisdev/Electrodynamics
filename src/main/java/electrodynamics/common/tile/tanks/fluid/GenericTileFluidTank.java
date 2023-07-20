@@ -60,7 +60,7 @@ public class GenericTileFluidTank extends GenericMaterialTile {
 			}
 		}
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
 		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(ComponentType.FluidHandler);

@@ -48,7 +48,7 @@ public class ScreenComponentCondensedFluid extends ScreenComponentGeneric {
 
 		gui.drawTexturedRect(stack, guiWidth + xLocation + 1, guiHeight + yLocation + 1, fluidFull.textureU(), fluidFull.textureV(), fluidFull.textureWidth(), fluidFull.textureHeight(), fluidFull.imageWidth(), fluidFull.imageHeight());
 	}
-	
+
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
@@ -65,9 +65,8 @@ public class ScreenComponentCondensedFluid extends ScreenComponentGeneric {
 		if (isValidClick(button)) {
 			onMouseRelease(mouseX, mouseY);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -80,15 +79,15 @@ public class ScreenComponentCondensedFluid extends ScreenComponentGeneric {
 		}
 
 		FluidStack fluidStack = fluidProperty.get();
-		
+
 		GenericScreen<?> screen = (GenericScreen<?>) gui;
-		
+
 		GenericTile owner = (GenericTile) ((GenericContainerBlockEntity<?>) screen.getMenu()).getHostFromIntArray();
-		
-		if(owner == null) {
+
+		if (owner == null) {
 			return;
 		}
-		
+
 		ItemStack stack = screen.getMenu().getCarried();
 
 		if (!CapabilityUtils.hasFluidItemCap(stack)) {
@@ -118,7 +117,7 @@ public class ScreenComponentCondensedFluid extends ScreenComponentGeneric {
 		}
 
 		NetworkHandler.CHANNEL.sendToServer(new PacketUpdateCarriedItemServer(stack.copy(), owner.getBlockPos(), Minecraft.getInstance().player.getUUID()));
-		
+
 	}
 
 }

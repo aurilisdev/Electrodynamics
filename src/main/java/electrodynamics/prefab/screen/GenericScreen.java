@@ -56,22 +56,22 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 		}
 		return new ScreenComponentSlot(slot, SlotType.NORMAL, IconType.NONE, slot.x + SlotType.NORMAL.xOffset(), slot.y + SlotType.NORMAL.yOffset());
 	}
-	
+
 	@Override
 	protected void containerTick() {
 		super.containerTick();
-		for(ScreenComponentEditBox box : editBoxes) {
+		for (ScreenComponentEditBox box : editBoxes) {
 			box.tick();
 		}
 	}
-	
+
 	@Override
 	protected void init() {
 		super.init();
-		for(AbstractScreenComponent component : components) {
+		for (AbstractScreenComponent component : components) {
 			addRenderableWidget(component);
 		}
-		if(editBoxes.size() > 0) {
+		if (editBoxes.size() > 0) {
 			minecraft.keyboardHandler.setSendRepeatsToGui(true);
 		}
 	}
@@ -139,32 +139,34 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 	public Font getFontRenderer() {
 		return Minecraft.getInstance().font;
 	}
-	
+
 	@Override
 	public void removed() {
 		super.removed();
-		if(editBoxes.size() > 0) {
+		if (editBoxes.size() > 0) {
 			minecraft.keyboardHandler.setSendRepeatsToGui(false);
 		}
 	}
-	
+
 	@Override
 	public void resize(Minecraft pMinecraft, int pWidth, int pHeight) {
 		List<String> strings = new ArrayList<>();
 		List<ScreenComponentEditBox> boxes = new ArrayList<>(editBoxes);
-		for(ScreenComponentEditBox box : boxes) {
+		for (ScreenComponentEditBox box : boxes) {
 			strings.add(box.getValue());
 		}
 		super.resize(pMinecraft, pWidth, pHeight);
-		for(int i = 0; i < boxes.size(); i++) {
+		for (int i = 0; i < boxes.size(); i++) {
 			boxes.get(i).setValue(strings.get(i));
 		}
 	}
 
+	@Override
 	public double getGuiWidth() {
 		return (width - imageWidth) / 2.0;
 	}
 
+	@Override
 	public double getGuiHeight() {
 		return (height - imageHeight) / 2.0;
 	}
@@ -185,7 +187,7 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 	public Set<AbstractScreenComponent> getComponents() {
 		return components;
 	}
-	
+
 	public void addEditBox(ScreenComponentEditBox box) {
 		editBoxes.add(box);
 		addComponent(box);

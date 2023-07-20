@@ -8,5 +8,5 @@ import net.minecraft.world.level.Level;
 public interface InventoryTickConsumer {
 
 	void apply(ItemStack stack, Level world, Entity entity, Integer slot, Boolean isSelected);
-	
+
 }

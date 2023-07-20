@@ -150,7 +150,7 @@ public class ThermoelectricGeneratorHeatRegister extends SimplePreparableReloadL
 	public boolean isHeatSource(Fluid fluid) {
 		return heatSources.containsKey(fluid);
 	}
-	
+
 	public double getHeatMultiplier(Fluid fluid) {
 		return heatSources.getOrDefault(fluid, 0.0);
 	}

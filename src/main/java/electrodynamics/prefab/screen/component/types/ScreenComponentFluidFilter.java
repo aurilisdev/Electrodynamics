@@ -105,7 +105,7 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 
 		gui.displayTooltips(stack, tooltips, xAxis, yAxis);
 	}
-	
+
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
@@ -122,9 +122,8 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 		if (isValidClick(button)) {
 			onMouseRelease(mouseX, mouseY);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
@@ -144,12 +143,11 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 
 		if (holding.isEmpty()) {
 
-			if (Screen.hasShiftDown()) {
-				property.set(FluidStack.EMPTY);
-				property.updateServer();
-			} else {
+			if (!Screen.hasShiftDown()) {
 				return;
 			}
+			property.set(FluidStack.EMPTY);
+			property.updateServer();
 
 		}
 
@@ -161,7 +159,7 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 
 		property.set(taken);
 		property.updateServer();
-		
+
 	}
 
 }

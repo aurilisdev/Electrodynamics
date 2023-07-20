@@ -18,8 +18,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 /**
- * An extension of the ScreenComponentFluid class that allows for draining
- * PropertyFluidTanks by clicking on them.
+ * An extension of the ScreenComponentFluid class that allows for draining PropertyFluidTanks by clicking on them.
  * 
  * @author skip999
  *
@@ -29,7 +28,7 @@ public class ScreenComponentFluidGaugeInput extends ScreenComponentFluidGauge {
 	public ScreenComponentFluidGaugeInput(FluidTankSupplier fluidInfoHandler, int x, int y) {
 		super(fluidInfoHandler, x, y);
 	}
-	
+
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
@@ -46,14 +45,13 @@ public class ScreenComponentFluidGaugeInput extends ScreenComponentFluidGauge {
 		if (isValidClick(button)) {
 			onMouseRelease(mouseX, mouseY);
 			return true;
-		} else {
-			return false;
 		}
+		return false;
 	}
 
 	@Override
 	public void onMouseClick(double mouseX, double mouseY) {
-		
+
 		PropertyFluidTank tank = (PropertyFluidTank) fluidInfoHandler.getTank();
 
 		if (tank == null) {
@@ -61,13 +59,13 @@ public class ScreenComponentFluidGaugeInput extends ScreenComponentFluidGauge {
 		}
 
 		GenericScreen<?> screen = (GenericScreen<?>) gui;
-		
+
 		GenericTile owner = (GenericTile) ((GenericContainerBlockEntity<?>) screen.getMenu()).getHostFromIntArray();
-		
-		if(owner == null) {
+
+		if (owner == null) {
 			return;
 		}
-		
+
 		ItemStack stack = screen.getMenu().getCarried();
 
 		if (!CapabilityUtils.hasFluidItemCap(stack)) {
@@ -75,31 +73,31 @@ public class ScreenComponentFluidGaugeInput extends ScreenComponentFluidGauge {
 		}
 
 		boolean isBucket = stack.getItem() instanceof BucketItem;
-		
+
 		FluidStack tankFluid = tank.getFluid();
-		
+
 		int amtTaken = CapabilityUtils.fillFluidItem(stack, tankFluid, FluidAction.SIMULATE);
-		
+
 		FluidStack taken = new FluidStack(tankFluid.getFluid(), amtTaken);
-		
+
 		if (isBucket && amtTaken == 1000 && (tankFluid.getFluid().isSame(Fluids.WATER) || tankFluid.getFluid().isSame(Fluids.LAVA))) {
-			
+
 			stack = new ItemStack(taken.getFluid().getBucket(), 1);
 			tank.drain(taken, FluidAction.EXECUTE);
 			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
 			tank.updateServer();
-		
+
 		} else if (amtTaken > 0 && !isBucket) {
-			
+
 			CapabilityUtils.fillFluidItem(stack, tankFluid, FluidAction.EXECUTE);
 			tank.drain(taken, FluidAction.EXECUTE);
 			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
 			tank.updateServer();
-			
+
 		}
 
 		NetworkHandler.CHANNEL.sendToServer(new PacketUpdateCarriedItemServer(stack.copy(), ((GenericContainerBlockEntity<?>) screen.getMenu()).getHostFromIntArray().getBlockPos(), Minecraft.getInstance().player.getUUID()));
-		
+
 	}
 
 }

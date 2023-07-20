@@ -21,19 +21,9 @@ public class ParticleOptionPlasmaBall extends ParticleType<ParticleOptionPlasmaB
 	public int b;
 	public int a;
 
-	public static final Codec<ParticleOptionPlasmaBall> CODEC = RecordCodecBuilder.create(instance -> {
-		return instance.group(
-				Codec.FLOAT.fieldOf("scale").forGetter(instance0 -> instance0.scale), 
-				Codec.FLOAT.fieldOf("gravity").forGetter(instance0 -> instance0.gravity), 
-				Codec.INT.fieldOf("maxage").forGetter(instance0 -> instance0.maxAge),
-				Codec.INT.fieldOf("r").forGetter(instance0 -> instance0.r),
-				Codec.INT.fieldOf("g").forGetter(instance0 -> instance0.g),
-				Codec.INT.fieldOf("b").forGetter(instance0 -> instance0.b),
-				Codec.INT.fieldOf("a").forGetter(instance0 -> instance0.a)
-			).apply(instance, (scale, gravity, age, r, g, b, a) -> new ParticleOptionPlasmaBall().setParameters(scale, gravity, age, r, g, b, a));
-	});
+	public static final Codec<ParticleOptionPlasmaBall> CODEC = RecordCodecBuilder.create(instance -> instance.group(Codec.FLOAT.fieldOf("scale").forGetter(instance0 -> instance0.scale), Codec.FLOAT.fieldOf("gravity").forGetter(instance0 -> instance0.gravity), Codec.INT.fieldOf("maxage").forGetter(instance0 -> instance0.maxAge), Codec.INT.fieldOf("r").forGetter(instance0 -> instance0.r), Codec.INT.fieldOf("g").forGetter(instance0 -> instance0.g), Codec.INT.fieldOf("b").forGetter(instance0 -> instance0.b), Codec.INT.fieldOf("a").forGetter(instance0 -> instance0.a)).apply(instance, (scale, gravity, age, r, g, b, a) -> new ParticleOptionPlasmaBall().setParameters(scale, gravity, age, r, g, b, a)));
 
-	public static final ParticleOptions.Deserializer<ParticleOptionPlasmaBall> DESERIALIZER = new ParticleOptions.Deserializer<ParticleOptionPlasmaBall>() {
+	public static final ParticleOptions.Deserializer<ParticleOptionPlasmaBall> DESERIALIZER = new ParticleOptions.Deserializer<>() {
 
 		@Override
 		public ParticleOptionPlasmaBall fromCommand(ParticleType<ParticleOptionPlasmaBall> type, StringReader reader) throws CommandSyntaxException {
@@ -47,16 +37,16 @@ public class ParticleOptionPlasmaBall extends ParticleType<ParticleOptionPlasmaB
 
 			reader.expect(' ');
 			int maxAge = reader.readInt();
-			
+
 			reader.expect(' ');
 			int r = reader.readInt();
-			
+
 			reader.expect(' ');
 			int g = reader.readInt();
-			
+
 			reader.expect(' ');
 			int b = reader.readInt();
-			
+
 			reader.expect(' ');
 			int a = reader.readInt();
 
@@ -103,7 +93,7 @@ public class ParticleOptionPlasmaBall extends ParticleType<ParticleOptionPlasmaB
 
 	@Override
 	public String writeToString() {
-		return ForgeRegistries.PARTICLE_TYPES.getKey(getType()).toString() + ", scale: " + scale + ", gravity: " + gravity + ", maxage: " + maxAge + ", r: " + r + ", g: " + g + ", b: " + b + ", a: " + a; 
+		return ForgeRegistries.PARTICLE_TYPES.getKey(getType()).toString() + ", scale: " + scale + ", gravity: " + gravity + ", maxage: " + maxAge + ", r: " + r + ", g: " + g + ", b: " + b + ", a: " + a;
 	}
 
 	@Override

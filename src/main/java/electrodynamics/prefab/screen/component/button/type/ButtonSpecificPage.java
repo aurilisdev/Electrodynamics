@@ -12,12 +12,13 @@ public class ButtonSpecificPage extends ScreenComponentButton<ButtonSpecificPage
 		super(x, y, width, height);
 		this.page = page;
 	}
-	
+
 	public ButtonSpecificPage(ITexture texture, int x, int y, int page) {
 		super(texture, x, y);
 		this.page = page;
 	}
 
+	@Override
 	public boolean isVisible() {
 		return page == ScreenGuidebook.currPageNumber || page == ScreenGuidebook.currPageNumber + 1;
 	}

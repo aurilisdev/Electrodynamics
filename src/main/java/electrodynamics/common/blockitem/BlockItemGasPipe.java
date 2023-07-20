@@ -16,19 +16,19 @@ import net.minecraft.world.level.Level;
 public class BlockItemGasPipe extends BlockItem {
 
 	private final BlockGasPipe pipe;
-	
+
 	public BlockItemGasPipe(BlockGasPipe pipe, Properties properties) {
 		super(pipe, properties);
 		this.pipe = pipe;
 	}
-	
+
 	@Override
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltips, TooltipFlag advanced) {
 		super.appendHoverText(stack, level, tooltips, advanced);
 		tooltips.add(ElectroTextUtils.tooltip("pipematerial", pipe.pipe.pipeMaterial.getTranslatedName()).withStyle(ChatFormatting.GRAY));
-		//tooltips.add(TextUtils.tooltip("pipeinsulationmaterial", pipe.pipe.insulationMaterial.getTranslatedName()).withStyle(ChatFormatting.GRAY));
+		// tooltips.add(TextUtils.tooltip("pipeinsulationmaterial", pipe.pipe.insulationMaterial.getTranslatedName()).withStyle(ChatFormatting.GRAY));
 		tooltips.add(ElectroTextUtils.tooltip("pipemaximumpressure", ChatFormatter.getChatDisplayShort(pipe.pipe.pipeMaterial.maxPressure, DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
-		//tooltips.add(TextUtils.tooltip("pipeheatloss", ChatFormatter.getChatDisplayShort(pipe.pipe.effectivePipeHeatLoss, DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
+		// tooltips.add(TextUtils.tooltip("pipeheatloss", ChatFormatter.getChatDisplayShort(pipe.pipe.effectivePipeHeatLoss, DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
 	}
 
 }

@@ -12,46 +12,44 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 
 public class ScreenHandlerMaterialScreen implements IGuiContainerHandler<GenericMaterialScreen<?>> {
-	
 
 	@Override
 	public @Nullable Object getIngredientUnderMouse(GenericMaterialScreen<?> screen, double mouseX, double mouseY) {
-		
+
 		double xAxis = mouseX - screen.getGuiWidth();
 		double yAxis = mouseY - screen.getGuiHeight();
-		
-		for(ScreenComponentFluidGauge gauge : screen.getFluidGauges()) {
-			
-			if(gauge.isMouseOver(xAxis, yAxis)) {
+
+		for (ScreenComponentFluidGauge gauge : screen.getFluidGauges()) {
+
+			if (gauge.isMouseOver(xAxis, yAxis)) {
 				IFluidTank tank = gauge.fluidInfoHandler.getTank();
-				if(tank == null) {
+				if (tank == null) {
 					continue;
 				}
 				FluidStack stack = tank.getFluid();
-				
-				if(stack.isEmpty()) {
+
+				if (stack.isEmpty()) {
 					continue;
 				}
 				return stack;
 			}
 		}
-		
-		for(ScreenComponentGasGauge gauge : screen.getGasGauges()) {
-			if(gauge.isMouseOver(xAxis, yAxis)) {
+
+		for (ScreenComponentGasGauge gauge : screen.getGasGauges()) {
+			if (gauge.isMouseOver(xAxis, yAxis)) {
 				IGasTank tank = gauge.gasTank.get();
-				if(tank == null) {
+				if (tank == null) {
 					continue;
 				}
 				GasStack stack = tank.getGas();
-				if(stack.isEmpty()) {
+				if (stack.isEmpty()) {
 					continue;
 				}
 				return stack;
 			}
 		}
-		
+
 		return null;
 	}
-	
 
 }

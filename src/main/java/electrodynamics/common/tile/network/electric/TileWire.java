@@ -1,5 +1,7 @@
 package electrodynamics.common.tile.network.electric;
 
+import org.jetbrains.annotations.NotNull;
+
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
@@ -10,15 +12,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class TileWire extends GenericTileWire {
-	
+
 	public Property<Double> transmit = property(new Property<>(PropertyType.Double, "transmit", 0.0));
 
 	public SubtypeWire wire = null;
 	public WireColor color = null;
-	
+
 	public TileWire(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_WIRE.get(), pos, state);
 	}
@@ -37,12 +38,12 @@ public class TileWire extends GenericTileWire {
 
 	@Override
 	public WireColor getWireColor() {
-		if(color == null) {
+		if (color == null) {
 			color = ((BlockWire) getBlockState().getBlock()).wire.color;
 		}
 		return color;
 	}
-	
+
 	@Override
 	public void saveAdditional(@NotNull CompoundTag compound) {
 		compound.putInt("ord", getWireType().ordinal());
@@ -56,6 +57,5 @@ public class TileWire extends GenericTileWire {
 		wire = SubtypeWire.values()[compound.getInt("ord")];
 		color = WireColor.values()[compound.getInt("color")];
 	}
-	
+
 }
- 

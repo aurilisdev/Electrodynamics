@@ -35,8 +35,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 /**
- * A modified variant of the EditBox class integrated into the Electrodynamics render system and fixing certain issues with the
- * vanilla-provided class
+ * A modified variant of the EditBox class integrated into the Electrodynamics render system and fixing certain issues with the vanilla-provided class
  * 
  * That's a spicy copy-pasta
  * 
@@ -84,9 +83,7 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 	private Consumer<String> responder;
 	/** Called to check if the text is valid */
 	private Predicate<String> filter = Objects::nonNull;
-	private BiFunction<String, Integer, FormattedCharSequence> formatter = (p_94147_, p_94148_) -> {
-		return FormattedCharSequence.forward(p_94147_, Style.EMPTY);
-	};
+	private BiFunction<String, Integer, FormattedCharSequence> formatter = (p_94147_, p_94148_) -> FormattedCharSequence.forward(p_94147_, Style.EMPTY);
 
 	public ScreenComponentEditBox(int x, int y, int width, int height, Font font) {
 		super(x, y, width, height);
@@ -187,8 +184,7 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 	}
 
 	/**
-	 * Deletes the given number of words from the current cursor's position, unless there is currently a selection, in which case the
-	 * selection is deleted instead.
+	 * Deletes the given number of words from the current cursor's position, unless there is currently a selection, in which case the selection is deleted instead.
 	 */
 	public void deleteWords(int num) {
 		if (!this.value.isEmpty()) {
@@ -201,8 +197,7 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 	}
 
 	/**
-	 * Deletes the given number of characters from the current cursor's position, unless there is currently a selection, in which case
-	 * the selection is deleted instead.
+	 * Deletes the given number of characters from the current cursor's position, unless there is currently a selection, in which case the selection is deleted instead.
 	 */
 	public void deleteChars(int num) {
 		if (!this.value.isEmpty()) {
@@ -315,76 +310,77 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 	public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
 		if (!this.canConsumeInput()) {
 			return false;
+		}
+		this.shiftPressed = Screen.hasShiftDown();
+		if (Screen.isSelectAll(keyCode)) {
+			this.moveCursorToEnd();
+			this.setHighlightPos(0);
+			return true;
+		}
+		if (Screen.isCopy(keyCode)) {
+			Minecraft.getInstance().keyboardHandler.setClipboard(this.getHighlighted());
+			return true;
+		}
+		if (Screen.isPaste(keyCode)) {
+			if (this.isEditable) {
+				this.insertText(Minecraft.getInstance().keyboardHandler.getClipboard());
+			}
+
+			return true;
+		} else if (Screen.isCut(keyCode)) {
+			Minecraft.getInstance().keyboardHandler.setClipboard(this.getHighlighted());
+			if (this.isEditable) {
+				this.insertText("");
+			}
+
+			return true;
 		} else {
-			this.shiftPressed = Screen.hasShiftDown();
-			if (Screen.isSelectAll(keyCode)) {
+			switch (keyCode) {
+			case 259:
+				if (this.isEditable) {
+					this.shiftPressed = false;
+					this.deleteText(-1);
+					this.shiftPressed = Screen.hasShiftDown();
+				}
+
+				return true;
+			case 260:
+			case 264:
+			case 265:
+			case 266:
+			case 267:
+			default:
+				return false;
+			case 261:
+				if (this.isEditable) {
+					this.shiftPressed = false;
+					this.deleteText(1);
+					this.shiftPressed = Screen.hasShiftDown();
+				}
+
+				return true;
+			case 262:
+				if (Screen.hasControlDown()) {
+					this.moveCursorTo(this.getWordPosition(1));
+				} else {
+					this.moveCursor(1);
+				}
+
+				return true;
+			case 263:
+				if (Screen.hasControlDown()) {
+					this.moveCursorTo(this.getWordPosition(-1));
+				} else {
+					this.moveCursor(-1);
+				}
+
+				return true;
+			case 268:
+				this.moveCursorToStart();
+				return true;
+			case 269:
 				this.moveCursorToEnd();
-				this.setHighlightPos(0);
 				return true;
-			} else if (Screen.isCopy(keyCode)) {
-				Minecraft.getInstance().keyboardHandler.setClipboard(this.getHighlighted());
-				return true;
-			} else if (Screen.isPaste(keyCode)) {
-				if (this.isEditable) {
-					this.insertText(Minecraft.getInstance().keyboardHandler.getClipboard());
-				}
-
-				return true;
-			} else if (Screen.isCut(keyCode)) {
-				Minecraft.getInstance().keyboardHandler.setClipboard(this.getHighlighted());
-				if (this.isEditable) {
-					this.insertText("");
-				}
-
-				return true;
-			} else {
-				switch (keyCode) {
-				case 259:
-					if (this.isEditable) {
-						this.shiftPressed = false;
-						this.deleteText(-1);
-						this.shiftPressed = Screen.hasShiftDown();
-					}
-
-					return true;
-				case 260:
-				case 264:
-				case 265:
-				case 266:
-				case 267:
-				default:
-					return false;
-				case 261:
-					if (this.isEditable) {
-						this.shiftPressed = false;
-						this.deleteText(1);
-						this.shiftPressed = Screen.hasShiftDown();
-					}
-
-					return true;
-				case 262:
-					if (Screen.hasControlDown()) {
-						this.moveCursorTo(this.getWordPosition(1));
-					} else {
-						this.moveCursor(1);
-					}
-
-					return true;
-				case 263:
-					if (Screen.hasControlDown()) {
-						this.moveCursorTo(this.getWordPosition(-1));
-					} else {
-						this.moveCursor(-1);
-					}
-
-					return true;
-				case 268:
-					this.moveCursorToStart();
-					return true;
-				case 269:
-					this.moveCursorToEnd();
-					return true;
-				}
 			}
 		}
 	}
@@ -397,37 +393,35 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 	public boolean charTyped(char codePoint, int modifiers) {
 		if (!this.canConsumeInput()) {
 			return false;
-		} else if (SharedConstants.isAllowedChatCharacter(codePoint)) {
-			if (this.isEditable) {
-				this.insertText(Character.toString(codePoint));
-			}
-
-			return true;
-		} else {
+		}
+		if (!SharedConstants.isAllowedChatCharacter(codePoint)) {
 			return false;
 		}
+		if (this.isEditable) {
+			this.insertText(Character.toString(codePoint));
+		}
+
+		return true;
 	}
 
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button) {
 		if (!this.isVisible()) {
 			return false;
-		} else {
-			boolean mouseOver = isMouseOver(mouseX, mouseY);
-			if (this.canLoseFocus) {
-				this.setFocus(mouseOver);
-			}
-
-			if (this.isFocused() && mouseOver && button == 0) {
-				int exitBoxXPos = Mth.floor(mouseX) - this.xLocation - ((int) gui.getGuiWidth()) - 4;
-
-				String text = this.font.plainSubstrByWidth(this.value.substring(this.displayPos), this.getInnerWidth());
-				this.moveCursorTo(this.font.plainSubstrByWidth(text, exitBoxXPos).length() + this.displayPos);
-				return true;
-			} else {
-				return false;
-			}
 		}
+		boolean mouseOver = isMouseOver(mouseX, mouseY);
+		if (this.canLoseFocus) {
+			this.setFocus(mouseOver);
+		}
+
+		if (this.isFocused() && mouseOver && button == 0) {
+			int exitBoxXPos = Mth.floor(mouseX) - this.xLocation - ((int) gui.getGuiWidth()) - 4;
+
+			String text = this.font.plainSubstrByWidth(this.value.substring(this.displayPos), this.getInnerWidth());
+			this.moveCursorTo(this.font.plainSubstrByWidth(text, exitBoxXPos).length() + this.displayPos);
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -472,7 +466,7 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 
 		if (!displayedText.isEmpty()) {
 			String highlightedText = isHighlightedValid ? displayedText.substring(0, highlightedSize) : displayedText;
-			textStartPre = this.font.drawShadow(stack, this.formatter.apply(highlightedText, this.displayPos), (float) textStartX, (float) textStartY, textColor);
+			textStartPre = this.font.drawShadow(stack, this.formatter.apply(highlightedText, this.displayPos), textStartX, textStartY, textColor);
 		}
 
 		boolean isCursorPastLength = this.cursorPos < this.value.length() || this.value.length() >= this.getMaxLength();
@@ -487,18 +481,18 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 		}
 
 		if (!displayedText.isEmpty() && isHighlightedValid && highlightedSize < displayedText.length()) {
-			this.font.drawShadow(stack, this.formatter.apply(displayedText.substring(highlightedSize), this.cursorPos), (float) textStartPre, (float) textStartY, textColor);
+			this.font.drawShadow(stack, this.formatter.apply(displayedText.substring(highlightedSize), this.cursorPos), textStartPre, textStartY, textColor);
 		}
 
 		if (!isCursorPastLength && this.suggestion != null) {
-			this.font.drawShadow(stack, this.suggestion, (float) (textStartPreCopy - 1), (float) textStartY, -8355712);
+			this.font.drawShadow(stack, this.suggestion, textStartPreCopy - 1, textStartY, -8355712);
 		}
 
 		if (blinkCursor) {
 			if (isCursorPastLength) {
 				GuiComponent.fill(stack, textStartPreCopy, textStartY - 1, textStartPreCopy + 1, textStartY + 1 + 9, -3092272);
 			} else {
-				this.font.drawShadow(stack, "_", (float) textStartPreCopy, (float) textStartY, textColor);
+				this.font.drawShadow(stack, "_", textStartPreCopy, textStartY, textColor);
 			}
 		}
 
@@ -541,10 +535,10 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 		RenderSystem.enableColorLogicOp();
 		RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
 		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
-		bufferbuilder.vertex((double) startX, (double) endY, 0.0D).endVertex();
-		bufferbuilder.vertex((double) endX, (double) endY, 0.0D).endVertex();
-		bufferbuilder.vertex((double) endX, (double) startY, 0.0D).endVertex();
-		bufferbuilder.vertex((double) startX, (double) startY, 0.0D).endVertex();
+		bufferbuilder.vertex(startX, endY, 0.0D).endVertex();
+		bufferbuilder.vertex(endX, endY, 0.0D).endVertex();
+		bufferbuilder.vertex(endX, startY, 0.0D).endVertex();
+		bufferbuilder.vertex(startX, startY, 0.0D).endVertex();
 		tesselator.end();
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderSystem.disableColorLogicOp();
@@ -552,8 +546,7 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 	}
 
 	/**
-	 * Sets the maximum length for the text in this text box. If the current text is longer than this length, the current text will be
-	 * trimmed.
+	 * Sets the maximum length for the text in this text box. If the current text is longer than this length, the current text will be trimmed.
 	 */
 	public ScreenComponentEditBox setMaxLength(int length) {
 		this.maxLength = length;
@@ -595,6 +588,7 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 		return this;
 	}
 
+	@Override
 	public boolean changeFocus(boolean pFocus) {
 		return isVisible() && this.isEditable ? super.changeFocus(pFocus) : false;
 	}
@@ -624,8 +618,7 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 	}
 
 	/**
-	 * Sets the position of the selection anchor (the selection anchor and the cursor position mark the edges of the selection). If
-	 * the anchor is set beyond the bounds of the current text, it will be put back inside.
+	 * Sets the position of the selection anchor (the selection anchor and the cursor position mark the edges of the selection). If the anchor is set beyond the bounds of the current text, it will be put back inside.
 	 */
 	public void setHighlightPos(int position) {
 		int length = this.value.length();
@@ -677,9 +670,9 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 	public static void drawExpandedBox(PoseStack stack, int x, int y, int boxWidth, int boxHeight) {
 		if (boxWidth < 18) {
 			if (boxHeight < 18) {
-				Screen.blit(stack, x, y, boxWidth, boxHeight, 0, 0, boxWidth, boxHeight, boxWidth, boxHeight);
+				GuiComponent.blit(stack, x, y, boxWidth, boxHeight, 0, 0, boxWidth, boxHeight, boxWidth, boxHeight);
 			} else {
-				Screen.blit(stack, x, y, boxWidth, 7, 0, 0, boxWidth, 7, boxWidth, 18);
+				GuiComponent.blit(stack, x, y, boxWidth, 7, 0, 0, boxWidth, 7, boxWidth, 18);
 
 				int sectionHeight = boxHeight - 14;
 				int heightIterations = sectionHeight / 4;
@@ -687,15 +680,15 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 
 				int heightOffset = 7;
 				for (int i = 0; i < heightIterations; i++) {
-					Screen.blit(stack, x, y + heightOffset, boxWidth, 4, 0, 7, boxWidth, 4, boxWidth, 18);
+					GuiComponent.blit(stack, x, y + heightOffset, boxWidth, 4, 0, 7, boxWidth, 4, boxWidth, 18);
 					heightOffset += 4;
 				}
-				Screen.blit(stack, x, y + heightOffset, boxWidth, remainderHeight, 0, 7, boxWidth, remainderHeight, boxWidth, 18);
+				GuiComponent.blit(stack, x, y + heightOffset, boxWidth, remainderHeight, 0, 7, boxWidth, remainderHeight, boxWidth, 18);
 
-				Screen.blit(stack, x, y + boxHeight - 7, boxWidth, 7, 0, 11, boxWidth, 7, boxWidth, 18);
+				GuiComponent.blit(stack, x, y + boxHeight - 7, boxWidth, 7, 0, 11, boxWidth, 7, boxWidth, 18);
 			}
 		} else if (boxHeight < 18) {
-			Screen.blit(stack, x, y, 7, boxHeight, 0, 0, 7, boxHeight, 18, boxHeight);
+			GuiComponent.blit(stack, x, y, 7, boxHeight, 0, 0, 7, boxHeight, 18, boxHeight);
 
 			int sectionWidth = boxWidth - 14;
 			int widthIterations = sectionWidth / 4;
@@ -703,12 +696,12 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 
 			int widthOffset = 7;
 			for (int i = 0; i < widthIterations; i++) {
-				Screen.blit(stack, x + widthOffset, y, 4, boxHeight, 7, 0, 4, boxHeight, 18, boxHeight);
+				GuiComponent.blit(stack, x + widthOffset, y, 4, boxHeight, 7, 0, 4, boxHeight, 18, boxHeight);
 				widthOffset += 4;
 			}
-			Screen.blit(stack, x + widthOffset, y, remainderWidth, boxHeight, 7, 0, remainderWidth, boxHeight, 18, boxHeight);
+			GuiComponent.blit(stack, x + widthOffset, y, remainderWidth, boxHeight, 7, 0, remainderWidth, boxHeight, 18, boxHeight);
 
-			Screen.blit(stack, x + boxWidth - 7, y, 7, boxHeight, 11, 0, 7, boxHeight, 18, boxHeight);
+			GuiComponent.blit(stack, x + boxWidth - 7, y, 7, boxHeight, 11, 0, 7, boxHeight, 18, boxHeight);
 		} else {
 			// the button is >= 18x18 at this point
 
@@ -795,7 +788,7 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 	}
 
 	private static void draw(PoseStack stack, int x, int y, int widthOffset, int heightOffset, int textXOffset, int textYOffset, int width, int height) {
-		Screen.blit(stack, x + widthOffset, y + heightOffset, width, height, textXOffset, textYOffset, width, height, 18, 18);
+		GuiComponent.blit(stack, x + widthOffset, y + heightOffset, width, height, textXOffset, textYOffset, width, height, 18, 18);
 	}
 
 	public static Predicate<String> getValidator(char[] validChars) {

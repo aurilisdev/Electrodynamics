@@ -75,12 +75,10 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 	 * Returns a GasStack representing how much fluid was actually emitted through the network
 	 * 
 	 * @param transfer: The gas stack to be transfered
-	 * @param ignored:  By convention, the first tile in the ignored list will be the transmitting tile, and will be the point used to
-	 *                  determine the heat loss
+	 * @param ignored:  By convention, the first tile in the ignored list will be the transmitting tile, and will be the point used to determine the heat loss
 	 * @param debug:    Whether or not this should be simulated
 	 * 
-	 * @return Empty if the transmitted pack is empty or if there is no transmitting tile (i.e. ignored is empty). All gas will be
-	 *         used if the network exploded
+	 * @return Empty if the transmitted pack is empty or if there is no transmitting tile (i.e. ignored is empty). All gas will be used if the network exploded
 	 */
 	public GasStack emit(GasStack transfer, ArrayList<BlockEntity> ignored, boolean debug) {
 
@@ -132,7 +130,7 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 		// This algorithm is not perfect, but it helps deal with tiles that do not accept the full amount allotted to them
 
 		for (BlockEntity tile : recievingTiles) {
-			gasPerTile = new GasStack(copy.getGas(), copy.getAmount() / (double) size, copy.getTemperature(), copy.getPressure());
+			gasPerTile = new GasStack(copy.getGas(), copy.getAmount() / size, copy.getTemperature(), copy.getPressure());
 			preGasPerTile = gasPerTile.copy();
 
 			// deltaDegreesKelvin = ((double) (Math.abs(tile.getBlockPos().getX() - senderPos.getX()) + Math.abs(tile.getBlockPos().getY() -
@@ -153,7 +151,7 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 
 			for (Direction dir : connections) {
 
-				gasPerConnection = new GasStack(gasPerTile.getGas(), gasPerTile.getAmount() / (double) connectionCount, gasPerTile.getTemperature(), gasPerTile.getPressure());
+				gasPerConnection = new GasStack(gasPerTile.getGas(), gasPerTile.getAmount() / connectionCount, gasPerTile.getTemperature(), gasPerTile.getPressure());
 				preGasPerConnection = gasPerConnection.copy();
 
 				// gasPerConnection.heat(deltaDegreesKelvin);
@@ -261,7 +259,7 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 				continue;
 			}
 
-			gasPerTile = new GasStack(copy.getGas(), copy.getAmount() / (double) size, copy.getTemperature(), copy.getPressure());
+			gasPerTile = new GasStack(copy.getGas(), copy.getAmount() / size, copy.getTemperature(), copy.getPressure());
 			preGasPerTile = gasPerTile.copy();
 
 			// deltaDegreesKelvin = ((double) (Math.abs(tile.getBlockPos().getX() - senderPos.getX()) + Math.abs(tile.getBlockPos().getY() -
@@ -282,7 +280,7 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 
 			for (Direction dir : connections) {
 
-				gasPerConnection = new GasStack(gasPerTile.getGas(), gasPerTile.getAmount() / (double) connectionCount, gasPerTile.getTemperature(), gasPerTile.getPressure());
+				gasPerConnection = new GasStack(gasPerTile.getGas(), gasPerTile.getAmount() / connectionCount, gasPerTile.getTemperature(), gasPerTile.getPressure());
 				preGasPerConnection = gasPerConnection.copy();
 
 				// gasPerConnection.heat(deltaDegreesKelvin);
@@ -327,7 +325,7 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 		if (stack.getPressure() <= maxPressure) {
 			return false;
 		}
-		
+
 		boolean isCorrosive = ElectrodynamicsRegistries.gasRegistry().tags().getTag(ElectrodynamicsTags.Gases.IS_CORROSIVE).contains(stack.getGas());
 
 		boolean exploded = false;

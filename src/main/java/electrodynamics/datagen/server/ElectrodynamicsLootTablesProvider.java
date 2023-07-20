@@ -1,11 +1,11 @@
 package electrodynamics.datagen.server;
 
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
-import electrodynamics.common.block.subtype.SubtypeFluidPipe;
-import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
@@ -36,8 +36,8 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 		for (SubtypeWire wire : SubtypeWire.values()) {
 			addSimpleBlock(ElectrodynamicsBlocks.getBlock(wire));
 		}
-		
-		for(SubtypeGasPipe pipe : SubtypeGasPipe.values()) {
+
+		for (SubtypeGasPipe pipe : SubtypeGasPipe.values()) {
 			addSimpleBlock(ElectrodynamicsBlocks.getBlock(pipe));
 		}
 
@@ -130,22 +130,22 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.quarry), ElectrodynamicsBlockTypes.TILE_QUARRY, true, false, false, true, false);
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coolantresavoir), ElectrodynamicsBlockTypes.TILE_COOLANTRESAVOIR, true, false, false, true, false);
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.motorcomplex), ElectrodynamicsBlockTypes.TILE_MOTORCOMPLEX, true, false, false, true, false);
-		
-		//TODO
-		//compressor
-		//decompressor
-		//thermo manip
-		//gas tanks
-		//electrolytic sep
+
+		// TODO
+		// compressor
+		// decompressor
+		// thermo manip
+		// gas tanks
+		// electrolytic sep
 		addSimpleBlock(ElectrodynamicsBlocks.blockGasTransformerAddonTank);
-		
+
 		addSimpleBlock(ElectrodynamicsBlocks.blockGasValve);
 		addSimpleBlock(ElectrodynamicsBlocks.blockFluidValve);
 		addSimpleBlock(ElectrodynamicsBlocks.blockGasPipePump);
 		addSimpleBlock(ElectrodynamicsBlocks.blockFluidPipePump);
 		addSimpleBlock(ElectrodynamicsBlocks.blockGasPipeFilter);
 		addSimpleBlock(ElectrodynamicsBlocks.blockFluidPipeFilter);
-		
+
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay));
 
 	}
@@ -153,7 +153,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 	public <T extends GenericTile> void addMachineTable(Block block, RegistryObject<BlockEntityType<T>> tilereg, boolean items, boolean fluids, boolean gases, boolean energy, boolean additional) {
 		lootTables.put(block, machineTable(name(block), block, tilereg.get(), items, fluids, gases, energy, additional));
 	}
-	
+
 	/**
 	 * Adds the block to the loottables silk touch only
 	 *

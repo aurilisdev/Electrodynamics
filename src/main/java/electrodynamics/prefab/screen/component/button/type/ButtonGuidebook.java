@@ -34,7 +34,10 @@ public class ButtonGuidebook extends ScreenComponentButton<ButtonGuidebook> {
 
 	public static enum GuidebookButtonType {
 
-		LEFT(GuidebookButtonTextures.PAGE_LEFT_OFF, GuidebookButtonTextures.PAGE_LEFT_ON), RIGHT(GuidebookButtonTextures.PAGE_RIGHT_OFF, GuidebookButtonTextures.PAGE_RIGHT_ON), HOME(GuidebookButtonTextures.HOME_OFF, GuidebookButtonTextures.HOME_ON), CHAPTERS(GuidebookButtonTextures.CHAPTERS_OFF, GuidebookButtonTextures.CHAPTERS_ON),
+		LEFT(GuidebookButtonTextures.PAGE_LEFT_OFF, GuidebookButtonTextures.PAGE_LEFT_ON),
+		RIGHT(GuidebookButtonTextures.PAGE_RIGHT_OFF, GuidebookButtonTextures.PAGE_RIGHT_ON),
+		HOME(GuidebookButtonTextures.HOME_OFF, GuidebookButtonTextures.HOME_ON),
+		CHAPTERS(GuidebookButtonTextures.CHAPTERS_OFF, GuidebookButtonTextures.CHAPTERS_ON),
 		SEARCH(GuidebookButtonTextures.SEARCH_OFF, GuidebookButtonTextures.SEARCH_ON);
 
 		public final GuidebookButtonTextures off;
@@ -48,8 +51,16 @@ public class ButtonGuidebook extends ScreenComponentButton<ButtonGuidebook> {
 	}
 
 	public static enum GuidebookButtonTextures implements ITexture {
-		PAGE_LEFT_OFF(19, 10, 2, 207, 256, 256, BookViewScreen.BOOK_LOCATION), PAGE_LEFT_ON(19, 10, 25, 207, 256, 256, BookViewScreen.BOOK_LOCATION), PAGE_RIGHT_OFF(19, 10, 2, 194, 256, 256, BookViewScreen.BOOK_LOCATION), PAGE_RIGHT_ON(19, 10, 25, 194, 256, 256, BookViewScreen.BOOK_LOCATION), HOME_OFF(11, 10, 0, 0, 11, 10, "homeoff"), HOME_ON(11, 10, 0, 0, 11, 10, "homeon"),
-		CHAPTERS_OFF(11, 10, 0, 0, 11, 10, "chaptersoff"), CHAPTERS_ON(11, 10, 0, 0, 11, 10, "chapterson"), SEARCH_OFF(11, 10, 0, 0, 11, 10, "searchoff"), SEARCH_ON(11, 10, 0, 0, 11, 10, "searchon");
+		PAGE_LEFT_OFF(19, 10, 2, 207, 256, 256, BookViewScreen.BOOK_LOCATION),
+		PAGE_LEFT_ON(19, 10, 25, 207, 256, 256, BookViewScreen.BOOK_LOCATION),
+		PAGE_RIGHT_OFF(19, 10, 2, 194, 256, 256, BookViewScreen.BOOK_LOCATION),
+		PAGE_RIGHT_ON(19, 10, 25, 194, 256, 256, BookViewScreen.BOOK_LOCATION),
+		HOME_OFF(11, 10, 0, 0, 11, 10, "homeoff"),
+		HOME_ON(11, 10, 0, 0, 11, 10, "homeon"),
+		CHAPTERS_OFF(11, 10, 0, 0, 11, 10, "chaptersoff"),
+		CHAPTERS_ON(11, 10, 0, 0, 11, 10, "chapterson"),
+		SEARCH_OFF(11, 10, 0, 0, 11, 10, "searchoff"),
+		SEARCH_ON(11, 10, 0, 0, 11, 10, "searchon");
 
 		private final int textureWidth;
 		private final int textureHeight;

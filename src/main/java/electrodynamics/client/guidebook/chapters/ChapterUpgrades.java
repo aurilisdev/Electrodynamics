@@ -43,31 +43,30 @@ public class ChapterUpgrades extends Chapter {
 	public void addData() {
 		// Injector Upgrade tutorial
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.iteminput).getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setSeparateStart());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.getItem(SubtypeItemUpgrade.iteminput))
-				.onTooltip(new OnTooltip() {
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.getItem(SubtypeItemUpgrade.iteminput)).onTooltip(new OnTooltip() {
 
-					@Override
-					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
-						if (JeiBuffer.isJeiInstalled()) {
-							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
-						}
+			@Override
+			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+				if (JeiBuffer.isJeiInstalled()) {
+					List<FormattedCharSequence> tooltips = new ArrayList<>();
+					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+					screen.displayTooltips(stack, tooltips, xAxis, yAxis);
+				}
 
-					}
-				}).onKeyPress(new OnKeyPress() {
+			}
+		}).onKeyPress(new OnKeyPress() {
 
-					@Override
-					public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
+			@Override
+			public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
 
-					}
+			}
 
-					@Override
-					public Object getJeiLookup() {
-						return new ItemStack(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.iteminput));
-					}
+			@Override
+			public Object getJeiLookup() {
+				return new ItemStack(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.iteminput));
+			}
 
-				}));
+		}));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l1")).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.default").withStyle(ChatFormatting.BOLD)));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l2")));
@@ -76,31 +75,30 @@ public class ChapterUpgrades extends Chapter {
 
 		// Ejector Upgrade tutorial
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput).getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput))
-				.onTooltip(new OnTooltip() {
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput)).onTooltip(new OnTooltip() {
 
-					@Override
-					public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
-						if (JeiBuffer.isJeiInstalled()) {
-							List<FormattedCharSequence> tooltips = new ArrayList<>();
-							tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-							screen.displayTooltips(stack, tooltips, xAxis, yAxis);
-						}
+			@Override
+			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+				if (JeiBuffer.isJeiInstalled()) {
+					List<FormattedCharSequence> tooltips = new ArrayList<>();
+					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+					screen.displayTooltips(stack, tooltips, xAxis, yAxis);
+				}
 
-					}
-				}).onKeyPress(new OnKeyPress() {
+			}
+		}).onKeyPress(new OnKeyPress() {
 
-					@Override
-					public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
+			@Override
+			public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
 
-					}
+			}
 
-					@Override
-					public Object getJeiLookup() {
-						return new ItemStack(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput));
-					}
+			@Override
+			public Object getJeiLookup() {
+				return new ItemStack(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput));
+			}
 
-				}));
+		}));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l4")).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.default").withStyle(ChatFormatting.BOLD)));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l5")));

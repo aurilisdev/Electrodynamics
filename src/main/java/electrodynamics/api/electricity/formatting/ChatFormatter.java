@@ -12,7 +12,8 @@ public class ChatFormatter {
 	public static MutableComponent getChatDisplay(double value, DisplayUnit unit, int decimalPlaces, boolean isShort) {
 		if (value < Long.MIN_VALUE + 10000) {
 			return Component.literal("-").append(ElectroTextUtils.gui("displayunit.infinity.name")).append(" ").append((isShort ? unit.symbol : unit.namePlural));
-		} else if (value > Long.MAX_VALUE - 10000) {
+		}
+		if (value > Long.MAX_VALUE - 10000) {
 			return ElectroTextUtils.gui("displayunit.infinity.name").append(" ").append((isShort ? unit.symbol : unit.namePlural));
 		}
 		Component unitName;
@@ -34,10 +35,9 @@ public class ChatFormatter {
 
 				if (measurement.ordinal() == 0) {
 					return formatDecimals(measurement.process(value), decimalPlaces).append(unit.distanceFromValue).append(measurement.getName(isShort)).append(unitName);
-				} else {
-					measurement = MeasurementUnit.values()[measurement.ordinal() - 1];
-					return formatDecimals(measurement.process(value), decimalPlaces).append(unit.distanceFromValue).append(measurement.getName(isShort)).append(unitName);
 				}
+				measurement = MeasurementUnit.values()[measurement.ordinal() - 1];
+				return formatDecimals(measurement.process(value), decimalPlaces).append(unit.distanceFromValue).append(measurement.getName(isShort)).append(unitName);
 			}
 		}
 

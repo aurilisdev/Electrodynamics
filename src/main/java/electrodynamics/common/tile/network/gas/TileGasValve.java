@@ -20,49 +20,49 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class TileGasValve extends GenericTileValve {
-	
+
 	public TileGasValve(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_GASVALVE.get(), pos, state);
 		addComponent(new ComponentDirection(this));
 	}
-	
+
 	@Override
 	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-		
-		if(side == null || cap != ElectrodynamicsCapabilities.GAS_HANDLER) {
+
+		if (side == null || cap != ElectrodynamicsCapabilities.GAS_HANDLER) {
 			return LazyOptional.empty();
 		}
-		
+
 		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-		
-		if(BlockEntityUtils.getRelativeSide(facing, INPUT_DIR) == side || BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR) == side) {
-			
+
+		if (BlockEntityUtils.getRelativeSide(facing, INPUT_DIR) == side || BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR) == side) {
+
 			BlockEntity relative = level.getBlockEntity(worldPosition.relative(side.getOpposite()));
-			
-			if(relative == null) {
+
+			if (relative == null) {
 				return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
 			}
-			
+
 			LazyOptional<IGasHandler> handler = relative.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER, side);
-			
-			if(handler.isPresent()) {
+
+			if (handler.isPresent()) {
 				return LazyOptional.of(() -> new CapDispatcher(handler.resolve().get())).cast();
 			}
 		}
 		return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
 	}
-	
+
 	private class CapDispatcher implements IGasHandler {
 
 		private final IGasHandler parent;
-		
+
 		private CapDispatcher(IGasHandler parent) {
 			this.parent = parent;
 		}
-		
+
 		@Override
 		public int getTanks() {
-			if(isClosed) {
+			if (isClosed) {
 				return 1;
 			}
 			return parent.getTanks();
@@ -70,7 +70,7 @@ public class TileGasValve extends GenericTileValve {
 
 		@Override
 		public GasStack getGasInTank(int tank) {
-			if(isClosed) {
+			if (isClosed) {
 				return GasStack.EMPTY;
 			}
 			return parent.getGasInTank(tank);
@@ -78,7 +78,7 @@ public class TileGasValve extends GenericTileValve {
 
 		@Override
 		public double getTankCapacity(int tank) {
-			if(isClosed) {
+			if (isClosed) {
 				return 0;
 			}
 			return parent.getTankCapacity(tank);
@@ -86,7 +86,7 @@ public class TileGasValve extends GenericTileValve {
 
 		@Override
 		public double getTankMaxTemperature(int tank) {
-			if(isClosed) {
+			if (isClosed) {
 				return 0;
 			}
 			return parent.getTankMaxTemperature(tank);
@@ -94,7 +94,7 @@ public class TileGasValve extends GenericTileValve {
 
 		@Override
 		public int getTankMaxPressure(int tank) {
-			if(isClosed) {
+			if (isClosed) {
 				return 0;
 			}
 			return parent.getTankMaxPressure(tank);
@@ -102,7 +102,7 @@ public class TileGasValve extends GenericTileValve {
 
 		@Override
 		public boolean isGasValid(int tank, GasStack gas) {
-			if(isClosed) {
+			if (isClosed) {
 				return false;
 			}
 			return parent.isGasValid(tank, gas);
@@ -110,7 +110,7 @@ public class TileGasValve extends GenericTileValve {
 
 		@Override
 		public double fillTank(int tank, GasStack gas, GasAction action) {
-			if(isClosed) {
+			if (isClosed) {
 				return 0;
 			}
 			return parent.fillTank(tank, gas, action);
@@ -118,7 +118,7 @@ public class TileGasValve extends GenericTileValve {
 
 		@Override
 		public GasStack drainTank(int tank, GasStack gas, GasAction action) {
-			if(isClosed) {
+			if (isClosed) {
 				return GasStack.EMPTY;
 			}
 			return parent.drainTank(tank, tank, action);
@@ -126,7 +126,7 @@ public class TileGasValve extends GenericTileValve {
 
 		@Override
 		public GasStack drainTank(int tank, double maxFill, GasAction action) {
-			if(isClosed) {
+			if (isClosed) {
 				return GasStack.EMPTY;
 			}
 			return parent.drainTank(tank, maxFill, action);
@@ -134,7 +134,7 @@ public class TileGasValve extends GenericTileValve {
 
 		@Override
 		public double heat(int tank, double deltaTemperature, GasAction action) {
-			if(isClosed) {
+			if (isClosed) {
 				return -1;
 			}
 			return parent.heat(tank, deltaTemperature, action);
@@ -142,12 +142,12 @@ public class TileGasValve extends GenericTileValve {
 
 		@Override
 		public double bringPressureTo(int tank, int atm, GasAction action) {
-			if(isClosed) {
+			if (isClosed) {
 				return -1;
 			}
 			return parent.bringPressureTo(tank, atm, action);
 		}
-		
+
 	}
 
 }

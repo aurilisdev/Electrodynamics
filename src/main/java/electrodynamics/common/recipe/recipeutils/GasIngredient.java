@@ -31,23 +31,23 @@ public class GasIngredient extends Ingredient {
 
 	@Nonnull
 	private List<GasStack> gasStacks;
-	
+
 	@Nullable
 	private TagKey<Gas> tag;
 	private double amount;
 	private double temperature;
 	private int pressure;
-	
+
 	public GasIngredient(GasStack stack) {
 		super(Stream.empty());
 		gasStacks = List.of(stack);
 	}
-	
+
 	public GasIngredient(List<GasStack> gases) {
 		super(Stream.empty());
 		gasStacks = gases;
 	}
-	
+
 	/**
 	 * Constructor to be used if trying to load fluids from a ResourceLocation after the server has loaded
 	 * 
@@ -60,21 +60,21 @@ public class GasIngredient extends Ingredient {
 	 */
 	public GasIngredient(ResourceLocation gasLoc, boolean isTag, double amount, double temperature, int pressure) {
 		super(Stream.empty());
-		if(isTag) {
+		if (isTag) {
 			List<Gas> gases = ElectrodynamicsRegistries.gasRegistry().tags().getTag(ElectrodynamicsTags.Gases.create(gasLoc)).stream().toList();
 			gasStacks = new ArrayList<>();
-			for(Gas gas : gases) {
+			for (Gas gas : gases) {
 				gasStacks.add(new GasStack(gas, amount, temperature, pressure));
 			}
 		} else {
 			gasStacks = List.of(new GasStack(ElectrodynamicsRegistries.gasRegistry().getValue(gasLoc), amount, temperature, pressure));
 		}
-		if(gasStacks.isEmpty()) {
+		if (gasStacks.isEmpty()) {
 			throw new UnsupportedOperationException("No gases returned from " + gasLoc);
 		}
-		
+
 	}
-	
+
 	public GasIngredient(TagKey<Gas> tag, double amount, double temperature, int pressure) {
 		super(Stream.empty());
 		this.tag = tag;
@@ -83,11 +83,11 @@ public class GasIngredient extends Ingredient {
 		this.pressure = pressure;
 		gasStacks = new ArrayList<>();
 	}
-	
+
 	public GasIngredient(ResourceLocation tag, double amount, double temperature, int pressure) {
 		this(ElectrodynamicsTags.Gases.create(tag), amount, temperature, pressure);
 	}
-	
+
 	public static GasIngredient deserialize(JsonObject jsonObject) {
 		Preconditions.checkArgument(jsonObject != null, "GasStack can only be deserialized from a JsonObject");
 		try {
@@ -97,7 +97,8 @@ public class GasIngredient extends Ingredient {
 				double temperature = GsonHelper.getAsDouble(jsonObject, "temp");
 				int pressure = GsonHelper.getAsInt(jsonObject, "pressure");
 				return new GasIngredient(resourceLocation, false, amount, temperature, pressure);
-			} else if (GsonHelper.isValidNode(jsonObject, "tag")) {
+			}
+			if (GsonHelper.isValidNode(jsonObject, "tag")) {
 				ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(jsonObject, "tag"));
 				double amount = GsonHelper.getAsDouble(jsonObject, "amount");
 				double temperature = GsonHelper.getAsDouble(jsonObject, "temp");
@@ -110,48 +111,45 @@ public class GasIngredient extends Ingredient {
 
 		return null;
 	}
-	
+
 	public boolean testGas(@Nullable GasStack gas, boolean checkTemperature, boolean checkPressure) {
-		if(gas == null) {
+		if (gas == null) {
 			return false;
 		}
-		for(GasStack g : getMatchingGases()) {
-			if(g.getAmount() >= gas.getAmount()) {
-				if(g.isSameGas(gas)) {
-					if(checkTemperature || checkPressure) {
-						boolean sameTemp = g.isSameTemperature(gas);
-						boolean samePres = g.isSamePressure(gas);
-						if(checkTemperature) {
-							if(checkPressure) {
-								return sameTemp && samePres;
-							} else {
-								return sameTemp;
-							}
-						} else {
-							return samePres;
-						}
-					} else {
+		for (GasStack g : getMatchingGases()) {
+			if (g.getAmount() >= gas.getAmount()) {
+				if (g.isSameGas(gas)) {
+					if (!checkTemperature && !checkPressure) {
 						return true;
 					}
+					boolean sameTemp = g.isSameTemperature(gas);
+					boolean samePres = g.isSamePressure(gas);
+					if (!checkTemperature) {
+						return samePres;
+					}
+					if (checkPressure) {
+						return sameTemp && samePres;
+					}
+					return sameTemp;
 				}
 			}
 		}
 		return false;
-		
+
 	}
-	
+
 	public List<GasStack> getMatchingGases() {
-		
-		if(gasStacks.isEmpty() && tag != null) {
+
+		if (gasStacks.isEmpty() && tag != null) {
 			ElectrodynamicsRegistries.gasRegistry().tags().getTag(tag).forEach(h -> {
 				gasStacks.add(new GasStack(h, amount, temperature, pressure));
 			});
 		}
-		
+
 		return gasStacks;
-		
+
 	}
-	
+
 	public static GasIngredient read(FriendlyByteBuf input) {
 		List<GasStack> stacks = new ArrayList<>();
 		int count = input.readInt();
@@ -184,7 +182,7 @@ public class GasIngredient extends Ingredient {
 			ing.write(buffer);
 		}
 	}
-	
+
 	public GasStack getGasStack() {
 		return getMatchingGases().get(0);
 	}

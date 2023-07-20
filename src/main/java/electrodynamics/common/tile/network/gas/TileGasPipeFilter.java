@@ -43,7 +43,7 @@ public class TileGasPipeFilter extends GenericTile {
 			property(new Property<>(PropertyType.Gasstack, "gasthree", GasStack.EMPTY)),
 			//
 			property(new Property<>(PropertyType.Gasstack, "gasfour", GasStack.EMPTY)) };
-	
+
 	public final Property<Boolean> isWhitelist = property(new Property<>(PropertyType.Boolean, "iswhitelist", false));
 
 	public TileGasPipeFilter(BlockPos worldPos, BlockState blockState) {

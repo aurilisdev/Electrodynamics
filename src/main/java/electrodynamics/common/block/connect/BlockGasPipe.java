@@ -98,13 +98,14 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock {
 		EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(dir);
 		if (tile instanceof IGasPipe) {
 			return state.setValue(property, EnumConnectType.WIRE);
-		} else if (GasUtilities.isGasReciever(tile, dir.getOpposite())) {
-			return state.setValue(property, EnumConnectType.INVENTORY);
-		} else if (state.hasProperty(property)) {
-			return state.setValue(property, EnumConnectType.NONE);
-		} else {
-			return state;
 		}
+		if (GasUtilities.isGasReciever(tile, dir.getOpposite())) {
+			return state.setValue(property, EnumConnectType.INVENTORY);
+		}
+		if (state.hasProperty(property)) {
+			return state.setValue(property, EnumConnectType.NONE);
+		}
+		return state;
 	}
 
 	@Override

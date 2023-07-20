@@ -15,7 +15,7 @@ public class ContainerGasVent extends GenericContainerBlockEntity<TileGasVent> {
 	public ContainerGasVent(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(ElectrodynamicsMenuTypes.CONTAINER_GASVENT.get(), id, playerinv, inventory, inventorydata);
 	}
-	
+
 	public ContainerGasVent(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));
 	}

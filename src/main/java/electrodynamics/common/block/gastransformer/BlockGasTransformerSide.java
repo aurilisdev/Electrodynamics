@@ -21,40 +21,40 @@ public class BlockGasTransformerSide extends GenericMachineBlock {
 		super(TileGasTransformerSideBlock::new);
 		registerDefaultState(stateDefinition.any().setValue(BlockMachine.ON, false).setValue(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false));
 	}
-	
+
 	@Override
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(BlockMachine.ON);
 		builder.add(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK);
 	}
-	
+
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		return getStatusFromTop(context.getLevel(), context.getClickedPos(), super.getStateForPlacement(context).setValue(BlockMachine.ON, false));
 	}
-	
+
 	public BlockState getStatusFromTop(Level world, BlockPos pos, BlockState baseState) {
-		if(!baseState.hasProperty(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK)) {
+		if (!baseState.hasProperty(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK)) {
 			return baseState;
-		} else if (world.getBlockState(pos.above()).is(ElectrodynamicsBlocks.blockGasTransformerAddonTank)) {
-			return baseState.setValue(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true);
-		} else {
-			return baseState.setValue(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false);
 		}
+		if (world.getBlockState(pos.above()).is(ElectrodynamicsBlocks.blockGasTransformerAddonTank)) {
+			return baseState.setValue(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true);
+		}
+		return baseState.setValue(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false);
 	}
-	
+
 	@Override
 	public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
 		super.onNeighborChange(state, level, pos, neighbor);
-		if(level instanceof Level world) {
+		if (level instanceof Level world) {
 			world.setBlockAndUpdate(pos, getStatusFromTop(world, pos, state));
 		}
 	}
-	
+
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-		if(state.hasProperty(BlockMachine.ON) && state.getValue(BlockMachine.ON)) {
+		if (state.hasProperty(BlockMachine.ON) && state.getValue(BlockMachine.ON)) {
 			return 15;
 		}
 		return super.getLightEmission(state, level, pos);

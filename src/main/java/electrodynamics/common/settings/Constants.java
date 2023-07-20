@@ -15,7 +15,7 @@ public class Constants {
 	@FloatValue(def = 0.995f)
 	public static float CIRCUITBREAKER_EFFICIENCY = 0.995f;
 	@FloatValue(def = 1.0F)
-	public static float RELAY_EFFICIENCY = 1.0F; //the relay is a dumb switch; no need to penalize its use
+	public static float RELAY_EFFICIENCY = 1.0F; // the relay is a dumb switch; no need to penalize its use
 	@DoubleValue(def = 34)
 	public static double COALGENERATOR_AMPERAGE = 34.0;
 	@DoubleValue(def = 4.5)

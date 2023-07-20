@@ -8,9 +8,9 @@ import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentGasHandlerSimple;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.types.GenericMaterialTile;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
@@ -29,7 +29,7 @@ public class TileGasVent extends GenericMaterialTile {
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().gasInputs(1)).valid((slot, stack, i) -> CapabilityUtils.hasGasItemCap(stack)));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.gasvent, this).createMenu((id, player) -> new ContainerGasVent(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
-	
+
 	public void tickServer(ComponentTickable tickable) {
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		ComponentGasHandlerSimple handler = getComponent(ComponentType.GasHandler);

@@ -55,12 +55,12 @@ public class Item2ItemRecipeSerializer<T extends Item2ItemRecipe> extends Electr
 		ProbableGas[] gasBi = null;
 		if (hasItemBi) {
 			itemBi = ProbableItem.readList(buffer);
-		} 
+		}
 		if (hasFluidBi) {
 			fluidBi = ProbableFluid.readList(buffer);
-			
+
 		}
-		if(hasGasBi) {
+		if (hasGasBi) {
 			gasBi = ProbableGas.readList(buffer);
 		}
 		try {
@@ -89,7 +89,7 @@ public class Item2ItemRecipeSerializer<T extends Item2ItemRecipe> extends Electr
 		if (recipe.hasFluidBiproducts()) {
 			ProbableFluid.writeList(buffer, recipe.getFluidBiproducts());
 		}
-		if(recipe.hasGasBiproducts()) {
+		if (recipe.hasGasBiproducts()) {
 			ProbableGas.writeList(buffer, recipe.getGasBiproducts());
 		}
 	}

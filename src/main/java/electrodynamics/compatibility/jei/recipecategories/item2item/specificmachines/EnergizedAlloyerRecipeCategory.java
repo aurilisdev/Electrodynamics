@@ -38,7 +38,7 @@ public class EnergizedAlloyerRecipeCategory extends Item2ItemRecipeCategory<Ener
 
 	public static final int ANIM_TIME = 50;
 
-	//public static final String RECIPE_GROUP = SubtypeMachine.energizedalloyer.tag();
+	// public static final String RECIPE_GROUP = SubtypeMachine.energizedalloyer.tag();
 
 	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.energizedalloyer));
 

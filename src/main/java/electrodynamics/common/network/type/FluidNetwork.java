@@ -97,7 +97,7 @@ public class FluidNetwork extends AbstractNetwork<IFluidPipe, SubtypeFluidPipe, 
 		HashSet<Direction> connections;
 
 		for (BlockEntity tile : availableAcceptors) {
-			
+
 			perTile = new FluidStack(initial.getFluid(), initial.getAmount() / size);
 			prePerTile = perTile.copy();
 
@@ -258,17 +258,14 @@ public class FluidNetwork extends AbstractNetwork<IFluidPipe, SubtypeFluidPipe, 
 	 * 
 	 * There is no need for this as we have no concept of fluid pressure nor temperature
 	 * 
-	 * private boolean checkForOverload(int attemptSend) { if (attemptSend >= networkMaxTransfer) { HashSet<SubtypeFluidPipe>
-	 * checkList = new HashSet<>(); for (SubtypeFluidPipe type : SubtypeFluidPipe.values()) { if (type.maxTransfer <= attemptSend) {
-	 * checkList.add(type); } } for (SubtypeFluidPipe index : checkList) { for (IFluidPipe conductor : conductorTypeMap.get(index)) {
-	 * conductor.destroyViolently(); } } return true; } return false; }
+	 * private boolean checkForOverload(int attemptSend) { if (attemptSend >= networkMaxTransfer) { HashSet<SubtypeFluidPipe> checkList = new HashSet<>(); for (SubtypeFluidPipe type : SubtypeFluidPipe.values()) { if (type.maxTransfer <= attemptSend) { checkList.add(type); } } for (SubtypeFluidPipe index : checkList) { for (IFluidPipe conductor : conductorTypeMap.get(index)) { conductor.destroyViolently(); } } return true; } return false; }
 	 */
 
 	@Override
 	public boolean isConductor(BlockEntity tile, IFluidPipe requsterCable) {
 		return tile instanceof IFluidPipe;
 	}
-	
+
 	@Override
 	public boolean isConductorClass(BlockEntity tile) {
 		return tile instanceof IFluidPipe;

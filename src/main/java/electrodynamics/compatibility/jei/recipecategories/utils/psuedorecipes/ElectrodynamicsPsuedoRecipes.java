@@ -26,16 +26,16 @@ public class ElectrodynamicsPsuedoRecipes {
 
 		for (Gas gas : ElectrodynamicsRegistries.gasRegistry().getValues()) {
 
-			if(gas.isEmpty()) {
+			if (gas.isEmpty()) {
 				continue;
 			}
-			
+
 			if (gas.getCondensedFluid().isSame(Fluids.EMPTY)) {
 				continue;
 			}
 
 			ItemStack inputCylinder = new ItemStack(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
-			
+
 			CapabilityUtils.fillGasItem(inputCylinder, new GasStack(gas, 1000, gas.getCondensationTemp() + 0.00001, Gas.PRESSURE_AT_SEA_LEVEL), GasAction.EXECUTE);
 
 			ItemStack outputBucket = new ItemStack(gas.getCondensedFluid().getBucket());

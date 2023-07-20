@@ -20,5 +20,5 @@ public interface IRefreshableCable extends IAbstractCable {
 
 	@Override
 	void setNetwork(AbstractNetwork<?, ?, ?, ?> aValueNetwork);
-	
+
 }

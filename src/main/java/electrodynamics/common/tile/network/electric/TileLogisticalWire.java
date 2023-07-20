@@ -7,7 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileLogisticalWire extends TileWire {
-	
+
 	public boolean isPowered = false;
 
 	public TileLogisticalWire(BlockPos pos, BlockState state) {

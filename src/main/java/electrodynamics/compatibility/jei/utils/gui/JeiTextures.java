@@ -5,11 +5,11 @@ import electrodynamics.api.screen.ITexture;
 import net.minecraft.resources.ResourceLocation;
 
 public enum JeiTextures implements ITexture {
-	
+
 	BACKGROUND_DEFAULT(0, 0, 512, 512, 512, 512, new ResourceLocation(References.ID, "textures/screen/jei/background.png")),
 	FLUID_GAUGE_DEFAULT(0, 0, 14, 49, 14, 49, new ResourceLocation(References.ID, "textures/screen/jei/fluid_gauge_default.png")),
 	FAKE_GAS_GAUGE(0, 0, 14, 49, 14, 49, new ResourceLocation(References.ID, "textures/screen/jei/fake_gas_gauge.png"));
-	
+
 	private final int u;
 	private final int v;
 	private final int width;
@@ -17,7 +17,7 @@ public enum JeiTextures implements ITexture {
 	private final int imageWidth;
 	private final int imageHeight;
 	private final ResourceLocation loc;
-	
+
 	private JeiTextures(int u, int v, int width, int height, int imageWidth, int imageHeight, ResourceLocation loc) {
 		this.u = u;
 		this.v = v;
@@ -27,7 +27,7 @@ public enum JeiTextures implements ITexture {
 		this.imageHeight = imageHeight;
 		this.loc = loc;
 	}
-	
+
 	@Override
 	public int textureWidth() {
 		return width;

@@ -54,32 +54,32 @@ public class ChapterFluids extends Chapter {
 
 		for (RegistryObject<Fluid> fluid : ElectrodynamicsFluids.FLUIDS.getEntries()) {
 			pageData.add(new FluidWrapperObject(0, 0, 32, 32, 36, fluid.get(), new GraphicTextDescriptor(36, 11, fluid.get().getFluidType().getDescription()))
-					
-			.onTooltip(new OnTooltip() {
 
-				@Override
-				public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
-					if (JeiBuffer.isJeiInstalled()) {
-						List<FormattedCharSequence> tooltips = new ArrayList<>();
-						tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-						tooltips.add(ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-						screen.displayTooltips(stack, tooltips, xAxis, yAxis);
-					}
+					.onTooltip(new OnTooltip() {
 
-				}
-			}).onKeyPress(new OnKeyPress() {
+						@Override
+						public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+							if (JeiBuffer.isJeiInstalled()) {
+								List<FormattedCharSequence> tooltips = new ArrayList<>();
+								tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+								tooltips.add(ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+								screen.displayTooltips(stack, tooltips, xAxis, yAxis);
+							}
 
-				@Override
-				public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
+						}
+					}).onKeyPress(new OnKeyPress() {
 
-				}
+						@Override
+						public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
 
-				@Override
-				public Object getJeiLookup() {
-					return new FluidStack(fluid.get(), 1);
-				}
+						}
 
-			}));
+						@Override
+						public Object getJeiLookup() {
+							return new FluidStack(fluid.get(), 1);
+						}
+
+					}));
 		}
 
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l2")).setIndentions(1).setSeparateStart());
@@ -94,10 +94,10 @@ public class ChapterFluids extends Chapter {
 				tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.left", ElectrodynamicsItems.getItem(SubtypeMachine.mineralwasher).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 				tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.middle", ElectrodynamicsItems.getItem(SubtypeMachine.chemicalcrystallizer).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 				tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.right", ElectrodynamicsItems.getItem(SubtypeMachine.electricpump).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
-				
+
 				screen.displayTooltips(stack, tooltips, xAxis, yAxis);
 			}
-			
+
 		}));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l4")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.pipecapacity", ElectroTextUtils.guidebook("chapter.fluids.pipecopper"), SubtypeFluidPipe.copper.maxTransfer)).setSeparateStart().setIndentions(1));

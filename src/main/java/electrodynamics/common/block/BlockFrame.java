@@ -58,7 +58,8 @@ public class BlockFrame extends BaseEntityBlock {
 		if (type == 0) {
 			return FRAME;
 			// room for future expansion
-		} else if (type == 1) {
+		}
+		if (type == 1) {
 			return FRAME_CORNER;
 		}
 		return super.getShape(pState, pLevel, pPos, pContext);
@@ -140,9 +141,9 @@ public class BlockFrame extends BaseEntityBlock {
 
 	public static void writeToNbt(CompoundTag tag, String key, BlockState state) {
 		CompoundTag data = new CompoundTag();
-		
+
 		data.putInt("facing", state.getValue(FACING).ordinal());
-		//data.putString("facing", state.getValue(FACING).name());
+		// data.putString("facing", state.getValue(FACING).name());
 		data.putBoolean("waterlogged", state.getValue(BlockStateProperties.WATERLOGGED));
 		data.putBoolean("decay", state.getValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY));
 		tag.put(key, data);
@@ -151,9 +152,9 @@ public class BlockFrame extends BaseEntityBlock {
 	public static BlockState readFromNbt(CompoundTag tag) {
 		BlockState state = ElectrodynamicsBlocks.blockFrame.defaultBlockState();
 		int dir = 0;
-		if(tag.contains("facing", 8)) {
+		if (tag.contains("facing", 8)) {
 			String name = tag.getString("facing");
-			dir = switch(name) {
+			dir = switch (name) {
 			case "DOWN" -> 0;
 			case "UP" -> 1;
 			case "NORTH" -> 2;

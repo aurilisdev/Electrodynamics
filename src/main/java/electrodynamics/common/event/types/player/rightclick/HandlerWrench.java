@@ -41,7 +41,7 @@ public class HandlerWrench extends AbstractRightClickBlockHandler {
 
 			}
 
-		} 
+		}
 
 	}
 

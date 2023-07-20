@@ -35,7 +35,7 @@ public class HandlerJetpackMode extends AbstractPostGuiOverlayHandler {
 			Component mode = ItemJetpack.getModeText(chestSlot.hasTag() ? chestSlot.getTag().getInt(NBTUtils.MODE) : -1);
 
 			int height = window.getGuiScaledHeight();
-			
+
 			chestSlot.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> {
 				GasStack gas = cap.getGasInTank(0);
 				if (gas.isEmpty()) {

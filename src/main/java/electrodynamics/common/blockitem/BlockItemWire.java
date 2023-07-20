@@ -22,7 +22,7 @@ import net.minecraftforge.fml.common.Mod;
 public class BlockItemWire extends BlockItem {
 
 	private static HashSet<BlockItemWire> WIRES = new HashSet<>();
-	
+
 	private final BlockWire wire;
 
 	public BlockItemWire(BlockWire wire, Properties builder) {
@@ -48,21 +48,20 @@ public class BlockItemWire extends BlockItem {
 			ElectroTextUtils.tooltip("itemwire.info.redstone");
 		}
 	}
-	
+
 	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = References.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 	private static class ColorHandler {
-		
+
 		@SubscribeEvent
 		public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
 			WIRES.forEach(item -> event.register((stack, index) -> {
-				if(index == 1) {
+				if (index == 1) {
 					return item.wire.wire.color.color;
-				} else {
-					return 0xFFFFFFFF;
 				}
+				return 0xFFFFFFFF;
 			}, item));
 		}
-		
+
 	}
-	
+
 }

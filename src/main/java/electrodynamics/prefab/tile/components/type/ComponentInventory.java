@@ -1,5 +1,16 @@
 package electrodynamics.prefab.tile.components.type;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
+import org.apache.commons.lang3.ArrayUtils;
+
 import electrodynamics.api.capability.types.itemhandler.IndexedSidedInvWrapper;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.properties.Property;
@@ -21,12 +32,6 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.*;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 public class ComponentInventory implements Component, WorldlyContainer {
 	protected GenericTile holder = null;
@@ -51,8 +56,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	/*
 	 * IMPORTANT DEFINITIONS:
 	 * 
-	 * SLOT ORDER: 1. Item Input Slots 2. Item Output Slot 3. Item Biproduct Slots
-	 * 4. Bucket Input Slots 5. Bucket Output Slots 6. Upgrade Slots
+	 * SLOT ORDER: 1. Item Input Slots 2. Item Output Slot 3. Item Biproduct Slots 4. Bucket Input Slots 5. Bucket Output Slots 6. Upgrade Slots
 	 * 
 	 */
 
@@ -80,7 +84,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	public ComponentInventory(GenericTile holder) {
 		this(holder, InventoryBuilder.EMPTY);
 	}
-	
+
 	public ComponentInventory(GenericTile holder, InventoryBuilder builder) {
 		holder(holder);
 
@@ -359,11 +363,11 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	public int bucketOutputs() {
 		return bucketOutputs;
 	}
-	
+
 	public int gasInputs() {
 		return gasInputs;
 	}
-	
+
 	public int gasOutputs() {
 		return gasOutputs;
 	}
@@ -391,11 +395,11 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	public int getOutputBucketStartIndex() {
 		return getInputBucketStartIndex() + bucketInputs;
 	}
-	
+
 	public int getInputGasStartIndex() {
 		return getOutputBucketStartIndex() + bucketOutputs;
 	}
-	
+
 	public int getOutputGasStartIndex() {
 		return getInputGasStartIndex() + gasInputs;
 	}
@@ -423,11 +427,11 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	public List<ItemStack> getOutputBucketContents() {
 		return items.get().subList(getOutputBucketStartIndex(), getUpgradeSlotStartIndex());
 	}
-	
+
 	public List<ItemStack> getInputGasContents() {
 		return items.get().subList(getInputGasStartIndex(), getOutputGasStartIndex());
 	}
-	
+
 	public List<ItemStack> getOutputGasContents() {
 		return items.get().subList(getOutputGasStartIndex(), getUpgradeSlotStartIndex());
 	}
@@ -554,7 +558,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	public static class InventoryBuilder {
-		
+
 		private static final InventoryBuilder EMPTY = new InventoryBuilder();
 
 		private int builderSize = 0;
@@ -600,7 +604,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			this.builderBucketOutputs = bucketOutputs;
 			return this;
 		}
-		
+
 		public InventoryBuilder gasInputs(int gasInputs) {
 			this.builderGasInputs = gasInputs;
 			return this;
@@ -619,8 +623,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		/**
 		 * Specialized method for machines that use ComponentProcessors. It removed the need to individually set input, output, and biproduct slots.
 		 * 
-		 * @param procCount How many ComponentProcessors the machine has
-		 * @param inputsPerProc How many inputs are assigned to a processor
+		 * @param procCount      How many ComponentProcessors the machine has
+		 * @param inputsPerProc  How many inputs are assigned to a processor
 		 * @param outputsPerProc How many outputs are assigned to a processor
 		 * @param biprodsPerProc how many biproducts are assigned to a processor
 		 * @return The mutated inventory builder
@@ -640,6 +644,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 		/**
 		 * This method should not be used in tandem with other individual mutator methods and is designed for inventories that have no specified slot types
+		 * 
 		 * @param size The desired size of the inventory
 		 * @return The mutated builder
 		 */

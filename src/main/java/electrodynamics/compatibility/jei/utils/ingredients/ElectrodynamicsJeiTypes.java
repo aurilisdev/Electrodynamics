@@ -6,7 +6,6 @@ import mezz.jei.api.ingredients.IIngredientTypeWithSubtypes;
 
 public class ElectrodynamicsJeiTypes {
 
-	
 	public static final IIngredientTypeWithSubtypes<Gas, GasStack> GAS_STACK = new IIngredientTypeWithSubtypes<>() {
 
 		@Override
@@ -24,5 +23,5 @@ public class ElectrodynamicsJeiTypes {
 			return ingredient.getGas();
 		}
 	};
-	
+
 }

@@ -16,14 +16,14 @@ import electrodynamics.prefab.utilities.RenderingUtils;
 public class ScreenComponentGeneric extends AbstractScreenComponent {
 
 	public ITexture texture;
-	
+
 	public int color = RenderingUtils.WHITE;
 
 	public ScreenComponentGeneric(ITexture texture, int x, int y) {
 		super(x, y, texture.textureWidth(), texture.textureHeight());
 		this.texture = texture;
 	}
-	
+
 	public ScreenComponentGeneric(int x, int y, int width, int height) {
 		super(x, y, width, height);
 		texture = Textures.NONE;
@@ -36,7 +36,7 @@ public class ScreenComponentGeneric extends AbstractScreenComponent {
 
 	@Override
 	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		if(!isVisible()) {
+		if (!isVisible()) {
 			return;
 		}
 		RenderingUtils.bindTexture(texture.getLocation());

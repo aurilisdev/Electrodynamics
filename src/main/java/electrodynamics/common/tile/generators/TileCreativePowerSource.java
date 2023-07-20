@@ -42,10 +42,10 @@ public class TileCreativePowerSource extends GenericTile {
 	}
 
 	private void tickServer(ComponentTickable tick) {
-		if(hasRedstoneSignal.get()) {
+		if (hasRedstoneSignal.get()) {
 			return;
 		}
-		//ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		// ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
 		if (outputs == null) {
 			outputs = new ArrayList<>();
 			for (Direction dir : Direction.values()) {
@@ -58,13 +58,13 @@ public class TileCreativePowerSource extends GenericTile {
 				cache.update(worldPosition.relative(Direction.values()[i]));
 			}
 		}
-		
-		if(voltage.get() <= 0) {
+
+		if (voltage.get() <= 0) {
 			return;
 		}
-		
-		//electro.voltage(power.get());
-		TransferPack output = TransferPack.joulesVoltage((double) (power.get() * POWER_MULTIPLIER) / 20.0, voltage.get());
+
+		// electro.voltage(power.get());
+		TransferPack output = TransferPack.joulesVoltage(power.get() * POWER_MULTIPLIER / 20.0, voltage.get());
 		for (int i = 0; i < outputs.size(); i++) {
 			CachedTileOutput cache = outputs.get(i);
 			Direction dir = Direction.values()[i];
@@ -74,12 +74,12 @@ public class TileCreativePowerSource extends GenericTile {
 		}
 
 	}
-	
+
 	@Override
 	public int getComparatorSignal() {
 		return power.get() > 0 ? 15 : 0;
 	}
-	
+
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
 		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));

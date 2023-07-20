@@ -5,16 +5,16 @@ import com.electronwill.nightconfig.core.conversion.InvalidValueException;
 import electrodynamics.prefab.properties.Property;
 
 public class TargetValue {
-	
+
 	private double val;
-	
+
 	private double target;
 	private double acceleration;
 
 	public double getValue() {
 		return val;
 	}
-	
+
 	public void setValue(double val) {
 		this.val = val;
 	}
@@ -41,25 +41,25 @@ public class TargetValue {
 	public TargetValue flush() {
 		return flush(target, acceleration);
 	}
-	
+
 	public static class PropertyTargetValue extends TargetValue {
 
 		private final Property<Double> valueProperty;
-		
+
 		public PropertyTargetValue(Property<Double> val) {
 			valueProperty = val;
 		}
-		
+
 		@Override
 		public double getValue() {
 			return valueProperty.get();
 		}
-		
+
 		@Override
 		public void setValue(double val) {
 			valueProperty.set(val);
 		}
-		
+
 	}
 
 }

@@ -247,11 +247,11 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
 		}
 		if (hasInputDir(side)) {
 			return LazyOptional.<IGasHandler>of(() -> new InputTankDispatcher(inputTanks)).cast();
-		} else if (hasOutputDir(side)) {
-			return LazyOptional.<IGasHandler>of(() -> new OutputTankDispatcher(outputTanks)).cast();
-		} else {
-			return LazyOptional.empty();
 		}
+		if (hasOutputDir(side)) {
+			return LazyOptional.<IGasHandler>of(() -> new OutputTankDispatcher(outputTanks)).cast();
+		}
+		return LazyOptional.empty();
 	}
 
 	@Override

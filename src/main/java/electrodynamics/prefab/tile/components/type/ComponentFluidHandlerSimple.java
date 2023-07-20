@@ -132,11 +132,11 @@ public class ComponentFluidHandlerSimple extends PropertyFluidTank implements IC
 		}
 		if (hasInputDir(side)) {
 			return LazyOptional.<IFluidHandler>of(() -> new InputTank(this)).cast();
-		} else if (hasOutputDir(side)) {
-			return LazyOptional.<IFluidHandler>of(() -> new OutputTank(this)).cast();
-		} else {
-			return LazyOptional.empty();
 		}
+		if (hasOutputDir(side)) {
+			return LazyOptional.<IFluidHandler>of(() -> new OutputTank(this)).cast();
+		}
+		return LazyOptional.empty();
 	}
 
 	@Override

@@ -47,9 +47,9 @@ public interface IItemTemperate {
 	/**
 	 * Increased the temperature of the item and returns the new temperature
 	 * 
-	 * @param stack: The item being heated
+	 * @param stack:  The item being heated
 	 * @param amount: The amount to heat the item by. This value should always be positive
-	 * @param debug: If this should be simulated or not
+	 * @param debug:  If this should be simulated or not
 	 * @return The new temperature of the item
 	 */
 	default double recieveHeat(ItemStack stack, double amount, boolean debug) {

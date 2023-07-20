@@ -1,11 +1,12 @@
 package electrodynamics.client.reloadlistener;
 
+import org.jetbrains.annotations.NotNull;
+
 import electrodynamics.Electrodynamics;
 import electrodynamics.client.guidebook.ScreenGuidebook;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Avert your eyes kids

@@ -176,11 +176,11 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 		world.getBlockEntity(facingPos);
 		if (TileLogisticalManager.isQuarry(facingPos, world)) {
 			return stateIn.setValue(property, EnumConnectType.WIRE);
-		} else if (TileLogisticalManager.isValidInventory(facingPos, world, facing.getOpposite())) {
-			return stateIn.setValue(property, EnumConnectType.INVENTORY);
-		} else {
-			return stateIn.setValue(property, EnumConnectType.NONE);
 		}
+		if (TileLogisticalManager.isValidInventory(facingPos, world, facing.getOpposite())) {
+			return stateIn.setValue(property, EnumConnectType.INVENTORY);
+		}
+		return stateIn.setValue(property, EnumConnectType.NONE);
 	}
 
 	@Override

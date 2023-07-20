@@ -20,57 +20,57 @@ public class TileGasTransformerAddonTank extends GenericTile {
 
 	public static final int MAX_ADDON_TANKS = 5;
 	public static final double ADDITIONAL_CAPACITY = 5000;
-	
+
 	private BlockPos ownerPos = TileQuarry.OUT_OF_REACH;
-	//public boolean isDestroyed = false;
-	
+	// public boolean isDestroyed = false;
+
 	public TileGasTransformerAddonTank(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_COMPRESSOR_ADDONTANK.get(), worldPos, blockState);
 	}
-	
+
 	public void setOwnerPos(BlockPos ownerPos) {
 		this.ownerPos = ownerPos;
 	}
-	
+
 	@Override
 	public void onBlockDestroyed() {
 		BlockPos above = getBlockPos().above();
 		BlockEntity aboveTile = getLevel().getBlockEntity(above);
-		for(int i = 0; i < MAX_ADDON_TANKS; i++) {
-			if(aboveTile != null && aboveTile instanceof TileGasTransformerAddonTank tank) {
+		for (int i = 0; i < MAX_ADDON_TANKS; i++) {
+			if (aboveTile != null && aboveTile instanceof TileGasTransformerAddonTank tank) {
 				tank.setOwnerPos(TileQuarry.OUT_OF_REACH);
 			}
 			above = above.above();
 			aboveTile = getLevel().getBlockEntity(above);
 		}
 		BlockEntity tile = getLevel().getBlockEntity(ownerPos);
-		if(tile != null && tile instanceof TileGasTransformerSideBlock side) {
-			//isDestroyed = true;
+		if (tile != null && tile instanceof TileGasTransformerSideBlock side) {
+			// isDestroyed = true;
 			side.updateTankCount();
 		}
 	}
-	
+
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
 		BlockPos belowPos = getBlockPos().below();
 		BlockState below = getLevel().getBlockState(belowPos);
 		BlockEntity tile;
-		for(int i = 0; i < MAX_ADDON_TANKS; i++) {
-			if(below.is(ElectrodynamicsBlocks.blockGasTransformerSide)) {
+		for (int i = 0; i < MAX_ADDON_TANKS; i++) {
+			if (below.is(ElectrodynamicsBlocks.blockGasTransformerSide)) {
 				tile = getLevel().getBlockEntity(belowPos);
-				if(tile != null && tile instanceof TileGasTransformerSideBlock side) {
+				if (tile != null && tile instanceof TileGasTransformerSideBlock side) {
 					side.updateTankCount();
 				}
 				break;
-			} else if (below.is(ElectrodynamicsBlocks.blockGasTransformerAddonTank)) {
-				belowPos = belowPos.below();
-				below = getLevel().getBlockState(belowPos);
-			} else {
+			}
+			if (!below.is(ElectrodynamicsBlocks.blockGasTransformerAddonTank)) {
 				break;
 			}
+			belowPos = belowPos.below();
+			below = getLevel().getBlockState(belowPos);
 		}
 	}
-	
+
 	@Override
 	public InteractionResult use(Player player, InteractionHand handIn, BlockHitResult hit) {
 		BlockEntity owner = getLevel().getBlockEntity(ownerPos);
@@ -79,7 +79,7 @@ public class TileGasTransformerAddonTank extends GenericTile {
 		}
 		return InteractionResult.FAIL;
 	}
-	
+
 	@Override
 	public void saveAdditional(@NotNull CompoundTag compound) {
 		super.saveAdditional(compound);

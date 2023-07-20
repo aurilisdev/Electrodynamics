@@ -28,7 +28,7 @@ public class DataGenerators {
 
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
-		
+
 		DataGenerator generator = event.getGenerator();
 		if (event.includeServer()) {
 			ElectrodynamicsBlockTagsProvider blockProvider = new ElectrodynamicsBlockTagsProvider(generator, event.getExistingFileHelper());

@@ -49,7 +49,7 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 
 		if (tank != null) {
 
-			renderMercuryTexture(stack, guiWidth + xLocation + 1, guiHeight + yLocation +1, (float) tank.getGasAmount() / (float) tank.getCapacity());
+			renderMercuryTexture(stack, guiWidth + xLocation + 1, guiHeight + yLocation + 1, (float) tank.getGasAmount() / (float) tank.getCapacity());
 
 		}
 
@@ -133,7 +133,9 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 	}
 
 	public enum GasGaugeTextures implements ITexture {
-		BACKGROUND_DEFAULT(14, 49, 0, 0, 256, 256, TEXTURE), LEVEL_DEFAULT(14, 49, 14, 0, 256, 256, TEXTURE), MERCURY_FLUID(12, 47, 0, 0, 12, 47, ClientRegister.TEXTURE_MERCURY);
+		BACKGROUND_DEFAULT(14, 49, 0, 0, 256, 256, TEXTURE),
+		LEVEL_DEFAULT(14, 49, 14, 0, 256, 256, TEXTURE),
+		MERCURY_FLUID(12, 47, 0, 0, 12, 47, ClientRegister.TEXTURE_MERCURY);
 
 		private final int textureWidth;
 		private final int textureHeight;

@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 
 public class BlockCompressor extends BlockGenericGasTransformer {
-	
+
 	public BlockCompressor(boolean isDecompressor) {
 		super(isDecompressor ? TileDecompressor::new : TileCompressor::new);
 		registerDefaultState(stateDefinition.any().setValue(BlockMachine.ON, false));

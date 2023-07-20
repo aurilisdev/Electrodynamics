@@ -18,7 +18,7 @@ public class BlockThermoelectricManipulator extends BlockGenericGasTransformer {
 		super(TileThermoelectricManipulator::new);
 		registerDefaultState(stateDefinition.any().setValue(BlockMachine.ON, false).setValue(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ManipulatorHeatingStatus.OFF));
 	}
-	
+
 	@Override
 	public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
 		if (state.hasProperty(BlockMachine.ON) && state.getValue(BlockMachine.ON)) {

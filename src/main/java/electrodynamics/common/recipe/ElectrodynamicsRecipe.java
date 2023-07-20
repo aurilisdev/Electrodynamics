@@ -238,8 +238,8 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		}
 		return Pair.of(tankOrientation, valid);
 	}
-	
-	public static Pair<List<Integer>, Boolean> areGasesValid(List<GasIngredient> ingredients, GasTank[] gasTanks){
+
+	public static Pair<List<Integer>, Boolean> areGasesValid(List<GasIngredient> ingredients, GasTank[] gasTanks) {
 		Boolean valid = true;
 		List<Integer> tankOrientation = new ArrayList<>();
 		for (int i = 0; i < ingredients.size(); i++) {

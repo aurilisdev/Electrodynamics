@@ -43,31 +43,31 @@ public class PropertyManager {
 			}
 
 		}
-		
+
 		return toSave;
-		
+
 	}
-	
+
 	public ArrayList<Property<?>> getClientUpdateProperties() {
-		
+
 		ArrayList<Property<?>> toClient = new ArrayList<>();
-		
-		for(Property<?> prop : properties) {
-			
-			if(prop.isDirty() && prop.shouldUpdateClient()) {
-				
+
+		for (Property<?> prop : properties) {
+
+			if (prop.isDirty() && prop.shouldUpdateClient()) {
+
 				toClient.add(prop);
-				
+
 			} else {
-				
+
 				toClient.add(null);
-				
+
 			}
-			
+
 		}
-		
+
 		return toClient;
-		
+
 	}
 
 	public void clean() {

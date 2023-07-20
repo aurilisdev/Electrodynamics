@@ -46,8 +46,8 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 			double distance = WorldUtils.distanceBetweenPositions(originPlayer.blockPosition(), Minecraft.getInstance().player.blockPosition());
 			if (distance > 0 && distance <= MAX_DISTANCE) {
 				return (float) (0.5F / distance);
-			} else if (distance > MAX_DISTANCE) {
-			} else {
+			}
+			if (distance <= MAX_DISTANCE) {
 				return 0.5F;
 			}
 		}
