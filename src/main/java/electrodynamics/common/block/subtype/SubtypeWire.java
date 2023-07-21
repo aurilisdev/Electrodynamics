@@ -345,7 +345,7 @@ public enum SubtypeWire implements ISubtype {
 		BARE(false, true, 0, 1, Material.METAL, SoundType.METAL),
 		WOOL(true, false, 240, 2, Material.WOOL, SoundType.WOOL),
 		THICK_WOOL(true, false, 960, 3, Material.WOOL, SoundType.WOOL),
-		CERAMIC(true, true, 480, 2, Material.STONE, SoundType.TUFF);
+		CERAMIC(true, true, 480, 3, Material.STONE, SoundType.TUFF);
 
 		public final boolean insulated;
 		public final boolean fireProof;
