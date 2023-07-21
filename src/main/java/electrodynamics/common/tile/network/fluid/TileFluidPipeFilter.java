@@ -33,6 +33,7 @@ public class TileFluidPipeFilter extends GenericTile {
 	public static final Direction INPUT_DIR = Direction.SOUTH;
 	public static final Direction OUTPUT_DIR = Direction.NORTH;
 
+	@SuppressWarnings("rawtypes")
 	public final Property[] filteredFluids = {
 			//
 			property(new Property<>(PropertyType.Fluidstack, "fluidone", FluidStack.EMPTY)),

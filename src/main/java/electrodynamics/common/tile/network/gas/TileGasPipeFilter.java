@@ -33,7 +33,8 @@ public class TileGasPipeFilter extends GenericTile {
 
 	public static final Direction INPUT_DIR = Direction.SOUTH;
 	public static final Direction OUTPUT_DIR = Direction.NORTH;
-
+	
+	@SuppressWarnings("rawtypes")
 	public final Property[] filteredGases = {
 			//
 			property(new Property<>(PropertyType.Gasstack, "gasone", GasStack.EMPTY)),
