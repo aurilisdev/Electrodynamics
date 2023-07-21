@@ -452,7 +452,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	// processor number is indexed at zero
 	public List<ItemStack> getBiprodsForProcessor(int processor) {
-		return getInputContents().subList(biprodsPerProc * processor, biprodsPerProc * (processor + 1));
+		return getItemBiContents().subList(biprodsPerProc * processor, biprodsPerProc * (processor + 1));
 	}
 
 	public List<Integer> getInputSlots() {
