@@ -26,8 +26,8 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 		addComponent(power = new ScreenComponentEditBox(80, 45, 49, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setFilter(ScreenComponentEditBox.POSITIVE_DECIMAL).setResponder(this::setPower));
 		addComponent(new ScreenComponentSimpleLabel(40, 31, 10, 4210752, ElectroTextUtils.gui("creativepowersource.voltage")));
 		addComponent(new ScreenComponentSimpleLabel(40, 49, 10, 4210752, ElectroTextUtils.gui("creativepowersource.power")));
-		addComponent(new ScreenComponentSimpleLabel(131, 31, 10, 4210752, DisplayUnit.VOLTAGE.symbol));
-		addComponent(new ScreenComponentSimpleLabel(131, 49, 10, 4210752, MeasurementUnit.MEGA.symbol.copy().append(DisplayUnit.WATT.symbol)));
+		addComponent(new ScreenComponentSimpleLabel(131, 31, 10, 4210752, DisplayUnit.VOLTAGE.getSymbol()));
+		addComponent(new ScreenComponentSimpleLabel(131, 49, 10, 4210752, MeasurementUnit.MEGA.getSymbol().copy().append(DisplayUnit.WATT.getSymbol())));
 	}
 
 	private void setVoltage(String val) {

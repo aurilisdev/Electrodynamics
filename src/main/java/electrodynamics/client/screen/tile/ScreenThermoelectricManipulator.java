@@ -74,7 +74,7 @@ public class ScreenThermoelectricManipulator extends GenericScreen<ContainerTher
 		addEditBox(temperature = new ScreenComponentEditBox(94, 75, 59, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(20).setResponder(this::setTemperature).setFilter(ScreenComponentEditBox.POSITIVE_DECIMAL));
 
 		addComponent(new ScreenComponentSimpleLabel(10, 80, 10, 4210752, ElectroTextUtils.gui("thermoelectricmanipulator.temp")));
-		addComponent(new ScreenComponentSimpleLabel(155, 80, 10, 4210752, DisplayUnit.TEMPERATURE_KELVIN.symbol));
+		addComponent(new ScreenComponentSimpleLabel(155, 80, 10, 4210752, DisplayUnit.TEMPERATURE_KELVIN.getSymbol()));
 	}
 
 	private void setTemperature(String temp) {

@@ -944,6 +944,14 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("displayunit.percentage.name", "Percent");
 			addGuiLabel("displayunit.percentage.nameplural", "Percent");
 			addGuiLabel("displayunit.percentage.symbol", "%");
+			
+			addGuiLabel("displayunit.timeticks.name", "Tick");
+			addGuiLabel("displayunit.timeticks.nameplural", "Ticks");
+			addGuiLabel("displayunit.timeticks.symbol", "t");
+			
+			addGuiLabel("displayunit.forgeenergyunit.name", "Forge Energy Unit");
+			addGuiLabel("displayunit.forgeenergyunit.nameplural", "Forge Energy Units");
+			addGuiLabel("displayunit.forgeenergyunit.symbol", "FE");
 
 			addGuiLabel("measurementunit.pico.name", "Pico");
 			addGuiLabel("measurementunit.pico.symbol", "p");
