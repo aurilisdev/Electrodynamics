@@ -1033,6 +1033,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addSubtitle(ElectrodynamicsSounds.SOUND_PRESSURERELEASE, "Gas hisses");
 			addSubtitle(ElectrodynamicsSounds.SOUND_COMPRESSORRUNNING, "Compressor pressurizes gas");
 			addSubtitle(ElectrodynamicsSounds.SOUND_DECOMPRESSORRUNNING, "Decompressor depressurizes gas");
+			addSubtitle(ElectrodynamicsSounds.SOUND_TRANSFORMERHUM, "Transformer hums");
 
 			addDimension(Level.OVERWORLD, "The Overworld");
 			addDimension(Level.NETHER, "The Nether");

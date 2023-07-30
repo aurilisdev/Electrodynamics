@@ -121,7 +121,6 @@ public class PropertyGasTank extends GasTank {
 
 	@Override
 	public void onChange() {
-		gasProperty.forceDirty();
 		if (holder != null) {
 			holder.onGasTankChange(this);
 		}

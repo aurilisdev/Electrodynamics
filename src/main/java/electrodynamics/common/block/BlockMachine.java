@@ -83,9 +83,9 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockPare
 	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
 		if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer) {
 			TileTransformer tile = (TileTransformer) worldIn.getBlockEntity(pos);
-			if (tile != null && tile.lastTransfer.getJoules() > 0) {
-				ElectricityUtils.electrecuteEntity(entityIn, tile.lastTransfer);
-				tile.lastTransfer = TransferPack.joulesVoltage(0, 0);
+			if (tile != null && tile.lastTransfer.get().getJoules() > 0) {
+				ElectricityUtils.electrecuteEntity(entityIn, tile.lastTransfer.get());
+				tile.lastTransfer.set(TransferPack.joulesVoltage(0, 0));
 			}
 		}
 	}

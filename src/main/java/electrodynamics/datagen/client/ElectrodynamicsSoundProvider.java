@@ -54,6 +54,7 @@ public class ElectrodynamicsSoundProvider extends SoundDefinitionsProvider {
 		add(ElectrodynamicsSounds.SOUND_PRESSURERELEASE);
 		add(ElectrodynamicsSounds.SOUND_COMPRESSORRUNNING);
 		add(ElectrodynamicsSounds.SOUND_DECOMPRESSORRUNNING);
+		add(ElectrodynamicsSounds.SOUND_TRANSFORMERHUM);
 	}
 
 	private void add(RegistryObject<SoundEvent> sound) {

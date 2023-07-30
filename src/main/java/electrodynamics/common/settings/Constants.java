@@ -75,6 +75,9 @@ public class Constants {
 
 	@BooleanValue(def = true)
 	public static boolean DISPENSE_GUIDEBOOK = true;
+	
+	@BooleanValue(def = true, comment = "When set to true, this will make transformers tick, but give them the ability to hum as they do in real life. If you need to gain performance, you can disable this to stop transformers from ticking and thus producing sound.")
+	public static boolean SHOULD_TRANSFORMER_HUM = true;
 
 	public static TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, 120);
 }

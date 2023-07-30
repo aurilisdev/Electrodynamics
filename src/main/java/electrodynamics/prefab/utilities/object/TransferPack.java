@@ -1,6 +1,10 @@
 package electrodynamics.prefab.utilities.object;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
+
 public class TransferPack {
+	
 	public static final TransferPack EMPTY = new TransferPack(0, 0);
 	private double joules;
 	private double voltage;
@@ -36,6 +40,39 @@ public class TransferPack {
 
 	public boolean valid() {
 		return (int) voltage != 0;
+	}
+	
+	public CompoundTag writeToTag() {
+		CompoundTag tag = new CompoundTag();
+		tag.putDouble("joules", joules);
+		tag.putDouble("voltage", voltage);
+		return tag;
+	}
+	
+	public static TransferPack readFromTag(CompoundTag tag) {
+		return joulesVoltage(tag.getDouble("joules"), tag.getDouble("voltage"));
+	}
+	
+	public void writeToBuffer(FriendlyByteBuf buf) {
+		buf.writeDouble(joules);
+		buf.writeDouble(voltage);
+	}
+	
+	public static TransferPack readFromBuffer(FriendlyByteBuf buf) {
+		return joulesVoltage(buf.readDouble(), buf.readDouble());
+	}
+	
+	@Override
+	public String toString() {
+		return "Joules: " + joules + " J, Voltage: " + voltage + " V";
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof TransferPack other) {
+			return other.joules == joules && other.voltage == voltage;
+		}
+		return false;
 	}
 
 }

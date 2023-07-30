@@ -115,7 +115,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 		super.load(compound);
 		for (Property<?> prop : propertyManager.getProperties()) {
 			if (prop.shouldSave()) {
-				prop.load(prop.getType().readFromNbt.apply(prop, compound));
+				prop.load(prop.getType().readFromTag(prop, compound));
 				compound.remove(prop.getName());
 			}
 		}
@@ -138,7 +138,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	public void saveAdditional(@NotNull CompoundTag compound) {
 		for (Property<?> prop : propertyManager.getProperties()) {
 			if (prop.shouldSave()) {
-				prop.getType().writeToNbt.accept(prop, compound);
+				prop.getType().writeToTag(prop, compound);
 			}
 		}
 		for (Component component : components) {

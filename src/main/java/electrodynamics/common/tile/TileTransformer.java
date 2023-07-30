@@ -4,10 +4,14 @@ import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.settings.Constants;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
+import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
@@ -20,18 +24,27 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class TileTransformer extends GenericTile {
+public class TileTransformer extends GenericTile implements ITickableSound {
+	
 	public CachedTileOutput output;
-	public TransferPack lastTransfer = TransferPack.EMPTY;
+	
+	public final Property<TransferPack> lastTransfer = property(new Property<>(PropertyType.Transferpack, "lasttransfer", TransferPack.EMPTY)).setNoSave();
+	
 	public boolean locked = false;
 
 	public TileTransformer(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_TRANSFORMER.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection(this));
+		addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1));
 	}
+	
+	public void tickClient(ComponentTickable tickable) {
+		
+	}
 
-	protected TransferPack receivePower(TransferPack transfer, boolean debug) {
+	// We can assume this runs on the server
+	public TransferPack receivePower(TransferPack transfer, boolean debug) {
 		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 		if (locked) {
 			return TransferPack.EMPTY;
@@ -44,7 +57,7 @@ public class TileTransformer extends GenericTile {
 		locked = true;
 		TransferPack returner = ElectricityUtils.receivePower(output.getSafe(), facing.getOpposite(), TransferPack.joulesVoltage(transfer.getJoules() * Constants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);
 		locked = false;
-		lastTransfer = returner;
+		lastTransfer.set(returner);
 		return returner;
 	}
 
@@ -97,5 +110,17 @@ public class TileTransformer extends GenericTile {
 		shape = Shapes.join(shape, Shapes.box(0.65625, 0.3125, 0.1875, 0.84375, 0.875, 0.375), BooleanOp.OR);
 		shape = Shapes.join(shape, Shapes.box(0.9375, 0.3125, 0.25, 1, 0.75, 0.75), BooleanOp.OR);
 		VoxelShapes.registerShape(SubtypeMachine.upgradetransformer, shape, Direction.EAST);
+	}
+
+	@Override
+	public void setNotPlaying() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean shouldPlaySound() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

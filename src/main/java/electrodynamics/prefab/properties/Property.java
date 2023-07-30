@@ -5,9 +5,17 @@ import java.util.function.BiConsumer;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.server.PacketSendUpdatePropertiesServer;
 
+/**
+ * A wrapper class designed to monitor a value and take action when it changes
+ * 
+ * @author skip999
+ * @author AurilisDev
+ *
+ * @param <T> The type of the property
+ */
 public class Property<T> {
 	private PropertyManager manager;
-	private final PropertyType type;
+	private final IPropertyType type;
 	private boolean isDirty = true;
 	private boolean shouldSave = true;
 	private boolean shouldUpdateClient = true;
@@ -22,7 +30,7 @@ public class Property<T> {
 	private BiConsumer<Property<T>, T> onLoad = (prop, val) -> {
 	};
 
-	public Property(PropertyType type, String name, T defaultValue) {
+	public Property(IPropertyType type, String name, T defaultValue) {
 		this.type = type;
 		if (name == null || name.length() == 0) {
 			throw new RuntimeException("The property's name cannot be null or empty");
@@ -35,16 +43,12 @@ public class Property<T> {
 		return value;
 	}
 
-	public PropertyType getType() {
+	public IPropertyType getType() {
 		return type;
 	}
 
 	public String getName() {
 		return name;
-	}
-
-	public boolean isDirty() {
-		return isDirty;
 	}
 
 	public Property<T> onChange(BiConsumer<Property<T>, T> event) {
@@ -57,10 +61,8 @@ public class Property<T> {
 		return this;
 	}
 
-	@Deprecated(forRemoval = false, since = "Only use this when absolutely nessisary")
-	public void forceDirty() {
-		isDirty = true;
-		manager.setDirty();
+	public boolean isDirty() {
+		return isDirty;
 	}
 
 	public void clean() {
@@ -72,10 +74,13 @@ public class Property<T> {
 	}
 
 	public Property<T> set(Object updated) {
-		verify((T) updated);
+		checkForChange((T) updated);
 		T old = value;
-		value = (T) type.attemptCast.apply(updated);
+		value = (T) type.attemptCast(updated);
 		if (isDirty()) {
+			if(!manager.getOwner().getLevel().isClientSide()) {
+				manager.setDirty(this);
+			}
 			onChange.accept(this, old);
 		}
 
@@ -90,22 +95,22 @@ public class Property<T> {
 		set(otherVal);
 	}
 
-	public void verify(T updated) {
+	private boolean checkForChange(T updated) {
 		boolean shouldUpdate = value == null && updated != null;
 		if (value != null && updated != null) {
-			shouldUpdate = !type.predicate.test(value, updated);
+			shouldUpdate = !type.hasChanged(value, updated);
 		}
 		if (shouldUpdate) {
 			isDirty = true;
-			manager.setDirty();
 		}
+		return shouldUpdate;
 	}
 
 	public void load(Object val) {
 		if (val == null) {
 			val = value;
 		}
-		value = (T) type.attemptCast.apply(val);
+		value = (T) type.attemptCast(val);
 		onLoad.accept(this, value);
 	}
 
@@ -147,7 +152,7 @@ public class Property<T> {
 	public void updateServer() {
 
 		if (manager.getOwner() != null) {
-			NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(index, this, manager.getOwner().getBlockPos()));
+			NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(this, manager.getOwner().getBlockPos()));
 		}
 
 	}
