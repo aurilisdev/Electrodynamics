@@ -73,7 +73,9 @@ public class PropertyManager {
 
 	public void setDirty(Property<?> dirtyProp) {
 		isDirty = true;
-		dirtyProperties.add(new PropertyWrapper(dirtyProp.getIndex(), dirtyProp.getType(), dirtyProp.get(), dirtyProp));
+		if(dirtyProp.shouldUpdateClient()) {
+			dirtyProperties.add(new PropertyWrapper(dirtyProp.getIndex(), dirtyProp.getType(), dirtyProp.get(), dirtyProp));
+		}
 	}
 
 	@Override

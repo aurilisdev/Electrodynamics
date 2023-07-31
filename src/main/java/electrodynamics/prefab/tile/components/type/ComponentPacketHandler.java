@@ -52,7 +52,7 @@ public class ComponentPacketHandler implements Component {
 	public void sendProperties() {
 		Level world = holder.getLevel();
 
-		if (world == null || world.isClientSide || !holder.getPropertyManager().isDirty()) {
+		if (world == null || world.isClientSide || !holder.getPropertyManager().isDirty() || holder.getPropertyManager().getClientUpdateProperties().isEmpty()) {
 			return;
 		}
 
