@@ -29,7 +29,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	private double transferBuffer = 0;
 	private double maxTransferBuffer = 0;
 
-	private double minimumVoltage = -1;
+	private double minimumVoltage = -1.0D;
 	private long minimumAmpacity = 0;
 
 	public double getLastEnergyLoss() {
@@ -335,4 +335,5 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	public long getMinimumAmpacity() {
 		return minimumAmpacity;
 	}
+	
 }

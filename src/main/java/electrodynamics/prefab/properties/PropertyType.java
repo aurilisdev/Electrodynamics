@@ -29,12 +29,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.FluidStack;
 
 public enum PropertyType implements IPropertyType {
-	
+
 	Byte((value, buf) -> buf.writeByte((Byte) value), FriendlyByteBuf::readByte, (prop, tag) -> tag.putByte(prop.getName(), (Byte) prop.get()), (prop, tag) -> tag.getByte(prop.getName()), val -> ((Number) val).byteValue()),
 	//
 	Boolean((value, buf) -> buf.writeBoolean((Boolean) value), FriendlyByteBuf::readBoolean, (prop, tag) -> tag.putBoolean(prop.getName(), (Boolean) prop.get()), (prop, tag) -> tag.getBoolean(prop.getName())),
 	//
 	Integer((value, buf) -> buf.writeInt((Integer) value), FriendlyByteBuf::readInt, (prop, tag) -> tag.putInt(prop.getName(), (Integer) prop.get()), (prop, tag) -> tag.getInt(prop.getName()), val -> ((Number) val).intValue()),
+	//
+	Long((value, buf) -> buf.writeLong((Long) value), FriendlyByteBuf::readLong, (prop, tag) -> tag.putLong(prop.getName(), (Long) prop.get()), (prop, tag) -> tag.getLong(prop.getName()), val -> ((Number) val).longValue()),
 	//
 	Float((value, buf) -> buf.writeFloat((Float) value), FriendlyByteBuf::readFloat, (prop, tag) -> tag.putFloat(prop.getName(), (Float) prop.get()), (prop, tag) -> tag.getFloat(prop.getName()), val -> ((Number) val).floatValue()),
 	//
@@ -174,12 +176,12 @@ public enum PropertyType implements IPropertyType {
 	//
 	Blockstate((value, buf) -> buf.writeNbt(NbtUtils.writeBlockState((BlockState) value)), buf -> NbtUtils.readBlockState(buf.readNbt()), (prop, tag) -> tag.put(prop.getName(), NbtUtils.writeBlockState((BlockState) prop.get())), (prop, tag) -> NbtUtils.readBlockState(tag.getCompound(prop.getName()))),
 	//
-	Transferpack((value, buf) -> ((TransferPack) value).writeToBuffer(buf), buf -> TransferPack.readFromBuffer(buf), (prop, tag) -> tag.put(prop.getName(), ((TransferPack)prop.get()).writeToTag()), (prop, tag) -> TransferPack.readFromTag(tag.getCompound(prop.getName()))),
+	Transferpack((value, buf) -> ((TransferPack) value).writeToBuffer(buf), buf -> TransferPack.readFromBuffer(buf), (prop, tag) -> tag.put(prop.getName(), ((TransferPack) prop.get()).writeToTag()), (prop, tag) -> TransferPack.readFromTag(tag.getCompound(prop.getName()))),
 	//
 	;
 
 	private final ResourceLocation id;
-	
+
 	@Nonnull
 	private final BiPredicate<Object, Object> predicate;
 

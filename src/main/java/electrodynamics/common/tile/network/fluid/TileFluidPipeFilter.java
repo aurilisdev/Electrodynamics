@@ -12,7 +12,6 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.CapabilityUtils;
@@ -32,6 +31,8 @@ public class TileFluidPipeFilter extends GenericTile {
 
 	public static final Direction INPUT_DIR = Direction.SOUTH;
 	public static final Direction OUTPUT_DIR = Direction.NORTH;
+	
+	private boolean isLocked = false;
 
 	@SuppressWarnings("rawtypes")
 	public final Property[] filteredFluids = {
@@ -50,8 +51,7 @@ public class TileFluidPipeFilter extends GenericTile {
 		super(ElectrodynamicsBlockTypes.TILE_FLUIDPIPEFILTER.get(), worldPos, blockState);
 		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentInventory(this));
-		addComponent(new ComponentContainerProvider("container.fluidpipefilter", this).createMenu((id, inv) -> new ContainerFluidPipeFilter(id, inv, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider("container.fluidpipefilter", this).createMenu((id, inv) -> new ContainerFluidPipeFilter(id, inv, getCoordsArray())));
 	}
 
 	@Override
@@ -111,22 +111,44 @@ public class TileFluidPipeFilter extends GenericTile {
 
 		@Override
 		public int getTanks() {
-			return outputCap.getTanks();
+			if(isLocked) {
+				return 0;
+			}
+			isLocked = true;
+			int count = outputCap.getTanks();
+			isLocked = false;
+			return count;
 		}
 
 		@Override
 		public @NotNull FluidStack getFluidInTank(int tank) {
-			return outputCap.getFluidInTank(tank);
+			if(isLocked) {
+				return FluidStack.EMPTY;
+			}
+			isLocked = true;
+			FluidStack stack = outputCap.getFluidInTank(tank);
+			isLocked = false;
+			return stack;
 		}
 
 		@Override
 		public int getTankCapacity(int tank) {
-			return outputCap.getTankCapacity(tank);
+			if(isLocked) {
+				return 0;
+			}
+			isLocked = true;
+			int cap = outputCap.getTankCapacity(tank);
+			isLocked = false;
+			return cap;
 		}
 
 		@Override
 		public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
 
+			if(isLocked) {
+				return false;
+			}
+			
 			if (whitelist) {
 
 				if (validFluids.isEmpty()) {
@@ -134,7 +156,10 @@ public class TileFluidPipeFilter extends GenericTile {
 				}
 
 				if (validFluids.contains(stack.getFluid())) {
-					return outputCap.isFluidValid(tank, stack);
+					isLocked = true;
+					boolean valid = outputCap.isFluidValid(tank, stack);
+					isLocked = false;
+					return valid;
 				}
 
 				return false;
@@ -142,7 +167,10 @@ public class TileFluidPipeFilter extends GenericTile {
 			}
 
 			if (validFluids.isEmpty() || !validFluids.contains(stack.getFluid())) {
-				return outputCap.isFluidValid(tank, stack);
+				isLocked = true;
+				boolean valid = outputCap.isFluidValid(tank, stack);
+				isLocked = false;
+				return valid;
 			}
 
 			return false;
@@ -151,8 +179,15 @@ public class TileFluidPipeFilter extends GenericTile {
 		@Override
 		public int fill(FluidStack stack, FluidAction action) {
 
+			if(isLocked) {
+				return 0;
+			}
+			
 			if (isFluidValid(getTanks(), stack)) {
-				return outputCap.fill(stack, action);
+				isLocked = true;
+				int fill = outputCap.fill(stack, action);
+				isLocked = false;
+				return fill;
 			}
 
 			return 0;
@@ -160,12 +195,18 @@ public class TileFluidPipeFilter extends GenericTile {
 
 		@Override
 		public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
-			return outputCap.drain(resource, action);
+			isLocked = true;
+			FluidStack drain = outputCap.drain(resource, action);
+			isLocked = false;
+			return drain;
 		}
 
 		@Override
 		public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
-			return outputCap.drain(maxDrain, action);
+			isLocked = true;
+			FluidStack drain = outputCap.drain(maxDrain, action);
+			isLocked = false;
+			return drain;
 		}
 
 	}

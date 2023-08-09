@@ -160,6 +160,9 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		glassBlock(ElectrodynamicsBlocks.blockSteelScaffold, blockLoc("steelscaffold"), true);
 
 		simpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer)), true);
+		
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedupgradetransformer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedupgradetransformer)), true);
 
 		genWires();
 		genPipes();

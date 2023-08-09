@@ -58,6 +58,8 @@
     "electrodynamics:gasvent",
     "electrodynamics:relay",
     "electrodynamics:potentiometer",
+    "electrodynamics:advancedupgradetransformer",
+    "electrodynamics:advanceddowngradetransformer",
     "electrodynamics:pipecopper",
     "electrodynamics:pipesteel",
     "electrodynamics:orefluorite",

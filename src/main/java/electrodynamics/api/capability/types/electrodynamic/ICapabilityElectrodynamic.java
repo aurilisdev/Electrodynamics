@@ -55,7 +55,7 @@ public interface ICapabilityElectrodynamic {
 				overVoltage(transfer);
 				return TransferPack.EMPTY;
 			}
-		}
+		} 
 		return TransferPack.joulesVoltage(received, transfer.getVoltage());
 	}
 

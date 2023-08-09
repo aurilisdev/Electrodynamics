@@ -64,6 +64,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		layeredItem(ElectrodynamicsItems.ITEM_COAL_COKE, Parent.GENERATED, itemLoc("coalcoke"));
 		layeredItem(ElectrodynamicsItems.ITEM_CERAMICINSULATION, Parent.GENERATED, itemLoc("insulationceramic"));
 		layeredBuilder(name(ElectrodynamicsItems.ITEM_COIL), Parent.GENERATED, itemLoc("coil")).transforms().transform(TransformType.GUI).scale(0.8F).end();
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_LAMINATEDCOIL), Parent.GENERATED, itemLoc("laminatedcoil")).transforms().transform(TransformType.GUI).scale(0.8F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_INSULATION, Parent.GENERATED, itemLoc("insulation"));
 		layeredItem(ElectrodynamicsItems.ITEM_MOLYBDENUMFERTILIZER, Parent.GENERATED, itemLoc("molybdenumfertilizer"));
 		layeredItem(ElectrodynamicsItems.ITEM_MOTOR, Parent.GENERATED, itemLoc("motor"));

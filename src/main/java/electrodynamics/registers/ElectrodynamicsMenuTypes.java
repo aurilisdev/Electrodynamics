@@ -5,6 +5,8 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.item.ContainerElectricDrill;
 import electrodynamics.common.inventory.container.item.ContainerGuidebook;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
+import electrodynamics.common.inventory.container.tile.ContainerAdvancedDowngradeTransformer;
+import electrodynamics.common.inventory.container.tile.ContainerAdvancedUpgradeTransformer;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
 import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalCrystallizer;
@@ -96,4 +98,6 @@ public class ElectrodynamicsMenuTypes {
 	public static final RegistryObject<MenuType<ContainerFluidPipeFilter>> CONTAINER_FLUIDPIPEFILTER = MENU_TYPES.register("fluidpipefilter", () -> new MenuType<>(ContainerFluidPipeFilter::new));
 	public static final RegistryObject<MenuType<ContainerElectricDrill>> CONTAINER_ELECTRICDRILL = MENU_TYPES.register("electricdrill", () -> new MenuType<>(ContainerElectricDrill::new));
 	public static final RegistryObject<MenuType<ContainerPotentiometer>> CONTAINER_POTENTIOMETER = MENU_TYPES.register("potentiometer", () -> new MenuType<>(ContainerPotentiometer::new));
+	public static final RegistryObject<MenuType<ContainerAdvancedUpgradeTransformer>> CONTAINER_ADVANCEDUPGRADETRANSFORMER = MENU_TYPES.register("advancedupgradetransformer", () -> new MenuType<>(ContainerAdvancedUpgradeTransformer::new));
+	public static final RegistryObject<MenuType<ContainerAdvancedDowngradeTransformer>> CONTAINER_ADVANCEDDOWNGRADETRANSFORMER = MENU_TYPES.register("advanceddowngradetransformer", () -> new MenuType<>(ContainerAdvancedDowngradeTransformer::new));
 }

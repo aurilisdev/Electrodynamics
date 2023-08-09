@@ -163,7 +163,9 @@ public class ChapterElectricity extends Chapter {
 
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l14")).setSeparateStart().setIndentions(1));
 
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l15")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l15l1")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.turnsratioformula")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l15l2")).setSeparateStart());
 
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l16.1")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_MULTIMETER.get().getDescription().copy().withStyle(ChatFormatting.BOLD)));

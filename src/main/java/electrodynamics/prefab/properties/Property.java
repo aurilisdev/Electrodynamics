@@ -77,7 +77,7 @@ public class Property<T> {
 		checkForChange((T) updated);
 		T old = value;
 		value = (T) type.attemptCast(updated);
-		if (isDirty()) {
+		if (isDirty() && manager.getOwner().getLevel() != null) {
 			if(!manager.getOwner().getLevel().isClientSide()) {
 				manager.setDirty(this);
 			}

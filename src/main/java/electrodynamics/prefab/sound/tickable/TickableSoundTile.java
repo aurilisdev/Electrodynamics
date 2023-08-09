@@ -1,4 +1,4 @@
-package electrodynamics.prefab.sound;
+package electrodynamics.prefab.sound.tickable;
 
 import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.utilities.WorldUtils;
@@ -25,8 +25,8 @@ public class TickableSoundTile<T extends BlockEntity & ITickableSound> extends A
 	public TickableSoundTile(SoundEvent event, SoundSource source, T tile, float volume, float pitch, boolean repeat) {
 		super(event, source, SoundInstance.createUnseededRandom());
 		this.tile = tile;
-		this.volume = 0.5F;
-		this.pitch = 1.0F;
+		this.volume = volume;
+		this.pitch = pitch;
 		x = tile.getBlockPos().getX();
 		y = tile.getBlockPos().getY();
 		z = tile.getBlockPos().getZ();
@@ -58,6 +58,12 @@ public class TickableSoundTile<T extends BlockEntity & ITickableSound> extends A
 
 	public void stopAbstract() {
 		super.stop();
+	}
+	
+	@Override
+	public float getVolume() {
+		// TODO Auto-generated method stub
+		return super.getVolume();
 	}
 
 }

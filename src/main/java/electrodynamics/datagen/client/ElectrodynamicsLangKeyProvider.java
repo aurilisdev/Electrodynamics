@@ -119,6 +119,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addItem(ElectrodynamicsItems.ITEM_SLAG, "Metallic Slag");
 			addItem(ElectrodynamicsItems.ITEM_CERAMICINSULATION, "Ceramic Insulation");
 			addItem(ElectrodynamicsItems.ITEM_COIL, "Copper Coil");
+			addItem(ElectrodynamicsItems.ITEM_LAMINATEDCOIL, "Laminated Copper Coil");
 			addItem(ElectrodynamicsItems.ITEM_MOLYBDENUMFERTILIZER, "Fertilizer");
 			addItem(ElectrodynamicsItems.ITEM_MOTOR, "Motor");
 			addItem(ElectrodynamicsItems.ITEM_COAL_COKE, "Coal Coke");
@@ -354,6 +355,9 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay), "Relay");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer), "Potentiometer");
+			
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer), "Downgrade Transformer Mk 2");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedupgradetransformer), "Upgrade Transformer Mk 2");
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.aluminum), "Bauxite Ore");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.chromium), "Chromite Ore");
@@ -699,6 +703,9 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addContainer("fluidpipefilter", "Fluid Pipe Filter");
 
 			addContainer(SubtypeMachine.potentiometer, "Potentiometer");
+			
+			addContainer(SubtypeMachine.advanceddowngradetransformer, "Downgrade Transformer Mk 2");
+			addContainer(SubtypeMachine.advancedupgradetransformer, "Upgrade Transformer Mk 2");
 
 			addTooltip("itemwire.resistance", "Resistance: %s");
 			addTooltip("itemwire.maxamps", "Ampacity: %s");
@@ -896,6 +903,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuiLabel("potentiometer.watts", "W");
 			addGuiLabel("potentiometer.usage", "Usage");
+			
+			addGuiLabel("coilratio", "Coil Ratio");
 
 			addGuiLabel("displayunit.infinity.name", "Infinite");
 
@@ -1254,12 +1263,20 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.electricity.l13.1", "Ceramic insulation on the other hand is more expensive than wool, but gains the advantage of being fire-proof:");
 
-			addGuidebook("chapter.electricity.l13.2", "This makes ceramicly insulated wires especially useful when working around fluids like lava. It should be noted though that ceramic insulation is not as effective as " + "woolen insulation, meaning that if you want to insulate high voltages, you will need to take the risk of fire!");
+			addGuidebook("chapter.electricity.l13.2", "This makes ceramicly insulated wires especially useful when working around fluids like lava. It should be noted though that ceramic insulation is not as effective as " + "woolen insulation, meaning that if you want to insulate high voltages, you will need to take the risk of fire! "
+					+ "It is also very important to understand that a wire not having sufficiant insulation has greater ramifications than just shocking you. Wires transmitting voltages higher than what they are insulated for will have a random chance to set the blocks surrounding them on fire (excluding other wires). If the wire cannot "
+					+ "set a flammable block on fire, by either pure chance or becuase you're trying to game the system, then the wire itself will be destroyed. This feature can be disabled in the Electrodynamics config file if desired.");
 
 			addGuidebook("chapter.electricity.l14", "One final note while on the topic of wires is the ability to field-modify them. If you right-click any insulated wire with Shears (excluding thick wires), it will remove the insulation from the wire. You can also apply woolen and ceramic insulation to an existing wire " + "by right-clicking the insulation on the wire. A woolen wire can be converted to a logistical wire by right-clicking a piece of redstone on it. You can also dye wires by right-clicking the respective dye onto the wire. Note that this is a less-efficiant way to color wires than crafting them to " + "the respective color!");
 
-			addGuidebook("chapter.electricity.l15", "Now that we know how to get energy to a machine and understand it must be at a specific voltage, you're probably wondering how that voltage is achieved. Most power sources in Electrodynamics are 120V or 240V, which works well for some basic machines, but that simply won't cut it for higher voltage " + "machines. This is where the Upgrade and Downgrade Transformers come in. The Upgrade Transformer will take any input voltage at any current and output double voltage at half the current. The Downgrade Transformer takes any input voltage at any current and outputs half the voltage at " + "double the current. Note, Transformers are not 100% efficient, so be wise with your use of them. Also, Transformers will instantly kill you if you walk over them while energized!");
+			addGuidebook("chapter.electricity.l15l1", "Now that we know how to get energy to a machine and understand it must be at a specific voltage, you're probably wondering how that voltage is achieved. Most power sources in Electrodynamics are 120V or 240V, which works well for some basic machines, but that simply won't cut it for higher voltage " + "machines. This is where the Upgrade and Downgrade Transformers come in. Transformers function by exchanging voltage for current. This exchange rate can be calculated using what is known as the Turns or Coil ratio, which is given by the formula:");
 
+			addGuidebook("chapter.electricity.turnsratioformula", "N = Np / Ns");
+			
+			addGuidebook("chapter.electricity.l15l2", "Where N is the turns ratio, Np is the number of Primary or input turns, and Ns is the number of Secondary or output turns. The output voltage can be calculated by dividing the input voltage by the Turns ratio. The output current can be calculated by multiplying the input current by the Turns ratio. "
+					+ "The base Upgrade Transformer has a fixed Turns ratio of 0.5, and the base Downgrade Transformer has a fixed turns ratio of 2. While cheap, they will also shock you if live. The improved Mark 2 versions, while much more expensive, have a programmable turns ratio you can select via the GUI. They are also enclosed and will not shock you if live. "
+					+ "It is important to note that all Transformers are not 100% efficient, so be wise with your use of them.");
+			
 			addGuidebook("chapter.electricity.l16.1", "By now, you are feeling overwhelmed most likely. How are you supposed to keep track of what voltage your wire network is operating at? How are you supposed to keep track of the overall resistance? Fear not, for Electrodynamics offers several tools and blocks " + "to help you out along the way. The first and most important is the ");
 
 			addGuidebook("chapter.electricity.l16.2", ". Right-clicking a wire network with one will display several imporant data points about that network:");

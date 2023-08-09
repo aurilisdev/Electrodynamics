@@ -161,6 +161,12 @@
     ],
     "subtitle": "subtitles.electrodynamics.seismicscanner"
   },
+  "transformerhum": {
+    "sounds": [
+      "electrodynamics:transformerhum"
+    ],
+    "subtitle": "subtitles.electrodynamics.transformerhum"
+  },
   "windmill": {
     "sounds": [
       "electrodynamics:windmill"

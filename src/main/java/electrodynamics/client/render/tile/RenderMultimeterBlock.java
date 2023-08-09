@@ -91,7 +91,12 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			rotateMatrix(stack, dir);
 
-			Component minVoltage = ElectroTextUtils.gui("multimeterblock.minvoltage", ChatFormatter.getDisplayShort(multimeter.minVoltage.get(), DisplayUnit.VOLTAGE, 2));
+			double minVolt = multimeter.minVoltage.get();
+			if(minVolt < 0) {
+				minVolt = multimeter.voltage.get();
+			}
+			
+			Component minVoltage = ElectroTextUtils.gui("multimeterblock.minvoltage", ChatFormatter.getDisplayShort(minVolt, DisplayUnit.VOLTAGE, 2));
 
 			scale = 0.0215f / (font.width(minVoltage) / 32f);
 

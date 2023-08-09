@@ -104,6 +104,8 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.oxidationfurnace), ElectrodynamicsBlockTypes.TILE_OXIDATIONFURNACE, true, false, false, true, false);
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.downgradetransformer));
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.upgradetransformer));
+		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer));
+		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer));
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coalgenerator), ElectrodynamicsBlockTypes.TILE_COALGENERATOR, true, false, false, true, false);
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.solarpanel), ElectrodynamicsBlockTypes.TILE_SOLARPANEL, true, false, false, true, false);
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedsolarpanel), ElectrodynamicsBlockTypes.TILE_ADVANCEDSOLARPANEL, true, false, false, true, false);

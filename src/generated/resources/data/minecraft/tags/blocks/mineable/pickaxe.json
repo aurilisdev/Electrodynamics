@@ -99,6 +99,8 @@
     "electrodynamics:gasvent",
     "electrodynamics:relay",
     "electrodynamics:potentiometer",
+    "electrodynamics:advancedupgradetransformer",
+    "electrodynamics:advanceddowngradetransformer",
     "electrodynamics:wiretin",
     "electrodynamics:wireiron",
     "electrodynamics:wirecopper",

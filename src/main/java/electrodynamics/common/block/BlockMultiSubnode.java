@@ -156,9 +156,6 @@ public class BlockMultiSubnode extends BaseEntityBlock implements IMultiblockChi
 
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-		if (worldIn.isClientSide) {
-			return InteractionResult.SUCCESS;
-		}
 		if (worldIn.getBlockEntity(pos) instanceof GenericTile generic && generic != null) {
 			return generic.use(player, handIn, hit);
 		}

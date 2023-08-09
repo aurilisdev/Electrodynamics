@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "forge:circuits/basic"
+    },
+    "O": {
+      "item": "electrodynamics:laminatedcoil"
+    },
+    "P": {
+      "tag": "forge:plates/stainlesssteel"
+    },
+    "T": {
+      "item": "electrodynamics:upgradetransformer"
+    },
+    "W": {
+      "item": "electrodynamics:wirecopper"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "OTO",
+    "CPW"
+  ],
+  "result": {
+    "item": "electrodynamics:advancedupgradetransformer"
+  }
+}

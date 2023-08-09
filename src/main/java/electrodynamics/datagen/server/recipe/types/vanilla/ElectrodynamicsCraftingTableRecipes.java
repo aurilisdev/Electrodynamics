@@ -219,6 +219,20 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(References.ID, "copper_coil", consumer);
 
+		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_LAMINATEDCOIL.get(), 1)
+				//
+				.addPattern(" P ")
+				//
+				.addPattern("PCP")
+				//
+				.addPattern(" P ")
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLASTIC)
+				//
+				.addKey('C', ElectrodynamicsItems.ITEM_COIL.get())
+				//
+				.complete(References.ID, "copper_coil_laminated", consumer);
+
 		ElectrodynamicsShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_RAWCOMPOSITEPLATING.get(), 6)
 				//
 				.addPattern("TTT")
@@ -1010,6 +1024,44 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 	}
 
 	private void addMachine(Consumer<FinishedRecipe> consumer) {
+
+		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.advanceddowngradetransformer.ordinal()], 1)
+				//
+				.addPattern("PPP")
+				//
+				.addPattern("OTO")
+				//
+				.addPattern("PCP")
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+				//
+				.addKey('O', ElectrodynamicsItems.ITEM_LAMINATEDCOIL.get())
+				//
+				.addKey('T', MACHINES[SubtypeMachine.downgradetransformer.ordinal()])
+				//
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+				//
+				.complete(References.ID, "machine_advanced_downgrade_transformer", consumer);
+
+		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.advancedupgradetransformer.ordinal()], 1)
+				//
+				.addPattern("PPP")
+				//
+				.addPattern("OTO")
+				//
+				.addPattern("CPW")
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+				//
+				.addKey('O', ElectrodynamicsItems.ITEM_LAMINATEDCOIL.get())
+				//
+				.addKey('T', MACHINES[SubtypeMachine.upgradetransformer.ordinal()])
+				//
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+				//
+				.addKey('W', WIRES[SubtypeWire.copper.ordinal()])
+				//
+				.complete(References.ID, "machine_advanced_upgrade_transformer", consumer);
 
 		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.advancedsolarpanel.ordinal()], 1)
 				//

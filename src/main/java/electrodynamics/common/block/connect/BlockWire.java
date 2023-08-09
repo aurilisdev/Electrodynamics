@@ -3,6 +3,7 @@ package electrodynamics.common.block.connect;
 import java.util.HashSet;
 
 import electrodynamics.api.References;
+import electrodynamics.api.electricity.IPorcelainInsulator;
 import electrodynamics.api.network.cable.IRefreshableCable;
 import electrodynamics.api.network.cable.type.IConductor;
 import electrodynamics.common.block.connect.util.AbstractRefreshingConnectBlock;
@@ -12,18 +13,24 @@ import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.block.subtype.SubtypeWire.InsulationMaterial;
 import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
 import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
+import electrodynamics.common.network.type.ElectricNetwork;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.common.tile.network.electric.GenericTileWire;
 import electrodynamics.common.tile.network.electric.TileLogisticalWire;
 import electrodynamics.common.tile.network.electric.TileWire;
+import electrodynamics.common.tile.network.electric.transformer.TileGenericTransformer;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -36,6 +43,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -56,7 +64,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 	public final SubtypeWire wire;
 
 	public BlockWire(SubtypeWire wire) {
-		super(Properties.of(wire.insulation.material).sound(wire.insulation.soundType).strength(0.15f).dynamicShape().noOcclusion(), wire.insulation.radius);
+		super(Properties.of(wire.insulation.material).sound(wire.insulation.soundType).strength(0.15f).dynamicShape().noOcclusion().randomTicks(), wire.insulation.radius);
 		this.wire = wire;
 
 		if (wire.wireClass != WireClass.LOGISTICAL) {
@@ -377,6 +385,114 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 			return conductor;
 		}
 		return null;
+	}
+
+	@Override
+	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+
+		if (!Constants.CONDUCTORS_BURN_SURROUNDINGS) {
+			return;
+		}
+
+		if (level.getBlockEntity(pos) instanceof GenericTileWire tile) {
+
+			ElectricNetwork network = tile.getNetwork();
+
+			double voltage = network.getActiveVoltage();
+			
+			if (voltage <= 0 || voltage <= wire.insulation.shockVoltage || network.getActiveTransmitted() <= 0) {
+				return;
+			}
+
+			boolean overMaxVoltage = voltage > TileGenericTransformer.MAX_VOLTAGE_CAP;
+			
+			double wireShockVoltage = Math.max(wire.insulation.shockVoltage, 1);
+
+			BlockPos relativePos, firePos;
+			BlockState relative;
+
+			for (Direction dir : Direction.values()) {
+
+				relativePos = pos.relative(dir);
+				relative = level.getBlockState(relativePos);
+				
+				boolean isFlammable = relative.isFlammable(level, relativePos, dir);
+				
+				if(relative.getBlock() instanceof BlockWire) {
+					
+					continue;
+					
+				} else if (relative.getBlock() instanceof IPorcelainInsulator insulator) {
+
+					if (overMaxVoltage && voltage > insulator.getMaximumVoltage()) {
+						
+						level.playSound(null, relativePos, ElectrodynamicsSounds.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+						level.destroyBlock(relativePos, false);
+						
+					}
+					
+					continue;
+					
+				} else if (overMaxVoltage) {
+					
+					if(isFlammable || relative.getBlock().getExplosionResistance() < Constants.BLOCK_VAPORIZATION_HARDNESS) {
+						
+						level.playSound(null, relativePos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
+						level.destroyBlock(relativePos, false);
+						
+					}
+					
+					continue;
+					
+				} else if (!isFlammable) {
+					
+					continue;
+					
+				} 
+
+				int flamability = relative.getFlammability(level, relativePos, dir);
+
+				if (flamability <= 0) {
+					continue;
+				}
+
+				int overvoltage = (int) Math.ceil((voltage / wireShockVoltage));
+
+				if (flamability > overvoltage) {
+					continue;
+				}
+				
+				boolean blockCaughtFire = false;
+				
+				for(Direction relDir : Direction.values()) {
+					
+					firePos = relativePos.relative(relDir);
+					
+					if(firePos.equals(pos) || !BaseFireBlock.canBePlacedAt(level, firePos, (relDir == Direction.DOWN || relDir == Direction.UP) ? dir : relDir.getOpposite())) {
+						continue;
+					}
+					
+					level.setBlock(firePos, BaseFireBlock.getState(level, firePos), 11);
+					
+					blockCaughtFire = true;
+					
+					break;
+					
+				}
+				
+				if(blockCaughtFire) {
+					continue;
+				}
+				
+				level.playSound(null, pos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
+				level.destroyBlock(pos, false);
+				
+				break;
+
+			}
+
+		}
+
 	}
 
 	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = References.ID, bus = Mod.EventBusSubscriber.Bus.MOD)

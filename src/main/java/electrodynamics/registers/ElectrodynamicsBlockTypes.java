@@ -23,7 +23,6 @@ import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileReinforcedAlloyer;
-import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.arcfurnace.TileElectricArcFurnace;
 import electrodynamics.common.tile.arcfurnace.TileElectricArcFurnaceDouble;
 import electrodynamics.common.tile.arcfurnace.TileElectricArcFurnaceTriple;
@@ -60,6 +59,10 @@ import electrodynamics.common.tile.network.electric.TileLogisticalWire;
 import electrodynamics.common.tile.network.electric.TilePotentiometer;
 import electrodynamics.common.tile.network.electric.TileRelay;
 import electrodynamics.common.tile.network.electric.TileWire;
+import electrodynamics.common.tile.network.electric.transformer.TileAdvancedTransformer.TileAdvancedDowngradeTransformer;
+import electrodynamics.common.tile.network.electric.transformer.TileAdvancedTransformer.TileAdvancedUpgradeTransformer;
+import electrodynamics.common.tile.network.electric.transformer.TileGenericTransformer.TileDowngradeTransformer;
+import electrodynamics.common.tile.network.electric.transformer.TileGenericTransformer.TileUpgradeTransformer;
 import electrodynamics.common.tile.network.fluid.TileFluidPipe;
 import electrodynamics.common.tile.network.fluid.TileFluidPipeFilter;
 import electrodynamics.common.tile.network.fluid.TileFluidPipePump;
@@ -130,7 +133,13 @@ public class ElectrodynamicsBlockTypes {
 	public static final RegistryObject<BlockEntityType<TileFluidTankReinforced>> TILE_TANKREINFORCED = BLOCK_ENTITY_TYPES.register(SubtypeMachine.tankreinforced.tag(), () -> new BlockEntityType<>(TileFluidTankReinforced::new, Sets.newHashSet(getBlock(SubtypeMachine.tankreinforced)), null));
 	public static final RegistryObject<BlockEntityType<TileFluidTankHSLA>> TILE_TANKHSLA = BLOCK_ENTITY_TYPES.register(SubtypeMachine.tankhsla.tag(), () -> new BlockEntityType<>(TileFluidTankHSLA::new, Sets.newHashSet(getBlock(SubtypeMachine.tankhsla)), null));
 
-	public static final RegistryObject<BlockEntityType<TileTransformer>> TILE_TRANSFORMER = BLOCK_ENTITY_TYPES.register("transformer", () -> new BlockEntityType<>(TileTransformer::new, Sets.newHashSet(getBlock(SubtypeMachine.downgradetransformer), getBlock(SubtypeMachine.upgradetransformer)), null));
+	public static final RegistryObject<BlockEntityType<TileDowngradeTransformer>> TILE_DOWNGRADETRANSFORMER = BLOCK_ENTITY_TYPES.register("downgradetransformer", () -> new BlockEntityType<>(TileDowngradeTransformer::new, Sets.newHashSet(getBlock(SubtypeMachine.downgradetransformer)), null));
+	public static final RegistryObject<BlockEntityType<TileUpgradeTransformer>> TILE_UPGRADETRANSFORMER = BLOCK_ENTITY_TYPES.register("upgradetransformer", () -> new BlockEntityType<>(TileUpgradeTransformer::new, Sets.newHashSet(getBlock(SubtypeMachine.upgradetransformer)), null));
+	
+	public static final RegistryObject<BlockEntityType<TileAdvancedDowngradeTransformer>> TILE_ADVANCEDDOWNGRADETRANSFORMER = BLOCK_ENTITY_TYPES.register("advanceddowngradetransformer", () -> new BlockEntityType<>(TileAdvancedDowngradeTransformer::new, Sets.newHashSet(getBlock(SubtypeMachine.advanceddowngradetransformer)), null));
+	public static final RegistryObject<BlockEntityType<TileAdvancedUpgradeTransformer>> TILE_ADVANCEDUPGRADETRANSFORMER = BLOCK_ENTITY_TYPES.register("advancedupgradetransformer", () -> new BlockEntityType<>(TileAdvancedUpgradeTransformer::new, Sets.newHashSet(getBlock(SubtypeMachine.advancedupgradetransformer)), null));
+	
+	
 	public static final RegistryObject<BlockEntityType<TileEnergizedAlloyer>> TILE_ENERGIZEDALLOYER = BLOCK_ENTITY_TYPES.register(SubtypeMachine.energizedalloyer.tag(), () -> new BlockEntityType<>(TileEnergizedAlloyer::new, Sets.newHashSet(getBlock(SubtypeMachine.energizedalloyer)), null));
 	public static final RegistryObject<BlockEntityType<TileLathe>> TILE_LATHE = BLOCK_ENTITY_TYPES.register(SubtypeMachine.lathe.tag(), () -> new BlockEntityType<>(TileLathe::new, Sets.newHashSet(getBlock(SubtypeMachine.lathe)), null));
 	public static final RegistryObject<BlockEntityType<TileReinforcedAlloyer>> TILE_REINFORCEDALLOYER = BLOCK_ENTITY_TYPES.register(SubtypeMachine.reinforcedalloyer.tag(), () -> new BlockEntityType<>(TileReinforcedAlloyer::new, Sets.newHashSet(getBlock(SubtypeMachine.reinforcedalloyer)), null));

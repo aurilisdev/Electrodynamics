@@ -15,6 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -165,9 +166,6 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-		if (worldIn.isClientSide) {
-			return InteractionResult.SUCCESS;
-		}
 		if (worldIn.getBlockEntity(pos) instanceof GenericTile generic) {
 			return generic.use(player, handIn, hit);
 		}
@@ -189,6 +187,14 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 			return generic.getSignal(direction);
 		}
 		return super.getSignal(state, level, pos, direction);
+	}
+	
+	@Override
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		super.entityInside(state, level, pos, entity);
+		if(level.getBlockEntity(pos) instanceof GenericTile tile) {
+			tile.onEntityInside(state, level, pos, entity);
+		}
 	}
 
 }

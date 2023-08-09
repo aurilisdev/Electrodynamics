@@ -15,7 +15,6 @@ import electrodynamics.common.tile.TileMineralWasher;
 import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.common.tile.TileOxidationFurnace;
 import electrodynamics.common.tile.TileReinforcedAlloyer;
-import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.arcfurnace.TileElectricArcFurnace;
 import electrodynamics.common.tile.arcfurnace.TileElectricArcFurnaceDouble;
 import electrodynamics.common.tile.arcfurnace.TileElectricArcFurnaceTriple;
@@ -45,6 +44,10 @@ import electrodynamics.common.tile.mineralgrinder.TileMineralGrinderTriple;
 import electrodynamics.common.tile.network.electric.TileCircuitBreaker;
 import electrodynamics.common.tile.network.electric.TilePotentiometer;
 import electrodynamics.common.tile.network.electric.TileRelay;
+import electrodynamics.common.tile.network.electric.transformer.TileAdvancedTransformer.TileAdvancedDowngradeTransformer;
+import electrodynamics.common.tile.network.electric.transformer.TileAdvancedTransformer.TileAdvancedUpgradeTransformer;
+import electrodynamics.common.tile.network.electric.transformer.TileGenericTransformer.TileDowngradeTransformer;
+import electrodynamics.common.tile.network.electric.transformer.TileGenericTransformer.TileUpgradeTransformer;
 import electrodynamics.common.tile.network.fluid.TileFluidVoid;
 import electrodynamics.common.tile.network.gas.TileGasVent;
 import electrodynamics.common.tile.quarry.TileCoolantResavoir;
@@ -87,8 +90,8 @@ public enum SubtypeMachine implements ISubtype {
 	lithiumbatterybox(true, TileLithiumBatteryBox.class, RenderShape.ENTITYBLOCK_ANIMATED, 0, false),
 	carbynebatterybox(true, TileCarbyneBatteryBox.class, RenderShape.ENTITYBLOCK_ANIMATED, 0, false),
 	oxidationfurnace(true, TileOxidationFurnace.class, RenderShape.MODEL, 6, false),
-	downgradetransformer(true, TileTransformer.class),
-	upgradetransformer(true, TileTransformer.class),
+	downgradetransformer(true, TileDowngradeTransformer.class),
+	upgradetransformer(true, TileUpgradeTransformer.class),
 	solarpanel(true, TileSolarPanel.class),
 	advancedsolarpanel(true, TileAdvancedSolarPanel.class),
 	electricpump(true, TileElectricPump.class),
@@ -124,7 +127,9 @@ public enum SubtypeMachine implements ISubtype {
 	gastankhsla(true, TileGasTankHSLA.class),
 	gasvent(true, TileGasVent.class),
 	relay(true, TileRelay.class),
-	potentiometer(true, TilePotentiometer.class);
+	potentiometer(true, TilePotentiometer.class),
+	advancedupgradetransformer(true, TileAdvancedUpgradeTransformer.class),
+	advanceddowngradetransformer(true, TileAdvancedDowngradeTransformer.class);
 
 	public final Class<? extends BlockEntity> tileclass;
 	public final boolean showInItemGroup;

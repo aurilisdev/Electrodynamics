@@ -10,7 +10,7 @@ import electrodynamics.common.item.gear.armor.types.ItemJetpack;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
-import electrodynamics.prefab.sound.TickableSoundJetpack;
+import electrodynamics.prefab.sound.tickable.TickableSoundJetpack;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;

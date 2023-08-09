@@ -16,6 +16,8 @@ public class GenericTileValve extends GenericTile {
 	public static final Direction OUTPUT_DIR = Direction.NORTH;
 
 	public boolean isClosed = false;
+	
+	protected boolean isLocked = false;
 
 	public GenericTileValve(BlockEntityType<?> tile, BlockPos pos, BlockState state) {
 		super(tile, pos, state);
