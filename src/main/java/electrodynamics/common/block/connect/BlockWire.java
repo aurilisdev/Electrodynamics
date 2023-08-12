@@ -3,7 +3,7 @@ package electrodynamics.common.block.connect;
 import java.util.HashSet;
 
 import electrodynamics.api.References;
-import electrodynamics.api.electricity.IPorcelainInsulator;
+import electrodynamics.api.electricity.IInsulator;
 import electrodynamics.api.network.cable.IRefreshableCable;
 import electrodynamics.api.network.cable.type.IConductor;
 import electrodynamics.common.block.connect.util.AbstractRefreshingConnectBlock;
@@ -24,7 +24,6 @@ import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsItems;
-import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -422,11 +421,11 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 					
 					continue;
 					
-				} else if (relative.getBlock() instanceof IPorcelainInsulator insulator) {
+				} else if (relative.getBlock() instanceof IInsulator insulator) {
 
 					if (overMaxVoltage && voltage > insulator.getMaximumVoltage()) {
 						
-						level.playSound(null, relativePos, ElectrodynamicsSounds.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
+						level.playSound(null, relativePos, insulator.getBreakingSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 						level.destroyBlock(relativePos, false);
 						
 					}
