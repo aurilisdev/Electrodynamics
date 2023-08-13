@@ -5,7 +5,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerCircuitMonitor;
-import electrodynamics.common.tile.generators.TileCreativePowerSource;
 import electrodynamics.common.tile.network.electric.TileCircuitMonitor;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.AbstractScreenComponent;
@@ -16,6 +15,7 @@ import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Inventory;
 
 public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor> {
@@ -36,22 +36,14 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 			if (monitor == null) {
 				return;
 			}
-
-			Component operatorLabel = getOperatorLabel(monitor.booleanOperator.get()).copy().withStyle(ChatFormatting.BOLD);
-
-			int width = getFontRenderer().width(operatorLabel);
-
-			font.draw(stack, operatorLabel, (float) ((imageWidth - width) / 2.0), 22, 0);
-
-			Component propertyLabel = getPropertyLabel(monitor.networkProperty.get()).copy().withStyle(ChatFormatting.BOLD);
-
-			font.draw(stack, propertyLabel, 13, 22, 0);
 			
 			DisplayUnit units = getUnit(monitor.networkProperty.get());
 			
-			Component value = ChatFormatter.getChatDisplayShort(monitor.value.get(), units).withStyle(ChatFormatting.BOLD);
+			Component combined = getPropertyLabel(monitor.networkProperty.get()).append(" ").append(getOperatorLabel(monitor.booleanOperator.get())).append(" ").append(ChatFormatter.getChatDisplayShort(monitor.value.get(), units)).withStyle(ChatFormatting.BOLD);
 			
-			font.draw(stack, value, 163 - font.width(value), 22, 0);
+			int offset = (int) ((150 - font.width(combined)) / 2.0);
+			
+			font.draw(stack, combined, 13 + offset, 22, 0);
 			
 			Component symbol = units.getSymbol();
 			
@@ -218,7 +210,7 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 		
 	}
 
-	private Component getPropertyLabel(int label) {
+	private MutableComponent getPropertyLabel(int label) {
 		return switch (label) {
 		case 0 -> ElectroTextUtils.gui("networkwattage");
 		case 1 -> ElectroTextUtils.gui("networkvoltage");
@@ -231,7 +223,7 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 		};
 	}
 
-	private Component getOperatorLabel(int label) {
+	private MutableComponent getOperatorLabel(int label) {
 		return switch (label) {
 		case 0 -> ElectroTextUtils.gui("equals");
 		case 1 -> ElectroTextUtils.gui("notequals");

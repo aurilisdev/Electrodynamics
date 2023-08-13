@@ -415,6 +415,10 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 				relativePos = pos.relative(dir);
 				relative = level.getBlockState(relativePos);
 				
+				if(relative.isAir()) {
+					continue;
+				}
+				
 				boolean isFlammable = relative.isFlammable(level, relativePos, dir);
 				
 				if(relative.getBlock() instanceof BlockWire) {
