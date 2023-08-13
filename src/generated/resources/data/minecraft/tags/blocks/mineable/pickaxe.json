@@ -101,6 +101,7 @@
     "electrodynamics:potentiometer",
     "electrodynamics:advancedupgradetransformer",
     "electrodynamics:advanceddowngradetransformer",
+    "electrodynamics:circuitmonitor",
     "electrodynamics:wiretin",
     "electrodynamics:wireiron",
     "electrodynamics:wirecopper",

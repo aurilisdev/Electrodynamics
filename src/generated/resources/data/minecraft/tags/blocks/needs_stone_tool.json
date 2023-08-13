@@ -60,6 +60,7 @@
     "electrodynamics:potentiometer",
     "electrodynamics:advancedupgradetransformer",
     "electrodynamics:advanceddowngradetransformer",
+    "electrodynamics:circuitmonitor",
     "electrodynamics:pipecopper",
     "electrodynamics:pipesteel",
     "electrodynamics:orefluorite",

@@ -358,6 +358,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer), "Downgrade Transformer Mk 2");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedupgradetransformer), "Upgrade Transformer Mk 2");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitmonitor), "Circuit Monitor");
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.aluminum), "Bauxite Ore");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.chromium), "Chromite Ore");
@@ -706,6 +707,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			
 			addContainer(SubtypeMachine.advanceddowngradetransformer, "Downgrade Transformer Mk 2");
 			addContainer(SubtypeMachine.advancedupgradetransformer, "Upgrade Transformer Mk 2");
+			addContainer(SubtypeMachine.circuitmonitor, "Circuit Monitor");
 
 			addTooltip("itemwire.resistance", "Resistance: %s");
 			addTooltip("itemwire.maxamps", "Ampacity: %s");
@@ -905,6 +907,24 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("potentiometer.usage", "Usage");
 			
 			addGuiLabel("coilratio", "Coil Ratio");
+			
+			addGuiLabel("networkwattage", "Wattage");
+			addGuiLabel("networkvoltage", "Voltage");
+			addGuiLabel("networkampacity", "Ampacity");
+			addGuiLabel("networkminimumvoltage", "Min. Voltage");
+			addGuiLabel("networkresistance", "Resistance");
+			addGuiLabel("networkload", "Load");
+			
+			addGuiLabel("equals", "=");
+			addGuiLabel("notequals", "!=");
+			addGuiLabel("lessthan", "<");
+			addGuiLabel("greaterthan", ">");
+			addGuiLabel("lessthanorequalto", "<=");
+			addGuiLabel("greaterthanorequalto", ">=");
+			
+			addGuiLabel("property", "Property");
+			addGuiLabel("operator", "Operator");
+			addGuiLabel("value", "Value");
 
 			addGuiLabel("displayunit.infinity.name", "Infinite");
 

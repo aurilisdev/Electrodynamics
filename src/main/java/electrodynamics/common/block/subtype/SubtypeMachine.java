@@ -42,6 +42,7 @@ import electrodynamics.common.tile.mineralgrinder.TileMineralGrinder;
 import electrodynamics.common.tile.mineralgrinder.TileMineralGrinderDouble;
 import electrodynamics.common.tile.mineralgrinder.TileMineralGrinderTriple;
 import electrodynamics.common.tile.network.electric.TileCircuitBreaker;
+import electrodynamics.common.tile.network.electric.TileCircuitMonitor;
 import electrodynamics.common.tile.network.electric.TilePotentiometer;
 import electrodynamics.common.tile.network.electric.TileRelay;
 import electrodynamics.common.tile.network.electric.transformer.TileAdvancedTransformer.TileAdvancedDowngradeTransformer;
@@ -129,7 +130,8 @@ public enum SubtypeMachine implements ISubtype {
 	relay(true, TileRelay.class),
 	potentiometer(true, TilePotentiometer.class),
 	advancedupgradetransformer(true, TileAdvancedUpgradeTransformer.class),
-	advanceddowngradetransformer(true, TileAdvancedDowngradeTransformer.class);
+	advanceddowngradetransformer(true, TileAdvancedDowngradeTransformer.class),
+	circuitmonitor(true, TileCircuitMonitor.class);
 
 	public final Class<? extends BlockEntity> tileclass;
 	public final boolean showInItemGroup;

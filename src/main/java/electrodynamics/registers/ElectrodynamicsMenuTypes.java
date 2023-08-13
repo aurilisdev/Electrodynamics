@@ -11,6 +11,7 @@ import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
 import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalCrystallizer;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalMixer;
+import electrodynamics.common.inventory.container.tile.ContainerCircuitMonitor;
 import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
 import electrodynamics.common.inventory.container.tile.ContainerCombustionChamber;
 import electrodynamics.common.inventory.container.tile.ContainerCompressor;
@@ -100,4 +101,5 @@ public class ElectrodynamicsMenuTypes {
 	public static final RegistryObject<MenuType<ContainerPotentiometer>> CONTAINER_POTENTIOMETER = MENU_TYPES.register("potentiometer", () -> new MenuType<>(ContainerPotentiometer::new));
 	public static final RegistryObject<MenuType<ContainerAdvancedUpgradeTransformer>> CONTAINER_ADVANCEDUPGRADETRANSFORMER = MENU_TYPES.register("advancedupgradetransformer", () -> new MenuType<>(ContainerAdvancedUpgradeTransformer::new));
 	public static final RegistryObject<MenuType<ContainerAdvancedDowngradeTransformer>> CONTAINER_ADVANCEDDOWNGRADETRANSFORMER = MENU_TYPES.register("advanceddowngradetransformer", () -> new MenuType<>(ContainerAdvancedDowngradeTransformer::new));
+	public static final RegistryObject<MenuType<ContainerCircuitMonitor>> CONTAINER_CIRCUITMONITOR = MENU_TYPES.register("circuitmonitor", () -> new MenuType<>(ContainerCircuitMonitor::new));
 }

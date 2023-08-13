@@ -1221,6 +1221,26 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(References.ID, "machine_circuit_breaker", consumer);
 
+		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.circuitmonitor.ordinal()], 1)
+				//
+				.addPattern("DRD")
+				//
+				.addPattern("PMP")
+				//
+				.addPattern("DCD")
+				//
+				.addKey('D', Tags.Items.DUSTS_REDSTONE)
+				//
+				.addKey('R', Items.COMPARATOR)
+				//
+				.addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+				//
+				.addKey('M', MACHINES[SubtypeMachine.multimeterblock.ordinal()])
+				//
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+				//
+				.complete(References.ID, "machine_circuit_monitor", consumer);
+
 		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.relay.ordinal()], 1)
 				//
 				.addPattern("SLS")
