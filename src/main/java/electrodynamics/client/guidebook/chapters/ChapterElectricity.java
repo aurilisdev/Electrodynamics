@@ -162,30 +162,38 @@ public class ChapterElectricity extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l13.2")).setSeparateStart());
 
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l14")).setSeparateStart().setIndentions(1));
+		
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l15")).setSeparateStart().setIndentions(1));
 
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l15l1")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l16l1")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.turnsratioformula")).setSeparateStart().setIndentions(1));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l15l2")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l16l2")).setSeparateStart());
 
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l16.1")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l17.1")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_MULTIMETER.get().getDescription().copy().withStyle(ChatFormatting.BOLD)));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l16.2")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l17.2")));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 40, 150, 40, 45, new ResourceLocation(References.ID, "textures/screen/guidebook/multimeterdisplay1.png")));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l16.3")).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l17.3")).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeMachine.multimeterblock).getDescription().copy().withStyle(ChatFormatting.BOLD)));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l16.4")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l17.4")));
 
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l17.1", ElectrodynamicsItems.getItem(SubtypeMachine.relay).getDescription().copy().withStyle(ChatFormatting.BOLD))).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l18.1", ElectrodynamicsItems.getItem(SubtypeMachine.relay).getDescription().copy().withStyle(ChatFormatting.BOLD))).setSeparateStart().setIndentions(1));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/relayoff.png")));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/relayon.png")));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l17.2", ElectrodynamicsItems.getItem(SubtypeMachine.relay).getDescription(), ElectrodynamicsItems.getItem(SubtypeMachine.relay).getDescription())).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l18.2", ElectrodynamicsItems.getItem(SubtypeMachine.relay).getDescription(), ElectrodynamicsItems.getItem(SubtypeMachine.relay).getDescription())).setSeparateStart());
 
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l18.1", ElectrodynamicsItems.getItem(SubtypeMachine.relay).getDescription(), ElectrodynamicsItems.getItem(SubtypeMachine.circuitbreaker).getDescription().copy().withStyle(ChatFormatting.BOLD), ElectrodynamicsItems.getItem(SubtypeMachine.circuitbreaker).getDescription())).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l19.1", ElectrodynamicsItems.getItem(SubtypeMachine.relay).getDescription(), ElectrodynamicsItems.getItem(SubtypeMachine.circuitbreaker).getDescription().copy().withStyle(ChatFormatting.BOLD), ElectrodynamicsItems.getItem(SubtypeMachine.circuitbreaker).getDescription())).setSeparateStart().setIndentions(1));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/breakeroff.png")));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/breakeron.png")));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l18.2", ElectrodynamicsItems.getItem(SubtypeMachine.circuitbreaker).getDescription())));
-
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l19")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l19.2", ElectrodynamicsItems.getItem(SubtypeMachine.circuitbreaker).getDescription())));
+		
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l20.1", ElectrodynamicsItems.getItem(SubtypeMachine.circuitmonitor).getDescription().copy().withStyle(ChatFormatting.BOLD))).setSeparateStart().setIndentions(1));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/circuitmonitor.png")));
+		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/circuitmonitorgui.png")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l20.2", ElectroTextUtils.gui("networkwattage").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkvoltage").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkampacity").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkminimumvoltage").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkresistance").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkload").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkwattage"))).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l20.3")).setSeparateStart().setIndentions(1));
+		
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l21")).setSeparateStart().setIndentions(1));
 
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.symbols").withStyle(ChatFormatting.BOLD)).setNewPage());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.symbvoltage")).setSeparateStart().setIndentions(1));
@@ -193,6 +201,7 @@ public class ChapterElectricity extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.symbresistance")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.symbpower")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.symbenergy")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.symbturnsratio")).setSeparateStart().setIndentions(1));
 		blankLine();
 
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.equations").withStyle(ChatFormatting.BOLD)).setSeparateStart());
@@ -201,6 +210,7 @@ public class ChapterElectricity extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.energytickstoseconds")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.ohmslaw")).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.powerfromcurrent")).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.turnsratioformula")).setSeparateStart().setIndentions(1));
 
 	}
 
