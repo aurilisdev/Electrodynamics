@@ -1,16 +1,4 @@
-        maven { url = 'https://files.minecraftforge.net/maven' }
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-        maven { url = 'https://maven.parchmentmc.org' }
-        maven { url = "https://modmaven.dev" }
-   		maven { url = "https://dvs1.progwml6.com/files/maven/" }
-        jcenter()
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
-        classpath 'org.parchmentmc:librarian:1.+'
-    }
 plugins {
-    id "com.matthewprenger.cursegradle" version '1.4.0'
 	id 'eclipse'
 	id 'maven-publish'
 	id 'net.minecraftforge.gradle' version "${forge_gradle_version}"
