@@ -7,10 +7,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -31,10 +29,10 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 
 	@Override
 	protected void onHitBlock(BlockHitResult hit) {
-		BlockState state = level.getBlockState(hit.getBlockPos());
-		if (!ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
-			if (!level.isClientSide) {
-				level.explode(null, hit.getBlockPos().getX(), hit.getBlockPos().getY(), hit.getBlockPos().getZ(), 4f / (tickCount / 40.0f + 1), true, BlockInteraction.DESTROY);
+		BlockState state = level().getBlockState(hit.getBlockPos());
+		if (!state.isAir()) {
+			if (!level().isClientSide) {
+				level().explode(null, hit.getBlockPos().getX(), hit.getBlockPos().getY(), hit.getBlockPos().getZ(), 4f / (tickCount / 40.0f + 1), true, ExplosionInteraction.BLOCK);
 			}
 			remove(Entity.RemovalReason.DISCARDED);
 		}

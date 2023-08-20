@@ -14,7 +14,7 @@ public class MathUtils {
 	}
 
 	public static Location getRaytracedBlock(Entity entity, double rayLength) {
-		return getRaytracedBlock(entity.level, entity.getLookAngle(), entity.getEyePosition(0), rayLength);
+		return getRaytracedBlock(entity.level(), entity.getLookAngle(), entity.getEyePosition(0), rayLength);
 	}
 
 	public static Location getRaytracedBlock(Level world, Vec3 direction, Vec3 from, double rayLength) {

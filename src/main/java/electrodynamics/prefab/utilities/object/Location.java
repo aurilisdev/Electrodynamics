@@ -1,6 +1,6 @@
 package electrodynamics.prefab.utilities.object;
 
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -152,7 +152,7 @@ public final class Location {
 	}
 
 	public BlockPos toBlockPos() {
-		return new BlockPos(x, y, z);
+		return new BlockPos((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
 	}
 
 	public BlockState getBlockState(BlockGetter reader) {

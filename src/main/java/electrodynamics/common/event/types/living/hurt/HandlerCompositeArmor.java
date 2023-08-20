@@ -20,7 +20,7 @@ public class HandlerCompositeArmor extends AbstractLivingHurtHandler {
 
 	@Override
 	public void handle(LivingHurtEvent event) {
-		if (event.getSource().isFall()) {
+		if (event.getSource().) {
 			return;
 		}
 		List<ItemStack> armorPieces = new ArrayList<>();
@@ -41,7 +41,7 @@ public class HandlerCompositeArmor extends AbstractLivingHurtHandler {
 
 	private boolean compareArmor(List<ItemStack> set1, ItemStack[] set2) {
 		if (set1.size() >= 3) {
-			return ItemStack.isSameIgnoreDurability(set1.get(0), set2[3]) && ItemStack.isSameIgnoreDurability(set1.get(1), set2[2]) && ItemStack.isSameIgnoreDurability(set1.get(2), set2[1]) && ItemStack.isSameIgnoreDurability(set1.get(3), set2[0]);
+			return set1.get(0) == set2[3] && set1.get(1) == set2[2] && set1.get(2) == set2[1] && set1.get(3) == set2[0];
 		}
 		return false;
 	}

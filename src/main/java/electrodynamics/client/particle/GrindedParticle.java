@@ -52,7 +52,7 @@ public class GrindedParticle extends TextureSheetParticle {
 	}
 
 	public GrindedParticle init() {
-		sourcePos = new BlockPos(x, y, z);
+		sourcePos = new BlockPos((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z));
 		if (sourceState.is(Blocks.GRASS_BLOCK)) {
 			return this;
 		}
@@ -90,7 +90,7 @@ public class GrindedParticle extends TextureSheetParticle {
 	@Override
 	public int getLightColor(float partialTick) {
 		int i = super.getLightColor(partialTick);
-		int j = LevelRenderer.getLightColor(level, new BlockPos(x, y, z));
+		int j = LevelRenderer.getLightColor(level, new BlockPos((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z)));
 		return i == 0 ? j : i;
 	}
 

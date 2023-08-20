@@ -21,7 +21,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion.BlockInteraction;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -61,7 +61,7 @@ public abstract class GenericTileCharger extends GenericTile {
 				if (machineVoltage > recieveVoltage) {
 					electricItem.overVoltage(TransferPack.joulesVoltage(electricItem.getElectricProperties().receive.getJoules(), machineVoltage));
 					level.setBlockAndUpdate(worldPosition, Blocks.AIR.defaultBlockState());
-					level.explode(null, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), 2f, BlockInteraction.DESTROY);
+					level.explode(null, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), 2f, ExplosionInteraction.BLOCK);
 				} else if (machineVoltage == recieveVoltage) {
 					electro.joules(electro.getJoulesStored() - electricItem.receivePower(itemInput, TransferPack.joulesVoltage(electro.getJoulesStored(), machineVoltage), false).getJoules());
 				} else {

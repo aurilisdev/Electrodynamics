@@ -16,6 +16,7 @@ import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -47,14 +48,14 @@ public abstract class FluidItem2ItemRecipe extends AbstractMaterialRecipe {
 		}
 		return false;
 	}
-
+	
 	@Override
-	public ItemStack assemble(RecipeWrapper inv) {
+	public ItemStack assemble(RecipeWrapper container, RegistryAccess registryAccess) {
 		return outputItemStack;
 	}
-
+	
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
 		return outputItemStack;
 	}
 

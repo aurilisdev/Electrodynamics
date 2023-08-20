@@ -20,7 +20,7 @@ import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Explosion.BlockInteraction;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.capabilities.Capability;
@@ -222,7 +222,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		Level world = holder.getLevel();
 		BlockPos pos = holder.getBlockPos();
 		world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-		world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()), BlockInteraction.DESTROY);
+		world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()), ExplosionInteraction.BLOCK);
 	}
 
 	@Override

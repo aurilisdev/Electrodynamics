@@ -16,7 +16,7 @@ public class HandlerWrench extends AbstractRightClickBlockHandler {
 
 		Player player = event.getEntity();
 
-		if (player.level.isClientSide) {
+		if (player.level().isClientSide) {
 			return;
 		}
 

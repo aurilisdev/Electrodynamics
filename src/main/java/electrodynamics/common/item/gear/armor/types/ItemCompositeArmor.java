@@ -38,7 +38,7 @@ public class ItemCompositeArmor extends ArmorItem {
 
 	public static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/compositearmor.png";
 
-	public ItemCompositeArmor(EquipmentSlot slot) {
+	public ItemCompositeArmor(Type slot) {
 		super(CompositeArmor.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).tab(References.CORETAB).fireResistant().setNoRepair());
 	}
 
@@ -54,24 +54,24 @@ public class ItemCompositeArmor extends ArmorItem {
 				List<ItemStack> armorPieces = new ArrayList<>();
 				entity.getArmorSlots().forEach(armorPieces::add);
 
-				boolean isBoth = ItemStack.isSameIgnoreDurability(armorPieces.get(0), armorPiecesArray[3]) && ItemStack.isSameIgnoreDurability(armorPieces.get(1), armorPiecesArray[2]);
+				boolean isBoth = armorPieces.get(0) == armorPiecesArray[3] && armorPieces.get(1) == armorPiecesArray[2];
 
-				boolean hasChest = ItemStack.isSameIgnoreDurability(armorPieces.get(2), armorPiecesArray[1]);
+				boolean hasChest = armorPieces.get(2) == armorPiecesArray[1];
 
 				ModelCompositeArmor<LivingEntity> model;
 
 				if (isBoth) {
 					if (hasChest) {
-						model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_COMB_CHEST.bakeRoot(), slot);
+						model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_COMB_CHEST.bakeRoot(), getEquipmentSlot());
 					} else {
-						model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), slot);
+						model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), getEquipmentSlot());
 					}
-				} else if (slot == EquipmentSlot.FEET) {
-					model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_BOOTS.bakeRoot(), slot);
+				} else if (getEquipmentSlot() == EquipmentSlot.FEET) {
+					model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_BOOTS.bakeRoot(), getEquipmentSlot());
 				} else if (hasChest) {
-					model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(), slot);
+					model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(), getEquipmentSlot());
 				} else {
-					model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), slot);
+					model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), getEquipmentSlot());
 				}
 
 				model.crouching = properties.crouching;
@@ -89,7 +89,7 @@ public class ItemCompositeArmor extends ArmorItem {
 			ItemStack empty = new ItemStack(this);
 			items.add(empty);
 			ItemStack filled = new ItemStack(this);
-			if (getSlot() == EquipmentSlot.CHEST) {
+			if (getEquipmentSlot() == EquipmentSlot.CHEST) {
 				CompoundTag tag = filled.getOrCreateTag();
 				tag.putInt(NBTUtils.PLATES, 2);
 				items.add(filled);
@@ -115,7 +115,7 @@ public class ItemCompositeArmor extends ArmorItem {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		if (((ArmorItem) stack.getItem()).getSlot() == EquipmentSlot.CHEST) {
+		if (((ArmorItem) stack.getItem()).getEquipmentSlot() == EquipmentSlot.CHEST) {
 			staticAppendHoverText(stack, worldIn, tooltip, flagIn);
 		}
 	}
@@ -151,16 +151,6 @@ public class ItemCompositeArmor extends ArmorItem {
 		}
 
 		@Override
-		public int getDurabilityForSlot(EquipmentSlot slotIn) {
-			return 2000;
-		}
-
-		@Override
-		public int getDefenseForSlot(EquipmentSlot slotIn) {
-			return damageReductionAmountArray[slotIn.getIndex()];
-		}
-
-		@Override
 		public SoundEvent getEquipSound() {
 			return ElectrodynamicsSounds.SOUND_EQUIPHEAVYARMOR.get();
 		}
@@ -178,6 +168,16 @@ public class ItemCompositeArmor extends ArmorItem {
 		@Override
 		public float getKnockbackResistance() {
 			return 4;
+		}
+
+		@Override
+		public int getDurabilityForType(Type type) {
+			return 2000;
+		}
+
+		@Override
+		public int getDefenseForType(Type type) {
+			return damageReductionAmountArray[type.ordinal()];
 		}
 
 	}

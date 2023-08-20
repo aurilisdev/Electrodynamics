@@ -264,7 +264,7 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 
 			access.set(oldHead);
 
-			player.getLevel().playLocalSound(player.getX(), player.getY(), player.getZ(), ElectrodynamicsSounds.SOUND_BATTERY_SWAP.get(), SoundSource.PLAYERS, 0.25F, 1.0F, false);
+			player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), ElectrodynamicsSounds.SOUND_BATTERY_SWAP.get(), SoundSource.PLAYERS, 0.25F, 1.0F, false);
 
 			return true;
 

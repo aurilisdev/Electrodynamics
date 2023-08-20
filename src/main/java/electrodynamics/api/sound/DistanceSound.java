@@ -24,7 +24,7 @@ public class DistanceSound extends AbstractTickableSoundInstance {
 
 	@Override
 	public float getVolume() {
-		if (block == null || Minecraft.getInstance().player.distanceToSqr(x + 0.5, y + 0.5, z + 0.5) > 16 * 16 || Minecraft.getInstance().level.getBlockState(new BlockPos(x, y, z)).getBlock() != block) {
+		if (block == null || Minecraft.getInstance().player.distanceToSqr(x + 0.5, y + 0.5, z + 0.5) > 16 * 16 || Minecraft.getInstance().level.getBlockState(new BlockPos((int) Math.floor(x), (int) Math.floor(y), (int) Math.floor(z))).getBlock() != block) {
 			block = null;
 			return 0;
 		}

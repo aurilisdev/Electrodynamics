@@ -293,7 +293,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 			if (!player.addItem(stack)) {
 
-				player.level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), stack));
+				player.level().addFreshEntity(new ItemEntity(player.level(), (int) player.getX(), (int) player.getY(), (int) player.getZ(), stack));
 
 			}
 

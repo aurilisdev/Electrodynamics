@@ -119,7 +119,7 @@ public class ItemUpgrade extends Item {
 
 	@Override
 	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-		if (!entity.level.isClientSide && entity.isShiftKeyDown()) {
+		if (!entity.level().isClientSide && entity.isShiftKeyDown()) {
 			if (!entity.getItemInHand(InteractionHand.MAIN_HAND).isEmpty() || !entity.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) {
 				SubtypeItemUpgrade subtype = ((ItemUpgrade) stack.getItem()).subtype;
 				if (subtype == SubtypeItemUpgrade.iteminput || subtype == SubtypeItemUpgrade.itemoutput) {

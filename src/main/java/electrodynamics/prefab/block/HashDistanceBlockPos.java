@@ -6,7 +6,7 @@ public class HashDistanceBlockPos extends BlockPos {
 	public int hash = 0;
 
 	public HashDistanceBlockPos(double xIn, double yIn, double zIn, int hash) {
-		super(xIn, yIn, zIn);
+		super((int) Math.floor(xIn), (int) Math.floor(yIn), (int) Math.floor(zIn));
 		this.hash = hash;
 	}
 

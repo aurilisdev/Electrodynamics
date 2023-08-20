@@ -12,7 +12,7 @@ public interface IMultiblockParentBlock {
 	default boolean isValidMultiblockPlacement(BlockState state, LevelReader worldIn, BlockPos pos, Subnode[] nodes) {
 		for (Subnode sub : nodes) {
 			BlockPos check = pos.offset(sub.pos());
-			if (!worldIn.getBlockState(check).getMaterial().isReplaceable()) {
+			if (!worldIn.getBlockState(check).canBeReplaced()) {
 				return false;
 			}
 		}

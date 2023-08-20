@@ -153,7 +153,7 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext context) {
 		BlockState superState = super.getStateForPlacement(context);
-		Level world = context.getPlayer().level;
+		Level world = context.getPlayer().level();
 		boolean set = false;
 		if (world.getBlockState(context.getClickedPos()).getBlock() instanceof BlockScaffold) {
 			superState = superState.setValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING, true);
@@ -218,7 +218,7 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 					if (!level.isClientSide) {
 						if (!player.isCreative()) {
 							if (!player.addItem(new ItemStack(connect.getCamoBlock().getBlock()))) {
-								level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), new ItemStack(connect.getCamoBlock().getBlock())));
+								level.addFreshEntity(new ItemEntity(player.level(), (int) player.getX(), (int) player.getY(), (int) player.getZ(), new ItemStack(connect.getCamoBlock().getBlock())));
 							}
 							stack.shrink(1);
 							player.setItemInHand(hand, stack);
@@ -296,7 +296,7 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 
 	@Override
 	public void onRotate(ItemStack stack, BlockPos pos, Player player) {
-		Level level = player.level;
+		Level level = player.level();
 		if (level.isClientSide()) {
 			return;
 		}
@@ -309,7 +309,7 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 
 				if (!player.isCreative()) {
 					if (!player.addItem(new ItemStack(camo))) {
-						level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), new ItemStack(camo)));
+						level.addFreshEntity(new ItemEntity(player.level(), (int) player.getX(), (int) player.getY(), (int) player.getZ(), new ItemStack(camo)));
 					}
 				}
 
@@ -324,7 +324,7 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 
 				if (!player.isCreative()) {
 					if (!player.addItem(new ItemStack(scaffold))) {
-						level.addFreshEntity(new ItemEntity(player.level, (int) player.getX(), (int) player.getY(), (int) player.getZ(), new ItemStack(scaffold)));
+						level.addFreshEntity(new ItemEntity(player.level(), (int) player.getX(), (int) player.getY(), (int) player.getZ(), new ItemStack(scaffold)));
 					}
 				}
 

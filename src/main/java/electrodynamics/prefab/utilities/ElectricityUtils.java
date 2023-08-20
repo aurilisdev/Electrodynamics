@@ -11,7 +11,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.Explosion.BlockInteraction;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,7 +29,7 @@ public class ElectricityUtils {
 					float damage = (float) transfer.getAmps() / 10.0f;
 					if (Math.random() < damage) {
 						int integerDamage = (int) Math.max(1, damage);
-						if (armor.getDamageValue() > armor.getMaxDamage() || armor.hurt(integerDamage, entityIn.level.random, null)) {
+						if (armor.getDamageValue() > armor.getMaxDamage() || armor.hurt(integerDamage, entityIn.level().random, null)) {
 							armor.setCount(0);
 						}
 					}
@@ -81,7 +81,7 @@ public class ElectricityUtils {
 					Level world = tile.getLevel();
 					BlockPos pos = tile.getBlockPos();
 					world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-					world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / ElectrodynamicsCapabilities.DEFAULT_VOLTAGE), BlockInteraction.DESTROY);
+					world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / ElectrodynamicsCapabilities.DEFAULT_VOLTAGE), ExplosionInteraction.BLOCK);
 				}
 				return returner;
 			}

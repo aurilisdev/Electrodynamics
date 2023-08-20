@@ -51,7 +51,7 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	private static final String ARMOR_TEXTURE_ON = References.ID + ":textures/model/armor/nightvisiongoggleson.png";
 
 	public ItemNightVisionGoggles(ElectricItemProperties properties) {
-		super(NightVisionGoggles.NVGS, EquipmentSlot.HEAD, properties);
+		super(NightVisionGoggles.NVGS, Type.HELMET, properties);
 		this.properties = properties;
 	}
 
@@ -164,16 +164,6 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 		NVGS;
 
 		@Override
-		public int getDurabilityForSlot(EquipmentSlot slotIn) {
-			return 100;
-		}
-
-		@Override
-		public int getDefenseForSlot(EquipmentSlot slotIn) {
-			return 1;
-		}
-
-		@Override
 		public SoundEvent getEquipSound() {
 			return SoundEvents.ARMOR_EQUIP_IRON;
 		}
@@ -191,6 +181,16 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 		@Override
 		public float getKnockbackResistance() {
 			return 0.0F;
+		}
+
+		@Override
+		public int getDurabilityForType(Type pType) {
+			return 100;
+		}
+
+		@Override
+		public int getDefenseForType(Type pType) {
+			return 1;
 		}
 
 	}

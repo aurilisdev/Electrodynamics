@@ -146,7 +146,7 @@ public interface IItemElectric {
 					ItemStack item = inv.getItem(j);
 					if (item.isEmpty()) {
 						inv.setItem(j, currBattery);
-						player.getLevel().playSound(null, player.getOnPos(), ElectrodynamicsSounds.SOUND_BATTERY_SWAP.get(), SoundSource.PLAYERS, 0.25F, 1.0F);
+						player.level().playSound(null, player.getOnPos(), ElectrodynamicsSounds.SOUND_BATTERY_SWAP.get(), SoundSource.PLAYERS, 0.25F, 1.0F);
 						return;
 					}
 				}
@@ -190,7 +190,7 @@ public interface IItemElectric {
 
 		thisElectric.setCurrentBattery(stack, other);
 
-		player.getLevel().playLocalSound(player.getX(), player.getY(), player.getZ(), ElectrodynamicsSounds.SOUND_BATTERY_SWAP.get(), SoundSource.PLAYERS, 0.25F, 1.0F, false);
+		player.level().playLocalSound(player.getX(), player.getY(), player.getZ(), ElectrodynamicsSounds.SOUND_BATTERY_SWAP.get(), SoundSource.PLAYERS, 0.25F, 1.0F, false);
 
 		return true;
 

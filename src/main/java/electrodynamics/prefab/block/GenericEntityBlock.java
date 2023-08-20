@@ -62,15 +62,15 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 
 	@Override
 	public void onRotate(ItemStack stack, BlockPos pos, Player player) {
-		if (player.level.getBlockState(pos).hasProperty(FACING)) {
-			BlockState state = rotate(player.level.getBlockState(pos), Rotation.CLOCKWISE_90);
-			if (player.level.getBlockEntity(pos) instanceof GenericTile tile) {
+		if (player.level().getBlockState(pos).hasProperty(FACING)) {
+			BlockState state = rotate(player.level().getBlockState(pos), Rotation.CLOCKWISE_90);
+			if (player.level().getBlockEntity(pos) instanceof GenericTile tile) {
 				if (tile.hasComponent(ComponentType.Direction)) {
 					tile.<ComponentDirection>getComponent(ComponentType.Direction).setDirection(state.getValue(FACING));
 				}
 			}
-			player.level.setBlockAndUpdate(pos, state);
-			player.level.updateNeighborsAt(pos, this);
+			player.level().setBlockAndUpdate(pos, state);
+			player.level().updateNeighborsAt(pos, this);
 		}
 	}
 
@@ -92,7 +92,7 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 
 	@Override
 	public void onPickup(ItemStack stack, BlockPos pos, Player player) {
-		Level world = player.level;
+		Level world = player.level();
 		world.destroyBlock(pos, true, player);
 	}
 

@@ -131,7 +131,7 @@ public class ItemSeismicScanner extends ItemElectric {
 					Location blockPos = new Location(WorldUtils.getClosestBlockToCenter(world, playerPos.toBlockPos(), RADUIS_BLOCKS, oreBlockItem.getBlock()));
 					playerPos.writeToNBT(tag, NBTUtils.LOCATION + PLAY_LOC);
 					blockPos.writeToNBT(tag, NBTUtils.LOCATION + BLOCK_LOC);
-					NetworkHandler.CHANNEL.sendTo(new PacketAddClientRenderInfo(player.getUUID(), blockPos.toBlockPos()), ((ServerPlayer) player).connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+					NetworkHandler.CHANNEL.sendTo(new PacketAddClientRenderInfo(player.getUUID(), blockPos.toBlockPos()), ((ServerPlayer) player).connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 				}
 			} else {
 				player.openMenu(getMenuProvider(world, player, scanner));

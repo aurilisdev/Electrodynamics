@@ -4,8 +4,8 @@ import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -64,14 +64,14 @@ public interface ICapabilityElectrodynamic {
 			Level world = tile.getLevel();
 			BlockPos pos = tile.getBlockPos();
 			world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-			world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()), BlockInteraction.DESTROY);
+			world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()), ExplosionInteraction.BLOCK);
 		} else if (this instanceof ComponentElectrodynamic electro) {
 			BlockEntity tile = electro.getHolder();
 			if (tile != null) {
 				Level world = tile.getLevel();
 				BlockPos pos = tile.getBlockPos();
 				world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-				world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()), BlockInteraction.DESTROY);
+				world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / getVoltage()), ExplosionInteraction.BLOCK);
 			}
 		}
 	}

@@ -3,8 +3,8 @@ package electrodynamics.common.item.gear.tools.electric;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import electrodynamics.api.item.IItemTemperate;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
@@ -84,11 +84,14 @@ public class ItemRailgunKinetic extends ItemRailgun {
 		projectile.setOwner(player);
 
 		Vec3 vec31 = player.getUpVector(1.0F);
-		Quaternion quaternion = new Quaternion(new Vector3f(vec31), 0, true);
-		Vec3 vec3 = player.getViewVector(1.0F);
-		Vector3f vector3f = new Vector3f(vec3);
-		vector3f.transform(quaternion);
-		projectile.shoot(vector3f.x(), vector3f.y(), vector3f.z(), 20.0F, 0.0F);
+
+		Quaternionf quaternionf = (new Quaternionf()).setAngleAxis((double) 0, vec31.x, vec31.y, vec31.z);
+
+		Vec3 playerViewVector = player.getViewVector(1.0F);
+
+		Vector3f viewVector = playerViewVector.toVector3f().rotate(quaternionf);
+
+		projectile.shoot(viewVector.x(), viewVector.y(), viewVector.z(), 20.0F, 0.0F);
 
 		world.addFreshEntity(projectile);
 		railgun.recieveHeat(gunStack, TEMPERATURE_PER_SHOT, false);

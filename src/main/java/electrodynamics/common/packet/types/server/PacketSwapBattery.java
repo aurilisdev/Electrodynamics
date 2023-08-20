@@ -22,7 +22,7 @@ public class PacketSwapBattery {
 	public static void handle(PacketSwapBattery message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			ServerLevel world = context.get().getSender().getLevel();
+			ServerLevel world = context.get().getSender().serverLevel();
 			if (world != null) {
 				Player player = world.getPlayerByUUID(message.playerId);
 				ItemStack handItem = player.getItemInHand(InteractionHand.MAIN_HAND);

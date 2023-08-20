@@ -29,7 +29,7 @@ public class PacketModeSwitchServer {
 	public static void handle(PacketModeSwitchServer message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			ServerLevel serverWorld = context.get().getSender().getLevel();
+			ServerLevel serverWorld = context.get().getSender().serverLevel();
 			if (serverWorld != null) {
 				ServerPlayer serverPlayer = (ServerPlayer) serverWorld.getPlayerByUUID(message.playerId);
 				switch (message.mode) {

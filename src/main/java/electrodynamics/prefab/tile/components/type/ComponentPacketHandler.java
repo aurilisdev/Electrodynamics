@@ -67,7 +67,7 @@ public class ComponentPacketHandler implements Component {
 
 			PacketSendUpdatePropertiesClient packet = new PacketSendUpdatePropertiesClient(holder);
 
-			players.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+			players.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.connection, NetworkDirection.PLAY_TO_CLIENT));
 
 			holder.getPropertyManager().clean();
 		}

@@ -24,7 +24,7 @@ public class PacketPowerSetting {
 	public static void handle(PacketPowerSetting message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			ServerLevel world = context.get().getSender().getLevel();
+			ServerLevel world = context.get().getSender().serverLevel();
 			if (world != null) {
 				TileCreativePowerSource tile = (TileCreativePowerSource) world.getBlockEntity(message.pos);
 				if (tile != null) {

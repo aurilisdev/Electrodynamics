@@ -14,6 +14,7 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -39,14 +40,14 @@ public abstract class Item2ItemRecipe extends ElectrodynamicsRecipe {
 		}
 		return false;
 	}
-
+	
 	@Override
-	public ItemStack assemble(RecipeWrapper inv) {
-		return getResultItem();
+	public ItemStack assemble(RecipeWrapper pContainer, RegistryAccess pRegistryAccess) {
+		return outputItem;
 	}
-
+	
 	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
 		return outputItem;
 	}
 

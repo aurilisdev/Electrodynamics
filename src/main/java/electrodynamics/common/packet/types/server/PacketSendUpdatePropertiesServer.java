@@ -31,7 +31,7 @@ public class PacketSendUpdatePropertiesServer {
 	public static void handle(PacketSendUpdatePropertiesServer message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			ServerLevel world = ctx.getSender().getLevel();
+			ServerLevel world = ctx.getSender().serverLevel();
 			if (world != null) {
 				BlockEntity tile = world.getBlockEntity(message.tilePos);
 				if (tile instanceof IPropertyHolderTile holder) {

@@ -83,11 +83,11 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock {
 
 		if (network.temperatureOfTransmitted >= Gas.MINIMUM_HEAT_BURN_TEMP * multipler) {
 
-			entityIn.hurt(DamageSource.IN_FIRE, 1.0F);
+			entityIn.hurt(entityIn.damageSources().inFire(), 1.0F);
 
 		} else if (network.temperatureOfTransmitted > 0 && network.temperatureOfTransmitted <= Gas.MINIMUM_FREEZE_TEMP / multipler) {
 
-			entityIn.hurt(DamageSource.FREEZE, 1.0F);
+			entityIn.hurt(entityIn.damageSources().freeze(), 1.0F);
 
 		}
 

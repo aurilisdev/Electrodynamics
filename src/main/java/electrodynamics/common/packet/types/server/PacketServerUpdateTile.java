@@ -22,7 +22,7 @@ public class PacketServerUpdateTile {
 	public static void handle(PacketServerUpdateTile message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			ServerLevel world = context.get().getSender().getLevel();
+			ServerLevel world = context.get().getSender().serverLevel();
 			if (world != null) {
 				BlockEntity tile = world.getBlockEntity(message.target);
 				if (tile instanceof IPacketServerUpdateTile serv) {
