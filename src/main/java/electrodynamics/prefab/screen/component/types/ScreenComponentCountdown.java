@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.DoubleSupplier;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
@@ -13,6 +11,7 @@ import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.component.TextPropertySupplier;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 
@@ -34,17 +33,17 @@ public class ScreenComponentCountdown extends AbstractScreenComponentInfo {
 	}
 
 	@Override
-	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, texture.textureWidth(), texture.textureHeight())) {
-			gui.displayTooltips(stack, getInfo(infoHandler.getInfo()), xAxis, yAxis);
+			graphics.renderTooltip(gui.getFontRenderer(), getInfo(infoHandler.getInfo()), xAxis, yAxis);
 		}
 	}
 
 	@Override
-	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
+	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 		int lengthBar = (int) (progressInfoHandler.getAsDouble() * CountdownTextures.COUNTDOWN_BAR_DEFAULT.textureWidth());
-		gui.drawTexturedRect(stack, guiWidth + xLocation + 1, guiHeight + yLocation + 1, CountdownTextures.COUNTDOWN_BAR_DEFAULT.textureU(), CountdownTextures.COUNTDOWN_BAR_DEFAULT.textureV(), lengthBar, CountdownTextures.COUNTDOWN_BAR_DEFAULT.textureHeight(), CountdownTextures.COUNTDOWN_BAR_DEFAULT.imageWidth(), CountdownTextures.COUNTDOWN_BAR_DEFAULT.imageHeight());
+		graphics.blit(CountdownTextures.BACKGROUND_DEFAULT.getLocation(), guiWidth + xLocation + 1, guiHeight + yLocation + 1, CountdownTextures.COUNTDOWN_BAR_DEFAULT.textureU(), CountdownTextures.COUNTDOWN_BAR_DEFAULT.textureV(), lengthBar, CountdownTextures.COUNTDOWN_BAR_DEFAULT.textureHeight(), CountdownTextures.COUNTDOWN_BAR_DEFAULT.imageWidth(), CountdownTextures.COUNTDOWN_BAR_DEFAULT.imageHeight());
 
 	}
 

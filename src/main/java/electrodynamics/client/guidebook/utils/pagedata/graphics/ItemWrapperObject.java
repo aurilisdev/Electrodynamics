@@ -1,9 +1,8 @@
 package electrodynamics.client.guidebook.utils.pagedata.graphics;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.client.guidebook.utils.components.Page;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.Item;
 
 /**
@@ -24,8 +23,8 @@ public class ItemWrapperObject extends AbstractGraphicWrapper<ItemWrapperObject>
 	}
 
 	@Override
-	public void render(PoseStack stack, int wrapperX, int wrapperY, int xShift, int guiWidth, int guiHeight, Page page) {
-		RenderingUtils.renderItemScaled(item, guiWidth + xOffset + wrapperX + xShift, guiHeight + yOffset + wrapperY, scale);
+	public void render(GuiGraphics graphics, int wrapperX, int wrapperY, int xShift, int guiWidth, int guiHeight, Page page) {
+		RenderingUtils.renderItemScaled(graphics, item, guiWidth + xOffset + wrapperX + xShift, guiHeight + yOffset + wrapperY, scale);
 	}
 
 }

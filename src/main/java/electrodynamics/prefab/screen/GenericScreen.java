@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.References;
 import electrodynamics.api.screen.IScreenWrapper;
 import electrodynamics.api.screen.component.ISlotTexture;
@@ -17,14 +15,12 @@ import electrodynamics.prefab.screen.component.types.ScreenComponentSlot;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.SlotType;
 import electrodynamics.prefab.screen.component.utils.SlotTextureProvider;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraftforge.api.distmarker.Dist;
@@ -71,38 +67,35 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 		for (AbstractScreenComponent component : components) {
 			addRenderableWidget(component);
 		}
-		if (editBoxes.size() > 0) {
-			minecraft.keyboardHandler.setSendRepeatsToGui(true);
-		}
+	}
+	
+	@Override
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(graphics);
+		super.render(graphics, mouseX, mouseY, partialTicks);
+		renderTooltip(graphics, mouseX, mouseY);
 	}
 
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(matrixStack);
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
-		renderTooltip(matrixStack, mouseX, mouseY);
-	}
-
-	@Override
-	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-		super.renderLabels(stack, mouseX, mouseY);
+	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
+		super.renderLabels(graphics, mouseX, mouseY);
 		int guiWidth = (int) getGuiWidth();
 		int guiHeight = (int) getGuiHeight();
 		int xAxis = mouseX - guiWidth;
 		int yAxis = mouseY - guiHeight;
 		for (AbstractScreenComponent component : components) {
-			component.renderForeground(stack, xAxis, yAxis, guiWidth, guiHeight);
+			component.renderForeground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 		}
 	}
 
 	@Override
-	protected void renderBg(PoseStack stack, float partialTick, int mouseX, int mouseY) {
-		RenderingUtils.bindTexture(defaultResource);
+	protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
+		//RenderingUtils.bindTexture(defaultResource);
 		int guiWidth = (int) getGuiWidth();
 		int guiHeight = (int) getGuiHeight();
-		blit(stack, guiWidth, guiHeight, 0, 248, imageWidth, 4);
-		blit(stack, guiWidth, guiHeight + 4, 0, 0, imageWidth, imageHeight - 8);
-		blit(stack, guiWidth, guiHeight + imageHeight - 4, 0, 252, imageWidth, 4);
+		graphics.blit(defaultResource, guiWidth, guiHeight, 0, 248, imageWidth, 4);
+		graphics.blit(defaultResource, guiWidth, guiHeight + 4, 0, 0, imageWidth, imageHeight - 8);
+		graphics.blit(defaultResource, guiWidth, guiHeight + imageHeight - 4, 0, 252, imageWidth, 4);
 	}
 
 	@Override
@@ -116,36 +109,8 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 	}
 
 	@Override
-	public void drawTexturedRect(PoseStack stack, int x, int y, int u, int v, int w, int h, int imgW, int imgH) {
-		blit(stack, x, y, u, v, w, h, imgW, imgH);
-	}
-
-	@Override
-	public void drawTexturedRectFromIcon(PoseStack stack, int x, int y, TextureAtlasSprite icon, int w, int h) {
-		blit(stack, x, y, (int) (icon.getU0() * icon.getWidth()), (int) (icon.getV0() * icon.getHeight()), w, h);
-	}
-
-	@Override
-	public void displayTooltip(PoseStack stack, Component text, int xAxis, int yAxis) {
-		this.renderTooltip(stack, text, xAxis, yAxis);
-	}
-
-	@Override
-	public void displayTooltips(PoseStack stack, List<? extends FormattedCharSequence> tooltips, int xAxis, int yAxis) {
-		super.renderTooltip(stack, tooltips, xAxis, yAxis, font);
-	}
-
-	@Override
 	public Font getFontRenderer() {
 		return Minecraft.getInstance().font;
-	}
-
-	@Override
-	public void removed() {
-		super.removed();
-		if (editBoxes.size() > 0) {
-			minecraft.keyboardHandler.setSendRepeatsToGui(false);
-		}
 	}
 
 	@Override

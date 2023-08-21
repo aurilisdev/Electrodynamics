@@ -3,12 +3,11 @@ package electrodynamics.client.render.entity;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -45,9 +44,13 @@ public class RenderMetalRod extends EntityRenderer<EntityMetalRod> {
 		double yaw = entity.yRotO + (entity.getYRot() - entity.yRotO) * partialTicks - 90.0F;// y lerp - 90
 		double pitch = entity.xRotO + (entity.getXRot() - entity.xRotO) * partialTicks - 90; // x lerp - 90
 
-		matrixStack.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), (float) yaw, true));
-		matrixStack.mulPose(new Quaternion(new Vector3f(0.0F, 0.0F, 1.0F), (float) pitch, true));
-		matrixStack.mulPose(new Quaternion(new Vector3f(0.0F, 0.0F, 1.0F), 90.0F, true));
+		matrixStack.mulPose(MathUtils.rotVectorQuaternionDeg((float) yaw, MathUtils.YP));
+		matrixStack.mulPose(MathUtils.rotVectorQuaternionDeg((float) pitch, MathUtils.ZP));
+		matrixStack.mulPose(MathUtils.rotVectorQuaternionDeg(90, MathUtils.ZP));
+
+		// matrixStack.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), (float) yaw, true));
+		// matrixStack.mulPose(new Quaternion(new Vector3f(0.0F, 0.0F, 1.0F), (float) pitch, true));
+		// matrixStack.mulPose(new Quaternion(new Vector3f(0.0F, 0.0F, 1.0F), 90.0F, true));
 
 		float[] color = getColor(entity.getNumber());
 

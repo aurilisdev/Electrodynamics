@@ -3,8 +3,6 @@ package electrodynamics.client.render.tile;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.quarry.TileMotorComplex;
@@ -12,6 +10,7 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -42,21 +41,27 @@ public class RenderMotorComplex extends AbstractTileRenderer<TileMotorComplex> {
 		switch (facing) {
 		case EAST -> {
 			stack.translate(0.5, 0.5, 0.5);
-			stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
+			stack.mulPose(MathUtils.rotVectorQuaternionDeg(progressDegrees, MathUtils.XN));
+			//stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
 		}
 		case WEST -> {
 			stack.translate(0.9375, 0.5, 0.5);
-			stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
+			stack.mulPose(MathUtils.rotVectorQuaternionDeg(progressDegrees, MathUtils.XP));
+			//stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
 		}
 		case SOUTH -> {
 			stack.translate(0.5, 0.5, 0.0625);
-			stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
-			stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
+			stack.mulPose(MathUtils.rotVectorQuaternionDeg(90, MathUtils.YP));
+			stack.mulPose(MathUtils.rotVectorQuaternionDeg(progressDegrees, MathUtils.XP));
+			//stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
+			//stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
 		}
 		case NORTH -> {
 			stack.translate(0.5, 0.5, 0.5);
-			stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
-			stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
+			stack.mulPose(MathUtils.rotVectorQuaternionDeg(90, MathUtils.YP));
+			stack.mulPose(MathUtils.rotVectorQuaternionDeg(progressDegrees, MathUtils.XN));
+			//stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
+			//stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
 		}
 		default -> {
 		}

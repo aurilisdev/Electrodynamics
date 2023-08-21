@@ -11,13 +11,14 @@ import javax.annotation.Nullable;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.conditions.ICondition;
@@ -28,7 +29,7 @@ public class ElectrodynamicsShapedCraftingRecipe extends ShapedRecipeBuilder.Res
 	private ICondition[] recipeConditions;
 
 	private ElectrodynamicsShapedCraftingRecipe(ResourceLocation recipeId, Item result, int count, List<String> pattern, Map<Character, Ingredient> keys, ICondition[] recipeConditions) {
-		super(recipeId, result, count, "", pattern, keys, null, null);
+		super(recipeId, result, count, "", CraftingBookCategory.MISC, pattern, keys, null, null, false);
 		this.recipeConditions = recipeConditions;
 	}
 
@@ -135,7 +136,7 @@ public class ElectrodynamicsShapedCraftingRecipe extends ShapedRecipeBuilder.Res
 		}
 
 		private TagKey<Item> itemTag(ResourceLocation tag) {
-			return TagKey.create(Registry.ITEM_REGISTRY, tag);
+			return TagKey.create(Registries.ITEM, tag);
 		}
 
 	}

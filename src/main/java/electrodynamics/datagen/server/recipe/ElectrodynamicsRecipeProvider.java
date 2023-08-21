@@ -19,7 +19,7 @@ import electrodynamics.datagen.server.recipe.types.custom.item2item.Electrodynam
 import electrodynamics.datagen.server.recipe.types.vanilla.ElectrodynamicsCraftingTableRecipes;
 import electrodynamics.datagen.server.recipe.types.vanilla.ElectrodynamicsSmeltingRecipes;
 import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 
@@ -27,8 +27,8 @@ public class ElectrodynamicsRecipeProvider extends RecipeProvider {
 
 	public final List<AbstractRecipeGenerator> GENERATORS = new ArrayList<>();
 
-	public ElectrodynamicsRecipeProvider(DataGenerator gen) {
-		super(gen);
+	public ElectrodynamicsRecipeProvider(PackOutput output) {
+		super(output);
 		addRecipes();
 	}
 
@@ -50,7 +50,7 @@ public class ElectrodynamicsRecipeProvider extends RecipeProvider {
 	}
 
 	@Override
-	protected void buildCraftingRecipes(Consumer<FinishedRecipe> consumer) {
+	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
 		for (AbstractRecipeGenerator generator : GENERATORS) {
 			generator.addRecipes(consumer);
 		}

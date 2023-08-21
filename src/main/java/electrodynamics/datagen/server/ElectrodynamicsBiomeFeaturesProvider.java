@@ -1,10 +1,12 @@
 package electrodynamics.datagen.server;
 
-import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 
 import com.google.gson.JsonObject;
 
@@ -13,8 +15,8 @@ import electrodynamics.datagen.utils.SimpleOreFeatureProvider;
 import electrodynamics.datagen.utils.SimpleOreFeatureProvider.BiomeModifierType;
 import electrodynamics.registers.ElectrodynamicsFeatures;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.levelgen.GenerationStep.Decoration;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
@@ -24,27 +26,30 @@ public class ElectrodynamicsBiomeFeaturesProvider implements DataProvider {
 
 	public static final String FORGE_BIOME_MODIFIERS_BASE = "data/" + References.ID + "/forge/biome_modifier/";
 
-	private final DataGenerator dataGenerator;
+	private final PackOutput output;
 
 	private final Map<String, JsonObject> jsons = new HashMap<>();
 
-	public ElectrodynamicsBiomeFeaturesProvider(DataGenerator generator) {
-		dataGenerator = generator;
+	public ElectrodynamicsBiomeFeaturesProvider(PackOutput output) {
+		this.output = output;
 	}
 
 	@Override
-	public void run(CachedOutput cache) throws IOException {
+	public CompletableFuture<?> run(CachedOutput cache) {
 
 		addOres();
 
-		Path parent = dataGenerator.getOutputFolder().resolve(FORGE_BIOME_MODIFIERS_BASE);
-		try {
-			for (Entry<String, JsonObject> json : jsons.entrySet()) {
-				DataProvider.saveStable(cache, json.getValue(), parent.resolve(json.getKey() + ".json"));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		Path parent = output.getOutputFolder().resolve(FORGE_BIOME_MODIFIERS_BASE);
+
+		List<CompletableFuture<?>> completed = new ArrayList<>();
+
+		for (Entry<String, JsonObject> json : jsons.entrySet()) {
+			completed.add(DataProvider.saveStable(cache, json.getValue(), parent.resolve(json.getKey() + ".json")));
 		}
+
+		return CompletableFuture.allOf(completed.toArray((size) -> {
+			return new CompletableFuture[size];
+		}));
 
 	}
 

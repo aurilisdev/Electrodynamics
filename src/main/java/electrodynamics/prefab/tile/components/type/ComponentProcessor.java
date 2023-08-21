@@ -250,7 +250,7 @@ public class ComponentProcessor implements Component {
 
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(processorNumber);
-		ItemStack result = recipe.getResultItem();
+		ItemStack result = locRecipe.getItemOutputNoAccess();
 		boolean isEmpty = output.isEmpty();
 		if (!isEmpty && !ItemUtils.testItems(output.getItem(), result.getItem())) {
 			return false;
@@ -311,7 +311,7 @@ public class ComponentProcessor implements Component {
 
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(processorNumber);
-		ItemStack result = recipe.getResultItem();
+		ItemStack result = locRecipe.getItemOutputNoAccess();
 		boolean isEmpty = output.isEmpty();
 
 		if (!isEmpty && !ItemUtils.testItems(output.getItem(), result.getItem())) {
@@ -531,7 +531,7 @@ public class ComponentProcessor implements Component {
 
 		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(processorNumber);
-		ItemStack result = recipe.getResultItem();
+		ItemStack result = locRecipe.getItemOutputNoAccess();
 		boolean isEmpty = output.isEmpty();
 
 		if (!isEmpty && !ItemUtils.testItems(output.getItem(), result.getItem())) {
@@ -735,10 +735,10 @@ public class ComponentProcessor implements Component {
 		int outputSlot = inv.getOutputSlots().get(procNumber);
 
 		if (inv.getOutputContents().get(procNumber).isEmpty()) {
-			inv.setItem(outputSlot, locRecipe.getResultItem().copy());
+			inv.setItem(outputSlot, locRecipe.getItemOutputNoAccess().copy());
 		} else {
 			ItemStack stack = inv.getOutputContents().get(procNumber);
-			stack.grow(locRecipe.getResultItem().getCount());
+			stack.grow(locRecipe.getItemOutputNoAccess().getCount());
 			inv.setItem(outputSlot, stack);
 
 		}
@@ -863,9 +863,9 @@ public class ComponentProcessor implements Component {
 		}
 
 		if (inv.getOutputContents().get(procNumber).isEmpty()) {
-			inv.setItem(inv.getOutputSlots().get(procNumber), locRecipe.getResultItem().copy());
+			inv.setItem(inv.getOutputSlots().get(procNumber), locRecipe.getItemOutputNoAccess().copy());
 		} else {
-			inv.getOutputContents().get(procNumber).grow(locRecipe.getResultItem().getCount());
+			inv.getOutputContents().get(procNumber).grow(locRecipe.getItemOutputNoAccess().getCount());
 		}
 
 		List<Integer> inputs = inv.getInputSlotsForProcessor(procNumber);
@@ -931,9 +931,9 @@ public class ComponentProcessor implements Component {
 		}
 
 		if (inv.getOutputContents().get(procNumber).isEmpty()) {
-			inv.setItem(inv.getOutputSlots().get(procNumber), locRecipe.getResultItem().copy());
+			inv.setItem(inv.getOutputSlots().get(procNumber), locRecipe.getItemOutputNoAccess().copy());
 		} else {
-			inv.getOutputContents().get(procNumber).grow(locRecipe.getResultItem().getCount());
+			inv.getOutputContents().get(procNumber).grow(locRecipe.getItemOutputNoAccess().getCount());
 		}
 
 		FluidTank[] tanks = handler.getInputTanks();

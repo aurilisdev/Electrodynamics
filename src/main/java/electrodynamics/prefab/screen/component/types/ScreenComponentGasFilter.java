@@ -3,8 +3,6 @@ package electrodynamics.prefab.screen.component.types;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.tile.network.gas.TileGasPipeFilter;
@@ -14,7 +12,7 @@ import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
 import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge.GasGaugeTextures;
 import electrodynamics.prefab.utilities.CapabilityUtils;
-import electrodynamics.prefab.utilities.RenderingUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
@@ -29,8 +27,8 @@ public class ScreenComponentGasFilter extends ScreenComponentGeneric {
 	}
 
 	@Override
-	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
+	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 
 		TileGasPipeFilter filter = (TileGasPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui).getMenu()).getHostFromIntArray();
 
@@ -42,20 +40,18 @@ public class ScreenComponentGasFilter extends ScreenComponentGeneric {
 
 		if (!property.get().isEmpty()) {
 
-			ScreenComponentGasGauge.renderMercuryTexture(stack, guiWidth + xLocation + 1, guiHeight + yLocation + 1, 1);
+			ScreenComponentGasGauge.renderMercuryTexture(graphics, guiWidth + xLocation + 1, guiHeight + yLocation + 1, 1);
 
 		}
 
 		GasGaugeTextures texture = GasGaugeTextures.LEVEL_DEFAULT;
 
-		RenderingUtils.bindTexture(texture.getLocation());
-
-		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
+		graphics.blit(texture.getLocation(), guiWidth + xLocation, guiHeight + yLocation, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
 
 	}
 
 	@Override
-	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		if (!isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(), super.texture.textureHeight())) {
 			return;
 		}
@@ -72,7 +68,7 @@ public class ScreenComponentGasFilter extends ScreenComponentGeneric {
 
 		tooltips.add(property.get().getGas().getDescription().getVisualOrderText());
 
-		gui.displayTooltips(stack, tooltips, xAxis, yAxis);
+		graphics.renderTooltip(gui.getFontRenderer(), tooltips, xAxis, yAxis);
 	}
 
 	@Override

@@ -72,7 +72,7 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 		ComponentInventory inv = getComponent(ComponentType.Inventory);
 		ItemStack input = inv.getInputsForProcessor(component.getProcessorNumber()).get(0);
 		ItemStack output = inv.getOutputsForProcessor(component.getProcessorNumber()).get(0);
-		ItemStack result = cachedRecipe[component.getProcessorNumber()].getResultItem();
+		ItemStack result = cachedRecipe[component.getProcessorNumber()].getResultItem(level.registryAccess());
 		int index = inv.getOutputSlots().get(component.getProcessorNumber());
 		if (!output.isEmpty()) {
 			output.setCount(output.getCount() + result.getCount());
@@ -141,8 +141,8 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 		electro.maxJoules(component.getUsage() * component.operatingSpeed.get() * 10 * component.totalProcessors);
 
 		ItemStack output = inv.getOutputContents().get(component.getProcessorNumber());
-		ItemStack result = cachedRecipe[component.getProcessorNumber()].getResultItem();
-		return (output.isEmpty() || ItemStack.isSame(output, result)) && output.getCount() + result.getCount() <= output.getMaxStackSize();
+		ItemStack result = cachedRecipe[component.getProcessorNumber()].getResultItem(level.registryAccess());
+		return (output.isEmpty() || output.getItem() == result.getItem()) && output.getCount() + result.getCount() <= output.getMaxStackSize();
 
 	}
 

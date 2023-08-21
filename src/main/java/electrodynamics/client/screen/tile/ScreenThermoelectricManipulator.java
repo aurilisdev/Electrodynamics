@@ -1,7 +1,5 @@
 package electrodynamics.client.screen.tile;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.gas.Gas;
 import electrodynamics.api.gas.GasStack;
@@ -25,6 +23,7 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -111,8 +110,8 @@ public class ScreenThermoelectricManipulator extends GenericScreen<ContainerTher
 	}
 
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(graphics, mouseX, mouseY, partialTicks);
 		if (needsUpdate) {
 			needsUpdate = false;
 			TileThermoelectricManipulator manipulator = menu.getHostFromIntArray();

@@ -79,7 +79,7 @@ public class Fluid2ItemRecipeSerializer<T extends Fluid2ItemRecipe> extends Elec
 		buffer.writeBoolean(recipe.hasFluidBiproducts());
 		buffer.writeBoolean(recipe.hasGasBiproducts());
 		FluidIngredient.writeList(buffer, recipe.getFluidIngredients());
-		buffer.writeItem(recipe.getResultItem());
+		buffer.writeItem(recipe.getItemOutputNoAccess());
 		buffer.writeDouble(recipe.getXp());
 		buffer.writeInt(recipe.getTicks());
 		buffer.writeDouble(recipe.getUsagePerTick());

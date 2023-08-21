@@ -16,7 +16,6 @@ import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
@@ -34,7 +33,7 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock {
 	public final SubtypeGasPipe pipe;
 
 	public BlockGasPipe(SubtypeGasPipe pipe) {
-		super(Properties.of(pipe.material).sound(pipe.soundType).strength(0.15f).dynamicShape().noOcclusion(), pipe.radius);
+		super(pipe.material.sound(pipe.soundType).strength(0.15f).dynamicShape().noOcclusion(), pipe.radius);
 
 		this.pipe = pipe;
 

@@ -19,12 +19,12 @@ public abstract class AbstractMaterialRecipe extends ElectrodynamicsRecipe {
 	
 	@Override
 	public ItemStack assemble(RecipeWrapper container, RegistryAccess registryAccess) {
-		return ItemStack.EMPTY;
+		return getItemOutputNoAccess();
 	}
 	
 	@Override
 	public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
-		return ItemStack.EMPTY;
+		return getItemOutputNoAccess();
 	}
 
 	public FluidStack getFluidRecipeOutput() {
@@ -41,6 +41,10 @@ public abstract class AbstractMaterialRecipe extends ElectrodynamicsRecipe {
 
 	public List<GasIngredient> getGasIngredients() {
 		return Collections.emptyList();
+	}
+	
+	public ItemStack getItemOutputNoAccess() {
+		return ItemStack.EMPTY;
 	}
 
 }

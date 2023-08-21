@@ -1,7 +1,5 @@
 package electrodynamics.client.screen.tile;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerCircuitMonitor;
@@ -14,6 +12,7 @@ import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Inventory;
@@ -29,7 +28,7 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 
 		imageHeight += 40;
 
-		addComponent(new ScreenComponentMultiLabel(0, 0, stack -> {
+		addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> {
 
 			TileCircuitMonitor monitor = menu.getHostFromIntArray();
 
@@ -43,11 +42,11 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 			
 			int offset = (int) ((150 - font.width(combined)) / 2.0);
 			
-			font.draw(stack, combined, 13 + offset, 22, 0);
+			graphics.drawString(font, combined, 13 + offset, 22, 0);
 			
 			Component symbol = units.getSymbol();
 			
-			font.draw(stack, symbol, 163 - font.width(symbol), 175, 4210752);
+			graphics.drawString(font, symbol, 163 - font.width(symbol), 175, 4210752);
 
 		}));
 
@@ -163,20 +162,20 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 	}
 
 	@Override
-	protected void renderLabels(PoseStack stack, int mouseX, int mouseY) {
-		this.font.draw(stack, this.title, (float) this.titleLabelX, (float) this.titleLabelY, 4210752);
+	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
+		graphics.drawString(font, this.title, this.titleLabelX, this.titleLabelY, 4210752);
 		int guiWidth = (int) getGuiWidth();
 		int guiHeight = (int) getGuiHeight();
 		int xAxis = mouseX - guiWidth;
 		int yAxis = mouseY - guiHeight;
 		for (AbstractScreenComponent component : getComponents()) {
-			component.renderForeground(stack, xAxis, yAxis, guiWidth, guiHeight);
+			component.renderForeground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 		}
 	}
 	
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(graphics, mouseX, mouseY, partialTicks);
 		if (needsUpdate) {
 			needsUpdate = false;
 			TileCircuitMonitor monitor = menu.getHostFromIntArray();

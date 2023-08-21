@@ -3,8 +3,6 @@ package electrodynamics.compatibility.jei.recipecategories.utils;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.compatibility.jei.utils.gui.ScreenObject;
@@ -33,6 +31,7 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -95,22 +94,22 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 	public IDrawable getIcon() {
 		return icon;
 	}
-
+	
 	@Override
-	public void draw(T recipe, IRecipeSlotsView recipeSlotsView, PoseStack matrixStack, double mouseX, double mouseY) {
+	public void draw(T recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
 
-		drawPre(matrixStack, recipe);
+		drawPre(graphics, recipe);
 
-		drawStatic(matrixStack);
-		drawAnimated(matrixStack);
+		drawStatic(graphics);
+		drawAnimated(graphics);
 
-		drawPost(matrixStack, recipe);
+		drawPost(graphics, recipe);
 
-		preLabels(matrixStack, recipe);
+		preLabels(graphics, recipe);
 
-		addLabels(matrixStack, recipe);
+		addLabels(graphics, recipe);
 
-		postLabels(matrixStack, recipe);
+		postLabels(graphics, recipe);
 	}
 
 	@Override
@@ -356,43 +355,43 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 		}
 	}
 
-	public void drawStatic(PoseStack matrixStack) {
+	public void drawStatic(GuiGraphics graphics) {
 		for (StaticWrapper wrapper : staticDrawables) {
-			wrapper.stat().draw(matrixStack, wrapper.x(), wrapper.y());
+			wrapper.stat().draw(graphics, wrapper.x(), wrapper.y());
 		}
 	}
 
-	public void drawAnimated(PoseStack matrixStack) {
+	public void drawAnimated(GuiGraphics graphics) {
 		for (AnimatedWrapper wrapper : animatedDrawables) {
-			wrapper.anim().draw(matrixStack, wrapper.x(), wrapper.y());
+			wrapper.anim().draw(graphics, wrapper.x(), wrapper.y());
 		}
 	}
 
-	public void drawPre(PoseStack matrixStack, T recipe) {
+	public void drawPre(GuiGraphics graphics, T recipe) {
 
 	}
 
-	public void drawPost(PoseStack matrixStack, T recipe) {
+	public void drawPost(GuiGraphics graphics, T recipe) {
 
 	}
 
-	public void addLabels(PoseStack stack, T recipe) {
+	public void addLabels(GuiGraphics graphics, T recipe) {
 		Font font = Minecraft.getInstance().font;
 		for (AbstractLabelWrapper wrap : labels) {
 			Component text = wrap.getComponent(this, recipe);
 			if (wrap.xIsEnd()) {
-				font.draw(stack, text, wrap.getXPos() - font.width(text.getVisualOrderText()), wrap.getYPos(), wrap.getColor());
+				graphics.drawString(font, text, wrap.getXPos() - font.width(text.getVisualOrderText()), wrap.getYPos(), wrap.getColor());
 			} else {
-				font.draw(stack, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
+				graphics.drawString(font, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
 			}
 		}
 	}
 
-	public void preLabels(PoseStack matrixStack, T recipe) {
+	public void preLabels(GuiGraphics graphics, T recipe) {
 
 	}
 
-	public void postLabels(PoseStack matrixStack, T recipe) {
+	public void postLabels(GuiGraphics graphics, T recipe) {
 
 	}
 

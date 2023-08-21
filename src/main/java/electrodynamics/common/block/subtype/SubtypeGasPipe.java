@@ -6,17 +6,18 @@ import electrodynamics.api.ISubtype;
 import electrodynamics.api.gas.Gas;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public enum SubtypeGasPipe implements ISubtype {
 
 	/*
 	 * UNINSULATED
 	 */
-	UNINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.NONE, 10000, 2.5, Material.METAL, SoundType.METAL), //
-	UNINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.NONE, 30000, 2.5, Material.METAL, SoundType.METAL), //
-	UNINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.NONE, 1000, 2.5, Material.STONE, SoundType.STONE);//
+	UNINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.NONE, 10000, 2.5, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL), //
+	UNINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.NONE, 30000, 2.5, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL), //
+	UNINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.NONE, 1000, 2.5, Properties.copy(Blocks.IRON_BLOCK), SoundType.STONE);//
 
 	/*
 	 * CERAMIC INSULATED
@@ -38,10 +39,10 @@ public enum SubtypeGasPipe implements ISubtype {
 	public final double effectivePipeHeatLoss;
 
 	public final double radius;
-	public final Material material;
+	public final Properties material;
 	public final SoundType soundType;
 
-	private SubtypeGasPipe(PipeMaterial pipeMaterial, InsulationMaterial insulationMaterial, double maxTransfer, double radius, Material material, SoundType soundType) {
+	private SubtypeGasPipe(PipeMaterial pipeMaterial, InsulationMaterial insulationMaterial, double maxTransfer, double radius, Properties material, SoundType soundType) {
 		this.pipeMaterial = pipeMaterial;
 		this.insulationMaterial = insulationMaterial;
 		this.maxTransfer = maxTransfer;

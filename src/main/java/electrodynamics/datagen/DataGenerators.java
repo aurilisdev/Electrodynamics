@@ -19,6 +19,7 @@ import electrodynamics.datagen.server.ElectrodynamicsLootTablesProvider;
 import electrodynamics.datagen.server.ThermoelectricGenHeatSourceProvider;
 import electrodynamics.datagen.server.recipe.ElectrodynamicsRecipeProvider;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -30,6 +31,9 @@ public class DataGenerators {
 	public static void gatherData(GatherDataEvent event) {
 
 		DataGenerator generator = event.getGenerator();
+		
+		PackOutput output = generator.getPackOutput();
+		
 		if (event.includeServer()) {
 			ElectrodynamicsBlockTagsProvider blockProvider = new ElectrodynamicsBlockTagsProvider(generator, event.getExistingFileHelper());
 			generator.addProvider(true, blockProvider);
@@ -37,19 +41,19 @@ public class DataGenerators {
 			generator.addProvider(true, new ElectrodynamicsFluidTagsProvider(generator, event.getExistingFileHelper()));
 			generator.addProvider(true, new ElectrodynamicsGasTagsProvider(generator, event.getExistingFileHelper()));
 			generator.addProvider(true, new ElectrodynamicsLootTablesProvider(generator));
-			generator.addProvider(true, new ElectrodynamicsRecipeProvider(generator));
-			generator.addProvider(true, new ElectrodynamicsBiomeFeaturesProvider(generator));
-			generator.addProvider(true, new CombustionChamberFuelSourceProvider(generator));
-			generator.addProvider(true, new CoalGeneratorFuelSourceProvider(generator));
+			generator.addProvider(true, new ElectrodynamicsRecipeProvider(output));
+			generator.addProvider(true, new ElectrodynamicsBiomeFeaturesProvider(output));
+			generator.addProvider(true, new CombustionChamberFuelSourceProvider(output));
+			generator.addProvider(true, new CoalGeneratorFuelSourceProvider(output));
 			generator.addProvider(true, new ThermoelectricGenHeatSourceProvider(generator));
-			generator.addProvider(true, new ElectrodynamicsAdvancementProvider(generator));
+			generator.addProvider(true, new ElectrodynamicsAdvancementProvider(output));
 		}
 		if (event.includeClient()) {
-			generator.addProvider(true, new ElectrodynamicsBlockStateProvider(generator, event.getExistingFileHelper()));
-			generator.addProvider(true, new ElectrodynamicsBlockModelsProvider(generator, event.getExistingFileHelper()));
-			generator.addProvider(true, new ElectrodynamicsItemModelsProvider(generator, event.getExistingFileHelper()));
-			generator.addProvider(true, new ElectrodynamicsLangKeyProvider(generator, Locale.EN_US));
-			generator.addProvider(true, new ElectrodynamicsSoundProvider(generator, event.getExistingFileHelper()));
+			generator.addProvider(true, new ElectrodynamicsBlockStateProvider(output, event.getExistingFileHelper()));
+			generator.addProvider(true, new ElectrodynamicsBlockModelsProvider(output, event.getExistingFileHelper()));
+			generator.addProvider(true, new ElectrodynamicsItemModelsProvider(output, event.getExistingFileHelper()));
+			generator.addProvider(true, new ElectrodynamicsLangKeyProvider(output, Locale.EN_US));
+			generator.addProvider(true, new ElectrodynamicsSoundProvider(output, event.getExistingFileHelper()));
 		}
 	}
 

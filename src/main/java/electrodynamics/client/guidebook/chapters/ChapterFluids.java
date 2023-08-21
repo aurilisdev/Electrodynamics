@@ -3,8 +3,6 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.References;
 import electrodynamics.client.guidebook.ScreenGuidebook;
 import electrodynamics.client.guidebook.utils.components.Chapter;
@@ -22,6 +20,7 @@ import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -58,12 +57,12 @@ public class ChapterFluids extends Chapter {
 					.onTooltip(new OnTooltip() {
 
 						@Override
-						public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+						public void onTooltip(GuiGraphics graphics, int xAxis, int yAxis, ScreenGuidebook screen) {
 							if (JeiBuffer.isJeiInstalled()) {
 								List<FormattedCharSequence> tooltips = new ArrayList<>();
 								tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
 								tooltips.add(ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-								screen.displayTooltips(stack, tooltips, xAxis, yAxis);
+								graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
 							}
 
 						}
@@ -89,13 +88,13 @@ public class ChapterFluids extends Chapter {
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, new ResourceLocation(References.ID, "textures/screen/guidebook/fluidio.png")).onTooltip(new OnTooltip() {
 
 			@Override
-			public void onTooltip(PoseStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+			public void onTooltip(GuiGraphics graphics, int xAxis, int yAxis, ScreenGuidebook screen) {
 				List<FormattedCharSequence> tooltips = new ArrayList<>();
 				tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.left", ElectrodynamicsItems.getItem(SubtypeMachine.mineralwasher).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 				tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.middle", ElectrodynamicsItems.getItem(SubtypeMachine.chemicalcrystallizer).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 				tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.right", ElectrodynamicsItems.getItem(SubtypeMachine.electricpump).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 
-				screen.displayTooltips(stack, tooltips, xAxis, yAxis);
+				graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
 			}
 
 		}));

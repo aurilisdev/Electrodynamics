@@ -3,7 +3,6 @@ package electrodynamics.client.render.tile;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.mineralcrusher.TileMineralCrusherDouble;
@@ -11,14 +10,15 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderMineralCrusherDouble extends AbstractTileRenderer<TileMineralCrusherDouble> {
@@ -47,12 +47,13 @@ public class RenderMineralCrusherDouble extends AbstractTileRenderer<TileMineral
 			matrixStackIn.translate(0.5 + dir.getStepX() / scale - (dir.getStepZ() != 0 ? 0.07 : 0), stack.getItem() instanceof BlockItem ? 0.48 : 0.39, 0.5 + dir.getStepZ() / scale - (dir.getStepX() != 0 ? 0.07 : 0));
 			matrixStackIn.scale(0.35f, 0.35f, 0.35f);
 			if (!(stack.getItem() instanceof BlockItem)) {
-				matrixStackIn.mulPose(Vector3f.XN.rotationDegrees(90));
+				matrixStackIn.mulPose(MathUtils.rotVectorQuaternionDeg(90, MathUtils.XN));
+				//matrixStackIn.mulPose(Vector3f.XN.rotationDegrees(90));
 			} else {
 				matrixStackIn.scale(0.3f, 0.3f, 0.3f);
 				matrixStackIn.translate(0, -0.5, 0);
 			}
-			Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+			Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, null, 0);
 			matrixStackIn.popPose();
 		}
 		stack = inv.getInputsForProcessor(1).get(0);
@@ -63,12 +64,13 @@ public class RenderMineralCrusherDouble extends AbstractTileRenderer<TileMineral
 			matrixStackIn.translate(0.5 + dir.getStepX() / scale + (dir.getStepZ() != 0 ? 0.07 : 0), stack.getItem() instanceof BlockItem ? 0.48 : 0.39, 0.5 + dir.getStepZ() / scale + (dir.getStepX() != 0 ? 0.07 : 0));
 			matrixStackIn.scale(0.35f, 0.35f, 0.35f);
 			if (!(stack.getItem() instanceof BlockItem)) {
-				matrixStackIn.mulPose(Vector3f.XN.rotationDegrees(90));
+				matrixStackIn.mulPose(MathUtils.rotVectorQuaternionDeg(90, MathUtils.XN));
+				//matrixStackIn.mulPose(Vector3f.XN.rotationDegrees(90));
 			} else {
 				matrixStackIn.scale(0.3f, 0.3f, 0.3f);
 				matrixStackIn.translate(0, -0.5, 0);
 			}
-			Minecraft.getInstance().getItemRenderer().renderStatic(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+			Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, null, 0);
 			matrixStackIn.popPose();
 		}
 	}

@@ -3,20 +3,19 @@ package electrodynamics.client.render.tile;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.tile.charger.GenericTileCharger;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
+import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.DiggerItem;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
 public class RenderChargerGeneric extends AbstractTileRenderer<GenericTileCharger> {
@@ -42,12 +41,14 @@ public class RenderChargerGeneric extends AbstractTileRenderer<GenericTileCharge
 				case NORTH -> {
 					matrixStackIn.translate(0.5f, 1.25f, 0.47f);
 					matrixStackIn.scale(0.5f, 0.5f, 0.5f);
-					matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 180, true));
+					matrixStackIn.mulPose(MathUtils.rotVectorQuaternionDeg(180, MathUtils.YP));
+					//matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 180, true));
 				}
 				case EAST -> {
 					matrixStackIn.translate(0.53f, 1.25f, 0.5f);
 					matrixStackIn.scale(0.5f, 0.5f, 0.5f);
-					matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 90, true));
+					matrixStackIn.mulPose(MathUtils.rotVectorQuaternionDeg(90, MathUtils.YP));
+					//matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 90, true));
 				}
 				case SOUTH -> {
 					matrixStackIn.translate(0.5f, 1.25f, 0.53f);
@@ -56,7 +57,8 @@ public class RenderChargerGeneric extends AbstractTileRenderer<GenericTileCharge
 				case WEST -> {
 					matrixStackIn.translate(0.47f, 1.25f, 0.5f);
 					matrixStackIn.scale(0.5f, 0.5f, 0.5f);
-					matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 270, true));
+					matrixStackIn.mulPose(MathUtils.rotVectorQuaternionDeg(270, MathUtils.YP));
+					//matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 270, true));
 				}
 				default -> {
 				}
@@ -66,17 +68,20 @@ public class RenderChargerGeneric extends AbstractTileRenderer<GenericTileCharge
 				case NORTH -> {
 					matrixStackIn.translate(0.5f, 1.15f, 0.47f);
 					matrixStackIn.scale(0.28f, 0.28f, 0.28f);
-					matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 270, true));
+					matrixStackIn.mulPose(MathUtils.rotVectorQuaternionDeg(270, MathUtils.YP));
+					//matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 270, true));
 				}
 				case EAST -> {
 					matrixStackIn.translate(0.53f, 1.15f, 0.5f);
 					matrixStackIn.scale(0.28f, 0.28f, 0.28f);
-					matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 180, true));
+					matrixStackIn.mulPose(MathUtils.rotVectorQuaternionDeg(180, MathUtils.YP));
+					//matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 180, true));
 				}
 				case SOUTH -> {
 					matrixStackIn.translate(0.5f, 1.15f, 0.53f);
 					matrixStackIn.scale(0.28f, 0.28f, 0.28f);
-					matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 90, true));
+					matrixStackIn.mulPose(MathUtils.rotVectorQuaternionDeg(90, MathUtils.YP));
+					//matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 90, true));
 				}
 				case WEST -> {
 					matrixStackIn.translate(0.47f, 1.15f, 0.5f);
@@ -86,7 +91,7 @@ public class RenderChargerGeneric extends AbstractTileRenderer<GenericTileCharge
 				}
 				}
 			}
-			Minecraft.getInstance().getItemRenderer().renderStatic(chargingItem, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, 0);
+			Minecraft.getInstance().getItemRenderer().renderStatic(chargingItem, ItemDisplayContext.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, null, 0);
 			matrixStackIn.popPose();
 		}
 

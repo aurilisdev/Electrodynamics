@@ -3,7 +3,9 @@ package electrodynamics.prefab.utilities;
 import java.util.Random;
 import java.util.function.Supplier;
 
-import com.mojang.blaze3d.platform.GlStateManager;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
+
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
@@ -13,31 +15,29 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 
 import electrodynamics.prefab.block.GenericEntityBlock;
+import electrodynamics.prefab.utilities.math.MathUtils;
+import net.minecraft.CrashReport;
+import net.minecraft.CrashReportCategory;
+import net.minecraft.ReportedException;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -62,12 +62,18 @@ public class RenderingUtils {
 			stack.translate(0.0D, -1.0D, 0.0D);
 
 			for (int i = 0; i < starFrags; ++i) {
-				stack.mulPose(Vector3f.XP.rotationDegrees(random.nextFloat() * 360.0F));
-				stack.mulPose(Vector3f.YP.rotationDegrees(random.nextFloat() * 360.0F));
-				stack.mulPose(Vector3f.ZP.rotationDegrees(random.nextFloat() * 360.0F));
-				stack.mulPose(Vector3f.XP.rotationDegrees(random.nextFloat() * 360.0F));
-				stack.mulPose(Vector3f.YP.rotationDegrees(random.nextFloat() * 360.0F));
-				stack.mulPose(Vector3f.ZP.rotationDegrees(random.nextFloat() * 360.0F + f5 * 90.0F));
+				stack.mulPose(MathUtils.rotVectorQuaternionDeg(random.nextFloat() * 360.0F, MathUtils.XP));
+				stack.mulPose(MathUtils.rotVectorQuaternionDeg(random.nextFloat() * 360.0F, MathUtils.YP));
+				stack.mulPose(MathUtils.rotVectorQuaternionDeg(random.nextFloat() * 360.0F, MathUtils.ZP));
+				stack.mulPose(MathUtils.rotVectorQuaternionDeg(random.nextFloat() * 360.0F, MathUtils.XP));
+				stack.mulPose(MathUtils.rotVectorQuaternionDeg(random.nextFloat() * 360.0F, MathUtils.YP));
+				stack.mulPose(MathUtils.rotVectorQuaternionDeg(random.nextFloat() * 360.0F + f5 * 90.0F, MathUtils.ZP));
+				//stack.mulPose(XP.rotationDegrees(random.nextFloat() * 360.0F));
+				//stack.mulPose(YP.rotationDegrees(random.nextFloat() * 360.0F));
+				//stack.mulPose(ZP.rotationDegrees(random.nextFloat() * 360.0F));
+				//stack.mulPose(XP.rotationDegrees(random.nextFloat() * 360.0F));
+				//stack.mulPose(YP.rotationDegrees(random.nextFloat() * 360.0F));
+				//stack.mulPose(ZP.rotationDegrees(random.nextFloat() * 360.0F + f5 * 90.0F));
 				float f3 = random.nextFloat() * 20.0F + 1.0F;
 				float f4 = random.nextFloat() * 2.0F + 1.0F + (star ? 0 : 100);
 				Matrix4f matrix4f = stack.last().pose();
@@ -92,7 +98,7 @@ public class RenderingUtils {
 	}
 
 	public static void renderModel(BakedModel model, BlockEntity tile, RenderType type, PoseStack stack, MultiBufferSource buffer, int combinedLightIn, int combinedOverlayIn) {
-		Minecraft.getInstance().getItemRenderer().render(new ItemStack(type == RenderType.translucent() ? Items.BLACK_STAINED_GLASS : Blocks.STONE), TransformType.NONE, false, stack, buffer, combinedLightIn, combinedOverlayIn, model);
+		Minecraft.getInstance().getItemRenderer().render(new ItemStack(type == RenderType.translucent() ? Items.BLACK_STAINED_GLASS : Blocks.STONE), ItemDisplayContext.NONE, false, stack, buffer, combinedLightIn, combinedOverlayIn, model);
 	}
 
 	public static void prepareRotationalTileModel(BlockEntity tile, PoseStack stack) {
@@ -101,11 +107,14 @@ public class RenderingUtils {
 		if (state.hasProperty(GenericEntityBlock.FACING)) {
 			Direction facing = state.getValue(GenericEntityBlock.FACING);
 			if (facing == Direction.NORTH) {
-				stack.mulPose(new Quaternion(0, 90, 0, true));
+				stack.mulPose(MathUtils.rotQuaternionDeg(0, 90, 0));
+				//stack.mulPose(new Quaternionf(0, 90, 0, true));
 			} else if (facing == Direction.SOUTH) {
-				stack.mulPose(new Quaternion(0, 270, 0, true));
+				stack.mulPose(MathUtils.rotQuaternionDeg(0, 270, 0));
+				//stack.mulPose(new Quaternionf(0, 270, 0, true));
 			} else if (facing == Direction.WEST) {
-				stack.mulPose(new Quaternion(0, 180, 0, true));
+				stack.mulPose(MathUtils.rotQuaternionDeg(0, 180, 0));
+				//stack.mulPose(new Quaternionf(0, 180, 0, true));
 			}
 		}
 	}
@@ -221,41 +230,50 @@ public class RenderingUtils {
 
 	}
 
-	public static void renderItemScaled(PoseStack posestack, Item item, int x, int y, float scale) {
+	public static void renderItemScaled(GuiGraphics graphics, Item item, int x, int y, float scale) {
 		ItemStack stack = new ItemStack(item);
 		Minecraft minecraft = Minecraft.getInstance();
 		ItemRenderer itemRenderer = minecraft.getItemRenderer();
 		BakedModel model = itemRenderer.getModel(stack, (Level) null, (LivingEntity) null, 0);
-		TextureManager manager = minecraft.getTextureManager();
+		
+		PoseStack poseStack = graphics.pose();
+		
+		poseStack.pushPose();
+		poseStack.translate((float) (x + 8), (float) (y + 8), (float) (150));
 
-		manager.getTexture(TextureAtlas.LOCATION_BLOCKS).setFilter(false, false);
-		RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
-		RenderSystem.enableBlend();
-		RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		posestack.pushPose();
-		posestack.translate(x, y, 100.0F + itemRenderer.blitOffset);
-		posestack.translate(8.0D, 8.0D, 0.0D);
-		posestack.scale(1.0F, -1.0F, 1.0F);
-		posestack.scale(16.0F, 16.0F, 16.0F);
-		posestack.scale(scale, scale, scale);
-		RenderSystem.applyModelViewMatrix();
-		PoseStack posestack1 = new PoseStack();
-		MultiBufferSource.BufferSource buffersource = Minecraft.getInstance().renderBuffers().bufferSource();
-		boolean flag = !model.usesBlockLight();
-		if (flag) {
-			Lighting.setupForFlatItems();
+		try {
+			poseStack.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
+			poseStack.scale(16.0F, 16.0F, 16.0F);
+			boolean flag = !model.usesBlockLight();
+			if (flag) {
+				Lighting.setupForFlatItems();
+			}
+
+			minecraft.getItemRenderer().render(stack, ItemDisplayContext.GUI, false, poseStack, graphics.bufferSource(), 15728880, OverlayTexture.NO_OVERLAY, model);
+			graphics.flush();
+			if (flag) {
+				Lighting.setupFor3DItems();
+			}
+		} catch (Throwable throwable) {
+			CrashReport crashreport = CrashReport.forThrowable(throwable, "Rendering item");
+			CrashReportCategory crashreportcategory = crashreport.addCategory("Item being rendered");
+			crashreportcategory.setDetail("Item Type", () -> {
+				return String.valueOf((Object) stack.getItem());
+			});
+			crashreportcategory.setDetail("Registry Name", () -> String.valueOf(net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(stack.getItem())));
+			crashreportcategory.setDetail("Item Damage", () -> {
+				return String.valueOf(stack.getDamageValue());
+			});
+			crashreportcategory.setDetail("Item NBT", () -> {
+				return String.valueOf((Object) stack.getTag());
+			});
+			crashreportcategory.setDetail("Item Foil", () -> {
+				return String.valueOf(stack.hasFoil());
+			});
+			throw new ReportedException(crashreport);
 		}
 
-		itemRenderer.render(stack, ItemTransforms.TransformType.GUI, false, posestack1, buffersource, 15728880, OverlayTexture.NO_OVERLAY, model);
-		buffersource.endBatch();
-		RenderSystem.enableDepthTest();
-		if (flag) {
-			Lighting.setupFor3DItems();
-		}
-
-		posestack.popPose();
-		RenderSystem.applyModelViewMatrix();
+		poseStack.popPose();
 
 	}
 
@@ -293,11 +311,6 @@ public class RenderingUtils {
 		BufferUploader.drawWithShader(bufferbuilder.end());
 
 		RenderSystem.setShader(GameRenderer::getPositionTexShader);
-
-	}
-
-	public static void renderItemScaled(Item item, int x, int y, float scale) {
-		renderItemScaled(RenderSystem.getModelViewStack(), item, x, y, scale);
 
 	}
 

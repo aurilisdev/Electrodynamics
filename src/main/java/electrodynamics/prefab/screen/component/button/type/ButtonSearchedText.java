@@ -1,11 +1,8 @@
 package electrodynamics.prefab.screen.component.button.type;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
@@ -26,11 +23,10 @@ public class ButtonSearchedText extends ButtonSpecificPage {
 	}
 
 	@Override
-	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
-		Font font = Minecraft.getInstance().font;
-		drawCenteredStringNoShadow(stack, font, chapter, this.xLocation + this.width / 2 + guiWidth, this.yLocation + guiHeight - 10, TextWrapperObject.DEFAULT_COLOR);
-		GuiComponent.drawCenteredString(stack, font, Language.getInstance().getVisualOrder(line), this.xLocation + guiWidth + this.width / 2, this.yLocation + guiHeight + (this.height - 8) / 2, color);
+	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
+		drawCenteredStringNoShadow(graphics, gui.getFontRenderer(), chapter, this.xLocation + this.width / 2 + guiWidth, this.yLocation + guiHeight - 10, TextWrapperObject.DEFAULT_COLOR);
+		graphics.drawString(gui.getFontRenderer(), Language.getInstance().getVisualOrder(line), this.xLocation + guiWidth + this.width / 2, this.yLocation + guiHeight + (this.height - 8) / 2, color);
 
 	}
 
@@ -55,9 +51,9 @@ public class ButtonSearchedText extends ButtonSpecificPage {
 		return super.isVisible() && shouldShow;
 	}
 
-	public static void drawCenteredStringNoShadow(PoseStack pPoseStack, Font pFont, Component pText, int pX, int pY, int pColor) {
+	public static void drawCenteredStringNoShadow(GuiGraphics graphics, Font font, Component pText, int pX, int pY, int pColor) {
 		FormattedCharSequence formattedcharsequence = pText.getVisualOrderText();
-		pFont.draw(pPoseStack, formattedcharsequence, pX - pFont.width(formattedcharsequence) / 2, pY, pColor);
+		graphics.drawString(font, formattedcharsequence, pX - font.width(formattedcharsequence) / 2, pY, pColor);
 	}
 
 }

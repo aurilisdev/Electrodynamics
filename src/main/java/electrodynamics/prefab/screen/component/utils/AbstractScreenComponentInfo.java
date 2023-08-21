@@ -3,11 +3,10 @@ package electrodynamics.prefab.screen.component.utils;
 import java.util.Collections;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.component.TextPropertySupplier;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -25,9 +24,9 @@ public abstract class AbstractScreenComponentInfo extends ScreenComponentGeneric
 	}
 
 	@Override
-	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		if (isHovered()) {
-			gui.displayTooltips(stack, getInfo(infoHandler.getInfo()), xAxis, yAxis);
+			graphics.renderTooltip(gui.getFontRenderer(), getInfo(infoHandler.getInfo()), xAxis, yAxis);
 		}
 	}
 

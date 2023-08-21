@@ -5,8 +5,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -16,11 +16,11 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class BlockCustomGlass extends Block {
 
 	public BlockCustomGlass(float hardness, float resistance) {
-		super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(hardness, resistance).isRedstoneConductor((x, y, z) -> false).noOcclusion());
+		super(Properties.copy(Blocks.GLASS).requiresCorrectToolForDrops().strength(hardness, resistance).isRedstoneConductor((x, y, z) -> false).noOcclusion());
 	}
 
 	public BlockCustomGlass(SubtypeGlass glass) {
-		super(Properties.of(Material.GLASS).requiresCorrectToolForDrops().strength(glass.hardness, glass.resistance).isRedstoneConductor((x, y, z) -> false).noOcclusion());
+		super(Properties.copy(Blocks.GLASS).requiresCorrectToolForDrops().strength(glass.hardness, glass.resistance).isRedstoneConductor((x, y, z) -> false).noOcclusion());
 	}
 
 	@Override

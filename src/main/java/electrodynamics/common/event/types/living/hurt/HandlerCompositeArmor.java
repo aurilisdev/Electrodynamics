@@ -8,6 +8,8 @@ import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
@@ -20,7 +22,8 @@ public class HandlerCompositeArmor extends AbstractLivingHurtHandler {
 
 	@Override
 	public void handle(LivingHurtEvent event) {
-		if (event.getSource().) {
+		LivingEntity entity = event.getEntity();
+		if (entity.damageSources().fall().is(DamageTypes.FALL)) {
 			return;
 		}
 		List<ItemStack> armorPieces = new ArrayList<>();

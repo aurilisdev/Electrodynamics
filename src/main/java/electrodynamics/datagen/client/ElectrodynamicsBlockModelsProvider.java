@@ -1,7 +1,7 @@
 package electrodynamics.datagen.client;
 
 import electrodynamics.api.References;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraftforge.client.model.generators.BlockModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
@@ -13,8 +13,8 @@ import net.minecraftforge.common.data.ExistingFileHelper;
  */
 public class ElectrodynamicsBlockModelsProvider extends BlockModelProvider {
 
-	public ElectrodynamicsBlockModelsProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-		super(generator, References.ID, existingFileHelper);
+	public ElectrodynamicsBlockModelsProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+		super(output, References.ID, existingFileHelper);
 	}
 
 	@Override

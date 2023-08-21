@@ -69,7 +69,7 @@ public class ElectricFurnaceRecipeCategory extends AbstractRecipeCategory<Smelti
 	@Override
 	public List<ItemStack> getItemOutputs(SmeltingRecipe recipe) {
 		List<ItemStack> outputs = new ArrayList<>();
-		outputs.add(recipe.getResultItem());
+		outputs.add(recipe.getResultItem(null));
 		return outputs;
 	}
 

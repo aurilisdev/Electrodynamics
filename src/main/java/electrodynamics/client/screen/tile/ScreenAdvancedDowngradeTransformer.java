@@ -19,16 +19,16 @@ public class ScreenAdvancedDowngradeTransformer extends GenericScreen<ContainerA
 		imageHeight += 30;
 		inventoryLabelY += 30;
 		addComponent(new ScreenComponentGeneric(Textures.TRANSFORMER_SYMBOL, 20, 43));
-		addComponent(new ScreenComponentMultiLabel(0, 0, stack -> {
+		addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> {
 			
-			float width = Textures.TRANSFORMER_SYMBOL.textureWidth();
-			float xStart = 20;
+			int width = Textures.TRANSFORMER_SYMBOL.textureWidth();
+			int xStart = 20;
 			
 			Component top = ElectroTextUtils.gui("coilratio");
 			
-			float offset = (width - font.width(top)) / 2.0F;
+			int offset = (int) ((width - font.width(top)) / 2.0F);
 			
-			font.draw(stack, top, xStart + offset, 28, 4210752);
+			graphics.drawString(font, top, xStart + offset, 28, 4210752);
 			
 			TileAdvancedDowngradeTransformer xfmr = menu.getHostFromIntArray();
 			if(xfmr == null) {
@@ -47,9 +47,9 @@ public class ScreenAdvancedDowngradeTransformer extends GenericScreen<ContainerA
 			
 			Component bottom =  Component.literal(wholeRatio + " : 1").withStyle(ChatFormatting.BOLD);
 			
-			offset = (width - font.width(bottom)) / 2.0F;
+			offset = (int) ((width - font.width(bottom)) / 2.0F);
 			
-			font.draw(stack, bottom, xStart + offset, 81, 4210752);
+			graphics.drawString(font, bottom, xStart + offset, 81, 4210752);
 			
 		}));
 		addComponent(new ScreenComponentButton<>(75, 20, 40, 20).setLabel(Component.literal("2 : 1")).setOnPress(button -> {

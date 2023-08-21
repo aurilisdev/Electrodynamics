@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -67,7 +67,7 @@ public class NBTUtils {
 	}
 
 	public static ResourceKey<Level> readDimensionFromTag(CompoundTag tag) {
-		return ResourceKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(tag.getString(DIMENSION)));
+		return ResourceKey.create(Registries.DIMENSION, new ResourceLocation(tag.getString(DIMENSION)));
 	}
 
 }

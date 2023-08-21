@@ -44,7 +44,7 @@ import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import electrodynamics.registers.ElectrodynamicsSounds;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
@@ -60,14 +60,14 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 	public final Locale locale;
 	public final String modID;
 
-	public ElectrodynamicsLangKeyProvider(DataGenerator gen, Locale locale, String modID) {
-		super(gen, modID, locale.toString());
+	public ElectrodynamicsLangKeyProvider(PackOutput output, Locale locale, String modID) {
+		super(output, modID, locale.toString());
 		this.locale = locale;
 		this.modID = modID;
 	}
 
-	public ElectrodynamicsLangKeyProvider(DataGenerator gen, Locale local) {
-		this(gen, local, References.ID);
+	public ElectrodynamicsLangKeyProvider(PackOutput output, Locale local) {
+		this(output, local, References.ID);
 	}
 
 	@Override

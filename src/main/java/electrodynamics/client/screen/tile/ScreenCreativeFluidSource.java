@@ -25,7 +25,7 @@ public class ScreenCreativeFluidSource extends GenericMaterialScreen<ContainerCr
 			}
 			return null;
 		}, 81, 18));
-		addComponent(new ScreenComponentSimpleLabel(13, 38.5F, 10, 4210752, ElectroTextUtils.gui("creativefluidsource.setfluid")));
+		addComponent(new ScreenComponentSimpleLabel(13, 38, 10, 4210752, ElectroTextUtils.gui("creativefluidsource.setfluid")));
 	}
 
 }

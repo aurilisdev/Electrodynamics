@@ -13,8 +13,9 @@ import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -342,19 +343,19 @@ public enum SubtypeWire implements ISubtype {
 	 */
 	public static enum InsulationMaterial {
 
-		BARE(false, true, 0, 1, Material.METAL, SoundType.METAL),
-		WOOL(true, false, 240, 2, Material.WOOL, SoundType.WOOL),
-		THICK_WOOL(true, false, 960, 3, Material.WOOL, SoundType.WOOL),
-		CERAMIC(true, true, 480, 3, Material.STONE, SoundType.TUFF);
+		BARE(false, true, 0, 1, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL),
+		WOOL(true, false, 240, 2, Properties.copy(Blocks.WHITE_WOOL), SoundType.WOOL),
+		THICK_WOOL(true, false, 960, 3, Properties.copy(Blocks.WHITE_WOOL), SoundType.WOOL),
+		CERAMIC(true, true, 480, 3, Properties.copy(Blocks.STONE), SoundType.TUFF);
 
 		public final boolean insulated;
 		public final boolean fireProof;
 		public final int shockVoltage;
 		public final double radius;
-		public final Material material;
+		public final Properties material;
 		public final SoundType soundType;
 
-		InsulationMaterial(boolean insulated, boolean fireProof, int shockVoltage, double radius, Material material, SoundType sounndType) {
+		InsulationMaterial(boolean insulated, boolean fireProof, int shockVoltage, double radius, Properties material, SoundType sounndType) {
 			this.insulated = insulated;
 			this.fireProof = fireProof;
 			this.shockVoltage = shockVoltage;

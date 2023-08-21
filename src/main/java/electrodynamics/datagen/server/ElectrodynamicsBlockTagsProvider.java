@@ -11,11 +11,12 @@ import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.registers.ElectrodynamicsBlocks;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
@@ -61,6 +62,12 @@ public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
 			ores.addTag(ore.blockTag);
 		}
 
+	}
+
+	@Override
+	protected void addTags(Provider pProvider) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

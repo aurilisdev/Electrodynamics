@@ -3,6 +3,7 @@ package electrodynamics.common.event.types.living.hurt;
 import java.util.ArrayList;
 
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
+import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
@@ -21,12 +22,8 @@ public class HandlerJetpackDamage extends AbstractLivingHurtHandler {
 			return;
 		}
 		ItemStack chestplate = armor.get(3);
-
-		if (chestplate.isEmpty()) {
-			return;
-		}
-
-		if (!ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(ElectrodynamicsItems.ITEM_JETPACK.get())) && !ItemStack.isSameIgnoreDurability(chestplate, new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()))) {
+		
+		if(chestplate.isEmpty() || !ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
 			return;
 		}
 

@@ -30,7 +30,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.storage.loot.LootContext.Builder;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -235,9 +234,9 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 
 		return InteractionResult.FAIL;
 	}
-
+	
 	@Override
-	public List<ItemStack> getDrops(BlockState state, Builder builder) {
+	public List<ItemStack> getDrops(BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder builder) {
 		ArrayList<ItemStack> drops = new ArrayList<>(super.getDrops(state, builder));
 		if (state.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING) && builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof GenericConnectTile connect) {
 			drops.add(new ItemStack(connect.getScaffoldBlock().getBlock()));

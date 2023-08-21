@@ -79,7 +79,7 @@ public class Item2ItemRecipeSerializer<T extends Item2ItemRecipe> extends Electr
 		buffer.writeBoolean(recipe.hasFluidBiproducts());
 		buffer.writeBoolean(recipe.hasGasBiproducts());
 		CountableIngredient.writeList(buffer, recipe.getCountedIngredients());
-		buffer.writeItem(recipe.getResultItem());
+		buffer.writeItem(recipe.getItemOutputNoAccess());
 		buffer.writeDouble(recipe.getXp());
 		buffer.writeInt(recipe.getTicks());
 		buffer.writeDouble(recipe.getUsagePerTick());

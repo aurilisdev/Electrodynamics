@@ -83,7 +83,7 @@ public class FluidItem2ItemRecipeSerializer<T extends FluidItem2ItemRecipe> exte
 		buffer.writeBoolean(recipe.hasGasBiproducts());
 		CountableIngredient.writeList(buffer, recipe.getCountedIngredients());
 		FluidIngredient.writeList(buffer, recipe.getFluidIngredients());
-		buffer.writeItem(recipe.getResultItem());
+		buffer.writeItem(recipe.getItemOutputNoAccess());
 		buffer.writeDouble(recipe.getXp());
 		buffer.writeInt(recipe.getTicks());
 		buffer.writeDouble(recipe.getUsagePerTick());

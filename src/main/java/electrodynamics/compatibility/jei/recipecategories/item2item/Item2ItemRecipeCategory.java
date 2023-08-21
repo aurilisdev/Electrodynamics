@@ -37,7 +37,7 @@ public abstract class Item2ItemRecipeCategory<T extends Item2ItemRecipe> extends
 	@Override
 	public List<ItemStack> getItemOutputs(Item2ItemRecipe recipe) {
 		List<ItemStack> outputs = new ArrayList<>();
-		outputs.add(recipe.getResultItem());
+		outputs.add(recipe.getItemOutputNoAccess());
 
 		if (recipe.hasItemBiproducts()) {
 			outputs.addAll(Arrays.asList(recipe.getFullItemBiStacks()));

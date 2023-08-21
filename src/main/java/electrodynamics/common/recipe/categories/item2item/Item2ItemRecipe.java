@@ -43,11 +43,15 @@ public abstract class Item2ItemRecipe extends ElectrodynamicsRecipe {
 	
 	@Override
 	public ItemStack assemble(RecipeWrapper pContainer, RegistryAccess pRegistryAccess) {
-		return outputItem;
+		return getItemOutputNoAccess();
 	}
 	
 	@Override
 	public ItemStack getResultItem(RegistryAccess pRegistryAccess) {
+		return getItemOutputNoAccess();
+	}
+	
+	public ItemStack getItemOutputNoAccess() {
 		return outputItem;
 	}
 

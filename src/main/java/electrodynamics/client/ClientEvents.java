@@ -53,7 +53,7 @@ public class ClientEvents {
 
 	@SubscribeEvent
 	public static void handlerGuiOverlays(RenderGuiOverlayEvent.Post event) {
-		POST_GUI_OVERLAY_HANDLERS.forEach(handler -> handler.renderToScreen(event.getOverlay(), event.getPoseStack(), event.getWindow(), Minecraft.getInstance(), event.getPartialTick()));
+		POST_GUI_OVERLAY_HANDLERS.forEach(handler -> handler.renderToScreen(event.getOverlay(), event.getGuiGraphics(), event.getWindow(), Minecraft.getInstance(), event.getPartialTick()));
 	}
 
 	@SubscribeEvent

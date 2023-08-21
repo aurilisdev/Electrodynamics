@@ -32,7 +32,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams.Builder;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 
@@ -95,10 +95,10 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		Level world = player.level();
 		world.destroyBlock(pos, true, player);
 	}
-
-	// TODO get this to work
+	
+	//TODO get this to work
 	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+	public List<ItemStack> getDrops(BlockState state, Builder builder) {
 		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 		if (tile instanceof GenericTile machine && machine != null) {
 			ItemStack stack = new ItemStack(this);
@@ -117,6 +117,8 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		}
 		return super.getDrops(state, builder);
 	}
+
+	// TODO get this to work
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {

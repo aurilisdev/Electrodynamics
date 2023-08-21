@@ -3,7 +3,6 @@ package electrodynamics.client.render.tile;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.battery.TileLithiumBatteryBox;
@@ -11,6 +10,7 @@ import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -40,15 +40,18 @@ public class RenderLithiumBatteryBox extends AbstractTileRenderer<TileLithiumBat
 
 		switch (tileEntityIn.getBlockState().getValue(GenericEntityBlock.FACING)) {
 		case NORTH -> {
-			matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
+			matrixStackIn.mulPose(MathUtils.rotQuaternionDeg(0, 90, 0));
+			//matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
 			matrixStackIn.translate(-1, 0, 0);
 		}
 		case SOUTH -> {
-			matrixStackIn.mulPose(new Quaternion(0, 270, 0, true));
+			matrixStackIn.mulPose(MathUtils.rotQuaternionDeg(0, 270, 0));
+			//matrixStackIn.mulPose(new Quaternion(0, 270, 0, true));
 			matrixStackIn.translate(0, 0, -1);
 		}
 		case WEST -> {
-			matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
+			matrixStackIn.mulPose(MathUtils.rotQuaternionDeg(0, 180, 0));
+			//matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
 			matrixStackIn.translate(-1, 0, -1);
 		}
 		default -> {

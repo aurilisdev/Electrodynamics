@@ -2,7 +2,7 @@ package electrodynamics.datagen.client;
 
 import electrodynamics.api.References;
 import electrodynamics.registers.ElectrodynamicsSounds;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.SoundDefinition;
@@ -15,12 +15,12 @@ public class ElectrodynamicsSoundProvider extends SoundDefinitionsProvider {
 
 	private final String modID;
 
-	public ElectrodynamicsSoundProvider(DataGenerator generator, ExistingFileHelper helper) {
-		this(generator, helper, References.ID);
+	public ElectrodynamicsSoundProvider(PackOutput output, ExistingFileHelper helper) {
+		this(output, helper, References.ID);
 	}
 
-	public ElectrodynamicsSoundProvider(DataGenerator generator, ExistingFileHelper helper, String modID) {
-		super(generator, modID, helper);
+	public ElectrodynamicsSoundProvider(PackOutput output, ExistingFileHelper helper, String modID) {
+		super(output, modID, helper);
 		this.modID = modID;
 	}
 

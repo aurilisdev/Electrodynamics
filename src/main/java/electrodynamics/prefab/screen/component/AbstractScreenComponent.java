@@ -1,13 +1,16 @@
 package electrodynamics.prefab.screen.component;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import javax.annotation.Nullable;
 
 import electrodynamics.api.screen.IScreenWrapper;
-import net.minecraft.client.gui.GuiComponent;
-import net.minecraft.client.gui.components.Widget;
+import net.minecraft.client.gui.ComponentPath;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Renderable;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
+import net.minecraft.client.gui.navigation.FocusNavigationEvent;
+import net.minecraft.network.chat.Component;
 
 /**
  * 
@@ -18,7 +21,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
  *         Original Author : AurilisDev
  *
  */
-public abstract class AbstractScreenComponent extends GuiComponent implements GuiEventListener, Widget, NarratableEntry {
+public abstract class AbstractScreenComponent implements GuiEventListener, Renderable, NarratableEntry {
 
 	public int xLocation;
 	public int yLocation;
@@ -35,7 +38,7 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 	public IScreenWrapper gui;
 
 	public AbstractScreenComponent(int x, int y, int width, int height) {
-
+		
 		xLocation = x;
 		yLocation = y;
 
@@ -44,7 +47,9 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 	}
 
 	/*
-	 * By separating the GUI definition from the constructor, it allows us to define screen components that can be attached to a screen at a later point. This is especially useful in GUIs that have components that do not change and thus can be made static to improve efficiency
+	 * By separating the GUI definition from the constructor, it allows us to define screen components that can be attached to a
+	 * screen at a later point. This is especially useful in GUIs that have components that do not change and thus can be made static
+	 * to improve efficiency
 	 * 
 	 * Granted, the downside is you need to remember to set the owner screen
 	 */
@@ -54,40 +59,41 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 	}
 
 	@Override
-	public void render(PoseStack stack, int mouseX, int mouseY, float partialTick) {
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
 		if (isVisible()) {
 			setHovered(isMouseOver(mouseX, mouseY));
 			int guiWidth = (int) gui.getGuiWidth();
 			int guiHeight = (int) gui.getGuiHeight();
-			renderBackground(stack, mouseX - guiWidth, mouseY - guiHeight, guiWidth, guiHeight);
+			renderBackground(graphics, mouseX - guiWidth, mouseY - guiHeight, guiWidth, guiHeight);
 		}
 
 	}
 
-	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 
 	}
 
-	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 
 	}
 
-	public void renderScaledText(PoseStack stack, String text, int x, int y, int color, int maxX) {
+	public void renderBoundedText(GuiGraphics graphics, Component text, int x, int y, int color, int maxLength) {
 		int length = gui.getFontRenderer().width(text);
 
-		if (length <= maxX) {
-			gui.getFontRenderer().draw(stack, text, x, y, color);
+		if (length <= maxLength) {
+			graphics.drawString(gui.getFontRenderer(), text, x, y, color);
 		} else {
-			float scale = (float) maxX / length;
+			float scale = (float) maxLength / length;
 			float reverse = 1 / scale;
 			float yAdd = 4 - scale * 8 / 2F;
 
-			stack.pushPose();
+			graphics.pose().pushPose();
 
-			stack.scale(scale, scale, scale);
-			gui.getFontRenderer().draw(stack, text, (int) (x * reverse), (int) (y * reverse + yAdd), color);
+			graphics.pose().scale(scale, scale, scale);
+			
+			graphics.drawString(gui.getFontRenderer(), text, (int) (x * reverse), (int) (y * reverse + yAdd), color);
 
-			stack.popPose();
+			graphics.pose().popPose();
 		}
 	}
 
@@ -97,17 +103,21 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 	}
 
 	/*
-	 * @Override public boolean mouseClicked(double mouseX, double mouseY, int button) { if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
+	 * @Override public boolean mouseClicked(double mouseX, double mouseY, int button) { if (isActiveAndVisible() &&
+	 * isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
 	 * 
 	 * onMouseClick(mouseX, mouseY);
 	 * 
 	 * return true; } return false; }
 	 * 
-	 * @Override public boolean mouseReleased(double mouseX, double mouseY, int button) { if (isValidClick(button)) { onMouseRelease(mouseX, mouseY); return true; } else { return false; } }
+	 * @Override public boolean mouseReleased(double mouseX, double mouseY, int button) { if (isValidClick(button)) {
+	 * onMouseRelease(mouseX, mouseY); return true; } else { return false; } }
 	 * 
-	 * @Override public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) { if (isValidClick(button)) { onMouseDrag(mouseX, mouseY, dragX, dragY); return true; } else { return false; } }
+	 * @Override public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) { if
+	 * (isValidClick(button)) { onMouseDrag(mouseX, mouseY, dragX, dragY); return true; } else { return false; } }
 	 * 
-	 * @Override public boolean mouseScrolled(double mouseX, double mouseY, double delta) { if(isActiveAndVisible()) { onMouseScroll(mouseX, mouseY, delta); return true; } else { return false; } }
+	 * @Override public boolean mouseScrolled(double mouseX, double mouseY, double delta) { if(isActiveAndVisible()) {
+	 * onMouseScroll(mouseX, mouseY, delta); return true; } else { return false; } }
 	 * 
 	 */
 	public boolean isInClickRegion(double mouseX, double mouseY) {
@@ -179,12 +189,19 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 		return isHovered;
 	}
 
+	@Override
 	public void setFocused(boolean isFocused) {
 		this.isFocused = isFocused;
+		onFocusChanged(isFocused);
 	}
 
+	@Override
 	public boolean isFocused() {
 		return isFocused;
+	}
+	
+	public void onFocusChanged(boolean isFocused) {
+		
 	}
 
 	public boolean isHoveredOrFocused() {
@@ -203,23 +220,19 @@ public abstract class AbstractScreenComponent extends GuiComponent implements Gu
 		return isHovered() ? NarratableEntry.NarrationPriority.HOVERED : NarratableEntry.NarrationPriority.NONE;
 	}
 
-	@Override
-	public boolean changeFocus(boolean pFocus) {
+	@Nullable
+	public ComponentPath nextFocusPath(FocusNavigationEvent pEvent) {
 		if (isActive() && isVisible()) {
-			setFocused(!isFocused());
-			onFocusChanged(isFocused());
-			return isFocused();
+			return !this.isFocused() ? ComponentPath.leaf(this) : null;
+		} else {
+			return null;
 		}
-		return false;
-	}
-
-	public void onFocusChanged(boolean isFocused) {
-
 	}
 
 	@Override
 	public void updateNarration(NarrationElementOutput pNarrationElementOutput) {
 
 	}
+
 
 }

@@ -63,7 +63,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 	public final SubtypeWire wire;
 
 	public BlockWire(SubtypeWire wire) {
-		super(Properties.of(wire.insulation.material).sound(wire.insulation.soundType).strength(0.15f).dynamicShape().noOcclusion().randomTicks(), wire.insulation.radius);
+		super(wire.insulation.material.sound(wire.insulation.soundType).strength(0.15f).dynamicShape().noOcclusion().randomTicks(), wire.insulation.radius);
 		this.wire = wire;
 
 		if (wire.wireClass != WireClass.LOGISTICAL) {

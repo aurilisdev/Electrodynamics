@@ -1,8 +1,8 @@
 package electrodynamics.prefab.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -15,17 +15,16 @@ public abstract class GenericCustomScreen<T extends AbstractContainerMenu> exten
 	}
 
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(matrixStack);
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
-		renderTooltip(matrixStack, mouseX, mouseY);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		this.renderBackground(graphics);
+		super.render(graphics, mouseX, mouseY, partialTicks);
+		renderTooltip(graphics, mouseX, mouseY);
 	}
 
 	@Override
-	protected void renderBg(PoseStack stack, float partialTicks, int mouseX, int mouseY) {
+	protected void renderBg(GuiGraphics graphics, float partialTicks, int mouseX, int mouseY) {
 		RenderSystem.setShaderColor(1, 1, 1, 1);
-		RenderSystem.setShaderTexture(0, getScreenBackground());
-		blit(stack, leftPos, topPos, 0, 0, imageWidth, imageHeight);
+		graphics.blit(getScreenBackground(), leftPos, topPos, 0, 0, imageWidth, imageHeight);
 	}
 
 	public abstract ResourceLocation getScreenBackground();
