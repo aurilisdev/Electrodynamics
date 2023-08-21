@@ -50,7 +50,7 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 	final ElectricItemProperties properties;
 
 	public ItemServoLeggings(ElectricItemProperties pProperties) {
-		super(ServoLeggings.SERVOLEGGINGS, EquipmentSlot.LEGS, pProperties);
+		super(ServoLeggings.SERVOLEGGINGS, Type.LEGGINGS, pProperties);
 		properties = pProperties;
 	}
 
@@ -165,13 +165,13 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 				case 0:
 					tag.putBoolean("reset", false);
 					tag.putBoolean(NBTUtils.SUCESS, true);
-					player.maxUpStep = 1.1F;
+					player.setMaxUpStep(1.1F);
 					legs.extractPower(stack, JOULES_PER_TICK, false);
 					break;
 				case 1:
 					tag.putBoolean("reset", false);
 					tag.putBoolean(NBTUtils.SUCESS, true);
-					player.maxUpStep = 1.1F;
+					player.setMaxUpStep(1.1F);
 					player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false, false, false));
 					legs.extractPower(stack, JOULES_PER_TICK, false);
 					break;
@@ -184,7 +184,7 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 				case 3:
 					tag.putBoolean(NBTUtils.SUCESS, false);
 					if (!tag.getBoolean("reset")) {
-						player.maxUpStep = DEFAULT_VANILLA_STEPUP;
+						player.setMaxUpStep(DEFAULT_VANILLA_STEPUP);
 					}
 					break;
 				default:
@@ -193,7 +193,7 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 			} else {
 				tag.putBoolean(NBTUtils.SUCESS, false);
 				if (!tag.getBoolean("reset")) {
-					player.maxUpStep = DEFAULT_VANILLA_STEPUP;
+					player.setMaxUpStep(DEFAULT_VANILLA_STEPUP);;
 				}
 			}
 		} else if (stack.hasTag()) {
@@ -201,18 +201,18 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 			if (tag.getBoolean(NBTUtils.SUCESS)) {
 				switch (tag.getInt(NBTUtils.MODE)) {
 				case 0, 1:
-					player.maxUpStep = 1.1F;
+					player.setMaxUpStep(1.1F);
 					break;
 				case 2, 3:
 					if (!tag.getBoolean("reset")) {
-						player.maxUpStep = DEFAULT_VANILLA_STEPUP;
+						player.setMaxUpStep(DEFAULT_VANILLA_STEPUP);
 					}
 					break;
 				default:
 					break;
 				}
 			} else if (!tag.getBoolean("reset")) {
-				player.maxUpStep = DEFAULT_VANILLA_STEPUP;
+				player.setMaxUpStep(DEFAULT_VANILLA_STEPUP);
 			}
 		}
 	}
@@ -229,16 +229,6 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 
 	public enum ServoLeggings implements ICustomArmor {
 		SERVOLEGGINGS;
-
-		@Override
-		public int getDurabilityForSlot(EquipmentSlot slotIn) {
-			return 100;
-		}
-
-		@Override
-		public int getDefenseForSlot(EquipmentSlot slotIn) {
-			return 1;
-		}
 
 		@Override
 		public SoundEvent getEquipSound() {
@@ -258,6 +248,16 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 		@Override
 		public float getKnockbackResistance() {
 			return 0.0F;
+		}
+
+		@Override
+		public int getDurabilityForType(Type pType) {
+			return 100;
+		}
+
+		@Override
+		public int getDefenseForType(Type pType) {
+			return 1;
 		}
 
 	}

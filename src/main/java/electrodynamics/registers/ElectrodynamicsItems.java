@@ -101,7 +101,8 @@ public class ElectrodynamicsItems {
 		registerSubtypeBlockItem(SubtypeResourceBlock.values());
 		registerSubtypeBlockItem(SubtypeGlass.values());
 		for (SubtypeMachine machine : SubtypeMachine.values()) {
-			if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer || machine == SubtypeMachine.multimeterblock || machine == SubtypeMachine.circuitbreaker || machine == SubtypeMachine.relay || machine == SubtypeMachine.potentiometer) {
+			if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer || machine == SubtypeMachine.multimeterblock || machine == SubtypeMachine.circuitbreaker || machine == SubtypeMachine.relay || machine == SubtypeMachine.potentiometer || 
+					machine == SubtypeMachine.advanceddowngradetransformer || machine == SubtypeMachine.advancedupgradetransformer || machine == SubtypeMachine.circuitmonitor) {
 				SUBTYPEITEMREGISTER_MAPPINGS.put(machine, ITEMS.register(machine.tag(), () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(machine).get(), new Item.Properties().tab(References.GRIDTAB))));
 			} else {
 				SUBTYPEITEMREGISTER_MAPPINGS.put(machine, ITEMS.register(machine.tag(), () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(machine).get(), new Item.Properties().tab(References.CORETAB))));
@@ -169,6 +170,7 @@ public class ElectrodynamicsItems {
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation", () -> new Item(new Item.Properties().tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_CERAMICINSULATION = ITEMS.register("insulationceramic", () -> new Item(new Item.Properties().tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", () -> new Item(new Item.Properties().tab(References.CORETAB)));
+	public static final RegistryObject<Item> ITEM_LAMINATEDCOIL = ITEMS.register("laminatedcoil", () -> new Item(new Item.Properties().tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_TITANIUM_COIL = ITEMS.register("titaniumheatcoil", () -> new Item(new Item.Properties().tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_MOTOR = ITEMS.register("motor", () -> new Item(new Item.Properties().tab(References.CORETAB)));
 	public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate", () -> new Item(new Item.Properties().tab(References.CORETAB)));

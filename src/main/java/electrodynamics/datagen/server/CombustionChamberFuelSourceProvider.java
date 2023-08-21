@@ -1,10 +1,12 @@
 package electrodynamics.datagen.server;
 
-import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.CompletableFuture;
 
 import com.google.gson.JsonObject;
 
@@ -13,33 +15,36 @@ import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 
 public class CombustionChamberFuelSourceProvider implements DataProvider {
 
 	public static final String LOC = "data/" + References.ID + "/" + CombustionFuelRegister.FOLDER + "/";
 
-	private final DataGenerator dataGenerator;
+	private final PackOutput output;
 
 	private final Map<String, JsonObject> jsons = new HashMap<>();
 
-	public CombustionChamberFuelSourceProvider(DataGenerator gen) {
-		dataGenerator = gen;
+	public CombustionChamberFuelSourceProvider(PackOutput output) {
+		this.output = output;
 	}
 
 	@Override
-	public void run(CachedOutput cache) throws IOException {
+	public CompletableFuture<?> run(CachedOutput cache) {
 		addFuels();
 
-		Path parent = dataGenerator.getOutputFolder().resolve(LOC);
-		try {
-			for (Entry<String, JsonObject> json : jsons.entrySet()) {
-				DataProvider.saveStable(cache, json.getValue(), parent.resolve(json.getKey() + ".json"));
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		Path parent = output.getOutputFolder().resolve(LOC);
+
+		List<CompletableFuture<?>> completed = new ArrayList<>();
+
+		for (Entry<String, JsonObject> json : jsons.entrySet()) {
+			completed.add(DataProvider.saveStable(cache, json.getValue(), parent.resolve(json.getKey() + ".json")));
 		}
+
+		return CompletableFuture.allOf(completed.toArray((size) -> {
+			return new CompletableFuture[size];
+		}));
 	}
 
 	private void addFuels() {

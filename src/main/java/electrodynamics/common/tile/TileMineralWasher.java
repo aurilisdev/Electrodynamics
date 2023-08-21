@@ -1,6 +1,6 @@
 package electrodynamics.common.tile;
 
-import com.mojang.math.Vector3f;
+import org.joml.Vector3f;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;

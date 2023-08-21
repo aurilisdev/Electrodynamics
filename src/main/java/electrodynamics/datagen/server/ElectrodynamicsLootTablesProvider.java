@@ -47,12 +47,23 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 
 		for (SubtypeOre ore : SubtypeOre.values()) {
 			Block block = ElectrodynamicsBlocks.getBlock(ore);
-			addFortuneAndSilkTouchTable(block, ore.nonSilkLootItem == null ? block.asItem() : ore.nonSilkLootItem.get(), ore.minDrop, ore.maxDrop);
+
+			if (ore.nonSilkLootItem == null) {
+				addSimpleBlock(block);
+			} else {
+				addFortuneAndSilkTouchTable(block, ore.nonSilkLootItem.get(), ore.minDrop, ore.maxDrop);
+			}
+
 		}
 
 		for (SubtypeOreDeepslate ore : SubtypeOreDeepslate.values()) {
 			Block block = ElectrodynamicsBlocks.getBlock(ore);
-			addFortuneAndSilkTouchTable(block, ore.nonSilkLootItem == null ? block.asItem() : ore.nonSilkLootItem.get(), ore.minDrop, ore.maxDrop);
+
+			if (ore.nonSilkLootItem == null) {
+				addSimpleBlock(block);
+			} else {
+				addFortuneAndSilkTouchTable(block, ore.nonSilkLootItem.get(), ore.minDrop, ore.maxDrop);
+			}
 		}
 
 		for (SubtypeResourceBlock storage : SubtypeResourceBlock.values()) {
@@ -93,6 +104,8 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.oxidationfurnace), ElectrodynamicsBlockTypes.TILE_OXIDATIONFURNACE, true, false, false, true, false);
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.downgradetransformer));
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.upgradetransformer));
+		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer));
+		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer));
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coalgenerator), ElectrodynamicsBlockTypes.TILE_COALGENERATOR, true, false, false, true, false);
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.solarpanel), ElectrodynamicsBlockTypes.TILE_SOLARPANEL, true, false, false, true, false);
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedsolarpanel), ElectrodynamicsBlockTypes.TILE_ADVANCEDSOLARPANEL, true, false, false, true, false);
@@ -131,12 +144,16 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coolantresavoir), ElectrodynamicsBlockTypes.TILE_COOLANTRESAVOIR, true, false, false, true, false);
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.motorcomplex), ElectrodynamicsBlockTypes.TILE_MOTORCOMPLEX, true, false, false, true, false);
 
-		// TODO
-		// compressor
-		// decompressor
-		// thermo manip
-		// gas tanks
-		// electrolytic sep
+		addMachineTable(ElectrodynamicsBlocks.blockCompressor, ElectrodynamicsBlockTypes.TILE_COMPRESSOR, true, false, true, true, false);
+		addMachineTable(ElectrodynamicsBlocks.blockDecompressor, ElectrodynamicsBlockTypes.TILE_DECOMPRESSOR, true, false, true, true, false);
+		addMachineTable(ElectrodynamicsBlocks.blockThermoelectricManipulator, ElectrodynamicsBlockTypes.TILE_THERMOELECTRIC_MANIPULATOR, true, true, true, true, false);
+
+		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastanksteel), ElectrodynamicsBlockTypes.TILE_GASTANK_STEEL, true, false, true, false, false);
+		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankreinforced), ElectrodynamicsBlockTypes.TILE_GASTANK_REINFORCED, true, false, true, false, false);
+		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gastankhsla), ElectrodynamicsBlockTypes.TILE_GASTANK_HSLA, true, false, true, false, false);
+
+		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electrolyticseparator), ElectrodynamicsBlockTypes.TILE_ELECTROLYTICSEPARATOR, true, true, true, true, false);
+
 		addSimpleBlock(ElectrodynamicsBlocks.blockGasTransformerAddonTank);
 
 		addSimpleBlock(ElectrodynamicsBlocks.blockGasValve);
@@ -147,6 +164,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 		addSimpleBlock(ElectrodynamicsBlocks.blockFluidPipeFilter);
 
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay));
+		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitmonitor));
 
 	}
 

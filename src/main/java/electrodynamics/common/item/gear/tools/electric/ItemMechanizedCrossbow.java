@@ -3,8 +3,8 @@ package electrodynamics.common.item.gear.tools.electric;
 import java.util.List;
 import java.util.function.Predicate;
 
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
@@ -83,15 +83,13 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 			arrow.shrink(1);
 		}
 
-		Vec3 playerUp = player.getUpVector(1.0F);
-
-		Quaternion quaternion = new Quaternion(new Vector3f(playerUp), 0, true);
-
-		Vec3 playerView = player.getViewVector(1.0F);
-
-		Vector3f viewVector = new Vector3f(playerView);
-
-		viewVector.transform(quaternion);
+		Vec3 playerUpVector = player.getUpVector(1.0F);
+		
+		Quaternionf quaternionf = (new Quaternionf()).setAngleAxis((double) 0, playerUpVector.x, playerUpVector.y, playerUpVector.z);
+		
+		Vec3 playerViewVector = player.getViewVector(1.0F);
+		
+		Vector3f viewVector = playerViewVector.toVector3f().rotate(quaternionf);
 
 		projectile.shoot(viewVector.x(), viewVector.y(), viewVector.z(), PROJECTILE_SPEED, 1);
 

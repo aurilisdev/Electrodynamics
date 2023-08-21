@@ -3,8 +3,6 @@ package electrodynamics.client.screen.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerQuarry;
@@ -24,6 +22,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.FormattedCharSequence;
@@ -163,40 +162,40 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 	}
 
 	@Override
-	protected void renderLabels(PoseStack stack, int x, int y) {
-		super.renderLabels(stack, x, y);
+	protected void renderLabels(GuiGraphics graphics, int x, int y) {
+		super.renderLabels(graphics, x, y);
 		TileQuarry quarry = menu.getHostFromIntArray();
 		if (quarry == null) {
 			return;
 		}
 		// void card
 		if (quarry.hasItemVoid.get()) {
-			font.draw(stack, ElectroTextUtils.gui("quarry.voiditems"), 85, 14, 4210752);
+			graphics.drawString(font, ElectroTextUtils.gui("quarry.voiditems"), 85, 14, 4210752);
 		} else {
-			font.draw(stack, ElectroTextUtils.gui("quarry.needvoidcard"), 85, 14, 4210752);
+			graphics.drawString(font, ElectroTextUtils.gui("quarry.needvoidcard"), 85, 14, 4210752);
 		}
 
 		/* STATUS */
 
-		font.draw(stack, ElectroTextUtils.gui("quarry.status"), 5, 32, 4210752);
+		graphics.drawString(font, ElectroTextUtils.gui("quarry.status"), 5, 32, 4210752);
 
 		int height = 42;
 		if (!quarry.isAreaCleared.get()) {
-			font.draw(stack, ElectroTextUtils.gui("quarry.clearingarea"), 10, height, 4210752);
+			graphics.drawString(font, ElectroTextUtils.gui("quarry.clearingarea"), 10, height, 4210752);
 		} else if (!quarry.hasRing.get()) {
-			font.draw(stack, ElectroTextUtils.gui("quarry.setup"), 10, height, 4210752);
+			graphics.drawString(font, ElectroTextUtils.gui("quarry.setup"), 10, height, 4210752);
 		} else if (quarry.running.get()) {
-			font.draw(stack, ElectroTextUtils.gui("quarry.mining"), 10, height, 4210752);
+			graphics.drawString(font, ElectroTextUtils.gui("quarry.mining"), 10, height, 4210752);
 		} else if (quarry.isFinished.get()) {
-			font.draw(stack, ElectroTextUtils.gui("quarry.finished"), 10, height, 4210752);
+			graphics.drawString(font, ElectroTextUtils.gui("quarry.finished"), 10, height, 4210752);
 		} else {
-			font.draw(stack, ElectroTextUtils.gui("quarry.notmining"), 10, height, 4210752);
+			graphics.drawString(font, ElectroTextUtils.gui("quarry.notmining"), 10, height, 4210752);
 		}
 
 		/* ERRORS */
 
-		font.draw(stack, ElectroTextUtils.gui("quarry.errors"), 5, 65, 4210752);
-		font.draw(stack, ElectroTextUtils.gui(getErrorKey(quarry)), 10, 75, 4210752);
+		graphics.drawString(font, ElectroTextUtils.gui("quarry.errors"), 5, 65, 4210752);
+		graphics.drawString(font, ElectroTextUtils.gui(getErrorKey(quarry)), 10, 75, 4210752);
 
 	}
 

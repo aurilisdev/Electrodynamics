@@ -10,10 +10,9 @@ import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.compatibility.jei.utils.gui.types.gasgauge.IGasGaugeTexture;
 import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import mezz.jei.api.ingredients.IIngredientRenderer;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.TooltipFlag;
 
@@ -22,7 +21,7 @@ public class IngredientRendererGasStack implements IIngredientRenderer<GasStack>
 	public static final IIngredientRenderer<GasStack> LIST_RENDERER = new IIngredientRenderer<>() {
 
 		@Override
-		public void render(PoseStack stack, GasStack ingredient) {
+		public void render(GuiGraphics graphics, GasStack ingredient) {
 		}
 
 		@Override
@@ -45,18 +44,19 @@ public class IngredientRendererGasStack implements IIngredientRenderer<GasStack>
 	}
 
 	@Override
-	public void render(PoseStack stack, GasStack ingredient) {
+	public void render(GuiGraphics graphics, GasStack ingredient) {
 		if (ingredient.isEmpty()) {
 			return;
 		}
+		PoseStack stack = graphics.pose();
+		
 		stack.pushPose();
 
 		float ratio = (float) ingredient.getAmount() / tankAmount;
 
-		ScreenComponentGasGauge.renderMercuryTexture(stack, 0, mercuryOffset, ratio);
+		ScreenComponentGasGauge.renderMercuryTexture(graphics, 0, mercuryOffset, ratio);
 
-		RenderingUtils.bindTexture(bars.getLocation());
-		GuiComponent.blit(stack, bars.getXOffset(), mercuryOffset + bars.getYOffset(), bars.textureU(), bars.textureV(), bars.textureWidth(), bars.textureHeight(), bars.imageWidth(), bars.imageHeight());
+		graphics.blit(bars.getLocation(), bars.getXOffset(), mercuryOffset + bars.getYOffset(), bars.textureU(), bars.textureV(), bars.textureWidth(), bars.textureHeight(), bars.imageWidth(), bars.imageHeight());
 
 		stack.popPose();
 	}

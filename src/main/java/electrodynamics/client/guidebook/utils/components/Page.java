@@ -3,8 +3,6 @@ package electrodynamics.client.guidebook.utils.components;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.client.guidebook.utils.pagedata.OnClick;
 import electrodynamics.client.guidebook.utils.pagedata.OnKeyPress;
 import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
@@ -12,6 +10,7 @@ import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicW
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.FormattedText;
 
@@ -39,20 +38,20 @@ public class Page {
 		return pageNumber;
 	}
 
-	public void renderAdditionalText(PoseStack stack, int refX, int refY, int xPageShift, Font font, int textWidth, int textStartX) {
+	public void renderAdditionalText(GuiGraphics graphics, int refX, int refY, int xPageShift, Font font, int textWidth, int textStartX) {
 
 		Module currMod = associatedChapter.module;
 		Component moduleTitle = currMod.getTitle().withStyle(ChatFormatting.BOLD);
 		int xShift = (textWidth - font.width(moduleTitle)) / 2;
-		font.draw(stack, moduleTitle, refX + textStartX + xShift + xPageShift, refY + 16, 4210752);
+		graphics.drawString(font, moduleTitle, refX + textStartX + xShift + xPageShift, refY + 16, 4210752);
 
 		Component chapTitle = associatedChapter.getTitle().withStyle(ChatFormatting.UNDERLINE);
 		xShift = (textWidth - font.width(chapTitle)) / 2;
-		font.draw(stack, chapTitle, refX + textStartX + xShift + xPageShift, refY + 26, 4210752);
+		graphics.drawString(font, chapTitle, refX + textStartX + xShift + xPageShift, refY + 26, 4210752);
 
 		Component pageNumber = Component.literal(getPage() + 1 + "");
 		xShift = (textWidth - font.width(pageNumber)) / 2;
-		font.draw(stack, pageNumber, refX + textStartX + xShift + xPageShift, refY + 200, 4210752);
+		graphics.drawString(font, pageNumber, refX + textStartX + xShift + xPageShift, refY + 200, 4210752);
 
 	}
 
@@ -74,16 +73,16 @@ public class Page {
 		}
 
 		@Override
-		public void renderAdditionalText(PoseStack stack, int refX, int refY, int xPageShift, Font font, int textWidth, int textStartX) {
+		public void renderAdditionalText(GuiGraphics graphics, int refX, int refY, int xPageShift, Font font, int textWidth, int textStartX) {
 
 			Module currMod = associatedModule;
 			Component moduleTitle = currMod.getTitle().withStyle(ChatFormatting.BOLD);
 			int xShift = (textWidth - font.width(moduleTitle)) / 2;
-			font.draw(stack, moduleTitle, refX + xShift + textStartX + xPageShift, refY + 16, 4210752);
+			graphics.drawString(font, moduleTitle, refX + xShift + textStartX + xPageShift, refY + 16, 4210752);
 
 			Component chapTitle = ElectroTextUtils.guidebook("chapters").withStyle(ChatFormatting.UNDERLINE);
 			xShift = (textWidth - font.width(chapTitle)) / 2;
-			font.draw(stack, chapTitle, refX + textStartX + xShift + xPageShift, refY + 31, 4210752);
+			graphics.drawString(font, chapTitle, refX + textStartX + xShift + xPageShift, refY + 31, 4210752);
 		}
 
 	}
@@ -95,10 +94,10 @@ public class Page {
 		}
 
 		@Override
-		public void renderAdditionalText(PoseStack stack, int refX, int refY, int xPageShift, Font font, int textWidth, int textStartX) {
+		public void renderAdditionalText(GuiGraphics graphics, int refX, int refY, int xPageShift, Font font, int textWidth, int textStartX) {
 			Component modTitle = ElectroTextUtils.guidebook("availablemodules").withStyle(ChatFormatting.BOLD);
 			int xShift = (textWidth - font.width(modTitle)) / 2;
-			font.draw(stack, modTitle, refX + textStartX + xShift + xPageShift, refY + 16, 4210752);
+			graphics.drawString(font, modTitle, refX + textStartX + xShift + xPageShift, refY + 16, 4210752);
 		}
 
 	}
@@ -110,7 +109,7 @@ public class Page {
 		}
 
 		@Override
-		public void renderAdditionalText(PoseStack stack, int refX, int refY, int xPageShift, Font font, int textWidth, int textStartX) {
+		public void renderAdditionalText(GuiGraphics graphics, int refX, int refY, int xPageShift, Font font, int textWidth, int textStartX) {
 			// Not used as of now
 		}
 

@@ -831,14 +831,12 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		}
 
 		if (leftEntity != null && leftEntity instanceof TileSeismicRelay relayin && ((ComponentDirection) relayin.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
-			corners.set(relayin.markerLocs);
-			corners.forceDirty();
+			corners.set(relayin.markerLocs.get());
 			cornerOnRight.set(relayin.cornerOnRight);
 			relay = relayin;
 			hasSeismicRelay.set(true);
 		} else if (rightEntity != null && rightEntity instanceof TileSeismicRelay relayin && ((ComponentDirection) relayin.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
-			corners.set(relayin.markerLocs);
-			corners.forceDirty();
+			corners.set(relayin.markerLocs.get());
 			cornerOnRight.set(relayin.cornerOnRight);
 			relay = relayin;
 			hasSeismicRelay.set(true);

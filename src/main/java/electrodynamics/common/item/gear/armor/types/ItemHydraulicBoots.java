@@ -45,7 +45,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 	private static final String TEXTURE_LOCATION = References.ID + ":textures/model/armor/hydraulicboots.png";
 
 	public ItemHydraulicBoots() {
-		super(HydraulicBoots.HYDRAULIC_BOOTS, EquipmentSlot.FEET, new Item.Properties().tab(References.CORETAB).stacksTo(1));
+		super(HydraulicBoots.HYDRAULIC_BOOTS, Type.BOOTS, new Item.Properties().tab(References.CORETAB).stacksTo(1));
 	}
 
 	@Override
@@ -149,16 +149,6 @@ public class ItemHydraulicBoots extends ArmorItem {
 		HYDRAULIC_BOOTS;
 
 		@Override
-		public int getDurabilityForSlot(EquipmentSlot slotIn) {
-			return 100;
-		}
-
-		@Override
-		public int getDefenseForSlot(EquipmentSlot slotIn) {
-			return 1;
-		}
-
-		@Override
 		public SoundEvent getEquipSound() {
 			return SoundEvents.ARMOR_EQUIP_IRON;
 		}
@@ -176,6 +166,16 @@ public class ItemHydraulicBoots extends ArmorItem {
 		@Override
 		public float getKnockbackResistance() {
 			return 0.0F;
+		}
+
+		@Override
+		public int getDurabilityForType(Type pType) {
+			return 100;
+		}
+
+		@Override
+		public int getDefenseForType(Type pType) {
+			return 1;
 		}
 
 	}

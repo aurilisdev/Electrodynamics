@@ -16,7 +16,6 @@ import electrodynamics.common.recipe.categories.item2item.specificmachines.Miner
 import electrodynamics.common.recipe.categories.item2item.specificmachines.OxidationFurnaceRecipe;
 import electrodynamics.common.recipe.categories.item2item.specificmachines.ReinforcedAlloyerRecipe;
 import electrodynamics.common.recipe.categories.item2item.specificmachines.WireMillRecipe;
-import net.minecraft.core.Registry;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -28,7 +27,7 @@ public class ElectrodynamicsRecipeInit {
 
 	// Deferred Register
 	public static DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, electrodynamics.api.References.ID);
-	public static DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registry.RECIPE_TYPE.key(), electrodynamics.api.References.ID);
+	public static DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, electrodynamics.api.References.ID);
 	/* RECIPE TYPES */
 
 	// Item2Item
@@ -78,7 +77,7 @@ public class ElectrodynamicsRecipeInit {
 	public static class CustomRecipeType<T extends Recipe<?>> implements RecipeType<T> {
 		@Override
 		public String toString() {
-			return Registry.RECIPE_TYPE.getKey(this).toString();
+			return ForgeRegistries.RECIPE_TYPES.getKey(this).toString();
 		}
 	}
 

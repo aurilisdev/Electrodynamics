@@ -1,7 +1,5 @@
 package electrodynamics.client.screen.tile;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerPotentiometer;
 import electrodynamics.common.tile.network.electric.TilePotentiometer;
@@ -9,6 +7,7 @@ import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -22,7 +21,7 @@ public class ScreenPotentiometer extends GenericScreen<ContainerPotentiometer> {
 		super(container, inv, title);
 		addEditBox(consumption = new ScreenComponentEditBox(72, 35, 80, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(30).setFilter(ScreenComponentEditBox.DECIMAL).setResponder(this::setConsumption));
 		addComponent(new ScreenComponentSimpleLabel(10, 39, 10, 4210752, ElectroTextUtils.gui("potentiometer.usage")));
-		addComponent(new ScreenComponentSimpleLabel(155, 39, 10, 4210752, DisplayUnit.WATT.symbol));
+		addComponent(new ScreenComponentSimpleLabel(155, 39, 10, 4210752, DisplayUnit.WATT.getSymbol()));
 	}
 
 	private void setConsumption(String value) {
@@ -51,8 +50,8 @@ public class ScreenPotentiometer extends GenericScreen<ContainerPotentiometer> {
 	}
 
 	@Override
-	public void render(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-		super.render(matrixStack, mouseX, mouseY, partialTicks);
+	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+		super.render(graphics, mouseX, mouseY, partialTicks);
 		if (needsUpdate) {
 			needsUpdate = false;
 			TilePotentiometer source = menu.getHostFromIntArray();

@@ -27,9 +27,11 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.Nameable;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -115,7 +117,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 		super.load(compound);
 		for (Property<?> prop : propertyManager.getProperties()) {
 			if (prop.shouldSave()) {
-				prop.load(prop.getType().readFromNbt.apply(prop, compound));
+				prop.load(prop.getType().readFromTag(prop, compound));
 				compound.remove(prop.getName());
 			}
 		}
@@ -138,7 +140,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	public void saveAdditional(@NotNull CompoundTag compound) {
 		for (Property<?> prop : propertyManager.getProperties()) {
 			if (prop.shouldSave()) {
-				prop.getType().writeToNbt.accept(prop, compound);
+				prop.getType().writeToTag(prop, compound);
 			}
 		}
 		for (Component component : components) {
@@ -167,7 +169,9 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 			}
 		}
 		/*
-		 * if (hasComponent(ComponentType.PacketHandler)) { this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket(); this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
+		 * if (hasComponent(ComponentType.PacketHandler)) {
+		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
+		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
 		 */
 	}
 
@@ -296,6 +300,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 
 	// This is ceded to the tile to allow for greater control with the use function
 	public InteractionResult use(Player player, InteractionHand handIn, BlockHitResult hit) {
+
 		ItemStack stack = player.getItemInHand(handIn);
 		if (stack.getItem() instanceof ItemUpgrade upgrade && hasComponent(ComponentType.Inventory)) {
 
@@ -307,16 +312,20 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 					if (inv.canPlaceItem(upgradeIndex + i, stack)) {
 						ItemStack upgradeStack = inv.getItem(upgradeIndex + i);
 						if (upgradeStack.isEmpty()) {
-							inv.setItem(upgradeIndex + i, stack.copy());
-							stack.shrink(stack.getCount());
+							if (!level.isClientSide()) {
+								inv.setItem(upgradeIndex + i, stack.copy());
+								stack.shrink(stack.getCount());
+							}
 							return InteractionResult.CONSUME;
 						}
 						if (ItemUtils.testItems(upgrade, upgradeStack.getItem())) {
 							int room = upgradeStack.getMaxStackSize() - upgradeStack.getCount();
 							if (room > 0) {
-								int accepted = room > stack.getCount() ? stack.getCount() : room;
-								upgradeStack.grow(accepted);
-								stack.shrink(accepted);
+								if (!level.isClientSide()) {
+									int accepted = room > stack.getCount() ? stack.getCount() : room;
+									upgradeStack.grow(accepted);
+									stack.shrink(accepted);
+								}
 								return InteractionResult.CONSUME;
 							}
 						}
@@ -325,13 +334,16 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 			}
 
 		} else if (!(stack.getItem() instanceof IWrenchItem)) {
-			if (hasComponent(ComponentType.ContainerProvider)) {
-				player.openMenu(getComponent(ComponentType.ContainerProvider));
+			if (!level.isClientSide()) {
+				if (hasComponent(ComponentType.ContainerProvider)) {
+					player.openMenu(getComponent(ComponentType.ContainerProvider));
+				}
+				player.awardStat(Stats.INTERACT_WITH_FURNACE);
 			}
-			player.awardStat(Stats.INTERACT_WITH_FURNACE);
+
 			return InteractionResult.CONSUME;
 		}
-		return InteractionResult.PASS;
+		return InteractionResult.FAIL;
 	}
 
 	public void onBlockDestroyed() {
@@ -356,6 +368,10 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 
 	public int getSignal(Direction dir) {
 		return 0;
+	}
+
+	public void onEntityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+
 	}
 
 	public void updateCarriedItemInContainer(ItemStack stack, UUID playerId) {

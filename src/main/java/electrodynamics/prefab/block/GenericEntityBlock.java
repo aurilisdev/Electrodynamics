@@ -15,6 +15,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
@@ -31,7 +32,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootParams.Builder;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 
@@ -61,15 +62,15 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 
 	@Override
 	public void onRotate(ItemStack stack, BlockPos pos, Player player) {
-		if (player.level.getBlockState(pos).hasProperty(FACING)) {
-			BlockState state = rotate(player.level.getBlockState(pos), Rotation.CLOCKWISE_90);
-			if (player.level.getBlockEntity(pos) instanceof GenericTile tile) {
+		if (player.level().getBlockState(pos).hasProperty(FACING)) {
+			BlockState state = rotate(player.level().getBlockState(pos), Rotation.CLOCKWISE_90);
+			if (player.level().getBlockEntity(pos) instanceof GenericTile tile) {
 				if (tile.hasComponent(ComponentType.Direction)) {
 					tile.<ComponentDirection>getComponent(ComponentType.Direction).setDirection(state.getValue(FACING));
 				}
 			}
-			player.level.setBlockAndUpdate(pos, state);
-			player.level.updateNeighborsAt(pos, this);
+			player.level().setBlockAndUpdate(pos, state);
+			player.level().updateNeighborsAt(pos, this);
 		}
 	}
 
@@ -91,13 +92,13 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 
 	@Override
 	public void onPickup(ItemStack stack, BlockPos pos, Player player) {
-		Level world = player.level;
+		Level world = player.level();
 		world.destroyBlock(pos, true, player);
 	}
-
-	// TODO get this to work
+	
+	//TODO get this to work
 	@Override
-	public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+	public List<ItemStack> getDrops(BlockState state, Builder builder) {
 		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 		if (tile instanceof GenericTile machine && machine != null) {
 			ItemStack stack = new ItemStack(this);
@@ -116,6 +117,8 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		}
 		return super.getDrops(state, builder);
 	}
+
+	// TODO get this to work
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
@@ -165,9 +168,6 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 
 	@Override
 	public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-		if (worldIn.isClientSide) {
-			return InteractionResult.SUCCESS;
-		}
 		if (worldIn.getBlockEntity(pos) instanceof GenericTile generic) {
 			return generic.use(player, handIn, hit);
 		}
@@ -189,6 +189,14 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 			return generic.getSignal(direction);
 		}
 		return super.getSignal(state, level, pos, direction);
+	}
+	
+	@Override
+	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+		super.entityInside(state, level, pos, entity);
+		if(level.getBlockEntity(pos) instanceof GenericTile tile) {
+			tile.onEntityInside(state, level, pos, entity);
+		}
 	}
 
 }

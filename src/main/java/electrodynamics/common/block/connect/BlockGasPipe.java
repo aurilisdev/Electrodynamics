@@ -16,7 +16,6 @@ import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
@@ -34,7 +33,7 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock {
 	public final SubtypeGasPipe pipe;
 
 	public BlockGasPipe(SubtypeGasPipe pipe) {
-		super(Properties.of(pipe.material).sound(pipe.soundType).strength(0.15f).dynamicShape().noOcclusion(), pipe.radius);
+		super(pipe.material.sound(pipe.soundType).strength(0.15f).dynamicShape().noOcclusion(), pipe.radius);
 
 		this.pipe = pipe;
 
@@ -83,11 +82,11 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock {
 
 		if (network.temperatureOfTransmitted >= Gas.MINIMUM_HEAT_BURN_TEMP * multipler) {
 
-			entityIn.hurt(DamageSource.IN_FIRE, 1.0F);
+			entityIn.hurt(entityIn.damageSources().inFire(), 1.0F);
 
 		} else if (network.temperatureOfTransmitted > 0 && network.temperatureOfTransmitted <= Gas.MINIMUM_FREEZE_TEMP / multipler) {
 
-			entityIn.hurt(DamageSource.FREEZE, 1.0F);
+			entityIn.hurt(entityIn.damageSources().freeze(), 1.0F);
 
 		}
 

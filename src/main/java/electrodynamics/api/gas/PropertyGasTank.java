@@ -7,8 +7,8 @@ import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.Blocks;
 
 /**
@@ -121,7 +121,6 @@ public class PropertyGasTank extends GasTank {
 
 	@Override
 	public void onChange() {
-		gasProperty.forceDirty();
 		if (holder != null) {
 			holder.onGasTankChange(this);
 		}
@@ -142,7 +141,7 @@ public class PropertyGasTank extends GasTank {
 			Level world = holder.getLevel();
 			BlockPos pos = holder.getBlockPos();
 			world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-			world.explode(null, pos.getX(), pos.getY(), pos.getZ(), 2.0F, BlockInteraction.DESTROY);
+			world.explode(null, pos.getX(), pos.getY(), pos.getZ(), 2.0F, ExplosionInteraction.BLOCK);
 		}
 	}
 

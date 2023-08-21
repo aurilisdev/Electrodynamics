@@ -29,7 +29,7 @@ public abstract class GenericContainer extends AbstractContainerMenu {
 	protected GenericContainer(MenuType<?> type, int id, Inventory playerInv) {
 		super(type, id);
 		inventory = new SimpleContainer(0);
-		world = playerInv.player.level;
+		world = playerInv.player.level();
 		slotCount = 0;
 	}
 
@@ -37,7 +37,7 @@ public abstract class GenericContainer extends AbstractContainerMenu {
 		super(type, id);
 		checkContainerSize(inventory, inventory.getContainerSize());
 		this.inventory = inventory;
-		world = playerinv.player.level;
+		world = playerinv.player.level();
 		addInventorySlots(inventory, playerinv);
 		slotCount = slots.size();
 		addPlayerInventory(playerinv);

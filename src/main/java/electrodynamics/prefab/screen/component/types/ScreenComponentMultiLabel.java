@@ -2,22 +2,21 @@ package electrodynamics.prefab.screen.component.types;
 
 import java.util.function.Consumer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.prefab.screen.component.AbstractScreenComponent;
+import net.minecraft.client.gui.GuiGraphics;
 
 public class ScreenComponentMultiLabel extends AbstractScreenComponent {
 
-	private final Consumer<PoseStack> fontConsumer;
+	private final Consumer<GuiGraphics> fontConsumer;
 
-	public ScreenComponentMultiLabel(int x, int y, Consumer<PoseStack> fontConsumer) {
+	public ScreenComponentMultiLabel(int x, int y, Consumer<GuiGraphics> fontConsumer) {
 		super(x, y, 0, 0);
 		this.fontConsumer = fontConsumer;
 	}
 
 	@Override
-	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		fontConsumer.accept(stack);
+	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		fontConsumer.accept(graphics);
 	}
 
 	@Override

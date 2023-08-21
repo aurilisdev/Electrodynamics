@@ -1,17 +1,17 @@
 package electrodynamics.client.render.entity;
 
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix3f;
+import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.api.References;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
+import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -43,7 +43,8 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 		int alpha = 255;
 		matrixStack.translate(0.0D, 0.1F, 0.0D);
 		matrixStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-		matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
+		matrixStack.mulPose(MathUtils.rotVectorQuaternionDeg(180.0F, MathUtils.YP));
+		//matrixStack.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 		matrixStack.scale(2.0F, 2.0F, 2.0F);
 		VertexConsumer vertexconsumer = buffer.getBuffer(RenderType.beaconBeam(new ResourceLocation(References.ID, "textures/custom/plasmaorb.png"), true));
 		PoseStack.Pose posestack$pose = matrixStack.last();

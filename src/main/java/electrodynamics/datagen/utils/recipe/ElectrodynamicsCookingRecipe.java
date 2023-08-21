@@ -2,28 +2,69 @@ package electrodynamics.datagen.utils.recipe;
 
 import java.util.function.Consumer;
 
+import javax.annotation.Nullable;
+
 import com.google.gson.JsonObject;
 
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.FinishedRecipe;
-import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 
-public class ElectrodynamicsCookingRecipe extends SimpleCookingRecipeBuilder.Result {
+public class ElectrodynamicsCookingRecipe implements FinishedRecipe {
 
-	public static float expereince;
+	private final ResourceLocation id;
+	private final CookingBookCategory category;
+	private final Ingredient ingredient;
+	private final Item result;
+	private final float experience;
+	private final int cookingTime;
+	private final RecipeSerializer<? extends AbstractCookingRecipe> serializer;
 
 	private ElectrodynamicsCookingRecipe(ResourceLocation id, Ingredient input, Item result, float experience, int cookingTime, RecipeSerializer<? extends AbstractCookingRecipe> serializer) {
-		super(id, "", input, result, experience, cookingTime, null, null, serializer);
+		this.id = id;
+		this.category = CookingBookCategory.MISC;
+		ingredient = input;
+		this.result = result;
+		this.experience = experience;
+		this.cookingTime = cookingTime;
+		this.serializer = serializer;
 	}
 
 	@Override
+	@Nullable
 	public JsonObject serializeAdvancement() {
+		return null;
+	}
+
+	@Override
+	public void serializeRecipeData(JsonObject pJson) {
+		pJson.addProperty("category", this.category.getSerializedName());
+		pJson.add("ingredient", this.ingredient.toJson());
+		pJson.addProperty("result", BuiltInRegistries.ITEM.getKey(this.result).toString());
+		pJson.addProperty("experience", this.experience);
+		pJson.addProperty("cookingtime", this.cookingTime);
+	}
+
+	@Override
+	public ResourceLocation getId() {
+		return id;
+	}
+
+	@Override
+	public RecipeSerializer<?> getType() {
+		return serializer;
+	}
+
+	@Override
+	@Nullable
+	public ResourceLocation getAdvancementId() {
 		return null;
 	}
 
@@ -80,7 +121,7 @@ public class ElectrodynamicsCookingRecipe extends SimpleCookingRecipeBuilder.Res
 	public static class SmeltingBuilder extends Builder {
 
 		private SmeltingBuilder(Item result, float experience, int smeltTime) {
-			super(result, expereince, smeltTime, RecipeSerializer.SMELTING_RECIPE);
+			super(result, experience, smeltTime, RecipeSerializer.SMELTING_RECIPE);
 		}
 
 	}
@@ -88,7 +129,7 @@ public class ElectrodynamicsCookingRecipe extends SimpleCookingRecipeBuilder.Res
 	public static class SmokingBuilder extends Builder {
 
 		private SmokingBuilder(Item result, float experience, int smeltTime) {
-			super(result, expereince, smeltTime, RecipeSerializer.SMOKING_RECIPE);
+			super(result, experience, smeltTime, RecipeSerializer.SMOKING_RECIPE);
 		}
 
 	}
@@ -96,7 +137,7 @@ public class ElectrodynamicsCookingRecipe extends SimpleCookingRecipeBuilder.Res
 	public static class BlastingBuilder extends Builder {
 
 		private BlastingBuilder(Item result, float experience, int smeltTime) {
-			super(result, expereince, smeltTime, RecipeSerializer.BLASTING_RECIPE);
+			super(result, experience, smeltTime, RecipeSerializer.BLASTING_RECIPE);
 		}
 
 	}

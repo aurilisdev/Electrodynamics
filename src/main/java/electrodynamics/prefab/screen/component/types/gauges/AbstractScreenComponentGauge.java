@@ -3,14 +3,13 @@ package electrodynamics.prefab.screen.component.types.gauges;
 import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.References;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -28,15 +27,15 @@ public abstract class AbstractScreenComponentGauge extends ScreenComponentGeneri
 	}
 
 	@Override
-	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
+	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 		ResourceLocation texture = getTexture();
 		int scale = getScaledLevel();
 
 		if (texture != null && scale > 0) {
 			ResourceLocation blocks = InventoryMenu.BLOCK_ATLAS;
 			TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(blocks).apply(texture);
-			RenderSystem.setShaderTexture(0, sprite.atlas().getId());
+			RenderingUtils.bindTexture(sprite.atlasLocation());
 			applyColor();
 			for (int i = 0; i < 16; i += 16) {
 				for (int j = 0; j < scale; j += 16) {
@@ -45,26 +44,26 @@ public abstract class AbstractScreenComponentGauge extends ScreenComponentGeneri
 
 					int drawX = guiWidth + xLocation + 1;
 					int drawY = guiHeight + yLocation - 1 + super.texture.textureHeight() - Math.min(scale - j, super.texture.textureHeight());
-					GuiComponent.blit(stack, drawX, drawY, 0, drawWidth, drawHeight, sprite);
+					
+					graphics.blit(drawX, drawY, 0, drawWidth, drawHeight, sprite);
+					
 				}
 			}
 			RenderSystem.setShaderColor(1, 1, 1, 1);
 		}
 
-		RenderingUtils.bindTexture(super.texture.getLocation());
-
-		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, GaugeTextures.LEVEL_DEFAULT.textureU(), 0, GaugeTextures.LEVEL_DEFAULT.textureWidth(), GaugeTextures.LEVEL_DEFAULT.textureHeight(), GaugeTextures.LEVEL_DEFAULT.imageWidth(), GaugeTextures.LEVEL_DEFAULT.imageHeight());
+		graphics.blit(super.texture.getLocation(), guiWidth + xLocation, guiHeight + yLocation, GaugeTextures.LEVEL_DEFAULT.textureU(), 0, GaugeTextures.LEVEL_DEFAULT.textureWidth(), GaugeTextures.LEVEL_DEFAULT.textureHeight(), GaugeTextures.LEVEL_DEFAULT.imageWidth(), GaugeTextures.LEVEL_DEFAULT.imageHeight());
 	}
 
 	protected abstract void applyColor();
 
 	@Override
-	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(), super.texture.textureHeight())) {
 			List<? extends FormattedCharSequence> tooltips = getTooltips();
 
 			if (!tooltips.isEmpty()) {
-				gui.displayTooltips(stack, tooltips, xAxis, yAxis);
+				graphics.renderTooltip(gui.getFontRenderer(), tooltips, xAxis, yAxis);
 			}
 		}
 	}

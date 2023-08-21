@@ -13,6 +13,7 @@ import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.condition.ConfigCondition;
 import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
 import electrodynamics.common.event.ServerEventHandler;
+import electrodynamics.common.eventbus.RegisterPropertiesEvent;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.client.PacketResetGuidebookPages;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
@@ -23,6 +24,8 @@ import electrodynamics.common.settings.Constants;
 import electrodynamics.common.settings.OreConfig;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.configuration.ConfigurationHandler;
+import electrodynamics.prefab.properties.PropertyManager;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -33,6 +36,7 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -63,7 +67,7 @@ public class Electrodynamics {
 		ElectrodynamicsRecipeInit.RECIPE_TYPES.register(bus);
 		ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
 		ElectrodynamicsAttributeModifiers.init();
-
+		bus.register(RegisterPropertiesEvent.class);
 	}
 
 	@SubscribeEvent
@@ -80,6 +84,14 @@ public class Electrodynamics {
 		// RegisterFluidToGasMapEvent map = new RegisterFluidToGasMapEvent();
 		// MinecraftForge.EVENT_BUS.post(map);
 		// ElectrodynamicsGases.MAPPED_GASSES.putAll(map.fluidToGasMap);
+		
+		event.enqueueWork(() -> {
+			RegisterPropertiesEvent properties = new RegisterPropertiesEvent();
+			
+			ModLoader.get().postEvent(properties);
+			
+			PropertyManager.registerProperties(properties.getRegisteredProperties());
+		});
 
 	}
 
@@ -93,6 +105,13 @@ public class Electrodynamics {
 	public static void registerConditions(RegisterEvent event) {
 		if (event.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
 			CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
+		}
+	}
+	
+	@SubscribeEvent
+	public static void registerProperties(RegisterPropertiesEvent event) {
+		for(PropertyType type : PropertyType.values()) {
+			event.registerProperty(type);
 		}
 	}
 

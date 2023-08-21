@@ -1,10 +1,9 @@
 package electrodynamics.client.render.tile;
 
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Quaternion;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
@@ -13,8 +12,10 @@ import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.Font.DisplayMode;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
@@ -57,7 +58,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			float textX = -font.width(transfer) / 2.0f;
 
-			font.drawInBatch(transfer, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, false, 0, combinedLight);
+			font.drawInBatch(transfer, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
 
 			stack.popPose();
 
@@ -79,7 +80,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			textX = -font.width(voltage) / 2.0f;
 
-			font.drawInBatch(voltage, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, false, 0, combinedLight);
+			font.drawInBatch(voltage, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
 
 			stack.popPose();
 
@@ -91,7 +92,12 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			rotateMatrix(stack, dir);
 
-			Component minVoltage = ElectroTextUtils.gui("multimeterblock.minvoltage", ChatFormatter.getDisplayShort(multimeter.minVoltage.get(), DisplayUnit.VOLTAGE, 2));
+			double minVolt = multimeter.minVoltage.get();
+			if(minVolt < 0) {
+				minVolt = multimeter.voltage.get();
+			}
+			
+			Component minVoltage = ElectroTextUtils.gui("multimeterblock.minvoltage", ChatFormatter.getDisplayShort(minVolt, DisplayUnit.VOLTAGE, 2));
 
 			scale = 0.0215f / (font.width(minVoltage) / 32f);
 
@@ -101,7 +107,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			textX = -font.width(minVoltage) / 2.0f;
 
-			font.drawInBatch(minVoltage, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, false, 0, combinedLight);
+			font.drawInBatch(minVoltage, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
 
 			stack.popPose();
 
@@ -123,7 +129,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			textX = -font.width(resistance) / 2.0f;
 
-			font.drawInBatch(resistance, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, false, 0, combinedLight);
+			font.drawInBatch(resistance, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
 
 			stack.popPose();
 
@@ -145,7 +151,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			textX = -font.width(loss) / 2.0f;
 
-			font.drawInBatch(loss, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, false, 0, combinedLight);
+			font.drawInBatch(loss, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
 
 			stack.popPose();
 
@@ -155,9 +161,9 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 	private void rotateMatrix(PoseStack stack, Direction dir) {
 		switch (dir) {
-		case EAST -> stack.mulPose(new Quaternion(0, -90, 0, true));
-		case SOUTH -> stack.mulPose(new Quaternion(0, 180, 0, true));
-		case WEST -> stack.mulPose(new Quaternion(0, 90, 0, true));
+		case EAST -> stack.mulPose(MathUtils.rotQuaternionDeg(0, -90, 0));//stack.mulPose(new Quaternion(0, -90, 0, true));
+		case SOUTH -> stack.mulPose(MathUtils.rotQuaternionDeg(0, 180, 0));//stack.mulPose(new Quaternion(0, 180, 0, true));
+		case WEST -> stack.mulPose(MathUtils.rotQuaternionDeg(0, 90, 0));//stack.mulPose(new Quaternion(0, 90, 0, true));
 		default -> {
 		}
 		}

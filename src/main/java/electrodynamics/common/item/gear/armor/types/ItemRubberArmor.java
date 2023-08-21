@@ -13,12 +13,8 @@ import net.minecraft.world.item.crafting.Ingredient;
 
 public class ItemRubberArmor extends ArmorItem {
 
-	public ItemRubberArmor(ArmorMaterial materialIn, EquipmentSlot slot, Properties builderIn) {
-		super(materialIn, slot, builderIn);
-	}
-
-	public ItemRubberArmor(EquipmentSlot slot, Properties builderIn) {
-		this(ArmorMaterialRubber.rubber, slot, builderIn);
+	public ItemRubberArmor(Type slot, Properties builderIn) {
+		super(ArmorMaterialRubber.rubber, slot, builderIn);
 	}
 
 	@Override
@@ -28,16 +24,6 @@ public class ItemRubberArmor extends ArmorItem {
 
 	public enum ArmorMaterialRubber implements ArmorMaterial {
 		rubber;
-
-		@Override
-		public int getDurabilityForSlot(EquipmentSlot slotIn) {
-			return 100000;
-		}
-
-		@Override
-		public int getDefenseForSlot(EquipmentSlot slotIn) {
-			return 2;
-		}
 
 		@Override
 		public int getEnchantmentValue() {
@@ -67,6 +53,16 @@ public class ItemRubberArmor extends ArmorItem {
 		@Override
 		public float getKnockbackResistance() {
 			return 0;
+		}
+
+		@Override
+		public int getDurabilityForType(Type pType) {
+			return 100000;
+		}
+
+		@Override
+		public int getDefenseForType(Type pType) {
+			return 2;
 		}
 
 	}

@@ -49,11 +49,11 @@ public class ItemMultimeter extends Item {
 			display.append(", ");
 
 			// minimum voltage
-			display.append(ChatFormatter.getChatDisplayShort(net.getMinimumVoltage(), DisplayUnit.VOLTAGE));
-
-			/*
-			 * String finalString = ChatFormatter.getChatDisplayShort(net.getActiveVoltage() == 0 ? 0 : net.getActiveTransmitted() * 20 / net.getActiveVoltage(), DisplayUnit.AMPERE) + " / " + ChatFormatter.getChatDisplayShort(net.networkMaxTransfer, DisplayUnit.AMPERE) + ", "; finalString += ChatFormatter.getChatDisplayShort(net.getActiveVoltage(), DisplayUnit.VOLTAGE) + ", "; finalString += ChatFormatter.getChatDisplayShort(net.getActiveTransmitted() * 20, DisplayUnit.WATT) + ", "; finalString += ChatFormatter.getChatDisplayShort(net.getResistance(), DisplayUnit.RESISTANCE) + " ( -" + Math.round(net.getLastEnergyLoss() / net.getActiveTransmitted() * 100) + "% " + ChatFormatter.getChatDisplayShort(net.getLastEnergyLoss() * 20, DisplayUnit.WATT) + " ), "; finalString += ChatFormatter.getChatDisplayShort(net.getMinimumVoltage(), DisplayUnit.VOLTAGE);
-			 */
+			double minimumVoltage = net.getMinimumVoltage();
+			if(minimumVoltage < 0) {
+				minimumVoltage = net.getActiveVoltage();
+			}
+			display.append(ChatFormatter.getChatDisplayShort(minimumVoltage, DisplayUnit.VOLTAGE));
 
 			context.getPlayer().displayClientMessage(display, true);
 		}

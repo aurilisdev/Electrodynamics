@@ -12,7 +12,7 @@ public class ItemGroupElectroGrid extends CreativeModeTab {
 	}
 
 	@Override
-	public ItemStack makeIcon() {
+	public ItemStack getIconItem() {
 		return new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.downgradetransformer));
 	}
 

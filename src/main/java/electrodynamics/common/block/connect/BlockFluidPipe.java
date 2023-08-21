@@ -12,11 +12,11 @@ import electrodynamics.common.tile.network.fluid.TileFluidPipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.Material;
 
 public class BlockFluidPipe extends AbstractRefreshingConnectBlock {
 
@@ -25,7 +25,7 @@ public class BlockFluidPipe extends AbstractRefreshingConnectBlock {
 	public final SubtypeFluidPipe pipe;
 
 	public BlockFluidPipe(SubtypeFluidPipe pipe) {
-		super(Properties.of(Material.METAL).sound(SoundType.METAL).strength(0.15f).dynamicShape().noOcclusion(), 3);
+		super(Properties.copy(Blocks.IRON_BLOCK).sound(SoundType.METAL).strength(0.15f).dynamicShape().noOcclusion(), 3);
 		this.pipe = pipe;
 		PIPESET.add(this);
 	}

@@ -3,11 +3,11 @@ package electrodynamics.client.render.tile;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.generators.TileHydroelectricGenerator;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -24,7 +24,8 @@ public class RenderHydroelectricGenerator extends AbstractTileRenderer<TileHydro
 		BakedModel ibakedmodel = getModel(ClientRegister.MODEL_HYDROELECTRICGENERATORBLADES);
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		float partial = (float) (partialTicks * tileEntityIn.rotationSpeed * (tileEntityIn.directionFlag.get() ? 1 : -1));
-		matrixStackIn.mulPose(new Quaternion((float) (-(tileEntityIn.savedTickRotation + partial) * 5f), 0, 0, true));
+		matrixStackIn.mulPose(MathUtils.rotQuaternionDeg((float) (-(tileEntityIn.savedTickRotation + partial) * 5f), 0, 0));
+		//matrixStackIn.mulPose(new Quaternion((float) (-(tileEntityIn.savedTickRotation + partial) * 5f), 0, 0, true));
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 	}
 }

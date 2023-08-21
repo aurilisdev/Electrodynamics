@@ -57,9 +57,9 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 
 	public static final float OFFSET = 0.2F;
 
-	public ItemCombatArmor(Properties properties, EquipmentSlot slot) {
-		super(ItemCompositeArmor.CompositeArmor.COMPOSITE_ARMOR, slot, properties);
-		switch (slot) {
+	public ItemCombatArmor(Properties properties, Type type) {
+		super(ItemCompositeArmor.CompositeArmor.COMPOSITE_ARMOR, type, properties);
+		switch (type) {
 		case HEAD, LEGS:
 			this.properties = (ElectricItemProperties) properties;
 			break;
@@ -80,24 +80,24 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 				List<ItemStack> armorPieces = new ArrayList<>();
 				entity.getArmorSlots().forEach(armorPieces::add);
 
-				boolean isBoth = ItemStack.isSameIgnoreDurability(armorPieces.get(0), armorPiecesArray[3]) && ItemStack.isSameIgnoreDurability(armorPieces.get(1), armorPiecesArray[2]);
+				boolean isBoth = armorPieces.get(0) == armorPiecesArray[3] && armorPieces.get(1) == armorPiecesArray[2];
 
-				boolean hasChest = ItemStack.isSameIgnoreDurability(armorPieces.get(2), armorPiecesArray[1]);
+				boolean hasChest = armorPieces.get(2) == armorPiecesArray[1];
 
 				ModelCombatArmor<LivingEntity> model;
 
 				if (isBoth) {
 					if (hasChest) {
-						model = new ModelCombatArmor<>(ClientRegister.COMBAT_ARMOR_LAYER_COMB_CHEST.bakeRoot(), slot);
+						model = new ModelCombatArmor<>(ClientRegister.COMBAT_ARMOR_LAYER_COMB_CHEST.bakeRoot(), getEquipmentSlot());
 					} else {
-						model = new ModelCombatArmor<>(ClientRegister.COMBAT_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), slot);
+						model = new ModelCombatArmor<>(ClientRegister.COMBAT_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), getEquipmentSlot());
 					}
-				} else if (slot == EquipmentSlot.FEET) {
-					model = new ModelCombatArmor<>(ClientRegister.COMBAT_ARMOR_LAYER_BOOTS.bakeRoot(), slot);
+				} else if (getEquipmentSlot() == EquipmentSlot.FEET) {
+					model = new ModelCombatArmor<>(ClientRegister.COMBAT_ARMOR_LAYER_BOOTS.bakeRoot(), getEquipmentSlot());
 				} else if (hasChest) {
-					model = new ModelCombatArmor<>(ClientRegister.COMBAT_ARMOR_LAYER_LEG_CHEST.bakeRoot(), slot);
+					model = new ModelCombatArmor<>(ClientRegister.COMBAT_ARMOR_LAYER_LEG_CHEST.bakeRoot(), getEquipmentSlot());
 				} else {
-					model = new ModelCombatArmor<>(ClientRegister.COMBAT_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), slot);
+					model = new ModelCombatArmor<>(ClientRegister.COMBAT_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), getEquipmentSlot());
 				}
 
 				model.crouching = properties.crouching;
@@ -112,7 +112,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		ArmorItem armor = (ArmorItem) stack.getItem();
-		switch (armor.getSlot()) {
+		switch (armor.getEquipmentSlot()) {
 		case CHEST:
 			return new GasHandlerItemStack(stack, ItemJetpack.MAX_CAPACITY, ItemJetpack.MAX_TEMPERATURE, ItemJetpack.MAX_PRESSURE).setPredicate(ItemJetpack.getGasValidator());
 		case FEET:
@@ -128,7 +128,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 		if (!allowedIn(tab)) {
 			return;
 		}
-		switch (getSlot()) {
+		switch (getEquipmentSlot()) {
 		case HEAD, LEGS:
 			ItemStack empty = new ItemStack(this);
 			IItemElectric.setEnergyStored(empty, 0);
@@ -171,7 +171,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	@Override
 	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flagin) {
 		super.appendHoverText(stack, level, tooltip, flagin);
-		switch (((ArmorItem) stack.getItem()).getSlot()) {
+		switch (((ArmorItem) stack.getItem()).getEquipmentSlot()) {
 		case HEAD:
 			tooltip.add(ElectroTextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)));
 			tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
@@ -205,7 +205,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	public void onArmorTick(ItemStack stack, Level world, Player player) {
 		super.onArmorTick(stack, world, player);
 		ItemCombatArmor combat = (ItemCombatArmor) stack.getItem();
-		switch (combat.getSlot()) {
+		switch (combat.getEquipmentSlot()) {
 		case HEAD:
 			ItemNightVisionGoggles.armorTick(stack, world, player);
 			break;
@@ -223,7 +223,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
 		ItemCombatArmor combat = (ItemCombatArmor) stack.getItem();
-		switch (combat.getSlot()) {
+		switch (combat.getEquipmentSlot()) {
 		case HEAD, LEGS:
 			return getJoulesStored(stack) < properties.capacity;
 		case CHEST:
@@ -238,7 +238,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	@Override
 	public int getBarWidth(ItemStack stack) {
 		ItemCombatArmor combat = (ItemCombatArmor) stack.getItem();
-		switch (combat.getSlot()) {
+		switch (combat.getEquipmentSlot()) {
 		case HEAD, LEGS:
 			return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
 		case CHEST:
@@ -292,7 +292,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 
 	@Override
 	public Item getDefaultStorageBattery() {
-		return switch (getSlot()) {
+		return switch (getEquipmentSlot()) {
 		case HEAD, LEGS -> ElectrodynamicsItems.ITEM_BATTERY.get();
 		default -> Items.AIR;
 		};
@@ -301,7 +301,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
 
-		if (getSlot() == EquipmentSlot.CHEST || getSlot() == EquipmentSlot.FEET) {
+		if (getEquipmentSlot() == EquipmentSlot.CHEST || getEquipmentSlot() == EquipmentSlot.FEET) {
 			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
 		}
 

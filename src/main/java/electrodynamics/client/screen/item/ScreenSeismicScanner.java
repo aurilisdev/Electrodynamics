@@ -28,20 +28,20 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 		addComponent(new ScreenComponentElectricInfo(this::getElectricInformation, -AbstractScreenComponentInfo.SIZE + 1, 2));
 		addComponent(new ScreenComponentSimpleLabel(15, 32, 10, 4210752, ElectroTextUtils.gui("seismicscanner.material")));
 		addComponent(new ScreenComponentSimpleLabel(85, 25, 10, 4210752, ElectroTextUtils.gui("seismicscanner.dataheader")));
-		addComponent(new ScreenComponentMultiLabel(0, 0, stack -> {
+		addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> {
 			ItemStack ownerItem = menu.getOwnerItem();
 
 			Location playerLoc = ownerItem.hasTag() ? Location.readFromNBT(ownerItem.getTag(), NBTUtils.LOCATION + ItemSeismicScanner.PLAY_LOC) : new Location(0, 0, 0);
 			Location blockLoc = ownerItem.hasTag() ? Location.readFromNBT(ownerItem.getTag(), NBTUtils.LOCATION + ItemSeismicScanner.BLOCK_LOC) : new Location(0, 0, 0);
 
 			if (blockLoc.equals(playerLoc)) {
-				font.draw(stack, ElectroTextUtils.gui("seismicscanner.xcoordna"), 95, 35, 4210752);
-				font.draw(stack, ElectroTextUtils.gui("seismicscanner.ycoordna"), 95, 45, 4210752);
-				font.draw(stack, ElectroTextUtils.gui("seismicscanner.zcoordna"), 95, 55, 4210752);
+				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.xcoordna"), 95, 35, 4210752);
+				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.ycoordna"), 95, 45, 4210752);
+				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.zcoordna"), 95, 55, 4210752);
 			} else {
-				font.draw(stack, ElectroTextUtils.gui("seismicscanner.xcoord", blockLoc.intX()), 95, 35, 4210752);
-				font.draw(stack, ElectroTextUtils.gui("seismicscanner.ycoord", blockLoc.intY()), 95, 45, 4210752);
-				font.draw(stack, ElectroTextUtils.gui("seismicscanner.zcoord", blockLoc.intZ()), 95, 55, 4210752);
+				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.xcoord", blockLoc.intX()), 95, 35, 4210752);
+				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.ycoord", blockLoc.intY()), 95, 45, 4210752);
+				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.zcoord", blockLoc.intZ()), 95, 55, 4210752);
 			}
 		}));
 

@@ -20,6 +20,8 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileCircuitBreaker extends GenericTile {
 
 	private boolean recievedRedstoneSignal = false;
+	
+	private boolean isLocked = false;
 
 	public TileCircuitBreaker(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_CIRCUITBREAKER.get(), worldPosition, blockState);
@@ -31,7 +33,7 @@ public class TileCircuitBreaker extends GenericTile {
 	// end current if recieving end is wire
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
 
-		if (recievedRedstoneSignal) {
+		if (recievedRedstoneSignal || isLocked) {
 			return TransferPack.EMPTY;
 		}
 
@@ -46,8 +48,13 @@ public class TileCircuitBreaker extends GenericTile {
 		return tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> {
 
 			if (debug) {
+				
+				isLocked = true;
+				
 				TransferPack accepted = cap.receivePower(transfer, debug);
 
+				isLocked = false;
+				
 				if (accepted.getJoules() > 0) {
 					return TransferPack.joulesVoltage(accepted.getJoules() + transfer.getJoules() * (1.0 - Constants.CIRCUITBREAKER_EFFICIENCY), transfer.getVoltage());
 				}
@@ -65,8 +72,12 @@ public class TileCircuitBreaker extends GenericTile {
 
 			}
 
+			isLocked = true;
+			
 			TransferPack accepted = cap.receivePower(transfer, debug);
 
+			isLocked = false;
+			
 			if (accepted.getJoules() > 0) {
 				return TransferPack.joulesVoltage(accepted.getJoules() + transfer.getJoules() * (1.0 - Constants.CIRCUITBREAKER_EFFICIENCY), transfer.getVoltage());
 			}

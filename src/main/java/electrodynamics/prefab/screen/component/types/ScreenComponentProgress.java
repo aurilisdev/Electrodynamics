@@ -2,11 +2,9 @@ package electrodynamics.prefab.screen.component.types;
 
 import java.util.function.DoubleSupplier;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.References;
 import electrodynamics.api.screen.ITexture;
-import electrodynamics.prefab.utilities.RenderingUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -26,23 +24,22 @@ public class ScreenComponentProgress extends ScreenComponentGeneric {
 	}
 
 	@Override
-	public void renderBackground(PoseStack stack, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
-		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
+	public void renderBackground(GuiGraphics graphics, final int xAxis, final int yAxis, final int guiWidth, final int guiHeight) {
+		super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 		ProgressTextures on = bar.on;
-		RenderingUtils.bindTexture(on.getLocation());
 		int progress;
 		switch (bar) {
 		case PROGRESS_ARROW_LEFT:
 			progress = (int) (progressInfoHandler.getAsDouble() * on.textureWidth());
 			int xStart = on.textureU() + on.textureWidth() - progress;
-			gui.drawTexturedRect(stack, guiWidth + xLocation + on.textureWidth() - progress, guiHeight + yLocation, xStart, on.textureV(), progress, on.textureHeight(), on.imageWidth(), on.imageHeight());
+			graphics.blit(on.getLocation(), guiWidth + xLocation + on.textureWidth() - progress, guiHeight + yLocation, xStart, on.textureV(), progress, on.textureHeight(), on.imageWidth(), on.imageHeight());
 			break;
 		case COUNTDOWN_FLAME:
 			progress = (int) (progressInfoHandler.getAsDouble() * on.textureHeight());
-			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation + on.textureHeight() - progress, on.textureU(), on.textureV() + on.textureHeight() - progress, on.textureWidth(), progress, on.imageWidth(), on.imageHeight());
+			graphics.blit(on.getLocation(), guiWidth + xLocation, guiHeight + yLocation + on.textureHeight() - progress, on.textureU(), on.textureV() + on.textureHeight() - progress, on.textureWidth(), progress, on.imageWidth(), on.imageHeight());
 			break;
 		case PROGRESS_ARROW_RIGHT, BATTERY_CHARGE_RIGHT, PROGRESS_ARROW_RIGHT_BIG:
-			gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, on.textureU(), on.textureV(), (int) (progressInfoHandler.getAsDouble() * on.textureWidth()), on.textureHeight(), on.imageWidth(), on.imageHeight());
+			graphics.blit(on.getLocation(), guiWidth + xLocation, guiHeight + yLocation, on.textureU(), on.textureV(), (int) (progressInfoHandler.getAsDouble() * on.textureWidth()), on.textureHeight(), on.imageWidth(), on.imageHeight());
 			break;
 		default:
 			break;

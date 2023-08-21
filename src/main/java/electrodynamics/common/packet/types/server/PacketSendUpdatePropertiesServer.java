@@ -2,8 +2,10 @@ package electrodynamics.common.packet.types.server;
 
 import java.util.function.Supplier;
 
+import electrodynamics.prefab.properties.IPropertyType;
 import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyType;
+import electrodynamics.prefab.properties.PropertyManager;
+import electrodynamics.prefab.properties.PropertyManager.PropertyWrapper;
 import electrodynamics.prefab.tile.IPropertyHolderTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
@@ -13,34 +15,27 @@ import net.minecraftforge.network.NetworkEvent.Context;
 
 public class PacketSendUpdatePropertiesServer {
 
-	private final int propertyIndex;
-	private final Property<?> property;
 	private final BlockPos tilePos;
-	private final Object value;
+	private final PropertyWrapper wrapper;
 
-	public PacketSendUpdatePropertiesServer(int propertyIndex, Property<?> property, BlockPos tilePos) {
-		this.propertyIndex = propertyIndex;
-		this.property = property;
+	public PacketSendUpdatePropertiesServer(Property<?> property, BlockPos tilePos) {
 		this.tilePos = tilePos;
-		value = null;
+		wrapper = new PropertyWrapper(property.getIndex(), property.getType(), property.get(), property);
 	}
 
-	public PacketSendUpdatePropertiesServer(int propertyIndex, Object value, BlockPos tilePos) {
-		this.propertyIndex = propertyIndex;
-		this.property = null;
+	public PacketSendUpdatePropertiesServer(PropertyWrapper property, BlockPos tilePos) {
 		this.tilePos = tilePos;
-		this.value = value;
+		wrapper = property;
 	}
 
 	public static void handle(PacketSendUpdatePropertiesServer message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			ServerLevel world = ctx.getSender().getLevel();
+			ServerLevel world = ctx.getSender().serverLevel();
 			if (world != null) {
 				BlockEntity tile = world.getBlockEntity(message.tilePos);
 				if (tile instanceof IPropertyHolderTile holder) {
-					holder.getPropertyManager().update(message.propertyIndex, message.value);
-					holder.getPropertyManager().setDirty();
+					holder.getPropertyManager().update(message.wrapper.index(), message.wrapper.value());
 				}
 			}
 		});
@@ -49,20 +44,20 @@ public class PacketSendUpdatePropertiesServer {
 
 	public static void encode(PacketSendUpdatePropertiesServer message, FriendlyByteBuf buf) {
 
+		buf.writeInt(message.wrapper.index());
+		buf.writeResourceLocation(message.wrapper.type().getId());
+		message.wrapper.type().writeToBuffer(message.wrapper.value(), buf);
+
 		buf.writeBlockPos(message.tilePos);
-		buf.writeInt(message.propertyIndex);
-		buf.writeInt(message.property.getType().ordinal());
-		message.property.getType().writeToBuffer.accept(message.property, buf);
 
 	}
 
 	public static PacketSendUpdatePropertiesServer decode(FriendlyByteBuf buf) {
-		BlockPos pos = buf.readBlockPos();
-		int propertyIndex = buf.readInt();
-		int type = buf.readInt();
-		Object value = PropertyType.values()[type].readFromBuffer.apply(buf);
 
-		return new PacketSendUpdatePropertiesServer(propertyIndex, value, pos);
+		int index = buf.readInt();
+		IPropertyType type = PropertyManager.REGISTERED_PROPERTIES.get(buf.readResourceLocation());
+
+		return new PacketSendUpdatePropertiesServer(new PropertyWrapper(index, type, type.readFromBuffer(buf), null), buf.readBlockPos());
 	}
 
 }

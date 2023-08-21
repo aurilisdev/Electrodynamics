@@ -30,10 +30,10 @@ import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsItems;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
@@ -49,13 +49,13 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 
 	public final String modID;
 
-	public ElectrodynamicsItemModelsProvider(DataGenerator generator, ExistingFileHelper existingFileHelper, String modID) {
-		super(generator, modID, existingFileHelper);
+	public ElectrodynamicsItemModelsProvider(PackOutput output, ExistingFileHelper existingFileHelper, String modID) {
+		super(output, modID, existingFileHelper);
 		this.modID = modID;
 	}
 
-	public ElectrodynamicsItemModelsProvider(DataGenerator generator, ExistingFileHelper existingFileHelper) {
-		this(generator, existingFileHelper, References.ID);
+	public ElectrodynamicsItemModelsProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+		this(output, existingFileHelper, References.ID);
 	}
 
 	@Override
@@ -63,14 +63,15 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 
 		layeredItem(ElectrodynamicsItems.ITEM_COAL_COKE, Parent.GENERATED, itemLoc("coalcoke"));
 		layeredItem(ElectrodynamicsItems.ITEM_CERAMICINSULATION, Parent.GENERATED, itemLoc("insulationceramic"));
-		layeredBuilder(name(ElectrodynamicsItems.ITEM_COIL), Parent.GENERATED, itemLoc("coil")).transforms().transform(TransformType.GUI).scale(0.8F).end();
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_COIL), Parent.GENERATED, itemLoc("coil")).transforms().transform(ItemDisplayContext.GUI).scale(0.8F).end();
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_LAMINATEDCOIL), Parent.GENERATED, itemLoc("laminatedcoil")).transforms().transform(ItemDisplayContext.GUI).scale(0.8F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_INSULATION, Parent.GENERATED, itemLoc("insulation"));
 		layeredItem(ElectrodynamicsItems.ITEM_MOLYBDENUMFERTILIZER, Parent.GENERATED, itemLoc("molybdenumfertilizer"));
 		layeredItem(ElectrodynamicsItems.ITEM_MOTOR, Parent.GENERATED, itemLoc("motor"));
 		layeredItem(ElectrodynamicsItems.ITEM_RAWCOMPOSITEPLATING, Parent.GENERATED, itemLoc("compositeplatingraw"));
 		layeredItem(ElectrodynamicsItems.ITEM_SHEETPLASTIC, Parent.GENERATED, itemLoc("sheetplastic"));
 		layeredItem(ElectrodynamicsItems.ITEM_SLAG, Parent.GENERATED, itemLoc("slag"));
-		layeredBuilder(name(ElectrodynamicsItems.ITEM_SOLARPANELPLATE), Parent.GENERATED, itemLoc("solarpanelplate")).transforms().transform(TransformType.GUI).scale(0.8F).end();
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_SOLARPANELPLATE), Parent.GENERATED, itemLoc("solarpanelplate")).transforms().transform(ItemDisplayContext.GUI).scale(0.8F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_TITANIUM_COIL, Parent.GENERATED, itemLoc("titaniumheatcoil"));
 		layeredItem(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS, Parent.GENERATED, itemLoc("plasticfibers"));
 		layeredItem(ElectrodynamicsItems.ITEM_MECHANICALVALVE, Parent.GENERATED, itemLoc("mechanicalvalve"));
@@ -94,8 +95,8 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 
 		getBucketModel(ElectrodynamicsItems.ITEM_CANISTERREINFORCED, Parent.FORGE_DEFAULT).fluid(Fluids.WATER).end().texture("base", itemLoc("canisterreinforced/base")).texture("fluid", itemLoc("canisterreinforced/fluid"));
 		layeredItem(ElectrodynamicsItems.GUIDEBOOK, Parent.GENERATED, itemLoc("guidebook"));
-		layeredBuilder(name(ElectrodynamicsItems.ITEM_MULTIMETER), Parent.GENERATED, itemLoc("multimeter")).transforms().transform(TransformType.GUI).scale(0.9F).end();
-		layeredBuilder(name(ElectrodynamicsItems.ITEM_SEISMICSCANNER), Parent.GENERATED, itemLoc("seismicscanner")).transforms().transform(TransformType.GUI).scale(0.75F).end();
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_MULTIMETER), Parent.GENERATED, itemLoc("multimeter")).transforms().transform(ItemDisplayContext.GUI).scale(0.9F).end();
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_SEISMICSCANNER), Parent.GENERATED, itemLoc("seismicscanner")).transforms().transform(ItemDisplayContext.GUI).scale(0.75F).end();
 		layeredItem(ElectrodynamicsItems.ITEM_WRENCH, Parent.GENERATED, itemLoc("wrench"));
 		layeredItem(ElectrodynamicsItems.ITEM_BATTERY, Parent.GENERATED, itemLoc("battery"));
 		layeredItem(ElectrodynamicsItems.ITEM_LITHIUMBATTERY, Parent.GENERATED, itemLoc("lithiumbattery"));
@@ -107,7 +108,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 
 		toggleableItem(ElectrodynamicsItems.ITEM_ELECTRICDRILL, "on", Parent.HANDHELD, Parent.HANDHELD, new ResourceLocation[] { itemLoc("tools/electricdrilloffbase"), itemLoc("tools/electricdrilloffhead") }, new ResourceLocation[] { itemLoc("tools/electricdrillonbase"), itemLoc("tools/electricdrillonhead") });
 
-		layeredBuilder(name(ElectrodynamicsItems.ITEM_MECHANIZEDCROSSBOW), Parent.GENERATED, itemLoc("tools/mechanizedcrossbow")).transforms().transform(TransformType.THIRD_PERSON_RIGHT_HAND).rotation(-90, 0, -60).translation(2F, 0.1F, -3F).scale(0.9F).end().transform(TransformType.THIRD_PERSON_LEFT_HAND).rotation(-90, 0, 30).translation(2, 0.1F, -3).scale(0.9F).end().transform(TransformType.FIRST_PERSON_RIGHT_HAND).rotation(-90, 0, -55).translation(1.13F, 3.2F, 1.13F).scale(0.68F).end().transform(TransformType.FIRST_PERSON_LEFT_HAND).rotation(-90, 0, 35).translation(1.13F, 3.2F, 1.13F).scale(0.68F).end();
+		layeredBuilder(name(ElectrodynamicsItems.ITEM_MECHANIZEDCROSSBOW), Parent.GENERATED, itemLoc("tools/mechanizedcrossbow")).transforms().transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(-90, 0, -60).translation(2F, 0.1F, -3F).scale(0.9F).end().transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(-90, 0, 30).translation(2, 0.1F, -3).scale(0.9F).end().transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(-90, 0, -55).translation(1.13F, 3.2F, 1.13F).scale(0.68F).end().transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(-90, 0, 35).translation(1.13F, 3.2F, 1.13F).scale(0.68F).end();
 
 		for (SubtypeCeramic ceramic : SubtypeCeramic.values()) {
 			layeredItem(ElectrodynamicsItems.getItem(ceramic), Parent.GENERATED, itemLoc("ceramic/" + ceramic.tag()));
@@ -142,7 +143,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		}
 
 		for (SubtypeItemUpgrade upgrade : SubtypeItemUpgrade.values()) {
-			layeredBuilder(name(ElectrodynamicsItems.getItem(upgrade)), Parent.GENERATED, itemLoc("upgrade/" + upgrade.tag())).transforms().transform(TransformType.GUI).scale(0.8F).end();
+			layeredBuilder(name(ElectrodynamicsItems.getItem(upgrade)), Parent.GENERATED, itemLoc("upgrade/" + upgrade.tag())).transforms().transform(ItemDisplayContext.GUI).scale(0.8F).end();
 		}
 
 		for (SubtypeNugget nugget : SubtypeNugget.values()) {
@@ -167,7 +168,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 
 		// bare
 		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.BARE, WireClass.BARE, WireColor.NONE)) {
-			layeredBuilder(name(ElectrodynamicsItems.getItem(wire)), Parent.GENERATED, itemLoc("wire/" + wire.tag())).transforms().transform(TransformType.GUI).scale(0.7F).end();
+			layeredBuilder(name(ElectrodynamicsItems.getItem(wire)), Parent.GENERATED, itemLoc("wire/" + wire.tag())).transforms().transform(ItemDisplayContext.GUI).scale(0.7F).end();
 		}
 
 		// insulated
@@ -198,8 +199,8 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 			layeredItem(ElectrodynamicsItems.getItem(pipe), Parent.GENERATED, itemLoc("gaspipe/" + pipe.tag()));
 		}
 
-		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedsolarpanel), existingBlock(blockLoc("advancedsolarpanelitem"))).transforms().transform(TransformType.THIRD_PERSON_RIGHT_HAND).rotation(35, 45, 0).translation(0, 2.5F, 0).scale(0.375F).end().transform(TransformType.THIRD_PERSON_LEFT_HAND).rotation(35, 45, 0).translation(0, 2.5F, 0).scale(0.375F).end().transform(TransformType.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).scale(0.4F).end().transform(TransformType.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4F).end().transform(TransformType.GUI).rotation(30, 225, 0).translation(0, -3F, 0).scale(0.265F).end();
-		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.hydroelectricgenerator), existingBlock(blockLoc("hydroelectricgeneratoritem"))).transforms().transform(TransformType.GUI).rotation(30, 225, 0).translation(1.85F, 1.0F, 0).scale(0.55F).end();
+		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedsolarpanel), existingBlock(blockLoc("advancedsolarpanelitem"))).transforms().transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND).rotation(35, 45, 0).translation(0, 2.5F, 0).scale(0.375F).end().transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND).rotation(35, 45, 0).translation(0, 2.5F, 0).scale(0.375F).end().transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND).rotation(0, 45, 0).scale(0.4F).end().transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND).rotation(0, 225, 0).scale(0.4F).end().transform(ItemDisplayContext.GUI).rotation(30, 225, 0).translation(0, -3F, 0).scale(0.265F).end();
+		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.hydroelectricgenerator), existingBlock(blockLoc("hydroelectricgeneratoritem"))).transforms().transform(ItemDisplayContext.GUI).rotation(30, 225, 0).translation(1.85F, 1.0F, 0).scale(0.55F).end();
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusher), existingBlock(blockLoc("mineralcrusheritem")));
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusherdouble), existingBlock(blockLoc("mineralcrusherdoubleitem")));
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrushertriple), existingBlock(blockLoc("mineralcrushertripleitem")));
@@ -208,9 +209,9 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrindertriple), existingBlock(blockLoc("mineralgrindertripleitem")));
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.motorcomplex), existingBlock(blockLoc("motorcomplexitem")));
 		simpleBlockItem(ElectrodynamicsBlocks.getBlock(SubtypeMachine.windmill), existingBlock(blockLoc("windmillitem")));
-		simpleBlockItem(ElectrodynamicsBlocks.blockCompressor, existingBlock(blockLoc("compressoritem"))).transforms().transform(TransformType.GUI).scale(0.3333F).rotation(30.0F, 225.0F, 0.0F).end();
-		simpleBlockItem(ElectrodynamicsBlocks.blockDecompressor, existingBlock(blockLoc("decompressoritem"))).transforms().transform(TransformType.GUI).rotation(30.0F, 225.0F, 0.0F).scale(0.3333F).end();
-		simpleBlockItem(ElectrodynamicsBlocks.blockThermoelectricManipulator, existingBlock(blockLoc("thermoelectricmanipulatoritem"))).transforms().transform(TransformType.GUI).rotation(30.0F, 225.0F, 0.0F).scale(0.3333F).end();
+		simpleBlockItem(ElectrodynamicsBlocks.blockCompressor, existingBlock(blockLoc("compressoritem"))).transforms().transform(ItemDisplayContext.GUI).scale(0.3333F).rotation(30.0F, 225.0F, 0.0F).end();
+		simpleBlockItem(ElectrodynamicsBlocks.blockDecompressor, existingBlock(blockLoc("decompressoritem"))).transforms().transform(ItemDisplayContext.GUI).rotation(30.0F, 225.0F, 0.0F).scale(0.3333F).end();
+		simpleBlockItem(ElectrodynamicsBlocks.blockThermoelectricManipulator, existingBlock(blockLoc("thermoelectricmanipulatoritem"))).transforms().transform(ItemDisplayContext.GUI).rotation(30.0F, 225.0F, 0.0F).scale(0.3333F).end();
 
 		simpleBlockItem(ElectrodynamicsBlocks.blockGasPipePump, existingBlock(blockLoc("gaspipepumpitem")));
 		simpleBlockItem(ElectrodynamicsBlocks.blockFluidPipePump, existingBlock(blockLoc("fluidpipepumpitem")));

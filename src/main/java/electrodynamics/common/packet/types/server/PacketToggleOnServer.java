@@ -31,7 +31,7 @@ public class PacketToggleOnServer {
 	public static void handle(PacketToggleOnServer message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			ServerLevel world = context.get().getSender().getLevel();
+			ServerLevel world = context.get().getSender().serverLevel();
 			if (world != null) {
 				Player player = world.getPlayerByUUID(message.playerId);
 				switch (message.type) {

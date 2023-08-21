@@ -44,7 +44,7 @@ public class ElectrodynamicsShaders extends RenderType {
 	// @SubscribeEvent
 	public static void onRegisterShaders(final RegisterShadersEvent event) {
 		try {
-			event.registerShader(new ShaderInstance(event.getResourceManager(), GREATER_ALPHA_LOC, DefaultVertexFormat.POSITION_COLOR_TEX), shader -> {
+			event.registerShader(new ShaderInstance(event.getResourceProvider(), GREATER_ALPHA_LOC, DefaultVertexFormat.POSITION_COLOR_TEX), shader -> {
 				//shaderPlasmaOrb = shader;
 				uniformAlphaCutoff = shader.getUniform("AlphaCutoff");
 			});

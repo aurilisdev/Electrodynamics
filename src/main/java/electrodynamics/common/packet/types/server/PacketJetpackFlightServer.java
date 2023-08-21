@@ -30,7 +30,7 @@ public class PacketJetpackFlightServer {
 	public static void handle(PacketJetpackFlightServer message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			ServerLevel world = context.get().getSender().getLevel();
+			ServerLevel world = context.get().getSender().serverLevel();
 			if (world != null) {
 				Player player = world.getPlayerByUUID(message.playerId);
 				ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);

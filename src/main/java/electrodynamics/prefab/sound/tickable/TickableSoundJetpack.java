@@ -1,4 +1,4 @@
-package electrodynamics.prefab.sound;
+package electrodynamics.prefab.sound.tickable;
 
 import java.util.UUID;
 

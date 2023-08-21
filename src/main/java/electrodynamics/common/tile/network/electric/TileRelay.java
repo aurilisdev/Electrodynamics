@@ -20,6 +20,8 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileRelay extends GenericTile {
 
 	private boolean recievedRedstoneSignal = false;
+	
+	private boolean isLocked = false;
 
 	public TileRelay(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_RELAY.get(), worldPos, blockState);
@@ -28,7 +30,7 @@ public class TileRelay extends GenericTile {
 	}
 
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
-		if (recievedRedstoneSignal) {
+		if (recievedRedstoneSignal || isLocked) {
 			return TransferPack.EMPTY;
 		}
 		Direction output = BlockEntityUtils.getRelativeSide(this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), Direction.SOUTH);
@@ -41,8 +43,12 @@ public class TileRelay extends GenericTile {
 
 		return tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> {
 
+			isLocked = true;
+			
 			TransferPack accepted = cap.receivePower(transfer, debug);
 
+			isLocked = false;
+			
 			if (accepted.getJoules() > 0) {
 				return TransferPack.joulesVoltage(accepted.getJoules() + transfer.getJoules() * (1.0 - Constants.RELAY_EFFICIENCY), transfer.getVoltage());
 			}

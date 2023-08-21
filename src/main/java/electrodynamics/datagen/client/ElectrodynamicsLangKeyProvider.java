@@ -44,7 +44,7 @@ import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import electrodynamics.registers.ElectrodynamicsSounds;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.item.Item;
@@ -60,14 +60,14 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 	public final Locale locale;
 	public final String modID;
 
-	public ElectrodynamicsLangKeyProvider(DataGenerator gen, Locale locale, String modID) {
-		super(gen, modID, locale.toString());
+	public ElectrodynamicsLangKeyProvider(PackOutput output, Locale locale, String modID) {
+		super(output, modID, locale.toString());
 		this.locale = locale;
 		this.modID = modID;
 	}
 
-	public ElectrodynamicsLangKeyProvider(DataGenerator gen, Locale local) {
-		this(gen, local, References.ID);
+	public ElectrodynamicsLangKeyProvider(PackOutput output, Locale local) {
+		this(output, local, References.ID);
 	}
 
 	@Override
@@ -119,6 +119,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addItem(ElectrodynamicsItems.ITEM_SLAG, "Metallic Slag");
 			addItem(ElectrodynamicsItems.ITEM_CERAMICINSULATION, "Ceramic Insulation");
 			addItem(ElectrodynamicsItems.ITEM_COIL, "Copper Coil");
+			addItem(ElectrodynamicsItems.ITEM_LAMINATEDCOIL, "Laminated Copper Coil");
 			addItem(ElectrodynamicsItems.ITEM_MOLYBDENUMFERTILIZER, "Fertilizer");
 			addItem(ElectrodynamicsItems.ITEM_MOTOR, "Motor");
 			addItem(ElectrodynamicsItems.ITEM_COAL_COKE, "Coal Coke");
@@ -354,6 +355,10 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay), "Relay");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer), "Potentiometer");
+			
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer), "Downgrade Transformer Mk 2");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedupgradetransformer), "Upgrade Transformer Mk 2");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitmonitor), "Circuit Monitor");
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.aluminum), "Bauxite Ore");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.chromium), "Chromite Ore");
@@ -699,6 +704,10 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addContainer("fluidpipefilter", "Fluid Pipe Filter");
 
 			addContainer(SubtypeMachine.potentiometer, "Potentiometer");
+			
+			addContainer(SubtypeMachine.advanceddowngradetransformer, "Downgrade Transformer Mk 2");
+			addContainer(SubtypeMachine.advancedupgradetransformer, "Upgrade Transformer Mk 2");
+			addContainer(SubtypeMachine.circuitmonitor, "Circuit Monitor");
 
 			addTooltip("itemwire.resistance", "Resistance: %s");
 			addTooltip("itemwire.maxamps", "Ampacity: %s");
@@ -896,6 +905,26 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuiLabel("potentiometer.watts", "W");
 			addGuiLabel("potentiometer.usage", "Usage");
+			
+			addGuiLabel("coilratio", "Coil Ratio");
+			
+			addGuiLabel("networkwattage", "Wattage");
+			addGuiLabel("networkvoltage", "Voltage");
+			addGuiLabel("networkampacity", "Ampacity");
+			addGuiLabel("networkminimumvoltage", "Min. Voltage");
+			addGuiLabel("networkresistance", "Resistance");
+			addGuiLabel("networkload", "Load");
+			
+			addGuiLabel("equals", "=");
+			addGuiLabel("notequals", "!=");
+			addGuiLabel("lessthan", "<");
+			addGuiLabel("greaterthan", ">");
+			addGuiLabel("lessthanorequalto", "<=");
+			addGuiLabel("greaterthanorequalto", ">=");
+			
+			addGuiLabel("property", "Property");
+			addGuiLabel("operator", "Operator");
+			addGuiLabel("value", "Value");
 
 			addGuiLabel("displayunit.infinity.name", "Infinite");
 
@@ -944,6 +973,14 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("displayunit.percentage.name", "Percent");
 			addGuiLabel("displayunit.percentage.nameplural", "Percent");
 			addGuiLabel("displayunit.percentage.symbol", "%");
+			
+			addGuiLabel("displayunit.timeticks.name", "Tick");
+			addGuiLabel("displayunit.timeticks.nameplural", "Ticks");
+			addGuiLabel("displayunit.timeticks.symbol", "t");
+			
+			addGuiLabel("displayunit.forgeenergyunit.name", "Forge Energy Unit");
+			addGuiLabel("displayunit.forgeenergyunit.nameplural", "Forge Energy Units");
+			addGuiLabel("displayunit.forgeenergyunit.symbol", "FE");
 
 			addGuiLabel("measurementunit.pico.name", "Pico");
 			addGuiLabel("measurementunit.pico.symbol", "p");
@@ -1025,6 +1062,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addSubtitle(ElectrodynamicsSounds.SOUND_PRESSURERELEASE, "Gas hisses");
 			addSubtitle(ElectrodynamicsSounds.SOUND_COMPRESSORRUNNING, "Compressor pressurizes gas");
 			addSubtitle(ElectrodynamicsSounds.SOUND_DECOMPRESSORRUNNING, "Decompressor depressurizes gas");
+			addSubtitle(ElectrodynamicsSounds.SOUND_TRANSFORMERHUM, "Transformer hums");
 
 			addDimension(Level.OVERWORLD, "The Overworld");
 			addDimension(Level.NETHER, "The Nether");
@@ -1247,27 +1285,46 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.electricity.l13.2", "This makes ceramicly insulated wires especially useful when working around fluids like lava. It should be noted though that ceramic insulation is not as effective as " + "woolen insulation, meaning that if you want to insulate high voltages, you will need to take the risk of fire!");
 
-			addGuidebook("chapter.electricity.l14", "One final note while on the topic of wires is the ability to field-modify them. If you right-click any insulated wire with Shears (excluding thick wires), it will remove the insulation from the wire. You can also apply woolen and ceramic insulation to an existing wire " + "by right-clicking the insulation on the wire. A woolen wire can be converted to a logistical wire by right-clicking a piece of redstone on it. You can also dye wires by right-clicking the respective dye onto the wire. Note that this is a less-efficiant way to color wires than crafting them to " + "the respective color!");
+			addGuidebook("chapter.electricity.l14", "While on the topic of insulation ratings, It is critical to understand that a wire not having sufficiant insulation has greater ramifications than just shocking you. Wires transmitting voltages higher than what they are rated for will have a random chance to set the blocks "
+					+ "surrounding them on fire (excluding other wires). If the wire cannot set a flammable block on fire, by either pure chance or becuase you're trying to game the system, then the wire itself will be destroyed. This feature can be disabled in the Electrodynamics config file if desired.");
+			
+			addGuidebook("chapter.electricity.l15", "One final note while on the topic of wires is the ability to field-modify them. If you right-click any insulated wire with Shears (excluding thick wires), it will remove the insulation from the wire. You can also apply woolen and ceramic insulation to an existing wire " + "by right-clicking the insulation on the wire. A woolen wire can be converted to a logistical wire by right-clicking a piece of redstone on it. You can also dye wires by right-clicking the respective dye onto the wire. Note that this is a less-efficiant way to color wires than crafting them to " + "the respective color!");
 
-			addGuidebook("chapter.electricity.l15", "Now that we know how to get energy to a machine and understand it must be at a specific voltage, you're probably wondering how that voltage is achieved. Most power sources in Electrodynamics are 120V or 240V, which works well for some basic machines, but that simply won't cut it for higher voltage " + "machines. This is where the Upgrade and Downgrade Transformers come in. The Upgrade Transformer will take any input voltage at any current and output double voltage at half the current. The Downgrade Transformer takes any input voltage at any current and outputs half the voltage at " + "double the current. Note, Transformers are not 100% efficient, so be wise with your use of them. Also, Transformers will instantly kill you if you walk over them while energized!");
+			addGuidebook("chapter.electricity.l16l1", "Now that we know how to get energy to a machine and understand it must be at a specific voltage, you're probably wondering how that voltage is achieved. Most power sources in Electrodynamics are 120V or 240V, which works well for some basic machines, but that simply won't cut it "
+					+ "for higher voltage " + "machines. This is where the Upgrade and Downgrade Transformers come in. Transformers function by exchanging voltage for current. This exchange rate can be calculated using what is known as the Turns or Coil Ratio, which is given by the formula:");
 
-			addGuidebook("chapter.electricity.l16.1", "By now, you are feeling overwhelmed most likely. How are you supposed to keep track of what voltage your wire network is operating at? How are you supposed to keep track of the overall resistance? Fear not, for Electrodynamics offers several tools and blocks " + "to help you out along the way. The first and most important is the ");
+			addGuidebook("chapter.electricity.turnsratioformula", "N = Np / Ns");
+			
+			addGuidebook("chapter.electricity.l16l2", "Where N is the Turns Ratio, Np is the number of primary or input turns, and Ns is the number of secondary or output turns. The output voltage can be calculated by dividing the input voltage by the Turns Ratio. The output current can be calculated by multiplying the input current by the Turns Ratio. "
+					+ "The base Upgrade Transformer has a fixed Turns Ratio of 0.5, and the base Downgrade Transformer has a fixed Turns Ratio of 2. While cheap, they will also shock you if live. The improved Mark 2 versions, while much more expensive, have a programmable turns ratio you can select via the GUI. They are also enclosed and will not shock you if live. "
+					+ "It is important to note that all Transformers are not 100% efficient, so be wise with your use of them.");
+			
+			addGuidebook("chapter.electricity.l17.1", "By now, you are feeling overwhelmed most likely. How are you supposed to keep track of what voltage your wire network is operating at? How are you supposed to keep track of the overall resistance? Fear not, for Electrodynamics offers several tools and blocks " + "to help you out along the way. The first and most important is the ");
 
-			addGuidebook("chapter.electricity.l16.2", ". Right-clicking a wire network with one will display several imporant data points about that network:");
+			addGuidebook("chapter.electricity.l17.2", ". Right-clicking a wire network with one will display several imporant data points about that network:");
 
-			addGuidebook("chapter.electricity.l16.3", "The first data point is the current power being transmitted in Amps in proportion to the Ampacity of the wire network. The second data point shows the current operating voltage of the wire network. The third data point shows the current power transfer " + "in watts. The fourth data point shows the total resistance of the network, with the fifth data point showing the power loss due to resistance. The final data point shows the lowest voltage machine connected to the network. If you wish to view the data points for a longer period of time, " + "you can craft a ");
+			addGuidebook("chapter.electricity.l17.3", "The first data point is the current power being transmitted in Amps in proportion to the Ampacity of the wire network. The second data point shows the current operating voltage of the wire network. The third data point shows the current power transfer " + "in watts. The fourth data point shows the total resistance of the network, with the fifth data point showing the power loss due to resistance. The final data point shows the lowest voltage machine connected to the network. If you wish to view the data points for a longer period of time, " + "you can craft a ");
 
-			addGuidebook("chapter.electricity.l16.4", ", which offers the same functionality, but will display the relevant data constantly.");
+			addGuidebook("chapter.electricity.l17.4", ", which offers the same functionality, but will display the relevant data constantly.");
 
-			addGuidebook("chapter.electricity.l17.1", "The next useful block Electrodynamics adds is the %1$s, which will stop the flow of electricity when powered with a redstone signal:");
+			addGuidebook("chapter.electricity.l18.1", "The next useful block Electrodynamics adds is the %1$s, which will stop the flow of electricity when powered with a redstone signal:");
 
-			addGuidebook("chapter.electricity.l17.2", "This is particularly useful, as it means that you can turn machines off and on without having to break a wire or waiting for them to fill up. The %1$s also does not impose a power loss when power flows across it. This comes at a price however, as it is also a dumb switch, " + "meaning the only way it will open is when manually activated. This means the %1$s is a useful logistical tool, but will not really be effective at protecting your downstream equipment.");
+			addGuidebook("chapter.electricity.l18.2", "This is particularly useful, as it means that you can turn machines off and on without having to break a wire or waiting for them to fill up. The %1$s also does not impose a power loss when power flows across it. This comes at a price however, as it is also a dumb switch, " + "meaning the only way it will open is when manually activated. This means the %1$s is a useful logistical tool, but will not really be effective at protecting your downstream equipment.");
 
-			addGuidebook("chapter.electricity.l18.1", "For a true protective device, you will need to upgrade the %1$s into a %2$s. The %3$s not only is able to be manually opened with redstone like its predecessor, but will also open automatically if it senses that the transmitting voltage will damage a machine of if the " + "transmitting current will damage a wire:");
+			addGuidebook("chapter.electricity.l19.1", "For a true protective device, you will need to upgrade the %1$s into a %2$s. The %3$s not only is able to be manually opened with redstone like its predecessor, but will also open automatically if it senses that the transmitting voltage will damage a machine or if the " + "transmitting current will damage a wire:");
 
-			addGuidebook("chapter.electricity.l18.2", "However, this protective nature comes at a price, as the %1$s has a small power loss. This means you will need to be somewhat more thoughtful with your use of them!");
+			addGuidebook("chapter.electricity.l19.2", "However, this protective nature comes at a price, as the %1$s has a small power loss. This means you will need to be somewhat more thoughtful with your use of them!");
+			
+			addGuidebook("chapter.electricity.l20.1", "For the redstone engineers reading this, the mention of a switch controllable by redstone has probably peaked your interest. Electrodynamics also provides the %s, which can be programmed to output a redstone signal (strength of 15) when a certain condition is met:");
+			
+			addGuidebook("chapter.electricity.l20.2", "We will first cover the \"Property\" selection list in the GUI. The %1$s property represents the current wattage of the energy flowing through the wire in real time in units of Watts. The %2$s property represents the current voltage of the energy flowing through the wire in real time "
+					+ "in units of Volts. The %3$s property is the maximum current the wire can achieve before it is damaged in units of Amps. The %4$s property is the voltage of the lowest-voltage machine connected to the wire in units of Volts. The %5$s property is the resistance of the wire in units of Ohms. Finally, the %6$s "
+					+ "property is the maximum possible energy usage of all machines connected to the wire in units of Watts. It is important to note this value can be different from the %7$s property's value.");
+			
+			addGuidebook("chapter.electricity.l20.3", "The next section of the GUI is the \"Operator\" selection list, which is the list of boolean operators that can be selected for comparing the \"Property\" and \"Value\" sections. It is hoped by the author of this book you understand what the individual operators mean. The final section "
+					+ " in the GUI is the \"Value\" section. The quantity input into this field is what will be compared against the property selected. It is important to note this value cannot be negative.");
 
-			addGuidebook("chapter.electricity.l19", "In summary, machines need energy at a specific voltage to work. There are multiple methods of finding this voltage. Machines have specific colored ports for energy input and output. Energy is transfered into machines using wires, with the type of wire " + "used determining how the cable network performs. Voltages can be stepped up and stepped down using transformers. There are multiple methods for monitoring and controling a wire network. The next page contains a list of symbols and formulas for you to reference..");
+			addGuidebook("chapter.electricity.l21", "In summary, machines need energy at a specific voltage to work. There are multiple methods of finding this voltage. Machines have specific colored ports for energy input and output. Energy is transfered into machines using wires, with the type of wire " + "used determining how the cable network performs. Voltages can be stepped up and stepped down using transformers. There are multiple methods for monitoring and controling a wire network. The next page contains a list of symbols and formulas for you to reference..");
 
 			addGuidebook("chapter.electricity.symbols", "Symbols:");
 			addGuidebook("chapter.electricity.symbvoltage", "Voltage : V");
@@ -1275,6 +1332,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.electricity.symbresistance", "Resistance : " + '\u03A9');
 			addGuidebook("chapter.electricity.symbpower", "Power : W or P");
 			addGuidebook("chapter.electricity.symbenergy", "Energy : J or E");
+			addGuidebook("chapter.electricity.symbturnsratio", "Turns Ratio : N");
 
 			addGuidebook("chapter.electricity.equations", "Equations:");
 			addGuidebook("chapter.electricity.powerfromenergy", "P = E / time");
@@ -1282,6 +1340,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.electricity.energytickstoseconds", "E/s = (E/tick) * 20");
 			addGuidebook("chapter.electricity.ohmslaw", "V = I * R");
 			addGuidebook("chapter.electricity.powerfromcurrent", "P = I * I * R");
+			
 
 			addGuidebook("chapter.fluids", "Fluids");
 

@@ -7,25 +7,16 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexFormat;
-
 import electrodynamics.api.References;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.SharedConstants;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.GameRenderer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
@@ -434,11 +425,9 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 	}
 
 	@Override
-	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 
-		RenderingUtils.bindTexture(texture.getLocation());
-
-		drawExpandedBox(stack, this.xLocation + guiWidth, this.yLocation + guiHeight, width, height);
+		drawExpandedBox(graphics, texture.getLocation(), this.xLocation + guiWidth, this.yLocation + guiHeight, width, height);
 
 		int textColor = this.isEditable ? this.textColor : this.textColorUneditable;
 		int highlightedSize = this.cursorPos - this.displayPos;
@@ -460,7 +449,7 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 
 		if (!displayedText.isEmpty()) {
 			String highlightedText = isHighlightedValid ? displayedText.substring(0, highlightedSize) : displayedText;
-			textStartPre = this.font.drawShadow(stack, this.formatter.apply(highlightedText, this.displayPos), textStartX, textStartY, textColor);
+			textStartPre = graphics.drawString(font, this.formatter.apply(highlightedText, this.displayPos), textStartX, textStartY, textColor);
 		}
 
 		boolean isCursorPastLength = this.cursorPos < this.value.length() || this.value.length() >= this.getMaxLength();
@@ -475,24 +464,24 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 		}
 
 		if (!displayedText.isEmpty() && isHighlightedValid && highlightedSize < displayedText.length()) {
-			this.font.drawShadow(stack, this.formatter.apply(displayedText.substring(highlightedSize), this.cursorPos), textStartPre, textStartY, textColor);
+			graphics.drawString(font, this.formatter.apply(displayedText.substring(highlightedSize), this.cursorPos), textStartPre, textStartY, textColor);
 		}
 
 		if (!isCursorPastLength && this.suggestion != null) {
-			this.font.drawShadow(stack, this.suggestion, textStartPreCopy - 1, textStartY, -8355712);
+			graphics.drawString(font, this.suggestion, textStartPreCopy - 1, textStartY, -8355712);
 		}
 
 		if (blinkCursor) {
 			if (isCursorPastLength) {
-				GuiComponent.fill(stack, textStartPreCopy, textStartY - 1, textStartPreCopy + 1, textStartY + 1 + 9, -3092272);
+				graphics.fill(RenderType.guiOverlay(), textStartPreCopy, textStartY - 1, textStartPreCopy + 1, textStartY + 1 + 9, -3092272);
 			} else {
-				this.font.drawShadow(stack, "_", textStartPreCopy, textStartY, textColor);
+				graphics.drawString(font, "_", textStartPreCopy, textStartY, textColor);
 			}
 		}
 
 		if (highlightedLength != highlightedSize) {
 			int l1 = textStartX + this.font.width(displayedText.substring(0, highlightedLength));
-			this.renderHighlight(textStartPreCopy, textStartY - 1, l1 - 1, textStartY + 1 + 9);
+			this.renderHighlight(graphics, textStartPreCopy, textStartY - 1, l1 - 1, textStartY + 1 + 9);
 		}
 
 	}
@@ -500,44 +489,29 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 	/**
 	 * Draws the blue selection box.
 	 */
-	private void renderHighlight(int startX, int startY, int endX, int endY) {
-		if (startX < endX) {
-			int i = startX;
-			startX = endX;
-			endX = i;
-		}
+	 private void renderHighlight(GuiGraphics graphics, int pMinX, int pMinY, int pMaxX, int pMaxY) {
+	      if (pMinX < pMaxX) {
+	         int i = pMinX;
+	         pMinX = pMaxX;
+	         pMaxX = i;
+	      }
 
-		if (startY < endY) {
-			int j = startY;
-			startY = endY;
-			endY = j;
-		}
+	      if (pMinY < pMaxY) {
+	         int j = pMinY;
+	         pMinY = pMaxY;
+	         pMaxY = j;
+	      }
 
-		if (endX > this.xLocation + this.width + gui.getGuiWidth()) {
-			endX = (int) (this.xLocation + this.width + gui.getGuiWidth());
-		}
+	      if (pMaxX > this.xLocation + this.width) {
+	         pMaxX = this.yLocation + this.width;
+	      }
 
-		if (startX > this.xLocation + this.width + gui.getGuiHeight()) {
-			startX = (int) (this.xLocation + this.width + gui.getGuiHeight());
-		}
+	      if (pMinX > this.xLocation + this.width) {
+	         pMinX = this.xLocation + this.width;
+	      }
 
-		Tesselator tesselator = Tesselator.getInstance();
-		BufferBuilder bufferbuilder = tesselator.getBuilder();
-		RenderSystem.setShader(GameRenderer::getPositionShader);
-		RenderSystem.setShaderColor(0.0F, 0.0F, 1.0F, 1.0F);
-		RenderSystem.disableTexture();
-		RenderSystem.enableColorLogicOp();
-		RenderSystem.logicOp(GlStateManager.LogicOp.OR_REVERSE);
-		bufferbuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION);
-		bufferbuilder.vertex(startX, endY, 0.0D).endVertex();
-		bufferbuilder.vertex(endX, endY, 0.0D).endVertex();
-		bufferbuilder.vertex(endX, startY, 0.0D).endVertex();
-		bufferbuilder.vertex(startX, startY, 0.0D).endVertex();
-		tesselator.end();
-		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-		RenderSystem.disableColorLogicOp();
-		RenderSystem.enableTexture();
-	}
+	      graphics.fill(RenderType.guiTextHighlight(), pMinX, pMinY, pMaxX, pMaxY, -16776961);
+	   }
 
 	/**
 	 * Sets the maximum length for the text in this text box. If the current text is longer than this length, the current text will be trimmed.
@@ -580,11 +554,6 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 	public ScreenComponentEditBox setTextColorUneditable(int pColor) {
 		this.textColorUneditable = pColor;
 		return this;
-	}
-
-	@Override
-	public boolean changeFocus(boolean pFocus) {
-		return isVisible() && this.isEditable ? super.changeFocus(pFocus) : false;
 	}
 
 	protected void onFocusedChanged(boolean pFocused) {
@@ -661,12 +630,12 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 		this.xLocation = xPos;
 	}
 
-	public static void drawExpandedBox(PoseStack stack, int x, int y, int boxWidth, int boxHeight) {
+	public static void drawExpandedBox(GuiGraphics graphics, ResourceLocation texture, int x, int y, int boxWidth, int boxHeight) {
 		if (boxWidth < 18) {
 			if (boxHeight < 18) {
-				GuiComponent.blit(stack, x, y, boxWidth, boxHeight, 0, 0, boxWidth, boxHeight, boxWidth, boxHeight);
+				graphics.blit(texture, x, y, boxWidth, boxHeight, 0, 0, boxWidth, boxHeight, boxWidth, boxHeight);
 			} else {
-				GuiComponent.blit(stack, x, y, boxWidth, 7, 0, 0, boxWidth, 7, boxWidth, 18);
+				graphics.blit(texture, x, y, boxWidth, 7, 0, 0, boxWidth, 7, boxWidth, 18);
 
 				int sectionHeight = boxHeight - 14;
 				int heightIterations = sectionHeight / 4;
@@ -674,15 +643,15 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 
 				int heightOffset = 7;
 				for (int i = 0; i < heightIterations; i++) {
-					GuiComponent.blit(stack, x, y + heightOffset, boxWidth, 4, 0, 7, boxWidth, 4, boxWidth, 18);
+					graphics.blit(texture, x, y + heightOffset, boxWidth, 4, 0, 7, boxWidth, 4, boxWidth, 18);
 					heightOffset += 4;
 				}
-				GuiComponent.blit(stack, x, y + heightOffset, boxWidth, remainderHeight, 0, 7, boxWidth, remainderHeight, boxWidth, 18);
+				graphics.blit(texture, x, y + heightOffset, boxWidth, remainderHeight, 0, 7, boxWidth, remainderHeight, boxWidth, 18);
 
-				GuiComponent.blit(stack, x, y + boxHeight - 7, boxWidth, 7, 0, 11, boxWidth, 7, boxWidth, 18);
+				graphics.blit(texture, x, y + boxHeight - 7, boxWidth, 7, 0, 11, boxWidth, 7, boxWidth, 18);
 			}
 		} else if (boxHeight < 18) {
-			GuiComponent.blit(stack, x, y, 7, boxHeight, 0, 0, 7, boxHeight, 18, boxHeight);
+			graphics.blit(texture, x, y, 7, boxHeight, 0, 0, 7, boxHeight, 18, boxHeight);
 
 			int sectionWidth = boxWidth - 14;
 			int widthIterations = sectionWidth / 4;
@@ -690,12 +659,12 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 
 			int widthOffset = 7;
 			for (int i = 0; i < widthIterations; i++) {
-				GuiComponent.blit(stack, x + widthOffset, y, 4, boxHeight, 7, 0, 4, boxHeight, 18, boxHeight);
+				graphics.blit(texture, x + widthOffset, y, 4, boxHeight, 7, 0, 4, boxHeight, 18, boxHeight);
 				widthOffset += 4;
 			}
-			GuiComponent.blit(stack, x + widthOffset, y, remainderWidth, boxHeight, 7, 0, remainderWidth, boxHeight, 18, boxHeight);
+			graphics.blit(texture, x + widthOffset, y, remainderWidth, boxHeight, 7, 0, remainderWidth, boxHeight, 18, boxHeight);
 
-			GuiComponent.blit(stack, x + boxWidth - 7, y, 7, boxHeight, 11, 0, 7, boxHeight, 18, boxHeight);
+			graphics.blit(texture, x + boxWidth - 7, y, 7, boxHeight, 11, 0, 7, boxHeight, 18, boxHeight);
 		} else {
 			// the button is >= 18x18 at this point
 
@@ -714,16 +683,16 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 			for (int i = 0; i <= squareHeightIterations; i++) {
 				int height = i == squareHeightIterations ? remainderSquareHeight : 8;
 				for (int j = 0; j < squareWidthIterations; j++) {
-					draw(stack, x, y, widthOffset, heightOffset, 5, 5, 8, height);
+					draw(graphics, texture, x, y, widthOffset, heightOffset, 5, 5, 8, height);
 					widthOffset += 8;
 				}
-				draw(stack, x, y, widthOffset, heightOffset, 5, 5, remainderSquareWidth, height);
+				draw(graphics, texture, x, y, widthOffset, heightOffset, 5, 5, remainderSquareWidth, height);
 				widthOffset = 5;
 				heightOffset += 8;
 			}
 
 			// draw tl corner
-			draw(stack, x, y, 0, 0, 0, 0, 8, 8);
+			draw(graphics, texture, x, y, 0, 0, 0, 0, 8, 8);
 
 			// draw top strip
 
@@ -737,52 +706,52 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 
 			widthOffset = 7;
 			for (int i = 0; i < stripWidthIterations; i++) {
-				draw(stack, x, y, widthOffset, 0, 7, 0, 4, 5);
+				draw(graphics, texture, x, y, widthOffset, 0, 7, 0, 4, 5);
 				widthOffset += 4;
 			}
-			draw(stack, x, y, widthOffset, 0, 7, 0, remainderStripWidth, 5);
+			draw(graphics, texture, x, y, widthOffset, 0, 7, 0, remainderStripWidth, 5);
 
 			// draw tr corner
-			draw(stack, x, y, boxWidth - 8, 0, 10, 0, 8, 8);
+			draw(graphics, texture, x, y, boxWidth - 8, 0, 10, 0, 8, 8);
 
 			// draw left strip
 			heightOffset = 7;
 			for (int i = 0; i < stripHeightIterations; i++) {
-				draw(stack, x, y, 0, heightOffset, 0, 7, 5, 4);
+				draw(graphics, texture, x, y, 0, heightOffset, 0, 7, 5, 4);
 				heightOffset += 4;
 			}
-			draw(stack, x, y, 0, heightOffset, 0, 5, 5, remainderStripHeight);
+			draw(graphics, texture, x, y, 0, heightOffset, 0, 5, 5, remainderStripHeight);
 
 			// draw right strip
 			heightOffset = 7;
 			widthOffset = boxWidth - 5;
 			for (int i = 0; i < stripHeightIterations; i++) {
-				draw(stack, x, y, widthOffset, heightOffset, 13, 7, 5, 4);
+				draw(graphics, texture, x, y, widthOffset, heightOffset, 13, 7, 5, 4);
 				heightOffset += 4;
 			}
-			draw(stack, x, y, widthOffset, heightOffset, 13, 7, 5, remainderStripHeight);
+			draw(graphics, texture, x, y, widthOffset, heightOffset, 13, 7, 5, remainderStripHeight);
 
 			// draw bl corner
-			draw(stack, x, y, 0, boxHeight - 8, 0, 10, 8, 8);
+			draw(graphics, texture, x, y, 0, boxHeight - 8, 0, 10, 8, 8);
 
 			// draw bottom strip
 			heightOffset = boxHeight - 5;
 			widthOffset = 7;
 			for (int i = 0; i < stripWidthIterations; i++) {
-				draw(stack, x, y, widthOffset, heightOffset, 7, 13, 4, 5);
+				draw(graphics, texture, x, y, widthOffset, heightOffset, 7, 13, 4, 5);
 				widthOffset += 4;
 			}
-			draw(stack, x, y, widthOffset, heightOffset, 7, 13, remainderStripWidth, 5);
+			draw(graphics, texture, x, y, widthOffset, heightOffset, 7, 13, remainderStripWidth, 5);
 
 			// draw br corner
-			draw(stack, x, y, boxWidth - 8, boxHeight - 8, 10, 10, 8, 8);
+			draw(graphics, texture, x, y, boxWidth - 8, boxHeight - 8, 10, 10, 8, 8);
 
 		}
 
 	}
 
-	private static void draw(PoseStack stack, int x, int y, int widthOffset, int heightOffset, int textXOffset, int textYOffset, int width, int height) {
-		GuiComponent.blit(stack, x + widthOffset, y + heightOffset, width, height, textXOffset, textYOffset, width, height, 18, 18);
+	private static void draw(GuiGraphics graphics, ResourceLocation texture, int x, int y, int widthOffset, int heightOffset, int textXOffset, int textYOffset, int width, int height) {
+		graphics.blit(texture, x + widthOffset, y + heightOffset, width, height, textXOffset, textYOffset, width, height, 18, 18);
 	}
 
 	public static Predicate<String> getValidator(char[] validChars) {

@@ -1,10 +1,8 @@
 package electrodynamics.prefab.screen.component.button.type;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.References;
 import electrodynamics.api.screen.ITexture;
-import electrodynamics.prefab.utilities.RenderingUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 
 public class ButtonModuleSelector extends ButtonSpecificPage {
@@ -21,14 +19,13 @@ public class ButtonModuleSelector extends ButtonSpecificPage {
 	}
 
 	@Override
-	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 
 		if (selected && isVisible()) {
 			ITexture texture = GuidebookButtonTextures.CHECKBOX_ON;
-			RenderingUtils.bindTexture(texture.getLocation());
-			gui.drawTexturedRect(stack, this.xLocation + guiWidth, this.yLocation + guiHeight, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
+			graphics.blit(texture.getLocation(), this.xLocation + guiWidth, this.yLocation + guiHeight, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
 		} else {
-			super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
+			super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 		}
 
 	}

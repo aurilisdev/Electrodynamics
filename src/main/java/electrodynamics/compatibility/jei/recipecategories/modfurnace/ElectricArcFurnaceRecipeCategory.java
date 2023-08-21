@@ -69,7 +69,7 @@ public class ElectricArcFurnaceRecipeCategory extends AbstractRecipeCategory<Bla
 	@Override
 	public List<ItemStack> getItemOutputs(BlastingRecipe recipe) {
 		List<ItemStack> outputs = new ArrayList<>();
-		outputs.add(recipe.getResultItem());
+		outputs.add(recipe.getResultItem(null));
 		return outputs;
 	}
 

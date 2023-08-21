@@ -4,14 +4,10 @@ import electrodynamics.api.multiblock.Subnode;
 import electrodynamics.api.multiblock.parent.IMultiblockParentBlock;
 import electrodynamics.api.multiblock.parent.IMultiblockParentTile;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.tile.TileTransformer;
 import electrodynamics.common.tile.quarry.TileQuarry;
 import electrodynamics.prefab.block.GenericMachineBlock;
-import electrodynamics.prefab.utilities.ElectricityUtils;
-import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -77,17 +73,6 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockPare
 			return true;
 		}
 		return super.propagatesSkylightDown(pState, pLevel, pPos);
-	}
-
-	@Override
-	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
-		if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer) {
-			TileTransformer tile = (TileTransformer) worldIn.getBlockEntity(pos);
-			if (tile != null && tile.lastTransfer.getJoules() > 0) {
-				ElectricityUtils.electrecuteEntity(entityIn, tile.lastTransfer);
-				tile.lastTransfer = TransferPack.joulesVoltage(0, 0);
-			}
-		}
 	}
 
 	@Override

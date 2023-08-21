@@ -99,8 +99,10 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	public int receiveEnergy(int maxReceive, boolean simulate) {
 
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		
+		int receive = (int) Math.min(maxReceive, powerOutput.get() * currentCapacityMultiplier.get());
 
-		int accepted = Math.min(maxReceive, (int) (electro.getMaxJoulesStored() - electro.getJoulesStored()));
+		int accepted = Math.min(receive, (int) (electro.getMaxJoulesStored() - electro.getJoulesStored()));
 
 		if (!simulate) {
 			electro.joules(electro.getJoulesStored() + accepted);
@@ -114,8 +116,10 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	public int extractEnergy(int maxExtract, boolean simulate) {
 
 		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		
+		int extract = (int) Math.min(maxExtract, powerOutput.get() * currentCapacityMultiplier.get());
 
-		int taken = Math.min(maxExtract, (int) electro.getJoulesStored());
+		int taken = Math.min(extract, (int) electro.getJoulesStored());
 
 		if (!simulate) {
 

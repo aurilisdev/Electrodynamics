@@ -17,7 +17,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public abstract class Fluid2ItemRecipe extends AbstractMaterialRecipe {
 
@@ -39,14 +38,9 @@ public abstract class Fluid2ItemRecipe extends AbstractMaterialRecipe {
 		}
 		return false;
 	}
-
+	
 	@Override
-	public ItemStack assemble(RecipeWrapper inv) {
-		return outputItem;
-	}
-
-	@Override
-	public ItemStack getResultItem() {
+	public ItemStack getItemOutputNoAccess() {
 		return outputItem;
 	}
 

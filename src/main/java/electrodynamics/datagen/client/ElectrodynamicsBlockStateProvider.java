@@ -22,10 +22,10 @@ import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
 import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
-import net.minecraft.client.renderer.block.model.ItemTransforms.TransformType;
 import net.minecraft.core.Direction;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.SnowyDirtBlock;
@@ -45,13 +45,13 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 
 	public final String modID;
 
-	public ElectrodynamicsBlockStateProvider(DataGenerator gen, ExistingFileHelper exFileHelper, String modID) {
-		super(gen, modID, exFileHelper);
+	public ElectrodynamicsBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper, String modID) {
+		super(output, modID, exFileHelper);
 		this.modID = modID;
 	}
 
-	public ElectrodynamicsBlockStateProvider(DataGenerator gen, ExistingFileHelper exFileHelper) {
-		this(gen, exFileHelper, References.ID);
+	public ElectrodynamicsBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
+		this(output, exFileHelper, References.ID);
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalmixer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalmixer)), true);
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitbreaker), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitbreaker)), true);
 		horrRotatedLitBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coalgenerator), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coalgenerator)), existingBlock(blockLoc("coalgeneratorrunning")), true);
-		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.combustionchamber), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.combustionchamber)), true).transforms().transform(TransformType.GUI).rotation(35, 40, 0).scale(0.665F).end();
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.combustionchamber), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.combustionchamber)), true).transforms().transform(ItemDisplayContext.GUI).rotation(35, 40, 0).scale(0.665F).end();
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coolantresavoir), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coolantresavoir)), true);
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativefluidsource), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativefluidsource)), true);
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativepowersource), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativepowersource)), true);
@@ -160,6 +160,10 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		glassBlock(ElectrodynamicsBlocks.blockSteelScaffold, blockLoc("steelscaffold"), true);
 
 		simpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer)), true);
+		
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedupgradetransformer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedupgradetransformer)), true);
+		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitmonitor), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitmonitor)), 90, 0, true);
 
 		genWires();
 		genPipes();

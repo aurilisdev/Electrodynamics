@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.tile.network.fluid.TileFluidPipeFilter;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
@@ -14,7 +13,7 @@ import electrodynamics.prefab.screen.component.types.gauges.AbstractScreenCompon
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
@@ -35,8 +34,8 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 	}
 
 	@Override
-	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
+	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 
 		TileFluidPipeFilter filter = (TileFluidPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui).getMenu()).getHostFromIntArray();
 
@@ -56,7 +55,7 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 
 				ResourceLocation blocks = InventoryMenu.BLOCK_ATLAS;
 				TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(blocks).apply(fluidText);
-				RenderSystem.setShaderTexture(0, sprite.atlas().getId());
+				RenderingUtils.bindTexture(sprite.atlasLocation());
 
 				int scale = GaugeTextures.BACKGROUND_DEFAULT.textureHeight() - 2;
 
@@ -69,7 +68,7 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 
 						int drawX = guiWidth + xLocation + 1;
 						int drawY = guiHeight + yLocation - 1 + super.texture.textureHeight() - Math.min(scale - j, super.texture.textureHeight());
-						GuiComponent.blit(stack, drawX, drawY, 0, drawWidth, drawHeight, sprite);
+						graphics.blit(drawX, drawY, 0, drawWidth, drawHeight, sprite);
 					}
 				}
 				RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -78,14 +77,12 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 
 		}
 
-		RenderingUtils.bindTexture(GaugeTextures.LEVEL_DEFAULT.getLocation());
-
-		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation, GaugeTextures.LEVEL_DEFAULT.textureU(), 0, GaugeTextures.LEVEL_DEFAULT.textureWidth(), GaugeTextures.LEVEL_DEFAULT.textureHeight(), GaugeTextures.LEVEL_DEFAULT.imageWidth(), GaugeTextures.LEVEL_DEFAULT.imageHeight());
+		graphics.blit(GaugeTextures.LEVEL_DEFAULT.getLocation(), guiWidth + xLocation, guiHeight + yLocation, GaugeTextures.LEVEL_DEFAULT.textureU(), 0, GaugeTextures.LEVEL_DEFAULT.textureWidth(), GaugeTextures.LEVEL_DEFAULT.textureHeight(), GaugeTextures.LEVEL_DEFAULT.imageWidth(), GaugeTextures.LEVEL_DEFAULT.imageHeight());
 
 	}
 
 	@Override
-	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 
 		if (!isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(), super.texture.textureHeight())) {
 			return;
@@ -103,7 +100,7 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 
 		tooltips.add(property.get().getDisplayName().getVisualOrderText());
 
-		gui.displayTooltips(stack, tooltips, xAxis, yAxis);
+		graphics.renderTooltip(gui.getFontRenderer(), tooltips, xAxis, yAxis);
 	}
 
 	@Override

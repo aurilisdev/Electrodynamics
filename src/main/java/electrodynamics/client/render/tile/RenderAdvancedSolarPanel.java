@@ -3,12 +3,11 @@ package electrodynamics.client.render.tile;
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Quaternion;
-import com.mojang.math.Vector3f;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.generators.TileAdvancedSolarPanel;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -25,7 +24,8 @@ public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedS
 
 		matrixStackIn.translate(0.5, 2, 0.5);
 
-		matrixStackIn.mulPose(new Quaternion(new Vector3f(0, 1, 0), 90, true));
+		matrixStackIn.mulPose(MathUtils.rotVectorQuaternionDeg(90, MathUtils.YP));
+		//matrixStackIn.mulPose(new Quaternion(new Vector3f(0, 1, 0), 90, true));
 
 		long time = solarPanel.getLevel().getLevelData().getDayTime();
 
@@ -33,7 +33,8 @@ public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedS
 			solarPanel.currentRotation.setValue(solarPanel.currentRotation.getValue() + (time / 24000.0 * Math.PI * 2 - Math.PI / 2.0 - solarPanel.currentRotation.getValue()) / 40.0);
 		}
 
-		matrixStackIn.mulPose(new Quaternion(new Vector3f(1, 0, 0), (float) -solarPanel.currentRotation.getValue(), false));
+		matrixStackIn.mulPose(MathUtils.rotVectorQuaternionDeg((float) -solarPanel.currentRotation.getValue(), MathUtils.XP));
+		//matrixStackIn.mulPose(new Quaternion(new Vector3f(1, 0, 0), (float) -solarPanel.currentRotation.getValue(), false));
 
 		matrixStackIn.scale(2, 2, 2);
 

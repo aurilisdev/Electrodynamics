@@ -25,7 +25,7 @@ public class PacketUpdateCarriedItemServer {
 	public static void handle(PacketUpdateCarriedItemServer message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			ServerLevel world = context.get().getSender().getLevel();
+			ServerLevel world = context.get().getSender().serverLevel();
 			if (world != null) {
 				GenericTile tile = (GenericTile) world.getBlockEntity(message.tilePos);
 				if (tile != null) {

@@ -3,14 +3,13 @@ package electrodynamics.prefab.screen.component.button;
 import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
-import net.minecraft.client.gui.GuiComponent;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -38,7 +37,7 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 	@Nullable
 	public Component label = null;
 
-	public SoundEvent pressSound = SoundEvents.UI_BUTTON_CLICK;
+	public SoundEvent pressSound = SoundEvents.UI_BUTTON_CLICK.get();
 
 	public ScreenComponentButton(ITexture texture, int x, int y) {
 		super(texture, x, y);
@@ -73,28 +72,28 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 	}
 
 	@Override
-	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		if (isVanillaRender && isVisible()) {
 			Minecraft minecraft = Minecraft.getInstance();
 
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			RenderingUtils.bindTexture(AbstractWidget.WIDGETS_LOCATION);
+			//RenderingUtils.bindTexture(AbstractWidget.WIDGETS_LOCATION);
 			RenderingUtils.color(color);
 			int i = this.getVanillaYImage(isHovered());
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
 			RenderSystem.enableDepthTest();
-			gui.drawTexturedRect(stack, this.xLocation + guiWidth, this.yLocation + guiHeight, 0, 46 + i * 20, this.width / 2, this.height, 256, 256);
-			gui.drawTexturedRect(stack, this.xLocation + guiWidth + this.width / 2, this.yLocation + guiHeight, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height, 256, 256);
+			graphics.blit(AbstractWidget.WIDGETS_LOCATION, this.xLocation + guiWidth, this.yLocation + guiHeight, 0, 46 + i * 20, this.width / 2, this.height, 256, 256);
+			graphics.blit(AbstractWidget.WIDGETS_LOCATION, this.xLocation + guiWidth + this.width / 2, this.yLocation + guiHeight, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height, 256, 256);
 
 			Font font = minecraft.font;
 			Component label = getLabel();
 			if (label != null) {
-				GuiComponent.drawCenteredString(stack, font, label, this.xLocation + guiWidth + this.width / 2, this.yLocation + guiHeight + (this.height - 8) / 2, color);
+				graphics.drawCenteredString(font, label, this.xLocation + guiWidth + this.width / 2, this.yLocation + guiHeight + (this.height - 8) / 2, color);
 			}
 
 		} else {
-			super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
+			super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 		}
 	}
 
@@ -110,10 +109,10 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 	}
 
 	@Override
-	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		super.renderForeground(stack, xAxis, yAxis, guiWidth, guiHeight);
+	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		super.renderForeground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 		if (isVisible() && isMouseOver(xAxis, yAxis) && onTooltip != null) {
-			onTooltip.onTooltip(stack, this, xAxis, yAxis);
+			onTooltip.onTooltip(graphics, this, xAxis, yAxis);
 		}
 	}
 
@@ -182,7 +181,7 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 
 	public static interface OnTooltip {
 
-		public void onTooltip(PoseStack stack, ScreenComponentButton<?> button, int xAxis, int yAxis);
+		public void onTooltip(GuiGraphics graphics, ScreenComponentButton<?> button, int xAxis, int yAxis);
 
 	}
 

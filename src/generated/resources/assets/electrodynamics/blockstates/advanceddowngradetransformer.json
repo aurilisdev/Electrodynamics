@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/advanceddowngradetransformer"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/advanceddowngradetransformer",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/advanceddowngradetransformer",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/advanceddowngradetransformer",
+      "y": 180
+    }
+  }
+}

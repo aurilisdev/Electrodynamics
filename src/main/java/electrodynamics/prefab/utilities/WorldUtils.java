@@ -142,9 +142,9 @@ public class WorldUtils {
 			ServerLevel level = (ServerLevel) chunk.getLevel();
 			chunk.setUnsaved(true);
 			LevelLightEngine lightManager = level.getLightEngine();
-			lightManager.enableLightSources(chunk.getPos(), false);
+			lightManager.setLightEnabled(chunk.getPos(), false);
 
-			ClientboundLevelChunkWithLightPacket packet = new ClientboundLevelChunkWithLightPacket(chunk, lightManager, null, null, false);
+			ClientboundLevelChunkWithLightPacket packet = new ClientboundLevelChunkWithLightPacket(chunk, lightManager, null, null);
 			level.getChunkSource().chunkMap.getPlayers(chunk.getPos(), false).forEach(e -> e.connection.send(packet));
 			level.getChunkSource().updateChunkForced(chunk.getPos(), true);
 		}

@@ -70,7 +70,7 @@ public class ItemJetpack extends ArmorItem {
 	public static final String WAS_HURT_KEY = "washurt";
 
 	public ItemJetpack() {
-		super(Jetpack.JETPACK, EquipmentSlot.CHEST, new Item.Properties().tab(References.CORETAB).stacksTo(1));
+		super(Jetpack.JETPACK, Type.CHESTPLATE, new Item.Properties().tab(References.CORETAB).stacksTo(1));
 	}
 
 	@Override
@@ -166,7 +166,7 @@ public class ItemJetpack extends ArmorItem {
 	public static void armorTick(ItemStack stack, Level world, Player player, float particleZ, boolean isCombat) {
 		if (world.isClientSide) {
 			ArmorItem item = (ArmorItem) stack.getItem();
-			if (item.getSlot() == EquipmentSlot.CHEST && stack.hasTag()) {
+			if (item.getEquipmentSlot() == EquipmentSlot.CHEST && stack.hasTag()) {
 				boolean isDown = KeyBinds.jetpackAscend.isDown();
 				int mode = stack.hasTag() ? stack.getTag().getInt(NBTUtils.MODE) : 0;
 				boolean enoughFuel = stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> cap.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
@@ -268,7 +268,7 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	public static boolean staticElytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
-		if (entity.level.isClientSide) {
+		if (entity.level().isClientSide) {
 			return true;
 		}
 		int nextFlightTick = flightTicks + 1;
@@ -383,16 +383,6 @@ public class ItemJetpack extends ArmorItem {
 		JETPACK;
 
 		@Override
-		public int getDurabilityForSlot(EquipmentSlot slotIn) {
-			return 100;
-		}
-
-		@Override
-		public int getDefenseForSlot(EquipmentSlot slotIn) {
-			return 1;
-		}
-
-		@Override
 		public SoundEvent getEquipSound() {
 			return SoundEvents.ARMOR_EQUIP_IRON;
 		}
@@ -410,6 +400,16 @@ public class ItemJetpack extends ArmorItem {
 		@Override
 		public float getKnockbackResistance() {
 			return 0.0F;
+		}
+
+		@Override
+		public int getDurabilityForType(Type pType) {
+			return 100;
+		}
+
+		@Override
+		public int getDefenseForType(Type pType) {
+			return 1;
 		}
 
 	}

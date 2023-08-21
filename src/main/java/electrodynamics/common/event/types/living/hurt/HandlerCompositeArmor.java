@@ -8,6 +8,8 @@ import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageTypes;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
@@ -20,7 +22,8 @@ public class HandlerCompositeArmor extends AbstractLivingHurtHandler {
 
 	@Override
 	public void handle(LivingHurtEvent event) {
-		if (event.getSource().isFall()) {
+		LivingEntity entity = event.getEntity();
+		if (entity.damageSources().fall().is(DamageTypes.FALL)) {
 			return;
 		}
 		List<ItemStack> armorPieces = new ArrayList<>();
@@ -41,7 +44,7 @@ public class HandlerCompositeArmor extends AbstractLivingHurtHandler {
 
 	private boolean compareArmor(List<ItemStack> set1, ItemStack[] set2) {
 		if (set1.size() >= 3) {
-			return ItemStack.isSameIgnoreDurability(set1.get(0), set2[3]) && ItemStack.isSameIgnoreDurability(set1.get(1), set2[2]) && ItemStack.isSameIgnoreDurability(set1.get(2), set2[1]) && ItemStack.isSameIgnoreDurability(set1.get(3), set2[0]);
+			return set1.get(0) == set2[3] && set1.get(1) == set2[2] && set1.get(2) == set2[1] && set1.get(3) == set2[0];
 		}
 		return false;
 	}

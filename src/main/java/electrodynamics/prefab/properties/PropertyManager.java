@@ -1,14 +1,37 @@
 package electrodynamics.prefab.properties;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.Nullable;
+
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
+/**
+ * A wrapper class designed to react when properties change and take according action
+ * 
+ * @author AurilisDev
+ * @author skip999
+ *
+ */
 public class PropertyManager {
+	
+	public static final ConcurrentHashMap<ResourceLocation, IPropertyType> REGISTERED_PROPERTIES = new ConcurrentHashMap<>();
+	
+	public static void registerProperties(Map<ResourceLocation, IPropertyType> propeties) {
+		REGISTERED_PROPERTIES.clear();
+		REGISTERED_PROPERTIES.putAll(propeties);
+	}
 
 	private final BlockEntity owner;
 
 	private ArrayList<Property<?>> properties = new ArrayList<>();
+
+	private HashSet<PropertyWrapper> dirtyProperties = new HashSet<>();
+
 	private boolean isDirty = false;
 
 	public PropertyManager(BlockEntity owner) {
@@ -26,53 +49,18 @@ public class PropertyManager {
 		return properties;
 	}
 
-	public ArrayList<Property<?>> getPropertiesToSave() {
+	public HashSet<PropertyWrapper> getClientUpdateProperties() {
 
-		ArrayList<Property<?>> toSave = new ArrayList<>();
-
-		for (Property<?> prop : properties) {
-
-			if (prop.isDirty() && prop.shouldSave()) {
-
-				toSave.add(prop);
-
-			} else {
-
-				toSave.add(null);
-
-			}
-
-		}
-
-		return toSave;
-
-	}
-
-	public ArrayList<Property<?>> getClientUpdateProperties() {
-
-		ArrayList<Property<?>> toClient = new ArrayList<>();
-
-		for (Property<?> prop : properties) {
-
-			if (prop.isDirty() && prop.shouldUpdateClient()) {
-
-				toClient.add(prop);
-
-			} else {
-
-				toClient.add(null);
-
-			}
-
-		}
-
-		return toClient;
+		return dirtyProperties;
 
 	}
 
 	public void clean() {
 		isDirty = false;
-		properties.forEach(Property::clean);
+		dirtyProperties.forEach(wrapper -> {
+			wrapper.property.clean();
+		});
+		dirtyProperties.clear();
 	}
 
 	public void update(int indexOf, Object value) {
@@ -83,8 +71,11 @@ public class PropertyManager {
 		return isDirty;
 	}
 
-	public void setDirty() {
+	public void setDirty(Property<?> dirtyProp) {
 		isDirty = true;
+		if(dirtyProp.shouldUpdateClient()) {
+			dirtyProperties.add(new PropertyWrapper(dirtyProp.getIndex(), dirtyProp.getType(), dirtyProp.get(), dirtyProp));
+		}
 	}
 
 	@Override
@@ -98,5 +89,9 @@ public class PropertyManager {
 
 	public BlockEntity getOwner() {
 		return owner;
+	}
+
+	public static record PropertyWrapper(int index, IPropertyType type, Object value, @Nullable Property<?> property) {
+
 	}
 }

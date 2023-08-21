@@ -5,6 +5,7 @@ import static electrodynamics.datagen.utils.AdvancementBuilder.create;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import com.google.common.collect.Sets;
@@ -30,8 +31,9 @@ import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.PlayerTrigger;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataGenerator.PathProvider;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.PackOutput.PathProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
 
@@ -40,17 +42,17 @@ public class ElectrodynamicsAdvancementProvider implements DataProvider {
 	public final String modID;
 	private final PathProvider pathProvider;
 
-	public ElectrodynamicsAdvancementProvider(DataGenerator generatorIn, String modID) {
-		this.pathProvider = generatorIn.createPathProvider(DataGenerator.Target.DATA_PACK, "advancements");
+	public ElectrodynamicsAdvancementProvider(PackOutput packoutput, String modID) {
+		this.pathProvider = packoutput.createPathProvider(PackOutput.Target.DATA_PACK, "advancements");
 		this.modID = modID;
 	}
 
-	public ElectrodynamicsAdvancementProvider(DataGenerator generatorIn) {
-		this(generatorIn, References.ID);
+	public ElectrodynamicsAdvancementProvider(PackOutput packOutput) {
+		this(packOutput, References.ID);
 	}
 
 	@Override
-	public void run(CachedOutput pOutput) throws IOException {
+	public CompletableFuture<?> run(CachedOutput pOutput) {
 		Set<ResourceLocation> registeredAdvancements = Sets.newHashSet();
 		Consumer<AdvancementBuilder> consumer = advancementBuilder -> {
 			if (!registeredAdvancements.add(advancementBuilder.id)) {
@@ -58,11 +60,7 @@ public class ElectrodynamicsAdvancementProvider implements DataProvider {
 			}
 			Path path = this.pathProvider.json(advancementBuilder.id);
 
-			try {
-				DataProvider.saveStable(pOutput, advancementBuilder.serializeToJson(), path);
-			} catch (IOException ioexception) {
-				Electrodynamics.LOGGER.error("Couldn't save advancement {}", path, ioexception);
-			}
+			DataProvider.saveStable(pOutput, advancementBuilder.serializeToJson(), path);
 		};
 
 		registerAdvancements(consumer);

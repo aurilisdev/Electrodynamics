@@ -51,7 +51,7 @@ public interface IMultiblockParentTile {
 			subnodeBlock = subnodeState.getBlock();
 
 			if (update) {
-				if (subnodeState.getMaterial().isReplaceable()) {
+				if (subnodeState.canBeReplaced()) {
 					world.setBlockAndUpdate(offset, ElectrodynamicsBlocks.multi.defaultBlockState());
 				}
 				TileMultiSubnode subnodeTile = (TileMultiSubnode) world.getBlockEntity(offset);

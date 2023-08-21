@@ -9,69 +9,69 @@ import net.minecraft.network.chat.MutableComponent;
 
 public class ChatFormatter {
 
-	public static MutableComponent getChatDisplay(double value, DisplayUnit unit, int decimalPlaces, boolean isShort) {
+	public static MutableComponent getChatDisplay(double value, IDisplayUnit unit, int decimalPlaces, boolean isShort) {
 		if (value < Long.MIN_VALUE + 10000) {
-			return Component.literal("-").append(ElectroTextUtils.gui("displayunit.infinity.name")).append(" ").append((isShort ? unit.symbol : unit.namePlural));
+			return Component.literal("-").append(ElectroTextUtils.gui("displayunit.infinity.name")).append(" ").append((isShort ? unit.getSymbol() : unit.getNamePlural()));
 		}
 		if (value > Long.MAX_VALUE - 10000) {
-			return ElectroTextUtils.gui("displayunit.infinity.name").append(" ").append((isShort ? unit.symbol : unit.namePlural));
+			return ElectroTextUtils.gui("displayunit.infinity.name").append(" ").append((isShort ? unit.getSymbol() : unit.getNamePlural()));
 		}
 		Component unitName;
 		if (isShort) {
-			unitName = unit.symbol;
+			unitName = unit.getSymbol();
 		} else if (value > 1.0D) {
-			unitName = unit.namePlural;
+			unitName = unit.getNamePlural();
 		} else {
-			unitName = unit.name;
+			unitName = unit.getName();
 		}
 
 		if (value == 0.0D) {
-			return Component.literal(value + "").append(unit.distanceFromValue).append(unitName);
+			return Component.literal(value + "").append(unit.getDistanceFromValue()).append(unitName);
 		}
 
 		for (MeasurementUnit measurement : MeasurementUnit.values()) {
 
-			if (value < measurement.value) {
+			if (value < measurement.getValue()) {
 
 				if (measurement.ordinal() == 0) {
-					return formatDecimals(measurement.process(value), decimalPlaces).append(unit.distanceFromValue).append(measurement.getName(isShort)).append(unitName);
+					return formatDecimals(measurement.process(value), decimalPlaces).append(unit.getDistanceFromValue()).append(measurement.getName(isShort)).append(unitName);
 				}
 				measurement = MeasurementUnit.values()[measurement.ordinal() - 1];
-				return formatDecimals(measurement.process(value), decimalPlaces).append(unit.distanceFromValue).append(measurement.getName(isShort)).append(unitName);
+				return formatDecimals(measurement.process(value), decimalPlaces).append(unit.getDistanceFromValue()).append(measurement.getName(isShort)).append(unitName);
 			}
 		}
 
 		MeasurementUnit measurement = MeasurementUnit.values()[MeasurementUnit.values().length - 1];
-		return formatDecimals(measurement.process(value), decimalPlaces).append(unit.distanceFromValue).append(measurement.getName(isShort)).append(unitName);
+		return formatDecimals(measurement.process(value), decimalPlaces).append(unit.getDistanceFromValue()).append(measurement.getName(isShort)).append(unitName);
 	}
 
-	public static MutableComponent getChatDisplay(double value, DisplayUnit unit) {
+	public static MutableComponent getChatDisplay(double value, IDisplayUnit unit) {
 		return getChatDisplay(value, unit, 2, false);
 	}
 
-	public static MutableComponent getChatDisplayShort(double value, DisplayUnit unit) {
+	public static MutableComponent getChatDisplayShort(double value, IDisplayUnit unit) {
 		return getChatDisplay(value, unit, 2, true);
 	}
 
-	public static MutableComponent getDisplayShort(double value, DisplayUnit unit, int decimalPlaces) {
+	public static MutableComponent getDisplayShort(double value, IDisplayUnit unit, int decimalPlaces) {
 		return getChatDisplay(value, unit, decimalPlaces, true);
 	}
 
-	public static MutableComponent getChatDisplaySimple(double value, DisplayUnit unit, int decimalPlaces) {
+	public static MutableComponent getChatDisplaySimple(double value, IDisplayUnit unit, int decimalPlaces) {
 		if (value > 1.0D) {
 
 			if (decimalPlaces < 1) {
-				return Component.literal((int) value + "").append(unit.distanceFromValue).append(unit.namePlural);
+				return Component.literal((int) value + "").append(unit.getDistanceFromValue()).append(unit.getNamePlural());
 			}
 
-			return formatDecimals(value, decimalPlaces).append(unit.distanceFromValue).append(unit.namePlural);
+			return formatDecimals(value, decimalPlaces).append(unit.getDistanceFromValue()).append(unit.getNamePlural());
 		}
 
 		if (decimalPlaces < 1) {
-			return Component.literal((int) value + "").append(unit.distanceFromValue).append(unit.name);
+			return Component.literal((int) value + "").append(unit.getDistanceFromValue()).append(unit.getName());
 		}
 
-		return formatDecimals(value, decimalPlaces).append(unit.distanceFromValue).append(unit.name);
+		return formatDecimals(value, decimalPlaces).append(unit.getDistanceFromValue()).append(unit.getName());
 	}
 
 	public static double roundDecimals(double d, int decimalPlaces) {

@@ -38,8 +38,9 @@ public class ElectrodynamicsSounds {
 	public static final RegistryObject<SoundEvent> SOUND_PRESSURERELEASE = sound("pressurerelease");
 	public static final RegistryObject<SoundEvent> SOUND_COMPRESSORRUNNING = sound("compressorrunning");
 	public static final RegistryObject<SoundEvent> SOUND_DECOMPRESSORRUNNING = sound("decompressorrunning");
+	public static final RegistryObject<SoundEvent> SOUND_TRANSFORMERHUM = sound("transformerhum");
 
 	private static RegistryObject<SoundEvent> sound(String name) {
-		return SOUNDS.register(name, () -> new SoundEvent(new ResourceLocation(References.ID + ":" + name)));
+		return SOUNDS.register(name, () -> SoundEvent.createFixedRangeEvent(new ResourceLocation(References.ID + ":" + name), 16.0F));
 	}
 }

@@ -2,6 +2,7 @@ package electrodynamics.common.entity.projectile;
 
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -32,7 +33,7 @@ public abstract class EntityCustomProjectile extends ThrowableItemProjectile imp
 	}
 
 	@Override
-	public Packet<?> getAddEntityPacket() {
+	public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
@@ -53,7 +54,7 @@ public abstract class EntityCustomProjectile extends ThrowableItemProjectile imp
 
 	@Override
 	public void tick() {
-		if (level.isClientSide) {
+		if (level().isClientSide) {
 			setDeltaMovement(clientDeltaX);
 		}
 		super.tick();

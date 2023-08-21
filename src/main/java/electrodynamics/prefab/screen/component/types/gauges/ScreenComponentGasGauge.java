@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import org.joml.Matrix4f;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import com.mojang.math.Matrix4f;
 
 import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
@@ -24,6 +24,7 @@ import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
@@ -42,27 +43,25 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 	}
 
 	@Override
-	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
+	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 
 		IGasTank tank = gasTank.get();
 
 		if (tank != null) {
 
-			renderMercuryTexture(stack, guiWidth + xLocation + 1, guiHeight + yLocation + 1, (float) tank.getGasAmount() / (float) tank.getCapacity());
+			renderMercuryTexture(graphics, guiWidth + xLocation + 1, guiHeight + yLocation + 1, (float) tank.getGasAmount() / (float) tank.getCapacity());
 
 		}
 
 		GasGaugeTextures texture = GasGaugeTextures.LEVEL_DEFAULT;
 
-		RenderingUtils.bindTexture(texture.getLocation());
-
-		gui.drawTexturedRect(stack, guiWidth + xLocation, guiHeight + yLocation + 1, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
+		graphics.blit(texture.getLocation(), guiWidth + xLocation, guiHeight + yLocation + 1, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
 
 	}
 
 	@Override
-	public void renderForeground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		if (isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(), super.texture.textureHeight())) {
 
 			IGasTank tank = gasTank.get();
@@ -88,20 +87,20 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 
 			}
 
-			gui.displayTooltips(stack, tooltips, xAxis, yAxis);
+			graphics.renderTooltip(gui.getFontRenderer(), tooltips, xAxis, yAxis);
 
 		}
 	}
 
-	public static void renderMercuryTexture(PoseStack stack, int x, int y, float progress) {
+	public static void renderMercuryTexture(GuiGraphics graphics, int x, int y, float progress) {
 
 		GasGaugeTextures texture = GasGaugeTextures.MERCURY_FLUID;
 
 		TextureAtlasSprite mercury = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(texture.getLocation());
 
-		Matrix4f matrix = stack.last().pose();
+		Matrix4f matrix = graphics.pose().last().pose();
 
-		RenderSystem.setShaderTexture(0, mercury.atlas().getId());
+		RenderingUtils.bindTexture(mercury.atlasLocation());
 
 		int height = (int) (progress * texture.textureHeight());
 

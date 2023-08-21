@@ -1,11 +1,9 @@
 package electrodynamics.prefab.screen.component.button.type;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.References;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.prefab.screen.component.button.ScreenComponentButton;
-import electrodynamics.prefab.utilities.RenderingUtils;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -21,13 +19,12 @@ public class ButtonGuidebook extends ScreenComponentButton<ButtonGuidebook> {
 	}
 
 	@Override
-	public void renderBackground(PoseStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		if (isActiveAndVisible() && isHovered()) {
 			ITexture on = type.on;
-			RenderingUtils.bindTexture(on.getLocation());
-			gui.drawTexturedRect(stack, xLocation + guiWidth, yLocation + guiHeight, on.textureU(), on.textureV(), on.textureWidth(), on.textureHeight(), on.imageWidth(), on.imageHeight());
+			graphics.blit(on.getLocation(), xLocation + guiWidth, yLocation + guiHeight, on.textureU(), on.textureV(), on.textureWidth(), on.textureHeight(), on.imageWidth(), on.imageHeight());
 		} else {
-			super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
+			super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 		}
 
 	}
