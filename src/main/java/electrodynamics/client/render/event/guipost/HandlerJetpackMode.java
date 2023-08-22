@@ -55,8 +55,6 @@ public class HandlerJetpackMode extends AbstractPostGuiOverlayHandler {
 
 		});
 
-		minecraft.getTextureManager().bindForSetup(GuiComponent.GUI_ICONS_LOCATION);
-
 		stack.popPose();
 
 	}

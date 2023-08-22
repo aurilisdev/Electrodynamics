@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
@@ -53,10 +52,6 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 		if (!armor.get(3).isEmpty() && handleHelmet(armor.get(3), overlay, graphics, window, minecraft, heightOffset)) {
 			heightOffset -= 30;
 		}
-
-		
-		
-		minecraft.getTextureManager().bindForSetup(GuiComponent.GUI_ICONS_LOCATION);
 
 		graphics.pose().popPose();
 

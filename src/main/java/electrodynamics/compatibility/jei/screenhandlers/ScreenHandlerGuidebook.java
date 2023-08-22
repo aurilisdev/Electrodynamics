@@ -2,6 +2,7 @@ package electrodynamics.compatibility.jei.screenhandlers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -12,12 +13,13 @@ import electrodynamics.client.guidebook.utils.components.Page.TextWrapper;
 import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper;
 import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper.GraphicTextDescriptor;
 import mezz.jei.api.gui.handlers.IGuiContainerHandler;
+import mezz.jei.api.runtime.IClickableIngredient;
 import net.minecraft.client.renderer.Rect2i;
 
 public class ScreenHandlerGuidebook implements IGuiContainerHandler<ScreenGuidebook> {
 
 	@Override
-	public @Nullable Object getIngredientUnderMouse(ScreenGuidebook screen, double mouseX, double mouseY) {
+	public Optional<IClickableIngredient<?>> getClickableIngredientUnderMouse(ScreenGuidebook screen, double mouseX, double mouseY) {
 
 		int refX = screen.getXRef();
 		int refY = screen.getYRef();
