@@ -1,5 +1,7 @@
 package electrodynamics.datagen.server;
 
+import java.util.concurrent.CompletableFuture;
+
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
@@ -22,20 +24,22 @@ import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.registers.ElectrodynamicsItems;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.tags.BlockTagsProvider;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.item.Item;
+import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ElectrodynamicsItemTagsProvider extends ItemTagsProvider {
 
-	public ElectrodynamicsItemTagsProvider(DataGenerator generator, BlockTagsProvider provider, ExistingFileHelper existingFileHelper) {
-		super(generator, provider, References.ID, existingFileHelper);
+	public ElectrodynamicsItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, BlockTagsProvider provider, ExistingFileHelper existingFileHelper) {
+		super(output, lookupProvider, provider.contentsGetter(), References.ID, existingFileHelper);
 	}
 
 	@Override
-	protected void addTags() {
+	protected void addTags(Provider pProvider) {
 
 		for (SubtypeCircuit circuit : SubtypeCircuit.values()) {
 			tag(circuit.tag).add(ElectrodynamicsItems.getItem(circuit));

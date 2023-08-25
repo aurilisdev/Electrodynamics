@@ -13,7 +13,6 @@ import electrodynamics.datagen.utils.AbstractLootTableProvider;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsBlocks;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -22,12 +21,8 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider {
 
-	public ElectrodynamicsLootTablesProvider(DataGenerator generator) {
-		super(generator);
-	}
-
 	@Override
-	protected void addTables() {
+	protected void generate() {
 
 		for (SubtypeFluidPipe pipe : SubtypeFluidPipe.values()) {
 			addSimpleBlock(ElectrodynamicsBlocks.getBlock(pipe));
@@ -169,7 +164,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 	}
 
 	public <T extends GenericTile> void addMachineTable(Block block, RegistryObject<BlockEntityType<T>> tilereg, boolean items, boolean fluids, boolean gases, boolean energy, boolean additional) {
-		lootTables.put(block, machineTable(name(block), block, tilereg.get(), items, fluids, gases, energy, additional));
+		add(block, machineTable(name(block), block, tilereg.get(), items, fluids, gases, energy, additional));
 	}
 
 	/**
@@ -180,7 +175,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 	 */
 	public void addSilkTouchOnlyTable(RegistryObject<Block> reg) {
 		Block block = reg.get();
-		lootTables.put(block, createSilkTouchOnlyTable(name(block), block));
+		add(block, createSilkTouchOnlyTable(name(block), block));
 	}
 
 	public void addFortuneAndSilkTouchTable(RegistryObject<Block> reg, Item nonSilk, int minDrop, int maxDrop) {
@@ -188,7 +183,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 	}
 
 	public void addFortuneAndSilkTouchTable(Block block, Item nonSilk, int minDrop, int maxDrop) {
-		lootTables.put(block, createSilkTouchAndFortuneTable(name(block), block, nonSilk, minDrop, maxDrop));
+		add(block, createSilkTouchAndFortuneTable(name(block), block, nonSilk, minDrop, maxDrop));
 	}
 
 	public void addSimpleBlock(RegistryObject<Block> reg) {
@@ -197,7 +192,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 
 	public void addSimpleBlock(Block block) {
 
-		lootTables.put(block, createSimpleBlockTable(name(block), block));
+		add(block, createSimpleBlockTable(name(block), block));
 	}
 
 	public String name(Block block) {

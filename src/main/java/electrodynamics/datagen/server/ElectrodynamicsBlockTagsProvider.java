@@ -1,5 +1,7 @@
 package electrodynamics.datagen.server;
 
+import java.util.concurrent.CompletableFuture;
+
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeGlass;
@@ -11,8 +13,9 @@ import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.registers.ElectrodynamicsBlocks;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
-import net.minecraft.data.DataGenerator;
+import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.Tags;
@@ -21,24 +24,28 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
 
-	public ElectrodynamicsBlockTagsProvider(DataGenerator pGenerator, ExistingFileHelper existingFileHelper) {
-		super(pGenerator, References.ID, existingFileHelper);
+	public ElectrodynamicsBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
+		super(output, lookupProvider, References.ID, existingFileHelper);
 	}
 
 	@Override
-	protected void addTags() {
-
-		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOre.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOreDeepslate.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeRawOreBlock.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeMachine.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeWire.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeFluidPipe.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeGlass.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeResourceBlock.values())).add(ElectrodynamicsBlocks.blockSeismicMarker).add(ElectrodynamicsBlocks.blockLogisticalManager);
+	protected void addTags(Provider provider) {
+		tag(BlockTags.MINEABLE_WITH_PICKAXE).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOre.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOreDeepslate.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeRawOreBlock.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeMachine.values()))
+				.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeWire.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeFluidPipe.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeGlass.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeResourceBlock.values())).add(ElectrodynamicsBlocks.blockSeismicMarker)
+				.add(ElectrodynamicsBlocks.blockLogisticalManager);
 
 		tag(BlockTags.MINEABLE_WITH_HOE).add(ElectrodynamicsBlocks.blockFrame).add(ElectrodynamicsBlocks.blockFrameCorner);
 
-		tag(Tags.Blocks.NEEDS_WOOD_TOOL).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeGlass.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOre.getOreForMiningLevel(0))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOreDeepslate.getOreForMiningLevel(0))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeRawOreBlock.getForMiningLevel(0))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeResourceBlock.getForMiningLevel(0))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeWire.values())).add(ElectrodynamicsBlocks.blockFrame).add(ElectrodynamicsBlocks.blockFrameCorner);
+		tag(Tags.Blocks.NEEDS_WOOD_TOOL).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeGlass.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOre.getOreForMiningLevel(0))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOreDeepslate.getOreForMiningLevel(0))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeRawOreBlock.getForMiningLevel(0)))
+				.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeResourceBlock.getForMiningLevel(0))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeWire.values())).add(ElectrodynamicsBlocks.blockFrame).add(ElectrodynamicsBlocks.blockFrameCorner);
 
-		tag(BlockTags.NEEDS_STONE_TOOL).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeMachine.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeFluidPipe.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOre.getOreForMiningLevel(1))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOreDeepslate.getOreForMiningLevel(1))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeRawOreBlock.getForMiningLevel(1))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeResourceBlock.getForMiningLevel(1)));
+		tag(BlockTags.NEEDS_STONE_TOOL).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeMachine.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeFluidPipe.values())).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOre.getOreForMiningLevel(1))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOreDeepslate.getOreForMiningLevel(1)))
+				.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeRawOreBlock.getForMiningLevel(1))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeResourceBlock.getForMiningLevel(1)));
 
 		tag(BlockTags.NEEDS_IRON_TOOL).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOre.getOreForMiningLevel(2))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOreDeepslate.getOreForMiningLevel(2))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeRawOreBlock.getForMiningLevel(2))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeResourceBlock.getForMiningLevel(2)));
 
-		tag(BlockTags.NEEDS_DIAMOND_TOOL).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOre.getOreForMiningLevel(3))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOreDeepslate.getOreForMiningLevel(3))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeRawOreBlock.getForMiningLevel(3))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeResourceBlock.getForMiningLevel(3)));
+		tag(BlockTags.NEEDS_DIAMOND_TOOL).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOre.getOreForMiningLevel(3))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeOreDeepslate.getOreForMiningLevel(3))).add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeRawOreBlock.getForMiningLevel(3)))
+				.add(ElectrodynamicsBlocks.getAllBlockForSubtype(SubtypeResourceBlock.getForMiningLevel(3)));
 
 		for (SubtypeOre ore : SubtypeOre.values()) {
 			tag(ore.blockTag).add(ElectrodynamicsBlocks.getBlock(ore));
@@ -61,13 +68,6 @@ public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
 		for (SubtypeOre ore : SubtypeOre.values()) {
 			ores.addTag(ore.blockTag);
 		}
-
-	}
-
-	@Override
-	protected void addTags(Provider pProvider) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

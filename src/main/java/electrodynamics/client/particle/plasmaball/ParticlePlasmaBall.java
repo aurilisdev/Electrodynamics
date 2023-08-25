@@ -2,6 +2,7 @@ package electrodynamics.client.particle.plasmaball;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleEngine.SpriteParticleRegistration;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
@@ -46,7 +47,7 @@ public class ParticlePlasmaBall extends TextureSheetParticle {
 		return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
 	}
 
-	public static class Factory implements ParticleProvider<ParticleOptionPlasmaBall> {
+	public static class Factory implements ParticleProvider<ParticleOptionPlasmaBall>, SpriteParticleRegistration<ParticleOptionPlasmaBall> {
 
 		private final SpriteSet sprites;
 
@@ -57,6 +58,11 @@ public class ParticlePlasmaBall extends TextureSheetParticle {
 		@Override
 		public Particle createParticle(ParticleOptionPlasmaBall type, ClientLevel level, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
 			return new ParticlePlasmaBall(level, x, y, z, xSpeed, ySpeed, zSpeed, type, sprites);
+		}
+
+		@Override
+		public ParticleProvider<ParticleOptionPlasmaBall> create(SpriteSet sprites) {
+			return new Factory(sprites);
 		}
 
 	}

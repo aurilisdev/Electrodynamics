@@ -1,19 +1,10 @@
 package electrodynamics.datagen.utils;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.Map;
-
-import electrodynamics.Electrodynamics;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.data.loot.packs.VanillaBlockLoot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantments;
@@ -30,23 +21,12 @@ import net.minecraft.world.level.storage.loot.functions.CopyNameFunction;
 import net.minecraft.world.level.storage.loot.functions.CopyNbtFunction;
 import net.minecraft.world.level.storage.loot.functions.SetContainerContents;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
-public abstract class AbstractLootTableProvider extends LootTableProvider {
-
-	protected final Map<Block, LootTable.Builder> lootTables = new HashMap<>();
-	private final DataGenerator generator;
-
-	public AbstractLootTableProvider(DataGenerator dataGeneratorIn) {
-		super(dataGeneratorIn);
-		generator = dataGeneratorIn;
-	}
-
-	protected abstract void addTables();
+public abstract class AbstractLootTableProvider extends VanillaBlockLoot {
 
 	public LootTable.Builder machineTable(String name, Block block, BlockEntityType<?> type, boolean items, boolean fluids, boolean gases, boolean energy, boolean additional) {
 		CopyNbtFunction.Builder function = CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY);
@@ -109,31 +89,6 @@ public abstract class AbstractLootTableProvider extends LootTableProvider {
 	protected LootTable.Builder createSimpleBlockTable(String name, Block block) {
 		LootPool.Builder builder = LootPool.lootPool().name(name).setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(block));
 		return LootTable.lootTable().withPool(builder);
-	}
-
-	@Override
-	public void run(CachedOutput cache) {
-		addTables();
-
-		Map<ResourceLocation, LootTable> tables = new HashMap<>();
-		for (Map.Entry<Block, LootTable.Builder> entry : lootTables.entrySet()) {
-			tables.put(entry.getKey().getLootTable(), entry.getValue().setParamSet(LootContextParamSets.BLOCK).build());
-		}
-
-		Path outputFolder = generator.getOutputFolder();
-		tables.forEach((key, lootTable) -> {
-			Path path = outputFolder.resolve("data/" + key.getNamespace() + "/loot_tables/" + key.getPath() + ".json");
-			try {
-				DataProvider.saveStable(cache, LootTables.serialize(lootTable), path);
-			} catch (IOException e) {
-				Electrodynamics.LOGGER.error("Couldn't write loot table {}", path, e);
-			}
-		});
-	}
-
-	@Override
-	public String getName() {
-		return "Electrodynamics LootTables";
 	}
 
 }

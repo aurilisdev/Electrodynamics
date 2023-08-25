@@ -1,15 +1,15 @@
 package electrodynamics.datagen.server;
 
-import java.io.IOException;
 import java.nio.file.Path;
+import java.util.concurrent.CompletableFuture;
 
 import com.google.gson.JsonObject;
 
 import electrodynamics.api.References;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
 import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
+import net.minecraft.data.PackOutput;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
@@ -18,25 +18,20 @@ public class ThermoelectricGenHeatSourceProvider implements DataProvider {
 
 	public static final String LOC = "data/" + References.ID + "/" + ThermoelectricGeneratorHeatRegister.FOLDER + "/" + ThermoelectricGeneratorHeatRegister.FILE_NAME;
 
-	private final DataGenerator dataGenerator;
+	private final PackOutput output;
 
-	public ThermoelectricGenHeatSourceProvider(DataGenerator gen) {
-		dataGenerator = gen;
+	public ThermoelectricGenHeatSourceProvider(PackOutput output) {
+		this.output = output;
 	}
 
 	@Override
-	public void run(CachedOutput cache) throws IOException {
+	public CompletableFuture<?> run(CachedOutput cache) {
 		JsonObject json = new JsonObject();
 		getFuels(json);
 
-		Path parent = dataGenerator.getOutputFolder().resolve(LOC + ".json");
-		try {
-
-			DataProvider.saveStable(cache, json, parent);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		Path parent = output.getOutputFolder().resolve(LOC + ".json");
+		
+		return CompletableFuture.allOf(DataProvider.saveStable(cache, json, parent));
 	}
 
 	private void getFuels(JsonObject json) {

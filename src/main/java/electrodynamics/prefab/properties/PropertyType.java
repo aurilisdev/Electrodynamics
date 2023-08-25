@@ -1,12 +1,13 @@
 package electrodynamics.prefab.properties;
 
+import static net.minecraft.world.level.block.Block.BLOCK_STATE_REGISTRY;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
-import java.util.function.BiConsumer;
-import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -19,7 +20,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.item.BlockItem;
@@ -30,23 +30,23 @@ import net.minecraftforge.fluids.FluidStack;
 
 public enum PropertyType implements IPropertyType {
 
-	Byte((value, buf) -> buf.writeByte((Byte) value), FriendlyByteBuf::readByte, (prop, tag) -> tag.putByte(prop.getName(), (Byte) prop.get()), (prop, tag) -> tag.getByte(prop.getName()), val -> ((Number) val).byteValue()),
+	Byte(writer -> writer.buf().writeByte((Byte) writer.value()), reader -> reader.buf().readByte(), writer -> writer.tag().putByte(writer.prop().getName(), (Byte) writer.prop().get()), reader -> reader.tag().getByte(reader.prop().getName()), val -> ((Number) val).byteValue()),
 	//
-	Boolean((value, buf) -> buf.writeBoolean((Boolean) value), FriendlyByteBuf::readBoolean, (prop, tag) -> tag.putBoolean(prop.getName(), (Boolean) prop.get()), (prop, tag) -> tag.getBoolean(prop.getName())),
+	Boolean(writer -> writer.buf().writeBoolean((Boolean) writer.value()), reader -> reader.buf().readBoolean(), writer -> writer.tag().putBoolean(writer.prop().getName(), (Boolean) writer.prop().get()), reader -> reader.tag().getBoolean(reader.prop().getName())),
 	//
-	Integer((value, buf) -> buf.writeInt((Integer) value), FriendlyByteBuf::readInt, (prop, tag) -> tag.putInt(prop.getName(), (Integer) prop.get()), (prop, tag) -> tag.getInt(prop.getName()), val -> ((Number) val).intValue()),
+	Integer(writer -> writer.buf().writeInt((Integer) writer.value()), reader -> reader.buf().readInt(), writer -> writer.tag().putInt(writer.prop().getName(), (Integer) writer.prop().get()), reader -> reader.tag().getInt(reader.prop().getName()), val -> ((Number) val).intValue()),
 	//
-	Long((value, buf) -> buf.writeLong((Long) value), FriendlyByteBuf::readLong, (prop, tag) -> tag.putLong(prop.getName(), (Long) prop.get()), (prop, tag) -> tag.getLong(prop.getName()), val -> ((Number) val).longValue()),
+	Long(writer -> writer.buf().writeLong((Long) writer.value()), reader -> reader.buf().readLong(), writer -> writer.tag().putLong(writer.prop().getName(), (Long) writer.prop().get()), reader -> reader.tag().getLong(reader.prop().getName()), val -> ((Number) val).longValue()),
 	//
-	Float((value, buf) -> buf.writeFloat((Float) value), FriendlyByteBuf::readFloat, (prop, tag) -> tag.putFloat(prop.getName(), (Float) prop.get()), (prop, tag) -> tag.getFloat(prop.getName()), val -> ((Number) val).floatValue()),
+	Float(writer -> writer.buf().writeFloat((Float) writer.value()), reader -> reader.buf().readFloat(), writer -> writer.tag().putFloat(writer.prop().getName(), (Float) writer.prop().get()), reader -> reader.tag().getFloat(reader.prop().getName()), val -> ((Number) val).floatValue()),
 	//
-	Double((value, buf) -> buf.writeDouble((Double) value), FriendlyByteBuf::readDouble, (prop, tag) -> tag.putDouble(prop.getName(), (Double) prop.get()), (prop, tag) -> tag.getDouble(prop.getName()), val -> ((Number) val).doubleValue()),
+	Double(writer -> writer.buf().writeDouble((Double) writer.value()), reader -> reader.buf().readDouble(), writer -> writer.tag().putDouble(writer.prop().getName(), (Double) writer.prop().get()), reader -> reader.tag().getDouble(reader.prop().getName()), val -> ((Number) val).doubleValue()),
 	//
-	UUID((value, buf) -> buf.writeUUID((UUID) value), FriendlyByteBuf::readUUID, (prop, tag) -> tag.putUUID(prop.getName(), (UUID) prop.get()), (prop, tag) -> tag.getUUID(prop.getName())),
+	UUID(writer -> writer.buf().writeUUID((UUID) writer.value()), reader -> reader.buf().readUUID(), writer -> writer.tag().putUUID(writer.prop().getName(), (UUID) writer.prop().get()), reader -> reader.tag().getUUID(reader.prop().getName())),
 	//
-	CompoundTag((value, buf) -> buf.writeNbt((CompoundTag) value), FriendlyByteBuf::readNbt, (prop, tag) -> tag.put(prop.getName(), (CompoundTag) prop.get()), (prop, tag) -> tag.getCompound(prop.getName())),
+	CompoundTag(writer -> writer.buf().writeNbt((CompoundTag) writer.value()), reader -> reader.buf().readNbt(), writer -> writer.tag().put(writer.prop().getName(), (CompoundTag) writer.prop().get()), reader -> reader.tag().getCompound(reader.prop().getName())),
 	//
-	BlockPos((value, buf) -> buf.writeBlockPos((BlockPos) value), FriendlyByteBuf::readBlockPos, (prop, tag) -> tag.put(prop.getName(), NbtUtils.writeBlockPos((BlockPos) prop.get())), (prop, tag) -> NbtUtils.readBlockPos(tag.getCompound(prop.getName()))),
+	BlockPos(writer -> writer.buf().writeBlockPos((BlockPos) writer.value()), reader -> reader.buf().readBlockPos(), writer -> writer.tag().put(writer.prop().getName(), NbtUtils.writeBlockPos((BlockPos) writer.prop().get())), reader -> NbtUtils.readBlockPos(reader.tag().getCompound(reader.prop().getName()))),
 	//
 	InventoryItems((thisList, otherList) -> {
 		NonNullList<ItemStack> thisCasted = (NonNullList<ItemStack>) thisList;
@@ -63,33 +63,33 @@ public enum PropertyType implements IPropertyType {
 			}
 		}
 		return true;
-	}, (value, buf) -> {
+	}, writer -> {
 		//
-		NonNullList<ItemStack> list = (NonNullList<ItemStack>) value;
+		NonNullList<ItemStack> list = (NonNullList<ItemStack>) writer.value();
 		int size = list.size();
-		buf.writeInt(size);
+		writer.buf().writeInt(size);
 		CompoundTag tag = new CompoundTag();
 		ContainerHelper.saveAllItems(tag, list);
-		buf.writeNbt(tag);
-	}, buf -> {
+		writer.buf().writeNbt(tag);
+	}, reader -> {
 		//
-		int size = buf.readInt();
+		int size = reader.buf().readInt();
 		NonNullList<ItemStack> toBeFilled = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
-		ContainerHelper.loadAllItems(buf.readNbt(), toBeFilled);
+		ContainerHelper.loadAllItems(reader.buf().readNbt(), toBeFilled);
 		return toBeFilled;
-	}, (prop, tag) -> {
+	}, writer -> {
 		//
-		NonNullList<ItemStack> list = (NonNullList<ItemStack>) prop.get();
-		tag.putInt(prop.getName() + "_size", list.size());
-		ContainerHelper.saveAllItems(tag, list);
-	}, (prop, tag) -> {
+		NonNullList<ItemStack> list = (NonNullList<ItemStack>) writer.prop().get();
+		writer.tag().putInt(writer.prop().getName() + "_size", list.size());
+		ContainerHelper.saveAllItems(writer.tag(), list);
+	}, reader -> {
 		//
-		int size = tag.getInt(prop.getName() + "_size");
-		if (size == 0 || ((NonNullList<ItemStack>) prop.get()).size() != size) {
-			return null; // null is handled in function method caller and signals a bad value to be ignored
+		int size = reader.tag().getInt(reader.prop().getName() + "_size");
+		if (size == 0 || ((NonNullList<ItemStack>) reader.prop().get()).size() != size) {
+			return null; // null is handled in function method caller and signals a bad writer.value() to be ignored
 		}
 		NonNullList<ItemStack> toBeFilled = NonNullList.<ItemStack>withSize(size, ItemStack.EMPTY);
-		ContainerHelper.loadAllItems(tag, toBeFilled);
+		ContainerHelper.loadAllItems(reader.tag(), toBeFilled);
 		return toBeFilled;
 	}),
 	//
@@ -100,11 +100,11 @@ public enum PropertyType implements IPropertyType {
 			return false;
 		}
 		return thisCasted.getFluid().isSame(otherCasted.getFluid());
-	}, (value, buf) -> buf.writeFluidStack((FluidStack) value), FriendlyByteBuf::readFluidStack, (prop, tag) -> {
+	}, writer -> writer.buf().writeFluidStack((FluidStack) writer.value()), reader -> reader.buf().readFluidStack(), writer -> {
 		CompoundTag fluidTag = new CompoundTag();
-		((FluidStack) prop.get()).writeToNBT(fluidTag);
-		tag.put(prop.getName(), fluidTag);
-	}, (prop, tag) -> FluidStack.loadFluidStackFromNBT(tag.getCompound(prop.getName()))),
+		((FluidStack) writer.prop().get()).writeToNBT(fluidTag);
+		writer.tag().put(writer.prop().getName(), fluidTag);
+	}, reader -> FluidStack.loadFluidStackFromNBT(reader.tag().getCompound(reader.prop().getName()))),
 	//
 	BlockPosList((thisList, otherList) -> {
 		List<BlockPos> thisCasted = (List<BlockPos>) thisList;
@@ -121,28 +121,28 @@ public enum PropertyType implements IPropertyType {
 			}
 		}
 		return true;
-	}, (value, buf) -> {
-		List<BlockPos> posList = (List<BlockPos>) value;
-		buf.writeInt(posList.size());
-		posList.forEach(pos -> buf.writeBlockPos(pos));
-	}, buf -> {
+	}, writer -> {
+		List<BlockPos> posList = (List<BlockPos>) writer.value();
+		writer.buf().writeInt(posList.size());
+		posList.forEach(pos -> writer.buf().writeBlockPos(pos));
+	}, reader -> {
 		List<BlockPos> list = new ArrayList<>();
-		int size = buf.readInt();
+		int size = reader.buf().readInt();
 		for (int i = 0; i < size; i++) {
-			list.add(buf.readBlockPos());
+			list.add(reader.buf().readBlockPos());
 		}
 		return list;
-	}, (prop, tag) -> {
-		List<BlockPos> posList = (List<BlockPos>) prop.get();
+	}, writer -> {
+		List<BlockPos> posList = (List<BlockPos>) writer.prop().get();
 		CompoundTag data = new CompoundTag();
 		data.putInt("size", posList.size());
 		for (int i = 0; i < posList.size(); i++) {
 			data.put("pos" + i, NbtUtils.writeBlockPos(posList.get(i)));
 		}
-		tag.put(prop.getName(), data);
-	}, (prop, tag) -> {
+		writer.tag().put(writer.prop().getName(), data);
+	}, reader -> {
 		List<BlockPos> list = new ArrayList<>();
-		CompoundTag data = tag.getCompound(prop.getName());
+		CompoundTag data = reader.tag().getCompound(reader.prop().getName());
 		int size = data.getInt("size");
 		for (int i = 0; i < size; i++) {
 			list.add(NbtUtils.readBlockPos(data.getCompound("pos" + i)));
@@ -150,33 +150,33 @@ public enum PropertyType implements IPropertyType {
 		return list;
 	}),
 	//
-	Location((value, buf) -> ((Location) value).toBuffer(buf), electrodynamics.prefab.utilities.object.Location::fromBuffer, (prop, tag) -> ((Location) prop.get()).writeToNBT(tag, prop.getName()), (prop, tag) -> electrodynamics.prefab.utilities.object.Location.readFromNBT(tag, prop.getName())),
+	Location(writer -> ((Location) writer.value()).toBuffer(writer.buf()), reader -> electrodynamics.prefab.utilities.object.Location.fromBuffer(reader.buf()), writer -> ((Location) writer.prop().get()).writeToNBT(writer.tag(), writer.prop().getName()), reader -> electrodynamics.prefab.utilities.object.Location.readFromNBT(reader.tag(), reader.prop().getName())),
 	//
-	Gasstack((value, buf) -> ((GasStack) value).writeToBuffer(buf), GasStack::readFromBuffer, (prop, tag) -> tag.put(prop.getName(), ((GasStack) prop.get()).writeToNbt()), (prop, tag) -> GasStack.readFromNbt(tag.getCompound(prop.getName()))),
+	Gasstack(writer -> ((GasStack) writer.value()).writeToBuffer(writer.buf()), reader -> GasStack.readFromBuffer(reader.buf()), writer -> writer.tag().put(writer.prop().getName(), ((GasStack) writer.prop().get()).writeToNbt()), reader -> GasStack.readFromNbt(reader.tag().getCompound(reader.prop().getName()))),
 	//
-	Itemstack((thisStack, otherStack) -> ((ItemStack) thisStack).equals((ItemStack) otherStack, false), (value, buf) -> buf.writeItem((ItemStack) value), FriendlyByteBuf::readItem, (prop, tag) -> tag.put(prop.getName(), ((ItemStack) prop.get()).save(new CompoundTag())), (prop, tag) -> ItemStack.of(tag.getCompound(prop.getName()))),
+	Itemstack((thisStack, otherStack) -> ((ItemStack) thisStack).equals((ItemStack) otherStack, false), writer -> writer.buf().writeItem((ItemStack) writer.value()), reader -> reader.buf().readItem(), writer -> writer.tag().put(writer.prop().getName(), ((ItemStack) writer.prop().get()).save(new CompoundTag())), reader -> ItemStack.of(reader.tag().getCompound(reader.prop().getName()))),
 	//
-	Block((value, buf) -> {
-		buf.writeItem(new ItemStack(((net.minecraft.world.level.block.Block) value).asItem()));
-	}, buf -> {
-		ItemStack stack = buf.readItem();
+	Block(writer -> {
+		writer.buf().writeItem(new ItemStack(((net.minecraft.world.level.block.Block) writer.value()).asItem()));
+	}, reader -> {
+		ItemStack stack = reader.buf().readItem();
 		if (stack.isEmpty()) {
 			return Blocks.AIR;
 		}
 		return ((BlockItem) stack.getItem()).getBlock();
-	}, (prop, tag) -> {
-		tag.put(prop.getName(), new ItemStack(((net.minecraft.world.level.block.Block) prop.get()).asItem()).save(new CompoundTag()));
-	}, (prop, tag) -> {
-		ItemStack stack = ItemStack.of(tag.getCompound(prop.getName()));
+	}, writer -> {
+		writer.tag().put(writer.prop().getName(), new ItemStack(((net.minecraft.world.level.block.Block) writer.prop().get()).asItem()).save(new CompoundTag()));
+	}, reader -> {
+		ItemStack stack = ItemStack.of(reader.tag().getCompound(reader.prop().getName()));
 		if (stack.isEmpty()) {
 			return Blocks.AIR;
 		}
 		return ((BlockItem) stack.getItem()).getBlock();
 	}),
 	//
-	Blockstate((value, buf) -> buf.writeNbt(NbtUtils.writeBlockState((BlockState) value)), buf -> NbtUtils.readBlockState(buf.readNbt()), (prop, tag) -> tag.put(prop.getName(), NbtUtils.writeBlockState((BlockState) prop.get())), (prop, tag) -> NbtUtils.readBlockState(tag.getCompound(prop.getName()))),
+	Blockstate(writer -> writer.buf().writeId(BLOCK_STATE_REGISTRY, (BlockState) writer.value()), reader -> reader.buf().readById(BLOCK_STATE_REGISTRY), writer -> writer.tag().putInt(writer.prop().getName(), BLOCK_STATE_REGISTRY.getId((BlockState) writer.prop().get())), reader -> BLOCK_STATE_REGISTRY.byId(reader.tag().getInt(reader.prop().getName()))),
 	//
-	Transferpack((value, buf) -> ((TransferPack) value).writeToBuffer(buf), buf -> TransferPack.readFromBuffer(buf), (prop, tag) -> tag.put(prop.getName(), ((TransferPack) prop.get()).writeToTag()), (prop, tag) -> TransferPack.readFromTag(tag.getCompound(prop.getName()))),
+	Transferpack(writer -> ((TransferPack) writer.value()).writeToBuffer(writer.buf()), reader -> TransferPack.readFromBuffer(reader.buf()), writer -> writer.tag().put(writer.prop().getName(), ((TransferPack) writer.prop().get()).writeToTag()), reader -> TransferPack.readFromTag(reader.tag().getCompound(reader.prop().getName()))),
 	//
 	;
 
@@ -186,31 +186,31 @@ public enum PropertyType implements IPropertyType {
 	private final BiPredicate<Object, Object> predicate;
 
 	@Nonnull
-	private final BiConsumer<Object, FriendlyByteBuf> writeToBuffer;
+	private final Consumer<BufferWriter> writeToBuffer;
 	@Nonnull
-	private final Function<FriendlyByteBuf, Object> readFromBuffer;
+	private final Function<BufferReader, Object> readFromBuffer;
 
 	@Nonnull
-	private final BiConsumer<Property<?>, CompoundTag> writeToNbt;
+	private final Consumer<TagWriter> writeToNbt;
 	@Nonnull
-	private final BiFunction<Property<?>, CompoundTag, Object> readFromNbt;
+	private final Function<TagReader, Object> readFromNbt;
 
 	@Nonnull
 	private final Function<Object, Object> attemptCast;
 
-	private PropertyType(@Nonnull BiPredicate<Object, Object> predicate, @Nonnull BiConsumer<Object, FriendlyByteBuf> writeToBuffer, @Nonnull Function<FriendlyByteBuf, Object> readFromBuffer, @Nonnull BiConsumer<Property<?>, CompoundTag> writeToNbt, @Nonnull BiFunction<Property<?>, CompoundTag, Object> readFromNbt) {
+	private PropertyType(@Nonnull BiPredicate<Object, Object> predicate, @Nonnull Consumer<BufferWriter> writeToBuffer, @Nonnull Function<BufferReader, Object> readFromBuffer, @Nonnull Consumer<TagWriter> writeToNbt, @Nonnull Function<TagReader, Object> readFromNbt) {
 		this(predicate, writeToBuffer, readFromBuffer, writeToNbt, readFromNbt, val -> val);
 	}
 
-	private PropertyType(@Nonnull BiConsumer<Object, FriendlyByteBuf> writeToBuffer, @Nonnull Function<FriendlyByteBuf, Object> readFromBuffer, @Nonnull BiConsumer<Property<?>, CompoundTag> writeToNbt, @Nonnull BiFunction<Property<?>, CompoundTag, Object> readFromNbt) {
+	private PropertyType(@Nonnull Consumer<BufferWriter> writeToBuffer, @Nonnull Function<BufferReader, Object> readFromBuffer, @Nonnull Consumer<TagWriter> writeToNbt, @Nonnull Function<TagReader, Object> readFromNbt) {
 		this(writeToBuffer, readFromBuffer, writeToNbt, readFromNbt, val -> val);
 	}
 
-	private PropertyType(@Nonnull BiConsumer<Object, FriendlyByteBuf> writeToBuffer, @Nonnull Function<FriendlyByteBuf, Object> readFromBuffer, @Nonnull BiConsumer<Property<?>, CompoundTag> writeToNbt, @Nonnull BiFunction<Property<?>, CompoundTag, Object> readFromNbt, @Nonnull Function<Object, Object> attemptCast) {
+	private PropertyType(@Nonnull Consumer<BufferWriter> writeToBuffer, @Nonnull Function<BufferReader, Object> readFromBuffer, @Nonnull Consumer<TagWriter> writeToNbt, @Nonnull Function<TagReader, Object> readFromNbt, @Nonnull Function<Object, Object> attemptCast) {
 		this(Object::equals, writeToBuffer, readFromBuffer, writeToNbt, readFromNbt, attemptCast);
 	}
 
-	private PropertyType(@Nonnull BiPredicate<Object, Object> predicate, @Nonnull BiConsumer<Object, FriendlyByteBuf> writeToBuffer, @Nonnull Function<FriendlyByteBuf, Object> readFromBuffer, @Nonnull BiConsumer<Property<?>, CompoundTag> writeToNbt, @Nonnull BiFunction<Property<?>, CompoundTag, Object> readFromNbt, @Nonnull Function<Object, Object> attemptCast) {
+	private PropertyType(@Nonnull BiPredicate<Object, Object> predicate, @Nonnull Consumer<BufferWriter> writeToBuffer, @Nonnull Function<BufferReader, Object> readFromBuffer, @Nonnull Consumer<TagWriter> writeToNbt, @Nonnull Function<TagReader, Object> readFromNbt, @Nonnull Function<Object, Object> attemptCast) {
 		id = new ResourceLocation(References.ID, name().toLowerCase(Locale.ROOT));
 		this.predicate = predicate;
 		this.writeToBuffer = writeToBuffer;
@@ -226,23 +226,23 @@ public enum PropertyType implements IPropertyType {
 	}
 
 	@Override
-	public void writeToBuffer(Object value, FriendlyByteBuf buf) {
-		writeToBuffer.accept(value, buf);
+	public void writeToBuffer(BufferWriter writer) {
+		writeToBuffer.accept(writer);
 	}
 
 	@Override
-	public Object readFromBuffer(FriendlyByteBuf buf) {
-		return readFromBuffer.apply(buf);
+	public Object readFromBuffer(BufferReader reader) {
+		return readFromBuffer.apply(reader);
 	}
 
 	@Override
-	public void writeToTag(Property<?> prop, net.minecraft.nbt.CompoundTag tag) {
-		writeToNbt.accept(prop, tag);
+	public void writeToTag(TagWriter writer) {
+		writeToNbt.accept(writer);
 	}
 
 	@Override
-	public Object readFromTag(Property<?> prop, net.minecraft.nbt.CompoundTag tag) {
-		return readFromNbt.apply(prop, tag);
+	public Object readFromTag(TagReader reader) {
+		return readFromNbt.apply(reader);
 	}
 
 	@Override

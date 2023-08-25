@@ -89,6 +89,7 @@ import electrodynamics.client.screen.tile.ScreenSeismicRelay;
 import electrodynamics.client.screen.tile.ScreenSolarPanel;
 import electrodynamics.client.screen.tile.ScreenThermoelectricManipulator;
 import electrodynamics.client.screen.tile.ScreenWindmill;
+import electrodynamics.client.textures.ElectrodynamicsTextureAtlases;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
@@ -101,7 +102,6 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -357,16 +357,20 @@ public class ClientRegister {
 		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_GAS);
 	}
 
+	/* All atlas textures in the block and item atlases are eagerly loaded now
+	 * Custom atlases are defined via JSON now
 	@SubscribeEvent
 	public static void addCustomTextureAtlases(TextureStitchEvent.Pre event) {
 		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
 			CUSTOM_TEXTURES.forEach(event::addSprite);
 		}
 	}
+	*/
+
 
 	@SubscribeEvent
 	public static void cacheCustomTextureAtlases(TextureStitchEvent.Post event) {
-		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+		if (event.getAtlas().location().equals(ElectrodynamicsTextureAtlases.ELECTRODYNAMICS_CUSTOM)) {
 			for (ResourceLocation loc : CUSTOM_TEXTURES) {
 				ClientRegister.CACHED_TEXTUREATLASSPRITES.put(loc, event.getAtlas().getSprite(loc));
 			}
@@ -375,7 +379,7 @@ public class ClientRegister {
 
 	@SubscribeEvent
 	public static void registerParticles(RegisterParticleProvidersEvent event) {
-		event.register(ElectrodynamicsParticles.PARTICLE_PLASMA_BALL.get(), ParticlePlasmaBall.Factory::new);
+		event.registerSpriteSet(ElectrodynamicsParticles.PARTICLE_PLASMA_BALL.get(), ParticlePlasmaBall.Factory::new);
 	}
 
 }
