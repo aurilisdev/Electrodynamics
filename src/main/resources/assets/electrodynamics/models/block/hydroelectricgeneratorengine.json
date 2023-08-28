@@ -2,7 +2,7 @@
 	"credit": "aurilisdev",
 	"parent": "block/cube_all",
 	"textures": {
-		"1": "electrodynamics:model/hydroelectricgenerator",
+		"1": "electrodynamics:block/model/hydroelectricgenerator",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

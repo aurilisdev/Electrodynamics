@@ -12,7 +12,7 @@ import net.minecraft.world.level.block.Block;
 public class BlockItemElectrodynamics extends BlockItem implements CreativeTabSupplier {
 
 	private final Supplier<CreativeModeTab> creativeTab;
-	
+
 	public BlockItemElectrodynamics(Block block, Properties properties, Supplier<CreativeModeTab> creativeTab) {
 		super(block, properties);
 		this.creativeTab = creativeTab;
@@ -26,6 +26,11 @@ public class BlockItemElectrodynamics extends BlockItem implements CreativeTabSu
 	@Override
 	public boolean isAllowedInCreativeTab(CreativeModeTab tab) {
 		return creativeTab.get() == tab;
+	}
+
+	@Override
+	public boolean hasCreativeTab() {
+		return creativeTab != null;
 	}
 
 }

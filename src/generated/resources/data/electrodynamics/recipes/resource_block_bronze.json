@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "I": {
       "tag": "forge:ingots/bronze"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "electrodynamics:resourceblockbronze"
-  }
+  },
+  "show_notification": false
 }

@@ -5,6 +5,12 @@ import java.util.List;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
+/**
+ * When mojank removes it do it yourself
+ * 
+ * @author skip999
+ *
+ */
 public interface CreativeTabSupplier {
 
 	/**
@@ -22,5 +28,12 @@ public interface CreativeTabSupplier {
 	 * @return whether or not this item belongs to the tab
 	 */
 	public boolean isAllowedInCreativeTab(CreativeModeTab tab);
+	
+	/**
+	 * This method will check if a block has a creative tab. This method should filter for things like a null creative tab or similar
+	 * 
+	 * @return
+	 */
+	public boolean hasCreativeTab();
 	
 }

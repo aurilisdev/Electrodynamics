@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "A": {
       "tag": "forge:gems/amethyst"
@@ -21,5 +22,6 @@
   ],
   "result": {
     "item": "electrodynamics:seismicrelay"
-  }
+  },
+  "show_notification": false
 }

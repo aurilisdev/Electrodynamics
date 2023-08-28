@@ -34,7 +34,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, CreativeTabSupplier {
 
-	//private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT, Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE);
+	// private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT, Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE);
 	private final ElectricItemProperties properties;
 	private final Supplier<CreativeModeTab> creativeTab;
 
@@ -64,7 +64,7 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		return 0;//getJoulesStored(stack) > properties.extract.getJoules() ? EFFECTIVE_ON_MATERIALS.contains(state.getMaterial()) ? speed : super.getDestroySpeed(stack, state) : 0;
+		return 0;// getJoulesStored(stack) > properties.extract.getJoules() ? EFFECTIVE_ON_MATERIALS.contains(state.getMaterial()) ? speed : super.getDestroySpeed(stack, state) : 0;
 	}
 
 	@Override
@@ -120,6 +120,11 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
 	@Override
 	public boolean isAllowedInCreativeTab(CreativeModeTab tab) {
 		return creativeTab.get() == tab;
+	}
+
+	@Override
+	public boolean hasCreativeTab() {
+		return creativeTab != null;
 	}
 
 }

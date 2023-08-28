@@ -28,4 +28,9 @@ public class ItemBoneMeal extends BoneMealItem implements CreativeTabSupplier {
 		return creativeTab.get() == tab;
 	}
 
+	@Override
+	public boolean hasCreativeTab() {
+		return creativeTab != null;
+	}
+
 }

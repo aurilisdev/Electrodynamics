@@ -58,5 +58,6 @@
       "name": "orechromium",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/orechromium"
 }

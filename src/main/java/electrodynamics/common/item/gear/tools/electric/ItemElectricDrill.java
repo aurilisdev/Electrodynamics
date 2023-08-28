@@ -341,4 +341,9 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 		return creativeTab.get() == tab;
 	}
 
+	@Override
+	public boolean hasCreativeTab() {
+		return creativeTab != null;
+	}
+
 }

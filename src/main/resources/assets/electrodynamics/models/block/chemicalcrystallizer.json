@@ -3,7 +3,7 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "electrodynamics:model/chemicalcrystallizer",
+		"1": "electrodynamics:block/model/chemicalcrystallizer",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"groups": [
@@ -40,8 +40,8 @@
 			"render_type": "minecraft:solid",
 			"parent": "block/cube_all",
 			"textures": {
-				"1": "electrodynamics:model/chemicalcrystallizer",
-				"particle": "electrodynamics:model/chemicalcrystallizer"
+				"1": "electrodynamics:block/model/chemicalcrystallizer",
+				"particle": "electrodynamics:block/model/chemicalcrystallizer"
 			},
 			"elements": [
 				{
@@ -560,8 +560,8 @@
 			"render_type": "minecraft:translucent",
 			"parent": "block/cube_all",
 			"textures": {
-				"1": "electrodynamics:model/chemicalcrystallizer",
-				"particle": "electrodynamics:model/chemicalcrystallizer"
+				"1": "electrodynamics:block/model/chemicalcrystallizer",
+				"particle": "electrodynamics:block/model/chemicalcrystallizer"
 			},
 			"elements": [
 				{

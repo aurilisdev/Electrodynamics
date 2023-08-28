@@ -6,7 +6,7 @@
 		128
 	],
 	"textures": {
-		"0": "electrodynamics:model/motorcomplex",
+		"0": "electrodynamics:block/model/motorcomplex",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

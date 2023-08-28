@@ -43,6 +43,10 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 	@Override
 	public void render(Camera camera, Frustum frustum, LevelRenderer renderer, PoseStack stack, Matrix4f projectionMatrix, Minecraft minecraft, int renderTick, float partialTick) {
 
+		if(armsToRender.isEmpty()) {
+			return;
+		}
+		
 		MultiBufferSource.BufferSource buffer = minecraft.renderBuffers().bufferSource();
 		Vec3 camPos = camera.getPosition();
 

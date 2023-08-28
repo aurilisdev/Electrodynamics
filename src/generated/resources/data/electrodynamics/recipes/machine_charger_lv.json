@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "B": {
       "item": "electrodynamics:batterybox"
@@ -21,5 +22,6 @@
   ],
   "result": {
     "item": "electrodynamics:chargerlv"
-  }
+  },
+  "show_notification": false
 }

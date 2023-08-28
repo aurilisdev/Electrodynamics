@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 13,
+    "targets": [
+      {
+        "state": {
+          "Name": "electrodynamics:oreniter"
+        },
+        "target": {
+          "block": "electrodynamics:oreniter",
+          "canspawnintag": "minecraft:stone_ore_replaceables",
+          "predicate_type": "electrodynamics:configorespawn"
+        }
+      },
+      {
+        "state": {
+          "Name": "electrodynamics:deepslateoreniter"
+        },
+        "target": {
+          "block": "electrodynamics:deepslateoreniter",
+          "canspawnintag": "minecraft:deepslate_ore_replaceables",
+          "predicate_type": "electrodynamics:configorespawn"
+        }
+      }
+    ]
+  }
+}

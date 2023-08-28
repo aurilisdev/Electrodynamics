@@ -3,7 +3,7 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"1": "electrodynamics:model/hydroelectricgenerator",
+		"1": "electrodynamics:block/model/hydroelectricgenerator",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

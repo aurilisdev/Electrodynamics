@@ -49,5 +49,6 @@
       "name": "mineralgrindertriple",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/mineralgrindertriple"
 }

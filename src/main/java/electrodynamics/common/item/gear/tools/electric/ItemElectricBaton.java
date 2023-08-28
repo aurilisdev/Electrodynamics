@@ -121,4 +121,9 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
 		return creativeTab.get() == tab;
 	}
 
+	@Override
+	public boolean hasCreativeTab() {
+		return creativeTab != null;
+	}
+
 }

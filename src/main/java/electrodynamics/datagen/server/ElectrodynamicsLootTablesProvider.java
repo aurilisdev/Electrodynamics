@@ -1,5 +1,8 @@
 package electrodynamics.datagen.server;
 
+import java.util.List;
+
+import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeGlass;
@@ -21,6 +24,14 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider {
 
+	public ElectrodynamicsLootTablesProvider(String modID) {
+		super(modID);
+	}
+	
+	public ElectrodynamicsLootTablesProvider() {
+		this(References.ID);
+	}
+	
 	@Override
 	protected void generate() {
 
@@ -99,7 +110,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.oxidationfurnace), ElectrodynamicsBlockTypes.TILE_OXIDATIONFURNACE, true, false, false, true, false);
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.downgradetransformer));
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.upgradetransformer));
-		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer));
+		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedupgradetransformer));
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer));
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coalgenerator), ElectrodynamicsBlockTypes.TILE_COALGENERATOR, true, false, false, true, false);
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.solarpanel), ElectrodynamicsBlockTypes.TILE_SOLARPANEL, true, false, false, true, false);
@@ -157,9 +168,13 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 		addSimpleBlock(ElectrodynamicsBlocks.blockFluidPipePump);
 		addSimpleBlock(ElectrodynamicsBlocks.blockGasPipeFilter);
 		addSimpleBlock(ElectrodynamicsBlocks.blockFluidPipeFilter);
+		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gasvent));
+		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer));
 
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay));
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitmonitor));
+		
+		addSimpleBlock(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get());
 
 	}
 
@@ -197,6 +212,11 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 
 	public String name(Block block) {
 		return ForgeRegistries.BLOCKS.getKey(block).getPath();
+	}
+
+	@Override
+	public List<Block> getExcludedBlocks() {
+		return List.of(ElectrodynamicsBlocks.BLOCK_MULTISUBNODE.get(), ElectrodynamicsBlocks.BLOCK_FRAME.get(), ElectrodynamicsBlocks.BLOCK_FRAME_CORNER.get(), ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get());
 	}
 
 }

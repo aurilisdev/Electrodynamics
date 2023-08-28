@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "P": {
       "item": "electrodynamics:compressoraddontank"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "electrodynamics:gastanksteel"
-  }
+  },
+  "show_notification": false
 }

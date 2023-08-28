@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "tag": "forge:dusts/endereye"
@@ -19,5 +20,6 @@
   "result": {
     "count": 9,
     "item": "electrodynamics:dustsuperconductive"
-  }
+  },
+  "show_notification": false
 }

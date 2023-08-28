@@ -49,5 +49,6 @@
       "name": "coalgenerator",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/coalgenerator"
 }

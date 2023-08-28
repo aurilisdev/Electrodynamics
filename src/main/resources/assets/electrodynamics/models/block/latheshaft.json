@@ -2,7 +2,7 @@
 	"parent": "block/cube_all",
 	"credit":"skip999",
 	"textures":{
-		"0":"electrodynamics:model/latheshaft",
+		"0":"electrodynamics:block/model/latheshaft",
 		"particle":"electrodynamics:block/steelcasing"
 	},
 	"elements":[

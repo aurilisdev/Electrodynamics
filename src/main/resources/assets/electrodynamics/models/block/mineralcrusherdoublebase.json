@@ -3,7 +3,7 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/mineralcrusherdouble",
+		"0": "electrodynamics:block/model/mineralcrusherdouble",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

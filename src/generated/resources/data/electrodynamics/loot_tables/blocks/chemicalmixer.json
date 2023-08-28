@@ -54,5 +54,6 @@
       "name": "chemicalmixer",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/chemicalmixer"
 }

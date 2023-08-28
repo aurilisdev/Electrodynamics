@@ -12,5 +12,6 @@
       "name": "wirelogisticssilverblue",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wirelogisticssilverblue"
 }

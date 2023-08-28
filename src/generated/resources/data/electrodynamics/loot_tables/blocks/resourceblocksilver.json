@@ -12,5 +12,6 @@
       "name": "resourceblocksilver",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/resourceblocksilver"
 }

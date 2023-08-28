@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "B": {
       "tag": "forge:storage_blocks/stainlesssteel"
@@ -30,5 +31,6 @@
   ],
   "result": {
     "item": "electrodynamics:railgunkinetic"
-  }
+  },
+  "show_notification": false
 }

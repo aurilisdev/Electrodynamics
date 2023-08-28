@@ -49,5 +49,6 @@
       "name": "tanksteel",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/tanksteel"
 }

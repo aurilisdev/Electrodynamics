@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 public class ItemElectrodynamics extends Item implements CreativeTabSupplier {
 
 	private final Supplier<CreativeModeTab> creativeTab;
-	
+
 	public ItemElectrodynamics(Properties properties, Supplier<CreativeModeTab> creativeTab) {
 		super(properties);
 		this.creativeTab = creativeTab;
@@ -25,6 +25,11 @@ public class ItemElectrodynamics extends Item implements CreativeTabSupplier {
 	@Override
 	public boolean isAllowedInCreativeTab(CreativeModeTab tab) {
 		return creativeTab.get() == tab;
+	}
+
+	@Override
+	public boolean hasCreativeTab() {
+		return creativeTab != null;
 	}
 
 }

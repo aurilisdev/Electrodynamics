@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "C": {
       "item": "electrodynamics:coil"
@@ -27,5 +28,6 @@
   ],
   "result": {
     "item": "electrodynamics:pressuregauge"
-  }
+  },
+  "show_notification": false
 }

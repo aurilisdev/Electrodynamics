@@ -216,4 +216,9 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 		return creativeTab.get() == tab;
 	}
 
+	@Override
+	public boolean hasCreativeTab() {
+		return creativeTab != null;
+	}
+
 }

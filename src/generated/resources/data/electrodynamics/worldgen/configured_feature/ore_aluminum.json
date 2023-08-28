@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 5,
+    "targets": [
+      {
+        "state": {
+          "Name": "electrodynamics:orealuminum"
+        },
+        "target": {
+          "block": "electrodynamics:orealuminum",
+          "canspawnintag": "minecraft:stone_ore_replaceables",
+          "predicate_type": "electrodynamics:configorespawn"
+        }
+      },
+      {
+        "state": {
+          "Name": "electrodynamics:deepslateorealuminum"
+        },
+        "target": {
+          "block": "electrodynamics:deepslateorealuminum",
+          "canspawnintag": "minecraft:deepslate_ore_replaceables",
+          "predicate_type": "electrodynamics:configorespawn"
+        }
+      }
+    ]
+  }
+}

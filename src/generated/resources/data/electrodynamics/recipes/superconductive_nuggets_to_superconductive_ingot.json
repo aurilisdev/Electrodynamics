@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "N": {
       "tag": "forge:nuggets/superconductive"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "electrodynamics:ingotsuperconductive"
-  }
+  },
+  "show_notification": false
 }

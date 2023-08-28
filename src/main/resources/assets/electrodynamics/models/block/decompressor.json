@@ -6,8 +6,8 @@
 		128
 	],
 	"textures": {
-		"0": "electrodynamics:model/decompressor",
-		"1": "electrodynamics:model/decompressordials",
+		"0": "electrodynamics:block/model/decompressor",
+		"1": "electrodynamics:block/model/decompressordials",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

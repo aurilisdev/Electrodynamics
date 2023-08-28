@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "C": {
       "tag": "forge:circuits/basic"
@@ -24,5 +25,6 @@
   ],
   "result": {
     "item": "electrodynamics:advancedupgradetransformer"
-  }
+  },
+  "show_notification": false
 }

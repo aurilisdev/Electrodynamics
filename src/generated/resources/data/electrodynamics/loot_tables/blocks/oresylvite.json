@@ -58,5 +58,6 @@
       "name": "oresylvite",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/oresylvite"
 }

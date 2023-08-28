@@ -12,5 +12,6 @@
       "name": "glassclear",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/glassclear"
 }

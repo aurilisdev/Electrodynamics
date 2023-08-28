@@ -49,5 +49,6 @@
       "name": "multimeterblock",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/multimeterblock"
 }

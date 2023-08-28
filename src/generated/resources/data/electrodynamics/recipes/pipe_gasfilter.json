@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "#": {
       "item": "minecraft:paper"
@@ -21,5 +22,6 @@
   ],
   "result": {
     "item": "electrodynamics:gaspipefilter"
-  }
+  },
+  "show_notification": false
 }

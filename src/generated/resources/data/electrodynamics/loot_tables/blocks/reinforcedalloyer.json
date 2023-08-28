@@ -49,5 +49,6 @@
       "name": "reinforcedalloyer",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/reinforcedalloyer"
 }

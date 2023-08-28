@@ -12,5 +12,6 @@
       "name": "wirecopper",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wirecopper"
 }

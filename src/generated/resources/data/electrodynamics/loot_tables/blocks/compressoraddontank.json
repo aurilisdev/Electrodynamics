@@ -12,5 +12,6 @@
       "name": "compressoraddontank",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/compressoraddontank"
 }

@@ -12,5 +12,6 @@
       "name": "wireinsulatedgoldbrown",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wireinsulatedgoldbrown"
 }

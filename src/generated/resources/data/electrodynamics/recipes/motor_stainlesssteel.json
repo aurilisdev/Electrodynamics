@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "C": {
       "item": "electrodynamics:coil"
@@ -19,5 +20,6 @@
   "result": {
     "count": 4,
     "item": "electrodynamics:motor"
-  }
+  },
+  "show_notification": false
 }

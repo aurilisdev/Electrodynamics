@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "discard_chance_on_air_exposure": 0.0,
+    "size": 8,
+    "targets": [
+      {
+        "state": {
+          "Name": "electrodynamics:oretitanium"
+        },
+        "target": {
+          "block": "electrodynamics:oretitanium",
+          "canspawnintag": "minecraft:stone_ore_replaceables",
+          "predicate_type": "electrodynamics:configorespawn"
+        }
+      },
+      {
+        "state": {
+          "Name": "electrodynamics:deepslateoretitanium"
+        },
+        "target": {
+          "block": "electrodynamics:deepslateoretitanium",
+          "canspawnintag": "minecraft:deepslate_ore_replaceables",
+          "predicate_type": "electrodynamics:configorespawn"
+        }
+      }
+    ]
+  }
+}

@@ -258,7 +258,7 @@ public class ElectrodynamicsItems {
 
 				CreativeTabSupplier supplier = (CreativeTabSupplier) reg.get();
 
-				if (supplier.isAllowedInCreativeTab(event.getTab())) {
+				if (supplier.hasCreativeTab() && supplier.isAllowedInCreativeTab(event.getTab())) {
 					List<ItemStack> toAdd = new ArrayList<>();
 					supplier.addCreativeModeItems(event.getTab(), toAdd);
 					event.acceptAll(toAdd);

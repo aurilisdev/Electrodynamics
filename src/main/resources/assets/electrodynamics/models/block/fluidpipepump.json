@@ -6,7 +6,7 @@
 		64
 	],
 	"textures": {
-		"0": "electrodynamics:model/fluidpipepump",
+		"0": "electrodynamics:block/model/fluidpipepump",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

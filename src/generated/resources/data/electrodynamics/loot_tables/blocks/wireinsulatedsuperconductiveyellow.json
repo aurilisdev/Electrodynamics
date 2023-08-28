@@ -12,5 +12,6 @@
       "name": "wireinsulatedsuperconductiveyellow",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wireinsulatedsuperconductiveyellow"
 }

@@ -12,5 +12,6 @@
       "name": "wirelogisticscopperyellow",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wirelogisticscopperyellow"
 }

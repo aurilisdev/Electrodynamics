@@ -12,5 +12,6 @@
       "name": "wireinsulatedtinblue",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wireinsulatedtinblue"
 }

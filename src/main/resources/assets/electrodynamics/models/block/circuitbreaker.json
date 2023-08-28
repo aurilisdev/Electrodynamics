@@ -3,7 +3,7 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/circuitbreaker",
+		"0": "electrodynamics:block/model/circuitbreaker",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"groups": [
@@ -35,8 +35,8 @@
 			"render_type": "minecraft:solid",
 			"parent": "block/cube_all",
 			"textures": {
-				"0": "electrodynamics:model/circuitbreaker",
-				"particle": "electrodynamics:model/circuitbreaker"
+				"0": "electrodynamics:block/model/circuitbreaker",
+				"particle": "electrodynamics:block/model/circuitbreaker"
 			},
 			"elements": [
 				{
@@ -358,8 +358,8 @@
 			"render_type": "minecraft:translucent",
 			"parent": "block/cube_all",
 			"textures": {
-				"0": "electrodynamics:model/circuitbreaker",
-				"particle": "electrodynamics:model/circuitbreaker"
+				"0": "electrodynamics:block/model/circuitbreaker",
+				"particle": "electrodynamics:block/model/circuitbreaker"
 			},
 			"elements": [
 				{

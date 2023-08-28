@@ -1,5 +1,9 @@
 package electrodynamics.datagen.utils;
 
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
@@ -25,13 +29,20 @@ import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class AbstractLootTableProvider extends VanillaBlockLoot {
+	
+	private final String modID;
+	
+	public AbstractLootTableProvider(String modID) {
+		this.modID = modID;
+	} 
 
 	public LootTable.Builder machineTable(String name, Block block, BlockEntityType<?> type, boolean items, boolean fluids, boolean gases, boolean energy, boolean additional) {
 		CopyNbtFunction.Builder function = CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY);
 
-		if (items) {
+		if (items) { 
 			function = function.copy("Items", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE);
 			function = function.copy(ComponentInventory.SAVE_KEY + "_size", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE);
 		}
@@ -90,5 +101,15 @@ public abstract class AbstractLootTableProvider extends VanillaBlockLoot {
 		LootPool.Builder builder = LootPool.lootPool().name(name).setRolls(ConstantValue.exactly(1)).add(LootItem.lootTableItem(block));
 		return LootTable.lootTable().withPool(builder);
 	}
+
+	@Override
+	protected Iterable<Block> getKnownBlocks() {
+		
+		
+		
+		return ForgeRegistries.BLOCKS.getEntries().stream().filter(e -> e.getKey().location().getNamespace().equals(modID) && !getExcludedBlocks().contains(e.getValue())).map(Map.Entry::getValue).collect(Collectors.toList());
+	}
+	
+	public abstract List<Block> getExcludedBlocks();
 
 }

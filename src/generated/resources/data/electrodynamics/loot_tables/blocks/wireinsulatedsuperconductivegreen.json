@@ -12,5 +12,6 @@
       "name": "wireinsulatedsuperconductivegreen",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wireinsulatedsuperconductivegreen"
 }

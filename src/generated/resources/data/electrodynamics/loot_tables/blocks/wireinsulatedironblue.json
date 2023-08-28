@@ -12,5 +12,6 @@
       "name": "wireinsulatedironblue",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wireinsulatedironblue"
 }

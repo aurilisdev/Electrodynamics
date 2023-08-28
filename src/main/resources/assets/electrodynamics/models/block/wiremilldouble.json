@@ -5,7 +5,7 @@
   "ambientocclusion" : "false",
   "render_type" : "cutout",
   "textures" : {
-    "0" : "electrodynamics:model/wiremilldouble",
+    "0" : "electrodynamics:block/model/wiremilldouble",
     "particle" : "electrodynamics:block/steelcasing"
   },
   "elements" : [ {

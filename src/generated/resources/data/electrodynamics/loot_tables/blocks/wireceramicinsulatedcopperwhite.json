@@ -12,5 +12,6 @@
       "name": "wireceramicinsulatedcopperwhite",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wireceramicinsulatedcopperwhite"
 }
