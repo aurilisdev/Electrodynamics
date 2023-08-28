@@ -67,7 +67,7 @@ public class DataGenerators {
 					.add(ForgeRegistries.Keys.BIOME_MODIFIERS, context -> ElectrodynamicsFeatures.registerModifiers(context))
 			//
 					, Set.of(References.ID)));
-			ElectrodynamicsTagsProvider.addTagProviders(generator, generator.getPackOutput(), event.getLookupProvider(), event.getExistingFileHelper());
+			ElectrodynamicsTagsProvider.addTagProviders(event.getGenerator(), event.getGenerator().getPackOutput(), event.getLookupProvider(), event.getExistingFileHelper());
 		}
 		if (event.includeClient()) {
 			generator.addProvider(true, new ElectrodynamicsBlockStateProvider(output, helper));
