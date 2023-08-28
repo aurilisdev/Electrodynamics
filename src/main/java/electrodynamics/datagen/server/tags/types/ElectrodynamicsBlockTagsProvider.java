@@ -1,4 +1,4 @@
-package electrodynamics.datagen.server;
+package electrodynamics.datagen.server.tags.types;
 
 import java.util.concurrent.CompletableFuture;
 

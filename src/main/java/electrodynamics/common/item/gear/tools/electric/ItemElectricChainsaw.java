@@ -2,9 +2,11 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import com.google.common.collect.Sets;
 
+import electrodynamics.api.creativetab.CreativeTabSupplier;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
@@ -29,16 +31,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Material;
 
-public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
+public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, CreativeTabSupplier {
 
-	private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT, Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE);
+	//private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT, Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE);
 	private final ElectricItemProperties properties;
+	private final Supplier<CreativeModeTab> creativeTab;
 
-	public ItemElectricChainsaw(ElectricItemProperties properties) {
+	public ItemElectricChainsaw(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
 		super(4, -2.4f, ElectricItemTier.DRILL, BlockTags.MINEABLE_WITH_AXE, properties.durability(0));
 		this.properties = properties;
+		this.creativeTab = creativeTab;
 	}
 
 	@Override
@@ -47,23 +50,21 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowedIn(group)) {
+	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
-			ItemStack empty = new ItemStack(this);
-			IItemElectric.setEnergyStored(empty, 0);
-			items.add(empty);
+		ItemStack empty = new ItemStack(this);
+		IItemElectric.setEnergyStored(empty, 0);
+		items.add(empty);
 
-			ItemStack charged = new ItemStack(this);
-			IItemElectric.setEnergyStored(charged, properties.capacity);
-			items.add(charged);
+		ItemStack charged = new ItemStack(this);
+		IItemElectric.setEnergyStored(charged, properties.capacity);
+		items.add(charged);
 
-		}
 	}
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		return getJoulesStored(stack) > properties.extract.getJoules() ? EFFECTIVE_ON_MATERIALS.contains(state.getMaterial()) ? speed : super.getDestroySpeed(stack, state) : 0;
+		return 0;//getJoulesStored(stack) > properties.extract.getJoules() ? EFFECTIVE_ON_MATERIALS.contains(state.getMaterial()) ? speed : super.getDestroySpeed(stack, state) : 0;
 	}
 
 	@Override
@@ -114,6 +115,11 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
 
 		return true;
 
+	}
+
+	@Override
+	public boolean isAllowedInCreativeTab(CreativeModeTab tab) {
+		return creativeTab.get() == tab;
 	}
 
 }

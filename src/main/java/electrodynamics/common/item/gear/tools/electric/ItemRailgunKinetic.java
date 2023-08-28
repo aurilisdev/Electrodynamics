@@ -2,6 +2,7 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
@@ -18,6 +19,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
@@ -31,8 +33,8 @@ public class ItemRailgunKinetic extends ItemRailgun {
 	private static final double TEMPERATURE_REDUCED_PER_TICK = 2.0;
 	private static final double OVERHEAT_WARNING_THRESHOLD = 0.75;
 
-	public ItemRailgunKinetic(ElectricItemProperties properties) {
-		super(properties, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK, item -> ElectrodynamicsItems.ITEM_LITHIUMBATTERY.get());
+	public ItemRailgunKinetic(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
+		super(properties, creativeTab, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK, item -> ElectrodynamicsItems.ITEM_LITHIUMBATTERY.get());
 	}
 
 	@Override

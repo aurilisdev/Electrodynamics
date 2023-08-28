@@ -3,10 +3,10 @@ package electrodynamics.common.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.References;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.registers.ElectrodynamicsCreativeTabs;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.nbt.CompoundTag;
@@ -18,11 +18,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class ItemCeramic extends Item {
+public class ItemCeramic extends ItemElectrodynamics {
 	public SubtypeCeramic subtype;
 
 	public ItemCeramic(SubtypeCeramic subtype) {
-		super(new Item.Properties().stacksTo(64).tab(References.CORETAB));
+		super(new Item.Properties().stacksTo(64), () -> ElectrodynamicsCreativeTabs.MAIN.get());
 		this.subtype = subtype;
 	}
 

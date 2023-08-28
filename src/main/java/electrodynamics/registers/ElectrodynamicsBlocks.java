@@ -11,6 +11,7 @@ import electrodynamics.common.block.BlockFrame;
 import electrodynamics.common.block.BlockLogisticalManager;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.BlockMultiSubnode;
+import electrodynamics.common.block.BlockOre;
 import electrodynamics.common.block.BlockPipeFilter;
 import electrodynamics.common.block.BlockPipePump;
 import electrodynamics.common.block.BlockSeismicMarker;
@@ -34,10 +35,8 @@ import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraftforge.registries.DeferredRegister;
@@ -75,10 +74,10 @@ public class ElectrodynamicsBlocks {
 
 	static {
 		for (SubtypeOre subtype : SubtypeOre.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new DropExperienceBlock(Properties.copy(Blocks.STONE).requiresCorrectToolForDrops().strength(subtype.hardness, subtype.resistance), UniformInt.of(subtype.minXP, subtype.maxXP))));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new BlockOre(subtype)));
 		}
 		for (SubtypeOreDeepslate subtype : SubtypeOreDeepslate.values()) {
-			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new DropExperienceBlock(Properties.copy(Blocks.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(subtype.hardness + 1.5f, subtype.resistance + 1.5f), UniformInt.of(subtype.minXP, subtype.maxXP))));
+			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new BlockOre(subtype)));
 		}
 		for (SubtypeRawOreBlock subtype : SubtypeRawOreBlock.values()) {
 			SUBTYPEBLOCKREGISTER_MAPPINGS.put(subtype, BLOCKS.register(subtype.tag(), () -> new Block(Properties.copy(Blocks.STONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F))));

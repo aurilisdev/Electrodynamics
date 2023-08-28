@@ -1,10 +1,12 @@
 package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
+import electrodynamics.api.creativetab.CreativeTabSupplier;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
@@ -13,7 +15,6 @@ import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -31,13 +32,15 @@ import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-public class ItemElectricBaton extends SwordItem implements IItemElectric {
+public class ItemElectricBaton extends SwordItem implements IItemElectric, CreativeTabSupplier {
 
 	private final ElectricItemProperties properties;
+	private final Supplier<CreativeModeTab> creativeTab;
 
-	public ItemElectricBaton(ElectricItemProperties properties) {
+	public ItemElectricBaton(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
 		super(ElectricItemTier.DRILL, 12, -2.4f, properties.durability(0));
 		this.properties = properties;
+		this.creativeTab = creativeTab;
 	}
 
 	@Override
@@ -51,16 +54,16 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowedIn(group)) {
-			ItemStack empty = new ItemStack(this);
-			IItemElectric.setEnergyStored(empty, 0);
-			items.add(empty);
+	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
-			ItemStack charged = new ItemStack(this);
-			IItemElectric.setEnergyStored(charged, properties.capacity);
-			items.add(charged);
-		}
+		ItemStack empty = new ItemStack(this);
+		IItemElectric.setEnergyStored(empty, 0);
+		items.add(empty);
+
+		ItemStack charged = new ItemStack(this);
+		IItemElectric.setEnergyStored(charged, properties.capacity);
+		items.add(charged);
+
 	}
 
 	@Override
@@ -111,6 +114,11 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric {
 
 		return true;
 
+	}
+
+	@Override
+	public boolean isAllowedInCreativeTab(CreativeModeTab tab) {
+		return creativeTab.get() == tab;
 	}
 
 }

@@ -1,24 +1,26 @@
-package electrodynamics.common.blockitem;
+package electrodynamics.common.blockitem.types;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.block.connect.BlockGasPipe;
+import electrodynamics.common.blockitem.BlockItemElectrodynamics;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-public class BlockItemGasPipe extends BlockItem {
+public class BlockItemGasPipe extends BlockItemElectrodynamics {
 
 	private final BlockGasPipe pipe;
 
-	public BlockItemGasPipe(BlockGasPipe pipe, Properties properties) {
-		super(pipe, properties);
+	public BlockItemGasPipe(BlockGasPipe pipe, Properties properties, Supplier<CreativeModeTab> creativeTab) {
+		super(pipe, properties, creativeTab);
 		this.pipe = pipe;
 	}
 

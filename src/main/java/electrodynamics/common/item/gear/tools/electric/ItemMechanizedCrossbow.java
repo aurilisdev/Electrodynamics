@@ -2,10 +2,12 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
+import electrodynamics.api.creativetab.CreativeTabSupplier;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
@@ -14,7 +16,6 @@ import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -40,9 +41,11 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IItemElectric {
+public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IItemElectric, CreativeTabSupplier {
 
 	private final ElectricItemProperties properties;
+
+	private final Supplier<CreativeModeTab> creativeTab;
 
 	public static final int JOULES_PER_SHOT = 5000;
 	public static final int NUMBER_OF_SHOTS = 200;
@@ -50,9 +53,10 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	public static final int PROJECTILE_RANGE = 20;
 	public static final int PROJECTILE_SPEED = 3;
 
-	public ItemMechanizedCrossbow(ElectricItemProperties properties) {
+	public ItemMechanizedCrossbow(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
 		super(properties);
 		this.properties = properties;
+		this.creativeTab = creativeTab;
 	}
 
 	@Override
@@ -84,11 +88,11 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 		}
 
 		Vec3 playerUpVector = player.getUpVector(1.0F);
-		
+
 		Quaternionf quaternionf = (new Quaternionf()).setAngleAxis((double) 0, playerUpVector.x, playerUpVector.y, playerUpVector.z);
-		
+
 		Vec3 playerViewVector = player.getViewVector(1.0F);
-		
+
 		Vector3f viewVector = playerViewVector.toVector3f().rotate(quaternionf);
 
 		projectile.shoot(viewVector.x(), viewVector.y(), viewVector.z(), PROJECTILE_SPEED, 1);
@@ -141,17 +145,16 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowedIn(group)) {
+	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
-			ItemStack empty = new ItemStack(this);
-			IItemElectric.setEnergyStored(empty, 0);
-			items.add(empty);
+		ItemStack empty = new ItemStack(this);
+		IItemElectric.setEnergyStored(empty, 0);
+		items.add(empty);
 
-			ItemStack charged = new ItemStack(this);
-			IItemElectric.setEnergyStored(charged, properties.capacity);
-			items.add(charged);
-		}
+		ItemStack charged = new ItemStack(this);
+		IItemElectric.setEnergyStored(charged, properties.capacity);
+		items.add(charged);
+
 	}
 
 	@Override
@@ -206,6 +209,11 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 
 		return true;
 
+	}
+
+	@Override
+	public boolean isAllowedInCreativeTab(CreativeModeTab tab) {
+		return creativeTab.get() == tab;
 	}
 
 }

@@ -2,13 +2,14 @@ package electrodynamics.prefab.item;
 
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
+import electrodynamics.common.item.ItemElectrodynamics;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
@@ -21,27 +22,27 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 
-public class ItemElectric extends Item implements IItemElectric {
+public class ItemElectric extends ItemElectrodynamics implements IItemElectric {
 
 	private final ElectricItemProperties properties;
 	private final Function<Item, Item> getBatteryItem;
 
-	public ItemElectric(ElectricItemProperties properties, Function<Item, Item> getBatteryItem) {
-		super(properties);
+	public ItemElectric(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab, Function<Item, Item> getBatteryItem) {
+		super(properties, creativeTab);
 		this.properties = properties;
 		this.getBatteryItem = getBatteryItem;
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowedIn(group)) {
-			ItemStack empty = new ItemStack(this);
-			IItemElectric.setEnergyStored(empty, 0);
-			items.add(empty);
-			ItemStack charged = new ItemStack(this);
-			IItemElectric.setEnergyStored(charged, properties.capacity);
-			items.add(charged);
-		}
+	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
+
+		ItemStack empty = new ItemStack(this);
+		IItemElectric.setEnergyStored(empty, 0);
+		items.add(empty);
+		ItemStack charged = new ItemStack(this);
+		IItemElectric.setEnergyStored(charged, properties.capacity);
+		items.add(charged);
+
 	}
 
 	@Override

@@ -1,9 +1,9 @@
 package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
-import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.client.PacketAddClientRenderInfo;
@@ -16,7 +16,6 @@ import electrodynamics.prefab.utilities.object.Location;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -26,10 +25,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.ClickAction;
-import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -45,7 +41,6 @@ import net.minecraftforge.network.NetworkDirection;
 public class ItemSeismicScanner extends ItemElectric {
 
 	private static final Component CONTAINER_TITLE = Component.translatable("container.seismicscanner");
-	private final ElectricItemProperties properties;
 
 	public static final int SLOT_COUNT = 1;
 	public static final int RADUIS_BLOCKS = 16;
@@ -55,14 +50,8 @@ public class ItemSeismicScanner extends ItemElectric {
 	public static final String PLAY_LOC = "player";
 	public static final String BLOCK_LOC = "block";
 
-	public ItemSeismicScanner(ElectricItemProperties properties) {
-		super(properties, item -> ElectrodynamicsItems.ITEM_BATTERY.get());
-		this.properties = properties;
-	}
-
-	@Override
-	public ElectricItemProperties getElectricProperties() {
-		return properties;
+	public ItemSeismicScanner(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
+		super(properties, creativeTab, item -> ElectrodynamicsItems.ITEM_BATTERY.get());
 	}
 
 	@Override
@@ -85,32 +74,8 @@ public class ItemSeismicScanner extends ItemElectric {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowedIn(group)) {
-
-			ItemStack empty = new ItemStack(this);
-			IItemElectric.setEnergyStored(empty, 0);
-			items.add(empty);
-
-			ItemStack charged = new ItemStack(this);
-			IItemElectric.setEnergyStored(charged, properties.capacity);
-			items.add(charged);
-		}
-	}
-
-	@Override
 	public boolean canBeDepleted() {
 		return false;
-	}
-
-	@Override
-	public int getBarWidth(ItemStack stack) {
-		return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
-	}
-
-	@Override
-	public boolean isBarVisible(ItemStack stack) {
-		return getJoulesStored(stack) < properties.capacity;
 	}
 
 	@Override
@@ -123,7 +88,7 @@ public class ItemSeismicScanner extends ItemElectric {
 			boolean isPowered = seismic.getJoulesStored(scanner) >= JOULES_PER_SCAN;
 			ItemStack ore = scanner.getCapability(ForgeCapabilities.ITEM_HANDLER).map(m -> m.getStackInSlot(0)).orElse(ItemStack.EMPTY);
 			if (player.isShiftKeyDown() && isTimerUp && isPowered && !ore.isEmpty()) {
-				extractPower(scanner, properties.extract.getJoules(), false);
+				extractPower(scanner, getElectricProperties().extract.getJoules(), false);
 				tag.putInt(NBTUtils.TIMER, COOLDOWN_SECONDS * 20);
 				world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_SEISMICSCANNER.get(), SoundSource.PLAYERS, 1, 1);
 				if (ore.getItem() instanceof BlockItem oreBlockItem) {
@@ -166,17 +131,6 @@ public class ItemSeismicScanner extends ItemElectric {
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 		return slotChanged;
-	}
-
-	@Override
-	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-
-		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
-			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-		}
-
-		return true;
-
 	}
 
 }

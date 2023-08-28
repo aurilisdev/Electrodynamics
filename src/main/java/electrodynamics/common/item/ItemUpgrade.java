@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.registers.ElectrodynamicsCreativeTabs;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -19,19 +20,18 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.ExperienceOrb;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class ItemUpgrade extends Item {
+public class ItemUpgrade extends ItemElectrodynamics {
 	public final SubtypeItemUpgrade subtype;
 
 	private static final DecimalFormat FORMATTER = new DecimalFormat("0.00");
 
 	public ItemUpgrade(Properties properties, SubtypeItemUpgrade subtype) {
-		super(properties.stacksTo(subtype.maxSize));
+		super(properties.stacksTo(subtype.maxSize), () -> ElectrodynamicsCreativeTabs.MAIN.get());
 		this.subtype = subtype;
 	}
 

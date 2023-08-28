@@ -1,18 +1,21 @@
 package electrodynamics.common.item.gear.tools;
 
+import java.util.function.Supplier;
+
 import electrodynamics.api.IWrenchItem;
+import electrodynamics.common.item.ItemElectrodynamics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class ItemWrench extends Item implements IWrenchItem {
+public class ItemWrench extends ItemElectrodynamics implements IWrenchItem {
 
-	public ItemWrench(Properties properties) {
-		super(properties);
+	public ItemWrench(Properties properties, Supplier<CreativeModeTab> creativeTab) {
+		super(properties, creativeTab);
 	}
 
 	@Override

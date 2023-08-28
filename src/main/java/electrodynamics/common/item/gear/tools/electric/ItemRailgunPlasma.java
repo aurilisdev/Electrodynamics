@@ -1,5 +1,7 @@
 package electrodynamics.common.item.gear.tools.electric;
 
+import java.util.function.Supplier;
+
 import electrodynamics.api.item.IItemTemperate;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
@@ -14,6 +16,7 @@ import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -26,8 +29,8 @@ public class ItemRailgunPlasma extends ItemRailgun {
 	private static final double TEMPERATURE_REDUCED_PER_TICK = 2.5;
 	private static final double OVERHEAT_WARNING_THRESHOLD = 0.5;
 
-	public ItemRailgunPlasma(ElectricItemProperties properties) {
-		super(properties, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK, item -> ElectrodynamicsItems.ITEM_CARBYNEBATTERY.get());
+	public ItemRailgunPlasma(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
+		super(properties, creativeTab, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK, item -> ElectrodynamicsItems.ITEM_CARBYNEBATTERY.get());
 	}
 
 	@Override

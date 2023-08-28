@@ -7,9 +7,7 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.tile.quarry.TileQuarry;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -86,13 +84,6 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockPare
 		}
 		return super.canSurvive(state, worldIn, pos);
 
-	}
-
-	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (machine.showInItemGroup) {
-			items.add(new ItemStack(this));
-		}
 	}
 
 	@Override

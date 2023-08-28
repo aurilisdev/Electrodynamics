@@ -1,8 +1,8 @@
 package electrodynamics.common.entity.projectile.types;
 
-import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.item.subtype.SubtypeRod;
+import electrodynamics.registers.ElectrodynamicsDamageTypes;
 import electrodynamics.registers.ElectrodynamicsEntities;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
@@ -62,15 +62,16 @@ public class EntityMetalRod extends EntityCustomProjectile {
 
 	@Override
 	public void onHitEntity(EntityHitResult hit) {
+		Entity entity = hit.getEntity();
 		switch (number) {
 		case 0:
-			hit.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 16f);
+			entity.hurt(entity.damageSources().source(ElectrodynamicsDamageTypes.ACCELERATED_BOLT, this, entity), 16f);
 			break;
 		case 1:
-			hit.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 20f);
+			entity.hurt(entity.damageSources().source(ElectrodynamicsDamageTypes.ACCELERATED_BOLT, this, entity), 20f);
 			break;
 		case 2:
-			hit.getEntity().hurt(DamageSources.ACCELERATED_BOLT_IGNOREARMOR, 4f);
+			entity.hurt(entity.damageSources().source(ElectrodynamicsDamageTypes.ACCELERATED_BOLT_IGNOREARMOR, this, entity), 4f);
 			break;
 		default:
 		}

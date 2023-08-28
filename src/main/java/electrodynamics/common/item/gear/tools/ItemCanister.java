@@ -2,15 +2,16 @@ package electrodynamics.common.item.gear.tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.inventory.InventoryTickConsumer;
+import electrodynamics.common.item.ItemElectrodynamics;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -37,32 +38,32 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ItemCanister extends Item {
+public class ItemCanister extends ItemElectrodynamics {
 
 	public static final int MAX_FLUID_CAPACITY = 5000;
 
 	public static final List<InventoryTickConsumer> INVENTORY_TICK_CONSUMERS = new ArrayList<>();
 
-	public ItemCanister(Item.Properties itemProperty) {
-		super(itemProperty);
+	public ItemCanister(Item.Properties properties, Supplier<CreativeModeTab> creativeTab) {
+		super(properties, creativeTab);
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowedIn(group)) {
-			items.add(new ItemStack(this));
-			if (!CapabilityUtils.isFluidItemNull()) {
-				for (Fluid liq : ForgeRegistries.FLUIDS.getValues()) {
-					if (liq.isSame(Fluids.EMPTY)) {
-						continue;
-					}
-					ItemStack temp = new ItemStack(this);
-					temp.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).setFluid(new FluidStack(liq, MAX_FLUID_CAPACITY)));
-					items.add(temp);
+	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
+		items.add(new ItemStack(this));
+		if (!CapabilityUtils.isFluidItemNull()) {
+			for (Fluid liq : ForgeRegistries.FLUIDS.getValues()) {
+				if (liq.isSame(Fluids.EMPTY)) {
+					continue;
 				}
+				ItemStack temp = new ItemStack(this);
+				temp.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).setFluid(new FluidStack(liq, MAX_FLUID_CAPACITY)));
+				items.add(temp);
+
 			}
 		}
+
 	}
 
 	@Override
