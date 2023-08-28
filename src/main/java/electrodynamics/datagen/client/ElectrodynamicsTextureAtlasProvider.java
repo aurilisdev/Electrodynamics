@@ -1,7 +1,7 @@
 package electrodynamics.datagen.client;
 
 import electrodynamics.api.References;
-import electrodynamics.client.textures.ElectrodynamicsTextureAtlases;
+import electrodynamics.client.texture.atlas.ElectrodynamicsTextureAtlases;
 import net.minecraft.client.renderer.texture.atlas.sources.DirectoryLister;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;

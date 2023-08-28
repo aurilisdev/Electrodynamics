@@ -89,7 +89,8 @@ import electrodynamics.client.screen.tile.ScreenSeismicRelay;
 import electrodynamics.client.screen.tile.ScreenSolarPanel;
 import electrodynamics.client.screen.tile.ScreenThermoelectricManipulator;
 import electrodynamics.client.screen.tile.ScreenWindmill;
-import electrodynamics.client.textures.ElectrodynamicsTextureAtlases;
+import electrodynamics.client.texture.atlas.AtlasHolderElectrodynamicsCustom;
+import electrodynamics.client.texture.atlas.ElectrodynamicsTextureAtlases;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
@@ -98,6 +99,7 @@ import electrodynamics.registers.ElectrodynamicsEntities;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import electrodynamics.registers.ElectrodynamicsParticles;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.RenderType;
@@ -108,6 +110,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent.RegisterAdditional;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -357,16 +360,12 @@ public class ClientRegister {
 		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_GAS);
 	}
 
-	/* All atlas textures in the block and item atlases are eagerly loaded now
-	 * Custom atlases are defined via JSON now
-	@SubscribeEvent
-	public static void addCustomTextureAtlases(TextureStitchEvent.Pre event) {
-		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-			CUSTOM_TEXTURES.forEach(event::addSprite);
-		}
-	}
-	*/
-
+	/*
+	 * All atlas textures in the block and item atlases are eagerly loaded now Custom atlases are defined via JSON now
+	 * 
+	 * @SubscribeEvent public static void addCustomTextureAtlases(TextureStitchEvent.Pre event) { if
+	 * (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) { CUSTOM_TEXTURES.forEach(event::addSprite); } }
+	 */
 
 	@SubscribeEvent
 	public static void cacheCustomTextureAtlases(TextureStitchEvent.Post event) {
@@ -380,6 +379,11 @@ public class ClientRegister {
 	@SubscribeEvent
 	public static void registerParticles(RegisterParticleProvidersEvent event) {
 		event.registerSpriteSet(ElectrodynamicsParticles.PARTICLE_PLASMA_BALL.get(), ParticlePlasmaBall.Factory::new);
+	}
+
+	@SubscribeEvent
+	public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
+		event.registerReloadListener(new AtlasHolderElectrodynamicsCustom(Minecraft.getInstance().textureManager));
 	}
 
 }
