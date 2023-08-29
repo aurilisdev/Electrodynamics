@@ -9,7 +9,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.api.References;
-import electrodynamics.client.ClientRegister;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
 import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -64,7 +63,7 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 
 	@Override
 	public @NotNull ResourceLocation getTextureLocation(@NotNull EntityEnergyBlast entity) {
-		return ClientRegister.TEXTURE_PLASMA_BALL;
+		return new ResourceLocation(References.ID, "custom/plasmaorb");
 	}
 
 }

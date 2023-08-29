@@ -19,7 +19,7 @@ import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.gas.utils.IGasTank;
 import electrodynamics.api.screen.ITexture;
-import electrodynamics.client.ClientRegister;
+import electrodynamics.client.texture.atlas.AtlasHolderElectrodynamicsCustom;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.RenderingUtils;
@@ -94,20 +94,18 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 
 	public static void renderMercuryTexture(GuiGraphics graphics, int x, int y, float progress) {
 
-		GasGaugeTextures texture = GasGaugeTextures.MERCURY_FLUID;
-
-		TextureAtlasSprite mercury = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(texture.getLocation());
+		TextureAtlasSprite mercury = AtlasHolderElectrodynamicsCustom.get(AtlasHolderElectrodynamicsCustom.TEXTURE_MERCURY);
 
 		Matrix4f matrix = graphics.pose().last().pose();
 
 		RenderingUtils.bindTexture(mercury.atlasLocation());
 
-		int height = (int) (progress * texture.textureHeight());
+		int height = (int) (progress * 49);
 
 		int x1 = x;
 		int x2 = x1 + 12;
 
-		int y1 = y + texture.textureHeight() - height;
+		int y1 = y + 49 - height;
 		int y2 = y1 + height;
 
 		float minU = mercury.getU0();
@@ -133,8 +131,7 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 
 	public enum GasGaugeTextures implements ITexture {
 		BACKGROUND_DEFAULT(14, 49, 0, 0, 256, 256, TEXTURE),
-		LEVEL_DEFAULT(14, 49, 14, 0, 256, 256, TEXTURE),
-		MERCURY_FLUID(12, 47, 0, 0, 12, 47, ClientRegister.TEXTURE_MERCURY);
+		LEVEL_DEFAULT(14, 49, 14, 0, 256, 256, TEXTURE);
 
 		private final int textureWidth;
 		private final int textureHeight;

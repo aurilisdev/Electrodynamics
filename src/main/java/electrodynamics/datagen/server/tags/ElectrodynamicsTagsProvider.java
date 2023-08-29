@@ -20,7 +20,7 @@ public class ElectrodynamicsTagsProvider {
 		generator.addProvider(true, new ElectrodynamicsItemTagsProvider(output, lookupProvider, blockProvider, helper));
 		generator.addProvider(true, new ElectrodynamicsFluidTagsProvider(output, lookupProvider, helper));
 		generator.addProvider(true, new ElectrodynamicsGasTagsProvider(output, lookupProvider, helper));
-		generator.addProvider(true, new ElectrodynamicsDamageTagsProvider(output, lookupProvider, helper));
+		//generator.addProvider(true, new ElectrodynamicsDamageTagsProvider(output, lookupProvider, helper));
 	}
 
 }
