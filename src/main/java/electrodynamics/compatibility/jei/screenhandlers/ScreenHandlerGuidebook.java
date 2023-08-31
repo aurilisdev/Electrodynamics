@@ -107,9 +107,13 @@ public class ScreenHandlerGuidebook implements IGuiContainerHandler<ScreenGuideb
 	
 	@Override
 	public List<Rect2i> getGuiExtraAreas(ScreenGuidebook screen) {
-		Rect2i area1 = new Rect2i(((int) (screen.getGuiLeft() + screen.getGuiWidth())), screen.getGuiTop(), ((int) (ScreenGuidebook.LEFT_X_SHIFT + ScreenGuidebook.LEFT_TEXTURE_WIDTH + ScreenGuidebook.RIGHT_TEXTURE_WIDTH - screen.getGuiHeight())), ScreenGuidebook.LEFT_TEXTURE_HEIGHT);
-		Rect2i area2 = new Rect2i(screen.getGuiLeft() + ScreenGuidebook.LEFT_X_SHIFT, screen.getGuiTop(), -ScreenGuidebook.LEFT_X_SHIFT, ScreenGuidebook.LEFT_TEXTURE_HEIGHT);
-		return Arrays.asList(area1, area2);
+		
+		Rect2i area = new Rect2i(screen.getGuiLeft() + ScreenGuidebook.LEFT_X_SHIFT, screen.getGuiTop(), ScreenGuidebook.OLD_TEXTURE_WIDTH + ScreenGuidebook.RIGHT_TEXTURE_WIDTH, ScreenGuidebook.LEFT_TEXTURE_HEIGHT);
+		
+		
+		//Rect2i area1 = new Rect2i(((int) (screen.getGuiLeft() + screen.getGuiWidth())), screen.getGuiTop(), ((int) (ScreenGuidebook.LEFT_X_SHIFT + ScreenGuidebook.LEFT_TEXTURE_WIDTH + ScreenGuidebook.RIGHT_TEXTURE_WIDTH - screen.getGuiHeight())), ScreenGuidebook.LEFT_TEXTURE_HEIGHT);
+		//Rect2i area2 = new Rect2i(screen.getGuiLeft() + ScreenGuidebook.LEFT_X_SHIFT, screen.getGuiTop(), -ScreenGuidebook.LEFT_X_SHIFT, ScreenGuidebook.LEFT_TEXTURE_HEIGHT);
+		return Arrays.asList(area);
 	}
 
 }
