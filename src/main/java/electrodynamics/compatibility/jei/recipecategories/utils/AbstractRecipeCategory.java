@@ -380,9 +380,9 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 		for (AbstractLabelWrapper wrap : labels) {
 			Component text = wrap.getComponent(this, recipe);
 			if (wrap.xIsEnd()) {
-				graphics.drawString(font, text, wrap.getXPos() - font.width(text.getVisualOrderText()), wrap.getYPos(), wrap.getColor());
+				graphics.drawString(font, text, wrap.getXPos() - font.width(text.getVisualOrderText()), wrap.getYPos(), wrap.getColor(), false);
 			} else {
-				graphics.drawString(font, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor());
+				graphics.drawString(font, text, wrap.getXPos(), wrap.getYPos(), wrap.getColor(), false);
 			}
 		}
 	}

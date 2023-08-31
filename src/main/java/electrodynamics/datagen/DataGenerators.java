@@ -3,6 +3,7 @@ package electrodynamics.datagen;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 import electrodynamics.api.References;
 import electrodynamics.datagen.client.ElectrodynamicsBlockModelsProvider;
@@ -21,6 +22,7 @@ import electrodynamics.datagen.server.recipe.ElectrodynamicsRecipeProvider;
 import electrodynamics.datagen.server.tags.ElectrodynamicsTagsProvider;
 import electrodynamics.registers.ElectrodynamicsDamageTypes;
 import electrodynamics.registers.ElectrodynamicsFeatures;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.DataGenerator;
@@ -47,7 +49,7 @@ public class DataGenerators {
 
 		ExistingFileHelper helper = event.getExistingFileHelper();
 
-		//CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
 		if (event.includeServer()) {
 			generator.addProvider(true, new LootTableProvider(output, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(ElectrodynamicsLootTablesProvider::new, LootContextParamSets.BLOCK))));
@@ -56,7 +58,8 @@ public class DataGenerators {
 			generator.addProvider(true, new CoalGeneratorFuelSourceProvider(output));
 			generator.addProvider(true, new ThermoelectricGenHeatSourceProvider(output));
 			generator.addProvider(true, new ForgeAdvancementProvider(output, event.getLookupProvider(), helper, List.of(new ElectrodynamicsAdvancementProvider())));
-			generator.addProvider(true, new DatapackBuiltinEntriesProvider(output, event.getLookupProvider(), new RegistrySetBuilder()
+			
+			DatapackBuiltinEntriesProvider datapacks = new DatapackBuiltinEntriesProvider(output, lookupProvider, new RegistrySetBuilder()
 					//
 					.add(Registries.DAMAGE_TYPE, ElectrodynamicsDamageTypes::registerTypes)
 					//
@@ -66,8 +69,10 @@ public class DataGenerators {
 					//
 					.add(ForgeRegistries.Keys.BIOME_MODIFIERS, context -> ElectrodynamicsFeatures.registerModifiers(context))
 			//
-					, Set.of(References.ID)));
-			ElectrodynamicsTagsProvider.addTagProviders(event.getGenerator(), event.getGenerator().getPackOutput(), event.getLookupProvider(), event.getExistingFileHelper());
+					, Set.of(References.ID));
+			
+			generator.addProvider(true, datapacks);
+			ElectrodynamicsTagsProvider.addTagProviders(generator, output, datapacks.getRegistryProvider(), helper);
 		}
 		if (event.includeClient()) {
 			generator.addProvider(true, new ElectrodynamicsBlockStateProvider(output, helper));

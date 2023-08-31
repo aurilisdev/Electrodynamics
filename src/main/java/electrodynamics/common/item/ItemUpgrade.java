@@ -72,7 +72,7 @@ public class ItemUpgrade extends ItemElectrodynamics {
 		}
 		if (subtype == SubtypeItemUpgrade.experience) {
 			double storedXp = stack.hasTag() ? stack.getTag().getDouble(NBTUtils.XP) : 0;
-			tooltip.add(ElectroTextUtils.tooltip("info.xpstored").withStyle(ChatFormatting.GRAY).append(Component.literal(FORMATTER.format(storedXp)).withStyle(ChatFormatting.LIGHT_PURPLE)));
+			tooltip.add(ElectroTextUtils.tooltip("info.xpstored", Component.literal(FORMATTER.format(storedXp)).withStyle(ChatFormatting.LIGHT_PURPLE)).withStyle(ChatFormatting.GRAY));
 			tooltip.add(ElectroTextUtils.tooltip("info.xpusage").withStyle(ChatFormatting.GRAY));
 
 		}

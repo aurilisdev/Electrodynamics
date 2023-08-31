@@ -42,11 +42,11 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 			
 			int offset = (int) ((150 - font.width(combined)) / 2.0);
 			
-			graphics.drawString(font, combined, 13 + offset, 22, 0);
+			graphics.drawString(font, combined, 13 + offset, 22, 0, false);
 			
 			Component symbol = units.getSymbol();
 			
-			graphics.drawString(font, symbol, 163 - font.width(symbol), 175, 4210752);
+			graphics.drawString(font, symbol, 163 - font.width(symbol), 175, 4210752, false);
 
 		}));
 
@@ -163,7 +163,7 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 
 	@Override
 	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-		graphics.drawString(font, this.title, this.titleLabelX, this.titleLabelY, 4210752);
+		graphics.drawString(font, this.title, this.titleLabelX, this.titleLabelY, 4210752, false);
 		int guiWidth = (int) getGuiWidth();
 		int guiHeight = (int) getGuiHeight();
 		int xAxis = mouseX - guiWidth;

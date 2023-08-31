@@ -26,7 +26,7 @@ public class ButtonSearchedText extends ButtonSpecificPage {
 	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 		drawCenteredStringNoShadow(graphics, gui.getFontRenderer(), chapter, this.xLocation + this.width / 2 + guiWidth, this.yLocation + guiHeight - 10, TextWrapperObject.DEFAULT_COLOR);
-		graphics.drawString(gui.getFontRenderer(), Language.getInstance().getVisualOrder(line), this.xLocation + guiWidth + this.width / 2, this.yLocation + guiHeight + (this.height - 8) / 2, color);
+		graphics.drawString(gui.getFontRenderer(), Language.getInstance().getVisualOrder(line), this.xLocation + guiWidth + this.width / 2, this.yLocation + guiHeight + (this.height - 8) / 2, color, false);
 
 	}
 
@@ -53,7 +53,7 @@ public class ButtonSearchedText extends ButtonSpecificPage {
 
 	public static void drawCenteredStringNoShadow(GuiGraphics graphics, Font font, Component pText, int pX, int pY, int pColor) {
 		FormattedCharSequence formattedcharsequence = pText.getVisualOrderText();
-		graphics.drawString(font, formattedcharsequence, pX - font.width(formattedcharsequence) / 2, pY, pColor);
+		graphics.drawString(font, formattedcharsequence, pX - font.width(formattedcharsequence) / 2, pY, pColor, false);
 	}
 
 }

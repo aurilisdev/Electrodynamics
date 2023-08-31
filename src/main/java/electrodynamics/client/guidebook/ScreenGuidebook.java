@@ -617,9 +617,9 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 			if (text.centered()) {
 				int xShift = (TEXT_WIDTH - font.width(text.characters())) / 2;
-				graphics.drawString(getFontRenderer(), Language.getInstance().getVisualOrder(text.characters()), text.x() + refX + xShift + xPageShift, refY + text.y(), text.color());
+				graphics.drawString(getFontRenderer(), Language.getInstance().getVisualOrder(text.characters()), text.x() + refX + xShift + xPageShift, refY + text.y(), text.color(), false);
 			} else {
-				graphics.drawString(getFontRenderer(), Language.getInstance().getVisualOrder(text.characters()), text.x() + refX + xPageShift, text.y() + refY, text.color());
+				graphics.drawString(getFontRenderer(), Language.getInstance().getVisualOrder(text.characters()), text.x() + refX + xPageShift, text.y() + refY, text.color(), false);
 			}
 
 		}
@@ -629,7 +629,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 			AbstractGraphicWrapper<?> graphic = wrapper.graphic();
 
 			for (GraphicTextDescriptor descriptor : graphic.descriptors) {
-				graphics.drawString(getFontRenderer(), descriptor.text, refX + wrapper.x() + descriptor.xOffsetFromImage + xPageShift, refY + wrapper.y() + descriptor.yOffsetFromImage, descriptor.color);
+				graphics.drawString(getFontRenderer(), descriptor.text, refX + wrapper.x() + descriptor.xOffsetFromImage + xPageShift, refY + wrapper.y() + descriptor.yOffsetFromImage, descriptor.color, false);
 			}
 
 		}

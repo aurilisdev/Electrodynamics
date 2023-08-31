@@ -18,12 +18,12 @@ public class ElectrodynamicsDamageTagsProvider extends DamageTypeTagsProvider {
 	
 	@Override
 	protected void addTags(Provider provider) {
-		tag(DamageTypeTags.BYPASSES_ARMOR).add(ElectrodynamicsDamageTypes.ELECTRICITY, ElectrodynamicsDamageTypes.RADIATION, ElectrodynamicsDamageTypes.ACCELERATED_BOLT_IGNOREARMOR, ElectrodynamicsDamageTypes.PLASMA_BOLT).replace(false);
-		tag(DamageTypeTags.IS_PROJECTILE).add(ElectrodynamicsDamageTypes.ACCELERATED_BOLT, ElectrodynamicsDamageTypes.ACCELERATED_BOLT_IGNOREARMOR, ElectrodynamicsDamageTypes.PLASMA_BOLT).replace(false);
+		tag(DamageTypeTags.BYPASSES_ARMOR).add(ElectrodynamicsDamageTypes.ELECTRICITY, ElectrodynamicsDamageTypes.RADIATION, ElectrodynamicsDamageTypes.ACCELERATED_BOLT_IGNOREARMOR, ElectrodynamicsDamageTypes.PLASMA_BOLT);
+		tag(DamageTypeTags.IS_PROJECTILE).add(ElectrodynamicsDamageTypes.ACCELERATED_BOLT, ElectrodynamicsDamageTypes.ACCELERATED_BOLT_IGNOREARMOR, ElectrodynamicsDamageTypes.PLASMA_BOLT);
 		//.isMagic()
-		tag(DamageTypeTags.WITCH_RESISTANT_TO).add(ElectrodynamicsDamageTypes.ELECTRICITY, ElectrodynamicsDamageTypes.RADIATION).replace(false);
-		tag(DamageTypeTags.AVOIDS_GUARDIAN_THORNS).add(ElectrodynamicsDamageTypes.ELECTRICITY, ElectrodynamicsDamageTypes.RADIATION).replace(false);
-		tag(DamageTypeTags.ALWAYS_TRIGGERS_SILVERFISH).add(ElectrodynamicsDamageTypes.ELECTRICITY, ElectrodynamicsDamageTypes.RADIATION).replace(false);
+		tag(DamageTypeTags.WITCH_RESISTANT_TO).add(ElectrodynamicsDamageTypes.ELECTRICITY, ElectrodynamicsDamageTypes.RADIATION);
+		tag(DamageTypeTags.AVOIDS_GUARDIAN_THORNS).add(ElectrodynamicsDamageTypes.ELECTRICITY, ElectrodynamicsDamageTypes.RADIATION);
+		tag(DamageTypeTags.ALWAYS_TRIGGERS_SILVERFISH).add(ElectrodynamicsDamageTypes.ELECTRICITY, ElectrodynamicsDamageTypes.RADIATION);
 	}
 
 }

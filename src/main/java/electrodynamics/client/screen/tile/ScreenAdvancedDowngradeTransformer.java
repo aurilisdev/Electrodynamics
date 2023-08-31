@@ -28,7 +28,7 @@ public class ScreenAdvancedDowngradeTransformer extends GenericScreen<ContainerA
 			
 			int offset = (int) ((width - font.width(top)) / 2.0F);
 			
-			graphics.drawString(font, top, xStart + offset, 28, 4210752);
+			graphics.drawString(font, top, xStart + offset, 28, 4210752, false);
 			
 			TileAdvancedDowngradeTransformer xfmr = menu.getHostFromIntArray();
 			if(xfmr == null) {
@@ -49,7 +49,7 @@ public class ScreenAdvancedDowngradeTransformer extends GenericScreen<ContainerA
 			
 			offset = (int) ((width - font.width(bottom)) / 2.0F);
 			
-			graphics.drawString(font, bottom, xStart + offset, 81, 4210752);
+			graphics.drawString(font, bottom, xStart + offset, 81, 4210752, false);
 			
 		}));
 		addComponent(new ScreenComponentButton<>(75, 20, 40, 20).setLabel(Component.literal("2 : 1")).setOnPress(button -> {

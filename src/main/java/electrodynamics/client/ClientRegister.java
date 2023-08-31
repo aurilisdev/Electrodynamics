@@ -104,6 +104,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -348,7 +349,7 @@ public class ClientRegister {
 
 	@SubscribeEvent
 	public static void cacheCustomTextureAtlases(TextureStitchEvent.Post event) {
-		if (event.getAtlas().location().equals(ElectrodynamicsTextureAtlases.ELECTRODYNAMICS_CUSTOM)) {
+		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
 			for (ResourceLocation loc : CUSTOM_TEXTURES) {
 				ClientRegister.CACHED_TEXTUREATLASSPRITES.put(loc, event.getAtlas().getSprite(loc));
 			}

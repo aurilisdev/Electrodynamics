@@ -35,13 +35,13 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 			Location blockLoc = ownerItem.hasTag() ? Location.readFromNBT(ownerItem.getTag(), NBTUtils.LOCATION + ItemSeismicScanner.BLOCK_LOC) : new Location(0, 0, 0);
 
 			if (blockLoc.equals(playerLoc)) {
-				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.xcoordna"), 95, 35, 4210752);
-				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.ycoordna"), 95, 45, 4210752);
-				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.zcoordna"), 95, 55, 4210752);
+				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.xcoordna"), 95, 35, 4210752, false);
+				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.ycoordna"), 95, 45, 4210752, false);
+				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.zcoordna"), 95, 55, 4210752, false);
 			} else {
-				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.xcoord", blockLoc.intX()), 95, 35, 4210752);
-				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.ycoord", blockLoc.intY()), 95, 45, 4210752);
-				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.zcoord", blockLoc.intZ()), 95, 55, 4210752);
+				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.xcoord", blockLoc.intX()), 95, 35, 4210752, false);
+				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.ycoord", blockLoc.intY()), 95, 45, 4210752, false);
+				graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.zcoord", blockLoc.intZ()), 95, 55, 4210752, false);
 			}
 		}));
 

@@ -100,12 +100,12 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 
 		RenderingUtils.bindTexture(mercury.atlasLocation());
 
-		int height = (int) (progress * 49);
+		int height = (int) (progress * 47);
 
 		int x1 = x;
 		int x2 = x1 + 12;
 
-		int y1 = y + 49 - height;
+		int y1 = y + 47 - height;
 		int y2 = y1 + height;
 
 		float minU = mercury.getU0();

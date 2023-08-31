@@ -57,7 +57,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 				chargeCapable = electro.getVoltage() / electricItem.getElectricProperties().receive.getVoltage() * 100;
 			}
 
-			graphics.drawString(font, ElectroTextUtils.gui("genericcharger.chargeperc", ChatFormatter.getChatDisplayShort(chargingPercentage, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.DARK_GRAY).withStyle(ChatFormatting.DARK_GRAY), inventoryLabelX, 33, 0);
+			graphics.drawString(font, ElectroTextUtils.gui("genericcharger.chargeperc", ChatFormatter.getChatDisplayShort(chargingPercentage, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.DARK_GRAY).withStyle(ChatFormatting.DARK_GRAY), inventoryLabelX, 33, 0, false);
 
 			Component capable = Component.empty();
 
@@ -69,7 +69,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 				capable = getChargeCapableFormatted(chargeCapable, ChatFormatting.GREEN);
 			}
 
-			graphics.drawString(font, capable, inventoryLabelX, 43, 0);
+			graphics.drawString(font, capable, inventoryLabelX, 43, 0, false);
 
 		}));
 	}
