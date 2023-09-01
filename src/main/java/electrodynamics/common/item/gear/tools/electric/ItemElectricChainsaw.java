@@ -1,10 +1,7 @@
 package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
-import java.util.Set;
 import java.util.function.Supplier;
-
-import com.google.common.collect.Sets;
 
 import electrodynamics.api.creativetab.CreativeTabSupplier;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
@@ -16,7 +13,6 @@ import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.LivingEntity;
@@ -31,10 +27,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.ToolAction;
+import net.minecraftforge.common.ToolActions;
 
 public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, CreativeTabSupplier {
 
-	// private static final Set<Material> EFFECTIVE_ON_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT, Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE);
 	private final ElectricItemProperties properties;
 	private final Supplier<CreativeModeTab> creativeTab;
 
@@ -64,7 +61,7 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
 
 	@Override
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		return 0;// getJoulesStored(stack) > properties.extract.getJoules() ? EFFECTIVE_ON_MATERIALS.contains(state.getMaterial()) ? speed : super.getDestroySpeed(stack, state) : 0;
+		return getJoulesStored(stack) > properties.extract.getJoules() ? super.getDestroySpeed(stack, state) : 0;
 	}
 
 	@Override
@@ -126,5 +123,10 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
 	public boolean hasCreativeTab() {
 		return creativeTab != null;
 	}
-
+	
+	@Override
+	public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+		return getJoulesStored(stack) > properties.extract.getJoules() ? ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_SHEARS_ACTIONS.contains(toolAction) : false;
+	}
+	
 }
