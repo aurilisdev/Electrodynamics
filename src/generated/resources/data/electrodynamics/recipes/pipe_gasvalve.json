@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "P": {
       "item": "electrodynamics:gaspipeuninsulatedsteel"
@@ -16,5 +17,6 @@
   ],
   "result": {
     "item": "electrodynamics:gasvalve"
-  }
+  },
+  "show_notification": false
 }

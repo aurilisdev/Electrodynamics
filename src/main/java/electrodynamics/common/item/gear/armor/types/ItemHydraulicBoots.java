@@ -10,13 +10,14 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelHydraulicBoots;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
+import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.registers.ElectrodynamicsCreativeTabs;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
@@ -24,7 +25,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -38,14 +38,14 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ItemHydraulicBoots extends ArmorItem {
+public class ItemHydraulicBoots extends ItemElectrodynamicsArmor {
 
 	public static final int MAX_CAPACITY = 2000;
 
 	private static final String TEXTURE_LOCATION = References.ID + ":textures/model/armor/hydraulicboots.png";
 
 	public ItemHydraulicBoots() {
-		super(HydraulicBoots.HYDRAULIC_BOOTS, Type.BOOTS, new Item.Properties().tab(References.CORETAB).stacksTo(1));
+		super(HydraulicBoots.HYDRAULIC_BOOTS, Type.BOOTS, new Item.Properties().stacksTo(1), () -> ElectrodynamicsCreativeTabs.MAIN.get());
 	}
 
 	@Override
@@ -72,16 +72,16 @@ public class ItemHydraulicBoots extends ArmorItem {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (allowedIn(tab)) {
-			items.add(new ItemStack(this));
-			if (!CapabilityUtils.isFluidItemNull()) {
-				ItemStack full = new ItemStack(this);
-				full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).setFluid(new FluidStack(ElectrodynamicsFluids.fluidHydraulic, MAX_CAPACITY)));
-				items.add(full);
+	public void addCreativeModeItems(CreativeModeTab tab, List<ItemStack> items) {
 
-			}
+		super.addCreativeModeItems(tab, items);
+		if (!CapabilityUtils.isFluidItemNull()) {
+			ItemStack full = new ItemStack(this);
+			full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).setFluid(new FluidStack(ElectrodynamicsFluids.fluidHydraulic, MAX_CAPACITY)));
+			items.add(full);
+
 		}
+
 	}
 
 	@Override

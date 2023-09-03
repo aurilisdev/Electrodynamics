@@ -4,7 +4,7 @@
 	"ambientocclusion": "false",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "electrodynamics:model/mineralgrinder",
+		"0": "electrodynamics:block/model/mineralgrinder",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

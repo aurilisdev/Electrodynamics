@@ -3,7 +3,7 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/electricarcfurnace",
+		"0": "electrodynamics:block/model/electricarcfurnace",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

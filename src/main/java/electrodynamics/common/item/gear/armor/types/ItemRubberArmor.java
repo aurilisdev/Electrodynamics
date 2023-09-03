@@ -1,20 +1,23 @@
 package electrodynamics.common.item.gear.armor.types;
 
+import java.util.function.Supplier;
+
 import electrodynamics.api.References;
+import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
-public class ItemRubberArmor extends ArmorItem {
+public class ItemRubberArmor extends ItemElectrodynamicsArmor {
 
-	public ItemRubberArmor(Type slot, Properties builderIn) {
-		super(ArmorMaterialRubber.rubber, slot, builderIn);
+	public ItemRubberArmor(Type slot, Properties properties, Supplier<CreativeModeTab> creativeTab) {
+		super(ArmorMaterialRubber.rubber, slot, properties, creativeTab);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "B": {
       "tag": "forge:storage_blocks/lapis"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "electrodynamics:circuitelite"
-  }
+  },
+  "show_notification": false
 }

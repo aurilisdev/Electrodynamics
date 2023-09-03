@@ -6,7 +6,7 @@
 		64
 	],
 	"textures": {
-		"0": "electrodynamics:model/compressoraddontankb",
+		"0": "electrodynamics:block/model/compressoraddontankb",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

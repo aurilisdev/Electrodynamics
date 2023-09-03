@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "B": {
       "item": "electrodynamics:carbynebattery"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "electrodynamics:carbynebatterybox"
-  }
+  },
+  "show_notification": false
 }

@@ -6,7 +6,7 @@
 		64
 	],
 	"textures": {
-		"0": "electrodynamics:model/advanceddowngradetransformer",
+		"0": "electrodynamics:block/model/advanceddowngradetransformer",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

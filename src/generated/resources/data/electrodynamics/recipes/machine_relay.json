@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "C": {
       "item": "electrodynamics:ceramicplate"
@@ -24,5 +25,6 @@
   ],
   "result": {
     "item": "electrodynamics:relay"
-  }
+  },
+  "show_notification": false
 }

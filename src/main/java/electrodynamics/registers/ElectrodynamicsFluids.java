@@ -4,12 +4,12 @@ import java.util.HashMap;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.References;
-import electrodynamics.common.fluid.types.gas.FluidHydrogen;
-import electrodynamics.common.fluid.types.gas.FluidOxygen;
 import electrodynamics.common.fluid.types.liquid.FluidClay;
 import electrodynamics.common.fluid.types.liquid.FluidEthanol;
 import electrodynamics.common.fluid.types.liquid.FluidHydraulic;
+import electrodynamics.common.fluid.types.liquid.FluidHydrogen;
 import electrodynamics.common.fluid.types.liquid.FluidHydrogenFluoride;
+import electrodynamics.common.fluid.types.liquid.FluidOxygen;
 import electrodynamics.common.fluid.types.liquid.FluidPolyethylene;
 import electrodynamics.common.fluid.types.liquid.FluidSulfate;
 import electrodynamics.common.fluid.types.liquid.FluidSulfuricAcid;

@@ -17,17 +17,18 @@ import electrodynamics.client.ClientRegister;
 import electrodynamics.client.keys.KeyBinds;
 import electrodynamics.client.render.model.armor.types.ModelJetpack;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
+import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.client.PacketRenderJetpackParticles;
 import electrodynamics.common.packet.types.server.PacketJetpackFlightServer;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.registers.ElectrodynamicsCreativeTabs;
 import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -51,7 +52,7 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.network.PacketDistributor;
 
-public class ItemJetpack extends ArmorItem {
+public class ItemJetpack extends ItemElectrodynamicsArmor {
 
 	// public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 	public static final int MAX_CAPACITY = 30000;
@@ -70,7 +71,7 @@ public class ItemJetpack extends ArmorItem {
 	public static final String WAS_HURT_KEY = "washurt";
 
 	public ItemJetpack() {
-		super(Jetpack.JETPACK, Type.CHESTPLATE, new Item.Properties().tab(References.CORETAB).stacksTo(1));
+		super(Jetpack.JETPACK, Type.CHESTPLATE, new Item.Properties().stacksTo(1), () -> ElectrodynamicsCreativeTabs.MAIN.get());
 	}
 
 	@Override
@@ -97,20 +98,19 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (allowedIn(tab)) {
-			items.add(new ItemStack(this));
-			if (!CapabilityUtils.isGasItemNull()) {
-				ItemStack full = new ItemStack(this);
+	public void addCreativeModeItems(CreativeModeTab tab, List<ItemStack> items) {
+		super.addCreativeModeItems(tab, items);
+		if (!CapabilityUtils.isGasItemNull()) {
+			ItemStack full = new ItemStack(this);
 
-				GasStack gas = new GasStack(ElectrodynamicsGases.HYDROGEN.get(), MAX_CAPACITY, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL);
+			GasStack gas = new GasStack(ElectrodynamicsGases.HYDROGEN.get(), MAX_CAPACITY, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL);
 
-				full.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> cap.fillTank(0, gas, GasAction.EXECUTE));
+			full.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> cap.fillTank(0, gas, GasAction.EXECUTE));
 
-				items.add(full);
+			items.add(full);
 
-			}
 		}
+
 	}
 
 	@Override

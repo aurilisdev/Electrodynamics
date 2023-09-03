@@ -10,6 +10,7 @@ import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 
 /**
@@ -100,6 +101,10 @@ public abstract class AbstractScreenComponent implements GuiEventListener, Rende
 	@Override
 	public boolean isMouseOver(double mouseX, double mouseY) {
 		return isPointInRegion(xLocation, yLocation, mouseX - gui.getGuiWidth(), mouseY - gui.getGuiHeight(), width, height);
+	}
+	
+	public Rect2i getClickArea() {
+		return new Rect2i(xLocation + (int) gui.getGuiWidth(), yLocation + (int) gui.getGuiHeight(), width, height);
 	}
 
 	/*

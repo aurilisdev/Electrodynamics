@@ -54,11 +54,11 @@ public class ScreenSeismicRelay extends GenericScreen<ContainerSeismicRelay> {
 	}
 
 	private void renderNotFound(GuiGraphics graphics, int offset, int index) {
-		graphics.drawString(font, ElectroTextUtils.gui("seismicrelay.posnotfound", index), 80, 30 + offset, 4210752);
+		graphics.drawString(font, ElectroTextUtils.gui("seismicrelay.posnotfound", index), 80, 30 + offset, 4210752, false);
 	}
 
 	private void renderCoordinate(GuiGraphics graphics, BlockPos pos, int offset, int index) {
-		graphics.drawString(font, ElectroTextUtils.gui("seismicrelay.posfound", index, pos.toShortString()), 80, 30 + offset, 4210752);
+		graphics.drawString(font, ElectroTextUtils.gui("seismicrelay.posfound", index, pos.toShortString()), 80, 30 + offset, 4210752, false);
 	}
 
 }

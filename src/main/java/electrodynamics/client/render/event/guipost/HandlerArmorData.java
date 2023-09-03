@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
@@ -54,10 +53,6 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 			heightOffset -= 30;
 		}
 
-		
-		
-		minecraft.getTextureManager().bindForSetup(GuiComponent.GUI_ICONS_LOCATION);
-
 		graphics.pose().popPose();
 
 	}
@@ -75,7 +70,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 				mode = ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED));
 			}
 			graphics.drawString(minecraft.font, mode, 35, heightOffset - 30, 0);
-			graphics.drawString(minecraft.font, ChatFormatter.getChatDisplayShort(helmet.getOrCreateTag().getDouble(IItemElectric.JOULES_STORED), DisplayUnit.JOULES), 35, heightOffset - 20, -1);
+			graphics.drawString(minecraft.font, ChatFormatter.getChatDisplayShort(helmet.getOrCreateTag().getDouble(IItemElectric.JOULES_STORED), DisplayUnit.JOULES), 35, heightOffset - 20, -1, false);
 		}
 
 		if (renderItem) {
@@ -100,7 +95,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 					graphics.drawString(minecraft.font, ElectroTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 35, heightOffset - 20, -1);
 				} else {
 					graphics.drawString(minecraft.font, mode, 35, heightOffset - 30, 0);
-					graphics.drawString(minecraft.font, ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 35, heightOffset - 20, -1);
+					graphics.drawString(minecraft.font, ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 35, heightOffset - 20, -1, false);
 				}
 
 			});
@@ -130,7 +125,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 
 		if (ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get())) {
 			renderItem = true;
-			graphics.drawString(minecraft.font, ElectroTextUtils.tooltip("ceramicplatecount", Component.literal((chestplate.hasTag() ? chestplate.getTag().getInt(NBTUtils.PLATES) : 0) + "")).withStyle(ChatFormatting.AQUA), 35, heightOffset - 25, -1);
+			graphics.drawString(minecraft.font, ElectroTextUtils.tooltip("ceramicplatecount", Component.literal((chestplate.hasTag() ? chestplate.getTag().getInt(NBTUtils.PLATES) : 0) + "")).withStyle(ChatFormatting.AQUA), 35, heightOffset - 25, -1, false);
 		}
 
 		if (renderItem) {
@@ -156,8 +151,8 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 			graphics.pose().pushPose();
 			graphics.pose().scale(0.8F, 0.8F, 0.8F);
 			graphics.drawString(minecraft.font, on, x, (int) ((heightOffset - 34) / 0.8F), 0);
-			graphics.drawString(minecraft.font, ItemJetpack.getModeText(leggings.hasTag() ? leggings.getTag().getInt(NBTUtils.MODE) : -1), x, (int) ((heightOffset - 25) / 0.8F), 0);
-			graphics.drawString(minecraft.font, ChatFormatter.getChatDisplayShort(leggings.getOrCreateTag().getDouble(IItemElectric.JOULES_STORED), DisplayUnit.JOULES), x, (int) ((heightOffset - 16) / 0.8F), -1);
+			graphics.drawString(minecraft.font, ItemJetpack.getModeText(leggings.hasTag() ? leggings.getTag().getInt(NBTUtils.MODE) : -1), x, (int) ((heightOffset - 25) / 0.8F), 0, false);
+			graphics.drawString(minecraft.font, ChatFormatter.getChatDisplayShort(leggings.getOrCreateTag().getDouble(IItemElectric.JOULES_STORED), DisplayUnit.JOULES), x, (int) ((heightOffset - 16) / 0.8F), -1, false);
 			graphics.pose().popPose();
 		}
 

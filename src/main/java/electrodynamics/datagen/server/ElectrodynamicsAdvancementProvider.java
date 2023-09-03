@@ -2,15 +2,8 @@ package electrodynamics.datagen.server;
 
 import static electrodynamics.datagen.utils.AdvancementBuilder.create;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
-import com.google.common.collect.Sets;
-
-import electrodynamics.Electrodynamics;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
@@ -26,62 +19,36 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRewards.Builder;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.FrameType;
-import net.minecraft.advancements.critereon.EntityPredicate;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
 import net.minecraft.advancements.critereon.InventoryChangeTrigger;
 import net.minecraft.advancements.critereon.PlayerTrigger;
-import net.minecraft.data.CachedOutput;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.PackOutput.PathProvider;
+import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Items;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.ForgeAdvancementProvider.AdvancementGenerator;
 
-public class ElectrodynamicsAdvancementProvider implements DataProvider {
+public class ElectrodynamicsAdvancementProvider implements AdvancementGenerator {
 
 	public final String modID;
-	private final PathProvider pathProvider;
 
-	public ElectrodynamicsAdvancementProvider(PackOutput packoutput, String modID) {
-		this.pathProvider = packoutput.createPathProvider(PackOutput.Target.DATA_PACK, "advancements");
+	public ElectrodynamicsAdvancementProvider(String modID) {
 		this.modID = modID;
 	}
 
-	public ElectrodynamicsAdvancementProvider(PackOutput packOutput) {
-		this(packOutput, References.ID);
+	public ElectrodynamicsAdvancementProvider() {
+		this(References.ID);
+	}
+
+	public AdvancementBuilder advancement(String name) {
+		return create(new ResourceLocation(modID, name));
 	}
 
 	@Override
-	public CompletableFuture<?> run(CachedOutput pOutput) {
-		Set<ResourceLocation> registeredAdvancements = Sets.newHashSet();
-		Consumer<AdvancementBuilder> consumer = advancementBuilder -> {
-			if (!registeredAdvancements.add(advancementBuilder.id)) {
-				throw new IllegalStateException("Duplicate advancement " + advancementBuilder.id);
-			}
-			Path path = this.pathProvider.json(advancementBuilder.id);
-
-			DataProvider.saveStable(pOutput, advancementBuilder.serializeToJson(), path);
-		};
-
-		registerAdvancements(consumer);
-
-	}
-
-	@Override
-	public String getName() {
-		return "Electrodynamics Advancement Provider";
-	}
-
-	/**
-	 * Override this to do mod-specific advancements
-	 * 
-	 * @param consumer
-	 */
-	public void registerAdvancements(Consumer<AdvancementBuilder> consumer) {
-
+	public void generate(Provider registries, Consumer<Advancement> consumer, ExistingFileHelper existingFileHelper) {
 		advancement("dispenseguidebook")
 				//
-				.addCriterion("SpawnIn", new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), EntityPredicate.Composite.ANY))
+				.addCriterion("SpawnIn", new PlayerTrigger.TriggerInstance(CriteriaTriggers.TICK.getId(), ContextAwarePredicate.ANY))
 				//
 				.rewards(Builder.loot(new ResourceLocation("advancement_reward/electroguidebook")))
 				//
@@ -674,11 +641,6 @@ public class ElectrodynamicsAdvancementProvider implements DataProvider {
 				.parent(basicWiring)
 				//
 				.save(consumer);
-
-	}
-
-	public AdvancementBuilder advancement(String name) {
-		return create(new ResourceLocation(modID, name));
 	}
 
 }

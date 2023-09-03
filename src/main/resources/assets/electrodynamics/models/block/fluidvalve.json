@@ -6,7 +6,7 @@
 		64
 	],
 	"textures": {
-		"0": "electrodynamics:model/fluidvalve",
+		"0": "electrodynamics:block/model/fluidvalve",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

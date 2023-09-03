@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "N": {
       "tag": "forge:nuggets/silver"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "electrodynamics:ingotsilver"
-  }
+  },
+  "show_notification": false
 }

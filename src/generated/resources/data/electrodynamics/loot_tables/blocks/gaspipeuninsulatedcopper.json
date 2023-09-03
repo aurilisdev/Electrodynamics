@@ -12,5 +12,6 @@
       "name": "gaspipeuninsulatedcopper",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/gaspipeuninsulatedcopper"
 }

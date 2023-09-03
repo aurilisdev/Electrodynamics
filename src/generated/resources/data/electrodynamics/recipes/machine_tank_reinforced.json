@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "G": {
       "item": "electrodynamics:glassclear"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "electrodynamics:tankreinforced"
-  }
+  },
+  "show_notification": false
 }

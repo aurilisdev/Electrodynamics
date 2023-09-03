@@ -3,7 +3,7 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/fermentationplant",
+		"0": "electrodynamics:block/model/fermentationplant",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"groups": [
@@ -78,8 +78,8 @@
 			"render_type": "minecraft:solid",
 			"parent": "block/cube_all",
 			"textures": {
-				"0": "electrodynamics:model/fermentationplant",
-				"particle": "electrodynamics:model/fermentationplant"
+				"0": "electrodynamics:block/model/fermentationplant",
+				"particle": "electrodynamics:block/model/fermentationplant"
 			},
 			"elements": [
 				{
@@ -788,8 +788,8 @@
 			"render_type": "minecraft:translucent",
 			"parent": "block/cube_all",
 			"textures": {
-				"0": "electrodynamics:model/fermentationplant",
-				"particle": "electrodynamics:model/fermentationplant"
+				"0": "electrodynamics:block/model/fermentationplant",
+				"particle": "electrodynamics:block/model/fermentationplant"
 			},
 			"elements": [
 				{

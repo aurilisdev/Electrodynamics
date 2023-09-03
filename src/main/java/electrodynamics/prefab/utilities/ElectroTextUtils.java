@@ -22,6 +22,7 @@ public class ElectroTextUtils {
 	public static final String GAS_BASE = "gas";
 	public static final String ADVANCEMENT_BASE = "advancement";
 	public static final String DIMENSION = "dimension";
+	public static final String CREATIVE_TAB = "creativetab";
 
 	public static MutableComponent tooltip(String key, Object... additional) {
 		return translated(TOOLTIP_BASE, key, additional);
@@ -69,6 +70,10 @@ public class ElectroTextUtils {
 
 	public static MutableComponent dimension(ResourceKey<Level> level, Object... additional) {
 		return dimension(level.location().getPath(), additional);
+	}
+	
+	public static MutableComponent creativeTab(String key, Object... additional) {
+		return translated(CREATIVE_TAB, key, additional);
 	}
 
 	public static MutableComponent translated(String base, String key, Object... additional) {

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "P": {
       "item": "electrodynamics:pipesteel"
@@ -16,5 +17,6 @@
   ],
   "result": {
     "item": "electrodynamics:fluidvalve"
-  }
+  },
+  "show_notification": false
 }

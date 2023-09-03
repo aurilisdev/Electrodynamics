@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "I": {
       "item": "electrodynamics:insulation"
@@ -11,5 +12,6 @@
   ],
   "result": {
     "item": "electrodynamics:rubberboots"
-  }
+  },
+  "show_notification": false
 }

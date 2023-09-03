@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.function.Supplier;
 
 import electrodynamics.prefab.properties.IPropertyType;
+import electrodynamics.prefab.properties.IPropertyType.BufferReader;
+import electrodynamics.prefab.properties.IPropertyType.BufferWriter;
 import electrodynamics.prefab.properties.PropertyManager;
 import electrodynamics.prefab.properties.PropertyManager.PropertyWrapper;
 import electrodynamics.prefab.tile.IPropertyHolderTile;
@@ -52,7 +54,7 @@ public class PacketSendUpdatePropertiesClient {
 		message.values.forEach(wrapper -> {
 			buf.writeInt(wrapper.index());
 			buf.writeResourceLocation(wrapper.type().getId());
-			wrapper.type().writeToBuffer(wrapper.value(), buf);
+			wrapper.type().writeToBuffer(new BufferWriter(wrapper.value(), buf));
 		});
 	}
 
@@ -69,7 +71,7 @@ public class PacketSendUpdatePropertiesClient {
 
 			index = buf.readInt();
 			propertyType = PropertyManager.REGISTERED_PROPERTIES.get(buf.readResourceLocation());
-			properties.add(new PropertyWrapper(index, propertyType, propertyType.readFromBuffer(buf), null));
+			properties.add(new PropertyWrapper(index, propertyType, propertyType.readFromBuffer(new BufferReader(buf)), null));
 
 		}
 		return new PacketSendUpdatePropertiesClient(pos, properties);

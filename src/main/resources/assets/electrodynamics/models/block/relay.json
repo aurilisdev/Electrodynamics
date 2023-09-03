@@ -6,7 +6,7 @@
 		128
 	],
 	"textures": {
-		"0": "electrodynamics:model/relay",
+		"0": "electrodynamics:block/model/relay",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

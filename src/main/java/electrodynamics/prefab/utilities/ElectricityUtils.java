@@ -3,9 +3,9 @@ package electrodynamics.prefab.utilities;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.cable.type.IConductor;
-import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import electrodynamics.registers.ElectrodynamicsDamageTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -21,15 +21,15 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class ElectricityUtils {
 
-	public static void electrecuteEntity(Entity entityIn, TransferPack transfer) {
+	public static void electrecuteEntity(Entity entity, TransferPack transfer) {
 		if (transfer.getVoltage() <= 960.0) {
 			Ingredient insulatingItems = Ingredient.of(ElectrodynamicsTags.Items.INSULATES_PLAYER_FEET);
-			for (ItemStack armor : entityIn.getArmorSlots()) {
+			for (ItemStack armor : entity.getArmorSlots()) {
 				if (ItemUtils.isIngredientMember(insulatingItems, armor.getItem())) {
 					float damage = (float) transfer.getAmps() / 10.0f;
 					if (Math.random() < damage) {
 						int integerDamage = (int) Math.max(1, damage);
-						if (armor.getDamageValue() > armor.getMaxDamage() || armor.hurt(integerDamage, entityIn.level().random, null)) {
+						if (armor.getDamageValue() > armor.getMaxDamage() || armor.hurt(integerDamage, entity.level().random, null)) {
 							armor.setCount(0);
 						}
 					}
@@ -37,7 +37,7 @@ public class ElectricityUtils {
 				}
 			}
 		}
-		entityIn.hurt(DamageSources.ELECTRICITY, (float) Math.min(9999, Math.max(0, transfer.getAmps())));
+		entity.hurt(entity.damageSources().source(ElectrodynamicsDamageTypes.ELECTRICITY, entity), (float) Math.min(9999, Math.max(0, transfer.getAmps())));
 	}
 
 	public static boolean isElectricReceiver(BlockEntity tile) {

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "B": {
       "item": "minecraft:bedrock"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "electrodynamics:creativepowersource"
-  }
+  },
+  "show_notification": false
 }

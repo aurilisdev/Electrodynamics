@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "B": {
       "item": "minecraft:iron_bars"
@@ -16,5 +17,6 @@
   "result": {
     "count": 6,
     "item": "electrodynamics:insulationceramic"
-  }
+  },
+  "show_notification": false
 }

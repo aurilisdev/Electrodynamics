@@ -77,8 +77,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		case EN_US:
 		default:
 
-			add("itemGroup.itemgroup" + References.ID, "Electrodynamics");
-			add("itemGroup.itemgroupelectrogrid", "Electrodynamics Grid");
+			addCreativeTab("main", "Electrodynamics");
+			addCreativeTab("grid", "Electrodynamics Grid");
 
 			addItem(ElectrodynamicsItems.ITEM_BATTERY, "Battery");
 			addItem(ElectrodynamicsItems.ITEM_LITHIUMBATTERY, "Lithium Battery");
@@ -1029,9 +1029,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addJei("gas_evaporating", "Fluid Evaporation");
 
 			addDamageSource("electricity", "%s was electrocuted");
-			addDamageSource("accelerated_bolt", "%1$s was perforated by %2$s");
-			addDamageSource("accelerated_bolt_ia", "%1$s was perforated by %2$s");
-			addDamageSource("plasma_bolt", "%1$s was vaporized by %2$s");
+			addDamageSource("acceleratedbolt", "%1$s was perforated by %2$s");
+			addDamageSource("plasmabolt", "%1$s was vaporized by %2$s");
 
 			addChatMessage("guidebookclick", "Click Here");
 
@@ -1697,6 +1696,10 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 	public void addAdvancement(String key, String translation) {
 		add("advancement." + modID + "." + key, translation);
+	}
+	
+	public void addCreativeTab(String key, String translation) {
+		add("creativetab." + modID + "." + key, translation);
 	}
 
 	public static enum Locale {

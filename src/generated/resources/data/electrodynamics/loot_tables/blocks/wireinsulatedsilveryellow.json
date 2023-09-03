@@ -12,5 +12,6 @@
       "name": "wireinsulatedsilveryellow",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wireinsulatedsilveryellow"
 }

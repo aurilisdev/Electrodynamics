@@ -49,5 +49,6 @@
       "name": "mineralcrusherdouble",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/mineralcrusherdouble"
 }

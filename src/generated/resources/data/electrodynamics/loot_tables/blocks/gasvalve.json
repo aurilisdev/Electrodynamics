@@ -12,5 +12,6 @@
       "name": "gasvalve",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/gasvalve"
 }

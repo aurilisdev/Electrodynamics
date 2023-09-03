@@ -12,5 +12,6 @@
       "name": "wirehighlyinsulatedtinbrown",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wirehighlyinsulatedtinbrown"
 }

@@ -164,9 +164,10 @@ public class AdvancementBuilder implements IForgeAdvancementBuilder {
 		return new Advancement(id, this.parent, this.display, this.rewards, this.criteria, this.requirements, false);
 	}
 
-	public Advancement save(Consumer<AdvancementBuilder> consumer) {
-		consumer.accept(this);
-		return this.build();
+	public Advancement save(Consumer<Advancement> consumer) {
+		Advancement adv = build();
+		consumer.accept(adv);
+		return adv;
 	}
 
 	public JsonObject serializeToJson() {

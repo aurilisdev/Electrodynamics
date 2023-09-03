@@ -3,7 +3,7 @@ package electrodynamics.registers;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.blockitem.BlockItemDescriptable;
+import electrodynamics.common.blockitem.types.BlockItemDescriptable;
 import electrodynamics.common.tile.gastransformer.TileGasTransformerAddonTank;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -18,12 +18,12 @@ public class UnifiedElectrodynamicsRegister {
 		ElectrodynamicsFluids.FLUIDS.register(bus);
 		ElectrodynamicsFluidTypes.FLUID_TYPES.register(bus);
 		ElectrodynamicsEntities.ENTITIES.register(bus);
-		ElectrodynamicsFeatures.CONFIGURED_FEATURES.register(bus);
-		ElectrodynamicsFeatures.PLACED_FEATURES.register(bus);
 		ElectrodynamicsMenuTypes.MENU_TYPES.register(bus);
 		ElectrodynamicsSounds.SOUNDS.register(bus);
 		ElectrodynamicsGases.GASES.register(bus);
 		ElectrodynamicsParticles.PARTICLES.register(bus);
+		ElectrodynamicsCreativeTabs.CREATIVE_TABS.register(bus);
+		ElectrodynamicsRuleTestTypes.RULE_TEST_TYPES.register(bus);
 	}
 
 	static {

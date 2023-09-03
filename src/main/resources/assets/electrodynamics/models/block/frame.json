@@ -5,7 +5,7 @@
 		128
 	],
 	"textures": {
-		"0": "electrodynamics:model/frame",
+		"0": "electrodynamics:block/model/frame",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

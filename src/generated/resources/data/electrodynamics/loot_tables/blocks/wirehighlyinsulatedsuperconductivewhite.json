@@ -12,5 +12,6 @@
       "name": "wirehighlyinsulatedsuperconductivewhite",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wirehighlyinsulatedsuperconductivewhite"
 }

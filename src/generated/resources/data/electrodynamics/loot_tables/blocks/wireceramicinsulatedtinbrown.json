@@ -12,5 +12,6 @@
       "name": "wireceramicinsulatedtinbrown",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wireceramicinsulatedtinbrown"
 }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "B": {
       "item": "electrodynamics:battery"
@@ -23,5 +24,6 @@
   ],
   "result": {
     "item": "electrodynamics:electricchainsaw"
-  }
+  },
+  "show_notification": false
 }

@@ -55,8 +55,6 @@ public class HandlerRailgunTemperature extends AbstractPostGuiOverlayHandler {
 			graphics.drawString(minecraft.font, overheatWarn, 2, 22, 0);
 		}
 
-		minecraft.getTextureManager().bindForSetup(GuiComponent.GUI_ICONS_LOCATION);
-
 		stack.popPose();
 	}
 

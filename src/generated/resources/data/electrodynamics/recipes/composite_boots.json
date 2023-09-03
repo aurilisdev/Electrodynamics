@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "P": {
       "item": "electrodynamics:compositeplating"
@@ -14,5 +15,6 @@
   ],
   "result": {
     "item": "electrodynamics:compositearmorboots"
-  }
+  },
+  "show_notification": false
 }

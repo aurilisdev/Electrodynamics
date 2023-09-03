@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "D": {
       "tag": "forge:dyes/yellow"
@@ -16,5 +17,6 @@
   "result": {
     "count": 8,
     "item": "electrodynamics:wirelogisticsgoldyellow"
-  }
+  },
+  "show_notification": false
 }

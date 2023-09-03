@@ -12,5 +12,6 @@
       "name": "resourceblockchromium",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/resourceblockchromium"
 }

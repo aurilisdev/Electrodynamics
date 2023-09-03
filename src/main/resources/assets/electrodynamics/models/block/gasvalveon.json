@@ -6,7 +6,7 @@
 		64
 	],
 	"textures": {
-		"0": "electrodynamics:model/gasvalve",
+		"0": "electrodynamics:block/model/gasvalve",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

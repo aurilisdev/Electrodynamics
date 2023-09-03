@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "C": {
       "item": "electrodynamics:coil"
@@ -21,5 +22,6 @@
   ],
   "result": {
     "item": "electrodynamics:upgradetransformer"
-  }
+  },
+  "show_notification": false
 }

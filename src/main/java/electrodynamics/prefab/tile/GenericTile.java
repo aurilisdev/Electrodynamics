@@ -9,6 +9,8 @@ import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.gas.GasTank;
 import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.prefab.properties.IPropertyType.TagReader;
+import electrodynamics.prefab.properties.IPropertyType.TagWriter;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyManager;
 import electrodynamics.prefab.tile.components.Component;
@@ -117,7 +119,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 		super.load(compound);
 		for (Property<?> prop : propertyManager.getProperties()) {
 			if (prop.shouldSave()) {
-				prop.load(prop.getType().readFromTag(prop, compound));
+				prop.load(prop.getType().readFromTag(new TagReader(prop, compound)));
 				compound.remove(prop.getName());
 			}
 		}
@@ -140,7 +142,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	public void saveAdditional(@NotNull CompoundTag compound) {
 		for (Property<?> prop : propertyManager.getProperties()) {
 			if (prop.shouldSave()) {
-				prop.getType().writeToTag(prop, compound);
+				prop.getType().writeToTag(new TagWriter(prop, compound));
 			}
 		}
 		for (Component component : components) {

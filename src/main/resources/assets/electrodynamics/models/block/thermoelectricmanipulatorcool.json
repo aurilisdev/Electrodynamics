@@ -6,8 +6,8 @@
 		128
 	],
 	"textures": {
-		"0": "electrodynamics:model/thermoelectricmanipulatorcool",
-		"1": "electrodynamics:model/thermoelectricmanipulatordials",
+		"0": "electrodynamics:block/model/thermoelectricmanipulatorcool",
+		"1": "electrodynamics:block/model/thermoelectricmanipulatordials",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "C": {
       "tag": "forge:ingots/copper"
@@ -11,5 +12,6 @@
   ],
   "result": {
     "item": "electrodynamics:wirecopper"
-  }
+  },
+  "show_notification": false
 }

@@ -12,5 +12,6 @@
       "name": "wirehighlyinsulatedsilverblue",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wirehighlyinsulatedsilverblue"
 }

@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "B": {
       "tag": "forge:circuits/basic"
@@ -19,5 +20,6 @@
   "result": {
     "count": 4,
     "item": "electrodynamics:upgradeitemvoid"
-  }
+  },
+  "show_notification": false
 }

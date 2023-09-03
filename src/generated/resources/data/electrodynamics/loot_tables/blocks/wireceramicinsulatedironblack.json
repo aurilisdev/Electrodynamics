@@ -12,5 +12,6 @@
       "name": "wireceramicinsulatedironblack",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wireceramicinsulatedironblack"
 }

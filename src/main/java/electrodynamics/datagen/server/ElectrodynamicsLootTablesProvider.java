@@ -1,5 +1,8 @@
 package electrodynamics.datagen.server;
 
+import java.util.List;
+
+import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeGlass;
@@ -13,7 +16,6 @@ import electrodynamics.datagen.utils.AbstractLootTableProvider;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsBlocks;
-import net.minecraft.data.DataGenerator;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -22,12 +24,16 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider {
 
-	public ElectrodynamicsLootTablesProvider(DataGenerator generator) {
-		super(generator);
+	public ElectrodynamicsLootTablesProvider(String modID) {
+		super(modID);
 	}
-
+	
+	public ElectrodynamicsLootTablesProvider() {
+		this(References.ID);
+	}
+	
 	@Override
-	protected void addTables() {
+	protected void generate() {
 
 		for (SubtypeFluidPipe pipe : SubtypeFluidPipe.values()) {
 			addSimpleBlock(ElectrodynamicsBlocks.getBlock(pipe));
@@ -104,7 +110,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.oxidationfurnace), ElectrodynamicsBlockTypes.TILE_OXIDATIONFURNACE, true, false, false, true, false);
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.downgradetransformer));
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.upgradetransformer));
-		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer));
+		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedupgradetransformer));
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer));
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coalgenerator), ElectrodynamicsBlockTypes.TILE_COALGENERATOR, true, false, false, true, false);
 		addMachineTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.solarpanel), ElectrodynamicsBlockTypes.TILE_SOLARPANEL, true, false, false, true, false);
@@ -162,14 +168,18 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 		addSimpleBlock(ElectrodynamicsBlocks.blockFluidPipePump);
 		addSimpleBlock(ElectrodynamicsBlocks.blockGasPipeFilter);
 		addSimpleBlock(ElectrodynamicsBlocks.blockFluidPipeFilter);
+		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.gasvent));
+		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer));
 
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay));
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitmonitor));
+		
+		addSimpleBlock(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get());
 
 	}
 
 	public <T extends GenericTile> void addMachineTable(Block block, RegistryObject<BlockEntityType<T>> tilereg, boolean items, boolean fluids, boolean gases, boolean energy, boolean additional) {
-		lootTables.put(block, machineTable(name(block), block, tilereg.get(), items, fluids, gases, energy, additional));
+		add(block, machineTable(name(block), block, tilereg.get(), items, fluids, gases, energy, additional));
 	}
 
 	/**
@@ -180,7 +190,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 	 */
 	public void addSilkTouchOnlyTable(RegistryObject<Block> reg) {
 		Block block = reg.get();
-		lootTables.put(block, createSilkTouchOnlyTable(name(block), block));
+		add(block, createSilkTouchOnlyTable(name(block), block));
 	}
 
 	public void addFortuneAndSilkTouchTable(RegistryObject<Block> reg, Item nonSilk, int minDrop, int maxDrop) {
@@ -188,7 +198,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 	}
 
 	public void addFortuneAndSilkTouchTable(Block block, Item nonSilk, int minDrop, int maxDrop) {
-		lootTables.put(block, createSilkTouchAndFortuneTable(name(block), block, nonSilk, minDrop, maxDrop));
+		add(block, createSilkTouchAndFortuneTable(name(block), block, nonSilk, minDrop, maxDrop));
 	}
 
 	public void addSimpleBlock(RegistryObject<Block> reg) {
@@ -197,11 +207,16 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 
 	public void addSimpleBlock(Block block) {
 
-		lootTables.put(block, createSimpleBlockTable(name(block), block));
+		add(block, createSimpleBlockTable(name(block), block));
 	}
 
 	public String name(Block block) {
 		return ForgeRegistries.BLOCKS.getKey(block).getPath();
+	}
+
+	@Override
+	public List<Block> getExcludedBlocks() {
+		return List.of(ElectrodynamicsBlocks.BLOCK_MULTISUBNODE.get(), ElectrodynamicsBlocks.BLOCK_FRAME.get(), ElectrodynamicsBlocks.BLOCK_FRAME_CORNER.get(), ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get());
 	}
 
 }

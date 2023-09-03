@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "S": {
       "tag": "forge:plates/hslasteel"
@@ -15,5 +16,6 @@
   ],
   "result": {
     "item": "electrodynamics:gastankhsla"
-  }
+  },
+  "show_notification": false
 }

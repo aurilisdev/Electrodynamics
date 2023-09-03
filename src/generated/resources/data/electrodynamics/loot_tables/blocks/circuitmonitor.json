@@ -12,5 +12,6 @@
       "name": "circuitmonitor",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/circuitmonitor"
 }

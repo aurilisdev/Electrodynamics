@@ -12,5 +12,6 @@
       "name": "wireinsulatedcopperbrown",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wireinsulatedcopperbrown"
 }

@@ -6,8 +6,8 @@
 		64
 	],
 	"textures": {
-		"0": "electrodynamics:model/gaspipepump",
-		"particle": "electrodynamics:block/gaspipepump"
+		"0": "electrodynamics:block/model/gaspipepump",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

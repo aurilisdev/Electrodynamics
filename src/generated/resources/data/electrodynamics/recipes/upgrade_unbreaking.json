@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "B": {
       "type": "forge:partial_nbt",
@@ -20,5 +21,6 @@
   ],
   "result": {
     "item": "electrodynamics:upgradeunbreaking"
-  }
+  },
+  "show_notification": false
 }

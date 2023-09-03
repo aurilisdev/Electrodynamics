@@ -8,7 +8,7 @@
 		64
 	],
 	"textures": {
-		"0": "electrodynamics:model/coalgeneratorrunning",
+		"0": "electrodynamics:block/model/coalgeneratorrunning",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

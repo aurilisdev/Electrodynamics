@@ -8,13 +8,14 @@ import electrodynamics.api.References;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
+import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.registers.ElectrodynamicsCreativeTabs;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
@@ -34,12 +35,12 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-public class ItemCompositeArmor extends ArmorItem {
+public class ItemCompositeArmor extends ItemElectrodynamicsArmor {
 
 	public static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/compositearmor.png";
 
 	public ItemCompositeArmor(Type slot) {
-		super(CompositeArmor.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).tab(References.CORETAB).fireResistant().setNoRepair());
+		super(CompositeArmor.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).fireResistant().setNoRepair(), () -> ElectrodynamicsCreativeTabs.MAIN.get());
 	}
 
 	@Override
@@ -54,9 +55,9 @@ public class ItemCompositeArmor extends ArmorItem {
 				List<ItemStack> armorPieces = new ArrayList<>();
 				entity.getArmorSlots().forEach(armorPieces::add);
 
-				boolean isBoth = armorPieces.get(0) == armorPiecesArray[3] && armorPieces.get(1) == armorPiecesArray[2];
+				boolean isBoth = armorPieces.get(0).getItem() == armorPiecesArray[3].getItem() && armorPieces.get(1).getItem() == armorPiecesArray[2].getItem();
 
-				boolean hasChest = armorPieces.get(2) == armorPiecesArray[1];
+				boolean hasChest = armorPieces.get(2).getItem() == armorPiecesArray[1].getItem();
 
 				ModelCompositeArmor<LivingEntity> model;
 
@@ -84,17 +85,16 @@ public class ItemCompositeArmor extends ArmorItem {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowedIn(group)) {
-			ItemStack empty = new ItemStack(this);
-			items.add(empty);
+	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
+		super.addCreativeModeItems(group, items);
+
+		if (getEquipmentSlot() == EquipmentSlot.CHEST) {
 			ItemStack filled = new ItemStack(this);
-			if (getEquipmentSlot() == EquipmentSlot.CHEST) {
-				CompoundTag tag = filled.getOrCreateTag();
-				tag.putInt(NBTUtils.PLATES, 2);
-				items.add(filled);
-			}
+			CompoundTag tag = filled.getOrCreateTag();
+			tag.putInt(NBTUtils.PLATES, 2);
+			items.add(filled);
 		}
+
 	}
 
 	@Override

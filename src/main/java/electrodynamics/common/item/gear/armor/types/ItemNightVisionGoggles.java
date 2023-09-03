@@ -2,6 +2,7 @@ package electrodynamics.common.item.gear.armor.types;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import electrodynamics.api.References;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
@@ -10,13 +11,13 @@ import electrodynamics.api.item.IItemElectric;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelNightVisionGoggles;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
+import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
@@ -30,7 +31,6 @@ import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -40,7 +40,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
-public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
+public class ItemNightVisionGoggles extends ItemElectrodynamicsArmor implements IItemElectric {
 
 	private final ElectricItemProperties properties;
 
@@ -50,8 +50,8 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	private static final String ARMOR_TEXTURE_OFF = References.ID + ":textures/model/armor/nightvisiongogglesoff.png";
 	private static final String ARMOR_TEXTURE_ON = References.ID + ":textures/model/armor/nightvisiongoggleson.png";
 
-	public ItemNightVisionGoggles(ElectricItemProperties properties) {
-		super(NightVisionGoggles.NVGS, Type.HELMET, properties);
+	public ItemNightVisionGoggles(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
+		super(NightVisionGoggles.NVGS, Type.HELMET, properties, creativeTab);
 		this.properties = properties;
 	}
 
@@ -122,7 +122,7 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, world, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY));
 		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
 		if (stack.hasTag() && stack.getTag().getBoolean(NBTUtils.ON)) {
 			tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
@@ -133,17 +133,16 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowedIn(group)) {
+	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
-			ItemStack empty = new ItemStack(this);
-			IItemElectric.setEnergyStored(empty, 0);
-			items.add(empty);
+		ItemStack empty = new ItemStack(this);
+		IItemElectric.setEnergyStored(empty, 0);
+		items.add(empty);
 
-			ItemStack charged = new ItemStack(this);
-			IItemElectric.setEnergyStored(charged, properties.capacity);
-			items.add(charged);
-		}
+		ItemStack charged = new ItemStack(this);
+		IItemElectric.setEnergyStored(charged, properties.capacity);
+		items.add(charged);
+
 	}
 
 	@Override

@@ -6,7 +6,7 @@
 		128
 	],
 	"textures": {
-		"0": "electrodynamics:model/gasfilterpipe",
+		"0": "electrodynamics:block/model/gasfilterpipe",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

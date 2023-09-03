@@ -3,11 +3,13 @@ package electrodynamics.common.item.gear.tools.electric;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.api.References;
 import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
+import electrodynamics.api.creativetab.CreativeTabSupplier;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
@@ -24,7 +26,6 @@ import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
@@ -56,7 +57,9 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
-public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric {
+public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric, CreativeTabSupplier {
+
+	private final Supplier<CreativeModeTab> creativeTab;
 
 	private static final List<ItemElectricDrill> DRILLS = new ArrayList<>();
 
@@ -69,9 +72,10 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 	private static final String SUBTYPE = "subtype";
 	private final ElectricItemProperties properties;
 
-	public ItemElectricDrill(ElectricItemProperties properties) {
+	public ItemElectricDrill(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
 		super(4, -2.4f, ElectricItemTier.DRILL, properties.durability(0), BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_PICKAXE);
 		this.properties = properties;
+		this.creativeTab = creativeTab;
 		DRILLS.add(this);
 	}
 
@@ -126,17 +130,16 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowedIn(group)) {
+	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
-			ItemStack empty = new ItemStack(this);
-			IItemElectric.setEnergyStored(empty, 0);
-			items.add(empty);
+		ItemStack empty = new ItemStack(this);
+		IItemElectric.setEnergyStored(empty, 0);
+		items.add(empty);
 
-			ItemStack charged = new ItemStack(this);
-			IItemElectric.setEnergyStored(charged, properties.capacity);
-			items.add(charged);
-		}
+		ItemStack charged = new ItemStack(this);
+		IItemElectric.setEnergyStored(charged, properties.capacity);
+		items.add(charged);
+
 	}
 
 	@Override
@@ -194,7 +197,7 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY));
 		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
 		IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
 		tooltip.add(ElectroTextUtils.tooltip("electricdrill.miningspeed", ChatFormatter.getChatDisplayShort(getHead(stack).speedBoost * 100, DisplayUnit.PERCENTAGE).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
@@ -331,6 +334,16 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 			}, item));
 		}
 
+	}
+
+	@Override
+	public boolean isAllowedInCreativeTab(CreativeModeTab tab) {
+		return creativeTab.get() == tab;
+	}
+
+	@Override
+	public boolean hasCreativeTab() {
+		return creativeTab != null;
 	}
 
 }

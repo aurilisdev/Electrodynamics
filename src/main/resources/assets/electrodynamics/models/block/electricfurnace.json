@@ -7,7 +7,7 @@
 		64
 	],
 	"textures": {
-		"0": "electrodynamics:model/electricfurnace",
+		"0": "electrodynamics:block/model/electricfurnace",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

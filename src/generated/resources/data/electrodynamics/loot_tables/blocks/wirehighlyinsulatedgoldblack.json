@@ -12,5 +12,6 @@
       "name": "wirehighlyinsulatedgoldblack",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wirehighlyinsulatedgoldblack"
 }

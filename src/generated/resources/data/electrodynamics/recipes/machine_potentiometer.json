@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "A": {
       "tag": "forge:plates/aluminum"
@@ -18,5 +19,6 @@
   ],
   "result": {
     "item": "electrodynamics:potentiometer"
-  }
+  },
+  "show_notification": false
 }

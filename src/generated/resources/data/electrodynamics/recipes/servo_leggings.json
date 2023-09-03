@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "B": {
       "item": "electrodynamics:battery"
@@ -24,5 +25,6 @@
   ],
   "result": {
     "item": "electrodynamics:servoleggings"
-  }
+  },
+  "show_notification": false
 }

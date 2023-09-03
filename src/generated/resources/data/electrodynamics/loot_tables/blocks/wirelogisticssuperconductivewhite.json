@@ -12,5 +12,6 @@
       "name": "wirelogisticssuperconductivewhite",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wirelogisticssuperconductivewhite"
 }

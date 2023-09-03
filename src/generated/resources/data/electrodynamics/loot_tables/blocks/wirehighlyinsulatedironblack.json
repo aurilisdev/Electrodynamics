@@ -12,5 +12,6 @@
       "name": "wirehighlyinsulatedironblack",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wirehighlyinsulatedironblack"
 }

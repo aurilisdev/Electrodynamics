@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "R": {
       "tag": "forge:raw_materials/silver"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "electrodynamics:raworeblocksilver"
-  }
+  },
+  "show_notification": false
 }

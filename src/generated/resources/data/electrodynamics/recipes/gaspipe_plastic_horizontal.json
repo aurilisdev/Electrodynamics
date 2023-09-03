@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "P": {
       "tag": "forge:plastic"
@@ -13,5 +14,6 @@
   "result": {
     "count": 6,
     "item": "electrodynamics:gaspipeuninsulatedplastic"
-  }
+  },
+  "show_notification": false
 }

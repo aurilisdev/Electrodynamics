@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "I": {
       "tag": "forge:ingots/steel"
@@ -14,5 +15,6 @@
   ],
   "result": {
     "item": "electrodynamics:drillheadsteel"
-  }
+  },
+  "show_notification": false
 }

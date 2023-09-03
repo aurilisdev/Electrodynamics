@@ -49,5 +49,6 @@
       "name": "carbynebatterybox",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/carbynebatterybox"
 }

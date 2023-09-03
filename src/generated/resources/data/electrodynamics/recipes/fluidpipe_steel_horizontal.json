@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "I": {
       "tag": "forge:ingots/steel"
@@ -13,5 +14,6 @@
   "result": {
     "count": 4,
     "item": "electrodynamics:pipesteel"
-  }
+  },
+  "show_notification": false
 }

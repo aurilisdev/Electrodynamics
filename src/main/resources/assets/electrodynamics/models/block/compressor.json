@@ -6,8 +6,8 @@
 		128
 	],
 	"textures": {
-		"0": "electrodynamics:model/compressor",
-		"1": "electrodynamics:model/compressordials",
+		"0": "electrodynamics:block/model/compressor",
+		"1": "electrodynamics:block/model/compressordials",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

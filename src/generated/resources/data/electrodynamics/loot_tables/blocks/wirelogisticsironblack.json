@@ -12,5 +12,6 @@
       "name": "wirelogisticsironblack",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wirelogisticsironblack"
 }

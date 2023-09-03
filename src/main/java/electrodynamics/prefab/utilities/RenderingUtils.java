@@ -244,6 +244,7 @@ public class RenderingUtils {
 		try {
 			poseStack.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
 			poseStack.scale(16.0F, 16.0F, 16.0F);
+			poseStack.scale(scale, scale, scale);
 			boolean flag = !model.usesBlockLight();
 			if (flag) {
 				Lighting.setupForFlatItems();

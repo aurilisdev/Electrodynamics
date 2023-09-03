@@ -27,7 +27,7 @@ public class ContainerSeismicScanner extends GenericContainerItem {
 		if (getHandler() == null) {
 			return;
 		}
-		addSlot(new SlotItemHandlerRestricted(SlotType.NORMAL, IconType.NONE, getHandler(), nextIndex(), 25, 42).setRestriction(stack -> (stack != null && stack.getItem().getClass().isInstance(BlockItem.class))));
+		addSlot(new SlotItemHandlerRestricted(SlotType.NORMAL, IconType.NONE, getHandler(), nextIndex(), 25, 42).setRestriction(stack -> (stack != null && stack.getItem() instanceof BlockItem)));
 	}
 
 }

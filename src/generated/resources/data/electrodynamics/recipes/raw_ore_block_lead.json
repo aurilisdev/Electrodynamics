@@ -1,5 +1,6 @@
 {
   "type": "minecraft:crafting_shaped",
+  "category": "misc",
   "key": {
     "R": {
       "tag": "forge:raw_materials/lead"
@@ -12,5 +13,6 @@
   ],
   "result": {
     "item": "electrodynamics:raworeblocklead"
-  }
+  },
+  "show_notification": false
 }

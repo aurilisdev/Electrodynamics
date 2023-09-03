@@ -89,6 +89,8 @@ import electrodynamics.client.screen.tile.ScreenSeismicRelay;
 import electrodynamics.client.screen.tile.ScreenSolarPanel;
 import electrodynamics.client.screen.tile.ScreenThermoelectricManipulator;
 import electrodynamics.client.screen.tile.ScreenWindmill;
+import electrodynamics.client.texture.atlas.AtlasHolderElectrodynamicsCustom;
+import electrodynamics.client.texture.atlas.ElectrodynamicsTextureAtlases;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
@@ -97,6 +99,7 @@ import electrodynamics.registers.ElectrodynamicsEntities;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import electrodynamics.registers.ElectrodynamicsParticles;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.RenderType;
@@ -108,6 +111,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent.RegisterAdditional;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -119,7 +123,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 public class ClientRegister {
 
 	private static final String BLOCK_LOC = References.ID + ":block/";
-	private static final String CUSTOM_LOC = References.ID + ":custom/";
 
 	// sometimes I fucking hate this game
 	public static LayerDefinition COMPOSITE_ARMOR_LAYER_LEG_NOCHEST = ModelCompositeArmor.createBodyLayer(1, true);
@@ -234,15 +237,7 @@ public class ClientRegister {
 	public static final ResourceLocation MODEL_QUARRYWHEEL_ROT = new ResourceLocation(BLOCK_LOC + "quarrywheelrot");
 
 	// Custom Textures
-	public static final ResourceLocation TEXTURE_QUARRYARM = new ResourceLocation(CUSTOM_LOC + "quarryarm");
-	public static final ResourceLocation TEXTURE_QUARRYARM_DARK = new ResourceLocation(CUSTOM_LOC + "quarrydark");
 	public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation("forge", "white");
-
-	public static final ResourceLocation TEXTURE_PLASMA_BALL = new ResourceLocation(CUSTOM_LOC + "plasmaorb");
-
-	public static final ResourceLocation TEXTURE_MERCURY = new ResourceLocation(CUSTOM_LOC + "mercury");
-
-	public static final ResourceLocation TEXTURE_GAS = new ResourceLocation(CUSTOM_LOC + "gastexture"); // use this texture when needing to render a visual representation of a gas that is not a barometer
 
 	public static void setup() {
 		ClientEvents.init();
@@ -349,19 +344,7 @@ public class ClientRegister {
 	}
 
 	static {
-		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_QUARRYARM);
-		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_QUARRYARM_DARK);
 		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_WHITE);
-		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_PLASMA_BALL);
-		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_MERCURY);
-		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_GAS);
-	}
-
-	@SubscribeEvent
-	public static void addCustomTextureAtlases(TextureStitchEvent.Pre event) {
-		if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-			CUSTOM_TEXTURES.forEach(event::addSprite);
-		}
 	}
 
 	@SubscribeEvent
@@ -375,7 +358,12 @@ public class ClientRegister {
 
 	@SubscribeEvent
 	public static void registerParticles(RegisterParticleProvidersEvent event) {
-		event.register(ElectrodynamicsParticles.PARTICLE_PLASMA_BALL.get(), ParticlePlasmaBall.Factory::new);
+		event.registerSpriteSet(ElectrodynamicsParticles.PARTICLE_PLASMA_BALL.get(), ParticlePlasmaBall.Factory::new);
+	}
+
+	@SubscribeEvent
+	public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
+		event.registerReloadListener(AtlasHolderElectrodynamicsCustom.INSTANCE = new AtlasHolderElectrodynamicsCustom(Minecraft.getInstance().textureManager));
 	}
 
 }

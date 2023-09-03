@@ -6,7 +6,7 @@
 		128
 	],
 	"textures": {
-		"0": "electrodynamics:model/coolantresavoir",
+		"0": "electrodynamics:block/model/coolantresavoir",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"groups": [
@@ -103,8 +103,8 @@
 			"render_type": "minecraft:solid",
 			"parent": "block/cube_all",
 			"textures": {
-				"0": "electrodynamics:model/coolantresavoir",
-				"particle": "electrodynamics:model/coolantresavoir"
+				"0": "electrodynamics:block/model/coolantresavoir",
+				"particle": "electrodynamics:block/model/coolantresavoir"
 			},
 			"elements": [
 				{
@@ -1542,8 +1542,8 @@
 			"render_type": "minecraft:translucent",
 			"parent": "block/cube_all",
 			"textures": {
-				"0": "electrodynamics:model/coolantresavoir",
-				"particle": "electrodynamics:model/coolantresavoir"
+				"0": "electrodynamics:block/model/coolantresavoir",
+				"particle": "electrodynamics:block/model/coolantresavoir"
 			},
 			"elements" : [
 				{

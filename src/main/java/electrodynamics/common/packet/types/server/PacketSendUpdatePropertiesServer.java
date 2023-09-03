@@ -3,6 +3,8 @@ package electrodynamics.common.packet.types.server;
 import java.util.function.Supplier;
 
 import electrodynamics.prefab.properties.IPropertyType;
+import electrodynamics.prefab.properties.IPropertyType.BufferReader;
+import electrodynamics.prefab.properties.IPropertyType.BufferWriter;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyManager;
 import electrodynamics.prefab.properties.PropertyManager.PropertyWrapper;
@@ -46,7 +48,7 @@ public class PacketSendUpdatePropertiesServer {
 
 		buf.writeInt(message.wrapper.index());
 		buf.writeResourceLocation(message.wrapper.type().getId());
-		message.wrapper.type().writeToBuffer(message.wrapper.value(), buf);
+		message.wrapper.type().writeToBuffer(new BufferWriter(message.wrapper.value(), buf));
 
 		buf.writeBlockPos(message.tilePos);
 
@@ -57,7 +59,7 @@ public class PacketSendUpdatePropertiesServer {
 		int index = buf.readInt();
 		IPropertyType type = PropertyManager.REGISTERED_PROPERTIES.get(buf.readResourceLocation());
 
-		return new PacketSendUpdatePropertiesServer(new PropertyWrapper(index, type, type.readFromBuffer(buf), null), buf.readBlockPos());
+		return new PacketSendUpdatePropertiesServer(new PropertyWrapper(index, type, type.readFromBuffer(new BufferReader(buf)), null), buf.readBlockPos());
 	}
 
 }

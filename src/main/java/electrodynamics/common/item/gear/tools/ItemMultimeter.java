@@ -1,21 +1,24 @@
 package electrodynamics.common.item.gear.tools;
 
+import java.util.function.Supplier;
+
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
+import electrodynamics.common.item.ItemElectrodynamics;
 import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.common.tile.network.electric.TileWire;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-public class ItemMultimeter extends Item {
+public class ItemMultimeter extends ItemElectrodynamics {
 
-	public ItemMultimeter(Properties properties) {
-		super(properties);
+	public ItemMultimeter(Properties properties, Supplier<CreativeModeTab> creativeTab) {
+		super(properties, creativeTab);
 	}
 
 	@Override

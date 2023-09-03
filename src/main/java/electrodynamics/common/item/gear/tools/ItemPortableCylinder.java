@@ -2,6 +2,7 @@ package electrodynamics.common.item.gear.tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -12,22 +13,21 @@ import electrodynamics.api.gas.Gas;
 import electrodynamics.api.gas.GasHandlerItemStack;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.inventory.InventoryTickConsumer;
+import electrodynamics.common.item.ItemElectrodynamics;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
-public class ItemPortableCylinder extends Item {
+public class ItemPortableCylinder extends ItemElectrodynamics {
 
 	public static final double MAX_GAS_CAPCITY = 5000;
 
@@ -36,30 +36,28 @@ public class ItemPortableCylinder extends Item {
 
 	public static final List<InventoryTickConsumer> INVENTORY_TICK_CONSUMERS = new ArrayList<>();
 
-	public ItemPortableCylinder(Properties properties) {
-		super(properties);
+	public ItemPortableCylinder(Properties properties, Supplier<CreativeModeTab> creativeTab) {
+		super(properties, creativeTab);
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowedIn(group)) {
+	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
-			items.add(new ItemStack(this));
-			if (ElectrodynamicsCapabilities.GAS_HANDLER_ITEM != null) {
+		items.add(new ItemStack(this));
+		if (ElectrodynamicsCapabilities.GAS_HANDLER_ITEM != null) {
 
-				for (Gas gas : ElectrodynamicsRegistries.gasRegistry().getValues()) {
-					if (gas.isEmpty()) {
-						continue;
-					}
-					ItemStack temp = new ItemStack(this);
-					temp.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> ((GasHandlerItemStack) cap).setGas(new GasStack(gas, MAX_GAS_CAPCITY, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL)));
-					items.add(temp);
-
+			for (Gas gas : ElectrodynamicsRegistries.gasRegistry().getValues()) {
+				if (gas.isEmpty()) {
+					continue;
 				}
+				ItemStack temp = new ItemStack(this);
+				temp.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> ((GasHandlerItemStack) cap).setGas(new GasStack(gas, MAX_GAS_CAPCITY, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL)));
+				items.add(temp);
 
 			}
 
 		}
+
 	}
 
 	@Override

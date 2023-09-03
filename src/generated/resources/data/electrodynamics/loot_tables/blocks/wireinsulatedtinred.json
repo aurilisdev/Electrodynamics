@@ -12,5 +12,6 @@
       "name": "wireinsulatedtinred",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/wireinsulatedtinred"
 }

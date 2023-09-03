@@ -58,5 +58,6 @@
       "name": "deepslateoresilver",
       "rolls": 1.0
     }
-  ]
+  ],
+  "random_sequence": "electrodynamics:blocks/deepslateoresilver"
 }
