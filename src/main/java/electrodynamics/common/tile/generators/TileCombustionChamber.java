@@ -147,6 +147,9 @@ public class TileCombustionChamber extends GenericMaterialTile implements IElect
 
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
+		if(level.isClientSide) {
+			return;
+		}
 		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
 	}
 

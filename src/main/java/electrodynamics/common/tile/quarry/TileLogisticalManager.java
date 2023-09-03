@@ -55,11 +55,17 @@ public class TileLogisticalManager extends GenericTile {
 
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
+		if(level.isClientSide) {
+			return;
+		}
 		refreshConnections();
 	}
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
+		if(level.isClientSide) {
+			return;
+		}
 		refreshConnections();
 	}
 

@@ -141,7 +141,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	public final Property<Double> setupPowerUsage;
 	public final Property<Boolean> isPowered;
 	public final Property<Boolean> hasHead;
-	public final Property<CompoundTag> currHead;
+	public final Property<Integer> currHead;
 
 	public final Property<Boolean> hasItemVoid;
 	public final Property<Integer> fortuneLevel;
@@ -180,7 +180,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		setupPowerUsage = property(new Property<>(PropertyType.Double, "setuppowerusage", 0.0));
 		isPowered = property(new Property<>(PropertyType.Boolean, "ispowered", false));
 		hasHead = property(new Property<>(PropertyType.Boolean, "hashead", false));
-		currHead = property(new Property<>(PropertyType.CompoundTag, "headtype", new CompoundTag()));
+		currHead = property(new Property<>(PropertyType.Integer, "headtype", -1));
 
 		hasItemVoid = property(new Property<>(PropertyType.Boolean, "hasitemvoid", false));
 		fortuneLevel = property(new Property<>(PropertyType.Integer, "fortunelevel", 0));
@@ -1019,6 +1019,9 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	@Override
 	public void onBlockDestroyed() {
+		if(level.isClientSide) {
+			return;
+		}
 		handleFramesDecayNoVarUpdate();
 	}
 
@@ -1152,16 +1155,16 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	private void writeHeadType(SubtypeDrillHead head) {
-		CompoundTag tag = new CompoundTag();
-		if (head != null) {
-			tag.putString("head", head.name());
+		if(head == null) {
+			currHead.set(-1);
+		} else {
+			currHead.set(head.ordinal());
 		}
-		currHead.set(tag);
 	}
 
 	@Nullable
 	public SubtypeDrillHead readHeadType() {
-		return currHead.get().contains("head") ? SubtypeDrillHead.valueOf(currHead.get().getString("head")) : null;
+		return currHead.get() == -1 ? null : SubtypeDrillHead.values()[currHead.get()];
 	}
 
 	@Nullable
