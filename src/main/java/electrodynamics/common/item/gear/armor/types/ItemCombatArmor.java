@@ -81,9 +81,9 @@ public class ItemCombatArmor extends ItemElectrodynamicsArmor implements IItemEl
 				List<ItemStack> armorPieces = new ArrayList<>();
 				entity.getArmorSlots().forEach(armorPieces::add);
 
-				boolean isBoth = armorPieces.get(0) == armorPiecesArray[3] && armorPieces.get(1) == armorPiecesArray[2];
+				boolean isBoth = armorPieces.get(0).getItem() == armorPiecesArray[3].getItem() && armorPieces.get(1).getItem() == armorPiecesArray[2].getItem();
 
-				boolean hasChest = armorPieces.get(2) == armorPiecesArray[1];
+				boolean hasChest = armorPieces.get(2).getItem() == armorPiecesArray[1].getItem();
 
 				ModelCombatArmor<LivingEntity> model;
 
