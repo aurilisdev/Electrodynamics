@@ -1,4 +1,4 @@
-package electrodynamics.common.fluid.types.gas;
+package electrodynamics.common.fluid.types.liquid;
 
 import electrodynamics.api.References;
 import electrodynamics.common.fluid.FluidNonPlaceable;
