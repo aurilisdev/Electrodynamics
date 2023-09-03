@@ -25,7 +25,9 @@ public class GenericTileValve extends GenericTile {
 
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
-		super.onNeightborChanged(neighbor);
+		if(level.isClientSide) {
+			return;
+		}
 
 		if (level.hasNeighborSignal(worldPosition)) {
 			isClosed = true;
@@ -41,7 +43,9 @@ public class GenericTileValve extends GenericTile {
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
-		super.onPlace(oldState, isMoving);
+		if(level.isClientSide) {
+			return;
+		}
 		if (level.hasNeighborSignal(worldPosition)) {
 			isClosed = true;
 		} else {

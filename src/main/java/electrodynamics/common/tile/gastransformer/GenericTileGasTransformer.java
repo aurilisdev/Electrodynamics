@@ -65,6 +65,9 @@ public abstract class GenericTileGasTransformer extends GenericGasTile implement
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
+		if(level.isClientSide) {
+			return;
+		}
 		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 
 		BlockEntity left = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
@@ -83,7 +86,7 @@ public abstract class GenericTileGasTransformer extends GenericGasTile implement
 
 	@Override
 	public void onBlockDestroyed() {
-		if (hasBeenDestroyed) {
+		if (level.isClientSide || hasBeenDestroyed) {
 			return;
 		}
 		hasBeenDestroyed = true;

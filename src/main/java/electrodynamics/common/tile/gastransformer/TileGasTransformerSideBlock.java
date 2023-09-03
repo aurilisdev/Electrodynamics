@@ -48,6 +48,9 @@ public class TileGasTransformerSideBlock extends GenericTile {
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
+		if(level.isClientSide) {
+			return;
+		}
 		updateTankCount();
 	}
 
@@ -77,8 +80,10 @@ public class TileGasTransformerSideBlock extends GenericTile {
 
 	@Override
 	public void onBlockDestroyed() {
-		BlockEntity owner = getLevel().getBlockEntity(ownerPos);
-		if (owner != null && owner instanceof GenericTileGasTransformer compressor) {
+		if(level.isClientSide) {
+			return;
+		}
+		if (getLevel().getBlockEntity(ownerPos) instanceof GenericTileGasTransformer compressor) {
 			getLevel().destroyBlock(ownerPos, !compressor.hasBeenDestroyed);
 		}
 	}
@@ -121,8 +126,7 @@ public class TileGasTransformerSideBlock extends GenericTile {
 
 	@Override
 	public InteractionResult use(Player player, InteractionHand handIn, BlockHitResult hit) {
-		BlockEntity owner = getLevel().getBlockEntity(ownerPos);
-		if (owner != null && owner instanceof GenericTileGasTransformer compressor) {
+		if (getLevel().getBlockEntity(ownerPos) instanceof GenericTileGasTransformer compressor) {
 			return compressor.use(player, handIn, hit);
 		}
 		return InteractionResult.FAIL;

@@ -92,6 +92,9 @@ public class TileSolarPanel extends GenericGeneratorTile {
 
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
+		if(level.isClientSide) {
+			return;
+		}
 		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
 	}
 

@@ -34,17 +34,19 @@ public class TileGasTransformerAddonTank extends GenericTile {
 
 	@Override
 	public void onBlockDestroyed() {
+		if(level.isClientSide) {
+			return;
+		}
 		BlockPos above = getBlockPos().above();
 		BlockEntity aboveTile = getLevel().getBlockEntity(above);
 		for (int i = 0; i < MAX_ADDON_TANKS; i++) {
-			if (aboveTile != null && aboveTile instanceof TileGasTransformerAddonTank tank) {
+			if (aboveTile instanceof TileGasTransformerAddonTank tank) {
 				tank.setOwnerPos(TileQuarry.OUT_OF_REACH);
 			}
 			above = above.above();
 			aboveTile = getLevel().getBlockEntity(above);
 		}
-		BlockEntity tile = getLevel().getBlockEntity(ownerPos);
-		if (tile != null && tile instanceof TileGasTransformerSideBlock side) {
+		if (getLevel().getBlockEntity(ownerPos) instanceof TileGasTransformerSideBlock side) {
 			// isDestroyed = true;
 			side.updateTankCount();
 		}
@@ -52,13 +54,14 @@ public class TileGasTransformerAddonTank extends GenericTile {
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
+		if(level.isClientSide) {
+			return;
+		}
 		BlockPos belowPos = getBlockPos().below();
 		BlockState below = getLevel().getBlockState(belowPos);
-		BlockEntity tile;
 		for (int i = 0; i < MAX_ADDON_TANKS; i++) {
 			if (below.is(ElectrodynamicsBlocks.blockGasTransformerSide)) {
-				tile = getLevel().getBlockEntity(belowPos);
-				if (tile != null && tile instanceof TileGasTransformerSideBlock side) {
+				if (getLevel().getBlockEntity(belowPos) instanceof TileGasTransformerSideBlock side) {
 					side.updateTankCount();
 				}
 				break;
@@ -73,8 +76,7 @@ public class TileGasTransformerAddonTank extends GenericTile {
 
 	@Override
 	public InteractionResult use(Player player, InteractionHand handIn, BlockHitResult hit) {
-		BlockEntity owner = getLevel().getBlockEntity(ownerPos);
-		if (owner != null && owner instanceof TileGasTransformerSideBlock compressor) {
+		if (getLevel().getBlockEntity(ownerPos) instanceof TileGasTransformerSideBlock compressor) {
 			return compressor.use(player, handIn, hit);
 		}
 		return InteractionResult.FAIL;
