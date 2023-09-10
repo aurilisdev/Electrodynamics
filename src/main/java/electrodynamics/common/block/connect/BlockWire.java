@@ -21,6 +21,7 @@ import electrodynamics.common.tile.network.electric.TileWire;
 import electrodynamics.common.tile.network.electric.transformer.TileGenericTransformer;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.Scheduler;
+import electrodynamics.prefab.utilities.math.Color;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -505,9 +506,9 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 		public static void registerColoredBlocks(RegisterColorHandlersEvent.Block event) {
 			WIRES.forEach(block -> event.register((state, level, pos, tintIndex) -> {
 				if (tintIndex == 0) {
-					return ((BlockWire) block).wire.color.color;
+					return ((BlockWire) block).wire.color.color.color();
 				}
-				return 0xFFFFFFFF;
+				return Color.WHITE.color();
 			}, block));
 		}
 	}

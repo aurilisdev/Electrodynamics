@@ -7,6 +7,7 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.screen.component.FluidTankSupplier;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -45,7 +46,7 @@ public class ScreenComponentFluidGauge extends AbstractScreenComponentGauge {
 			FluidStack fluidStack = tank.getFluid();
 			if (!fluidStack.isEmpty()) {
 				IClientFluidTypeExtensions extensions = IClientFluidTypeExtensions.of(fluidStack.getFluid());
-				RenderingUtils.color(extensions.getTintColor(fluidStack));
+				RenderingUtils.setShaderColor(new Color(extensions.getTintColor(fluidStack)));
 			}
 		}
 	}

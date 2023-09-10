@@ -4,6 +4,7 @@ import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.Blocks;
@@ -14,6 +15,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  */
 
 public interface ICapabilityElectrodynamic {
+	
+	
+	
 	default void setJoulesStored(double joules) {
 	}
 
@@ -77,5 +81,7 @@ public interface ICapabilityElectrodynamic {
 	}
 
 	void onChange();
+	
+	TransferPack getConnectedLoad(Direction dir);
 
 }

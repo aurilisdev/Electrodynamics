@@ -20,6 +20,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, BlockEntity, TransferPack> implements ICapabilityElectrodynamic {
+
 	private double resistance = 0;
 	private double energyLoss = 0;
 	private double voltage = 0.0;
@@ -31,6 +32,8 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 
 	private double minimumVoltage = -1.0D;
 	private long minimumAmpacity = 0;
+
+	private boolean locked = false;
 
 	public double getLastEnergyLoss() {
 		return lastEnergyLoss;
@@ -209,12 +212,12 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	@Override
 	public void tick() {
 		super.tick();
-		if (transferBuffer > 0) {
+		if (maxTransferBuffer > 0) {
 			ArrayList<BlockEntity> producersList = new ArrayList<>(currentProducers);
-			if ((int) voltage != 0 && voltage > 0) {
+			if ((int) voltage != 0 && voltage > 0 && transferBuffer > 0) {
 				if (resistance > 0) {
-					double bufferAsWatts = transferBuffer * 20; // buffer as watts
-					double maxWatts = (-voltage * voltage + voltage * Math.sqrt(voltage * voltage + 4 * bufferAsWatts * resistance)) / (2 * resistance);
+					double bufferAsWatts = transferBuffer * 20.0; // buffer as watts
+					double maxWatts = (-voltage * voltage + voltage * Math.sqrt(voltage * voltage + 4.0 * bufferAsWatts * resistance)) / (2.0 * resistance);
 					double maxPerTick = maxWatts / 20.0;
 					// above is power as watts when powerSend + powerLossToWires = m
 					TransferPack send = TransferPack.joulesVoltage(maxPerTick, voltage);
@@ -227,7 +230,11 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 				} else {
 					transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), producersList, false).getJoules();
 				}
+			} else {
+				transferBuffer = 0;
 			}
+		} else {
+			transferBuffer = 0;
 		}
 		lastVoltage = voltage;
 		voltage = 0;
@@ -237,17 +244,8 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		maxTransferBuffer = 0;
 		currentProducers.clear();
 
-		for (BlockEntity tile : acceptorSet) {
-			if (acceptorInputMap.containsKey(tile)) {
-				for (Direction connection : acceptorInputMap.get(tile)) {
-					TransferPack pack = ElectricityUtils.receivePower(tile, connection, TransferPack.joulesVoltage(Double.MAX_VALUE, voltage), true);
-					if (pack.getJoules() != 0) {
-						maxTransferBuffer += pack.getJoules();
-						break;
-					}
-				}
-			}
-		}
+		maxTransferBuffer = getConnectedLoad(Direction.UP).getJoules();
+
 		Iterator<IConductor> it = conductorSet.iterator();
 		boolean broken = false;
 		while (it.hasNext()) {
@@ -335,5 +333,44 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	public long getMinimumAmpacity() {
 		return minimumAmpacity;
 	}
-	
+
+	@Override
+	public TransferPack getConnectedLoad(Direction dir) {
+
+		if (locked) {
+			return TransferPack.EMPTY;
+		}
+
+		locked = true;
+
+		TransferPack connectedLoad = TransferPack.joulesVoltage(0, 0);
+
+		TransferPack capLoad;
+
+		ArrayList<BlockEntity> load = new ArrayList<>(acceptorSet);
+
+		load.removeAll(currentProducers);
+
+		for (BlockEntity tile : load) {
+
+			for (Direction direction : acceptorInputMap.getOrDefault(tile, new HashSet<>())) {
+
+				capLoad = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, direction).map(cap -> cap.getConnectedLoad(direction)).orElse(TransferPack.EMPTY);
+
+				if (capLoad.getJoules() != 0) {
+
+					connectedLoad = TransferPack.joulesVoltage(connectedLoad.getJoules() + capLoad.getJoules(), Math.max(connectedLoad.getVoltage(), capLoad.getVoltage()));
+					break;
+
+				}
+
+			}
+
+		}
+
+		locked = false;
+
+		return connectedLoad;
+	}
+
 }

@@ -6,7 +6,7 @@ import electrodynamics.api.References;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.tile.network.electric.TileLogisticalWire;
-import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
@@ -19,6 +19,9 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 public class BlockLogisticalWire extends BlockWire {
+	
+	public static final Color REDSTONE_ON = new Color(211, 5, 5, 255);
+	public static final Color REDSTONE_OFF = new Color(124, 25, 25, 255);
 
 	public static final HashSet<Block> WIRES = new HashSet<>();
 
@@ -52,15 +55,15 @@ public class BlockLogisticalWire extends BlockWire {
 		public static void registerColoredBlocks(RegisterColorHandlersEvent.Block event) {
 			WIRES.forEach(block -> event.register((state, level, pos, tintIndex) -> {
 				if (tintIndex == 0) {
-					return ((BlockLogisticalWire) block).wire.color.color;
+					return ((BlockLogisticalWire) block).wire.color.color.color();
 				}
 				if (tintIndex != 1) {
 					return 0xFFFFFFFF;
 				}
 				if (state.getValue(BlockMachine.ON)) {
-					return RenderingUtils.getRGBA(255, 211, 5, 5);
+					return REDSTONE_ON.color();
 				}
-				return RenderingUtils.getRGBA(255, 124, 25, 25);
+				return REDSTONE_OFF.color();
 			}, block));
 		}
 	}

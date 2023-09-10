@@ -83,6 +83,11 @@ public abstract class GenericTileWire extends GenericConnectTile implements ICon
 				public void onChange() {
 
 				}
+
+				@Override
+				public TransferPack getConnectedLoad(Direction dir) {
+					return getNetwork().getConnectedLoad(dir);
+				}
 			});
 		}
 	}

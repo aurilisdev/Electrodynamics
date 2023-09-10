@@ -28,7 +28,7 @@ public class TileRelay extends GenericTile {
 	public TileRelay(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_RELAY.get(), worldPos, blockState);
 		addComponent(new ComponentDirection(this));
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1));
 	}
 
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
@@ -47,30 +47,56 @@ public class TileRelay extends GenericTile {
 
 			isLocked = true;
 			
-			TransferPack accepted = cap.receivePower(transfer, debug);
+			TransferPack accepted = cap.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * Constants.RELAY_EFFICIENCY, transfer.getVoltage()), debug);
 
 			isLocked = false;
 			
 			if (accepted.getJoules() > 0) {
-				return TransferPack.joulesVoltage(accepted.getJoules() + transfer.getJoules() * (1.0 - Constants.RELAY_EFFICIENCY), transfer.getVoltage());
+				return accepted;
 			}
 			return TransferPack.EMPTY;
 
 		}).orElse(TransferPack.EMPTY);
+	}
+	
+	public TransferPack getConnectedLoad(Direction dir) {
+		
+		if (recievedRedstoneSignal || isLocked) {
+			return TransferPack.EMPTY;
+		}
+
+		Direction output = BlockEntityUtils.getRelativeSide(this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), Direction.SOUTH);
+		
+		if(dir.getOpposite() != output) {
+			return TransferPack.EMPTY;
+		}
+
+		BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
+
+		if (tile == null) {
+			return TransferPack.EMPTY;
+		}
+
+		isLocked = true;
+		
+		TransferPack load = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> cap.getConnectedLoad(output)).orElse(TransferPack.EMPTY);
+		
+		isLocked = false;
+		
+		return load;
+		
 	}
 
 	@Override
 	public void saveAdditional(@NotNull CompoundTag compound) {
 		super.saveAdditional(compound);
 		compound.putBoolean("hasredstonesignal", recievedRedstoneSignal);
-		compound.putBoolean("islocked", isLocked);
 	}
 
 	@Override
 	public void load(@NotNull CompoundTag compound) {
 		super.load(compound);
 		recievedRedstoneSignal = compound.getBoolean("hasredstonesignal");
-		isLocked = compound.getBoolean("islocked");
 	}
 
 	@Override
@@ -86,6 +112,7 @@ public class TileRelay extends GenericTile {
 			} else {
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
 			}
+			setChanged();
 		}
 	}
 
@@ -100,6 +127,7 @@ public class TileRelay extends GenericTile {
 			if(recievedRedstoneSignal) {
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
 			}
+			setChanged();
 		}
 	}
 

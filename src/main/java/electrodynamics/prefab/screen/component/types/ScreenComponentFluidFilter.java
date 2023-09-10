@@ -12,6 +12,7 @@ import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.types.gauges.AbstractScreenComponentGauge.GaugeTextures;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -59,7 +60,7 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 
 				int scale = GaugeTextures.BACKGROUND_DEFAULT.textureHeight() - 2;
 
-				RenderingUtils.color(IClientFluidTypeExtensions.of(fluid.getFluid()).getTintColor(fluid));
+				RenderingUtils.setShaderColor(new Color(IClientFluidTypeExtensions.of(fluid.getFluid()).getTintColor(fluid)));
 
 				for (int i = 0; i < 16; i += 16) {
 					for (int j = 0; j < scale; j += 16) {

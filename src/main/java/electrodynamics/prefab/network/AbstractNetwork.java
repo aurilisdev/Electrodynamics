@@ -19,6 +19,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 public abstract class AbstractNetwork<C extends IAbstractCable, T, A, P> implements ITickableNetwork {
+	
 	public HashSet<C> conductorSet = new HashSet<>();
 	public HashSet<A> acceptorSet = new HashSet<>();
 	public HashMap<A, HashSet<Direction>> acceptorInputMap = new HashMap<>();

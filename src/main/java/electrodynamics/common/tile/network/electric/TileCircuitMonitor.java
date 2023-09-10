@@ -42,7 +42,7 @@ public class TileCircuitMonitor extends GenericTile {
 		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-		addComponent(new ComponentElectrodynamic(this).voltage(-1).receivePower((transfer, debug) -> TransferPack.EMPTY).relativeInput(Direction.SOUTH));
+		addComponent(new ComponentElectrodynamic(this).voltage(-1).receivePower((transfer, debug) -> TransferPack.EMPTY).getConnectedLoad(dir -> TransferPack.EMPTY).relativeInput(Direction.SOUTH));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.circuitmonitor, this).createMenu((id, inv) -> new ContainerCircuitMonitor(id, inv, getCoordsArray())));
 	}
 

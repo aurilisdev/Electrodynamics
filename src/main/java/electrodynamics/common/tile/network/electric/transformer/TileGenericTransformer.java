@@ -28,6 +28,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -56,7 +57,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 		if (Constants.SHOULD_TRANSFORMER_HUM) {
 			addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 		}
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1.0));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1.0));
 	}
 
 	public void tickClient(ComponentTickable tickable) {
@@ -78,6 +79,9 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(facing));
 		}
+		if(output.getSafe() == null) {
+			return TransferPack.EMPTY;
+		}
 		double resultVoltage = transfer.getVoltage() * getCoilRatio();
 		if(resultVoltage != 0) {
 			resultVoltage = Mth.clamp(resultVoltage, MIN_VOLTAGE_CAP, MAX_VOLTAGE_CAP);
@@ -90,6 +94,26 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 			lastTransferTime.set(level.getGameTime());
 
 		}
+		return returner;
+	}
+	
+	public TransferPack getConnectedLoad(Direction dir) {
+		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		if(facing.getOpposite() != dir) {
+			return TransferPack.EMPTY;
+		}
+		if (locked) {
+			return TransferPack.EMPTY;
+		}
+		if (output == null) {
+			output = new CachedTileOutput(level, worldPosition.relative(facing));
+		}
+		if(output.getSafe() == null) {
+			return TransferPack.EMPTY;
+		}
+		locked = true;
+		TransferPack returner = ((BlockEntity) output.getSafe()).getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).map(cap -> cap.getConnectedLoad(dir)).orElse(TransferPack.EMPTY);
+		locked = false;
 		return returner;
 	}
 

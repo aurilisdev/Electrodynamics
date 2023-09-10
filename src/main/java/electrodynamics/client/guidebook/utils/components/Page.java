@@ -8,6 +8,7 @@ import electrodynamics.client.guidebook.utils.pagedata.OnKeyPress;
 import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
 import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -55,7 +56,7 @@ public class Page {
 
 	}
 
-	public record TextWrapper(int x, int y, FormattedText characters, int color, boolean centered, OnTooltip onTooltip, OnClick onClick, OnKeyPress onKeyPress) {
+	public record TextWrapper(int x, int y, FormattedText characters, Color color, boolean centered, OnTooltip onTooltip, OnClick onClick, OnKeyPress onKeyPress) {
 
 	}
 

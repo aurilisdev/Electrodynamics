@@ -78,7 +78,7 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
 			//RenderingUtils.bindTexture(AbstractWidget.WIDGETS_LOCATION);
-			RenderingUtils.color(color);
+			RenderingUtils.setShaderColor(color);
 			int i = this.getVanillaYImage(isHovered());
 			RenderSystem.enableBlend();
 			RenderSystem.defaultBlendFunc();
@@ -89,7 +89,7 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 			Font font = minecraft.font;
 			Component label = getLabel();
 			if (label != null) {
-				graphics.drawCenteredString(font, label, this.xLocation + guiWidth + this.width / 2, this.yLocation + guiHeight + (this.height - 8) / 2, color);
+				graphics.drawCenteredString(font, label, this.xLocation + guiWidth + this.width / 2, this.yLocation + guiHeight + (this.height - 8) / 2, color.color());
 			}
 
 		} else {

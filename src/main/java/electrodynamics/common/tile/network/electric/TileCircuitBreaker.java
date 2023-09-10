@@ -22,13 +22,13 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileCircuitBreaker extends GenericTile {
 
 	private boolean recievedRedstoneSignal = false;
-	
+
 	private boolean isLocked = false;
 
 	public TileCircuitBreaker(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_CIRCUITBREAKER.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection(this));
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1));
 	}
 
 	// will not transfer power if is recieving redstone signal, voltage exceeds recieving end voltage, or if current exceeds recieving
@@ -49,21 +49,6 @@ public class TileCircuitBreaker extends GenericTile {
 
 		return tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> {
 
-			if (debug) {
-				
-				isLocked = true;
-				
-				TransferPack accepted = cap.receivePower(transfer, debug);
-
-				isLocked = false;
-				
-				if (accepted.getJoules() > 0) {
-					return TransferPack.joulesVoltage(accepted.getJoules() + transfer.getJoules() * (1.0 - Constants.CIRCUITBREAKER_EFFICIENCY), transfer.getVoltage());
-				}
-				return TransferPack.EMPTY;
-
-			}
-
 			if (cap.getMinimumVoltage() > -1 && cap.getMinimumVoltage() < transfer.getVoltage()) {
 				return TransferPack.EMPTY;
 			}
@@ -74,18 +59,60 @@ public class TileCircuitBreaker extends GenericTile {
 
 			}
 
+			if (debug) {
+
+				isLocked = true;
+
+				TransferPack accepted = cap.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, transfer.getVoltage()), debug);
+
+				isLocked = false;
+
+				if (accepted.getJoules() > 0) {
+					return accepted;
+				}
+				return TransferPack.EMPTY;
+
+			}
+
 			isLocked = true;
-			
-			TransferPack accepted = cap.receivePower(transfer, debug);
+
+			TransferPack accepted = cap.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, transfer.getVoltage()), debug);
 
 			isLocked = false;
-			
+
 			if (accepted.getJoules() > 0) {
-				return TransferPack.joulesVoltage(accepted.getJoules() + transfer.getJoules() * (1.0 - Constants.CIRCUITBREAKER_EFFICIENCY), transfer.getVoltage());
+				return accepted;
 			}
 			return TransferPack.EMPTY;
 
 		}).orElse(TransferPack.EMPTY);
+	}
+
+	public TransferPack getConnectedLoad(Direction dir) {
+		
+		if (recievedRedstoneSignal || isLocked) {
+			return TransferPack.EMPTY;
+		}
+
+		Direction output = BlockEntityUtils.getRelativeSide(this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), Direction.SOUTH);
+
+		if(dir.getOpposite() != output) {
+			return TransferPack.EMPTY;
+		}
+		
+		BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
+
+		if (tile == null) {
+			return TransferPack.EMPTY;
+		}
+
+		isLocked = true;
+		
+		TransferPack load = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> cap.getConnectedLoad(output)).orElse(TransferPack.EMPTY);
+		
+		isLocked = false;
+		
+		return load;
 	}
 
 	@Override
@@ -95,32 +122,40 @@ public class TileCircuitBreaker extends GenericTile {
 	}
 
 	@Override
+	public void load(@NotNull CompoundTag compound) {
+		super.load(compound);
+		recievedRedstoneSignal = compound.getBoolean("hasredstonesignal");
+	}
+
+	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
 		if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
 			BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
-			if(recievedRedstoneSignal) {
+			if (recievedRedstoneSignal) {
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
 			} else {
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
 			}
+			setChanged();
 		}
 	}
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
 		if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
 			BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
-			if(recievedRedstoneSignal) {
+			if (recievedRedstoneSignal) {
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
 			}
+			setChanged();
 		}
 	}
 

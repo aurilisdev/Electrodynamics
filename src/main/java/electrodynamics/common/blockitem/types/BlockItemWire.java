@@ -10,6 +10,7 @@ import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.blockitem.BlockItemElectrodynamics;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -58,9 +59,9 @@ public class BlockItemWire extends BlockItemElectrodynamics {
 		public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
 			WIRES.forEach(item -> event.register((stack, index) -> {
 				if (index == 1) {
-					return item.wire.wire.color.color;
+					return item.wire.wire.color.color.color();
 				}
-				return 0xFFFFFFFF;
+				return Color.WHITE.color();
 			}, item));
 		}
 

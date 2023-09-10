@@ -5,6 +5,8 @@ import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
@@ -40,6 +42,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 
 	protected BiFunction<TransferPack, Boolean, TransferPack> functionReceivePower = ICapabilityElectrodynamic.super::receivePower;
 	protected BiFunction<TransferPack, Boolean, TransferPack> functionExtractPower = ICapabilityElectrodynamic.super::extractPower;
+	protected Function<Direction, TransferPack> connectedLoadFunction = dir -> TransferPack.joulesVoltage(getMaxJoulesStored() - getJoulesStored(), getVoltage());
 	protected Consumer<Double> setJoules = null;
 	protected HashSet<Direction> relativeOutputDirections = new HashSet<>();
 	protected HashSet<Direction> relativeInputDirections = new HashSet<>();
@@ -166,6 +169,11 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		functionExtractPower = extractPower;
 		return this;
 	}
+	
+	public ComponentElectrodynamic getConnectedLoad(Function<Direction, TransferPack> supplier) {
+		this.connectedLoadFunction = supplier;
+		return this;
+	}
 
 	public ComponentElectrodynamic setJoules(Consumer<Double> setJoules) {
 		this.setJoules = setJoules;
@@ -240,6 +248,14 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		if (holder != null) {
 			holder.onEnergyChange(this);
 		}
+	}
+
+	@Override
+	public TransferPack getConnectedLoad(Direction dir) {
+		if (inputDirections.contains(dir) || holder.hasComponent(ComponentType.Direction) && relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), dir))) {
+			return connectedLoadFunction.apply(dir);
+		}
+		return TransferPack.EMPTY;
 	}
 
 }

@@ -11,7 +11,7 @@ import electrodynamics.common.tile.TileMultimeterBlock;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -48,7 +48,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			rotateMatrix(stack, dir);
 
-			Component transfer = ElectroTextUtils.gui("multimeterblock.transfer", ChatFormatter.getDisplayShort(multimeter.joules.get() * 20, DisplayUnit.WATT, 2));
+			Component transfer = ElectroTextUtils.gui("multimeterblock.transfer", ChatFormatter.getDisplayShort(multimeter.joules.get() * 20.0, DisplayUnit.WATT, 2));
 
 			float scale = 0.0215f / (font.width(transfer) / 32f);
 
@@ -58,7 +58,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			float textX = -font.width(transfer) / 2.0f;
 
-			font.drawInBatch(transfer, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
+			font.drawInBatch(transfer, textX, 0, Color.WHITE.color(), false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
 
 			stack.popPose();
 
@@ -80,7 +80,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			textX = -font.width(voltage) / 2.0f;
 
-			font.drawInBatch(voltage, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
+			font.drawInBatch(voltage, textX, 0, Color.WHITE.color(), false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
 
 			stack.popPose();
 
@@ -107,7 +107,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			textX = -font.width(minVoltage) / 2.0f;
 
-			font.drawInBatch(minVoltage, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
+			font.drawInBatch(minVoltage, textX, 0, Color.WHITE.color(), false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
 
 			stack.popPose();
 
@@ -129,7 +129,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			textX = -font.width(resistance) / 2.0f;
 
-			font.drawInBatch(resistance, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
+			font.drawInBatch(resistance, textX, 0, Color.WHITE.color(), false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
 
 			stack.popPose();
 
@@ -151,7 +151,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			textX = -font.width(loss) / 2.0f;
 
-			font.drawInBatch(loss, textX, 0, RenderingUtils.WHITE, false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
+			font.drawInBatch(loss, textX, 0, Color.WHITE.color(), false, matrix4f, buffer, DisplayMode.NORMAL, 0, combinedLight);
 
 			stack.popPose();
 

@@ -25,8 +25,8 @@ public class ButtonSearchedText extends ButtonSpecificPage {
 	@Override
 	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
-		drawCenteredStringNoShadow(graphics, gui.getFontRenderer(), chapter.getVisualOrderText(), this.xLocation + this.width / 2 + guiWidth, this.yLocation + guiHeight - 10, TextWrapperObject.DEFAULT_COLOR);
-		drawCenteredStringNoShadow(graphics, gui.getFontRenderer(), Language.getInstance().getVisualOrder(line), this.xLocation + guiWidth + this.width / 2, this.yLocation + guiHeight + (this.height - 8) / 2, color);
+		drawCenteredStringNoShadow(graphics, gui.getFontRenderer(), chapter.getVisualOrderText(), this.xLocation + this.width / 2 + guiWidth, this.yLocation + guiHeight - 10, TextWrapperObject.DEFAULT_COLOR.color());
+		drawCenteredStringNoShadow(graphics, gui.getFontRenderer(), Language.getInstance().getVisualOrder(line), this.xLocation + guiWidth + this.width / 2, this.yLocation + guiHeight + (this.height - 8) / 2, color.color());
 
 	}
 

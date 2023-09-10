@@ -1,6 +1,10 @@
 package electrodynamics.api.capability.types.electrodynamic;
 
+import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.core.Direction;
+
 public class ElectrodynamicStorage implements ICapabilityElectrodynamic {
+	
 	private final double max;
 	private double joules;
 
@@ -27,6 +31,11 @@ public class ElectrodynamicStorage implements ICapabilityElectrodynamic {
 	@Override
 	public void onChange() {
 		// Not Needed
+	}
+
+	@Override
+	public TransferPack getConnectedLoad(Direction dir) {
+		return TransferPack.EMPTY;
 	}
 
 }

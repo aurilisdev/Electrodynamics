@@ -25,7 +25,7 @@ public class TilePotentiometer extends GenericTile {
 	public TilePotentiometer(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_POTENTIOMETER.get(), pos, state);
 		addComponent(new ComponentContainerProvider(SubtypeMachine.potentiometer, this).createMenu((id, player) -> new ContainerPotentiometer(id, player, getCoordsArray())));
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).input(Direction.NORTH).input(Direction.EAST).input(Direction.SOUTH).input(Direction.WEST).input(Direction.DOWN).voltage(-1.0D));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).input(Direction.NORTH).input(Direction.EAST).input(Direction.SOUTH).input(Direction.WEST).input(Direction.DOWN).voltage(-1.0D));
 	}
 
 	private TransferPack receivePower(TransferPack pack, boolean debug) {
@@ -34,6 +34,13 @@ public class TilePotentiometer extends GenericTile {
 		}
 		double accepted = Math.min(pack.getJoules(), powerConsumption.get());
 		return TransferPack.joulesVoltage(accepted, pack.getVoltage());
+	}
+	
+	private TransferPack getConnectedLoad(Direction dir) {
+		if(dir == Direction.UP || dir == Direction.DOWN) {
+			return TransferPack.EMPTY;
+		}
+		return TransferPack.joulesVoltage(powerConsumption.get(), -1);
 	}
 
 }
