@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class TileCircuitBreaker extends GenericTile {
 
-	public static final int TRIP_CURVE = 10;
+	public static final int TRIP_CURVE = 20;
 	
 	private boolean recievedRedstoneSignal = false;
 	private boolean tripped = false;
