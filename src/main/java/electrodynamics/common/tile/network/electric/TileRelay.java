@@ -3,6 +3,7 @@ package electrodynamics.common.tile.network.electric;
 import org.jetbrains.annotations.NotNull;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -59,7 +60,7 @@ public class TileRelay extends GenericTile {
 		}).orElse(TransferPack.EMPTY);
 	}
 	
-	public TransferPack getConnectedLoad(Direction dir) {
+	public TransferPack getConnectedLoad(LoadProfile lastEnergy, Direction dir) {
 		
 		if (recievedRedstoneSignal || isLocked) {
 			return TransferPack.EMPTY;
@@ -79,7 +80,7 @@ public class TileRelay extends GenericTile {
 
 		isLocked = true;
 		
-		TransferPack load = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> cap.getConnectedLoad(output)).orElse(TransferPack.EMPTY);
+		TransferPack load = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> cap.getConnectedLoad(lastEnergy, output)).orElse(TransferPack.EMPTY);
 		
 		isLocked = false;
 		

@@ -34,7 +34,7 @@ public class ElectrodynamicStorage implements ICapabilityElectrodynamic {
 	}
 
 	@Override
-	public TransferPack getConnectedLoad(Direction dir) {
+	public TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
 		return TransferPack.EMPTY;
 	}
 

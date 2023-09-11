@@ -33,6 +33,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	private double minimumVoltage = -1.0D;
 	private long minimumAmpacity = 0;
 
+	private HashMap<BlockEntity, HashMap<Direction, TransferPack>> lastTransfer = new HashMap<>();
+	private HashSet<BlockEntity> noUsage = new HashSet<>();
+
 	private boolean locked = false;
 
 	public double getLastEnergyLoss() {
@@ -97,6 +100,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		minimumVoltage = -1;
 		minimumAmpacity = 0;
 
+		lastTransfer.clear();
+		noUsage.clear();
+
 		super.refresh();
 	}
 
@@ -107,6 +113,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		Set<BlockEntity> availableAcceptors = getEnergyAcceptors();
 		double joulesSent = 0;
 		availableAcceptors.removeAll(ignored);
+		availableAcceptors.removeAll(noUsage);
 
 		if (availableAcceptors.isEmpty()) {
 			return TransferPack.EMPTY;
@@ -137,15 +144,19 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		}
 		for (BlockEntity receiver : availableAcceptors) {
 			TransferPack dedicated = TransferPack.joulesVoltage(maxTransfer.getJoules() * (usage.get(receiver) / totalUsage), maxTransfer.getVoltage());
+			HashMap<Direction, TransferPack> perConnectionMap;
 			if (acceptorInputMap.containsKey(receiver)) {
 				TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(), maxTransfer.getVoltage());
+				perConnectionMap = new HashMap<>();
 				for (Direction connection : acceptorInputMap.get(receiver)) {
 					TransferPack pack = ElectricityUtils.receivePower(receiver, connection, perConnection, debug);
+					perConnectionMap.put(connection, pack);
 					joulesSent += pack.getJoules();
 					if (!debug) {
 						transmittedThisTick += pack.getJoules();
 					}
 				}
+				lastTransfer.put(receiver, perConnectionMap);
 			}
 		}
 		return TransferPack.joulesVoltage(Math.min(maxTransfer.getJoules(), joulesSent), maxTransfer.getVoltage());
@@ -212,6 +223,8 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	@Override
 	public void tick() {
 		super.tick();
+		lastTransfer.clear();
+		noUsage.clear();
 		if (maxTransferBuffer > 0) {
 			ArrayList<BlockEntity> producersList = new ArrayList<>(currentProducers);
 			if ((int) voltage != 0 && voltage > 0 && transferBuffer > 0) {
@@ -230,12 +243,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 				} else {
 					transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), producersList, false).getJoules();
 				}
-			} else {
-				transferBuffer = 0;
 			}
-		} else {
-			transferBuffer = 0;
 		}
+		transferBuffer = 0;
 		lastVoltage = voltage;
 		voltage = 0;
 		lastEnergyLoss = energyLoss;
@@ -244,7 +254,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		maxTransferBuffer = 0;
 		currentProducers.clear();
 
-		maxTransferBuffer = getConnectedLoad(Direction.UP).getJoules();
+		maxTransferBuffer = getConnectedLoad(new LoadProfile(TransferPack.joulesVoltage(transmittedLastTick, lastVoltage), TransferPack.joulesVoltage(transmittedLastTick, lastVoltage)), Direction.UP).getJoules();
 
 		Iterator<IConductor> it = conductorSet.iterator();
 		boolean broken = false;
@@ -335,7 +345,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	}
 
 	@Override
-	public TransferPack getConnectedLoad(Direction dir) {
+	public TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
 
 		if (locked) {
 			return TransferPack.EMPTY;
@@ -350,14 +360,23 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		ArrayList<BlockEntity> load = new ArrayList<>(acceptorSet);
 
 		load.removeAll(currentProducers);
+		HashMap<Direction, TransferPack> lastPerTile;
 
 		for (BlockEntity tile : load) {
 
+			lastPerTile = lastTransfer.getOrDefault(load, new HashMap<>());
+
+			boolean noUsage = true;
+
 			for (Direction direction : acceptorInputMap.getOrDefault(tile, new HashSet<>())) {
 
-				capLoad = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, direction).map(cap -> cap.getConnectedLoad(direction)).orElse(TransferPack.EMPTY);
+				final LoadProfile profile = new LoadProfile(lastPerTile.getOrDefault(lastPerTile, TransferPack.EMPTY), loadProfile.maximumAvailable());
+
+				capLoad = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, direction).map(cap -> cap.getConnectedLoad(profile, direction)).orElse(TransferPack.EMPTY);
 
 				if (capLoad.getJoules() != 0) {
+
+					noUsage = false;
 
 					connectedLoad = TransferPack.joulesVoltage(connectedLoad.getJoules() + capLoad.getJoules(), Math.max(connectedLoad.getVoltage(), capLoad.getVoltage()));
 					break;
@@ -365,6 +384,10 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 				}
 
 			}
+
+			if (noUsage) {
+				this.noUsage.add(tile);
+			} 
 
 		}
 

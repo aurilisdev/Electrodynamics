@@ -1,5 +1,6 @@
 package electrodynamics.common.tile;
 
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
 import electrodynamics.api.network.cable.type.IConductor;
 import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.prefab.properties.Property;
@@ -65,7 +66,7 @@ public class TileMultimeterBlock extends GenericTile {
 		return TransferPack.EMPTY;
 	}
 	
-	protected TransferPack getConnectedLoad(Direction dir) {
+	protected TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
 		return TransferPack.EMPTY;
 	}
 }

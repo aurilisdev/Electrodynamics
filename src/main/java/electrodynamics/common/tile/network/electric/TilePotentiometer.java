@@ -1,5 +1,6 @@
 package electrodynamics.common.tile.network.electric;
 
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerPotentiometer;
 import electrodynamics.prefab.properties.Property;
@@ -36,7 +37,7 @@ public class TilePotentiometer extends GenericTile {
 		return TransferPack.joulesVoltage(accepted, pack.getVoltage());
 	}
 	
-	private TransferPack getConnectedLoad(Direction dir) {
+	private TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
 		if(dir == Direction.UP || dir == Direction.DOWN) {
 			return TransferPack.EMPTY;
 		}

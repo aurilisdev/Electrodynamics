@@ -1,6 +1,7 @@
 package electrodynamics.common.tile.network.electric.transformer;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
 import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.settings.Constants;
@@ -97,7 +98,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 		return returner;
 	}
 	
-	public TransferPack getConnectedLoad(Direction dir) {
+	public TransferPack getConnectedLoad(LoadProfile lastEnergy, Direction dir) {
 		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
 		if(facing.getOpposite() != dir) {
 			return TransferPack.EMPTY;
@@ -112,7 +113,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 			return TransferPack.EMPTY;
 		}
 		locked = true;
-		TransferPack returner = ((BlockEntity) output.getSafe()).getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).map(cap -> cap.getConnectedLoad(dir)).orElse(TransferPack.EMPTY);
+		TransferPack returner = ((BlockEntity) output.getSafe()).getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).map(cap -> cap.getConnectedLoad(lastEnergy, dir)).orElse(TransferPack.EMPTY);
 		locked = false;
 		return returner;
 	}
