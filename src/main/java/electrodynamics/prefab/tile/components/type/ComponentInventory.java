@@ -42,7 +42,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	protected static final int[] SLOTS_EMPTY = new int[] {};
-	protected Property<NonNullList<ItemStack>> items;
+	private Property<NonNullList<ItemStack>> items;
 	protected TriPredicate<Integer, ItemStack, ComponentInventory> itemValidTest = (x, y, i) -> true;
 	protected HashSet<Player> viewing = new HashSet<>();
 	protected EnumMap<Direction, ArrayList<Integer>> directionMappings = new EnumMap<>(Direction.class);
@@ -56,7 +56,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	/*
 	 * IMPORTANT DEFINITIONS:
 	 * 
-	 * SLOT ORDER: 1. Item Input Slots 2. Item Output Slot 3. Item Biproduct Slots 4. Bucket Input Slots 5. Bucket Output Slots 6. Upgrade Slots
+	 * SLOT ORDER: 1. Item Input Slots 2. Item Output Slot 3. Item Biproduct Slots 4. Bucket Input Slots 5. Bucket Output Slots 6.
+	 * Upgrade Slots
 	 * 
 	 */
 
@@ -230,11 +231,23 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public ItemStack removeItem(int index, int count) {
-		ItemStack stack = ContainerHelper.removeItem(items.get(), index, count);
-		if (!stack.isEmpty()) {
-			setChanged(index);
+
+		NonNullList<ItemStack> list = items.get();
+
+		if (index < 0 || index >= list.size() || count <= 0 || list.get(index).isEmpty()) {
+			return ItemStack.EMPTY;
 		}
-		return stack;
+
+		ItemStack indexItem = list.get(index);
+		ItemStack taken = indexItem.split(count);
+
+		list.set(index, indexItem);
+
+		items.set(list);
+
+		setChanged(index);
+
+		return taken;
 	}
 
 	@Override
@@ -247,7 +260,10 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		if (stack.getCount() > getMaxStackSize()) {
 			stack.setCount(getMaxStackSize());
 		}
-		items.get().set(index, stack);
+		NonNullList<ItemStack> list = NonNullList.create();
+		list.addAll(items.get());
+		list.set(index, stack);
+		items.set(list);
 		setChanged(index);
 	}
 
@@ -620,7 +636,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		}
 
 		/**
-		 * Specialized method for machines that use ComponentProcessors. It removed the need to individually set input, output, and biproduct slots.
+		 * Specialized method for machines that use ComponentProcessors. It removed the need to individually set input, output, and
+		 * biproduct slots.
 		 * 
 		 * @param procCount      How many ComponentProcessors the machine has
 		 * @param inputsPerProc  How many inputs are assigned to a processor
@@ -642,7 +659,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		}
 
 		/**
-		 * This method should not be used in tandem with other individual mutator methods and is designed for inventories that have no specified slot types
+		 * This method should not be used in tandem with other individual mutator methods and is designed for inventories that have no
+		 * specified slot types
 		 * 
 		 * @param size The desired size of the inventory
 		 * @return The mutated builder

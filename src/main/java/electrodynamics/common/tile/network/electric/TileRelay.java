@@ -80,7 +80,7 @@ public class TileRelay extends GenericTile {
 
 		isLocked = true;
 		
-		TransferPack load = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> cap.getConnectedLoad(lastEnergy, output)).orElse(TransferPack.EMPTY);
+		TransferPack load = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> cap.getConnectedLoad(lastEnergy, output.getOpposite())).orElse(TransferPack.EMPTY);
 		
 		isLocked = false;
 		

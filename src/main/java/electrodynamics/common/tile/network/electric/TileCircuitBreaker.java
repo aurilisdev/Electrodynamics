@@ -146,7 +146,7 @@ public class TileCircuitBreaker extends GenericTile {
 
 			}
 
-			return cap.getConnectedLoad(loadProfile, output);
+			return cap.getConnectedLoad(loadProfile, output.getOpposite());
 		}).orElse(TransferPack.EMPTY);
 
 		isLocked = false;

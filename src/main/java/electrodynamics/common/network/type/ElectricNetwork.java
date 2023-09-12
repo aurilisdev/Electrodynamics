@@ -18,6 +18,7 @@ import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, BlockEntity, TransferPack> implements ICapabilityElectrodynamic {
 
@@ -372,8 +373,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 
 				final LoadProfile profile = new LoadProfile(lastPerTile.getOrDefault(lastPerTile, TransferPack.EMPTY), loadProfile.maximumAvailable());
 
-				capLoad = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, direction).map(cap -> cap.getConnectedLoad(profile, direction)).orElse(TransferPack.EMPTY);
-
+				capLoad = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, direction).map(cap -> cap.getConnectedLoad(profile, direction)).orElseGet(() -> {
+					return tile.getCapability(ForgeCapabilities.ENERGY, dir).map(cap -> TransferPack.joulesVoltage(cap.receiveEnergy(Integer.MAX_VALUE, true), ElectrodynamicsCapabilities.DEFAULT_VOLTAGE)).orElse(TransferPack.EMPTY);
+				});
 				if (capLoad.getJoules() != 0) {
 
 					noUsage = false;
@@ -387,7 +389,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 
 			if (noUsage) {
 				this.noUsage.add(tile);
-			} 
+			}
 
 		}
 
