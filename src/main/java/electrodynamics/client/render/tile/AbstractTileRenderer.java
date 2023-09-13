@@ -2,6 +2,8 @@ package electrodynamics.client.render.tile;
 
 import java.util.Random;
 
+import javax.annotation.Nullable;
+
 import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -14,6 +16,9 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 
 /**
@@ -47,6 +52,10 @@ public abstract class AbstractTileRenderer<T extends GenericTile> implements Blo
 
 	public BakedModel getModel(ResourceLocation model) {
 		return Minecraft.getInstance().getModelManager().getModel(model);
+	}
+	
+	public void renderItem(ItemStack stack, ItemDisplayContext context, int light, int overlay, PoseStack poseStack, MultiBufferSource bufferSource, @Nullable Level world, int seed) {
+		Minecraft.getInstance().getItemRenderer().renderStatic(stack, context, light, overlay, poseStack, bufferSource, world, seed);
 	}
 
 	@Override
