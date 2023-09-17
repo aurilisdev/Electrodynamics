@@ -232,7 +232,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	@Override
 	public ItemStack removeItem(int index, int count) {
 
-		NonNullList<ItemStack> list = items.get();
+		NonNullList<ItemStack> list = NonNullList.create();
+		list.addAll(items.get());
 
 		if (index < 0 || index >= list.size() || count <= 0 || list.get(index).isEmpty()) {
 			return ItemStack.EMPTY;
