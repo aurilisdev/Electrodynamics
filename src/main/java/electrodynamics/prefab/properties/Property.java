@@ -86,6 +86,18 @@ public class Property<T> {
 
 		return this;
 	}
+	
+	/**
+	 * This method should be used when working with more complex data types like arrays (InventoryItems for example)
+	 * 
+	 * If it is a single object (FluidStack for example), then do NOT used this method
+	 */
+	@Deprecated(since = "This should be used when working with arrays")
+	public void forceDirty() {
+		if(!manager.getOwner().getLevel().isClientSide()) {
+			manager.setDirty(this);
+		}
+	}
 
 	public void copy(Property<T> other) {
 		T otherVal = other.get();

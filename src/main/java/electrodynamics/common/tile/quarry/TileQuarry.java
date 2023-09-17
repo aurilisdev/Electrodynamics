@@ -832,11 +832,13 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 		if (leftEntity != null && leftEntity instanceof TileSeismicRelay relayin && ((ComponentDirection) relayin.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
 			corners.set(relayin.markerLocs.get());
+			corners.forceDirty();
 			cornerOnRight.set(relayin.cornerOnRight);
 			relay = relayin;
 			hasSeismicRelay.set(true);
 		} else if (rightEntity != null && rightEntity instanceof TileSeismicRelay relayin && ((ComponentDirection) relayin.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
 			corners.set(relayin.markerLocs.get());
+			corners.forceDirty();
 			cornerOnRight.set(relayin.cornerOnRight);
 			relay = relayin;
 			hasSeismicRelay.set(true);
@@ -1043,6 +1045,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		running.set(false);
 		brokenFrames.clear();
 		repairedFrames.clear();
+		corners.set(new ArrayList<>());
+		corners.forceDirty();
 		handleFramesDecayNoVarUpdate();
 	}
 

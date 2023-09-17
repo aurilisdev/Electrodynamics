@@ -232,8 +232,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	@Override
 	public ItemStack removeItem(int index, int count) {
 
-		NonNullList<ItemStack> list = NonNullList.create();
-		list.addAll(items.get());
+		NonNullList<ItemStack> list = items.get();
 
 		if (index < 0 || index >= list.size() || count <= 0 || list.get(index).isEmpty()) {
 			return ItemStack.EMPTY;
@@ -245,6 +244,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		list.set(index, indexItem);
 
 		items.set(list);
+		
+		items.forceDirty();
 
 		setChanged(index);
 
@@ -258,13 +259,23 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public void setItem(int index, ItemStack stack) {
+		
+		NonNullList<ItemStack> list = items.get();
+		
+		if(index < 0 || index >= list.size() || ItemStack.isSameItemSameTags(list.get(index), stack)) {
+			return;
+		}
+		
 		if (stack.getCount() > getMaxStackSize()) {
 			stack.setCount(getMaxStackSize());
 		}
-		NonNullList<ItemStack> list = NonNullList.create();
-		list.addAll(items.get());
+		
 		list.set(index, stack);
+		
 		items.set(list);
+		
+		items.forceDirty();
+		
 		setChanged(index);
 	}
 
