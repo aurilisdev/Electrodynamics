@@ -11,6 +11,7 @@ import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
+import electrodynamics.common.item.gear.armor.types.ItemServoLeggings;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
@@ -151,7 +152,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 			graphics.pose().pushPose();
 			graphics.pose().scale(0.8F, 0.8F, 0.8F);
 			graphics.drawString(minecraft.font, on, x, (int) ((heightOffset - 34) / 0.8F), 0);
-			graphics.drawString(minecraft.font, ItemJetpack.getModeText(leggings.hasTag() ? leggings.getTag().getInt(NBTUtils.MODE) : -1), x, (int) ((heightOffset - 25) / 0.8F), 0, false);
+			graphics.drawString(minecraft.font, ItemServoLeggings.getModeText(leggings.hasTag() ? leggings.getTag().getInt(NBTUtils.MODE) : -1), x, (int) ((heightOffset - 25) / 0.8F), 0, false);
 			graphics.drawString(minecraft.font, ChatFormatter.getChatDisplayShort(leggings.getOrCreateTag().getDouble(IItemElectric.JOULES_STORED), DisplayUnit.JOULES), x, (int) ((heightOffset - 16) / 0.8F), -1, false);
 			graphics.pose().popPose();
 		}
