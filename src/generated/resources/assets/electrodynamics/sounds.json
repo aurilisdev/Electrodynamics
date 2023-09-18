@@ -137,11 +137,17 @@
     ],
     "subtitle": "subtitles.electrodynamics.railgunkinetic_noammo"
   },
-  "railgunplasma": {
+  "railgunplasma_fire": {
     "sounds": [
-      "electrodynamics:railgunplasma"
+      "electrodynamics:railgunplasma_fire"
     ],
-    "subtitle": "subtitles.electrodynamics.railgunplasma"
+    "subtitle": "subtitles.electrodynamics.railgunplasma_fire"
+  },
+  "railgunplasma_hit": {
+    "sounds": [
+      "electrodynamics:railgunplasma_hit"
+    ],
+    "subtitle": "subtitles.electrodynamics.railgunplasma_hit"
   },
   "railgunplasma_nopower": {
     "sounds": [

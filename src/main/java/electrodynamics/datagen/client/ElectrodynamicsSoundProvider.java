@@ -45,7 +45,8 @@ public class ElectrodynamicsSoundProvider extends SoundDefinitionsProvider {
 		add(ElectrodynamicsSounds.SOUND_NIGHTVISIONGOGGLESON);
 		add(ElectrodynamicsSounds.SOUND_RAILGUNKINETIC);
 		add(ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO);
-		add(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA);
+		add(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_FIRE);
+		add(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_HIT);
 		add(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_NOPOWER);
 		add(ElectrodynamicsSounds.SOUND_RODIMPACTINGGROUND);
 		add(ElectrodynamicsSounds.SOUND_SEISMICSCANNER);

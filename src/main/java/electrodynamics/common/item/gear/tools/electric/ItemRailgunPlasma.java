@@ -61,7 +61,7 @@ public class ItemRailgunPlasma extends ItemRailgun {
 		worldIn.addFreshEntity(projectile);
 
 		railgun.extractPower(gunStack, JOULES_PER_SHOT, false);
-		worldIn.playSound(null, playerIn.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNPLASMA.get(), SoundSource.PLAYERS, 1, 1);
+		worldIn.playSound(null, playerIn.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_FIRE.get(), SoundSource.PLAYERS, 1, 1);
 		railgun.recieveHeat(gunStack, TEMPERATURE_PER_SHOT, false);
 
 		return InteractionResultHolder.pass(gunStack);
