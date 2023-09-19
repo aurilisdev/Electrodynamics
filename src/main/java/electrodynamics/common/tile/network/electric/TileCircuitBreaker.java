@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
+import electrodynamics.common.block.VoxelShapes;
+import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.ComponentType;
@@ -18,8 +20,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileCircuitBreaker extends GenericTile {
 
@@ -200,6 +205,19 @@ public class TileCircuitBreaker extends GenericTile {
 			}
 			setChanged();
 		}
+	}
+	
+	static {
+		
+		VoxelShape shape = Block.box(0, 0, 0, 16, 2, 16);
+		shape = Shapes.or(shape, Block.box(0, 2, 1, 16, 5, 15));
+		shape = Shapes.or(shape, Block.box(0, 2, 1, 16, 5, 15));
+		shape = Shapes.or(shape, Block.box(1, 5, 2, 15, 15, 14));
+		shape = Shapes.or(shape, Block.box(0, 5, 4, 1, 12, 12));
+		shape = Shapes.or(shape, Block.box(15, 5, 4, 16, 12, 12));
+		
+		VoxelShapes.registerShape(SubtypeMachine.circuitbreaker, shape, Direction.WEST);
+		
 	}
 
 }
