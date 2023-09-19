@@ -29,10 +29,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class TileCircuitBreaker extends GenericTile {
 
 	public static final int TRIP_CURVE = 20;
-	
+
 	private boolean recievedRedstoneSignal = false;
 	private boolean tripped = false;
-	
+
 	private int tripCurveTimer = 0;
 
 	private boolean isLocked = false;
@@ -45,13 +45,16 @@ public class TileCircuitBreaker extends GenericTile {
 	}
 
 	public void tickServer(ComponentTickable tickable) {
-		if(tripCurveTimer > 0) {
+		if (tripCurveTimer > 0) {
 			tripCurveTimer--;
 			return;
 		}
+		if (tripped) {
+			level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
+		}
 		tripped = false;
 	}
-	
+
 	// will not transfer power if is recieving redstone signal, voltage exceeds recieving end voltage, or if current exceeds recieving
 	// end current if recieving end is wire
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
@@ -73,6 +76,8 @@ public class TileCircuitBreaker extends GenericTile {
 			if (cap.getMinimumVoltage() > -1 && cap.getMinimumVoltage() < transfer.getVoltage()) {
 				tripped = true;
 				tripCurveTimer = TRIP_CURVE;
+				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
+
 				return TransferPack.EMPTY;
 			}
 
@@ -80,7 +85,8 @@ public class TileCircuitBreaker extends GenericTile {
 
 				tripped = true;
 				tripCurveTimer = TRIP_CURVE;
-				
+				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
+
 				return TransferPack.EMPTY;
 
 			}
@@ -139,7 +145,8 @@ public class TileCircuitBreaker extends GenericTile {
 			if (cap.getMinimumVoltage() > -1 && (cap.getMinimumVoltage() < loadProfile.lastUsage().getVoltage() || cap.getMinimumVoltage() < loadProfile.maximumAvailable().getVoltage())) {
 				tripped = true;
 				tripCurveTimer = TRIP_CURVE;
-				
+				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
+
 				return TransferPack.EMPTY;
 			}
 
@@ -147,6 +154,8 @@ public class TileCircuitBreaker extends GenericTile {
 
 				tripped = true;
 				tripCurveTimer = TRIP_CURVE;
+				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
+
 				return TransferPack.EMPTY;
 
 			}
@@ -206,18 +215,18 @@ public class TileCircuitBreaker extends GenericTile {
 			setChanged();
 		}
 	}
-	
+
 	static {
-		
+
 		VoxelShape shape = Block.box(0, 0, 0, 16, 2, 16);
 		shape = Shapes.or(shape, Block.box(0, 2, 1, 16, 5, 15));
 		shape = Shapes.or(shape, Block.box(0, 2, 1, 16, 5, 15));
 		shape = Shapes.or(shape, Block.box(1, 5, 2, 15, 15, 14));
 		shape = Shapes.or(shape, Block.box(0, 5, 4, 1, 12, 12));
 		shape = Shapes.or(shape, Block.box(15, 5, 4, 16, 12, 12));
-		
+
 		VoxelShapes.registerShape(SubtypeMachine.circuitbreaker, shape, Direction.WEST);
-		
+
 	}
 
 }
