@@ -30,7 +30,7 @@ public class ItemDrillHead extends ItemElectrodynamics {
 
 		@SubscribeEvent
 		public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
-			HEADS.forEach(item -> event.register((stack, index) -> item.head.color, item));
+			HEADS.forEach(item -> event.register((stack, index) -> item.head.color.color(), item));
 		}
 
 	}

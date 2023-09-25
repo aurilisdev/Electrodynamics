@@ -10,7 +10,7 @@ import javax.annotation.Nullable;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Blocks;
@@ -422,20 +422,12 @@ public enum SubtypeWire implements ISubtype {
 		YELLOW(250, 240, 104, 255, Tags.Items.DYES_YELLOW),
 		BROWN(102, 78, 55, 255, Tags.Items.DYES_BROWN);
 
-		public final int color;
-		public final int r;
-		public final int g;
-		public final int b;
-		public final int a;
+		public final Color color;
 		@Nullable
 		public final TagKey<Item> dyeTag;
 
 		private WireColor(int r, int g, int b, int a, TagKey<Item> dyeTag) {
-			color = RenderingUtils.getRGBA(a, r, g, b);
-			this.r = r;
-			this.g = g;
-			this.b = b;
-			this.a = a;
+			color = new Color(r, g, b, a);
 			this.dyeTag = dyeTag;
 		}
 

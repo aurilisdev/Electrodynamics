@@ -48,7 +48,7 @@ public class ItemMultimeter extends ItemElectrodynamics {
 			display.append(", ");
 
 			// resistance and energy loss
-			display.append(ChatFormatter.getChatDisplayShort(net.getResistance(), DisplayUnit.RESISTANCE).append(" ( -").append(ChatFormatter.getChatDisplayShort(Math.round(net.getLastEnergyLoss() / net.getActiveTransmitted() * 100), DisplayUnit.PERCENTAGE)).append(ChatFormatter.getChatDisplayShort(net.getLastEnergyLoss() * 20, DisplayUnit.WATT).append(" )")));
+			display.append(ChatFormatter.getChatDisplayShort(net.getResistance(), DisplayUnit.RESISTANCE).append(" ( -").append(ChatFormatter.getChatDisplayShort(Math.round(net.getLastEnergyLoss() / net.getActiveTransmitted() * 100.0), DisplayUnit.PERCENTAGE)).append(" ").append(ChatFormatter.getChatDisplayShort(net.getLastEnergyLoss() * 20, DisplayUnit.WATT).append(" )")));
 			display.append(", ");
 
 			// minimum voltage

@@ -3,14 +3,14 @@ package electrodynamics.prefab.screen.component.types;
 import java.util.function.Supplier;
 
 import electrodynamics.prefab.screen.component.AbstractScreenComponent;
-import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 
 public class ScreenComponentSimpleLabel extends AbstractScreenComponent {
 
 	private Supplier<Component> text = Component::empty;
-	public int color = RenderingUtils.WHITE;
+	public int color = Color.WHITE.color();
 
 	private final int x;
 	private final int y;

@@ -88,6 +88,7 @@ public class TileSeismicRelay extends GenericTile {
 		}
 
 		markerLocs.set(positions);
+		markerLocs.forceDirty();
 
 		if (markerLocs.get().size() > 3) {
 			collectMarkers();

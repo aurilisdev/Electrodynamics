@@ -10,6 +10,9 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import electrodynamics.Electrodynamics;
 import electrodynamics.api.References;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
+import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -27,6 +30,11 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 	@Override
 	public void render(EntityEnergyBlast entity, float entityYaw, float partialTicks, PoseStack matrixStack, @NotNull MultiBufferSource buffer, int packedLight) {
 
+		if(entity.tickCount < 1) {
+			return;
+		}
+		
+		/*
 		int r = Electrodynamics.RANDOM.nextInt(0, 50);
 		int g = Electrodynamics.RANDOM.nextInt(10, 40);
 		int b = Electrodynamics.RANDOM.nextInt(60, 100);
@@ -54,7 +62,35 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 		vertex(vertexconsumer, matrix4f, matrix3f, 0.5F, 0.75F, red, green, blue, alpha, u1, v0, packedLight);
 		vertex(vertexconsumer, matrix4f, matrix3f, -0.5F, 0.75F, red, green, blue, alpha, u0, v0, packedLight);
 		matrixStack.popPose();
-
+		 */
+		
+		matrixStack.pushPose();
+		
+		//matrixStack.translate(0.5, 0.5, 0.5);
+		
+		int r = Electrodynamics.RANDOM.nextInt(0, 50);
+		int g = Electrodynamics.RANDOM.nextInt(10, 40);
+		int b = Electrodynamics.RANDOM.nextInt(60, 100);
+		
+		float red = (235 - r) / 256.0F;
+		float green = (120 - g) / 256.0F;
+		float blue = (245 - b) / 256.0F;
+		float alpha = 0.1F;
+		
+		int distance = entity.level().getRandom().nextIntBetweenInclusive(1, 10);
+		
+		long gameTime = entity.level().getGameTime();
+		
+		float scale = (float) Math.abs(Math.sin((gameTime + partialTicks) / 40.0)) * 0.001f + 0.001f;
+		matrixStack.scale(scale, scale, scale);
+		
+		RenderingUtils.renderStar(matrixStack, buffer, gameTime + partialTicks, (int) (250 / distance), red, green, blue, alpha, false);
+		RenderingUtils.renderStar(matrixStack, buffer, gameTime + 20f + partialTicks, (int) (250 / distance), red, green, blue, alpha, false);
+		RenderingUtils.renderStar(matrixStack, buffer, gameTime + 40f + partialTicks, (int) (250 / distance), red, green, blue, alpha, false);
+		
+		RenderingUtils.renderStar(matrixStack, buffer, gameTime + 60f + partialTicks, (int) (250 / distance), red, green, blue, alpha, false);
+		
+		matrixStack.popPose();
 	}
 
 	private static void vertex(VertexConsumer buffer, Matrix4f matrix, Matrix3f matrixNormal, float x, float y, int r, int g, int b, int a, float u, float v, int light) {

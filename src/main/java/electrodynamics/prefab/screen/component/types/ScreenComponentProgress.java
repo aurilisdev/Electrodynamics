@@ -78,8 +78,8 @@ public class ScreenComponentProgress extends ScreenComponentGeneric {
 		BATTER_CHARGE_RIGHT_ON(19, 10, 19, 0, 38, 10, "battery_charge"),
 		COMPRESS_ARROW_OFF(15, 9, 0, 0, 15, 9, "compressarrow"),
 		DECOMPRESS_ARROW_OFF(15, 9, 0, 0, 15, 9, "decompressarrow"),
-		FEYNMAN_DIAGRAM_OFF(65, 49, 0, 0, 65, 91, "feynman_diagram"),
-		FEYNMAN_DIAGRAM_ON(65, 42, 0, 49, 65, 91, "feynman_diagram");
+		FEYNMAN_DIAGRAM_OFF(65, 46, 0, 0, 65, 92, "feynman_diagram"),
+		FEYNMAN_DIAGRAM_ON(65, 46, 0, 46, 65, 92, "feynman_diagram");
 
 		private final int textureWidth;
 		private final int textureHeight;

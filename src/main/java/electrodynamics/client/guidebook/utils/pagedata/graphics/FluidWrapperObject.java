@@ -2,6 +2,7 @@ package electrodynamics.client.guidebook.utils.pagedata.graphics;
 
 import electrodynamics.client.guidebook.utils.components.Page;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -26,11 +27,11 @@ public class FluidWrapperObject extends AbstractGraphicWrapper<FluidWrapperObjec
 
 		TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texture);
 
-		RenderingUtils.color(IClientFluidTypeExtensions.of(fluid).getTintColor());
+		RenderingUtils.setShaderColor(new Color(IClientFluidTypeExtensions.of(fluid).getTintColor()));
 
 		graphics.blit(guiWidth + wrapperX + xShift, guiHeight + wrapperY, 0, width, height, sprite);
 
-		RenderingUtils.resetColor();
+		RenderingUtils.resetShaderColor();
 
 	}
 

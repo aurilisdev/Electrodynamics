@@ -40,6 +40,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 
 	protected BiFunction<TransferPack, Boolean, TransferPack> functionReceivePower = ICapabilityElectrodynamic.super::receivePower;
 	protected BiFunction<TransferPack, Boolean, TransferPack> functionExtractPower = ICapabilityElectrodynamic.super::extractPower;
+	protected BiFunction<LoadProfile, Direction, TransferPack> connectedLoadFunction = (profile, dir) -> TransferPack.joulesVoltage(getMaxJoulesStored() - getJoulesStored(), getVoltage());
 	protected Consumer<Double> setJoules = null;
 	protected HashSet<Direction> relativeOutputDirections = new HashSet<>();
 	protected HashSet<Direction> relativeInputDirections = new HashSet<>();
@@ -166,6 +167,11 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		functionExtractPower = extractPower;
 		return this;
 	}
+	
+	public ComponentElectrodynamic getConnectedLoad(BiFunction<LoadProfile, Direction, TransferPack> supplier) {
+		this.connectedLoadFunction = supplier;
+		return this;
+	}
 
 	public ComponentElectrodynamic setJoules(Consumer<Double> setJoules) {
 		this.setJoules = setJoules;
@@ -240,6 +246,14 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		if (holder != null) {
 			holder.onEnergyChange(this);
 		}
+	}
+
+	@Override
+	public TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
+		if (inputDirections.contains(dir) || holder.hasComponent(ComponentType.Direction) && relativeInputDirections.contains(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), dir))) {
+			return connectedLoadFunction.apply(loadProfile, dir);
+		}
+		return TransferPack.EMPTY;
 	}
 
 }

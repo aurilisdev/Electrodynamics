@@ -48,9 +48,9 @@ public class GenericMaterialTile extends GenericTile {
 				FluidStack taken = new FluidStack(containedFluid.getFluid(), amtTaken);
 				if (isBucket && amtTaken == 1000 && (taken.getFluid().isSame(Fluids.WATER) || taken.getFluid().isSame(Fluids.LAVA))) {
 					if (!world.isClientSide()) {
-						CapabilityUtils.drainFluidItem(stack, taken, FluidAction.EXECUTE);
 						tank.fill(taken, FluidAction.EXECUTE);
 						if (!player.isCreative()) {
+							CapabilityUtils.drainFluidItem(stack, taken, FluidAction.EXECUTE);
 							player.setItemInHand(handIn, new ItemStack(Items.BUCKET, 1));
 						}
 						world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 1, 1);

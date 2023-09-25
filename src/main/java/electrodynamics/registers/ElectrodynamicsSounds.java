@@ -21,7 +21,8 @@ public class ElectrodynamicsSounds {
 	public static final RegistryObject<SoundEvent> SOUND_CERAMICPLATEADDED = sound("ceramicplateadded");
 	public static final RegistryObject<SoundEvent> SOUND_RAILGUNKINETIC = sound("railgunkinetic");
 	public static final RegistryObject<SoundEvent> SOUND_RAILGUNKINETIC_NOAMMO = sound("railgunkinetic_noammo");
-	public static final RegistryObject<SoundEvent> SOUND_RAILGUNPLASMA = sound("railgunplasma");
+	public static final RegistryObject<SoundEvent> SOUND_RAILGUNPLASMA_FIRE = sound("railgunplasma_fire");
+	public static final RegistryObject<SoundEvent> SOUND_RAILGUNPLASMA_HIT = sound("railgunplasma_hit");
 	public static final RegistryObject<SoundEvent> SOUND_RAILGUNPLASMA_NOPOWER = sound("railgunplasma_nopower");
 	public static final RegistryObject<SoundEvent> SOUND_RODIMPACTINGGROUND = sound("rodhittingground");
 	public static final RegistryObject<SoundEvent> SOUND_LATHEPLAYING = sound("latherunning");

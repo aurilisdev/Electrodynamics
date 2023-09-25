@@ -1,5 +1,6 @@
 package electrodynamics.common.tile;
 
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
 import electrodynamics.api.network.cable.type.IConductor;
 import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.prefab.properties.Property;
@@ -32,7 +33,7 @@ public class TileMultimeterBlock extends GenericTile {
 		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).relativeInput(Direction.SOUTH).voltage(-1));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeInput(Direction.SOUTH).voltage(-1));
 	}
 
 	public void tickServer(ComponentTickable tickable) {
@@ -62,6 +63,10 @@ public class TileMultimeterBlock extends GenericTile {
 	}
 
 	protected TransferPack receivePower(TransferPack transfer, boolean debug) {
+		return TransferPack.EMPTY;
+	}
+	
+	protected TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
 		return TransferPack.EMPTY;
 	}
 }

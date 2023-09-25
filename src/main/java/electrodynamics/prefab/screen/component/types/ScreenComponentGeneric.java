@@ -4,6 +4,7 @@ import electrodynamics.api.screen.ITexture;
 import electrodynamics.api.screen.ITexture.Textures;
 import electrodynamics.prefab.screen.component.AbstractScreenComponent;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.client.gui.GuiGraphics;
 
 /**
@@ -16,7 +17,7 @@ public class ScreenComponentGeneric extends AbstractScreenComponent {
 
 	public ITexture texture;
 
-	public int color = RenderingUtils.WHITE;
+	public Color color = Color.WHITE;
 
 	public ScreenComponentGeneric(ITexture texture, int x, int y) {
 		super(x, y, texture.textureWidth(), texture.textureHeight());
@@ -28,7 +29,7 @@ public class ScreenComponentGeneric extends AbstractScreenComponent {
 		texture = Textures.NONE;
 	}
 
-	public ScreenComponentGeneric setColor(int color) {
+	public ScreenComponentGeneric setColor(Color color) {
 		this.color = color;
 		return this;
 	}
@@ -38,9 +39,9 @@ public class ScreenComponentGeneric extends AbstractScreenComponent {
 		if (!isVisible()) {
 			return;
 		}
-		RenderingUtils.color(color);
+		RenderingUtils.setShaderColor(color);
 		graphics.blit(texture.getLocation(), guiWidth + xLocation, guiHeight + yLocation, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
-		RenderingUtils.resetColor();
+		RenderingUtils.resetShaderColor();
 	}
 
 }

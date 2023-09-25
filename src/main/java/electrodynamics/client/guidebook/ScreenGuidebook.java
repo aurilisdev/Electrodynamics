@@ -36,6 +36,7 @@ import electrodynamics.prefab.screen.component.editbox.type.EditBoxSpecificPage;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGuidebookArrow;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGuidebookArrow.ArrowTextures;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.locale.Language;
@@ -130,7 +131,7 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 	private int previousHeight = 0;
 
-	private int color = 0;
+	private Color color = Color.BLACK;
 	private boolean centered = false;
 	private MutableComponent mergedText = Component.empty();
 
@@ -617,9 +618,9 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 
 			if (text.centered()) {
 				int xShift = (TEXT_WIDTH - font.width(text.characters())) / 2;
-				graphics.drawString(getFontRenderer(), Language.getInstance().getVisualOrder(text.characters()), text.x() + refX + xShift + xPageShift, refY + text.y(), text.color(), false);
+				graphics.drawString(getFontRenderer(), Language.getInstance().getVisualOrder(text.characters()), text.x() + refX + xShift + xPageShift, refY + text.y(), text.color().color(), false);
 			} else {
-				graphics.drawString(getFontRenderer(), Language.getInstance().getVisualOrder(text.characters()), text.x() + refX + xPageShift, text.y() + refY, text.color(), false);
+				graphics.drawString(getFontRenderer(), Language.getInstance().getVisualOrder(text.characters()), text.x() + refX + xPageShift, text.y() + refY, text.color().color(), false);
 			}
 
 		}

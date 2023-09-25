@@ -1,7 +1,7 @@
 package electrodynamics.client.guidebook.utils.pagedata.text;
 
 import electrodynamics.client.guidebook.utils.pagedata.AbstractWrapperObject;
-import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.network.chat.Component;
 
 /**
@@ -14,11 +14,11 @@ public class TextWrapperObject extends AbstractWrapperObject<TextWrapperObject> 
 
 	public static final TextWrapperObject BLANK_LINE = new TextWrapperObject(Component.empty());
 
-	public static final int DEFAULT_COLOR = 4210752;
+	public static final Color DEFAULT_COLOR = new Color(4210752);
 
-	public static final int LIGHT_GREY = RenderingUtils.getRGBA(255, 170, 170, 170);
+	public static final Color LIGHT_GREY = new Color(170, 170, 170, 255);
 
-	public int color;
+	public Color color;
 	public Component text;
 
 	public int numberOfIndentions = 0;
@@ -29,7 +29,7 @@ public class TextWrapperObject extends AbstractWrapperObject<TextWrapperObject> 
 		this(DEFAULT_COLOR, text);
 	}
 
-	public TextWrapperObject(int color, Component text) {
+	public TextWrapperObject(Color color, Component text) {
 		this.color = color;
 		this.text = text;
 	}

@@ -22,6 +22,7 @@ import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemMultiDigger;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
@@ -328,9 +329,9 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 		public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
 			DRILLS.forEach(item -> event.register((stack, index) -> {
 				if (index == 1) {
-					return getHead(stack).color;
+					return getHead(stack).color.color();
 				}
-				return 0xFFFFFFFF;
+				return Color.WHITE.color();
 			}, item));
 		}
 
