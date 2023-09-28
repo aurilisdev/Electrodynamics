@@ -10,7 +10,6 @@ import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-
 /**
  * CONVENTION NOTE: A VOLTAGE OF -1 INDICATES THIS ENTITY SHOULD NOT HAVE VOLTAGE CONSIDERED WHEN INTERACTING WITH IT
  * 
@@ -18,10 +17,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
  *
  */
 public interface ICapabilityElectrodynamic {
-	
-	
+
 	/**
 	 * Sets the joules stored for this Capability
+	 * 
 	 * @param joules
 	 */
 	default void setJoulesStored(double joules) {
@@ -29,12 +28,14 @@ public interface ICapabilityElectrodynamic {
 
 	/**
 	 * Returns the current joules stored by this Capability
+	 * 
 	 * @return
 	 */
 	double getJoulesStored();
 
 	/**
 	 * Returns the maximum possible joules stored by this Capability
+	 * 
 	 * @return
 	 */
 	double getMaxJoulesStored();
@@ -43,6 +44,7 @@ public interface ICapabilityElectrodynamic {
 	 * Returns the current operating voltage of this Capability
 	 * 
 	 * Note this value will NEVER be LESS than the minimum voltage
+	 * 
 	 * @return
 	 */
 	default double getVoltage() {
@@ -51,6 +53,7 @@ public interface ICapabilityElectrodynamic {
 
 	/**
 	 * Returns the minimum possible voltage this Capability may accept
+	 * 
 	 * @return
 	 */
 	default double getMinimumVoltage() {
@@ -60,7 +63,7 @@ public interface ICapabilityElectrodynamic {
 	/**
 	 * 
 	 * @param transfer: The desired energy that is to be extracted
-	 * @param debug: Whether or not this should be simulated
+	 * @param debug:    Whether or not this should be simulated
 	 * @return The actual energy that this Capability extracted
 	 */
 	default TransferPack extractPower(TransferPack transfer, boolean debug) {
@@ -81,7 +84,7 @@ public interface ICapabilityElectrodynamic {
 	/**
 	 * 
 	 * @param transfer: The energy that is to be accepted
-	 * @param debug: Whether or not this should be simulated
+	 * @param debug:    Whether or not this should be simulated
 	 * @return The energy that this Capability accepted
 	 */
 	default TransferPack receivePower(TransferPack transfer, boolean debug) {
@@ -95,12 +98,13 @@ public interface ICapabilityElectrodynamic {
 				overVoltage(transfer);
 				return TransferPack.EMPTY;
 			}
-		} 
+		}
 		return TransferPack.joulesVoltage(received, transfer.getVoltage());
 	}
 
 	/**
 	 * The energy that this Capability received that triggered the over-voltage condition
+	 * 
 	 * @param transfer
 	 */
 	default void overVoltage(TransferPack transfer) {
@@ -124,26 +128,26 @@ public interface ICapabilityElectrodynamic {
 	 * A hook method that is called by convention when a value on this Capabiliy changes
 	 */
 	void onChange();
-	
+
 	/**
-	 * Returns the load this Capability will cause 
+	 * Returns the load this Capability will cause
 	 * 
-	 * @param lastPower: The last amount of energy this Capability received 
-	 * @param dir: The direction energy is being inserted into this Capability
+	 * @param lastPower: The last amount of energy this Capability received
+	 * @param dir:       The direction energy is being inserted into this Capability
 	 * 
 	 * @return The voltage of the return is assumed to be the operating voltage of this Capability when this is called
 	 */
 	TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir);
-	
+
 	/**
-	 * @param lastUsage: represents the last known energy usage of this device
-	 * @param maximumAvailable: represents the theoretical maximum amount of energy this device could receive 
+	 * @param lastUsage:        represents the last known energy usage of this device
+	 * @param maximumAvailable: represents the theoretical maximum amount of energy this device could receive
 	 * 
 	 * @author skip999
 	 *
 	 */
 	public static final record LoadProfile(TransferPack lastUsage, TransferPack maximumAvailable) {
-		
+
 	}
 
 }

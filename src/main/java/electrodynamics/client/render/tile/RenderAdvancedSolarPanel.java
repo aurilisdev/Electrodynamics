@@ -25,7 +25,7 @@ public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedS
 		matrixStackIn.translate(0.5, 2, 0.5);
 
 		matrixStackIn.mulPose(MathUtils.rotVectorQuaternionDeg(90, MathUtils.YP));
-		//matrixStackIn.mulPose(new Quaternion(new Vector3f(0, 1, 0), 90, true));
+		// matrixStackIn.mulPose(new Quaternion(new Vector3f(0, 1, 0), 90, true));
 
 		long time = solarPanel.getLevel().getLevelData().getDayTime();
 
@@ -34,7 +34,7 @@ public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedS
 		}
 
 		matrixStackIn.mulPose(MathUtils.rotVectorQuaternionDeg((float) -solarPanel.currentRotation.getValue(), MathUtils.XP));
-		//matrixStackIn.mulPose(new Quaternion(new Vector3f(1, 0, 0), (float) -solarPanel.currentRotation.getValue(), false));
+		// matrixStackIn.mulPose(new Quaternion(new Vector3f(1, 0, 0), (float) -solarPanel.currentRotation.getValue(), false));
 
 		matrixStackIn.scale(2, 2, 2);
 

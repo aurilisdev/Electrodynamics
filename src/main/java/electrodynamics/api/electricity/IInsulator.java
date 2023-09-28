@@ -11,9 +11,9 @@ import net.minecraft.sounds.SoundEvent;
  *
  */
 public interface IInsulator {
-	
+
 	double getMaximumVoltage();
-	
+
 	SoundEvent getBreakingSound();
 
 }

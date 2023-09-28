@@ -42,26 +42,26 @@ public class RenderMotorComplex extends AbstractTileRenderer<TileMotorComplex> {
 		case EAST -> {
 			stack.translate(0.5, 0.5, 0.5);
 			stack.mulPose(MathUtils.rotVectorQuaternionDeg(progressDegrees, MathUtils.XN));
-			//stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
+			// stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
 		}
 		case WEST -> {
 			stack.translate(0.9375, 0.5, 0.5);
 			stack.mulPose(MathUtils.rotVectorQuaternionDeg(progressDegrees, MathUtils.XP));
-			//stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
+			// stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
 		}
 		case SOUTH -> {
 			stack.translate(0.5, 0.5, 0.0625);
 			stack.mulPose(MathUtils.rotVectorQuaternionDeg(90, MathUtils.YP));
 			stack.mulPose(MathUtils.rotVectorQuaternionDeg(progressDegrees, MathUtils.XP));
-			//stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
-			//stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
+			// stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
+			// stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
 		}
 		case NORTH -> {
 			stack.translate(0.5, 0.5, 0.5);
 			stack.mulPose(MathUtils.rotVectorQuaternionDeg(90, MathUtils.YP));
 			stack.mulPose(MathUtils.rotVectorQuaternionDeg(progressDegrees, MathUtils.XN));
-			//stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
-			//stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
+			// stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
+			// stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
 		}
 		default -> {
 		}

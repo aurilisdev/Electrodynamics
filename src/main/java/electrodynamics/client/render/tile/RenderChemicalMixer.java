@@ -51,7 +51,7 @@ public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer>
 		}
 
 		matrixStackIn.mulPose(MathUtils.rotQuaternionDeg(0, degrees, 0));
-		//matrixStackIn.mulPose(new Quaternion(0, degrees, 0, true));
+		// matrixStackIn.mulPose(new Quaternion(0, degrees, 0, true));
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
 

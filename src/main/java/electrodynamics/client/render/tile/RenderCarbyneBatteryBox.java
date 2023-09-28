@@ -41,17 +41,17 @@ public class RenderCarbyneBatteryBox extends AbstractTileRenderer<TileCarbyneBat
 		switch (tileEntityIn.getBlockState().getValue(GenericEntityBlock.FACING)) {
 		case NORTH -> {
 			matrixStackIn.mulPose(MathUtils.rotQuaternionDeg(0, 90, 0));
-			//matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
+			// matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
 			matrixStackIn.translate(-1, 0, 0);
 		}
 		case SOUTH -> {
 			matrixStackIn.mulPose(MathUtils.rotQuaternionDeg(0, 270, 0));
-			//matrixStackIn.mulPose(new Quaternion(0, 270, 0, true));
+			// matrixStackIn.mulPose(new Quaternion(0, 270, 0, true));
 			matrixStackIn.translate(0, 0, -1);
 		}
 		case WEST -> {
 			matrixStackIn.mulPose(MathUtils.rotQuaternionDeg(0, 180, 0));
-			//matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
+			// matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
 			matrixStackIn.translate(-1, 0, -1);
 		}
 		default -> {

@@ -32,9 +32,9 @@ public class HandlerJetpackMode extends AbstractPostGuiOverlayHandler {
 		if (!ItemUtils.testItems(chestSlot.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
 			return;
 		}
-		
+
 		PoseStack stack = graphics.pose();
-			
+
 		stack.pushPose();
 
 		Component mode = ItemJetpack.getModeText(chestSlot.hasTag() ? chestSlot.getTag().getInt(NBTUtils.MODE) : -1);

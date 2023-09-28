@@ -4,7 +4,7 @@ import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.Direction;
 
 public class ElectrodynamicStorage implements ICapabilityElectrodynamic {
-	
+
 	private final double max;
 	private double joules;
 

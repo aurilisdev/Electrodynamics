@@ -90,7 +90,6 @@ import electrodynamics.client.screen.tile.ScreenSolarPanel;
 import electrodynamics.client.screen.tile.ScreenThermoelectricManipulator;
 import electrodynamics.client.screen.tile.ScreenWindmill;
 import electrodynamics.client.texture.atlas.AtlasHolderElectrodynamicsCustom;
-import electrodynamics.client.texture.atlas.ElectrodynamicsTextureAtlases;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;

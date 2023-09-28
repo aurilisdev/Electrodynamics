@@ -93,10 +93,10 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 			rotateMatrix(stack, dir);
 
 			double minVolt = multimeter.minVoltage.get();
-			if(minVolt < 0) {
+			if (minVolt < 0) {
 				minVolt = multimeter.voltage.get();
 			}
-			
+
 			Component minVoltage = ElectroTextUtils.gui("multimeterblock.minvoltage", ChatFormatter.getDisplayShort(minVolt, DisplayUnit.VOLTAGE, 2));
 
 			scale = 0.0215f / (font.width(minVoltage) / 32f);
@@ -161,9 +161,9 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 	private void rotateMatrix(PoseStack stack, Direction dir) {
 		switch (dir) {
-		case EAST -> stack.mulPose(MathUtils.rotQuaternionDeg(0, -90, 0));//stack.mulPose(new Quaternion(0, -90, 0, true));
-		case SOUTH -> stack.mulPose(MathUtils.rotQuaternionDeg(0, 180, 0));//stack.mulPose(new Quaternion(0, 180, 0, true));
-		case WEST -> stack.mulPose(MathUtils.rotQuaternionDeg(0, 90, 0));//stack.mulPose(new Quaternion(0, 90, 0, true));
+		case EAST -> stack.mulPose(MathUtils.rotQuaternionDeg(0, -90, 0));// stack.mulPose(new Quaternion(0, -90, 0, true));
+		case SOUTH -> stack.mulPose(MathUtils.rotQuaternionDeg(0, 180, 0));// stack.mulPose(new Quaternion(0, 180, 0, true));
+		case WEST -> stack.mulPose(MathUtils.rotQuaternionDeg(0, 90, 0));// stack.mulPose(new Quaternion(0, 90, 0, true));
 		default -> {
 		}
 		}

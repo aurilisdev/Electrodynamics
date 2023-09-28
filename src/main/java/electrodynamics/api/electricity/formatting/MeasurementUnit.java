@@ -4,7 +4,7 @@ import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 
 public enum MeasurementUnit implements IMeasurementUnit {
-	
+
 	PICO(ElectroTextUtils.gui("measurementunit.pico.name"), ElectroTextUtils.gui("measurementunit.pico.symbol"), 1.0E-12D),
 	NANO(ElectroTextUtils.gui("measurementunit.nano.name"), ElectroTextUtils.gui("measurementunit.nano.symbol"), 1.0E-9D),
 	MICRO(ElectroTextUtils.gui("measurementunit.micro.name"), ElectroTextUtils.gui("measurementunit.micro.symbol"), 1.0E-6D),

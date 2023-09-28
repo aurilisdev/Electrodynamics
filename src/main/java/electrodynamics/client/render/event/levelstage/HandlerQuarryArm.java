@@ -45,10 +45,10 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 	@Override
 	public void render(Camera camera, Frustum frustum, LevelRenderer renderer, PoseStack stack, Matrix4f projectionMatrix, Minecraft minecraft, int renderTick, float partialTick) {
 
-		if(armsToRender.isEmpty()) {
+		if (armsToRender.isEmpty()) {
 			return;
 		}
-		
+
 		MultiBufferSource.BufferSource buffer = minecraft.renderBuffers().bufferSource();
 		Vec3 camPos = camera.getPosition();
 
@@ -141,7 +141,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 					float degrees = 360.0F * (progress / speed);
 					stack.translate(vec.remX + 0.5, 0, vec.remZ + 0.5);
 					stack.mulPose(MathUtils.rotQuaternionDeg(0, degrees, 0));
-					//stack.mulPose(new Quaternion(0, degrees, 0, true));
+					// stack.mulPose(new Quaternion(0, degrees, 0, true));
 					stack.translate(-vec.remX - 0.5, 0, -vec.remZ - 0.5);
 				}
 				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorHead.rFloat(), colorHead.gFloat(), colorHead.bFloat(), colorHead.aFloat(), u0Head, v0Head, u1Head, v1Head, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
@@ -161,14 +161,14 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 			PrecisionVector vec = data.leftWheel().vector();
 			stack.translate(vec.totX(), vec.totY(), vec.totZ());
 			stack.mulPose(MathUtils.rotQuaternionDeg(0, data.leftWheel().yAxisRotation(), 0));
-			//stack.mulPose(new Quaternion(0, data.leftWheel().yAxisRotation(), 0, true));
+			// stack.mulPose(new Quaternion(0, data.leftWheel().yAxisRotation(), 0, true));
 
 			RenderingUtils.renderModel(wheelStill, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
 
 			stack.pushPose();
 			stack.translate(0.0, 0.0625, 0.0);
 			stack.mulPose(MathUtils.rotQuaternionDeg(data.leftWheel().xAxisRotation(), 0, data.leftWheel().zAxisRotation()));
-			//stack.mulPose(new Quaternion(data.leftWheel().xAxisRotation(), 0, data.leftWheel().zAxisRotation(), true));
+			// stack.mulPose(new Quaternion(data.leftWheel().xAxisRotation(), 0, data.leftWheel().zAxisRotation(), true));
 			stack.translate(0.0, -0.0625, 0.0);
 
 			RenderingUtils.renderModel(wheelRot, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
@@ -182,14 +182,14 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 			vec = data.rightWheel().vector();
 			stack.translate(vec.totX(), vec.totY(), vec.totZ());
 			stack.mulPose(MathUtils.rotQuaternionDeg(0, data.rightWheel().yAxisRotation(), 0));
-			//stack.mulPose(new Quaternion(0, data.rightWheel().yAxisRotation(), 0, true));
+			// stack.mulPose(new Quaternion(0, data.rightWheel().yAxisRotation(), 0, true));
 
 			RenderingUtils.renderModel(wheelStill, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
 
 			stack.pushPose();
 			stack.translate(0.0, 0.0625, 0.0);
 			stack.mulPose(MathUtils.rotQuaternionDeg(data.rightWheel().xAxisRotation(), 0, data.rightWheel().zAxisRotation()));
-			//stack.mulPose(new Quaternion(data.rightWheel().xAxisRotation(), 0, data.rightWheel().zAxisRotation(), true));
+			// stack.mulPose(new Quaternion(data.rightWheel().xAxisRotation(), 0, data.rightWheel().zAxisRotation(), true));
 			stack.translate(0.0, -0.0625, 0.0);
 
 			RenderingUtils.renderModel(wheelRot, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
@@ -203,14 +203,14 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 			vec = data.bottomWheel().vector();
 			stack.translate(vec.totX(), vec.totY(), vec.totZ());
 			stack.mulPose(MathUtils.rotQuaternionDeg(0, data.bottomWheel().yAxisRotation(), 0));
-			//stack.mulPose(new Quaternion(0, data.bottomWheel().yAxisRotation(), 0, true));
+			// stack.mulPose(new Quaternion(0, data.bottomWheel().yAxisRotation(), 0, true));
 
 			RenderingUtils.renderModel(wheelStill, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
 
 			stack.pushPose();
 			stack.translate(0.0, 0.0625, 0.0);
 			stack.mulPose(MathUtils.rotQuaternionDeg(data.bottomWheel().xAxisRotation(), 0, data.bottomWheel().zAxisRotation()));
-			//stack.mulPose(new Quaternion(data.bottomWheel().xAxisRotation(), 0, data.bottomWheel().zAxisRotation(), true));
+			// stack.mulPose(new Quaternion(data.bottomWheel().xAxisRotation(), 0, data.bottomWheel().zAxisRotation(), true));
 			stack.translate(0.0, -0.0625, 0.0);
 
 			RenderingUtils.renderModel(wheelRot, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
@@ -224,14 +224,14 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 			vec = data.topWheel().vector();
 			stack.translate(vec.totX(), vec.totY(), vec.totZ());
 			stack.mulPose(MathUtils.rotQuaternionDeg(0, data.topWheel().yAxisRotation(), 0));
-			//stack.mulPose(new Quaternion(0, data.topWheel().yAxisRotation(), 0, true));
+			// stack.mulPose(new Quaternion(0, data.topWheel().yAxisRotation(), 0, true));
 
 			RenderingUtils.renderModel(wheelStill, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);
 
 			stack.pushPose();
 			stack.translate(0.0, 0.0625, 0.0);
 			stack.mulPose(MathUtils.rotQuaternionDeg(data.topWheel().xAxisRotation(), 0, data.topWheel().zAxisRotation()));
-			//stack.mulPose(new Quaternion(data.topWheel().xAxisRotation(), 0, data.topWheel().zAxisRotation(), true));
+			// stack.mulPose(new Quaternion(data.topWheel().xAxisRotation(), 0, data.topWheel().zAxisRotation(), true));
 			stack.translate(0.0, -0.0625, 0.0);
 
 			RenderingUtils.renderModel(wheelRot, null, RenderType.solid(), stack, buffer, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)), OverlayTexture.NO_OVERLAY);

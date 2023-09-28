@@ -27,7 +27,7 @@ public class ElectrodynamicsShaders extends RenderType {
 	public static final Logger LOGGER = LoggerFactory.getLogger("Electrodynamics: Shaders");
 
 	/* SHADER INSTANCES */
-	//private static ShaderInstance shaderPlasmaOrb;
+	// private static ShaderInstance shaderPlasmaOrb;
 
 	/* UNIFORMS */
 	private static Uniform uniformAlphaCutoff;
@@ -37,7 +37,7 @@ public class ElectrodynamicsShaders extends RenderType {
 
 	/* SHADER STATE SHARDS */
 
-	//private static final ShaderStateShard RENDERTYPE_PLASMA_ORB = new ShaderStateShard(() -> shaderPlasmaOrb);
+	// private static final ShaderStateShard RENDERTYPE_PLASMA_ORB = new ShaderStateShard(() -> shaderPlasmaOrb);
 
 	public static final RenderType GREATER_ALPHA = RenderType.create(GREATER_ALPHA_LOC.toString(), DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, false, CompositeState.builder().setLightmapState(LIGHTMAP).setShaderState(RENDERTYPE_EYES_SHADER).setTextureState(NO_TEXTURE).setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY).createCompositeState(false));
 
@@ -45,7 +45,7 @@ public class ElectrodynamicsShaders extends RenderType {
 	public static void onRegisterShaders(final RegisterShadersEvent event) {
 		try {
 			event.registerShader(new ShaderInstance(event.getResourceProvider(), GREATER_ALPHA_LOC, DefaultVertexFormat.POSITION_COLOR_TEX), shader -> {
-				//shaderPlasmaOrb = shader;
+				// shaderPlasmaOrb = shader;
 				uniformAlphaCutoff = shader.getUniform("AlphaCutoff");
 			});
 		} catch (IOException err) {

@@ -27,14 +27,14 @@ public class RenderMineralGrinderTriple extends AbstractTileRenderer<TileMineral
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		matrixStackIn.translate(0.0, 7.0 / 16.0, 2.5 / 16.0);
 		matrixStackIn.mulPose(MathUtils.rotQuaternionDeg((float) -progress, 0, 0));
-		//matrixStackIn.mulPose(new Quaternion((float) -progress, 0, 0, true));
+		// matrixStackIn.mulPose(new Quaternion((float) -progress, 0, 0, true));
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
 		matrixStackIn.pushPose();
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 		matrixStackIn.translate(0.0, 7.0 / 16.0, -2.5 / 16.0);
 		matrixStackIn.mulPose(MathUtils.rotQuaternionDeg((float) progress, 0, 0));
-		//matrixStackIn.mulPose(new Quaternion((float) progress, 0, 0, true));
+		// matrixStackIn.mulPose(new Quaternion((float) progress, 0, 0, true));
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 		matrixStackIn.popPose();
 		matrixStackIn.pushPose();

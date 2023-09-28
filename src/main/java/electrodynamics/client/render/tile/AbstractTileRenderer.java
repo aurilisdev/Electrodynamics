@@ -53,7 +53,7 @@ public abstract class AbstractTileRenderer<T extends GenericTile> implements Blo
 	public BakedModel getModel(ResourceLocation model) {
 		return Minecraft.getInstance().getModelManager().getModel(model);
 	}
-	
+
 	public void renderItem(ItemStack stack, ItemDisplayContext context, int light, int overlay, PoseStack poseStack, MultiBufferSource bufferSource, @Nullable Level world, int seed) {
 		Minecraft.getInstance().getItemRenderer().renderStatic(stack, context, light, overlay, poseStack, bufferSource, world, seed);
 	}

@@ -39,7 +39,7 @@ public class HandlerRailgunTemperature extends AbstractPostGuiOverlayHandler {
 		double temperature = IItemTemperate.getTemperature(item);
 
 		PoseStack stack = graphics.pose();
-		
+
 		stack.pushPose();
 
 		// ElectroTextUtils.tooltip("railguntemp", Component.literal(temperature + correction + " C"));
