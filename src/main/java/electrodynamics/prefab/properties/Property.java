@@ -78,7 +78,7 @@ public class Property<T> {
 		T old = value;
 		value = (T) type.attemptCast(updated);
 		if (isDirty() && manager.getOwner().getLevel() != null) {
-			if(!manager.getOwner().getLevel().isClientSide()) {
+			if (!manager.getOwner().getLevel().isClientSide()) {
 				manager.setDirty(this);
 			}
 			onChange.accept(this, old);
@@ -86,7 +86,7 @@ public class Property<T> {
 
 		return this;
 	}
-	
+
 	/**
 	 * This method should be used when working with more complex data types like arrays (InventoryItems for example)
 	 * 
@@ -94,7 +94,7 @@ public class Property<T> {
 	 */
 	@Deprecated(since = "This should be used when working with arrays")
 	public void forceDirty() {
-		if(!manager.getOwner().getLevel().isClientSide()) {
+		if (!manager.getOwner().getLevel().isClientSide()) {
 			manager.setDirty(this);
 		}
 	}

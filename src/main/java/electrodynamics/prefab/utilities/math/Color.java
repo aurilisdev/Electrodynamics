@@ -7,7 +7,7 @@ package electrodynamics.prefab.utilities.math;
  *
  */
 public class Color {
-	
+
 	public static final Color WHITE = new Color(0xFFFFFFFF);
 	public static final Color BLACK = new Color(0, 0, 0, 0);
 
@@ -33,10 +33,10 @@ public class Color {
 		this.b = b;
 		this.a = a;
 
-		rFloat = (float) this.r / 256.0F;
-		gFloat = (float) this.g / 256.0F;
-		bFloat = (float) this.b / 256.0F;
-		aFloat = (float) this.a / 256.0F;
+		rFloat = this.r / 256.0F;
+		gFloat = this.g / 256.0F;
+		bFloat = this.b / 256.0F;
+		aFloat = this.a / 256.0F;
 
 		color = (this.a << 24) + (this.r << 16) + (this.g << 8) + this.b;
 
@@ -52,11 +52,11 @@ public class Color {
 	public Color(float r, float g, float b, float a) {
 		this((int) (r * 256.0F), (int) (g * 256.0F), (int) (b * 256.0F), (int) (a * 256.0F));
 	}
-	
+
 	public Color(int[] colorArr) {
 		this(colorArr[0], colorArr[1], colorArr[2], colorArr[3]);
 	}
-	
+
 	public Color(float[] colorFloatArr) {
 		this(colorFloatArr[0], colorFloatArr[1], colorFloatArr[2], colorFloatArr[3]);
 	}

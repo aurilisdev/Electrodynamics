@@ -49,7 +49,7 @@ public class IngredientRendererGasStack implements IIngredientRenderer<GasStack>
 			return;
 		}
 		PoseStack stack = graphics.pose();
-		
+
 		stack.pushPose();
 
 		float ratio = (float) ingredient.getAmount() / tankAmount;

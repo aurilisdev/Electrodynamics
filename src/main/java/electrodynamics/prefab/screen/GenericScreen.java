@@ -68,7 +68,7 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 			addRenderableWidget(component);
 		}
 	}
-	
+
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(graphics);
@@ -90,7 +90,7 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 
 	@Override
 	protected void renderBg(GuiGraphics graphics, float partialTick, int mouseX, int mouseY) {
-		//RenderingUtils.bindTexture(defaultResource);
+		// RenderingUtils.bindTexture(defaultResource);
 		int guiWidth = (int) getGuiWidth();
 		int guiHeight = (int) getGuiHeight();
 		graphics.blit(defaultResource, guiWidth, guiHeight, 0, 248, imageWidth, 4);

@@ -32,17 +32,17 @@ import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class AbstractLootTableProvider extends VanillaBlockLoot {
-	
+
 	private final String modID;
-	
+
 	public AbstractLootTableProvider(String modID) {
 		this.modID = modID;
-	} 
+	}
 
 	public LootTable.Builder machineTable(String name, Block block, BlockEntityType<?> type, boolean items, boolean fluids, boolean gases, boolean energy, boolean additional) {
 		CopyNbtFunction.Builder function = CopyNbtFunction.copyData(ContextNbtProvider.BLOCK_ENTITY);
 
-		if (items) { 
+		if (items) {
 			function = function.copy("Items", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE);
 			function = function.copy(ComponentInventory.SAVE_KEY + "_size", "BlockEntityTag", CopyNbtFunction.MergeStrategy.REPLACE);
 		}
@@ -78,8 +78,7 @@ public abstract class AbstractLootTableProvider extends VanillaBlockLoot {
 	 * @param max      The maximum amount dropped
 	 */
 	protected LootTable.Builder createSilkTouchAndFortuneTable(String name, Block block, Item lootItem, float min, float max) {
-		LootPool.Builder builder = LootPool.lootPool().name(name).setRolls(ConstantValue.exactly(1)).add(AlternativesEntry.alternatives(LootItem.lootTableItem(block).when(MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))))),
-				LootItem.lootTableItem(lootItem).apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 1)).apply(ApplyExplosionDecay.explosionDecay())));
+		LootPool.Builder builder = LootPool.lootPool().name(name).setRolls(ConstantValue.exactly(1)).add(AlternativesEntry.alternatives(LootItem.lootTableItem(block).when(MatchTool.toolMatches(ItemPredicate.Builder.item().hasEnchantment(new EnchantmentPredicate(Enchantments.SILK_TOUCH, MinMaxBounds.Ints.atLeast(1))))), LootItem.lootTableItem(lootItem).apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max))).apply(ApplyBonusCount.addUniformBonusCount(Enchantments.BLOCK_FORTUNE, 1)).apply(ApplyExplosionDecay.explosionDecay())));
 		return LootTable.lootTable().withPool(builder);
 	}
 
@@ -104,12 +103,10 @@ public abstract class AbstractLootTableProvider extends VanillaBlockLoot {
 
 	@Override
 	protected Iterable<Block> getKnownBlocks() {
-		
-		
-		
+
 		return ForgeRegistries.BLOCKS.getEntries().stream().filter(e -> e.getKey().location().getNamespace().equals(modID) && !getExcludedBlocks().contains(e.getValue())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
-	
+
 	public abstract List<Block> getExcludedBlocks();
 
 }

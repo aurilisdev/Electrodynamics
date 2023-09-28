@@ -63,11 +63,11 @@ import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.utilities.object.TransferPack;
+import net.minecraft.world.item.ArmorItem.Type;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.ArmorItem.Type;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -110,8 +110,7 @@ public class ElectrodynamicsItems {
 		registerSubtypeBlockItem(SubtypeResourceBlock.values(), () -> ElectrodynamicsCreativeTabs.MAIN.get());
 		registerSubtypeBlockItem(SubtypeGlass.values(), () -> ElectrodynamicsCreativeTabs.MAIN.get());
 		for (SubtypeMachine machine : SubtypeMachine.values()) {
-			if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer || machine == SubtypeMachine.multimeterblock || machine == SubtypeMachine.circuitbreaker || machine == SubtypeMachine.relay || machine == SubtypeMachine.potentiometer || 
-					machine == SubtypeMachine.advanceddowngradetransformer || machine == SubtypeMachine.advancedupgradetransformer || machine == SubtypeMachine.circuitmonitor) {
+			if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer || machine == SubtypeMachine.multimeterblock || machine == SubtypeMachine.circuitbreaker || machine == SubtypeMachine.relay || machine == SubtypeMachine.potentiometer || machine == SubtypeMachine.advanceddowngradetransformer || machine == SubtypeMachine.advancedupgradetransformer || machine == SubtypeMachine.circuitmonitor) {
 				SUBTYPEITEMREGISTER_MAPPINGS.put(machine, ITEMS.register(machine.tag(), () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(machine).get(), new Item.Properties(), machine.showInItemGroup ? () -> ElectrodynamicsCreativeTabs.GRID.get() : null)));
 			} else {
 				SUBTYPEITEMREGISTER_MAPPINGS.put(machine, ITEMS.register(machine.tag(), () -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(machine).get(), new Item.Properties(), machine.showInItemGroup ? () -> ElectrodynamicsCreativeTabs.MAIN.get() : null)));
@@ -175,7 +174,7 @@ public class ElectrodynamicsItems {
 	public static final RegistryObject<Item> ITEM_SHEETPLASTIC = ITEMS.register("sheetplastic", () -> new ItemElectrodynamics(new Item.Properties().stacksTo(64), () -> ElectrodynamicsCreativeTabs.MAIN.get()));
 	public static final RegistryObject<Item> ITEM_RAWCOMPOSITEPLATING = ITEMS.register("compositeplatingraw", () -> new ItemElectrodynamics(new Item.Properties().stacksTo(64), () -> ElectrodynamicsCreativeTabs.MAIN.get()));
 	public static final RegistryObject<Item> ITEM_COMPOSITEPLATING = ITEMS.register("compositeplating", () -> new ItemElectrodynamics(new Item.Properties().stacksTo(64), () -> ElectrodynamicsCreativeTabs.MAIN.get()));
-	public static final RegistryObject<Item> ITEM_MOLYBDENUMFERTILIZER = ITEMS.register("molybdenumfertilizer", () -> new ItemBoneMeal(new Item.Properties().stacksTo(64), () -> ElectrodynamicsCreativeTabs.MAIN.get())); 
+	public static final RegistryObject<Item> ITEM_MOLYBDENUMFERTILIZER = ITEMS.register("molybdenumfertilizer", () -> new ItemBoneMeal(new Item.Properties().stacksTo(64), () -> ElectrodynamicsCreativeTabs.MAIN.get()));
 	public static final RegistryObject<Item> ITEM_INSULATION = ITEMS.register("insulation", () -> new ItemElectrodynamics(new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN.get()));
 	public static final RegistryObject<Item> ITEM_CERAMICINSULATION = ITEMS.register("insulationceramic", () -> new ItemElectrodynamics(new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN.get()));
 	public static final RegistryObject<Item> ITEM_COIL = ITEMS.register("coil", () -> new ItemElectrodynamics(new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN.get()));
@@ -247,7 +246,7 @@ public class ElectrodynamicsItems {
 	public static Item getItem(ISubtype value) {
 		return SUBTYPEITEMREGISTER_MAPPINGS.get(value).get();
 	}
-	
+
 	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = References.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 	private static class ElectroCreativeRegistry {
 
@@ -269,6 +268,5 @@ public class ElectrodynamicsItems {
 		}
 
 	}
-	
-	
+
 }

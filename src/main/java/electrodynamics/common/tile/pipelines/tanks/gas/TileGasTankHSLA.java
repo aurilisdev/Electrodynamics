@@ -44,7 +44,7 @@ public class TileGasTankHSLA extends GenericTileGasTank {
 						//
 						Block.box(14, 12, 2, 15, 14, 14)
 				//
-				).reduce((v1, v2) -> Shapes.or(v1, v2)).get(),
+				).reduce(Shapes::or).get(),
 				//
 				Stream.of(
 						//
@@ -64,9 +64,9 @@ public class TileGasTankHSLA extends GenericTileGasTank {
 						//
 						Block.box(2, 14, 7, 3, 15, 9)
 				//
-				).reduce((v1, v2) -> Shapes.or(v1, v2)).get()
+				).reduce(Shapes::or).get()
 		//
-		).reduce((v1, v2) -> Shapes.or(v1, v2)).get();
+		).reduce(Shapes::or).get();
 
 		VoxelShapes.registerShape(SubtypeMachine.gastankhsla, shape, Direction.NORTH);
 

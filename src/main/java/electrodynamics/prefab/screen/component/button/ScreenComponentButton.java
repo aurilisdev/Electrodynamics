@@ -77,7 +77,7 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 			Minecraft minecraft = Minecraft.getInstance();
 
 			RenderSystem.setShader(GameRenderer::getPositionTexShader);
-			//RenderingUtils.bindTexture(AbstractWidget.WIDGETS_LOCATION);
+			// RenderingUtils.bindTexture(AbstractWidget.WIDGETS_LOCATION);
 			RenderingUtils.setShaderColor(color);
 			int i = this.getVanillaYImage(isHovered());
 			RenderSystem.enableBlend();

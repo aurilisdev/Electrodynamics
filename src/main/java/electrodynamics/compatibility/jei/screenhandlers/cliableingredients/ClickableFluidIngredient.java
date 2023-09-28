@@ -9,7 +9,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class ClickableFluidIngredient extends AbstractClickableIngredient<FluidStack> {
 
 	private final FluidTypeIngredient typeIngredient;
-	
+
 	public ClickableFluidIngredient(Rect2i rect, FluidStack stack) {
 		super(rect);
 		typeIngredient = new FluidTypeIngredient(stack);
@@ -19,15 +19,15 @@ public class ClickableFluidIngredient extends AbstractClickableIngredient<FluidS
 	public ITypedIngredient<FluidStack> getTypedIngredient() {
 		return typeIngredient;
 	}
-	
+
 	private static class FluidTypeIngredient implements ITypedIngredient<FluidStack> {
 
 		private final FluidStack fluidStack;
-		
+
 		public FluidTypeIngredient(FluidStack fluidStack) {
 			this.fluidStack = fluidStack;
 		}
-		
+
 		@Override
 		public IIngredientType<FluidStack> getType() {
 			return ForgeTypes.FLUID_STACK;
@@ -37,7 +37,7 @@ public class ClickableFluidIngredient extends AbstractClickableIngredient<FluidS
 		public FluidStack getIngredient() {
 			return fluidStack;
 		}
-		
+
 	}
 
 }

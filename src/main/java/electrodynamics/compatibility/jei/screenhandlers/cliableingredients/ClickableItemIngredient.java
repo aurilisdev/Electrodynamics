@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 public class ClickableItemIngredient extends AbstractClickableIngredient<ItemStack> {
 
 	private final ItemIngredientType ingredientType;
-	
+
 	public ClickableItemIngredient(Rect2i rect, ItemStack stack) {
 		super(rect);
 		ingredientType = new ItemIngredientType(stack);
@@ -19,15 +19,15 @@ public class ClickableItemIngredient extends AbstractClickableIngredient<ItemSta
 	public ITypedIngredient<ItemStack> getTypedIngredient() {
 		return ingredientType;
 	}
-	
+
 	private static class ItemIngredientType implements ITypedIngredient<ItemStack> {
 
 		private final ItemStack itemStack;
-		
+
 		public ItemIngredientType(ItemStack itemStack) {
 			this.itemStack = itemStack;
 		}
-		
+
 		@Override
 		public IIngredientType<ItemStack> getType() {
 			return VanillaTypes.ITEM_STACK;
@@ -37,7 +37,7 @@ public class ClickableItemIngredient extends AbstractClickableIngredient<ItemSta
 		public ItemStack getIngredient() {
 			return itemStack;
 		}
-		
+
 	}
 
 }

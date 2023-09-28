@@ -31,7 +31,7 @@ public class TileFluidPipeFilter extends GenericTile {
 
 	public static final Direction INPUT_DIR = Direction.SOUTH;
 	public static final Direction OUTPUT_DIR = Direction.NORTH;
-	
+
 	private boolean isLocked = false;
 
 	@SuppressWarnings("rawtypes")
@@ -111,7 +111,7 @@ public class TileFluidPipeFilter extends GenericTile {
 
 		@Override
 		public int getTanks() {
-			if(isLocked) {
+			if (isLocked) {
 				return 0;
 			}
 			isLocked = true;
@@ -122,7 +122,7 @@ public class TileFluidPipeFilter extends GenericTile {
 
 		@Override
 		public @NotNull FluidStack getFluidInTank(int tank) {
-			if(isLocked) {
+			if (isLocked) {
 				return FluidStack.EMPTY;
 			}
 			isLocked = true;
@@ -133,7 +133,7 @@ public class TileFluidPipeFilter extends GenericTile {
 
 		@Override
 		public int getTankCapacity(int tank) {
-			if(isLocked) {
+			if (isLocked) {
 				return 0;
 			}
 			isLocked = true;
@@ -145,10 +145,10 @@ public class TileFluidPipeFilter extends GenericTile {
 		@Override
 		public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
 
-			if(isLocked) {
+			if (isLocked) {
 				return false;
 			}
-			
+
 			if (whitelist) {
 
 				if (validFluids.isEmpty()) {
@@ -179,10 +179,10 @@ public class TileFluidPipeFilter extends GenericTile {
 		@Override
 		public int fill(FluidStack stack, FluidAction action) {
 
-			if(isLocked) {
+			if (isLocked) {
 				return 0;
 			}
-			
+
 			if (isFluidValid(getTanks(), stack)) {
 				isLocked = true;
 				int fill = outputCap.fill(stack, action);

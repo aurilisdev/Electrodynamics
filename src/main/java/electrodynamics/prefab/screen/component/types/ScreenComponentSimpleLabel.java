@@ -20,7 +20,7 @@ public class ScreenComponentSimpleLabel extends AbstractScreenComponent {
 	}
 
 	public ScreenComponentSimpleLabel(int x, int y, int height, int color, Supplier<Component> text) {
-		super((int) x, (int) y, 0, height);
+		super(x, y, 0, height);
 		this.x = x;
 		this.y = y;
 		this.text = text;

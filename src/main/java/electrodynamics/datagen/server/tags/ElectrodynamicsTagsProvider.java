@@ -13,7 +13,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ElectrodynamicsTagsProvider {
-	
+
 	public static void addTagProviders(DataGenerator generator, PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper helper) {
 		ElectrodynamicsBlockTagsProvider blockProvider = new ElectrodynamicsBlockTagsProvider(output, lookupProvider, helper);
 		generator.addProvider(true, blockProvider);

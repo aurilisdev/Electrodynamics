@@ -16,7 +16,7 @@ public class GenericTileValve extends GenericTile {
 	public static final Direction OUTPUT_DIR = Direction.NORTH;
 
 	public boolean isClosed = false;
-	
+
 	protected boolean isLocked = false;
 
 	public GenericTileValve(BlockEntityType<?> tile, BlockPos pos, BlockState state) {
@@ -25,7 +25,7 @@ public class GenericTileValve extends GenericTile {
 
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 
@@ -43,7 +43,7 @@ public class GenericTileValve extends GenericTile {
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		if (level.hasNeighborSignal(worldPosition)) {

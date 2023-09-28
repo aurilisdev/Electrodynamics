@@ -71,7 +71,7 @@ public class ElectroTextUtils {
 	public static MutableComponent dimension(ResourceKey<Level> level, Object... additional) {
 		return dimension(level.location().getPath(), additional);
 	}
-	
+
 	public static MutableComponent creativeTab(String key, Object... additional) {
 		return translated(CREATIVE_TAB, key, additional);
 	}

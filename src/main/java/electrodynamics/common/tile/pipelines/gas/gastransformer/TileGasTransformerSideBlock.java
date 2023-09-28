@@ -48,7 +48,7 @@ public class TileGasTransformerSideBlock extends GenericTile {
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		updateTankCount();
@@ -80,7 +80,7 @@ public class TileGasTransformerSideBlock extends GenericTile {
 
 	@Override
 	public void onBlockDestroyed() {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		if (getLevel().getBlockEntity(ownerPos) instanceof GenericTileGasTransformer compressor) {

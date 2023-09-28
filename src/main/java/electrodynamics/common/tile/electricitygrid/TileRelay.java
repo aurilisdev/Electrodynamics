@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileRelay extends GenericTile {
 
 	private boolean recievedRedstoneSignal = false;
-	
+
 	private boolean isLocked = false;
 
 	public TileRelay(BlockPos worldPos, BlockState blockState) {
@@ -47,11 +47,11 @@ public class TileRelay extends GenericTile {
 		return tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> {
 
 			isLocked = true;
-			
+
 			TransferPack accepted = cap.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * Constants.RELAY_EFFICIENCY, transfer.getVoltage()), debug);
 
 			isLocked = false;
-			
+
 			if (accepted.getJoules() > 0) {
 				return accepted;
 			}
@@ -59,16 +59,16 @@ public class TileRelay extends GenericTile {
 
 		}).orElse(TransferPack.EMPTY);
 	}
-	
+
 	public TransferPack getConnectedLoad(LoadProfile lastEnergy, Direction dir) {
-		
+
 		if (recievedRedstoneSignal || isLocked) {
 			return TransferPack.EMPTY;
 		}
 
 		Direction output = BlockEntityUtils.getRelativeSide(this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), Direction.SOUTH);
-		
-		if(dir.getOpposite() != output) {
+
+		if (dir.getOpposite() != output) {
 			return TransferPack.EMPTY;
 		}
 
@@ -79,13 +79,13 @@ public class TileRelay extends GenericTile {
 		}
 
 		isLocked = true;
-		
+
 		TransferPack load = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> cap.getConnectedLoad(lastEnergy, output.getOpposite())).orElse(TransferPack.EMPTY);
-		
+
 		isLocked = false;
-		
+
 		return load;
-		
+
 	}
 
 	@Override
@@ -102,13 +102,13 @@ public class TileRelay extends GenericTile {
 
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
 		if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
 			BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
-			if(recievedRedstoneSignal) {
+			if (recievedRedstoneSignal) {
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
 			} else {
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
@@ -119,13 +119,13 @@ public class TileRelay extends GenericTile {
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
 		if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
 			BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
-			if(recievedRedstoneSignal) {
+			if (recievedRedstoneSignal) {
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
 			}
 			setChanged();

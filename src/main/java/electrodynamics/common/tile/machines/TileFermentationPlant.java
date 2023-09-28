@@ -114,11 +114,11 @@ public class TileFermentationPlant extends GenericMaterialTile {
 		shape = Shapes.or(shape, Block.box(10, 13, 10, 11, 14, 11));
 		shape = Shapes.or(shape, Block.box(11, 8, 12, 12, 14, 13));
 		shape = Shapes.or(shape, Block.box(10, 13, 12, 11, 14, 13));
-		
+
 		shape = Shapes.or(shape, Block.box(6, 8, 10, 10, 15, 13));
 		shape = Shapes.or(shape, Block.box(6, 5, 10, 9, 6, 13));
 		shape = Shapes.or(shape, Block.box(7, 6, 11, 8, 7, 12));
-		
+
 		shape = Shapes.or(shape, Block.box(7.5, 9, 9, 8.5, 10, 10));
 		shape = Shapes.or(shape, Block.box(7.5, 7, 8, 8.5, 9, 9));
 

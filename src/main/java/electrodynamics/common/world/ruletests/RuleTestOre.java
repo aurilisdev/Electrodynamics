@@ -27,27 +27,24 @@ public class RuleTestOre extends RuleTest {
 	private final SubtypeOre thisOre;
 	@Nullable
 	private final SubtypeOreDeepslate thisDeepOre;
-	
+
 	private final TagKey<Block> canSpawnIn;
-	
-	public static final Codec<RuleTestOre> CODEC = RecordCodecBuilder.create(instance -> 
-		instance.group(
-			BuiltInRegistries.BLOCK.byNameCodec().fieldOf("block").forGetter(instance0 -> {
-				if(instance0.thisOre != null) {
-					return ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(instance0.thisOre).get();
-				} else if (instance0.thisDeepOre != null) {
-					return ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(instance0.thisDeepOre).get();
-				} else {
-					return Blocks.AIR;
-				}
-			}),
-			TagKey.codec(Registries.BLOCK).fieldOf("canspawnintag").forGetter(instance0 -> instance0.canSpawnIn)
-		).apply(instance, (block, tag) -> {
-			if(block instanceof BlockOre ore) {
-				return new RuleTestOre(ore.ore, ore.deepOre, tag);
-			}
-			return new RuleTestOre(null, null, tag);
-		}));
+
+	public static final Codec<RuleTestOre> CODEC = RecordCodecBuilder.create(instance -> instance.group(BuiltInRegistries.BLOCK.byNameCodec().fieldOf("block").forGetter(instance0 -> {
+		if (instance0.thisOre != null) {
+			return ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(instance0.thisOre).get();
+		}
+		if (instance0.thisDeepOre != null) {
+			return ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(instance0.thisDeepOre).get();
+		} else {
+			return Blocks.AIR;
+		}
+	}), TagKey.codec(Registries.BLOCK).fieldOf("canspawnintag").forGetter(instance0 -> instance0.canSpawnIn)).apply(instance, (block, tag) -> {
+		if (block instanceof BlockOre ore) {
+			return new RuleTestOre(ore.ore, ore.deepOre, tag);
+		}
+		return new RuleTestOre(null, null, tag);
+	}));
 
 	public RuleTestOre(SubtypeOre thisOre, SubtypeOreDeepslate thisDeepOre, TagKey<Block> canSpawnIn) {
 		this.thisOre = thisOre;
@@ -57,23 +54,23 @@ public class RuleTestOre extends RuleTest {
 
 	@Override
 	public boolean test(BlockState state, RandomSource random) {
-		
+
 		return isEnabled() && state.is(this.canSpawnIn);
-		
+
 	}
 
 	private boolean isEnabled() {
-		
-		if(OreConfig.DISABLE_ALL_ORES) {
-			return  false;
+
+		if (OreConfig.DISABLE_ALL_ORES) {
+			return false;
 		}
-		
+
 		if (thisOre != null) {
-			
-			if(OreConfig.DISABLE_STONE_ORES) {
+
+			if (OreConfig.DISABLE_STONE_ORES) {
 				return false;
 			}
-			
+
 			return switch (thisOre) {
 			case aluminum -> OreConfig.SPAWN_ALUMINUM_ORE;
 			case chromium -> OreConfig.SPAWN_CHROMIUM_ORE;
@@ -94,12 +91,13 @@ public class RuleTestOre extends RuleTest {
 			case vanadium -> OreConfig.SPAWN_VANADIUM_ORE;
 			default -> false;
 			};
-		} else if (thisDeepOre != null) {
-			
-			if(OreConfig.DISABLE_DEEPSLATE_ORES) {
+		}
+		if (thisDeepOre != null) {
+
+			if (OreConfig.DISABLE_DEEPSLATE_ORES) {
 				return false;
 			}
-			
+
 			return switch (thisDeepOre) {
 			case aluminum -> OreConfig.SPAWN_DEEP_ALUMINUM_ORE;
 			case chromium -> OreConfig.SPAWN_DEEP_CHROMIUM_ORE;

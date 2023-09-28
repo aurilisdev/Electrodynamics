@@ -72,17 +72,17 @@ public class MathUtils {
 	public static Quaternionf rotQuaternionDeg(float angleX, float angleY, float angleZ) {
 		return rotQuaternionRad(angleX / 180.0F * Mth.PI, angleY / 180.0F * Mth.PI, angleZ / 180.0F * Mth.PI);
 	}
-	
+
 	/**
 	 * 
 	 * @param angle The angle to rotate the vector
-	 * @param vec The vector to rotate
+	 * @param vec   The vector to rotate
 	 * @return The resulting quaternion
 	 */
 	public static Quaternionf rotVectorQuaternionRad(float angle, Vector3f vec) {
 		return new Quaternionf().setAngleAxis(angle, vec.x(), vec.y(), vec.z());
 	}
-	
+
 	public static Quaternionf rotVectorQuaternionDeg(float angle, Vector3f vec) {
 		return rotVectorQuaternionRad(angle / 180.0F * Mth.PI, vec);
 	}

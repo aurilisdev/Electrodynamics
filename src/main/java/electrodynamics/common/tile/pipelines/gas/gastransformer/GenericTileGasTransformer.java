@@ -65,7 +65,7 @@ public abstract class GenericTileGasTransformer extends GenericGasTile implement
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();

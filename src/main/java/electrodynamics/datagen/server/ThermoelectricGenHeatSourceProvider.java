@@ -30,7 +30,7 @@ public class ThermoelectricGenHeatSourceProvider implements DataProvider {
 		getFuels(json);
 
 		Path parent = output.getOutputFolder().resolve(LOC + ".json");
-		
+
 		return CompletableFuture.allOf(DataProvider.saveStable(cache, json, parent));
 	}
 

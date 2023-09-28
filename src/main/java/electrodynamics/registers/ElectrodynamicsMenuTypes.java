@@ -105,8 +105,8 @@ public class ElectrodynamicsMenuTypes {
 	public static final RegistryObject<MenuType<ContainerAdvancedUpgradeTransformer>> CONTAINER_ADVANCEDUPGRADETRANSFORMER = register("advancedupgradetransformer", ContainerAdvancedUpgradeTransformer::new);
 	public static final RegistryObject<MenuType<ContainerAdvancedDowngradeTransformer>> CONTAINER_ADVANCEDDOWNGRADETRANSFORMER = register("advanceddowngradetransformer", ContainerAdvancedDowngradeTransformer::new);
 	public static final RegistryObject<MenuType<ContainerCircuitMonitor>> CONTAINER_CIRCUITMONITOR = register("circuitmonitor", ContainerCircuitMonitor::new);
-	
+
 	private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> register(String id, MenuSupplier<T> supplier) {
-		return MENU_TYPES.register(id, () -> new MenuType<T>(supplier, FeatureFlags.VANILLA_SET));
+		return MENU_TYPES.register(id, () -> new MenuType<>(supplier, FeatureFlags.VANILLA_SET));
 	}
 }

@@ -1021,7 +1021,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	@Override
 	public void onBlockDestroyed() {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		handleFramesDecayNoVarUpdate();
@@ -1159,7 +1159,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	private void writeHeadType(SubtypeDrillHead head) {
-		if(head == null) {
+		if (head == null) {
 			currHead.set(-1);
 		} else {
 			currHead.set(head.ordinal());

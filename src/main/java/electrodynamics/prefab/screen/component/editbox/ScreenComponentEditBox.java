@@ -312,7 +312,8 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 			}
 
 			return true;
-		} else if (Screen.isCut(keyCode)) {
+		}
+		if (Screen.isCut(keyCode)) {
 			Minecraft.getInstance().keyboardHandler.setClipboard(this.getHighlighted());
 			if (this.isEditable) {
 				this.insertText("");

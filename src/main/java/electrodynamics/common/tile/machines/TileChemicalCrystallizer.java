@@ -79,30 +79,30 @@ public class TileChemicalCrystallizer extends GenericMaterialTile implements ITi
 	public int getComparatorSignal() {
 		return this.<ComponentProcessor>getComponent(ComponentType.Processor).isActive() ? 15 : 0;
 	}
-	
+
 	static {
-		
+
 		VoxelShape shape = Block.box(0, 0, 0, 16, 5, 16);
-		
+
 		shape = Shapes.or(shape, Block.box(0, 5, 0, 2, 6, 16));
 		shape = Shapes.or(shape, Block.box(2, 5, 0, 4, 6, 2));
 		shape = Shapes.or(shape, Block.box(2, 5, 14, 4, 6, 16));
-		
+
 		shape = Shapes.or(shape, Block.box(4, 5, 0, 12, 12, 1));
 		shape = Shapes.or(shape, Block.box(4, 5, 15, 12, 12, 16));
-		
+
 		shape = Shapes.or(shape, Block.box(12, 5, 0, 13, 6, 2));
 		shape = Shapes.or(shape, Block.box(12, 5, 14, 13, 6, 16));
-		
+
 		shape = Shapes.or(shape, Block.box(13, 5, 0, 16, 16, 2));
 		shape = Shapes.or(shape, Block.box(13, 14, 2, 16, 16, 14));
 		shape = Shapes.or(shape, Block.box(13, 5, 14, 16, 16, 16));
-		
+
 		shape = Shapes.or(shape, Block.box(15, 5, 4, 16, 12, 12));
 		shape = Shapes.or(shape, Block.box(14, 5, 2, 15, 14, 14));
-		
+
 		VoxelShapes.registerShape(SubtypeMachine.chemicalcrystallizer, shape, Direction.WEST);
-		
+
 	}
 
 }

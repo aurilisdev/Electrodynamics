@@ -80,11 +80,11 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(facing));
 		}
-		if(output.getSafe() == null) {
+		if (output.getSafe() == null) {
 			return TransferPack.EMPTY;
 		}
 		double resultVoltage = transfer.getVoltage() * getCoilRatio();
-		if(resultVoltage != 0) {
+		if (resultVoltage != 0) {
 			resultVoltage = Mth.clamp(resultVoltage, MIN_VOLTAGE_CAP, MAX_VOLTAGE_CAP);
 		}
 		locked = true;
@@ -97,10 +97,10 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 		}
 		return returner;
 	}
-	
+
 	public TransferPack getConnectedLoad(LoadProfile lastEnergy, Direction dir) {
 		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-		if(facing.getOpposite() != dir) {
+		if (facing.getOpposite() != dir) {
 			return TransferPack.EMPTY;
 		}
 		if (locked) {
@@ -109,7 +109,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(facing));
 		}
-		if(output.getSafe() == null) {
+		if (output.getSafe() == null) {
 			return TransferPack.EMPTY;
 		}
 		locked = true;

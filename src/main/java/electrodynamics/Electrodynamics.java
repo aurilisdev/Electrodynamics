@@ -84,12 +84,12 @@ public class Electrodynamics {
 		// RegisterFluidToGasMapEvent map = new RegisterFluidToGasMapEvent();
 		// MinecraftForge.EVENT_BUS.post(map);
 		// ElectrodynamicsGases.MAPPED_GASSES.putAll(map.fluidToGasMap);
-		
+
 		event.enqueueWork(() -> {
 			RegisterPropertiesEvent properties = new RegisterPropertiesEvent();
-			
+
 			ModLoader.get().postEvent(properties);
-			
+
 			PropertyManager.registerProperties(properties.getRegisteredProperties());
 		});
 
@@ -107,10 +107,10 @@ public class Electrodynamics {
 			CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void registerProperties(RegisterPropertiesEvent event) {
-		for(PropertyType type : PropertyType.values()) {
+		for (PropertyType type : PropertyType.values()) {
 			event.registerProperty(type);
 		}
 	}

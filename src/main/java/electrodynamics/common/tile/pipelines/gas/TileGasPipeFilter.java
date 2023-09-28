@@ -152,7 +152,7 @@ public class TileGasPipeFilter extends GenericTile {
 			}
 			isLocked = true;
 			double temp = outputCap.getTankMaxTemperature(tank);
-			;
+
 			isLocked = false;
 			return temp;
 		}
@@ -184,7 +184,7 @@ public class TileGasPipeFilter extends GenericTile {
 				if (validGases.contains(gas.getGas())) {
 					isLocked = true;
 					boolean valid = outputCap.isGasValid(tank, gas);
-					;
+
 					isLocked = false;
 					return valid;
 				}
@@ -197,7 +197,7 @@ public class TileGasPipeFilter extends GenericTile {
 
 				isLocked = true;
 				boolean valid = outputCap.isGasValid(tank, gas);
-				;
+
 				isLocked = false;
 
 				return valid;
@@ -214,7 +214,7 @@ public class TileGasPipeFilter extends GenericTile {
 			if (isGasValid(tank, gas)) {
 				isLocked = true;
 				double fill = outputCap.fillTank(tank, gas, action);
-				;
+
 				isLocked = false;
 				return fill;
 			}
@@ -228,7 +228,7 @@ public class TileGasPipeFilter extends GenericTile {
 			}
 			isLocked = true;
 			GasStack drain = outputCap.drainTank(tank, tank, action);
-			;
+
 			isLocked = false;
 			return drain;
 		}
@@ -251,7 +251,7 @@ public class TileGasPipeFilter extends GenericTile {
 			}
 			isLocked = true;
 			double heat = outputCap.heat(tank, deltaTemperature, action);
-			;
+
 			isLocked = false;
 			return heat;
 		}
@@ -263,7 +263,7 @@ public class TileGasPipeFilter extends GenericTile {
 			}
 			isLocked = true;
 			double pres = outputCap.bringPressureTo(tank, atm, action);
-			;
+
 			isLocked = false;
 			return pres;
 		}

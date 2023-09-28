@@ -58,19 +58,19 @@ public class DataGenerators {
 			generator.addProvider(true, new CoalGeneratorFuelSourceProvider(output));
 			generator.addProvider(true, new ThermoelectricGenHeatSourceProvider(output));
 			generator.addProvider(true, new ForgeAdvancementProvider(output, event.getLookupProvider(), helper, List.of(new ElectrodynamicsAdvancementProvider())));
-			
+
 			DatapackBuiltinEntriesProvider datapacks = new DatapackBuiltinEntriesProvider(output, lookupProvider, new RegistrySetBuilder()
 					//
 					.add(Registries.DAMAGE_TYPE, ElectrodynamicsDamageTypes::registerTypes)
 					//
 					.add(Registries.CONFIGURED_FEATURE, context -> ElectrodynamicsFeatures.registerConfigured(context))
 					//
-					.add(Registries.PLACED_FEATURE, context -> ElectrodynamicsFeatures.registerPlaced(context))
+					.add(Registries.PLACED_FEATURE, ElectrodynamicsFeatures::registerPlaced)
 					//
-					.add(ForgeRegistries.Keys.BIOME_MODIFIERS, context -> ElectrodynamicsFeatures.registerModifiers(context))
+					.add(ForgeRegistries.Keys.BIOME_MODIFIERS, ElectrodynamicsFeatures::registerModifiers)
 			//
 					, Set.of(References.ID));
-			
+
 			generator.addProvider(true, datapacks);
 			ElectrodynamicsTagsProvider.addTagProviders(generator, output, datapacks.getRegistryProvider(), helper);
 		}

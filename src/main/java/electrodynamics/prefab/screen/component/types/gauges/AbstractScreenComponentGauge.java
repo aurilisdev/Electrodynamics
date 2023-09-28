@@ -44,9 +44,9 @@ public abstract class AbstractScreenComponentGauge extends ScreenComponentGeneri
 
 					int drawX = guiWidth + xLocation + 1;
 					int drawY = guiHeight + yLocation - 1 + super.texture.textureHeight() - Math.min(scale - j, super.texture.textureHeight());
-					
+
 					graphics.blit(drawX, drawY, 0, drawWidth, drawHeight, sprite);
-					
+
 				}
 			}
 			RenderSystem.setShaderColor(1, 1, 1, 1);

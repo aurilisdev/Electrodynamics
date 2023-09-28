@@ -94,7 +94,7 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 	public IDrawable getIcon() {
 		return icon;
 	}
-	
+
 	@Override
 	public void draw(T recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics graphics, double mouseX, double mouseY) {
 

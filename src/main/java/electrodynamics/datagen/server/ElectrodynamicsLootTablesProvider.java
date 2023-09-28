@@ -27,11 +27,11 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 	public ElectrodynamicsLootTablesProvider(String modID) {
 		super(modID);
 	}
-	
+
 	public ElectrodynamicsLootTablesProvider() {
 		this(References.ID);
 	}
-	
+
 	@Override
 	protected void generate() {
 
@@ -173,7 +173,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay));
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitmonitor));
-		
+
 		addSimpleBlock(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get());
 
 	}

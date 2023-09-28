@@ -59,7 +59,7 @@ public class TickableSoundTile<T extends BlockEntity & ITickableSound> extends A
 	public void stopAbstract() {
 		super.stop();
 	}
-	
+
 	@Override
 	public float getVolume() {
 		// TODO Auto-generated method stub

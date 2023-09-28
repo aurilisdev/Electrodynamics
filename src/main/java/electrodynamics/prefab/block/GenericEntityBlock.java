@@ -95,8 +95,8 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		Level world = player.level();
 		world.destroyBlock(pos, true, player);
 	}
-	
-	//TODO get this to work
+
+	// TODO get this to work
 	@Override
 	public List<ItemStack> getDrops(BlockState state, Builder builder) {
 		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
@@ -190,11 +190,11 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		}
 		return super.getSignal(state, level, pos, direction);
 	}
-	
+
 	@Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
 		super.entityInside(state, level, pos, entity);
-		if(level.getBlockEntity(pos) instanceof GenericTile tile) {
+		if (level.getBlockEntity(pos) instanceof GenericTile tile) {
 			tile.onEntityInside(state, level, pos, entity);
 		}
 	}

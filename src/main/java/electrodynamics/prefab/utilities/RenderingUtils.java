@@ -67,12 +67,12 @@ public class RenderingUtils {
 				stack.mulPose(MathUtils.rotVectorQuaternionDeg(random.nextFloat() * 360.0F, MathUtils.XP));
 				stack.mulPose(MathUtils.rotVectorQuaternionDeg(random.nextFloat() * 360.0F, MathUtils.YP));
 				stack.mulPose(MathUtils.rotVectorQuaternionDeg(random.nextFloat() * 360.0F + f5 * 90.0F, MathUtils.ZP));
-				//stack.mulPose(XP.rotationDegrees(random.nextFloat() * 360.0F));
-				//stack.mulPose(YP.rotationDegrees(random.nextFloat() * 360.0F));
-				//stack.mulPose(ZP.rotationDegrees(random.nextFloat() * 360.0F));
-				//stack.mulPose(XP.rotationDegrees(random.nextFloat() * 360.0F));
-				//stack.mulPose(YP.rotationDegrees(random.nextFloat() * 360.0F));
-				//stack.mulPose(ZP.rotationDegrees(random.nextFloat() * 360.0F + f5 * 90.0F));
+				// stack.mulPose(XP.rotationDegrees(random.nextFloat() * 360.0F));
+				// stack.mulPose(YP.rotationDegrees(random.nextFloat() * 360.0F));
+				// stack.mulPose(ZP.rotationDegrees(random.nextFloat() * 360.0F));
+				// stack.mulPose(XP.rotationDegrees(random.nextFloat() * 360.0F));
+				// stack.mulPose(YP.rotationDegrees(random.nextFloat() * 360.0F));
+				// stack.mulPose(ZP.rotationDegrees(random.nextFloat() * 360.0F + f5 * 90.0F));
 				float f3 = random.nextFloat() * 20.0F + 1.0F;
 				float f4 = random.nextFloat() * 2.0F + 1.0F + (star ? 0 : 100);
 				Matrix4f matrix4f = stack.last().pose();
@@ -107,13 +107,13 @@ public class RenderingUtils {
 			Direction facing = state.getValue(GenericEntityBlock.FACING);
 			if (facing == Direction.NORTH) {
 				stack.mulPose(MathUtils.rotQuaternionDeg(0, 90, 0));
-				//stack.mulPose(new Quaternionf(0, 90, 0, true));
+				// stack.mulPose(new Quaternionf(0, 90, 0, true));
 			} else if (facing == Direction.SOUTH) {
 				stack.mulPose(MathUtils.rotQuaternionDeg(0, 270, 0));
-				//stack.mulPose(new Quaternionf(0, 270, 0, true));
+				// stack.mulPose(new Quaternionf(0, 270, 0, true));
 			} else if (facing == Direction.WEST) {
 				stack.mulPose(MathUtils.rotQuaternionDeg(0, 180, 0));
-				//stack.mulPose(new Quaternionf(0, 180, 0, true));
+				// stack.mulPose(new Quaternionf(0, 180, 0, true));
 			}
 		}
 	}
@@ -234,11 +234,11 @@ public class RenderingUtils {
 		Minecraft minecraft = Minecraft.getInstance();
 		ItemRenderer itemRenderer = minecraft.getItemRenderer();
 		BakedModel model = itemRenderer.getModel(stack, (Level) null, (LivingEntity) null, 0);
-		
+
 		PoseStack poseStack = graphics.pose();
-		
+
 		poseStack.pushPose();
-		poseStack.translate((float) (x + 8), (float) (y + 8), (float) (150));
+		poseStack.translate(x + 8, y + 8, (150));
 
 		try {
 			poseStack.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
@@ -257,19 +257,11 @@ public class RenderingUtils {
 		} catch (Throwable throwable) {
 			CrashReport crashreport = CrashReport.forThrowable(throwable, "Rendering item");
 			CrashReportCategory crashreportcategory = crashreport.addCategory("Item being rendered");
-			crashreportcategory.setDetail("Item Type", () -> {
-				return String.valueOf((Object) stack.getItem());
-			});
+			crashreportcategory.setDetail("Item Type", () -> String.valueOf(stack.getItem()));
 			crashreportcategory.setDetail("Registry Name", () -> String.valueOf(net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(stack.getItem())));
-			crashreportcategory.setDetail("Item Damage", () -> {
-				return String.valueOf(stack.getDamageValue());
-			});
-			crashreportcategory.setDetail("Item NBT", () -> {
-				return String.valueOf((Object) stack.getTag());
-			});
-			crashreportcategory.setDetail("Item Foil", () -> {
-				return String.valueOf(stack.hasFoil());
-			});
+			crashreportcategory.setDetail("Item Damage", () -> String.valueOf(stack.getDamageValue()));
+			crashreportcategory.setDetail("Item NBT", () -> String.valueOf(stack.getTag()));
+			crashreportcategory.setDetail("Item Foil", () -> String.valueOf(stack.hasFoil()));
 			throw new ReportedException(crashreport);
 		}
 

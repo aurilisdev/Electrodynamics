@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public abstract class ContainerBlockEntityEmpty<T extends BlockEntity> extends GenericContainerBlockEntity<T> {
 
 	private static final Container EMPTY = new SimpleContainer(0);
-	
+
 	public ContainerBlockEntityEmpty(MenuType<?> type, int id, Inventory playerinv, ContainerData inventorydata) {
 		super(type, id, playerinv, EMPTY, inventorydata);
 	}
@@ -19,7 +19,7 @@ public abstract class ContainerBlockEntityEmpty<T extends BlockEntity> extends G
 	public final void addInventorySlots(Container inv, Inventory playerinv) {
 		playerInvOffset += getPlayerInvOffset();
 	}
-	
+
 	public int getPlayerInvOffset() {
 		return 0;
 	}

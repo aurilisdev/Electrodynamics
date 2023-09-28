@@ -84,7 +84,7 @@ public class TilePotentiometer extends GenericTile {
 						//
 						Block.box(15, 10, 12, 16, 11, 15)
 				//
-				).reduce((v1, v2) -> Shapes.or(v1, v2)).get(),
+				).reduce(Shapes::or).get(),
 				//
 				Stream.of(
 						//
@@ -94,7 +94,7 @@ public class TilePotentiometer extends GenericTile {
 						//
 						Block.box(6.5, 13, 6.5, 9.5, 17, 9.5)
 				//
-				).reduce((v1, v2) -> Shapes.or(v1, v2)).get(),
+				).reduce(Shapes::or).get(),
 				//
 				Stream.of(
 						//
@@ -114,10 +114,10 @@ public class TilePotentiometer extends GenericTile {
 						//
 						Block.box(1, 5, 5, 2, 11, 11)
 				//
-				).reduce((v1, v2) -> Shapes.or(v1, v2)).get()
+				).reduce(Shapes::or).get()
 		//
-		).reduce((v1, v2) -> Shapes.or(v1, v2)).get();
-		
+		).reduce(Shapes::or).get();
+
 		VoxelShapes.registerShape(SubtypeMachine.potentiometer, shape, Direction.NORTH);
 
 	}

@@ -42,9 +42,7 @@ public class CombustionChamberFuelSourceProvider implements DataProvider {
 			completed.add(DataProvider.saveStable(cache, json.getValue(), parent.resolve(json.getKey() + ".json")));
 		}
 
-		return CompletableFuture.allOf(completed.toArray((size) -> {
-			return new CompletableFuture[size];
-		}));
+		return CompletableFuture.allOf(completed.toArray(size -> new CompletableFuture[size]));
 	}
 
 	private void addFuels() {

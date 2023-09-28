@@ -20,8 +20,8 @@ import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
@@ -167,7 +167,7 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		functionExtractPower = extractPower;
 		return this;
 	}
-	
+
 	public ComponentElectrodynamic getConnectedLoad(BiFunction<LoadProfile, Direction, TransferPack> supplier) {
 		this.connectedLoadFunction = supplier;
 		return this;

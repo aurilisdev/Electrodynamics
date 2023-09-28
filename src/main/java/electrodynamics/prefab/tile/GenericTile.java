@@ -171,9 +171,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 			}
 		}
 		/*
-		 * if (hasComponent(ComponentType.PacketHandler)) {
-		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
-		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
+		 * if (hasComponent(ComponentType.PacketHandler)) { this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket(); this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
 		 */
 	}
 

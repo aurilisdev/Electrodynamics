@@ -34,7 +34,7 @@ public class TileGasTransformerAddonTank extends GenericTile {
 
 	@Override
 	public void onBlockDestroyed() {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		BlockPos above = getBlockPos().above();
@@ -54,7 +54,7 @@ public class TileGasTransformerAddonTank extends GenericTile {
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		BlockPos belowPos = getBlockPos().below();
