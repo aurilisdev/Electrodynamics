@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.mineralgrinder.TileMineralGrinder;
+import electrodynamics.common.tile.machines.mineralgrinder.TileMineralGrinder;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;

@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.network.gas.TileGasPipePump;
+import electrodynamics.common.tile.pipelines.gas.TileGasPipePump;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.utilities.RenderingUtils;

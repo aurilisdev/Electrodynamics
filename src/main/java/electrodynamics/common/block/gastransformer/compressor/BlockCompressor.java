@@ -2,8 +2,8 @@ package electrodynamics.common.block.gastransformer.compressor;
 
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.gastransformer.BlockGenericGasTransformer;
-import electrodynamics.common.tile.gastransformer.compressor.TileCompressor;
-import electrodynamics.common.tile.gastransformer.compressor.TileDecompressor;
+import electrodynamics.common.tile.pipelines.gas.gastransformer.compressor.TileCompressor;
+import electrodynamics.common.tile.pipelines.gas.gastransformer.compressor.TileDecompressor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;

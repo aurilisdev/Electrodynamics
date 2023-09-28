@@ -6,7 +6,7 @@ import java.util.List;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
-import electrodynamics.common.tile.battery.TileBatteryBox;
+import electrodynamics.common.tile.electricitygrid.batteries.TileBatteryBox;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;

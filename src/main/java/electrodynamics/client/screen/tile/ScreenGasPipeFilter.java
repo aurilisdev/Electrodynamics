@@ -1,7 +1,7 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerGasPipeFilter;
-import electrodynamics.common.tile.network.gas.TileGasPipeFilter;
+import electrodynamics.common.tile.pipelines.gas.TileGasPipeFilter;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.button.type.ButtonSwappableLabel;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGasFilter;

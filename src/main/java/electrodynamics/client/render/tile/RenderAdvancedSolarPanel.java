@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.generators.TileAdvancedSolarPanel;
+import electrodynamics.common.tile.electricitygrid.generators.TileAdvancedSolarPanel;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;

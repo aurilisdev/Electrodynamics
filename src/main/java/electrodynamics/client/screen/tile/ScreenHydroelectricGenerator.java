@@ -3,7 +3,7 @@ package electrodynamics.client.screen.tile;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
-import electrodynamics.common.tile.generators.TileHydroelectricGenerator;
+import electrodynamics.common.tile.electricitygrid.generators.TileHydroelectricGenerator;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;

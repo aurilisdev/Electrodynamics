@@ -3,7 +3,7 @@ package electrodynamics.client.screen.tile;
 import java.util.List;
 
 import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
-import electrodynamics.common.tile.quarry.TileSeismicRelay;
+import electrodynamics.common.tile.machines.quarry.TileSeismicRelay;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;

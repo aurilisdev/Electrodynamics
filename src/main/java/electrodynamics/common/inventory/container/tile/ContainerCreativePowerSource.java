@@ -1,6 +1,6 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.common.tile.generators.TileCreativePowerSource;
+import electrodynamics.common.tile.electricitygrid.generators.TileCreativePowerSource;
 import electrodynamics.prefab.inventory.container.ContainerBlockEntityEmpty;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.entity.player.Inventory;

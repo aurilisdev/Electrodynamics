@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.battery.TileBatteryBox;
+import electrodynamics.common.tile.electricitygrid.batteries.TileBatteryBox;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;

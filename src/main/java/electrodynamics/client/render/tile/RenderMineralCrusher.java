@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.mineralcrusher.TileMineralCrusher;
+import electrodynamics.common.tile.machines.mineralcrusher.TileMineralCrusher;
 import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;

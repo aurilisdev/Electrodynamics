@@ -1,7 +1,7 @@
 package electrodynamics.common.block;
 
-import electrodynamics.common.tile.network.fluid.TileFluidPipeFilter;
-import electrodynamics.common.tile.network.gas.TileGasPipeFilter;
+import electrodynamics.common.tile.pipelines.fluids.TileFluidPipeFilter;
+import electrodynamics.common.tile.pipelines.gas.TileGasPipeFilter;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import net.minecraft.core.BlockPos;

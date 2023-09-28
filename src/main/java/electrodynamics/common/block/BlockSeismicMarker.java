@@ -2,7 +2,7 @@ package electrodynamics.common.block;
 
 import java.util.stream.Stream;
 
-import electrodynamics.common.tile.quarry.TileSeismicMarker;
+import electrodynamics.common.tile.machines.quarry.TileSeismicMarker;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

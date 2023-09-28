@@ -2,7 +2,7 @@ package electrodynamics.common.block.gastransformer;
 
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates.AddonTankNeighborType;
-import electrodynamics.common.tile.gastransformer.TileGasTransformerAddonTank;
+import electrodynamics.common.tile.pipelines.gas.gastransformer.TileGasTransformerAddonTank;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;

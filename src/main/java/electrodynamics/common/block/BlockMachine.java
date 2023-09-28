@@ -4,7 +4,7 @@ import electrodynamics.api.multiblock.Subnode;
 import electrodynamics.api.multiblock.parent.IMultiblockParentBlock;
 import electrodynamics.api.multiblock.parent.IMultiblockParentTile;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.tile.quarry.TileQuarry;
+import electrodynamics.common.tile.machines.quarry.TileQuarry;
 import electrodynamics.prefab.block.GenericMachineBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;

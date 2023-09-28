@@ -5,7 +5,7 @@ import java.util.List;
 
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
-import electrodynamics.common.tile.network.gas.TileGasPipeFilter;
+import electrodynamics.common.tile.pipelines.gas.TileGasPipeFilter;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.screen.GenericScreen;

@@ -1,7 +1,7 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerGasPipePump;
-import electrodynamics.common.tile.network.gas.TileGasPipePump;
+import electrodynamics.common.tile.pipelines.gas.TileGasPipePump;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;

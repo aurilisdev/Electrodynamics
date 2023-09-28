@@ -16,7 +16,7 @@ import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.network.NetworkRegistry;
 import electrodynamics.common.network.utils.GasUtilities;
 import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.common.tile.network.gas.TileGasPipePump;
+import electrodynamics.common.tile.pipelines.gas.TileGasPipePump;
 import electrodynamics.prefab.network.AbstractNetwork;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.core.Direction;

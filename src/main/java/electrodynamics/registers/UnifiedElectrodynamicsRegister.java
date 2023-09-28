@@ -4,7 +4,7 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.blockitem.types.BlockItemDescriptable;
-import electrodynamics.common.tile.gastransformer.TileGasTransformerAddonTank;
+import electrodynamics.common.tile.pipelines.gas.gastransformer.TileGasTransformerAddonTank;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraftforge.eventbus.api.IEventBus;
 

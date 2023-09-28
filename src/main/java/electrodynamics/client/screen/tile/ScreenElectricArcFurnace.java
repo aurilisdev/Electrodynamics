@@ -1,7 +1,7 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnace;
-import electrodynamics.common.tile.arcfurnace.TileElectricArcFurnace;
+import electrodynamics.common.tile.machines.arcfurnace.TileElectricArcFurnace;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
 import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;

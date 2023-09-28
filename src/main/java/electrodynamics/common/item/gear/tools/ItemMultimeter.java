@@ -6,7 +6,7 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.item.ItemElectrodynamics;
 import electrodynamics.common.network.type.ElectricNetwork;
-import electrodynamics.common.tile.network.electric.TileWire;
+import electrodynamics.common.tile.electricitygrid.TileWire;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

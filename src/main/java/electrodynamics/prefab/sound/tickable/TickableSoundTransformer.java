@@ -2,7 +2,7 @@ package electrodynamics.prefab.sound.tickable;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.network.electric.transformer.TileGenericTransformer;
+import electrodynamics.common.tile.electricitygrid.transformer.TileGenericTransformer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 

@@ -3,7 +3,7 @@ package electrodynamics.client.screen.tile;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerCircuitMonitor;
-import electrodynamics.common.tile.network.electric.TileCircuitMonitor;
+import electrodynamics.common.tile.electricitygrid.TileCircuitMonitor;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.AbstractScreenComponent;
 import electrodynamics.prefab.screen.component.button.ScreenComponentButton;

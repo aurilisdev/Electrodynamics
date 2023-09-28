@@ -5,7 +5,7 @@ import java.util.HashSet;
 import electrodynamics.api.References;
 import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.tile.network.electric.TileLogisticalWire;
+import electrodynamics.common.tile.electricitygrid.TileLogisticalWire;
 import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;

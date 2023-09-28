@@ -1,7 +1,7 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerChemicalCrystallizer;
-import electrodynamics.common.tile.TileChemicalCrystallizer;
+import electrodynamics.common.tile.machines.TileChemicalCrystallizer;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
 import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
 import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;

@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.block.BlockMachine;
-import electrodynamics.common.tile.network.electric.TileLogisticalWire;
+import electrodynamics.common.tile.electricitygrid.TileLogisticalWire;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;

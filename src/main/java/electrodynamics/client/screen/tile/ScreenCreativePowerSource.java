@@ -3,7 +3,7 @@ package electrodynamics.client.screen.tile;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.electricity.formatting.MeasurementUnit;
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
-import electrodynamics.common.tile.generators.TileCreativePowerSource;
+import electrodynamics.common.tile.electricitygrid.generators.TileCreativePowerSource;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;

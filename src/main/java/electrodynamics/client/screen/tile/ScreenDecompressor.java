@@ -1,7 +1,7 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerDecompressor;
-import electrodynamics.common.tile.gastransformer.compressor.GenericTileCompressor;
+import electrodynamics.common.tile.pipelines.gas.gastransformer.compressor.GenericTileCompressor;
 import electrodynamics.prefab.screen.component.types.ScreenComponentCondensedFluid;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
 import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressTextures;

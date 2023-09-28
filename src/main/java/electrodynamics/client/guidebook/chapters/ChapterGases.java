@@ -20,7 +20,7 @@ import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.common.tile.tanks.gas.GenericTileGasTank;
+import electrodynamics.common.tile.pipelines.tanks.gas.GenericTileGasTank;
 import electrodynamics.compatibility.jei.JeiBuffer;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsGases;

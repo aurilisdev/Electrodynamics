@@ -1,6 +1,6 @@
 package electrodynamics.prefab.sound;
 
-import electrodynamics.common.tile.network.electric.transformer.TileGenericTransformer;
+import electrodynamics.common.tile.electricitygrid.transformer.TileGenericTransformer;
 import electrodynamics.prefab.sound.tickable.TickableSoundTile;
 import electrodynamics.prefab.sound.tickable.TickableSoundTransformer;
 import electrodynamics.prefab.sound.utils.ITickableSound;

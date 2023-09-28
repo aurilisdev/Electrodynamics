@@ -2,7 +2,7 @@ package electrodynamics.client.screen.tile;
 
 import electrodynamics.api.screen.ITexture.Textures;
 import electrodynamics.common.inventory.container.tile.ContainerAdvancedUpgradeTransformer;
-import electrodynamics.common.tile.network.electric.transformer.TileAdvancedTransformer.TileAdvancedUpgradeTransformer;
+import electrodynamics.common.tile.electricitygrid.transformer.TileAdvancedTransformer.TileAdvancedUpgradeTransformer;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.button.ScreenComponentButton;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;

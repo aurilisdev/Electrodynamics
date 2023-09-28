@@ -1,6 +1,6 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.common.tile.quarry.TileCoolantResavoir;
+import electrodynamics.common.tile.machines.quarry.TileCoolantResavoir;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotFluid;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;

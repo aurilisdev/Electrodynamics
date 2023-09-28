@@ -2,7 +2,7 @@ package electrodynamics.client.screen.tile;
 
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerPotentiometer;
-import electrodynamics.common.tile.network.electric.TilePotentiometer;
+import electrodynamics.common.tile.electricitygrid.TilePotentiometer;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
