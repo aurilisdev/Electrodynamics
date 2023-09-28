@@ -25,14 +25,14 @@ public class TileCircuitMonitor extends GenericTile {
 	public final Property<Integer> booleanOperator = property(new Property<>(PropertyType.Integer, "booleanoperator", 0));
 	public final Property<Double> value = property(new Property<>(PropertyType.Double, "value", 0.0));
 	public final Property<Boolean> redstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false)).setNoUpdateClient().onChange((prop, old) -> {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
-		
-		if(old ^ prop.get()) {
+
+		if (old ^ prop.get()) {
 			level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
 		}
-		
+
 	});
 
 	protected CachedTileOutput output;
@@ -60,7 +60,7 @@ public class TileCircuitMonitor extends GenericTile {
 		}
 
 		redstoneSignal.set(performCheck(monitoredValue));
-		
+
 	}
 
 	@Override
@@ -90,7 +90,7 @@ public class TileCircuitMonitor extends GenericTile {
 			case 2 -> network.getMinimumAmpacity(); // Maximum Current network can have before a wire is damaged in amps
 			case 3 -> network.getMinimumVoltage(); // The lowest voltage a connected machine has in volts
 			case 4 -> network.getResistance(); // The current resistance of the network in ohms
-			case 5 -> network.getMaxJoulesStored() / 20.0; //The connected load on the network in watts
+			case 5 -> network.getMaxJoulesStored() / 20.0; // The connected load on the network in watts
 			default -> -1;
 			};
 		}

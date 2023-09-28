@@ -234,7 +234,7 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 
 		return InteractionResult.FAIL;
 	}
-	
+
 	@Override
 	public List<ItemStack> getDrops(BlockState state, net.minecraft.world.level.storage.loot.LootParams.Builder builder) {
 		ArrayList<ItemStack> drops = new ArrayList<>(super.getDrops(state, builder));

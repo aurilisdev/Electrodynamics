@@ -22,8 +22,8 @@ public class HandlerJetpackDamage extends AbstractLivingHurtHandler {
 			return;
 		}
 		ItemStack chestplate = armor.get(3);
-		
-		if(chestplate.isEmpty() || !ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
+
+		if (chestplate.isEmpty() || !ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
 			return;
 		}
 

@@ -20,9 +20,9 @@ import net.minecraft.world.entity.player.Inventory;
 public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor> {
 
 	private ScreenComponentEditBox value;
-	
+
 	private boolean needsUpdate = true;
-	
+
 	public ScreenCircuitMonitor(ContainerCircuitMonitor container, Inventory inv, Component title) {
 		super(container, inv, title);
 
@@ -35,17 +35,17 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 			if (monitor == null) {
 				return;
 			}
-			
+
 			DisplayUnit units = getUnit(monitor.networkProperty.get());
-			
+
 			Component combined = getPropertyLabel(monitor.networkProperty.get()).append(" ").append(getOperatorLabel(monitor.booleanOperator.get())).append(" ").append(ChatFormatter.getChatDisplayShort(monitor.value.get(), units)).withStyle(ChatFormatting.BOLD);
-			
+
 			int offset = (int) ((150 - font.width(combined)) / 2.0);
-			
+
 			graphics.drawString(font, combined, 13 + offset, 22, 0, false);
-			
+
 			Component symbol = units.getSymbol();
-			
+
 			graphics.drawString(font, symbol, 163 - font.width(symbol), 175, 4210752, false);
 
 		}));
@@ -172,7 +172,7 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 			component.renderForeground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 		}
 	}
-	
+
 	@Override
 	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
 		super.render(graphics, mouseX, mouseY, partialTicks);
@@ -184,29 +184,29 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 			}
 		}
 	}
-	
+
 	private void handleValue(String val) {
-		if(val == null || val.isEmpty()) {
+		if (val == null || val.isEmpty()) {
 			return;
 		}
-		
+
 		TileCircuitMonitor monitor = menu.getHostFromIntArray();
-		
-		if(monitor == null) {
+
+		if (monitor == null) {
 			return;
 		}
-		
+
 		double value = 0;
-		
+
 		try {
 			value = Double.parseDouble(val);
 		} catch (Exception e) {
-			
+
 		}
-		
+
 		monitor.value.set(value);
 		monitor.value.updateServer();
-		
+
 	}
 
 	private MutableComponent getPropertyLabel(int label) {

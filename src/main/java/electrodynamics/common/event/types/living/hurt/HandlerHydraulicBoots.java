@@ -21,13 +21,13 @@ public class HandlerHydraulicBoots extends AbstractLivingHurtHandler {
 			return;
 		}
 		ItemStack playerBoots = entity.getItemBySlot(EquipmentSlot.FEET);
-		
-		if(!ItemUtils.testItems(playerBoots.getItem(), ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get(), ElectrodynamicsItems.ITEM_COMBATBOOTS.get())) {
+
+		if (!ItemUtils.testItems(playerBoots.getItem(), ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get(), ElectrodynamicsItems.ITEM_COMBATBOOTS.get())) {
 			return;
 		}
-		
+
 		int fluidRequired = (int) Math.log10(event.getAmount());
-		
+
 		if (playerBoots.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(m -> m.getFluidInTank(0).getAmount() - fluidRequired >= 0).orElse(false)) {
 			event.setCanceled(true);
 			playerBoots.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> h.drain(fluidRequired, FluidAction.EXECUTE));

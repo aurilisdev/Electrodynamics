@@ -12,19 +12,19 @@ public class ContainerCircuitMonitor extends ContainerBlockEntityEmpty<TileCircu
 	public ContainerCircuitMonitor(int id, Inventory playerinv, ContainerData inventorydata) {
 		super(ElectrodynamicsMenuTypes.CONTAINER_CIRCUITMONITOR.get(), id, playerinv, inventorydata);
 	}
-	
+
 	public ContainerCircuitMonitor(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainerData(3));
 	}
-	
+
 	@Override
 	public int getPlayerInvOffset() {
 		return 40;
 	}
-	
+
 	@Override
 	protected void addPlayerInventory(Inventory playerinv) {
-		
+
 	}
 
 }

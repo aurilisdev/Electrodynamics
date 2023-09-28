@@ -19,7 +19,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 public class BlockLogisticalWire extends BlockWire {
-	
+
 	public static final Color REDSTONE_ON = new Color(211, 5, 5, 255);
 	public static final Color REDSTONE_OFF = new Color(124, 25, 25, 255);
 

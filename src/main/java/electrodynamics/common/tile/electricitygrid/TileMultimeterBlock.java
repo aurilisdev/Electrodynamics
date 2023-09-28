@@ -65,7 +65,7 @@ public class TileMultimeterBlock extends GenericTile {
 	protected TransferPack receivePower(TransferPack transfer, boolean debug) {
 		return TransferPack.EMPTY;
 	}
-	
+
 	protected TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
 		return TransferPack.EMPTY;
 	}

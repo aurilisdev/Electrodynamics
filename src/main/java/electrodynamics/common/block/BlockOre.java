@@ -15,13 +15,13 @@ public class BlockOre extends DropExperienceBlock {
 	public final SubtypeOre ore;
 	@Nullable
 	public final SubtypeOreDeepslate deepOre;
-	
+
 	public BlockOre(SubtypeOre ore) {
 		super(Properties.copy(Blocks.STONE).requiresCorrectToolForDrops().strength(ore.hardness, ore.resistance), UniformInt.of(ore.minXP, ore.maxXP));
 		this.ore = ore;
 		deepOre = null;
 	}
-	
+
 	public BlockOre(SubtypeOreDeepslate ore) {
 		super(Properties.copy(Blocks.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(ore.hardness + 1.5f, ore.resistance + 1.5f), UniformInt.of(ore.minXP, ore.maxXP));
 		deepOre = ore;

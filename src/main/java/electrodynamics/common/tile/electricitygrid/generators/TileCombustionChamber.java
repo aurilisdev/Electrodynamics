@@ -194,19 +194,18 @@ public class TileCombustionChamber extends GenericMaterialTile implements IElect
 		shape = Shapes.or(shape, Block.box(13, 3, 14, 14, 4, 15));
 		shape = Shapes.or(shape, Block.box(14, 4, 14, 15, 10, 15));
 		shape = Shapes.or(shape, Block.box(13, 10, 14, 14, 11, 15));
-		
+
 		shape = Shapes.or(shape, Block.box(4, 12, 4, 5, 13, 5));
 		shape = Shapes.or(shape, Block.box(4, 12, 11, 5, 13, 12));
-		
+
 		shape = Shapes.or(shape, Block.box(7, 12, 2, 9, 14, 3));
 		shape = Shapes.or(shape, Block.box(7, 14, 3, 9, 15, 4));
 		shape = Shapes.or(shape, Block.box(5, 12, 4, 11, 15, 12));
 		shape = Shapes.or(shape, Block.box(7, 12, 13, 9, 14, 14));
 		shape = Shapes.or(shape, Block.box(7, 14, 12, 9, 15, 13));
-		
+
 		shape = Shapes.or(shape, Block.box(11, 12, 4, 12, 13, 5));
 		shape = Shapes.or(shape, Block.box(11, 12, 11, 12, 13, 12));
-		
 
 		VoxelShapes.registerShape(SubtypeMachine.combustionchamber, shape, Direction.WEST);
 

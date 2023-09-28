@@ -53,7 +53,7 @@ public class ItemMultimeter extends ItemElectrodynamics {
 
 			// minimum voltage
 			double minimumVoltage = net.getMinimumVoltage();
-			if(minimumVoltage < 0) {
+			if (minimumVoltage < 0) {
 				minimumVoltage = net.getActiveVoltage();
 			}
 			display.append(ChatFormatter.getChatDisplayShort(minimumVoltage, DisplayUnit.VOLTAGE));

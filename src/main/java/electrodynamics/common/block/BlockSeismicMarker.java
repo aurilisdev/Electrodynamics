@@ -36,7 +36,7 @@ public class BlockSeismicMarker extends GenericMachineBlock {
 			//
 			Block.box(5, 8, 5, 11, 9, 11)
 	//
-	).reduce((v1, v2) -> Shapes.or(v1, v2)).get(),
+	).reduce(Shapes::or).get(),
 			//
 			Block.box(7, 9, 7, 9, 11, 9));
 

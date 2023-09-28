@@ -399,13 +399,13 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 			ElectricNetwork network = tile.getNetwork();
 
 			double voltage = network.getActiveVoltage();
-			
+
 			if (voltage <= 0 || voltage <= wire.insulation.shockVoltage || network.getActiveTransmitted() <= 0) {
 				return;
 			}
 
 			boolean overMaxVoltage = voltage > TileGenericTransformer.MAX_VOLTAGE_CAP;
-			
+
 			double wireShockVoltage = Math.max(wire.insulation.shockVoltage, 1);
 
 			BlockPos relativePos, firePos;
@@ -415,44 +415,45 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 				relativePos = pos.relative(dir);
 				relative = level.getBlockState(relativePos);
-				
-				if(relative.isAir()) {
+
+				if (relative.isAir()) {
 					continue;
 				}
-				
+
 				boolean isFlammable = relative.isFlammable(level, relativePos, dir);
-				
-				if(relative.getBlock() instanceof BlockWire) {
-					
+
+				if (relative.getBlock() instanceof BlockWire) {
+
 					continue;
-					
-				} else if (relative.getBlock() instanceof IInsulator insulator) {
+
+				}
+				if (relative.getBlock() instanceof IInsulator insulator) {
 
 					if (overMaxVoltage && voltage > insulator.getMaximumVoltage()) {
-						
+
 						level.playSound(null, relativePos, insulator.getBreakingSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 						level.destroyBlock(relativePos, false);
-						
+
 					}
-					
+
 					continue;
-					
+
 				} else if (overMaxVoltage) {
-					
-					if(isFlammable || relative.getBlock().getExplosionResistance() < Constants.BLOCK_VAPORIZATION_HARDNESS) {
-						
+
+					if (isFlammable || relative.getBlock().getExplosionResistance() < Constants.BLOCK_VAPORIZATION_HARDNESS) {
+
 						level.playSound(null, relativePos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
 						level.destroyBlock(relativePos, false);
-						
+
 					}
-					
+
 					continue;
-					
+
 				} else if (!isFlammable) {
-					
+
 					continue;
-					
-				} 
+
+				}
 
 				int flamability = relative.getFlammability(level, relativePos, dir);
 
@@ -465,32 +466,32 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 				if (flamability > overvoltage) {
 					continue;
 				}
-				
+
 				boolean blockCaughtFire = false;
-				
-				for(Direction relDir : Direction.values()) {
-					
+
+				for (Direction relDir : Direction.values()) {
+
 					firePos = relativePos.relative(relDir);
-					
-					if(firePos.equals(pos) || !BaseFireBlock.canBePlacedAt(level, firePos, (relDir == Direction.DOWN || relDir == Direction.UP) ? dir : relDir.getOpposite())) {
+
+					if (firePos.equals(pos) || !BaseFireBlock.canBePlacedAt(level, firePos, (relDir == Direction.DOWN || relDir == Direction.UP) ? dir : relDir.getOpposite())) {
 						continue;
 					}
-					
+
 					level.setBlock(firePos, BaseFireBlock.getState(level, firePos), 11);
-					
+
 					blockCaughtFire = true;
-					
+
 					break;
-					
+
 				}
-				
-				if(blockCaughtFire) {
+
+				if (blockCaughtFire) {
 					continue;
 				}
-				
+
 				level.playSound(null, pos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
 				level.destroyBlock(pos, false);
-				
+
 				break;
 
 			}

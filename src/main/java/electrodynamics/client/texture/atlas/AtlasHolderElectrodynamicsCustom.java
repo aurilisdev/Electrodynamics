@@ -14,7 +14,7 @@ public class AtlasHolderElectrodynamicsCustom extends TextureAtlasHolder {
 	public static final ResourceLocation TEXTURE_QUARRYARM = create("quarryarm");
 	public static final ResourceLocation TEXTURE_QUARRYARM_DARK = create("quarrydark");
 	public static final ResourceLocation TEXTURE_MERCURY = create("mercury");
-	public static final ResourceLocation TEXTURE_GAS = create("gastexture"); 
+	public static final ResourceLocation TEXTURE_GAS = create("gastexture");
 
 	public AtlasHolderElectrodynamicsCustom(TextureManager textureManager) {
 		super(textureManager, new ResourceLocation(References.ID, "textures/" + References.ID + "/" + ElectrodynamicsTextureAtlases.ELECTRODYNAMICS_CUSTOM_NAME + ".png"), ElectrodynamicsTextureAtlases.ELECTRODYNAMICS_CUSTOM);
@@ -28,7 +28,7 @@ public class AtlasHolderElectrodynamicsCustom extends TextureAtlasHolder {
 	public static TextureAtlasSprite get(ResourceLocation loc) {
 		return INSTANCE.getSprite(loc);
 	}
-	
+
 	private static ResourceLocation create(String name) {
 		return new ResourceLocation(References.ID, "custom/" + name);
 	}

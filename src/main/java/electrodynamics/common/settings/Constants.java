@@ -82,7 +82,6 @@ public class Constants {
 	public static boolean CONDUCTORS_BURN_SURROUNDINGS = true;
 	@FloatValue(def = 6.0F, comment = "The hardness value that a block must have to not be instantly vaporized by a wire over 30,720V, which is the maximum voltage achievable by default electrodynamics. 6 is the explosion resistance of an Iron Block")
 	public static float BLOCK_VAPORIZATION_HARDNESS = 6.0F;
-	
 
 	public static TransferPack COALGENERATOR_MAX_OUTPUT = TransferPack.ampsVoltage(COALGENERATOR_AMPERAGE, 120);
 }

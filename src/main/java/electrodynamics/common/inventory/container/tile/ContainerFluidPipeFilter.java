@@ -16,7 +16,7 @@ public class ContainerFluidPipeFilter extends ContainerBlockEntityEmpty<TileFlui
 	public ContainerFluidPipeFilter(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainerData(3));
 	}
-	
+
 	@Override
 	public int getPlayerInvOffset() {
 		return 20;

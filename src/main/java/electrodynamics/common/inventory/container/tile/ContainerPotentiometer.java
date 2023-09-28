@@ -14,7 +14,7 @@ public class ContainerPotentiometer extends ContainerBlockEntityEmpty<TilePotent
 	}
 
 	public ContainerPotentiometer(int id, Inventory playerinv) {
-		this(id, playerinv,  new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainerData(3));
 	}
 
 }

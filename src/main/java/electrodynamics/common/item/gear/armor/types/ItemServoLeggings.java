@@ -193,7 +193,7 @@ public class ItemServoLeggings extends ItemElectrodynamicsArmor implements IItem
 				tag.putBoolean(NBTUtils.SUCESS, false);
 				if (!tag.getBoolean("reset")) {
 					player.setMaxUpStep(DEFAULT_VANILLA_STEPUP);
-					;
+
 				}
 			}
 		} else if (stack.hasTag()) {

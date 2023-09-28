@@ -38,7 +38,7 @@ public abstract class Fluid2ItemRecipe extends AbstractMaterialRecipe {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public ItemStack getItemOutputNoAccess() {
 		return outputItem;

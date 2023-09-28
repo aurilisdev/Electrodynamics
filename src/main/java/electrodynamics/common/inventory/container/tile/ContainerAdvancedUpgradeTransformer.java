@@ -12,11 +12,11 @@ public class ContainerAdvancedUpgradeTransformer extends ContainerBlockEntityEmp
 	public ContainerAdvancedUpgradeTransformer(int id, Inventory playerinv, ContainerData inventorydata) {
 		super(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDUPGRADETRANSFORMER.get(), id, playerinv, inventorydata);
 	}
-	
+
 	public ContainerAdvancedUpgradeTransformer(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainerData(3));
 	}
-	
+
 	@Override
 	public int getPlayerInvOffset() {
 		return 30;

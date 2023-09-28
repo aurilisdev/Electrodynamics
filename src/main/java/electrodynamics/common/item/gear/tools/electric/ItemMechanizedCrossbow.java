@@ -89,7 +89,7 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 
 		Vec3 playerUpVector = player.getUpVector(1.0F);
 
-		Quaternionf quaternionf = (new Quaternionf()).setAngleAxis((double) 0, playerUpVector.x, playerUpVector.y, playerUpVector.z);
+		Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(0, playerUpVector.x, playerUpVector.y, playerUpVector.z);
 
 		Vec3 playerViewVector = player.getViewVector(1.0F);
 

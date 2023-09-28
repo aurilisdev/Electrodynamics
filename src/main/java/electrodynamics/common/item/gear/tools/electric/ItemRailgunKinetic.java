@@ -87,7 +87,7 @@ public class ItemRailgunKinetic extends ItemRailgun {
 
 		Vec3 vec31 = player.getUpVector(1.0F);
 
-		Quaternionf quaternionf = (new Quaternionf()).setAngleAxis((double) 0, vec31.x, vec31.y, vec31.z);
+		Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(0, vec31.x, vec31.y, vec31.z);
 
 		Vec3 playerViewVector = player.getViewVector(1.0F);
 

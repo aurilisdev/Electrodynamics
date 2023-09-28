@@ -127,7 +127,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 
 	@Override
 	public void onNeightborChanged(BlockPos neighbor) {
-		if(level.isClientSide) {
+		if (level.isClientSide) {
 			return;
 		}
 		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));

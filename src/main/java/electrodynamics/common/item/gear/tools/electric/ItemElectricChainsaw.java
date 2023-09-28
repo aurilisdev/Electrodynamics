@@ -123,10 +123,10 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
 	public boolean hasCreativeTab() {
 		return creativeTab != null;
 	}
-	
+
 	@Override
 	public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
 		return getJoulesStored(stack) > properties.extract.getJoules() ? ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_SHEARS_ACTIONS.contains(toolAction) : false;
 	}
-	
+
 }
