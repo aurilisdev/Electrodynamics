@@ -481,7 +481,7 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 
 		if (highlightedLength != highlightedSize) {
 			int l1 = textStartX + this.font.width(displayedText.substring(0, highlightedLength));
-			this.renderHighlight(graphics, textStartPreCopy, textStartY - 1, l1 - 1, textStartY + 1 + 9);
+			this.renderHighlight(graphics, textStartPreCopy, textStartY - 1, l1 - 1, textStartY + 1 + 9, guiWidth, guiHeight);
 		}
 
 	}
@@ -489,29 +489,29 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 	/**
 	 * Draws the blue selection box.
 	 */
-	 private void renderHighlight(GuiGraphics graphics, int pMinX, int pMinY, int pMaxX, int pMaxY) {
-	      if (pMinX < pMaxX) {
-	         int i = pMinX;
-	         pMinX = pMaxX;
-	         pMaxX = i;
-	      }
+	private void renderHighlight(GuiGraphics graphics, int pMinX, int pMinY, int pMaxX, int pMaxY, int guiWidth, int guiHeight) {
+		if (pMinX < pMaxX) {
+			int i = pMinX;
+			pMinX = pMaxX;
+			pMaxX = i;
+		}
 
-	      if (pMinY < pMaxY) {
-	         int j = pMinY;
-	         pMinY = pMaxY;
-	         pMaxY = j;
-	      }
+		if (pMinY < pMaxY) {
+			int j = pMinY;
+			pMinY = pMaxY;
+			pMaxY = j;
+		}
 
-	      if (pMaxX > this.xLocation + this.width) {
-	         pMaxX = this.yLocation + this.width;
-	      }
+		if (pMaxX > this.xLocation + this.width + guiWidth) {
+			pMaxX = this.yLocation + this.width;
+		}
 
-	      if (pMinX > this.xLocation + this.width) {
-	         pMinX = this.xLocation + this.width;
-	      }
+		if (pMinX > this.xLocation + this.width + guiWidth) {
+			pMinX = this.xLocation + this.width;
+		}
 
-	      graphics.fill(RenderType.guiTextHighlight(), pMinX, pMinY, pMaxX, pMaxY, -16776961);
-	   }
+		graphics.fill(RenderType.guiTextHighlight(), pMinX, pMinY, pMaxX, pMaxY, -16776961);
+	}
 
 	/**
 	 * Sets the maximum length for the text in this text box. If the current text is longer than this length, the current text will be trimmed.
