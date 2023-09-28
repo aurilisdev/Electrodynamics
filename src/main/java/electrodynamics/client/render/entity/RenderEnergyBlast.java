@@ -1,11 +1,8 @@
 package electrodynamics.client.render.entity;
 
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.api.References;
@@ -14,7 +11,6 @@ import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
-import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
 public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
@@ -63,10 +59,6 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 		RenderingUtils.renderStar(matrixStack, buffer, gameTime + 60f + partialTicks, 250 / distance, red, green, blue, alpha, false);
 
 		matrixStack.popPose();
-	}
-
-	private static void vertex(VertexConsumer buffer, Matrix4f matrix, Matrix3f matrixNormal, float x, float y, int r, int g, int b, int a, float u, float v, int light) {
-		buffer.vertex(matrix, x, y, 0.0F).color(r, g, b, a).uv(u, v).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrixNormal, 0.0F, 1.0F, 0.0F).endVertex();
 	}
 
 	@Override

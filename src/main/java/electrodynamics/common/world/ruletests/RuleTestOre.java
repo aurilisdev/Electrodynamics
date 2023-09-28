@@ -36,9 +36,8 @@ public class RuleTestOre extends RuleTest {
 		}
 		if (instance0.thisDeepOre != null) {
 			return ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(instance0.thisDeepOre).get();
-		} else {
-			return Blocks.AIR;
 		}
+		return Blocks.AIR;
 	}), TagKey.codec(Registries.BLOCK).fieldOf("canspawnintag").forGetter(instance0 -> instance0.canSpawnIn)).apply(instance, (block, tag) -> {
 		if (block instanceof BlockOre ore) {
 			return new RuleTestOre(ore.ore, ore.deepOre, tag);

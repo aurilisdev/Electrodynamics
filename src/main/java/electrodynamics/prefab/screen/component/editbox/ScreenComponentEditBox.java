@@ -320,54 +320,53 @@ public class ScreenComponentEditBox extends ScreenComponentGeneric {
 			}
 
 			return true;
-		} else {
-			switch (keyCode) {
-			case 259:
-				if (this.isEditable) {
-					this.shiftPressed = false;
-					this.deleteText(-1);
-					this.shiftPressed = Screen.hasShiftDown();
-				}
-
-				return true;
-			case 260:
-			case 264:
-			case 265:
-			case 266:
-			case 267:
-			default:
-				return false;
-			case 261:
-				if (this.isEditable) {
-					this.shiftPressed = false;
-					this.deleteText(1);
-					this.shiftPressed = Screen.hasShiftDown();
-				}
-
-				return true;
-			case 262:
-				if (Screen.hasControlDown()) {
-					this.moveCursorTo(this.getWordPosition(1));
-				} else {
-					this.moveCursor(1);
-				}
-
-				return true;
-			case 263:
-				if (Screen.hasControlDown()) {
-					this.moveCursorTo(this.getWordPosition(-1));
-				} else {
-					this.moveCursor(-1);
-				}
-
-				return true;
-			case 268:
-				this.moveCursorToStart();
-				return true;
-			case 269:
-				this.moveCursorToEnd();
-				return true;
+		}
+		switch (keyCode) {
+		case 259:
+			if (this.isEditable) {
+				this.shiftPressed = false;
+				this.deleteText(-1);
+				this.shiftPressed = Screen.hasShiftDown();
 			}
+
+			return true;
+		case 260:
+		case 264:
+		case 265:
+		case 266:
+		case 267:
+		default:
+			return false;
+		case 261:
+			if (this.isEditable) {
+				this.shiftPressed = false;
+				this.deleteText(1);
+				this.shiftPressed = Screen.hasShiftDown();
+			}
+
+			return true;
+		case 262:
+			if (Screen.hasControlDown()) {
+				this.moveCursorTo(this.getWordPosition(1));
+			} else {
+				this.moveCursor(1);
+			}
+
+			return true;
+		case 263:
+			if (Screen.hasControlDown()) {
+				this.moveCursorTo(this.getWordPosition(-1));
+			} else {
+				this.moveCursor(-1);
+			}
+
+			return true;
+		case 268:
+			this.moveCursorToStart();
+			return true;
+		case 269:
+			this.moveCursorToEnd();
+			return true;
 		}
 	}
 
