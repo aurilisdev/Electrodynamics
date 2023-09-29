@@ -40,7 +40,7 @@ public class TileCircuitBreaker extends GenericTile {
 	public TileCircuitBreaker(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_CIRCUITBREAKER.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection(this));
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 	}
 
@@ -81,7 +81,7 @@ public class TileCircuitBreaker extends GenericTile {
 				return TransferPack.EMPTY;
 			}
 
-			if (tile instanceof GenericTileWire wire && wire.electricNetwork != null && wire.electricNetwork.networkMaxTransfer < transfer.getAmps()) {
+			if (cap.getAmpacity() > 0 && cap.getAmpacity() < transfer.getAmps()) {
 
 				tripped = true;
 				tripCurveTimer = TRIP_CURVE;
@@ -150,7 +150,7 @@ public class TileCircuitBreaker extends GenericTile {
 				return TransferPack.EMPTY;
 			}
 
-			if (tile instanceof GenericTileWire wire && wire.electricNetwork != null && wire.electricNetwork.networkMaxTransfer < loadProfile.lastUsage().getAmps()) {
+			if (cap.getAmpacity() > 0 && cap.getAmpacity() <= loadProfile.lastUsage().getAmps()) {
 
 				tripped = true;
 				tripCurveTimer = TRIP_CURVE;
@@ -166,6 +166,36 @@ public class TileCircuitBreaker extends GenericTile {
 		isLocked = false;
 
 		return load;
+	}
+	
+	public double getMinimumVoltage() {
+		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		if(isLocked) {
+			return 0;
+		}
+		BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
+		if(output == null) {
+			return -1;
+		}
+		isLocked = true;
+		double minimumVoltage = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(cap -> cap.getMinimumVoltage()).orElse(-1.0);
+		isLocked = false;
+		return minimumVoltage;
+	}
+	
+	public double getAmpacity() {
+		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		if(isLocked) {
+			return 0;
+		}
+		BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
+		if(output == null) {
+			return -1;
+		}
+		isLocked = true;
+		double ampacity = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(cap -> cap.getAmpacity()).orElse(-1.0);
+		isLocked = false;
+		return ampacity;
 	}
 
 	@Override

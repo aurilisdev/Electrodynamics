@@ -58,7 +58,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 		if (Constants.SHOULD_TRANSFORMER_HUM) {
 			addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 		}
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1.0));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1.0).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
 	}
 
 	public void tickClient(ComponentTickable tickable) {
@@ -116,6 +116,40 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 		TransferPack returner = ((BlockEntity) output.getSafe()).getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).map(cap -> cap.getConnectedLoad(lastEnergy, dir)).orElse(TransferPack.EMPTY);
 		locked = false;
 		return returner;
+	}
+
+	public double getMinimumVoltage() {
+		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		if (locked) {
+			return 0;
+		}
+		if (output == null) {
+			output = new CachedTileOutput(level, worldPosition.relative(facing));
+		}
+		if (output.getSafe() == null) {
+			return -1;
+		}
+		locked = true;
+		double minimumVoltage = ((BlockEntity) output.getSafe()).getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(cap -> cap.getMinimumVoltage()).orElse(-1.0) / getCoilRatio();
+		locked = false;
+		return minimumVoltage;
+	}
+
+	public double getAmpacity() {
+		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		if (locked) {
+			return 0;
+		}
+		if (output == null) {
+			output = new CachedTileOutput(level, worldPosition.relative(facing));
+		}
+		if (output.getSafe() == null) {
+			return -1;
+		}
+		locked = true;
+		double ampacity = ((BlockEntity) output.getSafe()).getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(cap -> cap.getAmpacity()).orElse(-1.0) * getCoilRatio();
+		locked = false;
+		return ampacity;
 	}
 
 	@Override
