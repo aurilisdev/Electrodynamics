@@ -56,20 +56,22 @@ public class GasUtilities {
 			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative.getOpposite());
 			BlockPos face = tile.getBlockPos().relative(direction.getOpposite());
 			BlockEntity faceTile = tile.getLevel().getBlockEntity(face);
-			if (faceTile != null) {
-				LazyOptional<IGasHandler> cap = faceTile.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER, direction);
-				if (cap.isPresent()) {
-					IGasHandler gHandler = cap.resolve().get();
-					for (GasTank gasTank : tanks) {
-						for (int i = 0; i < gHandler.getTanks(); i++) {
-							GasStack tankGas = gasTank.getGas();
-							double amtAccepted = gHandler.fillTank(i, tankGas, GasAction.EXECUTE);
-							GasStack taken = new GasStack(tankGas.getGas(), amtAccepted, tankGas.getTemperature(), tankGas.getPressure());
-							gasTank.drain(taken, GasAction.EXECUTE);
-						}
-
-					}
+			if (faceTile == null) {
+				continue;
+			}
+			LazyOptional<IGasHandler> cap = faceTile.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER, direction);
+			if (!cap.isPresent()) {
+				continue;
+			}
+			IGasHandler gHandler = cap.resolve().get();
+			for (GasTank gasTank : tanks) {
+				for (int i = 0; i < gHandler.getTanks(); i++) {
+					GasStack tankGas = gasTank.getGas().copy();
+					double amtAccepted = gHandler.fillTank(i, tankGas, GasAction.EXECUTE);
+					GasStack taken = new GasStack(tankGas.getGas(), amtAccepted, tankGas.getTemperature(), tankGas.getPressure());
+					gasTank.drain(taken, GasAction.EXECUTE);
 				}
+
 			}
 		}
 	}

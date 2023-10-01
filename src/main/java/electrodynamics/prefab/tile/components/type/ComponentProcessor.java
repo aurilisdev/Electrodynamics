@@ -105,7 +105,7 @@ public class ComponentProcessor implements Component {
 				if (process != null) {
 					process.accept(this);
 				}
-				operatingTicks.set(0.0);
+				operatingTicks.set(0);
 			}
 			if (holder.hasComponent(ComponentType.Electrodynamic)) {
 				ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
@@ -114,12 +114,14 @@ public class ComponentProcessor implements Component {
 		} else if (isActive()) {
 			isActive.set(false);
 			if (!shouldKeepProgress.get()) {
-				operatingTicks.set(0.0);
+				operatingTicks.set(0);
 			}
 
 			if (failed != null) {
 				failed.accept(this);
 			}
+		} else {
+			operatingTicks.set(0);
 		}
 
 	}
