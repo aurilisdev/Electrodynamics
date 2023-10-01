@@ -121,7 +121,7 @@ public class TileGasTransformerSideBlock extends GenericTile {
 			}
 			return compressor.getCapability(cap, side);
 		}
-		return super.getCapability(cap);
+		return super.getCapability(cap, side);
 	}
 
 	@Override

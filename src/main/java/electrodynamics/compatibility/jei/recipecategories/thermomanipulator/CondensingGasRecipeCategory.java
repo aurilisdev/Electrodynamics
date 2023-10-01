@@ -47,7 +47,7 @@ public class CondensingGasRecipeCategory extends AbstractRecipeCategory<PsuedoGa
 		@Override
 		public Component getComponent(AbstractRecipeCategory<?> category, Object recipe) {
 			PsuedoGas2FluidRecipe psuedo = (PsuedoGas2FluidRecipe) recipe;
-			return Component.literal("<= " + ChatFormatter.getChatDisplayShort(psuedo.inputs.get(0).getGasStack().getTemperature(), DisplayUnit.TEMPERATURE_KELVIN));
+			return Component.literal("<= ").append(ChatFormatter.getChatDisplayShort(psuedo.inputs.get(0).getGasStack().getTemperature(), DisplayUnit.TEMPERATURE_KELVIN));
 		}
 	};
 
