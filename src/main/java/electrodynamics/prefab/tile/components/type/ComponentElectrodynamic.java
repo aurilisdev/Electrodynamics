@@ -5,6 +5,7 @@ import java.util.function.BiFunction;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
@@ -41,6 +42,12 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	protected BiFunction<TransferPack, Boolean, TransferPack> functionReceivePower = ICapabilityElectrodynamic.super::receivePower;
 	protected BiFunction<TransferPack, Boolean, TransferPack> functionExtractPower = ICapabilityElectrodynamic.super::extractPower;
 	protected BiFunction<LoadProfile, Direction, TransferPack> connectedLoadFunction = (profile, dir) -> TransferPack.joulesVoltage(getMaxJoulesStored() - getJoulesStored(), getVoltage());
+	
+	protected Supplier<Double> ampacityFunction = ICapabilityElectrodynamic.super::getAmpacity;
+	
+	protected Supplier<Double> minimumVoltageFunction = ICapabilityElectrodynamic.super::getMinimumVoltage;
+	protected Supplier<Double> maximumVoltageFunction = ICapabilityElectrodynamic.super::getMaximumVoltage;
+	
 	protected Consumer<Double> setJoules = null;
 	protected HashSet<Direction> relativeOutputDirections = new HashSet<>();
 	protected HashSet<Direction> relativeInputDirections = new HashSet<>();
@@ -65,6 +72,16 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	@Override
 	public double getVoltage() {
 		return voltage.get();
+	}
+	
+	@Override
+	public double getMinimumVoltage() {
+		return minimumVoltageFunction.get();
+	}
+	
+	@Override
+	public double getMaximumVoltage() {
+		return maximumVoltageFunction.get();
 	}
 
 	@Override
@@ -172,6 +189,21 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 		this.connectedLoadFunction = supplier;
 		return this;
 	}
+	
+	public ComponentElectrodynamic getAmpacity(Supplier<Double> supplier) {
+		ampacityFunction = supplier;
+		return this;
+	}
+	
+	public ComponentElectrodynamic getMinimumVoltage(Supplier<Double> supplier) {
+		minimumVoltageFunction = supplier;
+		return this;
+	}
+	
+	public ComponentElectrodynamic getMaximumVoltage(Supplier<Double> supplier) {
+		maximumVoltageFunction = supplier;
+		return this;
+	}
 
 	public ComponentElectrodynamic setJoules(Consumer<Double> setJoules) {
 		this.setJoules = setJoules;
@@ -221,6 +253,11 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	@Override
 	public double getMaxJoulesStored() {
 		return maxJoules.get();
+	}
+	
+	@Override
+	public double getAmpacity() {
+		return ampacityFunction.get();
 	}
 
 	@Override

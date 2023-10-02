@@ -54,10 +54,34 @@ public interface ICapabilityElectrodynamic {
 	/**
 	 * Returns the minimum possible voltage this Capability may accept
 	 * 
+	 * A return of -1 indicates there is no minimum
+	 * 
 	 * @return
 	 */
 	default double getMinimumVoltage() {
 		return getVoltage();
+	}
+
+	/**
+	 * Returns the maximum possible voltage this Capability may accept
+	 * 
+	 * A return of -1 indicates there is no maximum
+	 * 
+	 * @return
+	 */
+	default double getMaximumVoltage() {
+		return getVoltage();
+	}
+
+	/**
+	 * Returns the maximum ampacity this Capability may accept
+	 * 
+	 * A return of -1 indicates there is no maximum
+	 * 
+	 * @return
+	 */
+	default double getAmpacity() {
+		return -1;
 	}
 
 	/**

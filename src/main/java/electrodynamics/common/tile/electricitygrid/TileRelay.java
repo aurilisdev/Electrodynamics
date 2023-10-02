@@ -29,7 +29,7 @@ public class TileRelay extends GenericTile {
 	public TileRelay(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_RELAY.get(), worldPos, blockState);
 		addComponent(new ComponentDirection(this));
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
 	}
 
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
@@ -86,6 +86,36 @@ public class TileRelay extends GenericTile {
 
 		return load;
 
+	}
+
+	public double getMinimumVoltage() {
+		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		if (isLocked) {
+			return 0;
+		}
+		BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
+		if (output == null) {
+			return -1;
+		}
+		isLocked = true;
+		double minimumVoltage = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(cap -> cap.getMinimumVoltage()).orElse(-1.0);
+		isLocked = false;
+		return minimumVoltage;
+	}
+
+	public double getAmpacity() {
+		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		if (isLocked) {
+			return 0;
+		}
+		BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
+		if (output == null) {
+			return -1;
+		}
+		isLocked = true;
+		double ampacity = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(cap -> cap.getAmpacity()).orElse(-1.0);
+		isLocked = false;
+		return ampacity;
 	}
 
 	@Override

@@ -111,9 +111,9 @@ public class TileGasTransformerSideBlock extends GenericTile {
 		if (cap == ElectrodynamicsCapabilities.ELECTRODYNAMIC) {
 			return LazyOptional.empty();
 		}
-		if (owner != null && owner instanceof GenericTileGasTransformer compressor) {
+		if (owner instanceof GenericTileGasTransformer compressor) {
 
-			if (cap == ForgeCapabilities.FLUID_HANDLER) {
+			if (cap == ForgeCapabilities.FLUID_HANDLER && compressor.hasComponent(ComponentType.FluidHandler)) {
 				if (isLeft) {
 					return compressor.getComponent(ComponentType.FluidHandler).getCapability(cap, side, CapabilityInputType.INPUT);
 				}
@@ -121,7 +121,7 @@ public class TileGasTransformerSideBlock extends GenericTile {
 			}
 			return compressor.getCapability(cap, side);
 		}
-		return super.getCapability(cap);
+		return super.getCapability(cap, side);
 	}
 
 	@Override

@@ -341,8 +341,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		return minimumVoltage;
 	}
 
-	public long getMinimumAmpacity() {
-		return minimumAmpacity;
+	@Override
+	public double getAmpacity() {
+		return networkMaxTransfer;
 	}
 
 	@Override

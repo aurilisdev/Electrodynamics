@@ -47,7 +47,7 @@ public class EvaporatingFluidRecipeCategory extends AbstractRecipeCategory<Psued
 		@Override
 		public Component getComponent(AbstractRecipeCategory<?> category, Object recipe) {
 			PsuedoFluid2GasRecipe psuedo = (PsuedoFluid2GasRecipe) recipe;
-			return Component.literal("> " + ChatFormatter.getChatDisplayShort(psuedo.output.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN));
+			return Component.literal("> ").append(ChatFormatter.getChatDisplayShort(psuedo.output.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN));
 		}
 	};
 

@@ -87,7 +87,7 @@ public class TileCircuitMonitor extends GenericTile {
 			return switch (networkProperty.get()) {
 			case 0 -> network.getActiveTransmitted() / 20.0; // Wattage in watts; network works in joules
 			case 1 -> network.getActiveVoltage(); // Current network Voltage in volts
-			case 2 -> network.getMinimumAmpacity(); // Maximum Current network can have before a wire is damaged in amps
+			case 2 -> network.getAmpacity(); // Maximum Current network can have before a wire is damaged in amps
 			case 3 -> network.getMinimumVoltage(); // The lowest voltage a connected machine has in volts
 			case 4 -> network.getResistance(); // The current resistance of the network in ohms
 			case 5 -> network.getMaxJoulesStored() / 20.0; // The connected load on the network in watts

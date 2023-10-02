@@ -55,18 +55,12 @@ public abstract class GenericTileWire extends GenericConnectTile implements ICon
 
 				@Override
 				public double getVoltage() {
-					if (getNetwork() != null) {
-						return getNetwork().getVoltage();
-					}
-					return -1;
+					return getNetwork().getVoltage();
 				}
 
 				@Override
 				public double getMinimumVoltage() {
-					if (getNetwork() != null) {
-						return getNetwork().getMinimumVoltage();
-					}
-					return -1;
+					return getNetwork().getMinimumVoltage();
 				}
 
 				@Override
@@ -88,6 +82,17 @@ public abstract class GenericTileWire extends GenericConnectTile implements ICon
 				public TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
 					return getNetwork().getConnectedLoad(loadProfile, dir);
 				}
+				
+				@Override
+				public double getMaximumVoltage() {
+					return getNetwork().getActiveVoltage();
+				}
+				
+				@Override
+				public double getAmpacity() {
+					return getNetwork().getAmpacity();
+				}
+				
 			});
 		}
 	}
