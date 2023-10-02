@@ -1,8 +1,8 @@
 package electrodynamics.client.guidebook.utils.pagedata.graphics;
 
 import electrodynamics.api.gas.Gas;
+import electrodynamics.client.ClientRegister;
 import electrodynamics.client.guidebook.utils.components.Page;
-import electrodynamics.client.texture.atlas.AtlasHolderElectrodynamicsCustom;
 import net.minecraft.client.gui.GuiGraphics;
 
 public class GasWrapperObject extends AbstractGraphicWrapper<GasWrapperObject> {
@@ -17,7 +17,7 @@ public class GasWrapperObject extends AbstractGraphicWrapper<GasWrapperObject> {
 	@Override
 	public void render(GuiGraphics graphics, int wrapperX, int wrapperY, int xShift, int guiWidth, int guiHeight, Page page) {
 
-		graphics.blit(guiWidth + wrapperX + xShift, guiHeight + wrapperY, 0, width, height, AtlasHolderElectrodynamicsCustom.get(AtlasHolderElectrodynamicsCustom.TEXTURE_MERCURY));
+		graphics.blit(guiWidth + wrapperX + xShift, guiHeight + wrapperY, 0, width, height, ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_GAS));
 
 	}
 

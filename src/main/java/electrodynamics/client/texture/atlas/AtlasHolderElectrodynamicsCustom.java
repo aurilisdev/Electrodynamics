@@ -11,10 +11,10 @@ public class AtlasHolderElectrodynamicsCustom extends TextureAtlasHolder {
 	public static AtlasHolderElectrodynamicsCustom INSTANCE;
 
 	// Custom Textures
-	public static final ResourceLocation TEXTURE_QUARRYARM = create("quarryarm");
-	public static final ResourceLocation TEXTURE_QUARRYARM_DARK = create("quarrydark");
-	public static final ResourceLocation TEXTURE_MERCURY = create("mercury");
-	public static final ResourceLocation TEXTURE_GAS = create("gastexture");
+//	public static final ResourceLocation TEXTURE_QUARRYARM = create("quarryarm");
+//	public static final ResourceLocation TEXTURE_QUARRYARM_DARK = create("quarrydark");
+//	public static final ResourceLocation TEXTURE_MERCURY = create("mercury");
+//	public static final ResourceLocation TEXTURE_GAS = create("gastexture");
 
 	public AtlasHolderElectrodynamicsCustom(TextureManager textureManager) {
 		super(textureManager, new ResourceLocation(References.ID, "textures/" + References.ID + "/" + ElectrodynamicsTextureAtlases.ELECTRODYNAMICS_CUSTOM_NAME + ".png"), ElectrodynamicsTextureAtlases.ELECTRODYNAMICS_CUSTOM);

@@ -19,7 +19,7 @@ import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.gas.utils.IGasTank;
 import electrodynamics.api.screen.ITexture;
-import electrodynamics.client.texture.atlas.AtlasHolderElectrodynamicsCustom;
+import electrodynamics.client.ClientRegister;
 import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.RenderingUtils;
@@ -94,7 +94,7 @@ public class ScreenComponentGasGauge extends ScreenComponentGeneric {
 
 	public static void renderMercuryTexture(GuiGraphics graphics, int x, int y, float progress) {
 
-		TextureAtlasSprite mercury = AtlasHolderElectrodynamicsCustom.get(AtlasHolderElectrodynamicsCustom.TEXTURE_MERCURY);
+		TextureAtlasSprite mercury = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_MERCURY);
 
 		Matrix4f matrix = graphics.pose().last().pose();
 
