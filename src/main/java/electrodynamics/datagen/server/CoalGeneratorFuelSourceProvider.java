@@ -34,7 +34,7 @@ public class CoalGeneratorFuelSourceProvider implements DataProvider {
 
 		Path parent = output.getOutputFolder().resolve(LOC + ".json");
 
-		return CompletableFuture.completedFuture(DataProvider.saveStable(cache, json, parent));
+		return CompletableFuture.allOf(DataProvider.saveStable(cache, json, parent));
 	}
 
 	private void getFuels(JsonObject object) {

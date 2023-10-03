@@ -237,6 +237,10 @@ public class ClientRegister {
 
 	// Custom Textures
 	public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation("forge", "white");
+	public static final ResourceLocation TEXTURE_QUARRYARM = new ResourceLocation(References.ID, "block/custom/quarryarm");
+	public static final ResourceLocation TEXTURE_QUARRYARM_DARK = new ResourceLocation(References.ID, "block/custom/quarrydark");
+	public static final ResourceLocation TEXTURE_MERCURY = new ResourceLocation(References.ID, "block/custom/mercury");
+	public static final ResourceLocation TEXTURE_GAS = new ResourceLocation(References.ID, "block/custom/gastexture");
 
 	public static void setup() {
 		ClientEvents.init();
@@ -344,6 +348,10 @@ public class ClientRegister {
 
 	static {
 		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_WHITE);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_MERCURY);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_QUARRYARM);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_QUARRYARM_DARK);
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_GAS);
 	}
 
 	@SubscribeEvent

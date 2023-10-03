@@ -20,7 +20,7 @@ libsDirName = "../output"
 distsDirName = "../output"
 
 group = electrodynamics_group
-version = electrodynamics_version
+version = "${minecraft_version}-" + electrodynamics_version
 
 base {
 
