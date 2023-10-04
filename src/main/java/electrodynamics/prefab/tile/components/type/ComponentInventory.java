@@ -261,7 +261,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 		NonNullList<ItemStack> list = items.get();
 
-		if (index < 0 || index >= list.size() || ItemStack.isSameItemSameTags(list.get(index), stack)) {
+		if (index < 0 || index >= list.size() || ItemStack.matches(list.get(index), stack)) {
 			return;
 		}
 
