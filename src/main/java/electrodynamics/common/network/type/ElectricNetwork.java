@@ -245,8 +245,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 					transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), producersList, false).getJoules();
 				}
 			}
+		} else {
+			transferBuffer = 0;
 		}
-		transferBuffer = 0;
 		lastVoltage = voltage;
 		voltage = 0;
 		lastEnergyLoss = energyLoss;
