@@ -49,7 +49,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickClient(this::tickClient).tickServer(this::tickServer));
-		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH));
+		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH).setEnergyProduction().setNoEnergyReception());
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(1)).slotFaces(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH).valid((index, stack, i) -> getValidItems().contains(stack.getItem())));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.coalgenerator, this).createMenu((id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}

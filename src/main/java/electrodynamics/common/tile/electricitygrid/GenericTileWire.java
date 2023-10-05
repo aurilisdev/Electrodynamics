@@ -66,9 +66,11 @@ public abstract class GenericTileWire extends GenericConnectTile implements ICon
 				@Override
 				public TransferPack receivePower(TransferPack transfer, boolean debug) {
 					ArrayList<BlockEntity> ignored = new ArrayList<>();
-					ignored.add(level.getBlockEntity(new BlockPos(worldPosition).relative(dir)));
+					BlockEntity entity = level.getBlockEntity(new BlockPos(worldPosition).relative(dir));
+					boolean isReceiver = entity.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir.getOpposite()).map(ICapabilityElectrodynamic::isEnergyReceiver).orElse(false);
+					ignored.add(entity);
 					if (!debug) {
-						getNetwork().addProducer(ignored.get(0), transfer.getVoltage());
+						getNetwork().addProducer(ignored.get(0), transfer.getVoltage(), isReceiver);
 					}
 					return getNetwork().receivePower(transfer, debug);
 				}
@@ -91,6 +93,16 @@ public abstract class GenericTileWire extends GenericConnectTile implements ICon
 				@Override
 				public double getAmpacity() {
 					return getNetwork().getAmpacity();
+				}
+
+				@Override
+				public boolean isEnergyReceiver() {
+					return getNetwork().isEnergyReceiver();
+				}
+
+				@Override
+				public boolean isEnergyProducer() {
+					return getNetwork().isEnergyProducer();
 				}
 				
 			});

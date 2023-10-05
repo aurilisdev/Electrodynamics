@@ -27,12 +27,11 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	private double voltage = 0.0;
 	private double lastEnergyLoss = 0;
 	private double lastVoltage = 0.0;
-	private HashSet<BlockEntity> currentProducers = new HashSet<>();
+	private HashSet<BlockEntity> producersToIgnore = new HashSet<>();
 	private double transferBuffer = 0;
 	private double maxTransferBuffer = 0;
 
 	private double minimumVoltage = -1.0D;
-	private long minimumAmpacity = 0;
 
 	private HashMap<BlockEntity, HashMap<Direction, TransferPack>> lastTransfer = new HashMap<>();
 	private HashSet<BlockEntity> noUsage = new HashSet<>();
@@ -94,12 +93,11 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		voltage = 0.0;
 		lastEnergyLoss = 0;
 		lastVoltage = 0.0;
-		currentProducers.clear();
+		producersToIgnore.clear();
 		transferBuffer = 0;
 		maxTransferBuffer = 0;
 
 		minimumVoltage = -1;
-		minimumAmpacity = 0;
 
 		lastTransfer.clear();
 		noUsage.clear();
@@ -216,8 +214,10 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		super.updateStatistics();
 	}
 
-	public void addProducer(BlockEntity tile, double d) {
-		currentProducers.add(tile);
+	public void addProducer(BlockEntity tile, double d, boolean isEnergyReceiver) {
+		if(!isEnergyReceiver) {
+			producersToIgnore.add(tile);
+		}
 		voltage = Math.max(voltage, d);
 	}
 
@@ -227,7 +227,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		lastTransfer.clear();
 		noUsage.clear();
 		if (maxTransferBuffer > 0) {
-			ArrayList<BlockEntity> producersList = new ArrayList<>(currentProducers);
+			ArrayList<BlockEntity> producersList = new ArrayList<>(producersToIgnore);
 			if ((int) voltage != 0 && voltage > 0 && transferBuffer > 0) {
 				if (resistance > 0) {
 					double bufferAsWatts = transferBuffer * 20.0; // buffer as watts
@@ -254,7 +254,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		energyLoss = 0;
 
 		maxTransferBuffer = 0;
-		currentProducers.clear();
+		producersToIgnore.clear();
 
 		maxTransferBuffer = getConnectedLoad(new LoadProfile(TransferPack.joulesVoltage(transmittedLastTick, lastVoltage), TransferPack.joulesVoltage(transmittedLastTick, lastVoltage)), Direction.UP).getJoules();
 
@@ -362,7 +362,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 
 		ArrayList<BlockEntity> load = new ArrayList<>(acceptorSet);
 
-		load.removeAll(currentProducers);
+		load.removeAll(producersToIgnore);
 		HashMap<Direction, TransferPack> lastPerTile;
 
 		for (BlockEntity tile : load) {
@@ -396,6 +396,16 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		locked = false;
 
 		return connectedLoad;
+	}
+
+	@Override
+	public boolean isEnergyReceiver() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnergyProducer() {
+		return true;
 	}
 
 }

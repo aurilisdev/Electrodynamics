@@ -35,7 +35,7 @@ public class TileThermoelectricGenerator extends GenericTile {
 		super(ElectrodynamicsBlockTypes.TILE_THERMOELECTRICGENERATOR.get(), worldPosition, blockState);
 		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.UP));
+		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.UP).setEnergyProduction().setNoEnergyReception());
 	}
 
 	protected void tickServer(ComponentTickable tickable) {

@@ -43,7 +43,7 @@ public class TileAdvancedSolarPanel extends TileSolarPanel implements IMultibloc
 		// addComponent(new ComponentPacketHandler(this));
 		// addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2));
 		// addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerSolarPanel.VALID_UPGRADES).valid(machineValidator()));
-		this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2);
+		this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).setEnergyProduction().setNoEnergyReception();
 		forceComponent(new ComponentContainerProvider(SubtypeMachine.advancedsolarpanel, this).createMenu((id, player) -> new ContainerSolarPanel(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 	}
 

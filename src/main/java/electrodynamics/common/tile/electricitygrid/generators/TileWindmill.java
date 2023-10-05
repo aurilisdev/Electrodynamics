@@ -58,7 +58,7 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN));
+		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).setEnergyProduction().setNoEnergyReception());
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerWindmill.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.windmill, this).createMenu((id, player) -> new ContainerWindmill(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
 

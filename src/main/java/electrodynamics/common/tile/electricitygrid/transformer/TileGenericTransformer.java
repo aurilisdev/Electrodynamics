@@ -58,7 +58,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 		if (Constants.SHOULD_TRANSFORMER_HUM) {
 			addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 		}
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1.0).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1.0).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage).setEnergyProduction());
 	}
 
 	public void tickClient(ComponentTickable tickable) {

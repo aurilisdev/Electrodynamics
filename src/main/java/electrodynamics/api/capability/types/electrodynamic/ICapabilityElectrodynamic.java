@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 /**
  * CONVENTION NOTE: A VOLTAGE OF -1 INDICATES THIS ENTITY SHOULD NOT HAVE VOLTAGE CONSIDERED WHEN INTERACTING WITH IT
  * 
- * @author AurilisDev
+ * @author AurilisDev, skip999
  *
  */
 public interface ICapabilityElectrodynamic {
@@ -83,6 +83,20 @@ public interface ICapabilityElectrodynamic {
 	default double getAmpacity() {
 		return -1;
 	}
+	
+	/**
+	 * Returns whether or not this Capability can receive energy
+	 * 
+	 * @return whether or not energy can be accepted
+	 */
+	public boolean isEnergyReceiver();
+	
+	/**
+	 * Returns whether or not this Capability can produce energy
+	 * 
+	 * @return whether or not energy can be produced
+	 */
+	public boolean isEnergyProducer();
 
 	/**
 	 * 

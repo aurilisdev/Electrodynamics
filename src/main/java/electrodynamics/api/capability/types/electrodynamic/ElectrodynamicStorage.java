@@ -38,4 +38,16 @@ public class ElectrodynamicStorage implements ICapabilityElectrodynamic {
 		return TransferPack.EMPTY;
 	}
 
+	@Override
+	public boolean isEnergyReceiver() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean isEnergyProducer() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -59,6 +59,9 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	protected DoubleSupplier getJoules = () -> joules.get();
 	protected BooleanSupplier hasCapability = () -> true;
 	private Direction lastReturnedSide = Direction.UP;
+	
+	private boolean producesEnergy = false;
+	private boolean acceptsEnergy = true;
 
 	public static final String SAVE_KEY = "joules";
 
@@ -82,6 +85,16 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 	@Override
 	public double getMaximumVoltage() {
 		return maximumVoltageFunction.get();
+	}
+	
+	@Override
+	public boolean isEnergyProducer() {
+		return producesEnergy;
+	}
+	
+	@Override
+	public boolean isEnergyReceiver() {
+		return acceptsEnergy;
 	}
 
 	@Override
@@ -217,6 +230,16 @@ public class ComponentElectrodynamic implements Component, ICapabilityElectrodyn
 
 	public ComponentElectrodynamic voltage(double voltage) {
 		this.voltage.set(voltage);
+		return this;
+	}
+	
+	public ComponentElectrodynamic setEnergyProduction() {
+		producesEnergy = true;
+		return this;
+	}
+	
+	public ComponentElectrodynamic setNoEnergyReception() {
+		acceptsEnergy = false;
 		return this;
 	}
 

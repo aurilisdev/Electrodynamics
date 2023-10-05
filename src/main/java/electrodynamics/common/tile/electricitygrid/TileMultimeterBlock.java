@@ -33,7 +33,7 @@ public class TileMultimeterBlock extends GenericTile {
 		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeInput(Direction.SOUTH).voltage(-1));
+		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeInput(Direction.SOUTH).voltage(-1).setNoEnergyReception());
 	}
 
 	public void tickServer(ComponentTickable tickable) {
