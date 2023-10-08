@@ -104,6 +104,11 @@ public abstract class GenericTileWire extends GenericConnectTile implements ICon
 				public boolean isEnergyProducer() {
 					return getNetwork().isEnergyProducer();
 				}
+
+				@Override
+				public void setJoulesStored(double joules) {
+					getNetwork().setJoulesStored(joules);
+				}
 				
 			});
 		}

@@ -19,27 +19,26 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 public interface ICapabilityElectrodynamic {
 
 	/**
-	 * Sets the joules stored for this Capability
-	 * 
-	 * @param joules
-	 */
-	default void setJoulesStored(double joules) {
-	}
-
-	/**
 	 * Returns the current joules stored by this Capability
 	 * 
 	 * @return
 	 */
-	double getJoulesStored();
+	public double getJoulesStored();
 
 	/**
 	 * Returns the maximum possible joules stored by this Capability
 	 * 
 	 * @return
 	 */
-	double getMaxJoulesStored();
+	public double getMaxJoulesStored();
 
+	/**
+	 * Sets the joules stored for this Capability
+	 * 
+	 * @param joules
+	 */
+	public void setJoulesStored(double joules);
+	
 	/**
 	 * Returns the current operating voltage of this Capability
 	 * 
