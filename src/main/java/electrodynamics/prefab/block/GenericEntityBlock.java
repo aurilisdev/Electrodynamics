@@ -128,11 +128,14 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		super.onRemove(state, level, pos, newState, isMoving);
 	}
 
+	/**
+	 * Fired when a neighboring tile changes
+	 */
 	@Override
 	public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
 		super.onNeighborChange(state, level, pos, neighbor);
 		if (level.getBlockEntity(pos) instanceof GenericTile generic) {
-			generic.onNeightborChanged(neighbor);
+			generic.onNeightborChanged(neighbor, false);
 		}
 	}
 
@@ -144,11 +147,14 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		}
 	}
 
+	/**
+	 * Fired when a neighboring blockstate changes
+	 */
 	@Override
 	public void neighborChanged(BlockState state, Level level, BlockPos pos, Block block, BlockPos neighbor, boolean isMoving) {
 		super.neighborChanged(state, level, pos, block, neighbor, isMoving);
 		if (level.getBlockEntity(pos) instanceof GenericTile generic) {
-			generic.onNeightborChanged(neighbor);
+			generic.onNeightborChanged(neighbor, true);
 		}
 
 	}

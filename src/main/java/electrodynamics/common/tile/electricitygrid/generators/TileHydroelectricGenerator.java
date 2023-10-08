@@ -154,7 +154,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 	}
 
 	@Override
-	public void onNeightborChanged(BlockPos neighbor) {
+	public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
 		if (level.isClientSide) {
 			return;
 		}

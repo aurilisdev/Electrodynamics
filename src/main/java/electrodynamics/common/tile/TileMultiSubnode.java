@@ -53,9 +53,9 @@ public class TileMultiSubnode extends GenericTile {
 	}
 
 	@Override
-	public void onNeightborChanged(BlockPos neighbor) {
+	public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
 		if (level.getBlockEntity(parentPos.get()) instanceof IMultiblockParentTile node) {
-			node.onSubnodeNeighborChange(this, neighbor);
+			node.onSubnodeNeighborChange(this, neighbor, blockStateTrigger);
 		}
 	}
 

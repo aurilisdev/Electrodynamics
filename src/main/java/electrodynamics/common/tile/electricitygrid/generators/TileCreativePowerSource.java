@@ -78,7 +78,7 @@ public class TileCreativePowerSource extends GenericTile {
 	}
 
 	@Override
-	public void onNeightborChanged(BlockPos neighbor) {
+	public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
 		if (level.isClientSide) {
 			return;
 		}

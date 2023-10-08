@@ -350,7 +350,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 
 	}
 
-	public void onNeightborChanged(BlockPos neighbor) {
+	public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
 
 	}
 

@@ -80,7 +80,7 @@ public interface IMultiblockParentTile {
 
 	Subnode[] getSubNodes();
 
-	default void onSubnodeNeighborChange(TileMultiSubnode subnode, BlockPos subnodeChangingNeighbor) {
+	default void onSubnodeNeighborChange(TileMultiSubnode subnode, BlockPos subnodeChangingNeighbor, boolean blockStateTrigger) {
 
 	}
 

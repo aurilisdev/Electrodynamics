@@ -215,7 +215,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	}
 
 	public void addProducer(BlockEntity tile, double d, boolean isEnergyReceiver) {
-		if(!isEnergyReceiver) {
+		if (!isEnergyReceiver) {
 			producersToIgnore.add(tile);
 		}
 		voltage = Math.max(voltage, d);
@@ -224,6 +224,13 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	@Override
 	public void tick() {
 		super.tick();
+		// Electrodynamics.LOGGER.info("Beginning of tick");
+		// Electrodynamics.LOGGER.info("ticks " + numTicks);
+		// Electrodynamics.LOGGER.info("length " + conductorSet.size());
+		// Electrodynamics.LOGGER.info("voltage " + voltage);
+		// Electrodynamics.LOGGER.info("trans " + transferBuffer);
+		// Electrodynamics.LOGGER.info("max trans " + maxTransferBuffer);
+
 		lastTransfer.clear();
 		noUsage.clear();
 		if (maxTransferBuffer > 0) {
@@ -249,7 +256,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 			transferBuffer = 0;
 		}
 		lastVoltage = voltage;
-		voltage = 0;
+		if (transferBuffer <= 0) {
+			voltage = 0;
+		}
 		lastEnergyLoss = energyLoss;
 		energyLoss = 0;
 
@@ -273,6 +282,15 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		if (getSize() == 0) {
 			deregister();
 		}
+		// Electrodynamics.LOGGER.info("");
+		// Electrodynamics.LOGGER.info("End of tick");
+		// Electrodynamics.LOGGER.info("length " + conductorSet.size());
+		// Electrodynamics.LOGGER.info("voltage " + voltage);
+		// Electrodynamics.LOGGER.info("trans " + transferBuffer);
+		// Electrodynamics.LOGGER.info("max trans " + maxTransferBuffer);
+		// Electrodynamics.LOGGER.info("");
+		// Electrodynamics.LOGGER.info("");
+		// numTicks++;
 
 	}
 

@@ -52,10 +52,7 @@ public class TileRelay extends GenericTile {
 
 			isLocked = false;
 
-			if (accepted.getJoules() > 0) {
-				return accepted;
-			}
-			return TransferPack.EMPTY;
+			return TransferPack.joulesVoltage(accepted.getJoules() / Constants.RELAY_EFFICIENCY, accepted.getVoltage());
 
 		}).orElse(TransferPack.EMPTY);
 	}
@@ -78,13 +75,13 @@ public class TileRelay extends GenericTile {
 			return TransferPack.EMPTY;
 		}
 
+		LoadProfile transformed = new LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * Constants.RELAY_EFFICIENCY, lastEnergy.lastUsage().getVoltage()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * Constants.RELAY_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage()));
+
 		isLocked = true;
-
-		TransferPack load = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> cap.getConnectedLoad(lastEnergy, output.getOpposite())).orElse(TransferPack.EMPTY);
-
+		TransferPack returner = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).map(cap -> cap.getConnectedLoad(transformed, dir)).orElse(TransferPack.EMPTY);
 		isLocked = false;
+		return TransferPack.joulesVoltage(returner.getJoules() / Constants.RELAY_EFFICIENCY, returner.getVoltage());
 
-		return load;
 
 	}
 
@@ -131,7 +128,7 @@ public class TileRelay extends GenericTile {
 	}
 
 	@Override
-	public void onNeightborChanged(BlockPos neighbor) {
+	public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
 		if (level.isClientSide) {
 			return;
 		}
@@ -143,7 +140,6 @@ public class TileRelay extends GenericTile {
 			} else {
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
 			}
-			setChanged();
 		}
 	}
 
@@ -158,7 +154,6 @@ public class TileRelay extends GenericTile {
 			if (recievedRedstoneSignal) {
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
 			}
-			setChanged();
 		}
 	}
 

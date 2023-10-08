@@ -11,6 +11,7 @@ import net.minecraft.network.protocol.game.ClientboundLevelChunkWithLightPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -186,5 +187,17 @@ public class WorldUtils {
 
 	public static double distanceBetweenPositions(BlockPos a, BlockPos b) {
 		return Mth.sqrt(Mth.square(a.getX() - b.getX()) + Mth.square(a.getY() - b.getY()) + Mth.square(a.getZ() - b.getZ()));
+	}
+
+	public static Direction getDirectionFromPosDelta(BlockPos from, BlockPos to) {
+		BlockPos delta = to.subtract(from);
+		return Direction.fromDelta(delta.getX(), delta.getY(), delta.getZ());
+	}
+
+	public static boolean shouldUpdateFromRedstoneChange(Level world, BlockPos ourPos, BlockPos neighborPos) {
+		int bestSignal = world.getBestNeighborSignal(ourPos);
+		int neighborSignal = world.getSignal(neighborPos, getDirectionFromPosDelta(ourPos, neighborPos));
+
+		return bestSignal == neighborSignal;
 	}
 }

@@ -90,12 +90,13 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 		locked = true;
 		TransferPack returner = ElectricityUtils.receivePower(output.getSafe(), facing.getOpposite(), TransferPack.joulesVoltage(transfer.getJoules() * Constants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);
 		locked = false;
-		if (!debug && returner.getVoltage() > 0) {
-			lastTransfer.set(returner);
+		TransferPack toReturn = TransferPack.joulesVoltage(returner.getJoules() / Constants.TRANSFORMER_EFFICIENCY, returner.getVoltage() / getCoilRatio());
+		if (!debug && toReturn.getVoltage() > 0) {
+			lastTransfer.set(toReturn);
 			lastTransferTime.set(level.getGameTime());
 
 		}
-		return returner;
+		return toReturn;
 	}
 
 	public TransferPack getConnectedLoad(LoadProfile lastEnergy, Direction dir) {
@@ -112,10 +113,12 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 		if (output.getSafe() == null) {
 			return TransferPack.EMPTY;
 		}
+		LoadProfile transformed = new LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * Constants.TRANSFORMER_EFFICIENCY, lastEnergy.lastUsage().getVoltage() * getCoilRatio()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * Constants.TRANSFORMER_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage() * getCoilRatio()));
+		
 		locked = true;
-		TransferPack returner = ((BlockEntity) output.getSafe()).getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).map(cap -> cap.getConnectedLoad(lastEnergy, dir)).orElse(TransferPack.EMPTY);
+		TransferPack returner = ((BlockEntity) output.getSafe()).getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).map(cap -> cap.getConnectedLoad(transformed, dir)).orElse(TransferPack.EMPTY);
 		locked = false;
-		return returner;
+		return TransferPack.joulesVoltage(returner.getJoules() / Constants.TRANSFORMER_EFFICIENCY, returner.getVoltage());
 	}
 
 	public double getMinimumVoltage() {

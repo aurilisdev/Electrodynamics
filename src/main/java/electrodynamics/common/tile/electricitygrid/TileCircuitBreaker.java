@@ -78,7 +78,7 @@ public class TileCircuitBreaker extends GenericTile {
 				tripCurveTimer = TRIP_CURVE;
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
 
-				return TransferPack.EMPTY;
+				return transfer;
 			}
 
 			if (cap.getAmpacity() > 0 && cap.getAmpacity() < transfer.getAmps()) {
@@ -87,7 +87,7 @@ public class TileCircuitBreaker extends GenericTile {
 				tripCurveTimer = TRIP_CURVE;
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
 
-				return TransferPack.EMPTY;
+				return transfer;
 
 			}
 
@@ -112,15 +112,13 @@ public class TileCircuitBreaker extends GenericTile {
 
 			isLocked = false;
 
-			if (accepted.getJoules() > 0) {
-				return accepted;
-			}
-			return TransferPack.EMPTY;
+			return TransferPack.joulesVoltage(accepted.getJoules() / Constants.CIRCUITBREAKER_EFFICIENCY, accepted.getVoltage());
+
 
 		}).orElse(TransferPack.EMPTY);
 	}
 
-	public TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
+	public TransferPack getConnectedLoad(LoadProfile lastEnergy, Direction dir) {
 
 		if (recievedRedstoneSignal || isLocked || tripped) {
 			return TransferPack.EMPTY;
@@ -142,7 +140,7 @@ public class TileCircuitBreaker extends GenericTile {
 
 		TransferPack load = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> {
 
-			if (cap.getMinimumVoltage() > -1 && (cap.getMinimumVoltage() < loadProfile.lastUsage().getVoltage() || cap.getMinimumVoltage() < loadProfile.maximumAvailable().getVoltage())) {
+			if (cap.getMinimumVoltage() > -1 && (cap.getMinimumVoltage() < lastEnergy.lastUsage().getVoltage() || cap.getMinimumVoltage() < lastEnergy.maximumAvailable().getVoltage())) {
 				tripped = true;
 				tripCurveTimer = TRIP_CURVE;
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
@@ -150,7 +148,7 @@ public class TileCircuitBreaker extends GenericTile {
 				return TransferPack.EMPTY;
 			}
 
-			if (cap.getAmpacity() > 0 && cap.getAmpacity() <= loadProfile.lastUsage().getAmps()) {
+			if (cap.getAmpacity() > 0 && cap.getAmpacity() <= lastEnergy.lastUsage().getAmps()) {
 
 				tripped = true;
 				tripCurveTimer = TRIP_CURVE;
@@ -160,21 +158,26 @@ public class TileCircuitBreaker extends GenericTile {
 
 			}
 
-			return cap.getConnectedLoad(loadProfile, output.getOpposite());
+			LoadProfile transformed = new LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.lastUsage().getVoltage()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage()));
+
+			isLocked = true;
+			TransferPack returner = cap.getConnectedLoad(transformed, dir);
+			isLocked = false;
+			return TransferPack.joulesVoltage(returner.getJoules() / Constants.CIRCUITBREAKER_EFFICIENCY, returner.getVoltage());
 		}).orElse(TransferPack.EMPTY);
 
 		isLocked = false;
 
 		return load;
 	}
-	
+
 	public double getMinimumVoltage() {
 		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-		if(isLocked) {
+		if (isLocked) {
 			return 0;
 		}
 		BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
-		if(output == null) {
+		if (output == null) {
 			return -1;
 		}
 		isLocked = true;
@@ -182,14 +185,14 @@ public class TileCircuitBreaker extends GenericTile {
 		isLocked = false;
 		return minimumVoltage;
 	}
-	
+
 	public double getAmpacity() {
 		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-		if(isLocked) {
+		if (isLocked) {
 			return 0;
 		}
 		BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
-		if(output == null) {
+		if (output == null) {
 			return -1;
 		}
 		isLocked = true;
@@ -215,7 +218,7 @@ public class TileCircuitBreaker extends GenericTile {
 	}
 
 	@Override
-	public void onNeightborChanged(BlockPos neighbor) {
+	public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
 		if (level.isClientSide) {
 			return;
 		}
@@ -227,7 +230,6 @@ public class TileCircuitBreaker extends GenericTile {
 			} else {
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
 			}
-			setChanged();
 		}
 	}
 
@@ -242,7 +244,6 @@ public class TileCircuitBreaker extends GenericTile {
 			if (recievedRedstoneSignal) {
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
 			}
-			setChanged();
 		}
 	}
 
