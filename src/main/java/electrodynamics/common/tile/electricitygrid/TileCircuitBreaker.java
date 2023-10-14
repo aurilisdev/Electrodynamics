@@ -8,8 +8,6 @@ import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
@@ -39,8 +37,7 @@ public class TileCircuitBreaker extends GenericTile {
 
 	public TileCircuitBreaker(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_CIRCUITBREAKER.get(), worldPosition, blockState);
-		addComponent(new ComponentDirection(this));
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage).setEnergyProduction());
+		addComponent(new ComponentElectrodynamic(this, true, true).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setOutputDirections(Direction.SOUTH).setInputDirections(Direction.NORTH).voltage(-1).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 	}
 
@@ -63,7 +60,7 @@ public class TileCircuitBreaker extends GenericTile {
 			return TransferPack.EMPTY;
 		}
 
-		Direction output = BlockEntityUtils.getRelativeSide(this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), Direction.SOUTH);
+		Direction output = BlockEntityUtils.getRelativeSide(getFacing(), Direction.SOUTH);
 
 		BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
 
@@ -124,7 +121,7 @@ public class TileCircuitBreaker extends GenericTile {
 			return TransferPack.EMPTY;
 		}
 
-		Direction output = BlockEntityUtils.getRelativeSide(this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), Direction.SOUTH);
+		Direction output = BlockEntityUtils.getRelativeSide(getFacing(), Direction.SOUTH);
 
 		if (dir.getOpposite() != output) {
 			return TransferPack.EMPTY;
@@ -172,7 +169,7 @@ public class TileCircuitBreaker extends GenericTile {
 	}
 
 	public double getMinimumVoltage() {
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 		if (isLocked) {
 			return 0;
 		}
@@ -187,7 +184,7 @@ public class TileCircuitBreaker extends GenericTile {
 	}
 
 	public double getAmpacity() {
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 		if (isLocked) {
 			return 0;
 		}
@@ -235,6 +232,7 @@ public class TileCircuitBreaker extends GenericTile {
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
+		super.onPlace(oldState, isMoving);
 		if (level.isClientSide) {
 			return;
 		}

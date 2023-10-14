@@ -1,9 +1,9 @@
 package electrodynamics.prefab.tile.components.type;
 
-import electrodynamics.prefab.tile.components.Component;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponent;
+import electrodynamics.prefab.tile.components.IComponentType;
 
-public class ComponentName implements Component {
+public class ComponentName implements IComponent {
 	protected boolean translation;
 	protected String name = "";
 
@@ -21,7 +21,7 @@ public class ComponentName implements Component {
 	}
 
 	@Override
-	public ComponentType getType() {
-		return ComponentType.Name;
+	public IComponentType getType() {
+		return IComponentType.Name;
 	}
 }

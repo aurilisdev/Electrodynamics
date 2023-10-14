@@ -34,7 +34,7 @@ public class TileCreativePowerSource extends GenericTile {
 		super(ElectrodynamicsBlockTypes.TILE_CREATIVEPOWERSOURCE.get(), worldPos, blockState);
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).output(Direction.UP).output(Direction.NORTH).output(Direction.SOUTH).output(Direction.EAST).output(Direction.WEST).voltage(-1).setEnergyProduction().setNoEnergyReception());
+		addComponent(new ComponentElectrodynamic(this, true, false).setOutputDirections(Direction.values()).voltage(-1));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.creativepowersource, this).createMenu((id, player) -> new ContainerCreativePowerSource(id, player, getCoordsArray())));
 	}
 

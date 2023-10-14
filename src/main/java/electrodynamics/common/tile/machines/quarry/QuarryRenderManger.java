@@ -9,8 +9,6 @@ import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.client.render.event.levelstage.HandlerQuarryArm;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.utilities.math.PrecisionVector;
 import electrodynamics.prefab.utilities.object.Location;
 import electrodynamics.prefab.utilities.object.QuarryArmDataHolder;
@@ -81,7 +79,7 @@ public class QuarryRenderManger {
 
 		/* Horizontal Arm Segment */
 
-		Direction facing = ((ComponentDirection) quarry.getComponent(ComponentType.Direction)).getDirection().getOpposite();
+		Direction facing = quarry.getFacing().getOpposite();
 
 		int wholeWidthLeft, wholeWidthRight, wholeWidthTop, wholeWidthBottom;
 		double remainderWidthLeft, remainderWidthRight, remainderWidthTop, remainderWidthBottom;

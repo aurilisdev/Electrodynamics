@@ -11,9 +11,8 @@ import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
 import electrodynamics.prefab.sound.utils.ITickableSound;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
@@ -55,13 +54,12 @@ public class TileCombustionChamber extends GenericMaterialTile implements IElect
 
 	public TileCombustionChamber(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_COMBUSTIONCHAMBER.get(), worldPosition, blockState);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.EAST).setEnergyProduction().setNoEnergyReception());
+		addComponent(new ComponentElectrodynamic(this, true, false).setOutputDirections(Direction.EAST));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1)).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
 		addComponent(new ComponentFluidHandlerMulti(this).setInputTanks(1, TANK_CAPACITY).setInputDirections(Direction.WEST).setInputFluidTags(CombustionFuelRegister.INSTANCE.getFluidTags()));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.combustionchamber, this).createMenu((id, player) -> new ContainerCombustionChamber(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.combustionchamber, this).createMenu((id, player) -> new ContainerCombustionChamber(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
@@ -69,15 +67,14 @@ public class TileCombustionChamber extends GenericMaterialTile implements IElect
 			running.set(false);
 			return;
 		}
-		ComponentDirection direction = getComponent(ComponentType.Direction);
-		Direction facing = direction.getDirection();
+		Direction facing = getFacing();
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(facing.getClockWise()));
 		}
 		if (tickable.getTicks() % 40 == 0) {
 			output.update(worldPosition.relative(facing.getClockWise()));
 		}
-		ComponentFluidHandlerMulti handler = getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerMulti handler = getComponent(IComponentType.FluidHandler);
 		FluidUtilities.drainItem(this, handler.getInputTanks());
 		FluidTank tank = handler.getInputTanks()[0];
 		if (burnTime.get() <= 0) {
@@ -140,7 +137,7 @@ public class TileCombustionChamber extends GenericMaterialTile implements IElect
 
 	@Override
 	public TransferPack getProduced() {
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 		return TransferPack.joulesVoltage(Constants.COMBUSTIONCHAMBER_JOULES_PER_TICK * fuelMultiplier * multiplier.get(), electro.getVoltage());
 	}
 

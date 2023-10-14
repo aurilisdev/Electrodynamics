@@ -4,9 +4,8 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCreativeFluidSource;
 import electrodynamics.common.tile.pipelines.fluids.GenericTileFluidPipe;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
@@ -35,16 +34,15 @@ public class TileCreativeFluidSource extends GenericTile {
 	public TileCreativeFluidSource(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_CREATIVEFLUIDSOURCE.get(), worldPos, blockState);
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentFluidHandlerSimple(128000, this, "").universalOutput());
+		addComponent(new ComponentFluidHandlerSimple(128000, this, "").setOutputDirections(Direction.values()));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1).bucketOutputs(1)).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.creativefluidsource, this).createMenu((id, player) -> new ContainerCreativeFluidSource(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.creativefluidsource, this).createMenu((id, player) -> new ContainerCreativeFluidSource(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
 	private void tickServer(ComponentTickable tick) {
-		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(ComponentType.FluidHandler);
-		ComponentInventory inv = getComponent(ComponentType.Inventory);
+		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(IComponentType.FluidHandler);
+		ComponentInventory inv = getComponent(IComponentType.Inventory);
 		ItemStack input = inv.getItem(0);
 		ItemStack output = inv.getItem(1);
 
@@ -71,9 +69,9 @@ public class TileCreativeFluidSource extends GenericTile {
 			}
 		}
 		// try to output to pipe
-		ComponentDirection componentDirection = getComponent(ComponentType.Direction);
+		Direction facing = getFacing();
 		for (Direction relative : handler.outputDirections) {
-			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative.getOpposite());
+			Direction direction = BlockEntityUtils.getRelativeSide(facing, relative.getOpposite());
 			BlockPos face = getBlockPos().relative(direction.getOpposite());
 			BlockEntity faceTile = getLevel().getBlockEntity(face);
 			if (faceTile != null) {

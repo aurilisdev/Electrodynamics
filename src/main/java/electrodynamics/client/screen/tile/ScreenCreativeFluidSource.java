@@ -7,7 +7,7 @@ import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.Pro
 import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
 import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentFluidGauge;
 import electrodynamics.prefab.screen.types.GenericMaterialScreen;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
@@ -21,7 +21,7 @@ public class ScreenCreativeFluidSource extends GenericMaterialScreen<ContainerCr
 		addComponent(new ScreenComponentFluidGauge(() -> {
 			TileCreativeFluidSource boiler = menu.getHostFromIntArray();
 			if (boiler != null) {
-				return boiler.<ComponentFluidHandlerSimple>getComponent(ComponentType.FluidHandler);
+				return boiler.<ComponentFluidHandlerSimple>getComponent(IComponentType.FluidHandler);
 			}
 			return null;
 		}, 81, 18));

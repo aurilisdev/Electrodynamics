@@ -9,8 +9,7 @@ import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
 import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
@@ -38,8 +37,7 @@ public class TileElectricPump extends GenericTile implements ITickableSound {
 
 	public TileElectricPump(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_ELECTRICPUMP.get(), worldPosition, blockState);
-		addComponent(new ComponentElectrodynamic(this).maxJoules(Constants.ELECTRICPUMP_USAGE_PER_TICK * 20).input(Direction.UP));
-		addComponent(new ComponentDirection(this));
+		addComponent(new ComponentElectrodynamic(this, false, true).maxJoules(Constants.ELECTRICPUMP_USAGE_PER_TICK * 20).setInputDirections(Direction.UP));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentFluidHandlerMulti(this).setOutputTanks(1, 0).setOutputDirections(Direction.EAST).setOutputFluidTags(FluidTags.WATER));
@@ -48,11 +46,11 @@ public class TileElectricPump extends GenericTile implements ITickableSound {
 	protected CachedTileOutput output;
 
 	protected void tickServer(ComponentTickable tickable) {
-		Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().getClockWise();
+		Direction direction = getFacing().getClockWise();
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(direction));
 		}
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
 		if (tickable.getTicks() % 20 == 0) {
 			output.update(worldPosition.relative(direction));

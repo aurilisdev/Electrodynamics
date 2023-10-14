@@ -7,8 +7,7 @@ import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.ElectricityUtils;
@@ -33,9 +32,8 @@ public class TileThermoelectricGenerator extends GenericTile {
 
 	public TileThermoelectricGenerator(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_THERMOELECTRICGENERATOR.get(), worldPosition, blockState);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.UP).setEnergyProduction().setNoEnergyReception());
+		addComponent(new ComponentElectrodynamic(this, true, false).setOutputDirections(Direction.UP));
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
@@ -45,16 +43,16 @@ public class TileThermoelectricGenerator extends GenericTile {
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(Direction.UP));
 		}
-		ComponentDirection direction = getComponent(ComponentType.Direction);
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		Direction facing = getFacing();
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 		if (tickable.getTicks() % 60 == 0) {
-			Fluid fluid = level.getFluidState(worldPosition.relative(direction.getDirection().getOpposite())).getType();
+			Fluid fluid = level.getFluidState(worldPosition.relative(facing.getOpposite())).getType();
 			hasHeat.set(ThermoelectricGeneratorHeatRegister.INSTANCE.isHeatSource(fluid));
 			heatMultipler.set(ThermoelectricGeneratorHeatRegister.INSTANCE.getHeatMultiplier(fluid));
 			output.update(worldPosition.relative(Direction.UP));
 		}
 		if (hasHeat.get() && output.valid()) {
-			ElectricityUtils.receivePower(output.getSafe(), Direction.UP, TransferPack.ampsVoltage(Constants.THERMOELECTRICGENERATOR_AMPERAGE * level.getFluidState(worldPosition.relative(direction.getDirection().getOpposite())).getAmount() / 16.0 * heatMultipler.get(), electro.getVoltage()), false);
+			ElectricityUtils.receivePower(output.getSafe(), Direction.UP, TransferPack.ampsVoltage(Constants.THERMOELECTRICGENERATOR_AMPERAGE * level.getFluidState(worldPosition.relative(facing.getOpposite())).getAmount() / 16.0 * heatMultipler.get(), electro.getVoltage()), false);
 		}
 	}
 

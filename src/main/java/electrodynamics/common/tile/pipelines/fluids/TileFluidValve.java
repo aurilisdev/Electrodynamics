@@ -3,8 +3,6 @@ package electrodynamics.common.tile.pipelines.fluids;
 import org.jetbrains.annotations.NotNull;
 
 import electrodynamics.common.tile.pipelines.GenericTileValve;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
@@ -22,7 +20,6 @@ public class TileFluidValve extends GenericTileValve {
 
 	public TileFluidValve(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_FLUIDVALVE.get(), pos, state);
-		addComponent(new ComponentDirection(this));
 	}
 
 	@Override
@@ -31,7 +28,7 @@ public class TileFluidValve extends GenericTileValve {
 			return LazyOptional.empty();
 		}
 
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 
 		if (BlockEntityUtils.getRelativeSide(facing, INPUT_DIR) == side || BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR) == side) {
 

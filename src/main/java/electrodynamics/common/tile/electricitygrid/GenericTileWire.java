@@ -67,6 +67,9 @@ public abstract class GenericTileWire extends GenericConnectTile implements ICon
 				public TransferPack receivePower(TransferPack transfer, boolean debug) {
 					ArrayList<BlockEntity> ignored = new ArrayList<>();
 					BlockEntity entity = level.getBlockEntity(new BlockPos(worldPosition).relative(dir));
+					if(entity == null) {
+						return TransferPack.EMPTY;
+					}
 					boolean isReceiver = entity.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir.getOpposite()).map(ICapabilityElectrodynamic::isEnergyReceiver).orElse(false);
 					ignored.add(entity);
 					if (!debug) {

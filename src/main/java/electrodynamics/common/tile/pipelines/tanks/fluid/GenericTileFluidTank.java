@@ -3,9 +3,8 @@ package electrodynamics.common.tile.pipelines.tanks.fluid;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerFluidTankGeneric;
 import electrodynamics.common.network.utils.FluidUtilities;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
@@ -25,15 +24,14 @@ public class GenericTileFluidTank extends GenericMaterialTile {
 	public GenericTileFluidTank(BlockEntityType<?> tile, int capacity, SubtypeMachine machine, BlockPos pos, BlockState state) {
 		super(tile, pos, state);
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentFluidHandlerSimple(capacity, this, "").setInputDirections(Direction.UP).setOutputDirections(Direction.DOWN));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1).bucketOutputs(1)).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> new ContainerFluidTankGeneric(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> new ContainerFluidTankGeneric(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
 	public void tickServer(ComponentTickable tick) {
-		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(IComponentType.FluidHandler);
 		FluidUtilities.drainItem(this, handler.toArray());
 		FluidUtilities.fillItem(this, handler.toArray());
 		FluidUtilities.outputToPipe(this, handler.toArray(), handler.outputDirections);
@@ -45,8 +43,8 @@ public class GenericTileFluidTank extends GenericMaterialTile {
 		if (level.getBlockState(below).hasBlockEntity()) {
 			BlockEntity tile = level.getBlockEntity(below);
 			if (tile instanceof GenericTileFluidTank tankBelow) {
-				ComponentFluidHandlerSimple belowHandler = tankBelow.getComponent(ComponentType.FluidHandler);
-				ComponentFluidHandlerSimple thisHandler = getComponent(ComponentType.FluidHandler);
+				ComponentFluidHandlerSimple belowHandler = tankBelow.getComponent(IComponentType.FluidHandler);
+				ComponentFluidHandlerSimple thisHandler = getComponent(IComponentType.FluidHandler);
 
 				if (belowHandler.isFluidValid(0, thisHandler.getFluid())) {
 					int room = belowHandler.getSpace();
@@ -63,7 +61,7 @@ public class GenericTileFluidTank extends GenericMaterialTile {
 
 	@Override
 	public int getComparatorSignal() {
-		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(IComponentType.FluidHandler);
 		return (int) ((double) handler.getFluidAmount() / (double) Math.max(1, handler.getCapacity()) * 15.0);
 	}
 }

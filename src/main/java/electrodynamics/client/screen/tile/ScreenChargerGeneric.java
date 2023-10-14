@@ -11,7 +11,7 @@ import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
 import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
@@ -51,7 +51,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 
 			if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric electricItem) {
 
-				ComponentElectrodynamic electro = charger.getComponent(ComponentType.Electrodynamic);
+				ComponentElectrodynamic electro = charger.getComponent(IComponentType.Electrodynamic);
 
 				chargingPercentage = electricItem.getJoulesStored(chargingItem) / electricItem.getElectricProperties().capacity * 100;
 				chargeCapable = electro.getVoltage() / electricItem.getElectricProperties().receive.getVoltage() * 100;

@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.electricitygrid.batteries.TileLithiumBatteryBox;
 import electrodynamics.prefab.block.GenericEntityBlock;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.math.MathUtils;
@@ -25,7 +25,7 @@ public class RenderLithiumBatteryBox extends AbstractTileRenderer<TileLithiumBat
 	@Override
 	public void render(TileLithiumBatteryBox tileEntityIn, float partialTicks, @NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		BakedModel ibakedmodel;
-		ComponentElectrodynamic el = tileEntityIn.getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic el = tileEntityIn.getComponent(IComponentType.Electrodynamic);
 		int stored = (int) (el.getJoulesStored() / el.getMaxJoulesStored() * 6);
 		ibakedmodel = switch (stored) {
 		case 0 -> getModel(ClientRegister.MODEL_LITHIUMBATTERYBOX);

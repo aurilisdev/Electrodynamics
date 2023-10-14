@@ -6,7 +6,7 @@ import electrodynamics.common.inventory.container.tile.ContainerAdvancedDowngrad
 import electrodynamics.common.inventory.container.tile.ContainerAdvancedUpgradeTransformer;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
@@ -29,7 +29,7 @@ public abstract class TileAdvancedTransformer extends TileGenericTransformer {
 	public TileAdvancedTransformer(BlockEntityType<?> type, BlockPos worldPosition, BlockState blockState, double defaultCoilRatio) {
 		super(type, worldPosition, blockState);
 		coilRatio = property(new Property<>(PropertyType.Double, "coilratio", defaultCoilRatio)).onChange((prop, old) -> {
-			if (level.isClientSide || hasComponent(ComponentType.Tickable)) {
+			if (level.isClientSide || hasComponent(IComponentType.Tickable)) {
 				return;
 			}
 			setChanged();

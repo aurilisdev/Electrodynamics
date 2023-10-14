@@ -1,9 +1,8 @@
 package electrodynamics.common.tile.pipelines.gas.gastransformer;
 
 import electrodynamics.prefab.sound.utils.ITickableSound;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
@@ -38,7 +37,6 @@ public abstract class GenericTileGasTransformer extends GenericGasTile implement
 
 	public GenericTileGasTransformer(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
 		super(tileEntityTypeIn, worldPos, blockState);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 		addComponent(getInventory());
@@ -60,15 +58,16 @@ public abstract class GenericTileGasTransformer extends GenericGasTile implement
 
 	@Override
 	public boolean shouldPlaySound() {
-		return this.<ComponentProcessor>getComponent(ComponentType.Processor).isActive();
+		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive();
 	}
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
+		super.onPlace(oldState, isMoving);
 		if (level.isClientSide) {
 			return;
 		}
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 
 		BlockEntity left = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
 		BlockEntity right = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
@@ -90,7 +89,7 @@ public abstract class GenericTileGasTransformer extends GenericGasTile implement
 			return;
 		}
 		hasBeenDestroyed = true;
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 		getLevel().destroyBlock(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)), false);
 		getLevel().destroyBlock(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)), false);
 	}

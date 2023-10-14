@@ -10,8 +10,6 @@ import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
 import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
@@ -53,12 +51,11 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 
 	public TileGenericTransformer(BlockEntityType<?> type, BlockPos worldPosition, BlockState blockState) {
 		super(type, worldPosition, blockState);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
 		if (Constants.SHOULD_TRANSFORMER_HUM) {
 			addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 		}
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1.0).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage).setEnergyProduction());
+		addComponent(new ComponentElectrodynamic(this, true, true).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setOutputDirections(Direction.SOUTH).setInputDirections(Direction.NORTH).voltage(-1.0).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
 	}
 
 	public void tickClient(ComponentTickable tickable) {
@@ -73,7 +70,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 
 	// We can assume this runs on the server
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 		if (locked) {
 			return TransferPack.EMPTY;
 		}
@@ -100,7 +97,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 	}
 
 	public TransferPack getConnectedLoad(LoadProfile lastEnergy, Direction dir) {
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 		if (facing.getOpposite() != dir) {
 			return TransferPack.EMPTY;
 		}
@@ -122,7 +119,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 	}
 
 	public double getMinimumVoltage() {
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 		if (locked) {
 			return 0;
 		}
@@ -139,7 +136,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 	}
 
 	public double getAmpacity() {
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 		if (locked) {
 			return 0;
 		}

@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import electrodynamics.common.tile.electricitygrid.generators.TileCombustionChamber;
 import electrodynamics.prefab.block.GenericEntityBlock;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
@@ -27,7 +27,7 @@ public class RenderCombustionChamber extends AbstractTileRenderer<TileCombustion
 	@Override
 	public void render(TileCombustionChamber tileEntityIn, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		matrixStackIn.pushPose();
-		FluidStack fuel = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getFluidInTank(0, true);
+		FluidStack fuel = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getFluidInTank(0, true);
 		float prog = fuel.getAmount() / (float) TileCombustionChamber.TANK_CAPACITY;
 		if (prog > 0) {
 

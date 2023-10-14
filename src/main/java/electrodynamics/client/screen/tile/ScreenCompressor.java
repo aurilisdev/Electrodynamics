@@ -12,7 +12,7 @@ import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGasPr
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGasTemperature;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.screen.types.GenericMaterialScreen;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -25,14 +25,14 @@ public class ScreenCompressor extends GenericMaterialScreen<ContainerCompressor>
 		addComponent(new ScreenComponentGasGaugeInput(() -> {
 			GenericTileCompressor boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return boiler.<ComponentGasHandlerMulti>getComponent(ComponentType.GasHandler).getInputTanks()[0];
+				return boiler.<ComponentGasHandlerMulti>getComponent(IComponentType.GasHandler).getInputTanks()[0];
 			}
 			return null;
 		}, 41, 18));
 		addComponent(new ScreenComponentGasGauge(() -> {
 			GenericTileCompressor boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return boiler.<ComponentGasHandlerMulti>getComponent(ComponentType.GasHandler).getOutputTanks()[0];
+				return boiler.<ComponentGasHandlerMulti>getComponent(IComponentType.GasHandler).getOutputTanks()[0];
 			}
 			return null;
 		}, 90, 18));

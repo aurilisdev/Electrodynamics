@@ -17,7 +17,7 @@ import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElect
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGuiTab;
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGuiTab.GuiInfoTabTextures;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
@@ -45,7 +45,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		TileQuarry quarry = menu.getHostFromIntArray();
 		if (quarry != null) {
-			ComponentElectrodynamic electro = quarry.getComponent(ComponentType.Electrodynamic);
+			ComponentElectrodynamic electro = quarry.getComponent(IComponentType.Electrodynamic);
 			list.add(ElectroTextUtils.gui("quarry.ringusage", ChatFormatter.getChatDisplayShort(quarry.setupPowerUsage.get() * 20, DisplayUnit.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(ElectroTextUtils.gui("quarry.miningusage", ChatFormatter.getChatDisplayShort(quarry.quarryPowerUsage.get() * 20, DisplayUnit.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 			list.add(ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
@@ -96,7 +96,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		if (complex == null) {
 			formatting = ChatFormatting.RED;
 		} else {
-			ComponentElectrodynamic electro = complex.getComponent(ComponentType.Electrodynamic);
+			ComponentElectrodynamic electro = complex.getComponent(IComponentType.Electrodynamic);
 			if (electro.getJoulesStored() >= Constants.MOTORCOMPLEX_USAGE_PER_TICK * complex.powerMultiplier.get()) {
 				formatting = ChatFormatting.GREEN;
 			} else {
@@ -225,7 +225,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 			return "quarry.missinghead";
 		} else if (!quarry.getFluidResavoir().hasEnoughFluid((int) (quarry.getMotorComplex().powerMultiplier.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK))) {
 			return "quarry.nocoolant";
-		} else if (!quarry.<ComponentInventory>getComponent(ComponentType.Inventory).areOutputsEmpty()) {
+		} else if (!quarry.<ComponentInventory>getComponent(IComponentType.Inventory).areOutputsEmpty()) {
 			return "quarry.inventoryroom";
 		}
 

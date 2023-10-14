@@ -5,12 +5,19 @@ import java.util.function.Consumer;
 import javax.annotation.Nonnull;
 
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.Component;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponent;
+import electrodynamics.prefab.tile.components.IComponentType;
 import net.minecraft.world.level.Level;
 
-public class ComponentTickable implements Component {
+public class ComponentTickable implements IComponent {
+
 	private GenericTile holder;
+
+	protected Consumer<ComponentTickable> tickCommon;
+	protected Consumer<ComponentTickable> tickClient;
+	protected Consumer<ComponentTickable> tickServer;
+
+	private long ticks = 0;
 
 	public ComponentTickable(GenericTile holder) {
 		this.holder = holder;
@@ -21,10 +28,10 @@ public class ComponentTickable implements Component {
 		this.holder = holder;
 	}
 
-	protected Consumer<ComponentTickable> tickCommon;
-	protected Consumer<ComponentTickable> tickClient;
-	protected Consumer<ComponentTickable> tickServer;
-	private long ticks = 0;
+	@Override
+	public GenericTile getHolder() {
+		return holder;
+	}
 
 	public ComponentTickable tickCommon(@Nonnull Consumer<ComponentTickable> consumer) {
 		Consumer<ComponentTickable> safe = consumer;
@@ -64,11 +71,6 @@ public class ComponentTickable implements Component {
 		if (tickServer != null) {
 			tickServer.accept(this);
 		}
-		// TODO remove
-
-		/*
-		 * if (ticks % 3 == 0 && holder.hasComponent(ComponentType.PacketHandler) && holder.hasComponent(ComponentType.Inventory) && !holder.<ComponentInventory>getComponent(ComponentType.Inventory).getViewing().isEmpty()) { holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
-		 */
 
 	}
 
@@ -111,7 +113,7 @@ public class ComponentTickable implements Component {
 	}
 
 	@Override
-	public ComponentType getType() {
-		return ComponentType.Tickable;
+	public IComponentType getType() {
+		return IComponentType.Tickable;
 	}
 }

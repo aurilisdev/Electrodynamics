@@ -4,8 +4,7 @@ import java.util.Optional;
 
 import electrodynamics.common.item.ItemDrillHead;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.Scheduler;
@@ -28,7 +27,6 @@ public class TileLogisticalManager extends GenericTile {
 
 	public TileLogisticalManager(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_LOGISTICALMANAGER.get(), pos, state);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 	}
 
@@ -43,7 +41,7 @@ public class TileLogisticalManager extends GenericTile {
 						IItemHandler handler = nonlazy.get();
 						for (TileQuarry quarry : quarries) {
 							if (quarry != null) {
-								manipulateItems(quarry.getComponent(ComponentType.Inventory), handler);
+								manipulateItems(quarry.getComponent(IComponentType.Inventory), handler);
 							}
 						}
 					}
@@ -63,6 +61,7 @@ public class TileLogisticalManager extends GenericTile {
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
+		super.onPlace(oldState, isMoving);
 		if (level.isClientSide) {
 			return;
 		}

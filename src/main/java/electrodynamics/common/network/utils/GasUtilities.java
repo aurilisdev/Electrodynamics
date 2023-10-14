@@ -9,8 +9,7 @@ import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.gas.GasTank;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.CapabilityUtils;
@@ -51,9 +50,9 @@ public class GasUtilities {
 	}
 
 	public static void outputToPipe(GenericTile tile, GasTank[] tanks, Direction... outputDirections) {
-		ComponentDirection componentDirection = tile.getComponent(ComponentType.Direction);
+		Direction facing = tile.getFacing();
 		for (Direction relative : outputDirections) {
-			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative.getOpposite());
+			Direction direction = BlockEntityUtils.getRelativeSide(facing, relative.getOpposite());
 			BlockPos face = tile.getBlockPos().relative(direction.getOpposite());
 			BlockEntity faceTile = tile.getLevel().getBlockEntity(face);
 			if (faceTile == null) {
@@ -77,7 +76,7 @@ public class GasUtilities {
 	}
 
 	public static void drainItem(GenericTile tile, GasTank[] tanks) {
-		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
 		List<ItemStack> cylinders = inv.getInputGasContents();
 		if (tanks.length >= cylinders.size()) {
 			for (int i = 0; i < cylinders.size(); i++) {
@@ -98,7 +97,7 @@ public class GasUtilities {
 	}
 
 	public static void fillItem(GenericTile tile, GasTank[] tanks) {
-		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
 		List<ItemStack> cylinders = inv.getOutputGasContents();
 		if (tanks.length >= cylinders.size()) {
 			for (int i = 0; i < cylinders.size(); i++) {

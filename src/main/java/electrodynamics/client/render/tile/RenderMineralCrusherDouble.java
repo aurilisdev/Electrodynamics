@@ -6,8 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.machines.mineralcrusher.TileMineralCrusherDouble;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.math.MathUtils;
@@ -47,11 +46,11 @@ public class RenderMineralCrusherDouble extends AbstractTileRenderer<TileMineral
 
 		matrixStackIn.popPose();
 
-		ComponentInventory inv = tileEntityIn.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = tileEntityIn.getComponent(IComponentType.Inventory);
 
 		ItemStack stack = inv.getInputsForProcessor(0).get(0);
 
-		Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction dir = tileEntityIn.getFacing();
 
 		if (!stack.isEmpty()) {
 

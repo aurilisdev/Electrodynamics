@@ -6,7 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.machines.TileLathe;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.math.MathUtils;
@@ -52,7 +52,7 @@ public class RenderLathe extends AbstractTileRenderer<TileLathe> {
 
 		poseStack.popPose();
 
-		ItemStack stack = tile.<ComponentInventory>getComponent(ComponentType.Inventory).getInputsForProcessor(0).get(0);
+		ItemStack stack = tile.<ComponentInventory>getComponent(IComponentType.Inventory).getInputsForProcessor(0).get(0);
 
 		if (stack.isEmpty()) {
 

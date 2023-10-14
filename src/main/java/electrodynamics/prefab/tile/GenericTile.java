@@ -9,12 +9,13 @@ import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.gas.GasTank;
 import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.properties.IPropertyType.TagReader;
 import electrodynamics.prefab.properties.IPropertyType.TagWriter;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyManager;
-import electrodynamics.prefab.tile.components.Component;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponent;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentName;
@@ -45,7 +46,7 @@ import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public abstract class GenericTile extends BlockEntity implements Nameable, IPropertyHolderTile {
-	private final Component[] components = new Component[ComponentType.values().length];
+	private final IComponent[] components = new IComponent[IComponentType.values().length];
 	private final ComponentProcessor[] processors = new ComponentProcessor[5];
 	private final PropertyManager propertyManager = new PropertyManager(this);
 
@@ -66,7 +67,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 		return propertyManager.addProperty(prop);
 	}
 
-	public boolean hasComponent(ComponentType type) {
+	public boolean hasComponent(IComponentType type) {
 		return components[type.ordinal()] != null;
 	}
 
@@ -75,7 +76,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 		return propertyManager;
 	}
 
-	public <T extends Component> T getComponent(ComponentType type) {
+	public <T extends IComponent> T getComponent(IComponentType type) {
 		return !hasComponent(type) ? null : (T) components[type.ordinal()];
 	}
 
@@ -98,7 +99,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 		return this;
 	}
 
-	public GenericTile addComponent(Component component) {
+	public GenericTile addComponent(IComponent component) {
 		component.holder(this);
 		if (hasComponent(component.getType())) {
 			throw new ExceptionInInitializerError("Component of type: " + component.getType().name() + " already registered!");
@@ -108,7 +109,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	}
 
 	@Deprecated(since = "Try not using this method.")
-	public GenericTile forceComponent(Component component) {
+	public GenericTile forceComponent(IComponent component) {
 		component.holder(this);
 		components[component.getType().ordinal()] = component;
 		return this;
@@ -123,7 +124,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 				compound.remove(prop.getName());
 			}
 		}
-		for (Component component : components) {
+		for (IComponent component : components) {
 			if (component != null) {
 				component.holder(this);
 				component.loadFromNBT(compound);
@@ -145,7 +146,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 				prop.getType().writeToTag(new TagWriter(prop, compound));
 			}
 		}
-		for (Component component : components) {
+		for (IComponent component : components) {
 			if (component != null) {
 				component.holder(this);
 				component.saveToNBT(compound);
@@ -164,7 +165,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	public void onLoad() {
 		super.onLoad();
 
-		for (Component component : components) {
+		for (IComponent component : components) {
 			if (component != null) {
 				component.holder(this);
 				component.onLoad();
@@ -177,23 +178,23 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 
 	@Override
 	public net.minecraft.network.chat.@NotNull Component getName() {
-		return hasComponent(ComponentType.Name) ? this.<ComponentName>getComponent(ComponentType.Name).getName() : net.minecraft.network.chat.Component.literal(References.ID + ".default.tile.name");
+		return hasComponent(IComponentType.Name) ? this.<ComponentName>getComponent(IComponentType.Name).getName() : net.minecraft.network.chat.Component.literal(References.ID + ".default.tile.name");
 	}
 
 	@Override
 	@NotNull
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-		if (cap == ElectrodynamicsCapabilities.ELECTRODYNAMIC && components[ComponentType.Electrodynamic.ordinal()] != null) {
-			return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side, null);
+		if (cap == ElectrodynamicsCapabilities.ELECTRODYNAMIC && components[IComponentType.Electrodynamic.ordinal()] != null) {
+			return components[IComponentType.Electrodynamic.ordinal()].getCapability(cap, side, null);
 		}
-		if (cap == ForgeCapabilities.FLUID_HANDLER && components[ComponentType.FluidHandler.ordinal()] != null) {
-			return components[ComponentType.FluidHandler.ordinal()].getCapability(cap, side, null);
+		if (cap == ForgeCapabilities.FLUID_HANDLER && components[IComponentType.FluidHandler.ordinal()] != null) {
+			return components[IComponentType.FluidHandler.ordinal()].getCapability(cap, side, null);
 		}
-		if (cap == ForgeCapabilities.ITEM_HANDLER && components[ComponentType.Inventory.ordinal()] != null) {
-			return components[ComponentType.Inventory.ordinal()].getCapability(cap, side, null);
+		if (cap == ForgeCapabilities.ITEM_HANDLER && components[IComponentType.Inventory.ordinal()] != null) {
+			return components[IComponentType.Inventory.ordinal()].getCapability(cap, side, null);
 		}
-		if (cap == ElectrodynamicsCapabilities.GAS_HANDLER && components[ComponentType.GasHandler.ordinal()] != null) {
-			return components[ComponentType.GasHandler.ordinal()].getCapability(cap, side, null);
+		if (cap == ElectrodynamicsCapabilities.GAS_HANDLER && components[IComponentType.GasHandler.ordinal()] != null) {
+			return components[IComponentType.GasHandler.ordinal()].getCapability(cap, side, null);
 		}
 		return LazyOptional.empty();
 	}
@@ -201,7 +202,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	@Override
 	public void setRemoved() {
 		super.setRemoved();
-		for (Component component : components) {
+		for (IComponent component : components) {
 			if (component != null) {
 				component.holder(this);
 				component.remove();
@@ -226,8 +227,8 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	public void setChanged() {
 		super.setChanged();
 		if (!level.isClientSide) {
-			if (hasComponent(ComponentType.PacketHandler)) {
-				this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendProperties();
+			if (hasComponent(IComponentType.PacketHandler)) {
+				this.<ComponentPacketHandler>getComponent(IComponentType.PacketHandler).sendProperties();
 			}
 		}
 	}
@@ -272,6 +273,15 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 		}
 		return count;
 	}
+	
+	/**
+	 * NORTH is defined as the default direction
+	 * 
+	 * @return
+	 */
+	public Direction getFacing() {
+		return getBlockState().hasProperty(GenericEntityBlock.FACING) ? getBlockState().getValue(GenericEntityBlock.FACING) : Direction.NORTH;
+	}
 
 	public void onEnergyChange(ComponentElectrodynamic cap) {
 		// hook method for now
@@ -280,8 +290,8 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	// no more polling for upgrade effects :D
 	public void onInventoryChange(ComponentInventory inv, int slot) {
 		// this can be moved to a seperate tile class in the future
-		if (hasComponent(ComponentType.Processor)) {
-			this.<ComponentProcessor>getComponent(ComponentType.Processor).onInventoryChange(inv, slot);
+		if (hasComponent(IComponentType.Processor)) {
+			this.<ComponentProcessor>getComponent(IComponentType.Processor).onInventoryChange(inv, slot);
 		}
 		for (ComponentProcessor processor : processors) {
 			if (processor != null) {
@@ -302,9 +312,9 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	public InteractionResult use(Player player, InteractionHand handIn, BlockHitResult hit) {
 
 		ItemStack stack = player.getItemInHand(handIn);
-		if (stack.getItem() instanceof ItemUpgrade upgrade && hasComponent(ComponentType.Inventory)) {
+		if (stack.getItem() instanceof ItemUpgrade upgrade && hasComponent(IComponentType.Inventory)) {
 
-			ComponentInventory inv = getComponent(ComponentType.Inventory);
+			ComponentInventory inv = getComponent(IComponentType.Inventory);
 			// null check for safety
 			if (inv != null && inv.upgrades() > 0) {
 				int upgradeIndex = inv.getUpgradeSlotStartIndex();
@@ -335,8 +345,8 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 
 		} else if (!(stack.getItem() instanceof IWrenchItem)) {
 			if (!level.isClientSide()) {
-				if (hasComponent(ComponentType.ContainerProvider)) {
-					player.openMenu(getComponent(ComponentType.ContainerProvider));
+				if (hasComponent(IComponentType.ContainerProvider)) {
+					player.openMenu(getComponent(IComponentType.ContainerProvider));
 				}
 				player.awardStat(Stats.INTERACT_WITH_FURNACE);
 			}
@@ -356,6 +366,13 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 
 	public void onPlace(BlockState oldState, boolean isMoving) {
 
+		for (IComponent component : components) {
+			if (component != null) {
+				component.holder(this);
+				component.onLoad();
+			}
+		}
+		
 	}
 
 	public int getComparatorSignal() {
@@ -391,6 +408,26 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 
 	public static int[] arr(int... values) {
 		return values;
+	}
+	
+	/**
+	 * This method will never have air as the newState unless something has gone horribly horribly wrong!
+	 * 
+	 * @param oldState
+	 * @param newState
+	 */
+	public void onBlockStateUpdate(BlockState oldState, BlockState newState) {
+		for(IComponent component : components) {
+			if(component != null) {
+				component.refreshIfUpdate(oldState, newState);
+			}
+		}
+		
+		for(IComponent component : processors) {
+			if(component != null) {
+				component.refreshIfUpdate(oldState, newState);
+			}
+		}
 	}
 
 }

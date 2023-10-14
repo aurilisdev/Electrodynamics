@@ -9,9 +9,8 @@ import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
 import electrodynamics.prefab.sound.utils.ITickableSound;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
@@ -47,18 +46,16 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 
 	public TileHydroelectricGenerator(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_HYDROELECTRICGENERATOR.get(), worldPosition, blockState, 2.25, SubtypeItemUpgrade.stator);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH).setEnergyProduction().setNoEnergyReception());
+		addComponent(new ComponentElectrodynamic(this, true, false).setOutputDirections(Direction.NORTH));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerHydroelectricGenerator.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.hydroelectricgenerator, this).createMenu((id, player) -> new ContainerHydroelectricGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.hydroelectricgenerator, this).createMenu((id, player) -> new ContainerHydroelectricGenerator(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
 	@Override
 	public AABB getRenderBoundingBox() {
-		ComponentDirection direction = getComponent(ComponentType.Direction);
-		Direction facing = direction.getDirection();
+		Direction facing = getFacing();
 		return super.getRenderBoundingBox().expandTowards(facing.getStepX(), facing.getStepY(), facing.getStepZ());
 	}
 
@@ -67,8 +64,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 			isGenerating.set(false);
 			return;
 		}
-		ComponentDirection direction = getComponent(ComponentType.Direction);
-		Direction facing = direction.getDirection();
+		Direction facing = getFacing();
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(facing.getOpposite()));
 		}
@@ -109,7 +105,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 			return;
 		}
 		if (level.random.nextDouble() < 0.3) {
-			Direction direction = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+			Direction direction = getFacing();
 			double d4 = level.random.nextDouble();
 			double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0.2D : 1.2D) : d4;
 			double d6 = level.random.nextDouble();
@@ -144,7 +140,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 
 	@Override
 	public TransferPack getProduced() {
-		return TransferPack.ampsVoltage(Constants.HYDROELECTRICGENERATOR_AMPERAGE * (isGenerating.get() ? multiplier.get() : 0), this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
+		return TransferPack.ampsVoltage(Constants.HYDROELECTRICGENERATOR_AMPERAGE * (isGenerating.get() ? multiplier.get() : 0), this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getVoltage());
 
 	}
 

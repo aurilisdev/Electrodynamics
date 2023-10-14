@@ -8,7 +8,7 @@ import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.tile.machines.quarry.TileQuarry;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.CapabilityInputType;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
@@ -48,6 +48,7 @@ public class TileGasTransformerSideBlock extends GenericTile {
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
+		super.onPlace(oldState, isMoving);
 		if (level.isClientSide) {
 			return;
 		}
@@ -113,11 +114,11 @@ public class TileGasTransformerSideBlock extends GenericTile {
 		}
 		if (owner instanceof GenericTileGasTransformer compressor) {
 
-			if (cap == ForgeCapabilities.FLUID_HANDLER && compressor.hasComponent(ComponentType.FluidHandler)) {
+			if (cap == ForgeCapabilities.FLUID_HANDLER && compressor.hasComponent(IComponentType.FluidHandler)) {
 				if (isLeft) {
-					return compressor.getComponent(ComponentType.FluidHandler).getCapability(cap, side, CapabilityInputType.INPUT);
+					return compressor.getComponent(IComponentType.FluidHandler).getCapability(cap, side, CapabilityInputType.INPUT);
 				}
-				return compressor.getComponent(ComponentType.FluidHandler).getCapability(cap, side, CapabilityInputType.OUTPUT);
+				return compressor.getComponent(IComponentType.FluidHandler).getCapability(cap, side, CapabilityInputType.OUTPUT);
 			}
 			return compressor.getCapability(cap, side);
 		}

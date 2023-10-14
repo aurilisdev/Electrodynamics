@@ -10,8 +10,7 @@ import electrodynamics.common.tile.pipelines.gas.gastransformer.GenericTileGasTr
 import electrodynamics.common.tile.pipelines.gas.gastransformer.TileGasTransformerAddonTank;
 import electrodynamics.common.tile.pipelines.gas.gastransformer.TileGasTransformerSideBlock;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
@@ -34,7 +33,7 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 	public GenericTileCompressor(BlockEntityType<?> type, BlockPos worldPos, BlockState blockState, boolean isDecompressor) {
 		super(type, worldPos, blockState);
 		this.isDecompressor = isDecompressor;
-		addComponent(new ComponentElectrodynamic(this).input(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(BASE_INPUT_CAPACITY * 10));
+		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(BASE_INPUT_CAPACITY * 10));
 	}
 
 	@Override
@@ -53,14 +52,14 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 	@Override
 	public boolean canProcess(ComponentProcessor processor) {
 
-		ComponentGasHandlerMulti gasHandler = getComponent(ComponentType.GasHandler);
+		ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
 
 		processor.consumeGasCylinder();
 		processor.dispenseGasCylinder();
 
-		ComponentDirection dir = getComponent(ComponentType.Direction);
-
-		Direction direction = BlockEntityUtils.getRelativeSide(dir.getDirection(), Direction.EAST);// opposite of west is east
+		Direction facing = getFacing();
+		
+		Direction direction = BlockEntityUtils.getRelativeSide(facing, Direction.EAST);// opposite of west is east
 		BlockPos face = getBlockPos().relative(direction.getOpposite(), 2);
 		BlockEntity faceTile = getLevel().getBlockEntity(face);
 		if (faceTile != null) {
@@ -81,8 +80,8 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 		boolean canProcess = checkConditions(processor);
 		if (BlockEntityUtils.isLit(this) ^ canProcess) {
 			BlockEntityUtils.updateLit(this, canProcess);
-			BlockEntity left = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(dir.getDirection(), Direction.EAST)));
-			BlockEntity right = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(dir.getDirection(), Direction.WEST)));
+			BlockEntity left = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
+			BlockEntity right = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
 			if (left != null && left instanceof TileGasTransformerSideBlock leftTile && right != null && right instanceof TileGasTransformerSideBlock rightTile) {
 				BlockEntityUtils.updateLit(leftTile, canProcess);
 				BlockEntityUtils.updateLit(rightTile, canProcess);
@@ -93,14 +92,14 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 
 	private boolean checkConditions(ComponentProcessor processor) {
 
-		ComponentGasHandlerMulti gasHandler = getComponent(ComponentType.GasHandler);
+		ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
 		GasTank inputTank = gasHandler.getInputTanks()[0];
 		GasTank outputTank = gasHandler.getOutputTanks()[0];
 		if (inputTank.isEmpty()) {
 			return false;
 		}
 
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
 		if (electro.getJoulesStored() < USAGE_PER_TICK * processor.operatingSpeed.get()) {
 			return false;
@@ -126,7 +125,7 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 
 		double conversionRate = BASE_CONVERSION_RATE * processor.operatingSpeed.get();
 
-		ComponentGasHandlerMulti gasHandler = getComponent(ComponentType.GasHandler);
+		ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
 		GasTank inputTank = gasHandler.getInputTanks()[0];
 		GasTank outputTank = gasHandler.getOutputTanks()[0];
 
@@ -154,7 +153,7 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 
 	@Override
 	public void updateAddonTanks(int count, boolean isLeft) {
-		ComponentGasHandlerMulti handler = getComponent(ComponentType.GasHandler);
+		ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
 		if (isLeft) {
 			handler.getInputTanks()[0].setCapacity(BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count);
 		} else {

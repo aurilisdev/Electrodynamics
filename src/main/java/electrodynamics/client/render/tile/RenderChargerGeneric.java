@@ -6,8 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.tile.machines.charger.GenericTileCharger;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -26,9 +25,9 @@ public class RenderChargerGeneric extends AbstractTileRenderer<GenericTileCharge
 	@Override
 	public void render(GenericTileCharger tileEntityIn, float partialTicks, @NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
-		Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction dir = tileEntityIn.getFacing();
 
-		ComponentInventory inv = tileEntityIn.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = tileEntityIn.getComponent(IComponentType.Inventory);
 
 		ItemStack chargingItem = inv.getItem(0);
 

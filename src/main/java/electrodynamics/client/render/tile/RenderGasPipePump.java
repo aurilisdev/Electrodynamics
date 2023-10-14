@@ -7,8 +7,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.pipelines.gas.TileGasPipePump;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
@@ -29,7 +27,7 @@ public class RenderGasPipePump extends AbstractTileRenderer<TileGasPipePump> {
 
 		poseStack.pushPose();
 
-		Direction dir = tile.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction dir = tile.getFacing();
 
 		AABB box1, box2;
 

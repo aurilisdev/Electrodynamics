@@ -6,9 +6,7 @@ import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
@@ -39,10 +37,9 @@ public class TileCircuitMonitor extends GenericTile {
 
 	public TileCircuitMonitor(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_CIRCUITMONITOR.get(), worldPos, blockState);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-		addComponent(new ComponentElectrodynamic(this).voltage(-1).receivePower((transfer, debug) -> TransferPack.EMPTY).getConnectedLoad((profile, dir) -> TransferPack.EMPTY).relativeInput(Direction.SOUTH).setNoEnergyReception());
+		addComponent(new ComponentElectrodynamic(this, false, false).voltage(-1).receivePower((transfer, debug) -> TransferPack.EMPTY).getConnectedLoad((profile, dir) -> TransferPack.EMPTY).setInputDirections(Direction.SOUTH));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.circuitmonitor, this).createMenu((id, inv) -> new ContainerCircuitMonitor(id, inv, getCoordsArray())));
 	}
 
@@ -74,11 +71,12 @@ public class TileCircuitMonitor extends GenericTile {
 	}
 
 	public double getMonitoredValue(long ticks) {
+		Direction facing = getFacing();
 		if (output == null) {
-			output = new CachedTileOutput(level, worldPosition.relative(this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().getOpposite()));
+			output = new CachedTileOutput(level, worldPosition.relative(facing.getOpposite()));
 		}
 		if (ticks % 40 == 0) {
-			output.update(worldPosition.relative(this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()));
+			output.update(worldPosition.relative(facing));
 		}
 		if (output.valid() && output.getSafe() instanceof GenericTileWire wire) {
 

@@ -6,8 +6,6 @@ import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
@@ -28,15 +26,14 @@ public class TileRelay extends GenericTile {
 
 	public TileRelay(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_RELAY.get(), worldPos, blockState);
-		addComponent(new ComponentDirection(this));
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage).setEnergyProduction());
+		addComponent(new ComponentElectrodynamic(this, true, true).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setOutputDirections(Direction.SOUTH).setInputDirections(Direction.NORTH).voltage(-1).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
 	}
 
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
 		if (recievedRedstoneSignal || isLocked) {
 			return TransferPack.EMPTY;
 		}
-		Direction output = BlockEntityUtils.getRelativeSide(this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), Direction.SOUTH);
+		Direction output = BlockEntityUtils.getRelativeSide(getFacing(), Direction.SOUTH);
 
 		BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
 
@@ -63,7 +60,7 @@ public class TileRelay extends GenericTile {
 			return TransferPack.EMPTY;
 		}
 
-		Direction output = BlockEntityUtils.getRelativeSide(this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), Direction.SOUTH);
+		Direction output = BlockEntityUtils.getRelativeSide(getFacing(), Direction.SOUTH);
 
 		if (dir.getOpposite() != output) {
 			return TransferPack.EMPTY;
@@ -86,7 +83,7 @@ public class TileRelay extends GenericTile {
 	}
 
 	public double getMinimumVoltage() {
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 		if (isLocked) {
 			return 0;
 		}
@@ -101,7 +98,7 @@ public class TileRelay extends GenericTile {
 	}
 
 	public double getAmpacity() {
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 		if (isLocked) {
 			return 0;
 		}
@@ -145,6 +142,7 @@ public class TileRelay extends GenericTile {
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
+		super.onPlace(oldState, isMoving);
 		if (level.isClientSide) {
 			return;
 		}

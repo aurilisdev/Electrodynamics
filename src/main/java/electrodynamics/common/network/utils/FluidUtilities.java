@@ -5,8 +5,7 @@ import java.util.List;
 
 import electrodynamics.api.network.cable.type.IFluidPipe;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.CapabilityUtils;
@@ -76,9 +75,9 @@ public class FluidUtilities {
 	}
 
 	public static void outputToPipe(GenericTile tile, FluidTank[] tanks, Direction... outputDirections) {
-		ComponentDirection componentDirection = tile.getComponent(ComponentType.Direction);
+		Direction facing = tile.getFacing();
 		for (Direction relative : outputDirections) {
-			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative.getOpposite());
+			Direction direction = BlockEntityUtils.getRelativeSide(facing, relative.getOpposite());
 			BlockPos face = tile.getBlockPos().relative(direction.getOpposite());
 			BlockEntity faceTile = tile.getLevel().getBlockEntity(face);
 			if (faceTile != null) {
@@ -97,7 +96,7 @@ public class FluidUtilities {
 	}
 
 	public static void drainItem(GenericTile tile, FluidTank[] tanks) {
-		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
 		List<ItemStack> buckets = inv.getInputBucketContents();
 		if (tanks.length >= buckets.size()) {
 			for (int i = 0; i < buckets.size(); i++) {
@@ -121,7 +120,7 @@ public class FluidUtilities {
 	}
 
 	public static void fillItem(GenericTile tile, FluidTank[] tanks) {
-		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
 		List<ItemStack> buckets = inv.getOutputBucketContents();
 		if (tanks.length >= buckets.size()) {
 			for (int i = 0; i < buckets.size(); i++) {

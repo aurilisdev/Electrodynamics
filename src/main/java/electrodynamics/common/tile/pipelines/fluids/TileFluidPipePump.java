@@ -9,9 +9,8 @@ import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
@@ -38,7 +37,7 @@ public class TileFluidPipePump extends GenericTile {
 			return;
 		}
 
-		BlockEntity entity = level.getBlockEntity(worldPosition.relative(BlockEntityUtils.getRelativeSide(((ComponentDirection) getComponent(ComponentType.Direction)).getDirection(), INPUT_DIR)));
+		BlockEntity entity = level.getBlockEntity(worldPosition.relative(BlockEntityUtils.getRelativeSide(getFacing(), INPUT_DIR)));
 
 		if (entity != null && entity instanceof TileFluidPipe pipe) {
 			FluidNetwork network = pipe.getNetwork();
@@ -52,16 +51,15 @@ public class TileFluidPipePump extends GenericTile {
 
 	public TileFluidPipePump(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_FLUIDPIPEPUMP.get(), pos, state);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(Constants.PIPE_PUMP_USAGE_PER_TICK * 10).relativeInput(Direction.WEST));
+		addComponent(new ComponentElectrodynamic(this, false, true).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(Constants.PIPE_PUMP_USAGE_PER_TICK * 10).setInputDirections(Direction.WEST));
 		addComponent(new ComponentContainerProvider("container.fluidpipepump", this).createMenu((id, inv) -> new ContainerFluidPipePump(id, inv, getCoordsArray())));
 	}
 
 	public void tickServer(ComponentTickable tick) {
 
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
 		electro.joules(Math.max(electro.getJoulesStored() - Constants.PIPE_PUMP_USAGE_PER_TICK, 0));
 
@@ -75,7 +73,7 @@ public class TileFluidPipePump extends GenericTile {
 		if (side == null || cap != ForgeCapabilities.FLUID_HANDLER) {
 			return LazyOptional.empty();
 		}
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 
 		if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR)) {
 			return LazyOptional.of(() -> CapabilityUtils.EMPTY_FLUID).cast();
@@ -99,7 +97,7 @@ public class TileFluidPipePump extends GenericTile {
 	}
 
 	public boolean isPowered() {
-		return this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored() >= Constants.PIPE_PUMP_USAGE_PER_TICK;
+		return this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getJoulesStored() >= Constants.PIPE_PUMP_USAGE_PER_TICK;
 	}
 
 }

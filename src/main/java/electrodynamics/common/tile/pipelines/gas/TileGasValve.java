@@ -7,8 +7,6 @@ import electrodynamics.api.capability.types.gas.IGasHandler;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.tile.pipelines.GenericTileValve;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
@@ -23,7 +21,6 @@ public class TileGasValve extends GenericTileValve {
 
 	public TileGasValve(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_GASVALVE.get(), pos, state);
-		addComponent(new ComponentDirection(this));
 	}
 
 	@Override
@@ -33,7 +30,7 @@ public class TileGasValve extends GenericTileValve {
 			return LazyOptional.empty();
 		}
 
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 
 		if (BlockEntityUtils.getRelativeSide(facing, INPUT_DIR) == side || BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR) == side) {
 

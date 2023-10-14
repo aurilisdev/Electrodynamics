@@ -10,7 +10,6 @@ import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
@@ -32,9 +31,8 @@ public class TilePotentiometer extends GenericTile {
 
 	public TilePotentiometer(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_POTENTIOMETER.get(), pos, state);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.potentiometer, this).createMenu((id, player) -> new ContainerPotentiometer(id, player, getCoordsArray())));
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).input(Direction.NORTH).input(Direction.EAST).input(Direction.SOUTH).input(Direction.WEST).input(Direction.DOWN).voltage(-1.0D));
+		addComponent(new ComponentElectrodynamic(this, false, true).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setInputDirections(Direction.NORTH, Direction.EAST, Direction.SOUTH, Direction.WEST, Direction.DOWN).voltage(-1.0D));
 	}
 
 	private TransferPack receivePower(TransferPack pack, boolean debug) {

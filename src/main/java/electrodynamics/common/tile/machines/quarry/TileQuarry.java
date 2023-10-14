@@ -29,9 +29,8 @@ import electrodynamics.prefab.block.GenericMachineBlock;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
@@ -193,12 +192,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		running = property(new Property<>(PropertyType.Boolean, "isrunning", false));
 		isTryingToMineFrame = property(new Property<>(PropertyType.Boolean, "istryingtomineframe", false));
 
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.QUARRY_USAGE_PER_TICK * CAPACITY));
+		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.QUARRY_USAGE_PER_TICK * CAPACITY));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(7).outputs(9).upgrades(3)).validUpgrades(ContainerQuarry.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.quarry, this).createMenu((id, player) -> new ContainerQuarry(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.quarry, this).createMenu((id, player) -> new ContainerQuarry(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
 	private void tickServer(ComponentTickable tick) {
@@ -278,7 +276,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		}
 
 		boolean shouldFail = false;
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
 		isPowered.set(electro.getJoulesStored() >= quarryPowerUsage.get());
 
@@ -295,7 +293,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		}
 
 		int fluidUse = (int) (complex.powerMultiplier.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
-		ComponentInventory inv = getComponent(ComponentType.Inventory);
+		ComponentInventory inv = getComponent(IComponentType.Inventory);
 		if (inv.getItem(DRILL_HEAD_INDEX).getItem() instanceof ItemDrillHead head) {
 			hasHead.set(true);
 			writeHeadType(head.head);
@@ -541,7 +539,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	// responsible for clearing initial obstructions from the mining area
 	private void clearArea() {
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 		setupPowerUsage.set(Constants.QUARRY_USAGE_PER_TICK);
 		isPowered.set(electro.getJoulesStored() >= setupPowerUsage.get());
 		if (hasCorners() && isPowered.get()) {
@@ -640,7 +638,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	private void checkRing() {
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 		if (electro.getJoulesStored() < Constants.QUARRY_USAGE_PER_TICK && hasCorners()) {
 			return;
 		}
@@ -651,7 +649,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		BlockPos foqFar = corners.get().get(1);
 		BlockPos foqCorner = corners.get().get(2);
 		BlockPos farCorner = corners.get().get(3);
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().getOpposite();
+		Direction facing = getFacing().getOpposite();
 		if (prevPos != null) {
 			if (hasAllStrips()) {
 				hasRing.set(true);
@@ -807,8 +805,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	private void checkComponents() {
-		ComponentDirection quarryDir = getComponent(ComponentType.Direction);
-		Direction facing = quarryDir.getDirection().getOpposite();
+		Direction facing = getFacing().getOpposite();
 		Level world = getLevel();
 		BlockPos machinePos = getBlockPos();
 		Direction left = facing.getCounterClockWise();
@@ -819,10 +816,10 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 		// reformatted to allow for individual components to be missing
 
-		if (leftEntity != null && leftEntity instanceof TileMotorComplex complexin && ((ComponentDirection) complexin.getComponent(ComponentType.Direction)).getDirection() == left) {
+		if (leftEntity != null && leftEntity instanceof TileMotorComplex complexin && complexin.getFacing() == left) {
 			complex = complexin;
 			hasMotorComplex.set(true);
-		} else if (rightEntity != null && rightEntity instanceof TileMotorComplex complexin && ((ComponentDirection) complexin.getComponent(ComponentType.Direction)).getDirection() == right) {
+		} else if (rightEntity != null && rightEntity instanceof TileMotorComplex complexin && complexin.getFacing() == right) {
 			complex = complexin;
 			hasMotorComplex.set(true);
 		} else {
@@ -830,13 +827,13 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			hasMotorComplex.set(false);
 		}
 
-		if (leftEntity != null && leftEntity instanceof TileSeismicRelay relayin && ((ComponentDirection) relayin.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
+		if (leftEntity != null && leftEntity instanceof TileSeismicRelay relayin && relayin.getFacing() == facing.getOpposite()) {
 			corners.set(relayin.markerLocs.get());
 			corners.forceDirty();
 			cornerOnRight.set(relayin.cornerOnRight);
 			relay = relayin;
 			hasSeismicRelay.set(true);
-		} else if (rightEntity != null && rightEntity instanceof TileSeismicRelay relayin && ((ComponentDirection) relayin.getComponent(ComponentType.Direction)).getDirection() == quarryDir.getDirection()) {
+		} else if (rightEntity != null && rightEntity instanceof TileSeismicRelay relayin && relayin.getFacing() == facing.getOpposite()) {
 			corners.set(relayin.markerLocs.get());
 			corners.forceDirty();
 			cornerOnRight.set(relayin.cornerOnRight);
@@ -1173,8 +1170,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	@Nullable
 	public TileMotorComplex getMotorComplex() {
-		ComponentDirection quarryDir = getComponent(ComponentType.Direction);
-		Direction facing = quarryDir.getDirection().getOpposite();
+		Direction facing = getFacing().getOpposite();
 		BlockEntity entity = level.getBlockEntity(getBlockPos().relative(facing.getClockWise()));
 		if (entity != null && entity instanceof TileMotorComplex complex) {
 			return complex;
@@ -1198,8 +1194,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	@Nullable
 	public TileSeismicRelay getSeismicRelay() {
-		ComponentDirection quarryDir = getComponent(ComponentType.Direction);
-		Direction facing = quarryDir.getDirection().getOpposite();
+		Direction facing = getFacing().getOpposite();
 		BlockEntity entity = level.getBlockEntity(getBlockPos().relative(facing.getClockWise()));
 		if (entity != null && entity instanceof TileSeismicRelay relay) {
 			return relay;
