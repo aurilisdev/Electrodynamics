@@ -12,17 +12,12 @@ public class ScreenComponentSimpleLabel extends AbstractScreenComponent {
 	private Supplier<Component> text = Component::empty;
 	public int color = Color.WHITE.color();
 
-	private final int x;
-	private final int y;
-
 	public ScreenComponentSimpleLabel(int x, int y, int height, int color, Component text) {
 		this(x, y, height, color, () -> text);
 	}
 
 	public ScreenComponentSimpleLabel(int x, int y, int height, int color, Supplier<Component> text) {
 		super(x, y, 0, height);
-		this.x = x;
-		this.y = y;
 		this.text = text;
 		this.color = color;
 	}
@@ -34,7 +29,9 @@ public class ScreenComponentSimpleLabel extends AbstractScreenComponent {
 
 	@Override
 	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		graphics.drawString(gui.getFontRenderer(), text.get(), x, y, color, false);
+		if(isVisible()) {
+			graphics.drawString(gui.getFontRenderer(), text.get(), xLocation, yLocation, color, false);
+		}
 	}
 
 }

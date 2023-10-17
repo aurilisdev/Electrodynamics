@@ -5,7 +5,6 @@ import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerCircuitMonitor;
 import electrodynamics.common.tile.electricitygrid.TileCircuitMonitor;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.AbstractScreenComponent;
 import electrodynamics.prefab.screen.component.button.ScreenComponentButton;
 import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
 import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
@@ -158,19 +157,9 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 
 		// entered value
 		addEditBox(value = new ScreenComponentEditBox(13, 170, 134, 20, getFontRenderer()).setFilter(ScreenComponentEditBox.POSITIVE_DECIMAL).setMaxLength(30).setTextColor(-1).setTextColorUneditable(-1).setResponder(this::handleValue));
+		
+		playerInvLabel.setVisible(false);
 
-	}
-
-	@Override
-	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-		graphics.drawString(font, this.title, this.titleLabelX, this.titleLabelY, 4210752, false);
-		int guiWidth = (int) getGuiWidth();
-		int guiHeight = (int) getGuiHeight();
-		int xAxis = mouseX - guiWidth;
-		int yAxis = mouseY - guiHeight;
-		for (AbstractScreenComponent component : getComponents()) {
-			component.renderForeground(graphics, xAxis, yAxis, guiWidth, guiHeight);
-		}
 	}
 
 	@Override

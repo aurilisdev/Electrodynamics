@@ -11,6 +11,7 @@ import electrodynamics.api.screen.component.ISlotTexture;
 import electrodynamics.prefab.inventory.container.GenericContainer;
 import electrodynamics.prefab.screen.component.AbstractScreenComponent;
 import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSlot;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.SlotType;
@@ -31,8 +32,13 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 
 	protected ResourceLocation defaultResource = new ResourceLocation(References.ID + ":textures/screen/component/base.png");
 	private Set<AbstractScreenComponent> components = new HashSet<>();
+	public List<ScreenComponentSlot> slots = new ArrayList<>();
 	private Set<ScreenComponentEditBox> editBoxes = new HashSet<>();
 	protected int playerInvOffset = 0;
+	
+	// Ability to manipulate labels 
+	public ScreenComponentSimpleLabel guiTitle;
+	public ScreenComponentSimpleLabel playerInvLabel;
 
 	public GenericScreen(T container, Inventory inv, Component title) {
 		super(container, inv, title);
@@ -41,8 +47,12 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 
 	protected void initializeComponents() {
 		for (Slot slot : menu.slots) {
-			addComponent(createScreenSlot(slot));
+			ScreenComponentSlot component = createScreenSlot(slot);
+			addComponent(component);
+			slots.add(component);
 		}
+		addComponent(guiTitle = new ScreenComponentSimpleLabel(this.titleLabelX, this.titleLabelY, 10, 4210752, this.title));
+		addComponent(playerInvLabel = new ScreenComponentSimpleLabel(this.inventoryLabelX, this.inventoryLabelY, 10, 4210752, this.playerInventoryTitle)); 
 	}
 
 	protected ScreenComponentSlot createScreenSlot(Slot slot) {
@@ -64,6 +74,10 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 	@Override
 	protected void init() {
 		super.init();
+		guiTitle.xLocation = titleLabelX;
+		guiTitle.yLocation = titleLabelY;
+		playerInvLabel.xLocation = inventoryLabelX;
+		playerInvLabel.yLocation = inventoryLabelY;
 		for (AbstractScreenComponent component : components) {
 			addRenderableWidget(component);
 		}
@@ -78,7 +92,7 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 
 	@Override
 	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-		super.renderLabels(graphics, mouseX, mouseY);
+		//super.renderLabels(graphics, mouseX, mouseY);
 		int guiWidth = (int) getGuiWidth();
 		int guiHeight = (int) getGuiHeight();
 		int xAxis = mouseX - guiWidth;

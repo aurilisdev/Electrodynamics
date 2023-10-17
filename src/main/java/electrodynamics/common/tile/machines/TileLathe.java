@@ -36,7 +36,7 @@ public class TileLathe extends GenericTile implements ITickableSound {
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().processors(1, 1, 1, 1).upgrades(3)).valid(machineValidator()));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().processors(1, 1, 1, 1).upgrades(3)).valid(machineValidator()).setDirectionsBySlot(0, Direction.EAST, Direction.UP).setDirectionsBySlot(1, Direction.WEST, Direction.DOWN).setDirectionsBySlot(2, Direction.WEST, Direction.DOWN));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.lathe, this).createMenu((id, player) -> new ContainerO2OProcessor(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 		addProcessor(new ComponentProcessor(this).canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.LATHE_TYPE.get())).process(component -> component.processItem2ItemRecipe(component)));
 	}

@@ -815,6 +815,17 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addTooltip("electricdrill.usage", "Use / Block: %s");
 
 			addTooltip("potentiometer.use", "A programmable energy void");
+			
+			addTooltip("inventoryio", "Inventory I/O");
+			addTooltip("inventoryio.presstoshow", "press to show");
+			addTooltip("inventoryio.presstohide", "press to hide");
+			addTooltip("inventoryio.top", "Top");
+			addTooltip("inventoryio.bottom", "Bottom");
+			addTooltip("inventoryio.left", "Left");
+			addTooltip("inventoryio.right", "Right");
+			addTooltip("inventoryio.front", "Front");
+			addTooltip("inventoryio.back", "Back");
+			addTooltip("inventoryio.slotmap", "Slot Map");
 
 			addGuiLabel("creativepowersource.voltage", "Voltage: ");
 			addGuiLabel("creativepowersource.power", "Power: ");

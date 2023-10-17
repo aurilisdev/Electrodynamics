@@ -17,7 +17,7 @@ public abstract class GenericContainer extends AbstractContainerMenu {
 
 	protected final Container inventory;
 	protected final Level world;
-	protected final int slotCount;
+	public final int slotCount;
 	protected int playerInvOffset = 0;
 	private int nextIndex = 0;
 

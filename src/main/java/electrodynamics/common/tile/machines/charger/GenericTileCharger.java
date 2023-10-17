@@ -38,7 +38,7 @@ public abstract class GenericTileCharger extends GenericTile {
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickCommon(this::tickCommon));
 		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * voltageMultiplier).maxJoules(2000.0 * voltageMultiplier));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(BATTERY_COUNT + 1).outputs(1)).valid(machineValidator()));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(BATTERY_COUNT + 1).outputs(1)).valid(machineValidator()).setDirectionsBySlot(0, Direction.EAST, Direction.UP).setDirectionsBySlot(4, Direction.WEST, Direction.DOWN));
 		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> new ContainerChargerGeneric(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 
 	}

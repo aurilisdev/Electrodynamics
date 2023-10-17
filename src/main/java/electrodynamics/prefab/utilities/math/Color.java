@@ -105,4 +105,20 @@ public class Color {
 		return colorFloatArr;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj instanceof Color other) {
+			return this.r == other.r && this.g == other.g && this.b == other.b && this.a == other.a;
+		}
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		return "r: " + r + ", g: " + g + ", b: " + b + ", a: " + a;
+	}
+
 }

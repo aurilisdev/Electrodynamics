@@ -44,7 +44,7 @@ public class ComponentInventory implements IComponent, WorldlyContainer {
 
 	protected HashSet<Player> viewing = new HashSet<>();
 
-	private HashSet<Integer>[] relativeDirectionToSlotsMap = new HashSet[6]; // Down Up North South West East
+	public HashSet<Integer>[] relativeDirectionToSlotsMap = new HashSet[6]; // Down Up North South West East
 
 	protected int inventorySize;
 
