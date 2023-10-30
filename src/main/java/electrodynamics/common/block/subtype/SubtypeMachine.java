@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import electrodynamics.api.ISubtype;
 import electrodynamics.common.tile.electricitygrid.TileCircuitBreaker;
 import electrodynamics.common.tile.electricitygrid.TileCircuitMonitor;
+import electrodynamics.common.tile.electricitygrid.TileCurrentRegulator;
 import electrodynamics.common.tile.electricitygrid.TileMultimeterBlock;
 import electrodynamics.common.tile.electricitygrid.TilePotentiometer;
 import electrodynamics.common.tile.electricitygrid.TileRelay;
@@ -131,7 +132,8 @@ public enum SubtypeMachine implements ISubtype {
 	potentiometer(true, TilePotentiometer.class),
 	advancedupgradetransformer(true, TileAdvancedUpgradeTransformer.class),
 	advanceddowngradetransformer(true, TileAdvancedDowngradeTransformer.class),
-	circuitmonitor(true, TileCircuitMonitor.class);
+	circuitmonitor(true, TileCircuitMonitor.class),
+	currentregulator(true, TileCurrentRegulator.class);
 
 	public final Class<? extends BlockEntity> tileclass;
 	public final boolean showInItemGroup;

@@ -2,6 +2,7 @@ package electrodynamics.common.tile.electricitygrid;
 
 import org.jetbrains.annotations.NotNull;
 
+import electrodynamics.Electrodynamics;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
 import electrodynamics.common.block.VoxelShapes;
@@ -78,8 +79,8 @@ public class TileCircuitBreaker extends GenericTile {
 				return transfer;
 			}
 
-			if (cap.getAmpacity() > 0 && cap.getAmpacity() < transfer.getAmps()) {
-
+			if (cap.getAmpacity() > 0 && cap.getAmpacity() < transfer.getAmpsInTicks()) {
+				Electrodynamics.LOGGER.info("tripped");
 				tripped = true;
 				tripCurveTimer = TRIP_CURVE;
 				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
@@ -97,7 +98,9 @@ public class TileCircuitBreaker extends GenericTile {
 				isLocked = false;
 
 				if (accepted.getJoules() > 0) {
-					return accepted;
+					
+					return TransferPack.joulesVoltage(accepted.getJoules() / Constants.CIRCUITBREAKER_EFFICIENCY, accepted.getVoltage());
+					
 				}
 				return TransferPack.EMPTY;
 
@@ -145,7 +148,7 @@ public class TileCircuitBreaker extends GenericTile {
 				return TransferPack.EMPTY;
 			}
 
-			if (cap.getAmpacity() > 0 && cap.getAmpacity() <= lastEnergy.lastUsage().getAmps()) {
+			if (cap.getAmpacity() > 0 && cap.getAmpacity() <= lastEnergy.lastUsage().getAmpsInTicks()) {
 
 				tripped = true;
 				tripCurveTimer = TRIP_CURVE;

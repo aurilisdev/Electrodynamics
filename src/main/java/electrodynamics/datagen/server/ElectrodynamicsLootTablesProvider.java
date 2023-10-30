@@ -173,6 +173,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay));
 		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitmonitor));
+		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.currentregulator));
 
 		addSimpleBlock(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get());
 

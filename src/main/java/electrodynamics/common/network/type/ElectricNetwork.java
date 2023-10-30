@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import electrodynamics.Electrodynamics;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.cable.type.IConductor;
@@ -21,6 +22,8 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, BlockEntity, TransferPack> implements ICapabilityElectrodynamic {
+
+	public static final int MAXIMUM_OVERLOAD_PERIOD_TICKS = 20;
 
 	private double resistance = 0;
 	private double energyLoss = 0;
@@ -37,6 +40,10 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	private HashSet<BlockEntity> noUsage = new HashSet<>();
 
 	private boolean locked = false;
+
+	private int ticksOverloaded = 0;
+
+	// private long numTicks = 0;
 
 	public double getLastEnergyLoss() {
 		return lastEnergyLoss;
@@ -88,6 +95,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 
 	@Override
 	public void refresh() {
+		ticksOverloaded = 0;
 		resistance = 0;
 		energyLoss = 0;
 		voltage = 0.0;
@@ -167,7 +175,8 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 
 	private boolean checkForOverload() {
 
-		if (voltage <= 0 || networkMaxTransfer * voltage - transmittedThisTick > 0) {
+		if (voltage <= 0 || networkMaxTransfer * voltage - transmittedThisTick * 20 > 0) {
+			ticksOverloaded = 0;
 			return false;
 		}
 
@@ -177,6 +186,20 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 				checkList.add(type);
 			}
 		}
+
+		if (checkList.isEmpty()) {
+
+			ticksOverloaded = 0;
+			return false;
+
+		}
+
+		ticksOverloaded++;
+
+		if (ticksOverloaded < MAXIMUM_OVERLOAD_PERIOD_TICKS) {
+			return true;
+		}
+
 		for (SubtypeWire index : checkList) {
 			for (IConductor conductor : conductorTypeMap.get(index)) {
 				Scheduler.schedule(1, conductor::destroyViolently);
@@ -224,13 +247,13 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	@Override
 	public void tick() {
 		super.tick();
-		// Electrodynamics.LOGGER.info("Beginning of tick");
-		// Electrodynamics.LOGGER.info("ticks " + numTicks);
-		// Electrodynamics.LOGGER.info("length " + conductorSet.size());
-		// Electrodynamics.LOGGER.info("voltage " + voltage);
-		// Electrodynamics.LOGGER.info("trans " + transferBuffer);
-		// Electrodynamics.LOGGER.info("max trans " + maxTransferBuffer);
-
+		/*
+		 * if (conductorSet.size() > 10) { Electrodynamics.LOGGER.info("Beginning of tick"); Electrodynamics.LOGGER.info("ticks " +
+		 * numTicks); Electrodynamics.LOGGER.info("length " + conductorSet.size()); Electrodynamics.LOGGER.info("voltage " + voltage);
+		 * Electrodynamics.LOGGER.info("trans " + transferBuffer); Electrodynamics.LOGGER.info("max trans " + maxTransferBuffer);
+		 * 
+		 * }
+		 */
 		lastTransfer.clear();
 		noUsage.clear();
 		if (maxTransferBuffer > 0) {
@@ -289,8 +312,11 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		// Electrodynamics.LOGGER.info("trans " + transferBuffer);
 		// Electrodynamics.LOGGER.info("max trans " + maxTransferBuffer);
 		// Electrodynamics.LOGGER.info("");
-		// Electrodynamics.LOGGER.info("");
-		// numTicks++;
+		/*
+		 * if (conductorSet.size() > 10) { Electrodynamics.LOGGER.info(""); numTicks++;
+		 * 
+		 * }
+		 */
 
 	}
 

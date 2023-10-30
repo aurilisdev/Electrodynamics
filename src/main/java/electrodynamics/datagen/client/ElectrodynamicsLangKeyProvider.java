@@ -355,6 +355,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay), "Relay");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer), "Potentiometer");
+			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.currentregulator), "Current Regulator");
 
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer), "Downgrade Transformer Mk 2");
 			addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedupgradetransformer), "Upgrade Transformer Mk 2");
@@ -917,7 +918,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("potentiometer.watts", "W");
 			addGuiLabel("potentiometer.usage", "Usage");
 
-			addGuiLabel("coilratio", "Coil Ratio");
+			addGuiLabel("coilratio", "Turns Ratio");
 
 			addGuiLabel("networkwattage", "Wattage");
 			addGuiLabel("networkvoltage", "Voltage");
@@ -1243,13 +1244,33 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 			addGuidebook("chapter.electricity", "Electricity");
 
-			addGuidebook("chapter.electricity.l1.1", "Understanding how energy and electricity work is key if you want to do well in Electrodynamics. Energy is what machines use to do work, and it is measured in units of Joules (J). However, the energy needs to be \"flowing\" in order to do work. The rate " + "of flow is measured in units of Volts (V). The pressure or force of the flow in measured in units of Amperes or Amps for short (A or I). The amount of energy transfered in one second is known as the Power and is measured in units of " + "Watts (W). Power can easily be found through following the formula:");
+			addGuidebook("chapter.electricity.l1", "Understanding how energy and electricity work is key if you want to do well in Electrodynamics. This chapter will cover the following topics:");
+			
+			addGuidebook("chapter.electricity.topic.elecbasics", "");
+			
+			addGuidebook("chapter.electricity.topic.header", "%1$s. %2$s");
+			addGuidebook("chapter.electricity.topic.electricbasics", "Electricity Basics");
+			addGuidebook("chapter.electricity.topic.machinefundamentals", "Machine Fundamentals");
+			addGuidebook("chapter.electricity.topic.wirebasics",  "Wire Basics");
+			addGuidebook("chapter.electricity.topic.wireinsulation", "Wire Insulation");
+			addGuidebook("chapter.electricity.topic.wiremodification", "Wire Modification");
+			addGuidebook("chapter.electricity.topic.transformers", "Transformers");
+			addGuidebook("chapter.electricity.topic.gridconcepts", "Grid Concepts");
+			addGuidebook("chapter.electricity.topic.gridtools", "Grid Tools");
+			addGuidebook("chapter.electricity.topic.onfe", "On Forge Energy Units (FE)");
+			addGuidebook("chapter.electricity.topic.summary", "Summary");
+
+			addGuidebook("chapter.electricity.l2.1", "Machines require energy to do work, and this energy is measured in units of Joules, denoted with a capital J. However, the energy needs to be \"flowing\" in order for it to actually do work. The speed of the flow is measured in units of Volts, which are denoted with a capital V. The volume of "
+					+ "the flow is measured in units of Amperes (Amps for short), and is denoted with a capital I or A. The amount of energy transfered in one second is known as the Power and is measured in units of Watts, denoted with a capital W or P. Power can easily be found through following the formula:");
 			addGuidebook("chapter.electricity.powerformula", "P = I * V");
-			addGuidebook("chapter.electricity.l1.2", "where I is the current and V is the voltage.");
+			addGuidebook("chapter.electricity.l2.2", "where P is the Power, I is the current, and V is the voltage.");
 
-			addGuidebook("chapter.electricity.l2", "Now, how does this impact you and what do you need to pay attention to? All machines require energy at a specific voltage to function. The voltage will be displayed in the tooltip usually. However, " + "if you do not have access to this, there are a couple of methods of checking.");
+			addGuidebook("chapter.electricity.l3.1", "Now that we understand the basics of electricity, it is time to cover how electricity will actually be interacted with in the mod. As covered previously, machines require flowing energy to do work. However, not all machines are the same, and different machines will require "
+					+ "different voltages for the type of work they perform. This voltage will usually be displayed in a tooltip when you hover over the machine in your inventory:");
+			
+			addGuidebook("chapter.electricity.l3.2", "However, if the tooltip does not provide this information, or if you do not have a spare machine to mouse over, there are a couple of methods of checking.");
 
-			addGuidebook("chapter.electricity.l3", "The first method is to look at the base of the machine in question. Most machines have a set of colored diagonal lines, with the color being directly related to the voltage. The " + "following voltages are represented by the following colors:");
+			addGuidebook("chapter.electricity.l4", "The first method is to look at the machine in question when placed in the world. Most machines have a set of colored diagonal lines, with the color being directly related to the voltage. The following voltages are represented by the following colors:");
 
 			addGuidebook("chapter.electricity.voltageval", "%1$s V : %2$s");
 			addGuidebook("chapter.electricity.yellow", "Yellow");
@@ -1257,77 +1278,150 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.electricity.red", "Red");
 			addGuidebook("chapter.electricity.purple", "Purple");
 
-			addGuidebook("chapter.electricity.l4", "The following pages contain examples of machines with these markings:");
+			addGuidebook("chapter.electricity.l5", "The following pages contain examples of machines with these markings:");
 
 			addGuidebook("chapter.electricity.voltageexample", "Examples of %sV machines:");
 			addGuidebook("chapter.electricity.left", "Left: %s");
 			addGuidebook("chapter.electricity.middle", "Middle: %s");
 			addGuidebook("chapter.electricity.right", "Right: %s");
-			addGuidebook("chapter.electricity.voltageexamplenote", "Note the markings do not have to be at the base.");
+			addGuidebook("chapter.electricity.voltageexamplenote", "Note the markings are not always at the base.");
 
-			addGuidebook("chapter.electricity.l5", "The second method for checking a machine's voltage is to look at the voltage displayed by the energy tooltip in it's GUI. This tooltip will also tell you useful information such as the " + "wattage of the machine. The next page contains examples of this tooltip:");
+			addGuidebook("chapter.electricity.l6", "The second method for checking a machine's voltage is to look at the voltage displayed by the energy tooltip in it's GUI. While the previous methods do not always provide the needed information, the tooltip in the GUI will always provide the correct voltage for a machine. This "
+					+ "tooltip will also tell you useful information such as the wattage (power use) of the machine. The next page contains examples of this tooltip:");
 
-			addGuidebook("chapter.electricity.guivoltagenote", "Note, the tooltip can also contain other useful info.");
+			addGuidebook("chapter.electricity.guivoltagenote", "Note the other data points the tooltip can provide.");
 
-			addGuidebook("chapter.electricity.l6", "However, not every machine has markings such as the Quarry or has a GUI like the Pump, so it's important to pay attention when placing cables and machines. Too low of a " + "voltage, and a machine won't run. Too high of a voltage, and the machine will explode!");
+			addGuidebook("chapter.electricity.l7", "However, not every machine has markings such as the Quarry or has a GUI like the Pump, so it's important to keep track of the voltages you are working with before engergizing a machine. Too low of a voltage, and a machine will consume energy but won't run. Too high of a "
+					+ "voltage, and the machine will explode!");
 
-			addGuidebook("chapter.electricity.l7", "Now that we have a basic understanding of voltage and how it works, it's time to understand how to get energy into the machine. All machines that use energy will have an I/O port to connect to. However, unlike the voltage indicators discussed previously, these " + "ports are universal to all machines that use energy. There are two ports for energy:");
+			addGuidebook("chapter.electricity.l8", "Now that we have a basic understanding of how voltage will be interacted with, it's time to understand how to get energy into the machine. All machines that use energy will have an I/O port to interface with for energy transfer. However, unlike the voltage indicators discussed "
+					+ "previously which have the potential to vary, these ports are universal to all machines that use energy, and will look the same on every single machine. There are two ports for energy:");
 
 			addGuidebook("chapter.electricity.energyinput", "Red : Input");
 			addGuidebook("chapter.electricity.energyoutput", "Grey : Output");
 
-			addGuidebook("chapter.electricity.l8", "Here is an example of each:");
+			addGuidebook("chapter.electricity.l9", "Here is an example of each:");
 
-			addGuidebook("chapter.electricity.l9", "However, what is connected to these ports? Now it's time to discuss how electricity is transfered: Wires. Wires in this mod function a little differently than what you're used to. If you hover over a " + "wire in your inventory, you will notice it has a Resistance measures in units of Ohms (" + '\u03A9' + ") and a maximum rated current, known as its Ampacity:");
+			addGuidebook("chapter.electricity.l10", "However, what is connected to these ports? Now it's time to discuss how electricity is transfered to and from machines: %s. Wires in this mod function a little differently than what you're used to. For starters, wires do not store energy. Furthermore, if you hover over a wire "
+					+ "in your inventory, you will notice it has three fields: Resistance, Ampacity, and Insulation Rating.");
 
-			addGuidebook("chapter.electricity.l10", "Resistance is a measure of how opposed a material is to the flow of electricity. The Resistance of a wire will determine how much energy is lost when a current is developed over it. You can use P = I * I * R to to calculate the exact amount of power lost. " + "This means the more wires you connect together, the higher the overall resistance will be. However, it is important to note from this formula that the power lost is based on the square of the current. It is crucial to keep this in mind when designing complex wire layouts, as you might loose a great deal " + "of usable energy to the wires alone. It should also be noted here that wires do not store energy as you may be accustomed to in other mods.");
+			addGuidebook("chapter.electricity.wires", "Wires");
+			
+			addGuidebook("chapter.electricity.l11.1", "%1$s is a measure of how opposed a material is to the flow of electricity, and is measured in units of Ohms, denoted by a capital Omega (" + '\u03A9' + "). The Resistance of a wire will determine how much energy is lost when a current is developed over it. You can use the "
+					+ "formula %2$s to to calculate the exact amount of power lost over a wire. "
+					+ "However, the resistance listed for a wire is only for a single wire, and machines tend to be more than one block away from each other. Thus a crucial concept is introduced, in that the longer wires are, the higher their overall resistance. In simpler terms, longer wires have a greater power loss. However, if you analyze "
+					+ "the equation, you will observe the resistance is only a linear factor where as the current is squared. Thus power loss over a wire is affected far more by the current flowing over it than the resistance of the wire itself. It is crucial to keep this in mind when designing complex wire layouts, as you might "
+					+ "lose a great deal of usable energy to the wires before it even reaches the machine.");
+			
+			addGuidebook("chapter.electricity.resistance", "Resistance");
+			
+			addGuidebook("chapter.electricity.l11.2", "The %s of a wire describes how high a current the wire can experience before it fails. If the current in a wire exceeds its ampacity, the wire runs the risk of permanent damage and/or destruction!");
+			addGuidebook("chapter.electricity.ampacity", "Ampacity");
+			addGuidebook("chapter.electricity.l11.3", "However, not all hope is completely lost for the wire if you introduce a higher current than it is rated for. Wires can withstand a current higher than their rated ampacity for %s ticks. While not a very long period of time, it gives you the chance to save the wire!");
+			
+			addGuidebook("chapter.electricity.l11.4", "The %s of a wire determines how high a voltage the insulation of a conductor can handle before breakdown occurs, and the energy is able to short through the insulation. Uninsulated wires can shock you amongst other items that will be covered here shortly.");
+			addGuidebook("chapter.electricity.insulation", "Insulation Rating");
 
-			addGuidebook("chapter.electricity.l11.1", "If you were paying attention, you may have also noticed that the wire tooltip will display an insulation rating. The insulation rating of a wire determines what voltage the wire can handle before it shocks you if touched. You can mitigate the danger of being shocked by " + "wearing ");
+			addGuidebook("chapter.electricity.l12.1", "The topic of insulation is deceptively simple and is worth an in-depth look at this point. Insulation has more factors to consider than just a voltage rating when selecting an insulation type to use. These factors will now be discussed at length.");
+			addGuidebook("chapter.electricity.l12.2", "As discussed, an under or uninsulated wire can shock you. However, this is not the be-all end-all factor for a wire's insulation. You can mitigate the danger of being shocked by wearing %s. You will still take some damage if you are shocked while wearing them, however you will "
+					+ "stand a far higher chance of survival. It should be noted this survival chance comes at the price of boot durability, so the best practice is still to not touch an exposed wire in the first place.");
 
-			addGuidebook("chapter.electricity.l11.2", ". You will still take damage wearing them if you are being shocked, however you will be able to survive the encounter at the price of boot durability.");
+			addGuidebook("chapter.electricity.l13.1", "Different insulation types also come with pros and cons. Wool-based insulation is cheap, easy to come by, and highly effective:");
+			addGuidebook("chapter.electricity.l13.2", "A specialzed variant of a wool-insulated wire is the Logistical Wire:");
+			addGuidebook("chapter.electricity.l13.3", "It will emit a redstone signal when power is flowing through it.");
+			addGuidebook("chapter.electricity.l13.4", "Ceramic insulation on the other hand is more expensive than wool, but gains the advantage of being fire-proof:");
+			addGuidebook("chapter.electricity.l13.5", "This makes ceramicly insulated wires especially useful when working around fluids like lava. It should be noted though that ceramic insulation is not as effective as " + "woolen insulation, meaning that if you want to insulate high voltages, you will need to take the risk of fire!");
 
-			addGuidebook("chapter.electricity.l12.1", "Different insulation types also come with pros and cons. Wool-based insulation is flammable, but is cheap has the ability to be colored:");
+			addGuidebook("chapter.electricity.l14.1", "Another property of insulated wires is the ability to be dyed different colors. All insulated wires have a default color that is able to connect to any insulation color and wire type. Black is the default color for woolen insulation and brown is the default color for ceramic insulation. If the color is not the default however, it will only be able to connect to wires colored the default color or wires of the same color:");
+			addGuidebook("chapter.electricity.l14.2", "Being able to color-coat wires has several advantages, the largest of which being the ability to run multiple wires in parallel right next to each other without having them connect. This can be very helpful if you are dealing with machine setups where multiple voltages are involved in tight quarters. ");
+			
+			addGuidebook("chapter.electricity.l15", "While on the topic of insulation ratings, It is critical to understand that a wire not having sufficiant insulation has greater ramifications than just shocking you. Wires transmitting voltages higher than what they are rated for will have a random chance to set the blocks " + "surrounding them on fire (excluding other wires). If the wire cannot set a flammable block on fire, either by pure chance or becuase you're trying to game the system, then the wire itself will be destroyed. However, this feature can be disabled in the Electrodynamics config file if desired.");
 
-			addGuidebook("chapter.electricity.l12.2", "Black is the default wire color for wool insulation, with a black wire being able to connect to any wire color or type. A yellow wire on the other hand " + "is only able to connect to black and other yellow wires. This is especially useful if you need to run multiple lines in parallel, as it means you can have two different-colored wires next to each other and not have them connect. This can be very helpful if you are dealing with machine setups where " + "multiple voltages are involved in tight quarters. A specialzed variant of a wool-insulated wire is the Logistical Wire:");
+			addGuidebook("chapter.electricity.l16", "Wires have the ability to be field-modified once placed in the world. If you right-click any insulated wire with Shears (excluding thick wires), it will remove the insulation from the wire. You can also apply woolen and ceramic insulation to an existing wire " + "by right-clicking the insulation on the wire. A woolen wire can be converted to a logistical wire by right-clicking a piece of redstone on it. You can also dye wires by right-clicking the respective dye onto the wire. Note that this is a less-efficiant way to color wires than crafting them to " + "the respective color!");
 
-			addGuidebook("chapter.electricity.l12.3", "It will emit a redstone signal when power is flowing through it.");
-
-			addGuidebook("chapter.electricity.l13.1", "Ceramic insulation on the other hand is more expensive than wool, but gains the advantage of being fire-proof:");
-
-			addGuidebook("chapter.electricity.l13.2", "This makes ceramicly insulated wires especially useful when working around fluids like lava. It should be noted though that ceramic insulation is not as effective as " + "woolen insulation, meaning that if you want to insulate high voltages, you will need to take the risk of fire!");
-
-			addGuidebook("chapter.electricity.l14", "While on the topic of insulation ratings, It is critical to understand that a wire not having sufficiant insulation has greater ramifications than just shocking you. Wires transmitting voltages higher than what they are rated for will have a random chance to set the blocks " + "surrounding them on fire (excluding other wires). If the wire cannot set a flammable block on fire, by either pure chance or becuase you're trying to game the system, then the wire itself will be destroyed. This feature can be disabled in the Electrodynamics config file if desired.");
-
-			addGuidebook("chapter.electricity.l15", "One final note while on the topic of wires is the ability to field-modify them. If you right-click any insulated wire with Shears (excluding thick wires), it will remove the insulation from the wire. You can also apply woolen and ceramic insulation to an existing wire " + "by right-clicking the insulation on the wire. A woolen wire can be converted to a logistical wire by right-clicking a piece of redstone on it. You can also dye wires by right-clicking the respective dye onto the wire. Note that this is a less-efficiant way to color wires than crafting them to " + "the respective color!");
-
-			addGuidebook("chapter.electricity.l16l1", "Now that we know how to get energy to a machine and understand it must be at a specific voltage, you're probably wondering how that voltage is achieved. Most power sources in Electrodynamics are 120V or 240V, which works well for some basic machines, but that simply won't cut it " + "for higher voltage " + "machines. This is where the Upgrade and Downgrade Transformers come in. Transformers function by exchanging voltage for current. This exchange rate can be calculated using what is known as the Turns or Coil Ratio, which is given by the formula:");
+			addGuidebook("chapter.electricity.l17.1", "Now that we know how to get energy to a machine and understand it must be at a specific voltage, you're probably wondering how that voltage is achieved. Most power sources in Electrodynamics are either 120 V or 240 V. This works well for many of the basic machines, but simply won't "
+					+ "cut it for more advanced machines that require higher voltages. This is where transformers come in. Transformers function by exchanging voltage for current. This exchange rate can be calculated using what is known as the Turns Ratio, which is given by the formula:");
 
 			addGuidebook("chapter.electricity.turnsratioformula", "N = Np / Ns");
 
-			addGuidebook("chapter.electricity.l16l2", "Where N is the Turns Ratio, Np is the number of primary or input turns, and Ns is the number of secondary or output turns. The output voltage can be calculated by dividing the input voltage by the Turns Ratio. The output current can be calculated by multiplying the input current by the Turns Ratio. " + "The base Upgrade Transformer has a fixed Turns Ratio of 0.5, and the base Downgrade Transformer has a fixed Turns Ratio of 2. While cheap, they will also shock you if live. The improved Mark 2 versions, while much more expensive, have a programmable turns ratio you can select via the GUI. They are also enclosed and will not shock you if live. " + "It is important to note that all Transformers are not 100% efficient, so be wise with your use of them.");
+			addGuidebook("chapter.electricity.l17.2", "Where N is the Turns Ratio, Np is the number of primary or input turns, and Ns is the number of secondary or output turns. The output voltage can be calculated by dividing the input voltage by the Turns Ratio. The output current can be calculated by multiplying the input "
+					+ "current by the Turns Ratio.");
+			addGuidebook("chapter.electricity.l17.3" , "Electrodynamics offers two transformer types: Upgrade and Downgrade. The %1$s Transformer steps up voltage, and the %2$s Transformer steps down voltage. The base upgrade variant has a fixed Turns Ratio of 0.5, and the base downgrade variant has a fixed Turns Ratio "
+					+ "of 2. While cheap and effective, these base units will shock you when touched if they are live. Electrodynamics also offers improved Mark 2 versions, which while much more expensive, have a programmable turns ratio you can select via the GUI. They are also enclosed and will not shock you when touched. It is "
+					+ "important to note that all transformers do have minor loses, so be wise with your use of them.");
+			
+			addGuidebook("chapter.electricity.upgrade", "Upgrade");
+			addGuidebook("chapter.electricity.downgrade", "Downgrade");
 
-			addGuidebook("chapter.electricity.l17.1", "By now, you are feeling overwhelmed most likely. How are you supposed to keep track of what voltage your wire network is operating at? How are you supposed to keep track of the overall resistance? Fear not, for Electrodynamics offers several tools and blocks " + "to help you out along the way. The first and most important is the ");
+			addGuidebook("chapter.electricity.l18.1", "Now that we understand the basics of electricity, how it will be interacted with, and how it can be manipulated, we can start to piece the different aspects together. This combination of aspects will be referred to as a %1$s moving forward. Operating machines in a grid introduces "
+					+ "more complex scenarios that analyzing individual components in a vacuum may overlook.");
+			
+			addGuidebook("chapter.electricity.grid", "Grid");
+			
+			addGuidebook("chapter.electricity.l18.2", "To construct a grid, we must first understand how Electrodynamics' electrical model functions. Electrodynamics assumes that all power sources are agregated into one large power source. It then assumes all loads are in series. This can be modeled with the following circuit diagram:");
+			
+			addGuidebook("chapter.electricity.l18.3", "This model is not perfect, however it gets the job done, and is about as acurate as you can get without a complex system model using software such as SPICE. Knowing how wire networks are modeled will prove valuable moving forward.");
+			
+			addGuidebook("chapter.electricity.l18.4", "The first of the more complex concepts that will be introduced is known as Return Current or %1$s. In short, the neutral current means you will lose twice the amount of energy to wire resistance you will think you will lose. While this may sound strange, a detailed examination of how current works "
+					+ "will reveal a logical answer. An electrical current requires a return path to its source in order to obey the laws of entropy, that is to say the net electrical charge is zero. In real life, this is accomplished by having a Primary conductor and a Neutral conductor, as can be seen from this image here:");
+			
+			addGuidebook("chapter.electricity.neutralcurrent", "Neutral Current");
+			
+			addGuidebook("chapter.electricity.neutralwirenote", "A Single Phase Power Line. Primary Conductor (top), Neutral Conductor (middle), Communication Cable (bottom)");
+			
+			addGuidebook("chapter.electricity.l18.5", "The Primary Conductor provides the path for the current to the load, and the Neutral Conductor provides the return path for the current to its source. Electrodynamics does not render a Neutral Conductor, however it assumes that Neutral Conductor is the same length as the "
+					+ "Primary Conductor, that is to say the wire you place. Thus the total power loss due to resistance can be calculated as %s. As an aisde, in real life there are techniques that can be used to reduce neutral current, however these techniques are beyond the scope of what Electodynamics is capable of.");
+			
+			addGuidebook("chapter.electricity.neutralloss", "P = 2 * R * I * I");
+			
+			addGuidebook("chapter.electricity.l18.6", "Before we proceed to the next complex topic, I would like to address an elephant in the room. You may be wondering: \"How is it possible that the energy returning to the power source is a net of zero if energy is lost on the way to resistance and also used by a power source.\" The first "
+					+ "Law of Thermodynamics states that energy can neither be created nor destroyed, only transformed. This applies to electrons as well. If you recall to the first section of this chapter, Voltage was described as the speed of the electricity. The property that will be affected by resistance and load is actually "
+					+ "the Voltage. Resistance and load can be thought of as friction slowing the electricity down, the same way a car will eventually come to a stop if you stop accelerating it. This leads to a phenomenon in the real world known as \"Voltage Drop\". Voltage Drop can be a singificant challenge in power delivery, as "
+					+ "the load you are serving might have too low of a voltage to run. Fortunately however, Electrodynamics does not simultate Voltage Drop for simplicity's sake.");
+			
+			addGuidebook("chapter.electricity.l18.7", "The next complex topic that will be covered is known as %1$s. All Electrodynamics machines that use energy have a small internal storage buffer. As they do not have an energy input cap, the empty buffer is seen in its entirety when connected to a live wire. As a result, the "
+					+ "current for the device will look akin to the following:");
+			
+			addGuidebook("chapter.electricity.inrushcurrent", "Inrush Current");
+			
+			addGuidebook("chapter.electricity.l18.8", "In short, the current will briefly spike and quickly approach its steady state level as the buffer is charged. Steady State current is the current you would expect the machine to draw. This buffer is "
+					+ "provided to help insulate machines against lag, allowing them to keep running if a tick is skipped by the server. The buffer also coincidentally models a real-world phenomenon, in that all electrical devices store energy. You may find this an odd statement. How can energy be stored without a battery? The "
+					+ "answer is that energy is stored in Electrical and Magnetic fields. While the amount is insignificant to the amount of energy that can stored by a battery, it still must be accounted for.");
+			
+			addGuidebook("chapter.electricity.l18.9", "Inrush Current will mostly not affect you fortunately. As discussed previously, while wires have a maximum ampacity that cannot be exceeded, they can handle a brief overload for %s ticks before actually failing. 9 times out of 10 this will not be an issue, however it can become a problem if "
+					+ "you have a prolonged inrush that exceeds this time limit. This inrush may also falsely trigger protective devices to trip!");
+			
+			addGuidebook("chapter.electricity.l19.1", "By now, you are feeling overwhelmed most likely. How are you supposed to keep track of what voltage your grid is operating at? How are you supposed to keep track of the overall resistance? Fear not, for Electrodynamics offers several tools and blocks to assist with this, "
+					+ "along with other tools you may find useful. These will be covered on the following pages.");
 
-			addGuidebook("chapter.electricity.l17.2", ". Right-clicking a wire network with one will display several imporant data points about that network:");
+			addGuidebook("chapter.electricity.l19.handheldmultimeter.1", "The Handheld Multimeter allows you to view multiple data points for a wire grid. Right-clicking any wire conneted to a grid will display several imporant data points about that grid:");
+			addGuidebook("chapter.electricity.l19.handheldmultimeter.2", "The first data point is the current power being transmitted in Amps in proportion to the Ampacity of the wire network. The second data point shows the current operating voltage of the wire network. The third data point shows the current power transfer in watts. "
+					+ "The fourth data point shows the total resistance of the network, with the fifth data point showing the power loss due to resistance. The final data point shows the lowest voltage machine connected to the network. Note this chat message will disappear after some time!");
 
-			addGuidebook("chapter.electricity.l17.3", "The first data point is the current power being transmitted in Amps in proportion to the Ampacity of the wire network. The second data point shows the current operating voltage of the wire network. The third data point shows the current power transfer " + "in watts. The fourth data point shows the total resistance of the network, with the fifth data point showing the power loss due to resistance. The final data point shows the lowest voltage machine connected to the network. If you wish to view the data points for a longer period of time, " + "you can craft a ");
+			addGuidebook("chapter.electricity.l19.multimeterblock.1", "The Multimeter Block offers the same functionality as the hand-held variant, but will display the relevant data constantly.");
 
-			addGuidebook("chapter.electricity.l17.4", ", which offers the same functionality, but will display the relevant data constantly.");
+			addGuidebook("chapter.electricity.l19.relay.1", "The Relay will stop the flow of electricity when powered with a redstone signal:");
+			addGuidebook("chapter.electricity.l19.relay.2", "This is particularly useful, as it means that you can turn machines off and on without having to break a wire or waiting for them to fill up. The Relay also does not impose a power loss when power flows across it. This comes at a price however, as it is also a dumb switch, "
+					+ "meaning it can only be opened manually with said redstone signal. This means the Relay is a useful logistical tool, but will not really be effective at protecting your downstream equipment.");
 
-			addGuidebook("chapter.electricity.l18.1", "The next useful block Electrodynamics adds is the %1$s, which will stop the flow of electricity when powered with a redstone signal:");
+			addGuidebook("chapter.electricity.l19.circuitbreaker.1", "The Circuit Breaker is an improved version of the Relay. Not only is able to be manually opened with a redstone signal, but it will also open automatically if it senses that the transmitting voltage will damage a machine or if the transmitting current will damage "
+					+ "a wire or machine:");
+			addGuidebook("chapter.electricity.l19.circuitbreaker.2", "However, this protective nature comes at a price, as the Circuit Breaker has a small power loss. This means you will need to be somewhat more thoughtful with your use of them!");
+			
+			addGuidebook("chapter.electricity.l19.currentregulator.1", "The Current Regulator is another protective device offered by Electrodynamics. Unlike the Circuit Breaker which is focused on interrupting power, the Current Regulator will ensure that current does not exceed the maximum rated ampacity of the downstream line "
+					+ "it is protecting. For example, if the ampacity was 20 A and the current was 30 A, the regulator would ensure the downstream current would not exceed 20 A. Unlike the Circuit Breaker and Relay however, the Current Regulator cannot be opened to interrupt load flow.");
 
-			addGuidebook("chapter.electricity.l18.2", "This is particularly useful, as it means that you can turn machines off and on without having to break a wire or waiting for them to fill up. The %1$s also does not impose a power loss when power flows across it. This comes at a price however, as it is also a dumb switch, " + "meaning the only way it will open is when manually activated. This means the %1$s is a useful logistical tool, but will not really be effective at protecting your downstream equipment.");
+			addGuidebook("chapter.electricity.l19.circuitmonitor.1", "The Circuit Monitor can be programmed to output a redstone signal (strength of 15) when a certain condition is met:");
+			addGuidebook("chapter.electricity.l19.circuitmonitor.2", "We will first cover the \"Property\" selection list in the GUI. The %1$s property represents the current wattage of the energy flowing through the wire in real time in units of Watts. The %2$s property represents the current voltage of the energy flowing through the wire in real time " + "in units of Volts. The %3$s property is the maximum current the wire can achieve before it is damaged in units of Amps. The %4$s property is the voltage of the lowest-voltage machine connected to the wire in units of Volts. The %5$s property is the resistance of the wire in units of Ohms. Finally, the %6$s " + "property is the maximum possible energy usage of all machines connected to the wire in units of Watts. It is important to note this value can be different from the %7$s property's value.");
+			addGuidebook("chapter.electricity.l19.circuitmonitor.3", "The next section of the GUI is the \"Operator\" selection list, which is the list of boolean operators that can be selected for comparing the \"Property\" and \"Value\" sections. It is hoped by the author of this book you understand what the individual operators mean. The final section " + " in the GUI is the \"Value\" section. The quantity input into this field is what will be compared against the property selected. It is important to note this value cannot be negative.");
 
-			addGuidebook("chapter.electricity.l19.1", "For a true protective device, you will need to upgrade the %1$s into a %2$s. The %3$s not only is able to be manually opened with redstone like its predecessor, but will also open automatically if it senses that the transmitting voltage will damage a machine or if the " + "transmitting current will damage a wire:");
-
-			addGuidebook("chapter.electricity.l19.2", "However, this protective nature comes at a price, as the %1$s has a small power loss. This means you will need to be somewhat more thoughtful with your use of them!");
-
-			addGuidebook("chapter.electricity.l20.1", "For the redstone engineers reading this, the mention of a switch controllable by redstone has probably peaked your interest. Electrodynamics also provides the %s, which can be programmed to output a redstone signal (strength of 15) when a certain condition is met:");
-
-			addGuidebook("chapter.electricity.l20.2", "We will first cover the \"Property\" selection list in the GUI. The %1$s property represents the current wattage of the energy flowing through the wire in real time in units of Watts. The %2$s property represents the current voltage of the energy flowing through the wire in real time " + "in units of Volts. The %3$s property is the maximum current the wire can achieve before it is damaged in units of Amps. The %4$s property is the voltage of the lowest-voltage machine connected to the wire in units of Volts. The %5$s property is the resistance of the wire in units of Ohms. Finally, the %6$s " + "property is the maximum possible energy usage of all machines connected to the wire in units of Watts. It is important to note this value can be different from the %7$s property's value.");
-
-			addGuidebook("chapter.electricity.l20.3", "The next section of the GUI is the \"Operator\" selection list, which is the list of boolean operators that can be selected for comparing the \"Property\" and \"Value\" sections. It is hoped by the author of this book you understand what the individual operators mean. The final section " + " in the GUI is the \"Value\" section. The quantity input into this field is what will be compared against the property selected. It is important to note this value cannot be negative.");
-
+			addGuidebook("chapter.electricity.l19.potentiometer.1", "The Potentiometer is, as the tooltip suggests, a programmable energy sink. If the entered value is less than 0, then the Potentiometer will accept as much energy as the power source it is connected to can produce. If the entered value is greater than 0, then the "
+					+ "Potentiometer will accept up to the value entered. The Potentiometer can never be \"filled\" for reference.");
+			
+			addGuidebook("chapter.electricity.l20", "Electrodynamics represents its energy in real-world quantities (Joules) as discussed in section 1 of this chapter. As a result, Electrodynamics machines cannot directly use Forge Energy Units (FE). However, this does not mean Electrodynamics cannot interact with FE. Wires are able to "
+					+ "power FE machines with Joules, and the conversion rate is one to one. However Electrodynamics assumes all FE machines are 120 V rated. This means if you power a Pulverizer from Thermal Expansion with a 240 V power source, it will explode! Battery Boxes are also able to accept FE as well as emit it. However, keep in mind if the output voltage is not 120 V, "
+					+ "then the FE device will explode!");
+			
 			addGuidebook("chapter.electricity.l21", "In summary, machines need energy at a specific voltage to work. There are multiple methods of finding this voltage. Machines have specific colored ports for energy input and output. Energy is transfered into machines using wires, with the type of wire " + "used determining how the cable network performs. Voltages can be stepped up and stepped down using transformers. There are multiple methods for monitoring and controling a wire network. The next page contains a list of symbols and formulas for you to reference..");
 
 			addGuidebook("chapter.electricity.symbols", "Symbols:");

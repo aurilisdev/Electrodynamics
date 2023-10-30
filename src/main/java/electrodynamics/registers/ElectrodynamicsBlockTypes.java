@@ -13,6 +13,7 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.electricitygrid.TileCircuitBreaker;
 import electrodynamics.common.tile.electricitygrid.TileCircuitMonitor;
+import electrodynamics.common.tile.electricitygrid.TileCurrentRegulator;
 import electrodynamics.common.tile.electricitygrid.TileLogisticalWire;
 import electrodynamics.common.tile.electricitygrid.TileMultimeterBlock;
 import electrodynamics.common.tile.electricitygrid.TilePotentiometer;
@@ -193,4 +194,5 @@ public class ElectrodynamicsBlockTypes {
 	public static final RegistryObject<BlockEntityType<TileRelay>> TILE_RELAY = BLOCK_ENTITY_TYPES.register("relay", () -> new BlockEntityType<>(TileRelay::new, Sets.newHashSet(ElectrodynamicsBlocks.getBlock(SubtypeMachine.relay)), null));
 	public static final RegistryObject<BlockEntityType<TilePotentiometer>> TILE_POTENTIOMETER = BLOCK_ENTITY_TYPES.register("potentiometer", () -> new BlockEntityType<>(TilePotentiometer::new, Sets.newHashSet(ElectrodynamicsBlocks.getBlock(SubtypeMachine.potentiometer)), null));
 	public static final RegistryObject<BlockEntityType<TileCircuitMonitor>> TILE_CIRCUITMONITOR = BLOCK_ENTITY_TYPES.register("circuitmonitor", () -> new BlockEntityType<>(TileCircuitMonitor::new, Sets.newHashSet(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitmonitor)), null));
+	public static final RegistryObject<BlockEntityType<TileCurrentRegulator>> TILE_CURRENTREGULATOR = BLOCK_ENTITY_TYPES.register("currentregulator", () -> new BlockEntityType<>(TileCurrentRegulator::new, Sets.newHashSet(ElectrodynamicsBlocks.getBlock(SubtypeMachine.currentregulator)), null));
 }

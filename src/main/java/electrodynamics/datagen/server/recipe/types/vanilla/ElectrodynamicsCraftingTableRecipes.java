@@ -1373,6 +1373,26 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(References.ID, "machine_creative_power_source", consumer);
 
+		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.currentregulator.ordinal()], 1)
+				//
+				.addPattern("SAS")
+				//
+				.addPattern("DCU")
+				//
+				.addPattern("SAS")
+				//
+				.addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+				//
+				.addKey('A', ElectrodynamicsTags.Items.PLATE_ALUMINUM)
+				//
+				.addKey('D', ElectrodynamicsItems.getItem(SubtypeMachine.downgradetransformer))
+				//
+				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+				//
+				.addKey('U', ElectrodynamicsItems.getItem(SubtypeMachine.upgradetransformer))
+				//
+				.complete(References.ID, "machine_current_regulator", consumer);
+
 		ElectrodynamicsShapedCraftingRecipe.start(MACHINES[SubtypeMachine.downgradetransformer.ordinal()], 1)
 				//
 				.addPattern("ISI")
