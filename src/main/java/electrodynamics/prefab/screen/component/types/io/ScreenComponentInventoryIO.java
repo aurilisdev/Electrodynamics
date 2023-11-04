@@ -25,6 +25,8 @@ public class ScreenComponentInventoryIO extends ScreenComponentGeneric {
 	public static final int SQUARE_SIZE = 6;
 	public static final int COLORS_PER_ROW = 4;
 	public static final int DRAWING_AREA_SIZE = 24;
+	
+	public Color SLOT_GRAY = new Color(150, 150, 150, 255);
 
 	private final Direction side;
 
@@ -107,7 +109,7 @@ public class ScreenComponentInventoryIO extends ScreenComponentGeneric {
 		for (int i = 0; i < wholeRows; i++) {
 			for (int j = 0; j < COLORS_PER_ROW; j++) {
 
-				graphics.fill(x + 1 + j * SQUARE_SIZE, y + 1 + i * wholeHeight, x + 1 + (j + 1) * SQUARE_SIZE, y + 1 + (i + 1) * wholeHeight, colors.get(index).color());
+				graphics.fill(x + 1 + j * SQUARE_SIZE, y + 1 + i * wholeHeight, x + 1 + (j + 1) * SQUARE_SIZE, y + 1 + (i + 1) * wholeHeight, colors.get(index).multiply(SLOT_GRAY).color());
 
 				index++;
 			}
@@ -119,12 +121,12 @@ public class ScreenComponentInventoryIO extends ScreenComponentGeneric {
 
 		for (int i = 0; i < lastRowCount - 1; i++) {
 
-			graphics.fill(x + 1 + i * remainderWidth, y + 1 + wholeHeight * wholeRows, x + 1 + (i + 1) * remainderWidth, y + 1 + wholeHeight * wholeRows + remainderHeight, colors.get(index).color());
+			graphics.fill(x + 1 + i * remainderWidth, y + 1 + wholeHeight * wholeRows, x + 1 + (i + 1) * remainderWidth, y + 1 + wholeHeight * wholeRows + remainderHeight, colors.get(index).multiply(SLOT_GRAY).color());
 
 			index++;
 		}
 
-		graphics.fill(x + 1 + remainderWidth * (lastRowCount - 1), y + 1 + wholeHeight * wholeRows, x + 1 + lastRowCount * remainderWidth + lastToAdd, y + 1 + wholeHeight * wholeRows + remainderHeight, colors.get(index).color());
+		graphics.fill(x + 1 + remainderWidth * (lastRowCount - 1), y + 1 + wholeHeight * wholeRows, x + 1 + lastRowCount * remainderWidth + lastToAdd, y + 1 + wholeHeight * wholeRows + remainderHeight, colors.get(index).multiply(SLOT_GRAY).color());
 
 	}
 
