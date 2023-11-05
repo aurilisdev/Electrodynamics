@@ -2,6 +2,7 @@ package electrodynamics.prefab.screen.component.types.wrapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiFunction;
 
 import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
 import electrodynamics.prefab.screen.GenericScreen;
@@ -22,8 +23,15 @@ public class InventoryIOWrapper {
 	
 	private final GenericScreen<?> screen;
 	
+	private final BiFunction<SlotGeneric, Integer, Color> defaultColorSupplier;
+	
 	public InventoryIOWrapper(GenericScreen<?> screen, int tabX, int tabY, int slotStartX, int slotStartY, int labelX, int labelY) {
+		this(screen, tabX, tabY, slotStartX, slotStartY, labelX, labelY, (slot, index) -> Color.WHITE);
+	}
+	
+	public InventoryIOWrapper(GenericScreen<?> screen, int tabX, int tabY, int slotStartX, int slotStartY, int labelX, int labelY, BiFunction<SlotGeneric, Integer, Color> defaultColorSupplier) {
 		this.screen = screen;
+		this.defaultColorSupplier = defaultColorSupplier;
 		screen.addComponent(new ButtonInventoryIOView(tabX, tabY).setOnPress(but -> {
 			//
 			ButtonInventoryIOView button = (ButtonInventoryIOView) but;
@@ -73,7 +81,7 @@ public class InventoryIOWrapper {
 
 					if (generic.ioColor != null) {
 
-						this.screen.slots.get(i).setColor(Color.WHITE);
+						this.screen.slots.get(i).setColor(this.defaultColorSupplier.apply(generic, i));
 
 					}
 

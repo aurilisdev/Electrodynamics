@@ -1,7 +1,6 @@
 package electrodynamics.common.tile.machines.wiremill;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorDouble;
@@ -25,9 +24,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileWireMill extends GenericTile implements ITickableSound {
 
@@ -87,25 +83,4 @@ public class TileWireMill extends GenericTile implements ITickableSound {
 		return (int) (((double) getNumActiveProcessors() / (double) Math.max(1, getNumProcessors())) * 15.0);
 	}
 
-	static {
-		VoxelShape shape = Shapes.empty();
-		shape = Shapes.join(shape, Shapes.box(0, 0, 0, 1, 0.3125, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.0625, 0.3125, 0, 0.3125, 1, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.3125, 0.3125, 0.125, 0.6875, 0.375, 0.5625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.375, 0.625, 0.9375, 0.4375, 0.75, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.5625, 0.625, 0.9375, 0.625, 0.75, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.4375, 0.75, 0.9375, 0.5625, 0.8125, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.421875, 0.640625, 0.125, 0.578125, 0.796875, 0.5625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.421875, 0.421875, 0.125, 0.578125, 0.578125, 0.5625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.4375, 0.5625, 0.9375, 0.5625, 0.625, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0.3125, 0.25, 0.0625, 0.75, 0.75), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0.3125, 0, 0.0625, 1, 0.125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0.875, 0.125, 0.0625, 1, 0.875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0.3125, 0.875, 0.0625, 1, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.3125, 0.3125, 0.6875, 0.6875, 0.9375, 0.9375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.3125, 0.3125, 0, 0.6875, 0.9375, 0.125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.3125, 0.3125, 0.5625, 0.6875, 0.9375, 0.6875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.6875, 0.3125, 0.6875, 1, 0.625, 0.9375), BooleanOp.OR);
-		VoxelShapes.registerShape(SubtypeMachine.wiremill, shape, Direction.EAST);
-	}
 }

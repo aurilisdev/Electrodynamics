@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
-import electrodynamics.common.block.VoxelShapes;
+import electrodynamics.common.block.voxelshapes.VoxelShapes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;

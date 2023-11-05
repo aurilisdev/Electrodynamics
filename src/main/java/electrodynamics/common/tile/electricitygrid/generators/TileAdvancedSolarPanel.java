@@ -4,7 +4,6 @@ import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.multiblock.Subnode;
 import electrodynamics.api.multiblock.parent.IMultiblockParentTile;
 import electrodynamics.common.block.BlockMachine;
-import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
@@ -22,13 +21,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -79,16 +74,6 @@ public class TileAdvancedSolarPanel extends TileSolarPanel implements IMultibloc
 	@Override
 	public Direction getFacingDirection() {
 		return getFacing();
-	}
-
-	static {
-
-		VoxelShape shape = Block.box(0, 0, 0, 16, 2, 16);
-		shape = Shapes.join(shape, Block.box(2, 2, 2, 14, 3, 14), BooleanOp.OR);
-		shape = Shapes.join(shape, Block.box(3, 3, 3, 13, 7, 13), BooleanOp.OR);
-		shape = Shapes.join(shape, Block.box(6, 7, 6, 10, 16, 10), BooleanOp.OR);
-
-		VoxelShapes.registerShape(SubtypeMachine.advancedsolarpanel, shape, Direction.NORTH);
 	}
 
 }

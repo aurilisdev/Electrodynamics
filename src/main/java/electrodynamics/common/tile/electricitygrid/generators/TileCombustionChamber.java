@@ -1,7 +1,6 @@
 package electrodynamics.common.tile.electricitygrid.generators;
 
 import electrodynamics.api.electricity.generator.IElectricGenerator;
-import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCombustionChamber;
 import electrodynamics.common.network.utils.FluidUtilities;
@@ -30,10 +29,7 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
@@ -152,60 +148,6 @@ public class TileCombustionChamber extends GenericMaterialTile implements IElect
 			return;
 		}
 		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
-	}
-
-	static {
-
-		VoxelShape shape = Block.box(1, 0, 0, 15, 1, 16);
-
-		shape = Shapes.or(shape, Block.box(2, 1, 0, 3, 12, 1));
-		shape = Shapes.or(shape, Block.box(13, 1, 0, 14, 12, 1));
-		shape = Shapes.or(shape, Block.box(3, 12, 0, 13, 13, 1));
-		shape = Shapes.or(shape, Block.box(4, 3, 0, 12, 11, 1));
-
-		shape = Shapes.or(shape, Block.box(2, 12, 1, 3, 13, 15));
-		shape = Shapes.or(shape, Block.box(3, 1, 1, 13, 12, 15));
-		shape = Shapes.or(shape, Block.box(13, 12, 1, 14, 13, 15));
-
-		shape = Shapes.or(shape, Block.box(2, 1, 15, 3, 12, 16));
-		shape = Shapes.or(shape, Block.box(13, 1, 15, 14, 12, 16));
-		shape = Shapes.or(shape, Block.box(3, 12, 15, 13, 13, 16));
-		shape = Shapes.or(shape, Block.box(4, 3, 15, 12, 11, 16));
-
-		shape = Shapes.or(shape, Block.box(2, 3, 1, 3, 4, 2));
-		shape = Shapes.or(shape, Block.box(1, 4, 1, 2, 10, 2));
-		shape = Shapes.or(shape, Block.box(2, 10, 1, 3, 11, 2));
-		shape = Shapes.or(shape, Block.box(2, 3, 7, 3, 4, 9));
-		shape = Shapes.or(shape, Block.box(1, 4, 7, 2, 10, 9));
-		shape = Shapes.or(shape, Block.box(2, 10, 7, 3, 11, 9));
-		shape = Shapes.or(shape, Block.box(2, 3, 14, 3, 4, 15));
-		shape = Shapes.or(shape, Block.box(1, 4, 14, 2, 10, 15));
-		shape = Shapes.or(shape, Block.box(2, 10, 14, 3, 11, 15));
-
-		shape = Shapes.or(shape, Block.box(13, 3, 1, 14, 4, 2));
-		shape = Shapes.or(shape, Block.box(14, 4, 1, 15, 10, 2));
-		shape = Shapes.or(shape, Block.box(13, 10, 1, 14, 11, 2));
-		shape = Shapes.or(shape, Block.box(13, 3, 7, 14, 4, 9));
-		shape = Shapes.or(shape, Block.box(14, 4, 7, 15, 10, 9));
-		shape = Shapes.or(shape, Block.box(13, 10, 7, 14, 11, 9));
-		shape = Shapes.or(shape, Block.box(13, 3, 14, 14, 4, 15));
-		shape = Shapes.or(shape, Block.box(14, 4, 14, 15, 10, 15));
-		shape = Shapes.or(shape, Block.box(13, 10, 14, 14, 11, 15));
-
-		shape = Shapes.or(shape, Block.box(4, 12, 4, 5, 13, 5));
-		shape = Shapes.or(shape, Block.box(4, 12, 11, 5, 13, 12));
-
-		shape = Shapes.or(shape, Block.box(7, 12, 2, 9, 14, 3));
-		shape = Shapes.or(shape, Block.box(7, 14, 3, 9, 15, 4));
-		shape = Shapes.or(shape, Block.box(5, 12, 4, 11, 15, 12));
-		shape = Shapes.or(shape, Block.box(7, 12, 13, 9, 14, 14));
-		shape = Shapes.or(shape, Block.box(7, 14, 12, 9, 15, 13));
-
-		shape = Shapes.or(shape, Block.box(11, 12, 4, 12, 13, 5));
-		shape = Shapes.or(shape, Block.box(11, 12, 11, 12, 13, 12));
-
-		VoxelShapes.registerShape(SubtypeMachine.combustionchamber, shape, Direction.WEST);
-
 	}
 
 }

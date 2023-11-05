@@ -1,6 +1,5 @@
 package electrodynamics.common.tile.electricitygrid.transformer;
 
-import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerAdvancedDowngradeTransformer;
 import electrodynamics.common.inventory.container.tile.ContainerAdvancedUpgradeTransformer;
@@ -10,15 +9,10 @@ import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public abstract class TileAdvancedTransformer extends TileGenericTransformer {
 
@@ -64,17 +58,6 @@ public abstract class TileAdvancedTransformer extends TileGenericTransformer {
 			addComponent(new ComponentContainerProvider(SubtypeMachine.advancedupgradetransformer, this).createMenu((id, playerinv) -> new ContainerAdvancedUpgradeTransformer(id, playerinv, getCoordsArray())));
 		}
 
-	}
-
-	static {
-
-		VoxelShape shape = Block.box(0, 0, 0, 16, 1, 16);
-		shape = Shapes.join(shape, Block.box(1, 1, 1, 15, 15, 15), BooleanOp.OR);
-		shape = Shapes.join(shape, Block.box(0, 4, 4, 1, 12, 12), BooleanOp.OR);
-		shape = Shapes.join(shape, Block.box(15, 4, 4, 16, 12, 12), BooleanOp.OR);
-
-		VoxelShapes.registerShape(SubtypeMachine.advanceddowngradetransformer, shape, Direction.EAST);
-		VoxelShapes.registerShape(SubtypeMachine.advancedupgradetransformer, shape, Direction.EAST);
 	}
 
 }

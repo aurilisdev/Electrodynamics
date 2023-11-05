@@ -1,6 +1,5 @@
 package electrodynamics.common.tile.electricitygrid.generators;
 
-import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
@@ -29,9 +28,6 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileHydroelectricGenerator extends GenericGeneratorTile implements ITickableSound {
 	protected CachedTileOutput output;
@@ -157,21 +153,4 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
 	}
 
-	static {
-		VoxelShape shape = Shapes.empty();
-		shape = Shapes.join(shape, Shapes.box(0.06, 0.25, 0.250625, 0.9975, 0.375, 0.750625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.06, 0, 0.09125, 0.9975, 0.25, 0.90375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.56, 0.375, 0.438125, 0.9975, 0.5, 0.563125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.685, 0.375, 0.375625, 0.935, 0.5625, 0.625625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.8725, 0.317394375, 0.33602125, 0.935, 0.379894375, 0.39852125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.685, 0.317394375, 0.33602125, 0.7475, 0.379894375, 0.39852125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.685, 0.317394375, 0.60272875, 0.7475, 0.379894375, 0.66522875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.8725, 0.317394375, 0.60272875, 0.935, 0.379894375, 0.66522875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.06, 0.375, 0.250625, 0.4975, 0.75, 0.750625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(-0.0025, 0.25, 0.250625, 0.06, 0.75, 0.750625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.4975, 0.375, 0.375625, 0.56, 0.5625, 0.625625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.4975, 0.375, 0.313125, 0.56, 0.4375, 0.375625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.4975, 0.375, 0.625625, 0.56, 0.4375, 0.688125), BooleanOp.OR);
-		VoxelShapes.registerShape(SubtypeMachine.hydroelectricgenerator, shape, Direction.EAST);
-	}
 }

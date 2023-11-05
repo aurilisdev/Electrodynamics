@@ -1,4 +1,4 @@
-package electrodynamics.common.block;
+package electrodynamics.common.block.voxelshapes;
 
 import java.util.HashMap;
 

@@ -3,7 +3,6 @@ package electrodynamics.common.tile.electricitygrid.generators;
 import electrodynamics.api.multiblock.Subnode;
 import electrodynamics.api.multiblock.parent.IMultiblockParentTile;
 import electrodynamics.common.block.BlockMachine;
-import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
@@ -31,13 +30,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileWindmill extends GenericGeneratorTile implements IMultiblockParentTile, ITickableSound {
 
@@ -161,15 +156,6 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 	@Override
 	public Direction getFacingDirection() {
 		return getFacing();
-	}
-
-	static {
-
-		VoxelShape shape = Block.box(2, 0, 2, 14, 2, 14);
-		shape = Shapes.join(shape, Block.box(3, 2, 3, 13, 3, 13), BooleanOp.OR);
-		shape = Shapes.join(shape, Block.box(5, 3, 5, 11, 16, 11), BooleanOp.OR);
-		VoxelShapes.registerShape(SubtypeMachine.windmill, shape, Direction.NORTH);
-
 	}
 
 }

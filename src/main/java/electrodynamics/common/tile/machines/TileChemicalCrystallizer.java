@@ -1,7 +1,6 @@
 package electrodynamics.common.tile.machines;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalCrystallizer;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
@@ -22,10 +21,7 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileChemicalCrystallizer extends GenericMaterialTile implements ITickableSound {
 	public static final int MAX_TANK_CAPACITY = 5000;
@@ -78,29 +74,5 @@ public class TileChemicalCrystallizer extends GenericMaterialTile implements ITi
 		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive() ? 15 : 0;
 	}
 
-	static {
-
-		VoxelShape shape = Block.box(0, 0, 0, 16, 5, 16);
-
-		shape = Shapes.or(shape, Block.box(0, 5, 0, 2, 6, 16));
-		shape = Shapes.or(shape, Block.box(2, 5, 0, 4, 6, 2));
-		shape = Shapes.or(shape, Block.box(2, 5, 14, 4, 6, 16));
-
-		shape = Shapes.or(shape, Block.box(4, 5, 0, 12, 12, 1));
-		shape = Shapes.or(shape, Block.box(4, 5, 15, 12, 12, 16));
-
-		shape = Shapes.or(shape, Block.box(12, 5, 0, 13, 6, 2));
-		shape = Shapes.or(shape, Block.box(12, 5, 14, 13, 6, 16));
-
-		shape = Shapes.or(shape, Block.box(13, 5, 0, 16, 16, 2));
-		shape = Shapes.or(shape, Block.box(13, 14, 2, 16, 16, 14));
-		shape = Shapes.or(shape, Block.box(13, 5, 14, 16, 16, 16));
-
-		shape = Shapes.or(shape, Block.box(15, 5, 4, 16, 12, 12));
-		shape = Shapes.or(shape, Block.box(14, 5, 2, 15, 14, 14));
-
-		VoxelShapes.registerShape(SubtypeMachine.chemicalcrystallizer, shape, Direction.WEST);
-
-	}
 
 }
