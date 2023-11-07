@@ -155,24 +155,28 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		if (inv.getUpgradeContents().size() > 0 && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
 			ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-			currentCapacityMultiplier.set(1.0);
-			currentVoltageMultiplier.set(1.0);
+			double capacityMultiplier = 1.0;
+			double voltageMultiplier = 1.0;
 
 			for (ItemStack stack : inv.getUpgradeContents()) {
 				if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype.isEmpty) {
 					for (int i = 0; i < stack.getCount(); i++) {
 						if (upgrade.subtype == SubtypeItemUpgrade.basiccapacity) {
-							currentCapacityMultiplier.set(Math.min(currentCapacityMultiplier.get() * 1.5, Math.pow(1.5, 3)));
-							currentVoltageMultiplier.set(Math.min(currentVoltageMultiplier.get() * 2, 2));
+							capacityMultiplier = Math.min(capacityMultiplier * 1.5, Math.pow(1.5, 3));
+							voltageMultiplier = Math.min(voltageMultiplier * 2, 2);
 						} else if (upgrade.subtype == SubtypeItemUpgrade.advancedcapacity) {
-							currentCapacityMultiplier.set(Math.min(currentCapacityMultiplier.get() * 2.25, Math.pow(2.25, 3)));
-							currentVoltageMultiplier.set(Math.min(currentVoltageMultiplier.get() * 4, 4));
+							capacityMultiplier = Math.min(capacityMultiplier * 2.25, Math.pow(2.25, 3));
+							voltageMultiplier = Math.min(voltageMultiplier * 4, 4);
 						}
 					}
 				}
 			}
+			
+			currentCapacityMultiplier.set(capacityMultiplier);
+			currentVoltageMultiplier.set(voltageMultiplier);
 
 			receiveLimitLeft.set(powerOutput.get() * currentCapacityMultiplier.get());
+			
 			electro.maxJoules(maxJoules.get() * currentCapacityMultiplier.get());
 			electro.voltage(baseVoltage * currentVoltageMultiplier.get());
 		}
