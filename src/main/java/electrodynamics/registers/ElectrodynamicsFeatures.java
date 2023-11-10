@@ -60,6 +60,7 @@ public class ElectrodynamicsFeatures {
 
 		FeatureUtils.register(context, ORE_ALUMINUM_CONFIGURED, Feature.ORE, dualOre(SubtypeOre.aluminum, SubtypeOreDeepslate.aluminum));
 		FeatureUtils.register(context, ORE_CHROMIUM_CONFIGURED, Feature.ORE, dualOre(SubtypeOre.chromium, SubtypeOreDeepslate.chromium));
+		FeatureUtils.register(context, ORE_FLUORITE_CONFIGURED, Feature.ORE, dualOre(SubtypeOre.fluorite, SubtypeOreDeepslate.fluorite));
 		FeatureUtils.register(context, ORE_LEAD_CONFIGURED, Feature.ORE, dualOre(SubtypeOre.lead, SubtypeOreDeepslate.lead));
 		FeatureUtils.register(context, ORE_LITHIUM_CONFIGURED, Feature.ORE, dualOre(SubtypeOre.lithium, SubtypeOreDeepslate.lithium));
 		FeatureUtils.register(context, ORE_MOLYBDENUM_CONFIGURED, Feature.ORE, dualOre(SubtypeOre.molybdenum, SubtypeOreDeepslate.molybdenum));
@@ -111,6 +112,7 @@ public class ElectrodynamicsFeatures {
 
 		PlacementUtils.register(context, ORE_ALUMINUM_PLACED, holderGetter.getOrThrow(ORE_ALUMINUM_CONFIGURED), orePlacement((int) (SubtypeOre.aluminum.veinsPerChunk * OreConfig.ORE_GENERATION_MULTIPLIER), SubtypeOre.aluminum.minY, SubtypeOre.aluminum.maxY));
 		PlacementUtils.register(context, ORE_CHROMIUM_PLACED, holderGetter.getOrThrow(ORE_CHROMIUM_CONFIGURED), orePlacement((int) (SubtypeOre.chromium.veinsPerChunk * OreConfig.ORE_GENERATION_MULTIPLIER), SubtypeOre.chromium.minY, SubtypeOre.chromium.maxY));
+		PlacementUtils.register(context, ORE_FLUORITE_PLACED, holderGetter.getOrThrow(ORE_FLUORITE_CONFIGURED), orePlacement((int) (SubtypeOre.fluorite.veinsPerChunk * OreConfig.ORE_GENERATION_MULTIPLIER), SubtypeOre.fluorite.minY, SubtypeOre.fluorite.maxY));
 		PlacementUtils.register(context, ORE_LEAD_PLACED, holderGetter.getOrThrow(ORE_LEAD_CONFIGURED), orePlacement((int) (SubtypeOre.lead.veinsPerChunk * OreConfig.ORE_GENERATION_MULTIPLIER), SubtypeOre.lead.minY, SubtypeOre.lead.maxY));
 		PlacementUtils.register(context, ORE_LITHIUM_PLACED, holderGetter.getOrThrow(ORE_LITHIUM_CONFIGURED), orePlacement((int) (SubtypeOre.lithium.veinsPerChunk * OreConfig.ORE_GENERATION_MULTIPLIER), SubtypeOre.lithium.minY, SubtypeOre.lithium.maxY));
 		PlacementUtils.register(context, ORE_MOLYBDENUM_PLACED, holderGetter.getOrThrow(ORE_MOLYBDENUM_CONFIGURED), orePlacement((int) (SubtypeOre.molybdenum.veinsPerChunk * OreConfig.ORE_GENERATION_MULTIPLIER), SubtypeOre.molybdenum.minY, SubtypeOre.molybdenum.maxY));
@@ -165,6 +167,7 @@ public class ElectrodynamicsFeatures {
 
 		context.register(ORE_ALUMINUM_MODIFIER, new AddFeaturesBiomeModifier(overworld, HolderSet.direct(placedLookup.getOrThrow(ORE_ALUMINUM_PLACED)), Decoration.UNDERGROUND_ORES));
 		context.register(ORE_CHROMIUM_MODIFIER, new AddFeaturesBiomeModifier(overworld, HolderSet.direct(placedLookup.getOrThrow(ORE_CHROMIUM_PLACED)), Decoration.UNDERGROUND_ORES));
+		context.register(ORE_FLUORITE_MODIFIER, new AddFeaturesBiomeModifier(overworld, HolderSet.direct(placedLookup.getOrThrow(ORE_FLUORITE_PLACED)), Decoration.UNDERGROUND_ORES));
 		context.register(ORE_LEAD_MODIFIER, new AddFeaturesBiomeModifier(overworld, HolderSet.direct(placedLookup.getOrThrow(ORE_LEAD_PLACED)), Decoration.UNDERGROUND_ORES));
 		context.register(ORE_LITHIUM_MODIFIER, new AddFeaturesBiomeModifier(overworld, HolderSet.direct(placedLookup.getOrThrow(ORE_LITHIUM_PLACED)), Decoration.UNDERGROUND_ORES));
 		context.register(ORE_MOLYBDENUM_MODIFIER, new AddFeaturesBiomeModifier(overworld, HolderSet.direct(placedLookup.getOrThrow(ORE_MOLYBDENUM_PLACED)), Decoration.UNDERGROUND_ORES));
