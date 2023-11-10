@@ -228,6 +228,8 @@ public class RenderingUtils {
 		builder.vertex(matrix4f, minX, minY, maxZ).color(r, g, b, a).uv(uMin, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1, 0, 0).endVertex();
 
 	}
+	
+	private static final Matrix4f ITEM_MATRIX = (new Matrix4f()).scaling(1.0F, -1.0F, 1.0F);
 
 	public static void renderItemScaled(GuiGraphics graphics, Item item, int x, int y, float scale) {
 		ItemStack stack = new ItemStack(item);
@@ -241,7 +243,7 @@ public class RenderingUtils {
 		poseStack.translate(x + 8, y + 8, (150));
 
 		try {
-			poseStack.mulPoseMatrix((new Matrix4f()).scaling(1.0F, -1.0F, 1.0F));
+			poseStack.mulPoseMatrix(ITEM_MATRIX);
 			poseStack.scale(16.0F, 16.0F, 16.0F);
 			poseStack.scale(scale, scale, scale);
 			boolean flag = !model.usesBlockLight();
