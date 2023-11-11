@@ -54,7 +54,7 @@ public class PacketSendUpdatePropertiesClient {
 		message.values.forEach(wrapper -> {
 			buf.writeInt(wrapper.index());
 			buf.writeResourceLocation(wrapper.type().getId());
-			wrapper.type().writeToBuffer(new BufferWriter(wrapper.value(), buf));
+			wrapper.type().writeToBuffer(new BufferWriter(wrapper.property().get(), buf));
 		});
 	}
 

@@ -11,6 +11,8 @@ import electrodynamics.common.event.types.living.hurt.AbstractLivingHurtHandler;
 import electrodynamics.common.event.types.living.hurt.HandlerCompositeArmor;
 import electrodynamics.common.event.types.living.hurt.HandlerHydraulicBoots;
 import electrodynamics.common.event.types.living.hurt.HandlerJetpackDamage;
+import electrodynamics.common.event.types.living.knockback.AbstractLivingKnockbackHandler;
+import electrodynamics.common.event.types.living.knockback.HandlerJetpackKnockbackImpulse;
 import electrodynamics.common.event.types.player.rightclick.AbstractRightClickBlockHandler;
 import electrodynamics.common.event.types.player.rightclick.HandlerWrench;
 import electrodynamics.common.event.types.player.starttracking.AbstractPlayerStartTrackingHandler;
@@ -25,6 +27,7 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.server.ServerStartedEvent;
@@ -38,6 +41,7 @@ public class ServerEventHandler {
 
 	private static final List<AbstractRightClickBlockHandler> RIGHT_CLICK_HANDLERS = new ArrayList<>();
 	private static final List<AbstractLivingHurtHandler> LIVING_HURT_HANDLERS = new ArrayList<>();
+	private static final List<AbstractLivingKnockbackHandler> LIVING_KNOCKBACK_HANDLERS = new ArrayList<>();
 	private static final List<AbstractEquipmentChangeHandler> EQUIPMENT_CHANGE_HANDLERS = new ArrayList<>();
 	private static final List<AbstractPlayerStartTrackingHandler> START_TRACKING_PLAYER_HANDLERS = new ArrayList<>();
 
@@ -47,6 +51,8 @@ public class ServerEventHandler {
 		LIVING_HURT_HANDLERS.add(new HandlerCompositeArmor());
 		LIVING_HURT_HANDLERS.add(new HandlerHydraulicBoots());
 		LIVING_HURT_HANDLERS.add(new HandlerJetpackDamage());
+		
+		LIVING_KNOCKBACK_HANDLERS.add(new HandlerJetpackKnockbackImpulse());
 
 		EQUIPMENT_CHANGE_HANDLERS.add(new HandlerJetpackEquiped());
 
@@ -61,6 +67,11 @@ public class ServerEventHandler {
 	@SubscribeEvent
 	public static void handlerLivingHurt(LivingHurtEvent event) {
 		LIVING_HURT_HANDLERS.forEach(handler -> handler.handle(event));
+	}
+	
+	@SubscribeEvent
+	public static void handleLivingKnockback(LivingKnockBackEvent event) {
+		LIVING_KNOCKBACK_HANDLERS.forEach(handler -> handler.handle(event));
 	}
 
 	@SubscribeEvent

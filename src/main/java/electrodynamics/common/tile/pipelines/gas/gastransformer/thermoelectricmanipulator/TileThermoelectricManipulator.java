@@ -280,6 +280,10 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 			double deltaT = targetTemperature.get() - evaporatedGas.getCondensationTemp();
 
 			conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
+			
+			if(conversionRate < 1) {
+				conversionRate = 1;
+			}
 
 			double maxTake = inputTank.getFluidAmount() > conversionRate ? conversionRate : inputTank.getFluidAmount();
 
@@ -310,16 +314,18 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 			double deltaT = targetTemp - inputTank.getGas().getTemperature();
 
 			conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
+			
+			if(conversionRate < 1) {
+				conversionRate = 1;
+			}
 
-			double maxTake = inputTank.getGasAmount() > conversionRate ? conversionRate : inputTank.getGasAmount();
-
-			GasStack condensedPotential = new GasStack(inputTank.getGas().getGas(), maxTake, inputTank.getGas().getTemperature(), inputTank.getGas().getPressure());
+			GasStack condensedPotential = new GasStack(inputTank.getGas().getGas(), inputTank.getGasAmount(), inputTank.getGas().getTemperature(), inputTank.getGas().getPressure());
 
 			condensedPotential.bringPressureTo(Gas.PRESSURE_AT_SEA_LEVEL);
 
 			condensedPotential.heat(deltaT);
 
-			int fluidAmount = (int) Math.floor(condensedPotential.getAmount());
+			int fluidAmount = (int) Math.floor(Math.min(conversionRate, condensedPotential.getAmount()));
 
 			if (fluidAmount == 0) {
 				return;

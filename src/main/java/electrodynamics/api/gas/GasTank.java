@@ -144,7 +144,7 @@ public class GasTank implements IGasTank, IGasHandler {
 
 			accepted.setAmount(canTake);
 
-			GasStack equalized = GasStack.equalizePresrsureAndTemperature(getGas(), accepted);
+			GasStack equalized = GasStack.equalizePresrsureAndTemperature(getGas().copy(), accepted);
 
 			setGas(equalized);
 
