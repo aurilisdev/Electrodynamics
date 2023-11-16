@@ -1,6 +1,5 @@
 package electrodynamics.client.render.event.guipost;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.mojang.blaze3d.platform.Window;
@@ -12,6 +11,7 @@ import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
 import electrodynamics.common.item.gear.armor.types.ItemServoLeggings;
+import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
@@ -27,12 +27,17 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 
 public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 
+	private final Component statusGogglesOn = ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN));
+	private final Component statusGogglesOff = ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED));
+	
 	@Override
 	public void renderToScreen(NamedGuiOverlay overlay, GuiGraphics graphics, Window window, Minecraft minecraft, float partialTicks) {
+		
+		if(!Constants.RENDER_COMBAT_ARMOR_STATUS) {
+			return;
+		}
 
-		List<ItemStack> armor = new ArrayList<>();
-
-		minecraft.player.getArmorSlots().forEach(armor::add);
+		List<ItemStack> armor = minecraft.player.inventory.armor;
 
 		graphics.pose().pushPose();
 
@@ -62,18 +67,19 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 
 		boolean renderItem = false;
 
+		
 		if (ItemUtils.testItems(helmet.getItem(), ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get(), ElectrodynamicsItems.ITEM_COMBATHELMET.get())) {
 			renderItem = true;
 			Component mode;
 			if (helmet.hasTag() && helmet.getTag().getBoolean(NBTUtils.ON)) {
-				mode = ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN));
+				mode = statusGogglesOn;
 			} else {
-				mode = ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED));
+				mode = statusGogglesOff;
 			}
 			graphics.drawString(minecraft.font, mode, 35, heightOffset - 30, 0);
 			graphics.drawString(minecraft.font, ChatFormatter.getChatDisplayShort(helmet.getOrCreateTag().getDouble(IItemElectric.JOULES_STORED), DisplayUnit.JOULES), 35, heightOffset - 20, -1, false);
 		}
-
+		
 		if (renderItem) {
 			RenderingUtils.renderItemScaled(graphics, helmet.getItem(), 10, heightOffset - 30, 1.5F);
 		}

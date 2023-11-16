@@ -12,7 +12,7 @@ import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.utils.IComponentGasHandler;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
@@ -46,7 +46,7 @@ public class ScreenComponentGasTemperature extends ScreenComponentGuiTab {
 			return tooltips;
 		}
 
-		IComponentGasHandler handler = generic.getComponent(ComponentType.GasHandler);
+		IComponentGasHandler handler = generic.getComponent(IComponentType.GasHandler);
 
 		int index = 1;
 

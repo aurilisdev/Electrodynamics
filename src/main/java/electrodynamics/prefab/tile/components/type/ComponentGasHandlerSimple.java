@@ -1,12 +1,11 @@
 package electrodynamics.prefab.tile.components.type;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
-
-import org.apache.commons.lang3.ArrayUtils;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.gas.IGasHandler;
@@ -15,21 +14,24 @@ import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.gas.GasTank;
 import electrodynamics.api.gas.PropertyGasTank;
+import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.CapabilityInputType;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.utils.IComponentGasHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 /**
  * Extension of the PropertyGasTank making it usable as a ComponentGasHandler
  * 
- * This ComponentGasHandler has only one tank with programmable inputs and outputs where as ComponentGasHandlerMulti has distinct input and output tanks
+ * This ComponentGasHandler has only one tank with programmable inputs and outputs where as ComponentGasHandlerMulti has distinct
+ * input and output tanks
  * 
  * @author skip999
  *
@@ -40,12 +42,21 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 	public Direction[] inputDirections;
 	@Nullable
 	public Direction[] outputDirections;
+
+	private boolean isSided = false;
+
 	@Nullable
 	private TagKey<Gas>[] validGasTags;
 	@Nullable
 	private Gas[] validGases;
 
 	private HashSet<Gas> validatorGases = new HashSet<>();
+
+	private LazyOptional<IGasHandler>[] sidedOptionals = new LazyOptional[6];
+
+	private LazyOptional<IGasHandler> sidelessOptional;
+	private LazyOptional<IGasHandler> inputOptional;
+	private LazyOptional<IGasHandler> outputOptional;
 
 	public ComponentGasHandlerSimple(GenericTile holder, String key, double capacity, double maxTemperature, int maxPressure) {
 		super(holder, key, capacity, maxTemperature, maxPressure);
@@ -60,11 +71,13 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 	}
 
 	public ComponentGasHandlerSimple setInputDirections(Direction... directions) {
+		isSided = true;
 		inputDirections = directions;
 		return this;
 	}
 
 	public ComponentGasHandlerSimple setOutputDirections(Direction... directions) {
+		isSided = true;
 		outputDirections = directions;
 		return this;
 	}
@@ -110,8 +123,8 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 	}
 
 	@Override
-	public ComponentType getType() {
-		return ComponentType.GasHandler;
+	public IComponentType getType() {
+		return IComponentType.GasHandler;
 	}
 
 	@Override
@@ -120,29 +133,89 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, Direction side, CapabilityInputType inputType) {
-		return capability == ElectrodynamicsCapabilities.GAS_HANDLER;
+	public GenericTile getHolder() {
+		return holder;
+	}
+
+	@Override
+	public void refreshIfUpdate(BlockState oldState, BlockState newState) {
+		if (isSided && oldState.hasProperty(GenericEntityBlock.FACING) && newState.hasProperty(GenericEntityBlock.FACING) && oldState.getValue(GenericEntityBlock.FACING) != newState.getValue(GenericEntityBlock.FACING)) {
+			defineOptionals(newState.getValue(GenericEntityBlock.FACING));
+		}
 	}
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side, CapabilityInputType inputType) {
-		if (!hasCapability(capability, side, inputType)) {
+		if (capability != ElectrodynamicsCapabilities.GAS_HANDLER) {
 			return LazyOptional.empty();
 		}
-		if (inputDirections == null && outputDirections == null) {
-			return LazyOptional.<IGasHandler>of(() -> this).cast();
+		if (!isSided) {
+			return sidelessOptional.cast();
 		}
-		if (hasInputDir(side)) {
-			return LazyOptional.<IGasHandler>of(() -> new InputTank(this)).cast();
+
+		if (side == null) {
+			return LazyOptional.empty();
 		}
-		if (hasOutputDir(side)) {
-			return LazyOptional.<IGasHandler>of(() -> new OutputTank(this)).cast();
+
+		return sidedOptionals[side.ordinal()].cast();
+	}
+
+	@Override
+	public void refresh() {
+
+		defineOptionals(holder.getFacing());
+
+	}
+
+	private void defineOptionals(Direction facing) {
+
+		sidedOptionals = new LazyOptional[6];
+		sidelessOptional = null;
+
+		if (isSided) {
+
+			if (inputOptional != null) {
+				inputOptional.invalidate();
+			}
+			if (outputOptional != null) {
+				outputOptional.invalidate();
+			}
+
+			Arrays.fill(sidedOptionals, LazyOptional.empty());
+
+			// Input
+
+			if (inputDirections != null) {
+				inputOptional = LazyOptional.of(() -> new InputTank(this));
+
+				for (Direction dir : inputDirections) {
+					sidedOptionals[BlockEntityUtils.getRelativeSide(facing, dir).ordinal()] = inputOptional;
+				}
+			}
+
+			if (outputDirections != null) {
+				outputOptional = LazyOptional.of(() -> new OutputTank(this));
+
+				for (Direction dir : outputDirections) {
+					sidedOptionals[BlockEntityUtils.getRelativeSide(facing, dir).ordinal()] = outputOptional;
+				}
+			}
+
+		} else {
+
+			if (sidelessOptional != null) {
+				sidelessOptional.invalidate();
+			}
+
+			sidelessOptional = LazyOptional.of(() -> this);
+
 		}
-		return LazyOptional.empty();
+
 	}
 
 	@Override
 	public void onLoad() {
+		IComponentGasHandler.super.onLoad();
 		if (validGases != null) {
 			for (Gas gas : validGases) {
 				validatorGases.add(gas);
@@ -158,22 +231,6 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
 		if (!validatorGases.isEmpty()) {
 			isGasValid = gasStack -> validatorGases.contains(gasStack.getGas());
 		}
-	}
-
-	private boolean hasInputDir(Direction dir) {
-		if (inputDirections == null) {
-			return false;
-		}
-		Direction facing = holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-		return ArrayUtils.contains(inputDirections, BlockEntityUtils.getRelativeSide(facing, dir));
-	}
-
-	private boolean hasOutputDir(Direction dir) {
-		if (outputDirections == null) {
-			return false;
-		}
-		Direction facing = holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-		return ArrayUtils.contains(outputDirections, BlockEntityUtils.getRelativeSide(facing, dir));
 	}
 
 	private class InputTank extends ComponentGasHandlerSimple {

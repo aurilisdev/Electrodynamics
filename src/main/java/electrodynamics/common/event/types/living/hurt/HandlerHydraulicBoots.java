@@ -17,7 +17,7 @@ public class HandlerHydraulicBoots extends AbstractLivingHurtHandler {
 	@Override
 	public void handle(LivingHurtEvent event) {
 		LivingEntity entity = event.getEntity();
-		if (!entity.damageSources().fall().is(DamageTypes.FALL)) {
+		if (!event.getSource().is(DamageTypes.FALL)) {
 			return;
 		}
 		ItemStack playerBoots = entity.getItemBySlot(EquipmentSlot.FEET);

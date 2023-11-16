@@ -5,8 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.tile.machines.TileMineralWasher;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -24,7 +23,7 @@ public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher>
 	@Override
 	public void render(TileMineralWasher tileEntityIn, float partialTicks, @NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
-		ItemStack stack = tileEntityIn.<ComponentInventory>getComponent(ComponentType.Inventory).getInputsForProcessor(0).get(0);
+		ItemStack stack = tileEntityIn.<ComponentInventory>getComponent(IComponentType.Inventory).getInputsForProcessor(0).get(0);
 
 		if (stack.isEmpty()) {
 
@@ -32,7 +31,7 @@ public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher>
 
 		}
 
-		Direction dir = tileEntityIn.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction dir = tileEntityIn.getFacing();
 
 		matrixStackIn.pushPose();
 

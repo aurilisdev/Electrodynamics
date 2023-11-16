@@ -9,9 +9,7 @@ import electrodynamics.common.inventory.container.tile.ContainerFluidPipeFilter;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.CapabilityUtils;
@@ -49,7 +47,6 @@ public class TileFluidPipeFilter extends GenericTile {
 
 	public TileFluidPipeFilter(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_FLUIDPIPEFILTER.get(), worldPos, blockState);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentContainerProvider("container.fluidpipefilter", this).createMenu((id, inv) -> new ContainerFluidPipeFilter(id, inv, getCoordsArray())));
 	}
@@ -60,7 +57,7 @@ public class TileFluidPipeFilter extends GenericTile {
 			return LazyOptional.empty();
 		}
 
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 
 		if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR)) {
 			return LazyOptional.of(() -> CapabilityUtils.EMPTY_FLUID).cast();

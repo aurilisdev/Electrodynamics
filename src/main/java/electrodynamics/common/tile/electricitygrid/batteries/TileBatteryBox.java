@@ -11,9 +11,8 @@ import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
@@ -54,18 +53,17 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 		powerOutput = property(new Property<>(PropertyType.Double, "powerOutput", output));
 		maxJoules = property(new Property<>(PropertyType.Double, "maxJoulesStored", max));
 		receiveLimitLeft = property(new Property<>(PropertyType.Double, "receiveLimitLeft", output * currentCapacityMultiplier.get()));
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(1).upgrades(3)).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid((i, s, c) -> i == 0 ? s.getItem() instanceof ItemElectric : machineValidator().test(i, s, c)));
-		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
-		addComponent(new ComponentElectrodynamic(this).voltage(baseVoltage).maxJoules(max).relativeInput(Direction.SOUTH).relativeOutput(Direction.NORTH).setEnergyProduction());
+		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentElectrodynamic(this, true, true).voltage(baseVoltage).maxJoules(max).setInputDirections(Direction.SOUTH).setOutputDirections(Direction.NORTH));
 
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+		Direction facing = getFacing();
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(facing.getOpposite()));
 		}
@@ -73,8 +71,6 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 			output.update(worldPosition.relative(facing.getOpposite()));
 		}
 		if (electro.getJoulesStored() > 0 && output.valid()) {
-			
-			//TransferPack taken = ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput.get() * currentCapacityMultiplier.get()), electro.getVoltage()), false);
 			
 			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput.get() * currentCapacityMultiplier.get()), electro.getVoltage()), false).getJoules());
 		}
@@ -86,11 +82,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
 	@Override
 	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> capability, Direction face) {
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-		ComponentElectrodynamic electro = this.getComponent(ComponentType.Electrodynamic);
-		if (electro.hasCapability(capability, face, null)) {
-			return electro.getCapability(capability, face, null);
-		}
+		Direction facing = getFacing();
 		if (capability == ForgeCapabilities.ENERGY && (face == facing || face == facing.getOpposite())) {
 			return (LazyOptional<T>) LazyOptional.of(() -> this);
 		}
@@ -101,7 +93,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	@Override
 	public int receiveEnergy(int maxReceive, boolean simulate) {
 
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
 		int receive = (int) Math.min(maxReceive, powerOutput.get() * currentCapacityMultiplier.get());
 
@@ -118,7 +110,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	@Override
 	public int extractEnergy(int maxExtract, boolean simulate) {
 
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
 		int extract = (int) Math.min(maxExtract, powerOutput.get() * currentCapacityMultiplier.get());
 
@@ -139,12 +131,12 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
 	@Override
 	public int getEnergyStored() {
-		return (int) Math.min(Integer.MAX_VALUE, this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getJoulesStored());
+		return (int) Math.min(Integer.MAX_VALUE, this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getJoulesStored());
 	}
 
 	@Override
 	public int getMaxEnergyStored() {
-		return (int) Math.min(Integer.MAX_VALUE, this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getMaxJoulesStored());
+		return (int) Math.min(Integer.MAX_VALUE, this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getMaxJoulesStored());
 	}
 
 	@Override
@@ -161,26 +153,30 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 	public void onInventoryChange(ComponentInventory inv, int slot) {
 		super.onInventoryChange(inv, slot);
 		if (inv.getUpgradeContents().size() > 0 && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
-			ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+			ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-			currentCapacityMultiplier.set(1.0);
-			currentVoltageMultiplier.set(1.0);
+			double capacityMultiplier = 1.0;
+			double voltageMultiplier = 1.0;
 
 			for (ItemStack stack : inv.getUpgradeContents()) {
 				if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype.isEmpty) {
 					for (int i = 0; i < stack.getCount(); i++) {
 						if (upgrade.subtype == SubtypeItemUpgrade.basiccapacity) {
-							currentCapacityMultiplier.set(Math.min(currentCapacityMultiplier.get() * 1.5, Math.pow(1.5, 3)));
-							currentVoltageMultiplier.set(Math.min(currentVoltageMultiplier.get() * 2, 2));
+							capacityMultiplier = Math.min(capacityMultiplier * 1.5, Math.pow(1.5, 3));
+							voltageMultiplier = Math.min(voltageMultiplier * 2, 2);
 						} else if (upgrade.subtype == SubtypeItemUpgrade.advancedcapacity) {
-							currentCapacityMultiplier.set(Math.min(currentCapacityMultiplier.get() * 2.25, Math.pow(2.25, 3)));
-							currentVoltageMultiplier.set(Math.min(currentVoltageMultiplier.get() * 4, 4));
+							capacityMultiplier = Math.min(capacityMultiplier * 2.25, Math.pow(2.25, 3));
+							voltageMultiplier = Math.min(voltageMultiplier * 4, 4);
 						}
 					}
 				}
 			}
+			
+			currentCapacityMultiplier.set(capacityMultiplier);
+			currentVoltageMultiplier.set(voltageMultiplier);
 
 			receiveLimitLeft.set(powerOutput.get() * currentCapacityMultiplier.get());
+			
 			electro.maxJoules(maxJoules.get() * currentCapacityMultiplier.get());
 			electro.voltage(baseVoltage * currentVoltageMultiplier.get());
 		}
@@ -188,7 +184,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
 	@Override
 	public int getComparatorSignal() {
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 		return (int) ((electro.getJoulesStored() / Math.max(1, electro.getMaxJoulesStored())) * 15.0);
 	}
 

@@ -2,16 +2,12 @@ package electrodynamics.common.tile.electricitygrid.transformer;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
-import electrodynamics.common.block.VoxelShapes;
-import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
 import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
@@ -33,9 +29,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public abstract class TileGenericTransformer extends GenericTile implements ITickableSound {
 
@@ -53,12 +46,11 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 
 	public TileGenericTransformer(BlockEntityType<?> type, BlockPos worldPosition, BlockState blockState) {
 		super(type, worldPosition, blockState);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
 		if (Constants.SHOULD_TRANSFORMER_HUM) {
 			addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 		}
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeOutput(Direction.SOUTH).relativeInput(Direction.NORTH).voltage(-1.0).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage).setEnergyProduction());
+		addComponent(new ComponentElectrodynamic(this, true, true).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setOutputDirections(Direction.SOUTH).setInputDirections(Direction.NORTH).voltage(-1.0).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
 	}
 
 	public void tickClient(ComponentTickable tickable) {
@@ -73,7 +65,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 
 	// We can assume this runs on the server
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 		if (locked) {
 			return TransferPack.EMPTY;
 		}
@@ -100,7 +92,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 	}
 
 	public TransferPack getConnectedLoad(LoadProfile lastEnergy, Direction dir) {
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 		if (facing.getOpposite() != dir) {
 			return TransferPack.EMPTY;
 		}
@@ -122,7 +114,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 	}
 
 	public double getMinimumVoltage() {
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 		if (locked) {
 			return 0;
 		}
@@ -139,7 +131,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 	}
 
 	public double getAmpacity() {
-		Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+		Direction facing = getFacing();
 		if (locked) {
 			return 0;
 		}
@@ -177,57 +169,6 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 
 	// I eliminated world access as that is costly when it doesn't need to be in this case
 	public abstract double getCoilRatio();
-
-	static {
-		VoxelShape shape = Shapes.empty();
-		shape = Shapes.join(shape, Shapes.box(0, 0, 0, 1, 0.125, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0.3125, 0.25, 0.0625, 0.75, 0.75), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0.125, 0.0625, 1, 0.3125, 0.9375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.15625, 0.875, 0.625, 0.84375, 0.9375, 0.8125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.15625, 0.875, 0.1875, 0.84375, 0.9375, 0.375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.625, 0.6875, 0.15625, 0.875, 0.78125, 0.40625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.625, 0.6875, 0.59375, 0.875, 0.78125, 0.84375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0.6875, 0.59375, 0.375, 0.84375, 0.84375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0.6875, 0.15625, 0.375, 0.84375, 0.40625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0.375, 0.59375, 0.375, 0.53125, 0.84375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0.375, 0.15625, 0.375, 0.53125, 0.40625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.625, 0.4375, 0.15625, 0.875, 0.53125, 0.40625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.625, 0.4375, 0.59375, 0.875, 0.53125, 0.84375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.640625, 0.53125, 0.171875, 0.859375, 0.6875, 0.390625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.640625, 0.53125, 0.609375, 0.859375, 0.6875, 0.828125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.140625, 0.53125, 0.609375, 0.359375, 0.6875, 0.828125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.140625, 0.53125, 0.171875, 0.359375, 0.6875, 0.390625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.15625, 0.3125, 0.625, 0.34375, 0.875, 0.8125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.15625, 0.3125, 0.1875, 0.34375, 0.875, 0.375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.65625, 0.3125, 0.625, 0.84375, 0.875, 0.8125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.65625, 0.3125, 0.1875, 0.84375, 0.875, 0.375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.9375, 0.3125, 0.25, 1, 0.75, 0.75), BooleanOp.OR);
-		VoxelShapes.registerShape(SubtypeMachine.downgradetransformer, shape, Direction.EAST);
-		shape = Shapes.empty();
-		shape = Shapes.join(shape, Shapes.box(0, 0, 0, 1, 0.125, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0.3125, 0.25, 0.0625, 0.75, 0.75), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0.125, 0.0625, 1, 0.3125, 0.9375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.15625, 0.875, 0.625, 0.84375, 0.9375, 0.8125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.15625, 0.875, 0.1875, 0.84375, 0.9375, 0.375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0.6875, 0.59375, 0.375, 0.78125, 0.84375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.625, 0.375, 0.59375, 0.875, 0.53125, 0.84375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.625, 0.375, 0.15625, 0.875, 0.53125, 0.40625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.625, 0.6875, 0.59375, 0.875, 0.84375, 0.84375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.625, 0.6875, 0.15625, 0.875, 0.84375, 0.40625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0.6875, 0.15625, 0.375, 0.78125, 0.40625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0.4375, 0.59375, 0.375, 0.53125, 0.84375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.125, 0.4375, 0.15625, 0.375, 0.53125, 0.40625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.140625, 0.53125, 0.609375, 0.359375, 0.6875, 0.828125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.640625, 0.53125, 0.609375, 0.859375, 0.6875, 0.828125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.640625, 0.53125, 0.171875, 0.859375, 0.6875, 0.390625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.140625, 0.53125, 0.171875, 0.359375, 0.6875, 0.390625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.15625, 0.3125, 0.625, 0.34375, 0.875, 0.8125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.15625, 0.3125, 0.1875, 0.34375, 0.875, 0.375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.65625, 0.3125, 0.625, 0.84375, 0.875, 0.8125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.65625, 0.3125, 0.1875, 0.84375, 0.875, 0.375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.9375, 0.3125, 0.25, 1, 0.75, 0.75), BooleanOp.OR);
-		VoxelShapes.registerShape(SubtypeMachine.upgradetransformer, shape, Direction.EAST);
-	}
 
 	public static final class TileDowngradeTransformer extends TileGenericTransformer {
 

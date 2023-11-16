@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+import electrodynamics.Electrodynamics;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.gas.IGasHandlerItem;
@@ -165,6 +166,9 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 
 	public static void armorTick(ItemStack stack, Level world, Player player, float particleZ, boolean isCombat) {
 		if (world.isClientSide) {
+
+			Electrodynamics.LOGGER.info(player.getDeltaMovement().y);
+			
 			ArmorItem item = (ArmorItem) stack.getItem();
 			if (item.getEquipmentSlot() == EquipmentSlot.CHEST && stack.hasTag()) {
 				boolean isDown = KeyBinds.jetpackAscend.isDown();
@@ -286,14 +290,13 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 	protected static double moveWithJetpack(double speed, double termVelocity, Player player, ItemStack jetpack) {
 
 		Vec3 movement = player.getDeltaMovement();
+		
 
-		if (player.hasImpulse && wasEntityHurt(jetpack)) {
-			movement = new Vec3(movement.x, getPrevDeltaY(jetpack), movement.z);
-		}
+		//if (player.hasImpulse && wasEntityHurt(jetpack)) {
+		//	movement = new Vec3(movement.x, getPrevDeltaY(jetpack), movement.z);
+		//}
 
-		double ySum = movement.y + speed;
-		double absY = Math.min(Math.abs(ySum), termVelocity);
-		double newY = Math.signum(ySum) * absY;
+		double newY = Math.min(movement.y + speed, termVelocity);
 		Vec3 currMovement = new Vec3(movement.x, newY, movement.z);
 
 		player.setDeltaMovement(currMovement);

@@ -1,7 +1,7 @@
 package electrodynamics.common.tile.pipelines.gas.gastransformer.compressor;
 
 import electrodynamics.common.inventory.container.tile.ContainerCompressor;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
@@ -15,7 +15,7 @@ public class TileCompressor extends GenericTileCompressor {
 
 	@Override
 	public ComponentContainerProvider getContainerProvider() {
-		return new ComponentContainerProvider("container.compressor", this).createMenu((id, inv) -> new ContainerCompressor(id, inv, getComponent(ComponentType.Inventory), getCoordsArray()));
+		return new ComponentContainerProvider("container.compressor", this).createMenu((id, inv) -> new ContainerCompressor(id, inv, getComponent(IComponentType.Inventory), getCoordsArray()));
 	}
 
 }

@@ -6,8 +6,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.machines.quarry.TileMotorComplex;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import electrodynamics.prefab.utilities.math.MathUtils;
@@ -28,8 +27,8 @@ public class RenderMotorComplex extends AbstractTileRenderer<TileMotorComplex> {
 
 		stack.pushPose();
 
-		Direction facing = tile.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-		float clientTicks = tile.<ComponentTickable>getComponent(ComponentType.Tickable).getTicks();
+		Direction facing = tile.getFacing();
+		float clientTicks = tile.<ComponentTickable>getComponent(IComponentType.Tickable).getTicks();
 		float progressDegrees = 0.0F;
 
 		if (tile.isPowered.get()) {

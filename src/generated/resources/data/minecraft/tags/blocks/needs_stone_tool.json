@@ -61,6 +61,7 @@
     "electrodynamics:advancedupgradetransformer",
     "electrodynamics:advanceddowngradetransformer",
     "electrodynamics:circuitmonitor",
+    "electrodynamics:currentregulator",
     "electrodynamics:pipecopper",
     "electrodynamics:pipesteel",
     "electrodynamics:orefluorite",

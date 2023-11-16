@@ -7,7 +7,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.machines.TileChemicalMixer;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.utilities.RenderingUtils;
@@ -42,7 +42,7 @@ public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer>
 		ibakedmodel = getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
 		matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
 
-		ComponentProcessor proc = tileEntityIn.getComponent(ComponentType.Processor);
+		ComponentProcessor proc = tileEntityIn.getComponent(IComponentType.Processor);
 
 		float degrees = 0.0F;
 
@@ -56,7 +56,7 @@ public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer>
 		matrixStackIn.popPose();
 
 		matrixStackIn.pushPose();
-		ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(IComponentType.FluidHandler);
 		FluidStack fluid = null;
 		for (FluidTank tank : multi.getInputTanks()) {
 			if (!tank.isEmpty()) {

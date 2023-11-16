@@ -104,5 +104,25 @@ public class Color {
 	public float[] colorFloatArr() {
 		return colorFloatArr;
 	}
+	
+	public Color multiply(Color other) {
+		return new Color((this.r * other.r) / 255, (this.g * other.g) / 255, (this.b * other.b) / 255, (this.a * other.a) / 255);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null) {
+			return false;
+		}
+		if (obj instanceof Color other) {
+			return this.r == other.r && this.g == other.g && this.b == other.b && this.a == other.a;
+		}
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		return "r: " + r + ", g: " + g + ", b: " + b + ", a: " + a;
+	}
 
 }

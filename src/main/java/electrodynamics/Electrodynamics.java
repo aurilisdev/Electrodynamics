@@ -10,6 +10,7 @@ import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
+import electrodynamics.common.block.voxelshapes.ElectrodynamicsVoxelShapeRegistry;
 import electrodynamics.common.condition.ConfigCondition;
 import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
 import electrodynamics.common.event.ServerEventHandler;
@@ -92,6 +93,7 @@ public class Electrodynamics {
 
 			PropertyManager.registerProperties(properties.getRegisteredProperties());
 		});
+		ElectrodynamicsVoxelShapeRegistry.init();
 
 	}
 

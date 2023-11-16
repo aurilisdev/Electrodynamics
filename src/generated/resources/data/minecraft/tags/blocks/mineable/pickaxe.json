@@ -102,6 +102,7 @@
     "electrodynamics:advancedupgradetransformer",
     "electrodynamics:advanceddowngradetransformer",
     "electrodynamics:circuitmonitor",
+    "electrodynamics:currentregulator",
     "electrodynamics:wiretin",
     "electrodynamics:wireiron",
     "electrodynamics:wirecopper",

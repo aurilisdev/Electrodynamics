@@ -3,7 +3,6 @@ package electrodynamics.common.tile.electricitygrid.generators;
 import electrodynamics.api.multiblock.Subnode;
 import electrodynamics.api.multiblock.parent.IMultiblockParentTile;
 import electrodynamics.common.block.BlockMachine;
-import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
@@ -13,9 +12,8 @@ import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
 import electrodynamics.prefab.sound.utils.ITickableSound;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
@@ -32,13 +30,9 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileWindmill extends GenericGeneratorTile implements IMultiblockParentTile, ITickableSound {
 
@@ -55,12 +49,11 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 
 	public TileWindmill(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_WINDMILL.get(), worldPosition, blockState, 2.25, SubtypeItemUpgrade.stator);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this).output(Direction.DOWN).setEnergyProduction().setNoEnergyReception());
+		addComponent(new ComponentElectrodynamic(this, true, false).setOutputDirections(Direction.DOWN));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerWindmill.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.windmill, this).createMenu((id, player) -> new ContainerWindmill(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.windmill, this).createMenu((id, player) -> new ContainerWindmill(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 
 	}
 
@@ -74,8 +67,7 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 			generating.set(false);
 			return;
 		}
-		ComponentDirection direction = getComponent(ComponentType.Direction);
-		Direction facing = direction.getDirection();
+		Direction facing = getFacing();
 		if (tickable.getTicks() % 40 == 0) {
 			isGenerating.set(level.isEmptyBlock(worldPosition.relative(facing).relative(Direction.UP)));
 			float height = Math.max(0, level.getHeight());
@@ -138,7 +130,7 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 
 	@Override
 	public TransferPack getProduced() {
-		return TransferPack.ampsVoltage(generating.get() * multiplier.get(), this.<ComponentElectrodynamic>getComponent(ComponentType.Electrodynamic).getVoltage());
+		return TransferPack.ampsVoltage(generating.get() * multiplier.get(), this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getVoltage());
 	}
 
 	@Override
@@ -163,16 +155,7 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 
 	@Override
 	public Direction getFacingDirection() {
-		return this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-	}
-
-	static {
-
-		VoxelShape shape = Block.box(2, 0, 2, 14, 2, 14);
-		shape = Shapes.join(shape, Block.box(3, 2, 3, 13, 3, 13), BooleanOp.OR);
-		shape = Shapes.join(shape, Block.box(5, 3, 5, 11, 16, 11), BooleanOp.OR);
-		VoxelShapes.registerShape(SubtypeMachine.windmill, shape, Direction.NORTH);
-
+		return getFacing();
 	}
 
 }

@@ -104,6 +104,11 @@ public interface ICapabilityElectrodynamic {
 	 * @return The actual energy that this Capability extracted
 	 */
 	default TransferPack extractPower(TransferPack transfer, boolean debug) {
+		
+		if(!isEnergyProducer()) {
+			return TransferPack.EMPTY;
+		}
+		
 		double taken = Math.min(transfer.getJoules(), getJoulesStored());
 		if (!debug && taken > 0) {
 			if (transfer.getVoltage() == getVoltage()) {
@@ -125,6 +130,11 @@ public interface ICapabilityElectrodynamic {
 	 * @return The energy that this Capability accepted
 	 */
 	default TransferPack receivePower(TransferPack transfer, boolean debug) {
+		
+		if(!isEnergyReceiver()) {
+			return TransferPack.EMPTY;
+		}
+		
 		double received = Math.max(0, Math.min(transfer.getJoules(), getMaxJoulesStored() - getJoulesStored()));
 		if (!debug && received > 0) {
 			if (transfer.getVoltage() == getVoltage() || getVoltage() == -1) {

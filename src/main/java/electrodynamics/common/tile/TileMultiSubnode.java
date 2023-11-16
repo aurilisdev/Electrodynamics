@@ -69,6 +69,7 @@ public class TileMultiSubnode extends GenericTile {
 
 	@Override
 	public void onPlace(BlockState oldState, boolean isMoving) {
+		super.onPlace(oldState, isMoving);
 		if (level.getBlockEntity(parentPos.get()) instanceof IMultiblockParentTile node) {
 			node.onSubnodePlace(this, oldState, isMoving);
 		}

@@ -8,8 +8,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.tile.electricitygrid.TileMultimeterBlock;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.math.Color;
 import electrodynamics.prefab.utilities.math.MathUtils;
@@ -34,7 +32,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 		for (Direction dir : DIRS_TO_CHECK) {
 
-			if (dir == multimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
+			if (dir == multimeter.getFacing()) {
 				continue;
 			}
 

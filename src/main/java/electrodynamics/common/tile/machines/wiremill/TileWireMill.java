@@ -1,7 +1,6 @@
 package electrodynamics.common.tile.machines.wiremill;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.common.block.VoxelShapes;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
 import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorDouble;
@@ -11,9 +10,8 @@ import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
 import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
@@ -26,9 +24,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class TileWireMill extends GenericTile implements ITickableSound {
 
@@ -46,12 +41,12 @@ public class TileWireMill extends GenericTile implements ITickableSound {
 		int outputPerProc = 1;
 		int biprodsPerProc = 1;
 
-		addComponent(new ComponentDirection(this));
+
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this).relativeInput(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * Math.pow(2, extra)).joules(Constants.WIREMILL_USAGE_PER_TICK * 20 * (extra + 1)));
+		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * Math.pow(2, extra)).joules(Constants.WIREMILL_USAGE_PER_TICK * 20 * (extra + 1)));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().processors(processorCount, inputsPerProc, outputPerProc, biprodsPerProc).upgrades(3)).validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator()).implementMachineInputsAndOutputs());
-		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> (extra == 0 ? new ContainerO2OProcessor(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(ComponentType.Inventory), getCoordsArray()) : null)));
+		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> (extra == 0 ? new ContainerO2OProcessor(id, player, getComponent(IComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(IComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(IComponentType.Inventory), getCoordsArray()) : null)));
 
 		for (int i = 0; i <= extra; i++) {
 			addProcessor(new ComponentProcessor(this, i, extra + 1).canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.WIRE_MILL_TYPE.get())).process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.WIREMILL_REQUIRED_TICKS).usage(Constants.WIREMILL_USAGE_PER_TICK));
@@ -88,25 +83,4 @@ public class TileWireMill extends GenericTile implements ITickableSound {
 		return (int) (((double) getNumActiveProcessors() / (double) Math.max(1, getNumProcessors())) * 15.0);
 	}
 
-	static {
-		VoxelShape shape = Shapes.empty();
-		shape = Shapes.join(shape, Shapes.box(0, 0, 0, 1, 0.3125, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.0625, 0.3125, 0, 0.3125, 1, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.3125, 0.3125, 0.125, 0.6875, 0.375, 0.5625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.375, 0.625, 0.9375, 0.4375, 0.75, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.5625, 0.625, 0.9375, 0.625, 0.75, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.4375, 0.75, 0.9375, 0.5625, 0.8125, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.421875, 0.640625, 0.125, 0.578125, 0.796875, 0.5625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.421875, 0.421875, 0.125, 0.578125, 0.578125, 0.5625), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.4375, 0.5625, 0.9375, 0.5625, 0.625, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0.3125, 0.25, 0.0625, 0.75, 0.75), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0.3125, 0, 0.0625, 1, 0.125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0.875, 0.125, 0.0625, 1, 0.875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0, 0.3125, 0.875, 0.0625, 1, 1), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.3125, 0.3125, 0.6875, 0.6875, 0.9375, 0.9375), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.3125, 0.3125, 0, 0.6875, 0.9375, 0.125), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.3125, 0.3125, 0.5625, 0.6875, 0.9375, 0.6875), BooleanOp.OR);
-		shape = Shapes.join(shape, Shapes.box(0.6875, 0.3125, 0.6875, 1, 0.625, 0.9375), BooleanOp.OR);
-		VoxelShapes.registerShape(SubtypeMachine.wiremill, shape, Direction.EAST);
-	}
 }

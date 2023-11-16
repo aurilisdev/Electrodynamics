@@ -10,9 +10,8 @@ import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
@@ -46,12 +45,11 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 
 	public TileCoalGenerator(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_COALGENERATOR.get(), worldPosition, blockState, 1.0);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickClient(this::tickClient).tickServer(this::tickServer));
-		addComponent(new ComponentElectrodynamic(this).relativeOutput(Direction.NORTH).setEnergyProduction().setNoEnergyReception());
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(1)).slotFaces(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH).valid((index, stack, i) -> getValidItems().contains(stack.getItem())));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.coalgenerator, this).createMenu((id, player) -> new ContainerCoalGenerator(id, player, getComponent(ComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentElectrodynamic(this, true, false).setOutputDirections(Direction.NORTH));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(1)).setDirectionsBySlot(0, Direction.UP, Direction.EAST, Direction.WEST, Direction.SOUTH, Direction.NORTH).valid((index, stack, i) -> getValidItems().contains(stack.getItem())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.coalgenerator, this).createMenu((id, player) -> new ContainerCoalGenerator(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
@@ -61,14 +59,14 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 		if (hasRedstoneSignal.get()) {
 			return;
 		}
-		ComponentDirection direction = getComponent(ComponentType.Direction);
+		Direction facing = getFacing();
 		if (output == null) {
-			output = new CachedTileOutput(level, worldPosition.relative(direction.getDirection().getOpposite()));
+			output = new CachedTileOutput(level, worldPosition.relative(facing.getOpposite()));
 		}
 		if (tickable.getTicks() % 20 == 0) {
-			output.update(worldPosition.relative(direction.getDirection().getOpposite()));
+			output.update(worldPosition.relative(facing.getOpposite()));
 		}
-		ComponentInventory inv = getComponent(ComponentType.Inventory);
+		ComponentInventory inv = getComponent(IComponentType.Inventory);
 		ItemStack fuel = inv.getItem(0);
 		if (burnTime.get() <= 0 && !fuel.isEmpty()) {
 			burnTime.set(ForgeHooks.getBurnTime(fuel, null));
@@ -80,7 +78,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 			BlockEntityUtils.updateLit(this, greaterBurnTime);
 		}
 		if (heat.getValue() > 27 && output.valid()) {
-			ElectricityUtils.receivePower(output.getSafe(), direction.getDirection(), currentOutput, false);
+			ElectricityUtils.receivePower(output.getSafe(), facing, currentOutput, false);
 		}
 		heat.rangeParameterize(27, 3000, burnTime.get() > 0 ? 3000 : 27, heat.getValue(), 600).flush();
 		currentOutput = getProduced();
@@ -88,7 +86,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 
 	protected void tickClient(ComponentTickable tickable) {
 		if (getBlockState().getValue(BlockMachine.ON)) {
-			Direction dir = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+			Direction dir = getFacing();
 			if (level.random.nextInt(10) == 0) {
 				level.playLocalSound(worldPosition.getX() + 0.5D, worldPosition.getY() + 0.5D, worldPosition.getZ() + 0.5D, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + level.random.nextFloat(), level.random.nextFloat() * 0.7F + 0.6F, false);
 			}

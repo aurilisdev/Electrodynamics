@@ -11,7 +11,7 @@ import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
@@ -31,7 +31,7 @@ public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
 			if (box == null) {
 				return;
 			}
-			ComponentElectrodynamic electro = box.getComponent(ComponentType.Electrodynamic);
+			ComponentElectrodynamic electro = box.getComponent(IComponentType.Electrodynamic);
 			graphics.drawString(font, ElectroTextUtils.gui("machine.current", ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get() / electro.getVoltage(), DisplayUnit.AMPERE)), inventoryLabelX, inventoryLabelY - 55, 4210752, false);
 			graphics.drawString(font, ElectroTextUtils.gui("machine.transfer", ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get(), DisplayUnit.WATT)), inventoryLabelX, inventoryLabelY - 42, 4210752, false);
 			graphics.drawString(font, ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE)), inventoryLabelX, inventoryLabelY - 29, 4210752, false);
@@ -46,7 +46,7 @@ public class ScreenBatteryBox extends GenericScreen<ContainerBatteryBox> {
 			return list;
 		}
 
-		ComponentElectrodynamic el = box.getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic el = box.getComponent(IComponentType.Electrodynamic);
 		list.add(ElectroTextUtils.gui("machine.current", ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get() / el.getVoltage(), DisplayUnit.AMPERE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		list.add(ElectroTextUtils.gui("machine.transfer", ChatFormatter.getChatDisplayShort(box.powerOutput.get() * 20.0 * box.currentCapacityMultiplier.get(), DisplayUnit.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		list.add(ElectroTextUtils.gui("machine.transfer", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(box.powerOutput.get() * box.currentCapacityMultiplier.get(), DisplayUnit.FORGE_ENERGY_UNIT).withStyle(ChatFormatting.GRAY), DisplayUnit.TIME_TICKS.getSymbol())).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());

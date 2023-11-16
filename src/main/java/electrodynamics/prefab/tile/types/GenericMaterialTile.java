@@ -4,7 +4,7 @@ import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.gas.GasTank;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.utils.IComponentFluidHandler;
 import electrodynamics.prefab.tile.components.utils.IComponentGasHandler;
 import electrodynamics.prefab.utilities.CapabilityUtils;
@@ -37,9 +37,9 @@ public class GenericMaterialTile extends GenericTile {
 	@Override
 	public InteractionResult use(Player player, InteractionHand handIn, BlockHitResult hit) {
 		ItemStack stack = player.getItemInHand(handIn);
-		if (CapabilityUtils.hasFluidItemCap(stack) && hasComponent(ComponentType.FluidHandler)) {
+		if (CapabilityUtils.hasFluidItemCap(stack) && hasComponent(IComponentType.FluidHandler)) {
 			Level world = getLevel();
-			IComponentFluidHandler handler = getComponent(ComponentType.FluidHandler);
+			IComponentFluidHandler handler = getComponent(IComponentType.FluidHandler);
 			boolean isBucket = stack.getItem() instanceof BucketItem;
 			// first try to drain the item
 			FluidStack containedFluid = CapabilityUtils.drainFluidItem(stack, Integer.MAX_VALUE, FluidAction.SIMULATE);
@@ -92,10 +92,10 @@ public class GenericMaterialTile extends GenericTile {
 			}
 		}
 		if (CapabilityUtils.hasGasItemCap(stack)) {
-			if (hasComponent(ComponentType.GasHandler)) {
+			if (hasComponent(IComponentType.GasHandler)) {
 
 				Level world = getLevel();
-				IComponentGasHandler handler = getComponent(ComponentType.GasHandler);
+				IComponentGasHandler handler = getComponent(IComponentType.GasHandler);
 				// first try to drain the item
 				GasStack containedGas = CapabilityUtils.drainGasItem(stack, Integer.MAX_VALUE, GasAction.SIMULATE);
 				for (GasTank tank : handler.getInputTanks()) {

@@ -6,8 +6,7 @@ import java.util.List;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.IWrenchable;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import net.minecraft.core.BlockPos;
@@ -54,7 +53,7 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 	@Override
 	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level lvl, BlockState state, BlockEntityType<T> type) {
 		return (l, pos, s, tile) -> {
-			if (tile instanceof GenericTile generic && generic.getComponent(ComponentType.Tickable) instanceof ComponentTickable tickable) {
+			if (tile instanceof GenericTile generic && generic.getComponent(IComponentType.Tickable) instanceof ComponentTickable tickable) {
 				tickable.performTick(l);
 			}
 		};
@@ -64,13 +63,7 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 	public void onRotate(ItemStack stack, BlockPos pos, Player player) {
 		if (player.level().getBlockState(pos).hasProperty(FACING)) {
 			BlockState state = rotate(player.level().getBlockState(pos), Rotation.CLOCKWISE_90);
-			if (player.level().getBlockEntity(pos) instanceof GenericTile tile) {
-				if (tile.hasComponent(ComponentType.Direction)) {
-					tile.<ComponentDirection>getComponent(ComponentType.Direction).setDirection(state.getValue(FACING));
-				}
-			}
 			player.level().setBlockAndUpdate(pos, state);
-			player.level().updateNeighborsAt(pos, this);
 		}
 	}
 
@@ -102,7 +95,7 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
 		if (tile instanceof GenericTile machine && machine != null) {
 			ItemStack stack = new ItemStack(this);
-			ComponentInventory inv = machine.getComponent(ComponentType.Inventory);
+			ComponentInventory inv = machine.getComponent(IComponentType.Inventory);
 			if (inv != null) {
 				Containers.dropContents(machine.getLevel(), machine.getBlockPos(), inv.getItems());
 				tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
@@ -122,8 +115,12 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 
 	@Override
 	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (newState.isAir() && level.getBlockEntity(pos) instanceof GenericTile generic) {
-			generic.onBlockDestroyed();
+		if(level.getBlockEntity(pos) instanceof GenericTile generic) {
+			if(newState.isAir() || !newState.is(state.getBlock())) {
+				generic.onBlockDestroyed();
+			} else {
+				generic.onBlockStateUpdate(state, newState);
+			}
 		}
 		super.onRemove(state, level, pos, newState, isMoving);
 	}

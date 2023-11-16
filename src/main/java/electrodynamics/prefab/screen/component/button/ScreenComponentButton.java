@@ -111,7 +111,7 @@ public class ScreenComponentButton<T extends ScreenComponentButton<?>> extends S
 	@Override
 	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 		super.renderForeground(graphics, xAxis, yAxis, guiWidth, guiHeight);
-		if (isVisible() && isMouseOver(xAxis, yAxis) && onTooltip != null) {
+		if (isVisible() && isHovered() && onTooltip != null) {
 			onTooltip.onTooltip(graphics, this, xAxis, yAxis);
 		}
 	}

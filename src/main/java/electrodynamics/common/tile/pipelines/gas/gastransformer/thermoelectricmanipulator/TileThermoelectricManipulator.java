@@ -17,9 +17,8 @@ import electrodynamics.common.tile.pipelines.gas.gastransformer.TileGasTransform
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti.ComponentFluidHandlerMultiBiDirec;
@@ -60,14 +59,14 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
 	public TileThermoelectricManipulator(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_THERMOELECTRIC_MANIPULATOR.get(), worldPos, blockState);
-		addComponent(new ComponentElectrodynamic(this).input(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(BASE_INPUT_CAPACITY * 10));
+		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(BASE_INPUT_CAPACITY * 10));
 		addComponent(new ComponentFluidHandlerMultiBiDirec(this).setInputDirections(Direction.DOWN).setInputTanks(1, arr((int) BASE_INPUT_CAPACITY)).setOutputDirections(Direction.DOWN).setOutputTanks(1, arr((int) BASE_OUTPUT_CAPACITY)));
 	}
 
 	@Override
 	public boolean canProcess(ComponentProcessor processor) {
 
-		ComponentGasHandlerMulti gasHandler = getComponent(ComponentType.GasHandler);
+		ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
 
 		processor.consumeGasCylinder();
 		processor.dispenseGasCylinder();
@@ -75,9 +74,9 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 		processor.consumeBucket();
 		processor.dispenseBucket();
 
-		ComponentDirection dir = getComponent(ComponentType.Direction);
+		Direction facing = getFacing();
 
-		Direction direction = BlockEntityUtils.getRelativeSide(dir.getDirection(), Direction.EAST);// opposite of west is east
+		Direction direction = BlockEntityUtils.getRelativeSide(facing, Direction.EAST);// opposite of west is east
 		BlockPos face = getBlockPos().relative(direction.getOpposite(), 2);
 		BlockEntity faceTile = getLevel().getBlockEntity(face);
 		if (faceTile != null) {
@@ -95,7 +94,7 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 			}
 		}
 
-		ComponentFluidHandlerMulti fluidHandler = getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
 
 		face = getBlockPos().relative(direction.getOpposite()).relative(Direction.DOWN);
 		faceTile = getLevel().getBlockEntity(face);
@@ -130,8 +129,8 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
 		if (BlockEntityUtils.isLit(this) ^ isHeating) {
 			BlockEntityUtils.updateLit(this, isHeating);
-			BlockEntity left = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(dir.getDirection(), Direction.EAST)));
-			BlockEntity right = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(dir.getDirection(), Direction.WEST)));
+			BlockEntity left = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
+			BlockEntity right = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
 			if (left != null && left instanceof TileGasTransformerSideBlock leftTile && right != null && right instanceof TileGasTransformerSideBlock rightTile) {
 				BlockEntityUtils.updateLit(leftTile, isHeating);
 				BlockEntityUtils.updateLit(rightTile, isHeating);
@@ -151,13 +150,13 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
 	private ManipulatorStatusCheckWrapper checkGasConditions(ComponentProcessor processor) {
 
-		ComponentGasHandlerMulti gasHandler = getComponent(ComponentType.GasHandler);
+		ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
 		GasTank inputTank = gasHandler.getInputTanks()[0];
 		if (inputTank.isEmpty()) {
 			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
 		}
 
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
 		if (electro.getJoulesStored() < USAGE_PER_TICK * processor.operatingSpeed.get()) {
 			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
@@ -166,7 +165,7 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 		if (inputTank.getGas().getGas().getCondensationTemp() >= targetTemperature.get()) {
 
 			// gas is condensed
-			ComponentFluidHandlerMultiBiDirec fluidHandler = getComponent(ComponentType.FluidHandler);
+			ComponentFluidHandlerMultiBiDirec fluidHandler = getComponent(IComponentType.FluidHandler);
 
 			FluidTank outputTank = fluidHandler.getOutputTanks()[0];
 
@@ -226,7 +225,7 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
 	private ManipulatorStatusCheckWrapper checkFluidConditions(ComponentProcessor processor) {
 
-		ComponentFluidHandlerMultiBiDirec fluidHandler = getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerMultiBiDirec fluidHandler = getComponent(IComponentType.FluidHandler);
 
 		FluidTank inputTank = fluidHandler.getInputTanks()[0];
 
@@ -234,13 +233,13 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
 		}
 
-		ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
 		if (electro.getJoulesStored() < USAGE_PER_TICK * processor.operatingSpeed.get()) {
 			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
 		}
 
-		ComponentGasHandlerMulti gasHandler = getComponent(ComponentType.GasHandler);
+		ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
 
 		GasTank outputTank = gasHandler.getOutputTanks()[0];
 
@@ -267,8 +266,8 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
 	@Override
 	public void process(ComponentProcessor processor) {
-		ComponentFluidHandlerMultiBiDirec fluidHandler = getComponent(ComponentType.FluidHandler);
-		ComponentGasHandlerMulti gasHandler = getComponent(ComponentType.GasHandler);
+		ComponentFluidHandlerMultiBiDirec fluidHandler = getComponent(IComponentType.FluidHandler);
+		ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
 
 		double conversionRate = BASE_CONVERSION_RATE * processor.operatingSpeed.get();
 
@@ -281,6 +280,10 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 			double deltaT = targetTemperature.get() - evaporatedGas.getCondensationTemp();
 
 			conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
+			
+			if(conversionRate < 1) {
+				conversionRate = 1;
+			}
 
 			double maxTake = inputTank.getFluidAmount() > conversionRate ? conversionRate : inputTank.getFluidAmount();
 
@@ -311,16 +314,18 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 			double deltaT = targetTemp - inputTank.getGas().getTemperature();
 
 			conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
+			
+			if(conversionRate < 1) {
+				conversionRate = 1;
+			}
 
-			double maxTake = inputTank.getGasAmount() > conversionRate ? conversionRate : inputTank.getGasAmount();
-
-			GasStack condensedPotential = new GasStack(inputTank.getGas().getGas(), maxTake, inputTank.getGas().getTemperature(), inputTank.getGas().getPressure());
+			GasStack condensedPotential = new GasStack(inputTank.getGas().getGas(), inputTank.getGasAmount(), inputTank.getGas().getTemperature(), inputTank.getGas().getPressure());
 
 			condensedPotential.bringPressureTo(Gas.PRESSURE_AT_SEA_LEVEL);
 
 			condensedPotential.heat(deltaT);
 
-			int fluidAmount = (int) Math.floor(condensedPotential.getAmount());
+			int fluidAmount = (int) Math.floor(Math.min(conversionRate, condensedPotential.getAmount()));
 
 			if (fluidAmount == 0) {
 				return;
@@ -381,8 +386,8 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
 	@Override
 	public void updateAddonTanks(int count, boolean isLeft) {
-		ComponentGasHandlerMulti handler = getComponent(ComponentType.GasHandler);
-		ComponentFluidHandlerMulti multi = getComponent(ComponentType.FluidHandler);
+		ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
+		ComponentFluidHandlerMulti multi = getComponent(IComponentType.FluidHandler);
 		if (isLeft) {
 			multi.getInputTanks()[0].setCapacity((int) (BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count));
 			handler.getInputTanks()[0].setCapacity(BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count);
@@ -394,7 +399,7 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
 	@Override
 	public ComponentContainerProvider getContainerProvider() {
-		return new ComponentContainerProvider("container.thermoelectricmanipulator", this).createMenu((id, inv) -> new ContainerThermoelectricManipulator(id, inv, getComponent(ComponentType.Inventory), getCoordsArray()));
+		return new ComponentContainerProvider("container.thermoelectricmanipulator", this).createMenu((id, inv) -> new ContainerThermoelectricManipulator(id, inv, getComponent(IComponentType.Inventory), getCoordsArray()));
 	}
 
 	@Override
@@ -407,7 +412,7 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
 		return (tank, tile) -> {
 
-			FluidTank outputTank = tile.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getOutputTanks()[0];
+			FluidTank outputTank = tile.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getOutputTanks()[0];
 
 			GasStack tankGas = tank.getGas().copy();
 

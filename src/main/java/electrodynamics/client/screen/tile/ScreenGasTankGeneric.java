@@ -10,7 +10,7 @@ import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGasPr
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGasTemperature;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.screen.types.GenericMaterialScreen;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentGasHandlerSimple;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -24,7 +24,7 @@ public class ScreenGasTankGeneric extends GenericMaterialScreen<ContainerGasTank
 		addComponent(new ScreenComponentGasGauge(() -> {
 			GenericTileGasTank boiler = menu.getHostFromIntArray();
 			if (boiler != null) {
-				return boiler.<ComponentGasHandlerSimple>getComponent(ComponentType.GasHandler);
+				return boiler.<ComponentGasHandlerSimple>getComponent(IComponentType.GasHandler);
 			}
 			return null;
 		}, 81, 18));

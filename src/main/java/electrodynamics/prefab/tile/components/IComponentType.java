@@ -1,6 +1,6 @@
 package electrodynamics.prefab.tile.components;
 
-public enum ComponentType {
+public enum IComponentType {
 	Name,
 	PacketHandler,
 	Tickable,
@@ -8,7 +8,6 @@ public enum ComponentType {
 	ContainerProvider,
 	Electrodynamic,
 	MultiblockSource,
-	Direction,
 	FluidHandler,
 	Processor,
 	GasHandler,

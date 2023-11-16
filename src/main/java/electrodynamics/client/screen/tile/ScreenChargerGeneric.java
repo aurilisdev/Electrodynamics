@@ -10,8 +10,9 @@ import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
 import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
 import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.types.wrapper.InventoryIOWrapper;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
@@ -51,7 +52,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 
 			if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric electricItem) {
 
-				ComponentElectrodynamic electro = charger.getComponent(ComponentType.Electrodynamic);
+				ComponentElectrodynamic electro = charger.getComponent(IComponentType.Electrodynamic);
 
 				chargingPercentage = electricItem.getJoulesStored(chargingItem) / electricItem.getElectricProperties().capacity * 100;
 				chargeCapable = electro.getVoltage() / electricItem.getElectricProperties().receive.getVoltage() * 100;
@@ -72,6 +73,8 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 			graphics.drawString(font, capable, inventoryLabelX, 43, 0, false);
 
 		}));
+		
+		new InventoryIOWrapper(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75, 82, 8, 72);
 	}
 
 	private Component getChargeCapableFormatted(double chargeCapable, ChatFormatting formatColor) {

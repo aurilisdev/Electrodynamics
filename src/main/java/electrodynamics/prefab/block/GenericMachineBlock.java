@@ -4,10 +4,7 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
-import electrodynamics.common.block.VoxelShapes;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.common.block.voxelshapes.VoxelShapes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -39,11 +36,10 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 
 	@Override
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		BlockEntity entity = worldIn.getBlockEntity(pos);
-		if (entity instanceof GenericTile tile) {
-			if (tile.getComponent(ComponentType.Direction) instanceof ComponentDirection direc) {
-				return VoxelShapes.getShape(worldIn.getBlockState(pos).getBlock(), direc.getDirection());
-			}
+		if (state.hasProperty(GenericEntityBlock.FACING)) {
+
+			return VoxelShapes.getShape(worldIn.getBlockState(pos).getBlock(), state.getValue(GenericEntityBlock.FACING));
+
 		}
 		return super.getShape(state, worldIn, pos, context);
 	}

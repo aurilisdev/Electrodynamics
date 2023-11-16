@@ -191,7 +191,8 @@ public class ScreenComponentSlot extends ScreenComponentGeneric {
 		QUARRY_COMPONENTS(18, 18, 0, 0, 18, 18, "quarry_components"), //
 		TEMPERATURE(14, 14, 0, 0, 14, 14, "temperature"), //
 		THERMOMETER(16, 16, 0, 0, 16, 16, "thermometer"), //
-		PRESSURE_GAUGE(10, 10, 0, 0, 10, 10, "pressuredial");//
+		PRESSURE_GAUGE(10, 10, 0, 0, 10, 10, "pressuredial"), //
+		INVENTORY_IO(16, 16, 0, 0, 16, 16, "inventoryio"); //
 
 		private final int textureWidth;
 		private final int textureHeight;

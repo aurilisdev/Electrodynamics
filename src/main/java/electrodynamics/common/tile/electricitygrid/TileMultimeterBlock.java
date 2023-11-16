@@ -6,8 +6,6 @@ import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
@@ -30,16 +28,15 @@ public class TileMultimeterBlock extends GenericTile {
 
 	public TileMultimeterBlock(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_MULTIMETERBLOCK.get(), worldPosition, blockState);
-		addComponent(new ComponentDirection(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).relativeInput(Direction.SOUTH).voltage(-1).setNoEnergyReception());
+		addComponent(new ComponentElectrodynamic(this, false, false).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setInputDirections(Direction.SOUTH).voltage(-1));
 	}
 
 	public void tickServer(ComponentTickable tickable) {
 
 		if (tickable.getTicks() % (minVoltage.get() == 0 ? 20 : 2) == 0) {
-			Direction facing = this.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
+			Direction facing = getFacing();
 			if (input == null) {
 				input = new CachedTileOutput(level, worldPosition.relative(facing));
 			}
