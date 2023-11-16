@@ -114,12 +114,12 @@ public class InventoryIOWrapper {
 
 		label.setVisible(false);
 
-		this.screen.addComponent(ioArr[0] = new ScreenComponentInventoryIO(slotStartX, slotStartY, Direction.UP));
+		this.screen.addComponent(ioArr[0] = new ScreenComponentInventoryIO(slotStartX, slotStartY+1, Direction.UP));
 		this.screen.addComponent(ioArr[1] = new ScreenComponentInventoryIO(slotStartX, slotStartY + 26, Direction.NORTH));
-		this.screen.addComponent(ioArr[2] = new ScreenComponentInventoryIO(slotStartX, slotStartY + 26 * 2, Direction.DOWN));
-		this.screen.addComponent(ioArr[3] = new ScreenComponentInventoryIO(slotStartX - 26, slotStartY + 26, Direction.EAST));
-		this.screen.addComponent(ioArr[4] = new ScreenComponentInventoryIO(slotStartX + 26, slotStartY + 26, Direction.WEST));
-		this.screen.addComponent(ioArr[5] = new ScreenComponentInventoryIO(slotStartX + 26, slotStartY + 26 * 2, Direction.SOUTH));
+		this.screen.addComponent(ioArr[2] = new ScreenComponentInventoryIO(slotStartX, slotStartY + 26 * 2 - 1, Direction.DOWN));
+		this.screen.addComponent(ioArr[3] = new ScreenComponentInventoryIO(slotStartX - 25, slotStartY + 26, Direction.EAST));
+		this.screen.addComponent(ioArr[4] = new ScreenComponentInventoryIO(slotStartX + 25, slotStartY + 26, Direction.WEST));
+		this.screen.addComponent(ioArr[5] = new ScreenComponentInventoryIO(slotStartX + 25, slotStartY + 26 * 2 - 1, Direction.SOUTH));
 
 		for (ScreenComponentInventoryIO io : ioArr) {
 			io.setVisible(false);
