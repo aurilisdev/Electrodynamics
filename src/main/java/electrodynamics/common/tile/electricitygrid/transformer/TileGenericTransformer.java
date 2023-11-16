@@ -1,6 +1,9 @@
 package electrodynamics.common.tile.electricitygrid.transformer;
 
+import org.jetbrains.annotations.NotNull;
+
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.properties.Property;
@@ -106,7 +109,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 			return TransferPack.EMPTY;
 		}
 		LoadProfile transformed = new LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * Constants.TRANSFORMER_EFFICIENCY, lastEnergy.lastUsage().getVoltage() * getCoilRatio()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * Constants.TRANSFORMER_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage() * getCoilRatio()));
-		
+
 		locked = true;
 		TransferPack returner = ((BlockEntity) output.getSafe()).getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).map(cap -> cap.getConnectedLoad(transformed, dir)).orElse(TransferPack.EMPTY);
 		locked = false;
@@ -125,7 +128,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 			return -1;
 		}
 		locked = true;
-		double minimumVoltage = ((BlockEntity) output.getSafe()).getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(cap -> cap.getMinimumVoltage()).orElse(-1.0) / getCoilRatio();
+		double minimumVoltage = ((BlockEntity) output.getSafe()).getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(@NotNull ICapabilityElectrodynamic::getMinimumVoltage).orElse(-1.0) / getCoilRatio();
 		locked = false;
 		return minimumVoltage;
 	}
@@ -142,7 +145,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 			return -1;
 		}
 		locked = true;
-		double ampacity = ((BlockEntity) output.getSafe()).getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(cap -> cap.getAmpacity()).orElse(-1.0) * getCoilRatio();
+		double ampacity = ((BlockEntity) output.getSafe()).getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(@NotNull ICapabilityElectrodynamic::getAmpacity).orElse(-1.0) * getCoilRatio();
 		locked = false;
 		return ampacity;
 	}

@@ -82,7 +82,7 @@ public class ScreenElectricArcFurnaceTriple extends GenericScreen<ContainerElect
 		imageHeight += 20;
 		inventoryLabelY += 20;
 		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
-		
+
 		new InventoryIOWrapper(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75, 82 + 20, 8, 72 + 20);
 	}
 }

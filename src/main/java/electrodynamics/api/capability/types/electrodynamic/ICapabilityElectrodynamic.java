@@ -38,7 +38,7 @@ public interface ICapabilityElectrodynamic {
 	 * @param joules
 	 */
 	public void setJoulesStored(double joules);
-	
+
 	/**
 	 * Returns the current operating voltage of this Capability
 	 * 
@@ -82,14 +82,14 @@ public interface ICapabilityElectrodynamic {
 	default double getAmpacity() {
 		return -1;
 	}
-	
+
 	/**
 	 * Returns whether or not this Capability can receive energy
 	 * 
 	 * @return whether or not energy can be accepted
 	 */
 	public boolean isEnergyReceiver();
-	
+
 	/**
 	 * Returns whether or not this Capability can produce energy
 	 * 
@@ -104,11 +104,11 @@ public interface ICapabilityElectrodynamic {
 	 * @return The actual energy that this Capability extracted
 	 */
 	default TransferPack extractPower(TransferPack transfer, boolean debug) {
-		
-		if(!isEnergyProducer()) {
+
+		if (!isEnergyProducer()) {
 			return TransferPack.EMPTY;
 		}
-		
+
 		double taken = Math.min(transfer.getJoules(), getJoulesStored());
 		if (!debug && taken > 0) {
 			if (transfer.getVoltage() == getVoltage()) {
@@ -130,11 +130,11 @@ public interface ICapabilityElectrodynamic {
 	 * @return The energy that this Capability accepted
 	 */
 	default TransferPack receivePower(TransferPack transfer, boolean debug) {
-		
-		if(!isEnergyReceiver()) {
+
+		if (!isEnergyReceiver()) {
 			return TransferPack.EMPTY;
 		}
-		
+
 		double received = Math.max(0, Math.min(transfer.getJoules(), getMaxJoulesStored() - getJoulesStored()));
 		if (!debug && received > 0) {
 			if (transfer.getVoltage() == getVoltage() || getVoltage() == -1) {

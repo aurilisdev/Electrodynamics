@@ -84,7 +84,7 @@ public class Constants {
 	public static boolean CONDUCTORS_BURN_SURROUNDINGS = true;
 	@FloatValue(def = 6.0F, comment = "The hardness value that a block must have to not be instantly vaporized by a wire over 30,720V, which is the maximum voltage achievable by default electrodynamics. 6 is the explosion resistance of an Iron Block")
 	public static float BLOCK_VAPORIZATION_HARDNESS = 6.0F;
-	
+
 	@BooleanValue(def = true, comment = "Set to false to disable the HUD rendering for combat armor.")
 	public static boolean RENDER_COMBAT_ARMOR_STATUS = true;
 

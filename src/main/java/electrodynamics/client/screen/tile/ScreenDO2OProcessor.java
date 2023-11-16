@@ -31,7 +31,7 @@ public class ScreenDO2OProcessor extends GenericScreen<ContainerDO2OProcessor> {
 			return 0;
 		}, 84 - ContainerDO2OProcessor.startXOffset, 34));
 		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
-		
+
 		new InventoryIOWrapper(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75, 82, 8, 72);
 	}
 

@@ -25,7 +25,7 @@ public class TransferPack {
 	public double getAmps() {
 		return joules / voltage * 20.0;
 	}
-	
+
 	public double getAmpsInTicks() {
 		return joules / voltage;
 	}

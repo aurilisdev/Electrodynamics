@@ -89,5 +89,5 @@ public class TileElectricPump extends GenericTile implements ITickableSound {
 	public int getComparatorSignal() {
 		return isGenerating.get() ? 15 : 0;
 	}
-	
+
 }

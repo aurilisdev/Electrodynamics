@@ -280,8 +280,8 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 			double deltaT = targetTemperature.get() - evaporatedGas.getCondensationTemp();
 
 			conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
-			
-			if(conversionRate < 1) {
+
+			if (conversionRate < 1) {
 				conversionRate = 1;
 			}
 
@@ -314,8 +314,8 @@ public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 			double deltaT = targetTemp - inputTank.getGas().getTemperature();
 
 			conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
-			
-			if(conversionRate < 1) {
+
+			if (conversionRate < 1) {
 				conversionRate = 1;
 			}
 

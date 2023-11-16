@@ -99,7 +99,8 @@ public class ScreenHandlerGuidebook implements IGuiContainerHandler<ScreenGuideb
 		}
 		if (lookup instanceof FluidStack stack) {
 			return Optional.of(new ClickableFluidIngredient(area, stack));
-		} else if (lookup instanceof GasStack stack) {
+		}
+		if (lookup instanceof GasStack stack) {
 			return Optional.of(new ClickableGasIngredient(area, stack));
 		} else {
 			return Optional.empty();

@@ -168,7 +168,7 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 		if (world.isClientSide) {
 
 			Electrodynamics.LOGGER.info(player.getDeltaMovement().y);
-			
+
 			ArmorItem item = (ArmorItem) stack.getItem();
 			if (item.getEquipmentSlot() == EquipmentSlot.CHEST && stack.hasTag()) {
 				boolean isDown = KeyBinds.jetpackAscend.isDown();
@@ -290,11 +290,10 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 	protected static double moveWithJetpack(double speed, double termVelocity, Player player, ItemStack jetpack) {
 
 		Vec3 movement = player.getDeltaMovement();
-		
 
-		//if (player.hasImpulse && wasEntityHurt(jetpack)) {
-		//	movement = new Vec3(movement.x, getPrevDeltaY(jetpack), movement.z);
-		//}
+		// if (player.hasImpulse && wasEntityHurt(jetpack)) {
+		// movement = new Vec3(movement.x, getPrevDeltaY(jetpack), movement.z);
+		// }
 
 		double newY = Math.min(movement.y + speed, termVelocity);
 		Vec3 currMovement = new Vec3(movement.x, newY, movement.z);

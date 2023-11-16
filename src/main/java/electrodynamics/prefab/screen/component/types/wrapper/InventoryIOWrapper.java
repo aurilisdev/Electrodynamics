@@ -18,17 +18,17 @@ import net.minecraft.network.chat.Component;
 public class InventoryIOWrapper {
 
 	private ScreenComponentInventoryIO[] ioArr = new ScreenComponentInventoryIO[6];
-	
+
 	private ScreenComponentSimpleLabel label;
-	
+
 	private final GenericScreen<?> screen;
-	
+
 	private final BiFunction<SlotGeneric, Integer, Color> defaultColorSupplier;
-	
+
 	public InventoryIOWrapper(GenericScreen<?> screen, int tabX, int tabY, int slotStartX, int slotStartY, int labelX, int labelY) {
 		this(screen, tabX, tabY, slotStartX, slotStartY, labelX, labelY, (slot, index) -> Color.WHITE);
 	}
-	
+
 	public InventoryIOWrapper(GenericScreen<?> screen, int tabX, int tabY, int slotStartX, int slotStartY, int labelX, int labelY, BiFunction<SlotGeneric, Integer, Color> defaultColorSupplier) {
 		this.screen = screen;
 		this.defaultColorSupplier = defaultColorSupplier;
@@ -62,7 +62,7 @@ public class InventoryIOWrapper {
 				for (ScreenComponentInventoryIO io : ioArr) {
 					io.setVisible(true);
 				}
-				
+
 				label.setVisible(true);
 
 			} else {
@@ -90,7 +90,7 @@ public class InventoryIOWrapper {
 				for (ScreenComponentInventoryIO io : ioArr) {
 					io.setVisible(false);
 				}
-				
+
 				label.setVisible(false);
 
 			}
@@ -109,11 +109,11 @@ public class InventoryIOWrapper {
 			graphics.renderComponentTooltip(this.screen.getFontRenderer(), tooltips, xAxis, yAxis);
 
 		}));
-		
+
 		this.screen.addComponent(label = new ScreenComponentSimpleLabel(labelX, labelY, 10, 4210752, ElectroTextUtils.tooltip("inventoryio.slotmap")));
-		
+
 		label.setVisible(false);
-		
+
 		this.screen.addComponent(ioArr[0] = new ScreenComponentInventoryIO(slotStartX, slotStartY, Direction.UP));
 		this.screen.addComponent(ioArr[1] = new ScreenComponentInventoryIO(slotStartX, slotStartY + 26, Direction.NORTH));
 		this.screen.addComponent(ioArr[2] = new ScreenComponentInventoryIO(slotStartX, slotStartY + 26 * 2, Direction.DOWN));
@@ -125,5 +125,5 @@ public class InventoryIOWrapper {
 			io.setVisible(false);
 		}
 	}
-	
+
 }

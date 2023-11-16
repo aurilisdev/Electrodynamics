@@ -42,7 +42,7 @@ import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
 public class ComponentProcessor implements IComponent {
-	
+
 	private GenericTile holder;
 
 	public Property<Double> operatingSpeed;
@@ -84,12 +84,12 @@ public class ComponentProcessor implements IComponent {
 		}
 		holder.<ComponentTickable>getComponent(IComponentType.Tickable).tickServer(this::tickServer);
 	}
-	
+
 	@Override
 	public void holder(GenericTile holder) {
 		this.holder = holder;
 	}
-	
+
 	@Override
 	public GenericTile getHolder() {
 		return holder;

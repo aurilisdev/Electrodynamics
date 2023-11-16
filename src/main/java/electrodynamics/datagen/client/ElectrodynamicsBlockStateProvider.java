@@ -164,7 +164,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advanceddowngradetransformer)), true);
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedupgradetransformer), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedupgradetransformer)), true);
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitmonitor), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitmonitor)), 90, 0, true);
-		
+
 		horrRotatedBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.currentregulator), existingBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.currentregulator)), 180, 0, true);
 
 		genWires();

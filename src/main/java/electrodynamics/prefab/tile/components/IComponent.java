@@ -11,12 +11,12 @@ import net.minecraftforge.common.util.LazyOptional;
 
 //renamed ever so slightly so it's not confused with the Vanilla class constantly when importing 
 public interface IComponent {
-	
+
 	IComponentType getType();
 
 	default void holder(GenericTile holder) {
 	}
-	
+
 	@Nullable
 	default GenericTile getHolder() {
 		return null;
@@ -38,13 +38,13 @@ public interface IComponent {
 	default void onLoad() {
 		refresh();
 	}
-	
+
 	default void refreshIfUpdate(BlockState oldState, BlockState newState) {
-		
+
 	}
-	
+
 	default void refresh() {
-		
+
 	}
 
 }

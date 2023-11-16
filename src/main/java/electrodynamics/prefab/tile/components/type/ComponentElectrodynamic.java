@@ -31,7 +31,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
 
 public class ComponentElectrodynamic implements IComponent, ICapabilityElectrodynamic {
-	
+
 	protected GenericTile holder;
 
 	protected BiFunction<TransferPack, Boolean, TransferPack> functionReceivePower = ICapabilityElectrodynamic.super::receivePower;
@@ -56,7 +56,7 @@ public class ComponentElectrodynamic implements IComponent, ICapabilityElectrody
 	private boolean acceptsEnergy = true;
 
 	private boolean isSided = false;
- 
+
 	private LazyOptional<ICapabilityElectrodynamic>[] sidedOptionals = new LazyOptional[6]; // Down Up North South West East
 
 	private LazyOptional<ICapabilityElectrodynamic> sidelessOptional;
@@ -73,12 +73,12 @@ public class ComponentElectrodynamic implements IComponent, ICapabilityElectrody
 		maxJoules = source.property(new Property<>(PropertyType.Double, "maxJoules", 0.0));
 		joules = source.property(new Property<>(PropertyType.Double, "joules", 0.0));
 	}
-	
+
 	@Override
 	public void holder(GenericTile holder) {
 		this.holder = holder;
 	}
-	
+
 	@Override
 	public GenericTile getHolder() {
 		return holder;
@@ -122,27 +122,24 @@ public class ComponentElectrodynamic implements IComponent, ICapabilityElectrody
 			return LazyOptional.empty();
 		}
 
-		if (isSided) {
+		if (!isSided) {
+			return sidelessOptional.cast();
+		}
+		if (side == null) {
 
-			if (side == null) {
-
-				return LazyOptional.empty();
-
-			} else {
-
-				return sidedOptionals[side.ordinal()].cast();
-
-			}
+			return LazyOptional.empty();
 
 		} else {
-			return sidelessOptional.cast();
+
+			return sidedOptionals[side.ordinal()].cast();
+
 		}
 
 	}
-	
+
 	@Override
 	public void refreshIfUpdate(BlockState oldState, BlockState newState) {
-		if(isSided && oldState.hasProperty(GenericEntityBlock.FACING) && newState.hasProperty(GenericEntityBlock.FACING) && oldState.getValue(GenericEntityBlock.FACING) != newState.getValue(GenericEntityBlock.FACING)) {
+		if (isSided && oldState.hasProperty(GenericEntityBlock.FACING) && newState.hasProperty(GenericEntityBlock.FACING) && oldState.getValue(GenericEntityBlock.FACING) != newState.getValue(GenericEntityBlock.FACING)) {
 			defineOptionals(newState.getValue(GenericEntityBlock.FACING));
 		}
 	}
@@ -153,9 +150,9 @@ public class ComponentElectrodynamic implements IComponent, ICapabilityElectrody
 		defineOptionals(holder.getFacing());
 
 	}
-	
+
 	private void defineOptionals(Direction facing) {
-		
+
 		sidedOptionals = new LazyOptional[6];
 		sidelessOptional = null;
 

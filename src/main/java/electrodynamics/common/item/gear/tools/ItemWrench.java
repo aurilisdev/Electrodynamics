@@ -35,7 +35,7 @@ public class ItemWrench extends ItemElectrodynamics implements IWrenchItem {
 		BlockPos pos = context.getClickedPos();
 		BlockState state = context.getLevel().getBlockState(pos);
 		Block block = state.getBlock();
-		
+
 		ItemStack stack = player.getItemInHand(context.getHand());
 
 		if (block instanceof IWrenchable wrenchable) {
@@ -45,7 +45,7 @@ public class ItemWrench extends ItemElectrodynamics implements IWrenchItem {
 				if (onPickup(stack, pos, player)) {
 
 					wrenchable.onPickup(stack, pos, player);
-					
+
 					return InteractionResult.CONSUME;
 
 				}
@@ -53,7 +53,7 @@ public class ItemWrench extends ItemElectrodynamics implements IWrenchItem {
 			} else if (onRotate(stack, pos, player)) {
 
 				wrenchable.onRotate(stack, pos, player);
-				
+
 				return InteractionResult.CONSUME;
 
 			}
@@ -62,7 +62,7 @@ public class ItemWrench extends ItemElectrodynamics implements IWrenchItem {
 
 		return InteractionResult.PASS;
 	}
-	
+
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
 		return InteractionResultHolder.fail(pPlayer.getItemInHand(pUsedHand));

@@ -219,7 +219,7 @@ public class ChapterGases extends Chapter {
 		/* Gas Tools */
 
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.topic.gastools").withStyle(ChatFormatting.BOLD, ChatFormatting.UNDERLINE)).setNewPage());
-		
+
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l18.1")).setIndentions(1).setSeparateStart());
 
 		// Portable Gas Cylinder
@@ -415,15 +415,14 @@ public class ChapterGases extends Chapter {
 
 		}));
 
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l18.gascylinder.1", ChatFormatter.getChatDisplayShort(GenericTileGasTank.HEAT_LOSS * 20, DisplayUnit.TEMPERATURE_KELVIN), ElectrodynamicsItems.ITEM_FIBERGLASSSHEET.get().getDescription().copy().withStyle(ChatFormatting.BOLD),
-				ChatFormatter.getChatDisplayShort(GenericTileGasTank.INSULATION_EFFECTIVENESS * 100 - 100, DisplayUnit.PERCENTAGE), ChatFormatter.getChatDisplayShort(Math.pow(GenericTileGasTank.INSULATION_EFFECTIVENESS, 6) * 100 - 100, DisplayUnit.PERCENTAGE))).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l18.gascylinder.1", ChatFormatter.getChatDisplayShort(GenericTileGasTank.HEAT_LOSS * 20, DisplayUnit.TEMPERATURE_KELVIN), ElectrodynamicsItems.ITEM_FIBERGLASSSHEET.get().getDescription().copy().withStyle(ChatFormatting.BOLD), ChatFormatter.getChatDisplayShort(GenericTileGasTank.INSULATION_EFFECTIVENESS * 100 - 100, DisplayUnit.PERCENTAGE), ChatFormatter.getChatDisplayShort(Math.pow(GenericTileGasTank.INSULATION_EFFECTIVENESS, 6) * 100 - 100, DisplayUnit.PERCENTAGE))).setSeparateStart().setIndentions(1));
 
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/fiberglasssheetuse.png")));
 
 		/* Gas GUIs */
 
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.topic.gasgui").withStyle(ChatFormatting.BOLD, ChatFormatting.UNDERLINE)).setNewPage());
-		
+
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l19", ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get().getDescription())).setIndentions(1).setSeparateStart());
 	}
 

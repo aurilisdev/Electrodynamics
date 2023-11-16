@@ -29,7 +29,7 @@ public class ScreenComponentSimpleLabel extends AbstractScreenComponent {
 
 	@Override
 	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		if(isVisible()) {
+		if (isVisible()) {
 			graphics.drawString(gui.getFontRenderer(), text.get(), xLocation, yLocation, color, false);
 		}
 	}

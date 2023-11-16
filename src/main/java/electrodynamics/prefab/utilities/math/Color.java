@@ -104,7 +104,7 @@ public class Color {
 	public float[] colorFloatArr() {
 		return colorFloatArr;
 	}
-	
+
 	public Color multiply(Color other) {
 		return new Color((this.r * other.r) / 255, (this.g * other.g) / 255, (this.b * other.b) / 255, (this.a * other.a) / 255);
 	}

@@ -29,15 +29,15 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 
 	private final Component statusGogglesOn = ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN));
 	private final Component statusGogglesOff = ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED));
-	
+
 	@Override
 	public void renderToScreen(NamedGuiOverlay overlay, GuiGraphics graphics, Window window, Minecraft minecraft, float partialTicks) {
-		
-		if(!Constants.RENDER_COMBAT_ARMOR_STATUS) {
+
+		if (!Constants.RENDER_COMBAT_ARMOR_STATUS) {
 			return;
 		}
 
-		List<ItemStack> armor = minecraft.player.inventory.armor;
+		List<ItemStack> armor = minecraft.player.getInventory().armor;
 
 		graphics.pose().pushPose();
 
@@ -67,7 +67,6 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 
 		boolean renderItem = false;
 
-		
 		if (ItemUtils.testItems(helmet.getItem(), ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get(), ElectrodynamicsItems.ITEM_COMBATHELMET.get())) {
 			renderItem = true;
 			Component mode;
@@ -79,7 +78,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 			graphics.drawString(minecraft.font, mode, 35, heightOffset - 30, 0);
 			graphics.drawString(minecraft.font, ChatFormatter.getChatDisplayShort(helmet.getOrCreateTag().getDouble(IItemElectric.JOULES_STORED), DisplayUnit.JOULES), 35, heightOffset - 20, -1, false);
 		}
-		
+
 		if (renderItem) {
 			RenderingUtils.renderItemScaled(graphics, helmet.getItem(), 10, heightOffset - 30, 1.5F);
 		}

@@ -67,7 +67,7 @@ public abstract class GenericTileWire extends GenericConnectTile implements ICon
 				public TransferPack receivePower(TransferPack transfer, boolean debug) {
 					ArrayList<BlockEntity> ignored = new ArrayList<>();
 					BlockEntity entity = level.getBlockEntity(new BlockPos(worldPosition).relative(dir));
-					if(entity == null) {
+					if (entity == null) {
 						return TransferPack.EMPTY;
 					}
 					boolean isReceiver = entity.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir.getOpposite()).map(ICapabilityElectrodynamic::isEnergyReceiver).orElse(false);
@@ -87,12 +87,12 @@ public abstract class GenericTileWire extends GenericConnectTile implements ICon
 				public TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
 					return getNetwork().getConnectedLoad(loadProfile, dir);
 				}
-				
+
 				@Override
 				public double getMaximumVoltage() {
 					return getNetwork().getActiveVoltage();
 				}
-				
+
 				@Override
 				public double getAmpacity() {
 					return getNetwork().getAmpacity();
@@ -112,7 +112,7 @@ public abstract class GenericTileWire extends GenericConnectTile implements ICon
 				public void setJoulesStored(double joules) {
 					getNetwork().setJoulesStored(joules);
 				}
-				
+
 			});
 		}
 	}

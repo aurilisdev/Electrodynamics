@@ -35,8 +35,8 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 	public List<ScreenComponentSlot> slots = new ArrayList<>();
 	private Set<ScreenComponentEditBox> editBoxes = new HashSet<>();
 	protected int playerInvOffset = 0;
-	
-	// Ability to manipulate labels 
+
+	// Ability to manipulate labels
 	public ScreenComponentSimpleLabel guiTitle;
 	public ScreenComponentSimpleLabel playerInvLabel;
 
@@ -52,7 +52,7 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 			slots.add(component);
 		}
 		addComponent(guiTitle = new ScreenComponentSimpleLabel(this.titleLabelX, this.titleLabelY, 10, 4210752, this.title));
-		addComponent(playerInvLabel = new ScreenComponentSimpleLabel(this.inventoryLabelX, this.inventoryLabelY, 10, 4210752, this.playerInventoryTitle)); 
+		addComponent(playerInvLabel = new ScreenComponentSimpleLabel(this.inventoryLabelX, this.inventoryLabelY, 10, 4210752, this.playerInventoryTitle));
 	}
 
 	protected ScreenComponentSlot createScreenSlot(Slot slot) {
@@ -92,7 +92,7 @@ public class GenericScreen<T extends GenericContainer> extends AbstractContainer
 
 	@Override
 	protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-		//super.renderLabels(graphics, mouseX, mouseY);
+		// super.renderLabels(graphics, mouseX, mouseY);
 		int guiWidth = (int) getGuiWidth();
 		int guiHeight = (int) getGuiHeight();
 		int xAxis = mouseX - guiWidth;

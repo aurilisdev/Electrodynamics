@@ -25,12 +25,12 @@ public class ComponentContainerProvider implements IComponent, MenuProvider {
 	public ComponentContainerProvider(SubtypeMachine machine, GenericTile holder) {
 		this("container." + machine.name(), holder);
 	}
-	
+
 	@Override
 	public void holder(GenericTile holder) {
 		this.holder = holder;
 	}
-	
+
 	@Override
 	public GenericTile getHolder() {
 		return holder;

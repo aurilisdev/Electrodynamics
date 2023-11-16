@@ -17,9 +17,9 @@ public class SlotGeneric extends Slot implements SlotTextureProvider {
 
 	private final ISlotTexture slotType;
 	private final ITexture iconType;
-	
+
 	private boolean active = true;
-	
+
 	@Nullable
 	public Color ioColor = null; // null means there is no color for this slot in IO mode meaning it isn't mapped to a face!
 
@@ -37,7 +37,7 @@ public class SlotGeneric extends Slot implements SlotTextureProvider {
 		this.ioColor = color;
 		return this;
 	}
-	
+
 	@Override
 	public boolean mayPlace(ItemStack stack) {
 		return stack != null && container.canPlaceItem(getSlotIndex(), stack);
@@ -52,12 +52,12 @@ public class SlotGeneric extends Slot implements SlotTextureProvider {
 	public ITexture getIconType() {
 		return iconType;
 	}
-	
+
 	@Override
 	public boolean isActive() {
 		return active;
 	}
-	
+
 	public void setActive(boolean active) {
 		this.active = active;
 	}

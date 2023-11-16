@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.cable.type.IConductor;
@@ -248,9 +247,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	public void tick() {
 		super.tick();
 		/*
-		 * if (conductorSet.size() > 10) { Electrodynamics.LOGGER.info("Beginning of tick"); Electrodynamics.LOGGER.info("ticks " +
-		 * numTicks); Electrodynamics.LOGGER.info("length " + conductorSet.size()); Electrodynamics.LOGGER.info("voltage " + voltage);
-		 * Electrodynamics.LOGGER.info("trans " + transferBuffer); Electrodynamics.LOGGER.info("max trans " + maxTransferBuffer);
+		 * if (conductorSet.size() > 10) { Electrodynamics.LOGGER.info("Beginning of tick"); Electrodynamics.LOGGER.info("ticks " + numTicks); Electrodynamics.LOGGER.info("length " + conductorSet.size()); Electrodynamics.LOGGER.info("voltage " + voltage); Electrodynamics.LOGGER.info("trans " + transferBuffer); Electrodynamics.LOGGER.info("max trans " + maxTransferBuffer);
 		 * 
 		 * }
 		 */

@@ -25,7 +25,7 @@ public class ScreenComponentInventoryIO extends ScreenComponentGeneric {
 	public static final int SQUARE_SIZE = 6;
 	public static final int COLORS_PER_ROW = 4;
 	public static final int DRAWING_AREA_SIZE = 24;
-	
+
 	public Color SLOT_GRAY = new Color(150, 150, 150, 255);
 
 	private final Direction side;
@@ -91,7 +91,7 @@ public class ScreenComponentInventoryIO extends ScreenComponentGeneric {
 
 	@Override
 	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		if(isVisible() && isHovered()) {
+		if (isVisible() && isHovered()) {
 			graphics.renderTooltip(gui.getFontRenderer(), getLabelFromDir(), xAxis, yAxis);
 		}
 	}

@@ -49,7 +49,7 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 			graphics.drawString(font, ElectroTextUtils.gui("machine.output", ChatFormatter.getChatDisplayShort(output.getWatts(), DisplayUnit.WATT)), inventoryLabelX + 60, inventoryLabelY - 27, 4210752, false);
 			graphics.drawString(font, ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(output.getVoltage(), DisplayUnit.VOLTAGE)), inventoryLabelX + 60, inventoryLabelY - 14, 4210752, false);
 		}));
-		
+
 		new InventoryIOWrapper(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE * 2 + 2, 75, 82, 8, 72);
 	}
 

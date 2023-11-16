@@ -438,7 +438,8 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 					continue;
 
-				} else if (overMaxVoltage) {
+				}
+				if (overMaxVoltage) {
 
 					if (isFlammable || relative.getBlock().getExplosionResistance() < Constants.BLOCK_VAPORIZATION_HARDNESS) {
 

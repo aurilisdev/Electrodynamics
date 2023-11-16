@@ -40,7 +40,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		addComponent(new ScreenComponentGuiTab(GuiInfoTabTextures.REGULAR, IconType.FLUID_BLUE, this::getFluidInformation, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 3));
 		addComponent(new ScreenComponentGuiTab(GuiInfoTabTextures.REGULAR, IconType.ENCHANTMENT, this::getEnchantmentInformation, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 2));
 		addComponent(new ScreenComponentElectricInfo(this::getElectricInformation, -AbstractScreenComponentInfo.SIZE + 1, 2));
-		
+
 		new InventoryIOWrapper(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75, 82 + 58, 8, 72 + 58);
 	}
 
@@ -214,7 +214,8 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		}
 		if (!quarry.hasCorners()) {
 			return "quarry.nocorners";
-		} else if (!quarry.isMotorComplexPowered()) {
+		}
+		if (!quarry.isMotorComplexPowered()) {
 			return "quarry.motorcomplexnotpowered";
 		} else if (!quarry.isPowered.get()) {
 			return "quarry.nopower";

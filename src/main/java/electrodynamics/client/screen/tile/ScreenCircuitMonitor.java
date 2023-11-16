@@ -157,7 +157,7 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 
 		// entered value
 		addEditBox(value = new ScreenComponentEditBox(13, 170, 134, 20, getFontRenderer()).setFilter(ScreenComponentEditBox.POSITIVE_DECIMAL).setMaxLength(30).setTextColor(-1).setTextColorUneditable(-1).setResponder(this::handleValue));
-		
+
 		playerInvLabel.setVisible(false);
 
 	}

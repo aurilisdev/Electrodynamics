@@ -228,7 +228,7 @@ public class RenderingUtils {
 		builder.vertex(matrix4f, minX, minY, maxZ).color(r, g, b, a).uv(uMin, vMax).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(light).normal(matrix3f, -1, 0, 0).endVertex();
 
 	}
-	
+
 	private static final Matrix4f ITEM_MATRIX = (new Matrix4f()).scaling(1.0F, -1.0F, 1.0F);
 
 	public static void renderItemScaled(GuiGraphics graphics, Item item, int x, int y, float scale) {

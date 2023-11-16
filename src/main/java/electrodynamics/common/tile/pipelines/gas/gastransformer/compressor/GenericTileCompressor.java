@@ -58,7 +58,7 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 		processor.dispenseGasCylinder();
 
 		Direction facing = getFacing();
-		
+
 		Direction direction = BlockEntityUtils.getRelativeSide(facing, Direction.EAST);// opposite of west is east
 		BlockPos face = getBlockPos().relative(direction.getOpposite(), 2);
 		BlockEntity faceTile = getLevel().getBlockEntity(face);

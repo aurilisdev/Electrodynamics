@@ -28,7 +28,7 @@ public class GenericTileValve extends GenericTile {
 		if (level.isClientSide) {
 			return;
 		}
-		
+
 		if (level.hasNeighborSignal(worldPosition)) {
 			isClosed = true;
 		} else {

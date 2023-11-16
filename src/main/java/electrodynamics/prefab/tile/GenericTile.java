@@ -273,7 +273,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 		}
 		return count;
 	}
-	
+
 	/**
 	 * NORTH is defined as the default direction
 	 * 
@@ -372,7 +372,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 				component.onLoad();
 			}
 		}
-		
+
 	}
 
 	public int getComparatorSignal() {
@@ -409,7 +409,7 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	public static int[] arr(int... values) {
 		return values;
 	}
-	
+
 	/**
 	 * This method will never have air as the newState unless something has gone horribly horribly wrong!
 	 * 
@@ -417,14 +417,14 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 	 * @param newState
 	 */
 	public void onBlockStateUpdate(BlockState oldState, BlockState newState) {
-		for(IComponent component : components) {
-			if(component != null) {
+		for (IComponent component : components) {
+			if (component != null) {
 				component.refreshIfUpdate(oldState, newState);
 			}
 		}
-		
-		for(IComponent component : processors) {
-			if(component != null) {
+
+		for (IComponent component : processors) {
+			if (component != null) {
 				component.refreshIfUpdate(oldState, newState);
 			}
 		}

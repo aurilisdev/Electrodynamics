@@ -188,7 +188,7 @@ public class GasTank implements IGasTank, IGasHandler {
 		if (action == GasAction.EXECUTE) {
 
 			GasStack newStack = getGas().copy();
-			
+
 			newStack.shrink(taken);
 
 			if (newStack.getAmount() == 0) {

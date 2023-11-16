@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
@@ -93,9 +94,9 @@ public class TileCircuitBreaker extends GenericTile {
 				isLocked = false;
 
 				if (accepted.getJoules() > 0) {
-					
+
 					return TransferPack.joulesVoltage(accepted.getJoules() / Constants.CIRCUITBREAKER_EFFICIENCY, accepted.getVoltage());
-					
+
 				}
 				return TransferPack.EMPTY;
 
@@ -108,7 +109,6 @@ public class TileCircuitBreaker extends GenericTile {
 			isLocked = false;
 
 			return TransferPack.joulesVoltage(accepted.getJoules() / Constants.CIRCUITBREAKER_EFFICIENCY, accepted.getVoltage());
-
 
 		}).orElse(TransferPack.EMPTY);
 	}
@@ -176,7 +176,7 @@ public class TileCircuitBreaker extends GenericTile {
 			return -1;
 		}
 		isLocked = true;
-		double minimumVoltage = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(cap -> cap.getMinimumVoltage()).orElse(-1.0);
+		double minimumVoltage = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(@NotNull ICapabilityElectrodynamic::getMinimumVoltage).orElse(-1.0);
 		isLocked = false;
 		return minimumVoltage;
 	}
@@ -191,7 +191,7 @@ public class TileCircuitBreaker extends GenericTile {
 			return -1;
 		}
 		isLocked = true;
-		double ampacity = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(cap -> cap.getAmpacity()).orElse(-1.0);
+		double ampacity = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(@NotNull ICapabilityElectrodynamic::getAmpacity).orElse(-1.0);
 		isLocked = false;
 		return ampacity;
 	}

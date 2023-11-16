@@ -74,5 +74,4 @@ public class TileChemicalCrystallizer extends GenericMaterialTile implements ITi
 		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive() ? 15 : 0;
 	}
 
-
 }

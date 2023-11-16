@@ -30,8 +30,7 @@ import net.minecraftforge.common.util.LazyOptional;
 /**
  * Extension of the PropertyGasTank making it usable as a ComponentGasHandler
  * 
- * This ComponentGasHandler has only one tank with programmable inputs and outputs where as ComponentGasHandlerMulti has distinct
- * input and output tanks
+ * This ComponentGasHandler has only one tank with programmable inputs and outputs where as ComponentGasHandlerMulti has distinct input and output tanks
  * 
  * @author skip999
  *

@@ -830,9 +830,9 @@ public class ElectrodynamicsVoxelShapeRegistry {
 		windmill = Shapes.join(windmill, Block.box(3, 2, 3, 13, 3, 13), BooleanOp.OR);
 		windmill = Shapes.join(windmill, Block.box(5, 3, 5, 11, 16, 11), BooleanOp.OR);
 		VoxelShapes.registerShape(SubtypeMachine.windmill, windmill, Direction.NORTH);
-		
+
 		/* WIREMILL */
-		
+
 		VoxelShape wiremill = Shapes.empty();
 		wiremill = Shapes.join(wiremill, Shapes.box(0, 0, 0, 1, 0.3125, 1), BooleanOp.OR);
 		wiremill = Shapes.join(wiremill, Shapes.box(0.0625, 0.3125, 0, 0.3125, 1, 1), BooleanOp.OR);

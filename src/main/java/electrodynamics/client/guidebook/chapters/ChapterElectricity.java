@@ -442,8 +442,7 @@ public class ChapterElectricity extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l19.circuitmonitor.1")).setSeparateStart().setIndentions(1));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 75, 150, 75, new ResourceLocation(References.ID, "textures/screen/guidebook/circuitmonitor.png")));
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 150, 150, 150, new ResourceLocation(References.ID, "textures/screen/guidebook/circuitmonitorgui.png")));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l19.circuitmonitor.2", ElectroTextUtils.gui("networkwattage").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkvoltage").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkampacity").withStyle(ChatFormatting.BOLD),
-				ElectroTextUtils.gui("networkminimumvoltage").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkresistance").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkload").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkwattage"))).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l19.circuitmonitor.2", ElectroTextUtils.gui("networkwattage").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkvoltage").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkampacity").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkminimumvoltage").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkresistance").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkload").withStyle(ChatFormatting.BOLD), ElectroTextUtils.gui("networkwattage"))).setSeparateStart().setIndentions(1));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l19.circuitmonitor.3")).setSeparateStart().setIndentions(1));
 
 		// Potentiometer

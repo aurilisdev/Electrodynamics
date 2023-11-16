@@ -71,7 +71,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 			output.update(worldPosition.relative(facing.getOpposite()));
 		}
 		if (electro.getJoulesStored() > 0 && output.valid()) {
-			
+
 			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput.get() * currentCapacityMultiplier.get()), electro.getVoltage()), false).getJoules());
 		}
 		if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
@@ -171,12 +171,12 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 					}
 				}
 			}
-			
+
 			currentCapacityMultiplier.set(capacityMultiplier);
 			currentVoltageMultiplier.set(voltageMultiplier);
 
 			receiveLimitLeft.set(powerOutput.get() * currentCapacityMultiplier.get());
-			
+
 			electro.maxJoules(maxJoules.get() * currentCapacityMultiplier.get());
 			electro.voltage(baseVoltage * currentVoltageMultiplier.get());
 		}

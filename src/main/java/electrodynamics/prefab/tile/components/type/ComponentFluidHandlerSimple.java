@@ -29,8 +29,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 /**
  * Extension of PropertyFluidTank implementing directional I/O and the Component system
  * 
- * This is a separate class because ComponentFluidHandlerMulti is does not have segregated input and output tanks. Instead it has
- * a single tank that is used for both functions.
+ * This is a separate class because ComponentFluidHandlerMulti is does not have segregated input and output tanks. Instead it has a single tank that is used for both functions.
  * 
  * This class also has no concept of a RecipeType tied to it since recipes have segregated inputs and outputs.
  * 

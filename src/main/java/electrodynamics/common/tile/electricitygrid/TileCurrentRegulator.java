@@ -1,6 +1,9 @@
 package electrodynamics.common.tile.electricitygrid;
 
+import org.jetbrains.annotations.NotNull;
+
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.prefab.tile.GenericTile;
@@ -16,12 +19,12 @@ import net.minecraft.world.level.block.state.BlockState;
 public class TileCurrentRegulator extends GenericTile {
 
 	private boolean isLocked = false;
-	
+
 	public TileCurrentRegulator(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_CURRENTREGULATOR.get(), worldPos, blockState);
 		addComponent(new ComponentElectrodynamic(this, true, true).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setOutputDirections(Direction.SOUTH).setInputDirections(Direction.NORTH).voltage(-1).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
 	}
-	
+
 	public TransferPack receivePower(TransferPack transfer, boolean debug) {
 
 		if (isLocked) {
@@ -41,27 +44,26 @@ public class TileCurrentRegulator extends GenericTile {
 			isLocked = true;
 
 			TransferPack accepted = cap.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * Constants.CURRENTREGULATOR_EFFICIENCY, transfer.getVoltage()), debug);
-			
+
 			isLocked = false;
-			
+
 			TransferPack adjusted = TransferPack.joulesVoltage(accepted.getJoules() / Constants.CURRENTREGULATOR_EFFICIENCY, accepted.getVoltage());
-			
+
 			double ampacityInTicks = cap.getAmpacity();
-			
-			if(ampacityInTicks < 0) {
+
+			if (ampacityInTicks < 0) {
 				return adjusted;
 			}
 
 			double currentInTicks = adjusted.getAmpsInTicks();
 
-			if(currentInTicks > ampacityInTicks) {
-				
-				adjusted = TransferPack.ampsVoltage(ampacityInTicks, adjusted.getVoltage());
-				
-			} 
-			
-			return adjusted;
+			if (currentInTicks > ampacityInTicks) {
 
+				adjusted = TransferPack.ampsVoltage(ampacityInTicks, adjusted.getVoltage());
+
+			}
+
+			return adjusted;
 
 		}).orElse(TransferPack.EMPTY);
 	}
@@ -91,27 +93,27 @@ public class TileCurrentRegulator extends GenericTile {
 			LoadProfile transformed = new LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.lastUsage().getVoltage()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage()));
 
 			isLocked = true;
-			
+
 			TransferPack returner = cap.getConnectedLoad(transformed, dir);
-			
+
 			isLocked = false;
-			
+
 			TransferPack adjusted = TransferPack.joulesVoltage(returner.getJoules() / Constants.CIRCUITBREAKER_EFFICIENCY, returner.getVoltage());
-			
+
 			double ampacityInTicks = cap.getAmpacity();
-			
-			if(ampacityInTicks < 0) {
+
+			if (ampacityInTicks < 0) {
 				return adjusted;
 			}
-			
+
 			double currentInTicks = adjusted.getAmpsInTicks();
-			
-			if(currentInTicks > ampacityInTicks) {
-				
+
+			if (currentInTicks > ampacityInTicks) {
+
 				adjusted = TransferPack.ampsVoltage(ampacityInTicks, adjusted.getVoltage());
-				
+
 			}
-			
+
 			return adjusted;
 		}).orElse(TransferPack.EMPTY);
 
@@ -130,7 +132,7 @@ public class TileCurrentRegulator extends GenericTile {
 			return -1;
 		}
 		isLocked = true;
-		double minimumVoltage = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(cap -> cap.getMinimumVoltage()).orElse(-1.0);
+		double minimumVoltage = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(@NotNull ICapabilityElectrodynamic::getMinimumVoltage).orElse(-1.0);
 		isLocked = false;
 		return minimumVoltage;
 	}
@@ -145,11 +147,9 @@ public class TileCurrentRegulator extends GenericTile {
 			return -1;
 		}
 		isLocked = true;
-		double ampacity = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(cap -> cap.getAmpacity()).orElse(-1.0);
+		double ampacity = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(@NotNull ICapabilityElectrodynamic::getAmpacity).orElse(-1.0);
 		isLocked = false;
 		return ampacity;
 	}
-	
-	
 
 }

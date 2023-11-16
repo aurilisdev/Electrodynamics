@@ -51,7 +51,7 @@ public class ServerEventHandler {
 		LIVING_HURT_HANDLERS.add(new HandlerCompositeArmor());
 		LIVING_HURT_HANDLERS.add(new HandlerHydraulicBoots());
 		LIVING_HURT_HANDLERS.add(new HandlerJetpackDamage());
-		
+
 		LIVING_KNOCKBACK_HANDLERS.add(new HandlerJetpackKnockbackImpulse());
 
 		EQUIPMENT_CHANGE_HANDLERS.add(new HandlerJetpackEquiped());
@@ -68,7 +68,7 @@ public class ServerEventHandler {
 	public static void handlerLivingHurt(LivingHurtEvent event) {
 		LIVING_HURT_HANDLERS.forEach(handler -> handler.handle(event));
 	}
-	
+
 	@SubscribeEvent
 	public static void handleLivingKnockback(LivingKnockBackEvent event) {
 		LIVING_KNOCKBACK_HANDLERS.forEach(handler -> handler.handle(event));

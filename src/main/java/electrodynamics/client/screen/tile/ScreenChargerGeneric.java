@@ -73,7 +73,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 			graphics.drawString(font, capable, inventoryLabelX, 43, 0, false);
 
 		}));
-		
+
 		new InventoryIOWrapper(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75, 82, 8, 72);
 	}
 

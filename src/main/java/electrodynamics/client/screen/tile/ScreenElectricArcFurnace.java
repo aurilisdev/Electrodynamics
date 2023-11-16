@@ -40,7 +40,7 @@ public class ScreenElectricArcFurnace extends GenericScreen<ContainerElectricArc
 			return 0;
 		}, 39, 36));
 		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
-		
+
 		new InventoryIOWrapper(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75, 82, 8, 72);
 	}
 
