@@ -129,11 +129,8 @@ public class ComponentElectrodynamic implements IComponent, ICapabilityElectrody
 
 			return LazyOptional.empty();
 
-		} else {
-
-			return sidedOptionals[side.ordinal()].cast();
-
 		}
+		return sidedOptionals[side.ordinal()].cast();
 
 	}
 

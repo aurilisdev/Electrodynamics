@@ -29,6 +29,7 @@ public class AtlasHolderElectrodynamicsCustom extends TextureAtlasHolder {
 		return INSTANCE.getSprite(loc);
 	}
 
+	@SuppressWarnings("unused")
 	private static ResourceLocation create(String name) {
 		return new ResourceLocation(References.ID, "custom/" + name);
 	}

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
 import electrodynamics.api.References;
 import electrodynamics.api.screen.ITexture;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
