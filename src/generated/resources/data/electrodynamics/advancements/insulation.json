@@ -1,0 +1,41 @@
+{
+  "parent": "electrodynamics:basicwiring",
+  "criteria": {
+    "HasInsulation": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "electrodynamics:insulation"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.electrodynamics.insulation.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "electrodynamics:wireinsulatedcopper"
+    },
+    "show_toast": true,
+    "title": {
+      "color": "gray",
+      "translate": "advancement.electrodynamics.insulatedwiring.title"
+    }
+  },
+  "requirements": [
+    [
+      "HasInsulation"
+    ]
+  ],
+  "rewards": {
+    "experience": 20
+  }
+}

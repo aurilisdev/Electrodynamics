@@ -1,7 +1,7 @@
 package electrodynamics.common.event.types.player.starttracking;
 
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketJetpackEquipedSound;
+import electrodynamics.common.packet.types.client.PacketJetpackEquipedSound;
 import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,7 +21,7 @@ public class HandlerJetpackSound extends AbstractPlayerStartTrackingHandler {
 			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
 			if (!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()))) {
 				ServerPlayer server = (ServerPlayer) event.getEntity();
-				NetworkHandler.CHANNEL.sendTo(new PacketJetpackEquipedSound(player.getUUID()), server.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT);
+				NetworkHandler.CHANNEL.sendTo(new PacketJetpackEquipedSound(player.getUUID()), server.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 			}
 		}
 	}

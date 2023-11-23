@@ -13,7 +13,7 @@ import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
-import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
@@ -79,7 +79,7 @@ public class ElectrodynamicsItems {
 		for (SubtypeWire subtype : SubtypeWire.values()) {
 			SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), supplier(() -> new BlockItemWire((BlockWire) ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(subtype).get(), new Item.Properties().tab(References.CORETAB)), subtype)));
 		}
-		for (SubtypePipe subtype : SubtypePipe.values()) {
+		for (SubtypeFluidPipe subtype : SubtypeFluidPipe.values()) {
 			SUBTYPEITEMREGISTER_MAPPINGS.put(subtype, ITEMS.register(subtype.tag(), supplier(() -> new BlockItemDescriptable(() -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(subtype).get(), new Item.Properties().tab(References.CORETAB)), subtype)));
 		}
 		registerSubtypeItem(SubtypeRawOre.values());
@@ -133,9 +133,9 @@ public class ElectrodynamicsItems {
 	public static final RegistryObject<Item> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate", supplier(() -> new Item(new Item.Properties().tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_CANISTERREINFORCED = ITEMS.register("canisterreinforced", supplier(() -> new ItemCanister(new Item.Properties().stacksTo(1).tab(References.CORETAB))));
 	public static final RegistryObject<Item> ITEM_TITANIUM_COIL = ITEMS.register("titaniumheatcoil", supplier(() -> new Item(new Item.Properties().tab(References.CORETAB))));
-	public static final RegistryObject<Item> COAL_COKE = ITEMS.register("coalcoke", supplier(() -> new Item(new Item.Properties().tab(References.CORETAB))));
-	public static final RegistryObject<Item> SLAG = ITEMS.register("slag", supplier(() -> new Item(new Item.Properties().tab(References.CORETAB))));
-	public static final RegistryObject<Item> GUIDEBOOK = ITEMS.register("guidebook", supplier(() -> new ItemGuidebook(new Item.Properties().tab(References.CORETAB))));
+	public static final RegistryObject<Item> ITEM_COAL_COKE = ITEMS.register("coalcoke", supplier(() -> new Item(new Item.Properties().tab(References.CORETAB))));
+	public static final RegistryObject<Item> ITEM_SLAG = ITEMS.register("slag", supplier(() -> new Item(new Item.Properties().tab(References.CORETAB))));
+	public static final RegistryObject<Item> ITEM_GUIDEBOOK = ITEMS.register("guidebook", supplier(() -> new ItemGuidebook(new Item.Properties().tab(References.CORETAB))));
 
 	public static final RegistryObject<Item> ITEM_COMPOSITEHELMET = ITEMS.register("compositearmorhelmet", supplier(() -> new ItemCompositeArmor(EquipmentSlot.HEAD)));
 	public static final RegistryObject<Item> ITEM_COMPOSITECHESTPLATE = ITEMS.register("compositearmorchestplate", supplier(() -> new ItemCompositeArmor(EquipmentSlot.CHEST)));

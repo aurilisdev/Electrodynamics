@@ -8,7 +8,7 @@ import org.apache.logging.log4j.util.TriConsumer;
 
 import electrodynamics.api.ISubtype;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.utilities.ItemUtils;
@@ -48,7 +48,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	// the only way to optimize this one further is to increase the tick delay.
 	// Currently, it's set to every 4 ticks
 	iteminput((holder, processor, upgrade) -> {
-		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
 
 		if (!inv.hasInputRoom()) {
 			return;
@@ -89,7 +89,7 @@ public enum SubtypeItemUpgrade implements ISubtype {
 	}, 1),
 	// I can't really optimize this one any more than it is
 	itemoutput((holder, processor, upgrade) -> {
-		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
 		if (!inv.hasItemsInOutput()) {
 			return;
 		}

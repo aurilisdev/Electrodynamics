@@ -3,7 +3,7 @@
 	"parent": "block/cube_all",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "electrodynamics:model/mineralwasher",
+		"0": "electrodynamics:block/model/mineralwasher",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"groups": [
@@ -35,8 +35,8 @@
 			"render_type": "minecraft:solid",
 			"parent": "block/cube_all",
 			"textures": {
-				"0": "electrodynamics:model/mineralwasher",
-				"particle": "electrodynamics:model/mineralwasher"
+				"0": "electrodynamics:block/model/mineralwasher",
+				"particle": "electrodynamics:block/model/mineralwasher"
 			},
 			"elements": [
 				{
@@ -414,8 +414,8 @@
 			"render_type": "minecraft:translucent",
 			"parent": "block/cube_all",
 			"textures": {
-				"0": "electrodynamics:model/mineralwasher",
-				"particle": "electrodynamics:model/mineralwasher"
+				"0": "electrodynamics:block/model/mineralwasher",
+				"particle": "electrodynamics:block/model/mineralwasher"
 			},
 			"elements": [
 				{

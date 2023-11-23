@@ -1,10 +1,12 @@
 package electrodynamics.client.render.tile;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import electrodynamics.common.tile.TileCoolantResavoir;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.common.tile.machines.quarry.TileCoolantResavoir;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
@@ -13,7 +15,6 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 
 public class RenderCoolantResavoir extends AbstractTileRenderer<TileCoolantResavoir> {
 
@@ -30,7 +31,7 @@ public class RenderCoolantResavoir extends AbstractTileRenderer<TileCoolantResav
 
 	@Override
 	public void render(TileCoolantResavoir entity, float tick, @NotNull PoseStack stack, @NotNull MultiBufferSource source, int light, int overlay) {
-		ComponentFluidHandlerSimple tank = entity.getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerSimple tank = entity.getComponent(IComponentType.FluidHandler);
 		if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
 			FluidStack fluid = tank.getFluid();
 			float yHeight = Math.max(Math.min((float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y), MIN_Y);

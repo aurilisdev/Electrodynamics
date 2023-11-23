@@ -1,21 +1,13 @@
 package electrodynamics.common.block;
 
-import java.util.HashSet;
-
+import electrodynamics.api.multiblock.Subnode;
+import electrodynamics.api.multiblock.parent.IMultiblockParentBlock;
+import electrodynamics.api.multiblock.parent.IMultiblockParentTile;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.multiblock.IMultiblockNode;
-import electrodynamics.common.multiblock.IMultiblockTileNode;
-import electrodynamics.common.multiblock.Subnode;
-import electrodynamics.common.tile.TileTransformer;
-import electrodynamics.common.tile.quarry.TileQuarry;
+import electrodynamics.common.tile.machines.quarry.TileQuarry;
 import electrodynamics.prefab.block.GenericMachineBlock;
-import electrodynamics.prefab.utilities.ElectricityUtils;
-import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -30,26 +22,36 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class BlockMachine extends GenericMachineBlock implements IMultiblockNode {
+public class BlockMachine extends GenericMachineBlock implements IMultiblockParentBlock {
 
 	public static final BooleanProperty ON = BlockStateProperties.LIT;
 	public static final IntegerProperty BATTERY_CHARGE = BlockStateProperties.AGE_7;
 
-	public static final HashSet<Subnode> advancedsolarpanelsubnodes = new HashSet<>();
-	public static final HashSet<Subnode> windmillsubnodes = new HashSet<>();
+	public static final VoxelShape[] STANDARD_CUBE = new VoxelShape[] { Shapes.block(), Shapes.block(), Shapes.block(), Shapes.block(), Shapes.block(), Shapes.block() };
+
+	public static final Subnode[] advancedsolarpanelsubnodes = new Subnode[9];
+	public static final Subnode[] windmillsubnodes = { new Subnode(new BlockPos(0, 1, 0), new VoxelShape[] { Shapes.block(), Shapes.block(), Shapes.or(Block.box(5, 0, 5, 11, 16, 11), Block.box(5, 10, 3, 11, 16, 13)), Shapes.or(Block.box(5, 0, 5, 11, 16, 11), Block.box(5, 10, 3, 11, 16, 13)), Shapes.or(Block.box(5, 0, 5, 11, 16, 11), Block.box(3, 10, 5, 13, 16, 11)), Shapes.or(Block.box(5, 0, 5, 11, 16, 11), Block.box(3, 10, 5, 13, 16, 11)) }) };
 	static {
+
+		int counter = 0;
+
 		int radius = 1;
+
 		for (int i = -radius; i <= radius; i++) {
+
 			for (int j = -radius; j <= radius; j++) {
 				if (i == 0 && j == 0) {
-					advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), Shapes.block()));
+					advancedsolarpanelsubnodes[counter] = new Subnode(new BlockPos(i, 1, j), Shapes.or(Block.box(6, 0, 6, 10, 16, 10), Block.box(5, 13, 5, 11, 16, 11), Block.box(0, 14, 0, 16, 16, 16)));
 				} else {
-					advancedsolarpanelsubnodes.add(new Subnode(new BlockPos(i, 1, j), Shapes.box(0, 13.0 / 16.0, 0, 1, 1, 1)));
+					advancedsolarpanelsubnodes[counter] = new Subnode(new BlockPos(i, 1, j), Block.box(0, 14, 0, 16, 16, 16));
 				}
+
+				counter++;
 			}
 		}
-		windmillsubnodes.add(new Subnode(new BlockPos(0, 1, 0), Shapes.block()));
+
 	}
 
 	public final SubtypeMachine machine;
@@ -64,26 +66,24 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 	}
 
 	@Override
-	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
-		if (machine == SubtypeMachine.downgradetransformer || machine == SubtypeMachine.upgradetransformer) {
-			TileTransformer tile = (TileTransformer) worldIn.getBlockEntity(pos);
-			if (tile != null && tile.lastTransfer.getJoules() > 0) {
-				ElectricityUtils.electrecuteEntity(entityIn, tile.lastTransfer);
-				tile.lastTransfer = TransferPack.joulesVoltage(0, 0);
-			}
+	public boolean propagatesSkylightDown(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+		if (machine.propogateLightDown) {
+			return true;
 		}
+		return super.propagatesSkylightDown(pState, pLevel, pPos);
 	}
 
 	@Override
 	public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-		return isValidMultiblockPlacement(state, worldIn, pos, machine == SubtypeMachine.advancedsolarpanel ? advancedsolarpanelsubnodes : machine == SubtypeMachine.windmill ? windmillsubnodes : new HashSet<Subnode>());
-	}
 
-	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (machine.showInItemGroup) {
-			items.add(new ItemStack(this));
+		if (machine == SubtypeMachine.advancedsolarpanel) {
+			return isValidMultiblockPlacement(state, worldIn, pos, advancedsolarpanelsubnodes);
 		}
+		if (machine == SubtypeMachine.windmill) {
+			return isValidMultiblockPlacement(state, worldIn, pos, windmillsubnodes);
+		}
+		return super.canSurvive(state, worldIn, pos);
+
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 	public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		super.setPlacedBy(worldIn, pos, state, placer, stack);
 		BlockEntity tile = worldIn.getBlockEntity(pos);
-		if (hasMultiBlock() && tile instanceof IMultiblockTileNode multi) {
+		if (hasMultiBlock() && tile instanceof IMultiblockParentTile multi) {
 			multi.onNodePlaced(worldIn, pos, state, placer, stack);
 		}
 	}
@@ -115,7 +115,7 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 		BlockEntity tile = worldIn.getBlockEntity(pos);
 		if (!(state.getBlock() == newState.getBlock() && state.getValue(FACING) != newState.getValue(FACING))) {
 
-			if (tile instanceof IMultiblockTileNode multi) {
+			if (tile instanceof IMultiblockParentTile multi) {
 				multi.onNodeReplaced(worldIn, pos, true);
 			}
 			if (tile instanceof TileQuarry quarry && quarry.hasCorners()) {
@@ -123,7 +123,7 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockNode
 			}
 		}
 		if (newState.isAir()) {
-			if (tile instanceof IMultiblockTileNode multi) {
+			if (tile instanceof IMultiblockParentTile multi) {
 				multi.onNodeReplaced(worldIn, pos, false);
 			}
 		}

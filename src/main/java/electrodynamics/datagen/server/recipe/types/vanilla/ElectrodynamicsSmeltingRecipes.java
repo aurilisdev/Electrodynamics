@@ -60,13 +60,13 @@ public class ElectrodynamicsSmeltingRecipes extends AbstractRecipeGenerator {
 
 		// Coal Coke
 
-		ElectrodynamicsCookingRecipe.smeltingRecipe(ElectrodynamicsItems.COAL_COKE.get(), 0.1F, 200)
+		ElectrodynamicsCookingRecipe.smeltingRecipe(ElectrodynamicsItems.ITEM_COAL_COKE.get(), 0.1F, 200)
 				//
 				.input(ItemTags.COALS)
 				//
 				.complete(References.ID, SMELTING_LOC + "coal_coke", consumer);
 
-		ElectrodynamicsCookingRecipe.blastingRecipe(ElectrodynamicsItems.COAL_COKE.get(), 0.1F, 100)
+		ElectrodynamicsCookingRecipe.blastingRecipe(ElectrodynamicsItems.ITEM_COAL_COKE.get(), 0.1F, 100)
 				//
 				.input(ItemTags.COALS)
 				//

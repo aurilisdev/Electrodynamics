@@ -5,11 +5,13 @@ import java.util.function.Consumer;
 import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.block.subtype.SubtypeWire.WireType;
+import electrodynamics.common.block.subtype.SubtypeWire.Conductor;
+import electrodynamics.common.block.subtype.SubtypeWire.InsulationMaterial;
+import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
@@ -403,7 +405,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(References.ID, "motor_stainlesssteel", consumer);
 
-		for (SubtypePipe pipe : SubtypePipe.values()) {
+		for (SubtypeFluidPipe pipe : SubtypeFluidPipe.values()) {
 			ElectrodynamicsShapedCraftingRecipe.start(PIPES[pipe.ordinal()], 6)
 					//
 					.addPattern("III")
@@ -795,8 +797,8 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		}
 
 		// Insulated Wires
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.INSULATED)) {
-			SubtypeWire uninsulated = SubtypeWire.getWireForType(WireType.UNINSULATED, wire.material);
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.INSULATED)) {
+			SubtypeWire uninsulated = SubtypeWire.getWire(wire.conductor, InsulationMaterial.BARE, WireClass.BARE);
 
 			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
 					//
@@ -809,8 +811,8 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		}
 
 		// Logistics Wires
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.LOGISTICAL)) {
-			SubtypeWire insulated = SubtypeWire.getWireForType(WireType.INSULATED, wire.material);
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.WOOL, WireClass.LOGISTICAL)) {
+			SubtypeWire insulated = SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.INSULATED);
 
 			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
 					//
@@ -823,9 +825,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		}
 
 		// Ceramic Insulated
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.CERAMIC)) {
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.CERAMIC, WireClass.CERAMIC)) {
 
-			SubtypeWire insulated = SubtypeWire.getWireForType(WireType.INSULATED, wire.material);
+			SubtypeWire insulated = SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.INSULATED);
 			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 1)
 					//
 					.addIngredient(WIRES[insulated.ordinal()])
@@ -837,9 +839,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		}
 
 		// Highly Insulated
-		for (SubtypeWire wire : SubtypeWire.getWiresForType(WireType.HIGHLY_INSULATED)) {
+		for (SubtypeWire wire : SubtypeWire.getWires(Conductor.values(), InsulationMaterial.THICK_WOOL, WireClass.THICK)) {
 
-			SubtypeWire insulated = SubtypeWire.getWireForType(WireType.INSULATED, wire.material);
+			SubtypeWire insulated = SubtypeWire.getWire(wire.conductor, InsulationMaterial.WOOL, WireClass.INSULATED);
 
 			ElectrodynamicsShapelessCraftingRecipe.start(WIRES[wire.ordinal()], 2)
 					//
@@ -1563,7 +1565,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE)
 				//
-				.addKey('P', PIPES[SubtypePipe.steel.ordinal()])
+				.addKey('P', PIPES[SubtypeFluidPipe.steel.ordinal()])
 				//
 				.addKey('E', MACHINES[SubtypeMachine.electricpump.ordinal()])
 				//
@@ -2047,7 +2049,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(References.ID, "electric_drill", consumer);
 
-		ElectrodynamicsShapelessCraftingRecipe.start(ElectrodynamicsItems.GUIDEBOOK.get(), 1)
+		ElectrodynamicsShapelessCraftingRecipe.start(ElectrodynamicsItems.ITEM_GUIDEBOOK.get(), 1)
 				//
 				.addIngredient(Items.BOOK)
 				//
@@ -2101,7 +2103,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.addKey('T', MACHINES[SubtypeMachine.tanksteel.ordinal()])
 				//
-				.addKey('P', PIPES[SubtypePipe.steel.ordinal()])
+				.addKey('P', PIPES[SubtypeFluidPipe.steel.ordinal()])
 				//
 				.complete(References.ID, "jetpack", consumer);
 

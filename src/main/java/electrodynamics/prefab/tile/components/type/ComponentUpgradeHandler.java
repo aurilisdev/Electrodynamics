@@ -5,12 +5,12 @@ import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.Component;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponent;
+import electrodynamics.prefab.tile.components.IComponentType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
-public class ComponentUpgradeHandler implements Component {
+public class ComponentUpgradeHandler implements IComponent {
 
 	public static final double BASIC_SPEED_BOOST = 1.5;
 	public static final double BASIC_SPEED_POWER = 1.5;
@@ -66,8 +66,8 @@ public class ComponentUpgradeHandler implements Component {
 	}
 	
 	@Override
-	public ComponentType getType() {
-		return ComponentType.UpgradeHandler;
+	public IComponentType getType() {
+		return IComponentType.UpgradeHandler;
 	}
 	
 	@Override
@@ -86,7 +86,7 @@ public class ComponentUpgradeHandler implements Component {
 			return;
 		}
 		
-		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
 		
 		for(ItemStack stack : inv.getUpgradeContents()) {
 			

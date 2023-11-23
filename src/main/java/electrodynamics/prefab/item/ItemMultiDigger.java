@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ItemMultiDigger extends DiggerItem {
+	
 	protected final TagKey<Block>[] sets;
 
 	public ItemMultiDigger(float damage, float speed, Tier tier, Properties prop, TagKey<Block>... sets) {

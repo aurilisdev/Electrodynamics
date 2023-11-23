@@ -5,16 +5,18 @@ import com.electronwill.nightconfig.core.conversion.InvalidValueException;
 import electrodynamics.prefab.properties.Property;
 
 public class TargetValue {
-	private Property<Double> val;
+	
+	private double val;
+
 	private double target;
 	private double acceleration;
 
-	public TargetValue(Property<Double> val) {
-		this.val = val;
+	public double getValue() {
+		return val;
 	}
 
-	public Property<Double> getValue() {
-		return val;
+	public void setValue(double val) {
+		this.val = val;
 	}
 
 	public TargetValue flush(double target, double acceleration) {
@@ -22,15 +24,15 @@ public class TargetValue {
 			throw new InvalidValueException("Negative acceleration is not supported");
 		}
 		this.target = target;
-		this.acceleration = val.get() < target && acceleration > 1 ? acceleration : 1 / acceleration;
+		this.acceleration = getValue() < target && acceleration > 1 ? acceleration : 1 / acceleration;
 		boolean aimsUp = this.acceleration > 1;
-		double valAcc = val.get() * this.acceleration;
-		val.set(aimsUp ? valAcc > target ? target : valAcc : valAcc < target ? target : valAcc);
+		double valAcc = getValue() * this.acceleration;
+		setValue(aimsUp ? valAcc > target ? target : valAcc : valAcc < target ? target : valAcc);
 		return this;
 	}
 
 	public TargetValue rangeParameterize(double starttarget, double endtarget, double currentTarget, double value, int ticks) {
-		val.set(value);
+		setValue(value);
 		target = currentTarget;
 		acceleration = Math.pow(endtarget / starttarget, 1.0 / ticks);
 		return this;
@@ -40,8 +42,24 @@ public class TargetValue {
 		return flush(target, acceleration);
 	}
 
-	public void set(double val) {
-		this.val.set(val);
+	public static class PropertyTargetValue extends TargetValue {
+
+		private final Property<Double> valueProperty;
+
+		public PropertyTargetValue(Property<Double> val) {
+			valueProperty = val;
+		}
+
+		@Override
+		public double getValue() {
+			return valueProperty.get();
+		}
+
+		@Override
+		public void setValue(double val) {
+			valueProperty.set(val);
+		}
+
 	}
 
 }

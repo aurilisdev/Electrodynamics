@@ -2,8 +2,8 @@ package electrodynamics.client.keys.event;
 
 import electrodynamics.client.keys.KeyBinds;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketModeSwitchServer;
-import electrodynamics.common.packet.types.PacketModeSwitchServer.Mode;
+import electrodynamics.common.packet.types.server.PacketModeSwitchServer;
+import electrodynamics.common.packet.types.server.PacketModeSwitchServer.Mode;
 import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.client.Minecraft;

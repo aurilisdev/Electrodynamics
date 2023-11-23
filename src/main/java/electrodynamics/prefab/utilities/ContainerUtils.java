@@ -50,8 +50,7 @@ public final class ContainerUtils {
 				Slot targetSlot = slots.get(idx);
 				if (targetSlot.container == playerInv == mergeIntoPlayer) {
 					ItemStack target = targetSlot.getItem();
-					if (ItemStack.isSame(sourceStack, target)) { // also checks target != null, because
-						// stack is never null
+					if (sourceStack.getItem() == target.getItem()) {
 						int targetMax = Math.min(targetSlot.getMaxStackSize(), target.getMaxStackSize());
 						int toTransfer = Math.min(sourceStack.getCount(), targetMax - target.getCount());
 						if (toTransfer > 0) {

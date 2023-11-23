@@ -3,10 +3,9 @@ package electrodynamics.common.network;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.network.pipe.IPipe;
+import electrodynamics.api.network.cable.type.IFluidPipe;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.CapabilityUtils;
@@ -48,7 +47,7 @@ public class FluidUtilities {
 	}
 
 	public static boolean isConductor(BlockEntity acceptor) {
-		return acceptor instanceof IPipe;
+		return acceptor instanceof IFluidPipe;
 	}
 
 	public static Integer receiveFluid(BlockEntity acceptor, Direction direction, FluidStack perReceiver, boolean debug) {
@@ -76,9 +75,9 @@ public class FluidUtilities {
 	}
 
 	public static void outputToPipe(GenericTile tile, FluidTank[] tanks, Direction... outputDirections) {
-		ComponentDirection componentDirection = tile.getComponent(ComponentType.Direction);
+		Direction facing = tile.getFacing();
 		for (Direction relative : outputDirections) {
-			Direction direction = BlockEntityUtils.getRelativeSide(componentDirection.getDirection(), relative.getOpposite());
+			Direction direction = BlockEntityUtils.getRelativeSide(facing, relative.getOpposite());
 			BlockPos face = tile.getBlockPos().relative(direction.getOpposite());
 			BlockEntity faceTile = tile.getLevel().getBlockEntity(face);
 			if (faceTile != null) {
@@ -97,31 +96,61 @@ public class FluidUtilities {
 	}
 
 	public static void drainItem(GenericTile tile, FluidTank[] tanks) {
-		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
-		List<ItemStack> buckets = inv.getInputBucketContents();
-		if (tanks.length >= buckets.size()) {
-			for (int i = 0; i < buckets.size(); i++) {
-				FluidTank tank = tanks[i];
-				ItemStack stack = buckets.get(i);
-				if (!stack.isEmpty() && !CapabilityUtils.isFluidItemNull()) {
-					FluidStack containerFluid = CapabilityUtils.simDrain(stack, Integer.MAX_VALUE);
-					if (tank.isFluidValid(containerFluid)) {
-						int amtDrained = tank.fill(containerFluid, FluidAction.SIMULATE);
-						FluidStack drained = new FluidStack(containerFluid.getFluid(), amtDrained);
-						CapabilityUtils.drain(stack, drained);
-						tank.fill(drained, FluidAction.EXECUTE);
-						if (stack.getItem() instanceof BucketItem) {
-							inv.setItem(inv.getInputBucketStartIndex() + i, new ItemStack(Items.BUCKET));
-						}
-					}
-				}
+		
+		ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
+		
+		int bucketIndex = inv.getInputBucketStartIndex();
+		
+		int size = inv.getInputBucketContents().size();
+		
+		if (tanks.length < size) {
+			
+			return;
+			
+		}
+		
+		int index;
+		
+		for (int i = 0; i < size; i++) {
+			
+			index = bucketIndex + i;
+			
+			FluidTank tank = tanks[i];
+			ItemStack stack = inv.getItem(index).copy();
+
+			if (stack.isEmpty() || CapabilityUtils.isFluidItemNull() || tank.getFluidAmount() >= tank.getCapacity()) {
+				continue;
+			}
+
+			FluidStack containerFluid = CapabilityUtils.drainFluidItem(stack, Integer.MAX_VALUE, FluidAction.SIMULATE);
+
+			if (!tank.isFluidValid(containerFluid)) {
+				continue;
+			}
+
+			int amtDrained = tank.fill(containerFluid, FluidAction.SIMULATE);
+			
+			FluidStack drained = new FluidStack(containerFluid.getFluid(), amtDrained);
+			
+			CapabilityUtils.drainFluidItem(stack, drained, FluidAction.EXECUTE);
+			
+			tank.fill(drained, FluidAction.EXECUTE);
+			
+			if (stack.getItem() instanceof BucketItem) {
+				
+				inv.setItem(index, new ItemStack(Items.BUCKET));
+				
+			} else {
+				
+				inv.setItem(index, stack);
+				
 			}
 		}
 
 	}
 
 	public static void fillItem(GenericTile tile, FluidTank[] tanks) {
-		ComponentInventory inv = tile.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
 		List<ItemStack> buckets = inv.getOutputBucketContents();
 		if (tanks.length >= buckets.size()) {
 			for (int i = 0; i < buckets.size(); i++) {
@@ -130,7 +159,7 @@ public class FluidUtilities {
 				boolean isBucket = stack.getItem() instanceof BucketItem;
 				if (!stack.isEmpty() && !CapabilityUtils.isFluidItemNull()) {
 					FluidStack fluid = tank.getFluid();
-					int amtFilled = CapabilityUtils.simFill(stack, fluid);
+					int amtFilled = CapabilityUtils.fillFluidItem(stack, fluid, FluidAction.SIMULATE);
 					FluidStack taken = new FluidStack(fluid.getFluid(), amtFilled);
 					boolean isWater = taken.getFluid().isSame(Fluids.WATER);
 					if (isBucket && amtFilled == 1000 && (isWater || taken.getFluid().isSame(Fluids.LAVA))) {
@@ -143,7 +172,7 @@ public class FluidUtilities {
 						}
 						inv.setItem(inv.getOutputBucketStartIndex() + i, filledBucket.copy());
 					} else if (!isBucket) {
-						CapabilityUtils.fill(stack, taken);
+						CapabilityUtils.fillFluidItem(stack, taken, FluidAction.EXECUTE);
 						tank.drain(taken, FluidAction.EXECUTE);
 					}
 

@@ -14,7 +14,8 @@ import electrodynamics.client.render.model.armor.types.ModelCombatArmor;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
@@ -35,13 +36,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 
@@ -108,9 +109,9 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 		ArmorItem armor = (ArmorItem) stack.getItem();
 		switch (armor.getSlot()) {
 		case CHEST:
-			return new RestrictedFluidHandlerItemStack(stack, stack, ItemJetpack.MAX_CAPACITY, ItemJetpack.staticGetWhitelistedFluids());
+			return new RestrictedFluidHandlerItemStack(stack, stack, ItemJetpack.MAX_CAPACITY).setValidator(ItemJetpack.getFuelPredicate());
 		case FEET:
-			return new RestrictedFluidHandlerItemStack(stack, stack, ItemHydraulicBoots.MAX_CAPACITY, ItemHydraulicBoots.staticGetWhitelistedFluids());
+			return new RestrictedFluidHandlerItemStack(stack, stack, ItemHydraulicBoots.MAX_CAPACITY).setValidator(ItemJetpack.getFuelPredicate());
 		default:
 			return super.initCapabilities(stack, nbt);
 		}
@@ -118,40 +119,41 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (tab == References.CORETAB) {
-			switch (getSlot()) {
-			case HEAD, LEGS:
-				ItemStack empty = new ItemStack(this);
-				IItemElectric.setEnergyStored(empty, 0);
-				items.add(empty);
 
-				ItemStack charged = new ItemStack(this);
-				IItemElectric.setEnergyStored(charged, properties.capacity);
-				items.add(charged);
-				break;
-			case CHEST:
-				items.add(new ItemStack(this));
-				if (!CapabilityUtils.isFluidItemNull()) {
-					ItemStack full = new ItemStack(this);
-					Fluid fluid = ItemJetpack.staticGetWhitelistedFluids().getSecond().get(0);
-					full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemJetpack.MAX_CAPACITY)));
-					CompoundTag tag = full.getOrCreateTag();
-					tag.putInt(NBTUtils.PLATES, 2);
-					items.add(full);
-				}
-				break;
-			case FEET:
-				items.add(new ItemStack(this));
-				if (!CapabilityUtils.isFluidItemNull()) {
-					ItemStack full = new ItemStack(this);
-					Fluid fluid = ItemHydraulicBoots.staticGetWhitelistedFluids().getSecond().get(0);
-					full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, ItemHydraulicBoots.MAX_CAPACITY)));
-					items.add(full);
-				}
-				break;
-			default:
-				break;
+		if (!allowedIn(tab)) {
+			return;
+		}
+
+		switch (getSlot()) {
+		case HEAD, LEGS:
+			ItemStack empty = new ItemStack(this);
+			IItemElectric.setEnergyStored(empty, 0);
+			items.add(empty);
+
+			ItemStack charged = new ItemStack(this);
+			IItemElectric.setEnergyStored(charged, properties.capacity);
+			items.add(charged);
+			break;
+		case CHEST:
+			items.add(new ItemStack(this));
+			if (!CapabilityUtils.isFluidItemNull()) {
+				ItemStack full = new ItemStack(this);
+				full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fill(new FluidStack(ElectrodynamicsFluids.fluidHydrogen, ItemJetpack.MAX_CAPACITY), FluidAction.EXECUTE));
+				CompoundTag tag = full.getOrCreateTag();
+				tag.putInt(NBTUtils.PLATES, 2);
+				items.add(full);
 			}
+			break;
+		case FEET:
+			items.add(new ItemStack(this));
+			if (!CapabilityUtils.isFluidItemNull()) {
+				ItemStack full = new ItemStack(this);
+				full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fill(new FluidStack(ElectrodynamicsFluids.fluidHydraulic, ItemHydraulicBoots.MAX_CAPACITY), FluidAction.EXECUTE));
+				items.add(full);
+			}
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -160,12 +162,12 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 		super.appendHoverText(stack, level, tooltip, flagin);
 		switch (((ArmorItem) stack.getItem()).getSlot()) {
 		case HEAD:
-			tooltip.add(TextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
-			tooltip.add(TextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
+			tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY));
+			tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
 			if (stack.hasTag() && stack.getTag().getBoolean(NBTUtils.ON)) {
-				tooltip.add(TextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
+				tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
 			} else {
-				tooltip.add(TextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(TextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
+				tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
 			}
 			IItemElectric.addBatteryTooltip(stack, level, tooltip);
 			break;
@@ -174,14 +176,13 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 			ItemCompositeArmor.staticAppendHoverText(stack, level, tooltip, flagin);
 			break;
 		case LEGS:
-			tooltip.add(TextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
-			tooltip.add(TextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
+			tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY));
+			tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
 			ItemServoLeggings.staticAppendTooltips(stack, level, tooltip, flagin);
-			IItemElectric.addBatteryTooltip(stack, level, tooltip);
 			break;
 		case FEET:
 			if (!CapabilityUtils.isFluidItemNull()) {
-				stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> tooltip.add(Component.literal(h.getFluidInTank(0).getAmount() + " / " + ItemHydraulicBoots.MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY)));
+				stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> tooltip.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(h.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(ItemHydraulicBoots.MAX_CAPACITY)).withStyle(ChatFormatting.GRAY)));
 			}
 			break;
 		default:
@@ -239,11 +240,6 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		return ARMOR_TEXTURE_LOCATION;
-	}
-
-	@Override
 	public boolean canBeDepleted() {
 		return false;
 	}
@@ -269,26 +265,36 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 	}
 
 	@Override
+	public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
+		return ItemJetpack.staticCanElytraFly(stack, entity);
+	}
+
+	@Override
+	public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
+		return ItemJetpack.staticElytraFlightTick(stack, entity, flightTicks);
+	}
+
+	@Override
 	public Item getDefaultStorageBattery() {
-		return switch(getSlot()) {
+		return switch (getSlot()) {
 		case HEAD, LEGS -> ElectrodynamicsItems.ITEM_BATTERY.get();
 		default -> Items.AIR;
 		};
 	}
-	
+
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-		
-		if(getSlot() == EquipmentSlot.CHEST || getSlot() == EquipmentSlot.FEET) {
+
+		if (getSlot() == EquipmentSlot.CHEST || getSlot() == EquipmentSlot.FEET) {
 			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
 		}
-		
-		if(!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+
+		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
 			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
 		}
-		
+
 		return true;
-		
+
 	}
 
 }

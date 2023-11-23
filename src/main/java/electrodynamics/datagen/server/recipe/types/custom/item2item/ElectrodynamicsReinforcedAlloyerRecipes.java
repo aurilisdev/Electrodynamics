@@ -41,7 +41,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.DUST_SALTPETER, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.5))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.5))
 				//
 				.complete(consumer);
 
@@ -51,7 +51,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 				//
 				.addItemTagInput(Tags.Items.INGOTS_COPPER, 4)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.5))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.5))
 				//
 				.complete(consumer);
 
@@ -69,7 +69,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_MOLYBDENUM, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 1))
 				//
 				.complete(consumer);
 
@@ -79,11 +79,11 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 				//
 				.addItemTagInput(Tags.Items.INGOTS_GOLD, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.75))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.75))
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.0F, 50, 50.0, "slag")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.0F, 50, 50.0, "slag")
 				//
 				.addItemTagInput(Tags.Items.INGOTS, 1)
 				//
@@ -97,7 +97,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_STEEL, 3)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.75))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.75))
 				//
 				.complete(consumer);
 
@@ -107,7 +107,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.COAL_COKE, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.5))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.5))
 				//
 				.complete(consumer);
 
@@ -117,7 +117,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 				//
 				.addItemStackInput(new ItemStack(Items.ENDER_EYE, 4))
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.9))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.9))
 				//
 				.complete(consumer);
 
@@ -127,7 +127,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 				//
 				.addItemTagInput(Tags.Items.INGOTS_NETHERITE, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.9))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.9))
 				//
 				.complete(consumer);
 
@@ -137,7 +137,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.COAL_COKE, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 1))
 				//
 				.complete(consumer);
 
@@ -147,7 +147,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_VANADIUM, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.SLAG.get()), 0.75))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.75))
 				//
 				.complete(consumer);
 

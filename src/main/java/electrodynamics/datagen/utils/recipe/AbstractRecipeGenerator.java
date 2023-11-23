@@ -6,7 +6,7 @@ import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
-import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
@@ -60,7 +60,7 @@ public abstract class AbstractRecipeGenerator {
 		MACHINES = ElectrodynamicsItems.getAllItemForSubtype(SubtypeMachine.values());
 		ORES = ElectrodynamicsItems.getAllItemForSubtype(SubtypeOre.values());
 		DEEPSLATE_ORES = ElectrodynamicsItems.getAllItemForSubtype(SubtypeOreDeepslate.values());
-		PIPES = ElectrodynamicsItems.getAllItemForSubtype(SubtypePipe.values());
+		PIPES = ElectrodynamicsItems.getAllItemForSubtype(SubtypeFluidPipe.values());
 		RAW_ORE_BLOCKS = ElectrodynamicsItems.getAllItemForSubtype(SubtypeRawOreBlock.values());
 		STORAGE_BLOCKS = ElectrodynamicsItems.getAllItemForSubtype(SubtypeResourceBlock.values());
 		WIRES = ElectrodynamicsItems.getAllItemForSubtype(SubtypeWire.values());

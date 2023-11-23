@@ -2,11 +2,12 @@ package electrodynamics.prefab.tile.components.type;
 
 import electrodynamics.api.capability.types.itemhandler.IndexedSidedInvWrapper;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
+import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.Component;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponent;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -15,43 +16,43 @@ import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.stream.Stream;
 
-public class ComponentInventory implements Component, WorldlyContainer {
+public class ComponentInventory implements IComponent, WorldlyContainer {
+	protected static final int[] SLOTS_EMPTY = new int[] {};
+	public static final String SAVE_KEY = "itemproperty";
+
 	protected GenericTile holder = null;
 
-	@Override
-	public void holder(GenericTile holder) {
-		this.holder = holder;
-	}
+	private Property<NonNullList<ItemStack>> items;
 
-	protected static final int[] SLOTS_EMPTY = new int[] {};
-	protected Property<NonNullList<ItemStack>> items;
 	protected TriPredicate<Integer, ItemStack, ComponentInventory> itemValidTest = (x, y, i) -> true;
-	protected HashSet<Player> viewing = new HashSet<>();
-	protected EnumMap<Direction, ArrayList<Integer>> directionMappings = new EnumMap<>(Direction.class);
-	protected EnumMap<Direction, ArrayList<Integer>> relativeDirectionMappings = new EnumMap<>(Direction.class);
-	protected int inventorySize;
-	protected Function<Direction, Collection<Integer>> getSlotsFunction;
-	protected LazyOptional<IItemHandlerModifiable>[] sideWrappers = IndexedSidedInvWrapper.create(this, Direction.values());
 
-	public static final String SAVE_KEY = "itemproperty";
+	protected HashSet<Player> viewing = new HashSet<>();
+
+	public HashSet<Integer>[] relativeDirectionToSlotsMap = new HashSet[6]; // Down Up North South West East
+
+	protected int inventorySize;
+
+	protected Function<Direction, Collection<Integer>> getSlotsFunction;
+
+	private final LazyOptional<IItemHandlerModifiable>[] sidedOptionals = IndexedSidedInvWrapper.create(this, Direction.values());
+
+	private int[][] slotsForFace = new int[6][]; // Down Up North South West East
 
 	/*
 	 * IMPORTANT DEFINITIONS:
 	 * 
-	 * SLOT ORDER: 1. Item Input Slots 2. Item Output Slot 3. Item Biproduct Slots
-	 * 4. Bucket Input Slots 5. Bucket Output Slots 6. Upgrade Slots
+	 * SLOT ORDER: 1. Item Input Slots 2. Item Output Slot 3. Item Biproduct Slots 4. Bucket Input Slots 5. Bucket Output Slots 6. Upgrade Slots
 	 * 
 	 */
 
@@ -61,6 +62,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	private int biproducts = 0;
 	private int bucketInputs = 0;
 	private int bucketOutputs = 0;
+	private int gasInputs = 0;
+	private int gasOutputs = 0;
 
 	private int inputsPerProc = 0;
 	private int outputsPerProc = 0;
@@ -77,9 +80,13 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	public ComponentInventory(GenericTile holder) {
 		this(holder, InventoryBuilder.EMPTY);
 	}
-	
+
 	public ComponentInventory(GenericTile holder, InventoryBuilder builder) {
 		holder(holder);
+
+		if (!holder.getBlockState().hasProperty(GenericEntityBlock.FACING)) {
+			throw new UnsupportedOperationException("The tile " + holder + " must have the FACING direction property!");
+		}
 
 		if (builder.builderSize > 0) {
 			inventorySize = builder.builderSize;
@@ -91,8 +98,10 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			biproducts = builder.builderBiproducts;
 			bucketInputs = builder.builderBucketInputs;
 			bucketOutputs = builder.builderBucketOutputs;
+			gasInputs = builder.builderGasInputs;
+			gasOutputs = builder.builderGasOutputs;
 
-			inventorySize = inputs + outputs + upgrades + biproducts + bucketInputs + bucketOutputs + upgrades;
+			inventorySize = inputs + outputs + upgrades + biproducts + bucketInputs + bucketOutputs + gasInputs + gasOutputs + upgrades;
 
 			inputsPerProc = builder.builderInputsPerProc;
 			outputsPerProc = builder.builderOutputsPerProc;
@@ -102,6 +111,16 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 		items = holder.property(new Property<>(PropertyType.InventoryItems, "itemproperty", NonNullList.withSize(getContainerSize(), ItemStack.EMPTY)));
 
+	}
+
+	@Override
+	public void holder(GenericTile holder) {
+		this.holder = holder;
+	}
+
+	@Override
+	public GenericTile getHolder() {
+		return holder;
 	}
 
 	public ComponentInventory onChanged(BiConsumer<ComponentInventory, Integer> onChanged) {
@@ -114,43 +133,26 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return this;
 	}
 
-	public ComponentInventory faceSlots(Direction face, Integer... slot) {
-		if (!directionMappings.containsKey(face)) {
-			directionMappings.put(face, new ArrayList<>());
+	public ComponentInventory setSlotsByDirection(Direction face, Integer... slot) {
+		if (relativeDirectionToSlotsMap[face.ordinal()] == null) {
+			relativeDirectionToSlotsMap[face.ordinal()] = new HashSet<>();
 		}
 		for (Integer sl : slot) {
-			directionMappings.get(face).add(sl);
+			relativeDirectionToSlotsMap[face.ordinal()].add(sl);
 		}
 		return this;
 	}
 
-	public ComponentInventory relativeFaceSlots(Direction face, Integer... slot) {
-		if (!relativeDirectionMappings.containsKey(face)) {
-			relativeDirectionMappings.put(face, new ArrayList<>());
-		}
-		for (Integer sl : slot) {
-			relativeDirectionMappings.get(face).add(sl);
-		}
-		return this;
-	}
-
-	public ComponentInventory slotFaces(Integer slot, Direction... faces) {
+	public ComponentInventory setDirectionsBySlot(Integer slot, Direction... faces) {
 		for (Direction face : faces) {
-			faceSlots(face, slot);
+			setSlotsByDirection(face, slot);
 		}
 		return this;
 	}
 
-	public ComponentInventory relativeSlotFaces(Integer slot, Direction... faces) {
-		for (Direction face : faces) {
-			relativeFaceSlots(face, slot);
-		}
-		return this;
-	}
-
-	public ComponentInventory universalSlots(Integer... slots) {
+	public ComponentInventory setSlotsForAllDirections(Integer... slots) {
 		for (Direction faceDirection : Direction.values()) {
-			faceSlots(faceDirection, slots);
+			setSlotsByDirection(faceDirection, slots);
 		}
 		return this;
 	}
@@ -159,15 +161,15 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		ComponentInventory inv = this;
 
 		for (int i : getInputSlots()) {
-			inv = inv.relativeFaceSlots(Direction.EAST, i).relativeFaceSlots(Direction.UP, i);
+			inv = inv.setSlotsByDirection(Direction.EAST, i).setSlotsByDirection(Direction.UP, i);
 		}
 
 		for (int i : getOutputSlots()) {
-			inv = inv.relativeFaceSlots(Direction.WEST, i).relativeFaceSlots(Direction.DOWN, i);
+			inv = inv.setSlotsByDirection(Direction.WEST, i).setSlotsByDirection(Direction.DOWN, i);
 		}
 
 		for (int i : getBiproductSlots()) {
-			inv = inv.relativeFaceSlots(Direction.WEST, i).relativeFaceSlots(Direction.DOWN, i);
+			inv = inv.setSlotsByDirection(Direction.WEST, i).setSlotsByDirection(Direction.DOWN, i);
 		}
 
 		return inv;
@@ -190,13 +192,63 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, Direction side) {
-		return (side == null || directionMappings.containsKey(side) || holder.hasComponent(ComponentType.Direction) && relativeDirectionMappings.containsKey(BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))) && capability == ForgeCapabilities.ITEM_HANDLER;
+	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
+
+		if (side == null || capability != ForgeCapabilities.ITEM_HANDLER) {
+			return LazyOptional.empty();
+		}
+
+		return sidedOptionals[side.ordinal()].cast();
+
 	}
 
 	@Override
-	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		return side != null && hasCapability(capability, side) ? (LazyOptional<T>) sideWrappers[side.ordinal()] : LazyOptional.empty();
+	public void refresh() {
+
+		defineOptionals(holder.getFacing());
+
+	}
+
+	@Override
+	public void refreshIfUpdate(BlockState oldState, BlockState newState) {
+		if (oldState.hasProperty(GenericEntityBlock.FACING) && newState.hasProperty(GenericEntityBlock.FACING) && oldState.getValue(GenericEntityBlock.FACING) != newState.getValue(GenericEntityBlock.FACING)) {
+			defineOptionals(newState.getValue(GenericEntityBlock.FACING));
+		}
+	}
+
+	private void defineOptionals(Direction facing) {
+
+		slotsForFace = new int[6][];
+
+		Direction relative;
+
+		for (Direction dir : Direction.values()) {
+
+			relative = BlockEntityUtils.getRelativeSide(facing, dir);
+
+			HashSet<Integer> slots = relativeDirectionToSlotsMap[dir.ordinal()];
+
+			if (slots == null) {
+
+				slotsForFace[relative.ordinal()] = SLOTS_EMPTY;
+
+			} else {
+
+				int[] arr = new int[slots.size()];
+
+				int i = 0;
+
+				for (Integer integer : slots) {
+					arr[i] = integer;
+					i++;
+				}
+
+				slotsForFace[relative.ordinal()] = arr;
+
+			}
+
+		}
+
 	}
 
 	@Override
@@ -221,11 +273,25 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public ItemStack removeItem(int index, int count) {
-		ItemStack stack = ContainerHelper.removeItem(items.get(), index, count);
-		if (!stack.isEmpty()) {
-			setChanged(index);
+
+		NonNullList<ItemStack> list = items.get();
+
+		if (index < 0 || index >= list.size() || count <= 0 || list.get(index).isEmpty()) {
+			return ItemStack.EMPTY;
 		}
-		return stack;
+
+		ItemStack indexItem = list.get(index);
+		ItemStack taken = indexItem.split(count);
+
+		list.set(index, indexItem);
+
+		items.set(list);
+
+		items.forceDirty();
+
+		setChanged(index);
+
+		return taken;
 	}
 
 	@Override
@@ -235,10 +301,22 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	@Override
 	public void setItem(int index, ItemStack stack) {
+
+		NonNullList<ItemStack> list = items.get();
+		if (index < 0 || index >= list.size() || ItemStack.tagMatches(list.get(index), stack)) {
+			return;
+		}
+
 		if (stack.getCount() > getMaxStackSize()) {
 			stack.setCount(getMaxStackSize());
 		}
-		items.get().set(index, stack);
+
+		list.set(index, stack);
+
+		items.set(list);
+
+		items.forceDirty();
+
 		setChanged(index);
 	}
 
@@ -258,19 +336,12 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		if (getSlotsFunction != null) {
 			return getSlotsFunction.apply(side).stream().mapToInt(i -> i).toArray();
 		}
-		if (holder.hasComponent(ComponentType.Direction)) {
-			Stream<Integer> st = directionMappings.containsKey(side) ? directionMappings.get(side).stream() : null;
-			Direction relativeDirection = BlockEntityUtils.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side);
-			Stream<Integer> stRel = relativeDirectionMappings.containsKey(relativeDirection) ? relativeDirectionMappings.get(relativeDirection).stream() : null;
-			return ArrayUtils.addAll(st == null ? new int[0] : st.mapToInt(i -> i).toArray(), stRel == null ? new int[0] : stRel.mapToInt(i -> i).toArray());
 
-		}
-		return directionMappings.get(side) == null ? SLOTS_EMPTY : directionMappings.get(side).stream().mapToInt(i -> i).toArray();
+		return side == null ? SLOTS_EMPTY : slotsForFace[side.ordinal()];
 	}
 
 	@Override
 	public boolean canPlaceItem(int index, ItemStack stack) {
-		// Electrodynamics.LOGGER.info(itemValidTest.test(index, stack, this));
 		return itemValidTest.test(index, stack, this);
 	}
 
@@ -301,8 +372,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	@Override
-	public ComponentType getType() {
-		return ComponentType.Inventory;
+	public IComponentType getType() {
+		return IComponentType.Inventory;
 	}
 
 	@Override
@@ -317,7 +388,6 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	public void setChanged(int slot) {
-		items.forceDirty();
 		if (onChanged != null) {
 			onChanged.accept(this, slot);
 		}
@@ -356,6 +426,14 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return bucketOutputs;
 	}
 
+	public int gasInputs() {
+		return gasInputs;
+	}
+
+	public int gasOutputs() {
+		return gasOutputs;
+	}
+
 	/*
 	 * Utility methods so you don't have to think as much
 	 */
@@ -380,8 +458,16 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return getInputBucketStartIndex() + bucketInputs;
 	}
 
-	public int getUpgradeSlotStartIndex() {
+	public int getInputGasStartIndex() {
 		return getOutputBucketStartIndex() + bucketOutputs;
+	}
+
+	public int getOutputGasStartIndex() {
+		return getInputGasStartIndex() + gasInputs;
+	}
+
+	public int getUpgradeSlotStartIndex() {
+		return getOutputGasStartIndex() + gasOutputs;
 	}
 
 	public List<ItemStack> getInputContents() {
@@ -404,6 +490,14 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		return items.get().subList(getOutputBucketStartIndex(), getUpgradeSlotStartIndex());
 	}
 
+	public List<ItemStack> getInputGasContents() {
+		return items.get().subList(getInputGasStartIndex(), getOutputGasStartIndex());
+	}
+
+	public List<ItemStack> getOutputGasContents() {
+		return items.get().subList(getOutputGasStartIndex(), getUpgradeSlotStartIndex());
+	}
+
 	public List<ItemStack> getUpgradeContents() {
 		return items.get().subList(getUpgradeSlotStartIndex(), items.get().size());
 	}
@@ -420,7 +514,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 	// processor number is indexed at zero
 	public List<ItemStack> getBiprodsForProcessor(int processor) {
-		return getInputContents().subList(biprodsPerProc * processor, biprodsPerProc * (processor + 1));
+		return getItemBiContents().subList(biprodsPerProc * processor, biprodsPerProc * (processor + 1));
 	}
 
 	public List<Integer> getInputSlots() {
@@ -526,7 +620,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 	}
 
 	public static class InventoryBuilder {
-		
+
 		private static final InventoryBuilder EMPTY = new InventoryBuilder();
 
 		private int builderSize = 0;
@@ -537,6 +631,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		private int builderBucketInputs = 0;
 		private int builderBucketOutputs = 0;
 		private int builderUpgrades = 0;
+		private int builderGasInputs = 0;
+		private int builderGasOutputs = 0;
 
 		private int builderInputsPerProc = 0;
 		private int builderOutputsPerProc = 0;
@@ -571,6 +667,16 @@ public class ComponentInventory implements Component, WorldlyContainer {
 			return this;
 		}
 
+		public InventoryBuilder gasInputs(int gasInputs) {
+			this.builderGasInputs = gasInputs;
+			return this;
+		}
+
+		public InventoryBuilder gasOutputs(int gasOutputs) {
+			this.builderGasOutputs = gasOutputs;
+			return this;
+		}
+
 		public InventoryBuilder upgrades(int upgrades) {
 			this.builderUpgrades = upgrades;
 			return this;
@@ -579,8 +685,8 @@ public class ComponentInventory implements Component, WorldlyContainer {
 		/**
 		 * Specialized method for machines that use ComponentProcessors. It removed the need to individually set input, output, and biproduct slots.
 		 * 
-		 * @param procCount How many ComponentProcessors the machine has
-		 * @param inputsPerProc How many inputs are assigned to a processor
+		 * @param procCount      How many ComponentProcessors the machine has
+		 * @param inputsPerProc  How many inputs are assigned to a processor
 		 * @param outputsPerProc How many outputs are assigned to a processor
 		 * @param biprodsPerProc how many biproducts are assigned to a processor
 		 * @return The mutated inventory builder
@@ -600,6 +706,7 @@ public class ComponentInventory implements Component, WorldlyContainer {
 
 		/**
 		 * This method should not be used in tandem with other individual mutator methods and is designed for inventories that have no specified slot types
+		 * 
 		 * @param size The desired size of the inventory
 		 * @return The mutated builder
 		 */

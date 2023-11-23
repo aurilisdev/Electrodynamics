@@ -1,17 +1,18 @@
 package electrodynamics.client.render.tile;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.generators.TileAdvancedSolarPanel;
+import electrodynamics.common.tile.electricitygrid.generators.TileAdvancedSolarPanel;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
-import org.jetbrains.annotations.NotNull;
 
 public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedSolarPanel> {
 
@@ -20,17 +21,25 @@ public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedS
 	}
 
 	@Override
-	public void render(TileAdvancedSolarPanel tileEntityIn, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(TileAdvancedSolarPanel solarPanel, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+
 		matrixStackIn.translate(0.5, 2, 0.5);
+
 		matrixStackIn.mulPose(new Quaternion(new Vector3f(0, 1, 0), 90, true));
-		long time = tileEntityIn.getLevel().getLevelData().getDayTime();
+
+		long time = solarPanel.getLevel().getLevelData().getDayTime();
+
 		if (time < 13000 || time > 23000) {
-			tileEntityIn.currentRotation.set(tileEntityIn.currentRotation.getValue().get() + (time / 24000.0 * Math.PI * 2 - Math.PI / 2.0 - tileEntityIn.currentRotation.getValue().get()) / 40.0);
+			solarPanel.currentRotation.setValue(solarPanel.currentRotation.getValue() + (time / 24000.0 * Math.PI * 2 - Math.PI / 2.0 - solarPanel.currentRotation.getValue()) / 40.0);
 		}
-		matrixStackIn.mulPose(new Quaternion(new Vector3f(1, 0, 0), (float) -tileEntityIn.currentRotation.getValue().get(), false));
+
+		matrixStackIn.mulPose(new Quaternion(new Vector3f(1, 0, 0), (float) -solarPanel.currentRotation.getValue(), false));
+
 		matrixStackIn.scale(2, 2, 2);
+
 		BakedModel ibakedmodel = getModel(ClientRegister.MODEL_ADVSOLARTOP);
-		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+
+		RenderingUtils.renderModel(ibakedmodel, solarPanel, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 	}
 
 }

@@ -18,8 +18,14 @@ public class ItemUtils {
 	 * @param itemB
 	 * @return boolean if the items are equal or not
 	 */
-	public static boolean testItems(Item itemA, Item itemB) {
-		return ItemStack.isSame(new ItemStack(itemA), new ItemStack(itemB));
+	public static boolean testItems(Item comparator, Item... itemsToCompare) {
+		ItemStack stack = new ItemStack(comparator);
+		for (Item item : itemsToCompare) {
+			if (stack.getItem() == item) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

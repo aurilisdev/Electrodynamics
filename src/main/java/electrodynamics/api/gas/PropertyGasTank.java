@@ -4,7 +4,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Predicate;
 
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketSendUpdatePropertiesServer;
+import electrodynamics.common.packet.types.server.PacketSendUpdatePropertiesServer;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
@@ -159,7 +159,7 @@ public class PropertyGasTank extends GasTank {
 	public void updateServer() {
 
 		if (holder != null) {
-			NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(gasProperty.getPropertyManager().getProperties().indexOf(gasProperty), gasProperty, holder.getBlockPos()));
+			//NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(gasProperty.getPropertyManager().getProperties().indexOf(gasProperty), gasProperty, holder.getBlockPos()));
 		}
 
 	}

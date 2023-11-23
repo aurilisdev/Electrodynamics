@@ -9,7 +9,8 @@ import electrodynamics.datagen.client.ElectrodynamicsLangKeyProvider.Locale;
 import electrodynamics.datagen.client.ElectrodynamicsSoundProvider;
 import electrodynamics.datagen.server.CoalGeneratorFuelSourceProvider;
 import electrodynamics.datagen.server.CombustionChamberFuelSourceProvider;
-import electrodynamics.datagen.server.ElectrodynamicsBiomeFeaturesProvider;
+import electrodynamics.datagen.server.ElectrodynamicsAdvancementProvider;
+import electrodynamics.datagen.server.ElectrodynamicsBiomeModifierProvider;
 import electrodynamics.datagen.server.ElectrodynamicsBlockTagsProvider;
 import electrodynamics.datagen.server.ElectrodynamicsFluidTagsProvider;
 import electrodynamics.datagen.server.ElectrodynamicsGasTagsProvider;
@@ -37,10 +38,11 @@ public class DataGenerators {
 			generator.addProvider(true, new ElectrodynamicsGasTagsProvider(generator, event.getExistingFileHelper()));
 			generator.addProvider(true, new ElectrodynamicsLootTablesProvider(generator));
 			generator.addProvider(true, new ElectrodynamicsRecipeProvider(generator));
-			generator.addProvider(true, new ElectrodynamicsBiomeFeaturesProvider(generator));
+			generator.addProvider(true, new ElectrodynamicsBiomeModifierProvider(generator, event.getExistingFileHelper()));
 			generator.addProvider(true, new CombustionChamberFuelSourceProvider(generator));
 			generator.addProvider(true, new CoalGeneratorFuelSourceProvider(generator));
 			generator.addProvider(true, new ThermoelectricGenHeatSourceProvider(generator));
+			generator.addProvider(true, new ElectrodynamicsAdvancementProvider(generator));
 		}
 		if (event.includeClient()) {
 			generator.addProvider(true, new ElectrodynamicsBlockStateProvider(generator, event.getExistingFileHelper()));

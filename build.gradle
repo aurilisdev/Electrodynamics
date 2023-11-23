@@ -11,6 +11,7 @@ buildscript {
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath 'org.ajoberstar:gradle-git:0.6.1'
         classpath 'org.parchmentmc:librarian:1.+'
     }
 }
@@ -30,9 +31,9 @@ libsDirName = "../output"
 distsDirName = "../output"
 
 def	version_minor="8"
-def	version_revision='0'
+def	version_revision='1'
 def	minecraft_version='1.19.2'
-def	version_build='5'
+def	version_build='0'
 def	version_major='0'
 
 version = minecraft_version+'-'+version_major+'.'+version_minor+'.'+version_revision+'-'+version_build
@@ -114,11 +115,13 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.19.2-43.1.52'
+	minecraft 'net.minecraftforge:forge:1.19.2-43.3.5'
     compileOnly(fg.deobf("mezz.jei:jei-1.19.2-common-api:11.3.0.271"))
     compileOnly(fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.3.0.271"))
     runtimeOnly(fg.deobf("mezz.jei:jei-1.19.2-forge:11.3.0.271"))
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
+    
+    implementation fg.deobf("curse.maven:pneumaticcraft-repressurized-281849:4866219")
 }
 
 
@@ -170,6 +173,12 @@ repositories{
 	   	    name = "Progwml6 maven"
 	   	    url = "https://dvs1.progwml6.com/files/maven/"
 	  	}
+	  	maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+    	}
+	}
 }
 tasks.curseforge.dependsOn jar
 

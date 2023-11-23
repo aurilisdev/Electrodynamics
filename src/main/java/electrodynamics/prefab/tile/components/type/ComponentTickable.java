@@ -1,16 +1,21 @@
 package electrodynamics.prefab.tile.components.type;
 
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.Component;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponent;
+import electrodynamics.prefab.tile.components.IComponentType;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nonnull;
 import java.util.function.Consumer;
 
-public class ComponentTickable implements Component {
-    private GenericTile holder;
+public class ComponentTickable implements IComponent {
+    
+	private GenericTile holder;
 
+	public ComponentTickable(GenericTile holder) {
+		this.holder = holder;
+	}
+	
     @Override
     public void holder(GenericTile holder) {
         this.holder = holder;
@@ -61,8 +66,8 @@ public class ComponentTickable implements Component {
         }
         // TODO remove
 
-        if (ticks % 3 == 0 && holder.hasComponent(ComponentType.PacketHandler) && holder.hasComponent(ComponentType.Inventory) && !holder.<ComponentInventory>getComponent(ComponentType.Inventory).getViewing().isEmpty()) {
-            holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
+        if (ticks % 3 == 0 && holder.hasComponent(IComponentType.PacketHandler) && holder.hasComponent(IComponentType.Inventory) && !holder.<ComponentInventory>getComponent(IComponentType.Inventory).getViewing().isEmpty()) {
+            holder.<ComponentPacketHandler>getComponent(IComponentType.PacketHandler).sendGuiPacketToTracking();
         }
 
     }
@@ -94,7 +99,7 @@ public class ComponentTickable implements Component {
     }
 
     @Override
-    public ComponentType getType() {
-        return ComponentType.Tickable;
+    public IComponentType getType() {
+        return IComponentType.Tickable;
     }
 }

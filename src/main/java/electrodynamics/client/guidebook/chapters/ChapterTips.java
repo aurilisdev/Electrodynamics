@@ -3,9 +3,9 @@ package electrodynamics.client.guidebook.chapters;
 import electrodynamics.api.References;
 import electrodynamics.client.guidebook.utils.components.Chapter;
 import electrodynamics.client.guidebook.utils.components.Module;
-import electrodynamics.client.guidebook.utils.pagedata.ImageWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.TextWrapperObject;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -25,23 +25,27 @@ public class ChapterTips extends Chapter {
 
 	@Override
 	public MutableComponent getTitle() {
-		return TextUtils.guidebook("chapter.tips");
+		return ElectroTextUtils.guidebook("chapter.tips");
 	}
 
 	@Override
 	public void addData() {
 
 		// Energy storage tip
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.tips.tip", 1).withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.tips.tip1")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tips.tip", 1).withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tips.tip1")).setIndentions(1).setSeparateStart());
 
 		// Transformer Tip
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.tips.tip", 2).withStyle(ChatFormatting.UNDERLINE)).setNewPage());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.tips.tip2")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tips.tip", 2).withStyle(ChatFormatting.UNDERLINE)).setNewPage());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tips.tip2")).setIndentions(1).setSeparateStart());
 
 		// Tool Battery Replacement Tip
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.tips.tip", 3).withStyle(ChatFormatting.UNDERLINE)).setNewPage());
-		pageData.add(new TextWrapperObject(TextUtils.guidebook("chapter.tips.tip3")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tips.tip", 3).withStyle(ChatFormatting.UNDERLINE)).setNewPage());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tips.tip3")).setIndentions(1).setSeparateStart());
+
+		// Ctrl hover over upgrade slots in GUI
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tips.tip", 4).withStyle(ChatFormatting.UNDERLINE)).setNewPage());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tips.tip4")).setIndentions(1).setSeparateStart());
 
 	}
 

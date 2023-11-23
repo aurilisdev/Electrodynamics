@@ -1,25 +1,27 @@
 package electrodynamics.prefab.tile.components.type;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 import electrodynamics.api.fluid.PropertyFluidTank;
 import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.AbstractMaterialRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
+import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.utils.IComponentFluidHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
@@ -46,8 +48,10 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 	@Nullable
 	public Direction[] outputDirections;
 
-	private PropertyFluidTank[] inputTanks;
-	private PropertyFluidTank[] outputTanks;
+	private boolean isSided = false;
+
+	private PropertyFluidTank[] inputTanks = new PropertyFluidTank[0];
+	private PropertyFluidTank[] outputTanks = new PropertyFluidTank[0];
 
 	@Nullable
 	private RecipeType<? extends AbstractMaterialRecipe> recipeType;
@@ -64,13 +68,22 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 	private Fluid[] validOutputFluids;
 	private HashSet<Fluid> outputValidatorFluids = new HashSet<>();
 
+	private LazyOptional<IFluidHandler>[] sidedOptionals = new LazyOptional[6];
+
+	private LazyOptional<IFluidHandler> inputOptional;
+	private LazyOptional<IFluidHandler> outputOptional;
+
 	public ComponentFluidHandlerMulti(GenericTile holder) {
 		this.holder = holder;
+
+		if (!holder.getBlockState().hasProperty(GenericEntityBlock.FACING)) {
+			throw new UnsupportedOperationException("The tile " + holder + " must have the FACING direction property!");
+		}
 	}
 
 	public ComponentFluidHandlerMulti setInputTanks(int count, int... capacity) {
 		inputTanks = new PropertyFluidTank[count];
-		if(capacity.length < count) {
+		if (capacity.length < count) {
 			throw new UnsupportedOperationException("The number of capacities does not match the number of input tanks");
 		}
 		for (int i = 0; i < count; i++) {
@@ -81,7 +94,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 
 	public ComponentFluidHandlerMulti setOutputTanks(int count, int... capacity) {
 		outputTanks = new PropertyFluidTank[count];
-		if(capacity.length < count) {
+		if (capacity.length < count) {
 			throw new UnsupportedOperationException("The number of capacities does not match the number of output tanks");
 		}
 		for (int i = 0; i < count; i++) {
@@ -116,21 +129,13 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 
 	public ComponentFluidHandlerMulti setInputDirections(Direction... directions) {
 		inputDirections = directions;
+		isSided = true;
 		return this;
 	}
 
 	public ComponentFluidHandlerMulti setOutputDirections(Direction... directions) {
 		outputDirections = directions;
-		return this;
-	}
-
-	public ComponentFluidHandlerMulti universalInput() {
-		inputDirections = Direction.values();
-		return this;
-	}
-
-	public ComponentFluidHandlerMulti universalOutput() {
-		outputDirections = Direction.values();
+		isSided = true;
 		return this;
 	}
 
@@ -217,27 +222,65 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 	}
 
 	@Override
-	public ComponentType getType() {
-		return ComponentType.FluidHandler;
-	}
-
-	@Override
-	public boolean hasCapability(Capability<?> capability, Direction side) {
-		return capability == ForgeCapabilities.FLUID_HANDLER;
+	public IComponentType getType() {
+		return IComponentType.FluidHandler;
 	}
 
 	@Override
 	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-		if (!hasCapability(capability, side)) {
+		if (capability != ForgeCapabilities.FLUID_HANDLER || side == null || !isSided) {
 			return LazyOptional.empty();
 		}
-		if (hasInputDir(side)) {
-			return LazyOptional.<IFluidHandler>of(() -> new InputTankDispatcher(inputTanks)).cast();
-		} else if (hasOutputDir(side)) {
-			return LazyOptional.<IFluidHandler>of(() -> new OutputTankDispatcher(outputTanks)).cast();
-		} else {
-			return LazyOptional.empty();
+
+		return sidedOptionals[side.ordinal()].cast();
+
+	}
+
+	@Override
+	public void refreshIfUpdate(BlockState oldState, BlockState newState) {
+		if (isSided && oldState.hasProperty(GenericEntityBlock.FACING) && newState.hasProperty(GenericEntityBlock.FACING) && oldState.getValue(GenericEntityBlock.FACING) != newState.getValue(GenericEntityBlock.FACING)) {
+			defineOptionals(newState.getValue(GenericEntityBlock.FACING));
 		}
+	}
+
+	@Override
+	public void refresh() {
+
+		defineOptionals(holder.getFacing());
+
+	}
+
+	private void defineOptionals(Direction facing) {
+
+		sidedOptionals = new LazyOptional[6];
+
+		if (inputOptional != null) {
+			inputOptional.invalidate();
+		}
+		if (outputOptional != null) {
+			outputOptional.invalidate();
+		}
+
+		Arrays.fill(sidedOptionals, LazyOptional.empty());
+
+		// Input
+
+		if (inputDirections != null) {
+			inputOptional = LazyOptional.of(() -> new InputTankDispatcher(inputTanks));
+
+			for (Direction dir : inputDirections) {
+				sidedOptionals[BlockEntityUtils.getRelativeSide(facing, dir).ordinal()] = inputOptional;
+			}
+		}
+
+		if (outputDirections != null) {
+			outputOptional = LazyOptional.of(() -> new OutputTankDispatcher(outputTanks));
+
+			for (Direction dir : outputDirections) {
+				sidedOptionals[BlockEntityUtils.getRelativeSide(facing, dir).ordinal()] = outputOptional;
+			}
+		}
+
 	}
 
 	@Override
@@ -246,7 +289,14 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 	}
 
 	@Override
+	public GenericTile getHolder() {
+		return holder;
+	}
+
+	@Override
 	public void onLoad() {
+		IComponentFluidHandler.super.onLoad();
+
 		if (recipeType != null) {
 			List<ElectrodynamicsRecipe> recipes = ElectrodynamicsRecipe.findRecipesbyType(recipeType, holder.getLevel());
 
@@ -261,7 +311,7 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 				if (inputTanks != null) {
 					for (FluidIngredient ing : recipe.getFluidIngredients()) {
 						ing.getMatchingFluids().forEach(h -> inputFluidHolder.add(h.getFluid()));
-						if(ing.getFluidStack().getAmount() > maxFluidInput) {
+						if (ing.getFluidStack().getAmount() > maxFluidInput) {
 							maxFluidInput = ing.getFluidStack().getAmount();
 						}
 					}
@@ -269,56 +319,56 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 
 				if (outputTanks != null) {
 					outputFluidHohlder.add(recipe.getFluidRecipeOutput().getFluid());
-					if(recipe.getFluidRecipeOutput().getAmount() > maxFluidOutput) {
+					if (recipe.getFluidRecipeOutput().getAmount() > maxFluidOutput) {
 						maxFluidOutput = recipe.getFluidRecipeOutput().getAmount();
 					}
-				}
-				if (recipe.hasFluidBiproducts()) {
-					for (FluidStack stack : recipe.getFullFluidBiStacks()) {
-						outputFluidHohlder.add(stack.getFluid());
-						if(stack.getAmount() > maxFluidBiproduct) {
-							maxFluidBiproduct = stack.getAmount();
+
+					if (recipe.hasFluidBiproducts()) {
+						for (FluidStack stack : recipe.getFullFluidBiStacks()) {
+							outputFluidHohlder.add(stack.getFluid());
+							if (stack.getAmount() > maxFluidBiproduct) {
+								maxFluidBiproduct = stack.getAmount();
+							}
 						}
 					}
 				}
 			}
 			inputValidatorFluids.addAll(inputFluidHolder);
 			outputValidatorFluids.addAll(outputFluidHohlder);
-			if(maxFluidInput > 0) {
-				
+			if (maxFluidInput > 0) {
+
 				maxFluidInput = (maxFluidInput / TANK_MULTIPLER) * TANK_MULTIPLER + TANK_MULTIPLER;
-				
-				for(PropertyFluidTank tank : inputTanks) {
-					if(tank.getCapacity() < maxFluidInput) {
+
+				for (PropertyFluidTank tank : inputTanks) {
+					if (tank.getCapacity() < maxFluidInput) {
 						tank.setCapacity(maxFluidInput);
 					}
 				}
 			}
 			int offset = 0;
-			if(maxFluidOutput > 0) {
-				
+			if (maxFluidOutput > 0) {
+
 				maxFluidOutput = (maxFluidOutput / TANK_MULTIPLER) * TANK_MULTIPLER + TANK_MULTIPLER;
-				
-				if(outputTanks[0].getCapacity() < maxFluidOutput) {
+
+				if (outputTanks[0].getCapacity() < maxFluidOutput) {
 					outputTanks[0].setCapacity(maxFluidOutput);
 				}
-				
+
 				offset = 1;
 			}
-			if(maxFluidBiproduct > 0) {
-				
+			if (maxFluidBiproduct > 0) {
+
 				maxFluidBiproduct = (maxFluidBiproduct / TANK_MULTIPLER) * TANK_MULTIPLER + TANK_MULTIPLER;
-				
-				for(int i = 0; i < outputTanks.length - offset; i++) {
-					
-					if(outputTanks[i + offset].getCapacity() < maxFluidBiproduct) {
+
+				for (int i = 0; i < outputTanks.length - offset; i++) {
+
+					if (outputTanks[i + offset].getCapacity() < maxFluidBiproduct) {
 						outputTanks[i + offset].setCapacity(maxFluidBiproduct);
 					}
-					
+
 				}
 			}
-			
-			
+
 		} else {
 			if (validInputFluids != null) {
 				for (Fluid fluid : validInputFluids) {
@@ -365,22 +415,6 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 	@Override
 	public PropertyFluidTank[] getOutputTanks() {
 		return outputTanks;
-	}
-
-	private boolean hasOutputDir(Direction dir) {
-		if (outputDirections == null) {
-			return false;
-		}
-		Direction facing = holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-		return ArrayUtils.contains(outputDirections, BlockEntityUtils.getRelativeSide(facing, dir));
-	}
-
-	private boolean hasInputDir(Direction dir) {
-		if (inputDirections == null) {
-			return false;
-		}
-		Direction facing = holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-		return ArrayUtils.contains(inputDirections, BlockEntityUtils.getRelativeSide(facing, dir));
 	}
 
 	private class InputTankDispatcher implements IFluidHandler {

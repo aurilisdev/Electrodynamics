@@ -10,6 +10,7 @@ import com.mojang.math.Quaternion;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import electrodynamics.prefab.utilities.math.PrecisionVector;
 import electrodynamics.prefab.utilities.object.QuarryArmDataHolder;
 import net.minecraft.client.Camera;
@@ -50,21 +51,21 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 		float u1Frame = armTexture.getU1();
 		float v0Frame = armTexture.getV0();
 		float v1Frame = armTexture.getV1();
-		float[] colorsFrame = RenderingUtils.getColorArray(armTexture.getPixelRGBA(0, 10, 10));
+		Color colorFrame = new Color(armTexture.getPixelRGBA(0, 10, 10));
 
 		TextureAtlasSprite darkArmTexture = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_QUARRYARM_DARK);
 		float u0FrameDark = darkArmTexture.getU0();
 		float u1FrameDark = darkArmTexture.getU1();
 		float v0FrameDark = darkArmTexture.getV0();
 		float v1FrameDark = darkArmTexture.getV1();
-		float[] colorsFrameDark = RenderingUtils.getColorArray(armTexture.getPixelRGBA(0, 10, 10));
+		Color colorFrameDark = new Color(armTexture.getPixelRGBA(0, 10, 10));
 
 		TextureAtlasSprite titaniumTexture = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(SubtypeDrillHead.titanium.blockTextureLoc);
 		float u0Titanium = titaniumTexture.getU0();
 		float u1Titanium = titaniumTexture.getU1();
 		float v0Titanium = titaniumTexture.getV0();
 		float v1Titanium = titaniumTexture.getV1();
-		float[] colorsTitanium = RenderingUtils.getColorArray(armTexture.getPixelRGBA(0, 10, 10));
+		Color colorTitanium = new Color(armTexture.getPixelRGBA(0, 10, 10));
 
 		TextureAtlasSprite whiteTexture = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_WHITE);
 		float u0White = whiteTexture.getU0();
@@ -85,7 +86,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				}
 				stack.pushPose();
 				stack.translate(vec.x, vec.y, vec.z);
-				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
+				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorFrame.rFloat(), colorFrame.gFloat(), colorFrame.bFloat(), colorFrame.aFloat(), u0Frame, v0Frame, u1Frame, v1Frame, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
 				stack.popPose();
 			});
 			data.darkParts().forEach(pair -> {
@@ -96,7 +97,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				}
 				stack.pushPose();
 				stack.translate(vec.x, vec.y, vec.z);
-				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsFrameDark[0], colorsFrameDark[1], colorsFrameDark[2], colorsFrameDark[3], u0FrameDark, v0FrameDark, u1FrameDark, v1FrameDark, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
+				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorFrameDark.rFloat(), colorFrameDark.gFloat(), colorFrameDark.bFloat(), colorFrameDark.aFloat(), u0FrameDark, v0FrameDark, u1FrameDark, v1FrameDark, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
 				stack.popPose();
 			});
 			data.titaniumParts().forEach(pair -> {
@@ -107,7 +108,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				}
 				stack.pushPose();
 				stack.translate(vec.x, vec.y, vec.z);
-				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
+				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorTitanium.rFloat(), colorTitanium.gFloat(), colorTitanium.bFloat(), colorTitanium.aFloat(), u0Titanium, v0Titanium, u1Titanium, v1Titanium, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
 				stack.popPose();
 			});
 			if (data.headType() != null) {
@@ -122,7 +123,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 				float u1Head = headText.getU1();
 				float v0Head = headText.getV0();
 				float v1Head = headText.getV1();
-				float[] colorsHead = RenderingUtils.getColorArray(armTexture.getPixelRGBA(0, 10, 10));
+				Color colorHead = new Color(armTexture.getPixelRGBA(0, 10, 10));
 				stack.pushPose();
 				stack.translate(vec.x, vec.y, vec.z);
 				if (data.running()) {
@@ -136,7 +137,7 @@ public class HandlerQuarryArm extends AbstractLevelStageHandler {
 					stack.mulPose(new Quaternion(0, degrees, 0, true));
 					stack.translate(-vec.remX - 0.5, 0, -vec.remZ - 0.5);
 				}
-				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorsHead[0], colorsHead[1], colorsHead[2], colorsHead[3], u0Head, v0Head, u1Head, v1Head, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
+				RenderingUtils.renderFilledBoxNoOverlay(stack, armBuilder, aabb, colorHead.rFloat(), colorHead.gFloat(), colorHead.bFloat(), colorHead.aFloat(), u0Head, v0Head, u1Head, v1Head, LevelRenderer.getLightColor(minecraft.level, new BlockPos(vec.x, vec.y, vec.z)));
 				stack.popPose();
 			}
 

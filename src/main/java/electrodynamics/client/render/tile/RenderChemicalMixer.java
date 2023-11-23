@@ -1,12 +1,14 @@
 package electrodynamics.client.render.tile;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.TileChemicalMixer;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.common.tile.machines.TileChemicalMixer;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.utilities.RenderingUtils;
@@ -19,7 +21,6 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import org.jetbrains.annotations.NotNull;
 
 public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer> {
 
@@ -41,7 +42,7 @@ public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer>
 		ibakedmodel = getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
 		matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
 
-		ComponentProcessor proc = tileEntityIn.getComponent(ComponentType.Processor);
+		ComponentProcessor proc = tileEntityIn.getComponent(IComponentType.Processor);
 
 		float degrees = 0.0F;
 
@@ -54,7 +55,7 @@ public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer>
 		matrixStackIn.popPose();
 
 		matrixStackIn.pushPose();
-		ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(IComponentType.FluidHandler);
 		FluidStack fluid = null;
 		for (FluidTank tank : multi.getInputTanks()) {
 			if (!tank.isEmpty()) {

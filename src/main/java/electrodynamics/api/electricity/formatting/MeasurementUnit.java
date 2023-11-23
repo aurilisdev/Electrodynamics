@@ -1,23 +1,31 @@
 package electrodynamics.api.electricity.formatting;
 
-public enum MeasurementUnit {
-	MICRO("Micro", "mi", 1.0E-6D),
-	MILLI("Milli", "m", 0.001D),
-	KILO("Kilo", "k", 1000.0D),
-	MEGA("Mega", "M", 1000000.0D);
+import electrodynamics.prefab.utilities.ElectroTextUtils;
+import net.minecraft.network.chat.Component;
 
-	final double value;
+public enum MeasurementUnit implements IMeasurementUnit {
 
-	final String symbol;
-	final String name;
+	PICO(ElectroTextUtils.gui("measurementunit.pico.name"), ElectroTextUtils.gui("measurementunit.pico.symbol"), 1.0E-12D),
+	NANO(ElectroTextUtils.gui("measurementunit.nano.name"), ElectroTextUtils.gui("measurementunit.nano.symbol"), 1.0E-9D),
+	MICRO(ElectroTextUtils.gui("measurementunit.micro.name"), ElectroTextUtils.gui("measurementunit.micro.symbol"), 1.0E-6D),
+	MILLI(ElectroTextUtils.gui("measurementunit.milli.name"), ElectroTextUtils.gui("measurementunit.milli.symbol"), 1.0E-3D),
+	NONE(ElectroTextUtils.gui("measurementunit.none.name"), ElectroTextUtils.gui("measurementunit.none.symbol"), 1.0),
+	KILO(ElectroTextUtils.gui("measurementunit.kilo.name"), ElectroTextUtils.gui("measurementunit.kilo.symbol"), 1.0E3D),
+	MEGA(ElectroTextUtils.gui("measurementunit.mega.name"), ElectroTextUtils.gui("measurementunit.mega.symbol"), 1.0E6D),
+	GIGA(ElectroTextUtils.gui("measurementunit.giga.name"), ElectroTextUtils.gui("measurementunit.giga.symbol"), 1.0E9D);
 
-	MeasurementUnit(String name, String symbol, double value) {
+	private final double value;
+
+	private final Component symbol;
+	private final Component name;
+
+	private MeasurementUnit(Component name, Component symbol, double value) {
 		this.name = name;
 		this.symbol = symbol;
 		this.value = value;
 	}
 
-	public String getName(boolean isSymbol) {
+	public Component getName(boolean isSymbol) {
 		if (isSymbol) {
 			return symbol;
 		}
@@ -27,5 +35,20 @@ public enum MeasurementUnit {
 
 	public double process(double value) {
 		return value / this.value;
+	}
+
+	@Override
+	public double getValue() {
+		return value;
+	}
+
+	@Override
+	public Component getSymbol() {
+		return symbol;
+	}
+
+	@Override
+	public Component getName() {
+		return name;
 	}
 }

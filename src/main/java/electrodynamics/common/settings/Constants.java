@@ -68,6 +68,11 @@ public class Constants {
 	public static boolean MAINTAIN_MINING_AREA = true;
 	@BooleanValue(def = false, comment = "Controls whether the quarry can bypass claims or not")
 	public static boolean BYPASS_CLAIMS = false;
+	
+	@BooleanValue(def = true, comment = "When set to true, this will make transformers tick, but give them the ability to hum as they do in real life. If you need to gain performance, you can disable this to stop transformers from ticking and thus producing sound.")
+	public static boolean SHOULD_TRANSFORMER_HUM = true;
+	@DoubleValue(def = 5000, comment = "The Watts a transformer needs to see to be considered under \"full load\" and thus hum as loud as it can. Set to 0 to have it hum under any load greater than 0 Watts")
+	public static double TRANSFORMER_SOUND_LOAD_TARGET = 5000;
 
 	@BooleanValue(def = true)
 	public static boolean DISPENSE_GUIDEBOOK = true;

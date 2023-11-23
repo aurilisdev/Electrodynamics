@@ -3,7 +3,7 @@
   "parent" : "block/cube_all",
   "texture_size" : [ 64, 64 ],
   "textures" : {
-    "1" : "electrodynamics:model/wiremilltriple",
+    "1" : "electrodynamics:block/model/wiremilltriple",
     "particle" : "electrodynamics:block/steelcasing"
   },
   "render_type" : "cutout",

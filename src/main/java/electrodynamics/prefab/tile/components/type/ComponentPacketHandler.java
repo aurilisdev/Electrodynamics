@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketSendUpdatePropertiesClient;
-import electrodynamics.common.packet.types.PacketUpdateTile;
+import electrodynamics.common.packet.types.client.PacketSendUpdatePropertiesClient;
+import electrodynamics.common.packet.types.client.PacketUpdateTile;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.Component;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponent;
+import electrodynamics.prefab.tile.components.IComponentType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -17,8 +17,13 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkDirection;
 
-public class ComponentPacketHandler implements Component {
+public class ComponentPacketHandler implements IComponent {
+	
     private GenericTile holder;
+    
+    public ComponentPacketHandler(GenericTile tile) {
+    	holder = tile;
+    }
 
     @Override
     public void holder(GenericTile holder) {
@@ -134,7 +139,7 @@ public class ComponentPacketHandler implements Component {
     }
 
     @Override
-    public ComponentType getType() {
-        return ComponentType.PacketHandler;
+    public IComponentType getType() {
+        return IComponentType.PacketHandler;
     }
 }

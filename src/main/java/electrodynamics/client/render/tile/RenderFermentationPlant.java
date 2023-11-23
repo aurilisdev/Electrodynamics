@@ -1,11 +1,13 @@
 package electrodynamics.client.render.tile;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import electrodynamics.common.tile.TileFermentationPlant;
+import electrodynamics.common.tile.machines.TileFermentationPlant;
 import electrodynamics.prefab.block.GenericEntityBlock;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
@@ -16,7 +18,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
-import org.jetbrains.annotations.NotNull;
 
 public class RenderFermentationPlant extends AbstractTileRenderer<TileFermentationPlant> {
 
@@ -27,7 +28,7 @@ public class RenderFermentationPlant extends AbstractTileRenderer<TileFermentati
 	@Override
 	public void render(TileFermentationPlant tileEntityIn, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		matrixStackIn.pushPose();
-		ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(IComponentType.FluidHandler);
 
 		Direction facing = tileEntityIn.getBlockState().getValue(GenericEntityBlock.FACING);
 

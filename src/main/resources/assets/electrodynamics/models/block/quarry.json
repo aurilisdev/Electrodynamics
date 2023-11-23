@@ -6,7 +6,7 @@
 		128
 	],
 	"textures": {
-		"0": "electrodynamics:model/quarry",
+		"0": "electrodynamics:block/model/quarry",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

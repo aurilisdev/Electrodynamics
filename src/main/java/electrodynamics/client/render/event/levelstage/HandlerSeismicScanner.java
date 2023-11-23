@@ -61,4 +61,5 @@ public class HandlerSeismicScanner extends AbstractLevelStageHandler {
 		INSTANCE.pingedBlocks.put(pos, System.currentTimeMillis());
 	}
 
+
 }

@@ -9,7 +9,7 @@ import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
@@ -85,16 +85,17 @@ public class ItemCompositeArmor extends ArmorItem {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowedIn(group)) {
-			ItemStack filled = new ItemStack(this);
-			if (getSlot() == EquipmentSlot.CHEST) {
-				CompoundTag tag = filled.getOrCreateTag();
-				tag.putInt(NBTUtils.PLATES, 2);
-				items.add(filled);
-			}
-			ItemStack empty = new ItemStack(this);
-			items.add(empty);
+		if (!allowedIn(group)) {
+			return;
 		}
+		ItemStack filled = new ItemStack(this);
+		if (getSlot() == EquipmentSlot.CHEST) {
+			CompoundTag tag = filled.getOrCreateTag();
+			tag.putInt(NBTUtils.PLATES, 2);
+			items.add(filled);
+		}
+		ItemStack empty = new ItemStack(this);
+		items.add(empty);
 	}
 
 	@Override
@@ -122,7 +123,7 @@ public class ItemCompositeArmor extends ArmorItem {
 
 	protected static void staticAppendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		int plates = stack.hasTag() ? stack.getTag().getInt(NBTUtils.PLATES) : 0;
-		tooltip.add(TextUtils.tooltip("ceramicplatecount", Component.translatable(plates + "")).withStyle(ChatFormatting.AQUA));
+		tooltip.add(ElectroTextUtils.tooltip("ceramicplatecount", plates).withStyle(ChatFormatting.AQUA));
 	}
 
 	@Override

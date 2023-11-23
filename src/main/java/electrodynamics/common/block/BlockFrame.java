@@ -6,7 +6,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
-import electrodynamics.common.tile.quarry.TileFrame;
+import electrodynamics.common.tile.machines.quarry.TileFrame;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

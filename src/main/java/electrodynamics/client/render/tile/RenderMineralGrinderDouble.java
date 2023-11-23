@@ -1,16 +1,17 @@
 package electrodynamics.client.render.tile;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.TileMineralGrinder;
+import electrodynamics.common.tile.machines.mineralgrinder.TileMineralGrinder;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
-import org.jetbrains.annotations.NotNull;
 
 public class RenderMineralGrinderDouble extends AbstractTileRenderer<TileMineralGrinder> {
 

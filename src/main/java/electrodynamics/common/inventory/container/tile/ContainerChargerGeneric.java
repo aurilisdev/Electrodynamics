@@ -1,9 +1,10 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.common.tile.generic.GenericTileCharger;
+import electrodynamics.common.tile.machines.charger.GenericTileCharger;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotCharging;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotRestricted;
+import electrodynamics.prefab.utilities.math.Color;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -23,11 +24,11 @@ public class ContainerChargerGeneric extends GenericContainerBlockEntity<Generic
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotCharging(inv, nextIndex(), 95, 34));
+		addSlot(new SlotCharging(inv, nextIndex(), 95, 34).setIOColor(new Color(0, 240, 255, 255)));
 		addSlot(new SlotCharging(inv, nextIndex(), 95, 54));
 		addSlot(new SlotCharging(inv, nextIndex(), 115, 54));
 		addSlot(new SlotCharging(inv, nextIndex(), 135, 54));
-		addSlot(new SlotRestricted(inv, nextIndex(), 145, 34));
+		addSlot(new SlotRestricted(inv, nextIndex(), 145, 34).setIOColor(new Color(255, 0, 0, 255)));
 	}
 
 }

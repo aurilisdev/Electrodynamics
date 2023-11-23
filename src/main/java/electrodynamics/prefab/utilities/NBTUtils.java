@@ -21,6 +21,7 @@ public class NBTUtils {
 	public static final String PLATES = "plates";
 	public static final String SUCESS = "sucess";
 	public static final String PLAYING_SOUND = "false";
+	public static final String TEMPERATURE = "temperature";
 
 	public static List<Direction> readDirectionList(ItemStack item) {
 		List<Direction> dirs = new ArrayList<>();

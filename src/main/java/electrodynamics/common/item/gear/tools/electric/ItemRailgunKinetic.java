@@ -6,12 +6,12 @@ import java.util.List;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
+import electrodynamics.api.item.IItemTemperate;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.sounds.SoundSource;
@@ -54,7 +54,7 @@ public class ItemRailgunKinetic extends ItemRailgun {
 
 		ItemRailgunKinetic railgun = (ItemRailgunKinetic) gunStack.getItem();
 
-		if (railgun.getJoulesStored(gunStack) < JOULES_PER_SHOT || ammoStack.isEmpty() || railgun.getTemperatureStored(gunStack) > OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
+		if (railgun.getJoulesStored(gunStack) < JOULES_PER_SHOT || ammoStack.isEmpty() || IItemTemperate.getTemperature(gunStack) > OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
 
 			world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
 			return InteractionResultHolder.pass(gunStack);
@@ -91,7 +91,7 @@ public class ItemRailgunKinetic extends ItemRailgun {
         projectile.shoot((double)vector3f.x(), (double)vector3f.y(), (double)vector3f.z(), 20.0F, 0.0F);
 		
 		world.addFreshEntity(projectile);
-		railgun.recieveHeat(gunStack, TransferPack.temperature(TEMPERATURE_PER_SHOT), false);
+		railgun.recieveHeat(gunStack, TEMPERATURE_PER_SHOT, false);
 		ammoStack.shrink(1);
 
 		return InteractionResultHolder.pass(gunStack);

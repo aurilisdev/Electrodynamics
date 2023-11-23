@@ -3,7 +3,7 @@
 	"parent": "block/cube_all",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "electrodynamics:model/energizedalloyer",
+		"0": "electrodynamics:block/model/energizedalloyer",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

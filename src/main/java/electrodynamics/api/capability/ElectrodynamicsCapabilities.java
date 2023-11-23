@@ -18,10 +18,6 @@ public class ElectrodynamicsCapabilities {
 	});
 	public static Capability<ILocationStorage> LOCATION_STORAGE_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
 	});
-	
-	public static Capability<IGasHandler> GAS_HANDLER = CapabilityManager.get(new CapabilityToken<>() {});
-	
-	public static Capability<IGasHandlerItem> GAS_HANDLER_ITEM = CapabilityManager.get(new CapabilityToken<>() {});
 
 	public static void register(RegisterCapabilitiesEvent event) {
 		event.register(ICapabilityElectrodynamic.class);

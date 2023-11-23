@@ -5,7 +5,7 @@ import java.util.function.Predicate;
 import org.jetbrains.annotations.NotNull;
 
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketSendUpdatePropertiesServer;
+import electrodynamics.common.packet.types.server.PacketSendUpdatePropertiesServer;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
@@ -75,7 +75,6 @@ public class PropertyFluidTank extends FluidTank {
 	@Override
 	public PropertyFluidTank setCapacity(int capacity) {
 		capacityProperty.set(capacity);
-		capacityProperty.forceDirty();
 		onContentsChanged();
 		return this;
 	}
@@ -175,19 +174,22 @@ public class PropertyFluidTank extends FluidTank {
 
 	@Override
 	protected void onContentsChanged() {
-		fluidStackProperty.forceDirty();
 		if (holder != null) {
 			holder.onFluidTankChange(this);
 		}
 	}
-	
-	//this must be called to update the server if interacted with on the client
+
+	// this must be called to update the server if interacted with on the client
 	public void updateServer() {
-		
-		if(holder != null) {
-			NetworkHandler.CHANNEL.sendToServer(new PacketSendUpdatePropertiesServer(fluidStackProperty.getPropertyManager().getProperties().indexOf(fluidStackProperty), fluidStackProperty, holder.getBlockPos()));
+
+		if (fluidStackProperty.isDirty()) {
+			fluidStackProperty.updateServer();
+		}
+		if (capacityProperty.isDirty()) {
+			capacityProperty.updateServer();
 		}
 
 	}
+
 
 }

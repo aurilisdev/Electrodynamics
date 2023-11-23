@@ -3,11 +3,13 @@ package electrodynamics.common.item.gear.tools.electric.utils;
 import java.util.List;
 import java.util.function.Function;
 
+import electrodynamics.api.electricity.formatting.ChatFormatter;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemTemperate;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.item.TemperateItemProperties;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
@@ -35,17 +37,21 @@ public class ItemRailgun extends ItemElectric implements IItemTemperate {
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		ItemRailgun railgun = (ItemRailgun) stack.getItem();
-		tooltip.add(TextUtils.tooltip("railguntemp").withStyle(ChatFormatting.YELLOW).append(Component.literal(railgun.getTemperatureStored(stack) + " C")));
-		tooltip.add(TextUtils.tooltip("railgunmaxtemp").withStyle(ChatFormatting.YELLOW).append(Component.literal(overheatTemperature + " C")));
-		if (railgun.getTemperatureStored(stack) >= getOverheatTemp()) {
-			tooltip.add(TextUtils.tooltip("railgunoverheat").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+		tooltip.add(ElectroTextUtils.tooltip("railguntemp", ChatFormatter.getChatDisplayShort(IItemTemperate.getTemperature(stack), DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.YELLOW));
+		tooltip.add(ElectroTextUtils.tooltip("railgunmaxtemp", ChatFormatter.getChatDisplayShort(overheatTemperature, DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.YELLOW));
+		if (IItemTemperate.getTemperature(stack) >= getOverheatTemp()) {
+			tooltip.add(ElectroTextUtils.tooltip("railgunoverheat").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
 		}
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 		super.fillItemCategory(group, items);
+
+		if (!allowedIn(group)) {
+			return;
+		}
+
 		for (ItemStack stack : items) {
 			if (stack.getItem() instanceof ItemRailgun) {
 				IItemTemperate.setTemperature(stack, 0);
@@ -56,7 +62,7 @@ public class ItemRailgun extends ItemElectric implements IItemTemperate {
 	@Override
 	public void inventoryTick(ItemStack stack, Level worldIn, Entity entityIn, int itemSlot, boolean isSelected) {
 		super.inventoryTick(stack, worldIn, entityIn, itemSlot, isSelected);
-		((ItemRailgun) stack.getItem()).decreaseTemperature(stack, tempPerTick, false, 0.0);
+		((ItemRailgun) stack.getItem()).loseHeat(stack, tempPerTick, 0.0, false);
 	}
 
 	@Override

@@ -49,7 +49,7 @@ public class BlockItemDescriptable extends BlockItem {
 		if (stack.hasTag()) {
 			double joules = stack.getTag().getDouble("joules");
 			if (joules > 0) {
-				tooltip.add(Component.literal("Stored: " + ChatFormatter.getChatDisplay(joules, DisplayUnit.JOULES, 2, false)));
+				tooltip.add(Component.literal("Stored: " + ChatFormatter.getChatDisplay(joules, DisplayUnit.JOULES, 3, false)));
 			}
 		}
 	}

@@ -10,11 +10,13 @@ import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
+import electrodynamics.common.block.voxelshapes.ElectrodynamicsVoxelShapeRegistry;
 import electrodynamics.common.condition.ConfigCondition;
 import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
 import electrodynamics.common.event.ServerEventHandler;
+import electrodynamics.common.eventbus.RegisterPropertiesEvent;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketResetGuidebookPages;
+import electrodynamics.common.packet.types.client.PacketResetGuidebookPages;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
@@ -23,6 +25,8 @@ import electrodynamics.common.settings.Constants;
 import electrodynamics.common.settings.OreConfig;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.configuration.ConfigurationHandler;
+import electrodynamics.prefab.properties.PropertyManager;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.api.distmarker.Dist;
@@ -33,6 +37,7 @@ import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
@@ -41,6 +46,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PacketDistributor.PacketTarget;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegisterEvent;
 
 @Mod(References.ID)
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
@@ -73,7 +80,30 @@ public class Electrodynamics {
 		ThermoelectricGeneratorHeatRegister.INSTANCE = new ThermoelectricGeneratorHeatRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
 		MinecraftForge.EVENT_BUS.addListener(getGuidebookListener());
 		ElectrodynamicsTags.init();
-		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to 1.19.2
+		//CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to 1.19.2
+
+		event.enqueueWork(() -> {
+			RegisterPropertiesEvent properties = new RegisterPropertiesEvent();
+
+			ModLoader.get().postEvent(properties);
+
+			PropertyManager.registerProperties(properties.getRegisteredProperties());
+		});
+		ElectrodynamicsVoxelShapeRegistry.init();
+	}
+	
+	@SubscribeEvent
+	public static void registerConditions(RegisterEvent event) {
+		if (event.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
+			CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
+		}
+	}
+
+	@SubscribeEvent
+	public static void registerProperties(RegisterPropertiesEvent event) {
+		for (PropertyType type : PropertyType.values()) {
+			event.registerProperty(type);
+		}
 	}
 
 	@SubscribeEvent

@@ -23,8 +23,8 @@ import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.Component;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponent;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import net.minecraft.nbt.CompoundTag;
@@ -34,13 +34,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class ComponentProcessor implements Component {
+public class ComponentProcessor implements IComponent {
 	private GenericTile holder;
-
-	@Override
-	public void holder(GenericTile holder) {
-		this.holder = holder;
-	}
 
 	public Property<Double> operatingSpeed;
 	public Property<Double> operatingTicks;
@@ -73,18 +68,27 @@ public class ComponentProcessor implements Component {
 		requiredTicks = holder.property(new Property<>(PropertyType.Double, "requiredTicks" + processorNumber, 0.0));
 		isActive = holder.property(new Property<>(PropertyType.Boolean, "isprocactive" + processorNumber, false));
 		shouldKeepProgress = holder.property(new Property<>(PropertyType.Boolean, "shouldprockeepprogress" + processorNumber, false));
-		if (!holder.hasComponent(ComponentType.Inventory)) {
+		if (!holder.hasComponent(IComponentType.Inventory)) {
 			throw new UnsupportedOperationException("You need to implement an inventory component to use the processor component!");
 		}
-		if (holder.hasComponent(ComponentType.Tickable)) {
-			holder.<ComponentTickable>getComponent(ComponentType.Tickable).tickServer(this::tickServer);
-		} else {
+		if (!holder.hasComponent(IComponentType.Tickable)) {
 			throw new UnsupportedOperationException("You need to implement a tickable component to use the processor component!");
 		}
+		holder.<ComponentTickable>getComponent(IComponentType.Tickable).tickServer(this::tickServer);
+	}
+
+	@Override
+	public void holder(GenericTile holder) {
+		this.holder = holder;
+	}
+
+	@Override
+	public GenericTile getHolder() {
+		return holder;
 	}
 
 	private void tickServer(ComponentTickable tickable) {
-		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
 		for (ItemStack stack : inv.getUpgradeContents()) {
 			if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade && !upgrade.subtype.isEmpty) {
 				for (int i = 0; i < stack.getCount(); i++) {
@@ -99,25 +103,24 @@ public class ComponentProcessor implements Component {
 				if (process != null) {
 					process.accept(this);
 				}
-				operatingTicks.set(0.0);
+				operatingTicks.set(0);
 			}
-			if (holder.hasComponent(ComponentType.Electrodynamic)) {
-				ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+			if (holder.hasComponent(IComponentType.Electrodynamic)) {
+				ComponentElectrodynamic electro = holder.getComponent(IComponentType.Electrodynamic);
 				electro.joules(electro.getJoulesStored() - usage.get() * operatingSpeed.get());
 			}
 		} else if (isActive()) {
 			isActive.set(false);
-			if(!shouldKeepProgress.get()) {
-				operatingTicks.set(0.0);
+			if (!shouldKeepProgress.get()) {
+				operatingTicks.set(0);
 			}
-			
+
 			if (failed != null) {
 				failed.accept(this);
 			}
+		} else {
+			operatingTicks.set(0);
 		}
-
-		
-
 
 	}
 
@@ -155,28 +158,24 @@ public class ComponentProcessor implements Component {
 	}
 
 	@Override
-	public ComponentType getType() {
-		return ComponentType.Processor;
+	public IComponentType getType() {
+		return IComponentType.Processor;
 	}
 
 	public ComponentProcessor consumeBucket() {
-		FluidUtilities.drainItem(holder, holder.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getInputTanks());
+		FluidUtilities.drainItem(holder, holder.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks());
 		return this;
 	}
 
 	public ComponentProcessor dispenseBucket() {
-		FluidUtilities.fillItem(holder, holder.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getOutputTanks());
+		FluidUtilities.fillItem(holder, holder.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getOutputTanks());
 		return this;
 	}
 
-	public ComponentProcessor outputToPipe() {
-		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
+	public ComponentProcessor outputToFluidPipe() {
+		ComponentFluidHandlerMulti handler = holder.getComponent(IComponentType.FluidHandler);
 		FluidUtilities.outputToPipe(holder, handler.getOutputTanks(), handler.outputDirections);
 		return this;
-	}
-
-	public GenericTile getHolder() {
-		return holder;
 	}
 
 	public ElectrodynamicsRecipe getRecipe() {
@@ -198,12 +197,11 @@ public class ComponentProcessor implements Component {
 	public boolean isActive() {
 		return isActive.get();
 	}
-	
+
 	public void setShouldKeepProgress(boolean should) {
 		shouldKeepProgress.set(should);
 	}
 
-	// Instead of checking all at once, we check one at a time; more efficient
 	public boolean canProcessItem2ItemRecipe(ComponentProcessor pr, RecipeType<?> typeIn) {
 		Item2ItemRecipe locRecipe;
 		if (!checkExistingRecipe(pr)) {
@@ -223,16 +221,16 @@ public class ComponentProcessor implements Component {
 		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
 
-		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = holder.getComponent(IComponentType.Electrodynamic);
 		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
 
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
 		}
 
-		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(processorNumber);
-		ItemStack result = recipe.getResultItem();
+		ItemStack result = locRecipe.getResultItem();
 		boolean isEmpty = output.isEmpty();
 		if (!isEmpty && !ItemUtils.testItems(output.getItem(), result.getItem())) {
 			return false;
@@ -250,8 +248,8 @@ public class ComponentProcessor implements Component {
 			}
 		}
 		if (locRecipe.hasFluidBiproducts()) {
-			ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
-			boolean fluidBiRoom = roomInBiproductTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
+			ComponentFluidHandlerMulti handler = holder.getComponent(IComponentType.FluidHandler);
+			boolean fluidBiRoom = roomInBiproductFluidTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
 			if (!fluidBiRoom) {
 				return false;
 			}
@@ -277,16 +275,16 @@ public class ComponentProcessor implements Component {
 		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
 
-		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = holder.getComponent(IComponentType.Electrodynamic);
 		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
 
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
 		}
 
-		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(processorNumber);
-		ItemStack result = recipe.getResultItem();
+		ItemStack result = locRecipe.getResultItem();
 		boolean isEmpty = output.isEmpty();
 
 		if (!isEmpty && !ItemUtils.testItems(output.getItem(), result.getItem())) {
@@ -304,8 +302,8 @@ public class ComponentProcessor implements Component {
 			}
 		}
 		if (locRecipe.hasFluidBiproducts()) {
-			ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
-			boolean fluidBiRoom = roomInBiproductTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
+			ComponentFluidHandlerMulti handler = holder.getComponent(IComponentType.FluidHandler);
+			boolean fluidBiRoom = roomInBiproductFluidTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
 			if (!fluidBiRoom) {
 				return false;
 			}
@@ -331,27 +329,27 @@ public class ComponentProcessor implements Component {
 		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
 
-		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = holder.getComponent(IComponentType.Electrodynamic);
 		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
 
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
 		}
 
-		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerMulti handler = holder.getComponent(IComponentType.FluidHandler);
 		int amtAccepted = handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
 		if (amtAccepted < locRecipe.getFluidRecipeOutput().getAmount()) {
 			return false;
 		}
 		if (locRecipe.hasItemBiproducts()) {
-			ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+			ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
 			boolean itemBiRoom = roomInItemBiSlots(inv.getBiprodsForProcessor(pr.getProcessorNumber()), locRecipe.getFullItemBiStacks());
 			if (!itemBiRoom) {
 				return false;
 			}
 		}
 		if (locRecipe.hasFluidBiproducts()) {
-			boolean fluidBiRoom = roomInBiproductTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
+			boolean fluidBiRoom = roomInBiproductFluidTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
 			if (!fluidBiRoom) {
 				return false;
 			}
@@ -377,27 +375,27 @@ public class ComponentProcessor implements Component {
 		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
 
-		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = holder.getComponent(IComponentType.Electrodynamic);
 		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
 
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
 		}
 
-		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerMulti handler = holder.getComponent(IComponentType.FluidHandler);
 		int amtAccepted = handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
 		if (amtAccepted < locRecipe.getFluidRecipeOutput().getAmount()) {
 			return false;
 		}
 		if (locRecipe.hasItemBiproducts()) {
-			ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+			ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
 			boolean itemBiRoom = roomInItemBiSlots(inv.getBiprodsForProcessor(pr.getProcessorNumber()), locRecipe.getFullItemBiStacks());
 			if (!itemBiRoom) {
 				return false;
 			}
 		}
 		if (locRecipe.hasFluidBiproducts()) {
-			boolean fluidBiRoom = roomInBiproductTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
+			boolean fluidBiRoom = roomInBiproductFluidTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
 			if (!fluidBiRoom) {
 				return false;
 			}
@@ -423,27 +421,27 @@ public class ComponentProcessor implements Component {
 		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
 
-		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = holder.getComponent(IComponentType.Electrodynamic);
 		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
 
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
 		}
 
-		ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
+		ComponentFluidHandlerMulti handler = holder.getComponent(IComponentType.FluidHandler);
 		int amtAccepted = handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.SIMULATE);
 		if (amtAccepted < locRecipe.getFluidRecipeOutput().getAmount()) {
 			return false;
 		}
 		if (locRecipe.hasItemBiproducts()) {
-			ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+			ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
 			boolean itemBiRoom = roomInItemBiSlots(inv.getBiprodsForProcessor(pr.getProcessorNumber()), locRecipe.getFullItemBiStacks());
 			if (!itemBiRoom) {
 				return false;
 			}
 		}
 		if (locRecipe.hasFluidBiproducts()) {
-			boolean fluidBiRoom = roomInBiproductTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
+			boolean fluidBiRoom = roomInBiproductFluidTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
 			if (!fluidBiRoom) {
 				return false;
 			}
@@ -469,16 +467,16 @@ public class ComponentProcessor implements Component {
 		requiredTicks.set((double) locRecipe.getTicks());
 		usage.set(locRecipe.getUsagePerTick());
 
-		ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+		ComponentElectrodynamic electro = holder.getComponent(IComponentType.Electrodynamic);
 		electro.maxJoules(usage.get() * operatingSpeed.get() * 10 * totalProcessors);
 
 		if (electro.getJoulesStored() < pr.getUsage()) {
 			return false;
 		}
 
-		ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
+		ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
 		ItemStack output = inv.getOutputContents().get(processorNumber);
-		ItemStack result = recipe.getResultItem();
+		ItemStack result = locRecipe.getResultItem();
 		boolean isEmpty = output.isEmpty();
 
 		if (!isEmpty && !ItemUtils.testItems(output.getItem(), result.getItem())) {
@@ -496,8 +494,8 @@ public class ComponentProcessor implements Component {
 			}
 		}
 		if (locRecipe.hasFluidBiproducts()) {
-			ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
-			boolean fluidBiRoom = roomInBiproductTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
+			ComponentFluidHandlerMulti handler = holder.getComponent(IComponentType.FluidHandler);
+			boolean fluidBiRoom = roomInBiproductFluidTanks(handler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
 			if (!fluidBiRoom) {
 				return false;
 			}
@@ -510,241 +508,244 @@ public class ComponentProcessor implements Component {
 	 * 
 	 * Biproducts will be output in the order they appear in the recipe JSON
 	 * 
-	 * The output FluidTanks will contain both the recipe output tank and the
-	 * biproduct tanks The first tank is ALWAYS the main output tank, and the
-	 * following tanks will be filled in the order of the fluid biproducts
+	 * The output FluidTanks will contain both the recipe output tank and the biproduct tanks The first tank is ALWAYS the main output tank, and the following tanks will be filled in the order of the fluid biproducts
 	 * 
 	 * 
 	 * 
 	 * 
-	 * Also, no checks outside of the null recipe check will be performed in these
-	 * methods All validity checks will take place in the recipe validator methods
+	 * Also, no checks outside of the null recipe check will be performed in these methods All validity checks will take place in the recipe validator methods
 	 * 
 	 */
 
 	public void processItem2ItemRecipe(ComponentProcessor pr) {
-		if (getRecipe() != null) {
-			ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-			Item2ItemRecipe locRecipe = (Item2ItemRecipe) getRecipe();
-			int procNumber = pr.getProcessorNumber();
-			List<Integer> slotOrientation = locRecipe.getItemArrangment(procNumber);
-
-			if (locRecipe.hasItemBiproducts()) {
-
-				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
-				int index = 0;
-
-				for (int slot : inv.getBiprodSlotsForProcessor(procNumber)) {
-
-					ItemStack stack = inv.getItem(slot);
-					if (stack.isEmpty()) {
-						inv.setItem(slot, itemBi[index].roll().copy());
-					} else {
-						stack.grow(itemBi[index].roll().getCount());
-						inv.setItem(slot, stack);
-					}
-				}
-
-			}
-
-			if (locRecipe.hasFluidBiproducts()) {
-				ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.Inventory);
-				ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
-				FluidTank[] outTanks = handler.getOutputTanks();
-				for (int i = 0; i < fluidBi.length; i++) {
-
-					outTanks[i].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
-				}
-			}
-
-			int outputSlot = inv.getOutputSlots().get(procNumber);
-
-			if (inv.getOutputContents().get(procNumber).isEmpty()) {
-				inv.setItem(outputSlot, locRecipe.getResultItem().copy());
-			} else {
-				ItemStack stack = inv.getOutputContents().get(procNumber);
-				stack.grow(locRecipe.getResultItem().getCount());
-				inv.setItem(outputSlot, stack);
-
-			}
-			List<Integer> inputs = inv.getInputSlotsForProcessor(procNumber);
-			for (int i = 0; i < inputs.size(); i++) {
-				int index = inputs.get(slotOrientation.get(i));
-				ItemStack stack = inv.getItem(index);
-				stack.shrink(locRecipe.getCountedIngredients().get(i).getStackSize());
-				inv.setItem(index, stack);
-			}
-			dispenseExperience(inv, locRecipe.getXp());
-			setChanged();
+		if (getRecipe() == null) {
+			return;
 		}
+		ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
+		Item2ItemRecipe locRecipe = (Item2ItemRecipe) getRecipe();
+		int procNumber = pr.getProcessorNumber();
+		List<Integer> slotOrientation = locRecipe.getItemArrangment(procNumber);
+
+		if (locRecipe.hasItemBiproducts()) {
+
+			ProbableItem[] itemBi = locRecipe.getItemBiproducts();
+			int index = 0;
+
+			for (int slot : inv.getBiprodSlotsForProcessor(procNumber)) {
+
+				ItemStack stack = inv.getItem(slot);
+				if (stack.isEmpty()) {
+					inv.setItem(slot, itemBi[index].roll().copy());
+				} else {
+					stack.grow(itemBi[index].roll().getCount());
+					inv.setItem(slot, stack);
+				}
+			}
+
+		}
+
+		if (locRecipe.hasFluidBiproducts()) {
+			ComponentFluidHandlerMulti handler = holder.getComponent(IComponentType.FluidHandler);
+			ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
+			FluidTank[] outTanks = handler.getOutputTanks();
+			for (int i = 0; i < fluidBi.length; i++) {
+
+				outTanks[i].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
+			}
+		}
+
+		int outputSlot = inv.getOutputSlots().get(procNumber);
+
+		if (inv.getOutputContents().get(procNumber).isEmpty()) {
+			inv.setItem(outputSlot, locRecipe.getResultItem().copy());
+		} else {
+			ItemStack stack = inv.getOutputContents().get(procNumber);
+			stack.grow(locRecipe.getResultItem().getCount());
+			inv.setItem(outputSlot, stack);
+
+		}
+		List<Integer> inputs = inv.getInputSlotsForProcessor(procNumber);
+		for (int i = 0; i < inputs.size(); i++) {
+			int index = inputs.get(slotOrientation.get(i));
+			ItemStack stack = inv.getItem(index);
+			stack.shrink(locRecipe.getCountedIngredients().get(i).getStackSize());
+			inv.setItem(index, stack);
+		}
+		dispenseExperience(inv, locRecipe.getXp());
+		setChanged();
 	}
 
 	public void processFluidItem2FluidRecipe(ComponentProcessor pr) {
-		if (getRecipe() != null) {
-			FluidItem2FluidRecipe locRecipe = (FluidItem2FluidRecipe) getRecipe();
-			ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-			ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
-			List<Integer> slotOrientation = locRecipe.getItemArrangment(pr.getProcessorNumber());
-			int procNumber = pr.getProcessorNumber();
-			if (locRecipe.hasItemBiproducts()) {
-
-				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
-				int index = 0;
-
-				for (int slot : inv.getBiprodSlotsForProcessor(procNumber)) {
-
-					ItemStack stack = inv.getItem(slot);
-					if (stack.isEmpty()) {
-						inv.setItem(slot, itemBi[index].roll().copy());
-					} else {
-						stack.grow(itemBi[index].roll().getCount());
-						inv.setItem(slot, stack);
-					}
-				}
-
-			}
-
-			if (locRecipe.hasFluidBiproducts()) {
-				ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
-				FluidTank[] outTanks = handler.getOutputTanks();
-				for (int i = 0; i < fluidBi.length; i++) {
-					outTanks[i + 1].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
-				}
-			}
-
-			handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.EXECUTE);
-
-			List<Integer> inputs = inv.getInputSlotsForProcessor(procNumber);
-			for (int i = 0; i < inputs.size(); i++) {
-				int index = inputs.get(slotOrientation.get(i));
-				ItemStack stack = inv.getItem(index);
-				stack.shrink(locRecipe.getCountedIngredients().get(i).getStackSize());
-				inv.setItem(index, stack);
-			}
-
-			FluidTank[] tanks = handler.getInputTanks();
-			List<FluidIngredient> fluidIngs = locRecipe.getFluidIngredients();
-			List<Integer> tankOrientation = locRecipe.getFluidArrangement();
-			for (int i = 0; i < handler.tankCount(true); i++) {
-				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
-			}
-			dispenseExperience(inv, locRecipe.getXp());
-			setChanged();
+		if (getRecipe() == null) {
+			return;
 		}
+		FluidItem2FluidRecipe locRecipe = (FluidItem2FluidRecipe) getRecipe();
+		ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
+		ComponentFluidHandlerMulti handler = holder.getComponent(IComponentType.FluidHandler);
+		List<Integer> slotOrientation = locRecipe.getItemArrangment(pr.getProcessorNumber());
+		int procNumber = pr.getProcessorNumber();
+		if (locRecipe.hasItemBiproducts()) {
+
+			ProbableItem[] itemBi = locRecipe.getItemBiproducts();
+			int index = 0;
+
+			for (int slot : inv.getBiprodSlotsForProcessor(procNumber)) {
+
+				ItemStack stack = inv.getItem(slot);
+				if (stack.isEmpty()) {
+					inv.setItem(slot, itemBi[index].roll().copy());
+				} else {
+					stack.grow(itemBi[index].roll().getCount());
+					inv.setItem(slot, stack);
+				}
+			}
+
+		}
+
+		if (locRecipe.hasFluidBiproducts()) {
+			ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
+			FluidTank[] outTanks = handler.getOutputTanks();
+			for (int i = 0; i < fluidBi.length; i++) {
+				outTanks[i + 1].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
+			}
+		}
+
+		handler.getOutputTanks()[0].fill(locRecipe.getFluidRecipeOutput(), FluidAction.EXECUTE);
+
+		List<Integer> inputs = inv.getInputSlotsForProcessor(procNumber);
+		for (int i = 0; i < inputs.size(); i++) {
+			int index = inputs.get(slotOrientation.get(i));
+			ItemStack stack = inv.getItem(index);
+			stack.shrink(locRecipe.getCountedIngredients().get(i).getStackSize());
+			inv.setItem(index, stack);
+		}
+
+		FluidTank[] tanks = handler.getInputTanks();
+		List<FluidIngredient> fluidIngs = locRecipe.getFluidIngredients();
+		List<Integer> tankOrientation = locRecipe.getFluidArrangement();
+		for (int i = 0; i < handler.tankCount(true); i++) {
+			tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
+		}
+		dispenseExperience(inv, locRecipe.getXp());
+		setChanged();
 	}
 
 	public void processFluidItem2ItemRecipe(ComponentProcessor pr) {
-		if (getRecipe() != null) {
-			FluidItem2ItemRecipe locRecipe = (FluidItem2ItemRecipe) getRecipe();
-			int procNumber = pr.getProcessorNumber();
-			ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-			ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
-			List<Integer> slotOrientation = locRecipe.getItemArrangment(procNumber);
-
-			if (locRecipe.hasItemBiproducts()) {
-
-				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
-				int index = 0;
-
-				for (int slot : inv.getBiprodSlotsForProcessor(procNumber)) {
-
-					ItemStack stack = inv.getItem(slot);
-					if (stack.isEmpty()) {
-						inv.setItem(slot, itemBi[index].roll().copy());
-					} else {
-						stack.grow(itemBi[index].roll().getCount());
-						inv.setItem(slot, stack);
-					}
-				}
-
-			}
-
-			if (locRecipe.hasFluidBiproducts()) {
-				ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
-				FluidTank[] outTanks = handler.getOutputTanks();
-				for (int i = 0; i < fluidBi.length; i++) {
-					outTanks[i].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
-				}
-			}
-			if (inv.getOutputContents().get(procNumber).isEmpty()) {
-				inv.setItem(inv.getOutputSlots().get(procNumber), locRecipe.getResultItem().copy());
-			} else {
-				inv.getOutputContents().get(procNumber).grow(locRecipe.getResultItem().getCount());
-			}
-
-			List<Integer> inputs = inv.getInputSlotsForProcessor(procNumber);
-			for (int i = 0; i < inputs.size(); i++) {
-				int index = inputs.get(slotOrientation.get(i));
-				ItemStack stack = inv.getItem(index);
-				stack.shrink(locRecipe.getCountedIngredients().get(i).getStackSize());
-				inv.setItem(index, stack);
-			}
-
-			FluidTank[] tanks = handler.getInputTanks();
-			List<FluidIngredient> fluidIngs = locRecipe.getFluidIngredients();
-			List<Integer> tankOrientation = locRecipe.getFluidArrangement();
-			for (int i = 0; i < handler.tankCount(true); i++) {
-				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
-			}
-			dispenseExperience(inv, locRecipe.getXp());
-			setChanged();
+		if (getRecipe() == null) {
+			return;
 		}
+		FluidItem2ItemRecipe locRecipe = (FluidItem2ItemRecipe) getRecipe();
+		int procNumber = pr.getProcessorNumber();
+		ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
+		ComponentFluidHandlerMulti handler = holder.getComponent(IComponentType.FluidHandler);
+		List<Integer> slotOrientation = locRecipe.getItemArrangment(procNumber);
+
+		if (locRecipe.hasItemBiproducts()) {
+
+			ProbableItem[] itemBi = locRecipe.getItemBiproducts();
+			int index = 0;
+
+			for (int slot : inv.getBiprodSlotsForProcessor(procNumber)) {
+
+				ItemStack stack = inv.getItem(slot);
+				if (stack.isEmpty()) {
+					inv.setItem(slot, itemBi[index].roll().copy());
+				} else {
+					stack.grow(itemBi[index].roll().getCount());
+					inv.setItem(slot, stack);
+				}
+			}
+
+		}
+
+		if (locRecipe.hasFluidBiproducts()) {
+			ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
+			FluidTank[] outTanks = handler.getOutputTanks();
+			for (int i = 0; i < fluidBi.length; i++) {
+				outTanks[i].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
+			}
+		}
+
+		if (inv.getOutputContents().get(procNumber).isEmpty()) {
+			inv.setItem(inv.getOutputSlots().get(procNumber), locRecipe.getResultItem().copy());
+		} else {
+			inv.getOutputContents().get(procNumber).grow(locRecipe.getResultItem().getCount());
+		}
+
+		List<Integer> inputs = inv.getInputSlotsForProcessor(procNumber);
+		for (int i = 0; i < inputs.size(); i++) {
+			int index = inputs.get(slotOrientation.get(i));
+			ItemStack stack = inv.getItem(index);
+			stack.shrink(locRecipe.getCountedIngredients().get(i).getStackSize());
+			inv.setItem(index, stack);
+		}
+
+		FluidTank[] tanks = handler.getInputTanks();
+		List<FluidIngredient> fluidIngs = locRecipe.getFluidIngredients();
+		List<Integer> tankOrientation = locRecipe.getFluidArrangement();
+		for (int i = 0; i < handler.tankCount(true); i++) {
+			tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
+		}
+		dispenseExperience(inv, locRecipe.getXp());
+		setChanged();
 	}
 
 	public void processFluid2ItemRecipe(ComponentProcessor pr) {
-		if (getRecipe() != null) {
-			Fluid2ItemRecipe locRecipe = (Fluid2ItemRecipe) getRecipe();
-			int procNumber = pr.getProcessorNumber();
-			ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-			ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
-
-			if (locRecipe.hasItemBiproducts()) {
-
-				ProbableItem[] itemBi = locRecipe.getItemBiproducts();
-				int index = 0;
-
-				for (int slot : inv.getBiprodSlotsForProcessor(procNumber)) {
-
-					ItemStack stack = inv.getItem(slot);
-					if (stack.isEmpty()) {
-						inv.setItem(slot, itemBi[index].roll().copy());
-					} else {
-						stack.grow(itemBi[index].roll().getCount());
-						inv.setItem(slot, stack);
-					}
-				}
-
-			}
-
-			if (locRecipe.hasFluidBiproducts()) {
-				ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
-				FluidTank[] outTanks = handler.getOutputTanks();
-				for (int i = 0; i < fluidBi.length; i++) {
-					outTanks[i].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
-				}
-			}
-			if (inv.getOutputContents().get(procNumber).isEmpty()) {
-				inv.setItem(inv.getOutputSlots().get(procNumber), locRecipe.getResultItem().copy());
-			} else {
-				inv.getOutputContents().get(procNumber).grow(locRecipe.getResultItem().getCount());
-			}
-
-			FluidTank[] tanks = handler.getInputTanks();
-			List<FluidIngredient> fluidIngs = locRecipe.getFluidIngredients();
-			List<Integer> tankOrientation = locRecipe.getFluidArrangement();
-			for (int i = 0; i < handler.tankCount(true); i++) {
-				tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
-			}
-			dispenseExperience(inv, locRecipe.getXp());
-			setChanged();
+		if (getRecipe() == null) {
+			return;
 		}
+		Fluid2ItemRecipe locRecipe = (Fluid2ItemRecipe) getRecipe();
+		int procNumber = pr.getProcessorNumber();
+		ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
+		ComponentFluidHandlerMulti handler = holder.getComponent(IComponentType.FluidHandler);
+
+		if (locRecipe.hasItemBiproducts()) {
+
+			ProbableItem[] itemBi = locRecipe.getItemBiproducts();
+			int index = 0;
+
+			for (int slot : inv.getBiprodSlotsForProcessor(procNumber)) {
+
+				ItemStack stack = inv.getItem(slot);
+				if (stack.isEmpty()) {
+					inv.setItem(slot, itemBi[index].roll().copy());
+				} else {
+					stack.grow(itemBi[index].roll().getCount());
+					inv.setItem(slot, stack);
+				}
+			}
+
+		}
+
+		if (locRecipe.hasFluidBiproducts()) {
+			ProbableFluid[] fluidBi = locRecipe.getFluidBiproducts();
+			FluidTank[] outTanks = handler.getOutputTanks();
+			for (int i = 0; i < fluidBi.length; i++) {
+				outTanks[i].fill(fluidBi[i].roll(), FluidAction.EXECUTE);
+			}
+		}
+
+		if (inv.getOutputContents().get(procNumber).isEmpty()) {
+			inv.setItem(inv.getOutputSlots().get(procNumber), locRecipe.getResultItem().copy());
+		} else {
+			inv.getOutputContents().get(procNumber).grow(locRecipe.getResultItem().getCount());
+		}
+
+		FluidTank[] tanks = handler.getInputTanks();
+		List<FluidIngredient> fluidIngs = locRecipe.getFluidIngredients();
+		List<Integer> tankOrientation = locRecipe.getFluidArrangement();
+		for (int i = 0; i < handler.tankCount(true); i++) {
+			tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(), FluidAction.EXECUTE);
+		}
+		dispenseExperience(inv, locRecipe.getXp());
+		setChanged();
 	}
 
 	public void processFluid2FluidRecipe(ComponentProcessor pr) {
 		if (getRecipe() != null) {
 			Fluid2FluidRecipe locRecipe = (Fluid2FluidRecipe) getRecipe();
-			ComponentInventory inv = holder.getComponent(ComponentType.Inventory);
-			ComponentFluidHandlerMulti handler = holder.getComponent(ComponentType.FluidHandler);
+			ComponentInventory inv = holder.getComponent(IComponentType.Inventory);
+			ComponentFluidHandlerMulti handler = holder.getComponent(IComponentType.FluidHandler);
 
 			if (locRecipe.hasItemBiproducts()) {
 
@@ -806,14 +807,19 @@ public class ComponentProcessor implements Component {
 		for (int i = 0; i < slots.size(); i++) {
 			ItemStack slotStack = slots.get(i);
 			ItemStack biStack = biproducts[Math.min(i, biproducts.length - 1)];
-			if (!slotStack.isEmpty() && ItemUtils.testItems(slotStack.getItem(), biStack.getItem()) && (slotStack.getCount() + biStack.getCount() > slotStack.getMaxStackSize())) {
-				return false;
+			if (!slotStack.isEmpty()) {
+				if ((slotStack.getCount() + biStack.getCount() > slotStack.getMaxStackSize())) {
+					return false;
+				}
+				if (!ItemUtils.testItems(slotStack.getItem(), biStack.getItem())) {
+					return false;
+				}
 			}
 		}
 		return true;
 	}
 
-	private static boolean roomInBiproductTanks(FluidTank[] tanks, FluidStack[] stacks) {
+	private static boolean roomInBiproductFluidTanks(FluidTank[] tanks, FluidStack[] stacks) {
 		for (int i = 1; i < tanks.length; i++) {
 			FluidTank tank = tanks[i];
 			FluidStack stack = stacks[Math.min(i, stacks.length - 1)];
@@ -860,8 +866,8 @@ public class ComponentProcessor implements Component {
 				}
 			}
 
-			if (holder.hasComponent(ComponentType.Electrodynamic)) {
-				ComponentElectrodynamic electro = holder.getComponent(ComponentType.Electrodynamic);
+			if (holder.hasComponent(IComponentType.Electrodynamic)) {
+				ComponentElectrodynamic electro = holder.getComponent(IComponentType.Electrodynamic);
 				electro.maxJoules(usage.get() * operatingSpeed.get() * 10);
 			}
 		}

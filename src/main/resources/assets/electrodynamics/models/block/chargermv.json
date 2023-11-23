@@ -3,7 +3,7 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/chargermv",
+		"0": "electrodynamics:block/model/chargermv",
 		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [

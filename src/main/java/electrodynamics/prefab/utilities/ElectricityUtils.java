@@ -2,7 +2,7 @@ package electrodynamics.prefab.utilities;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.api.network.conductor.IConductor;
+import electrodynamics.api.network.cable.type.IConductor;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.object.TransferPack;
@@ -59,20 +59,20 @@ public class ElectricityUtils {
 		return false;
 	}
 
-	public static boolean isConductor(BlockEntity acceptor) {
-		return acceptor instanceof IConductor;
+	public static boolean isConductor(BlockEntity acceptor, IConductor requesterWire) {
+		return acceptor instanceof IConductor conductor;
 	}
 
 	public static TransferPack receivePower(BlockEntity tile, Direction direction, TransferPack transfer, boolean debug) {
 		if (isElectricReceiver(tile, direction)) {
-			LazyOptional<ICapabilityElectrodynamic> cap = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, direction);
-			if (cap.isPresent()) {
-				ICapabilityElectrodynamic handler = cap.resolve().get();
+			LazyOptional<ICapabilityElectrodynamic> electro = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, direction);
+			if (electro.isPresent()) {
+				ICapabilityElectrodynamic handler = electro.resolve().get();
 				return handler.receivePower(transfer, debug);
 			}
-			LazyOptional<IEnergyStorage> cap2 = tile.getCapability(ForgeCapabilities.ENERGY, direction);
-			if (cap2.isPresent()) {
-				IEnergyStorage handler = cap2.resolve().get();
+			LazyOptional<IEnergyStorage> fe = tile.getCapability(ForgeCapabilities.ENERGY, direction);
+			if (fe.isPresent()) {
+				IEnergyStorage handler = fe.resolve().get();
 				TransferPack returner = TransferPack.joulesVoltage(handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());
 				if (transfer.getVoltage() > ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) {
 					Level world = tile.getLevel();

@@ -8,7 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -40,44 +40,44 @@ public class ItemUpgrade extends Item {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
 		if (subtype == SubtypeItemUpgrade.advancedcapacity || subtype == SubtypeItemUpgrade.basiccapacity) {
 			double capacityMultiplier = subtype == SubtypeItemUpgrade.advancedcapacity ? 2.25 : 1.5;
-			tooltip.add(TextUtils.tooltip("info.capacityupgrade", capacityMultiplier).withStyle(ChatFormatting.GRAY));
-			tooltip.add(TextUtils.tooltip("info.capacityupgradevoltage", (capacityMultiplier == 2.25 ? 4 : 2) + "x").withStyle(ChatFormatting.RED));
+			tooltip.add(ElectroTextUtils.tooltip("info.capacityupgrade", capacityMultiplier).withStyle(ChatFormatting.GRAY));
+			tooltip.add(ElectroTextUtils.tooltip("info.capacityupgradevoltage", (capacityMultiplier == 2.25 ? 4 : 2) + "x").withStyle(ChatFormatting.RED));
 		}
 		if (subtype == SubtypeItemUpgrade.advancedspeed || subtype == SubtypeItemUpgrade.basicspeed) {
 			double speedMultiplier = subtype == SubtypeItemUpgrade.advancedspeed ? 2.25 : 1.5;
-			tooltip.add(TextUtils.tooltip("info.speedupgrade", speedMultiplier).withStyle(ChatFormatting.GRAY));
+			tooltip.add(ElectroTextUtils.tooltip("info.speedupgrade", speedMultiplier).withStyle(ChatFormatting.GRAY));
 		}
 		if (subtype == SubtypeItemUpgrade.itemoutput || subtype == SubtypeItemUpgrade.iteminput) {
 			if (subtype == SubtypeItemUpgrade.itemoutput) {
-				tooltip.add(TextUtils.tooltip("info.itemoutputupgrade").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ElectroTextUtils.tooltip("info.itemoutputupgrade").withStyle(ChatFormatting.GRAY));
 			} else {
-				tooltip.add(TextUtils.tooltip("info.iteminputupgrade").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ElectroTextUtils.tooltip("info.iteminputupgrade").withStyle(ChatFormatting.GRAY));
 			}
 			boolean hasTag = stack.hasTag();
 			if (hasTag && stack.getTag().getBoolean(NBTUtils.SMART)) {
-				tooltip.add(TextUtils.tooltip("info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
+				tooltip.add(ElectroTextUtils.tooltip("info.insmartmode").withStyle(ChatFormatting.LIGHT_PURPLE));
 			}
 			List<Direction> dirs = hasTag ? NBTUtils.readDirectionList(stack) : new ArrayList<>();
 			if (!dirs.isEmpty()) {
-				tooltip.add(TextUtils.tooltip("info.dirlist").withStyle(ChatFormatting.BLUE));
+				tooltip.add(ElectroTextUtils.tooltip("info.dirlist").withStyle(ChatFormatting.BLUE));
 				for (int i = 0; i < dirs.size(); i++) {
 					Direction dir = dirs.get(i);
 					tooltip.add(Component.literal(i + 1 + ". " + StringUtils.capitalize(dir.getName())).withStyle(ChatFormatting.BLUE));
 				}
-				tooltip.add(TextUtils.tooltip("info.cleardirs").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ElectroTextUtils.tooltip("info.cleardirs").withStyle(ChatFormatting.GRAY));
 			} else {
-				tooltip.add(TextUtils.tooltip("info.nodirs").withStyle(ChatFormatting.GRAY));
+				tooltip.add(ElectroTextUtils.tooltip("info.nodirs").withStyle(ChatFormatting.GRAY));
 			}
-			tooltip.add(TextUtils.tooltip("info.togglesmart").withStyle(ChatFormatting.GRAY));
+			tooltip.add(ElectroTextUtils.tooltip("info.togglesmart").withStyle(ChatFormatting.GRAY));
 		}
 		if (subtype == SubtypeItemUpgrade.experience) {
 			double storedXp = stack.hasTag() ? stack.getTag().getDouble(NBTUtils.XP) : 0;
-			tooltip.add(TextUtils.tooltip("info.xpstored").withStyle(ChatFormatting.GRAY).append(Component.literal(FORMATTER.format(storedXp)).withStyle(ChatFormatting.LIGHT_PURPLE)));
-			tooltip.add(TextUtils.tooltip("info.xpusage").withStyle(ChatFormatting.GRAY));
+			tooltip.add(ElectroTextUtils.tooltip("info.xpstored").withStyle(ChatFormatting.GRAY).append(Component.literal(FORMATTER.format(storedXp)).withStyle(ChatFormatting.LIGHT_PURPLE)));
+			tooltip.add(ElectroTextUtils.tooltip("info.xpusage").withStyle(ChatFormatting.GRAY));
 
 		}
 		if (subtype == SubtypeItemUpgrade.range) {
-			tooltip.add(TextUtils.tooltip("info.range").withStyle(ChatFormatting.GRAY));
+			tooltip.add(ElectroTextUtils.tooltip("info.range").withStyle(ChatFormatting.GRAY));
 		}
 	}
 

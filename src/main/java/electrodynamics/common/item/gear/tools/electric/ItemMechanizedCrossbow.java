@@ -10,7 +10,7 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.prefab.utilities.TextUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
@@ -21,10 +21,13 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArrowItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -55,29 +58,49 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		ItemStack crossbow = player.getItemInHand(hand);
-		if (!world.isClientSide) {
-			ItemMechanizedCrossbow mechanized = (ItemMechanizedCrossbow) crossbow.getItem();
-			if (mechanized.getJoulesStored(crossbow) >= JOULES_PER_SHOT) {
-				ItemStack arrow = getAmmo(player);
-				Projectile projectile = getArrow(world, player, crossbow, arrow);
-				if (!arrow.isEmpty()) {
-					mechanized.extractPower(crossbow, JOULES_PER_SHOT, false);
-					arrow.shrink(1);
-					Vec3 playerUp = player.getUpVector(1.0F);
-					Quaternion quaternion = new Quaternion(new Vector3f(playerUp), 0, true);
-					Vec3 playerView = player.getViewVector(1.0F);
-					Vector3f viewVector = new Vector3f(playerView);
-					viewVector.transform(quaternion);
-					projectile.shoot(viewVector.x(), viewVector.y(), viewVector.z(), PROJECTILE_SPEED, 1);
-					world.addFreshEntity(projectile);
-					world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, 1);
-				} else {
-					world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
-				}
-			} else {
-				world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
-			}
+
+		if (world.isClientSide) {
+			return InteractionResultHolder.pass(crossbow);
 		}
+
+		ItemMechanizedCrossbow mechanized = (ItemMechanizedCrossbow) crossbow.getItem();
+		if (mechanized.getJoulesStored(crossbow) < JOULES_PER_SHOT) {
+			world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+			return InteractionResultHolder.pass(crossbow);
+		}
+
+		ItemStack arrow = getAmmo(player);
+		Projectile projectile = getArrow(world, player, crossbow, arrow);
+
+		if (arrow.isEmpty()) {
+			world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
+			return InteractionResultHolder.pass(crossbow);
+		}
+
+		mechanized.extractPower(crossbow, JOULES_PER_SHOT, false);
+
+		if (!player.isCreative()) {
+			arrow.shrink(1);
+		}
+
+		mechanized.extractPower(crossbow, JOULES_PER_SHOT, false);
+
+		Vec3 playerUp = player.getUpVector(1.0F);
+
+		Quaternion quaternion = new Quaternion(new Vector3f(playerUp), 0, true);
+
+		Vec3 playerView = player.getViewVector(1.0F);
+
+		Vector3f viewVector = new Vector3f(playerView);
+
+		viewVector.transform(quaternion);
+
+		projectile.shoot(viewVector.x(), viewVector.y(), viewVector.z(), PROJECTILE_SPEED, 1);
+
+		world.addFreshEntity(projectile);
+
+		world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, 1);
+
 		return InteractionResultHolder.pass(crossbow);
 	}
 
@@ -115,19 +138,26 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 				return stack;
 			}
 		}
+		if (player.isCreative()) {
+			return new ItemStack(Items.ARROW);
+		}
 		return ItemStack.EMPTY;
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowedIn(group)) {
-			ItemStack charged = new ItemStack(this);
-			IItemElectric.setEnergyStored(charged, properties.capacity);
-			items.add(charged);
-			ItemStack empty = new ItemStack(this);
-			IItemElectric.setEnergyStored(empty, 0);
-			items.add(empty);
+
+		if (!allowedIn(group)) {
+			return;
 		}
+
+		ItemStack charged = new ItemStack(this);
+		IItemElectric.setEnergyStored(charged, properties.capacity);
+		items.add(charged);
+
+		ItemStack empty = new ItemStack(this);
+		IItemElectric.setEnergyStored(empty, 0);
+		items.add(empty);
 	}
 
 	@Override
@@ -148,8 +178,8 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(TextUtils.tooltip("item.electric.info").withStyle(ChatFormatting.GRAY).append(Component.literal(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
-		tooltip.add(TextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
 		IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
 	}
 
@@ -171,6 +201,17 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	@Override
 	public Item getDefaultStorageBattery() {
 		return ElectrodynamicsItems.ITEM_BATTERY.get();
+	}
+
+	@Override
+	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+
+		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
+		}
+
+		return true;
+
 	}
 
 }

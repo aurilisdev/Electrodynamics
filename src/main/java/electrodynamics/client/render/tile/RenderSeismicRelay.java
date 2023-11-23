@@ -1,13 +1,13 @@
 package electrodynamics.client.render.tile;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.TileSeismicRelay;
-import electrodynamics.common.tile.quarry.TileQuarry;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.common.tile.machines.quarry.TileQuarry;
+import electrodynamics.common.tile.machines.quarry.TileSeismicRelay;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
-import org.jetbrains.annotations.NotNull;
 
 public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 
@@ -39,7 +38,7 @@ public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, RIGHT, 1.0F, 0F, 0F, 1.0F, 255, 0);
 			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, DOWN, 1.0F, 0F, 0F, 1.0F, 255, 0);
 
-			Direction facing = tile.<ComponentDirection>getComponent(ComponentType.Direction).getDirection().getOpposite();
+			Direction facing = tile.getFacing().getOpposite();
 
 			boolean doesQuarryHaveRing = false;
 			BlockEntity entity = level().getBlockEntity(tile.getBlockPos().relative(facing.getClockWise()));

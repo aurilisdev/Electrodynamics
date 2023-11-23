@@ -1,10 +1,10 @@
 package electrodynamics.common.item.gear.tools.electric;
 
+import electrodynamics.api.item.IItemTemperate;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.sounds.SoundSource;
@@ -42,10 +42,11 @@ public class ItemRailgunPlasma extends ItemRailgun {
 
 		ItemRailgunPlasma railgun = (ItemRailgunPlasma) gunStack.getItem();
 
-		if (railgun.getJoulesStored(gunStack) < JOULES_PER_SHOT || railgun.getTemperatureStored(gunStack) > OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
+		if (railgun.getJoulesStored(gunStack) < JOULES_PER_SHOT || IItemTemperate.getTemperature(gunStack) > OVERHEAT_TEMPERATURE - TEMPERATURE_PER_SHOT) {
 			worldIn.playSound(null, playerIn.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
 			return InteractionResultHolder.pass(gunStack);
 		}
+
 
 		EntityCustomProjectile projectile = new EntityEnergyBlast(playerIn, worldIn);
 		projectile.setNoGravity(true);
@@ -55,7 +56,7 @@ public class ItemRailgunPlasma extends ItemRailgun {
 
 		railgun.extractPower(gunStack, JOULES_PER_SHOT, false);
 		worldIn.playSound(null, playerIn.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNPLASMA.get(), SoundSource.PLAYERS, 1, 1);
-		railgun.recieveHeat(gunStack, TransferPack.temperature(TEMPERATURE_PER_SHOT), false);
+		railgun.recieveHeat(gunStack,TEMPERATURE_PER_SHOT, false);
 
 		return InteractionResultHolder.pass(gunStack);
 	}

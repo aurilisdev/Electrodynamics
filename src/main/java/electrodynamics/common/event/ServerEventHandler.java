@@ -12,11 +12,10 @@ import electrodynamics.common.event.types.living.hurt.HandlerCompositeArmor;
 import electrodynamics.common.event.types.living.hurt.HandlerHydraulicBoots;
 import electrodynamics.common.event.types.living.hurt.HandlerJetpackDamage;
 import electrodynamics.common.event.types.player.rightclick.AbstractRightClickBlockHandler;
-import electrodynamics.common.event.types.player.rightclick.HandlerRightClickWires;
 import electrodynamics.common.event.types.player.starttracking.AbstractPlayerStartTrackingHandler;
 import electrodynamics.common.event.types.player.starttracking.HandlerJetpackSound;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.PacketPlayerInformation;
+import electrodynamics.common.packet.types.server.PacketPlayerInformation;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
@@ -42,7 +41,6 @@ public class ServerEventHandler {
 	private static final List<AbstractPlayerStartTrackingHandler> START_TRACKING_PLAYER_HANDLERS = new ArrayList<>();
 
 	public static void init() {
-		RIGHT_CLICK_HANDLERS.add(new HandlerRightClickWires());
 
 		LIVING_HURT_HANDLERS.add(new HandlerCompositeArmor());
 		LIVING_HURT_HANDLERS.add(new HandlerHydraulicBoots());
