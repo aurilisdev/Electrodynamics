@@ -36,6 +36,7 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ItemCanister extends ItemElectrodynamics {
@@ -111,22 +112,44 @@ public class ItemCanister extends ItemElectrodynamics {
 	}
 
 	public void useCanister(Level world, Player player, InteractionHand hand) {
+		
 		ItemStack stack = player.getItemInHand(hand);
+		
 		HitResult trace = getPlayerPOVHitResult(world, player, net.minecraft.world.level.ClipContext.Fluid.ANY);
-		if (!world.isClientSide && trace.getType() != Type.MISS && trace.getType() != Type.ENTITY) {
-			BlockHitResult blockTrace = (BlockHitResult) trace;
-			BlockPos pos = blockTrace.getBlockPos();
-			BlockState state = world.getBlockState(pos);
-			if (state.getFluidState().isSource() && !state.getFluidState().getType().isSame(Fluids.EMPTY)) {
-				FluidStack sourceFluid = new FluidStack(state.getFluidState().getType(), 1000);
-				int accepted = CapabilityUtils.fillFluidItem(stack, sourceFluid, FluidAction.SIMULATE);
-				if (accepted >= 1000) {
-					CapabilityUtils.fillFluidItem(stack, sourceFluid, FluidAction.EXECUTE);
-					world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-					world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
-				}
-			}
+		
+		if(world.isClientSide || trace.getType() == Type.MISS || trace.getType() == Type.ENTITY) {
+			return;
 		}
+		
+		BlockHitResult blockTrace = (BlockHitResult) trace;
+		
+		BlockPos pos = blockTrace.getBlockPos();
+		
+		BlockState state = world.getBlockState(pos);
+		
+		if(!state.getFluidState().isSource() || state.getFluidState().isEmpty()) {
+			return;
+		}
+		
+		FluidStack sourceFluid = new FluidStack(state.getFluidState().getType(), 1000);
+		
+		if(!CapabilityUtils.hasFluidItemCap(stack)) {
+			return;
+		}
+		
+		IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(stack);
+		
+		int accepted = handler.fill(sourceFluid, FluidAction.SIMULATE);
+		
+		if(accepted < 1000) {
+			return;
+		}
+		
+		handler.fill(sourceFluid, FluidAction.EXECUTE);
+		
+		world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+		
+		world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
 	}
 
 }

@@ -14,35 +14,46 @@ import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 public class TileFluidVoid extends GenericMaterialTile {
+	
+	public static final int CAPACITY = 128000;
+	
+	public static final int INPUT_SLOT = 0;
 
 	public TileFluidVoid(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsBlockTypes.TILE_FLUIDVOID.get(), worldPos, blockState);
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentFluidHandlerSimple(128000, this, "").setInputDirections(Direction.values()));
+		addComponent(new ComponentFluidHandlerSimple(CAPACITY, this, "").setInputDirections(Direction.values()));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1)).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.fluidvoid, this).createMenu((id, player) -> new ContainerFluidVoid(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
 	private void tickServer(ComponentTickable tick) {
+		
 		ComponentInventory inv = getComponent(IComponentType.Inventory);
-		ComponentFluidHandlerSimple handler = getComponent(IComponentType.FluidHandler);
-		ItemStack input = inv.getItem(0);
-		if (!input.isEmpty() && CapabilityUtils.hasFluidItemCap(input)) {
-			CapabilityUtils.drainFluidItem(input, Integer.MAX_VALUE, FluidAction.EXECUTE);
-			if (input.getItem() instanceof BucketItem) {
-				inv.setItem(0, new ItemStack(Items.BUCKET, 1));
-			}
+		
+		ComponentFluidHandlerSimple simple = getComponent(IComponentType.FluidHandler);
+		
+		simple.drain(simple.getFluidAmount(), FluidAction.EXECUTE);
+		
+		ItemStack input = inv.getItem(INPUT_SLOT);
+		
+		if(input.isEmpty() || !CapabilityUtils.hasFluidItemCap(input)) {
+			return;
 		}
-
-		handler.drain(handler.getFluidAmount(), FluidAction.EXECUTE);
+		
+		IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(input);
+		
+		handler.drain(Integer.MAX_VALUE, FluidAction.EXECUTE);
+		
+		inv.setItem(INPUT_SLOT, handler.getContainer());
+		
 	}
 
 }

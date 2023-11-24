@@ -11,17 +11,15 @@ import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -29,8 +27,7 @@ public class FluidUtilities {
 
 	public static boolean isFluidReceiver(BlockEntity acceptor) {
 		for (Direction dir : Direction.values()) {
-			boolean is = isFluidReceiver(acceptor, dir);
-			if (is) {
+			if (isFluidReceiver(acceptor, dir)) {
 				return true;
 			}
 		}
@@ -38,35 +35,36 @@ public class FluidUtilities {
 	}
 
 	public static boolean isFluidReceiver(BlockEntity acceptor, Direction dir) {
-		if (acceptor != null) {
-			if (acceptor.getCapability(ForgeCapabilities.FLUID_HANDLER, dir).isPresent()) {
-				return true;
-			}
-		}
-		return false;
+		return acceptor != null && acceptor.getCapability(ForgeCapabilities.FLUID_HANDLER, dir).isPresent();
 	}
 
 	public static boolean isConductor(BlockEntity acceptor) {
 		return acceptor instanceof IFluidPipe;
 	}
 
-	public static Integer receiveFluid(BlockEntity acceptor, Direction direction, FluidStack perReceiver, boolean debug) {
-		if (isFluidReceiver(acceptor, direction)) {
-			LazyOptional<IFluidHandler> cap = acceptor.getCapability(ForgeCapabilities.FLUID_HANDLER, direction);
-			if (cap.isPresent()) {
-				IFluidHandler handler = cap.resolve().get();
-				boolean canPass = false;
-				for (int i = 0; i < handler.getTanks(); i++) {
-					if (handler.isFluidValid(i, perReceiver)) {
-						canPass = true;
-						break;
-					}
-				}
-				if (canPass) {
-					return handler.fill(perReceiver, debug ? FluidAction.SIMULATE : FluidAction.EXECUTE);
-				}
+	public static int receiveFluid(BlockEntity acceptor, Direction direction, FluidStack perReceiver, boolean debug) {
+
+		if (!isFluidReceiver(acceptor, direction)) {
+			return 0;
+		}
+
+		LazyOptional<IFluidHandler> cap = acceptor.getCapability(ForgeCapabilities.FLUID_HANDLER, direction);
+
+		if (!cap.isPresent()) {
+			return 0;
+		}
+
+		IFluidHandler handler = cap.resolve().get();
+
+		for (int i = 0; i < handler.getTanks(); i++) {
+
+			if (handler.isFluidValid(i, perReceiver)) {
+
+				return handler.fill(perReceiver, debug ? FluidAction.SIMULATE : FluidAction.EXECUTE);
+
 			}
 		}
+
 		return 0;
 	}
 
@@ -75,79 +73,126 @@ public class FluidUtilities {
 	}
 
 	public static void outputToPipe(GenericTile tile, FluidTank[] tanks, Direction... outputDirections) {
+
 		Direction facing = tile.getFacing();
+
 		for (Direction relative : outputDirections) {
+
 			Direction direction = BlockEntityUtils.getRelativeSide(facing, relative.getOpposite());
+
 			BlockPos face = tile.getBlockPos().relative(direction.getOpposite());
+
 			BlockEntity faceTile = tile.getLevel().getBlockEntity(face);
-			if (faceTile != null) {
-				LazyOptional<IFluidHandler> cap = faceTile.getCapability(ForgeCapabilities.FLUID_HANDLER, direction);
-				if (cap.isPresent()) {
-					IFluidHandler fHandler = cap.resolve().get();
-					for (FluidTank fluidTank : tanks) {
-						FluidStack tankFluid = fluidTank.getFluid();
-						int amtAccepted = fHandler.fill(tankFluid, FluidAction.EXECUTE);
-						FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
-						fluidTank.drain(taken, FluidAction.EXECUTE);
-					}
-				}
+
+			if (faceTile == null) {
+				continue;
+			}
+
+			LazyOptional<IFluidHandler> cap = faceTile.getCapability(ForgeCapabilities.FLUID_HANDLER, direction);
+
+			if (!cap.isPresent()) {
+				continue;
+			}
+
+			IFluidHandler fHandler = cap.resolve().get();
+
+			for (FluidTank fluidTank : tanks) {
+
+				FluidStack tankFluid = fluidTank.getFluid();
+
+				int amtAccepted = fHandler.fill(tankFluid, FluidAction.EXECUTE);
+
+				FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
+
+				fluidTank.drain(taken, FluidAction.EXECUTE);
 			}
 		}
 	}
 
 	public static void drainItem(GenericTile tile, FluidTank[] tanks) {
+
 		ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
-		List<ItemStack> buckets = inv.getInputBucketContents();
-		if (tanks.length >= buckets.size()) {
-			for (int i = 0; i < buckets.size(); i++) {
-				FluidTank tank = tanks[i];
-				ItemStack stack = buckets.get(i);
-				if (!stack.isEmpty() && !CapabilityUtils.isFluidItemNull()) {
-					FluidStack containerFluid = CapabilityUtils.drainFluidItem(stack, Integer.MAX_VALUE, FluidAction.SIMULATE);
-					if (tank.isFluidValid(containerFluid)) {
-						int amtDrained = tank.fill(containerFluid, FluidAction.SIMULATE);
-						FluidStack drained = new FluidStack(containerFluid.getFluid(), amtDrained);
-						CapabilityUtils.drainFluidItem(stack, drained, FluidAction.EXECUTE);
-						tank.fill(drained, FluidAction.EXECUTE);
-						if (stack.getItem() instanceof BucketItem) {
-							inv.setItem(inv.getInputBucketStartIndex() + i, new ItemStack(Items.BUCKET));
-						}
-					}
-				}
+
+		int bucketIndex = inv.getInputBucketStartIndex();
+
+		int size = inv.getInputBucketContents().size();
+
+		if (tanks.length < size) {
+
+			return;
+
+		}
+
+		int index;
+
+		for (int i = 0; i < size; i++) {
+
+			index = bucketIndex + i;
+
+			FluidTank tank = tanks[i];
+			ItemStack stack = inv.getItem(index);
+
+			int room = tank.getSpace();
+
+			if (stack.isEmpty() || CapabilityUtils.isFluidItemNull() || room <= 0 || !CapabilityUtils.hasFluidItemCap(stack)) {
+				continue;
 			}
+
+			IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(stack);
+
+			FluidStack containerFluid = handler.drain(room, FluidAction.SIMULATE);
+
+			if (containerFluid.isEmpty() || !tank.isFluidValid(containerFluid)) {
+				continue;
+			}
+
+			int accepted = tank.fill(containerFluid, FluidAction.EXECUTE);
+
+			handler.drain(accepted, FluidAction.EXECUTE);
+
+			inv.setItem(index, handler.getContainer());
+
 		}
 
 	}
 
 	public static void fillItem(GenericTile tile, FluidTank[] tanks) {
-		ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
-		List<ItemStack> buckets = inv.getOutputBucketContents();
-		if (tanks.length >= buckets.size()) {
-			for (int i = 0; i < buckets.size(); i++) {
-				ItemStack stack = buckets.get(i);
-				FluidTank tank = tanks[i];
-				boolean isBucket = stack.getItem() instanceof BucketItem;
-				if (!stack.isEmpty() && !CapabilityUtils.isFluidItemNull()) {
-					FluidStack fluid = tank.getFluid();
-					int amtFilled = CapabilityUtils.fillFluidItem(stack, fluid, FluidAction.SIMULATE);
-					FluidStack taken = new FluidStack(fluid.getFluid(), amtFilled);
-					boolean isWater = taken.getFluid().isSame(Fluids.WATER);
-					if (isBucket && amtFilled == 1000 && (isWater || taken.getFluid().isSame(Fluids.LAVA))) {
-						tank.drain(taken, FluidAction.EXECUTE);
-						ItemStack filledBucket;
-						if (isWater) {
-							filledBucket = new ItemStack(Items.WATER_BUCKET);
-						} else {
-							filledBucket = new ItemStack(Items.LAVA_BUCKET);
-						}
-						inv.setItem(inv.getOutputBucketStartIndex() + i, filledBucket.copy());
-					} else if (!isBucket) {
-						CapabilityUtils.fillFluidItem(stack, taken, FluidAction.EXECUTE);
-						tank.drain(taken, FluidAction.EXECUTE);
-					}
 
-				}
+		ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
+
+		int bucketIndex = inv.getOutputBucketStartIndex();
+
+		int size = inv.getOutputBucketContents().size();
+
+		if (tanks.length < size) {
+
+			return;
+
+		}
+
+		int index;
+
+		for (int i = 0; i < size; i++) {
+
+			index = bucketIndex + i;
+
+			ItemStack stack = inv.getItem(index);
+
+			FluidTank tank = tanks[i];
+
+			if (stack.isEmpty() || CapabilityUtils.isFluidItemNull() || tank.isEmpty() || !CapabilityUtils.hasFluidItemCap(stack)) {
+				continue;
 			}
+
+			FluidStack fluid = tank.getFluid();
+
+			IFluidHandlerItem handler = (IFluidHandlerItem) stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).cast().resolve().get();
+
+			int taken = handler.fill(fluid, FluidAction.EXECUTE);
+
+			tank.drain(taken, FluidAction.EXECUTE);
+
+			inv.setItem(index, handler.getContainer());
 		}
 	}
 

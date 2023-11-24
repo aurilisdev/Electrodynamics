@@ -17,12 +17,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
@@ -146,10 +149,20 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 			}
 			property.set(FluidStack.EMPTY);
 			property.updateServer();
+			
+			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_EMPTY, 1.0F));
 
+			return;
+			
+		}
+		
+		if(!CapabilityUtils.hasFluidItemCap(holding)) {
+			return;
 		}
 
-		FluidStack taken = CapabilityUtils.drainFluidItem(holding, Integer.MAX_VALUE, FluidAction.SIMULATE);
+		IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(holding);
+		
+		FluidStack taken = handler.drain(Integer.MAX_VALUE, FluidAction.SIMULATE);
 
 		if (taken.isEmpty()) {
 			return;
@@ -157,6 +170,8 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
 
 		property.set(taken);
 		property.updateServer();
+		
+		Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
 
 	}
 

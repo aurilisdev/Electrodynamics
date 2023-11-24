@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import electrodynamics.api.capability.types.gas.IGasHandlerItem;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.recipe.categories.fluid2gas.Fluid2GasRecipe;
@@ -20,6 +21,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -52,7 +54,15 @@ public abstract class Fluid2GasRecipeCategory<T extends Fluid2GasRecipe> extends
 			List<ItemStack> buckets = new ArrayList<>();
 			for (FluidStack stack : ing.getMatchingFluids()) {
 				ItemStack bucket = new ItemStack(stack.getFluid().getBucket(), 1);
-				CapabilityUtils.fillFluidItem(bucket, stack, FluidAction.EXECUTE);
+				if (CapabilityUtils.hasFluidItemCap(bucket)) {
+
+					IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(bucket);
+
+					handler.fill(stack, FluidAction.EXECUTE);
+
+					bucket = handler.getContainer();
+
+				}
 				buckets.add(bucket);
 			}
 			ingredients.add(buckets);
@@ -67,7 +77,11 @@ public abstract class Fluid2GasRecipeCategory<T extends Fluid2GasRecipe> extends
 
 		ItemStack output = new ItemStack(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
 
-		CapabilityUtils.fillGasItem(output, recipe.getGasRecipeOutput(), GasAction.EXECUTE);
+		IGasHandlerItem outputHandler = CapabilityUtils.getGasHandlerItem(output);
+
+		outputHandler.fillTank(0, recipe.getGasRecipeOutput(), GasAction.EXECUTE);
+
+		output = outputHandler.getContainer();
 
 		if (output.getItem() == Items.AIR) {
 			output = new ItemStack(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
@@ -78,7 +92,15 @@ public abstract class Fluid2GasRecipeCategory<T extends Fluid2GasRecipe> extends
 		if (recipe.hasGasBiproducts()) {
 			for (ProbableGas gas : recipe.getGasBiproducts()) {
 				ItemStack temp = new ItemStack(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
-				CapabilityUtils.fillGasItem(temp, gas.getFullStack(), GasAction.EXECUTE);
+				if (CapabilityUtils.hasGasItemCap(temp)) {
+
+					IGasHandlerItem handler = CapabilityUtils.getGasHandlerItem(temp);
+
+					handler.fillTank(0, gas.getFullStack(), GasAction.EXECUTE);
+
+					temp = handler.getContainer();
+
+				}
 				if (temp.getItem() == Items.AIR) {
 					temp = new ItemStack(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
 				}

@@ -11,11 +11,10 @@ import electrodynamics.prefab.utilities.CapabilityUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 
 /**
  * An extension of the ScreenComponentFluid class that allows for draining PropertyFluidTanks by clicking on them.
@@ -72,29 +71,23 @@ public class ScreenComponentFluidGaugeInput extends ScreenComponentFluidGauge {
 			return;
 		}
 
-		boolean isBucket = stack.getItem() instanceof BucketItem;
+		IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(stack);
 
-		FluidStack tankFluid = tank.getFluid();
-
-		int amtTaken = CapabilityUtils.fillFluidItem(stack, tankFluid, FluidAction.SIMULATE);
-
-		FluidStack taken = new FluidStack(tankFluid.getFluid(), amtTaken);
-
-		if (isBucket && amtTaken == 1000 && (tankFluid.getFluid().isSame(Fluids.WATER) || tankFluid.getFluid().isSame(Fluids.LAVA))) {
-
-			stack = new ItemStack(taken.getFluid().getBucket(), 1);
-			tank.drain(taken, FluidAction.EXECUTE);
-			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
-			tank.updateServer();
-
-		} else if (amtTaken > 0 && !isBucket) {
-
-			CapabilityUtils.fillFluidItem(stack, tankFluid, FluidAction.EXECUTE);
-			tank.drain(taken, FluidAction.EXECUTE);
-			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
-			tank.updateServer();
-
+		FluidStack tankFluid = tank.getFluid().copy();
+		
+		int taken = handler.fill(tankFluid, FluidAction.EXECUTE);
+		
+		if(taken <= 0) {
+			return;
 		}
+		
+		tank.drain(taken, FluidAction.EXECUTE);
+		
+		Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
+		
+		stack = handler.getContainer();
+		
+		tank.updateServer();
 
 		NetworkHandler.CHANNEL.sendToServer(new PacketUpdateCarriedItemServer(stack.copy(), ((GenericContainerBlockEntity<?>) screen.getMenu()).getHostFromIntArray().getBlockPos(), Minecraft.getInstance().player.getUUID()));
 

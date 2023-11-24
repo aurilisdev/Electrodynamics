@@ -3,6 +3,7 @@ package electrodynamics.prefab.screen.component.types;
 import java.util.ArrayList;
 import java.util.List;
 
+import electrodynamics.api.capability.types.gas.IGasHandlerItem;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.tile.pipelines.gas.TileGasPipeFilter;
@@ -12,8 +13,11 @@ import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
 import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge.GasGaugeTextures;
 import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.registers.ElectrodynamicsSounds;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
 
@@ -113,14 +117,26 @@ public class ScreenComponentGasFilter extends ScreenComponentGeneric {
 			}
 			property.set(GasStack.EMPTY);
 			property.updateServer();
+			
+			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), 1.0F));
+			
+			return;
 
 		}
+		
+		if(!CapabilityUtils.hasGasItemCap(holding)) {
+			return;
+		}
+		
+		IGasHandlerItem handler = CapabilityUtils.getGasHandlerItem(holding);
 
-		GasStack taken = CapabilityUtils.drainGasItem(holding, Double.MAX_VALUE, GasAction.SIMULATE);
+		GasStack taken = handler.drainTank(0, Double.MAX_VALUE, GasAction.SIMULATE);
 
 		if (taken.isEmpty()) {
 			return;
 		}
+		
+		Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), 1.0F));
 
 		property.set(taken);
 		property.updateServer();
