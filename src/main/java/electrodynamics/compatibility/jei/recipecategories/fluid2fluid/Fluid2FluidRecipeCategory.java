@@ -17,6 +17,7 @@ import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -51,7 +52,17 @@ public abstract class Fluid2FluidRecipeCategory<T extends ElectrodynamicsRecipe>
 			List<ItemStack> buckets = new ArrayList<>();
 			for (FluidStack stack : ing.getMatchingFluids()) {
 				ItemStack bucket = new ItemStack(stack.getFluid().getBucket(), 1);
-				CapabilityUtils.fillFluidItem(bucket, stack, FluidAction.EXECUTE);
+
+				if (CapabilityUtils.hasFluidItemCap(bucket)) {
+
+					IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(bucket);
+
+					handler.fill(stack, FluidAction.EXECUTE);
+
+					bucket = handler.getContainer();
+
+				}
+
 				buckets.add(bucket);
 			}
 			ingredients.add(buckets);
@@ -66,13 +77,29 @@ public abstract class Fluid2FluidRecipeCategory<T extends ElectrodynamicsRecipe>
 		List<ItemStack> outputItems = new ArrayList<>();
 
 		ItemStack bucket = new ItemStack(recipe.getFluidRecipeOutput().getFluid().getBucket(), 1);
-		CapabilityUtils.fillFluidItem(bucket, recipe.getFluidRecipeOutput(), FluidAction.EXECUTE);
+		if (CapabilityUtils.hasFluidItemCap(bucket)) {
+
+			IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(bucket);
+
+			handler.fill(recipe.getFluidRecipeOutput(), FluidAction.EXECUTE);
+
+			bucket = handler.getContainer();
+
+		}
 		outputItems.add(bucket);
 
 		if (recipe.hasFluidBiproducts()) {
 			for (ProbableFluid stack : recipe.getFluidBiproducts()) {
 				ItemStack temp = new ItemStack(stack.getFullStack().getFluid().getBucket(), 1);
-				CapabilityUtils.fillFluidItem(temp, stack.getFullStack(), FluidAction.EXECUTE);
+				if (CapabilityUtils.hasFluidItemCap(temp)) {
+
+					IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(temp);
+
+					handler.fill(stack.getFullStack(), FluidAction.EXECUTE);
+
+					temp = handler.getContainer();
+
+				}
 				outputItems.add(temp);
 			}
 		}

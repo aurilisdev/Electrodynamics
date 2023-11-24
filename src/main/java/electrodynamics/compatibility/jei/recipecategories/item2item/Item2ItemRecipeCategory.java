@@ -13,6 +13,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public abstract class Item2ItemRecipeCategory<T extends Item2ItemRecipe> extends AbstractRecipeCategory<T> {
@@ -46,7 +47,15 @@ public abstract class Item2ItemRecipeCategory<T extends Item2ItemRecipe> extends
 		if (recipe.hasFluidBiproducts()) {
 			for (ProbableFluid fluid : recipe.getFluidBiproducts()) {
 				ItemStack canister = new ItemStack(fluid.getFullStack().getFluid().getBucket(), 1);
-				CapabilityUtils.fillFluidItem(canister, fluid.getFullStack(), FluidAction.EXECUTE);
+				if (CapabilityUtils.hasFluidItemCap(canister)) {
+
+					IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(canister);
+
+					handler.fill(fluid.getFullStack(), FluidAction.EXECUTE);
+
+					canister = handler.getContainer();
+
+				}
 				outputs.add(canister);
 			}
 		}

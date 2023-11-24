@@ -303,7 +303,7 @@ public class ComponentInventory implements IComponent, WorldlyContainer {
 	public void setItem(int index, ItemStack stack) {
 
 		NonNullList<ItemStack> list = items.get();
-		if (index < 0 || index >= list.size() || ItemStack.tagMatches(list.get(index), stack)) {
+		if (index < 0 || index >= list.size() || ItemStack.matches(list.get(index), stack)) {
 			return;
 		}
 
