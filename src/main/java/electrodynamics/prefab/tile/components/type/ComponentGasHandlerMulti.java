@@ -64,10 +64,22 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
 	private Gas[] validOutputGases;
 	private HashSet<Gas> outputValidatorGases = new HashSet<>();
 
-	private LazyOptional<IGasHandler>[] sidedOptionals = new LazyOptional[6];
+	private LazyOptional<IGasHandler>[] sidedOptionals = genArr(); // Down Up North South West East
 
-	private LazyOptional<IGasHandler> inputOptional;
-	private LazyOptional<IGasHandler> outputOptional;
+	private static LazyOptional<IGasHandler>[] genArr() {
+
+		LazyOptional<IGasHandler>[] arr = new LazyOptional[6];
+
+		for (int i = 0; i < 6; i++) {
+			arr[i] = LazyOptional.empty();
+		}
+
+		return arr;
+
+	}
+
+	private LazyOptional<IGasHandler> inputOptional = LazyOptional.empty();
+	private LazyOptional<IGasHandler> outputOptional = LazyOptional.empty();
 
 	public ComponentGasHandlerMulti(GenericTile holder) {
 		this.holder = holder;
