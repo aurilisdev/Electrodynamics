@@ -56,11 +56,23 @@ public class ComponentElectrodynamic implements IComponent, ICapabilityElectrody
 
 	private boolean isSided = false;
 
-	private LazyOptional<ICapabilityElectrodynamic>[] sidedOptionals = new LazyOptional[6]; // Down Up North South West East
+	private LazyOptional<ICapabilityElectrodynamic>[] sidedOptionals = genArr(); // Down Up North South West East
 
-	private LazyOptional<ICapabilityElectrodynamic> sidelessOptional;
-	private LazyOptional<ICapabilityElectrodynamic> inputOptional;
-	private LazyOptional<ICapabilityElectrodynamic> outputOptional;
+	private static LazyOptional<ICapabilityElectrodynamic>[] genArr() {
+
+		LazyOptional<ICapabilityElectrodynamic>[] arr = new LazyOptional[6];
+
+		for (int i = 0; i < 6; i++) {
+			arr[i] = LazyOptional.empty();
+		}
+
+		return arr;
+
+	}
+
+	private LazyOptional<ICapabilityElectrodynamic> sidelessOptional = LazyOptional.empty();
+	private LazyOptional<ICapabilityElectrodynamic> inputOptional = LazyOptional.empty();
+	private LazyOptional<ICapabilityElectrodynamic> outputOptional = LazyOptional.empty();
 
 	public ComponentElectrodynamic(GenericTile source, boolean isProducer, boolean isReceiver) {
 
