@@ -38,7 +38,7 @@ public abstract class GenericTileFluidPipe extends GenericTile implements IFluid
 		if (capability == ForgeCapabilities.FLUID_HANDLER) {
 			return LazyOptional.of(() -> handler.get((facing == null ? Direction.UP : facing).ordinal())).cast();
 		}
-		return super.getCapability(capability, facing);
+		return LazyOptional.empty();
 	}
 
 	@Override

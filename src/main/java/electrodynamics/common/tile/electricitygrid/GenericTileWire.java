@@ -122,7 +122,7 @@ public abstract class GenericTileWire extends GenericTile implements IConductor 
 		if (capability == ElectrodynamicsCapabilities.ELECTRODYNAMIC) {
 			return LazyOptional.of(() -> handler.get(facing.ordinal())).cast();
 		}
-		return super.getCapability(capability, facing);
+		return LazyOptional.empty();
 	}
 
 	@Override
