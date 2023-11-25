@@ -116,12 +116,10 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
 	minecraft 'net.minecraftforge:forge:1.19.2-43.3.5'
-    compileOnly(fg.deobf("mezz.jei:jei-1.19.2-common-api:11.3.0.271"))
-    compileOnly(fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.3.0.271"))
-    runtimeOnly(fg.deobf("mezz.jei:jei-1.19.2-forge:11.3.0.271"))
+    compileOnly(fg.deobf("mezz.jei:jei-1.19.2-common-api:11.5.0.297"))
+    compileOnly(fg.deobf("mezz.jei:jei-1.19.2-forge-api:11.5.0.297"))
+    runtimeOnly(fg.deobf("mezz.jei:jei-1.19.2-forge:11.5.0.297"))
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
-    
-    implementation fg.deobf("curse.maven:pneumaticcraft-repressurized-281849:4866219")
 }
 
 
