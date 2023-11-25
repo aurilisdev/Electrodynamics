@@ -50,14 +50,14 @@ public class ScreenElectrolyticSeparator extends GenericMaterialScreen<Container
 		addComponent(new ScreenComponentFluidGauge(() -> {
 			TileElectrolyticSeparator boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.GasHandler).getOutputTanks()[0];
+				return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getOutputTanks()[0];
 			}
 			return null;
 		}, 62, 18));
 		addComponent(new ScreenComponentFluidGauge(() -> {
 			TileElectrolyticSeparator boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.GasHandler).getOutputTanks()[1];
+				return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getOutputTanks()[1];
 			}
 			return null;
 		}, 102, 18));
