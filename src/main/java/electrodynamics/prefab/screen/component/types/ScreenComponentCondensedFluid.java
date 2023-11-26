@@ -14,10 +14,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class ScreenComponentCondensedFluid extends ScreenComponentGeneric {
@@ -89,28 +88,22 @@ public class ScreenComponentCondensedFluid extends ScreenComponentGeneric {
 		if (!CapabilityUtils.hasFluidItemCap(stack)) {
 			return;
 		}
-
-		boolean isBucket = stack.getItem() instanceof BucketItem;
-
-		int amtTaken = CapabilityUtils.fillFluidItem(stack, fluidStack, FluidAction.SIMULATE);
-
-		FluidStack taken = new FluidStack(fluidStack.getFluid(), amtTaken);
-
-		if (isBucket && amtTaken == 1000 && (fluidStack.getFluid().isSame(Fluids.WATER) || fluidStack.getFluid().isSame(Fluids.LAVA))) {
-
-			stack = new ItemStack(taken.getFluid().getBucket(), 1);
-			fluidStack.shrink(amtTaken);
-			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
-			fluidProperty.updateServer();
-
-		} else if (amtTaken > 0 && !isBucket) {
-
-			CapabilityUtils.fillFluidItem(stack, fluidStack, FluidAction.EXECUTE);
-			fluidStack.shrink(amtTaken);
-			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
-			fluidProperty.updateServer();
-
+		
+		IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(stack);
+		
+		int taken = handler.fill(fluidStack, FluidAction.EXECUTE);
+		
+		if(taken <= 0) {
+			return;
 		}
+		
+		fluidStack.shrink(taken);
+		
+		Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
+		
+		fluidProperty.updateServer();
+		
+		stack = handler.getContainer();
 
 		NetworkHandler.CHANNEL.sendToServer(new PacketUpdateCarriedItemServer(stack.copy(), owner.getBlockPos(), Minecraft.getInstance().player.getUUID()));
 

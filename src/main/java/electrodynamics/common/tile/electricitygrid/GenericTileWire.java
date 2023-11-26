@@ -123,7 +123,7 @@ public abstract class GenericTileWire extends GenericConnectTile implements ICon
 		if (capability == ElectrodynamicsCapabilities.ELECTRODYNAMIC) {
 			return LazyOptional.of(() -> handler.get(facing.ordinal())).cast();
 		}
-		return super.getCapability(capability, facing);
+		return LazyOptional.empty();
 	}
 
 	@Override

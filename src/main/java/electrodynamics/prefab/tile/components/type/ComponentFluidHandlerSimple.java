@@ -49,11 +49,23 @@ public class ComponentFluidHandlerSimple extends PropertyFluidTank implements IC
 
 	private HashSet<Fluid> validatorFluids = new HashSet<>();
 
-	private LazyOptional<IFluidHandler>[] sidedOptionals = new LazyOptional[6];
+	private LazyOptional<IFluidHandler>[] sidedOptionals = genArr(); // Down Up North South West East
 
-	private LazyOptional<IFluidHandler> sidelessOptional;
-	private LazyOptional<IFluidHandler> inputOptional;
-	private LazyOptional<IFluidHandler> outputOptional;
+	private static LazyOptional<IFluidHandler>[] genArr() {
+
+		LazyOptional<IFluidHandler>[] arr = new LazyOptional[6];
+
+		for (int i = 0; i < 6; i++) {
+			arr[i] = LazyOptional.empty();
+		}
+
+		return arr;
+
+	}
+
+	private LazyOptional<IFluidHandler> sidelessOptional = LazyOptional.empty();
+	private LazyOptional<IFluidHandler> inputOptional = LazyOptional.empty();
+	private LazyOptional<IFluidHandler> outputOptional = LazyOptional.empty();
 
 	private boolean isSided = false;
 

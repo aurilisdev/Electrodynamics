@@ -1,5 +1,6 @@
 package electrodynamics.common.tile.pipelines.gas;
 
+import electrodynamics.api.capability.types.gas.IGasHandlerItem;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerGasVent;
@@ -30,13 +31,19 @@ public class TileGasVent extends GenericMaterialTile {
 
 	public void tickServer(ComponentTickable tickable) {
 		ComponentInventory inv = getComponent(IComponentType.Inventory);
-		ComponentGasHandlerSimple handler = getComponent(IComponentType.GasHandler);
+		ComponentGasHandlerSimple simple = getComponent(IComponentType.GasHandler);
 		ItemStack input = inv.getItem(0);
 		if (!input.isEmpty() && CapabilityUtils.hasGasItemCap(input)) {
-			CapabilityUtils.drainGasItem(input, Integer.MAX_VALUE, GasAction.EXECUTE);
+			
+			IGasHandlerItem handler = CapabilityUtils.getGasHandlerItem(input);
+			
+			for(int i = 0; i < handler.getTanks(); i++) {
+				handler.drainTank(i, Double.MAX_VALUE, GasAction.EXECUTE);
+			}
+
 		}
 
-		handler.drain(handler.getGasAmount(), GasAction.EXECUTE);
+		simple.drain(simple.getGasAmount(), GasAction.EXECUTE);
 	}
 
 }

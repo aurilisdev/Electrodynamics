@@ -424,5 +424,9 @@ public class GasTank implements IGasTank, IGasHandler {
 	public double bringPressureTo(int tank, int atm, GasAction action) {
 		return bringPressureTo(atm, action);
 	}
+	
+	public double getRoom() {
+		return getCapacity() - getGasAmount();
+	}
 
 }

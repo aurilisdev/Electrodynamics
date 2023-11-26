@@ -69,10 +69,22 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 	private Fluid[] validOutputFluids;
 	private HashSet<Fluid> outputValidatorFluids = new HashSet<>();
 
-	private LazyOptional<IFluidHandler>[] sidedOptionals = new LazyOptional[6];
+	private LazyOptional<IFluidHandler>[] sidedOptionals = genArr(); // Down Up North South West East
+	
+	private static LazyOptional<IFluidHandler>[] genArr() {
+		
+		LazyOptional<IFluidHandler>[] arr = new LazyOptional[6];
+		
+		for(int i = 0; i < 6; i++) {
+			arr[i] = LazyOptional.empty();
+		}
+		
+		return arr;
+		
+	}
 
-	private LazyOptional<IFluidHandler> inputOptional;
-	private LazyOptional<IFluidHandler> outputOptional;
+	private LazyOptional<IFluidHandler> inputOptional = LazyOptional.empty();
+	private LazyOptional<IFluidHandler> outputOptional = LazyOptional.empty();
 
 	public ComponentFluidHandlerMulti(GenericTile holder) {
 		this.holder = holder;
@@ -80,6 +92,8 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 		if (!holder.getBlockState().hasProperty(GenericEntityBlock.FACING)) {
 			throw new UnsupportedOperationException("The tile " + holder + " must have the FACING direction property!");
 		}
+		
+		
 	}
 
 	public ComponentFluidHandlerMulti setInputTanks(int count, int... capacity) {

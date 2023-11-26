@@ -2,6 +2,7 @@ package electrodynamics.prefab.screen.component.types.gauges;
 
 import java.util.function.Supplier;
 
+import electrodynamics.api.capability.types.gas.IGasHandlerItem;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.api.gas.PropertyGasTank;
@@ -66,19 +67,23 @@ public class ScreenComponentGasGaugeInput extends ScreenComponentGasGauge {
 			return;
 		}
 
-		GasStack tankGas = tank.getGas();
-
-		double amtTaken = CapabilityUtils.fillGasItem(stack, tankGas, GasAction.SIMULATE);
-
-		GasStack taken = new GasStack(tankGas.getGas(), amtTaken, tankGas.getTemperature(), tankGas.getPressure());
-		if (amtTaken > 0) {
-
-			CapabilityUtils.fillGasItem(stack, tankGas, GasAction.EXECUTE);
-			tank.drain(taken, GasAction.EXECUTE);
-			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), 1.0F));
-			tank.updateServer();
-
+		GasStack tankGas = tank.getGas().copy();
+		
+		IGasHandlerItem handler = CapabilityUtils.getGasHandlerItem(stack);
+		
+		double taken = handler.fillTank(0, tankGas, GasAction.EXECUTE);
+		
+		if(taken <= 0) {
+			return;
 		}
+		
+		tank.drain(taken, GasAction.EXECUTE);
+
+		Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), 1.0F));
+		
+		tank.updateServer();
+		
+		stack = handler.getContainer();
 
 		NetworkHandler.CHANNEL.sendToServer(new PacketUpdateCarriedItemServer(stack.copy(), ((GenericContainerBlockEntity<?>) screen.getMenu()).getHostFromIntArray().getBlockPos(), Minecraft.getInstance().player.getUUID()));
 

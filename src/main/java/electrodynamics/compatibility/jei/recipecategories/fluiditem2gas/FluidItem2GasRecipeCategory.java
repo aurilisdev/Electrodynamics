@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import electrodynamics.api.capability.types.gas.IGasHandlerItem;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.recipe.categories.fluiditem2gas.FluidItem2GasRecipe;
@@ -19,6 +20,7 @@ import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -40,7 +42,15 @@ public class FluidItem2GasRecipeCategory<T extends FluidItem2GasRecipe> extends 
 			List<ItemStack> buckets = new ArrayList<>();
 			for (FluidStack stack : ing.getMatchingFluids()) {
 				ItemStack bucket = new ItemStack(stack.getFluid().getBucket(), 1);
-				CapabilityUtils.fillFluidItem(bucket, stack, FluidAction.EXECUTE);
+				if (CapabilityUtils.hasFluidItemCap(bucket)) {
+
+					IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(bucket);
+
+					handler.fill(stack, FluidAction.EXECUTE);
+
+					bucket = handler.getContainer();
+
+				}
 				buckets.add(bucket);
 			}
 			ingredients.add(buckets);
@@ -59,15 +69,29 @@ public class FluidItem2GasRecipeCategory<T extends FluidItem2GasRecipe> extends 
 
 		ItemStack bucket = new ItemStack(recipe.getGasRecipeOutput().getGas().getContainer(), 1);
 
-		if (!bucket.isEmpty()) {
-			CapabilityUtils.fillGasItem(bucket, recipe.getGasRecipeOutput(), GasAction.EXECUTE);
+		if (!bucket.isEmpty() && CapabilityUtils.hasGasItemCap(bucket)) {
+			
+			IGasHandlerItem handler = CapabilityUtils.getGasHandlerItem(bucket);
+			
+			handler.fillTank(0, recipe.getGasRecipeOutput(), GasAction.EXECUTE);
+			
+			bucket = handler.getContainer();
+			
 			outputItems.add(bucket);
 		}
 
 		if (recipe.hasFluidBiproducts()) {
 			for (ProbableFluid stack : recipe.getFluidBiproducts()) {
 				ItemStack temp = new ItemStack(stack.getFullStack().getFluid().getBucket(), 1);
-				CapabilityUtils.fillFluidItem(temp, stack.getFullStack(), FluidAction.EXECUTE);
+				if (CapabilityUtils.hasFluidItemCap(temp)) {
+
+					IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(temp);
+
+					handler.fill(stack.getFullStack(), FluidAction.EXECUTE);
+
+					temp = handler.getContainer();
+
+				}
 				outputItems.add(temp);
 			}
 		}
