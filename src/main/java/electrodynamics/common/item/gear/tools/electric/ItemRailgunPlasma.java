@@ -15,10 +15,10 @@ import net.minecraft.world.level.Level;
 
 public class ItemRailgunPlasma extends ItemRailgun {
 
-	public static final double JOULES_PER_SHOT = 1000000.0;
-	private static final int OVERHEAT_TEMPERATURE = 500;
-	private static final int TEMPERATURE_PER_SHOT = 200;
-	private static final double TEMPERATURE_REDUCED_PER_TICK = 1.0;
+	public static final double JOULES_PER_SHOT = 250000.0;
+	private static final int OVERHEAT_TEMPERATURE = 1250;
+	private static final int TEMPERATURE_PER_SHOT = 125;
+	private static final double TEMPERATURE_REDUCED_PER_TICK = 2.5;
 	private static final double OVERHEAT_WARNING_THRESHOLD = 0.5;
 
 	public ItemRailgunPlasma(ElectricItemProperties properties) {
@@ -34,6 +34,7 @@ public class ItemRailgunPlasma extends ItemRailgun {
 		} else {
 			gunStack = playerIn.getOffhandItem();
 		}
+		
 		if (!worldIn.isClientSide) {
 			ItemRailgunPlasma railgun = (ItemRailgunPlasma) gunStack.getItem();
 

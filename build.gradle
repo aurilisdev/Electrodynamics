@@ -15,7 +15,6 @@ buildscript {
 
 plugins {
     id "com.matthewprenger.cursegradle" version '1.4.0'
-
 }
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
@@ -29,9 +28,9 @@ libsDirName = "../output"
 distsDirName = "../output"
 
 def	version_minor="6"
-def	version_revision='3'
+def	version_revision='4'
 def	minecraft_version='1.18.2'
-def	version_build='10'
+def	version_build='0'
 def	version_major='0'
 
 version = minecraft_version+'-'+version_major+'.'+version_minor+'.'+version_revision+'-'+version_build
@@ -109,9 +108,9 @@ mixin {
     add sourceSets.main, "electrodynamics.refmap.json"
 }
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.18.2-40.0.45'
-    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.0.193:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.0.193")
+	minecraft 'net.minecraftforge:forge:1.18.2-40.1.73'
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.1.232:api")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.1.232")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }

@@ -44,7 +44,8 @@ import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
-import net.minecraftforge.client.event.RenderLevelLastEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent;
+import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -105,81 +106,80 @@ public class ClientEvents {
 	public static HashMap<BlockPos, QuarryArmDataHolder> quarryArm = new HashMap<>();
 
 	@SubscribeEvent
-	public static void renderSelectedBlocks(RenderLevelLastEvent event) {
-		PoseStack matrix = event.getPoseStack();
-		MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
-		VertexConsumer builder = buffer.getBuffer(RenderType.LINES);
-		Minecraft minecraft = Minecraft.getInstance();
-		GameRenderer renderer = minecraft.gameRenderer;
-		Vec3 camera = renderer.getMainCamera().getPosition();
-		Iterator<Pair<Long, BlockPos>> it = blocks.iterator();
-		while (it.hasNext()) {
-			Pair<Long, BlockPos> pair = it.next();
-			AABB box = new AABB(pair.getSecond());
-			matrix.pushPose();
-			matrix.translate(-camera.x, -camera.y, -camera.z);
-			LevelRenderer.renderLineBox(matrix, builder, box, 1.0F, 1.0F, 1.0F, 1.0F);
-			matrix.popPose();
-			if (System.currentTimeMillis() - pair.getFirst() > 10000) {
-				it.remove();
+	public static void renderSelectedBlocks(RenderLevelStageEvent event) {
+		if (event.getStage() == Stage.AFTER_WEATHER) {
+			PoseStack matrix = event.getPoseStack();
+			MultiBufferSource.BufferSource buffer = Minecraft.getInstance().renderBuffers().bufferSource();
+			VertexConsumer builder = buffer.getBuffer(RenderType.LINES);
+			Minecraft minecraft = Minecraft.getInstance();
+			GameRenderer renderer = minecraft.gameRenderer;
+			Vec3 camera = renderer.getMainCamera().getPosition();
+			Iterator<Pair<Long, BlockPos>> it = blocks.iterator();
+			while (it.hasNext()) {
+				Pair<Long, BlockPos> pair = it.next();
+				AABB box = new AABB(pair.getSecond());
+				matrix.pushPose();
+				matrix.translate(-camera.x, -camera.y, -camera.z);
+				LevelRenderer.renderLineBox(matrix, builder, box, 1.0F, 1.0F, 1.0F, 1.0F);
+				matrix.popPose();
+				if (System.currentTimeMillis() - pair.getFirst() > 10000) {
+					it.remove();
+				}
 			}
-		}
-		buffer.endBatch(RenderType.LINES);
-		VertexConsumer sheetBuilder = buffer.getBuffer(RenderingUtils.beaconType());
-		markerLines.forEach((pos, list) -> {
-			list.forEach(aabb -> {
+			buffer.endBatch(RenderType.LINES);
+			VertexConsumer sheetBuilder = buffer.getBuffer(RenderingUtils.beaconType());
+			markerLines.forEach((pos, list) -> list.forEach(aabb -> {
 				matrix.pushPose();
 				matrix.translate(-camera.x, -camera.y, -camera.z);
 				RenderingUtils.renderSolidColorBox(matrix, minecraft, sheetBuilder, aabb, 1.0F, 0F, 0F, 1.0F, 255, 0);
 				matrix.popPose();
+			}));
+			buffer.endBatch(RenderingUtils.beaconType());
+			TextureAtlasSprite cornerFrame = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_QUARRYARM);
+			float u0Frame = cornerFrame.getU0();
+			float u1Frame = cornerFrame.getU1();
+			float v0Frame = cornerFrame.getV0();
+			float v1Frame = cornerFrame.getV1();
+			float[] colorsFrame = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
+
+			TextureAtlasSprite titanium = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(SubtypeDrillHead.titanium.blockTextureLoc);
+			float u0Titanium = titanium.getU0();
+			float u1Titanium = titanium.getU1();
+			float v0Titanium = titanium.getV0();
+			float v1Titanium = titanium.getV1();
+			float[] colorsTitanium = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
+
+			VertexConsumer armBuilder = buffer.getBuffer(Sheets.solidBlockSheet());
+
+			quarryArm.forEach((pos, data) -> {
+				data.armParts.forEach(aabb -> {
+					matrix.pushPose();
+					matrix.translate(-camera.x, -camera.y, -camera.z);
+					RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, 255);
+					matrix.popPose();
+				});
+				data.titaniumParts.forEach(aabb -> {
+					matrix.pushPose();
+					matrix.translate(-camera.x, -camera.y, -camera.z);
+					RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, 255);
+					matrix.popPose();
+				});
+				if (data.headType != null) {
+					matrix.pushPose();
+					matrix.translate(-camera.x, -camera.y, -camera.z);
+					TextureAtlasSprite headText = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(data.headType.blockTextureLoc);
+					float u0Head = headText.getU0();
+					float u1Head = headText.getU1();
+					float v0Head = headText.getV0();
+					float v1Head = headText.getV1();
+					float[] colorsHead = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
+					RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, data.drillHead, colorsHead[0], colorsHead[1], colorsHead[2], colorsHead[3], u0Head, v0Head, u1Head, v1Head, 255);
+					matrix.popPose();
+				}
 			});
-		});
-		buffer.endBatch(RenderingUtils.beaconType());
-		TextureAtlasSprite cornerFrame = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_QUARRYARM);
-		float u0Frame = cornerFrame.getU0();
-		float u1Frame = cornerFrame.getU1();
-		float v0Frame = cornerFrame.getV0();
-		float v1Frame = cornerFrame.getV1();
-		float[] colorsFrame = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
 
-		TextureAtlasSprite titanium = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(SubtypeDrillHead.titanium.blockTextureLoc);
-		float u0Titanium = titanium.getU0();
-		float u1Titanium = titanium.getU1();
-		float v0Titanium = titanium.getV0();
-		float v1Titanium = titanium.getV1();
-		float[] colorsTitanium = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
-
-		VertexConsumer armBuilder = buffer.getBuffer(Sheets.solidBlockSheet());
-
-		quarryArm.forEach((pos, data) -> {
-			data.armParts.forEach(aabb -> {
-				matrix.pushPose();
-				matrix.translate(-camera.x, -camera.y, -camera.z);
-				RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsFrame[0], colorsFrame[1], colorsFrame[2], colorsFrame[3], u0Frame, v0Frame, u1Frame, v1Frame, 255);
-				matrix.popPose();
-			});
-			data.titaniumParts.forEach(aabb -> {
-				matrix.pushPose();
-				matrix.translate(-camera.x, -camera.y, -camera.z);
-				RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, aabb, colorsTitanium[0], colorsTitanium[1], colorsTitanium[2], colorsTitanium[3], u0Titanium, v0Titanium, u1Titanium, v1Titanium, 255);
-				matrix.popPose();
-			});
-			if (data.headType != null) {
-				matrix.pushPose();
-				matrix.translate(-camera.x, -camera.y, -camera.z);
-				TextureAtlasSprite headText = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(data.headType.blockTextureLoc);
-				float u0Head = headText.getU0();
-				float u1Head = headText.getU1();
-				float v0Head = headText.getV0();
-				float v1Head = headText.getV1();
-				float[] colorsHead = RenderingUtils.getColorArray(cornerFrame.getPixelRGBA(0, 10, 10));
-				RenderingUtils.renderFilledBoxNoOverlay(matrix, armBuilder, data.drillHead, colorsHead[0], colorsHead[1], colorsHead[2], colorsHead[3], u0Head, v0Head, u1Head, v1Head, 255);
-				matrix.popPose();
-			}
-		});
-
-		buffer.endBatch(Sheets.solidBlockSheet());
-
+			buffer.endBatch(Sheets.solidBlockSheet());
+		}
 	}
 
 	public static void addRenderLocation(BlockPos pos) {
