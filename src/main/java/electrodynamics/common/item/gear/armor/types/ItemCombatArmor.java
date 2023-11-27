@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.jetbrains.annotations.Nullable;
+
 import electrodynamics.api.References;
 import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
@@ -295,6 +297,11 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 
 		return true;
 
+	}
+	
+	@Override
+	public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+		return ARMOR_TEXTURE_LOCATION;
 	}
 
 }
