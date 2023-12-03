@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "PGP"
+  ],
+  "key": {
+    "P": {
+      "item": "electrodynamics:compositeplating"
+    },
+    "G": {
+      "item": "electrodynamics:glassaluminum"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:compositearmorhelmet"
+  }
+}

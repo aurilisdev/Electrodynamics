@@ -3,8 +3,8 @@
 	"parent": "minecraft:block/cube_all",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "electrodynamics:model/motorcomplex",
-		"particle": "electrodynamics:model/motorcomplex"
+		"0": "electrodynamics:block/model/motorcomplex",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

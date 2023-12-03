@@ -2,8 +2,8 @@
 	"credit": "aurilisdev",
 	"parent": "block/cube_all",
 	"textures": {
-		"2": "electrodynamics:model/windmill",
-		"particle": "electrodynamics:model/windmill"
+		"2": "electrodynamics:block/model/windmill",
+		"particle": "electrodynamics:block/model/windmill"
 	},
 	"elements": [
 		{

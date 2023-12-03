@@ -3,8 +3,8 @@
 	"parent": "block/cube_all",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "electrodynamics:model/solarpanel",
-		"particle": "electrodynamics:model/solarpanel"
+		"0": "electrodynamics:block/model/solarpanel",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

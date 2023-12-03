@@ -1,0 +1,21 @@
+{
+  "type": "electrodynamics:oxidation_furnace_recipe",
+  "ticks": 200,
+  "usagepertick": 350.0,
+  "iteminputs": {
+    "count": 2,
+    "0": {
+      "tag": "forge:dusts/vanadium",
+      "count": 1
+    },
+    "1": {
+      "tag": "minecraft:coals",
+      "count": 1
+    }
+  },
+  "output": {
+    "item": "electrodynamics:oxidevanadium",
+    "count": 1
+  },
+  "experience": 0.10000000149011612
+}

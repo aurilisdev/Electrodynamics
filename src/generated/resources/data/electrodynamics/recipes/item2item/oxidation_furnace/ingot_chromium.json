@@ -1,0 +1,29 @@
+{
+  "type": "electrodynamics:oxidation_furnace_recipe",
+  "ticks": 200,
+  "usagepertick": 350.0,
+  "iteminputs": {
+    "count": 2,
+    "0": {
+      "tag": "forge:oxide/chromium",
+      "count": 1
+    },
+    "1": {
+      "tag": "forge:oxide/calciumcarbonate",
+      "count": 1
+    }
+  },
+  "output": {
+    "item": "electrodynamics:ingotchromium",
+    "count": 1
+  },
+  "experience": 0.30000001192092896,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": "electrodynamics:slag",
+      "count": 1,
+      "chance": 0.75
+    }
+  }
+}

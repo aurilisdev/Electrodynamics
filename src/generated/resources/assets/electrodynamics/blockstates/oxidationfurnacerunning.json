@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "electrodynamics:block/oxidationfurnacerunning",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/oxidationfurnacerunning",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/oxidationfurnacerunning",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "electrodynamics:block/oxidationfurnacerunning"
+    }
+  }
+}

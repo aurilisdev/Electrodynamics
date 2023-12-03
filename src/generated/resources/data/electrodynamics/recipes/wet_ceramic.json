@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SCS",
+    "CWC",
+    "SCS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:sand"
+    },
+    "C": {
+      "item": "minecraft:clay_ball"
+    },
+    "W": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:ceramicwet",
+    "count": 4
+  }
+}

@@ -1,22 +1,22 @@
 package electrodynamics.client.render.tile;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import electrodynamics.common.tile.TileCoolantResavoir;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.common.tile.machines.quarry.TileCoolantResavoir;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class RenderCoolantResavoir implements BlockEntityRenderer<TileCoolantResavoir> {
+public class RenderCoolantResavoir extends AbstractTileRenderer<TileCoolantResavoir> {
 
 	private static final float MIN_X = 1.0F / 16.0F;
 	private static final float MAX_X = 15.0F / 16.0F;
@@ -26,11 +26,12 @@ public class RenderCoolantResavoir implements BlockEntityRenderer<TileCoolantRes
 	private static final float MAX_Z = 15.0F / 16.0F;
 
 	public RenderCoolantResavoir(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override
-	public void render(TileCoolantResavoir entity, float tick, PoseStack stack, MultiBufferSource source, int light, int overlay) {
-		FluidTank tank = ((ComponentFluidHandlerSimple) entity.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
+	public void render(TileCoolantResavoir entity, float tick, @NotNull PoseStack stack, @NotNull MultiBufferSource source, int light, int overlay) {
+		ComponentFluidHandlerSimple tank = entity.getComponent(IComponentType.FluidHandler);
 		if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
 			FluidStack fluid = tank.getFluid();
 			float yHeight = Math.max(Math.min((float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y), MIN_Y);

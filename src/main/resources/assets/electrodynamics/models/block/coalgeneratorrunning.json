@@ -2,13 +2,14 @@
 	"parent": "block/cube_all",
 	"credit": "aurilisdev",
 	"ambientocclusion": "false",
+	"render_type": "cutout",
 	"texture_size": [
 		64,
 		64
 	],
 	"textures": {
-		"0": "electrodynamics:model/coalgeneratorrunning",
-		"particle": "electrodynamics:model/coalgenerator"
+		"0": "electrodynamics:block/model/coalgeneratorrunning",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

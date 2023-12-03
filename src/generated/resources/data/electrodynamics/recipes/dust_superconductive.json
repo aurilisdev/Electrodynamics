@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#S#",
+    "G#G",
+    "#S#"
+  ],
+  "key": {
+    "#": {
+      "tag": "forge:dusts/endereye"
+    },
+    "S": {
+      "tag": "forge:dusts/silver"
+    },
+    "G": {
+      "tag": "forge:dusts/gold"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:dustsuperconductive",
+    "count": 9
+  }
+}

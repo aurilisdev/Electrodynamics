@@ -1,12 +1,13 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.common.tile.TileChemicalMixer;
+import electrodynamics.common.tile.machines.TileChemicalMixer;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotFluid;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import electrodynamics.prefab.utilities.math.Color;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -23,7 +24,7 @@ public class ContainerChemicalMixer extends GenericContainerBlockEntity<TileChem
 	}
 
 	public ContainerChemicalMixer(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(DeferredRegisters.CONTAINER_CHEMICALMIXER.get(), id, playerinv, inventory, inventorydata);
+		super(ElectrodynamicsMenuTypes.CONTAINER_CHEMICALMIXER.get(), id, playerinv, inventory, inventorydata);
 	}
 
 	public ContainerChemicalMixer(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
@@ -32,7 +33,7 @@ public class ContainerChemicalMixer extends GenericContainerBlockEntity<TileChem
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotGeneric(inv, nextIndex(), 74, 31));
+		addSlot(new SlotGeneric(inv, nextIndex(), 74, 31).setIOColor(new Color(0, 240, 255, 255)));
 		addSlot(new SlotFluid(inv, nextIndex(), 74, 51));
 		addSlot(new SlotFluid(inv, nextIndex(), 108, 51));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));

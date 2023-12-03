@@ -1,47 +1,82 @@
 package electrodynamics.client.render.tile;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import org.jetbrains.annotations.NotNull;
 
-import electrodynamics.DeferredRegisters;
-import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.TileFermentationPlant;
-import electrodynamics.prefab.tile.components.ComponentType;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+
+import electrodynamics.common.tile.machines.TileFermentationPlant;
+import electrodynamics.prefab.block.GenericEntityBlock;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.world.level.material.Fluids;
+import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class RenderFermentationPlant implements BlockEntityRenderer<TileFermentationPlant> {
+public class RenderFermentationPlant extends AbstractTileRenderer<TileFermentationPlant> {
+
 	public RenderFermentationPlant(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override
-	public void render(TileFermentationPlant tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(TileFermentationPlant tileEntityIn, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		matrixStackIn.pushPose();
-		float prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getTankFromFluid(DeferredRegisters.fluidEthanol, false).getFluidAmount() / (float) TileFermentationPlant.MAX_TANK_CAPACITY;
-		matrixStackIn.translate(0, 1.0 / 16.0 - 2.5 / 16.0 * (1 - prog), 0);
-		BakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_FERMENTATIONPLANTETHANOL);
-		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
-		if (prog > 0) {
-			matrixStackIn.scale(1, prog / 16.0f * 12f, 1);
-			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+		ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(IComponentType.FluidHandler);
+
+		Direction facing = tileEntityIn.getBlockState().getValue(GenericEntityBlock.FACING);
+
+		FluidStack input = null;
+		for (FluidTank tank : multi.getInputTanks()) {
+			if (!tank.isEmpty()) {
+				input = tank.getFluid();
+				break;
+			}
+		}
+		if (input != null) {
+			AABB box;
+			if (facing == Direction.WEST) {
+				box = new AABB(7.0D / 16.0D, 9.0D / 16.0D, 11.0D / 16.0D, 9.0D / 16.0D, 14.0D / 16.0D, 12.0D / 16.0D);
+			} else if (facing == Direction.EAST) {
+				box = new AABB(7.0D / 16.0D, 9.0D / 16.0D, 4.0D / 16.0D, 9.0D / 16.0D, 14.0D / 16.0D, 5.0D / 16.0D);
+			} else if (facing == Direction.SOUTH) {
+				box = new AABB(11.0D / 16.0D, 9.0D / 16.0D, 7.0D / 16.0D, 12.0D / 16.0D, 14.0D / 16.0D, 9.0D / 16.0D);
+			} else {
+				box = new AABB(4.0D / 16.0D, 9.0D / 16.0D, 7.0D / 16.0D, 5.0D / 16.0D, 14.0D / 16.0D, 9.0D / 16.0D);
+			}
+			VertexConsumer builder = bufferIn.getBuffer(Sheets.translucentCullBlockSheet());
+			RenderingUtils.renderFluidBox(matrixStackIn, Minecraft.getInstance(), builder, box, input, combinedLightIn, combinedOverlayIn);
+		}
+
+		FluidStack output = null;
+		for (FluidTank tank : multi.getOutputTanks()) {
+			if (!tank.isEmpty()) {
+				output = tank.getFluid();
+				break;
+			}
+		}
+		if (output != null) {
+			AABB box;
+			if (facing == Direction.WEST) {
+				box = new AABB(6.0D / 16.0D, 5.0D / 16.0D, 2.0D / 16.0D, 10.0D / 16.0D, 7.0D / 16.0D, 7.0D / 16.0D);
+			} else if (facing == Direction.EAST) {
+				box = new AABB(6.0D / 16.0D, 5.0D / 16.0D, 9.0D / 16.0D, 10.0D / 16.0D, 7.0D / 16.0D, 14.0D / 16.0D);
+			} else if (facing == Direction.SOUTH) {
+				box = new AABB(2.0D / 16.0D, 5.0D / 16.0D, 6.0D / 16.0D, 7.0D / 16.0D, 7.0D / 16.0D, 10.0D / 16.0D);
+			} else {
+				box = new AABB(9.0D / 16.0D, 5.0D / 16.0D, 6.0D / 16.0D, 14.0D / 16.0D, 7.0D / 16.0D, 10.0D / 16.0D);
+			}
+			VertexConsumer builder = bufferIn.getBuffer(Sheets.translucentCullBlockSheet());
+			RenderingUtils.renderFluidBox(matrixStackIn, Minecraft.getInstance(), builder, box, output, combinedLightIn, combinedOverlayIn);
 		}
 		matrixStackIn.popPose();
-		matrixStackIn.pushPose();
-		matrixStackIn.translate(0, 1.0 / 16.0, 0);
-		ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_FERMENTATIONPLANTWATER);
-		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
-		prog = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getTankFromFluid(Fluids.WATER, true).getFluidAmount() / (float) TileFermentationPlant.MAX_TANK_CAPACITY;
-		if (prog > 0) {
-			matrixStackIn.scale(1, prog / 16.0f * 12f, 1);
-			RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-		}
-		matrixStackIn.popPose();
+
 	}
 
 }

@@ -7,8 +7,8 @@
 		128
 	],
 	"textures": {
-		"0": "electrodynamics:model/fluidvoid",
-		"particle": "electrodynamics:model/fluidvoid"
+		"0": "electrodynamics:block/model/fluidvoid",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

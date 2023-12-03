@@ -1,0 +1,29 @@
+{
+  "type": "electrodynamics:reinforced_alloyer_recipe",
+  "ticks": 50,
+  "usagepertick": 50.0,
+  "iteminputs": {
+    "count": 2,
+    "0": {
+      "tag": "forge:ingots/tin",
+      "count": 1
+    },
+    "1": {
+      "tag": "forge:ingots/copper",
+      "count": 4
+    }
+  },
+  "output": {
+    "item": "electrodynamics:ingotbronze",
+    "count": 7
+  },
+  "experience": 0.10000000149011612,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": "electrodynamics:slag",
+      "count": 1,
+      "chance": 0.5
+    }
+  }
+}

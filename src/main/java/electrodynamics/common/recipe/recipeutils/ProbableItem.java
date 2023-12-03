@@ -4,32 +4,23 @@ import com.google.gson.JsonObject;
 
 import electrodynamics.Electrodynamics;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.crafting.CraftingHelper;
 
 public class ProbableItem {
 
-	private Item item;
-	private int maxCount;
+	private ItemStack item;
 	// 0: 0% chance
 	// 1: 100% chance
 	private double chance;
 
-	public ProbableItem(Item item, int count, double chance) {
-		this.item = item;
-		maxCount = count;
-		setChance(chance);
-	}
-
 	public ProbableItem(ItemStack stack, double chance) {
-		item = stack.getItem();
-		maxCount = stack.getCount();
+		item = stack;
 		setChance(chance);
 	}
 
 	public ItemStack getFullStack() {
-		return new ItemStack(item, maxCount);
+		return item;
 	}
 
 	private void setChance(double chance) {
@@ -43,9 +34,9 @@ public class ProbableItem {
 	public ItemStack roll() {
 		double random = Electrodynamics.RANDOM.nextDouble();
 		if (random > 1 - chance) {
-			double amount = chance >= 1 ? maxCount : maxCount * random;
+			double amount = chance >= 1 ? item.getCount() : item.getCount() * random;
 			int itemCount = (int) Math.ceil(amount);
-			return new ItemStack(item, itemCount);
+			return new ItemStack(item.getItem(), itemCount);
 		}
 		return ItemStack.EMPTY;
 	}

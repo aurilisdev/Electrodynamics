@@ -6,32 +6,23 @@ import electrodynamics.Electrodynamics;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class ProbableFluid {
 
-	private Fluid fluid;
-	private int maxCount;
+	private FluidStack fluid;
 	// 0: 0% chance
 	// 1: 100% chance
 	private double chance;
 
-	public ProbableFluid(Fluid fluid, int amount, double chance) {
-		this.fluid = fluid;
-		maxCount = amount;
-		setChance(chance);
-	}
-
 	public ProbableFluid(FluidStack stack, double chance) {
-		fluid = stack.getFluid();
-		maxCount = stack.getAmount();
+		fluid = stack;
 		setChance(chance);
 	}
 
 	public FluidStack getFullStack() {
-		return new FluidStack(fluid, maxCount);
+		return fluid;
 	}
 
 	private void setChance(double chance) {
@@ -45,7 +36,7 @@ public class ProbableFluid {
 	public FluidStack roll() {
 		double random = Electrodynamics.RANDOM.nextDouble();
 		if (random > 1 - chance) {
-			double amount = chance >= 1 ? maxCount : maxCount * random;
+			double amount = chance >= 1 ? fluid.getAmount() : fluid.getAmount() * random;
 			int fluidAmount = (int) Math.ceil(amount);
 			return new FluidStack(fluid, fluidAmount);
 		}

@@ -1,13 +1,12 @@
 package electrodynamics.common.entity.projectile.types;
 
-import electrodynamics.DeferredRegisters;
-import electrodynamics.SoundRegister;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.item.subtype.SubtypeRod;
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
+import electrodynamics.registers.ElectrodynamicsEntities;
+import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsSounds;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -26,31 +25,25 @@ public class EntityMetalRod extends EntityCustomProjectile {
 	/*
 	 * 0 = Steel 1 = Stainless Steel 2 = HSLA Steel
 	 */
-	private static final EntityDataAccessor<Integer> NUMBER = SynchedEntityData.defineId(EntityMetalRod.class, EntityDataSerializers.INT);
 	private int number = 0;
 
 	public EntityMetalRod(EntityType<? extends ThrowableItemProjectile> type, Level world) {
-		super(DeferredRegisters.ENTITY_METALROD.get(), world);
+		super(ElectrodynamicsEntities.ENTITY_METALROD.get(), world);
 	}
 
 	public EntityMetalRod(LivingEntity entity, Level world, int number) {
-		super(DeferredRegisters.ENTITY_METALROD.get(), entity, world);
+		super(ElectrodynamicsEntities.ENTITY_METALROD.get(), entity, world);
 		this.number = number;
 	}
 
 	public EntityMetalRod(double x, double y, double z, Level worldIn, int number) {
-		super(DeferredRegisters.ENTITY_METALROD.get(), x, y, z, worldIn);
+		super(ElectrodynamicsEntities.ENTITY_METALROD.get(), x, y, z, worldIn);
 		this.number = number;
 	}
-
+	
 	@Override
-	public void tick() {
-		super.tick();
-		if (!level.isClientSide) {
-			entityData.set(NUMBER, number);
-		} else if (!entityData.isEmpty()) {
-			number = entityData.get(NUMBER);
-		}
+	public void setPos(double x, double y, double z) {
+		super.setPos(x, y, z);
 	}
 
 	@Override
@@ -62,45 +55,38 @@ public class EntityMetalRod extends EntityCustomProjectile {
 				if (state.getDestroySpeed(level, p_230299_1_.getBlockPos()) < 50f && !ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.BEDROCK))) {
 					level.removeBlock(p_230299_1_.getBlockPos(), false);
 				}
-				level.playSound(null, p_230299_1_.getBlockPos(), SoundRegister.SOUND_RODIMPACTINGGROUND.get(), SoundSource.BLOCKS, 1f, 1f);
+				level.playSound(null, p_230299_1_.getBlockPos(), ElectrodynamicsSounds.SOUND_RODIMPACTINGGROUND.get(), SoundSource.BLOCKS, 1f, 1f);
 			}
 			remove(Entity.RemovalReason.DISCARDED);
 		}
 	}
 
 	@Override
-	protected void defineSynchedData() {
-		super.defineSynchedData();
-		entityData.define(NUMBER, number);
-	}
-
-	// It bugs for some reason if I don't have the break
-	@Override
-	public void onHitEntity(EntityHitResult p_213868_1_) {
+	public void onHitEntity(EntityHitResult hit) {
 		switch (number) {
 		case 0:
-			p_213868_1_.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 16f);
+			hit.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 16f);
 			break;
 		case 1:
-			p_213868_1_.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 20f);
+			hit.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 20f);
 			break;
 		case 2:
-			p_213868_1_.getEntity().hurt(DamageSources.ACCELERATED_BOLT_IGNOREARMOR, 4f);
+			hit.getEntity().hurt(DamageSources.ACCELERATED_BOLT_IGNOREARMOR, 4f);
 			break;
 		default:
 		}
-		super.onHitEntity(p_213868_1_);
+		super.onHitEntity(hit);
 	}
 
 	@Override
 	protected Item getDefaultItem() {
 		switch (number) {
 		case 0:
-			return DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.steel).get();
+			return ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.steel).get();
 		case 1:
-			return DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.stainlesssteel).get();
+			return ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.stainlesssteel).get();
 		case 2:
-			return DeferredRegisters.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.hslasteel).get();
+			return ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.hslasteel).get();
 		default:
 			return super.getDefaultItem();
 		}
@@ -108,6 +94,18 @@ public class EntityMetalRod extends EntityCustomProjectile {
 
 	public int getNumber() {
 		return number;
+	}
+	
+	@Override
+	public void writeSpawnData(FriendlyByteBuf buffer) {
+		super.writeSpawnData(buffer);
+		buffer.writeInt(number);
+	}
+	
+	@Override
+	public void readSpawnData(FriendlyByteBuf additionalData) {
+		super.readSpawnData(additionalData);
+		number = additionalData.readInt();
 	}
 
 }

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CTC",
+    "SPS",
+    "P P"
+  ],
+  "key": {
+    "P": {
+      "item": "electrodynamics:pipesteel"
+    },
+    "C": {
+      "tag": "forge:circuits/advanced"
+    },
+    "S": {
+      "tag": "forge:plates/steel"
+    },
+    "T": {
+      "item": "electrodynamics:tanksteel"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:jetpack"
+  }
+}

@@ -7,10 +7,10 @@
 		128
 	],
 	"textures": {
-		"0": "electrodynamics:model/cobblestonegenerator",
+		"0": "electrodynamics:block/model/cobblestonegenerator",
 		"1": "electrodynamics:fluid/water",
 		"2": "electrodynamics:fluid/lava_still",
-		"particle": "electrodynamics:model/cobblestonegenerator"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

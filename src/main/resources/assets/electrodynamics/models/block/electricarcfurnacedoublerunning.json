@@ -3,8 +3,8 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/electricarcfurnacedoublerunning",
-		"particle": "electrodynamics:model/electricarcfurnacedoublerunning"
+		"0": "electrodynamics:block/model/electricarcfurnacedoublerunning",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "PAP",
+    " P "
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "A": {
+      "tag": "forge:gems/amethyst"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:seismicmarker"
+  }
+}

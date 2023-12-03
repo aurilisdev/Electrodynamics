@@ -1,7 +1,0 @@
-{
-	"parent": "electrodynamics:parent/pipe_side",
-	"textures": {
-		"particle": "electrodynamics:block/pipe/copperpipe_base",
-		"texture": "electrodynamics:block/pipe/copperpipe_base"
-	}
-}

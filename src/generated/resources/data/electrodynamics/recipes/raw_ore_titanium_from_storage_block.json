@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "electrodynamics:raworeblocktitanium"
+    }
+  ],
+  "result": {
+    "item": "electrodynamics:raworetitanium",
+    "count": 9
+  }
+}

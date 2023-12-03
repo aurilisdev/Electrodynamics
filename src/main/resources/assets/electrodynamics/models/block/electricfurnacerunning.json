@@ -7,8 +7,8 @@
 		64
 	],
 	"textures": {
-		"0": "electrodynamics:model/electricfurnacerunning",
-		"particle": "electrodynamics:model/electricfurnace"
+		"0": "electrodynamics:block/model/electricfurnacerunning",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

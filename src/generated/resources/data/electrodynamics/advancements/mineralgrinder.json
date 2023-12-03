@@ -1,0 +1,41 @@
+{
+  "parent": "electrodynamics:coalgenerator",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:mineralgrinder"
+    },
+    "title": {
+      "color": "gold",
+      "translate": "advancement.electrodynamics.mineralgrinder.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.mineralgrinder.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 20
+  },
+  "criteria": {
+    "HasGrinder": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "electrodynamics:mineralgrinder"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasGrinder"
+    ]
+  ]
+}

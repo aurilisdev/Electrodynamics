@@ -1,0 +1,41 @@
+{
+  "parent": "electrodynamics:insulatedwiring",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:wireceramicinsulatedcopper"
+    },
+    "title": {
+      "color": "gray",
+      "translate": "advancement.electrodynamics.ceramicinsulatedwiring.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.ceramicinsulatedwiring.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 15
+  },
+  "criteria": {
+    "HasCeramicInsulatedCopperWire": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "electrodynamics:wireceramicinsulatedcopper"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasCeramicInsulatedCopperWire"
+    ]
+  ]
+}

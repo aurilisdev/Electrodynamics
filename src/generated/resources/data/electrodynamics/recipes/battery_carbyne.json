@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "TNT",
+    "TNT"
+  ],
+  "key": {
+    "S": {
+      "item": "electrodynamics:wiresuperconductive"
+    },
+    "T": {
+      "tag": "forge:plates/titaniumcarbide"
+    },
+    "N": {
+      "tag": "forge:dusts/netherite"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:carbynebattery"
+  }
+}

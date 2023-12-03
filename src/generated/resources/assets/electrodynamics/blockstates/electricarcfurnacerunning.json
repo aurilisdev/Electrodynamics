@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "electrodynamics:block/electricarcfurnacerunning",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/electricarcfurnacerunning",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/electricarcfurnacerunning",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "electrodynamics:block/electricarcfurnacerunning"
+    }
+  }
+}

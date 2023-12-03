@@ -1,11 +1,13 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceTriple;
-import electrodynamics.common.tile.TileElectricFurnace;
+import electrodynamics.common.tile.machines.arcfurnace.TileElectricArcFurnaceTriple;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;
+import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.types.wrapper.InventoryIOWrapper;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,69 +19,71 @@ public class ScreenElectricFurnaceTriple extends GenericScreen<ContainerElectric
 
 	public ScreenElectricFurnaceTriple(ContainerElectricFurnaceTriple container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentProgress(() -> {
-			TileElectricFurnace furnace = container.getHostFromIntArray();
+		addComponent(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
+			TileElectricArcFurnaceTriple furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
-				if (processor.operatingTicks > 0) {
-					return processor.operatingTicks / processor.requiredTicks;
+				if (processor.isActive()) {
+					return processor.operatingTicks.get() / processor.requiredTicks.get();
 				}
 			}
 			return 0;
-		}, this, 84, 24));
-		components.add(new ScreenComponentProgress(() -> {
-			TileElectricFurnace furnace = container.getHostFromIntArray();
+		}, 84, 24));
+		addComponent(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
+			TileElectricArcFurnaceTriple furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(0);
-				if (processor.operatingTicks > 0) {
+				if (processor.isActive()) {
 					return 1;
 				}
 			}
 			return 0;
-		}, this, 39, 26).flame());
-		components.add(new ScreenComponentProgress(() -> {
-			TileElectricFurnace furnace = container.getHostFromIntArray();
+		}, 39, 26));
+		addComponent(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
+			TileElectricArcFurnaceTriple furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(1);
-				if (processor.operatingTicks > 0) {
-					return processor.operatingTicks / processor.requiredTicks;
+				if (processor.isActive()) {
+					return processor.operatingTicks.get() / processor.requiredTicks.get();
 				}
 			}
 			return 0;
-		}, this, 84, 44));
-		components.add(new ScreenComponentProgress(() -> {
-			TileElectricFurnace furnace = container.getHostFromIntArray();
+		}, 84, 44));
+		addComponent(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
+			TileElectricArcFurnaceTriple furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(1);
-				if (processor.operatingTicks > 0) {
+				if (processor.isActive()) {
 					return 1;
 				}
 			}
 			return 0;
-		}, this, 39, 46).flame());
-		components.add(new ScreenComponentProgress(() -> {
-			TileElectricFurnace furnace = container.getHostFromIntArray();
+		}, 39, 46));
+		addComponent(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
+			TileElectricArcFurnaceTriple furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(2);
-				if (processor.operatingTicks > 0) {
-					return processor.operatingTicks / processor.requiredTicks;
+				if (processor.isActive()) {
+					return processor.operatingTicks.get() / processor.requiredTicks.get();
 				}
 			}
 			return 0;
-		}, this, 84, 64));
-		components.add(new ScreenComponentProgress(() -> {
-			TileElectricFurnace furnace = container.getHostFromIntArray();
+		}, 84, 64));
+		addComponent(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
+			TileElectricArcFurnaceTriple furnace = container.getHostFromIntArray();
 			if (furnace != null) {
 				ComponentProcessor processor = furnace.getProcessor(2);
-				if (processor.operatingTicks > 0) {
+				if (processor.isActive()) {
 					return 1;
 				}
 			}
 			return 0;
-		}, this, 39, 66).flame());
+		}, 39, 66));
 		imageHeight += 20;
 		inventoryLabelY += 20;
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
+		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
+
+		new InventoryIOWrapper(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75, 82 + 20, 8, 72 + 20);
 	}
 
 }

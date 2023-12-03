@@ -1,0 +1,25 @@
+{
+  "type": "electrodynamics:lathe_recipe",
+  "ticks": 200,
+  "usagepertick": 350.0,
+  "iteminputs": {
+    "count": 1,
+    "0": {
+      "tag": "forge:ingots/steel",
+      "count": 2
+    }
+  },
+  "output": {
+    "item": "electrodynamics:rodsteel",
+    "count": 1
+  },
+  "experience": 0.10000000149011612,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": "electrodynamics:nuggetsteel",
+      "count": 2,
+      "chance": 1.0
+    }
+  }
+}

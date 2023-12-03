@@ -44,6 +44,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
     mappings channel: 'parchment', version: '2022.03.13-1.18.2'
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     runs {
         client {
             workingDirectory project.file('run')
@@ -94,7 +95,7 @@ minecraft {
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
-            args '--mod', 'electrodynamics', '--all', '--output', file('src/generated/resources/')
+            args '--mod', 'electrodynamics', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
                 electrodynamics {
@@ -107,10 +108,14 @@ minecraft {
 mixin {
     add sourceSets.main, "electrodynamics.refmap.json"
 }
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.18.2-40.1.73'
-    compileOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.1.232:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2:9.7.1.232")
+	minecraft 'net.minecraftforge:forge:1.18.2-40.2.14'
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2-common-api:10.2.1.283")
+    compileOnly fg.deobf("mezz.jei:jei-1.18.2-forge-api:10.2.1.283")
+    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2-forge:10.2.1.283")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }
@@ -160,10 +165,16 @@ publishing {
 }
 repositories{
 		mavenCentral()
-	  	maven {
-	   	    name = "Progwml6 maven"
-	   	    url = "https://dvs1.progwml6.com/files/maven/"
-	  	}
+	maven {
+	    // location of the maven that hosts JEI files since January 2023
+	    name = "Jared's maven"
+	    url = "https://maven.blamejared.com/"
+	}
+	maven {
+   		// location of a maven mirror for JEI files, as a fallback
+    	name = "ModMaven"
+    	url = "https://modmaven.dev"
+  	}
 }
 tasks.curseforge.dependsOn jar
 

@@ -3,8 +3,8 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/lathe",
-		"particle": "electrodynamics:model/lathe"
+		"0": "electrodynamics:block/model/lathe",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

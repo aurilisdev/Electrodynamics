@@ -1,15 +1,16 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.DeferredRegisters;
-import electrodynamics.common.tile.TileCoalGenerator;
+import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
+import electrodynamics.common.tile.electricitygrid.generators.TileCoalGenerator;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotRestricted;
+import electrodynamics.prefab.utilities.math.Color;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.item.Items;
 
 public class ContainerCoalGenerator extends GenericContainerBlockEntity<TileCoalGenerator> {
 
@@ -22,12 +23,12 @@ public class ContainerCoalGenerator extends GenericContainerBlockEntity<TileCoal
 	}
 
 	public ContainerCoalGenerator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(DeferredRegisters.CONTAINER_COALGENERATOR.get(), id, playerinv, inventory, inventorydata);
+		super(ElectrodynamicsMenuTypes.CONTAINER_COALGENERATOR.get(), id, playerinv, inventory, inventorydata);
 	}
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotRestricted(inv, nextIndex(), 25, 42, Items.CHARCOAL, Items.COAL));
+		addSlot(new SlotRestricted(inv, nextIndex(), 25, 42).setRestriction(stack -> CoalGeneratorFuelRegister.INSTANCE.isFuel(stack.getItem())).setIOColor(new Color(0, 240, 255, 255)));
 	}
 
 }

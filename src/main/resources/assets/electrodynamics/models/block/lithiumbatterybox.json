@@ -3,8 +3,8 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/lithiumbatterybox",
-		"particle": "electrodynamics:model/lithiumbatterybox"
+		"0": "electrodynamics:block/model/lithiumbatterybox",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

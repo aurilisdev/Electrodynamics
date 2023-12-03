@@ -1,35 +1,31 @@
 package electrodynamics.client.screen.tile;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.mojang.blaze3d.vertex.PoseStack;
-
+import electrodynamics.api.electricity.formatting.ChatFormatter;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
-import electrodynamics.common.tile.generic.GenericTileCharger;
+import electrodynamics.common.tile.machines.charger.GenericTileCharger;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.ScreenComponentCharge;
-import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentInfo;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;
+import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.types.wrapper.InventoryIOWrapper;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.ItemStack;
 
 public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric> {
 
-	private static DecimalFormat DECIMAL_FORMATTER = new DecimalFormat("#0.0");
-
 	public ScreenChargerGeneric(ContainerChargerGeneric screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
 
-		components.add(new ScreenComponentCharge(() -> {
+		addComponent(new ScreenComponentProgress(ProgressBars.BATTERY_CHARGE_RIGHT, () -> {
 			GenericTileCharger charger = menu.getHostFromIntArray();
 			if (charger != null) {
 				ItemStack chargingItem = menu.getSlot(0).getItem();
@@ -38,54 +34,51 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 				}
 			}
 			return 0;
-		}, this, 118, 37));
+		}, 118, 37));
 
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2).wattage(e -> e.getMaxJoulesStored() * 20));
-	}
+		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2).wattage(e -> e.getMaxJoulesStored() * 20));
+		addComponent(new ScreenComponentMultiLabel(0, 0, stack -> {
 
-	@Override
-	protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-		super.renderLabels(matrixStack, mouseX, mouseY);
-		List<? extends Component> screenOverlays = getChargerInfo();
+			GenericTileCharger charger = menu.getHostFromIntArray();
 
-		if (!screenOverlays.isEmpty()) {
-			font.draw(matrixStack, screenOverlays.get(0), inventoryLabelX, 33f, 0);
-			font.draw(matrixStack, screenOverlays.get(1), inventoryLabelX, 43f, 0);
-		}
-	}
-
-	private List<? extends Component> getChargerInfo() {
-		ArrayList<Component> list = new ArrayList<>();
-		GenericTileCharger charger = menu.getHostFromIntArray();
-		if (charger != null) {
+			if (charger == null) {
+				return;
+			}
 
 			ItemStack chargingItem = menu.getSlot(0).getItem();
+
 			double chargingPercentage = 0;
 			double chargeCapable = 100.0;
+
 			if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric electricItem) {
 
-				ComponentElectrodynamic electro = charger.getComponent(ComponentType.Electrodynamic);
+				ComponentElectrodynamic electro = charger.getComponent(IComponentType.Electrodynamic);
 
 				chargingPercentage = electricItem.getJoulesStored(chargingItem) / electricItem.getElectricProperties().capacity * 100;
 				chargeCapable = electro.getVoltage() / electricItem.getElectricProperties().receive.getVoltage() * 100;
 			}
 
-			list.add(new TranslatableComponent("gui.genericcharger.chargeperc", new TextComponent(DECIMAL_FORMATTER.format(chargingPercentage) + "%").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+			font.draw(stack, ElectroTextUtils.gui("genericcharger.chargeperc", ChatFormatter.getChatDisplayShort(chargingPercentage, DisplayUnit.PERCENTAGE)).withStyle(ChatFormatting.DARK_GRAY).withStyle(ChatFormatting.DARK_GRAY), inventoryLabelX, 33, 0);
+
+			Component capable = ElectroTextUtils.empty();
 
 			if (chargeCapable < 33) {
-				list.add(getChargeCapableFormatted(chargeCapable, ChatFormatting.RED));
+				capable = getChargeCapableFormatted(chargeCapable, ChatFormatting.RED);
 			} else if (chargeCapable < 66) {
-				list.add(getChargeCapableFormatted(chargeCapable, ChatFormatting.YELLOW));
+				capable = getChargeCapableFormatted(chargeCapable, ChatFormatting.YELLOW);
 			} else {
-				list.add(getChargeCapableFormatted(chargeCapable, ChatFormatting.GREEN));
+				capable = getChargeCapableFormatted(chargeCapable, ChatFormatting.GREEN);
 			}
 
-		}
-		return list;
+			font.draw(stack, capable, inventoryLabelX, 43, 0);
+
+		}));
+
+		new InventoryIOWrapper(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75, 82, 8, 72);
 	}
 
-	private static Component getChargeCapableFormatted(double chargeCapable, ChatFormatting formatColor) {
-		return new TranslatableComponent("gui.genericcharger.chargecapable", new TextComponent(DECIMAL_FORMATTER.format(chargeCapable) + "%").withStyle(formatColor)).withStyle(ChatFormatting.DARK_GRAY);
+	private Component getChargeCapableFormatted(double chargeCapable, ChatFormatting formatColor) {
+		return ElectroTextUtils.gui("genericcharger.chargecapable", ChatFormatter.getChatDisplayShort(chargeCapable, DisplayUnit.PERCENTAGE)).withStyle(formatColor).withStyle(ChatFormatting.DARK_GRAY);
 	}
 
 }

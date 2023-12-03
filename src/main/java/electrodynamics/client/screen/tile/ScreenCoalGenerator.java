@@ -3,23 +3,23 @@ package electrodynamics.client.screen.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.TileCoalGenerator;
+import electrodynamics.common.tile.electricitygrid.generators.TileCoalGenerator;
 import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentProgress;
-import electrodynamics.prefab.screen.component.ScreenComponentTemperature;
+import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;
+import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentTemperature;
+import electrodynamics.prefab.screen.component.types.wrapper.InventoryIOWrapper;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraftforge.api.distmarker.Dist;
@@ -29,38 +29,42 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 	public ScreenCoalGenerator(ContainerCoalGenerator container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentProgress(() -> {
+		addComponent(new ScreenComponentProgress(ProgressBars.COUNTDOWN_FLAME, () -> {
 			TileCoalGenerator box = container.getHostFromIntArray();
 			if (box != null) {
-				return box.clientBurnTime / box.clientMaxBurnTime;
+				return (double) box.burnTime.get() / (double) box.maxBurnTime.get();
 			}
 			return 0;
-		}, this, 25, 25).flame());
-		components.add(new ScreenComponentTemperature(this::getTemperatureInformation, this, -ScreenComponentInfo.SIZE + 1, 2 + ScreenComponentInfo.SIZE));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
+		}, 25, 25));
+		addComponent(new ScreenComponentTemperature(this::getTemperatureInformation, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE));
+		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
+		addComponent(new ScreenComponentMultiLabel(0, 0, stack -> {
+			TileCoalGenerator coal = menu.getHostFromIntArray();
+			if (coal == null) {
+				return;
+			}
+			TransferPack output = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * Math.min((coal.heat.getValue() - 27.0) / (3000.0 - 27.0), 1), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
+			font.draw(stack, ElectroTextUtils.gui("coalgenerator.timeleft", ChatFormatter.getChatDisplayShort((double) coal.burnTime.get() / 20.0, DisplayUnit.TIME_SECONDS)), inventoryLabelX + 60, inventoryLabelY - 53, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("machine.current", ChatFormatter.getChatDisplayShort(output.getAmps(), DisplayUnit.AMPERE)), inventoryLabelX + 60, inventoryLabelY - 40, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("machine.output", ChatFormatter.getChatDisplayShort(output.getWatts(), DisplayUnit.WATT)), inventoryLabelX + 60, inventoryLabelY - 27, 4210752);
+			font.draw(stack, ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(output.getVoltage(), DisplayUnit.VOLTAGE)), inventoryLabelX + 60, inventoryLabelY - 14, 4210752);
+		}));
+
+		new InventoryIOWrapper(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE * 2 + 2, 75, 82, 8, 72);
 	}
 
 	private List<FormattedCharSequence> getTemperatureInformation() {
 		ArrayList<FormattedCharSequence> list = new ArrayList<>();
 		TileCoalGenerator box = menu.getHostFromIntArray();
-		if (box != null) {
-			list.add(new TranslatableComponent("gui.coalgenerator.timeleft", new TextComponent(box.clientBurnTime / 20 + "s").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.machine.temperature", new TextComponent(ChatFormatter.roundDecimals(box.clientHeat * (2500.0 / 3000.0)) + " C").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(new TranslatableComponent("gui.machine.heat", new TextComponent(ChatFormatter.roundDecimals((box.clientHeat - 27.0) / (3000.0 - 27.0) * 100) + "%").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		if (box == null) {
+			return list;
 		}
+
+		list.add(ElectroTextUtils.gui("coalgenerator.timeleft", ChatFormatter.getChatDisplayShort((double) box.burnTime.get() / 20.0, DisplayUnit.TIME_SECONDS).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("machine.temperature", ChatFormatter.getChatDisplayShort(box.heat.getValue() * (2500.0 / 3000.0), DisplayUnit.TEMPERATURE_CELCIUS).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("machine.heat", ChatFormatter.getChatDisplayShort((box.heat.getValue() - 27.0) / (3000.0 - 27.0) * 100, DisplayUnit.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+
 		return list;
 	}
 
-	@Override
-	protected void renderLabels(PoseStack matrixStack, int mouseX, int mouseY) {
-		super.renderLabels(matrixStack, mouseX, mouseY);
-		TileCoalGenerator box = menu.getHostFromIntArray();
-		if (box != null) {
-			TransferPack output = TransferPack.ampsVoltage(Constants.COALGENERATOR_MAX_OUTPUT.getAmps() * Math.min((box.clientHeat - 27.0) / (3000.0 - 27.0), 1), Constants.COALGENERATOR_MAX_OUTPUT.getVoltage());
-			font.draw(matrixStack, new TranslatableComponent("gui.coalgenerator.timeleft", box.clientBurnTime / 20 + "s"), inventoryLabelX + 60f, inventoryLabelY - 53f, 4210752);
-			font.draw(matrixStack, new TranslatableComponent("gui.machine.current", ChatFormatter.getChatDisplayShort(output.getAmps(), DisplayUnit.AMPERE)), inventoryLabelX + 60f, inventoryLabelY - 40f, 4210752);
-			font.draw(matrixStack, new TranslatableComponent("gui.machine.output", ChatFormatter.getChatDisplayShort(output.getWatts(), DisplayUnit.WATT)), inventoryLabelX + 60f, inventoryLabelY - 27f, 4210752);
-			font.draw(matrixStack, new TranslatableComponent("gui.machine.voltage", ChatFormatter.getChatDisplayShort(output.getVoltage(), DisplayUnit.VOLTAGE)), inventoryLabelX + 60f, inventoryLabelY - 14f, 4210752);
-		}
-	}
 }

@@ -3,6 +3,8 @@ package electrodynamics.common.recipe;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.google.gson.JsonObject;
 
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
@@ -20,13 +22,15 @@ import net.minecraftforge.registries.ForgeRegistryEntry;
 
 public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsRecipe> extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<T> {
 
-	private static final String COUNT = "count";
-	private static final String ITEM_INPUTS = "iteminputs";
-	private static final String FLUID_INPUTS = "fluidinputs";
+	public static final String COUNT = "count";
+	public static final String ITEM_INPUTS = "iteminputs";
+	public static final String FLUID_INPUTS = "fluidinputs";
 	public static final String ITEM_BIPRODUCTS = "itembi";
 	public static final String FLUID_BIPRODUCTS = "fluidbi";
-	private static final String OUTPUT = "output";
+	public static final String OUTPUT = "output";
 	public static final String EXPERIENCE = "experience";
+	public static final String TICKS = "ticks";
+	public static final String USAGE_PER_TICK = "usagepertick";
 
 	private Class<T> RECIPE_CLASS;
 
@@ -38,19 +42,19 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		return this.RECIPE_CLASS;
 	}
 
-	public static CountableIngredient[] getItemIngredients(JsonObject json) {
+	public static CountableIngredient[] getItemIngredients(ResourceLocation recipeId, JsonObject json) {
 		if (!json.has(ITEM_INPUTS)) {
-			throw new UnsupportedOperationException("There are no Item Inputs!");
+			throw new UnsupportedOperationException(recipeId.toString() + ": There are no Item Inputs!");
 		}
 		JsonObject itemInputs = GsonHelper.getAsJsonObject(json, ITEM_INPUTS);
 		if (!itemInputs.has(COUNT)) {
-			throw new UnsupportedOperationException("You must include a count field");
+			throw new UnsupportedOperationException(recipeId.toString() + ": You must include a count field");
 		}
 		int count = itemInputs.get(COUNT).getAsInt();
 		List<CountableIngredient> itemIngredients = new ArrayList<>();
 		for (int i = 0; i < count; i++) {
 			if (!itemInputs.has(i + "")) {
-				throw new UnsupportedOperationException("The count field does not match the input count");
+				throw new UnsupportedOperationException(recipeId.toString() + ": The count field does not match the input count");
 			}
 			itemIngredients.add(CountableIngredient.deserialize(itemInputs.get(i + "")));
 		}
@@ -61,20 +65,19 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		return ings;
 	}
 
-	public static FluidIngredient[] getFluidIngredients(JsonObject json) {
+	public static FluidIngredient[] getFluidIngredients(ResourceLocation recipeId, JsonObject json) {
 		if (!json.has(FLUID_INPUTS)) {
-			throw new UnsupportedOperationException("There are no Fluid Inputs!");
+			throw new UnsupportedOperationException(recipeId.toString() + ": There are no Fluid Inputs!");
 		}
 		JsonObject fluidInputs = GsonHelper.getAsJsonObject(json, FLUID_INPUTS);
 		if (!fluidInputs.has(COUNT)) {
-			throw new UnsupportedOperationException("You must include a count field");
+			throw new UnsupportedOperationException(recipeId.toString() + ": You must include a count field");
 		}
 		int count = fluidInputs.get(COUNT).getAsInt();
-		// Electrodynamics.LOGGER.info(count);
 		List<FluidIngredient> fluidIngredients = new ArrayList<>();
 		for (int i = 0; i < count; i++) {
 			if (!fluidInputs.has(i + "")) {
-				throw new UnsupportedOperationException("The count field does not match the input count");
+				throw new UnsupportedOperationException(recipeId.toString() + ": The count field does not match the input count");
 			}
 			fluidIngredients.add(FluidIngredient.deserialize(fluidInputs.get(i + "").getAsJsonObject()));
 		}
@@ -85,22 +88,21 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		return ings;
 	}
 
-	/**
-	 * It is assumed you checked this field was here before you called!
-	 * 
-	 * @param json
-	 * @return
-	 */
-	public static ProbableItem[] getItemBiproducts(JsonObject json) {
+	@Nullable
+	public static ProbableItem[] getItemBiproducts(ResourceLocation recipeId, JsonObject json) {
+		if(!json.has(ITEM_BIPRODUCTS)) {
+			return null;
+		}
 		JsonObject itemBiproducts = GsonHelper.getAsJsonObject(json, ITEM_BIPRODUCTS);
+		
 		if (!itemBiproducts.has(COUNT)) {
-			throw new UnsupportedOperationException("You must include a count field");
+			throw new UnsupportedOperationException(recipeId.toString() + ": You must include a count field");
 		}
 		int count = itemBiproducts.get(COUNT).getAsInt();
 		List<ProbableItem> items = new ArrayList<>();
 		for (int i = 0; i < count; i++) {
 			if (!itemBiproducts.has(i + "")) {
-				throw new UnsupportedOperationException("The count field does not match the input count");
+				throw new UnsupportedOperationException(recipeId.toString() + ": The count field does not match the input count");
 			}
 			items.add(ProbableItem.deserialize(itemBiproducts.get("" + i).getAsJsonObject()));
 		}
@@ -111,22 +113,20 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		return stacks;
 	}
 
-	/**
-	 * It is assumed you checked this field was here before you called!
-	 * 
-	 * @param json
-	 * @return
-	 */
-	public static ProbableFluid[] getFluidBiproducts(JsonObject json) {
+	@Nullable
+	public static ProbableFluid[] getFluidBiproducts(ResourceLocation recipeId, JsonObject json) {
+		if(!json.has(FLUID_BIPRODUCTS)) {
+			return null;
+		}
 		JsonObject fluidBiproducts = GsonHelper.getAsJsonObject(json, FLUID_BIPRODUCTS);
 		if (!fluidBiproducts.has(COUNT)) {
-			throw new UnsupportedOperationException("You must include a count field");
+			throw new UnsupportedOperationException(recipeId.toString() + ": You must include a count field");
 		}
 		int count = fluidBiproducts.get(COUNT).getAsInt();
 		List<ProbableFluid> fluids = new ArrayList<>();
 		for (int i = 0; i < count; i++) {
 			if (!fluidBiproducts.has(i + "")) {
-				throw new UnsupportedOperationException("The count field does not match the input count");
+				throw new UnsupportedOperationException(recipeId.toString() + ": The count field does not match the input count");
 			}
 			fluids.add(ProbableFluid.deserialize(fluidBiproducts.get(i + "").getAsJsonObject()));
 		}
@@ -137,16 +137,16 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 		return stacks;
 	}
 
-	public static ItemStack getItemOutput(JsonObject json) {
+	public static ItemStack getItemOutput(ResourceLocation recipeId, JsonObject json) {
 		if (!json.has(OUTPUT)) {
-			throw new UnsupportedOperationException("You must include an Item output!");
+			throw new UnsupportedOperationException(recipeId.toString() + ": You must include an Item output!");
 		}
 		return CraftingHelper.getItemStack(json.get(OUTPUT).getAsJsonObject(), false);
 	}
 
-	public static FluidStack getFluidOutput(JsonObject json) {
+	public static FluidStack getFluidOutput(ResourceLocation recipeId, JsonObject json) {
 		if (!json.has(OUTPUT)) {
-			throw new UnsupportedOperationException("You must include an Item output!");
+			throw new UnsupportedOperationException(recipeId.toString() + ": You must include a Fluid output!");
 		}
 		JsonObject fluid = json.get(OUTPUT).getAsJsonObject();
 		ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(fluid, "fluid"));
@@ -156,6 +156,20 @@ public abstract class ElectrodynamicsRecipeSerializer<T extends ElectrodynamicsR
 
 	public static double getExperience(JsonObject json) {
 		return json.has(EXPERIENCE) ? json.get(EXPERIENCE).getAsDouble() : 0;
+	}
+
+	public static int getTicks(ResourceLocation recipeId, JsonObject json) {
+		if (!json.has(TICKS)) {
+			throw new UnsupportedOperationException(recipeId.toString() + ": You must include an operating tick time!");
+		}
+		return json.get(TICKS).getAsInt();
+	}
+
+	public static double getUsagePerTick(ResourceLocation recipeId, JsonObject json) {
+		if (!json.has(USAGE_PER_TICK)) {
+			throw new UnsupportedOperationException(recipeId.toString() + ": You must include a usage per tick!");
+		}
+		return json.get(USAGE_PER_TICK).getAsDouble();
 	}
 
 }

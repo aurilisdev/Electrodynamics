@@ -1,5 +1,7 @@
 package electrodynamics.common.item.subtype;
 
+import java.util.Locale;
+
 import electrodynamics.api.ISubtype;
 import net.minecraft.resources.ResourceLocation;
 
@@ -17,7 +19,7 @@ public enum SubtypeDrillHead implements ISubtype {
 	SubtypeDrillHead(int durability, boolean unbreakable) {
 		this.durability = durability;
 		isUnbreakable = unbreakable;
-		blockTextureLoc = new ResourceLocation("electrodynamics:block/resource/resourceblock" + toString().toLowerCase());
+		blockTextureLoc = new ResourceLocation("electrodynamics:block/resource/resourceblock" + toString().toLowerCase(Locale.ROOT));
 	}
 
 	@Override

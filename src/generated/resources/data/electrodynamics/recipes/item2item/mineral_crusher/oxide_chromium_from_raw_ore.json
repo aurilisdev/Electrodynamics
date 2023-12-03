@@ -1,0 +1,25 @@
+{
+  "type": "electrodynamics:mineral_crusher_recipe",
+  "ticks": 200,
+  "usagepertick": 450.0,
+  "iteminputs": {
+    "count": 1,
+    "0": {
+      "tag": "forge:raw_materials/chromium",
+      "count": 1
+    }
+  },
+  "output": {
+    "item": "electrodynamics:oxidechromite",
+    "count": 3
+  },
+  "experience": 0.5,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": "electrodynamics:impuredustiron",
+      "count": 1,
+      "chance": 0.3
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "electrodynamics:resourceblocktitaniumcarbide"
+    }
+  ],
+  "result": {
+    "item": "electrodynamics:ingottitaniumcarbide",
+    "count": 9
+  }
+}

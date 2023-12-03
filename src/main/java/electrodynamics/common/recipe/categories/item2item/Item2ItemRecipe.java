@@ -9,7 +9,7 @@ import electrodynamics.common.recipe.ElectrodynamicsRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.core.NonNullList;
@@ -23,33 +23,15 @@ public abstract class Item2ItemRecipe extends ElectrodynamicsRecipe {
 	private CountableIngredient[] ITEM_INPUTS;
 	private ItemStack OUTPUT;
 
-	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, double experience) {
-		super(recipeID, experience);
-		ITEM_INPUTS = inputs;
-		OUTPUT = output;
-	}
-
-	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts, double experience) {
-		super(recipeID, itemBiproducts, experience);
-		ITEM_INPUTS = inputs;
-		OUTPUT = output;
-	}
-
-	public Item2ItemRecipe(CountableIngredient[] inputs, ItemStack output, ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
-		super(fluidBiproducts, recipeID, experience);
-		ITEM_INPUTS = inputs;
-		OUTPUT = output;
-	}
-
-	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
-		super(recipeID, itemBiproducts, fluidBiproducts, experience);
+	public Item2ItemRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
+		super(recipeID, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts);
 		ITEM_INPUTS = inputs;
 		OUTPUT = output;
 	}
 
 	@Override
 	public boolean matchesRecipe(ComponentProcessor pr) {
-		Pair<List<Integer>, Boolean> pair = areItemsValid(getCountedIngredients(), ((ComponentInventory) pr.getHolder().getComponent(ComponentType.Inventory)).getInputContents().get(pr.getProcessorNumber()));
+		Pair<List<Integer>, Boolean> pair = areItemsValid(getCountedIngredients(), ((ComponentInventory) pr.getHolder().getComponent(IComponentType.Inventory)).getInputsForProcessor(pr.getProcessorNumber()));
 		if (pair.getSecond()) {
 			setItemArrangement(pr.getProcessorNumber(), pair.getFirst());
 			return true;

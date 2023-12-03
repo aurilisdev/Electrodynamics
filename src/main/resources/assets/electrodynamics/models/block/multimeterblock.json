@@ -3,8 +3,8 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/multimeterblock",
-		"particle": "electrodynamics:model/multimeterblock"
+		"0": "electrodynamics:block/model/multimeterblock",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

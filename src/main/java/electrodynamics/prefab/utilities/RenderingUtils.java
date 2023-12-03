@@ -13,6 +13,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import electrodynamics.prefab.block.GenericEntityBlock;
+import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
@@ -107,9 +108,10 @@ public class RenderingUtils {
 
 	public static void renderFluidBox(PoseStack stack, Minecraft minecraft, VertexConsumer builder, AABB box, FluidStack fluidStack, int light, int overlay) {
 		FluidAttributes attributes = fluidStack.getFluid().getAttributes();
+
 		TextureAtlasSprite sp = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(attributes.getStillTexture());
-		float[] colors = getColorArray(attributes.getColor(fluidStack));
-		renderFilledBox(stack, builder, box, colors[0], colors[1], colors[2], colors[3], sp.getU0(), sp.getV0(), sp.getU1(), sp.getV1(), light, overlay);
+		Color color = new Color(attributes.getColor(fluidStack));
+		renderFilledBox(stack, builder, box, color.rFloat(), color.gFloat(), color.bFloat(), color.aFloat(), sp.getU0(), sp.getV0(), sp.getU1(), sp.getV1(), light, overlay);
 	}
 
 	public static void renderFilledBox(PoseStack stack, VertexConsumer builder, AABB box, float r, float g, float b, float a, float uMin, float vMin, float uMax, float vMax, int light, int overlay) {
@@ -253,35 +255,15 @@ public class RenderingUtils {
 		RenderSystem.setShaderTexture(0, resource);
 	}
 
-	public static float getRed(int color) {
-		return (color >> 16 & 0xFF) / 255.0F;
-	}
-
-	public static float getGreen(int color) {
-		return (color >> 8 & 0xFF) / 255.0F;
-	}
-
-	public static float getBlue(int color) {
-		return (color & 0xFF) / 255.0F;
-	}
-
-	public static float getAlpha(int color) {
-		return (color >> 24 & 0xFF) / 255.0F;
-	}
-
-	public static int getRGBA(int a, int r, int g, int b) {
-		return (a << 24) + (r << 16) + (g << 8) + b;
-	}
-
-	public static float[] getColorArray(int color) {
-		return new float[] { getRed(color), getGreen(color), getBlue(color), getAlpha(color) };
-	}
-
-	public static void color(int color) {
-		RenderSystem.setShaderColor(getRed(color), getGreen(color), getBlue(color), getAlpha(color));
+	public static void setShaderColor(Color color) {
+		RenderSystem.setShaderColor(color.rFloat(), color.gFloat(), color.bFloat(), color.aFloat());
 	}
 
 	public static RenderType beaconType() {
 		return RenderType.beaconBeam(new ResourceLocation("textures/entity/beacon_beam.png"), true);
+	}
+
+	public static void resetShaderColor() {
+		RenderingUtils.setShaderColor(Color.WHITE);
 	}
 }

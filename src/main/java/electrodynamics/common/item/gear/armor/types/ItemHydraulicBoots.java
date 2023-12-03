@@ -1,26 +1,24 @@
 package electrodynamics.common.item.gear.armor.types;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 
-import com.mojang.datafixers.util.Pair;
-
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
-import electrodynamics.api.fluid.RestrictedFluidHandlerItemStack;
+import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
+import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelHydraulicBoots;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -40,6 +38,7 @@ import net.minecraftforge.client.IItemRenderProperties;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 
 public class ItemHydraulicBoots extends ArmorItem {
 
@@ -54,7 +53,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY, getWhitelistedFluids());
+		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY).setValidator(getFuelValidator());
 	}
 
 	@Override
@@ -77,25 +76,24 @@ public class ItemHydraulicBoots extends ArmorItem {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-		if (allowdedIn(tab)) {
-			items.add(new ItemStack(this));
-			if (!CapabilityUtils.isFluidItemNull()) {
-				ItemStack full = new ItemStack(this);
-				Fluid fluid = getWhitelistedFluids().getSecond().get(0);
-				full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fillInit(new FluidStack(fluid, MAX_CAPACITY)));
-				full.getCapability(CapabilityUtils.getFluidItemCap()).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).hasInitHappened(true));
-				items.add(full);
 
-			}
+		if (!allowdedIn(tab)) {
+			return;
+		}
+
+		items.add(new ItemStack(this));
+		if (!CapabilityUtils.isFluidItemNull()) {
+			ItemStack full = new ItemStack(this);
+			full.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fill(new FluidStack(ElectrodynamicsFluids.fluidHydraulic, MAX_CAPACITY), FluidAction.EXECUTE));
+			items.add(full);
+
 		}
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		if (!CapabilityUtils.isFluidItemNull()) {
-			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-				tooltip.add(new TextComponent(h.getFluidInTank(0).getAmount() + " / " + MAX_CAPACITY + " mB").withStyle(ChatFormatting.GRAY));
-			});
+			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> tooltip.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(h.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY)));
 		}
 		super.appendHoverText(stack, world, tooltip, flagIn);
 	}
@@ -121,7 +119,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 	}
 
 	protected static boolean staticIsBarVisible(ItemStack stack) {
-		return stack.getCapability(CapabilityUtils.getFluidItemCap()).map(m -> {
+		return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(m -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0;
 		}).orElse(false);
@@ -133,7 +131,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 	}
 
 	protected static int staticGetBarWidth(ItemStack stack) {
-		return (int) Math.round(stack.getCapability(CapabilityUtils.getFluidItemCap()).map(h -> {
+		return (int) Math.round(stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
 			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
 		}).orElse(13.0));
@@ -149,16 +147,8 @@ public class ItemHydraulicBoots extends ArmorItem {
 		return slotChanged;
 	}
 
-	public Pair<List<ResourceLocation>, List<Fluid>> getWhitelistedFluids() {
-		return staticGetWhitelistedFluids();
-	}
-
-	protected static Pair<List<ResourceLocation>, List<Fluid>> staticGetWhitelistedFluids() {
-		List<ResourceLocation> tags = new ArrayList<>();
-		List<Fluid> fluids = new ArrayList<>();
-		tags.add(ElectrodynamicsTags.Fluids.HYDRAULIC_FLUID.location());
-		fluids.add(DeferredRegisters.fluidHydraulic);
-		return Pair.of(tags, fluids);
+	public static Predicate<FluidStack> getFuelValidator() {
+		return fluid -> fluid.getFluid().is(ElectrodynamicsTags.Fluids.HYDRAULIC_FLUID);
 	}
 
 	public enum HydraulicBoots implements ICustomArmor {

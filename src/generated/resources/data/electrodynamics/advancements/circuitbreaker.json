@@ -1,0 +1,41 @@
+{
+  "parent": "electrodynamics:basicwiring",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:circuitbreaker"
+    },
+    "title": {
+      "color": "gray",
+      "translate": "advancement.electrodynamics.circuitbreaker.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.circuitbreaker.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 30
+  },
+  "criteria": {
+    "HasCircuitBreaker": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "electrodynamics:circuitbreaker"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasCircuitBreaker"
+    ]
+  ]
+}

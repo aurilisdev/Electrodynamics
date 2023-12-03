@@ -1,9 +1,0 @@
-{
-	"replace": false,
-	"values": [
-		"electrodynamics:glassaluminum",
-		"electrodynamics:glassclear",
-		"electrodynamics:frame",
-		"electrodynamics:framecorner"
-	]
-}

@@ -4,20 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import electrodynamics.DeferredRegisters;
-import electrodynamics.SoundRegister;
 import electrodynamics.api.References;
 import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -50,7 +49,7 @@ public class ItemCompositeArmor extends ArmorItem {
 			@Override
 			public HumanoidModel<?> getArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-				ItemStack[] ARMOR_PIECES = new ItemStack[] { new ItemStack(DeferredRegisters.ITEM_COMPOSITEHELMET.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITECHESTPLATE.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITELEGGINGS.get()), new ItemStack(DeferredRegisters.ITEM_COMPOSITEBOOTS.get()) };
+				ItemStack[] ARMOR_PIECES = new ItemStack[] { new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get()) };
 
 				List<ItemStack> armorPieces = new ArrayList<>();
 				entity.getArmorSlots().forEach(armorPieces::add);
@@ -86,16 +85,22 @@ public class ItemCompositeArmor extends ArmorItem {
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowdedIn(group)) {
-			ItemStack filled = new ItemStack(this);
-			if (getSlot() == EquipmentSlot.CHEST) {
-				CompoundTag tag = filled.getOrCreateTag();
-				tag.putInt(NBTUtils.PLATES, 2);
-				items.add(filled);
-			}
-			ItemStack empty = new ItemStack(this);
-			items.add(empty);
+		if (!allowdedIn(group)) {
+			return;
 		}
+		ItemStack filled = new ItemStack(this);
+		if (getSlot() == EquipmentSlot.CHEST) {
+			CompoundTag tag = filled.getOrCreateTag();
+			tag.putInt(NBTUtils.PLATES, 2);
+			items.add(filled);
+		}
+		ItemStack empty = new ItemStack(this);
+		items.add(empty);
+	}
+
+	@Override
+	public boolean canBeDepleted() {
+		return false;
 	}
 
 	@Override
@@ -118,7 +123,7 @@ public class ItemCompositeArmor extends ArmorItem {
 
 	protected static void staticAppendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		int plates = stack.hasTag() ? stack.getTag().getInt(NBTUtils.PLATES) : 0;
-		tooltip.add(new TranslatableComponent("tooltip.electrodynamics.ceramicplatecount", new TextComponent(plates + "")).withStyle(ChatFormatting.AQUA));
+		tooltip.add(ElectroTextUtils.tooltip("ceramicplatecount", plates).withStyle(ChatFormatting.AQUA));
 	}
 
 	@Override
@@ -126,7 +131,6 @@ public class ItemCompositeArmor extends ArmorItem {
 		super.onArmorTick(stack, world, player);
 		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20));
 	}
-
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 		return ARMOR_TEXTURE_LOCATION;
@@ -158,7 +162,7 @@ public class ItemCompositeArmor extends ArmorItem {
 
 		@Override
 		public SoundEvent getEquipSound() {
-			return SoundRegister.SOUND_EQUIPHEAVYARMOR.get();
+			return ElectrodynamicsSounds.SOUND_EQUIPHEAVYARMOR.get();
 		}
 
 		@Override

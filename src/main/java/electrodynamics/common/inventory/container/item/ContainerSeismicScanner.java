@@ -1,9 +1,11 @@
 package electrodynamics.common.inventory.container.item;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.item.gear.tools.electric.ItemSeismicScanner;
 import electrodynamics.prefab.inventory.container.GenericContainerItem;
-import electrodynamics.prefab.inventory.container.slot.itemhandler.SlotItemHandlerRestricted;
+import electrodynamics.prefab.inventory.container.slot.itemhandler.type.SlotItemHandlerRestricted;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.SlotType;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.BlockItem;
@@ -17,14 +19,15 @@ public class ContainerSeismicScanner extends GenericContainerItem {
 	}
 
 	public ContainerSeismicScanner(int id, Inventory playerinv, IItemHandler handler) {
-		super(DeferredRegisters.CONTAINER_SEISMICSCANNER.get(), id, playerinv, handler);
+		super(ElectrodynamicsMenuTypes.CONTAINER_SEISMICSCANNER.get(), id, playerinv, handler);
 	}
 
 	@Override
 	public void addItemInventorySlots(Container inv, Inventory playerinv) {
-		if (getHandler() != null) {
-			addSlot(new SlotItemHandlerRestricted(getHandler(), nextIndex(), 25, 42, true, BlockItem.class));
+		if (getHandler() == null) {
+			return;
 		}
+		addSlot(new SlotItemHandlerRestricted(SlotType.NORMAL, IconType.NONE, getHandler(), nextIndex(), 25, 42).setRestriction(stack -> (stack != null && stack.getItem() instanceof BlockItem)));
 	}
 
 }

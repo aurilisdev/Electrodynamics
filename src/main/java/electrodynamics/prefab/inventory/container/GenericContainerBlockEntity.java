@@ -14,7 +14,7 @@ public abstract class GenericContainerBlockEntity<T extends BlockEntity> extends
 	protected final BlockEntity tile;
 	protected final ContainerData inventorydata;
 
-	protected GenericContainerBlockEntity(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	public GenericContainerBlockEntity(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 		super(type, id, playerinv, inventory);
 		checkContainerDataCount(inventorydata, inventorydata.getCount());
 		this.inventorydata = inventorydata;
@@ -34,5 +34,11 @@ public abstract class GenericContainerBlockEntity<T extends BlockEntity> extends
 	@Nullable
 	public BlockEntity getUnsafeHost() {
 		return world.getBlockEntity(new BlockPos(inventorydata.get(0), inventorydata.get(1), inventorydata.get(2)));
+	}
+
+	@Override
+	public void broadcastChanges() {
+		// TODO Auto-generated method stub
+		super.broadcastChanges();
 	}
 }

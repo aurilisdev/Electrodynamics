@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " L ",
+    "SCS",
+    "SWS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:plates/steel"
+    },
+    "C": {
+      "item": "electrodynamics:oxidethionylchloride"
+    },
+    "W": {
+      "item": "electrodynamics:wiregold"
+    },
+    "L": {
+      "tag": "forge:plates/lithium"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:lithiumbattery"
+  }
+}

@@ -1,15 +1,16 @@
 package electrodynamics.prefab.utilities;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.api.network.conductor.IConductor;
+import electrodynamics.api.network.cable.type.IConductor;
 import electrodynamics.common.damage.DamageSources;
+import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Explosion.BlockInteraction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -19,10 +20,12 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 
 public class ElectricityUtils {
+
 	public static void electrecuteEntity(Entity entityIn, TransferPack transfer) {
 		if (transfer.getVoltage() <= 960.0) {
+			Ingredient insulatingItems = Ingredient.of(ElectrodynamicsTags.Items.INSULATES_PLAYER_FEET);
 			for (ItemStack armor : entityIn.getArmorSlots()) {
-				if (armor.getItem() == DeferredRegisters.ITEM_RUBBERBOOTS.get()) {
+				if (ItemUtils.isIngredientMember(insulatingItems, armor.getItem())) {
 					float damage = (float) transfer.getAmps() / 10.0f;
 					if (Math.random() < damage) {
 						int integerDamage = (int) Math.max(1, damage);
@@ -56,20 +59,20 @@ public class ElectricityUtils {
 		return false;
 	}
 
-	public static boolean isConductor(BlockEntity acceptor) {
-		return acceptor instanceof IConductor;
+	public static boolean isConductor(BlockEntity acceptor, IConductor requesterWire) {
+		return acceptor instanceof IConductor conductor;
 	}
 
 	public static TransferPack receivePower(BlockEntity tile, Direction direction, TransferPack transfer, boolean debug) {
 		if (isElectricReceiver(tile, direction)) {
-			LazyOptional<ICapabilityElectrodynamic> cap = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, direction);
-			if (cap.isPresent()) {
-				ICapabilityElectrodynamic handler = cap.resolve().get();
+			LazyOptional<ICapabilityElectrodynamic> electro = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, direction);
+			if (electro.isPresent()) {
+				ICapabilityElectrodynamic handler = electro.resolve().get();
 				return handler.receivePower(transfer, debug);
 			}
-			LazyOptional<IEnergyStorage> cap2 = tile.getCapability(CapabilityEnergy.ENERGY, direction);
-			if (cap2.isPresent()) {
-				IEnergyStorage handler = cap2.resolve().get();
+			LazyOptional<IEnergyStorage> fe = tile.getCapability(CapabilityEnergy.ENERGY, direction);
+			if (fe.isPresent()) {
+				IEnergyStorage handler = fe.resolve().get();
 				TransferPack returner = TransferPack.joulesVoltage(handler.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());
 				if (transfer.getVoltage() > ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) {
 					Level world = tile.getLevel();

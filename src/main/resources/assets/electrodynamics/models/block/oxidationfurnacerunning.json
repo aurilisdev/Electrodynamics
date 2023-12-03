@@ -3,8 +3,8 @@
 	"parent": "block/cube_all",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/oxidationfurnacerunning",
-		"particle": "electrodynamics:model/oxidationfurnacerunning"
+		"0": "electrodynamics:block/model/oxidationfurnacerunning",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

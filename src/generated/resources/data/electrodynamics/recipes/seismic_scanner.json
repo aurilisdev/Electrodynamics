@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PQP",
+    "ABA",
+    "PCP"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "Q": {
+      "tag": "forge:gems/quartz"
+    },
+    "A": {
+      "tag": "forge:gems/amethyst"
+    },
+    "B": {
+      "item": "electrodynamics:battery"
+    },
+    "C": {
+      "tag": "forge:circuits/basic"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:seismicscanner"
+  }
+}

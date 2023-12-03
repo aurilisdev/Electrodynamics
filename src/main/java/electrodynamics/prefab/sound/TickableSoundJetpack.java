@@ -2,11 +2,11 @@ package electrodynamics.prefab.sound;
 
 import java.util.UUID;
 
-import electrodynamics.DeferredRegisters;
-import electrodynamics.SoundRegister;
-import electrodynamics.api.item.ItemUtils;
+import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.WorldUtils;
+import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.sounds.SoundSource;
@@ -21,7 +21,7 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 	private Player originPlayer;
 
 	public TickableSoundJetpack(UUID originPlayer) {
-		super(SoundRegister.SOUND_JETPACK.get(), SoundSource.PLAYERS);
+		super(ElectrodynamicsSounds.SOUND_JETPACK.get(), SoundSource.PLAYERS);
 		originId = originPlayer;
 		volume = 0.5F;
 		pitch = 1.0F;
@@ -61,8 +61,8 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 		if (jetpack.isEmpty()) {
 			return true;
 		}
-		if (!ItemUtils.testItems(jetpack.getItem(), DeferredRegisters.ITEM_JETPACK.get())) {
-			if (!ItemUtils.testItems(jetpack.getItem(), DeferredRegisters.ITEM_COMBATCHESTPLATE.get())) {
+		if (!ItemUtils.testItems(jetpack.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get())) {
+			if (!ItemUtils.testItems(jetpack.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
 				return true;
 			}
 		}
