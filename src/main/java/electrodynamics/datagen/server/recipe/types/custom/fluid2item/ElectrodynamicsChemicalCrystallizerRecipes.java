@@ -3,12 +3,14 @@ package electrodynamics.datagen.server.recipe.types.custom.fluid2item;
 import java.util.function.Consumer;
 
 import electrodynamics.api.References;
+import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
 import electrodynamics.datagen.utils.recipe.FinishedRecipeItemOutput;
+import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.FluidTags;
@@ -60,6 +62,12 @@ public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGe
 						.complete(consumer);
 			}
 		}
+
+		newRecipe(new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeConcrete.regular)), 0, CHEMICALCRYSTALLIZER_REQUIRED_TICKS, CHEMICALCRYSTALLIZER_USAGE_PER_TICK, "concrete_regular")
+				//
+				.addFluidTagInput(ElectrodynamicsTags.Fluids.CONCRETE, 1000)
+				//
+				.complete(consumer);
 
 	}
 

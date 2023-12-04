@@ -5,5 +5,5 @@
     "fluid": "electrodynamics:item/canisterreinforced/fluid"
   },
   "loader": "forge:bucket",
-  "fluid": "minecraft:water"
+  "fluid": "minecraft:empty"
 }

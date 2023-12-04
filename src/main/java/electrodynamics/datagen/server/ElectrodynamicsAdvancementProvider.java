@@ -126,7 +126,7 @@ public class ElectrodynamicsAdvancementProvider implements DataProvider {
 				//
 				.rewards(Builder.experience(10))
 				//
-				.parent(ores.getId())
+				.parent(ores)
 				//
 				.save(consumer);
 

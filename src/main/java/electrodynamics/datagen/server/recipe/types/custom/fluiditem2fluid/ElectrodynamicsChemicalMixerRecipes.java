@@ -10,9 +10,11 @@ import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecip
 import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
 import electrodynamics.datagen.utils.recipe.FinishedRecipeFluidOutput;
 import electrodynamics.registers.ElectrodynamicsFluids;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -95,6 +97,14 @@ public class ElectrodynamicsChemicalMixerRecipes extends AbstractRecipeGenerator
 				.addFluidTagInput(FluidTags.WATER, 1000)
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.OXIDE_TRISULFUR, 1)
+				//
+				.complete(consumer);
+
+		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidCement, 5000), 0, CHEMICALMIXER_REQUIRED_TICKS, CHEMICALMIXER_USAGE_PER_TICK, "concrete_slurry")
+				//
+				.addFluidTagInput(FluidTags.WATER, 1000)
+				//
+				.addItemStackInput(new ItemStack(ElectrodynamicsItems.ITEM_CONCRETEMIX.get()))
 				//
 				.complete(consumer);
 
