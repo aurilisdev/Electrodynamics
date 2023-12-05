@@ -1,6 +1,6 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.common.tile.machines.arcfurnace.TileElectricArcFurnaceTriple;
+import electrodynamics.common.tile.machines.furnace.TileElectricFurnaceTriple;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotRestricted;
@@ -13,7 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 
-public class ContainerElectricFurnaceTriple extends GenericContainerBlockEntity<TileElectricArcFurnaceTriple> {
+public class ContainerElectricFurnaceTriple extends GenericContainerBlockEntity<TileElectricFurnaceTriple> {
 
 	public ContainerElectricFurnaceTriple(int id, Inventory playerinv) {
 		this(id, playerinv, new SimpleContainer(9));
@@ -24,7 +24,7 @@ public class ContainerElectricFurnaceTriple extends GenericContainerBlockEntity<
 	}
 
 	public ContainerElectricFurnaceTriple(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICARCFURNACETRIPLE.get(), id, playerinv, inventory, inventorydata);
+		super(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICFURNACETRIPLE.get(), id, playerinv, inventory, inventorydata);
 	}
 
 	@Override
@@ -36,8 +36,8 @@ public class ContainerElectricFurnaceTriple extends GenericContainerBlockEntity<
 		addSlot(new SlotRestricted(inv, nextIndex(), 116, 24).setIOColor(new Color(255, 0, 0, 255)));
 		addSlot(new SlotRestricted(inv, nextIndex(), 116, 44).setIOColor(new Color(255, 0, 0, 255)));
 		addSlot(new SlotRestricted(inv, nextIndex(), 116, 64).setIOColor(new Color(255, 0, 0, 255)));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, ContainerElectricArcFurnace.VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, ContainerElectricArcFurnace.VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, ContainerElectricArcFurnace.VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, ContainerElectricFurnace.VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, ContainerElectricFurnace.VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, ContainerElectricFurnace.VALID_UPGRADES));
 	}
 }

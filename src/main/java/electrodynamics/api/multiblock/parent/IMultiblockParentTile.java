@@ -3,6 +3,7 @@ package electrodynamics.api.multiblock.parent;
 import electrodynamics.api.multiblock.Subnode;
 import electrodynamics.api.multiblock.child.IMultiblockChildBlock;
 import electrodynamics.common.tile.TileMultiSubnode;
+import electrodynamics.prefab.utilities.object.Location;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -60,7 +61,7 @@ public interface IMultiblockParentTile {
 				}
 			} else if (subnodeBlock instanceof IMultiblockChildBlock) {
 				TileMultiSubnode subnodeTile = (TileMultiSubnode) world.getBlockEntity(offset);
-				if (subnodeTile != null && subnodeTile.parentPos.get().equals(pos)) {
+				if (subnodeTile != null && subnodeTile.parentPos.get().equals(new Location(pos))) {
 					world.setBlockAndUpdate(offset, Blocks.AIR.defaultBlockState());
 				}
 			}

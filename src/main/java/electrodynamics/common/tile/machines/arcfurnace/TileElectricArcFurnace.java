@@ -1,5 +1,7 @@
 package electrodynamics.common.tile.machines.arcfurnace;
 
+import java.util.List;
+
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnace;
@@ -8,17 +10,20 @@ import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurna
 import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
 import electrodynamics.prefab.sound.utils.ITickableSound;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.*;
+import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
+import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
+import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
+import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
+import electrodynamics.prefab.tile.components.type.ComponentProcessor;
+import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
-import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -29,8 +34,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.List;
 
 public class TileElectricArcFurnace extends GenericTile implements ITickableSound {
 
@@ -92,20 +95,6 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 		if (BlockEntityUtils.isLit(this) ^ canProcess || isProcessorActive()) {
 			BlockEntityUtils.updateLit(this, canProcess || isProcessorActive());
 		}
-		
-		if(getBlockState().is(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacerunning))) {
-			
-			level.setBlockAndUpdate(worldPosition, ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnace).defaultBlockState().setValue(GenericEntityBlock.FACING, getFacing()));
-			
-		} else if(getBlockState().is(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacedoublerunning))) {
-			
-			level.setBlockAndUpdate(worldPosition, ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacedouble).defaultBlockState().setValue(GenericEntityBlock.FACING, getFacing()));
-			
-		} else if(getBlockState().is(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacetriplerunning))) {
-			
-			level.setBlockAndUpdate(worldPosition, ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacetriple).defaultBlockState().setValue(GenericEntityBlock.FACING, getFacing()));
-			
-		} 
 
 		return canProcess;
 	}
@@ -195,6 +184,5 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 	public int getComparatorSignal() {
 		return (int) (((double) getNumActiveProcessors() / (double) Math.max(1, getNumProcessors())) * 15.0);
 	}
-
 
 }

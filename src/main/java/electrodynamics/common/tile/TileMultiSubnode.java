@@ -31,7 +31,7 @@ public class TileMultiSubnode extends GenericTile {
 
 	public void setData(BlockPos parentPos, int subnodeIndex) {
 
-		this.parentPos.set(parentPos);
+		this.parentPos.set(new Location(parentPos));
 		nodeIndex.set(subnodeIndex);
 
 		setChanged();
