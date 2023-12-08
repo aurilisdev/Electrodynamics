@@ -47,7 +47,17 @@ public class ComponentInventory implements IComponent, WorldlyContainer {
 
 	private final LazyOptional<IItemHandlerModifiable>[] sidedOptionals = IndexedSidedInvWrapper.create(this, Direction.values());
 
-	private int[][] slotsForFace = new int[6][]; // Down Up North South West East
+	private static int[][] createArr() {
+		int[][] arr = new int[6][];
+		
+		for(int i = 0; i < arr.length; i++) {
+			arr[i] = new int[] {};
+		}
+		
+		return arr;
+	}
+	
+	private int[][] slotsForFace = createArr(); // Down Up North South West East
 
 	/*
 	 * IMPORTANT DEFINITIONS:
