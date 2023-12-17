@@ -294,6 +294,7 @@
     "electrodynamics:resourceblocktitanium",
     "electrodynamics:resourceblocktitaniumcarbide",
     "electrodynamics:seismicmarker",
-    "electrodynamics:logisticalmanager"
+    "electrodynamics:logisticalmanager",
+    "electrodynamics:steelscaffold"
   ]
 }
