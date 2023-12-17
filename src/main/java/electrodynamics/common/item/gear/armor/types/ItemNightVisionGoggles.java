@@ -70,8 +70,6 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 				return model;
 			}
 		});
-		consumer.accept(new IItemRenderProperties() {
-		});
 	}
 
 	@Override
