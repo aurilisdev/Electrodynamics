@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BBB",
+    "SWS",
+    "BBB"
+  ],
+  "key": {
+    "B": {
+      "item": "electrodynamics:lithiumbattery"
+    },
+    "S": {
+      "tag": "forge:plates/stainlesssteel"
+    },
+    "W": {
+      "item": "electrodynamics:wireinsulatedgold"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:lithiumbatterybox"
+  }
+}

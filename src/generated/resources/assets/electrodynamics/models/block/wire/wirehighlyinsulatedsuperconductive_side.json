@@ -1,0 +1,7 @@
+{
+  "parent": "electrodynamics:parent/highlyinsulatedwire_side",
+  "textures": {
+    "texture": "electrodynamics:block/wire/wireinsulatedsuperconductive",
+    "particle": "#texture"
+  }
+}

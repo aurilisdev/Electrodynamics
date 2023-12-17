@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "resourceblockbronze",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "electrodynamics:resourceblockbronze"
+        }
+      ]
+    }
+  ]
+}

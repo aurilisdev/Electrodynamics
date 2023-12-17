@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WCW",
+    "PFP",
+    "WCW"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "C": {
+      "item": "electrodynamics:coil"
+    },
+    "F": {
+      "item": "electrodynamics:ceramicfuse"
+    },
+    "W": {
+      "item": "electrodynamics:wirecopper"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:circuitbreaker"
+  }
+}

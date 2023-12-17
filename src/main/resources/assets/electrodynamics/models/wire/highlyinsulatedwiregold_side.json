@@ -1,7 +1,0 @@
-{
-	"parent": "electrodynamics:parent/highlyinsulatedwire_side",
-	"textures": {
-		"particle": "electrodynamics:block/wire/insulatedwiregold",
-		"texture": "electrodynamics:block/wire/insulatedwiregold"
-	}
-}

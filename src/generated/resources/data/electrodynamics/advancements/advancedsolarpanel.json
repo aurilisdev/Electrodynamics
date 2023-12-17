@@ -1,0 +1,39 @@
+{
+  "parent": "electrodynamics:solarpanel",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:advancedsolarpanel"
+    },
+    "title": {
+      "color": "dark_blue",
+      "translate": "advancement.electrodynamics.advancedsolarpanel.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.advancedsolarpanel.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 75
+  },
+  "criteria": {
+    "HasPanel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "electrodynamics:advancedsolarpanel"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasPanel"
+    ]
+  ]
+}

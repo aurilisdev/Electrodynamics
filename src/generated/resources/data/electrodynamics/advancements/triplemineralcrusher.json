@@ -1,0 +1,39 @@
+{
+  "parent": "electrodynamics:doublemineralcrusher",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:mineralcrushertriple"
+    },
+    "title": {
+      "color": "red",
+      "translate": "advancement.electrodynamics.triplemineralcrusher.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.triplemineralcrusher.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 150
+  },
+  "criteria": {
+    "HasCrusher": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "electrodynamics:mineralcrushertriple"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasCrusher"
+    ]
+  ]
+}

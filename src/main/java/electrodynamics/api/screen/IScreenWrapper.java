@@ -2,25 +2,33 @@ package electrodynamics.api.screen;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.ITextProperties;
+import net.minecraft.util.IReorderingProcessor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public interface IScreenWrapper {
-    void drawTexturedRect(MatrixStack stack, int x, int y, int u, int v, int w, int h);
 
-    void drawTexturedRectFromIcon(MatrixStack stack, int x, int y, TextureAtlasSprite icon, int w, int h);
+	double getGuiWidth();
 
-    void displayTooltip(MatrixStack stack, ITextComponent text, int xAxis, int yAxis);
+	double getGuiHeight();
 
-    void displayTooltips(MatrixStack stack, List<? extends ITextProperties> tooltips, int xAxis, int yAxis);
+	FontRenderer getFontRenderer();
 
-    FontRenderer getFontRenderer();
+	public void displayTooltips(MatrixStack stack, List<? extends IReorderingProcessor> tooltips, int mouseX, int mouseY);
+
+	public void displayTooltips(MatrixStack stack, List<? extends IReorderingProcessor> lines, int x, int y, FontRenderer font);
+	
+	default public void displayTooltip(MatrixStack stack, IReorderingProcessor tooltip, int mouseX, int mouseY) {
+		displayTooltips(stack, Lists.newArrayList(tooltip), mouseX, mouseY);
+	}
+
+	default public void displayTooltip(MatrixStack stack, IReorderingProcessor line, int x, int y, FontRenderer font) {
+		displayTooltips(stack, Lists.newArrayList(line), x, y, font);
+	}
 
 }

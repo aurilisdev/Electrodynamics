@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "electrodynamics:wireiron"
+    },
+    {
+      "item": "electrodynamics:insulation"
+    }
+  ],
+  "result": {
+    "item": "electrodynamics:wireinsulatediron"
+  }
+}

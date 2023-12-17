@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "forge:dusts/bronze"
+  },
+  "result": "electrodynamics:ingotbronze",
+  "experience": 0.0,
+  "cookingtime": 200
+}

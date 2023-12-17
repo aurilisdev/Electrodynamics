@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PGP",
+    "WWW",
+    "CGC"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "C": {
+      "tag": "forge:circuits/basic"
+    },
+    "G": {
+      "tag": "forge:gears/bronze"
+    },
+    "W": {
+      "item": "electrodynamics:wireinsulatedgold"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:upgradebasicspeed"
+  }
+}

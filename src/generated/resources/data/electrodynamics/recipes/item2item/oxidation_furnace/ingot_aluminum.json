@@ -1,0 +1,21 @@
+{
+  "type": "electrodynamics:oxidation_furnace_recipe",
+  "ticks": 200,
+  "usagepertick": 350.0,
+  "iteminputs": {
+    "count": 2,
+    "0": {
+      "tag": "forge:ores/aluminum",
+      "count": 1
+    },
+    "1": {
+      "tag": "forge:dusts/saltpeter",
+      "count": 1
+    }
+  },
+  "output": {
+    "item": "electrodynamics:ingotaluminum",
+    "count": 3
+  },
+  "experience": 0.4000000059604645
+}

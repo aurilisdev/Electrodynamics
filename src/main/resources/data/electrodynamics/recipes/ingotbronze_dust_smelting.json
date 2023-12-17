@@ -1,9 +1,0 @@
-{
-	"type": "minecraft:smelting",
-	"ingredient": {
-		"item": "electrodynamics:dustbronze"
-	},
-	"result": "electrodynamics:ingotbronze",
-	"experience": 0.0,
-	"cookingtime": 200
-}

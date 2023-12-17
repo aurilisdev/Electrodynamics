@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SPS",
+    "CIC",
+    "IWI"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "S": {
+      "item": "electrodynamics:solarpanelplate"
+    },
+    "C": {
+      "tag": "forge:circuits/basic"
+    },
+    "W": {
+      "item": "electrodynamics:wirecopper"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:solarpanel"
+  }
+}

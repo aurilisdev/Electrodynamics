@@ -1,0 +1,39 @@
+{
+  "parent": "electrodynamics:basicwiring",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:downgradetransformer"
+    },
+    "title": {
+      "color": "gold",
+      "translate": "advancement.electrodynamics.downgradetransformer.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.downgradetransformer.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 25
+  },
+  "criteria": {
+    "HasTransformer": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "electrodynamics:downgradetransformer"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasTransformer"
+    ]
+  ]
+}

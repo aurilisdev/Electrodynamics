@@ -1,15 +1,15 @@
 package electrodynamics.common.fluid.types;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.fluid.FluidNonPlaceable;
+import electrodynamics.registers.ElectrodynamicsItems;
 
 public class FluidPolyethylene extends FluidNonPlaceable {
 
 	public static final String FORGE_TAG = "polyethylene";
-	
-    public FluidPolyethylene() {
-	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "polyethylene", -376664948);
-    }
+
+	public FluidPolyethylene() {
+		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED, References.ID, "polyethylene", -376664948);
+	}
 
 }

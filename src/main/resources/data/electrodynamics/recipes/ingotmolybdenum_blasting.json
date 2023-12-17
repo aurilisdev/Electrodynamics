@@ -1,9 +1,0 @@
-{
-	"type": "minecraft:blasting",
-	"ingredient": {
-		"tag": "forge:ores/molybdenum"
-	},
-	"result": "electrodynamics:ingotmolybdenum",
-	"experience": 0.7,
-	"cookingtime": 100
-}

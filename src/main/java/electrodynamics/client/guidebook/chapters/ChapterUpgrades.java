@@ -1,0 +1,111 @@
+package electrodynamics.client.guidebook.chapters;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+
+import electrodynamics.client.guidebook.ScreenGuidebook;
+import electrodynamics.client.guidebook.utils.components.Chapter;
+import electrodynamics.client.guidebook.utils.components.Module;
+import electrodynamics.client.guidebook.utils.pagedata.OnKeyPress;
+import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
+import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
+import electrodynamics.compatibility.jei.JeiBuffer;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.registers.ElectrodynamicsItems;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IReorderingProcessor;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.TextFormatting;
+
+public class ChapterUpgrades extends Chapter {
+
+	private static final ItemWrapperObject LOGO = new ItemWrapperObject(7, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.getItem(SubtypeItemUpgrade.advancedspeed));
+
+	public ChapterUpgrades(Module module) {
+		super(module);
+	}
+
+	@Override
+	public ItemWrapperObject getLogo() {
+		return LOGO;
+	}
+
+	@Override
+	public IFormattableTextComponent getTitle() {
+		return ElectroTextUtils.guidebook("chapter.upgrades");
+	}
+
+	@Override
+	public void addData() {
+		// Injector Upgrade tutorial
+		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.iteminput).getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setSeparateStart());
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.getItem(SubtypeItemUpgrade.iteminput)).onTooltip(new OnTooltip() {
+
+			@Override
+			public void onTooltip(MatrixStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+				if (JeiBuffer.isJeiInstalled()) {
+					List<IReorderingProcessor> tooltips = new ArrayList<>();
+					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
+					screen.renderTooltip(stack, tooltips, xAxis, yAxis);
+				}
+
+			}
+		}).onKeyPress(new OnKeyPress() {
+
+			@Override
+			public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
+
+			}
+
+			@Override
+			public Object getJeiLookup() {
+				return new ItemStack(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.iteminput));
+			}
+
+		}));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l1")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.default").withStyle(TextFormatting.BOLD)));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l2")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.smart").withStyle(TextFormatting.BOLD)));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l3")));
+
+		// Ejector Upgrade tutorial
+		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput).getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setNewPage());
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput)).onTooltip(new OnTooltip() {
+
+			@Override
+			public void onTooltip(MatrixStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+				if (JeiBuffer.isJeiInstalled()) {
+					List<IReorderingProcessor> tooltips = new ArrayList<>();
+					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
+					screen.renderTooltip(stack, tooltips, xAxis, yAxis);
+				}
+
+			}
+		}).onKeyPress(new OnKeyPress() {
+
+			@Override
+			public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
+
+			}
+
+			@Override
+			public Object getJeiLookup() {
+				return new ItemStack(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput));
+			}
+
+		}));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l4")).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.default").withStyle(TextFormatting.BOLD)));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l5")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.smart").withStyle(TextFormatting.BOLD)));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l6")));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l7")).setIndentions(1).setSeparateStart());
+
+	}
+
+}

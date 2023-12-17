@@ -2,7 +2,7 @@
 	"credit": "aurilisdev",
 	"textures": {
 		"0": "electrodynamics:model/chemicalmixer",
-		"particle": "electrodynamics:model/chemicalmixer"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

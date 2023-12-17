@@ -1,78 +1,105 @@
 package electrodynamics.api.electricity.formatting;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+
+import electrodynamics.prefab.utilities.ElectroTextUtils;
+import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.StringTextComponent;
+
 public class ChatFormatter {
 
-    public static String getElectricDisplay(double value, ElectricUnit unit, int decimalPlaces, boolean isShort) {
-	if (value < Long.MIN_VALUE + 10000) {
-	    return "-Infinite" + (isShort ? unit.symbol : unit.getPlural());
-	} else if (value > Long.MAX_VALUE - 10000) {
-	    return "Infinite " + (isShort ? unit.symbol : unit.getPlural());
-	}
-	String unitName = unit.name;
-	if (isShort) {
-	    unitName = unit.symbol;
-	} else if (value > 1.0D) {
-	    unitName = unit.getPlural();
-	}
+	public static IFormattableTextComponent getChatDisplay(double value, IDisplayUnit unit, int decimalPlaces, boolean isShort) {
+		if (value < Long.MIN_VALUE + 10000) {
+			return new StringTextComponent("-").append(ElectroTextUtils.gui("displayunit.infinity.name")).append(" ").append((isShort ? unit.getSymbol() : unit.getNamePlural()));
+		}
+		if (value > Long.MAX_VALUE - 10000) {
+			return ElectroTextUtils.gui("displayunit.infinity.name").append(" ").append((isShort ? unit.getSymbol() : unit.getNamePlural()));
+		}
+		IFormattableTextComponent unitName;
+		if (isShort) {
+			unitName = unit.getSymbol();
+		} else if (value > 1.0D) {
+			unitName = unit.getNamePlural();
+		} else {
+			unitName = unit.getName();
+		}
 
-	if (value == 0.0D) {
-	    return value + " " + unitName;
-	}
+		if (value == 0.0D) {
+			return new StringTextComponent(value + "").append(unit.getDistanceFromValue()).append(unitName);
+		}
 
-	if (value <= MeasurementUnit.MILLI.value) {
-	    return roundDecimals(MeasurementUnit.MICRO.process(value), decimalPlaces) + " " + MeasurementUnit.MICRO.getName(isShort) + unitName;
-	}
+		for (MeasurementUnit measurement : MeasurementUnit.values()) {
 
-	if (value < 1.0D) {
-	    return roundDecimals(MeasurementUnit.MILLI.process(value), decimalPlaces) + " " + MeasurementUnit.MILLI.getName(isShort) + unitName;
-	}
+			if (value < measurement.getValue()) {
 
-	if (value > MeasurementUnit.MEGA.value) {
-	    return roundDecimals(MeasurementUnit.MEGA.process(value), decimalPlaces) + " " + MeasurementUnit.MEGA.getName(isShort) + unitName;
-	}
+				if (measurement.ordinal() == 0) {
+					return formatDecimals(measurement.process(value), decimalPlaces).append(unit.getDistanceFromValue()).append(measurement.getName(isShort)).append(unitName);
+				}
+				measurement = MeasurementUnit.values()[measurement.ordinal() - 1];
+				return formatDecimals(measurement.process(value), decimalPlaces).append(unit.getDistanceFromValue()).append(measurement.getName(isShort)).append(unitName);
+			}
+		}
 
-	if (value > MeasurementUnit.KILO.value) {
-	    return roundDecimals(MeasurementUnit.KILO.process(value), decimalPlaces) + " " + MeasurementUnit.KILO.getName(isShort) + unitName;
-	}
-
-	return roundDecimals(value, decimalPlaces) + " " + unitName;
-    }
-
-    public static String getElectricDisplay(double value, ElectricUnit unit) {
-	return getElectricDisplay(value, unit, 2, false);
-    }
-
-    public static String getElectricDisplayShort(double value, ElectricUnit unit) {
-	return getElectricDisplay(value, unit, 2, true);
-    }
-
-    public static String getDisplayShort(double value, ElectricUnit unit, int decimalPlaces) {
-	return getElectricDisplay(value, unit, decimalPlaces, true);
-    }
-
-    public static String getElectricDisplaySimple(double value, ElectricUnit unit, int decimalPlaces) {
-	if (value > 1.0D) {
-
-	    if (decimalPlaces < 1) {
-		return (int) value + " " + unit.getPlural();
-	    }
-
-	    return roundDecimals(value, decimalPlaces) + " " + unit.getPlural();
+		MeasurementUnit measurement = MeasurementUnit.values()[MeasurementUnit.values().length - 1];
+		return formatDecimals(measurement.process(value), decimalPlaces).append(unit.getDistanceFromValue()).append(measurement.getName(isShort)).append(unitName);
 	}
 
-	if (decimalPlaces < 1) {
-	    return (int) value + " " + unit.name;
+	public static IFormattableTextComponent getChatDisplay(double value, IDisplayUnit unit) {
+		return getChatDisplay(value, unit, 3, false);
 	}
 
-	return roundDecimals(value, decimalPlaces) + " " + unit.name;
-    }
+	public static IFormattableTextComponent getChatDisplayShort(double value, IDisplayUnit unit) {
+		return getChatDisplay(value, unit, 3, true);
+	}
 
-    public static double roundDecimals(double d, int decimalPlaces) {
-	int j = (int) (d * Math.pow(10.0D, decimalPlaces));
-	return j / Math.pow(10.0D, decimalPlaces);
-    }
+	public static IFormattableTextComponent getDisplayShort(double value, IDisplayUnit unit, int decimalPlaces) {
+		return getChatDisplay(value, unit, decimalPlaces, true);
+	}
 
-    public static double roundDecimals(double d) {
-	return roundDecimals(d, 2);
-    }
+	public static IFormattableTextComponent getChatDisplaySimple(double value, IDisplayUnit unit, int decimalPlaces) {
+		if (value > 1.0D) {
+
+			if (decimalPlaces < 1) {
+				return new StringTextComponent((int) value + "").append(unit.getDistanceFromValue()).append(unit.getNamePlural());
+			}
+
+			return formatDecimals(value, decimalPlaces).append(unit.getDistanceFromValue()).append(unit.getNamePlural());
+		}
+
+		if (decimalPlaces < 1) {
+			return new StringTextComponent((int) value + "").append(unit.getDistanceFromValue()).append(unit.getName());
+		}
+
+		return formatDecimals(value, decimalPlaces).append(unit.getDistanceFromValue()).append(unit.getName());
+	}
+
+	public static double roundDecimals(double d, int decimalPlaces) {
+		int j = (int) (d * Math.pow(10.0D, decimalPlaces));
+		return j / Math.pow(10.0D, decimalPlaces);
+	}
+
+	public static IFormattableTextComponent formatDecimals(double d, int decimalPlaces) {
+		DecimalFormat format = new DecimalFormat("0" + getDecimals(decimalPlaces));
+		format.setRoundingMode(RoundingMode.HALF_EVEN);
+		return new StringTextComponent(format.format(roundDecimals(d, decimalPlaces)));
+	}
+
+	public static IFormattableTextComponent formatFluidMilibuckets(double amount) {
+
+		return getChatDisplayShort(amount / 1000.0, DisplayUnit.BUCKETS);
+
+	}
+
+	private static String getDecimals(int num) {
+		if (num <= 0) {
+			return ".";
+		}
+		num--;
+		String key = ".0";
+		for (int i = 0; i < num; i++) {
+			key += "#";
+		}
+		return key;
+	}
 }

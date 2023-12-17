@@ -5,7 +5,7 @@
 	"ambientocclusion": "false",
 	"textures":{
 		"0":"electrodynamics:model/reinforcedalloyer",
-		"particle":"electrodynamics:model/reinforcedalloyer"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements":[
 		{

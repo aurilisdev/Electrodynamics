@@ -1,0 +1,21 @@
+{
+  "type": "electrodynamics:reinforced_alloyer_recipe",
+  "ticks": 50,
+  "usagepertick": 50.0,
+  "iteminputs": {
+    "count": 2,
+    "0": {
+      "tag": "forge:ingots/chromium",
+      "count": 1
+    },
+    "1": {
+      "tag": "forge:ingots/steel",
+      "count": 3
+    }
+  },
+  "output": {
+    "item": "electrodynamics:ingotstainlesssteel",
+    "count": 4
+  },
+  "experience": 0.4000000059604645
+}

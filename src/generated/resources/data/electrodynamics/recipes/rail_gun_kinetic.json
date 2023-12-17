@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CXS",
+    "LPR",
+    "BCS"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/stainlesssteel"
+    },
+    "B": {
+      "tag": "forge:storage_blocks/stainlesssteel"
+    },
+    "R": {
+      "tag": "forge:rods/stainlesssteel"
+    },
+    "S": {
+      "item": "electrodynamics:wiresuperconductive"
+    },
+    "C": {
+      "tag": "forge:circuits/elite"
+    },
+    "X": {
+      "item": "electrodynamics:upgradetransformer"
+    },
+    "L": {
+      "item": "electrodynamics:lithiumbattery"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:railgunkinetic"
+  }
+}

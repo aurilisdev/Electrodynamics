@@ -5,7 +5,7 @@
 	"ambientocclusion": "false",
 	"textures":{
 		"0": "electrodynamics:model/energizedalloyerrunning",
-		"particle": "electrodynamics:model/energizedalloyer"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 		"elements":[
 		{

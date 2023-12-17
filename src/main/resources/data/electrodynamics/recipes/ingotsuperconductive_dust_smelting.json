@@ -1,9 +1,0 @@
-{
-	"type": "minecraft:smelting",
-	"ingredient": {
-		"item": "electrodynamics:dustsuperconductive"
-	},
-	"result": "electrodynamics:ingotsuperconductive",
-	"experience": 0.0,
-	"cookingtime": 200
-}

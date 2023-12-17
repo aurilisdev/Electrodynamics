@@ -1,0 +1,78 @@
+package electrodynamics.common.recipe.recipeutils;
+
+import com.google.gson.JsonObject;
+
+import electrodynamics.Electrodynamics;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.util.JSONUtils;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.registries.ForgeRegistries;
+
+public class ProbableFluid {
+
+	private FluidStack fluid;
+	// 0: 0% chance
+	// 1: 100% chance
+	private double chance;
+
+	public ProbableFluid(FluidStack stack, double chance) {
+		fluid = stack;
+		setChance(chance);
+	}
+
+	public FluidStack getFullStack() {
+		return fluid;
+	}
+
+	private void setChance(double chance) {
+		this.chance = chance > 1 ? 1 : chance < 0 ? 0 : chance;
+	}
+
+	public double getChance() {
+		return chance;
+	}
+
+	public FluidStack roll() {
+		double random = Electrodynamics.RANDOM.nextDouble();
+		if (random > 1 - chance) {
+			double amount = chance >= 1 ? fluid.getAmount() : fluid.getAmount() * random;
+			int fluidAmount = (int) Math.ceil(amount);
+			return new FluidStack(fluid, fluidAmount);
+		}
+		return FluidStack.EMPTY;
+	}
+
+	public static ProbableFluid deserialize(JsonObject json) {
+		ResourceLocation resourceLocation = new ResourceLocation(JSONUtils.getAsString(json, "fluid"));
+		FluidStack fluid = new FluidStack(ForgeRegistries.FLUIDS.getValue(resourceLocation), JSONUtils.getAsInt(json, "amount"));
+		double chance = json.get("chance").getAsDouble();
+		return new ProbableFluid(fluid, chance);
+	}
+
+	public static ProbableFluid read(PacketBuffer buf) {
+		return new ProbableFluid(buf.readFluidStack(), buf.readDouble());
+	}
+
+	public static ProbableFluid[] readList(PacketBuffer buf) {
+		int count = buf.readInt();
+		ProbableFluid[] fluids = new ProbableFluid[count];
+		for (int i = 0; i < count; i++) {
+			fluids[i] = ProbableFluid.read(buf);
+		}
+		return fluids;
+	}
+
+	public void write(PacketBuffer buf) {
+		buf.writeFluidStack(getFullStack());
+		buf.writeDouble(chance);
+	}
+
+	public static void writeList(PacketBuffer buf, ProbableFluid[] items) {
+		buf.writeInt(items.length);
+		for (ProbableFluid fluid : items) {
+			fluid.write(buf);
+		}
+	}
+
+}

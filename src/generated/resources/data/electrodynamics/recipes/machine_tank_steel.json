@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SGS",
+    "GCG",
+    "SGS"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:plates/steel"
+    },
+    "C": {
+      "item": "minecraft:cauldron"
+    },
+    "G": {
+      "tag": "forge:glass"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:tanksteel"
+  }
+}

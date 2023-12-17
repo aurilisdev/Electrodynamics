@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PBP",
+    "MGM",
+    "PGP"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "B": {
+      "tag": "forge:circuits/basic"
+    },
+    "G": {
+      "tag": "forge:gears/bronze"
+    },
+    "M": {
+      "item": "electrodynamics:motor"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:wiremill"
+  }
+}

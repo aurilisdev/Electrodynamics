@@ -1,0 +1,50 @@
+{
+	"type" : "recipecatgoeshere",
+	//this field is manditory!
+	"fluidinputs" : {
+		"count" : 2, //can be any number in theory; must have this field
+		//must have same number of items as count
+		"0" : {
+			"tag" : "forge:tag", 
+			"amount" : 100
+		},
+		"1" : {
+			"fluid" : "modid:fluid",
+			"amount" : 300
+		}
+	},
+	"output" : {
+		"fluid" : "modid:fluid",
+		"amount" : 5
+	},
+	"experience" : 0.5,
+	//these fields are optional
+	"itembi" : {
+		"count" : 2, //can be any number in theory; must have this field
+		//must have same number of items as count
+		"0" : {
+			"item" : "modid:item", //will use mod-specific items only!
+			"count" : 9,
+			"chance" : 0.35
+		},
+		"1" : {
+			"item" : "modid:item",
+			"count" : 5,
+			"chance" : 0.23
+		}
+	},
+	"fluidbi" : {
+		"count" : 2, //can be any number in theory; must have this field
+		//must have same number of items as count
+		"0" : {
+			"fluid" : "modid:fluid", //will use mod-specific fluids only!
+			"amount" : 100,
+			"chance" : 1.0
+		},
+		"1" : {
+			"fluid" : "modid:fluid",
+			"amount" : 300,
+			"chance" : 0.37
+		}
+	}
+}

@@ -5,7 +5,7 @@
 	"ambientocclusion": "false",
 	"textures": {
 		"0": "electrodynamics:model/wiremilldouble",
-		"particle": "electrodynamics:model/wiremilldouble"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

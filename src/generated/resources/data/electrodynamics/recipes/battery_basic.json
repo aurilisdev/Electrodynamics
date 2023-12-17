@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    "TRT",
+    "TWT"
+  ],
+  "key": {
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "C": {
+      "tag": "minecraft:coals"
+    },
+    "T": {
+      "tag": "forge:ingots/tin"
+    },
+    "W": {
+      "item": "electrodynamics:wirecopper"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:battery"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "electrodynamics:parent/wire_side",
+  "textures": {
+    "texture": "electrodynamics:block/wire/wiregold",
+    "particle": "#texture"
+  }
+}

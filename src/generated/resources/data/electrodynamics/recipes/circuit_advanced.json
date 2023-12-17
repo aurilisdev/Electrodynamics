@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "QQQ",
+    "CDC",
+    "QQQ"
+  ],
+  "key": {
+    "Q": {
+      "tag": "forge:gems/quartz"
+    },
+    "C": {
+      "tag": "forge:circuits/basic"
+    },
+    "D": {
+      "tag": "forge:gems/diamond"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:circuitadvanced"
+  }
+}

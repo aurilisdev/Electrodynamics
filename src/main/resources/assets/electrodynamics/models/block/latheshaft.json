@@ -3,7 +3,7 @@
 	"credit":"skip999",
 	"textures":{
 		"0":"electrodynamics:model/latheshaft",
-		"particle":"electrodynamics:model/latheshaft"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements":[
 		{

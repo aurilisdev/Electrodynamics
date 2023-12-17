@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ISI",
+    "SPS",
+    "CFC"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "S": {
+      "tag": "forge:ingots/steel"
+    },
+    "C": {
+      "tag": "forge:ingots/copper"
+    },
+    "F": {
+      "item": "minecraft:furnace"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:thermoelectricgenerator"
+  }
+}

@@ -8,6 +8,6 @@
 	],
 	"textures": {
 		"0": "electrodynamics:model/lithiumbatterybox2",
-		"particle": "electrodynamics:model/lithiumbatterybox2"
+		"particle": "electrodynamics:block/steelcasing"
 	}
 }

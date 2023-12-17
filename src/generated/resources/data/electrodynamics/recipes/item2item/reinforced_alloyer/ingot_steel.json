@@ -1,0 +1,21 @@
+{
+  "type": "electrodynamics:reinforced_alloyer_recipe",
+  "ticks": 50,
+  "usagepertick": 50.0,
+  "iteminputs": {
+    "count": 2,
+    "0": {
+      "tag": "forge:ingots/iron",
+      "count": 2
+    },
+    "1": {
+      "tag": "forge:coal_coke",
+      "count": 1
+    }
+  },
+  "output": {
+    "item": "electrodynamics:ingotsteel",
+    "count": 4
+  },
+  "experience": 0.30000001192092896
+}

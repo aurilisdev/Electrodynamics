@@ -1,0 +1,39 @@
+{
+  "parent": "electrodynamics:basicwiring",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:multimeter"
+    },
+    "title": {
+      "color": "gray",
+      "translate": "advancement.electrodynamics.multimeter.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.multimeter.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 10
+  },
+  "criteria": {
+    "HasMeter": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "electrodynamics:multimeter"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasMeter"
+    ]
+  ]
+}

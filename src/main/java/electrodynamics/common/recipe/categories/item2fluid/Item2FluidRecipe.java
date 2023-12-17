@@ -1,38 +1,69 @@
 package electrodynamics.common.recipe.categories.item2fluid;
 
-import electrodynamics.common.recipe.ElectrodynamicsRecipe;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.mojang.datafixers.util.Pair;
+
+import electrodynamics.common.recipe.recipeutils.AbstractMaterialRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import electrodynamics.common.recipe.recipeutils.IFluidRecipe;
+import electrodynamics.common.recipe.recipeutils.FluidIngredient;
+import electrodynamics.common.recipe.recipeutils.ProbableFluid;
+import electrodynamics.common.recipe.recipeutils.ProbableItem;
+import electrodynamics.prefab.tile.components.IComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-public abstract class Item2FluidRecipe extends ElectrodynamicsRecipe implements IFluidRecipe {
+public abstract class Item2FluidRecipe extends AbstractMaterialRecipe {
 
-    private CountableIngredient ITEM_INPUT;
-    private FluidStack FLUID_OUTPUT;
+	private CountableIngredient[] ITEM_INPUTS;
+	private FluidStack FLUID_OUTPUT;
 
-    public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient itemInput, FluidStack fluidOutput) {
-	super(recipeID);
-	ITEM_INPUT = itemInput;
-	FLUID_OUTPUT = fluidOutput;
-    }
+	public Item2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] itemInputs, FluidStack fluidOutput, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
+		super(recipeID, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts);
+		ITEM_INPUTS = itemInputs;
+		FLUID_OUTPUT = fluidOutput;
+	}
 
-    @Override
-    public boolean matchesRecipe(ComponentProcessor pr) {
-	return false;
-    }
+	@Override
+	public boolean matchesRecipe(ComponentProcessor pr) {
+		Pair<List<Integer>, Boolean> pair = areItemsValid(getCountedIngredients(), ((ComponentInventory) pr.getHolder().getComponent(IComponentType.Inventory)).getInputsForProcessor(pr.getProcessorNumber()));
+		if (pair.getSecond()) {
+			setItemArrangement(pr.getProcessorNumber(), pair.getFirst());
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public FluidStack getFluidRecipeOutput() {
-	return FLUID_OUTPUT;
-    }
+	@Override
+	public FluidStack getFluidRecipeOutput() {
+		return FLUID_OUTPUT;
+	}
 
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-	return NonNullList.from(null, ITEM_INPUT);
-    }
+	@Override
+	public NonNullList<Ingredient> getIngredients() {
+		NonNullList<Ingredient> list = NonNullList.create();
+		for (Ingredient ing : ITEM_INPUTS) {
+			list.add(ing);
+		}
+		return list;
+	}
+
+	public List<CountableIngredient> getCountedIngredients() {
+		List<CountableIngredient> list = new ArrayList<>();
+		for (CountableIngredient ing : ITEM_INPUTS) {
+			list.add(ing);
+		}
+		return list;
+	}
+
+	@Override
+	public List<FluidIngredient> getFluidIngredients() {
+		return new ArrayList<>();
+	}
 
 }
