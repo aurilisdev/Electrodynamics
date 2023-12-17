@@ -113,7 +113,7 @@ public class ItemCombatArmor extends ArmorItem implements IItemElectric {
 		case CHEST:
 			return new RestrictedFluidHandlerItemStack(stack, stack, ItemJetpack.MAX_CAPACITY).setValidator(ItemJetpack.getFuelPredicate());
 		case FEET:
-			return new RestrictedFluidHandlerItemStack(stack, stack, ItemHydraulicBoots.MAX_CAPACITY).setValidator(ItemJetpack.getFuelPredicate());
+			return new RestrictedFluidHandlerItemStack(stack, stack, ItemHydraulicBoots.MAX_CAPACITY).setValidator(ItemHydraulicBoots.getFuelValidator());
 		default:
 			return super.initCapabilities(stack, nbt);
 		}
