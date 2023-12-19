@@ -170,7 +170,7 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 	}
 
 	public double getPowerUsage(ItemStack stack) {
-		double multiplier = getSpeedBoost(stack);
+		double multiplier = Math.max(1, getSpeedBoost(stack));
 
 		if (hasSilkTouch(stack)) {
 			multiplier += 3;
