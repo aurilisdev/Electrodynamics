@@ -23,11 +23,11 @@ public class HandlerCompositeArmor extends AbstractLivingHurtHandler {
 	@Override
 	public void handle(LivingHurtEvent event) {
 		LivingEntity entity = event.getEntity();
-		if (entity.damageSources().fall().is(DamageTypes.FALL)) {
+		if (event.getSource().is(DamageTypes.FALL)) {
 			return;
 		}
 		List<ItemStack> armorPieces = new ArrayList<>();
-		event.getEntity().getArmorSlots().forEach(armorPieces::add);
+		event.getEntity().getArmorSlots().forEach(piece -> armorPieces.add(piece));
 
 		if (compareArmor(armorPieces, COMPOSITE_ARMOR) || compareArmor(armorPieces, COMBAT_ARMOR)) {
 			ItemStack stack = armorPieces.get(2);
