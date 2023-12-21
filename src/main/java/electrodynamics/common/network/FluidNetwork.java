@@ -7,25 +7,25 @@ import java.util.Set;
 
 import com.google.common.collect.Sets;
 
-import electrodynamics.api.network.pipe.IPipe;
-import electrodynamics.common.block.subtype.SubtypePipe;
+import electrodynamics.api.network.cable.type.IFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.prefab.network.AbstractNetwork;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.fluids.FluidStack;
 
-public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack> {
+public class FluidNetwork extends AbstractNetwork<IFluidPipe, SubtypeFluidPipe, BlockEntity, FluidStack> {
 	public FluidNetwork() {
-		this(new HashSet<IPipe>());
+		this(new HashSet<IFluidPipe>());
 	}
 
-	public FluidNetwork(Collection<? extends IPipe> varCables) {
+	public FluidNetwork(Collection<? extends IFluidPipe> varCables) {
 		conductorSet.addAll(varCables);
 		NetworkRegistry.register(this);
 	}
 
-	public FluidNetwork(Set<AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack>> networks) {
-		for (AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack> net : networks) {
+	public FluidNetwork(Set<AbstractNetwork<IFluidPipe, SubtypeFluidPipe, BlockEntity, FluidStack>> networks) {
+		for (AbstractNetwork<IFluidPipe, SubtypeFluidPipe, BlockEntity, FluidStack> net : networks) {
 			if (net != null) {
 				conductorSet.addAll(net.conductorSet);
 				net.deregister();
@@ -73,14 +73,14 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, BlockEntit
 
 	private boolean checkForOverload(int attemptSend) {
 		if (attemptSend >= networkMaxTransfer) {
-			HashSet<SubtypePipe> checkList = new HashSet<>();
-			for (SubtypePipe type : SubtypePipe.values()) {
+			HashSet<SubtypeFluidPipe> checkList = new HashSet<>();
+			for (SubtypeFluidPipe type : SubtypeFluidPipe.values()) {
 				if (type.maxTransfer <= attemptSend) {
 					checkList.add(type);
 				}
 			}
-			for (SubtypePipe index : checkList) {
-				for (IPipe conductor : conductorTypeMap.get(index)) {
+			for (SubtypeFluidPipe index : checkList) {
+				for (IFluidPipe conductor : conductorTypeMap.get(index)) {
 					conductor.destroyViolently();
 				}
 			}
@@ -90,38 +90,43 @@ public class FluidNetwork extends AbstractNetwork<IPipe, SubtypePipe, BlockEntit
 	}
 
 	@Override
-	public boolean isConductor(BlockEntity tile) {
-		return tile instanceof IPipe;
-	}
-
-	@Override
 	public boolean isAcceptor(BlockEntity acceptor, Direction orientation) {
 		return FluidUtilities.isFluidReceiver(acceptor);
 	}
 
 	@Override
-	public AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack> createInstance() {
+	public AbstractNetwork<IFluidPipe, SubtypeFluidPipe, BlockEntity, FluidStack> createInstance() {
 		return new FluidNetwork();
 	}
 
 	@Override
-	public AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack> createInstanceConductor(Set<IPipe> conductors) {
+	public AbstractNetwork<IFluidPipe, SubtypeFluidPipe, BlockEntity, FluidStack> createInstanceConductor(Set<IFluidPipe> conductors) {
 		return new FluidNetwork(conductors);
 	}
 
 	@Override
-	public AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack> createInstance(Set<AbstractNetwork<IPipe, SubtypePipe, BlockEntity, FluidStack>> networks) {
+	public AbstractNetwork<IFluidPipe, SubtypeFluidPipe, BlockEntity, FluidStack> createInstance(Set<AbstractNetwork<IFluidPipe, SubtypeFluidPipe, BlockEntity, FluidStack>> networks) {
 		return new FluidNetwork(networks);
 
 	}
 
 	@Override
-	public SubtypePipe[] getConductorTypes() {
-		return SubtypePipe.values();
+	public SubtypeFluidPipe[] getConductorTypes() {
+		return SubtypeFluidPipe.values();
 	}
 
 	@Override
 	public boolean canConnect(BlockEntity acceptor, Direction orientation) {
 		return FluidUtilities.isFluidReceiver(acceptor, orientation.getOpposite());
+	}
+
+	@Override
+	public boolean isConductor(BlockEntity tile, IFluidPipe requsterCable) {
+		return tile instanceof IFluidPipe;
+	}
+
+	@Override
+	public boolean isConductorClass(BlockEntity tile) {
+		return tile instanceof IFluidPipe;
 	}
 }

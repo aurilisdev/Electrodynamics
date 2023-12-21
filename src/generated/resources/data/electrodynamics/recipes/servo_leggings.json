@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PCP",
+    "MWM",
+    "B B"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "B": {
+      "item": "electrodynamics:battery"
+    },
+    "C": {
+      "tag": "forge:circuits/basic"
+    },
+    "W": {
+      "item": "electrodynamics:wireinsulatedcopper"
+    },
+    "M": {
+      "item": "electrodynamics:motor"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:servoleggings"
+  }
+}

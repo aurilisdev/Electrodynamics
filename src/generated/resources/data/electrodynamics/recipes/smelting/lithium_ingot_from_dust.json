@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "tag": "forge:dusts/lithium"
+  },
+  "result": "electrodynamics:ingotlithium",
+  "experience": 0.0,
+  "cookingtime": 200
+}

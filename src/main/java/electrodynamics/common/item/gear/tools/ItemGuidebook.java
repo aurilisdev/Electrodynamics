@@ -3,6 +3,7 @@ package electrodynamics.common.item.gear.tools;
 import java.util.List;
 
 import electrodynamics.common.inventory.container.item.ContainerGuidebook;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.network.chat.ClickEvent;
@@ -29,8 +30,8 @@ public class ItemGuidebook extends Item {
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
-		tooltips.add(new TranslatableComponent("tooltip.info.guidebookuse").withStyle(ChatFormatting.LIGHT_PURPLE));
-		// tooltips.add(new TranslatableComponent("tooltip.info.guidebooktemp").withStyle(ChatFormatting.BLUE));
+		tooltips.add(ElectroTextUtils.tooltip("info.guidebookuse").withStyle(ChatFormatting.LIGHT_PURPLE));
+		tooltips.add(ElectroTextUtils.tooltip("guidebookname").withStyle(ChatFormatting.GRAY));
 		super.appendHoverText(stack, world, tooltips, flag);
 	}
 
@@ -38,7 +39,7 @@ public class ItemGuidebook extends Item {
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand handIn) {
 		if (world.isClientSide) {
 			if (player.isShiftKeyDown()) {
-				player.sendMessage(new TranslatableComponent("message.electrodynamics.guidebookclick").withStyle(ChatFormatting.BOLD, ChatFormatting.RED).withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, LINK))), Util.NIL_UUID);
+				player.sendMessage(ElectroTextUtils.chatMessage("guidebookclick").withStyle(ChatFormatting.BOLD, ChatFormatting.RED).withStyle(style -> style.withClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, LINK))), Util.NIL_UUID);
 				return InteractionResultHolder.pass(player.getItemInHand(handIn));
 			}
 		} else {

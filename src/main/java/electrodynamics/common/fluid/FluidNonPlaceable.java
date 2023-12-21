@@ -23,10 +23,6 @@ public abstract class FluidNonPlaceable extends Fluid {
 	private String fluidName;
 	private int color = 0;
 
-	public FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier) {
-		this.itemSupplier = itemSupplier;
-	}
-
 	public FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier, String modID, String fluidName) {
 		this.itemSupplier = itemSupplier;
 		this.modID = modID;
@@ -93,13 +89,14 @@ public abstract class FluidNonPlaceable extends Fluid {
 	@Override
 	protected FluidAttributes createAttributes() {
 		if (color == 0) {
-			return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName)).translationKey("fluid." + modID + "." + fluidName).build(this);
+			return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName)).translationKey("fluid." + modID + ".fluid" + fluidName).build(this);
 		}
-		return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName)).translationKey("fluid." + modID + "." + fluidName).color(color).build(this);
+		return FluidAttributes.builder(new ResourceLocation(modID + ":fluid/" + fluidName), new ResourceLocation(modID + ":fluid/" + fluidName)).translationKey("fluid." + modID + ".fluid" + fluidName).color(color).build(this);
 	}
 
 	@Override
 	public VoxelShape getShape(FluidState p_215664_1_, BlockGetter p_215664_2_, BlockPos p_215664_3_) {
 		return Shapes.block();
 	}
+
 }

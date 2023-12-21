@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "TJT",
+    "TST",
+    "TCT"
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:plates/hslasteel"
+    },
+    "C": {
+      "item": "electrodynamics:compositearmorchestplate"
+    },
+    "T": {
+      "tag": "forge:plates/titaniumcarbide"
+    },
+    "J": {
+      "item": "electrodynamics:jetpack"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:combatarmorchestplate"
+  }
+}

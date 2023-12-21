@@ -1,0 +1,41 @@
+{
+  "parent": "electrodynamics:coalgenerator",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:batterybox"
+    },
+    "title": {
+      "color": "gold",
+      "translate": "advancement.electrodynamics.batterybox.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.batterybox.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 30
+  },
+  "criteria": {
+    "HasBatteryBox": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "electrodynamics:batterybox"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasBatteryBox"
+    ]
+  ]
+}

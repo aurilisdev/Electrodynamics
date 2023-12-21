@@ -1,9 +1,10 @@
 package electrodynamics.common.inventory.container.tile;
 
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.common.tile.TileSolarPanel;
+import electrodynamics.common.tile.electricitygrid.generators.TileSolarPanel;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -19,7 +20,7 @@ public class ContainerSolarPanel extends GenericContainerBlockEntity<TileSolarPa
 	}
 
 	public ContainerSolarPanel(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(electrodynamics.DeferredRegisters.CONTAINER_SOLARPANEL.get(), id, playerinv, inventory, inventorydata);
+		super(ElectrodynamicsMenuTypes.CONTAINER_SOLARPANEL.get(), id, playerinv, inventory, inventorydata);
 	}
 
 	@Override

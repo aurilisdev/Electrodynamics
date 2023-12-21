@@ -1,0 +1,25 @@
+{
+  "type": "electrodynamics:wire_mill_recipe",
+  "ticks": 200,
+  "usagepertick": 125.0,
+  "iteminputs": {
+    "count": 1,
+    "0": {
+      "tag": "forge:ingots/tin",
+      "count": 1
+    }
+  },
+  "output": {
+    "item": "electrodynamics:wiretin",
+    "count": 1
+  },
+  "experience": 0.10000000149011612,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": "electrodynamics:nuggettin",
+      "count": 1,
+      "chance": 1.0
+    }
+  }
+}

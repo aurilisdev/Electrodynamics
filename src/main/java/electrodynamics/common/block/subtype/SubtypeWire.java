@@ -1,8 +1,17 @@
 package electrodynamics.common.block.subtype;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+
+import javax.annotation.Nullable;
 
 import electrodynamics.api.ISubtype;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 // Calculated using https://www.omnicalculator.com/physics/wire-resistance
 // Area is actually 0.125 = 15625mm^2
@@ -10,66 +19,68 @@ import electrodynamics.api.ISubtype;
 // wires are rarely connected in all directions.
 // Also manipulated uniformally
 public enum SubtypeWire implements ISubtype {
-	tin(0.020064, 60, false, false, false, false), // Tin has 15% the conductivity of copper. Tin resistance = copper / 0.15
-	iron(0.01709, 100, false, false, false, false),
-	copper(0.0030096, 360, false, false, false, false), // annealed copper
-	silver(0.0027984, 600, false, false, false, false),
-	gold(0.004294, 1000, false, false, false, false),
-	superconductive(0.0, Long.MAX_VALUE, false, false, false, false),
-	// split between types
-	insulatedtin(SubtypeWire.tin.resistance, 60, true, false, false, false),
-	insulatediron(SubtypeWire.iron.resistance, 100, true, false, false, false),
-	insulatedcopper(SubtypeWire.copper.resistance, 360, true, false, false, false),
-	insulatedsilver(SubtypeWire.silver.resistance, 600, true, false, false, false),
-	insulatedgold(SubtypeWire.gold.resistance, 1000, true, false, false, false),
-	insulatedsuperconductive(0.0, Long.MAX_VALUE, true, false, false, false),
-	// split between types
-	highlyinsulatedtin(SubtypeWire.tin.resistance / 4.0, 180, true, false, false, true),
-	highlyinsulatediron(SubtypeWire.iron.resistance / 4.0, 300, true, false, false, true),
-	highlyinsulatedcopper(SubtypeWire.copper.resistance / 4.0, 1080, true, false, false, true),
-	highlyinsulatedsilver(SubtypeWire.silver.resistance / 4.0, 1800, true, false, false, true),
-	highlyinsulatedgold(SubtypeWire.gold.resistance / 4.0, 3000, true, false, false, true),
-	highlyinsulatedsuperconductive(0.0, Long.MAX_VALUE, true, false, false, true),
-	// split between types
-	ceramicinsulatedtin(SubtypeWire.tin.resistance, 60, true, false, true, false),
-	ceramicinsulatediron(SubtypeWire.iron.resistance, 100, true, false, true, false),
-	ceramicinsulatedcopper(SubtypeWire.copper.resistance, 360, true, false, true, false),
-	ceramicinsulatedsilver(SubtypeWire.silver.resistance, 600, true, false, true, false),
-	ceramicinsulatedgold(SubtypeWire.gold.resistance, 1000, true, false, true, false),
-	ceramicinsulatedsuperconductive(0.0, Long.MAX_VALUE, true, false, true, false),
-	// split between types
-	logisticstin(SubtypeWire.tin.resistance, 60, true, true, false, false),
-	logisticsiron(SubtypeWire.iron.resistance, 100, true, true, false, false),
-	logisticscopper(SubtypeWire.copper.resistance, 360, true, true, false, false),
-	logisticssilver(SubtypeWire.silver.resistance, 600, true, true, false, false),
-	logisticsgold(SubtypeWire.gold.resistance, 1000, true, true, false, false),
-	logisticssuperconductive(0.0, Long.MAX_VALUE, true, true, false, false);
+
+	/* UNINSULATED */
+	tin(Conductor.TIN, InsulationMaterial.BARE, WireClass.BARE),
+	iron(Conductor.IRON, InsulationMaterial.BARE, WireClass.BARE),
+	copper(Conductor.COPPER, InsulationMaterial.BARE, WireClass.BARE),
+	silver(Conductor.SILVER, InsulationMaterial.BARE, WireClass.BARE),
+	gold(Conductor.GOLD, InsulationMaterial.BARE, WireClass.BARE),
+	superconductive(Conductor.SUPERCONDUCTIVE, InsulationMaterial.BARE, WireClass.BARE),
+	/* INSULATED */
+	insulatedtin(Conductor.TIN, InsulationMaterial.WOOL, WireClass.INSULATED),
+	insulatediron(Conductor.IRON, InsulationMaterial.WOOL, WireClass.INSULATED),
+	insulatedcopper(Conductor.COPPER, InsulationMaterial.WOOL, WireClass.INSULATED),
+	insulatedsilver(Conductor.SILVER, InsulationMaterial.WOOL, WireClass.INSULATED),
+	insulatedgold(Conductor.GOLD, InsulationMaterial.WOOL, WireClass.INSULATED),
+	insulatedsuperconductive(Conductor.SUPERCONDUCTIVE, InsulationMaterial.WOOL, WireClass.INSULATED),
+	/* HIGHLY INSULATED */
+	highlyinsulatedtin(Conductor.TIN, InsulationMaterial.THICK_WOOL, WireClass.THICK, 4.0),
+	highlyinsulatediron(Conductor.IRON, InsulationMaterial.THICK_WOOL, WireClass.THICK, 4.0),
+	highlyinsulatedcopper(Conductor.COPPER, InsulationMaterial.THICK_WOOL, WireClass.THICK, 4.0),
+	highlyinsulatedsilver(Conductor.SILVER, InsulationMaterial.THICK_WOOL, WireClass.THICK, 4.0),
+	highlyinsulatedgold(Conductor.GOLD, InsulationMaterial.THICK_WOOL, WireClass.THICK, 4.0),
+	highlyinsulatedsuperconductive(Conductor.SUPERCONDUCTIVE, InsulationMaterial.THICK_WOOL, WireClass.THICK, 4.0),
+	/* CERAMIC INSULATED */
+	ceramicinsulatedtin(Conductor.TIN, InsulationMaterial.CERAMIC, WireClass.CERAMIC),
+	ceramicinsulatediron(Conductor.IRON, InsulationMaterial.CERAMIC, WireClass.CERAMIC),
+	ceramicinsulatedcopper(Conductor.COPPER, InsulationMaterial.CERAMIC, WireClass.CERAMIC),
+	ceramicinsulatedsilver(Conductor.SILVER, InsulationMaterial.CERAMIC, WireClass.CERAMIC),
+	ceramicinsulatedgold(Conductor.GOLD, InsulationMaterial.CERAMIC, WireClass.CERAMIC),
+	ceramicinsulatedsuperconductive(Conductor.SUPERCONDUCTIVE, InsulationMaterial.CERAMIC, WireClass.CERAMIC),
+	/* LOGISTICAL */
+	logisticstin(Conductor.TIN, InsulationMaterial.WOOL, WireClass.LOGISTICAL),
+	logisticsiron(Conductor.IRON, InsulationMaterial.WOOL, WireClass.LOGISTICAL),
+	logisticscopper(Conductor.COPPER, InsulationMaterial.WOOL, WireClass.LOGISTICAL),
+	logisticssilver(Conductor.SILVER, InsulationMaterial.WOOL, WireClass.LOGISTICAL),
+	logisticsgold(Conductor.GOLD, InsulationMaterial.WOOL, WireClass.LOGISTICAL),
+	logisticssuperconductive(Conductor.SUPERCONDUCTIVE, InsulationMaterial.WOOL, WireClass.LOGISTICAL);
 	// split between types
 
-	public final double resistance;
-	public final long capacity;
-	public final boolean insulated;
-	public final boolean highlyinsulated;
-	public final boolean logistical;
-	public final boolean ceramic;
+	public static final HashMap<WireClass, HashSet<SubtypeWire>> WIRES = new HashMap<>();
 
-	SubtypeWire(double resistance, long capacity, boolean insulated, boolean logistical, boolean ceramic, boolean highlyinsulated) {
-		this.resistance = resistance;
-		this.capacity = capacity;
-		this.insulated = insulated;
-		this.logistical = logistical;
-		this.ceramic = ceramic;
-		this.highlyinsulated = highlyinsulated;
+	static {
+		for (SubtypeWire wire : SubtypeWire.values()) {
+			HashSet<SubtypeWire> wireSet = WIRES.getOrDefault(wire.wireClass, new HashSet<>());
+			wireSet.add(wire);
+			WIRES.put(wire.wireClass, wireSet);
+		}
 	}
 
-	public static SubtypeWire getUninsulatedWire(SubtypeWire type) {
-		String wanted = type.name().replace("logistics", "").replace("ceramic", "").replace("highly", "").replace("insulated", "");
-		for (SubtypeWire wire : values()) {
-			if (Objects.equals(wire.name(), wanted)) {
-				return wire;
-			}
-		}
-		return type;
+	public final double resistance;
+	public final WireClass wireClass;
+	public final InsulationMaterial insulation;
+	public final Conductor conductor;
+
+	private SubtypeWire(Conductor conductor, InsulationMaterial insulation, WireClass wireClass, double dividend) {
+		resistance = conductor.resistance / dividend;
+		this.conductor = conductor;
+		this.insulation = insulation;
+		this.wireClass = wireClass;
+	}
+
+	private SubtypeWire(Conductor conductor, InsulationMaterial insulation, WireClass wireClass) {
+		this(conductor, insulation, wireClass, 1);
 	}
 
 	@Override
@@ -86,4 +97,108 @@ public enum SubtypeWire implements ISubtype {
 	public boolean isItem() {
 		return false;
 	}
+
+	@Nullable
+	public static SubtypeWire getWire(Conductor conductor, InsulationMaterial insulation, WireClass wireClass) {
+
+		for (SubtypeWire wire : WIRES.getOrDefault(wireClass, new HashSet<>())) {
+			if (wire.conductor == conductor && wire.insulation == insulation && wire.wireClass == wireClass) {
+				return wire;
+			}
+		}
+
+		return null;
+	}
+
+	public static SubtypeWire[] getWires(Conductor[] conductors, InsulationMaterial insulation, WireClass wireClass) {
+
+		List<SubtypeWire> list = new ArrayList<>();
+
+		SubtypeWire wire;
+
+		for (Conductor conductor : conductors) {
+			wire = SubtypeWire.getWire(conductor, insulation, wireClass);
+			if (wire != null) {
+				list.add(wire);
+			}
+		}
+
+		return list.toArray(new SubtypeWire[] {});
+	}
+
+	/**
+	 * A distinction is made between this and WireClass, as there can be multiple different wires with the same insulation but different properties like the Logistical Wire. It shares the same insulation value as the standard Insulated wire
+	 * 
+	 * @author skip999
+	 *
+	 */
+	public static enum InsulationMaterial {
+
+		BARE(false, true, 0, 1, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL),
+		WOOL(true, false, 240, 2, Properties.copy(Blocks.WHITE_WOOL), SoundType.WOOL),
+		THICK_WOOL(true, false, 960, 3, Properties.copy(Blocks.WHITE_WOOL), SoundType.WOOL),
+		CERAMIC(true, true, 480, 3, Properties.copy(Blocks.STONE), SoundType.TUFF);
+
+		public final boolean insulated;
+		public final boolean fireProof;
+		public final int shockVoltage;
+		public final double radius;
+		public final Properties material;
+		public final SoundType soundType;
+
+		InsulationMaterial(boolean insulated, boolean fireProof, int shockVoltage, double radius, Properties material, SoundType sounndType) {
+			this.insulated = insulated;
+			this.fireProof = fireProof;
+			this.shockVoltage = shockVoltage;
+			this.radius = radius;
+			this.material = material;
+			this.soundType = sounndType;
+		}
+	}
+
+	/**
+	 * This is a category enum to make distinctions between the different types of wires
+	 * 
+	 * @author skip999
+	 *
+	 */
+	public static enum WireClass {
+
+		BARE(false),
+		INSULATED(false),
+		THICK(false),
+		CERAMIC(false),
+		LOGISTICAL(true);
+
+		public final boolean conductsRedstone;
+
+		WireClass(boolean conductsRedstone) {
+			this.conductsRedstone = conductsRedstone;
+		}
+	}
+
+	public static enum Conductor {
+
+		COPPER(0.0030096, 360), // annealed copper
+		GOLD(0.004294, 1000),
+		IRON(0.01709, 100),
+		SILVER(0.0027984, 600),
+		SUPERCONDUCTIVE(0, Long.MAX_VALUE),
+		TIN(0.020064, 60); // Tin has 15% the conductivity of copper. Tin resistance = copper / 0.15
+
+		public final double resistance;
+		public final long ampacity;
+
+		Conductor(double resistance, long ampacity) {
+			this.resistance = resistance;
+			this.ampacity = ampacity;
+		}
+
+		@Override
+		public String toString() {
+			return super.toString().toLowerCase(Locale.ROOT);
+		}
+
+	}
+
 }

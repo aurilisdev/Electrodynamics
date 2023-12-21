@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "STS",
+    "A A",
+    "STS"
+  ],
+  "key": {
+    "A": {
+      "item": "electrodynamics:glassaluminum"
+    },
+    "S": {
+      "tag": "forge:plates/stainlesssteel"
+    },
+    "T": {
+      "tag": "forge:plates/titanium"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:canisterreinforced",
+    "count": 4
+  }
+}

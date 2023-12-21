@@ -1,11 +1,8 @@
 package electrodynamics.common.entity.projectile.types;
 
-import com.mojang.math.Vector3f;
-
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
-import net.minecraft.core.particles.DustParticleOptions;
+import electrodynamics.registers.ElectrodynamicsEntities;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -25,11 +22,11 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 	}
 
 	public EntityEnergyBlast(LivingEntity entity, Level world) {
-		super(DeferredRegisters.ENTITY_ENERGYBLAST.get(), entity, world);
+		super(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), entity, world);
 	}
 
 	public EntityEnergyBlast(double x, double y, double z, Level worldIn) {
-		super(DeferredRegisters.ENTITY_ENERGYBLAST.get(), x, y, z, worldIn);
+		super(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), x, y, z, worldIn);
 	}
 
 	@Override
@@ -43,6 +40,7 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 		}
 		if (tickCount > 100) {
 			remove(Entity.RemovalReason.DISCARDED);
+			
 		}
 	}
 
@@ -52,18 +50,11 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 		if (isInWater() || isInLava()) {
 			remove(Entity.RemovalReason.DISCARDED);
 		}
-		if (level.isClientSide) {
-			for (int i = 0; i < 10; i++)
-				level.addParticle(new DustParticleOptions(new Vector3f(1.8f, 0, 0.8f),4), getX(), getY(), getZ(), 0, 0, 0);
-		}
 	}
 
 	@Override
 	public void onHitEntity(EntityHitResult hit) {
 		hit.getEntity().hurt(DamageSources.PLASMA_BOLT, 40F / (tickCount / 40.0f + 1));
-		if (!level.isClientSide) {
-			level.explode(null, hit.getLocation().x(), hit.getLocation().y(), hit.getLocation().z(), 4f / (tickCount / 40.0f + 1), true, BlockInteraction.DESTROY);
-		}
 		super.onHitEntity(hit);
 	}
 

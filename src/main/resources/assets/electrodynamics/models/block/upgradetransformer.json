@@ -4,8 +4,8 @@
 	"ambientocclusion": "false",
 	"texture_size": [64, 64],
 	"textures": {
-		"0": "electrodynamics:model/upgradetransformer",
-		"particle": "electrodynamics:model/upgradetransformer"
+		"0": "electrodynamics:block/model/upgradetransformer",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

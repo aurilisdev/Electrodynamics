@@ -3,112 +3,55 @@ package electrodynamics.client.guidebook.utils.components;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.client.guidebook.utils.ImageWrapperObject;
-import electrodynamics.client.guidebook.utils.components.Page.ChapterPage;
+import electrodynamics.client.guidebook.utils.pagedata.OnClick;
+import electrodynamics.client.guidebook.utils.pagedata.OnKeyPress;
+import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper;
+import net.minecraft.network.chat.MutableComponent;
 
+/**
+ * A simple data-wrapping class that contains a name, a logo, and the various chapters associated with it
+ * 
+ * @author skip999
+ *
+ */
 public abstract class Module {
 
-	private List<Chapter> chapters;
-	private int startingPageNumber;
-	private int endingPageNumber;
-	private int chapterPages = 0;
-
-	public static final int CHAPTERS_PER_PAGE = 4;
+	public List<Chapter> chapters = new ArrayList<>();
+	private int startingPageNumber = 0;
 
 	public Module() {
-		chapters = genChapters();
-		chapterPages = (int) Math.ceil((double) chapters.size() / (double) CHAPTERS_PER_PAGE);
+
 	}
 
-	public int setPageNumbers(int startingPageNumber) {
-		this.startingPageNumber = startingPageNumber;
-		startingPageNumber += chapterPages;
-		for (Chapter chapter : chapters) {
-			startingPageNumber += chapter.setPageNumbers(startingPageNumber);
-		}
-		endingPageNumber = startingPageNumber;
-
-		int index = 0;
-		for (int i = 0; i < chapterPages; i++) {
-			for (int j = 0; j < CHAPTERS_PER_PAGE; j++) {
-				if (index < chapters.size()) {
-					chapters.get(index).setChapterPageNumber(this.startingPageNumber + i);
-					index++;
-				} else {
-					break;
-				}
-			}
-		}
-
-		return endingPageNumber - this.startingPageNumber;
+	public void setStartPage(int page) {
+		startingPageNumber = page;
 	}
 
-	public List<Page> getAllPages() {
-		List<Page> pages = new ArrayList<>();
-		for (int i = 0; i < chapterPages; i++) {
-			pages.add(new ChapterPage(i + startingPageNumber));
-		}
-		for (Chapter chapter : chapters) {
-			pages.addAll(chapter.getPages());
-		}
-		return pages;
-	}
-
-	public int getStartingPageNumber() {
+	public int getPage() {
 		return startingPageNumber;
 	}
 
-	public int getEndingPageNumber() {
-		return endingPageNumber;
+	public boolean isCat(MutableComponent cat) {
+		return getTitle().getString().equals(cat.getString());
 	}
 
-	public boolean isChapterListPage(int pageNumber) {
-		return startingPageNumber + chapterPages < pageNumber;
+	public abstract void addChapters();
+
+	public abstract AbstractGraphicWrapper<?> getLogo();
+
+	public abstract MutableComponent getTitle();
+
+	public OnTooltip onTooltip() {
+		return null;
 	}
 
-	public boolean isPageInModule(int pageNumber) {
-		return pageNumber >= startingPageNumber && pageNumber < endingPageNumber;
+	public OnClick onClick() {
+		return null;
 	}
 
-	public List<Chapter> getChapters() {
-		return chapters;
+	public OnKeyPress onKeyPress() {
+		return null;
 	}
-
-	public List<Chapter> getChapterSubList(int pageNumber) {
-		List<Chapter> chapters = new ArrayList<>();
-		for (Chapter chapter : this.chapters) {
-			if (chapter.getChapterPageNumber() == pageNumber) {
-				chapters.add(chapter);
-			}
-		}
-		return chapters;
-	}
-
-	public int getChapterPages() {
-		return chapterPages;
-	}
-
-	public String getTitle() {
-		return "guidebook." + getTitleCat() + ".moduletitle";
-	}
-
-	public boolean isCat(String cat) {
-		if (getTitleCat().equals(cat)) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * @return should only return true if module is ModuleElectrodynamics; false otherwise
-	 */
-	public abstract boolean isFirst();
-
-	public abstract ImageWrapperObject getLogo();
-
-	public abstract String getTitleCat();
-
-	// this is called at init() and init() only
-	protected abstract List<Chapter> genChapters();
 
 }

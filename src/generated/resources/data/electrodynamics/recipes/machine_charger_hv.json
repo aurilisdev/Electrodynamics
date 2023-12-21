@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "W W",
+    "NMN",
+    "PCP"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/hslasteel"
+    },
+    "C": {
+      "tag": "forge:circuits/ultimate"
+    },
+    "W": {
+      "item": "electrodynamics:wirehighlyinsulatedsuperconductive"
+    },
+    "M": {
+      "item": "electrodynamics:chargermv"
+    },
+    "N": {
+      "item": "minecraft:netherite_scrap"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:chargerhv"
+  }
+}

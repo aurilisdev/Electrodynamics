@@ -1,0 +1,41 @@
+{
+  "parent": "electrodynamics:electricarcfurnace",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:electricarcfurnacedouble"
+    },
+    "title": {
+      "color": "blue",
+      "translate": "advancement.electrodynamics.doubleelectricarcfurnace.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.doubleelectricarcfurnace.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 50
+  },
+  "criteria": {
+    "HasFurnace": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "electrodynamics:electricarcfurnacedouble"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasFurnace"
+    ]
+  ]
+}

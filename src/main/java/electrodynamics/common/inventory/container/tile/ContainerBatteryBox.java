@@ -1,11 +1,11 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.common.tile.TileBatteryBox;
+import electrodynamics.common.tile.electricitygrid.batteries.TileBatteryBox;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotCharging;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -21,15 +21,15 @@ public class ContainerBatteryBox extends GenericContainerBlockEntity<TileBattery
 	}
 
 	public ContainerBatteryBox(int id, Inventory pinv, Container inv, ContainerData data) {
-		super(DeferredRegisters.CONTAINER_BATTERYBOX.get(), id, pinv, inv, data);
+		super(ElectrodynamicsMenuTypes.CONTAINER_BATTERYBOX.get(), id, pinv, inv, data);
 	}
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
+		addSlot(new SlotCharging(inv, nextIndex(), 133, 14));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
-		addSlot(new SlotCharging(inv, nextIndex(), 133, 14));
 	}
 
 }

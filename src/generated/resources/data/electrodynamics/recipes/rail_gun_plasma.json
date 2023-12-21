@@ -1,0 +1,34 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CXS",
+    "LPR",
+    "BCS"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/hslasteel"
+    },
+    "B": {
+      "tag": "forge:storage_blocks/hslasteel"
+    },
+    "R": {
+      "tag": "forge:rods/titaniumcarbide"
+    },
+    "S": {
+      "item": "electrodynamics:wiresuperconductive"
+    },
+    "C": {
+      "tag": "forge:circuits/ultimate"
+    },
+    "X": {
+      "item": "electrodynamics:upgradetransformer"
+    },
+    "L": {
+      "item": "electrodynamics:carbynebattery"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:railgunplasma"
+  }
+}

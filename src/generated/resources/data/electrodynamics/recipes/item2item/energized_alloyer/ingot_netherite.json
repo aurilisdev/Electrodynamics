@@ -1,0 +1,29 @@
+{
+  "type": "electrodynamics:energized_alloyer_recipe",
+  "ticks": 50,
+  "usagepertick": 50.0,
+  "iteminputs": {
+    "count": 2,
+    "0": {
+      "item": "minecraft:netherite_scrap",
+      "count": 1
+    },
+    "1": {
+      "tag": "forge:ingots/gold",
+      "count": 1
+    }
+  },
+  "output": {
+    "item": "minecraft:netherite_ingot",
+    "count": 2
+  },
+  "experience": 1.0,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": "electrodynamics:slag",
+      "count": 1,
+      "chance": 0.75
+    }
+  }
+}

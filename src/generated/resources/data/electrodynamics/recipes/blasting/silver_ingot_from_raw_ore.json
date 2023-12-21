@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "ingredient": {
+    "tag": "forge:raw_materials/silver"
+  },
+  "result": "electrodynamics:ingotsilver",
+  "experience": 0.0,
+  "cookingtime": 100
+}

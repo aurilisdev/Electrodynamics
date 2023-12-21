@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "II",
+    "II"
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/bronze"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:platebronze"
+  }
+}

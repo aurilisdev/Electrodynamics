@@ -7,8 +7,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.api.network.conductor.IConductor;
+import electrodynamics.api.network.cable.type.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.prefab.network.AbstractNetwork;
 import electrodynamics.prefab.utilities.ElectricityUtils;
@@ -16,16 +17,31 @@ import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, BlockEntity, TransferPack> implements ICapabilityElectrodynamic {
-	private double resistance;
-	private double energyLoss;
+	
+	public static final int MAXIMUM_OVERLOAD_PERIOD_TICKS = 20;
+
+	private double resistance = 0;
+	private double energyLoss = 0;
 	private double voltage = 0.0;
-	private double lastEnergyLoss;
+	private double lastEnergyLoss = 0;
 	private double lastVoltage = 0.0;
-	private ArrayList<BlockEntity> currentProducers = new ArrayList<>();
+	private HashSet<BlockEntity> producersToIgnore = new HashSet<>();
 	private double transferBuffer = 0;
-	private double maxTransferBuffer;
+	private double maxTransferBuffer = 0;
+
+	private double minimumVoltage = -1.0D;
+
+	private HashMap<BlockEntity, HashMap<Direction, TransferPack>> lastTransfer = new HashMap<>();
+	private HashSet<BlockEntity> noUsage = new HashSet<>();
+
+	private boolean locked = false;
+
+	private int ticksOverloaded = 0;
+
+	// private long numTicks = 0;
 
 	public double getLastEnergyLoss() {
 		return lastEnergyLoss;
@@ -33,7 +49,7 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 
 	@Override
 	public double getVoltage() {
-		return -1;
+		return voltage;
 	}
 
 	public double getActiveVoltage() {
@@ -75,52 +91,80 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		NetworkRegistry.register(this);
 	}
 
+	@Override
+	public void refresh() {
+		ticksOverloaded = 0;
+		resistance = 0;
+		energyLoss = 0;
+		voltage = 0.0;
+		lastEnergyLoss = 0;
+		lastVoltage = 0.0;
+		producersToIgnore.clear();
+		transferBuffer = 0;
+		maxTransferBuffer = 0;
+
+		minimumVoltage = -1;
+
+		lastTransfer.clear();
+		noUsage.clear();
+
+		super.refresh();
+	}
+
 	private TransferPack sendToReceivers(TransferPack maxTransfer, ArrayList<BlockEntity> ignored, boolean debug) {
-		if (maxTransfer.getJoules() > 0 && maxTransfer.getVoltage() > 0) {
-			Set<BlockEntity> availableAcceptors = getEnergyAcceptors();
-			double joulesSent = 0;
-			availableAcceptors.removeAll(ignored);
-			if (!availableAcceptors.isEmpty()) {
-				Iterator<BlockEntity> it = availableAcceptors.iterator();
-				double totalUsage = 0;
-				HashMap<BlockEntity, Double> usage = new HashMap<>();
-				while (it.hasNext()) {
-					BlockEntity receiver = it.next();
-					double localUsage = 0;
-					if (acceptorInputMap.containsKey(receiver)) {
-						boolean shouldRemove = true;
-						for (Direction connection : acceptorInputMap.get(receiver)) {
-							TransferPack pack = ElectricityUtils.receivePower(receiver, connection, TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()), true);
-							if (pack.getJoules() != 0) {
-								shouldRemove = false;
-								totalUsage += pack.getJoules();
-								localUsage += pack.getJoules();
-								break;
-							}
-						}
-						if (shouldRemove) {
-							it.remove();
-						}
+		if (maxTransfer.getJoules() <= 0 || maxTransfer.getVoltage() <= 0) {
+			return TransferPack.EMPTY;
+		}
+		Set<BlockEntity> availableAcceptors = getEnergyAcceptors();
+		double joulesSent = 0;
+		availableAcceptors.removeAll(ignored);
+		availableAcceptors.removeAll(noUsage);
+
+		if (availableAcceptors.isEmpty()) {
+			return TransferPack.EMPTY;
+		}
+
+		Iterator<BlockEntity> it = availableAcceptors.iterator();
+		double totalUsage = 0;
+		HashMap<BlockEntity, Double> usage = new HashMap<>();
+		while (it.hasNext()) {
+			BlockEntity receiver = it.next();
+			double localUsage = 0;
+			if (acceptorInputMap.containsKey(receiver)) {
+				boolean shouldRemove = true;
+				for (Direction connection : acceptorInputMap.get(receiver)) {
+					TransferPack pack = ElectricityUtils.receivePower(receiver, connection, TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()), true);
+					if (pack.getJoules() != 0) {
+						shouldRemove = false;
+						totalUsage += pack.getJoules();
+						localUsage += pack.getJoules();
+						break;
 					}
-					usage.put(receiver, localUsage);
 				}
-				for (BlockEntity receiver : availableAcceptors) {
-					TransferPack dedicated = TransferPack.joulesVoltage(maxTransfer.getJoules() * (usage.get(receiver) / totalUsage), maxTransfer.getVoltage());
-					if (acceptorInputMap.containsKey(receiver)) {
-						TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(), maxTransfer.getVoltage());
-						for (Direction connection : acceptorInputMap.get(receiver)) {
-							TransferPack pack = ElectricityUtils.receivePower(receiver, connection, perConnection, debug);
-							joulesSent += pack.getJoules();
-							if (!debug) {
-								transmittedThisTick += pack.getJoules();
-							}
-						}
-					}
+				if (shouldRemove) {
+					it.remove();
 				}
 			}
-			return TransferPack.joulesVoltage(Math.min(maxTransfer.getJoules(), joulesSent), maxTransfer.getVoltage());
+			usage.put(receiver, localUsage);
 		}
-		return TransferPack.EMPTY;
+		for (BlockEntity receiver : availableAcceptors) {
+			TransferPack dedicated = TransferPack.joulesVoltage(maxTransfer.getJoules() * (usage.get(receiver) / totalUsage), maxTransfer.getVoltage());
+			HashMap<Direction, TransferPack> perConnectionMap;
+			if (acceptorInputMap.containsKey(receiver)) {
+				TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(), maxTransfer.getVoltage());
+				perConnectionMap = new HashMap<>();
+				for (Direction connection : acceptorInputMap.get(receiver)) {
+					TransferPack pack = ElectricityUtils.receivePower(receiver, connection, perConnection, debug);
+					perConnectionMap.put(connection, pack);
+					joulesSent += pack.getJoules();
+					if (!debug) {
+						transmittedThisTick += pack.getJoules();
+					}
+				}
+				lastTransfer.put(receiver, perConnectionMap);
+			}
+		}
+		return TransferPack.joulesVoltage(Math.min(maxTransfer.getJoules(), joulesSent), maxTransfer.getVoltage());
 	}
 
 	public Set<BlockEntity> getEnergyAcceptors() {
@@ -128,27 +172,61 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	}
 
 	private boolean checkForOverload() {
-		if (networkMaxTransfer * voltage - transmittedThisTick <= 0 && voltage > 0) {
-			HashSet<SubtypeWire> checkList = new HashSet<>();
-			for (SubtypeWire type : SubtypeWire.values()) {
-				if (type != SubtypeWire.superconductive && type != SubtypeWire.insulatedsuperconductive && type != SubtypeWire.logisticssuperconductive && type.capacity <= transmittedLastTick / voltage * 20 && type.capacity <= transmittedThisTick / voltage * 20) {
-					checkList.add(type);
-				}
+
+		if (voltage <= 0 || networkMaxTransfer * voltage - transmittedThisTick * 20 > 0) {
+			ticksOverloaded = 0;
+			return false;
+		}
+
+		HashSet<SubtypeWire> checkList = new HashSet<>();
+		for (SubtypeWire type : SubtypeWire.values()) {
+			if (type.conductor.ampacity <= transmittedLastTick / voltage * 20 && type.conductor.ampacity <= transmittedThisTick / voltage * 20) {
+				checkList.add(type);
 			}
-			for (SubtypeWire index : checkList) {
-				for (IConductor conductor : conductorTypeMap.get(index)) {
-					Scheduler.schedule(1, conductor::destroyViolently);
-				}
-			}
+		}
+
+		if (checkList.isEmpty()) {
+
+			ticksOverloaded = 0;
+			return false;
+
+		}
+
+		ticksOverloaded++;
+
+		if (ticksOverloaded < MAXIMUM_OVERLOAD_PERIOD_TICKS) {
 			return true;
 		}
-		return false;
+
+		for (SubtypeWire index : checkList) {
+			for (IConductor conductor : conductorTypeMap.get(index)) {
+				Scheduler.schedule(1, conductor::destroyViolently);
+			}
+		}
+		return true;
+
 	}
 
 	@Override
-	public void updateStatistics(IConductor cable) {
-		super.updateStatistics(cable);
+	public void updateConductorStatistics(IConductor cable) {
+		super.updateConductorStatistics(cable);
 		resistance += cable.getWireType().resistance;
+
+	}
+
+	@Override
+	public void updateRecieverStatistics(BlockEntity reciever, Direction dir) {
+		reciever.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).ifPresent(cap -> {
+			if (cap.getVoltage() < 0) {
+				return;
+			}
+
+			if (minimumVoltage <= 0) {
+				minimumVoltage = cap.getVoltage();
+			} else if (cap.getVoltage() < minimumVoltage) {
+				minimumVoltage = cap.getVoltage();
+			}
+		});
 	}
 
 	@Override
@@ -157,9 +235,9 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		super.updateStatistics();
 	}
 
-	public void addProducer(BlockEntity tile, double d) {
-		if (!currentProducers.contains(tile)) {
-			currentProducers.add(tile);
+	public void addProducer(BlockEntity tile, double d, boolean isEnergyReceiver) {
+		if (!isEnergyReceiver) {
+			producersToIgnore.add(tile);
 		}
 		voltage = Math.max(voltage, d);
 	}
@@ -167,42 +245,47 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	@Override
 	public void tick() {
 		super.tick();
-		if (transferBuffer > 0) {
-			if ((int) voltage != 0 && voltage > 0) {
+		/*
+		 * if (conductorSet.size() > 10) { Electrodynamics.LOGGER.info("Beginning of tick"); Electrodynamics.LOGGER.info("ticks " + numTicks); Electrodynamics.LOGGER.info("length " + conductorSet.size()); Electrodynamics.LOGGER.info("voltage " + voltage); Electrodynamics.LOGGER.info("trans " + transferBuffer); Electrodynamics.LOGGER.info("max trans " + maxTransferBuffer);
+		 * 
+		 * }
+		 */
+		lastTransfer.clear();
+		noUsage.clear();
+		if (maxTransferBuffer > 0) {
+			ArrayList<BlockEntity> producersList = new ArrayList<>(producersToIgnore);
+			if ((int) voltage != 0 && voltage > 0 && transferBuffer > 0) {
 				if (resistance > 0) {
-					double bufferAsWatts = transferBuffer * 20; // buffer as watts
-					double maxWatts = (-voltage * voltage + voltage * Math.sqrt(voltage * voltage + 4 * bufferAsWatts * resistance)) / (2 * resistance);
+					double bufferAsWatts = transferBuffer * 20.0; // buffer as watts
+					double maxWatts = (-voltage * voltage + voltage * Math.sqrt(voltage * voltage + 4.0 * bufferAsWatts * resistance)) / (2.0 * resistance);
 					double maxPerTick = maxWatts / 20.0;
 					// above is power as watts when powerSend + powerLossToWires = m
 					TransferPack send = TransferPack.joulesVoltage(maxPerTick, voltage);
-					double sent = sendToReceivers(send, currentProducers, false).getJoules();
+					double sent = sendToReceivers(send, producersList, false).getJoules();
 					double lossPerTick = send.getAmps() * send.getAmps() * resistance / 20.0;
 					transferBuffer -= sent + lossPerTick;
 					energyLoss += lossPerTick;
 					transmittedThisTick += lossPerTick;
 					checkForOverload();
 				} else {
-					transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), currentProducers, false).getJoules();
+					transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), producersList, false).getJoules();
 				}
 			}
+		} else {
+			transferBuffer = 0;
 		}
 		lastVoltage = voltage;
-		voltage = 0;
+		if (transferBuffer <= 0) {
+			voltage = 0;
+		}
 		lastEnergyLoss = energyLoss;
 		energyLoss = 0;
-		currentProducers.clear();
+
 		maxTransferBuffer = 0;
-		for (BlockEntity tile : acceptorSet) {
-			if (acceptorInputMap.containsKey(tile)) {
-				for (Direction connection : acceptorInputMap.get(tile)) {
-					TransferPack pack = ElectricityUtils.receivePower(tile, connection, TransferPack.joulesVoltage(Double.MAX_VALUE, voltage), true);
-					if (pack.getJoules() != 0) {
-						maxTransferBuffer += pack.getJoules();
-						break;
-					}
-				}
-			}
-		}
+		producersToIgnore.clear();
+
+		maxTransferBuffer = getConnectedLoad(new LoadProfile(TransferPack.joulesVoltage(transmittedLastTick, lastVoltage), TransferPack.joulesVoltage(transmittedLastTick, lastVoltage)), Direction.UP).getJoules();
+
 		Iterator<IConductor> it = conductorSet.iterator();
 		boolean broken = false;
 		while (it.hasNext()) {
@@ -218,11 +301,29 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 		if (getSize() == 0) {
 			deregister();
 		}
+		// Electrodynamics.LOGGER.info("");
+		// Electrodynamics.LOGGER.info("End of tick");
+		// Electrodynamics.LOGGER.info("length " + conductorSet.size());
+		// Electrodynamics.LOGGER.info("voltage " + voltage);
+		// Electrodynamics.LOGGER.info("trans " + transferBuffer);
+		// Electrodynamics.LOGGER.info("max trans " + maxTransferBuffer);
+		// Electrodynamics.LOGGER.info("");
+		/*
+		 * if (conductorSet.size() > 10) { Electrodynamics.LOGGER.info(""); numTicks++;
+		 * 
+		 * }
+		 */
+
 	}
 
 	@Override
-	public boolean isConductor(BlockEntity tile) {
-		return ElectricityUtils.isConductor(tile);
+	public boolean isConductor(BlockEntity tile, IConductor requesterCable) {
+		return ElectricityUtils.isConductor(tile, requesterCable);
+	}
+
+	@Override
+	public boolean isConductorClass(BlockEntity tile) {
+		return tile instanceof IConductor;
 	}
 
 	@Override
@@ -269,5 +370,81 @@ public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, Bl
 	@Override
 	public double getMaxJoulesStored() {
 		return maxTransferBuffer;
+	}
+
+	@Override
+	public void onChange() {
+
+	}
+
+	@Override
+	public double getMinimumVoltage() {
+		return minimumVoltage;
+	}
+
+	@Override
+	public double getAmpacity() {
+		return networkMaxTransfer;
+	}
+
+	@Override
+	public TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
+
+		if (locked) {
+			return TransferPack.EMPTY;
+		}
+
+		locked = true;
+
+		TransferPack connectedLoad = TransferPack.joulesVoltage(0, 0);
+
+		TransferPack capLoad;
+
+		ArrayList<BlockEntity> load = new ArrayList<>(acceptorSet);
+
+		load.removeAll(producersToIgnore);
+		HashMap<Direction, TransferPack> lastPerTile;
+
+		for (BlockEntity tile : load) {
+
+			lastPerTile = lastTransfer.getOrDefault(load, new HashMap<>());
+
+			boolean noUsage = true;
+
+			for (Direction direction : acceptorInputMap.getOrDefault(tile, new HashSet<>())) {
+
+				final LoadProfile profile = new LoadProfile(lastPerTile.getOrDefault(lastPerTile, TransferPack.EMPTY), loadProfile.maximumAvailable());
+
+				capLoad = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, direction).map(cap -> cap.getConnectedLoad(profile, direction)).orElseGet(() -> tile.getCapability(CapabilityEnergy.ENERGY, dir).map(cap -> TransferPack.joulesVoltage(cap.receiveEnergy(Integer.MAX_VALUE, true), ElectrodynamicsCapabilities.DEFAULT_VOLTAGE)).orElse(TransferPack.EMPTY));
+				if (capLoad.getJoules() != 0) {
+
+					noUsage = false;
+
+					connectedLoad = TransferPack.joulesVoltage(connectedLoad.getJoules() + capLoad.getJoules(), Math.max(connectedLoad.getVoltage(), capLoad.getVoltage()));
+					break;
+
+				}
+
+			}
+
+			if (noUsage) {
+				this.noUsage.add(tile);
+			}
+
+		}
+
+		locked = false;
+
+		return connectedLoad;
+	}
+
+	@Override
+	public boolean isEnergyReceiver() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnergyProducer() {
+		return true;
 	}
 }

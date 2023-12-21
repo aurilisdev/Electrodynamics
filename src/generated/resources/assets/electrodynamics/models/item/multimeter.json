@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:item/generated",
+  "display": {
+    "gui": {
+      "scale": [
+        0.9,
+        0.9,
+        0.9
+      ]
+    }
+  },
+  "textures": {
+    "layer0": "electrodynamics:item/multimeter"
+  }
+}

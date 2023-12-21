@@ -3,8 +3,8 @@
 	"parent": "block/cube_all",
 	"texture_size": [128, 128],
 	"textures": {
-		"0": "electrodynamics:model/electrolyticseparator",
-		"particle": "electrodynamics:model/electrolyticseparator"
+		"0": "electrodynamics:block/model/electrolyticseparator",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

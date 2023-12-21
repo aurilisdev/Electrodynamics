@@ -18,26 +18,38 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * Extension of Ingredient that adds Fluid compatibility
+ * 
+ * @author skip999
+ *
+ */
 public class FluidIngredient extends Ingredient {
+
+	private static final List<FluidStack> EMPTY_FLUID_LIST = List.of(new FluidStack(Fluids.EMPTY, 1000));
 
 	@Nonnull
 	private List<FluidStack> fluidStacks;
 
-	private TagKey<Fluid> tag;
+	@Nullable
+	public TagKey<Fluid> tag;
 	private int amount;
 
 	public FluidIngredient(FluidStack fluidStack) {
 		super(Stream.empty());
 		fluidStacks = new ArrayList<>();
 		fluidStacks.add(fluidStack);
+		amount = fluidStack.getAmount();
 	}
 
 	public FluidIngredient(List<FluidStack> fluidStack) {
 		super(Stream.empty());
 		fluidStacks = fluidStack;
+		amount = fluidStack.get(0).getAmount();
 	}
 
 	/**
@@ -53,11 +65,12 @@ public class FluidIngredient extends Ingredient {
 		super(Stream.empty());
 		if (isTag) {
 			// Don't know ifi can use FluidTags.create(resourceLocation) all the time but we shall see.
-			List<Fluid> fluids = ForgeRegistries.FLUIDS.tags().getTag(FluidTags.create(resourceLocation)).stream().toList();
 			fluidStacks = new ArrayList<>();
-			for (Fluid fluid : fluids) {
-				fluidStacks.add(new FluidStack(fluid, amount));
-			}
+			ForgeRegistries.FLUIDS.forEach(fluid -> {
+				if (fluid.is(tag)) {
+					fluidStacks.add(new FluidStack(fluid, amount));
+				}
+			});
 		} else {
 			List<FluidStack> fluids = new ArrayList<>();
 			fluids.add(new FluidStack(ForgeRegistries.FLUIDS.getValue(resourceLocation), amount));
@@ -69,16 +82,21 @@ public class FluidIngredient extends Ingredient {
 	}
 
 	/**
-	 * Specialized constructor for pre-server load JSON loading
+	 * Constructor is designed to defer loading tag value until ingredient is referenced
 	 * 
 	 * @param resource
 	 * @param amount
 	 */
-	private FluidIngredient(ResourceLocation resource, int amount) {
+	public FluidIngredient(ResourceLocation resource, int amount) {
+		this(FluidTags.create(resource), amount);
+	}
+
+	public FluidIngredient(TagKey<Fluid> tag, int amount) {
 		super(Stream.empty());
-		tag = FluidTags.create(resource);
+		this.tag = tag;
 		this.amount = amount;
 		fluidStacks = new ArrayList<>();
+
 	}
 
 	public static FluidIngredient deserialize(JsonObject jsonObject) {
@@ -101,6 +119,10 @@ public class FluidIngredient extends Ingredient {
 		return null;
 	}
 
+	public int getAmount() {
+		return amount;
+	}
+
 	public boolean testFluid(@Nullable FluidStack t) {
 		if (t != null) {
 			for (FluidStack stack : getMatchingFluids()) {
@@ -115,12 +137,22 @@ public class FluidIngredient extends Ingredient {
 	}
 
 	public static FluidIngredient read(FriendlyByteBuf input) {
-		List<FluidStack> stacks = new ArrayList<>();
-		int count = input.readInt();
-		for (int i = 0; i < count; i++) {
-			stacks.add(input.readFluidStack());
+
+		if (input.readBoolean()) {
+
+			return new FluidIngredient(input.readResourceLocation(), input.readInt());
+
+		} else {
+
+			List<FluidStack> stacks = new ArrayList<>();
+			int count = input.readInt();
+			for (int i = 0; i < count; i++) {
+				stacks.add(input.readFluidStack());
+			}
+			return new FluidIngredient(stacks);
+
 		}
-		return new FluidIngredient(stacks);
+
 	}
 
 	public static FluidIngredient[] readList(FriendlyByteBuf buffer) {
@@ -133,10 +165,24 @@ public class FluidIngredient extends Ingredient {
 	}
 
 	public void write(FriendlyByteBuf output) {
-		output.writeInt(fluidStacks.size());
-		for (FluidStack stack : fluidStacks) {
-			output.writeFluidStack(stack);
+
+		output.writeBoolean(tag != null);
+
+		if (tag != null) {
+
+			output.writeResourceLocation(tag.location());
+			output.writeInt(amount);
+
+		} else {
+
+			fluidStacks = getMatchingFluids();
+			output.writeInt(fluidStacks.size());
+			for (FluidStack stack : fluidStacks) {
+				output.writeFluidStack(stack);
+			}
+
 		}
+
 	}
 
 	public static void writeList(FriendlyByteBuf buffer, List<FluidIngredient> list) {
@@ -148,15 +194,21 @@ public class FluidIngredient extends Ingredient {
 
 	public List<FluidStack> getMatchingFluids() {
 		if (fluidStacks.isEmpty() && tag != null) {
-			ForgeRegistries.FLUIDS.tags().getTag(tag).forEach(h -> {
-				fluidStacks.add(new FluidStack(h, amount));
+			ForgeRegistries.FLUIDS.forEach(fluid -> {
+				if (fluid.is(tag)) {
+					fluidStacks.add(new FluidStack(fluid, amount));
+				}
 			});
+
+			// ForgeRegistries.FLUIDS.tags().getTag(tag).forEach(h -> {
+			// fluidStacks.add(new FluidStack(h, amount));
+			// });
 		}
-		return fluidStacks;
+		return fluidStacks.isEmpty() ? EMPTY_FLUID_LIST : fluidStacks;
 	}
 
 	public FluidStack getFluidStack() {
-		return fluidStacks.get(0);
+		return getMatchingFluids().isEmpty() ? EMPTY_FLUID_LIST.get(0) : getMatchingFluids().get(0);
 	}
 
 }

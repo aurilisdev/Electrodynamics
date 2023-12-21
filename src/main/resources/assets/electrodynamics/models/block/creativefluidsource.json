@@ -7,9 +7,9 @@
 		128
 	],
 	"textures": {
-		"0": "electrodynamics:model/creativefluidsource",
+		"0": "electrodynamics:block/model/creativefluidsource",
 		"1" : "electrodynamics:block/nether_portal",
-		"particle": "electrodynamics:model/creativefluidsource"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

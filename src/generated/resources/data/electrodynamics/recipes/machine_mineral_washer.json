@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SGS",
+    "CEC",
+    "PEP"
+  ],
+  "key": {
+    "P": {
+      "item": "electrodynamics:pipesteel"
+    },
+    "S": {
+      "tag": "forge:plates/steel"
+    },
+    "C": {
+      "tag": "forge:circuits/ultimate"
+    },
+    "E": {
+      "item": "electrodynamics:electricpump"
+    },
+    "G": {
+      "tag": "forge:gears/steel"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:mineralwasher"
+  }
+}

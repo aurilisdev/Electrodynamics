@@ -2,9 +2,7 @@ package electrodynamics.common.item;
 
 import java.util.List;
 
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -12,17 +10,21 @@ import net.minecraft.world.level.Level;
 
 public class ItemDescriptable extends Item {
 
-	private String langKey;
+	private Component[] tooltips;
 
-	public ItemDescriptable(Properties properties, String langKey) {
+	public ItemDescriptable(Properties properties, Component... tooltips) {
 		super(properties);
-		this.langKey = langKey;
+		this.tooltips = tooltips;
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
 		super.appendHoverText(stack, world, tooltips, flag);
-		tooltips.add(new TranslatableComponent(langKey).withStyle(ChatFormatting.GRAY));
+		if (tooltips != null) {
+			for (Component tooltip : this.tooltips) {
+				tooltips.add(tooltip);
+			}
+		}
 	}
 
 }

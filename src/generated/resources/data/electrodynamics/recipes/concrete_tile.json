@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CC",
+    "CC"
+  ],
+  "key": {
+    "C": {
+      "item": "electrodynamics:concretebricks"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:concretetile",
+    "count": 4
+  }
+}

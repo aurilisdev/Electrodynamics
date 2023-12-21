@@ -1,0 +1,9 @@
+{
+  "parent": "forge:item/default",
+  "textures": {
+    "base": "electrodynamics:item/canisterreinforced/base",
+    "fluid": "electrodynamics:item/canisterreinforced/fluid"
+  },
+  "loader": "forge:bucket",
+  "fluid": "minecraft:empty"
+}

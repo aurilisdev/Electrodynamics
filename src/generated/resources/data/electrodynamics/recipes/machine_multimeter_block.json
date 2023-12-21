@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "SMS",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "tag": "forge:ingots/steel"
+    },
+    "M": {
+      "item": "electrodynamics:multimeter"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:multimeterblock"
+  }
+}

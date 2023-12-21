@@ -25,69 +25,37 @@ import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 
-	/*
-	 * Need to know: > does it have fluid and item biproducts ; store as booleans > the number of fluid and item biproducts ; store as ints > the arrangement of the items in the machine's inventory ; store as int list
-	 * 
-	 * store item and fluid biproducts here as well
-	 */
-
 	private ResourceLocation id;
 
-	private boolean hasItemBi;
-	private boolean hasFluidBi;
-	// not initialized unless in use; no need to create a bunch of Objects if there
-	// never even used!
-	private int itemBiCount;
-	private int fluidBiCount;
-
 	private double xp;
+	private int ticks;
+	private double usagePerTick;
 
-	private ProbableItem[] itemBiProducts;
-	private ProbableFluid[] fluidBiProducts;
+	@Nullable
+	private ProbableItem[] itemBiproducts;
+	@Nullable
+	private ProbableFluid[] fluidBiproducts;
 
 	private HashMap<Integer, List<Integer>> itemArrangements = new HashMap<>();
+	@Nullable
 	private List<Integer> fluidArrangement;
+	@Nullable
+	private List<Integer> gasArrangement;
 
-	protected ElectrodynamicsRecipe(ResourceLocation recipeID, double experience) {
+	public ElectrodynamicsRecipe(ResourceLocation recipeID, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
 		id = recipeID;
-		hasItemBi = false;
-		hasFluidBi = false;
 		xp = experience;
-	}
-
-	protected ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, double experience) {
-		id = recipeID;
-		hasItemBi = true;
-		itemBiProducts = itemBiproducts;
-		itemBiCount = itemBiproducts.length;
-		hasFluidBi = false;
-		xp = experience;
-	}
-
-	protected ElectrodynamicsRecipe(ProbableFluid[] fluidBiproducts, ResourceLocation recipeID, double experience) {
-		id = recipeID;
-		hasItemBi = false;
-		hasFluidBi = true;
-		fluidBiProducts = fluidBiproducts;
-		fluidBiCount = fluidBiproducts.length;
-		xp = experience;
-	}
-
-	protected ElectrodynamicsRecipe(ResourceLocation recipeID, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, double experience) {
-		id = recipeID;
-		hasItemBi = true;
-		itemBiProducts = itemBiproducts;
-		itemBiCount = itemBiproducts.length;
-		hasFluidBi = true;
-		fluidBiProducts = fluidBiproducts;
-		fluidBiCount = fluidBiproducts.length;
-		xp = experience;
+		this.ticks = ticks;
+		this.usagePerTick = usagePerTick;
+		this.itemBiproducts = itemBiproducts;
+		this.fluidBiproducts = fluidBiproducts;
 	}
 
 	/**
 	 * NEVER USE THIS METHOD!
 	 */
 	@Override
+	@Deprecated
 	public boolean matches(RecipeWrapper inv, Level world) {
 		return false;
 	}
@@ -107,57 +75,58 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		return id;
 	}
 
-	// ALWAYS call these methods before trying to get any other info on biproducts
 	public boolean hasItemBiproducts() {
-		return hasItemBi;
+		return itemBiproducts != null;
 	}
 
 	public boolean hasFluidBiproducts() {
-		return hasFluidBi;
+		return fluidBiproducts != null;
 	}
 
+	@Nullable
 	public ProbableItem[] getItemBiproducts() {
-		if (!hasItemBiproducts()) {
-			throw new UnsupportedOperationException("This recipe has no Item Biproducts. Do not get the list!");
-		}
-		return itemBiProducts;
+		return itemBiproducts;
 	}
 
+	@Nullable
 	public ProbableFluid[] getFluidBiproducts() {
-		if (!hasFluidBiproducts()) {
-			throw new UnsupportedOperationException("This recipe has no Fluid Biproducts. Do not get the list!");
-		}
-		return fluidBiProducts;
+		return fluidBiproducts;
 	}
 
 	public ItemStack[] getFullItemBiStacks() {
-		ItemStack[] items = new ItemStack[itemBiCount];
-		for (int i = 0; i < itemBiCount; i++) {
-			items[i] = itemBiProducts[i].getFullStack();
+		ItemStack[] items = new ItemStack[getItemBiproductCount()];
+		for (int i = 0; i < getItemBiproductCount(); i++) {
+			items[i] = itemBiproducts[i].getFullStack();
 		}
 		return items;
 	}
 
 	public FluidStack[] getFullFluidBiStacks() {
-		FluidStack[] fluids = new FluidStack[fluidBiCount];
-		for (int i = 0; i < fluidBiCount; i++) {
-			fluids[i] = fluidBiProducts[i].getFullStack();
+		FluidStack[] fluids = new FluidStack[getFluidBiproductCount()];
+		for (int i = 0; i < getFluidBiproductCount(); i++) {
+			fluids[i] = fluidBiproducts[i].getFullStack();
 		}
 		return fluids;
 	}
 
 	public int getItemBiproductCount() {
-		if (!hasItemBiproducts()) {
-			throw new UnsupportedOperationException("This recipe has no Item Biproducts. Do not get the count");
-		}
-		return itemBiCount;
+		return itemBiproducts.length;
 	}
 
 	public int getFluidBiproductCount() {
-		if (!hasFluidBiproducts()) {
-			throw new UnsupportedOperationException("This recipe has no Fluid Biproducts. Do not get the count!");
-		}
-		return fluidBiCount;
+		return fluidBiproducts.length;
+	}
+
+	public double getXp() {
+		return xp;
+	}
+
+	public int getTicks() {
+		return ticks;
+	}
+
+	public double getUsagePerTick() {
+		return usagePerTick;
 	}
 
 	public void setItemArrangement(Integer procNumber, List<Integer> arrangement) {
@@ -176,8 +145,12 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		return fluidArrangement;
 	}
 
-	public double getXp() {
-		return xp;
+	public void setGasArrangement(List<Integer> arrangement) {
+		gasArrangement = arrangement;
+	}
+
+	public List<Integer> getGasArrangement() {
+		return gasArrangement;
 	}
 
 	public static List<ElectrodynamicsRecipe> findRecipesbyType(RecipeType<? extends ElectrodynamicsRecipe> typeIn, Level world) {

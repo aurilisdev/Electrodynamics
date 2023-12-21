@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "electrodynamics:upgradeitemoutput"
+    }
+  ],
+  "result": {
+    "item": "electrodynamics:upgradeitemoutput"
+  }
+}

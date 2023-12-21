@@ -1,0 +1,41 @@
+{
+  "parent": "electrodynamics:insulatedwiring",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:wirehighlyinsulatedcopper"
+    },
+    "title": {
+      "color": "gray",
+      "translate": "advancement.electrodynamics.highlyinsulatedwiring.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.highlyinsulatedwiring.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 20
+  },
+  "criteria": {
+    "HasHighlyInsulatedCopperWire": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "electrodynamics:wirehighlyinsulatedcopper"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasHighlyInsulatedCopperWire"
+    ]
+  ]
+}

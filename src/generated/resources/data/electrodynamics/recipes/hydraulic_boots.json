@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C C",
+    "P P",
+    "WSW"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "C": {
+      "item": "electrodynamics:canisterreinforced"
+    },
+    "S": {
+      "tag": "forge:plates/steel"
+    },
+    "W": {
+      "tag": "minecraft:wool"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:hydraulicboots"
+  }
+}

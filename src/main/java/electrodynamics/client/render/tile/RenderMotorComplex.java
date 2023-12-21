@@ -1,64 +1,64 @@
 package electrodynamics.client.render.tile;
 
+import org.jetbrains.annotations.NotNull;
+
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.TileMotorComplex;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.common.tile.machines.quarry.TileMotorComplex;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.RenderingUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 
-public class RenderMotorComplex implements BlockEntityRenderer<TileMotorComplex> {
+public class RenderMotorComplex extends AbstractTileRenderer<TileMotorComplex> {
 
 	public RenderMotorComplex(BlockEntityRendererProvider.Context context) {
+		super(context);
 	}
 
 	@Override
-	public void render(TileMotorComplex tile, float ticks, PoseStack stack, MultiBufferSource source, int light, int overlay) {
+	public void render(TileMotorComplex tile, float ticks, PoseStack stack, @NotNull MultiBufferSource source, int light, int overlay) {
 
 		stack.pushPose();
 
-		Direction facing = tile.<ComponentDirection>getComponent(ComponentType.Direction).getDirection();
-		float clientTicks = tile.<ComponentTickable>getComponent(ComponentType.Tickable).getTicks();
+		Direction facing = tile.getFacing();
+		float clientTicks = tile.<ComponentTickable>getComponent(IComponentType.Tickable).getTicks();
 		float progressDegrees = 0.0F;
 
-		if (tile.clientPowered) {
-			progressDegrees = 360.0f * (float) Math.sin(clientTicks / tile.clientSpeed);
+		if (tile.isPowered.get()) {
+			progressDegrees = 360.0f * (float) Math.sin(clientTicks / tile.speed.get());
 		}
 
-		BakedModel shaft = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_MOTORCOMPLEXROTOR);
+		BakedModel shaft = getModel(ClientRegister.MODEL_MOTORCOMPLEXROTOR);
 
 		switch (facing) {
-		case EAST:
+		case EAST -> {
 			stack.translate(0.5, 0.5, 0.5);
 			stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
-			break;
-		case WEST:
+		}
+		case WEST -> {
 			stack.translate(0.9375, 0.5, 0.5);
 			stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
-			break;
-		case SOUTH:
+		}
+		case SOUTH -> {
 			stack.translate(0.5, 0.5, 0.0625);
 			stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
 			stack.mulPose(new Quaternion(new Vector3f(1.0F, 0.0F, 0.0F), progressDegrees, true));
-			break;
-		case NORTH:
+		}
+		case NORTH -> {
 			stack.translate(0.5, 0.5, 0.5);
 			stack.mulPose(new Quaternion(new Vector3f(0, 1F, 0), 90, true));
 			stack.mulPose(new Quaternion(new Vector3f(-1.0F, 0.0F, 0.0F), progressDegrees, true));
-			break;
-		default:
-			break;
+		}
+		default -> {
+		}
 		}
 
 		RenderingUtils.renderModel(shaft, tile, RenderType.solid(), stack, source, light, overlay);

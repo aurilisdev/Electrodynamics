@@ -1,23 +1,28 @@
 package electrodynamics.client.guidebook;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import electrodynamics.api.References;
+import electrodynamics.client.guidebook.chapters.ChapterArmor;
 import electrodynamics.client.guidebook.chapters.ChapterElectricity;
 import electrodynamics.client.guidebook.chapters.ChapterFluids;
+import electrodynamics.client.guidebook.chapters.ChapterGenerators;
 import electrodynamics.client.guidebook.chapters.ChapterGettingStarted;
 import electrodynamics.client.guidebook.chapters.ChapterMachines;
+import electrodynamics.client.guidebook.chapters.ChapterMetricPrefixes;
 import electrodynamics.client.guidebook.chapters.ChapterMisc;
 import electrodynamics.client.guidebook.chapters.ChapterOre;
+import electrodynamics.client.guidebook.chapters.ChapterQuarry;
 import electrodynamics.client.guidebook.chapters.ChapterTips;
-import electrodynamics.client.guidebook.utils.ImageWrapperObject;
-import electrodynamics.client.guidebook.utils.components.Chapter;
+import electrodynamics.client.guidebook.chapters.ChapterTools;
+import electrodynamics.client.guidebook.chapters.ChapterUpgrades;
 import electrodynamics.client.guidebook.utils.components.Module;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 
-public class ModuleElectrodynamics extends Module {
+public final class ModuleElectrodynamics extends Module {
 
-	private static final ImageWrapperObject LOGO = new ImageWrapperObject(10, 38, 0, 0, 32, 32, 32, 32, References.ID + ":textures/screen/guidebook/electrodynamicslogo.png");
+	private static final ImageWrapperObject LOGO = new ImageWrapperObject(0, 0, 0, 0, 32, 32, 32, 32, new ResourceLocation(References.ID, "textures/screen/guidebook/electrodynamicslogo.png"));
 
 	@Override
 	public ImageWrapperObject getLogo() {
@@ -25,26 +30,25 @@ public class ModuleElectrodynamics extends Module {
 	}
 
 	@Override
-	public String getTitleCat() {
-		return References.ID;
+	public MutableComponent getTitle() {
+		return ElectroTextUtils.guidebook(References.ID);
 	}
 
 	@Override
-	protected List<Chapter> genChapters() {
-		List<Chapter> chapters = new ArrayList<>();
-		chapters.add(new ChapterGettingStarted());
-		chapters.add(new ChapterOre());
-		chapters.add(new ChapterElectricity());
-		chapters.add(new ChapterFluids());
-		chapters.add(new ChapterMachines());
-		chapters.add(new ChapterMisc());
-		chapters.add(new ChapterTips());
-		return chapters;
-	}
-
-	@Override
-	public boolean isFirst() {
-		return true;
+	public void addChapters() {
+		chapters.add(new ChapterGettingStarted(this));
+		chapters.add(new ChapterOre(this));
+		chapters.add(new ChapterMetricPrefixes(this));
+		chapters.add(new ChapterElectricity(this));
+		chapters.add(new ChapterFluids(this));
+		chapters.add(new ChapterGenerators(this));
+		chapters.add(new ChapterMachines(this));
+		chapters.add(new ChapterQuarry(this));
+		chapters.add(new ChapterUpgrades(this));
+		chapters.add(new ChapterTools(this));
+		chapters.add(new ChapterArmor(this));
+		chapters.add(new ChapterMisc(this));
+		chapters.add(new ChapterTips(this));
 	}
 
 }

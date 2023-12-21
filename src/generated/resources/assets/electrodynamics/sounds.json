@@ -1,0 +1,158 @@
+{
+  "ceramicplateadded": {
+    "subtitle": "subtitles.electrodynamics.ceramicplateadded",
+    "sounds": [
+      "electrodynamics:ceramicplateadded"
+    ]
+  },
+  "ceramicplatebreaking": {
+    "subtitle": "subtitles.electrodynamics.ceramicplatebreaking",
+    "sounds": [
+      "electrodynamics:ceramicplatebreaking"
+    ]
+  },
+  "combustionchamber": {
+    "subtitle": "subtitles.electrodynamics.combustionchamber",
+    "sounds": [
+      "electrodynamics:combustionchamber"
+    ]
+  },
+  "electricpump": {
+    "subtitle": "subtitles.electrodynamics.electricpump",
+    "sounds": [
+      "electrodynamics:electricpump"
+    ]
+  },
+  "electrolyticseparator": {
+    "subtitle": "subtitles.electrodynamics.electrolyticseparator",
+    "sounds": [
+      "electrodynamics:electrolyticseparator"
+    ]
+  },
+  "equipheavyarmor": {
+    "subtitle": "subtitles.electrodynamics.equipheavyarmor",
+    "sounds": [
+      "electrodynamics:equipheavyarmor"
+    ]
+  },
+  "hum": {
+    "subtitle": "subtitles.electrodynamics.hum",
+    "sounds": [
+      "electrodynamics:hum"
+    ]
+  },
+  "hydraulicboots": {
+    "subtitle": "subtitles.electrodynamics.hydraulicboots",
+    "sounds": [
+      "electrodynamics:hydraulicboots"
+    ]
+  },
+  "hydroelectricgenerator": {
+    "subtitle": "subtitles.electrodynamics.hydroelectricgenerator",
+    "sounds": [
+      "electrodynamics:hydroelectricgenerator"
+    ]
+  },
+  "jetpack": {
+    "subtitle": "subtitles.electrodynamics.jetpack",
+    "sounds": [
+      "electrodynamics:jetpack"
+    ]
+  },
+  "jetpackswitchmode": {
+    "subtitle": "subtitles.electrodynamics.jetpackswitchmode",
+    "sounds": [
+      "electrodynamics:jetpackswitchmode"
+    ]
+  },
+  "latherunning": {
+    "subtitle": "subtitles.electrodynamics.latherunning",
+    "sounds": [
+      "electrodynamics:latherunning"
+    ]
+  },
+  "mineralcrusher": {
+    "subtitle": "subtitles.electrodynamics.mineralcrusher",
+    "sounds": [
+      "electrodynamics:mineralcrusher"
+    ]
+  },
+  "mineralgrinder": {
+    "subtitle": "subtitles.electrodynamics.mineralgrinder",
+    "sounds": [
+      "electrodynamics:mineralgrinder"
+    ]
+  },
+  "motorrunning": {
+    "subtitle": "subtitles.electrodynamics.motorrunning",
+    "sounds": [
+      "electrodynamics:motorrunning"
+    ]
+  },
+  "nightvisiongogglesoff": {
+    "subtitle": "subtitles.electrodynamics.nightvisiongogglesoff",
+    "sounds": [
+      "electrodynamics:nightvisiongogglesoff"
+    ]
+  },
+  "nightvisiongoggleson": {
+    "subtitle": "subtitles.electrodynamics.nightvisiongoggleson",
+    "sounds": [
+      "electrodynamics:nightvisiongoggleson"
+    ]
+  },
+  "railgunkinetic": {
+    "subtitle": "subtitles.electrodynamics.railgunkinetic",
+    "sounds": [
+      "electrodynamics:railgunkinetic"
+    ]
+  },
+  "railgunkinetic_noammo": {
+    "subtitle": "subtitles.electrodynamics.railgunkinetic_noammo",
+    "sounds": [
+      "electrodynamics:railgunkinetic_noammo"
+    ]
+  },
+  "railgunplasma": {
+    "subtitle": "subtitles.electrodynamics.railgunplasma",
+    "sounds": [
+      "electrodynamics:railgunplasma"
+    ]
+  },
+  "railgunplasma_nopower": {
+    "subtitle": "subtitles.electrodynamics.railgunplasma_nopower",
+    "sounds": [
+      "electrodynamics:railgunplasma_nopower"
+    ]
+  },
+  "rodhittingground": {
+    "subtitle": "subtitles.electrodynamics.rodhittingground",
+    "sounds": [
+      "electrodynamics:rodhittingground"
+    ]
+  },
+  "seismicscanner": {
+    "subtitle": "subtitles.electrodynamics.seismicscanner",
+    "sounds": [
+      "electrodynamics:seismicscanner"
+    ]
+  },
+  "windmill": {
+    "subtitle": "subtitles.electrodynamics.windmill",
+    "sounds": [
+      "electrodynamics:windmill"
+    ]
+  },
+  "batteryswap": {
+    "subtitle": "subtitles.electrodynamics.batteryswap",
+    "sounds": [
+      "electrodynamics:batteryswap"
+    ]
+  },
+  "transformerhum": {
+    "subtitle": "subtitles.electrodynamics.transformerhum",
+    "sounds": [
+      "electrodynamics:transformerhum"
+    ]
+  }
+}

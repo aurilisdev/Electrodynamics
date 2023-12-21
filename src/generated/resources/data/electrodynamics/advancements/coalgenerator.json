@@ -1,0 +1,41 @@
+{
+  "parent": "electrodynamics:root",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:coalgenerator"
+    },
+    "title": {
+      "color": "gold",
+      "translate": "advancement.electrodynamics.coalgenerator.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.coalgenerator.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 25
+  },
+  "criteria": {
+    "HasCoalGenerator": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "electrodynamics:coalgenerator"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasCoalGenerator"
+    ]
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "   ",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "tag": "forge:ingots/copper"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:pipecopper",
+    "count": 6
+  }
+}

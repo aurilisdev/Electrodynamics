@@ -1,0 +1,25 @@
+{
+  "type": "electrodynamics:electrolytic_separator_recipe",
+  "ticks": 200,
+  "usagepertick": 250.0,
+  "fluidinputs": {
+    "count": 1,
+    "0": {
+      "tag": "minecraft:water",
+      "amount": 1000
+    }
+  },
+  "output": {
+    "fluid": "electrodynamics:fluidoxygen",
+    "amount": 1000
+  },
+  "experience": 0.0,
+  "fluidbi": {
+    "count": 1,
+    "0": {
+      "fluid": "electrodynamics:fluidhydrogen",
+      "amount": 2000,
+      "chance": 1.0
+    }
+  }
+}

@@ -1,9 +1,9 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.DeferredRegisters;
-import electrodynamics.common.tile.TileCreativeFluidSource;
+import electrodynamics.common.tile.pipelines.TileCreativeFluidSource;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotFluid;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,7 +18,7 @@ public class ContainerCreativeFluidSource extends GenericContainerBlockEntity<Ti
 	}
 
 	public ContainerCreativeFluidSource(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(DeferredRegisters.CONTAINER_CREATIVEFLUIDSOURCE.get(), id, playerinv, inventory, inventorydata);
+		super(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEFLUIDSOURCE.get(), id, playerinv, inventory, inventorydata);
 	}
 
 	public ContainerCreativeFluidSource(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {

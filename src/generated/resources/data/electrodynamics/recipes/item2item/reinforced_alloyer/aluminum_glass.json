@@ -1,0 +1,29 @@
+{
+  "type": "electrodynamics:reinforced_alloyer_recipe",
+  "ticks": 50,
+  "usagepertick": 50.0,
+  "iteminputs": {
+    "count": 2,
+    "0": {
+      "tag": "forge:ingots/aluminum",
+      "count": 1
+    },
+    "1": {
+      "tag": "forge:dusts/saltpeter",
+      "count": 1
+    }
+  },
+  "output": {
+    "item": "electrodynamics:glassaluminum",
+    "count": 5
+  },
+  "experience": 0.5,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": "electrodynamics:slag",
+      "count": 1,
+      "chance": 0.5
+    }
+  }
+}

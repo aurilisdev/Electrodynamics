@@ -6,8 +6,8 @@
 		64
 	],
 	"textures": {
-		"0": "electrodynamics:model/seismicmarker",
-		"particle": "electrodynamics:model/seismicmarker"
+		"0": "electrodynamics:block/model/seismicmarker",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

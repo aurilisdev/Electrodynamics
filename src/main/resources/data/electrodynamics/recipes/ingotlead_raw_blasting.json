@@ -1,9 +1,0 @@
-{
-	"type": "minecraft:blasting",
-	"ingredient": {
-		"tag": "forge:raw_materials/lead"
-	},
-	"result": "electrodynamics:ingotlead",
-	"experience": 0.1,
-	"cookingtime": 100
-}

@@ -1,13 +1,13 @@
 {
 	"credit": "skip999",
-	"parent" : "minecraft:block/cube_all",
+	"parent": "minecraft:block/cube_all",
 	"texture_size": [
 		128,
 		128
 	],
 	"textures": {
-		"0": "electrodynamics:model/coolantresavoir",
-		"particle": "electrodynamics:model/coolantresavoir"
+		"0": "electrodynamics:block/model/coolantresavoir",
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"groups": [
 		{
@@ -98,12 +98,13 @@
 		}
 	],
 	"loader": "forge:multi-layer",
-	"layers" : {
-		"solid" : {
+	"layers": {
+		"solid": {
+			"render_type": "minecraft:solid",
 			"parent": "block/cube_all",
 			"textures": {
-				"0": "electrodynamics:model/coolantresavoir",
-				"particle": "electrodynamics:model/coolantresavoir"
+				"0": "electrodynamics:block/model/coolantresavoir",
+				"particle": "electrodynamics:block/model/coolantresavoir"
 			},
 			"elements": [
 				{
@@ -1533,17 +1534,17 @@
 							"texture": "#0"
 						}
 					}
-				
 				}
 			]
 		},
 		"translucent": {
+			"render_type": "minecraft:translucent",
 			"parent": "block/cube_all",
 			"textures": {
-				"0": "electrodynamics:model/coolantresavoir",
-				"particle": "electrodynamics:model/coolantresavoir"
+				"0": "electrodynamics:block/model/coolantresavoir",
+				"particle": "electrodynamics:block/model/coolantresavoir"
 			},
-			"elements" : [
+			"elements": [
 				{
 					"from": [
 						2,

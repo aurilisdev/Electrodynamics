@@ -1,9 +1,9 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.DeferredRegisters;
-import electrodynamics.common.tile.TileCombustionChamber;
+import electrodynamics.common.tile.electricitygrid.generators.TileCombustionChamber;
 import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
 import electrodynamics.prefab.inventory.container.slot.item.type.SlotFluid;
+import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,7 +18,7 @@ public class ContainerCombustionChamber extends GenericContainerBlockEntity<Tile
 	}
 
 	public ContainerCombustionChamber(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(DeferredRegisters.CONTAINER_COMBUSTION_CHAMBER.get(), id, playerinv, inventory, inventorydata);
+		super(ElectrodynamicsMenuTypes.CONTAINER_COMBUSTION_CHAMBER.get(), id, playerinv, inventory, inventorydata);
 	}
 
 	public ContainerCombustionChamber(MenuType<?> type, int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {

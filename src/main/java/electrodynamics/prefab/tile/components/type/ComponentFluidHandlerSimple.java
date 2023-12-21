@@ -1,190 +1,279 @@
 package electrodynamics.prefab.tile.components.type;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
+import org.jetbrains.annotations.NotNull;
+
+import electrodynamics.api.fluid.PropertyFluidTank;
+import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
-import net.minecraft.nbt.CompoundTag;
+import electrodynamics.prefab.tile.components.IComponentType;
+import electrodynamics.prefab.tile.components.utils.IComponentFluidHandler;
+import electrodynamics.prefab.utilities.BlockEntityUtils;
+import net.minecraft.core.Direction;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class ComponentFluidHandlerSimple extends AbstractFluidHandler<ComponentFluidHandlerSimple> {
+/**
+ * Extension of PropertyFluidTank implementing directional I/O and the Component system
+ * 
+ * This is a separate class because ComponentFluidHandlerMulti is does not have segregated input and output tanks. Instead it has a single tank that is used for both functions.
+ * 
+ * This class also has no concept of a RecipeType tied to it since recipes have segregated inputs and outputs.
+ * 
+ * @author skip999
+ *
+ */
+public class ComponentFluidHandlerSimple extends PropertyFluidTank implements IComponentFluidHandler {
 
 	@Nullable
-	private FluidTank fluidTank;
-	private List<Fluid> validFluids = new ArrayList<>();
+	public Direction[] inputDirections;
+	@Nullable
+	public Direction[] outputDirections;
+	@Nullable
+	private TagKey<Fluid>[] validFluidTags;
+	@Nullable
+	private Fluid[] validFluids;
 
-	public ComponentFluidHandlerSimple(GenericTile source) {
-		super(source);
-	}
+	private HashSet<Fluid> validatorFluids = new HashSet<>();
 
-	@Override
-	public void loadFromNBT(CompoundTag nbt) {
-		CompoundTag compound = nbt.getCompound("fluidtank");
-		int cap = compound.getInt("cap");
-		FluidStack stack = FluidStack.loadFluidStackFromNBT(compound);
-		FluidTank tank = new FluidTank(cap);
-		tank.setFluid(stack);
-		fluidTank = tank;
-	}
+	private LazyOptional<IFluidHandler>[] sidedOptionals = genArr(); // Down Up North South West East
 
-	@Override
-	public void saveToNBT(CompoundTag nbt) {
-		CompoundTag tag = new CompoundTag();
-		tag.putString("FluidName", fluidTank.getFluid().getRawFluid().getRegistryName().toString());
-		tag.putInt("Amount", fluidTank.getFluid().getAmount());
-		if (fluidTank.getFluid().getTag() != null) {
-			tag.put("Tag", fluidTank.getFluid().getTag());
+	private static LazyOptional<IFluidHandler>[] genArr() {
+
+		LazyOptional<IFluidHandler>[] arr = new LazyOptional[6];
+
+		for (int i = 0; i < 6; i++) {
+			arr[i] = LazyOptional.empty();
 		}
-		tag.putInt("cap", fluidTank.getCapacity());
-		nbt.put("fluidtank", tag);
+
+		return arr;
+
+	}
+
+	private LazyOptional<IFluidHandler> sidelessOptional = LazyOptional.empty();
+	private LazyOptional<IFluidHandler> inputOptional = LazyOptional.empty();
+	private LazyOptional<IFluidHandler> outputOptional = LazyOptional.empty();
+
+	private boolean isSided = false;
+
+	public ComponentFluidHandlerSimple(int capacity, Predicate<FluidStack> validator, GenericTile holder, String key) {
+		super(capacity, validator, holder, key);
+	}
+
+	public ComponentFluidHandlerSimple(int capacity, GenericTile holder, String key) {
+		super(capacity, holder, key);
+	}
+
+	protected ComponentFluidHandlerSimple(ComponentFluidHandlerSimple other) {
+		super(other);
+	}
+
+	public ComponentFluidHandlerSimple setInputDirections(Direction... directions) {
+		inputDirections = directions;
+		isSided = true;
+		return this;
+	}
+
+	public ComponentFluidHandlerSimple setOutputDirections(Direction... directions) {
+		outputDirections = directions;
+		isSided = true;
+		return this;
 	}
 
 	@Override
-	public int getTanks() {
-		return 1;
+	public ComponentFluidHandlerSimple setCapacity(int capacity) {
+		return (ComponentFluidHandlerSimple) super.setCapacity(capacity);
 	}
 
 	@Override
-	public FluidStack getFluidInTank(int tank) {
-		return fluidTank.getFluid();
+	public ComponentFluidHandlerSimple setValidator(Predicate<FluidStack> validator) {
+		return (ComponentFluidHandlerSimple) super.setValidator(validator);
+	}
+
+	public ComponentFluidHandlerSimple setValidFluids(Fluid... fluids) {
+		validFluids = fluids;
+		return this;
+	}
+
+	public ComponentFluidHandlerSimple setValidFluidTags(TagKey<Fluid>... fluids) {
+		validFluidTags = fluids;
+		return this;
 	}
 
 	@Override
-	public int getTankCapacity(int tank) {
-		return fluidTank.getCapacity();
-	}
-
-	@Override
-	public boolean isFluidValid(int tank, FluidStack stack) {
-		if (validFluids.contains(stack.getFluid())) {
-			return fluidTank.isFluidValid(stack);
+	public boolean equals(Object obj) {
+		if (obj instanceof ComponentFluidHandlerSimple tank) {
+			return tank.getFluid().equals(getFluid()) && tank.getCapacity() == getCapacity();
 		}
 		return false;
 	}
 
 	@Override
-	public FluidStack drain(int maxDrain, FluidAction action) {
-		return fluidTank.drain(maxDrain, action);
+	public IComponentType getType() {
+		return IComponentType.FluidHandler;
 	}
 
 	@Override
-	protected void addFluidTank(Fluid fluid, boolean isInput) {
-		if (fluidTank == null) {
-			fluidTank = new FluidTank(tankCapacity);
-			fluidTank.setFluid(new FluidStack(fluid, 0));
+	public void holder(GenericTile holder) {
+		this.holder = holder;
+	}
+
+	@Override
+	public GenericTile getHolder() {
+		return holder;
+	}
+
+	@Override
+	public void refreshIfUpdate(BlockState oldState, BlockState newState) {
+		if (isSided && oldState.hasProperty(GenericEntityBlock.FACING) && newState.hasProperty(GenericEntityBlock.FACING) && oldState.getValue(GenericEntityBlock.FACING) != newState.getValue(GenericEntityBlock.FACING)) {
+			defineOptionals(newState.getValue(GenericEntityBlock.FACING));
 		}
 	}
 
 	@Override
-	protected void setFluidInTank(FluidStack stack, int tank, boolean isInput) {
-		fluidTank.setFluid(stack);
-	}
-
-	@Override
-	public ComponentFluidHandlerSimple setManualFluids(int tankCount, boolean isInput, int capacity, Fluid... fluids) {
-		tankCapacity = capacity;
-		for (Fluid fluid : fluids) {
-			addValidFluid(fluid, isInput);
+	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
+		if (capability != CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return LazyOptional.empty();
 		}
-		if (fluidTank == null) {
-			fluidTank = new FluidTank(capacity);
+		if (!isSided) {
+			return sidelessOptional.cast();
 		}
-		return this;
-	}
 
-	@Override
-	public ComponentFluidHandlerSimple setInputTags(int count, int capacity, TagKey<Fluid>... tags) {
-		inTankCount = count;
-		inKeys = tags;
-		inCapacity = capacity;
-		return this;
-	}
-
-	@Override
-	// we only need the one so we can ignore this one
-	public ComponentFluidHandlerSimple setOutputTags(int count, int capacity, TagKey<Fluid>... tags) {
-		return this;
-	}
-
-	@Override
-	public FluidStack getFluidInTank(int tank, boolean isInput) {
-		return fluidTank.getFluid();
-	}
-
-	@Override
-	public FluidTank getTankFromFluid(Fluid fluid, boolean isInput) {
-		return fluidTank;
-	}
-
-	@Override
-	public FluidTank[] getInputTanks() {
-		return new FluidTank[] { fluidTank };
-	}
-
-	@Override
-	public FluidTank[] getOutputTanks() {
-		return new FluidTank[] { fluidTank };
-	}
-
-	@Override
-	public List<Fluid> getValidInputFluids() {
-		return validFluids;
-	}
-
-	@Override
-	public List<Fluid> getValidOutputFluids() {
-		return validFluids;
-	}
-
-	@Override
-	protected void addValidFluid(Fluid fluid, boolean isInput) {
-		if (!validFluids.contains(fluid)) {
-			validFluids.add(fluid);
+		if (side == null) {
+			return LazyOptional.empty();
 		}
+
+		return sidedOptionals[side.ordinal()].cast();
 	}
 
 	@Override
-	public int getInputTankCount() {
-		return getTanks();
+	public void refresh() {
+
+		defineOptionals(holder.getFacing());
+
 	}
 
-	@Override
-	public int getOutputTankCount() {
-		return getTanks();
-	}
+	private void defineOptionals(Direction facing) {
 
-	@Override
-	public void addFluidToTank(FluidStack fluid, boolean isInput) {
-		fluidTank.fill(fluid, FluidAction.EXECUTE);
-	}
+		sidedOptionals = new LazyOptional[6];
+		sidelessOptional = null;
 
-	@Override
-	public void drainFluidFromTank(FluidStack fluid, boolean isInput) {
-		fluidTank.drain(fluid, FluidAction.EXECUTE);
-	}
+		if (isSided) {
 
-	@Override
-	public void addFluids() {
-		if (inKeys != null) {
-			List<Fluid> inputFluidHolder = new ArrayList<>();
-			for (TagKey<Fluid> key : inKeys) {
-				inputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
+			if (inputOptional != null) {
+				inputOptional.invalidate();
 			}
-			setManualFluids(inTankCount, true, inCapacity, inputFluidHolder.toArray(new Fluid[inputFluidHolder.size()]));
-		}
-		if (outKeys != null) {
-			List<Fluid> outputFluidHolder = new ArrayList<>();
-			for (TagKey<Fluid> key : outKeys) {
-				outputFluidHolder.addAll(ForgeRegistries.FLUIDS.tags().getTag(key).stream().toList());
+			if (outputOptional != null) {
+				outputOptional.invalidate();
 			}
-			setManualFluids(outTankCount, false, outCapacity, outputFluidHolder.toArray(new Fluid[outputFluidHolder.size()]));
+
+			Arrays.fill(sidedOptionals, LazyOptional.empty());
+
+			// Input
+
+			if (inputDirections != null) {
+				inputOptional = LazyOptional.of(() -> new InputTank(this));
+
+				for (Direction dir : inputDirections) {
+					sidedOptionals[BlockEntityUtils.getRelativeSide(facing, dir).ordinal()] = inputOptional;
+				}
+			}
+
+			if (outputDirections != null) {
+				outputOptional = LazyOptional.of(() -> new OutputTank(this));
+
+				for (Direction dir : outputDirections) {
+					sidedOptionals[BlockEntityUtils.getRelativeSide(facing, dir).ordinal()] = outputOptional;
+				}
+			}
+
+		} else {
+
+			if (sidelessOptional != null) {
+				sidelessOptional.invalidate();
+			}
+
+			sidelessOptional = LazyOptional.of(() -> this);
+
+		}
+
+	}
+
+	@Override
+	public void onLoad() {
+		IComponentFluidHandler.super.onLoad();
+		if (validFluids != null) {
+			for (Fluid fluid : validFluids) {
+				validatorFluids.add(fluid);
+			}
+		}
+		if (validFluidTags != null) {
+			for (TagKey<Fluid> tag : validFluidTags) {
+				for (Fluid fluid : ForgeRegistries.FLUIDS.tags().getTag(tag).stream().toList()) {
+					validatorFluids.add(fluid);
+				}
+			}
+		}
+		if (!validatorFluids.isEmpty()) {
+			validator = fluidStack -> validatorFluids.contains(fluidStack.getFluid());
 		}
 	}
+
+	@Override
+	public PropertyFluidTank[] getInputTanks() {
+		return toArray();
+	}
+
+	@Override
+	public PropertyFluidTank[] getOutputTanks() {
+		return toArray();
+	}
+
+	public PropertyFluidTank[] toArray() {
+		return new PropertyFluidTank[] { this };
+	}
+
+	private class InputTank extends ComponentFluidHandlerSimple {
+
+		public InputTank(ComponentFluidHandlerSimple property) {
+			super(property);
+		}
+
+		@Override
+		public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
+			return FluidStack.EMPTY;
+		}
+
+		@Override
+		public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
+			return FluidStack.EMPTY;
+		}
+
+	}
+
+	private class OutputTank extends ComponentFluidHandlerSimple {
+
+		public OutputTank(ComponentFluidHandlerSimple property) {
+			super(property);
+		}
+
+		@Override
+		public int fill(FluidStack resource, FluidAction action) {
+			return 0;
+		}
+
+	}
+
 }

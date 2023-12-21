@@ -1,15 +1,20 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerChemicalMixer;
-import electrodynamics.common.tile.TileChemicalMixer;
-import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentFluid;
-import electrodynamics.prefab.screen.component.ScreenComponentInfo;
-import electrodynamics.prefab.screen.component.ScreenComponentProgress;
+import electrodynamics.common.tile.machines.TileChemicalMixer;
+import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;
+import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressTextures;
+import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentFluidGauge;
+import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentFluidGaugeInput;
+import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
+import electrodynamics.prefab.screen.component.types.wrapper.InventoryIOWrapper;
+import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
+import electrodynamics.prefab.screen.types.GenericMaterialScreen;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.generic.AbstractFluidHandler;
+import electrodynamics.prefab.tile.components.IComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -17,45 +22,47 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
-public class ScreenChemicalMixer extends GenericScreen<ContainerChemicalMixer> {
+public class ScreenChemicalMixer extends GenericMaterialScreen<ContainerChemicalMixer> {
 	public ScreenChemicalMixer(ContainerChemicalMixer container, Inventory playerInventory, Component title) {
 		super(container, playerInventory, title);
-		components.add(new ScreenComponentProgress(() -> {
+		addComponent(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			GenericTile furnace = container.getHostFromIntArray();
 			if (furnace != null) {
-				ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
-				if (processor.operatingTicks > 0) {
-					return Math.min(1.0, processor.operatingTicks / (processor.requiredTicks / 2.0));
+				ComponentProcessor processor = furnace.getComponent(IComponentType.Processor);
+				if (processor.operatingTicks.get() > 0) {
+					return Math.min(1.0, processor.operatingTicks.get() / (processor.requiredTicks.get() / 2.0));
 				}
 			}
 			return 0;
-		}, this, 42, 30));
-		components.add(new ScreenComponentProgress(() -> {
+		}, 42, 30));
+		addComponent(new ScreenComponentProgress(ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
 			GenericTile furnace = container.getHostFromIntArray();
 			if (furnace != null) {
-				ComponentProcessor processor = furnace.getComponent(ComponentType.Processor);
-				if (processor.operatingTicks > processor.requiredTicks / 2.0) {
-					return Math.min(1.0, (processor.operatingTicks - processor.requiredTicks / 2.0) / (processor.requiredTicks / 2.0));
+				ComponentProcessor processor = furnace.getComponent(IComponentType.Processor);
+				if (processor.operatingTicks.get() > processor.requiredTicks.get() / 2.0) {
+					return Math.min(1.0, (processor.operatingTicks.get() - processor.requiredTicks.get() / 2.0) / (processor.requiredTicks.get() / 2.0));
 				}
 			}
 			return 0;
-		}, this, 98, 30));
-		components.add(new ScreenComponentProgress(() -> 0, this, 42, 50).left());
-		components.add(new ScreenComponentFluid(() -> {
+		}, 98, 30));
+		addComponent(new ScreenComponentGeneric(ProgressTextures.ARROW_LEFT_OFF, 42, 50));
+		addComponent(new ScreenComponentFluidGaugeInput(() -> {
 			TileChemicalMixer boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return ((AbstractFluidHandler<?>) boiler.getComponent(ComponentType.FluidHandler)).getInputTanks()[0];
+				return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks()[0];
 			}
 			return null;
-		}, this, 21, 18));
-		components.add(new ScreenComponentFluid(() -> {
+		}, 21, 18));
+		addComponent(new ScreenComponentFluidGauge(() -> {
 			TileChemicalMixer boiler = container.getHostFromIntArray();
 			if (boiler != null) {
-				return ((AbstractFluidHandler<?>) boiler.getComponent(ComponentType.FluidHandler)).getOutputTanks()[0];
+				return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getOutputTanks()[0];
 			}
 			return null;
-		}, this, 127, 18));
-		components.add(new ScreenComponentElectricInfo(this, -ScreenComponentInfo.SIZE + 1, 2));
+		}, 127, 18));
+		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
+
+		new InventoryIOWrapper(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75, 82, 8, 72);
 	}
 
 }

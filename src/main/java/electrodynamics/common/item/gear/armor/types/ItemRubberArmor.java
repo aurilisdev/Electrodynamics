@@ -1,7 +1,7 @@
 package electrodynamics.common.item.gear.armor.types;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
@@ -51,7 +51,7 @@ public class ItemRubberArmor extends ArmorItem {
 
 		@Override
 		public Ingredient getRepairIngredient() {
-			return Ingredient.of(DeferredRegisters.ITEM_INSULATION.get());
+			return Ingredient.of(ElectrodynamicsItems.ITEM_INSULATION.get());
 		}
 
 		@Override

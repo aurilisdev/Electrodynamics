@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "electrodynamics:resourceblockhslasteel"
+    }
+  ],
+  "result": {
+    "item": "electrodynamics:ingothslasteel",
+    "count": 9
+  }
+}

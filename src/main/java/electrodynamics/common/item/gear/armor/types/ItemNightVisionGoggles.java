@@ -11,14 +11,14 @@ import electrodynamics.client.ClientRegister;
 import electrodynamics.client.render.model.armor.types.ModelNightVisionGoggles;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.prefab.item.ElectricItemProperties;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -26,9 +26,13 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickAction;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
@@ -65,8 +69,6 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 
 				return model;
 			}
-		});
-		consumer.accept(new IItemRenderProperties() {
 		});
 	}
 
@@ -120,26 +122,28 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, world, tooltip, flagIn);
-		tooltip.add(new TranslatableComponent("tooltip.item.electric.info").withStyle(ChatFormatting.GRAY).append(new TextComponent(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES))));
-		tooltip.add(new TranslatableComponent("tooltip.item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE) + " / " + ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE)).withStyle(ChatFormatting.RED));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
 		if (stack.hasTag() && stack.getTag().getBoolean(NBTUtils.ON)) {
-			tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
+			tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
 		} else {
-			tooltip.add(new TranslatableComponent("tooltip.nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(new TranslatableComponent("tooltip.nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
+			tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
 		}
+		IItemElectric.addBatteryTooltip(stack, world, tooltip);
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (allowdedIn(group)) {
-			ItemStack charged = new ItemStack(this);
-			IItemElectric.setEnergyStored(charged, properties.capacity);
-			items.add(charged);
-
-			ItemStack empty = new ItemStack(this);
-			IItemElectric.setEnergyStored(empty, 0);
-			items.add(empty);
+		if (!allowdedIn(group)) {
+			return;
 		}
+		ItemStack charged = new ItemStack(this);
+		IItemElectric.setEnergyStored(charged, properties.capacity);
+		items.add(charged);
+
+		ItemStack empty = new ItemStack(this);
+		IItemElectric.setEnergyStored(empty, 0);
+		items.add(empty);
 	}
 
 	@Override
@@ -149,7 +153,7 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		boolean isOn = stack.hasTag() ? stack.getTag().getBoolean(NBTUtils.ON) : false;
+		boolean isOn = stack.hasTag() && stack.getTag().getBoolean(NBTUtils.ON);
 		if (isOn) {
 			return ARMOR_TEXTURE_ON;
 		}
@@ -188,6 +192,22 @@ public class ItemNightVisionGoggles extends ArmorItem implements IItemElectric {
 		public float getKnockbackResistance() {
 			return 0.0F;
 		}
+
+	}
+
+	@Override
+	public Item getDefaultStorageBattery() {
+		return ElectrodynamicsItems.ITEM_BATTERY.get();
+	}
+
+	@Override
+	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+
+		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
+		}
+
+		return true;
 
 	}
 
