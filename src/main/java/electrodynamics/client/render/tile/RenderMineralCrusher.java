@@ -76,7 +76,7 @@ public class RenderMineralCrusher extends AbstractTileRenderer<TileMineralCrushe
 
 		}
 
-		renderItem(stack, ItemDisplayContext.GROUND, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, tileEntityIn.getLevel(), 0);
+		renderItem(stack, ItemDisplayContext.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, tileEntityIn.getLevel(), 0);
 
 		matrixStackIn.popPose();
 	}
