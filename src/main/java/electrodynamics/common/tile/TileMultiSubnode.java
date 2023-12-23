@@ -65,7 +65,7 @@ public class TileMultiSubnode extends GenericTile {
 		if (level.getBlockEntity(parentPos.get().toBlockPos()) instanceof IMultiblockParentTile node) {
 			return node.onSubnodeUse(player, handIn, hit, this);
 		}
-		return InteractionResult.FAIL;
+		return super.use(player, handIn, hit);
 	}
 
 	@Override
