@@ -30,11 +30,6 @@ public class BlockFluidPipe extends AbstractRefreshingConnectBlock {
 		this.pipe = pipe;
 		PIPESET.add(this);
 	}
-	
-	@Override
-	public TileEntity newBlockEntity(IBlockReader reader) {
-		return new TileFluidPipe();
-	}
 
 	@Override
 	public BlockState refreshConnections(BlockState otherState, TileEntity tile, BlockState state, Direction dir) {
@@ -57,6 +52,11 @@ public class BlockFluidPipe extends AbstractRefreshingConnectBlock {
 			return (IFluidPipe) tile;
 		}
 		return null;
+	}
+
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return new TileFluidPipe();
 	}
 
 }

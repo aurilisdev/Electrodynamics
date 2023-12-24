@@ -2,19 +2,16 @@ package electrodynamics.prefab.block;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.IWrenchable;
 import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
@@ -33,9 +30,8 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 
-public abstract class GenericEntityBlock extends Block implements ITileEntityProvider, IWrenchable {
+public abstract class GenericEntityBlock extends Block implements IWrenchable {
 	public static final DirectionProperty FACING = HorizontalBlock.FACING;
 
 	protected GenericEntityBlock(Properties properties) {
@@ -43,31 +39,8 @@ public abstract class GenericEntityBlock extends Block implements ITileEntityPro
 	}
 
 	@Override
-	public abstract TileEntity newBlockEntity(IBlockReader reader);
-
-	@Override
 	public BlockRenderType getRenderShape(BlockState pState) {
 		return BlockRenderType.MODEL;
-	}
-
-	@Override
-	public void tick(BlockState state, ServerWorld level, BlockPos pos, Random rand) {
-		TileEntity entity = level.getBlockEntity(pos);
-
-		if (entity instanceof GenericTile) {
-			GenericTile generic = (GenericTile) entity;
-
-			if (generic.hasComponent(IComponentType.Tickable)) {
-				ComponentTickable tickable = generic.getComponent(IComponentType.Tickable);
-				tickable.performTick(level);
-			}
-
-		}
-	}
-
-	@Override
-	public void randomTick(BlockState state, ServerWorld level, BlockPos pos, Random random) {
-
 	}
 
 	@Override
@@ -130,7 +103,7 @@ public abstract class GenericEntityBlock extends Block implements ITileEntityPro
 		TileEntity entity = level.getBlockEntity(pos);
 		if (entity instanceof GenericTile) {
 			GenericTile generic = (GenericTile) entity;
-			if (newState.isAir() || !newState.is(state.getBlock())) {
+			if (newState.isAir(level, pos) || !newState.is(state.getBlock())) {
 				generic.onBlockDestroyed();
 			} else {
 				generic.onBlockStateUpdate(state, newState);
@@ -199,7 +172,7 @@ public abstract class GenericEntityBlock extends Block implements ITileEntityPro
 			return generic.use(player, handIn, hit);
 		}
 
-		return ActionResultType.FAIL;
+		return super.use(state, level, pos, player, handIn, hit);
 	}
 
 	@Override
@@ -231,5 +204,13 @@ public abstract class GenericEntityBlock extends Block implements ITileEntityPro
 			generic.onEntityInside(state, level, pos, entity);
 		}
 	}
+	
+	@Override
+	public boolean hasTileEntity(BlockState state) {
+		return true;
+	}
+	
+	@Override
+	public abstract TileEntity createTileEntity(BlockState state, IBlockReader world);
 
 }

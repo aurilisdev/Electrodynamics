@@ -77,4 +77,5 @@ public class RenderMetalRod extends EntityRenderer<EntityMetalRod> {
 		}
 
 	}
+
 }

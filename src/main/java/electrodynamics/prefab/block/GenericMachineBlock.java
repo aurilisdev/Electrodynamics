@@ -35,11 +35,6 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 		}
 		return super.getShape(state, level, pos, context);
 	}
-
-	@Override
-	public TileEntity newBlockEntity(IBlockReader reader) {
-		return blockEntitySupplier.create(reader);
-	}
 	
 	@Override
 	public float getShadeBrightness(BlockState pState, IBlockReader pLevel, BlockPos pPos) {
@@ -55,6 +50,11 @@ public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 	protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(FACING);
+	}
+
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return blockEntitySupplier.create(world);
 	}
 
 }

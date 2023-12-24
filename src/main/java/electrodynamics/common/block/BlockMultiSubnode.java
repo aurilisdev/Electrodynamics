@@ -74,11 +74,6 @@ public class BlockMultiSubnode extends GenericEntityBlock implements IMultiblock
 	}
 
 	@Override
-	public TileEntity newBlockEntity(IBlockReader reader) {
-		return new TileMultiSubnode();
-	}
-
-	@Override
 	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		TileEntity entity = level.getBlockEntity(pos);
 		if (newState.isAir(level, pos) && entity instanceof GenericTile) {
@@ -96,5 +91,10 @@ public class BlockMultiSubnode extends GenericEntityBlock implements IMultiblock
 			GenericTile generic = (GenericTile) entity;
 			generic.onPlace(oldState, isMoving);
 		}
+	}
+
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return new TileMultiSubnode();
 	}
 }

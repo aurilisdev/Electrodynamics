@@ -77,7 +77,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 		ItemStack stack = player.getItemInHand(hand);
 
-		if (stack.isEmpty() || state.isAir()) {
+		if (stack.isEmpty() || state.isAir(level, pos)) {
 			return ActionResultType.FAIL;
 		}
 
@@ -300,11 +300,6 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 
 		});
 	}
-	
-	@Override
-	public TileEntity newBlockEntity(IBlockReader reader) {
-		return new TileWire();
-	}
 
 	@Override
 	public BlockState refreshConnections(BlockState otherState, TileEntity tile, BlockState state, Direction dir) {
@@ -331,6 +326,11 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 			return (IConductor) tile;
 		}
 		return null;
+	}
+
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return new TileWire();
 	}
 
 }

@@ -55,8 +55,6 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 	private AbstractFluidGaugeObject[] fluidInputWrappers = new AbstractFluidGaugeObject[0];
 	private AbstractFluidGaugeObject[] fluidOutputWrappers = new AbstractFluidGaugeObject[0];
 
-	private int index = 0;
-
 	public AbstractRecipeCategory(IGuiHelper guiHelper, ITextComponent title, ItemStack inputMachine, BackgroundObject wrapper, RecipeType<T> recipeType, int animationTime) {
 
 		this.title = title;
@@ -121,10 +119,12 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 	@Override
 	public void setRecipe(IRecipeLayout builder, T recipe, IIngredients focuses) {
 
-		setItemInputs(builder, focuses);
-		setFluidInputs(getFluidInputs(recipe), builder, focuses);
-		setItemOutputs(getItemOutputs(recipe).size(), builder, focuses);
-		setFluidOutputs(getFluidOutputs(recipe), builder, focuses);
+		int index = 0;
+		
+		index = setItemInputs(index, builder, focuses);
+		index = setFluidInputs(index, getFluidInputs(recipe), builder, focuses);
+		index = setItemOutputs(index, getItemOutputs(recipe).size(), builder, focuses);
+		index = setFluidOutputs(index, getFluidOutputs(recipe), builder, focuses);
 	}
 
 	@Override
@@ -243,7 +243,7 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 
 	}
 
-	public void setItemInputs(IRecipeLayout builder, IIngredients ingredients) {
+	public int setItemInputs(int index, IRecipeLayout builder, IIngredients ingredients) {
 		SlotDataWrapper wrapper;
 
 		IGuiItemStackGroup group = builder.getItemStacks();
@@ -254,9 +254,11 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 			group.init(index, wrapper.input, wrapper.x, wrapper.y);
 			index++;
 		}
+		
+		return index;
 	}
 
-	public void setItemOutputs(int outputSize, IRecipeLayout builder, IIngredients ingredients) {
+	public int setItemOutputs(int index, int outputSize, IRecipeLayout builder, IIngredients ingredients) {
 		SlotDataWrapper wrapper;
 
 		IGuiItemStackGroup group = builder.getItemStacks();
@@ -271,9 +273,11 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 		}
 
 		group.set(ingredients);
+		
+		return index;
 	}
 
-	public void setFluidInputs(List<List<FluidStack>> inputs, IRecipeLayout builder, IIngredients ingredients) {
+	public int setFluidInputs(int index, List<List<FluidStack>> inputs, IRecipeLayout builder, IIngredients ingredients) {
 		AbstractFluidGaugeObject wrapper;
 
 		IGuiFluidStackGroup group = builder.getFluidStacks();
@@ -298,10 +302,12 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 			group.init(index, true, wrapper.getFluidXPos(), wrapper.getFluidYPos() - height, wrapper.getFluidTextWidth(), height, stack.getAmount(), true, null);
 			index++;
 		}
+		
+		return index;
 
 	}
 
-	public void setFluidOutputs(List<FluidStack> outputs, IRecipeLayout builder, IIngredients ingredients) {
+	public int setFluidOutputs(int index, List<FluidStack> outputs, IRecipeLayout builder, IIngredients ingredients) {
 		AbstractFluidGaugeObject wrapper;
 
 		IGuiFluidStackGroup group = builder.getFluidStacks();
@@ -328,6 +334,8 @@ public abstract class AbstractRecipeCategory<T> implements IRecipeCategory<T> {
 		}
 
 		group.set(ingredients);
+		
+		return index;
 	}
 
 	public void drawStatic(MatrixStack stack) {

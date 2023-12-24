@@ -143,19 +143,6 @@ public class ElectrodynamicsTags {
 		public static final IOptionalNamedTag<Item> STORAGE_BLOCK_TITANIUMCARBIDE = forgeTag("storage_blocks/titaniumcarbide");
 		public static final IOptionalNamedTag<Item> STORAGE_BLOCK_VANADIUMSTEEL = forgeTag("storage_blocks/vanadiumsteel");
 
-		public static final IOptionalNamedTag<Item> BLOCK_RAW_ORE_CHROMIUM = forgeTag("storage_blocks/rawchromium");
-		public static final IOptionalNamedTag<Item> BLOCK_RAW_ORE_FLUORITE = forgeTag("storage_blocks/rawfluorite");
-		public static final IOptionalNamedTag<Item> BLOCK_RAW_ORE_LEAD = forgeTag("storage_blocks/rawlead");
-		public static final IOptionalNamedTag<Item> BLOCK_RAW_ORE_LEPIDOLITE = forgeTag("storage_blocks/rawlepidolite");
-		public static final IOptionalNamedTag<Item> BLOCK_RAW_ORE_SILVER = forgeTag("storage_blocks/rawsilver");
-		public static final IOptionalNamedTag<Item> BLOCK_RAW_ORE_THORIUM = forgeTag("storage_blocks/rawthorium");
-		public static final IOptionalNamedTag<Item> BLOCK_RAW_ORE_TIN = forgeTag("storage_blocks/rawtin");
-		public static final IOptionalNamedTag<Item> BLOCK_RAW_ORE_TITANIUM = forgeTag("storage_blocks/rawtitanium");
-		public static final IOptionalNamedTag<Item> BLOCK_RAW_ORE_URANIUM = forgeTag("storage_blocks/rawuranium");
-		public static final IOptionalNamedTag<Item> BLOCK_RAW_ORE_VANADIUM = forgeTag("storage_blocks/rawvanadinite");
-
-		public static final IOptionalNamedTag<Item> CONCRETES = forgeTag("hardened_blocks/concretes");
-
 		public static final IOptionalNamedTag<Item> COAL_COKE = forgeTag("coal_coke");
 		public static final IOptionalNamedTag<Item> PLASTIC = forgeTag("plastic");
 		public static final IOptionalNamedTag<Item> SLAG = forgeTag("slag");

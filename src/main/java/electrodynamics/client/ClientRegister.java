@@ -57,9 +57,11 @@ import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsEntities;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
@@ -155,9 +157,15 @@ public class ClientRegister {
 	public static void setup() {
 
 		ClientEvents.init();
+		
+		Minecraft.getInstance().getEntityRenderDispatcher().register(null, null);
 
-		RenderingRegistry.registerEntityRenderingHandler(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
-		RenderingRegistry.registerEntityRenderingHandler(ElectrodynamicsEntities.ENTITY_METALROD.get(), RenderMetalRod::new);
+		EntityRendererManager manager = Minecraft.getInstance().getEntityRenderDispatcher();
+		
+		manager.register(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), new RenderEnergyBlast(manager));
+		manager.register(ElectrodynamicsEntities.ENTITY_METALROD.get(), new RenderMetalRod(manager));
+		//RenderingRegistry.registerEntityRenderingHandler(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
+		//RenderingRegistry.registerEntityRenderingHandler(ElectrodynamicsEntities.ENTITY_METALROD.get(), RenderMetalRod::new);
 
 		ClientRegistry.bindTileEntityRenderer(ElectrodynamicsBlockTypes.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
 		ClientRegistry.bindTileEntityRenderer(ElectrodynamicsBlockTypes.TILE_BATTERYBOX.get(), RenderBatteryBox::new);

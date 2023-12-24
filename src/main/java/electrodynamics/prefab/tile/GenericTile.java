@@ -20,6 +20,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.stats.Stats;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.ActionResultType;
@@ -43,7 +44,7 @@ import java.util.UUID;
 
 import javax.annotation.Nonnull;
 
-public class GenericTile extends TileEntity implements INameable, IPropertyHolderTile {
+public class GenericTile extends TileEntity implements INameable, IPropertyHolderTile, ITickableTileEntity {
 	private final IComponent[] components = new IComponent[IComponentType.values().length];
 	private final ComponentProcessor[] processors = new ComponentProcessor[5];
 	private final PropertyManager propertyManager = new PropertyManager(this);
@@ -306,7 +307,7 @@ public class GenericTile extends TileEntity implements INameable, IPropertyHolde
 
 		ItemStack stack = player.getItemInHand(handIn);
 		if (stack.getItem() instanceof ItemUpgrade && hasComponent(IComponentType.Inventory)) {
-			
+
 			ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
 
 			ComponentInventory inv = getComponent(IComponentType.Inventory);
@@ -339,16 +340,22 @@ public class GenericTile extends TileEntity implements INameable, IPropertyHolde
 			}
 
 		} else if (!(stack.getItem() instanceof IWrenchItem)) {
-			if (!level.isClientSide()) {
-				if (hasComponent(IComponentType.ContainerProvider)) {
+
+			if (hasComponent(IComponentType.ContainerProvider)) {
+
+				if (!level.isClientSide()) {
+
 					player.openMenu(getComponent(IComponentType.ContainerProvider));
+
+					player.awardStat(Stats.INTERACT_WITH_FURNACE);
 				}
-				player.awardStat(Stats.INTERACT_WITH_FURNACE);
+
+				return ActionResultType.CONSUME;
+
 			}
 
-			return ActionResultType.CONSUME;
 		}
-		return ActionResultType.FAIL;
+		return ActionResultType.PASS;
 	}
 
 	public void onBlockDestroyed() {
@@ -421,6 +428,14 @@ public class GenericTile extends TileEntity implements INameable, IPropertyHolde
 			if (component != null) {
 				component.refreshIfUpdate(oldState, newState);
 			}
+		}
+	}
+
+	@Override
+	public void tick() {
+		if (hasComponent(IComponentType.Tickable)) {
+			ComponentTickable tickable = getComponent(IComponentType.Tickable);
+			tickable.performTick(level);
 		}
 	}
 

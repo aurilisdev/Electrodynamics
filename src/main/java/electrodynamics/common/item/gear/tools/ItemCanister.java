@@ -102,8 +102,8 @@ public class ItemCanister extends Item {
 	public double getDurabilityForDisplay(ItemStack stack) {
 		return (int) Math.round(stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> {
 			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
-			return 13.0 - 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
-		}).orElse(13.0));
+			return 1.0 - (double) cap.getFluidInTank(0).getAmount() / (double) cap.getTankCapacity(0);
+		}).orElse(1.0));
 	}
 
 	@Override

@@ -130,11 +130,9 @@ public class ComponentPacketHandler implements IComponent {
 					if (world instanceof ServerWorld) {
 						ServerWorld level = (ServerWorld) world;
 						Stream<ServerPlayerEntity> players = level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false);
-						if (!players.findAny().isPresent()) {
-							PacketSendUpdatePropertiesClient packet = new PacketSendUpdatePropertiesClient(holder);
-							players.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
-							holder.getPropertyManager().clean();
-						}
+						PacketSendUpdatePropertiesClient packet = new PacketSendUpdatePropertiesClient(holder);
+						players.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+						holder.getPropertyManager().clean();
 					}
 				}
 			}
