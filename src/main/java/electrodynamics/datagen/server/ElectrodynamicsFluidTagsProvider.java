@@ -6,6 +6,7 @@ import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.FluidTagsProvider;
+import net.minecraft.fluid.Fluids;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class ElectrodynamicsFluidTagsProvider extends FluidTagsProvider {
@@ -24,6 +25,8 @@ public class ElectrodynamicsFluidTagsProvider extends FluidTagsProvider {
 		for (SubtypeSulfateFluid sulfate : SubtypeSulfateFluid.values()) {
 			tag(sulfate.tag).add(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(sulfate).get());
 		}
+		
+		tag(ElectrodynamicsTags.Fluids.EMPTY).add(Fluids.EMPTY);
 
 	}
 

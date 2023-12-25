@@ -7,12 +7,11 @@ import electrodynamics.registers.ElectrodynamicsEntities;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -46,15 +45,15 @@ public class EntityMetalRod extends EntityCustomProjectile {
 	}
 
 	@Override
-	protected void onHitBlock(BlockRayTraceResult p_230299_1_) {
-		BlockState state = level.getBlockState(p_230299_1_.getBlockPos());
-		if (!ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
+	protected void onHitBlock(BlockRayTraceResult hit) {
+		BlockState state = level.getBlockState(hit.getBlockPos());
+		if (!state.isAir(level, hit.getBlockPos())) {
 			if (!level.isClientSide) {
 				// Hardness of obsidian
-				if (state.getDestroySpeed(level, p_230299_1_.getBlockPos()) < 50f && !ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.BEDROCK))) {
-					level.removeBlock(p_230299_1_.getBlockPos(), false);
+				if (state.getDestroySpeed(level, hit.getBlockPos()) < 50f && !state.is(Blocks.BEDROCK)) {
+					level.removeBlock(hit.getBlockPos(), false);
 				}
-				level.playSound(null, p_230299_1_.getBlockPos(), ElectrodynamicsSounds.SOUND_RODIMPACTINGGROUND.get(), SoundCategory.BLOCKS, 1f, 1f);
+				level.playSound(null, hit.getBlockPos(), ElectrodynamicsSounds.SOUND_RODIMPACTINGGROUND.get(), SoundCategory.BLOCKS, 1f, 1f);
 			}
 			remove();
 		}

@@ -195,17 +195,11 @@ public class FluidIngredient extends Ingredient {
 
 	public List<FluidStack> getMatchingFluids() {
 		if (fluidStacks.isEmpty() && tag != null) {
-			ForgeRegistries.FLUIDS.forEach(fluid -> {
-				if (fluid.is(tag)) {
-					fluidStacks.add(new FluidStack(fluid, amount));
-				}
-			});
+			FluidTags.getAllTags().getTag(tag.getName()).getValues().forEach(fluid -> fluidStacks.add(new FluidStack(fluid, amount)));
 
-			// ForgeRegistries.FLUIDS.tags().getTag(tag).forEach(h -> {
-			// fluidStacks.add(new FluidStack(h, amount));
-			// });
 		}
 		return fluidStacks.isEmpty() ? EMPTY_FLUID_LIST : fluidStacks;
+
 	}
 
 	public FluidStack getFluidStack() {

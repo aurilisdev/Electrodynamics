@@ -37,6 +37,7 @@ import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.Tags;
 
 public class BlockMachine extends GenericMachineBlock implements IMultiblockParentBlock {
 
@@ -77,7 +78,6 @@ public class BlockMachine extends GenericMachineBlock implements IMultiblockPare
 		if (machine.litBrightness > 0) {
 			registerDefaultState(stateDefinition.any().setValue(ON, false));
 		}
-
 	}
 
 	@Override

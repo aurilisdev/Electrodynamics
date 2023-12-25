@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gson.JsonObject;
 
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
+import electrodynamics.common.tags.ElectrodynamicsTags;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tags.FluidTags;
@@ -18,7 +19,7 @@ public class CombustionFuelSource {
 	public static final String USAGE_AMOUNT = "usage_per_burn";
 	public static final String POWER_MULTIPLIER = "power_multiplier";
 
-	public static final CombustionFuelSource EMPTY = new CombustionFuelSource(FluidTags.createOptional(new ResourceLocation("air")), 0, 0);
+	public static final CombustionFuelSource EMPTY = new CombustionFuelSource(ElectrodynamicsTags.Fluids.EMPTY, 0, 0);
 
 	private FluidIngredient fuel;
 	private double powerMultiplier;

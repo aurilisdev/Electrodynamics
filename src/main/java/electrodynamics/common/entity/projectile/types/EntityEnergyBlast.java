@@ -31,7 +31,7 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 	@Override
 	protected void onHitBlock(BlockRayTraceResult hit) {
 		BlockState state = level.getBlockState(hit.getBlockPos());
-		if (!ItemStack.isSame(new ItemStack(state.getBlock().asItem()), new ItemStack(Items.AIR))) {
+		if (!state.isAir(level, hit.getBlockPos())) {
 			if (!level.isClientSide) {
 				level.explode(null, hit.getBlockPos().getX(), hit.getBlockPos().getY(), hit.getBlockPos().getZ(), 4f / (tickCount / 40.0f + 1), true, Mode.DESTROY);
 			}
