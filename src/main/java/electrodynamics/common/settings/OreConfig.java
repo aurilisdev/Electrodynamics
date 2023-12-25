@@ -15,6 +15,8 @@ public class OreConfig {
 	@BooleanValue(def = true)
 	public static boolean SPAWN_CHROMIUM_ORE = true;
 	@BooleanValue(def = true)
+	public static boolean SPAWN_COPPER_ORE = true;
+	@BooleanValue(def = true)
 	public static boolean SPAWN_FLUORITE_ORE = true;
 	@BooleanValue(def = true)
 	public static boolean SPAWN_LEAD_ORE = true;
