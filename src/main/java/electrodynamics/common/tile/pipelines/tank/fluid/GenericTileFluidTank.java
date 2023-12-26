@@ -24,7 +24,7 @@ public class GenericTileFluidTank extends GenericFluidTile {
 		super(tile);
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentFluidHandlerSimple(capacity, this, "").setInputDirections(Direction.UP).setOutputDirections(Direction.DOWN));
+		addComponent(new ComponentFluidHandlerSimple(capacity, this, "").setInputDirections(Direction.EAST, Direction.UP, Direction.NORTH, Direction.SOUTH).setOutputDirections(Direction.DOWN, Direction.WEST));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1).bucketOutputs(1)).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> new ContainerFluidTankGeneric(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
