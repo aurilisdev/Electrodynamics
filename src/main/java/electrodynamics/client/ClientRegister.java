@@ -62,6 +62,7 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
+import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
@@ -72,7 +73,6 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 
@@ -85,7 +85,7 @@ public class ClientRegister {
 
 	public static HashMap<ResourceLocation, TextureAtlasSprite> CACHED_TEXTUREATLASSPRITES = new HashMap<>();
 	// for registration purposes only!
-	private static List<ResourceLocation> customTextures = new ArrayList<>();
+	private static final List<ResourceLocation> CUSTOM_TEXTURES = new ArrayList<>();
 
 	public static final ResourceLocation ON = new ResourceLocation("on");
 
@@ -154,18 +154,23 @@ public class ClientRegister {
 	public static final ResourceLocation TEXTURE_RODSTAINLESSSTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodstainlesssteel.png");
 	public static final ResourceLocation TEXTURE_RODHSLASTEEL = new ResourceLocation(References.ID + ":textures/entity/projectile/rodhslasteel.png");
 
+	// Custom Textures
+	public static final ResourceLocation TEXTURE_WHITE = new ResourceLocation("forge", "white");
+
+	// Custom Textures
+
 	public static void setup() {
 
 		ClientEvents.init();
-		
+
 		Minecraft.getInstance().getEntityRenderDispatcher().register(null, null);
 
 		EntityRendererManager manager = Minecraft.getInstance().getEntityRenderDispatcher();
-		
+
 		manager.register(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), new RenderEnergyBlast(manager));
 		manager.register(ElectrodynamicsEntities.ENTITY_METALROD.get(), new RenderMetalRod(manager));
-		//RenderingRegistry.registerEntityRenderingHandler(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
-		//RenderingRegistry.registerEntityRenderingHandler(ElectrodynamicsEntities.ENTITY_METALROD.get(), RenderMetalRod::new);
+		// RenderingRegistry.registerEntityRenderingHandler(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
+		// RenderingRegistry.registerEntityRenderingHandler(ElectrodynamicsEntities.ENTITY_METALROD.get(), RenderMetalRod::new);
 
 		ClientRegistry.bindTileEntityRenderer(ElectrodynamicsBlockTypes.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
 		ClientRegistry.bindTileEntityRenderer(ElectrodynamicsBlockTypes.TILE_BATTERYBOX.get(), RenderBatteryBox::new);
@@ -237,6 +242,27 @@ public class ClientRegister {
 
 	public static boolean shouldMultilayerRender(RenderType type) {
 		return type == RenderType.translucent() || type == RenderType.solid();
+	}
+
+	static {
+		CUSTOM_TEXTURES.add(ClientRegister.TEXTURE_WHITE);
+	}
+	
+	@SubscribeEvent
+	public static void addCustomTextureAtlases(TextureStitchEvent.Pre event) {
+		if (event.getMap().location().equals(AtlasTexture.LOCATION_BLOCKS)) {
+			CUSTOM_TEXTURES.forEach(h -> event.addSprite(h));
+		}
+	}
+
+
+	@SubscribeEvent
+	public static void cacheCustomTextureAtlases(TextureStitchEvent.Post event) {
+		if (event.getMap().location().equals(AtlasTexture.LOCATION_BLOCKS)) {
+			for (ResourceLocation loc : CUSTOM_TEXTURES) {
+				ClientRegister.CACHED_TEXTUREATLASSPRITES.put(loc, event.getMap().getSprite(loc));
+			}
+		}
 	}
 
 }
