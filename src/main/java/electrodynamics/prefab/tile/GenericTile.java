@@ -172,7 +172,9 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 			}
 		}
 		/*
-		 * if (hasComponent(ComponentType.PacketHandler)) { this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket(); this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
+		 * if (hasComponent(ComponentType.PacketHandler)) {
+		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
+		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
 		 */
 	}
 
@@ -344,16 +346,21 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 			}
 
 		} else if (!(stack.getItem() instanceof IWrenchItem)) {
-			if (!level.isClientSide()) {
-				if (hasComponent(IComponentType.ContainerProvider)) {
-					player.openMenu(getComponent(IComponentType.ContainerProvider));
-				}
-				player.awardStat(Stats.INTERACT_WITH_FURNACE);
-			}
+			if (hasComponent(IComponentType.ContainerProvider)) {
 
-			return InteractionResult.CONSUME;
+				if (!level.isClientSide) {
+
+					player.openMenu(getComponent(IComponentType.ContainerProvider));
+
+					player.awardStat(Stats.INTERACT_WITH_FURNACE);
+
+				}
+
+				return InteractionResult.CONSUME;
+
+			}
 		}
-		return InteractionResult.FAIL;
+		return InteractionResult.PASS;
 	}
 
 	public void onBlockDestroyed() {
