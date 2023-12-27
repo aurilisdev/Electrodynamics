@@ -175,7 +175,7 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 			return generic.use(player, handIn, hit);
 		}
 
-		return InteractionResult.FAIL;
+		return super.use(state, worldIn, pos, player, handIn, hit);
 	}
 
 	@Override

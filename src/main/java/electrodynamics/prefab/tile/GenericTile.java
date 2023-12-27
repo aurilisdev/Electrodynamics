@@ -336,16 +336,22 @@ public class GenericTile extends BlockEntity implements Nameable, IPropertyHolde
 			}
 
 		} else if (!(stack.getItem() instanceof IWrenchItem)) {
-			if (!level.isClientSide()) {
-				if (hasComponent(IComponentType.ContainerProvider)) {
+			
+			if(hasComponent(IComponentType.ContainerProvider)) {
+				
+				if(!level.isClientSide) {
+					
 					player.openMenu(getComponent(IComponentType.ContainerProvider));
+					
+					player.awardStat(Stats.INTERACT_WITH_FURNACE);
+					
 				}
-				player.awardStat(Stats.INTERACT_WITH_FURNACE);
+				
+				return InteractionResult.CONSUME;
 			}
-
-			return InteractionResult.CONSUME;
+			
 		}
-		return InteractionResult.FAIL;
+		return InteractionResult.PASS;
 	}
 
 	public void onBlockDestroyed() {
