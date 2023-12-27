@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "name": "wireceramicinsulatedcopper",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "electrodynamics:wireceramicinsulatedcopper"
+        }
+      ]
+    }
+  ]
+}

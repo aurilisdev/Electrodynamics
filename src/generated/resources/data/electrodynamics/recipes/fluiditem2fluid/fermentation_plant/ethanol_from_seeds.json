@@ -1,0 +1,24 @@
+{
+  "type": "electrodynamics:fermentation_plant_recipe",
+  "ticks": 2000,
+  "usagepertick": 20.0,
+  "iteminputs": {
+    "count": 1,
+    "0": {
+      "tag": "forge:seeds",
+      "count": 9
+    }
+  },
+  "fluidinputs": {
+    "count": 1,
+    "0": {
+      "tag": "minecraft:water",
+      "amount": 1000
+    }
+  },
+  "output": {
+    "fluid": "electrodynamics:fluidethanol",
+    "amount": 100
+  },
+  "experience": 0.0
+}

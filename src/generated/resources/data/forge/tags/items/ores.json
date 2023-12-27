@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:ores/copper",
+    "#forge:ores/tin",
+    "#forge:ores/silver",
+    "#forge:ores/lead",
+    "#forge:ores/uranium",
+    "#forge:ores/thorium",
+    "#forge:ores/monazite",
+    "#forge:ores/vanadium",
+    "#forge:ores/sulfur",
+    "#forge:ores/saltpeter",
+    "#forge:ores/aluminum",
+    "#forge:ores/chromium",
+    "#forge:ores/titanium",
+    "#forge:ores/salt",
+    "#forge:ores/lithium",
+    "#forge:ores/molybdenum",
+    "#forge:ores/fluorite",
+    "#forge:ores/potassiumchloride"
+  ]
+}

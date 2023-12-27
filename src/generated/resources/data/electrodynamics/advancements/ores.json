@@ -1,0 +1,39 @@
+{
+  "parent": "electrodynamics:root",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:oretin"
+    },
+    "title": {
+      "color": "gray",
+      "translate": "advancement.electrodynamics.ores.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.ores.desc"
+    },
+    "frame": "task",
+    "show_toast": false,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 10
+  },
+  "criteria": {
+    "HasWoodenPickaxe": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:wooden_pickaxe"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasWoodenPickaxe"
+    ]
+  ]
+}

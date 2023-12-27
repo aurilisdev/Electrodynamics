@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "DMP",
+    " RB"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "R": {
+      "tag": "forge:rods/steel"
+    },
+    "B": {
+      "item": "electrodynamics:battery"
+    },
+    "D": {
+      "item": "electrodynamics:drillheadtitanium"
+    },
+    "M": {
+      "item": "electrodynamics:motor"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:electricdrill"
+  }
+}

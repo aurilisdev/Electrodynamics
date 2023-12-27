@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "electrodynamics:resourceblocksteel"
+    }
+  ],
+  "result": {
+    "item": "electrodynamics:ingotsteel",
+    "count": 9
+  }
+}

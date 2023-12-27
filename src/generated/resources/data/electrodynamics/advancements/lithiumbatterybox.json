@@ -1,0 +1,39 @@
+{
+  "parent": "electrodynamics:batterybox",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:lithiumbatterybox"
+    },
+    "title": {
+      "color": "blue",
+      "translate": "advancement.electrodynamics.lithiumbatterybox.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.lithiumbatterybox.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 70
+  },
+  "criteria": {
+    "HasBatteryBox": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "electrodynamics:lithiumbatterybox"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasBatteryBox"
+    ]
+  ]
+}

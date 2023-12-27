@@ -1,0 +1,39 @@
+{
+  "parent": "electrodynamics:doubleelectricfurnace",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:electricfurnacetriple"
+    },
+    "title": {
+      "color": "red",
+      "translate": "advancement.electrodynamics.tripleelectricfurnace.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.tripleelectricfurnace.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 100
+  },
+  "criteria": {
+    "HasFurnace": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "electrodynamics:electricfurnacetriple"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasFurnace"
+    ]
+  ]
+}

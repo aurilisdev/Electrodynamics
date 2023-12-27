@@ -1,324 +1,442 @@
 package electrodynamics.prefab.tile;
 
-import java.util.Set;
-
-import javax.annotation.Nullable;
-
+import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.References;
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
-import electrodynamics.common.recipe.ElectrodynamicsRecipe;
-import electrodynamics.common.recipe.categories.do2o.DO2ORecipe;
-import electrodynamics.common.recipe.categories.fluid2item.Fluid2ItemRecipe;
-import electrodynamics.common.recipe.categories.fluid3items2item.Fluid3Items2ItemRecipe;
-import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
-import electrodynamics.common.recipe.categories.fluiditem2item.FluidItem2ItemRecipe;
-import electrodynamics.common.recipe.categories.o2o.O2ORecipe;
-import electrodynamics.prefab.tile.components.Component;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentName;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
-import electrodynamics.prefab.utilities.Scheduler;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.common.item.ItemUpgrade;
+import electrodynamics.prefab.block.GenericEntityBlock;
+import electrodynamics.prefab.properties.IPropertyType.TagReader;
+import electrodynamics.prefab.properties.IPropertyType.TagWriter;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyManager;
+import electrodynamics.prefab.tile.components.IComponent;
+import electrodynamics.prefab.tile.components.IComponentType;
+import electrodynamics.prefab.tile.components.type.*;
+import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.prefab.utilities.ItemUtils;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.item.crafting.IRecipeType;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.stats.Stats;
+import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.Hand;
 import net.minecraft.util.INameable;
 import net.minecraft.util.IntArray;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import net.minecraftforge.items.CapabilityItemHandler;
 
-public class GenericTile extends TileEntity implements INameable {
-    private Component[] components = new Component[ComponentType.values().length];
-    private ComponentProcessor[] processors = new ComponentProcessor[5];
+import java.util.UUID;
 
-    public boolean hasComponent(ComponentType type) {
-	return components[type.ordinal()] != null;
-    }
+import javax.annotation.Nonnull;
 
-    public <T extends Component> T getComponent(ComponentType type) {
-	return !hasComponent(type) ? null : (T) components[type.ordinal()];
-    }
+public class GenericTile extends TileEntity implements INameable, IPropertyHolderTile, ITickableTileEntity {
+	private final IComponent[] components = new IComponent[IComponentType.values().length];
+	private final ComponentProcessor[] processors = new ComponentProcessor[5];
+	private final PropertyManager propertyManager = new PropertyManager(this);
 
-    public ComponentProcessor getProcessor(int id) {
-	return processors[id];
-    }
+	// use this for manually setting the change flag
+	public boolean isChanged = false;
 
-    public GenericTile addProcessor(ComponentProcessor processor) {
-	for (int i = 0; i < processors.length; i++) {
-	    if (processors[i] == null) {
-		processors[i] = processor;
-		processor.holder(this);
-		break;
-	    }
+	public GenericTile(TileEntityType<?> tileEntityTypeIn) {
+		super(tileEntityTypeIn);
 	}
-	return this;
-    }
 
-    public GenericTile addComponent(Component component) {
-	component.holder(this);
-	if (hasComponent(component.getType())) {
-	    throw new ExceptionInInitializerError("Component of type: " + component.getType().name() + " already registered!");
+	public <T> Property<T> property(Property<T> prop) {
+		for (Property<?> existing : propertyManager.getProperties()) {
+			if (existing.getName().equals(prop.getName())) {
+				throw new RuntimeException(prop.getName() + " is already being used by another property!");
+			}
+		}
+
+		return propertyManager.addProperty(prop);
 	}
-	components[component.getType().ordinal()] = component;
-	return this;
-    }
 
-    @Deprecated
-    public GenericTile forceComponent(Component component) {
-	component.holder(this);
-	components[component.getType().ordinal()] = component;
-	return this;
-    }
+	public boolean hasComponent(IComponentType type) {
+		return components[type.ordinal()] != null;
+	}
 
-    @Override
-    public void read(BlockState state, CompoundNBT compound) {
-	super.read(state, compound);
-	for (Component component : components) {
-	    if (component != null) {
+	@Override
+	public PropertyManager getPropertyManager() {
+		return propertyManager;
+	}
+
+	public <T extends IComponent> T getComponent(IComponentType type) {
+		return !hasComponent(type) ? null : (T) components[type.ordinal()];
+	}
+
+	public ComponentProcessor getProcessor(int id) {
+		return processors[id];
+	}
+
+	public ComponentProcessor[] getProcessors() {
+		return processors;
+	}
+
+	public GenericTile addProcessor(ComponentProcessor processor) {
+		for (int i = 0; i < processors.length; i++) {
+			if (processors[i] == null) {
+				processors[i] = processor;
+				processor.holder(this);
+				break;
+			}
+		}
+		return this;
+	}
+
+	public GenericTile addComponent(IComponent component) {
 		component.holder(this);
-		component.loadFromNBT(state, compound);
-	    }
+		if (hasComponent(component.getType())) {
+			throw new ExceptionInInitializerError("Component of type: " + component.getType().name() + " already registered!");
+		}
+		components[component.getType().ordinal()] = component;
+		return this;
 	}
-	for (ComponentProcessor pr : processors) {
-	    if (pr != null) {
-		pr.holder(this);
-		pr.loadFromNBT(state, compound);
-	    }
-	}
-    }
 
-    @Override
-    public CompoundNBT write(CompoundNBT compound) {
-	for (Component component : components) {
-	    if (component != null) {
+	@Deprecated // "Try not using this method."
+	public GenericTile forceComponent(IComponent component) {
 		component.holder(this);
-		component.saveToNBT(compound);
-	    }
-	}
-	for (ComponentProcessor pr : processors) {
-	    if (pr != null) {
-		pr.holder(this);
-		pr.saveToNBT(compound);
-	    }
-	}
-	return super.write(compound);
-    }
-
-    protected GenericTile(TileEntityType<?> tileEntityTypeIn) {
-	super(tileEntityTypeIn);
-    }
-
-    @Override
-    public void onLoad() {
-	super.onLoad();
-	// JSON recipe fluids have to be added at load time
-	if (hasComponent(ComponentType.FluidHandler)) {
-	    AbstractFluidHandler<?> tank = this.getComponent(ComponentType.FluidHandler);
-	    tank.addFluids();
-	}
-	if (hasComponent(ComponentType.PacketHandler)) {
-	    Scheduler.schedule(1, () -> {
-		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
-		this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-	    });
-	}
-    }
-
-    @Override
-    public ITextComponent getName() {
-	return hasComponent(ComponentType.Name) ? this.<ComponentName>getComponent(ComponentType.Name).getName()
-		: new StringTextComponent(References.ID + ".default.tile.name");
-    }
-
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> cap, Direction side) {
-	if (cap == CapabilityElectrodynamic.ELECTRODYNAMIC) {
-	    if (components[ComponentType.Electrodynamic.ordinal()] != null) {
-		return components[ComponentType.Electrodynamic.ordinal()].getCapability(cap, side);
-	    }
-	}
-	if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	    if (components[ComponentType.FluidHandler.ordinal()] != null) {
-		return components[ComponentType.FluidHandler.ordinal()].getCapability(cap, side);
-	    }
-	}
-	if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-	    if (components[ComponentType.Inventory.ordinal()] != null) {
-		return components[ComponentType.Inventory.ordinal()].getCapability(cap, side);
-	    }
-	}
-	return super.getCapability(cap, side);
-    }
-
-    @Override
-    public void remove() {
-	super.remove();
-	for (Component component : components) {
-	    if (component != null) {
-		component.holder(this);
-		component.remove();
-	    }
-	}
-	for (ComponentProcessor pr : processors) {
-	    if (pr != null) {
-		pr.holder(this);
-		pr.remove();
-	    }
-	}
-    }
-
-    public IntArray getCoordsArray() {
-	IntArray array = new IntArray(3);
-	array.set(0, pos.getX());
-	array.set(1, pos.getY());
-	array.set(2, pos.getZ());
-	return array;
-    }
-
-    @Override
-    public BlockPos getPos() {
-	return pos;
-    }
-
-    @Override
-    public double getMaxRenderDistanceSquared() {
-	return 256;
-    }
-
-    @Nullable
-    public <T extends O2ORecipe> T getO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
-	ItemStack stack = pr.getInput();
-	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
-	    return null;
-	}
-	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-	for (IRecipe<?> iRecipe : recipes) {
-	    T recipe = recipeClass.cast(iRecipe);
-	    if (recipe.matchesRecipe(pr)) {
-		return recipe;
-	    }
-	}
-	return null;
-    }
-
-    public <T extends DO2ORecipe> T getDO2ORecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
-	ItemStack[] stack = new ItemStack[] { pr.getInput(), pr.getSecondInput() };
-	if (stack[0] == null || stack[0].equals(new ItemStack(Items.AIR), true) || stack[1] == null
-		|| stack[1].equals(new ItemStack(Items.AIR), true)) {
-	    return null;
-	}
-	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-	for (IRecipe<?> iRecipe : recipes) {
-	    T recipe = recipeClass.cast(iRecipe);
-	    if (recipe.matchesRecipe(pr)) {
-		return recipe;
-	    }
-	}
-	return null;
-    }
-
-    public <T extends FluidItem2FluidRecipe> T getFluidItem2FluidRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
-	ItemStack stack = pr.getInput();
-	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
-	    return null;
+		components[component.getType().ordinal()] = component;
+		return this;
 	}
 
-	ComponentFluidHandlerMulti fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
-	    if (fluidTank.getCapacity() > 0) {
-		break;
-	    }
-	    return null;
+	@Override
+	public void load(BlockState state, @Nonnull CompoundNBT compound) {
+		super.load(state, compound);
+		for (Property<?> prop : propertyManager.getProperties()) {
+			if (prop.shouldSave()) {
+				prop.load(prop.getType().readFromTag(new TagReader(prop, compound)));
+				compound.remove(prop.getName());
+			}
+		}
+		for (IComponent component : components) {
+			if (component != null) {
+				component.holder(this);
+				component.loadFromNBT(compound);
+			}
+		}
+		for (ComponentProcessor pr : processors) {
+			if (pr != null) {
+				pr.holder(this);
+				pr.loadFromNBT(compound);
+			}
+		}
+
 	}
 
-	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-	for (IRecipe<?> iRecipe : recipes) {
-	    T recipe = recipeClass.cast(iRecipe);
-	    if (recipe.matchesRecipe(pr)) {
-		return recipe;
-	    }
-	}
-	return null;
-    }
-
-    public <T extends FluidItem2ItemRecipe> T getFluidItem2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
-	ItemStack stack = pr.getInput();
-	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
-	    return null;
-	}
-
-	ComponentFluidHandlerMulti fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
-	    if (fluidTank.getCapacity() > 0) {
-		break;
-	    }
-	    return null;
+	@Override
+	public CompoundNBT save(@Nonnull CompoundNBT compound) {
+		for (Property<?> prop : propertyManager.getProperties()) {
+			if (prop.shouldSave()) {
+				prop.getType().writeToTag(new TagWriter(prop, compound));
+			}
+		}
+		for (IComponent component : components) {
+			if (component != null) {
+				component.holder(this);
+				component.saveToNBT(compound);
+			}
+		}
+		for (ComponentProcessor pr : processors) {
+			if (pr != null) {
+				pr.holder(this);
+				pr.saveToNBT(compound);
+			}
+		}
+		return super.save(compound);
 	}
 
-	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-	for (IRecipe<?> iRecipe : recipes) {
-	    T recipe = recipeClass.cast(iRecipe);
-	    if (recipe.matchesRecipe(pr)) {
-		return recipe;
-	    }
-	}
-	return null;
-    }
+	@Override
+	public void onLoad() {
+		super.onLoad();
 
-    public <T extends Fluid3Items2ItemRecipe> T getFluid3Items2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
-	ItemStack stack = pr.getInput();
-	if (stack == null || stack.equals(new ItemStack(Items.AIR), true)) {
-	    return null;
-	}
-
-	ComponentFluidHandlerMulti fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
-	    if (fluidTank.getCapacity() > 0) {
-		break;
-	    }
-	    return null;
+		for (IComponent component : components) {
+			if (component != null) {
+				component.holder(this);
+				component.onLoad();
+			}
+		}
+		/*
+		 * if (hasComponent(ComponentType.PacketHandler)) {
+		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendCustomPacket();
+		 * this.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking(); }
+		 */
 	}
 
-	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-	for (IRecipe<?> iRecipe : recipes) {
-	    T recipe = recipeClass.cast(iRecipe);
-	    if (recipe.matchesRecipe(pr)) {
-		return recipe;
-	    }
+	@Override
+	public ITextComponent getName() {
+		return hasComponent(IComponentType.Name) ? this.<ComponentName>getComponent(IComponentType.Name).getName() : new StringTextComponent(References.ID + ".default.tile.name");
 	}
-	return null;
-    }
 
-    public <T extends Fluid2ItemRecipe> T getFluid2ItemRecipe(ComponentProcessor pr, Class<T> recipeClass, IRecipeType<?> typeIn) {
-	ComponentFluidHandlerMulti fluidHandler = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	for (FluidTank fluidTank : fluidHandler.getInputFluidTanks()) {
-	    if (fluidTank.getCapacity() > 0) {
-		break;
-	    }
-	    return null;
+	@Override
+	@Nonnull
+	public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
+		if (cap == ElectrodynamicsCapabilities.ELECTRODYNAMIC && components[IComponentType.Electrodynamic.ordinal()] != null) {
+			return components[IComponentType.Electrodynamic.ordinal()].getCapability(cap, side);
+		}
+		if (cap == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && components[IComponentType.FluidHandler.ordinal()] != null) {
+			return components[IComponentType.FluidHandler.ordinal()].getCapability(cap, side);
+		}
+		if (cap == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && components[IComponentType.Inventory.ordinal()] != null) {
+			return components[IComponentType.Inventory.ordinal()].getCapability(cap, side);
+		}
+		return LazyOptional.empty();
 	}
-	Set<IRecipe<?>> recipes = ElectrodynamicsRecipe.findRecipesbyType(typeIn, pr.getHolder().world);
-	for (IRecipe<?> iRecipe : recipes) {
-	    T recipe = recipeClass.cast(iRecipe);
-	    if (recipe.matchesRecipe(pr)) {
-		return recipe;
-	    }
+
+	@Override
+	public void setRemoved() {
+		super.setRemoved();
+		for (IComponent component : components) {
+			if (component != null) {
+				component.holder(this);
+				component.remove();
+			}
+		}
+		for (ComponentProcessor pr : processors) {
+			if (pr != null) {
+				pr.holder(this);
+				pr.remove();
+			}
+		}
 	}
-	return null;
-    }
+
+	@Override
+	public @Nonnull CompoundNBT getUpdateTag() {
+		CompoundNBT tag = super.getUpdateTag();
+		tag = save(tag);
+		return tag;
+	}
+
+	@Override
+	public void setChanged() {
+		super.setChanged();
+		if (!level.isClientSide) {
+			if (hasComponent(IComponentType.PacketHandler)) {
+				this.<ComponentPacketHandler>getComponent(IComponentType.PacketHandler).sendProperties();
+			}
+		}
+	}
+
+	public IntArray getCoordsArray() {
+		IntArray array = new IntArray(3);
+		array.set(0, worldPosition.getX());
+		array.set(1, worldPosition.getY());
+		array.set(2, worldPosition.getZ());
+		return array;
+	}
+
+	public boolean isPoweredByRedstone() {
+		return level.getDirectSignalTo(worldPosition) > 0;
+	}
+
+	public boolean isProcessorActive() {
+		for (ComponentProcessor pr : processors) {
+			if (pr != null && pr.isActive()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public int getNumActiveProcessors() {
+		int count = 0;
+		for (ComponentProcessor pr : processors) {
+			if (pr != null && pr.isActive()) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	public int getNumProcessors() {
+		int count = 0;
+		for (ComponentProcessor pr : processors) {
+			if (pr != null) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	/**
+	 * NORTH is defined as the default direction
+	 * 
+	 * @return
+	 */
+	public Direction getFacing() {
+		return getBlockState().hasProperty(GenericEntityBlock.FACING) ? getBlockState().getValue(GenericEntityBlock.FACING) : Direction.NORTH;
+	}
+
+	public void onEnergyChange(ComponentElectrodynamic cap) {
+		// hook method for now
+	}
+
+	// no more polling for upgrade effects :D
+	public void onInventoryChange(ComponentInventory inv, int slot) {
+		// this can be moved to a seperate tile class in the future
+		if (hasComponent(IComponentType.Processor)) {
+			this.<ComponentProcessor>getComponent(IComponentType.Processor).onInventoryChange(inv, slot);
+		}
+		for (ComponentProcessor processor : processors) {
+			if (processor != null) {
+				processor.onInventoryChange(inv, slot);
+			}
+		}
+	}
+
+	public void onFluidTankChange(FluidTank tank) {
+		// hook method for now
+	}
+
+	// This is ceded to the tile to allow for greater control with the use function
+	public ActionResultType use(PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+
+		ItemStack stack = player.getItemInHand(handIn);
+		if (stack.getItem() instanceof ItemUpgrade && hasComponent(IComponentType.Inventory)) {
+
+			ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
+
+			ComponentInventory inv = getComponent(IComponentType.Inventory);
+			// null check for safety
+			if (inv != null && inv.upgrades() > 0) {
+				int upgradeIndex = inv.getUpgradeSlotStartIndex();
+				for (int i = 0; i < inv.upgrades(); i++) {
+					if (inv.canPlaceItem(upgradeIndex + i, stack)) {
+						ItemStack upgradeStack = inv.getItem(upgradeIndex + i);
+						if (upgradeStack.isEmpty()) {
+							if (!level.isClientSide()) {
+								inv.setItem(upgradeIndex + i, stack.copy());
+								stack.shrink(stack.getCount());
+							}
+							return ActionResultType.CONSUME;
+						}
+						if (ItemUtils.testItems(upgrade, upgradeStack.getItem())) {
+							int room = upgradeStack.getMaxStackSize() - upgradeStack.getCount();
+							if (room > 0) {
+								if (!level.isClientSide()) {
+									int accepted = room > stack.getCount() ? stack.getCount() : room;
+									upgradeStack.grow(accepted);
+									stack.shrink(accepted);
+								}
+								return ActionResultType.CONSUME;
+							}
+						}
+					}
+				}
+			}
+
+		} else if (!(stack.getItem() instanceof IWrenchItem)) {
+
+			if (hasComponent(IComponentType.ContainerProvider)) {
+
+				if (!level.isClientSide()) {
+
+					player.openMenu(getComponent(IComponentType.ContainerProvider));
+
+					player.awardStat(Stats.INTERACT_WITH_FURNACE);
+				}
+
+				return ActionResultType.CONSUME;
+
+			}
+
+		}
+		return ActionResultType.PASS;
+	}
+
+	public void onBlockDestroyed() {
+
+	}
+
+	public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
+
+	}
+
+	public void onPlace(BlockState oldState, boolean isMoving) {
+
+		for (IComponent component : components) {
+			if (component != null) {
+				component.holder(this);
+				component.onLoad();
+			}
+		}
+
+	}
+
+	public int getComparatorSignal() {
+		return 0;
+	}
+
+	public int getDirectSignal(Direction dir) {
+		return 0;
+	}
+
+	public int getSignal(Direction dir) {
+		return 0;
+	}
+
+	public void onEntityInside(BlockState state, World level, BlockPos pos, Entity entity) {
+
+	}
+
+	public void updateCarriedItemInContainer(ItemStack stack, UUID playerId) {
+		PlayerEntity player = getLevel().getPlayerByUUID(playerId);
+		player.inventory.setCarried(stack);
+
+	}
+
+	protected static TriPredicate<Integer, ItemStack, ComponentInventory> machineValidator() {
+		return (x, y, i) -> x < i.getOutputStartIndex() || x >= i.getInputBucketStartIndex() && x < i.getUpgradeSlotStartIndex() && CapabilityUtils.hasFluidItemCap(y) || x >= i.getUpgradeSlotStartIndex() && y.getItem() instanceof ItemUpgrade && i.isUpgradeValid(((ItemUpgrade) y.getItem()).subtype);
+	}
+
+	public static double[] arr(double... values) {
+		return values;
+	}
+
+	public static int[] arr(int... values) {
+		return values;
+	}
+
+	/**
+	 * This method will never have air as the newState unless something has gone horribly horribly wrong!
+	 * 
+	 * @param oldState
+	 * @param newState
+	 */
+	public void onBlockStateUpdate(BlockState oldState, BlockState newState) {
+		for (IComponent component : components) {
+			if (component != null) {
+				component.refreshIfUpdate(oldState, newState);
+			}
+		}
+
+		for (IComponent component : processors) {
+			if (component != null) {
+				component.refreshIfUpdate(oldState, newState);
+			}
+		}
+	}
+
+	@Override
+	public void tick() {
+		if (hasComponent(IComponentType.Tickable)) {
+			ComponentTickable tickable = getComponent(IComponentType.Tickable);
+			tickable.performTick(level);
+		}
+	}
 
 }

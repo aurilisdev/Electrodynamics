@@ -1,0 +1,138 @@
+package electrodynamics.prefab.screen.component.types.gauges;
+
+import java.util.List;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.systems.RenderSystem;
+
+import electrodynamics.api.References;
+import electrodynamics.api.screen.ITexture;
+import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
+import electrodynamics.prefab.utilities.RenderingUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.IReorderingProcessor;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+
+@OnlyIn(Dist.CLIENT)
+public abstract class AbstractScreenComponentGauge extends ScreenComponentGeneric {
+
+	public static final ResourceLocation TEXTURE = new ResourceLocation(References.ID + ":textures/screen/component/fluid.png");
+
+	public AbstractScreenComponentGauge(int x, int y) {
+		super(GaugeTextures.BACKGROUND_DEFAULT, x, y);
+	}
+
+	@Override
+	public void renderBackground(MatrixStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		super.renderBackground(stack, xAxis, yAxis, guiWidth, guiHeight);
+		ResourceLocation texture = getTexture();
+		int scale = getScaledLevel();
+
+		if (texture != null && scale > 0) {
+			ResourceLocation blocks = AtlasTexture.LOCATION_BLOCKS;
+			TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(blocks).apply(texture);
+			RenderingUtils.bindTexture(sprite.atlas().location());
+			applyColor();
+			for (int i = 0; i < 16; i += 16) {
+				for (int j = 0; j < scale; j += 16) {
+					int drawWidth = Math.min(super.texture.textureWidth() - 2 - i, 16);
+					int drawHeight = Math.min(scale - j, 16);
+
+					int drawX = guiWidth + this.x + 1;
+					int drawY = guiHeight + this.y - 1 + super.texture.textureHeight() - Math.min(scale - j, super.texture.textureHeight());
+
+					blit(stack, drawX, drawY, 0, drawWidth, drawHeight, sprite);
+
+				}
+			}
+			RenderSystem.color4f(1, 1, 1, 1);
+		}
+
+		RenderingUtils.bindTexture(super.texture.getLocation());
+		blit(stack, guiWidth + this.x, guiHeight + this.y, GaugeTextures.LEVEL_DEFAULT.textureU(), 0, GaugeTextures.LEVEL_DEFAULT.textureWidth(), GaugeTextures.LEVEL_DEFAULT.textureHeight(), GaugeTextures.LEVEL_DEFAULT.imageWidth(), GaugeTextures.LEVEL_DEFAULT.imageHeight());
+		RenderingUtils.resetShaderColor();
+	}
+
+	protected abstract void applyColor();
+
+	@Override
+	public void renderForeground(MatrixStack stack, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+		if (isPointInRegion(this.x, this.y, xAxis, yAxis, super.texture.textureWidth(), super.texture.textureHeight())) {
+			List<? extends IReorderingProcessor> tooltips = getTooltips();
+
+			if (!tooltips.isEmpty()) {
+				gui.displayTooltips(stack, tooltips, xAxis, yAxis, gui.getFontRenderer());
+			}
+		}
+	}
+
+	protected abstract int getScaledLevel();
+
+	protected abstract ResourceLocation getTexture();
+
+	protected abstract List<? extends IReorderingProcessor> getTooltips();
+
+	public enum GaugeTextures implements ITexture {
+		BACKGROUND_DEFAULT(14, 49, 0, 0, 256, 256, TEXTURE),
+		LEVEL_DEFAULT(14, 49, 14, 0, 256, 256, TEXTURE);
+
+		private final int textureWidth;
+		private final int textureHeight;
+		private final int textureU;
+		private final int textureV;
+		private final int imageWidth;
+		private final int imageHeight;
+		private final ResourceLocation loc;
+
+		GaugeTextures(int textureWidth, int textureHeight, int textureU, int textureV, int imageWidth, int imageHeight, ResourceLocation loc) {
+			this.textureWidth = textureWidth;
+			this.textureHeight = textureHeight;
+			this.textureU = textureU;
+			this.textureV = textureV;
+			this.imageWidth = imageWidth;
+			this.imageHeight = imageHeight;
+			this.loc = loc;
+		}
+
+		@Override
+		public ResourceLocation getLocation() {
+			return loc;
+		}
+
+		@Override
+		public int imageHeight() {
+			return imageHeight;
+		}
+
+		@Override
+		public int imageWidth() {
+			return imageWidth;
+		}
+
+		@Override
+		public int textureHeight() {
+			return textureHeight;
+		}
+
+		@Override
+		public int textureU() {
+			return textureU;
+		}
+
+		@Override
+		public int textureV() {
+			return textureV;
+		}
+
+		@Override
+		public int textureWidth() {
+			return textureWidth;
+		}
+
+	}
+
+}

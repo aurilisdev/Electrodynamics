@@ -1,38 +1,58 @@
 package electrodynamics.common.recipe.categories.fluid2fluid;
 
-import electrodynamics.common.recipe.ElectrodynamicsRecipe;
+import java.util.Arrays;
+import java.util.List;
+
+import com.mojang.datafixers.util.Pair;
+
+import electrodynamics.common.recipe.recipeutils.AbstractMaterialRecipe;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.recipe.recipeutils.IFluidRecipe;
+import electrodynamics.common.recipe.recipeutils.ProbableFluid;
+import electrodynamics.common.recipe.recipeutils.ProbableItem;
+import electrodynamics.prefab.tile.components.IComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
-public abstract class Fluid2FluidRecipe extends ElectrodynamicsRecipe implements IFluidRecipe {
+public abstract class Fluid2FluidRecipe extends AbstractMaterialRecipe {
 
-    private FluidIngredient INPUT_FLUID;
-    private FluidStack OUTPUT_FLUID;
+	private FluidIngredient[] inputFluidIngredients;
+	private FluidStack outputFluidStack;
 
-    public Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient inputFluid, FluidStack outputFluid) {
-	super(recipeID);
-	INPUT_FLUID = inputFluid;
-	OUTPUT_FLUID = outputFluid;
-    }
+	public Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
+		super(recipeID, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts);
+		inputFluidIngredients = inputFluids;
+		outputFluidStack = outputFluid;
+	}
 
-    @Override
-    public boolean matchesRecipe(ComponentProcessor pr) {
-	return false;
-    }
+	@Override
+	public boolean matchesRecipe(ComponentProcessor pr) {
+		Pair<List<Integer>, Boolean> pair = areFluidsValid(getFluidIngredients(), pr.getHolder().<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks());
+		if (Boolean.TRUE.equals(pair.getSecond())) {
+			setFluidArrangement(pair.getFirst());
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public FluidStack getFluidRecipeOutput() {
-	return OUTPUT_FLUID;
-    }
+	@Override
+	public FluidStack getFluidRecipeOutput() {
+		return outputFluidStack;
+	}
 
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-	return NonNullList.from(null, INPUT_FLUID);
-    }
+	@Override
+	public NonNullList<Ingredient> getIngredients() {
+		NonNullList<Ingredient> ings = NonNullList.create();
+		ings.addAll(Arrays.asList(inputFluidIngredients));
+		return ings;
+	}
+
+	@Override
+	public List<FluidIngredient> getFluidIngredients() {
+		return Arrays.asList(inputFluidIngredients);
+	}
 
 }

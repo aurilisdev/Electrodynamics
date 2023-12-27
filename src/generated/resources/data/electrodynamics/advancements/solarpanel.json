@@ -1,0 +1,39 @@
+{
+  "parent": "electrodynamics:coalgenerator",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:solarpanel"
+    },
+    "title": {
+      "color": "blue",
+      "translate": "advancement.electrodynamics.solarpanel.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.solarpanel.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 25
+  },
+  "criteria": {
+    "HasPanel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "electrodynamics:solarpanel"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasPanel"
+    ]
+  ]
+}

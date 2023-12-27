@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "W W",
+    "PLP",
+    "PCP"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/stainlesssteel"
+    },
+    "C": {
+      "tag": "forge:circuits/elite"
+    },
+    "W": {
+      "item": "electrodynamics:wirehighlyinsulatedgold"
+    },
+    "L": {
+      "item": "electrodynamics:chargerlv"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:chargermv"
+  }
+}

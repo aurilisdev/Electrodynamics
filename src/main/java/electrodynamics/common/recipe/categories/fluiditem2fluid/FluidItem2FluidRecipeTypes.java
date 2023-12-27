@@ -7,11 +7,8 @@ import net.minecraft.item.crafting.IRecipeSerializer;
 
 public class FluidItem2FluidRecipeTypes {
 
-    public static final IRecipeSerializer<ChemicalMixerRecipe> CHEMICAL_MIXER_JSON_SERIALIZER = new FluidItem2FluidRecipeSerializer<>(
-	    ChemicalMixerRecipe.class);
-    public static final IRecipeSerializer<FermentationPlantRecipe> FERMENTATION_PLANT_JSON_SERIALIZER = new FluidItem2FluidRecipeSerializer<>(
-	    FermentationPlantRecipe.class);
-    public static final IRecipeSerializer<MineralWasherRecipe> MINERAL_WASHER_JSON_SERIALIZER = new FluidItem2FluidRecipeSerializer<>(
-	    MineralWasherRecipe.class);
+	public static final IRecipeSerializer<ChemicalMixerRecipe> CHEMICAL_MIXER_JSON_SERIALIZER = new FluidItem2FluidRecipeSerializer<>(ChemicalMixerRecipe.class);
+	public static final IRecipeSerializer<FermentationPlantRecipe> FERMENTATION_PLANT_JSON_SERIALIZER = new FluidItem2FluidRecipeSerializer<>(FermentationPlantRecipe.class);
+	public static final IRecipeSerializer<MineralWasherRecipe> MINERAL_WASHER_JSON_SERIALIZER = new FluidItem2FluidRecipeSerializer<>(MineralWasherRecipe.class);
 
 }

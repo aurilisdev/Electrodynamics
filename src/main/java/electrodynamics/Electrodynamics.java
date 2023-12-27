@@ -1,131 +1,118 @@
 package electrodynamics;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.function.Supplier;
+import java.util.Random;
+import java.util.function.Consumer;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.collect.Lists;
-
 import electrodynamics.api.References;
-import electrodynamics.api.capability.ceramicplate.CapabilityCeramicPlate;
-import electrodynamics.api.electricity.CapabilityElectrodynamic;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.block.BlockCustomGlass;
-import electrodynamics.common.block.subtype.SubtypeOre;
+import electrodynamics.common.block.voxelshapes.ElectrodynamicsVoxelShapeRegistry;
+import electrodynamics.common.condition.ConfigCondition;
+import electrodynamics.common.eventbus.RegisterPropertiesEvent;
 import electrodynamics.common.packet.NetworkHandler;
+import electrodynamics.common.packet.types.client.PacketResetGuidebookPages;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
+import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
+import electrodynamics.common.reloadlistener.CombustionFuelRegister;
+import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
 import electrodynamics.common.settings.Constants;
 import electrodynamics.common.settings.OreConfig;
+import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.configuration.ConfigurationHandler;
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.WorldGenRegistries;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeGenerationSettings;
-import net.minecraft.world.gen.GenerationStage;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.OreFeatureConfig;
+import electrodynamics.prefab.properties.PropertyManager;
+import electrodynamics.prefab.properties.PropertyType;
+import electrodynamics.registers.UnifiedElectrodynamicsRegister;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.crafting.IRecipeSerializer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.crafting.CraftingHelper;
+import net.minecraftforge.event.OnDatapackSyncEvent;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.RegistryObject;
+import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.network.PacketDistributor;
+import net.minecraftforge.fml.network.PacketDistributor.PacketTarget;
 
 @Mod(References.ID)
 @EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
 public class Electrodynamics {
 
-    public static Logger LOGGER = LogManager.getLogger(electrodynamics.api.References.ID);
+	public static Logger LOGGER = LogManager.getLogger(electrodynamics.api.References.ID);
 
-    public Electrodynamics() {
-	ConfigurationHandler.registerConfig(Constants.class);
-	ConfigurationHandler.registerConfig(OreConfig.class);
-	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-	SoundRegister.SOUNDS.register(bus);
-	DeferredRegisters.BLOCKS.register(bus);
-	DeferredRegisters.ITEMS.register(bus);
-	ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
-	DeferredRegisters.TILES.register(bus);
-	DeferredRegisters.CONTAINERS.register(bus);
-	DeferredRegisters.FLUIDS.register(bus);
-	DeferredRegisters.ENTITIES.register(bus);
-    }
+	public static final Random RANDOM = new Random();
 
-    @SubscribeEvent
-    public static void onCommonSetup(FMLCommonSetupEvent event) {
-	CapabilityElectrodynamic.register(); // TODO: Move to the upcoming RegisterCapabilitiesEvent when it is implemented.
-	CapabilityCeramicPlate.register();
-	NetworkHandler.init();
-    }
-
-    @SubscribeEvent
-    @OnlyIn(Dist.CLIENT)
-    public static void onClientSetup(FMLClientSetupEvent event) {
-	for (RegistryObject<Block> block : DeferredRegisters.BLOCKS.getEntries()) {
-	    if (block.get() instanceof BlockCustomGlass) {
-		RenderTypeLookup.setRenderLayer(block.get(), RenderType.getCutout());
-	    }
+	public Electrodynamics() {
+		ConfigurationHandler.registerConfig(Constants.class);
+		ConfigurationHandler.registerConfig(OreConfig.class);
+		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+		UnifiedElectrodynamicsRegister.register(bus);
+		Electrodynamics.LOGGER.info("Starting Electrodynamics recipe engine");
+		ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
 	}
-	ClientRegister.setup();
-    }
 
-    @SubscribeEvent
-    @Deprecated
-    public static void onLoadEvent(FMLLoadCompleteEvent event) {
-	for (SubtypeOre ore : SubtypeOre.values()) {
-	    if (OreConfig.oresToSpawn.contains(ore.name())) {
-		OreFeatureConfig feature = new OreFeatureConfig(OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD,
-			DeferredRegisters.SUBTYPEBLOCK_MAPPINGS.get(ore).getDefaultState(), ore.veinSize);
-		Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId(),
-			Feature.ORE.withConfiguration(feature).range(ore.maxY)
-				.func_242731_b((int) (ore.veinsPerChunk * OreConfig.OREGENERATIONMULTIPLIER)).square());
-	    }
+	@SubscribeEvent
+	public static void onCommonSetup(FMLCommonSetupEvent event) {
+		NetworkHandler.init();
+		CombustionFuelRegister.INSTANCE = new CombustionFuelRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
+		CoalGeneratorFuelRegister.INSTANCE = new CoalGeneratorFuelRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
+		ThermoelectricGeneratorHeatRegister.INSTANCE = new ThermoelectricGeneratorHeatRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
+		MinecraftForge.EVENT_BUS.addListener(getGuidebookListener());
+		ElectrodynamicsTags.init();
+
+		event.enqueueWork(() -> {
+			ElectrodynamicsCapabilities.register();
+
+			RegisterPropertiesEvent properties = new RegisterPropertiesEvent();
+
+			ModLoader.get().postEvent(properties);
+
+			PropertyManager.registerProperties(properties.getRegisteredProperties());
+		});
+		ElectrodynamicsVoxelShapeRegistry.init();
 	}
-	setupGen();
-    }
 
-    @Deprecated
-    public static void setupGen() {
-	for (SubtypeOre ore : SubtypeOre.values()) {
-	    if (OreConfig.oresToSpawn.contains(ore.name())) {
-		for (Entry<RegistryKey<Biome>, Biome> biome : WorldGenRegistries.BIOME.getEntries()) {
-		    if (!biome.getValue().getCategory().equals(Biome.Category.NETHER)
-			    && !biome.getValue().getCategory().equals(Biome.Category.THEEND)) {
-			addFeatureToBiome(biome.getValue(), GenerationStage.Decoration.UNDERGROUND_ORES,
-				WorldGenRegistries.CONFIGURED_FEATURE.getOrDefault(DeferredRegisters.SUBTYPEBLOCKREGISTER_MAPPINGS.get(ore).getId()));
-		    }
+	@SubscribeEvent
+	public static void registerProperties(RegisterPropertiesEvent event) {
+		for (PropertyType type : PropertyType.values()) {
+			event.registerProperty(type);
 		}
-	    }
-	}
-    }
-
-    public static void addFeatureToBiome(Biome biome, GenerationStage.Decoration decoration, ConfiguredFeature<?, ?> configuredFeature) {
-	List<List<Supplier<ConfiguredFeature<?, ?>>>> biomeFeatures = new ArrayList<>(biome.getGenerationSettings().getFeatures());
-
-	while (biomeFeatures.size() <= decoration.ordinal()) {
-	    biomeFeatures.add(Lists.newArrayList());
 	}
 
-	List<Supplier<ConfiguredFeature<?, ?>>> features = new ArrayList<>(biomeFeatures.get(decoration.ordinal()));
-	features.add(() -> configuredFeature);
-	biomeFeatures.set(decoration.ordinal(), features);
+	@SubscribeEvent
+	public static void registerRecipeSerialziers(RegistryEvent.Register<IRecipeSerializer<?>> event) {
+		CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
+	}
 
-	ObfuscationReflectionHelper.setPrivateValue(BiomeGenerationSettings.class, biome.getGenerationSettings(), biomeFeatures, "field_242484_f");
-    }
+	// I wonder how long this bug has been there
+	@SubscribeEvent
+	@OnlyIn(Dist.CLIENT)
+	public static void onClientSetup(FMLClientSetupEvent event) {
+		event.enqueueWork(() -> {
+			ClientRegister.setup();
+		});
+	}
+
+	// Don't really have a better place to put this for now
+	private static Consumer<OnDatapackSyncEvent> getGuidebookListener() {
+
+		return event -> {
+			ServerPlayerEntity player = event.getPlayer();
+			PacketTarget target = player == null ? PacketDistributor.ALL.noArg() : PacketDistributor.PLAYER.with(() -> player);
+			NetworkHandler.CHANNEL.send(target, new PacketResetGuidebookPages());
+		};
+
+	}
+
 }

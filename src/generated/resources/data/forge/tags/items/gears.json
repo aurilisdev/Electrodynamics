@@ -1,0 +1,10 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:gears/iron",
+    "#forge:gears/copper",
+    "#forge:gears/tin",
+    "#forge:gears/steel",
+    "#forge:gears/bronze"
+  ]
+}

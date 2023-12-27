@@ -1,70 +1,80 @@
 package electrodynamics.client.render.tile;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.TileChemicalMixer;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.common.tile.machines.TileChemicalMixer;
+import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.utilities.UtilitiesRendering;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.IBakedModel;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.fluid.Fluids;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Quaternion;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public class RenderChemicalMixer extends TileEntityRenderer<TileChemicalMixer> {
+public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer> {
 
-    public RenderChemicalMixer(TileEntityRendererDispatcher rendererDispatcherIn) {
-	super(rendererDispatcherIn);
-    }
-
-    @Override
-    public void render(TileChemicalMixer tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn,
-	    int combinedOverlayIn) {
-
-	IBakedModel ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBASE);
-	matrixStackIn.push();
-	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
-	matrixStackIn.translate(0, 1 / 16.0, 0);
-	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-	matrixStackIn.pop();
-
-	matrixStackIn.push();
-	ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
-	matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
-	matrixStackIn.rotate(new Quaternion(0,
-		(tileEntityIn.clientTicks
-			+ (tileEntityIn.<ComponentProcessor>getComponent(ComponentType.Processor).operatingTicks > 0 ? partialTicks : 0)) * 10,
-		0, true));
-	UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-	matrixStackIn.pop();
-
-	matrixStackIn.push();
-	UtilitiesRendering.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
-	matrixStackIn.translate(0.5, 0.2, 0.5);
-	ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERWATER);
-	float prog = (tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler).getStackFromFluid(Fluids.WATER, true)
-		.getAmount()
-		+ tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler)
-			.getStackFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getAmount())
-		/ (float) TileChemicalMixer.MAX_TANK_CAPACITY;
-	if (prog > 0) {
-	    matrixStackIn.scale(1, prog / 16.0f, 1);
-	    matrixStackIn.translate(0, prog / 8.0, 0);
-	    if (tileEntityIn.<ComponentFluidHandlerMulti>getComponent(ComponentType.FluidHandler)
-		    .getStackFromFluid(DeferredRegisters.fluidSulfuricAcid, true).getAmount() > 0) {
-		ibakedmodel = Minecraft.getInstance().getModelManager().getModel(ClientRegister.MODEL_CHEMICALMIXERSULFURICACID);
-	    }
-	    UtilitiesRendering.renderModel(ibakedmodel, tileEntityIn, RenderType.getSolid(), matrixStackIn, bufferIn, combinedLightIn,
-		    combinedOverlayIn);
+	public RenderChemicalMixer(TileEntityRendererDispatcher context) {
+		super(context);
 	}
-	matrixStackIn.pop();
-    }
+
+	@Override
+	public void render(TileChemicalMixer tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+
+		IBakedModel ibakedmodel = getModel(ClientRegister.MODEL_CHEMICALMIXERBASE);
+		matrixStackIn.pushPose();
+		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
+		matrixStackIn.translate(0, 1 / 16.0, 0);
+		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+		matrixStackIn.popPose();
+
+		matrixStackIn.pushPose();
+		ibakedmodel = getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
+		matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
+
+		ComponentProcessor proc = tileEntityIn.getComponent(IComponentType.Processor);
+
+		float degrees = 0.0F;
+
+		if (proc.isActive()) {
+			degrees = proc.operatingTicks.get().floatValue() / Math.max(proc.requiredTicks.get().floatValue(), 1.0F) * 360.0F * proc.operatingSpeed.get().floatValue() * 2.0F;
+		}
+
+		matrixStackIn.mulPose(new Quaternion(0, degrees, 0, true));
+		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+		matrixStackIn.popPose();
+
+		matrixStackIn.pushPose();
+		ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(IComponentType.FluidHandler);
+		FluidStack fluid = null;
+		for (FluidTank tank : multi.getInputTanks()) {
+			if (!tank.isEmpty()) {
+				fluid = tank.getFluid();
+				break;
+			}
+		}
+		if (fluid == null) {
+			for (FluidTank tank : multi.getOutputTanks()) {
+				if (!tank.isEmpty()) {
+					fluid = tank.getFluid();
+					break;
+				}
+			}
+		}
+		if (fluid != null) {
+			AxisAlignedBB box = new AxisAlignedBB(2.0D / 16.0D, 7.0D / 16.0D, 2.0D / 16.0D, 14.0D / 16.0D, 10.0D / 16.0D, 14.0D / 16.0D);
+			IVertexBuilder builder = bufferIn.getBuffer(Atlases.translucentCullBlockSheet());
+			RenderingUtils.renderFluidBox(matrixStackIn, Minecraft.getInstance(), builder, box, fluid, combinedLightIn, combinedOverlayIn);
+		}
+		matrixStackIn.popPose();
+	}
 
 }

@@ -3,153 +3,171 @@ package electrodynamics.client.render.tile;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.ElectricUnit;
-import electrodynamics.common.tile.TileMultimeterBlock;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentDirection;
+import electrodynamics.api.electricity.formatting.DisplayUnit;
+import electrodynamics.common.tile.electricitygrid.TileMultimeterBlock;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Quaternion;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.ITextComponent;
 
-public class RenderMultimeterBlock extends TileEntityRenderer<TileMultimeterBlock> {
+public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBlock> {
 
-    public RenderMultimeterBlock(TileEntityRendererDispatcher rendererDispatcherIn) {
-	super(rendererDispatcherIn);
-    }
+	public static final Direction[] DIRS_TO_CHECK = { Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST };
 
-    @Override
-    public void render(TileMultimeterBlock tilemultimeter, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
-	    int combinedLightIn, int combinedOverlayIn) {
-	for (Direction dir : Direction.values()) {
-	    if (dir != Direction.UP && dir != Direction.DOWN
-		    && dir != tilemultimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
-		matrixStackIn.push();
-		matrixStackIn.translate(0.5 + dir.getXOffset() / 1.999, 0.85 + dir.getYOffset() / 2.0, 0.5 + dir.getZOffset() / 1.999);
+	public RenderMultimeterBlock(TileEntityRendererDispatcher context) {
+		super(context);
+	}
+
+	@Override
+	public void render(TileMultimeterBlock multimeter, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+
+		for (Direction dir : DIRS_TO_CHECK) {
+
+			if (dir == multimeter.getFacing()) {
+				continue;
+			}
+
+			/* TRANSFER */
+
+			FontRenderer font = Minecraft.getInstance().font;
+
+			stack.pushPose();
+
+			stack.translate(0.5 + dir.getStepX() / 1.999, 0.85 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);
+
+			rotateMatrix(stack, dir);
+
+			ITextComponent transfer = ElectroTextUtils.gui("multimeterblock.transfer", ChatFormatter.getDisplayShort(multimeter.joules.get() * 20.0, DisplayUnit.WATT, 3));
+
+			float scale = 0.0215f / (font.width(transfer) / 32f);
+
+			stack.scale(-scale, -scale, -scale);
+
+			Matrix4f matrix4f = stack.last().pose();
+
+			float textX = -font.width(transfer) / 2.0f;
+
+			font.drawInBatch(transfer, textX, 0, Color.WHITE.color(), false, matrix4f, buffer, false, 0, combinedLight);
+
+			stack.popPose();
+
+			/* VOLTAGE */
+
+			stack.pushPose();
+
+			stack.translate(0.5 + dir.getStepX() / 1.999, 0.70 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);
+
+			rotateMatrix(stack, dir);
+
+			ITextComponent voltage = ElectroTextUtils.gui("multimeterblock.voltage", ChatFormatter.getDisplayShort(multimeter.voltage.get(), DisplayUnit.VOLTAGE, 3));
+
+			scale = 0.0215f / (font.width(voltage) / 32f);
+
+			stack.scale(-scale, -scale, -scale);
+
+			matrix4f = stack.last().pose();
+
+			textX = -font.width(voltage) / 2.0f;
+
+			font.drawInBatch(voltage, textX, 0, Color.WHITE.color(), false, matrix4f, buffer, false, 0, combinedLight);
+
+			stack.popPose();
+
+			/* MINIMUM VOLTAGE */
+
+			stack.pushPose();
+
+			stack.translate(0.5 + dir.getStepX() / 1.999, 0.55 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);
+
+			rotateMatrix(stack, dir);
+
+			double minVolt = multimeter.minVoltage.get();
+			if (minVolt < 0) {
+				minVolt = multimeter.voltage.get();
+			}
+
+			ITextComponent minVoltage = ElectroTextUtils.gui("multimeterblock.minvoltage", ChatFormatter.getDisplayShort(minVolt, DisplayUnit.VOLTAGE, 3));
+
+			scale = 0.0215f / (font.width(minVoltage) / 32f);
+
+			stack.scale(-scale, -scale, -scale);
+
+			matrix4f = stack.last().pose();
+
+			textX = -font.width(minVoltage) / 2.0f;
+
+			font.drawInBatch(minVoltage, textX, 0, Color.WHITE.color(), false, matrix4f, buffer, false, 0, combinedLight);
+
+			stack.popPose();
+
+			/* RESISTANCE */
+
+			stack.pushPose();
+
+			stack.translate(0.5 + dir.getStepX() / 1.999, 0.40 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);
+
+			rotateMatrix(stack, dir);
+
+			ITextComponent resistance = ElectroTextUtils.gui("multimeterblock.resistance", ChatFormatter.getDisplayShort(multimeter.resistance.get(), DisplayUnit.RESISTANCE, 3));
+
+			scale = 0.0215f / (font.width(resistance) / 32f);
+
+			stack.scale(-scale, -scale, -scale);
+
+			matrix4f = stack.last().pose();
+
+			textX = -font.width(resistance) / 2.0f;
+
+			font.drawInBatch(resistance, textX, 0, Color.WHITE.color(), false, matrix4f, buffer, false, 0, combinedLight);
+
+			stack.popPose();
+
+			/* LOSS (is this) */
+
+			stack.pushPose();
+
+			stack.translate(0.5 + dir.getStepX() / 1.999, 0.25 + dir.getStepY() / 2.0, 0.5 + dir.getStepZ() / 1.999);
+
+			rotateMatrix(stack, dir);
+
+			ITextComponent loss = ElectroTextUtils.gui("multimeterblock.loss", ChatFormatter.getDisplayShort(multimeter.loss.get() * 20, DisplayUnit.WATT, 3));
+
+			scale = 0.0215f / (font.width(loss) / 32f);
+
+			stack.scale(-scale, -scale, -scale);
+
+			matrix4f = stack.last().pose();
+
+			textX = -font.width(loss) / 2.0f;
+
+			font.drawInBatch(loss, textX, 0, Color.WHITE.color(), false, matrix4f, buffer, false, 0, combinedLight);
+
+			stack.popPose();
+
+		}
+
+	}
+
+	private void rotateMatrix(MatrixStack stack, Direction dir) {
 		switch (dir) {
 		case EAST:
-		    matrixStackIn.rotate(new Quaternion(0, -90, 0, true));
-		    break;
-		case NORTH:
-		    break;
+			stack.mulPose(new Quaternion(0, -90, 0, true));
+			break;
 		case SOUTH:
-		    matrixStackIn.rotate(new Quaternion(0, 180, 0, true));
-		    break;
+			stack.mulPose(new Quaternion(0, 180, 0, true));
+			break;
 		case WEST:
-		    matrixStackIn.rotate(new Quaternion(0, 90, 0, true));
-		    break;
+			stack.mulPose(new Quaternion(0, 90, 0, true));
+			break;
 		default:
-		    break;
+			break;
 		}
-		StringTextComponent displayNameIn = new StringTextComponent(
-			"Transfer: " + ChatFormatter.getDisplayShort(tilemultimeter.joules * 20, ElectricUnit.WATT, 2));
-		FontRenderer fontrenderer = Minecraft.getInstance().fontRenderer;
-		float scale = 0.0215f / (fontrenderer.getStringPropertyWidth(displayNameIn) / 32f);
-		matrixStackIn.scale(-scale, -scale, -scale);
-		Matrix4f matrix4f = matrixStackIn.getLast().getMatrix();
-		float f2 = -fontrenderer.getStringPropertyWidth(displayNameIn) / 2.0f;
-		fontrenderer.func_243247_a(displayNameIn, f2, 0, 0xffffff, false, matrix4f, bufferIn, false, 0, combinedLightIn);
-		matrixStackIn.pop();
-	    }
 	}
-	for (Direction dir : Direction.values()) {
-	    if (dir != Direction.UP && dir != Direction.DOWN
-		    && dir != tilemultimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
-		matrixStackIn.push();
-		matrixStackIn.translate(0.5 + dir.getXOffset() / 1.999, 0.65 + dir.getYOffset() / 2.0, 0.5 + dir.getZOffset() / 1.999);
-		switch (dir) {
-		case EAST:
-		    matrixStackIn.rotate(new Quaternion(0, -90, 0, true));
-		    break;
-		case NORTH:
-		    break;
-		case SOUTH:
-		    matrixStackIn.rotate(new Quaternion(0, 180, 0, true));
-		    break;
-		case WEST:
-		    matrixStackIn.rotate(new Quaternion(0, 90, 0, true));
-		    break;
-		default:
-		    break;
-		}
-		StringTextComponent displayNameIn = new StringTextComponent(
-			"Voltage: " + ChatFormatter.getDisplayShort(tilemultimeter.voltage, ElectricUnit.VOLTAGE, 2));
-		FontRenderer fontrenderer = Minecraft.getInstance().fontRenderer;
-		float scale = 0.0215f / (fontrenderer.getStringPropertyWidth(displayNameIn) / 32f);
-		matrixStackIn.scale(-scale, -scale, -scale);
-		Matrix4f matrix4f = matrixStackIn.getLast().getMatrix();
-		float f2 = -fontrenderer.getStringPropertyWidth(displayNameIn) / 2.0f;
-		fontrenderer.func_243247_a(displayNameIn, f2, 0, 0xffffff, false, matrix4f, bufferIn, false, 0, combinedLightIn);
-		matrixStackIn.pop();
-	    }
-	}
-	for (Direction dir : Direction.values()) {
-	    if (dir != Direction.UP && dir != Direction.DOWN
-		    && dir != tilemultimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
-		matrixStackIn.push();
-		matrixStackIn.translate(0.5 + dir.getXOffset() / 1.999, 0.45 + dir.getYOffset() / 2.0, 0.5 + dir.getZOffset() / 1.999);
-		switch (dir) {
-		case EAST:
-		    matrixStackIn.rotate(new Quaternion(0, -90, 0, true));
-		    break;
-		case NORTH:
-		    break;
-		case SOUTH:
-		    matrixStackIn.rotate(new Quaternion(0, 180, 0, true));
-		    break;
-		case WEST:
-		    matrixStackIn.rotate(new Quaternion(0, 90, 0, true));
-		    break;
-		default:
-		    break;
-		}
-		StringTextComponent displayNameIn = new StringTextComponent(
-			"Resistance: " + ChatFormatter.getDisplayShort(tilemultimeter.resistance, ElectricUnit.RESISTANCE, 2));
-		FontRenderer fontrenderer = Minecraft.getInstance().fontRenderer;
-		float scale = 0.0215f / (fontrenderer.getStringPropertyWidth(displayNameIn) / 32f);
-		matrixStackIn.scale(-scale, -scale, -scale);
-		Matrix4f matrix4f = matrixStackIn.getLast().getMatrix();
-		float f2 = -fontrenderer.getStringPropertyWidth(displayNameIn) / 2.0f;
-		fontrenderer.func_243247_a(displayNameIn, f2, 0, 0xffffff, false, matrix4f, bufferIn, false, 0, combinedLightIn);
-		matrixStackIn.pop();
-	    }
-	}
-	for (Direction dir : Direction.values()) {
-	    if (dir != Direction.UP && dir != Direction.DOWN
-		    && dir != tilemultimeter.<ComponentDirection>getComponent(ComponentType.Direction).getDirection()) {
-		matrixStackIn.push();
-		matrixStackIn.translate(0.5 + dir.getXOffset() / 1.999, 0.25 + dir.getYOffset() / 2.0, 0.5 + dir.getZOffset() / 1.999);
-		switch (dir) {
-		case EAST:
-		    matrixStackIn.rotate(new Quaternion(0, -90, 0, true));
-		    break;
-		case NORTH:
-		    break;
-		case SOUTH:
-		    matrixStackIn.rotate(new Quaternion(0, 180, 0, true));
-		    break;
-		case WEST:
-		    matrixStackIn.rotate(new Quaternion(0, 90, 0, true));
-		    break;
-		default:
-		    break;
-		}
-		StringTextComponent displayNameIn = new StringTextComponent(
-			"Loss: " + ChatFormatter.getDisplayShort(tilemultimeter.loss * 20, ElectricUnit.WATT, 2));
-		FontRenderer fontrenderer = Minecraft.getInstance().fontRenderer;
-		float scale = 0.0215f / (fontrenderer.getStringPropertyWidth(displayNameIn) / 32f);
-		matrixStackIn.scale(-scale, -scale, -scale);
-		Matrix4f matrix4f = matrixStackIn.getLast().getMatrix();
-		float f2 = -fontrenderer.getStringPropertyWidth(displayNameIn) / 2.0f;
-		fontrenderer.func_243247_a(displayNameIn, f2, 0, 0xffffff, false, matrix4f, bufferIn, false, 0, combinedLightIn);
-		matrixStackIn.pop();
-	    }
-	}
-    }
 
 }

@@ -1,0 +1,21 @@
+{
+  "type": "electrodynamics:reinforced_alloyer_recipe",
+  "ticks": 50,
+  "usagepertick": 50.0,
+  "iteminputs": {
+    "count": 2,
+    "0": {
+      "item": "minecraft:ender_eye",
+      "count": 4
+    },
+    "1": {
+      "tag": "forge:ingots/silver",
+      "count": 5
+    }
+  },
+  "output": {
+    "item": "electrodynamics:ingotsuperconductive",
+    "count": 4
+  },
+  "experience": 0.30000001192092896
+}

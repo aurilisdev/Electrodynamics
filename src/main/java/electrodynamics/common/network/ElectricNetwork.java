@@ -7,251 +7,447 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import electrodynamics.api.electricity.IElectrodynamic;
-import electrodynamics.api.network.conductor.IConductor;
+import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
+import electrodynamics.api.network.cable.type.IConductor;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.prefab.network.AbstractNetwork;
+import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraftforge.energy.CapabilityEnergy;
 
-public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> implements IElectrodynamic {
-    private double resistance;
-    private double energyLoss;
-    private double voltage = 0.0;
-    private double lastEnergyLoss;
-    private double lastVoltage = 0.0;
-    private ArrayList<TileEntity> currentProducers = new ArrayList<>();
-    private double transferBuffer = 0;
-    private double maxTransferBuffer;
+public class ElectricNetwork extends AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> implements ICapabilityElectrodynamic {
+	
+	public static final int MAXIMUM_OVERLOAD_PERIOD_TICKS = 20;
 
-    public double getLastEnergyLoss() {
-	return lastEnergyLoss;
-    }
+	private double resistance = 0;
+	private double energyLoss = 0;
+	private double voltage = 0.0;
+	private double lastEnergyLoss = 0;
+	private double lastVoltage = 0.0;
+	private HashSet<TileEntity> producersToIgnore = new HashSet<>();
+	private double transferBuffer = 0;
+	private double maxTransferBuffer = 0;
 
-    @Override
-    @Deprecated
-    public double getVoltage() {
-	return -1;
-    }
+	private double minimumVoltage = -1.0D;
 
-    public double getActiveVoltage() {
-	return lastVoltage;
-    }
+	private HashMap<TileEntity, HashMap<Direction, TransferPack>> lastTransfer = new HashMap<>();
+	private HashSet<TileEntity> noUsage = new HashSet<>();
 
-    public double getResistance() {
-	return resistance;
-    }
+	private boolean locked = false;
 
-    public ElectricNetwork() {
-	this(new HashSet<IConductor>());
-    }
+	private int ticksOverloaded = 0;
 
-    public ElectricNetwork(Collection<? extends IConductor> varCables) {
-	conductorSet.addAll(varCables);
-	NetworkRegistry.register(this);
-    }
+	// private long numTicks = 0;
 
-    public ElectricNetwork(Set<AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack>> networks) {
-	for (AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> net : networks) {
-	    if (net != null) {
-		conductorSet.addAll(net.conductorSet);
-		net.deregister();
-	    }
+	public double getLastEnergyLoss() {
+		return lastEnergyLoss;
 	}
-	refresh();
-	NetworkRegistry.register(this);
-    }
 
-    public ElectricNetwork(Set<ElectricNetwork> networks, boolean special) {
-	for (ElectricNetwork net : networks) {
-	    if (net != null) {
-		conductorSet.addAll(net.conductorSet);
-		net.deregister();
-	    }
+	@Override
+	public double getVoltage() {
+		return voltage;
 	}
-	refresh();
-	NetworkRegistry.register(this);
-    }
 
-    private TransferPack sendToReceivers(TransferPack maxTransfer, ArrayList<TileEntity> ignored, boolean debug) {
-	if (maxTransfer.getJoules() > 0 && maxTransfer.getVoltage() > 0) {
-	    Set<TileEntity> availableAcceptors = getEnergyAcceptors();
-	    double joulesSent = 0;
-	    availableAcceptors.removeAll(ignored);
-	    if (!availableAcceptors.isEmpty()) {
+	public double getActiveVoltage() {
+		return lastVoltage;
+	}
+
+	public double getResistance() {
+		return resistance;
+	}
+
+	public ElectricNetwork() {
+		this(new HashSet<IConductor>());
+	}
+
+	public ElectricNetwork(Collection<? extends IConductor> varCables) {
+		conductorSet.addAll(varCables);
+		NetworkRegistry.register(this);
+	}
+
+	public ElectricNetwork(Set<AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack>> networks) {
+		for (AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> net : networks) {
+			if (net != null) {
+				conductorSet.addAll(net.conductorSet);
+				net.deregister();
+			}
+		}
+		refresh();
+		NetworkRegistry.register(this);
+	}
+
+	public ElectricNetwork(Set<ElectricNetwork> networks, boolean special) {
+		for (ElectricNetwork net : networks) {
+			if (net != null) {
+				conductorSet.addAll(net.conductorSet);
+				net.deregister();
+			}
+		}
+		refresh();
+		NetworkRegistry.register(this);
+	}
+
+	@Override
+	public void refresh() {
+		ticksOverloaded = 0;
+		resistance = 0;
+		energyLoss = 0;
+		voltage = 0.0;
+		lastEnergyLoss = 0;
+		lastVoltage = 0.0;
+		producersToIgnore.clear();
+		transferBuffer = 0;
+		maxTransferBuffer = 0;
+
+		minimumVoltage = -1;
+
+		lastTransfer.clear();
+		noUsage.clear();
+
+		super.refresh();
+	}
+
+	private TransferPack sendToReceivers(TransferPack maxTransfer, ArrayList<TileEntity> ignored, boolean debug) {
+		if (maxTransfer.getJoules() <= 0 || maxTransfer.getVoltage() <= 0) {
+			return TransferPack.EMPTY;
+		}
+		Set<TileEntity> availableAcceptors = getEnergyAcceptors();
+		double joulesSent = 0;
+		availableAcceptors.removeAll(ignored);
+		availableAcceptors.removeAll(noUsage);
+
+		if (availableAcceptors.isEmpty()) {
+			return TransferPack.EMPTY;
+		}
+
 		Iterator<TileEntity> it = availableAcceptors.iterator();
 		double totalUsage = 0;
 		HashMap<TileEntity, Double> usage = new HashMap<>();
 		while (it.hasNext()) {
-		    TileEntity receiver = it.next();
-		    double localUsage = 0;
-		    if (acceptorInputMap.containsKey(receiver)) {
-			boolean shouldRemove = true;
-			for (Direction connection : acceptorInputMap.get(receiver)) {
-			    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection,
-				    TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()), true);
-			    if (pack.getJoules() != 0) {
-				shouldRemove = false;
-				totalUsage += pack.getJoules();
-				localUsage += pack.getJoules();
-				break;
-			    }
+			TileEntity receiver = it.next();
+			double localUsage = 0;
+			if (acceptorInputMap.containsKey(receiver)) {
+				boolean shouldRemove = true;
+				for (Direction connection : acceptorInputMap.get(receiver)) {
+					TransferPack pack = ElectricityUtils.receivePower(receiver, connection, TransferPack.joulesVoltage(maxTransfer.getJoules(), maxTransfer.getVoltage()), true);
+					if (pack.getJoules() != 0) {
+						shouldRemove = false;
+						totalUsage += pack.getJoules();
+						localUsage += pack.getJoules();
+						break;
+					}
+				}
+				if (shouldRemove) {
+					it.remove();
+				}
 			}
-			if (shouldRemove) {
-			    it.remove();
-			}
-		    }
-		    usage.put(receiver, localUsage);
+			usage.put(receiver, localUsage);
 		}
 		for (TileEntity receiver : availableAcceptors) {
-		    TransferPack dedicated = TransferPack.joulesVoltage(maxTransfer.getJoules() * (usage.get(receiver) / totalUsage),
-			    maxTransfer.getVoltage());
-		    if (acceptorInputMap.containsKey(receiver)) {
-			TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(),
-				maxTransfer.getVoltage());
-			for (Direction connection : acceptorInputMap.get(receiver)) {
-			    TransferPack pack = ElectricityUtilities.receivePower(receiver, connection, perConnection, debug);
-			    joulesSent += pack.getJoules();
-			    if (!debug) {
-				transmittedThisTick += pack.getJoules();
-			    }
+			TransferPack dedicated = TransferPack.joulesVoltage(maxTransfer.getJoules() * (usage.get(receiver) / totalUsage), maxTransfer.getVoltage());
+			HashMap<Direction, TransferPack> perConnectionMap;
+			if (acceptorInputMap.containsKey(receiver)) {
+				TransferPack perConnection = TransferPack.joulesVoltage(dedicated.getJoules() / acceptorInputMap.get(receiver).size(), maxTransfer.getVoltage());
+				perConnectionMap = new HashMap<>();
+				for (Direction connection : acceptorInputMap.get(receiver)) {
+					TransferPack pack = ElectricityUtils.receivePower(receiver, connection, perConnection, debug);
+					perConnectionMap.put(connection, pack);
+					joulesSent += pack.getJoules();
+					if (!debug) {
+						transmittedThisTick += pack.getJoules();
+					}
+				}
+				lastTransfer.put(receiver, perConnectionMap);
 			}
-		    }
 		}
-	    }
-	    return TransferPack.joulesVoltage(Math.min(maxTransfer.getJoules(), joulesSent), maxTransfer.getVoltage());
+		return TransferPack.joulesVoltage(Math.min(maxTransfer.getJoules(), joulesSent), maxTransfer.getVoltage());
 	}
-	return TransferPack.EMPTY;
-    }
 
-    public Set<TileEntity> getEnergyAcceptors() {
-	Set<TileEntity> toReturn = new HashSet<>();
-	toReturn.addAll(acceptorSet);
-	return toReturn;
-    }
+	public Set<TileEntity> getEnergyAcceptors() {
+		return new HashSet<>(acceptorSet);
+	}
 
-    private boolean checkForOverload() {
-	if (networkMaxTransfer - transmittedThisTick <= 0 && voltage > 0) {
-	    HashSet<SubtypeWire> checkList = new HashSet<>();
-	    for (SubtypeWire type : SubtypeWire.values()) {
-		if (type != SubtypeWire.superconductive && type != SubtypeWire.insulatedsuperconductive
-			&& type != SubtypeWire.logisticssuperconductive && type.capacity <= transmittedLastTick / voltage * 20
-			&& type.capacity <= transmittedThisTick / voltage * 20) {
-		    checkList.add(type);
+	private boolean checkForOverload() {
+
+		if (voltage <= 0 || networkMaxTransfer * voltage - transmittedThisTick * 20 > 0) {
+			ticksOverloaded = 0;
+			return false;
 		}
-	    }
-	    for (SubtypeWire index : checkList) {
-		for (IConductor conductor : conductorTypeMap.get(index)) {
-		    Scheduler.schedule(1, conductor::destroyViolently);
+
+		HashSet<SubtypeWire> checkList = new HashSet<>();
+		for (SubtypeWire type : SubtypeWire.values()) {
+			if (type.conductor.ampacity <= transmittedLastTick / voltage * 20 && type.conductor.ampacity <= transmittedThisTick / voltage * 20) {
+				checkList.add(type);
+			}
 		}
-	    }
-	    return true;
-	}
-	return false;
-    }
 
-    @Override
-    public void updateStatistics(IConductor cable) {
-	super.updateStatistics(cable);
-	resistance += cable.getWireType().resistance;
-    }
+		if (checkList.isEmpty()) {
 
-    @Override
-    public void updateStatistics() {
-	resistance = 0;
-	super.updateStatistics();
-    }
+			ticksOverloaded = 0;
+			return false;
 
-    public void addProducer(TileEntity tile, double d) {
-	currentProducers.add(tile);
-	voltage = Math.max(voltage, d);
-    }
-
-    @Override
-    public void tick() {
-	if ((int) voltage != 0 && voltage > 0) {
-	    double watts = transferBuffer * 20;
-	    double loss = Math.min(transferBuffer, watts * watts * resistance / (voltage * voltage) / 20.0);
-	    transferBuffer -= loss;
-	    energyLoss += loss;
-	    transmittedThisTick += loss;
-	    TransferPack send = TransferPack.joulesVoltage(transferBuffer, voltage);
-	    transferBuffer -= sendToReceivers(send, currentProducers, false).getJoules();
-	    checkForOverload();
-	}
-	super.tick();
-	lastVoltage = voltage;
-	voltage = 0;
-	lastEnergyLoss = energyLoss;
-	energyLoss = 0;
-	currentProducers.clear();
-	maxTransferBuffer = 0;
-	for (TileEntity tile : acceptorSet) {
-	    if (acceptorInputMap.containsKey(tile)) {
-		for (Direction connection : acceptorInputMap.get(tile)) {
-		    TransferPack pack = ElectricityUtilities.receivePower(tile, connection, TransferPack.joulesVoltage(Double.MAX_VALUE, voltage),
-			    true);
-		    if (pack.getJoules() != 0) {
-			maxTransferBuffer += pack.getJoules();
-			break;
-		    }
 		}
-	    }
+
+		ticksOverloaded++;
+
+		if (ticksOverloaded < MAXIMUM_OVERLOAD_PERIOD_TICKS) {
+			return true;
+		}
+
+		for (SubtypeWire index : checkList) {
+			for (IConductor conductor : conductorTypeMap.get(index)) {
+				Scheduler.schedule(1, conductor::destroyViolently);
+			}
+		}
+		return true;
+
 	}
-	transferBuffer = Math.max(0, Math.min(maxTransferBuffer, transferBuffer) * 0.75);
-    }
 
-    @Override
-    public boolean isConductor(TileEntity tile) {
-	return ElectricityUtilities.isConductor(tile);
-    }
+	@Override
+	public void updateConductorStatistics(IConductor cable) {
+		super.updateConductorStatistics(cable);
+		resistance += cable.getWireType().resistance;
 
-    @Override
-    public boolean isAcceptor(TileEntity acceptor, Direction orientation) {
-	return ElectricityUtilities.isElectricReceiver(acceptor);
-    }
+	}
 
-    @Override
-    public AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> createInstance() {
-	return new ElectricNetwork();
-    }
+	@Override
+	public void updateRecieverStatistics(TileEntity reciever, Direction dir) {
+		reciever.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).ifPresent(cap -> {
+			if (cap.getVoltage() < 0) {
+				return;
+			}
 
-    @Override
-    public AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> createInstanceConductor(Set<IConductor> conductors) {
-	return new ElectricNetwork(conductors);
-    }
+			if (minimumVoltage <= 0) {
+				minimumVoltage = cap.getVoltage();
+			} else if (cap.getVoltage() < minimumVoltage) {
+				minimumVoltage = cap.getVoltage();
+			}
+		});
+	}
 
-    @Override
-    public AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> createInstance(
-	    Set<AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack>> networks) {
-	return new ElectricNetwork(networks);
+	@Override
+	public void updateStatistics() {
+		resistance = 0;
+		super.updateStatistics();
+	}
 
-    }
+	public void addProducer(TileEntity tile, double d, boolean isEnergyReceiver) {
+		if (!isEnergyReceiver) {
+			producersToIgnore.add(tile);
+		}
+		voltage = Math.max(voltage, d);
+	}
 
-    @Override
-    public SubtypeWire[] getConductorTypes() {
-	return SubtypeWire.values();
-    }
+	@Override
+	public void tick() {
+		super.tick();
+		/*
+		 * if (conductorSet.size() > 10) { Electrodynamics.LOGGER.info("Beginning of tick"); Electrodynamics.LOGGER.info("ticks " + numTicks); Electrodynamics.LOGGER.info("length " + conductorSet.size()); Electrodynamics.LOGGER.info("voltage " + voltage); Electrodynamics.LOGGER.info("trans " + transferBuffer); Electrodynamics.LOGGER.info("max trans " + maxTransferBuffer);
+		 * 
+		 * }
+		 */
+		lastTransfer.clear();
+		noUsage.clear();
+		if (maxTransferBuffer > 0) {
+			ArrayList<TileEntity> producersList = new ArrayList<>(producersToIgnore);
+			if ((int) voltage != 0 && voltage > 0 && transferBuffer > 0) {
+				if (resistance > 0) {
+					double bufferAsWatts = transferBuffer * 20.0; // buffer as watts
+					double maxWatts = (-voltage * voltage + voltage * Math.sqrt(voltage * voltage + 4.0 * bufferAsWatts * resistance)) / (2.0 * resistance);
+					double maxPerTick = maxWatts / 20.0;
+					// above is power as watts when powerSend + powerLossToWires = m
+					TransferPack send = TransferPack.joulesVoltage(maxPerTick, voltage);
+					double sent = sendToReceivers(send, producersList, false).getJoules();
+					double lossPerTick = send.getAmps() * send.getAmps() * resistance / 20.0;
+					transferBuffer -= sent + lossPerTick;
+					energyLoss += lossPerTick;
+					transmittedThisTick += lossPerTick;
+					checkForOverload();
+				} else {
+					transferBuffer -= sendToReceivers(TransferPack.joulesVoltage(transferBuffer, voltage), producersList, false).getJoules();
+				}
+			}
+		} else {
+			transferBuffer = 0;
+		}
+		lastVoltage = voltage;
+		if (transferBuffer <= 0) {
+			voltage = 0;
+		}
+		lastEnergyLoss = energyLoss;
+		energyLoss = 0;
 
-    @Override
-    public boolean canConnect(TileEntity acceptor, Direction orientation) {
-	return ElectricityUtilities.canInputPower(acceptor, orientation.getOpposite());
-    }
+		maxTransferBuffer = 0;
+		producersToIgnore.clear();
 
-    @Override
-    public double getJoulesStored() {
-	return transferBuffer;
-    }
+		maxTransferBuffer = getConnectedLoad(new LoadProfile(TransferPack.joulesVoltage(transmittedLastTick, lastVoltage), TransferPack.joulesVoltage(transmittedLastTick, lastVoltage)), Direction.UP).getJoules();
 
-    @Override
-    public void setJoulesStored(double joules) {
-	transferBuffer = joules;
-    }
+		Iterator<IConductor> it = conductorSet.iterator();
+		boolean broken = false;
+		while (it.hasNext()) {
+			IConductor conductor = it.next();
+			if (conductor instanceof TileEntity) {
+				TileEntity entity = (TileEntity) conductor;
+				if(entity.isRemoved() || conductor.getNetwork() != this) {
+					broken = true;
+					break;
+				}
+			}
+		}
+		if (broken) {
+			refresh();
+		}
+		if (getSize() == 0) {
+			deregister();
+		}
+		// Electrodynamics.LOGGER.info("");
+		// Electrodynamics.LOGGER.info("End of tick");
+		// Electrodynamics.LOGGER.info("length " + conductorSet.size());
+		// Electrodynamics.LOGGER.info("voltage " + voltage);
+		// Electrodynamics.LOGGER.info("trans " + transferBuffer);
+		// Electrodynamics.LOGGER.info("max trans " + maxTransferBuffer);
+		// Electrodynamics.LOGGER.info("");
+		/*
+		 * if (conductorSet.size() > 10) { Electrodynamics.LOGGER.info(""); numTicks++;
+		 * 
+		 * }
+		 */
 
-    @Override
-    public double getMaxJoulesStored() {
-	return maxTransferBuffer;
-    }
+	}
+
+	@Override
+	public boolean isConductor(TileEntity tile, IConductor requesterCable) {
+		return ElectricityUtils.isConductor(tile, requesterCable);
+	}
+
+	@Override
+	public boolean isConductorClass(TileEntity tile) {
+		return tile instanceof IConductor;
+	}
+
+	@Override
+	public boolean isAcceptor(TileEntity acceptor, Direction orientation) {
+		return ElectricityUtils.isElectricReceiver(acceptor);
+	}
+
+	@Override
+	public AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> createInstance() {
+		return new ElectricNetwork();
+	}
+
+	@Override
+	public AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> createInstanceConductor(Set<IConductor> conductors) {
+		return new ElectricNetwork(conductors);
+	}
+
+	@Override
+	public AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack> createInstance(Set<AbstractNetwork<IConductor, SubtypeWire, TileEntity, TransferPack>> networks) {
+		return new ElectricNetwork(networks);
+
+	}
+
+	@Override
+	public SubtypeWire[] getConductorTypes() {
+		return SubtypeWire.values();
+	}
+
+	@Override
+	public boolean canConnect(TileEntity acceptor, Direction orientation) {
+		return ElectricityUtils.canInputPower(acceptor, orientation.getOpposite());
+	}
+
+	@Override
+	public double getJoulesStored() {
+		return transferBuffer;
+	}
+
+	@Override
+	public void setJoulesStored(double joules) {
+		transferBuffer = joules;
+	}
+
+	@Override
+	public double getMaxJoulesStored() {
+		return maxTransferBuffer;
+	}
+
+	@Override
+	public void onChange() {
+
+	}
+
+	@Override
+	public double getMinimumVoltage() {
+		return minimumVoltage;
+	}
+
+	@Override
+	public double getAmpacity() {
+		return networkMaxTransfer;
+	}
+
+	@Override
+	public TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
+
+		if (locked) {
+			return TransferPack.EMPTY;
+		}
+
+		locked = true;
+
+		TransferPack connectedLoad = TransferPack.joulesVoltage(0, 0);
+
+		TransferPack capLoad;
+
+		ArrayList<TileEntity> load = new ArrayList<>(acceptorSet);
+
+		load.removeAll(producersToIgnore);
+		HashMap<Direction, TransferPack> lastPerTile;
+
+		for (TileEntity tile : load) {
+
+			lastPerTile = lastTransfer.getOrDefault(load, new HashMap<>());
+
+			boolean noUsage = true;
+
+			for (Direction direction : acceptorInputMap.getOrDefault(tile, new HashSet<>())) {
+
+				final LoadProfile profile = new LoadProfile(lastPerTile.getOrDefault(lastPerTile, TransferPack.EMPTY), loadProfile.maximumAvailable);
+
+				capLoad = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, direction).map(cap -> cap.getConnectedLoad(profile, direction)).orElseGet(() -> tile.getCapability(CapabilityEnergy.ENERGY, dir).map(cap -> TransferPack.joulesVoltage(cap.receiveEnergy(Integer.MAX_VALUE, true), ElectrodynamicsCapabilities.DEFAULT_VOLTAGE)).orElse(TransferPack.EMPTY));
+				if (capLoad.getJoules() != 0) {
+
+					noUsage = false;
+
+					connectedLoad = TransferPack.joulesVoltage(connectedLoad.getJoules() + capLoad.getJoules(), Math.max(connectedLoad.getVoltage(), capLoad.getVoltage()));
+					break;
+
+				}
+
+			}
+
+			if (noUsage) {
+				this.noUsage.add(tile);
+			}
+
+		}
+
+		locked = false;
+
+		return connectedLoad;
+	}
+
+	@Override
+	public boolean isEnergyReceiver() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnergyProducer() {
+		return true;
+	}
 }

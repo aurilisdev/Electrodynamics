@@ -1,0 +1,39 @@
+{
+  "parent": "electrodynamics:coalgenerator",
+  "display": {
+    "icon": {
+      "item": "electrodynamics:wiremill"
+    },
+    "title": {
+      "color": "gold",
+      "translate": "advancement.electrodynamics.wiremill.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.wiremill.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "rewards": {
+    "experience": 20
+  },
+  "criteria": {
+    "HasMill": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "electrodynamics:wiremill"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasMill"
+    ]
+  ]
+}

@@ -1,20 +1,18 @@
 package electrodynamics.client.render.entity;
 
-import java.util.Random;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.client.ClientRegister;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
-import net.minecraft.block.Blocks;
-import net.minecraft.client.Minecraft;
+import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.AtlasTexture;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
@@ -23,63 +21,55 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class RenderMetalRod extends EntityRenderer<EntityMetalRod> {
 
-    public RenderMetalRod(EntityRendererManager renderManager) {
-	super(renderManager);
-    }
+	public static final float[] STEEL_COLOR = { 134.0F / 255.0F, 134.0F / 255.0F, 134.0F / 255.0F };
+	public static final float[] STAINLESS_COLOR = { 211.0F / 255.0F, 218.0F / 255.0F, 218.0F / 255.0F };
+	public static final float[] HSLA_COLOR = { 191.0F / 255.0F, 211.0F / 255.0F, 228.0F / 255.0F };
 
-    @Override
-    public void render(EntityMetalRod entity, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn,
-	    int packedLightIn) {
+	public static final AxisAlignedBB ROD = new AxisAlignedBB(0.0625, 0.46875, 0.46875, 0.9375, 0.53125, 0.53125);
 
-	matrixStackIn.push();
+	public RenderMetalRod(EntityRendererManager renderManager) {
+		super(renderManager);
+	}
 
-	// not gonna split hairs immerisve engineering gets credit for this
-	double yaw = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks - 90.0F;
-	double pitch = entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks;
+	@Override
+	public void render(EntityMetalRod entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer bufferIn, int packedLightIn) {
 
-	matrixStackIn.rotate(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), (float) yaw, true));
-	matrixStackIn.rotate(new Quaternion(new Vector3f(0.0F, 0.0F, 1.0F), (float) pitch, true));
+		matrixStack.pushPose();
 
-	matrixStackIn.translate(-0.5, -0.5, -0.5);
+		TextureAtlasSprite sprite = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_WHITE);
 
-	switch (entity.getNumber()) {
-	case 0:
-	    IBakedModel steelrod = Minecraft.getInstance().getModelManager().getModel(electrodynamics.client.ClientRegister.MODEL_RODSTEEL);
-	    Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModelFlat(entity.world, steelrod,
-		    Blocks.AIR.getDefaultState(), entity.getPosition(), matrixStackIn, bufferIn.getBuffer(RenderType.getSolid()), false,
-		    entity.world.rand, new Random().nextLong(), 0);
-	    break;
-	case 1:
-	    IBakedModel stainlessSteelrod = Minecraft.getInstance().getModelManager()
-		    .getModel(electrodynamics.client.ClientRegister.MODEL_RODSTAINLESSSTEEL);
-	    Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModelFlat(entity.world, stainlessSteelrod,
-		    Blocks.AIR.getDefaultState(), entity.getPosition(), matrixStackIn, bufferIn.getBuffer(RenderType.getSolid()), false,
-		    entity.world.rand, new Random().nextLong(), 0);
-	    break;
-	case 2:
-	    IBakedModel hslaSteelrod = Minecraft.getInstance().getModelManager().getModel(electrodynamics.client.ClientRegister.MODEL_RODHSLASTEEL);
-	    Minecraft.getInstance().getBlockRendererDispatcher().getBlockModelRenderer().renderModelFlat(entity.world, hslaSteelrod,
-		    Blocks.AIR.getDefaultState(), entity.getPosition(), matrixStackIn, bufferIn.getBuffer(RenderType.getSolid()), false,
-		    entity.world.rand, new Random().nextLong(), 0);
+		double yaw = entity.yRotO + (entity.yRot - entity.yRotO) * partialTicks - 90.0F;// y lerp - 90
+		double pitch = entity.xRotO + (entity.xRot - entity.xRotO) * partialTicks - 90; // x lerp - 90
+
+		matrixStack.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), (float) yaw, true));
+		matrixStack.mulPose(new Quaternion(new Vector3f(0.0F, 0.0F, 1.0F), (float) pitch, true));
+		matrixStack.mulPose(new Quaternion(new Vector3f(0.0F, 0.0F, 1.0F), 90.0F, true));
+		
+		matrixStack.translate(-0.5, -0.5, -0.5);
+
+		float[] color = getColor(entity.getNumber());
+
+		RenderingUtils.renderFilledBoxNoOverlay(matrixStack, bufferIn.getBuffer(RenderType.solid()), ROD, color[0], color[1], color[2], 1.0F, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), packedLightIn);
+
+		matrixStack.popPose();
+	}
+
+	@Override
+	public ResourceLocation getTextureLocation(EntityMetalRod entity) {
+
+		return AtlasTexture.LOCATION_BLOCKS;
 
 	}
 
-	matrixStackIn.pop();
-    }
-
-    @Override
-    public ResourceLocation getEntityTexture(EntityMetalRod entity) {
-
-	switch (entity.getNumber()) {
-	case 0:
-	    return ClientRegister.TEXTURE_RODSTEEL;
-	case 1:
-	    return ClientRegister.TEXTURE_RODSTAINLESSSTEEL;
-	case 2:
-	    return ClientRegister.TEXTURE_RODHSLASTEEL;
-	default:
-	    return AtlasTexture.LOCATION_BLOCKS_TEXTURE;
+	public static float[] getColor(int number) {
+		switch (number) {
+		case 2:
+			return HSLA_COLOR;
+		case 1:
+			return STAINLESS_COLOR;
+		default:
+			return STEEL_COLOR;
+		}
 	}
 
-    }
 }

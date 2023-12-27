@@ -1,22 +1,40 @@
 package electrodynamics.common.item.subtype;
 
 import electrodynamics.api.ISubtype;
+import electrodynamics.common.tags.ElectrodynamicsTags;
+import net.minecraft.item.Item;
+import net.minecraftforge.common.Tags.IOptionalNamedTag;
 
 public enum SubtypeOxide implements ISubtype {
-    vanadium, disulfur, trisulfur, sulfurdichloride, thionylchloride, calciumcarbonate, chromite, dititanium, sodiumcarbonate, chromiumdisilicide;
+	vanadium(ElectrodynamicsTags.Items.OXIDE_VANADIUM),
+	disulfur(ElectrodynamicsTags.Items.OXIDE_DISULFUR),
+	trisulfur(ElectrodynamicsTags.Items.OXIDE_TRISULFUR),
+	sulfurdichloride(ElectrodynamicsTags.Items.OXIDE_SULFURDICHLORIDE),
+	thionylchloride(ElectrodynamicsTags.Items.OXIDE_THIONYLCHLORIDE),
+	calciumcarbonate(ElectrodynamicsTags.Items.OXIDE_CALCIUMCARBONATE),
+	chromite(ElectrodynamicsTags.Items.OXIDE_CHROMIUM),
+	dititanium(ElectrodynamicsTags.Items.OXIDE_DITITANIUM),
+	sodiumcarbonate(ElectrodynamicsTags.Items.OXIDE_SODIUMCARBONATE),
+	chromiumdisilicide(ElectrodynamicsTags.Items.OXIDE_CHROMIUMDISILICIDE);
 
-    @Override
-    public String tag() {
-	return "oxide" + name();
-    }
+	public final IOptionalNamedTag<Item> tag;
 
-    @Override
-    public String forgeTag() {
-	return "oxide/" + name();
-    }
+	SubtypeOxide(IOptionalNamedTag<Item> tag) {
+		this.tag = tag;
+	}
 
-    @Override
-    public boolean isItem() {
-	return true;
-    }
+	@Override
+	public String tag() {
+		return "oxide" + name();
+	}
+
+	@Override
+	public String forgeTag() {
+		return "oxide/" + name();
+	}
+
+	@Override
+	public boolean isItem() {
+		return true;
+	}
 }

@@ -1,13 +1,15 @@
 package electrodynamics.common.fluid.types;
 
-import electrodynamics.DeferredRegisters;
 import electrodynamics.api.References;
 import electrodynamics.common.fluid.FluidNonPlaceable;
+import electrodynamics.registers.ElectrodynamicsItems;
 
 public class FluidEthanol extends FluidNonPlaceable {
 
-    public FluidEthanol() {
-	super(() -> DeferredRegisters.ITEM_CANISTERREINFORCED, References.ID, "ethanol", -428574419);
-    }
+	public static final String FORGE_TAG = "ethanol";
+
+	public FluidEthanol() {
+		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED, References.ID, "ethanol", -428574419);
+	}
 
 }

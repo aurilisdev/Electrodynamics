@@ -5,7 +5,7 @@
 	"texture_size": [64, 64],
 	"textures": {
 		"0": "electrodynamics:model/downgradetransformer",
-		"particle": "electrodynamics:model/downgradetransformer"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

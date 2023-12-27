@@ -1,28 +1,54 @@
 package electrodynamics.api.electricity.formatting;
 
-public enum MeasurementUnit {
-    MICRO("Micro", "mi", 1.0E-6D), MILLI("Milli", "m", 0.001D), KILO("Kilo", "k", 1000.0D), MEGA("Mega", "M", 1000000.0D);
+import electrodynamics.prefab.utilities.ElectroTextUtils;
+import net.minecraft.util.text.IFormattableTextComponent;
 
-    protected double value;
+public enum MeasurementUnit implements IMeasurementUnit {
 
-    protected String symbol;
-    protected String name;
+	PICO(ElectroTextUtils.gui("measurementunit.pico.name"), ElectroTextUtils.gui("measurementunit.pico.symbol"), 1.0E-12D),
+	NANO(ElectroTextUtils.gui("measurementunit.nano.name"), ElectroTextUtils.gui("measurementunit.nano.symbol"), 1.0E-9D),
+	MICRO(ElectroTextUtils.gui("measurementunit.micro.name"), ElectroTextUtils.gui("measurementunit.micro.symbol"), 1.0E-6D),
+	MILLI(ElectroTextUtils.gui("measurementunit.milli.name"), ElectroTextUtils.gui("measurementunit.milli.symbol"), 1.0E-3D),
+	NONE(ElectroTextUtils.gui("measurementunit.none.name"), ElectroTextUtils.gui("measurementunit.none.symbol"), 1.0),
+	KILO(ElectroTextUtils.gui("measurementunit.kilo.name"), ElectroTextUtils.gui("measurementunit.kilo.symbol"), 1.0E3D),
+	MEGA(ElectroTextUtils.gui("measurementunit.mega.name"), ElectroTextUtils.gui("measurementunit.mega.symbol"), 1.0E6D),
+	GIGA(ElectroTextUtils.gui("measurementunit.giga.name"), ElectroTextUtils.gui("measurementunit.giga.symbol"), 1.0E9D);
 
-    MeasurementUnit(String name, String symbol, double value) {
-	this.name = name;
-	this.symbol = symbol;
-	this.value = value;
-    }
+	private final double value;
 
-    public String getName(boolean isSymbol) {
-	if (isSymbol) {
-	    return symbol;
+	private final IFormattableTextComponent symbol;
+	private final IFormattableTextComponent name;
+
+	private MeasurementUnit(IFormattableTextComponent name, IFormattableTextComponent symbol, double value) {
+		this.name = name;
+		this.symbol = symbol;
+		this.value = value;
 	}
 
-	return name;
-    }
+	public IFormattableTextComponent getName(boolean isSymbol) {
+		if (isSymbol) {
+			return symbol;
+		}
 
-    public double process(double value) {
-	return value / this.value;
-    }
+		return name;
+	}
+
+	public double process(double value) {
+		return value / this.value;
+	}
+
+	@Override
+	public double getValue() {
+		return value;
+	}
+
+	@Override
+	public IFormattableTextComponent getSymbol() {
+		return symbol;
+	}
+
+	@Override
+	public IFormattableTextComponent getName() {
+		return name;
+	}
 }

@@ -1,9 +1,0 @@
-{
-	"type": "minecraft:blasting",
-	"ingredient": {
-		"item": "electrodynamics:oresilver"
-	},
-	"result": "electrodynamics:ingotsilver",
-	"experience": 1.0,
-	"cookingtime": 100
-}

@@ -8,6 +8,6 @@
 	],
 	"textures": {
 		"0": "electrodynamics:model/batterybox3",
-		"particle": "electrodynamics:model/batterybox3"
+		"particle": "electrodynamics:block/steelcasing"
 	}
 }

@@ -1,0 +1,39 @@
+{
+  "display": {
+    "icon": {
+      "item": "electrodynamics:downgradetransformer"
+    },
+    "title": {
+      "color": "aqua",
+      "translate": "advancement.electrodynamics.root.title"
+    },
+    "description": {
+      "translate": "advancement.electrodynamics.root.desc"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false,
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png"
+  },
+  "rewards": {
+    "experience": 10
+  },
+  "criteria": {
+    "HasCraftingTable": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "minecraft:crafting_table"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "HasCraftingTable"
+    ]
+  ]
+}

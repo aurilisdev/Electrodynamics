@@ -1,61 +1,76 @@
 package electrodynamics.common.recipe.categories.fluiditem2fluid;
 
+import java.util.Arrays;
 import java.util.List;
 
-import electrodynamics.common.recipe.ElectrodynamicsRecipe;
+import com.mojang.datafixers.util.Pair;
+
+import electrodynamics.common.recipe.recipeutils.AbstractMaterialRecipe;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.recipe.recipeutils.IFluidRecipe;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.common.recipe.recipeutils.ProbableFluid;
+import electrodynamics.common.recipe.recipeutils.ProbableItem;
+import electrodynamics.prefab.tile.components.IComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
+import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.utils.AbstractFluidHandler;
-import net.minecraft.fluid.Fluid;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
 
-public abstract class FluidItem2FluidRecipe extends ElectrodynamicsRecipe implements IFluidRecipe {
+public abstract class FluidItem2FluidRecipe extends AbstractMaterialRecipe {
 
-    private FluidIngredient INPUT_FLUID;
-    private CountableIngredient INPUT_ITEM;
+	private FluidIngredient[] fluidIngredients;
+	private CountableIngredient[] ingredients;
+	private FluidStack outputStack;
 
-    private FluidStack OUTPUT_FLUID;
-
-    protected FluidItem2FluidRecipe(ResourceLocation recipeID, CountableIngredient inputItem, FluidIngredient inputFluid, FluidStack outputFluid) {
-	super(recipeID);
-	INPUT_ITEM = inputItem;
-	INPUT_FLUID = inputFluid;
-	OUTPUT_FLUID = outputFluid;
-    }
-
-    @Override
-    public boolean matchesRecipe(ComponentProcessor pr) {
-
-	if (INPUT_ITEM.testStack(pr.getInput())) {
-	    AbstractFluidHandler<?> fluid = pr.getHolder().getComponent(ComponentType.FluidHandler);
-	    List<Fluid> inputFluids = fluid.getValidInputFluids();
-	    for (Fluid inputFluid : inputFluids) {
-		FluidTank tank = fluid.getTankFromFluid(inputFluid, true);
-		if (tank != null && tank.getFluid().getFluid().isEquivalentTo(INPUT_FLUID.getFluidStack().getFluid())
-			&& tank.getFluidAmount() >= INPUT_FLUID.getFluidStack().getAmount()) {
-		    return true;
-		}
-	    }
-
+	public FluidItem2FluidRecipe(ResourceLocation recipeID, CountableIngredient[] inputItems, FluidIngredient[] inputFluids, FluidStack outputFluid, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
+		super(recipeID, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts);
+		ingredients = inputItems;
+		fluidIngredients = inputFluids;
+		outputStack = outputFluid;
 	}
-	return false;
-    }
 
-    @Override
-    public FluidStack getFluidRecipeOutput() {
-	return OUTPUT_FLUID;
-    }
+	@Override
+	public boolean matchesRecipe(ComponentProcessor pr) {
 
-    @Override
-    public NonNullList<Ingredient> getIngredients() {
-	return NonNullList.from(null, INPUT_ITEM, INPUT_FLUID);
-    }
+		Pair<List<Integer>, Boolean> itemPair = areItemsValid(getCountedIngredients(), ((ComponentInventory) pr.getHolder().getComponent(IComponentType.Inventory)).getInputsForProcessor(pr.getProcessorNumber()));
+		if (Boolean.TRUE.equals(itemPair.getSecond())) {
+			Pair<List<Integer>, Boolean> fluidPair = areFluidsValid(getFluidIngredients(), pr.getHolder().<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks());
+			if (Boolean.TRUE.equals(fluidPair.getSecond())) {
+				setItemArrangement(pr.getProcessorNumber(), itemPair.getFirst());
+				setFluidArrangement(fluidPair.getFirst());
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public FluidStack getFluidRecipeOutput() {
+		return outputStack;
+	}
+
+	@Override
+	public NonNullList<Ingredient> getIngredients() {
+		NonNullList<Ingredient> list = NonNullList.create();
+		for (Ingredient ing : ingredients) {
+			list.add(ing);
+		}
+		for (Ingredient ing : fluidIngredients) {
+			list.add(ing);
+		}
+		return list;
+	}
+
+	@Override
+	public List<FluidIngredient> getFluidIngredients() {
+		return Arrays.asList(fluidIngredients);
+	}
+
+	public List<CountableIngredient> getCountedIngredients() {
+		return Arrays.asList(ingredients);
+	}
 
 }

@@ -1,0 +1,17 @@
+{
+  "type": "electrodynamics:chemical_crystallizer_recipe",
+  "ticks": 200,
+  "usagepertick": 800.0,
+  "fluidinputs": {
+    "count": 1,
+    "0": {
+      "tag": "minecraft:lava",
+      "amount": 1000
+    }
+  },
+  "output": {
+    "item": "minecraft:obsidian",
+    "count": 1
+  },
+  "experience": 0.0
+}

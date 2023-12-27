@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "BGB",
+    "RWR",
+    "ICI"
+  ],
+  "key": {
+    "B": {
+      "item": "minecraft:blue_stained_glass_pane"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
+    },
+    "C": {
+      "tag": "forge:ingots/copper"
+    },
+    "G": {
+      "item": "minecraft:gray_stained_glass_pane"
+    },
+    "W": {
+      "item": "electrodynamics:wirecopper"
+    },
+    "I": {
+      "tag": "forge:ingots/iron"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:solarpanelplate"
+  }
+}

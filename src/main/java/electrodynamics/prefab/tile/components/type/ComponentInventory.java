@@ -1,287 +1,738 @@
 package electrodynamics.prefab.tile.components.type;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.EnumMap;
-import java.util.HashSet;
-import java.util.function.BiPredicate;
-import java.util.function.Function;
-import java.util.stream.Stream;
-
-import org.apache.commons.lang3.ArrayUtils;
-
+import electrodynamics.api.capability.types.itemhandler.IndexedSidedInvWrapper;
+import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
+import electrodynamics.prefab.block.GenericEntityBlock;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.Component;
-import electrodynamics.prefab.tile.components.ComponentType;
-import electrodynamics.prefab.utilities.UtilitiesTiles;
+import electrodynamics.prefab.tile.components.IComponent;
+import electrodynamics.prefab.tile.components.IComponentType;
+import electrodynamics.prefab.utilities.BlockEntityUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.ItemStackHelper;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.common.util.TriPredicate;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.wrapper.SidedInvWrapper;
+import net.minecraftforge.items.IItemHandlerModifiable;
 
-public class ComponentInventory implements Component, ISidedInventory {
-    protected GenericTile holder = null;
+import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
-    @Override
-    public void holder(GenericTile holder) {
-	this.holder = holder;
-    }
+public class ComponentInventory implements IComponent, ISidedInventory {
+	protected static final int[] SLOTS_EMPTY = new int[] {};
+	public static final String SAVE_KEY = "itemproperty";
 
-    protected static final int[] SLOTS_EMPTY = new int[] {};
-    protected NonNullList<ItemStack> items = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
-    protected BiPredicate<Integer, ItemStack> itemValidPredicate = (x, y) -> true;
-    protected HashSet<PlayerEntity> viewing = new HashSet<>();
-    protected EnumMap<Direction, ArrayList<Integer>> directionMappings = new EnumMap<>(Direction.class);
-    protected EnumMap<Direction, ArrayList<Integer>> relativeDirectionMappings = new EnumMap<>(Direction.class);
-    protected Direction lastDirection = null;
-    protected int inventorySize;
-    protected Function<Direction, Collection<Integer>> getSlotsFunction;
-    protected boolean shouldSendInfo;
+	protected GenericTile holder = null;
 
-    public ComponentInventory(GenericTile holder) {
-	holder(holder);
-    }
+	private Property<NonNullList<ItemStack>> items;
 
-    public ComponentInventory shouldSendInfo() {
-	if (!shouldSendInfo && holder.hasComponent(ComponentType.PacketHandler)) {
-	    holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).guiPacketReader(this::loadNBT).guiPacketWriter(this::saveNBT);
+	protected TriPredicate<Integer, ItemStack, ComponentInventory> itemValidTest = (x, y, i) -> true;
+
+	protected HashSet<PlayerEntity> viewing = new HashSet<>();
+
+	public HashSet<Integer>[] relativeDirectionToSlotsMap = new HashSet[6]; // Down Up North South West East
+
+	protected int inventorySize;
+
+	protected Function<Direction, Collection<Integer>> getSlotsFunction;
+
+	private final LazyOptional<IItemHandlerModifiable>[] sidedOptionals = IndexedSidedInvWrapper.create(this, Direction.values());
+
+	private static int[][] createArr() {
+		int[][] arr = new int[6][];
+		
+		for(int i = 0; i < arr.length; i++) {
+			arr[i] = new int[] {};
+		}
+		
+		return arr;
 	}
-	shouldSendInfo = true;
-	return this;
-    }
+	
+	private int[][] slotsForFace = createArr(); // Down Up North South West East
 
-    public ComponentInventory getSlots(Function<Direction, Collection<Integer>> getSlotsFunction) {
-	this.getSlotsFunction = getSlotsFunction;
-	return this;
-    }
+	
+	
+	/*
+	 * IMPORTANT DEFINITIONS:
+	 * 
+	 * SLOT ORDER: 1. Item Input Slots 2. Item Output Slot 3. Item Biproduct Slots 4. Bucket Input Slots 5. Bucket Output Slots 6. Upgrade Slots
+	 * 
+	 */
 
-    public ComponentInventory size(int inventorySize) {
-	this.inventorySize = inventorySize;
-	items = NonNullList.<ItemStack>withSize(getSizeInventory(), ItemStack.EMPTY);
-	return this;
-    }
+	private int inputs = 0;
+	private int outputs = 0;
+	private int upgrades = 0;
+	private int biproducts = 0;
+	private int bucketInputs = 0;
+	private int bucketOutputs = 0;
+	private int gasInputs = 0;
+	private int gasOutputs = 0;
 
-    public ComponentInventory faceSlots(Direction face, Integer... slot) {
-	if (!directionMappings.containsKey(face)) {
-	    directionMappings.put(face, new ArrayList<>());
+	private int inputsPerProc = 0;
+	private int outputsPerProc = 0;
+	private int biprodsPerProc = 0;
+
+	private BiConsumer<ComponentInventory, Integer> onChanged = (componentInventory, slot) -> {
+		if (holder != null) {
+			holder.onInventoryChange(componentInventory, slot);
+		}
+	};
+
+	protected SubtypeItemUpgrade[] validUpgrades = SubtypeItemUpgrade.values();
+
+	public ComponentInventory(GenericTile holder) {
+		this(holder, InventoryBuilder.EMPTY);
 	}
-	for (Integer sl : slot) {
-	    directionMappings.get(face).add(sl);
+
+	public ComponentInventory(GenericTile holder, InventoryBuilder builder) {
+		holder(holder);
+
+		/*
+		if (!holder.getBlockState().hasProperty(GenericEntityBlock.FACING)) {
+			throw new UnsupportedOperationException("The tile " + holder + " must have the FACING direction property!");
+		}
+		*/
+		
+		if (builder.builderSize > 0) {
+			inventorySize = builder.builderSize;
+		} else {
+
+			inputs = builder.builderInputs;
+			outputs = builder.builderOutputs;
+			upgrades = builder.builderUpgrades;
+			biproducts = builder.builderBiproducts;
+			bucketInputs = builder.builderBucketInputs;
+			bucketOutputs = builder.builderBucketOutputs;
+			gasInputs = builder.builderGasInputs;
+			gasOutputs = builder.builderGasOutputs;
+
+			inventorySize = inputs + outputs + upgrades + biproducts + bucketInputs + bucketOutputs + gasInputs + gasOutputs + upgrades;
+
+			inputsPerProc = builder.builderInputsPerProc;
+			outputsPerProc = builder.builderOutputsPerProc;
+			biprodsPerProc = builder.builderBiprodsPerProc;
+
+		}
+
+		items = holder.property(new Property<>(PropertyType.InventoryItems, "itemproperty", NonNullList.withSize(getContainerSize(), ItemStack.EMPTY)));
+
 	}
-	return this;
-    }
 
-    public ComponentInventory relativeFaceSlots(Direction face, Integer... slot) {
-	if (!relativeDirectionMappings.containsKey(face)) {
-	    relativeDirectionMappings.put(face, new ArrayList<>());
+	@Override
+	public void holder(GenericTile holder) {
+		this.holder = holder;
 	}
-	for (Integer sl : slot) {
-	    relativeDirectionMappings.get(face).add(sl);
+
+	@Override
+	public GenericTile getHolder() {
+		return holder;
 	}
-	return this;
-    }
 
-    public ComponentInventory slotFaces(Integer slot, Direction... faces) {
-	for (Direction face : faces) {
-	    faceSlots(face, slot);
+	public ComponentInventory onChanged(BiConsumer<ComponentInventory, Integer> onChanged) {
+		this.onChanged = onChanged;
+		return this;
 	}
-	return this;
-    }
 
-    public ComponentInventory relativeSlotFaces(Integer slot, Direction... faces) {
-	for (Direction face : faces) {
-	    relativeFaceSlots(face, slot);
+	public ComponentInventory getSlots(Function<Direction, Collection<Integer>> getSlotsFunction) {
+		this.getSlotsFunction = getSlotsFunction;
+		return this;
 	}
-	return this;
-    }
 
-    public ComponentInventory setMachineSlots(int extra) {
-	return relativeFaceSlots(Direction.EAST, 0, extra == 1 ? 2 : 0, extra == 2 ? 4 : 0)
-		.relativeFaceSlots(Direction.UP, extra == 1 ? 2 : 0, extra == 2 ? 4 : 0)
-		.relativeFaceSlots(Direction.WEST, 1, extra == 1 || extra == 2 ? 3 : 1, extra == 2 ? 5 : 1)
-		.relativeFaceSlots(Direction.DOWN, 1, extra == 1 || extra == 2 ? 3 : 1, extra == 2 ? 5 : 1);
-    }
+	public ComponentInventory setSlotsByDirection(Direction face, Integer... slot) {
+		if (relativeDirectionToSlotsMap[face.ordinal()] == null) {
+			relativeDirectionToSlotsMap[face.ordinal()] = new HashSet<>();
+		}
+		for (Integer sl : slot) {
+			relativeDirectionToSlotsMap[face.ordinal()].add(sl);
+		}
+		return this;
+	}
 
-    public ComponentInventory valid(BiPredicate<Integer, ItemStack> itemValidPredicate) {
-	this.itemValidPredicate = itemValidPredicate;
-	return this;
-    }
+	public ComponentInventory setDirectionsBySlot(Integer slot, Direction... faces) {
+		for (Direction face : faces) {
+			setSlotsByDirection(face, slot);
+		}
+		return this;
+	}
 
-    @Override
-    public void loadFromNBT(BlockState state, CompoundNBT nbt) {
-	ItemStackHelper.loadAllItems(nbt, items);
-    }
+	public ComponentInventory setSlotsForAllDirections(Integer... slots) {
+		for (Direction faceDirection : Direction.values()) {
+			setSlotsByDirection(faceDirection, slots);
+		}
+		return this;
+	}
 
-    @Override
-    public void saveToNBT(CompoundNBT nbt) {
-	ItemStackHelper.saveAllItems(nbt, items);
-    }
+	public ComponentInventory implementMachineInputsAndOutputs() {
+		ComponentInventory inv = this;
 
-    protected void loadNBT(CompoundNBT nbt) {
-	items.clear();
-	loadFromNBT(holder.getBlockState(), nbt);
-    }
+		for (int i : getInputSlots()) {
+			inv = inv.setSlotsByDirection(Direction.EAST, i).setSlotsByDirection(Direction.UP, i);
+		}
 
-    protected void saveNBT(CompoundNBT nbt) {
-	saveToNBT(nbt);
-    }
+		for (int i : getOutputSlots()) {
+			inv = inv.setSlotsByDirection(Direction.WEST, i).setSlotsByDirection(Direction.DOWN, i);
+		}
 
-    @Override
-    public void openInventory(PlayerEntity player) {
-	viewing.add(player);
-    }
+		for (int i : getBiproductSlots()) {
+			inv = inv.setSlotsByDirection(Direction.WEST, i).setSlotsByDirection(Direction.DOWN, i);
+		}
 
-    @Override
-    public void closeInventory(PlayerEntity player) {
-	viewing.remove(player);
-    }
+		return inv;
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, Direction side) {
-	lastDirection = side;
-	return (side == null || directionMappings.containsKey(side)
-		|| holder.hasComponent(ComponentType.Direction) && relativeDirectionMappings.containsKey(
-			UtilitiesTiles.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side)))
-		&& capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
-    }
+	}
 
-    @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
-	return hasCapability(capability, side) ? (LazyOptional<T>) LazyOptional.of(() -> new SidedInvWrapper(this, side)) : LazyOptional.empty();
-    }
+	public ComponentInventory valid(TriPredicate<Integer, ItemStack, ComponentInventory> itemValidPredicate) {
+		itemValidTest = itemValidPredicate;
+		return this;
+	}
 
-    @Override
-    public int getSizeInventory() {
-	return inventorySize;
-    }
+	@Override
+	public void startOpen(PlayerEntity player) {
+		viewing.add(player);
+	}
 
-    @Override
-    public boolean isEmpty() {
-	for (ItemStack itemstack : items) {
-	    if (!itemstack.isEmpty()) {
+	@Override
+	public void stopOpen(PlayerEntity player) {
+		viewing.remove(player);
+	}
+
+	@Override
+	public <T> LazyOptional<T> getCapability(Capability<T> capability, Direction side) {
+
+		if (side == null || capability != CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return LazyOptional.empty();
+		}
+
+		return sidedOptionals[side.ordinal()].cast();
+
+	}
+
+	@Override
+	public void refresh() {
+
+		defineOptionals(holder.getFacing());
+
+	}
+
+	@Override
+	public void refreshIfUpdate(BlockState oldState, BlockState newState) {
+		if (oldState.hasProperty(GenericEntityBlock.FACING) && newState.hasProperty(GenericEntityBlock.FACING) && oldState.getValue(GenericEntityBlock.FACING) != newState.getValue(GenericEntityBlock.FACING)) {
+			defineOptionals(newState.getValue(GenericEntityBlock.FACING));
+		}
+	}
+
+	private void defineOptionals(Direction facing) {
+
+		slotsForFace = new int[6][];
+
+		Direction relative;
+
+		for (Direction dir : Direction.values()) {
+
+			relative = BlockEntityUtils.getRelativeSide(facing, dir);
+
+			HashSet<Integer> slots = relativeDirectionToSlotsMap[dir.ordinal()];
+
+			if (slots == null) {
+
+				slotsForFace[relative.ordinal()] = SLOTS_EMPTY;
+
+			} else {
+
+				int[] arr = new int[slots.size()];
+
+				int i = 0;
+
+				for (Integer integer : slots) {
+					arr[i] = integer;
+					i++;
+				}
+
+				slotsForFace[relative.ordinal()] = arr;
+
+			}
+
+		}
+
+	}
+
+	@Override
+	public int getContainerSize() {
+		return inventorySize;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		for (ItemStack itemstack : items.get()) {
+			if (!itemstack.isEmpty()) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	public ItemStack getItem(int index) {
+		return items.get().get(index);
+	}
+
+	@Override
+	public ItemStack removeItem(int index, int count) {
+
+		NonNullList<ItemStack> list = items.get();
+
+		if (index < 0 || index >= list.size() || count <= 0 || list.get(index).isEmpty()) {
+			return ItemStack.EMPTY;
+		}
+
+		ItemStack indexItem = list.get(index);
+		ItemStack taken = indexItem.split(count);
+
+		list.set(index, indexItem);
+
+		items.set(list);
+
+		items.forceDirty();
+
+		setChanged(index);
+
+		return taken;
+	}
+
+	@Override
+	public ItemStack removeItemNoUpdate(int index) {
+		return ItemStackHelper.takeItem(items.get(), index);
+	}
+
+	@Override
+	public void setItem(int index, ItemStack stack) {
+
+		NonNullList<ItemStack> list = items.get();
+		if (index < 0 || index >= list.size() || ItemStack.matches(list.get(index), stack)) {
+			return;
+		}
+
+		if (stack.getCount() > getMaxStackSize()) {
+			stack.setCount(getMaxStackSize());
+		}
+
+		list.set(index, stack);
+
+		items.set(list);
+
+		items.forceDirty();
+
+		setChanged(index);
+	}
+
+	@Override
+	public boolean stillValid(PlayerEntity player) {
+		BlockPos pos = holder.getBlockPos();
+		return holder.getLevel().getBlockEntity(pos) == holder && player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64;
+	}
+
+	@Override
+	public void clearContent() {
+		items.get().clear();
+	}
+
+	@Override
+	public int[] getSlotsForFace(Direction side) {
+		if (getSlotsFunction != null) {
+			return getSlotsFunction.apply(side).stream().mapToInt(i -> i).toArray();
+		}
+
+		return side == null ? SLOTS_EMPTY : slotsForFace[side.ordinal()];
+	}
+
+	@Override
+	public boolean canPlaceItem(int index, ItemStack stack) {
+		return itemValidTest.test(index, stack, this);
+	}
+
+	@Override
+	public boolean canPlaceItemThroughFace(int index, ItemStack itemStackIn, Direction direction) {
+		ArrayList<Integer> test = new ArrayList<>();
+		for (int i : getSlotsForFace(direction)) {
+			test.add(i);
+		}
+		return test.contains(index) && canPlaceItem(index, itemStackIn);
+	}
+
+	@Override
+	public boolean canTakeItemThroughFace(int index, ItemStack stack, Direction direction) {
+		ArrayList<Integer> test = new ArrayList<>();
+		for (int i : getSlotsForFace(direction)) {
+			test.add(i);
+		}
+		return test.contains(index);
+	}
+
+	public NonNullList<ItemStack> getItems() {
+		return items.get();
+	}
+
+	public HashSet<PlayerEntity> getViewing() {
+		return viewing;
+	}
+
+	@Override
+	public IComponentType getType() {
+		return IComponentType.Inventory;
+	}
+
+	@Override
+	public void remove() {
+		// Not required
+	}
+
+	@Override
+	// this is only called through someone instance checking of this class....
+	public void setChanged() {
+		setChanged(-1);
+	}
+
+	public void setChanged(int slot) {
+		if (onChanged != null) {
+			onChanged.accept(this, slot);
+		}
+	}
+
+	public int inputs() {
+		return inputs;
+	}
+
+	public int outputs() {
+		return outputs;
+	}
+
+	public int upgrades() {
+		return upgrades;
+	}
+
+	public ComponentInventory validUpgrades(SubtypeItemUpgrade... upgrades) {
+		validUpgrades = upgrades;
+		return this;
+	}
+
+	public SubtypeItemUpgrade[] validUpgrades() {
+		return validUpgrades;
+	}
+
+	public int biproducts() {
+		return biproducts;
+	}
+
+	public int bucketInputs() {
+		return bucketInputs;
+	}
+
+	public int bucketOutputs() {
+		return bucketOutputs;
+	}
+
+	public int gasInputs() {
+		return gasInputs;
+	}
+
+	public int gasOutputs() {
+		return gasOutputs;
+	}
+
+	/*
+	 * Utility methods so you don't have to think as much
+	 */
+
+	public int getInputStartIndex() {
+		return 0;
+	}
+
+	public int getOutputStartIndex() {
+		return inputs;
+	}
+
+	public int getItemBiproductStartIndex() {
+		return getOutputStartIndex() + outputs;
+	}
+
+	public int getInputBucketStartIndex() {
+		return getItemBiproductStartIndex() + biproducts;
+	}
+
+	public int getOutputBucketStartIndex() {
+		return getInputBucketStartIndex() + bucketInputs;
+	}
+
+	public int getInputGasStartIndex() {
+		return getOutputBucketStartIndex() + bucketOutputs;
+	}
+
+	public int getOutputGasStartIndex() {
+		return getInputGasStartIndex() + gasInputs;
+	}
+
+	public int getUpgradeSlotStartIndex() {
+		return getOutputGasStartIndex() + gasOutputs;
+	}
+
+	public List<ItemStack> getInputContents() {
+		return items.get().subList(getInputStartIndex(), getOutputStartIndex());
+	}
+
+	public List<ItemStack> getOutputContents() {
+		return items.get().subList(getOutputStartIndex(), getItemBiproductStartIndex());
+	}
+
+	public List<ItemStack> getItemBiContents() {
+		return items.get().subList(getItemBiproductStartIndex(), getInputBucketStartIndex());
+	}
+
+	public List<ItemStack> getInputBucketContents() {
+		return items.get().subList(getInputBucketStartIndex(), getOutputBucketStartIndex());
+	}
+
+	public List<ItemStack> getOutputBucketContents() {
+		return items.get().subList(getOutputBucketStartIndex(), getUpgradeSlotStartIndex());
+	}
+
+	public List<ItemStack> getInputGasContents() {
+		return items.get().subList(getInputGasStartIndex(), getOutputGasStartIndex());
+	}
+
+	public List<ItemStack> getOutputGasContents() {
+		return items.get().subList(getOutputGasStartIndex(), getUpgradeSlotStartIndex());
+	}
+
+	public List<ItemStack> getUpgradeContents() {
+		return items.get().subList(getUpgradeSlotStartIndex(), items.get().size());
+	}
+
+	// processor number is indexed at zero
+	public List<ItemStack> getInputsForProcessor(int processor) {
+		return getInputContents().subList(inputsPerProc * processor, inputsPerProc * (processor + 1));
+	}
+
+	// processor number is indexed at zero
+	public List<ItemStack> getOutputsForProcessor(int processor) {
+		return getOutputContents().subList(outputsPerProc * processor, outputsPerProc * (processor + 1));
+	}
+
+	// processor number is indexed at zero
+	public List<ItemStack> getBiprodsForProcessor(int processor) {
+		return getItemBiContents().subList(biprodsPerProc * processor, biprodsPerProc * (processor + 1));
+	}
+
+	public List<Integer> getInputSlots() {
+		List<Integer> list = new ArrayList<>();
+		for (int i = 0; i < inputs; i++) {
+			list.add(getInputStartIndex() + i);
+		}
+		return list;
+	}
+
+	public List<Integer> getOutputSlots() {
+		List<Integer> list = new ArrayList<>();
+		for (int i = 0; i < outputs; i++) {
+			list.add(getOutputStartIndex() + i);
+		}
+		return list;
+	}
+
+	public List<Integer> getBiproductSlots() {
+		List<Integer> list = new ArrayList<>();
+		for (int i = 0; i < biproducts; i++) {
+			list.add(getItemBiproductStartIndex() + i);
+		}
+		return list;
+	}
+
+	// processor number is indexed at zero
+	public List<Integer> getInputSlotsForProcessor(int processor) {
+		return getInputSlots().subList(inputsPerProc * processor, inputsPerProc * (processor + 1));
+	}
+
+	// processor number is indexed at zero
+	public List<Integer> getOutputSlotsForProcessor(int processor) {
+		return getOutputSlots().subList(outputsPerProc * processor, outputsPerProc * (processor + 1));
+	}
+
+	// processor number is indexed at zero
+	public List<Integer> getBiprodSlotsForProcessor(int processor) {
+		return getBiproductSlots().subList(biprodsPerProc * processor, biprodsPerProc * (processor + 1));
+	}
+
+	public boolean areOutputsEmpty() {
+		boolean output = false;
+		boolean biproduct = false;
+		for (ItemStack stack : getOutputContents()) {
+			if (stack.isEmpty()) {
+				output = true;
+				break;
+			}
+		}
+		if (!getItemBiContents().isEmpty()) {
+			for (ItemStack stack : getItemBiContents()) {
+				if (stack.isEmpty()) {
+					biproduct = true;
+					break;
+				}
+			}
+		} else {
+			biproduct = true;
+		}
+		return output && biproduct;
+	}
+
+	public boolean hasItemsInOutput() {
+		for (ItemStack stack : getOutputContents()) {
+			if (!stack.isEmpty()) {
+				return true;
+			}
+		}
+		for (ItemStack stack : getItemBiContents()) {
+			if (!stack.isEmpty()) {
+				return true;
+			}
+		}
 		return false;
-	    }
 	}
-	return true;
-    }
 
-    @Override
-    public ItemStack getStackInSlot(int index) {
-	return items.get(index);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-	return ItemStackHelper.getAndSplit(items, index, count);
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int index) {
-	return ItemStackHelper.getAndRemove(items, index);
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, ItemStack stack) {
-	if (stack.getCount() > getInventoryStackLimit()) {
-	    stack.setCount(getInventoryStackLimit());
+	public boolean areInputsEmpty() {
+		for (ItemStack stack : getInputContents()) {
+			if (stack.isEmpty()) {
+				return false;
+			}
+		}
+		return false;
 	}
-	if (shouldSendInfo && stack.getCount() != items.get(index).getCount() || stack.getItem() != items.get(index).getItem()) {
-	    items.set(index, stack);
-	    if (holder.hasComponent(ComponentType.PacketHandler)) {
-		holder.<ComponentPacketHandler>getComponent(ComponentType.PacketHandler).sendGuiPacketToTracking();
-	    }
-	} else {
-	    items.set(index, stack);
+
+	public boolean hasInputRoom() {
+		for (ItemStack stack : getInputContents()) {
+			if (stack.getMaxStackSize() > stack.getCount()) {
+				return true;
+			}
+		}
+		return false;
 	}
-    }
 
-    @Override
-    public boolean isUsableByPlayer(PlayerEntity player) {
-	BlockPos pos = holder.getPos();
-	return holder.getWorld().getTileEntity(pos) == holder && player.getDistanceSq(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) <= 64;
-    }
-
-    @Override
-    public void clear() {
-	items.clear();
-    }
-
-    @Override
-    public int[] getSlotsForFace(Direction side) {
-	if (getSlotsFunction != null) {
-	    return getSlotsFunction.apply(side).stream().mapToInt(i -> i).toArray();
+	public boolean isUpgradeValid(SubtypeItemUpgrade upgrade) {
+		for (SubtypeItemUpgrade subtype : validUpgrades) {
+			if (subtype == upgrade) {
+				return true;
+			}
+		}
+		return false;
 	}
-	if (holder.hasComponent(ComponentType.Direction)) {
-	    Stream<Integer> st = directionMappings.containsKey(side) ? directionMappings.get(side).stream() : null;
-	    Stream<Integer> stRel = relativeDirectionMappings.containsKey(
-		    UtilitiesTiles.getRelativeSide(holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))
-			    ? relativeDirectionMappings
-				    .get(UtilitiesTiles.getRelativeSide(
-					    holder.<ComponentDirection>getComponent(ComponentType.Direction).getDirection(), side))
-				    .stream()
-			    : null;
-	    return ArrayUtils.addAll(st == null ? new int[0] : st.mapToInt(i -> i).toArray(),
-		    stRel == null ? new int[0] : stRel.mapToInt(i -> i).toArray());
+
+	public static class InventoryBuilder {
+
+		private static final InventoryBuilder EMPTY = new InventoryBuilder();
+
+		private int builderSize = 0;
+
+		private int builderInputs = 0;
+		private int builderOutputs = 0;
+		private int builderBiproducts = 0;
+		private int builderBucketInputs = 0;
+		private int builderBucketOutputs = 0;
+		private int builderUpgrades = 0;
+		private int builderGasInputs = 0;
+		private int builderGasOutputs = 0;
+
+		private int builderInputsPerProc = 0;
+		private int builderOutputsPerProc = 0;
+		private int builderBiprodsPerProc = 0;
+
+		private InventoryBuilder() {
+
+		}
+
+		public InventoryBuilder inputs(int inputs) {
+			this.builderInputs = inputs;
+			return this;
+		}
+
+		public InventoryBuilder outputs(int outputs) {
+			this.builderOutputs = outputs;
+			return this;
+		}
+
+		public InventoryBuilder biproducts(int biproducts) {
+			this.builderBiproducts = biproducts;
+			return this;
+		}
+
+		public InventoryBuilder bucketInputs(int bucketInputs) {
+			this.builderBucketInputs = bucketInputs;
+			return this;
+		}
+
+		public InventoryBuilder bucketOutputs(int bucketOutputs) {
+			this.builderBucketOutputs = bucketOutputs;
+			return this;
+		}
+
+		public InventoryBuilder gasInputs(int gasInputs) {
+			this.builderGasInputs = gasInputs;
+			return this;
+		}
+
+		public InventoryBuilder gasOutputs(int gasOutputs) {
+			this.builderGasOutputs = gasOutputs;
+			return this;
+		}
+
+		public InventoryBuilder upgrades(int upgrades) {
+			this.builderUpgrades = upgrades;
+			return this;
+		}
+
+		/**
+		 * Specialized method for machines that use ComponentProcessors. It removed the need to individually set input, output, and biproduct slots.
+		 * 
+		 * @param procCount      How many ComponentProcessors the machine has
+		 * @param inputsPerProc  How many inputs are assigned to a processor
+		 * @param outputsPerProc How many outputs are assigned to a processor
+		 * @param biprodsPerProc how many biproducts are assigned to a processor
+		 * @return The mutated inventory builder
+		 */
+		public InventoryBuilder processors(int procCount, int inputsPerProc, int outputsPerProc, int biprodsPerProc) {
+
+			this.builderInputsPerProc = inputsPerProc;
+			this.builderOutputsPerProc = outputsPerProc;
+			this.builderBiprodsPerProc = biprodsPerProc;
+
+			this.builderInputs = procCount * inputsPerProc;
+			this.builderOutputs = procCount * outputsPerProc;
+			this.builderBiproducts = procCount * biprodsPerProc;
+
+			return this;
+		}
+
+		/**
+		 * This method should not be used in tandem with other individual mutator methods and is designed for inventories that have no specified slot types
+		 * 
+		 * @param size The desired size of the inventory
+		 * @return The mutated builder
+		 */
+		public InventoryBuilder forceSize(int size) {
+			this.builderSize = size;
+			return this;
+		}
+
+		public static InventoryBuilder newInv() {
+			return new InventoryBuilder();
+		}
 
 	}
-	return directionMappings.get(side) == null ? SLOTS_EMPTY : directionMappings.get(side).stream().mapToInt(i -> i).toArray();
 
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-	return itemValidPredicate.test(index, stack);
-    }
-
-    @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, Direction direction) {
-	lastDirection = direction;
-	ArrayList<Integer> test = new ArrayList<>();
-	for (int i : getSlotsForFace(direction)) {
-	    test.add(i);
-	}
-	return test.contains(index) && isItemValidForSlot(index, itemStackIn);
-    }
-
-    @Override
-    public boolean canExtractItem(int index, ItemStack stack, Direction direction) {
-	lastDirection = direction;
-	ArrayList<Integer> test = new ArrayList<>();
-	for (int i : getSlotsForFace(direction)) {
-	    test.add(i);
-	}
-	return test.contains(index);
-    }
-
-    public NonNullList<ItemStack> getItems() {
-	return items;
-    }
-
-    public HashSet<PlayerEntity> getViewing() {
-	return viewing;
-    }
-
-    @Override
-    public ComponentType getType() {
-	return ComponentType.Inventory;
-    }
-
-    @Override
-    public void remove() {
-	// Not required
-    }
-
-    @Override
-    public void markDirty() {
-	holder.markDirty();
-    }
 }

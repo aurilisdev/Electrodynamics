@@ -1,12 +1,15 @@
 package electrodynamics.prefab.tile.components.type;
 
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.PacketUpdateTile;
+import electrodynamics.common.packet.types.client.PacketSendUpdatePropertiesClient;
+import electrodynamics.common.packet.types.client.PacketUpdateTile;
 import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.Component;
-import electrodynamics.prefab.tile.components.ComponentType;
+import electrodynamics.prefab.tile.components.IComponent;
+import electrodynamics.prefab.tile.components.IComponentType;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -14,93 +17,130 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.NetworkDirection;
 
-public class ComponentPacketHandler implements Component {
-    private GenericTile holder;
+public class ComponentPacketHandler implements IComponent {
 
-    @Override
-    public void holder(GenericTile holder) {
-	this.holder = holder;
-    }
+	private GenericTile holder;
 
-    protected Consumer<CompoundNBT> customPacketWriter;
-    protected Consumer<CompoundNBT> guiPacketWriter;
-    protected Consumer<CompoundNBT> customPacketReader;
-    protected Consumer<CompoundNBT> guiPacketReader;
-
-    public ComponentPacketHandler customPacketWriter(Consumer<CompoundNBT> consumer) {
-	Consumer<CompoundNBT> safe = consumer;
-	if (customPacketWriter != null) {
-	    safe = safe.andThen(customPacketWriter);
+	public ComponentPacketHandler(GenericTile tile) {
+		holder = tile;
 	}
-	customPacketWriter = safe;
-	return this;
-    }
 
-    public ComponentPacketHandler guiPacketWriter(Consumer<CompoundNBT> consumer) {
-	Consumer<CompoundNBT> safe = consumer;
-	if (guiPacketWriter != null) {
-	    safe = safe.andThen(guiPacketWriter);
+	@Override
+	public void holder(GenericTile holder) {
+		this.holder = holder;
 	}
-	guiPacketWriter = safe;
-	return this;
-    }
 
-    public ComponentPacketHandler customPacketReader(Consumer<CompoundNBT> consumer) {
-	Consumer<CompoundNBT> safe = consumer;
-	if (customPacketReader != null) {
-	    safe = safe.andThen(customPacketReader);
+	protected Consumer<CompoundNBT> customPacketWriter;
+	protected Consumer<CompoundNBT> guiPacketWriter;
+	protected Consumer<CompoundNBT> customPacketReader;
+	protected Consumer<CompoundNBT> guiPacketReader;
+
+	@Deprecated
+	public ComponentPacketHandler addCustomPacketWriter(Consumer<CompoundNBT> consumer) {
+		Consumer<CompoundNBT> safe = consumer;
+		if (customPacketWriter != null) {
+			safe = safe.andThen(customPacketWriter);
+		}
+		customPacketWriter = safe;
+		return this;
 	}
-	customPacketReader = safe;
-	return this;
-    }
 
-    public ComponentPacketHandler guiPacketReader(Consumer<CompoundNBT> consumer) {
-	Consumer<CompoundNBT> safe = consumer;
-	if (guiPacketReader != null) {
-	    safe = safe.andThen(guiPacketReader);
+	@Deprecated
+	public ComponentPacketHandler addGuiPacketWriter(Consumer<CompoundNBT> consumer) {
+		Consumer<CompoundNBT> safe = consumer;
+		if (guiPacketWriter != null) {
+			safe = safe.andThen(guiPacketWriter);
+		}
+		guiPacketWriter = safe;
+		return this;
 	}
-	guiPacketReader = safe;
-	return this;
-    }
 
-    public Consumer<CompoundNBT> getCustomPacketSupplier() {
-	return customPacketWriter;
-    }
-
-    public Consumer<CompoundNBT> getGuiPacketSupplier() {
-	return guiPacketWriter;
-    }
-
-    public Consumer<CompoundNBT> getCustomPacketConsumer() {
-	return customPacketReader;
-    }
-
-    public Consumer<CompoundNBT> getGuiPacketConsumer() {
-	return guiPacketReader;
-    }
-
-    public void sendCustomPacket() {
-	PacketUpdateTile packet = new PacketUpdateTile(this, holder.getPos(), false, new CompoundNBT());
-	World world = holder.getWorld();
-	BlockPos pos = holder.getPos();
-	if (world instanceof ServerWorld) {
-	    ((ServerWorld) world).getChunkProvider().chunkManager.getTrackingPlayers(new ChunkPos(pos), false)
-		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT));
+	@Deprecated
+	public ComponentPacketHandler addCustomPacketReader(Consumer<CompoundNBT> consumer) {
+		Consumer<CompoundNBT> safe = consumer;
+		if (customPacketReader != null) {
+			safe = safe.andThen(customPacketReader);
+		}
+		customPacketReader = safe;
+		return this;
 	}
-    }
 
-    public void sendGuiPacketToTracking() {
-	PacketUpdateTile packet = new PacketUpdateTile(this, holder.getPos(), true, new CompoundNBT());
-	World world = holder.getWorld();
-	BlockPos pos = holder.getPos();
-	if (world instanceof ServerWorld) {
-	    ((ServerWorld) world).getChunkProvider().chunkManager.getTrackingPlayers(new ChunkPos(pos), false)
-		    .forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getNetworkManager(), NetworkDirection.PLAY_TO_CLIENT));
+	@Deprecated
+	public ComponentPacketHandler addGuiPacketReader(Consumer<CompoundNBT> consumer) {
+		Consumer<CompoundNBT> safe = consumer;
+		if (guiPacketReader != null) {
+			safe = safe.andThen(guiPacketReader);
+		}
+		guiPacketReader = safe;
+		return this;
 	}
-    }
 
-    @Override
-    public ComponentType getType() {
-	return ComponentType.PacketHandler;
-    }
+	@Deprecated // "Changed to property system. Do not use if possible."
+	public Consumer<CompoundNBT> getCustomPacketSupplier() {
+		return customPacketWriter;
+	}
+
+	@Deprecated // "Changed to property system. Do not use if possible."
+	public Consumer<CompoundNBT> getGuiPacketSupplier() {
+		return guiPacketWriter;
+	}
+
+	@Deprecated // "Changed to property system. Do not use if possible."
+	public Consumer<CompoundNBT> getCustomPacketConsumer() {
+		return customPacketReader;
+	}
+
+	@Deprecated // "Changed to property system. Do not use if possible."
+	public Consumer<CompoundNBT> getGuiPacketConsumer() {
+		return guiPacketReader;
+	}
+
+	@Deprecated // "Changed to property system. Do not use if possible."
+	public void sendCustomPacket() {
+		if (customPacketWriter != null) {
+			PacketUpdateTile packet = new PacketUpdateTile(this, holder.getBlockPos(), false, new CompoundNBT());
+			World world = holder.getLevel();
+			BlockPos pos = holder.getBlockPos();
+			if (world instanceof ServerWorld) {
+				ServerWorld level = (ServerWorld) world;
+				level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+			}
+		}
+	}
+
+	@Deprecated // "Changed to property system. Do not use if possible."
+	public void sendGuiPacketToTracking() {
+		if (guiPacketWriter != null) {
+			PacketUpdateTile packet = new PacketUpdateTile(this, holder.getBlockPos(), true, new CompoundNBT());
+			World world = holder.getLevel();
+			BlockPos pos = holder.getBlockPos();
+			if (world instanceof ServerWorld) {
+				ServerWorld level = (ServerWorld) world;
+				level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false).forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+			}
+		}
+	}
+
+	public void sendProperties() {
+		World world = holder.getLevel();
+		if (world != null) {
+			if (!world.isClientSide) {
+				if (holder.getPropertyManager().isDirty()) {
+					BlockPos pos = holder.getBlockPos();
+					if (world instanceof ServerWorld) {
+						ServerWorld level = (ServerWorld) world;
+						Stream<ServerPlayerEntity> players = level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false);
+						PacketSendUpdatePropertiesClient packet = new PacketSendUpdatePropertiesClient(holder);
+						players.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.getConnection(), NetworkDirection.PLAY_TO_CLIENT));
+						holder.getPropertyManager().clean();
+					}
+				}
+			}
+		}
+	}
+
+	@Override
+	public IComponentType getType() {
+		return IComponentType.PacketHandler;
+	}
 }

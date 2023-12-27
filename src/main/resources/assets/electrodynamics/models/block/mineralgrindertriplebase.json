@@ -4,7 +4,7 @@
 	"texture_size": [128, 128],
 	"textures": {
 		"0": "electrodynamics:model/mineralgrindertriple",
-		"particle": "electrodynamics:model/mineralgrindertriple"
+		"particle": "electrodynamics:block/steelcasing"
 	},
 	"elements": [
 		{

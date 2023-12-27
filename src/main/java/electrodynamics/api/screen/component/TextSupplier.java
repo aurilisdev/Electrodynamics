@@ -1,8 +1,9 @@
 package electrodynamics.api.screen.component;
 
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.IFormattableTextComponent;
 
 @FunctionalInterface
 public interface TextSupplier {
-    ITextComponent getText();
+
+	IFormattableTextComponent getText();
 }

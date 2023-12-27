@@ -1,0 +1,34 @@
+package electrodynamics.client.guidebook.chapters;
+
+import electrodynamics.api.References;
+import electrodynamics.client.guidebook.utils.components.Chapter;
+import electrodynamics.client.guidebook.utils.components.Module;
+import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.IFormattableTextComponent;
+
+public class ChapterMisc extends Chapter {
+
+	private static final ImageWrapperObject LOGO = new ImageWrapperObject(0, 0, 0, 0, 32, 32, 32, 32, new ResourceLocation(References.ID, "textures/item/coil.png"));
+
+	public ChapterMisc(Module module) {
+		super(module);
+	}
+
+	@Override
+	public ImageWrapperObject getLogo() {
+		return LOGO;
+	}
+
+	@Override
+	public IFormattableTextComponent getTitle() {
+		return ElectroTextUtils.guidebook("chapter.misc");
+	}
+
+	@Override
+	public void addData() {
+
+	}
+
+}

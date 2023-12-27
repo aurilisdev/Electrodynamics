@@ -1,0 +1,24 @@
+package electrodynamics.prefab.inventory.container.slot.item.type;
+
+import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
+import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.SlotType;
+import electrodynamics.prefab.utilities.CapabilityUtils;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+
+public class SlotFluid extends SlotGeneric {
+
+	public SlotFluid(IInventory inventory, int index, int x, int y) {
+		super(SlotType.NORMAL, IconType.FLUID_DARK, inventory, index, x, y);
+	}
+
+	@Override
+	public boolean mayPlace(ItemStack stack) {
+		if (super.mayPlace(stack) && CapabilityUtils.hasFluidItemCap(stack)) {
+			return true;
+		}
+		return false;
+	}
+
+}
