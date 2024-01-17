@@ -1,60 +1,6 @@
 {
   "type": "forge:add_features",
-  "biomes": [],
-  "features": {
-    "feature": {
-      "type": "minecraft:ore",
-      "config": {
-        "discard_chance_on_air_exposure": 0.0,
-        "size": 8,
-        "targets": [
-          {
-            "state": {
-              "Name": "electrodynamics:oremonazite"
-            },
-            "target": {
-              "block": "electrodynamics:oremonazite",
-              "canspawnintag": "minecraft:stone_ore_replaceables",
-              "predicate_type": "electrodynamics:configorespawn"
-            }
-          },
-          {
-            "state": {
-              "Name": "electrodynamics:deepslateoremonazite"
-            },
-            "target": {
-              "block": "electrodynamics:deepslateoremonazite",
-              "canspawnintag": "minecraft:deepslate_ore_replaceables",
-              "predicate_type": "electrodynamics:configorespawn"
-            }
-          }
-        ]
-      }
-    },
-    "placement": [
-      {
-        "type": "minecraft:count",
-        "count": 5
-      },
-      {
-        "type": "minecraft:in_square"
-      },
-      {
-        "type": "minecraft:height_range",
-        "height": {
-          "type": "minecraft:uniform",
-          "max_inclusive": {
-            "absolute": 32
-          },
-          "min_inclusive": {
-            "absolute": 0
-          }
-        }
-      },
-      {
-        "type": "minecraft:biome"
-      }
-    ]
-  },
+  "biomes": "#minecraft:is_overworld",
+  "features": "electrodynamics:ore_monazite",
   "step": "underground_ores"
 }

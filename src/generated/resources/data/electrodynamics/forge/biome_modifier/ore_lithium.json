@@ -1,60 +1,6 @@
 {
   "type": "forge:add_features",
-  "biomes": [],
-  "features": {
-    "feature": {
-      "type": "minecraft:ore",
-      "config": {
-        "discard_chance_on_air_exposure": 0.0,
-        "size": 9,
-        "targets": [
-          {
-            "state": {
-              "Name": "electrodynamics:orelepidolite"
-            },
-            "target": {
-              "block": "electrodynamics:orelepidolite",
-              "canspawnintag": "minecraft:stone_ore_replaceables",
-              "predicate_type": "electrodynamics:configorespawn"
-            }
-          },
-          {
-            "state": {
-              "Name": "electrodynamics:deepslateorelepidolite"
-            },
-            "target": {
-              "block": "electrodynamics:deepslateorelepidolite",
-              "canspawnintag": "minecraft:deepslate_ore_replaceables",
-              "predicate_type": "electrodynamics:configorespawn"
-            }
-          }
-        ]
-      }
-    },
-    "placement": [
-      {
-        "type": "minecraft:count",
-        "count": 3
-      },
-      {
-        "type": "minecraft:in_square"
-      },
-      {
-        "type": "minecraft:height_range",
-        "height": {
-          "type": "minecraft:uniform",
-          "max_inclusive": {
-            "absolute": 32
-          },
-          "min_inclusive": {
-            "absolute": -32
-          }
-        }
-      },
-      {
-        "type": "minecraft:biome"
-      }
-    ]
-  },
+  "biomes": "#minecraft:is_overworld",
+  "features": "electrodynamics:ore_lithium",
   "step": "underground_ores"
 }
