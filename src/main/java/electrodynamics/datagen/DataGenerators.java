@@ -38,7 +38,7 @@ public class DataGenerators {
 			generator.addProvider(true, new ElectrodynamicsGasTagsProvider(generator, event.getExistingFileHelper()));
 			generator.addProvider(true, new ElectrodynamicsLootTablesProvider(generator));
 			generator.addProvider(true, new ElectrodynamicsRecipeProvider(generator));
-			generator.addProvider(true, new ElectrodynamicsBiomeModifierProvider(generator, event.getExistingFileHelper()));
+			generator.addProvider(true, new ElectrodynamicsBiomeModifierProvider(generator));
 			generator.addProvider(true, new CombustionChamberFuelSourceProvider(generator));
 			generator.addProvider(true, new CoalGeneratorFuelSourceProvider(generator));
 			generator.addProvider(true, new ThermoelectricGenHeatSourceProvider(generator));
