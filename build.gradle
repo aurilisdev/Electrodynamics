@@ -3,7 +3,6 @@ plugins {
 	id 'eclipse'
 	id 'maven-publish'
 	id 'net.neoforged.gradle.userdev' version "${forge_gradle_version}"
-	id 'org.spongepowered.mixin' version "${mixin_gradle_version}"
     id 'com.matthewprenger.cursegradle' version "${cursegradle_version}"
 }
 
@@ -129,18 +128,12 @@ minecraft {
 }
 
 */
-mixin {
-    add sourceSets.main, "electrodynamics.refmap.json"
-}
-
-
 
 dependencies {
 	implementation "net.neoforged:neoforge:${forge_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
     compileOnly "mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"
     runtimeOnly "mezz.jei:jei-${minecraft_version}-forge:${jei_version}"
-    annotationProcessor "org.spongepowered:mixin:${mixin_annotationprocessor_version}:processor"
 }
 
 repositories {
