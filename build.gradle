@@ -51,6 +51,14 @@ runs {
     
     }
     
+    client {
+    
+    }
+    
+    server {
+    
+    }
+    
     data {
     
         programArguments.addAll '--mod', project.group, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
@@ -245,4 +253,8 @@ curseforge {
       displayName=project.name+" ${mod_version}"
     }
   }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
