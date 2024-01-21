@@ -4,27 +4,27 @@ loaderVersion="${loader_version_range}"
 
 license="${mod_license}"
 
-issueTrackerURL="${issue_tracker_url}" 
+issueTrackerURL="https://github.com/aurilisdev/Electrodynamics/issues" 
 
 
 
 [[mods]] 
 
-modId="${electrodynamics_id}"
+modId="${mod_id}"
 
 version="${mod_version}"
 
 displayName="${mod_name}"
 
-displayURL="${homepage_url}"
+displayURL="https://github.com/aurilisdev/Electrodynamics"
 
-logoFile="${logo_file}"
+logoFile="electrodynamics.png"
 
-credits="${mod_credits}"
+credits="${credits}"
 
 authors="${mod_authors}" 
 
-description="${mod_desc}"
+description="${mod_description}"
 
 [[mixins]]
 

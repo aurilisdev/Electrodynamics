@@ -6,20 +6,25 @@ plugins {
     id 'com.matthewprenger.cursegradle' version "${cursegradle_version}"
 }
 
+repositories {
+	mavenLocal()
+	maven {
+       // location of the maven that hosts JEI files since January 2023
+       name = "Jared's maven"
+       url = "https://maven.blamejared.com/"
+    }
+    maven {
+       // location of a maven mirror for JEI files, as a fallback
+       name = "ModMaven"
+       url = "https://modmaven.dev"
+    }
+}
 
-//apply plugin: 'net.minecraftforge.gradle'
-//apply plugin: 'org.spongepowered.mixin'
-//apply plugin: 'org.parchmentmc.librarian.forgegradle'
-
-//apply plugin: 'eclipse'
-//apply plugin: 'maven-publish'
-//apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
+group = mod_group_id
+version = "${minecraft_version}-" + mod_version
 
 libsDirName = "../output"
 distsDirName = "../output"
-
-group = mod_id
-version = "${minecraft_version}-" + mod_version
 
 base {
 
@@ -138,26 +143,14 @@ minecraft {
 */
 
 dependencies {
-	implementation "net.neoforged:neoforge:${forge_version}"
-    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
-    compileOnly "mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"
-    runtimeOnly "mezz.jei:jei-${minecraft_version}-forge:${jei_version}"
+	implementation("net.neoforged:neoforge:${forge_version}")
+    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+     // at runtime, use the full JEI jar for NeoForge
+    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 }
 
-repositories {
-	mavenLocal()
-	maven {
-	    // location of the maven that hosts JEI files since January 2023
-	    name = "Jared's maven"
-	    url = "https://maven.blamejared.com/"
-	}
-	maven {
-   		// location of a maven mirror for JEI files, as a fallback
-    	name = "ModMaven"
-    	url = "https://modmaven.dev"
-  	}
 
-}
 
 tasks.withType(ProcessResources).configureEach {
     var replaceProperties = [
@@ -170,6 +163,7 @@ tasks.withType(ProcessResources).configureEach {
             mod_name : mod_name, 
             mod_license : mod_license, 
             mod_version : version,
+            credits : mod_credits,
             mod_authors : mod_authors, 
             mod_description: mod_desc,
     ]
@@ -178,6 +172,11 @@ tasks.withType(ProcessResources).configureEach {
     filesMatching(['META-INF/mods.toml']) {
         expand replaceProperties + [project: project]
     }
+}
+
+
+task getDeps(type: Copy) {
+	duplicatesStrategy 'exclude'
 }
 
 /*
