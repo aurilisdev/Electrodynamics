@@ -1,32 +1,37 @@
 package electrodynamics.common.packet.types.client;
 
-import java.util.function.Supplier;
-
 import electrodynamics.common.packet.BarrierMethods;
+import electrodynamics.common.packet.NetworkHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class PacketResetGuidebookPages {
+public class PacketResetGuidebookPages implements CustomPacketPayload {
 
-	public static void handle(PacketResetGuidebookPages message, Supplier<Context> context) {
-		Context ctx = context.get();
-		ctx.enqueueWork(() -> {
-			Minecraft minecraft = Minecraft.getInstance();
-			ClientLevel world = minecraft.level;
-			if (world != null && minecraft.player != null) {
-				BarrierMethods.handlerSetGuidebookInitFlag();
-			}
-		});
-		ctx.setPacketHandled(true);
+	public static void handle(PacketResetGuidebookPages message, PlayPayloadContext context) {
+	    Minecraft minecraft = Minecraft.getInstance();
+        ClientLevel world = minecraft.level;
+        if (world == null || minecraft.player == null) {
+            return;
+        }
+        BarrierMethods.handlerSetGuidebookInitFlag();
 	}
 
-	public static void encode(PacketResetGuidebookPages message, FriendlyByteBuf buf) {
-	}
-
-	public static PacketResetGuidebookPages decode(FriendlyByteBuf buf) {
+	public static PacketResetGuidebookPages read(FriendlyByteBuf buf) {
 		return new PacketResetGuidebookPages();
 	}
+
+    @Override
+    public void write(FriendlyByteBuf pBuffer) {
+        
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return NetworkHandler.PACKET_RESETGUIDEBOOKPAGES_PACKETID;
+    }
 
 }

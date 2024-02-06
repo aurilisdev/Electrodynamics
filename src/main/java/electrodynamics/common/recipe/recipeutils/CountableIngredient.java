@@ -4,87 +4,112 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-import com.google.gson.JsonElement;
+import javax.annotation.Nullable;
 
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+
+import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.neoforged.neoforge.common.crafting.IngredientType;
 
 public class CountableIngredient extends Ingredient {
 
-	private Ingredient INGREDIENT;
-	private int STACK_SIZE;
+    public static final Codec<CountableIngredient> CODEC = RecordCodecBuilder.create(
+            //
+            instance -> instance.group(
+                    //
+                    Ingredient.CODEC_NONEMPTY.fieldOf("ingreident").forGetter(instance0 -> instance0),
+                    //
+                    Codec.INT.fieldOf("count").forGetter(instance0 -> instance0.stackSize)
 
-	protected CountableIngredient(Ingredient ingredient, int stackCount) {
-		super(Stream.empty());
-		INGREDIENT = ingredient;
-		STACK_SIZE = stackCount;
+            )
+                    //
+                    .apply(instance, (ing, count) -> new CountableIngredient(ing, count))
 
-	}
+    //
+    );
 
-	public static CountableIngredient deserialize(JsonElement jsonElement) {
-		Ingredient itemIngredient = Ingredient.fromJson(jsonElement);
-		int count;
-		try {
-			count = jsonElement.getAsJsonObject().get("count").getAsInt();
-			return new CountableIngredient(itemIngredient, count);
-		} catch (Exception e) {
-			count = 1;
-			return new CountableIngredient(itemIngredient, count);
-		}
-	}
+    public static final Codec<List<CountableIngredient>> LIST_CODEC = CODEC.listOf();
 
-	public boolean testStack(ItemStack itemStack) {
-		if (INGREDIENT.test(itemStack)) {
-			if (itemStack.getCount() >= STACK_SIZE) {
-				return true;
-			}
-		}
-		return false;
-	}
+    private int stackSize;
 
-	public int getStackSize() {
-		return STACK_SIZE;
-	}
+    @Nullable
+    private ItemStack[] countedItems;
 
-	public static CountableIngredient read(FriendlyByteBuf buffer) {
-		Ingredient ingredient = Ingredient.fromNetwork(buffer);
-		int stackSize = buffer.readInt();
-		return new CountableIngredient(ingredient, stackSize);
-	}
+    public CountableIngredient(Ingredient ingredient, int stackCount) {
+        super(Stream.of(ingredient.values));
+        stackSize = stackCount;
 
-	public static CountableIngredient[] readList(FriendlyByteBuf buffer) {
-		int length = buffer.readInt();
-		CountableIngredient[] ings = new CountableIngredient[length];
-		for (int i = 0; i < length; i++) {
-			ings[i] = read(buffer);
-		}
-		return ings;
-	}
+    }
 
-	public void writeStack(FriendlyByteBuf buffer) {
-		INGREDIENT.toNetwork(buffer);
-		buffer.writeInt(STACK_SIZE);
-	}
+    @Override
+    public boolean test(ItemStack stack) {
+        return super.test(stack) && stackSize >= stack.getCount();
+    }
 
-	public static void writeList(FriendlyByteBuf buffer, List<CountableIngredient> list) {
-		buffer.writeInt(list.size());
-		for (CountableIngredient ing : list) {
-			ing.writeStack(buffer);
-		}
-	}
+    @Override
+    public ItemStack[] getItems() {
+        if (countedItems == null) {
+            ItemStack[] items = super.getItems();
+            for (ItemStack item : items) {
+                item.setCount(stackSize);
+            }
+        }
+        return countedItems;
+    }
 
-	public ArrayList<ItemStack> fetchCountedStacks() {
-		ArrayList<ItemStack> countedStacks = new ArrayList<>();
-		for (ItemStack itemStack : INGREDIENT.getItems()) {
-			itemStack.setCount(STACK_SIZE);
-			countedStacks.add(itemStack);
-		}
-		return countedStacks;
-	}
+    @Override
+    public IngredientType<?> getType() {
+        return ElectrodynamicsRecipeInit.COUNTABLE_INGREDIENT_TYPE.get();
+    }
 
-	@Override
-	public String toString() {
-		return fetchCountedStacks().get(0).toString();
-	}
+    public int getStackSize() {
+        return stackSize;
+    }
+
+    @Override
+    public String toString() {
+        return getItems()[0].toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof CountableIngredient otherIng) {
+
+            return otherIng.stackSize == stackSize && super.equals(obj);
+
+        }
+        return false;
+    }
+
+    public static CountableIngredient read(FriendlyByteBuf buffer) {
+        Ingredient ingredient = Ingredient.fromNetwork(buffer);
+        int stackSize = buffer.readInt();
+        return new CountableIngredient(ingredient, stackSize);
+    }
+
+    public static List<CountableIngredient> readList(FriendlyByteBuf buffer) {
+        int length = buffer.readInt();
+        List<CountableIngredient> ings = new ArrayList<>();
+        for (int i = 0; i < length; i++) {
+            ings.add(read(buffer));
+        }
+        return ings;
+    }
+
+    public void writeStack(FriendlyByteBuf buffer) {
+        toNetwork(buffer);
+        buffer.writeInt(stackSize);
+    }
+
+    public static void writeList(FriendlyByteBuf buffer, List<CountableIngredient> list) {
+        buffer.writeInt(list.size());
+        for (CountableIngredient ing : list) {
+            ing.writeStack(buffer);
+        }
+    }
+
 }

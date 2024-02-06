@@ -18,38 +18,38 @@ import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import electrodynamics.common.recipe.recipeutils.ProbableGas;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
-import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.items.wrapper.RecipeWrapper;
 
 public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 
-	private ResourceLocation id;
+	private final String group;
 
-	private double xp;
-	private int ticks;
-	private double usagePerTick;
+	private final double xp;
+	private final int ticks;
+	private final double usagePerTick;
 
 	@Nullable
-	private ProbableItem[] itemBiproducts;
+	private final List<ProbableItem> itemBiproducts;
 	@Nullable
-	private ProbableFluid[] fluidBiproducts;
+	private final List<ProbableFluid> fluidBiproducts;
 	@Nullable
-	private ProbableGas[] gasBiproducts;
+	private final List<ProbableGas> gasBiproducts;
 
-	private HashMap<Integer, List<Integer>> itemArrangements = new HashMap<>();
+	private final HashMap<Integer, List<Integer>> itemArrangements = new HashMap<>();
 	@Nullable
 	private List<Integer> fluidArrangement;
 	@Nullable
 	private List<Integer> gasArrangement;
 
-	public ElectrodynamicsRecipe(ResourceLocation recipeID, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, ProbableGas[] gasBiproducts) {
-		id = recipeID;
+	public ElectrodynamicsRecipe(String recipeGroup, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
+		group = recipeGroup;
 		xp = experience;
 		this.ticks = ticks;
 		this.usagePerTick = usagePerTick;
@@ -78,8 +78,8 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 	}
 
 	@Override
-	public ResourceLocation getId() {
-		return id;
+	public String getGroup() {
+	    return group;
 	}
 
 	public boolean hasItemBiproducts() {
@@ -95,24 +95,24 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 	}
 
 	@Nullable
-	public ProbableItem[] getItemBiproducts() {
+	public List<ProbableItem> getItemBiproducts() {
 		return itemBiproducts;
 	}
 
 	@Nullable
-	public ProbableFluid[] getFluidBiproducts() {
+	public List<ProbableFluid> getFluidBiproducts() {
 		return fluidBiproducts;
 	}
 
 	@Nullable
-	public ProbableGas[] getGasBiproducts() {
+	public List<ProbableGas> getGasBiproducts() {
 		return gasBiproducts;
 	}
 
 	public ItemStack[] getFullItemBiStacks() {
 		ItemStack[] items = new ItemStack[getItemBiproductCount()];
 		for (int i = 0; i < getItemBiproductCount(); i++) {
-			items[i] = itemBiproducts[i].getFullStack();
+			items[i] = itemBiproducts.get(i).getFullStack();
 		}
 		return items;
 	}
@@ -120,7 +120,7 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 	public FluidStack[] getFullFluidBiStacks() {
 		FluidStack[] fluids = new FluidStack[getFluidBiproductCount()];
 		for (int i = 0; i < getFluidBiproductCount(); i++) {
-			fluids[i] = fluidBiproducts[i].getFullStack();
+			fluids[i] = fluidBiproducts.get(i).getFullStack();
 		}
 		return fluids;
 	}
@@ -128,21 +128,21 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 	public GasStack[] getFullGasBiStacks() {
 		GasStack[] gases = new GasStack[getGasBiproductCount()];
 		for (int i = 0; i < getGasBiproductCount(); i++) {
-			gases[i] = gasBiproducts[i].getFullStack();
+			gases[i] = gasBiproducts.get(i).getFullStack();
 		}
 		return gases;
 	}
 
 	public int getItemBiproductCount() {
-		return itemBiproducts.length;
+		return itemBiproducts.size();
 	}
 
 	public int getFluidBiproductCount() {
-		return fluidBiproducts.length;
+		return fluidBiproducts.size();
 	}
 
 	public int getGasBiproductCount() {
-		return gasBiproducts.length;
+		return gasBiproducts.size();
 	}
 
 	public double getXp() {
@@ -181,15 +181,15 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 		return gasArrangement;
 	}
 
-	public static List<ElectrodynamicsRecipe> findRecipesbyType(RecipeType<? extends ElectrodynamicsRecipe> typeIn, Level world) {
+	public static List<RecipeHolder<ElectrodynamicsRecipe>> findRecipesbyType(RecipeType<? extends ElectrodynamicsRecipe> typeIn, Level world) {
 		return world != null ? world.getRecipeManager().getAllRecipesFor((RecipeType<ElectrodynamicsRecipe>) typeIn) : Collections.emptyList();
 	}
 
 	@Nullable
-	public static ElectrodynamicsRecipe getRecipe(ComponentProcessor pr, List<ElectrodynamicsRecipe> recipes) {
-		for (ElectrodynamicsRecipe recipe : recipes) {
-			if (recipe.matchesRecipe(pr)) {
-				return recipe;
+	public static ElectrodynamicsRecipe getRecipe(ComponentProcessor pr, List<RecipeHolder<ElectrodynamicsRecipe>> cachedRecipes) {
+		for (RecipeHolder<ElectrodynamicsRecipe> recipe : cachedRecipes) {
+			if (recipe.value().matchesRecipe(pr)) {
+				return recipe.value();
 			}
 		}
 		return null;
@@ -202,7 +202,7 @@ public abstract class ElectrodynamicsRecipe implements Recipe<RecipeWrapper> {
 			CountableIngredient ing = ingredients.get(i);
 			int slotNum = -1;
 			for (int j = 0; j < stacks.size(); j++) {
-				if (ing.testStack(stacks.get(j))) {
+				if (ing.test(stacks.get(j))) {
 					slotNum = j;
 					break;
 				}

@@ -1,58 +1,63 @@
 package electrodynamics.common.packet.types.server;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
+import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class PacketJetpackFlightServer {
+public class PacketJetpackFlightServer implements CustomPacketPayload {
 
-	private final UUID playerId;
-	private final boolean bool;
-	private final double prevDeltaY;
+    private final UUID playerId;
+    private final boolean bool;
+    private final double prevDeltaY;
 
-	public PacketJetpackFlightServer(UUID uuid, boolean bool, double prevDeltaY) {
-		playerId = uuid;
-		this.bool = bool;
-		this.prevDeltaY = prevDeltaY;
-	}
+    public PacketJetpackFlightServer(UUID uuid, boolean bool, double prevDeltaY) {
+        playerId = uuid;
+        this.bool = bool;
+        this.prevDeltaY = prevDeltaY;
+    }
 
-	public static void handle(PacketJetpackFlightServer message, Supplier<Context> context) {
-		Context ctx = context.get();
-		ctx.enqueueWork(() -> {
-			ServerLevel world = context.get().getSender().serverLevel();
-			if (world != null) {
-				Player player = world.getPlayerByUUID(message.playerId);
-				ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-				if (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
-					CompoundTag tag = chest.getOrCreateTag();
-					tag.putBoolean(NBTUtils.USED, message.bool);
-					tag.putBoolean(ItemJetpack.WAS_HURT_KEY, false);
-					tag.putDouble(ItemJetpack.DELTA_Y_KEY, message.prevDeltaY);
-				}
-			}
-		});
-		ctx.setPacketHandled(true);
-	}
+    public static void handle(PacketJetpackFlightServer message, PlayPayloadContext context) {
+        if (context.level().isEmpty()) {
+            return;
+        }
+        ServerLevel world = (ServerLevel) context.level().get();
+        Player player = world.getPlayerByUUID(message.playerId);
+        ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+        if (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
+            CompoundTag tag = chest.getOrCreateTag();
+            tag.putBoolean(NBTUtils.USED, message.bool);
+            tag.putBoolean(ItemJetpack.WAS_HURT_KEY, false);
+            tag.putDouble(ItemJetpack.DELTA_Y_KEY, message.prevDeltaY);
+        }
+    }
 
-	public static void encode(PacketJetpackFlightServer message, FriendlyByteBuf buf) {
-		buf.writeUUID(message.playerId);
-		buf.writeBoolean(message.bool);
-		buf.writeDouble(message.prevDeltaY);
-	}
+    public static PacketJetpackFlightServer read(FriendlyByteBuf buf) {
+        return new PacketJetpackFlightServer(buf.readUUID(), buf.readBoolean(), buf.readDouble());
+    }
 
-	public static PacketJetpackFlightServer decode(FriendlyByteBuf buf) {
-		return new PacketJetpackFlightServer(buf.readUUID(), buf.readBoolean(), buf.readDouble());
-	}
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeUUID(playerId);
+        buf.writeBoolean(bool);
+        buf.writeDouble(prevDeltaY);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return NetworkHandler.PACKET_JETPACKFLIGHTSERVER_PACKETID;
+    }
 
 }

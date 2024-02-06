@@ -10,7 +10,6 @@ import electrodynamics.client.keys.event.HandlerModeSwitchServoLegs;
 import electrodynamics.client.keys.event.HandlerSwapBattery;
 import electrodynamics.client.keys.event.HandlerToggleNVGoggles;
 import electrodynamics.client.keys.event.HandlerToggleServoLegs;
-import electrodynamics.client.reloadlistener.ReloadListenerResetGuidebook;
 import electrodynamics.client.render.event.guipost.AbstractPostGuiOverlayHandler;
 import electrodynamics.client.render.event.guipost.HandlerArmorData;
 import electrodynamics.client.render.event.guipost.HandlerRailgunTemperature;
@@ -20,14 +19,13 @@ import electrodynamics.client.render.event.levelstage.HandlerQuarryArm;
 import electrodynamics.client.render.event.levelstage.HandlerSeismicScanner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
-import net.minecraftforge.client.event.InputEvent.Key;
-import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
-import net.minecraftforge.client.event.RenderGuiOverlayEvent;
-import net.minecraftforge.client.event.RenderLevelStageEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
+import net.neoforged.neoforge.client.event.InputEvent.Key;
+import net.neoforged.neoforge.client.event.RenderGuiOverlayEvent;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
 @Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientEvents {
@@ -77,13 +75,6 @@ public class ClientEvents {
 	@SubscribeEvent
 	public static void handleKeyPress(Key event) {
 		KEY_PRESS_HANDLERS.forEach(handler -> handler.handler(event, Minecraft.getInstance()));
-	}
-
-	@SubscribeEvent
-	public static void handleClientDatapackReloads(RegisterClientReloadListenersEvent event) {
-
-		event.registerReloadListener(new ReloadListenerResetGuidebook());
-
 	}
 
 }

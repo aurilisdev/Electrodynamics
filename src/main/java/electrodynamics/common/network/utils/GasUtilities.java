@@ -1,6 +1,5 @@
 package electrodynamics.common.network.utils;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.gas.IGasHandler;
 import electrodynamics.api.capability.types.gas.IGasHandlerItem;
 import electrodynamics.api.gas.GasAction;
@@ -10,192 +9,203 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.util.LazyOptional;
 
 public class GasUtilities {
 
-	public static boolean isGasReciever(BlockEntity acceptor, Direction dir) {
-		return acceptor != null && acceptor.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER, dir).isPresent();
-	}
+    public static boolean isGasReciever(BlockEntity acceptor, Direction dir) {
+        return acceptor != null && acceptor.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_BLOCK, acceptor.getBlockPos(), acceptor.getBlockState(), acceptor, dir) != null;
+    }
 
-	public static double recieveGas(BlockEntity reciever, Direction dir, GasStack gas, GasAction action) {
-		if (gas.isEmpty() || gas.getAmount() <= 0) {
-			return 0;
-		}
-		GasStack copy = gas.copy();
-		return reciever.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER, dir).map(cap -> {
-			double taken = 0;
-			double recieved = 0;
-			for (int i = 0; i < cap.getTanks(); i++) {
-				if (cap.isGasValid(i, copy)) {
-					recieved = cap.fillTank(i, copy, action);
-					copy.shrink(recieved);
-					taken += recieved;
-				}
-			}
-			return taken;
-		}).orElse(0.0);
-	}
+    public static double recieveGas(BlockEntity reciever, Direction dir, GasStack gas, GasAction action) {
+        if (gas.isEmpty() || gas.getAmount() <= 0) {
+            return 0;
+        }
+        GasStack copy = gas.copy();
 
-	public static void outputToPipe(GenericTile tile, GasTank[] tanks, Direction... outputDirections) {
+        IGasHandler handler = reciever.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_BLOCK, reciever.getBlockPos(), reciever.getBlockState(), reciever, dir);
 
-		Direction facing = tile.getFacing();
+        if (handler == null) {
+            return 0.0;
+        }
 
-		for (Direction relative : outputDirections) {
+        double taken = 0;
+        double recieved = 0;
 
-			Direction direction = BlockEntityUtils.getRelativeSide(facing, relative.getOpposite());
+        for (int i = 0; i < handler.getTanks(); i++) {
+            if (handler.isGasValid(i, copy)) {
+                recieved = handler.fillTank(i, copy, action);
+                copy.shrink(recieved);
+                taken += recieved;
+            }
+        }
+        return taken;
+    }
 
-			BlockPos face = tile.getBlockPos().relative(direction.getOpposite());
+    public static void outputToPipe(GenericTile tile, GasTank[] tanks, Direction... outputDirections) {
 
-			BlockEntity faceTile = tile.getLevel().getBlockEntity(face);
+        Direction facing = tile.getFacing();
 
-			if (faceTile == null) {
-				continue;
-			}
+        for (Direction relative : outputDirections) {
 
-			LazyOptional<IGasHandler> cap = faceTile.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER, direction);
+            Direction direction = BlockEntityUtils.getRelativeSide(facing, relative.getOpposite());
 
-			if (!cap.isPresent()) {
-				continue;
-			}
+            BlockPos face = tile.getBlockPos().relative(direction.getOpposite());
 
-			IGasHandler gHandler = cap.resolve().get();
+            BlockEntity faceTile = tile.getLevel().getBlockEntity(face);
 
-			for (GasTank gasTank : tanks) {
+            if (faceTile == null) {
+                continue;
+            }
 
-				for (int i = 0; i < gHandler.getTanks(); i++) {
+            IGasHandler handler = faceTile.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_BLOCK, faceTile.getBlockPos(), faceTile.getBlockState(), tile, direction);
 
-					GasStack tankGas = gasTank.getGas().copy();
+            if (handler == null) {
+                continue;
+            }
 
-					double amtAccepted = gHandler.fillTank(i, tankGas, GasAction.EXECUTE);
+            for (GasTank gasTank : tanks) {
 
-					GasStack taken = new GasStack(tankGas.getGas(), amtAccepted, tankGas.getTemperature(), tankGas.getPressure());
+                for (int i = 0; i < handler.getTanks(); i++) {
 
-					gasTank.drain(taken, GasAction.EXECUTE);
-				}
+                    GasStack tankGas = gasTank.getGas().copy();
 
-			}
-		}
-	}
+                    double amtAccepted = handler.fillTank(i, tankGas, GasAction.EXECUTE);
 
-	public static void drainItem(GenericTile tile, GasTank[] tanks) {
+                    GasStack taken = new GasStack(tankGas.getGas(), amtAccepted, tankGas.getTemperature(), tankGas.getPressure());
 
-		ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
+                    gasTank.drain(taken, GasAction.EXECUTE);
+                }
 
-		int cylinderIndex = inv.getInputGasStartIndex();
+            }
+        }
+    }
 
-		int size = inv.getInputGasContents().size();
+    public static void drainItem(GenericTile tile, GasTank[] tanks) {
 
-		if (tanks.length < size) {
+        ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
 
-			return;
+        int cylinderIndex = inv.getInputGasStartIndex();
 
-		}
+        int size = inv.getInputGasContents().size();
 
-		int index;
+        if (tanks.length < size) {
 
-		for (int i = 0; i < size; i++) {
+            return;
 
-			index = cylinderIndex + i;
+        }
 
-			GasTank tank = tanks[i];
+        int index;
 
-			ItemStack stack = inv.getItem(index);
+        for (int i = 0; i < size; i++) {
 
-			double room = tank.getRoom();
+            index = cylinderIndex + i;
 
-			if (stack.isEmpty() || CapabilityUtils.isGasItemNull() || room <= 0 || !CapabilityUtils.hasGasItemCap(stack)) {
-				continue;
-			}
+            GasTank tank = tanks[i];
 
-			IGasHandlerItem handler = CapabilityUtils.getGasHandlerItem(stack);
+            ItemStack stack = inv.getItem(index);
 
-			for (int j = 0; j < handler.getTanks(); j++) {
+            double room = tank.getRoom();
 
-				if (room <= 0) {
-					break;
-				}
+            if (stack.isEmpty() || room <= 0) {
+                continue;
+            }
 
-				GasStack taken = handler.drainTank(0, room, GasAction.SIMULATE);
+            IGasHandlerItem handler = stack.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-				if (taken.isEmpty() || !tank.isGasValid(taken)) {
-					continue;
-				}
+            if (handler == null) {
+                continue;
+            }
 
-				double takenAmt = tank.fill(taken, GasAction.EXECUTE);
+            for (int j = 0; j < handler.getTanks(); j++) {
 
-				handler.drainTank(j, takenAmt, GasAction.EXECUTE);
+                if (room <= 0) {
+                    break;
+                }
 
-				room = tank.getRoom();
+                GasStack taken = handler.drainTank(0, room, GasAction.SIMULATE);
 
-			}
+                if (taken.isEmpty() || !tank.isGasValid(taken)) {
+                    continue;
+                }
 
-			inv.setItem(index, handler.getContainer());
+                double takenAmt = tank.fill(taken, GasAction.EXECUTE);
 
-		}
+                handler.drainTank(j, takenAmt, GasAction.EXECUTE);
 
-	}
+                room = tank.getRoom();
 
-	public static void fillItem(GenericTile tile, GasTank[] tanks) {
+            }
 
-		ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
+            inv.setItem(index, handler.getContainer());
 
-		int cylinderIndex = inv.getOutputGasStartIndex();
+        }
 
-		int size = inv.getOutputGasContents().size();
+    }
 
-		if (tanks.length < size) {
+    public static void fillItem(GenericTile tile, GasTank[] tanks) {
 
-			return;
+        ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
 
-		}
+        int cylinderIndex = inv.getOutputGasStartIndex();
 
-		int index;
+        int size = inv.getOutputGasContents().size();
 
-		for (int i = 0; i < size; i++) {
+        if (tanks.length < size) {
 
-			index = cylinderIndex + i;
+            return;
 
-			GasTank tank = tanks[i];
+        }
 
-			ItemStack stack = inv.getItem(index);
+        int index;
 
-			if (tank.isEmpty() || stack.isEmpty() || CapabilityUtils.isGasItemNull() || !CapabilityUtils.hasGasItemCap(stack)) {
-				continue;
-			}
+        for (int i = 0; i < size; i++) {
 
-			IGasHandlerItem handler = CapabilityUtils.getGasHandlerItem(stack);
+            index = cylinderIndex + i;
 
-			for (int j = 0; j < handler.getTanks(); j++) {
+            GasTank tank = tanks[i];
 
-				if (tank.isEmpty()) {
-					break;
-				}
+            ItemStack stack = inv.getItem(index);
 
-				GasStack gas = tank.getGas();
+            if (tank.isEmpty() || stack.isEmpty()) {
+                continue;
+            }
 
-				if (gas.getTemperature() > handler.getTankMaxTemperature(0) || gas.getPressure() > handler.getTankMaxPressure(0)) {
+            IGasHandlerItem handler = stack.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-					tile.getLevel().playSound(null, tile.getBlockPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
+            if (handler == null) {
+                continue;
+            }
 
-				}
+            for (int j = 0; j < handler.getTanks(); j++) {
 
-				double taken = handler.fillTank(j, gas, GasAction.EXECUTE);
+                if (tank.isEmpty()) {
+                    break;
+                }
 
-				tank.drain(taken, GasAction.EXECUTE);
+                GasStack gas = tank.getGas();
 
-			}
+                if (gas.getTemperature() > handler.getTankMaxTemperature(0) || gas.getPressure() > handler.getTankMaxPressure(0)) {
 
-			inv.setItem(index, handler.getContainer());
+                    tile.getLevel().playSound(null, tile.getBlockPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
 
-		}
-	}
+                }
+
+                double taken = handler.fillTank(j, gas, GasAction.EXECUTE);
+
+                tank.drain(taken, GasAction.EXECUTE);
+
+            }
+
+            inv.setItem(index, handler.getContainer());
+
+        }
+    }
 
 }

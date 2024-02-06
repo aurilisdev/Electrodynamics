@@ -15,12 +15,13 @@ import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterShadersEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
+import net.neoforged.neoforge.client.event.RegisterShadersEvent;
 
-@EventBusSubscriber(modid = References.ID, bus = Bus.MOD, value = Dist.CLIENT)
+//@EventBusSubscriber(modid = References.ID, bus = Bus.MOD, value = Dist.CLIENT)
 public class ElectrodynamicsShaders extends RenderType {
 
 	/* LOGGER INSTANCE & RANDOM SOURCE */
@@ -41,7 +42,7 @@ public class ElectrodynamicsShaders extends RenderType {
 
 	public static final RenderType GREATER_ALPHA = RenderType.create(GREATER_ALPHA_LOC.toString(), DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, false, false, CompositeState.builder().setLightmapState(LIGHTMAP).setShaderState(RENDERTYPE_EYES_SHADER).setTextureState(NO_TEXTURE).setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY).createCompositeState(false));
 
-	// @SubscribeEvent
+	//@SubscribeEvent
 	public static void onRegisterShaders(final RegisterShadersEvent event) {
 		try {
 			event.registerShader(new ShaderInstance(event.getResourceProvider(), GREATER_ALPHA_LOC, DefaultVertexFormat.POSITION_COLOR_TEX), shader -> {

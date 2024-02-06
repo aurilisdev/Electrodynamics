@@ -17,7 +17,7 @@ import electrodynamics.common.tile.pipelines.fluids.TileFluidPipePump;
 import electrodynamics.prefab.network.AbstractNetwork;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class FluidNetwork extends AbstractNetwork<IFluidPipe, SubtypeFluidPipe, BlockEntity, FluidStack> {
 

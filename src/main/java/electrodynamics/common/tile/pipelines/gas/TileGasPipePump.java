@@ -1,8 +1,7 @@
 package electrodynamics.common.tile.pipelines.gas;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.gas.IGasHandler;
 import electrodynamics.common.inventory.container.tile.ContainerGasPipePump;
 import electrodynamics.common.network.type.GasNetwork;
@@ -18,17 +17,18 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 
 public class TileGasPipePump extends GenericTile {
 
 	public static final Direction INPUT_DIR = Direction.SOUTH;
 	public static final Direction OUTPUT_DIR = Direction.NORTH;
+	
+	private boolean isLocked = false;
 
 	public final Property<Integer> priority = property(new Property<>(PropertyType.Integer, "pumppriority", 0).onChange((prop, oldval) -> {
 
@@ -63,36 +63,36 @@ public class TileGasPipePump extends GenericTile {
 		electro.joules(Math.max(electro.getJoulesStored() - Constants.PIPE_PUMP_USAGE_PER_TICK, 0));
 
 	}
-
+	
 	@Override
-	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-		if (cap == ElectrodynamicsCapabilities.ELECTRODYNAMIC) {
-			return super.getCapability(cap, side);
-		}
-		if (side == null || cap != ElectrodynamicsCapabilities.GAS_HANDLER) {
-			return LazyOptional.empty();
-		}
-		Direction facing = getFacing();
+	public @Nullable IGasHandler getGasHandlerCapability(@Nullable Direction side) {
+	    if(side == null || isLocked) {
+	        return null;
+	    }
+	    Direction facing = getFacing();
 
-		if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR)) {
-			return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
-		}
+        if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR)) {
+            return CapabilityUtils.EMPTY_GAS;
+        }
 
-		if (side == BlockEntityUtils.getRelativeSide(facing, INPUT_DIR)) {
+        if (side == BlockEntityUtils.getRelativeSide(facing, INPUT_DIR)) {
 
-			BlockEntity output = level.getBlockEntity(worldPosition.relative(side.getOpposite()));
-			if (output == null) {
-				return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
-			}
-			LazyOptional<IGasHandler> lazy = output.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER, side);
+            BlockEntity output = level.getBlockEntity(worldPosition.relative(side.getOpposite()));
+            if (output == null) {
+                return CapabilityUtils.EMPTY_GAS;
+            }
+            
+            isLocked = true;
+            
+            IGasHandler gas = output.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_BLOCK, output.getBlockPos(), output.getBlockState(), output, side);
+            
+            isLocked = false;
+            
+            return gas == null ? CapabilityUtils.EMPTY_GAS : gas;
 
-			if (lazy.isPresent()) {
-				return lazy.cast();
-			}
-			return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
-
-		}
-		return LazyOptional.empty();
+        }
+        
+        return null;
 	}
 
 	public boolean isPowered() {

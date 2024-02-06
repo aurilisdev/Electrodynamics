@@ -1,6 +1,5 @@
 package electrodynamics.common.recipe.categories.fluid2fluid;
 
-import java.util.Arrays;
 import java.util.List;
 
 import com.mojang.datafixers.util.Pair;
@@ -14,46 +13,51 @@ import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.core.NonNullList;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public abstract class Fluid2FluidRecipe extends AbstractMaterialRecipe {
 
-	private FluidIngredient[] inputFluidIngredients;
-	private FluidStack outputFluidStack;
+    private List<FluidIngredient> inputFluidIngredients;
+    private FluidStack outputFluidStack;
 
-	public Fluid2FluidRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, FluidStack outputFluid, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts, ProbableGas[] gasBiproducts) {
-		super(recipeID, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
-		inputFluidIngredients = inputFluids;
-		outputFluidStack = outputFluid;
-	}
+    public Fluid2FluidRecipe(String recipeGroup, List<FluidIngredient> inputFluids, FluidStack outputFluid, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
+        super(recipeGroup, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
+        inputFluidIngredients = inputFluids;
+        outputFluidStack = outputFluid;
+    }
 
-	@Override
-	public boolean matchesRecipe(ComponentProcessor pr) {
-		Pair<List<Integer>, Boolean> pair = areFluidsValid(getFluidIngredients(), pr.getHolder().<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks());
-		if (pair.getSecond()) {
-			setFluidArrangement(pair.getFirst());
-			return true;
-		}
-		return false;
-	}
+    @Override
+    public boolean matchesRecipe(ComponentProcessor pr) {
+        Pair<List<Integer>, Boolean> pair = areFluidsValid(getFluidIngredients(), pr.getHolder().<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks());
+        if (pair.getSecond()) {
+            setFluidArrangement(pair.getFirst());
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public FluidStack getFluidRecipeOutput() {
-		return outputFluidStack;
-	}
+    @Override
+    public FluidStack getFluidRecipeOutput() {
+        return outputFluidStack;
+    }
 
-	@Override
-	public NonNullList<Ingredient> getIngredients() {
-		NonNullList<Ingredient> ings = NonNullList.create();
-		ings.addAll(Arrays.asList(inputFluidIngredients));
-		return ings;
-	}
+    @Override
+    public NonNullList<Ingredient> getIngredients() {
+        NonNullList<Ingredient> ings = NonNullList.create();
+        ings.addAll(inputFluidIngredients);
+        return ings;
+    }
 
-	@Override
-	public List<FluidIngredient> getFluidIngredients() {
-		return Arrays.asList(inputFluidIngredients);
-	}
+    @Override
+    public List<FluidIngredient> getFluidIngredients() {
+        return inputFluidIngredients;
+    }
+
+    public interface Factory<T extends Fluid2FluidRecipe> {
+
+        T create(String recipeGroup, List<FluidIngredient> inputFluids, FluidStack outputFluid, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts);
+
+    }
 
 }

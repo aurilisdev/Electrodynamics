@@ -28,7 +28,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage;
 
 public class HandlerQuarryArm extends AbstractLevelStageHandler {
 

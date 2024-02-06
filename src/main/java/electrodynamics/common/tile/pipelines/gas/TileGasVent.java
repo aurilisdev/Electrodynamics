@@ -12,38 +12,49 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryB
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.tile.types.GenericMaterialTile;
-import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class TileGasVent extends GenericMaterialTile {
 
-	public TileGasVent(BlockPos worldPos, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_GASVENT.get(), worldPos, blockState);
-		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentGasHandlerSimple(this, "", 128000, 1000000, 1000000).universalInput());
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().gasInputs(1)).valid((slot, stack, i) -> CapabilityUtils.hasGasItemCap(stack)));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.gasvent, this).createMenu((id, player) -> new ContainerGasVent(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
-	}
+    public TileGasVent(BlockPos worldPos, BlockState blockState) {
+        super(ElectrodynamicsBlockTypes.TILE_GASVENT.get(), worldPos, blockState);
+        addComponent(new ComponentTickable(this).tickServer(this::tickServer));
+        addComponent(new ComponentPacketHandler(this));
+        addComponent(new ComponentGasHandlerSimple(this, "", 128000, 1000000, 1000000).universalInput());
+        addComponent(new ComponentInventory(this, InventoryBuilder.newInv().gasInputs(1)).valid((slot, stack, i) -> stack.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM) != null));
+        addComponent(new ComponentContainerProvider(SubtypeMachine.gasvent, this).createMenu((id, player) -> new ContainerGasVent(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+    }
 
-	public void tickServer(ComponentTickable tickable) {
-		ComponentInventory inv = getComponent(IComponentType.Inventory);
-		ComponentGasHandlerSimple simple = getComponent(IComponentType.GasHandler);
-		ItemStack input = inv.getItem(0);
-		if (!input.isEmpty() && CapabilityUtils.hasGasItemCap(input)) {
-			
-			IGasHandlerItem handler = CapabilityUtils.getGasHandlerItem(input);
-			
-			for(int i = 0; i < handler.getTanks(); i++) {
-				handler.drainTank(i, Double.MAX_VALUE, GasAction.EXECUTE);
-			}
+    public void tickServer(ComponentTickable tickable) {
 
-		}
+        ComponentInventory inv = getComponent(IComponentType.Inventory);
 
-		simple.drain(simple.getGasAmount(), GasAction.EXECUTE);
-	}
+        ComponentGasHandlerSimple simple = getComponent(IComponentType.GasHandler);
+
+        simple.drain(simple.getGasAmount(), GasAction.EXECUTE);
+
+        ItemStack input = inv.getItem(0);
+
+        if (input.isEmpty()) {
+
+            return;
+
+        }
+
+        IGasHandlerItem handler = input.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
+
+        if (handler == null) {
+            return;
+        }
+
+        for (int i = 0; i < handler.getTanks(); i++) {
+            handler.drainTank(i, Double.MAX_VALUE, GasAction.EXECUTE);
+        }
+
+    }
 
 }

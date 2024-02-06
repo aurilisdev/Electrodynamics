@@ -1,6 +1,6 @@
 package electrodynamics.common.event.types.living.hurt;
 
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 
 public abstract class AbstractLivingHurtHandler {
 

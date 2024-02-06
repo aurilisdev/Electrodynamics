@@ -13,6 +13,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.AABB;
 
 public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher> {
 
@@ -49,5 +50,10 @@ public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher>
 
 		matrixStackIn.popPose();
 
+	}
+	
+	@Override
+	public AABB getRenderBoundingBox(TileMineralWasher blockEntity) {
+	    return super.getRenderBoundingBox(blockEntity).inflate(1);
 	}
 }

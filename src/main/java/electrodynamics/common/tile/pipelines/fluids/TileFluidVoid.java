@@ -10,14 +10,14 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryB
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.tile.types.GenericMaterialTile;
-import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 public class TileFluidVoid extends GenericMaterialTile {
 	
@@ -30,7 +30,7 @@ public class TileFluidVoid extends GenericMaterialTile {
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentFluidHandlerSimple(CAPACITY, this, "").setInputDirections(Direction.values()));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1)).valid((slot, stack, i) -> CapabilityUtils.hasFluidItemCap(stack)));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1)).valid((slot, stack, i) -> stack.getCapability(Capabilities.FluidHandler.ITEM) != null));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.fluidvoid, this).createMenu((id, player) -> new ContainerFluidVoid(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
@@ -44,11 +44,15 @@ public class TileFluidVoid extends GenericMaterialTile {
 		
 		ItemStack input = inv.getItem(INPUT_SLOT);
 		
-		if(input.isEmpty() || !CapabilityUtils.hasFluidItemCap(input)) {
+		if(input.isEmpty()) {
 			return;
 		}
 		
-		IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(input);
+		IFluidHandlerItem handler = input.getCapability(Capabilities.FluidHandler.ITEM);
+	
+		if(handler == null) {
+		    return;
+		}
 		
 		handler.drain(Integer.MAX_VALUE, FluidAction.EXECUTE);
 		

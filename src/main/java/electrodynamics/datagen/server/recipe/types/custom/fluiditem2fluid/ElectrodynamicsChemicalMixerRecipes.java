@@ -1,20 +1,18 @@
 package electrodynamics.datagen.server.recipe.types.custom.fluiditem2fluid;
 
-import java.util.function.Consumer;
-
 import electrodynamics.api.References;
 import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
+import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.ChemicalMixerRecipe;
 import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.FinishedRecipeFluidOutput;
+import electrodynamics.datagen.utils.recipe.builders.ElectrodynamicsRecipeBuilder.RecipeCategory;
+import electrodynamics.datagen.utils.recipe.builders.FluidItem2FluidBuilder;
 import electrodynamics.registers.ElectrodynamicsFluids;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.ItemTags;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class ElectrodynamicsChemicalMixerRecipes extends AbstractRecipeGenerator {
 
@@ -32,76 +30,76 @@ public class ElectrodynamicsChemicalMixerRecipes extends AbstractRecipeGenerator
 	}
 
 	@Override
-	public void addRecipes(Consumer<FinishedRecipe> consumer) {
+	public void addRecipes(RecipeOutput output) {
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidHydraulic, 1000), 0, 200, 400.0, "hydraulic_fluid")
+		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidHydraulic, 1000), 0, 200, 400.0, "hydraulic_fluid", modID)
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.ETHANOL, 500)
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.DUST_SILICA, 1)
 				//
-				.complete(consumer);
+				.save(output);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidHydrogenFluoride, 1000), 0, 200, 400.0, "hydrofluoric_acid")
+		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidHydrogenFluoride, 1000), 0, 200, 400.0, "hydrofluoric_acid", modID)
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.SULFURIC_ACID, 1000)
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.RAW_ORE_FLUORITE, 1)
 				//
-				.complete(consumer);
+				.save(output);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidClay, 1000), 0, 200, 400.0, "liquid_clay")
+		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidClay, 1000), 0, 200, 400.0, "liquid_clay", modID)
 				//
 				.addFluidTagInput(FluidTags.WATER, 1000)
 				//
 				.addItemTagInput(ItemTags.DIRT, 1)
 				//
-				.complete(consumer);
+				.save(output);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(SubtypeSulfateFluid.molybdenum).get(), 250), 0, 200, 400.0, "molybdenum_from_carrots")
+		newRecipe(new FluidStack(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(SubtypeSulfateFluid.molybdenum).get(), 250), 0, 200, 400.0, "molybdenum_from_carrots", modID)
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.SULFURIC_ACID, 100)
 				//
 				.addItemTagInput(Tags.Items.CROPS_CARROT, 6)
 				//
-				.complete(consumer);
+				.save(output);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(SubtypeSulfateFluid.molybdenum).get(), 250), 0, 200, 400.0, "molybdenum_from_potatos")
+		newRecipe(new FluidStack(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(SubtypeSulfateFluid.molybdenum).get(), 250), 0, 200, 400.0, "molybdenum_from_potatos", modID)
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.SULFURIC_ACID, 100)
 				//
 				.addItemTagInput(Tags.Items.CROPS_POTATO, 4)
 				//
-				.complete(consumer);
+				.save(output);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(SubtypeSulfateFluid.molybdenum).get(), 250), 0, 200, 400.0, "molybdenum_from_wheat")
+		newRecipe(new FluidStack(ElectrodynamicsFluids.SUBTYPEFLUID_REGISTRY_MAP.get(SubtypeSulfateFluid.molybdenum).get(), 250), 0, 200, 400.0, "molybdenum_from_wheat", modID)
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.SULFURIC_ACID, 100)
 				//
 				.addItemTagInput(Tags.Items.CROPS_WHEAT, 5)
 				//
-				.complete(consumer);
+				.save(output);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidPolyethylene, 1000), 0, 200, 400.0, "polyethylene")
+		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidPolyethylene, 1000), 0, 200, 400.0, "polyethylene", modID)
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.ETHANOL, 1000)
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.OXIDE_CHROMIUMDISILICIDE, 1)
 				//
-				.complete(consumer);
+				.save(output);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidSulfuricAcid, 2500), 0, 200, 400.0, "sulfuric_acid")
+		newRecipe(new FluidStack(ElectrodynamicsFluids.fluidSulfuricAcid, 2500), 0, 200, 400.0, "sulfuric_acid", modID)
 				//
 				.addFluidTagInput(FluidTags.WATER, 1000)
 				//
 				.addItemTagInput(ElectrodynamicsTags.Items.OXIDE_TRISULFUR, 1)
 				//
-				.complete(consumer);
+				.save(output);
 
 	}
 
-	public FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeFluidOutput.of(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_ITEM_2_FLUID, modID, "chemical_mixer/" + name);
+	public FluidItem2FluidBuilder<ChemicalMixerRecipe> newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name, String group) {
+		return new FluidItem2FluidBuilder<>(ChemicalMixerRecipe::new, stack, RecipeCategory.FLUID_ITEM_2_FLUID, modID, "chemical_mixer/" + name, group, xp, ticks, usagePerTick);
 	}
 
 }

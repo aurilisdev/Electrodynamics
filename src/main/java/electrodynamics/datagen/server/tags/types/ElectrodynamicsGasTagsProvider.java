@@ -14,12 +14,12 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceKey;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 public class ElectrodynamicsGasTagsProvider extends IntrinsicHolderTagsProvider<Gas> {
 
 	public ElectrodynamicsGasTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modId, @Nullable ExistingFileHelper existingFileHelper) {
-		super(output, ElectrodynamicsRegistries.GAS_REGISTRY_KEY, lookupProvider, gas -> ResourceKey.create(ElectrodynamicsRegistries.GAS_REGISTRY_KEY, ElectrodynamicsRegistries.gasRegistry().getKey(gas)), modId, existingFileHelper);
+		super(output, ElectrodynamicsRegistries.GAS_REGISTRY_KEY, lookupProvider, gas -> ResourceKey.create(ElectrodynamicsRegistries.GAS_REGISTRY_KEY, ElectrodynamicsRegistries.GAS_REGISTRY.get().getKey(gas)), modId, existingFileHelper);
 	}
 
 	public ElectrodynamicsGasTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {

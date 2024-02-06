@@ -2,7 +2,6 @@ package electrodynamics.common.tile.pipelines.gas.gastransformer.thermoelectricm
 
 import java.util.function.BiConsumer;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.gas.IGasHandler;
 import electrodynamics.api.gas.Gas;
 import electrodynamics.api.gas.GasAction;
@@ -29,6 +28,7 @@ import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -36,419 +36,425 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 public class TileThermoelectricManipulator extends GenericTileGasTransformer {
 
-	/**
-	 * NOTE this value can NEVER be more than 90. This is because above 90, it becomes possible to create an infinite energy loop with the steam turbine from Nuclear Science.
-	 */
-	private static final double HEAT_TRANSFER = 10.0; // degrees kelvin
+    /**
+     * NOTE this value can NEVER be more than 90. This is because above 90, it becomes possible to create an infinite energy
+     * loop with the steam turbine from Nuclear Science.
+     */
+    private static final double HEAT_TRANSFER = 10.0; // degrees kelvin
 
-	public final Property<Double> targetTemperature = property(new Property<>(PropertyType.Double, "targettemperature", Gas.ROOM_TEMPERATURE));
+    public final Property<Double> targetTemperature = property(new Property<>(PropertyType.Double, "targettemperature", Gas.ROOM_TEMPERATURE));
 
-	private boolean isFluid = false;
-	private boolean changeState = false;
+    private boolean isFluid = false;
+    private boolean changeState = false;
 
-	private Gas evaporatedGas;
+    private Gas evaporatedGas;
 
-	public TileThermoelectricManipulator(BlockPos worldPos, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_THERMOELECTRIC_MANIPULATOR.get(), worldPos, blockState);
-		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(BASE_INPUT_CAPACITY * 10));
-		addComponent(new ComponentFluidHandlerMultiBiDirec(this).setInputDirections(Direction.DOWN).setInputTanks(1, arr((int) BASE_INPUT_CAPACITY)).setOutputDirections(Direction.DOWN).setOutputTanks(1, arr((int) BASE_OUTPUT_CAPACITY)));
-	}
+    public TileThermoelectricManipulator(BlockPos worldPos, BlockState blockState) {
+        super(ElectrodynamicsBlockTypes.TILE_THERMOELECTRIC_MANIPULATOR.get(), worldPos, blockState);
+        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(BASE_INPUT_CAPACITY * 10));
+        addComponent(new ComponentFluidHandlerMultiBiDirec(this).setInputDirections(Direction.DOWN).setInputTanks(1, arr((int) BASE_INPUT_CAPACITY)).setOutputDirections(Direction.DOWN).setOutputTanks(1, arr((int) BASE_OUTPUT_CAPACITY)));
+    }
 
-	@Override
-	public boolean canProcess(ComponentProcessor processor) {
+    @Override
+    public boolean canProcess(ComponentProcessor processor) {
 
-		ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+        ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
 
-		processor.consumeGasCylinder();
-		processor.dispenseGasCylinder();
+        processor.consumeGasCylinder();
+        processor.dispenseGasCylinder();
 
-		processor.consumeBucket();
-		processor.dispenseBucket();
+        processor.consumeBucket();
+        processor.dispenseBucket();
 
-		Direction facing = getFacing();
+        Direction facing = getFacing();
 
-		Direction direction = BlockEntityUtils.getRelativeSide(facing, Direction.EAST);// opposite of west is east
-		BlockPos face = getBlockPos().relative(direction.getOpposite(), 2);
-		BlockEntity faceTile = getLevel().getBlockEntity(face);
-		if (faceTile != null) {
-			LazyOptional<IGasHandler> cap = faceTile.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER, direction);
-			if (cap.isPresent()) {
-				IGasHandler gHandler = cap.resolve().get();
-				GasTank gasTank = gasHandler.getOutputTanks()[0];
-				for (int i = 0; i < gHandler.getTanks(); i++) {
-					GasStack tankGas = gasTank.getGas();
-					double amtAccepted = gHandler.fillTank(i, tankGas, GasAction.EXECUTE);
-					GasStack taken = new GasStack(tankGas.getGas(), amtAccepted, tankGas.getTemperature(), tankGas.getPressure());
-					gasTank.drain(taken, GasAction.EXECUTE);
-				}
+        Direction direction = BlockEntityUtils.getRelativeSide(facing, Direction.EAST);// opposite of west is east
+        BlockPos face = getBlockPos().relative(direction.getOpposite(), 2);
+        BlockEntity faceTile = getLevel().getBlockEntity(face);
+        if (faceTile != null) {
 
-			}
-		}
+            IGasHandler handler = faceTile.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_BLOCK, faceTile.getBlockPos(), faceTile.getBlockState(), faceTile, direction);
 
-		ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
+            if (handler != null) {
 
-		face = getBlockPos().relative(direction.getOpposite()).relative(Direction.DOWN);
-		faceTile = getLevel().getBlockEntity(face);
-		if (faceTile != null) {
-			LazyOptional<IFluidHandler> cap = faceTile.getCapability(ForgeCapabilities.FLUID_HANDLER, direction);
-			if (cap.isPresent()) {
-				IFluidHandler fHandler = cap.resolve().get();
-				FluidTank fluidTank = fluidHandler.getOutputTanks()[0];
-				FluidStack tankFluid = fluidTank.getFluid();
-				int amtAccepted = fHandler.fill(tankFluid, FluidAction.EXECUTE);
-				FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
-				fluidTank.drain(taken, FluidAction.EXECUTE);
+                GasTank gasTank = gasHandler.getOutputTanks()[0];
+                for (int i = 0; i < handler.getTanks(); i++) {
+                    GasStack tankGas = gasTank.getGas();
+                    double amtAccepted = handler.fillTank(i, tankGas, GasAction.EXECUTE);
+                    GasStack taken = new GasStack(tankGas.getGas(), amtAccepted, tankGas.getTemperature(), tankGas.getPressure());
+                    gasTank.drain(taken, GasAction.EXECUTE);
+                }
 
-			}
-		}
+            }
 
-		ManipulatorStatusCheckWrapper result = checkGasConditions(processor);
+        }
 
-		if (result.canProcess()) {
+        ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
 
-			isFluid = false;
-			changeState = result.changeState();
+        face = getBlockPos().relative(direction.getOpposite()).relative(Direction.DOWN);
+        faceTile = getLevel().getBlockEntity(face);
+        if (faceTile != null) {
 
-		} else {
+            IFluidHandler handler = faceTile.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, faceTile.getBlockPos(), faceTile.getBlockState(), faceTile, direction);
 
-			result = checkFluidConditions(processor);
-			isFluid = result.canProcess();
-			changeState = result.changeState();
-		}
+            if (handler != null) {
 
-		boolean isHeating = result.status() == ManipulatorHeatingStatus.HEAT && result.canProcess();
+                FluidTank fluidTank = fluidHandler.getOutputTanks()[0];
+                FluidStack tankFluid = fluidTank.getFluid();
+                int amtAccepted = handler.fill(tankFluid, FluidAction.EXECUTE);
+                FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
+                fluidTank.drain(taken, FluidAction.EXECUTE);
 
-		if (BlockEntityUtils.isLit(this) ^ isHeating) {
-			BlockEntityUtils.updateLit(this, isHeating);
-			BlockEntity left = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
-			BlockEntity right = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
-			if (left != null && left instanceof TileGasTransformerSideBlock leftTile && right != null && right instanceof TileGasTransformerSideBlock rightTile) {
-				BlockEntityUtils.updateLit(leftTile, isHeating);
-				BlockEntityUtils.updateLit(rightTile, isHeating);
-			}
-		}
+            }
 
-		ManipulatorHeatingStatus currStatus = getBlockState().getValue(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS);
+        }
 
-		if (currStatus != result.status()) {
+        ManipulatorStatusCheckWrapper result = checkGasConditions(processor);
 
-			getLevel().setBlockAndUpdate(worldPosition, getBlockState().setValue(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, result.status()));
+        if (result.canProcess()) {
 
-		}
+            isFluid = false;
+            changeState = result.changeState();
 
-		return result.canProcess();
-	}
+        } else {
 
-	private ManipulatorStatusCheckWrapper checkGasConditions(ComponentProcessor processor) {
+            result = checkFluidConditions(processor);
+            isFluid = result.canProcess();
+            changeState = result.changeState();
+        }
 
-		ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
-		GasTank inputTank = gasHandler.getInputTanks()[0];
-		if (inputTank.isEmpty()) {
-			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-		}
+        boolean isHeating = result.status() == ManipulatorHeatingStatus.HEAT && result.canProcess();
 
-		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+        if (BlockEntityUtils.isLit(this) ^ isHeating) {
+            BlockEntityUtils.updateLit(this, isHeating);
+            BlockEntity left = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
+            BlockEntity right = getLevel().getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
+            if (left != null && left instanceof TileGasTransformerSideBlock leftTile && right != null && right instanceof TileGasTransformerSideBlock rightTile) {
+                BlockEntityUtils.updateLit(leftTile, isHeating);
+                BlockEntityUtils.updateLit(rightTile, isHeating);
+            }
+        }
 
-		if (electro.getJoulesStored() < USAGE_PER_TICK * processor.operatingSpeed.get()) {
-			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-		}
+        ManipulatorHeatingStatus currStatus = getBlockState().getValue(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS);
 
-		if (inputTank.getGas().getGas().getCondensationTemp() >= targetTemperature.get()) {
+        if (currStatus != result.status()) {
 
-			// gas is condensed
-			ComponentFluidHandlerMultiBiDirec fluidHandler = getComponent(IComponentType.FluidHandler);
+            getLevel().setBlockAndUpdate(worldPosition, getBlockState().setValue(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, result.status()));
 
-			FluidTank outputTank = fluidHandler.getOutputTanks()[0];
+        }
 
-			if (outputTank.getFluidAmount() >= outputTank.getCapacity()) {
-				return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-			}
+        return result.canProcess();
+    }
 
-			Fluid condensedFluid = inputTank.getGas().getGas().getCondensedFluid();
+    private ManipulatorStatusCheckWrapper checkGasConditions(ComponentProcessor processor) {
 
-			if (condensedFluid == null) {
-				return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-			}
+        ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+        GasTank inputTank = gasHandler.getInputTanks()[0];
+        if (inputTank.isEmpty()) {
+            return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+        }
 
-			if (!outputTank.isEmpty() && !outputTank.getFluid().getFluid().isSame(condensedFluid)) {
-				return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-			}
+        ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-			ManipulatorHeatingStatus status;
+        if (electro.getJoulesStored() < USAGE_PER_TICK * processor.operatingSpeed.get()) {
+            return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+        }
 
-			if (inputTank.getGas().getTemperature() < targetTemperature.get()) {
-				status = ManipulatorHeatingStatus.HEAT;
-			} else if (inputTank.getGas().getTemperature() > targetTemperature.get()) {
-				status = ManipulatorHeatingStatus.COOL;
-			} else {
-				status = ManipulatorHeatingStatus.OFF;
-			}
+        if (inputTank.getGas().getGas().getCondensationTemp() >= targetTemperature.get()) {
 
-			return new ManipulatorStatusCheckWrapper(true, status, true);
+            // gas is condensed
+            ComponentFluidHandlerMultiBiDirec fluidHandler = getComponent(IComponentType.FluidHandler);
 
-		}
-		GasTank outputTank = gasHandler.getOutputTanks()[0];
-		if (outputTank.getGasAmount() >= outputTank.getCapacity()) {
-			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-		}
+            FluidTank outputTank = fluidHandler.getOutputTanks()[0];
 
-		if (!outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas())) {
-			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-		}
+            if (outputTank.getFluidAmount() >= outputTank.getCapacity()) {
+                return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+            }
 
-		if (inputTank.getGas().getTemperature() <= GasStack.ABSOLUTE_ZERO) {
-			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-		}
+            Fluid condensedFluid = inputTank.getGas().getGas().getCondensedFluid();
 
-		ManipulatorHeatingStatus status;
+            if (condensedFluid == null) {
+                return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+            }
 
-		if (inputTank.getGas().getTemperature() < targetTemperature.get()) {
-			status = ManipulatorHeatingStatus.HEAT;
-		} else if (inputTank.getGas().getTemperature() > targetTemperature.get()) {
-			status = ManipulatorHeatingStatus.COOL;
-		} else {
-			status = ManipulatorHeatingStatus.OFF;
-		}
+            if (!outputTank.isEmpty() && !outputTank.getFluid().getFluid().isSame(condensedFluid)) {
+                return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+            }
 
-		return new ManipulatorStatusCheckWrapper(true, status, false);
+            ManipulatorHeatingStatus status;
 
-	}
+            if (inputTank.getGas().getTemperature() < targetTemperature.get()) {
+                status = ManipulatorHeatingStatus.HEAT;
+            } else if (inputTank.getGas().getTemperature() > targetTemperature.get()) {
+                status = ManipulatorHeatingStatus.COOL;
+            } else {
+                status = ManipulatorHeatingStatus.OFF;
+            }
 
-	private ManipulatorStatusCheckWrapper checkFluidConditions(ComponentProcessor processor) {
+            return new ManipulatorStatusCheckWrapper(true, status, true);
 
-		ComponentFluidHandlerMultiBiDirec fluidHandler = getComponent(IComponentType.FluidHandler);
+        }
+        GasTank outputTank = gasHandler.getOutputTanks()[0];
+        if (outputTank.getGasAmount() >= outputTank.getCapacity()) {
+            return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+        }
 
-		FluidTank inputTank = fluidHandler.getInputTanks()[0];
+        if (!outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas())) {
+            return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+        }
 
-		if (inputTank.isEmpty()) {
-			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-		}
+        if (inputTank.getGas().getTemperature() <= GasStack.ABSOLUTE_ZERO) {
+            return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+        }
 
-		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+        ManipulatorHeatingStatus status;
 
-		if (electro.getJoulesStored() < USAGE_PER_TICK * processor.operatingSpeed.get()) {
-			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-		}
+        if (inputTank.getGas().getTemperature() < targetTemperature.get()) {
+            status = ManipulatorHeatingStatus.HEAT;
+        } else if (inputTank.getGas().getTemperature() > targetTemperature.get()) {
+            status = ManipulatorHeatingStatus.COOL;
+        } else {
+            status = ManipulatorHeatingStatus.OFF;
+        }
 
-		ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+        return new ManipulatorStatusCheckWrapper(true, status, false);
 
-		GasTank outputTank = gasHandler.getOutputTanks()[0];
+    }
 
-		if (outputTank.getGasAmount() >= outputTank.getCapacity()) {
-			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-		}
+    private ManipulatorStatusCheckWrapper checkFluidConditions(ComponentProcessor processor) {
 
-		evaporatedGas = ElectrodynamicsGases.MAPPED_GASSES.getOrDefault(inputTank.getFluid().getFluid(), Gas.empty());
+        ComponentFluidHandlerMultiBiDirec fluidHandler = getComponent(IComponentType.FluidHandler);
 
-		if (evaporatedGas.isEmpty()) {
-			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-		}
+        FluidTank inputTank = fluidHandler.getInputTanks()[0];
 
-		if (targetTemperature.get() <= evaporatedGas.getCondensationTemp()) {
-			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-		}
+        if (inputTank.isEmpty()) {
+            return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+        }
 
-		if (!outputTank.isEmpty() && !outputTank.getGas().getGas().equals(evaporatedGas)) {
-			return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
-		}
+        ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-		return new ManipulatorStatusCheckWrapper(true, ManipulatorHeatingStatus.HEAT, true);
-	}
+        if (electro.getJoulesStored() < USAGE_PER_TICK * processor.operatingSpeed.get()) {
+            return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+        }
 
-	@Override
-	public void process(ComponentProcessor processor) {
-		ComponentFluidHandlerMultiBiDirec fluidHandler = getComponent(IComponentType.FluidHandler);
-		ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+        ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
 
-		double conversionRate = BASE_CONVERSION_RATE * processor.operatingSpeed.get();
+        GasTank outputTank = gasHandler.getOutputTanks()[0];
 
-		// fluid to gas
-		if (isFluid && changeState) {
+        if (outputTank.getGasAmount() >= outputTank.getCapacity()) {
+            return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+        }
 
-			FluidTank inputTank = fluidHandler.getInputTanks()[0];
-			GasTank outputTank = gasHandler.getOutputTanks()[0];
+        evaporatedGas = ElectrodynamicsGases.MAPPED_GASSES.getOrDefault(inputTank.getFluid().getFluid(), ElectrodynamicsGases.EMPTY.get());
 
-			double deltaT = targetTemperature.get() - evaporatedGas.getCondensationTemp();
+        if (evaporatedGas.isEmpty()) {
+            return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+        }
 
-			conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
+        if (targetTemperature.get() <= evaporatedGas.getCondensationTemp()) {
+            return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+        }
 
-			if (conversionRate < 1) {
-				conversionRate = 1;
-			}
+        if (!outputTank.isEmpty() && !outputTank.getGas().getGas().equals(evaporatedGas)) {
+            return new ManipulatorStatusCheckWrapper(false, ManipulatorHeatingStatus.OFF, false);
+        }
 
-			double maxTake = inputTank.getFluidAmount() > conversionRate ? conversionRate : inputTank.getFluidAmount();
+        return new ManipulatorStatusCheckWrapper(true, ManipulatorHeatingStatus.HEAT, true);
+    }
 
-			GasStack evaporatedPotential = new GasStack(evaporatedGas, maxTake, evaporatedGas.getCondensationTemp(), Gas.PRESSURE_AT_SEA_LEVEL);
+    @Override
+    public void process(ComponentProcessor processor) {
+        ComponentFluidHandlerMultiBiDirec fluidHandler = getComponent(IComponentType.FluidHandler);
+        ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
 
-			evaporatedPotential.heat(deltaT);
+        double conversionRate = BASE_CONVERSION_RATE * processor.operatingSpeed.get();
 
-			double taken = outputTank.fill(evaporatedPotential, GasAction.EXECUTE);
+        // fluid to gas
+        if (isFluid && changeState) {
 
-			if (taken == 0) {
-				return;
-			}
+            FluidTank inputTank = fluidHandler.getInputTanks()[0];
+            GasTank outputTank = gasHandler.getOutputTanks()[0];
 
-			evaporatedPotential.setAmount(taken);
+            double deltaT = targetTemperature.get() - evaporatedGas.getCondensationTemp();
 
-			evaporatedPotential.heat(-deltaT);
+            conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
 
-			inputTank.drain((int) Math.ceil(evaporatedPotential.getAmount()), FluidAction.EXECUTE);
+            if (conversionRate < 1) {
+                conversionRate = 1;
+            }
 
-			// gas to fluid
-		} else if (changeState) {
+            double maxTake = inputTank.getFluidAmount() > conversionRate ? conversionRate : inputTank.getFluidAmount();
 
-			GasTank inputTank = gasHandler.getInputTanks()[0];
-			FluidTank outputTank = fluidHandler.getOutputTanks()[0];
+            GasStack evaporatedPotential = new GasStack(evaporatedGas, maxTake, evaporatedGas.getCondensationTemp(), Gas.PRESSURE_AT_SEA_LEVEL);
 
-			double targetTemp = targetTemperature.get() < inputTank.getGas().getGas().getCondensationTemp() ? inputTank.getGas().getGas().getCondensationTemp() : targetTemperature.get();
+            evaporatedPotential.heat(deltaT);
 
-			double deltaT = targetTemp - inputTank.getGas().getTemperature();
+            double taken = outputTank.fill(evaporatedPotential, GasAction.EXECUTE);
 
-			conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
+            if (taken == 0) {
+                return;
+            }
 
-			if (conversionRate < 1) {
-				conversionRate = 1;
-			}
+            evaporatedPotential.setAmount(taken);
 
-			GasStack condensedPotential = new GasStack(inputTank.getGas().getGas(), inputTank.getGasAmount(), inputTank.getGas().getTemperature(), inputTank.getGas().getPressure());
+            evaporatedPotential.heat(-deltaT);
 
-			condensedPotential.bringPressureTo(Gas.PRESSURE_AT_SEA_LEVEL);
+            inputTank.drain((int) Math.ceil(evaporatedPotential.getAmount()), FluidAction.EXECUTE);
 
-			condensedPotential.heat(deltaT);
+            // gas to fluid
+        } else if (changeState) {
 
-			int fluidAmount = (int) Math.floor(Math.min(conversionRate, condensedPotential.getAmount()));
+            GasTank inputTank = gasHandler.getInputTanks()[0];
+            FluidTank outputTank = fluidHandler.getOutputTanks()[0];
 
-			if (fluidAmount == 0) {
-				return;
-			}
+            double targetTemp = targetTemperature.get() < inputTank.getGas().getGas().getCondensationTemp() ? inputTank.getGas().getGas().getCondensationTemp() : targetTemperature.get();
 
-			FluidStack condensedFluid = new FluidStack(condensedPotential.getGas().getCondensedFluid(), fluidAmount);
+            double deltaT = targetTemp - inputTank.getGas().getTemperature();
 
-			int taken = outputTank.fill(condensedFluid, FluidAction.EXECUTE);
+            conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
 
-			if (taken == 0) {
-				return;
-			}
+            if (conversionRate < 1) {
+                conversionRate = 1;
+            }
 
-			condensedPotential.setAmount(taken);
+            GasStack condensedPotential = new GasStack(inputTank.getGas().getGas(), inputTank.getGasAmount(), inputTank.getGas().getTemperature(), inputTank.getGas().getPressure());
 
-			condensedPotential.bringPressureTo(inputTank.getGas().getPressure());
+            condensedPotential.bringPressureTo(Gas.PRESSURE_AT_SEA_LEVEL);
 
-			condensedPotential.heat(-deltaT);
+            condensedPotential.heat(deltaT);
 
-			inputTank.drain(condensedPotential, GasAction.EXECUTE);
+            int fluidAmount = (int) Math.floor(Math.min(conversionRate, condensedPotential.getAmount()));
 
-			// gas to gas
-		} else {
+            if (fluidAmount == 0) {
+                return;
+            }
 
-			GasTank inputTank = gasHandler.getInputTanks()[0];
-			GasTank outputTank = gasHandler.getOutputTanks()[0];
+            FluidStack condensedFluid = new FluidStack(condensedPotential.getGas().getCondensedFluid(), fluidAmount);
 
-			double deltaT = targetTemperature.get() - inputTank.getGas().getTemperature();
+            int taken = outputTank.fill(condensedFluid, FluidAction.EXECUTE);
 
-			conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
+            if (taken == 0) {
+                return;
+            }
 
-			double maxTake = inputTank.getGasAmount() > conversionRate ? conversionRate : inputTank.getGasAmount();
+            condensedPotential.setAmount(taken);
 
-			GasStack condensedPotential = new GasStack(inputTank.getGas().getGas(), maxTake, inputTank.getGas().getTemperature(), inputTank.getGas().getPressure());
+            condensedPotential.bringPressureTo(inputTank.getGas().getPressure());
 
-			condensedPotential.heat(deltaT);
+            condensedPotential.heat(-deltaT);
 
-			double taken = outputTank.fill(condensedPotential, GasAction.EXECUTE);
+            inputTank.drain(condensedPotential, GasAction.EXECUTE);
 
-			if (taken == 0) {
-				return;
-			}
+            // gas to gas
+        } else {
 
-			condensedPotential.setAmount(taken);
+            GasTank inputTank = gasHandler.getInputTanks()[0];
+            GasTank outputTank = gasHandler.getOutputTanks()[0];
 
-			condensedPotential.heat(-deltaT);
+            double deltaT = targetTemperature.get() - inputTank.getGas().getTemperature();
 
-			inputTank.drain(condensedPotential, GasAction.EXECUTE);
-		}
+            conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
 
-	}
+            double maxTake = inputTank.getGasAmount() > conversionRate ? conversionRate : inputTank.getGasAmount();
 
-	@Override
-	public void tickClient(ComponentTickable tickable) {
-		// TODO Auto-generated method stub
+            GasStack condensedPotential = new GasStack(inputTank.getGas().getGas(), maxTake, inputTank.getGas().getTemperature(), inputTank.getGas().getPressure());
 
-	}
+            condensedPotential.heat(deltaT);
 
-	@Override
-	public void updateAddonTanks(int count, boolean isLeft) {
-		ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
-		ComponentFluidHandlerMulti multi = getComponent(IComponentType.FluidHandler);
-		if (isLeft) {
-			multi.getInputTanks()[0].setCapacity((int) (BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count));
-			handler.getInputTanks()[0].setCapacity(BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count);
-		} else {
-			multi.getOutputTanks()[0].setCapacity((int) (BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count));
-			handler.getOutputTanks()[0].setCapacity(BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count);
-		}
-	}
+            double taken = outputTank.fill(condensedPotential, GasAction.EXECUTE);
 
-	@Override
-	public ComponentContainerProvider getContainerProvider() {
-		return new ComponentContainerProvider("container.thermoelectricmanipulator", this).createMenu((id, inv) -> new ContainerThermoelectricManipulator(id, inv, getComponent(IComponentType.Inventory), getCoordsArray()));
-	}
+            if (taken == 0) {
+                return;
+            }
 
-	@Override
-	public ComponentInventory getInventory() {
-		return new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1).gasInputs(1).bucketOutputs(1).gasOutputs(1).upgrades(3)).valid(machineValidator()).validUpgrades(ContainerThermoelectricManipulator.VALID_UPGRADES);
-	}
+            condensedPotential.setAmount(taken);
 
-	@Override
-	public BiConsumer<GasTank, GenericTile> getCondensedHandler() {
+            condensedPotential.heat(-deltaT);
 
-		return (tank, tile) -> {
+            inputTank.drain(condensedPotential, GasAction.EXECUTE);
+        }
 
-			FluidTank outputTank = tile.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getOutputTanks()[0];
+    }
 
-			GasStack tankGas = tank.getGas().copy();
+    @Override
+    public void tickClient(ComponentTickable tickable) {
+        // TODO Auto-generated method stub
 
-			tank.setGas(GasStack.EMPTY);
+    }
 
-			if (tankGas.isEmpty() || !outputTank.isEmpty()) {
-				return;
-			}
+    @Override
+    public void updateAddonTanks(int count, boolean isLeft) {
+        ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
+        ComponentFluidHandlerMulti multi = getComponent(IComponentType.FluidHandler);
+        if (isLeft) {
+            multi.getInputTanks()[0].setCapacity((int) (BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count));
+            handler.getInputTanks()[0].setCapacity(BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count);
+        } else {
+            multi.getOutputTanks()[0].setCapacity((int) (BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count));
+            handler.getOutputTanks()[0].setCapacity(BASE_INPUT_CAPACITY + TileGasTransformerAddonTank.ADDITIONAL_CAPACITY * count);
+        }
+    }
 
-			Fluid fluid = tankGas.getGas().getCondensedFluid();
+    @Override
+    public ComponentContainerProvider getContainerProvider() {
+        return new ComponentContainerProvider("container.thermoelectricmanipulator", this).createMenu((id, inv) -> new ContainerThermoelectricManipulator(id, inv, getComponent(IComponentType.Inventory), getCoordsArray()));
+    }
 
-			if (fluid.isSame(Fluids.EMPTY)) {
-				return;
-			}
+    @Override
+    public ComponentInventory getInventory() {
+        return new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1).gasInputs(1).bucketOutputs(1).gasOutputs(1).upgrades(3)).valid(machineValidator()).validUpgrades(ContainerThermoelectricManipulator.VALID_UPGRADES);
+    }
 
-			tankGas.bringPressureTo(Gas.PRESSURE_AT_SEA_LEVEL);
+    @Override
+    public BiConsumer<GasTank, GenericTile> getCondensedHandler() {
 
-			FluidStack fluidStack = new FluidStack(fluid, (int) tankGas.getAmount());
+        return (tank, tile) -> {
 
-			outputTank.fill(fluidStack, FluidAction.EXECUTE);
+            FluidTank outputTank = tile.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getOutputTanks()[0];
 
-		};
-	}
+            GasStack tankGas = tank.getGas().copy();
 
-	private static double getAdjustedHeatingFactor(double deltaT) {
+            tank.setGas(GasStack.EMPTY);
 
-		if (deltaT == 0) {
-			return 1;
-		}
+            if (tankGas.isEmpty() || !outputTank.isEmpty()) {
+                return;
+            }
 
-		return Math.abs(HEAT_TRANSFER / deltaT);
+            Fluid fluid = tankGas.getGas().getCondensedFluid();
 
-	}
+            if (fluid.isSame(Fluids.EMPTY)) {
+                return;
+            }
 
-	private static record ManipulatorStatusCheckWrapper(boolean canProcess, ManipulatorHeatingStatus status, boolean changeState) {
+            tankGas.bringPressureTo(Gas.PRESSURE_AT_SEA_LEVEL);
 
-	}
+            FluidStack fluidStack = new FluidStack(fluid, (int) tankGas.getAmount());
+
+            outputTank.fill(fluidStack, FluidAction.EXECUTE);
+
+        };
+    }
+
+    private static double getAdjustedHeatingFactor(double deltaT) {
+
+        if (deltaT == 0) {
+            return 1;
+        }
+
+        return Math.abs(HEAT_TRANSFER / deltaT);
+
+    }
+
+    private static record ManipulatorStatusCheckWrapper(boolean canProcess, ManipulatorHeatingStatus status, boolean changeState) {
+
+    }
 
 }

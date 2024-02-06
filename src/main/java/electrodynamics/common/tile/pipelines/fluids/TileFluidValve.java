@@ -1,6 +1,7 @@
 package electrodynamics.common.tile.pipelines.fluids;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.common.tile.pipelines.GenericTileValve;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
@@ -10,128 +11,131 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class TileFluidValve extends GenericTileValve {
 
-	public TileFluidValve(BlockPos pos, BlockState state) {
-		super(ElectrodynamicsBlockTypes.TILE_FLUIDVALVE.get(), pos, state);
-	}
+    private boolean isLocked = false;
 
-	@Override
-	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-		if (side == null || cap != ForgeCapabilities.FLUID_HANDLER) {
-			return LazyOptional.empty();
-		}
+    public TileFluidValve(BlockPos pos, BlockState state) {
+        super(ElectrodynamicsBlockTypes.TILE_FLUIDVALVE.get(), pos, state);
+    }
 
-		Direction facing = getFacing();
+    @Override
+    public @Nullable IFluidHandler getFluidHandlerCapability(@Nullable Direction side) {
+        if (side == null || isLocked) {
+            return null;
+        }
 
-		if (BlockEntityUtils.getRelativeSide(facing, INPUT_DIR) == side || BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR) == side) {
+        Direction facing = getFacing();
 
-			BlockEntity relative = level.getBlockEntity(worldPosition.relative(side.getOpposite()));
+        if (BlockEntityUtils.getRelativeSide(facing, INPUT_DIR) == side || BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR) == side) {
 
-			if (relative == null) {
-				return LazyOptional.of(() -> CapabilityUtils.EMPTY_FLUID).cast();
-			}
+            BlockEntity relative = level.getBlockEntity(worldPosition.relative(side.getOpposite()));
 
-			LazyOptional<IFluidHandler> handler = relative.getCapability(ForgeCapabilities.FLUID_HANDLER, side);
+            if (relative == null) {
+                return CapabilityUtils.EMPTY_FLUID;
+            }
 
-			if (handler.isPresent()) {
-				return LazyOptional.of(() -> new CapDispatcher(handler.resolve().get())).cast();
-			}
-		}
-		return LazyOptional.of(() -> CapabilityUtils.EMPTY_FLUID).cast();
-	}
+            isLocked = true;
 
-	private class CapDispatcher implements IFluidHandler {
+            IFluidHandler fluid = relative.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, relative.getBlockPos(), relative.getBlockState(), relative, side);
 
-		private final IFluidHandler parent;
+            isLocked = false;
 
-		private CapDispatcher(IFluidHandler parent) {
-			this.parent = parent;
-		}
+            return fluid == null ? CapabilityUtils.EMPTY_FLUID : new CapDispatcher(fluid);
+        }
 
-		@Override
-		public int getTanks() {
-			if (isClosed || isLocked) {
-				return 1;
-			}
-			isLocked = true;
-			int tanks = parent.getTanks();
-			isLocked = false;
-			return tanks;
-		}
+        return null;
+    }
 
-		@Override
-		public @NotNull FluidStack getFluidInTank(int tank) {
-			if (isClosed || isLocked) {
-				return FluidStack.EMPTY;
-			}
-			isLocked = true;
-			FluidStack stack = parent.getFluidInTank(tank);
-			isLocked = false;
-			return stack;
-		}
+    private class CapDispatcher implements IFluidHandler {
 
-		@Override
-		public int getTankCapacity(int tank) {
-			if (isClosed || isLocked) {
-				return 0;
-			}
-			isLocked = true;
-			int cap = parent.getTankCapacity(tank);
-			isLocked = false;
-			return cap;
-		}
+        private final IFluidHandler parent;
 
-		@Override
-		public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
-			if (isClosed || isLocked) {
-				return false;
-			}
-			isLocked = true;
-			boolean valid = parent.isFluidValid(tank, stack);
-			isLocked = false;
-			return valid;
-		}
+        private CapDispatcher(IFluidHandler parent) {
+            this.parent = parent;
+        }
 
-		@Override
-		public int fill(FluidStack resource, FluidAction action) {
-			if (isClosed || isLocked) {
-				return 0;
-			}
-			isLocked = true;
-			int fill = parent.fill(resource, action);
-			isLocked = false;
-			return fill;
-		}
+        @Override
+        public int getTanks() {
+            if (isClosed || isLocked) {
+                return 1;
+            }
+            isLocked = true;
+            int tanks = parent.getTanks();
+            isLocked = false;
+            return tanks;
+        }
 
-		@Override
-		public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
-			if (isClosed || isLocked) {
-				return FluidStack.EMPTY;
-			}
-			isLocked = true;
-			FluidStack drain = parent.drain(resource, action);
-			isLocked = false;
-			return drain;
-		}
+        @Override
+        public @NotNull FluidStack getFluidInTank(int tank) {
+            if (isClosed || isLocked) {
+                return FluidStack.EMPTY;
+            }
+            isLocked = true;
+            FluidStack stack = parent.getFluidInTank(tank);
+            isLocked = false;
+            return stack;
+        }
 
-		@Override
-		public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
-			if (isClosed || isLocked) {
-				return FluidStack.EMPTY;
-			}
-			isLocked = true;
-			FluidStack drain = parent.drain(maxDrain, action);
-			isLocked = false;
-			return drain;
-		}
+        @Override
+        public int getTankCapacity(int tank) {
+            if (isClosed || isLocked) {
+                return 0;
+            }
+            isLocked = true;
+            int cap = parent.getTankCapacity(tank);
+            isLocked = false;
+            return cap;
+        }
 
-	}
+        @Override
+        public boolean isFluidValid(int tank, @NotNull FluidStack stack) {
+            if (isClosed || isLocked) {
+                return false;
+            }
+            isLocked = true;
+            boolean valid = parent.isFluidValid(tank, stack);
+            isLocked = false;
+            return valid;
+        }
+
+        @Override
+        public int fill(FluidStack resource, FluidAction action) {
+            if (isClosed || isLocked) {
+                return 0;
+            }
+            isLocked = true;
+            int fill = parent.fill(resource, action);
+            isLocked = false;
+            return fill;
+        }
+
+        @Override
+        public @NotNull FluidStack drain(FluidStack resource, FluidAction action) {
+            if (isClosed || isLocked) {
+                return FluidStack.EMPTY;
+            }
+            isLocked = true;
+            FluidStack drain = parent.drain(resource, action);
+            isLocked = false;
+            return drain;
+        }
+
+        @Override
+        public @NotNull FluidStack drain(int maxDrain, FluidAction action) {
+            if (isClosed || isLocked) {
+                return FluidStack.EMPTY;
+            }
+            isLocked = true;
+            FluidStack drain = parent.drain(maxDrain, action);
+            isLocked = false;
+            return drain;
+        }
+
+    }
 
 }

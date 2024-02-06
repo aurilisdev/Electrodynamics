@@ -11,7 +11,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
 
 public class HandlerCompositeArmor extends AbstractLivingHurtHandler {
 
@@ -36,7 +36,7 @@ public class HandlerCompositeArmor extends AbstractLivingHurtHandler {
 			if (event.getAmount() >= LETHAL_DAMAGE_AMOUNT && stored > 0) {
 				event.setAmount((float) Math.sqrt(event.getAmount()));
 				tag.putInt(NBTUtils.PLATES, stored - 1);
-				event.getEntity().getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(), ElectrodynamicsSounds.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
+                event.getEntity().getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(), ElectrodynamicsSounds.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
 			}
 		}
 

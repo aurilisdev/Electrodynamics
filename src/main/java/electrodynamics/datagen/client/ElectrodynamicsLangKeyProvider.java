@@ -44,6 +44,7 @@ import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import electrodynamics.registers.ElectrodynamicsSounds;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.sounds.SoundEvent;
@@ -51,9 +52,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
@@ -1804,7 +1804,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 	}
 
-	public void addItem(RegistryObject<Item> item, String translation) {
+	public void addItem(DeferredHolder<Item, Item> item, String translation) {
 		add(item.get(), translation);
 	}
 
@@ -1812,7 +1812,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		add(item, translation);
 	}
 
-	public void addBlock(RegistryObject<Block> block, String translation) {
+	public void addBlock(DeferredHolder<Block, Block> block, String translation) {
 		add(block.get(), translation);
 	}
 
@@ -1825,15 +1825,15 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 	}
 
 	public void addFluid(Fluid fluid, String translation) {
-		add("fluid." + modID + "." + ForgeRegistries.FLUIDS.getKey(fluid).getPath(), translation);
+		add("fluid." + modID + "." + BuiltInRegistries.FLUID.getKey(fluid).getPath(), translation);
 	}
 
-	public void addGas(RegistryObject<Gas> gas, String translation) {
+	public void addGas(DeferredHolder<Gas, Gas> gas, String translation) {
 		addGas(gas.get(), translation);
 	}
 
 	public void addGas(Gas gas, String translation) {
-		add("gas." + modID + "." + ElectrodynamicsRegistries.gasRegistry().getKey(gas).getPath(), translation);
+		add("gas." + modID + "." + ElectrodynamicsRegistries.GAS_REGISTRY.get().getKey(gas).getPath(), translation);
 	}
 
 	public void addContainer(SubtypeMachine key, String translation) {
@@ -1852,7 +1852,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		add("subtitles." + modID + "." + key, translation);
 	}
 
-	public void addSubtitle(RegistryObject<SoundEvent> sound, String translation) {
+	public void addSubtitle(DeferredHolder<SoundEvent, SoundEvent> sound, String translation) {
 		addSubtitle(sound.getId().getPath(), translation);
 	}
 

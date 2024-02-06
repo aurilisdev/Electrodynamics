@@ -5,8 +5,8 @@ import electrodynamics.api.screen.component.ISlotTexture;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
 import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.SlotType;
 import electrodynamics.prefab.screen.component.utils.SlotTextureProvider;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.SlotItemHandler;
 
 public class SlotItemHandlerGeneric extends SlotItemHandler implements SlotTextureProvider {
 

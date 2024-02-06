@@ -15,13 +15,13 @@ import java.util.Map.Entry;
 import electrodynamics.api.ISubtype;
 import electrodynamics.api.References;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.fluids.FluidType;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 public class ElectrodynamicsFluidTypes {
-	public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, References.ID);
+	public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, References.ID);
 
 	// liquids
 	public static FluidType fluidTypeEthanol;
@@ -42,7 +42,7 @@ public class ElectrodynamicsFluidTypes {
 		FLUID_TYPES.register("fluidpolyethylene", () -> fluidPolyethylene.getFluidType());
 		FLUID_TYPES.register("fluidclay", () -> fluidClay.getFluidType());
 		FLUID_TYPES.register("fluidhydraulic", () -> fluidHydraulic.getFluidType());
-		for (Entry<ISubtype, RegistryObject<Fluid>> entry : SUBTYPEFLUID_REGISTRY_MAP.entrySet()) {
+		for (Entry<ISubtype, DeferredHolder<Fluid, Fluid>> entry : SUBTYPEFLUID_REGISTRY_MAP.entrySet()) {
 			FLUID_TYPES.register("fluidsulfate" + entry.getKey().tag(), () -> entry.getValue().get().getFluidType());
 		}
 		// condensed gases

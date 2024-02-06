@@ -7,7 +7,7 @@ import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
+import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 
 /**
  * This event should deal with the jetpack user getting yeeted into the ground when flying if damaged

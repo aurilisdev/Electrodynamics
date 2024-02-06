@@ -30,20 +30,20 @@ import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsItems;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
-import net.minecraftforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ModelFile.ExistingModelFile;
+import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 
@@ -218,7 +218,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 
 	}
 
-	public void layeredItem(RegistryObject<Item> item, Parent parent, ResourceLocation... textures) {
+	public void layeredItem(DeferredHolder<Item, Item> item, Parent parent, ResourceLocation... textures) {
 		layeredItem(name(item), parent, textures);
 	}
 
@@ -230,7 +230,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		layeredBuilder(name, parent, textures);
 	}
 
-	public void toggleableItem(RegistryObject<Item> item, String toggle, Parent parentOff, Parent parentOn, ResourceLocation[] offText, ResourceLocation[] onText) {
+	public void toggleableItem(DeferredHolder<Item, Item> item, String toggle, Parent parentOff, Parent parentOn, ResourceLocation[] offText, ResourceLocation[] onText) {
 		toggleableItem(name(item), toggle, parentOff, parentOn, offText, onText);
 	}
 
@@ -253,7 +253,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		return builder;
 	}
 
-	public DynamicFluidContainerModelBuilder<ItemModelBuilder> getBucketModel(RegistryObject<Item> item, Parent parent) {
+	public DynamicFluidContainerModelBuilder<ItemModelBuilder> getBucketModel(DeferredHolder<Item, Item> item, Parent parent) {
 		return getBucketModel(name(item), parent);
 	}
 
@@ -266,7 +266,7 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 	}
 
 	public ResourceLocation key(Block block) {
-		return ForgeRegistries.BLOCKS.getKey(block);
+		return BuiltInRegistries.BLOCK.getKey(block);
 	}
 
 	public ResourceLocation itemLoc(String texture) {
@@ -277,20 +277,20 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		return modLoc("block/" + texture);
 	}
 
-	public String name(RegistryObject<Item> item) {
+	public String name(DeferredHolder<Item, Item> item) {
 		return name(item.get());
 	}
 
 	public String name(Item item) {
-		return ForgeRegistries.ITEMS.getKey(item).getPath();
+		return BuiltInRegistries.ITEM.getKey(item).getPath();
 	}
 
-	public ExistingModelFile existingBlock(RegistryObject<Block> block) {
+	public ExistingModelFile existingBlock(DeferredHolder<Block, Block> block) {
 		return existingBlock(block.getId());
 	}
 
 	public ExistingModelFile existingBlock(Block block) {
-		return existingBlock(ForgeRegistries.BLOCKS.getKey(block));
+		return existingBlock(BuiltInRegistries.BLOCK.getKey(block));
 	}
 
 	public ExistingModelFile existingBlock(ResourceLocation loc) {

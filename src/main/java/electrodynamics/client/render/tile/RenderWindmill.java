@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.phys.AABB;
 
 public class RenderWindmill extends AbstractTileRenderer<TileWindmill> {
 
@@ -29,5 +30,10 @@ public class RenderWindmill extends AbstractTileRenderer<TileWindmill> {
 		matrixStackIn.mulPose(MathUtils.rotQuaternionDeg((float) ((tileEntityIn.savedTickRotation + partial) * tileEntityIn.generating.get() * 1.5), 0, 0));
 		// matrixStackIn.mulPose(new Quaternion((float) ((tileEntityIn.savedTickRotation + partial) * tileEntityIn.generating.get() * 1.5), 0, 0, true));
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+	}
+	
+	@Override
+	public AABB getRenderBoundingBox(TileWindmill blockEntity) {
+	    return super.getRenderBoundingBox(blockEntity).expandTowards(0, 1.5, 0);
 	}
 }

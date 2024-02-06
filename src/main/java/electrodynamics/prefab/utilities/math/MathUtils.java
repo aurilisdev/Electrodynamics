@@ -37,7 +37,7 @@ public class MathUtils {
 		// consideration for more math.
 		Vec3 rayPath = direction.normalize().scale(rayLength);
 		Vec3 to = from.add(rayPath);
-		ClipContext rayContext = new ClipContext(from, to, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, null);
+		ClipContext rayContext = new ClipContext(from, to, ClipContext.Block.OUTLINE, ClipContext.Fluid.ANY, (Entity) null);
 		BlockHitResult rayHit = world.clip(rayContext);
 
 		return rayHit.getType() != Type.BLOCK ? null : new Location(rayHit.getBlockPos());

@@ -5,7 +5,7 @@ import electrodynamics.common.fluid.FluidNonPlaceable;
 import electrodynamics.common.fluid.types.SimpleWaterBasedFluidType;
 import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
 import electrodynamics.registers.ElectrodynamicsItems;
-import net.minecraftforge.fluids.FluidType;
+import net.neoforged.neoforge.fluids.FluidType;
 
 public class FluidSulfate extends FluidNonPlaceable {
 

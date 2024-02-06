@@ -6,7 +6,7 @@ import java.util.List;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class PsuedoFluid2GasRecipe {
 

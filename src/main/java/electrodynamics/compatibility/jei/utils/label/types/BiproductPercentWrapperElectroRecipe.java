@@ -29,7 +29,7 @@ public class BiproductPercentWrapperElectroRecipe extends AbstractLabelWrapper {
 			int biPos = labels.indexOf(this) - category.itemBiLabelFirstIndex;
 			ElectrodynamicsRecipe electro = (ElectrodynamicsRecipe) recipe;
 			if (electro.hasItemBiproducts()) {
-				ProbableItem item = electro.getItemBiproducts()[biPos];
+				ProbableItem item = electro.getItemBiproducts().get(biPos);
 				return ChatFormatter.getChatDisplayShort(item.getChance() * 100, DisplayUnit.PERCENTAGE);
 			}
 		}

@@ -23,31 +23,31 @@ import net.minecraft.world.item.ItemStack;
 
 public class MineralCrusherRecipeCategory extends Item2ItemRecipeCategory<MineralCrusherRecipe> {
 
-	public static final BackgroundObject BACK_WRAP = new BackgroundObject(132, 58);
+    public static final BackgroundObject BACK_WRAP = new BackgroundObject(132, 58);
 
-	public static final ItemSlotObject INPUT_SLOT = new ItemSlotObject(SlotType.NORMAL, 17, 20, RecipeIngredientRole.INPUT);
-	public static final ItemSlotObject OUTPUT_SLOT = new ItemSlotObject(SlotType.BIG, 69, 16, RecipeIngredientRole.OUTPUT);
-	public static final ItemSlotObject BIPRODUCT_SLOT = new ItemSlotObject(SlotType.NORMAL, 100, 20, RecipeIngredientRole.OUTPUT);
+    public static final ItemSlotObject INPUT_SLOT = new ItemSlotObject(SlotType.NORMAL, 17, 20, RecipeIngredientRole.INPUT);
+    public static final ItemSlotObject OUTPUT_SLOT = new ItemSlotObject(SlotType.BIG, 69, 16, RecipeIngredientRole.OUTPUT);
+    public static final ItemSlotObject BIPRODUCT_SLOT = new ItemSlotObject(SlotType.NORMAL, 100, 20, RecipeIngredientRole.OUTPUT);
 
-	public static final ArrowAnimatedObject ANIM_ARROW = new ArrowAnimatedObject(ProgressBars.PROGRESS_ARROW_RIGHT, 41, 23, StartDirection.LEFT);
+    public static final ArrowAnimatedObject ANIM_ARROW = new ArrowAnimatedObject(ProgressBars.PROGRESS_ARROW_RIGHT, 41, 23, StartDirection.LEFT);
 
-	public static final PowerLabelWrapperElectroRecipe POWER_LABEL = new PowerLabelWrapperElectroRecipe(2, 48, 240);
-	public static final BiproductPercentWrapperElectroRecipe ITEM_LABEL = new BiproductPercentWrapperElectroRecipe(100, 40, false);
-	public static final TimeLabelWrapperElectroRecipe TIME_LABEL = new TimeLabelWrapperElectroRecipe(130, 48);
+    public static final PowerLabelWrapperElectroRecipe POWER_LABEL = new PowerLabelWrapperElectroRecipe(2, 48, 240);
+    public static final BiproductPercentWrapperElectroRecipe ITEM_LABEL = new BiproductPercentWrapperElectroRecipe(100, 40, false);
+    public static final TimeLabelWrapperElectroRecipe TIME_LABEL = new TimeLabelWrapperElectroRecipe(130, 48);
 
-	public static final int ANIM_TIME = 50;
+    public static final int ANIM_TIME = 50;
 
-	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusher));
+    public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusher));
 
-	public static final RecipeType<MineralCrusherRecipe> RECIPE_TYPE = RecipeType.create(References.ID, MineralCrusherRecipe.RECIPE_GROUP, MineralCrusherRecipe.class);
+    public static final RecipeType<MineralCrusherRecipe> RECIPE_TYPE = RecipeType.create(References.ID, MineralCrusherRecipe.RECIPE_GROUP, MineralCrusherRecipe.class);
 
-	public MineralCrusherRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, ElectroTextUtils.jeiTranslated(MineralCrusherRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
-		ElectrodynamicsJEIPlugin.addO2OClickArea(RECIPE_TYPE);
-		setInputSlots(guiHelper, INPUT_SLOT);
-		setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);
-		setAnimatedArrows(guiHelper, ANIM_ARROW);
-		setLabels(POWER_LABEL, ITEM_LABEL, TIME_LABEL);
-	}
+    public MineralCrusherRecipeCategory(IGuiHelper guiHelper) {
+        super(guiHelper, ElectroTextUtils.jeiTranslated(MineralCrusherRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
+        ElectrodynamicsJEIPlugin.addO2OClickArea(RECIPE_TYPE);
+        setInputSlots(guiHelper, INPUT_SLOT);
+        setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);
+        setAnimatedArrows(guiHelper, ANIM_ARROW);
+        setLabels(POWER_LABEL, ITEM_LABEL, TIME_LABEL);
+    }
 
 }

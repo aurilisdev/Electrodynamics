@@ -1,45 +1,49 @@
 package electrodynamics.common.packet.types.client;
 
 import java.util.HashMap;
-import java.util.function.Supplier;
 
 import electrodynamics.common.packet.BarrierMethods;
+import electrodynamics.common.packet.NetworkHandler;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class PacketSetClientThermoGenSources {
+public class PacketSetClientThermoGenSources implements CustomPacketPayload {
 
-	private final HashMap<Fluid, Double> heatSources;
+    private final HashMap<Fluid, Double> heatSources;
 
-	public PacketSetClientThermoGenSources(HashMap<Fluid, Double> heatSources) {
-		this.heatSources = heatSources;
-	}
+    public PacketSetClientThermoGenSources(HashMap<Fluid, Double> heatSources) {
+        this.heatSources = heatSources;
+    }
 
-	public static void handle(PacketSetClientThermoGenSources message, Supplier<Context> context) {
-		Context ctx = context.get();
-		ctx.enqueueWork(() -> {
-			BarrierMethods.handlerClientThermoGenHeatSources(message.heatSources);
-		});
-		ctx.setPacketHandled(true);
-	}
+    public static void handle(PacketSetClientThermoGenSources message, PlayPayloadContext context) {
+        BarrierMethods.handlerClientThermoGenHeatSources(message.heatSources);
+    }
 
-	public static void encode(PacketSetClientThermoGenSources pkt, FriendlyByteBuf buf) {
-		buf.writeInt(pkt.heatSources.size());
-		pkt.heatSources.forEach((fluid, value) -> {
-			buf.writeFluidStack(new FluidStack(fluid, 1));
-			buf.writeDouble(value);
-		});
-	}
+    public static PacketSetClientThermoGenSources read(FriendlyByteBuf buf) {
+        int count = buf.readInt();
+        HashMap<Fluid, Double> values = new HashMap<>();
+        for (int i = 0; i < count; i++) {
+            values.put(buf.readFluidStack().getFluid(), buf.readDouble());
+        }
+        return new PacketSetClientThermoGenSources(values);
+    }
 
-	public static PacketSetClientThermoGenSources decode(FriendlyByteBuf buf) {
-		int count = buf.readInt();
-		HashMap<Fluid, Double> values = new HashMap<>();
-		for (int i = 0; i < count; i++) {
-			values.put(buf.readFluidStack().getFluid(), buf.readDouble());
-		}
-		return new PacketSetClientThermoGenSources(values);
-	}
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeInt(heatSources.size());
+        heatSources.forEach((fluid, value) -> {
+            buf.writeFluidStack(new FluidStack(fluid, 1));
+            buf.writeDouble(value);
+        });
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return NetworkHandler.PACKET_SETCLIENTTHERMOGENSOURCES_PACKETID;
+    }
 
 }

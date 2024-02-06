@@ -14,15 +14,15 @@ import electrodynamics.common.fluid.types.liquid.FluidPolyethylene;
 import electrodynamics.common.fluid.types.liquid.FluidSulfate;
 import electrodynamics.common.fluid.types.liquid.FluidSulfuricAcid;
 import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ElectrodynamicsFluids {
-	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, References.ID);
+	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, References.ID);
 
-	public static final HashMap<ISubtype, RegistryObject<Fluid>> SUBTYPEFLUID_REGISTRY_MAP = new HashMap<>();
+	public static final HashMap<ISubtype, DeferredHolder<Fluid, Fluid>> SUBTYPEFLUID_REGISTRY_MAP = new HashMap<>();
 
 	// Liquids
 	public static FluidEthanol fluidEthanol;

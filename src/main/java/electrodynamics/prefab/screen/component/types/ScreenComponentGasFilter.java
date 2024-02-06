@@ -12,7 +12,7 @@ import electrodynamics.prefab.properties.Property;
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
 import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge.GasGaugeTextures;
-import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -23,124 +23,124 @@ import net.minecraft.world.item.ItemStack;
 
 public class ScreenComponentGasFilter extends ScreenComponentGeneric {
 
-	private final int index;
+    private final int index;
 
-	public ScreenComponentGasFilter(int x, int y, int index) {
-		super(GasGaugeTextures.BACKGROUND_DEFAULT, x, y);
-		this.index = index;
-	}
+    public ScreenComponentGasFilter(int x, int y, int index) {
+        super(GasGaugeTextures.BACKGROUND_DEFAULT, x, y);
+        this.index = index;
+    }
 
-	@Override
-	public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
+    @Override
+    public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+        super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 
-		TileGasPipeFilter filter = (TileGasPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui).getMenu()).getHostFromIntArray();
+        TileGasPipeFilter filter = (TileGasPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui).getMenu()).getHostFromIntArray();
 
-		if (filter == null) {
-			return;
-		}
+        if (filter == null) {
+            return;
+        }
 
-		Property<GasStack> property = filter.filteredGases[index];
+        Property<GasStack> property = filter.filteredGases[index];
 
-		if (!property.get().isEmpty()) {
+        if (!property.get().isEmpty()) {
 
-			ScreenComponentGasGauge.renderMercuryTexture(graphics, guiWidth + xLocation + 1, guiHeight + yLocation + 1, 1);
+            ScreenComponentGasGauge.renderMercuryTexture(graphics, guiWidth + xLocation + 1, guiHeight + yLocation + 1, 1);
 
-		}
+        }
 
-		GasGaugeTextures texture = GasGaugeTextures.LEVEL_DEFAULT;
+        GasGaugeTextures texture = GasGaugeTextures.LEVEL_DEFAULT;
 
-		graphics.blit(texture.getLocation(), guiWidth + xLocation, guiHeight + yLocation, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
+        graphics.blit(texture.getLocation(), guiWidth + xLocation, guiHeight + yLocation, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
 
-	}
+    }
 
-	@Override
-	public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-		if (!isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(), super.texture.textureHeight())) {
-			return;
-		}
+    @Override
+    public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
+        if (!isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(), super.texture.textureHeight())) {
+            return;
+        }
 
-		TileGasPipeFilter filter = (TileGasPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui).getMenu()).getHostFromIntArray();
+        TileGasPipeFilter filter = (TileGasPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui).getMenu()).getHostFromIntArray();
 
-		if (filter == null) {
-			return;
-		}
+        if (filter == null) {
+            return;
+        }
 
-		List<FormattedCharSequence> tooltips = new ArrayList<>();
+        List<FormattedCharSequence> tooltips = new ArrayList<>();
 
-		Property<GasStack> property = filter.filteredGases[index];
+        Property<GasStack> property = filter.filteredGases[index];
 
-		tooltips.add(property.get().getGas().getDescription().getVisualOrderText());
+        tooltips.add(property.get().getGas().getDescription().getVisualOrderText());
 
-		graphics.renderTooltip(gui.getFontRenderer(), tooltips, xAxis, yAxis);
-	}
+        graphics.renderTooltip(gui.getFontRenderer(), tooltips, xAxis, yAxis);
+    }
 
-	@Override
-	public boolean mouseClicked(double mouseX, double mouseY, int button) {
-		if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
 
-			onMouseClick(mouseX, mouseY);
+            onMouseClick(mouseX, mouseY);
 
-			return true;
-		}
-		return false;
-	}
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public boolean mouseReleased(double mouseX, double mouseY, int button) {
-		if (isValidClick(button)) {
-			onMouseRelease(mouseX, mouseY);
-			return true;
-		}
-		return false;
-	}
+    @Override
+    public boolean mouseReleased(double mouseX, double mouseY, int button) {
+        if (isValidClick(button)) {
+            onMouseRelease(mouseX, mouseY);
+            return true;
+        }
+        return false;
+    }
 
-	@Override
-	public void onMouseClick(double mouseX, double mouseY) {
+    @Override
+    public void onMouseClick(double mouseX, double mouseY) {
 
-		GenericScreen<?> screen = (GenericScreen<?>) gui;
+        GenericScreen<?> screen = (GenericScreen<?>) gui;
 
-		TileGasPipeFilter filter = (TileGasPipeFilter) ((GenericContainerBlockEntity<?>) screen.getMenu()).getHostFromIntArray();
+        TileGasPipeFilter filter = (TileGasPipeFilter) ((GenericContainerBlockEntity<?>) screen.getMenu()).getHostFromIntArray();
 
-		if (filter == null) {
-			return;
-		}
+        if (filter == null) {
+            return;
+        }
 
-		Property<GasStack> property = filter.filteredGases[index];
+        Property<GasStack> property = filter.filteredGases[index];
 
-		ItemStack holding = screen.getMenu().getCarried();
+        ItemStack holding = screen.getMenu().getCarried();
 
-		if (holding.isEmpty()) {
+        if (holding.isEmpty()) {
 
-			if (!Screen.hasShiftDown()) {
-				return;
-			}
-			property.set(GasStack.EMPTY);
-			property.updateServer();
-			
-			Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), 1.0F));
-			
-			return;
+            if (!Screen.hasShiftDown()) {
+                return;
+            }
+            property.set(GasStack.EMPTY);
+            property.updateServer();
 
-		}
-		
-		if(!CapabilityUtils.hasGasItemCap(holding)) {
-			return;
-		}
-		
-		IGasHandlerItem handler = CapabilityUtils.getGasHandlerItem(holding);
+            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), 1.0F));
 
-		GasStack taken = handler.drainTank(0, Double.MAX_VALUE, GasAction.SIMULATE);
+            return;
 
-		if (taken.isEmpty()) {
-			return;
-		}
-		
-		Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), 1.0F));
+        }
 
-		property.set(taken);
-		property.updateServer();
+        IGasHandlerItem handler = holding.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-	}
+        if (handler == null) {
+            return;
+        }
+
+        GasStack taken = handler.drainTank(0, Double.MAX_VALUE, GasAction.SIMULATE);
+
+        if (taken.isEmpty()) {
+            return;
+        }
+
+        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), 1.0F));
+
+        property.set(taken);
+        property.updateServer();
+
+    }
 
 }

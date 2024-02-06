@@ -1,8 +1,7 @@
 package electrodynamics.common.tile.electricitygrid.batteries;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
 import electrodynamics.common.item.ItemUpgrade;
@@ -18,174 +17,178 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.utilities.CapabilityUtils.FEInputDispatcher;
+import electrodynamics.prefab.utilities.CapabilityUtils.FEOutputDispatcher;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.object.CachedTileOutput;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.energy.IEnergyStorage;
+import net.neoforged.neoforge.energy.IEnergyStorage;
 
 public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
-	public final Property<Double> powerOutput;
-	public final Property<Double> maxJoules;
-	public Property<Double> currentCapacityMultiplier = property(new Property<>(PropertyType.Double, "currentCapacityMultiplier", 1.0));
-	public Property<Double> currentVoltageMultiplier = property(new Property<>(PropertyType.Double, "currentVoltageMultiplier", 1.0));
-	protected Property<Double> receiveLimitLeft;
-	protected CachedTileOutput output;
+    private final FEInputDispatcher inputDispatcher = new FEInputDispatcher(this);
+    private final FEOutputDispatcher outputDispatcher = new FEOutputDispatcher(this);
 
-	public final int baseVoltage;
+    public final Property<Double> powerOutput;
+    public final Property<Double> maxJoules;
+    public Property<Double> currentCapacityMultiplier = property(new Property<>(PropertyType.Double, "currentCapacityMultiplier", 1.0));
+    public Property<Double> currentVoltageMultiplier = property(new Property<>(PropertyType.Double, "currentVoltageMultiplier", 1.0));
+    protected Property<Double> receiveLimitLeft;
+    protected CachedTileOutput output;
 
-	public TileBatteryBox(BlockPos worldPosition, BlockState blockState) {
-		this(ElectrodynamicsBlockTypes.TILE_BATTERYBOX.get(), SubtypeMachine.batterybox, 120, 359.0 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition, blockState);
-	}
+    public final int baseVoltage;
 
-	public TileBatteryBox(BlockEntityType<?> type, SubtypeMachine machine, int baseVoltage, double output, double max, BlockPos worldPosition, BlockState blockState) {
-		super(type, worldPosition, blockState);
-		this.baseVoltage = baseVoltage;
-		powerOutput = property(new Property<>(PropertyType.Double, "powerOutput", output));
-		maxJoules = property(new Property<>(PropertyType.Double, "maxJoulesStored", max));
-		receiveLimitLeft = property(new Property<>(PropertyType.Double, "receiveLimitLeft", output * currentCapacityMultiplier.get()));
-		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(1).upgrades(3)).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid((i, s, c) -> i == 0 ? s.getItem() instanceof ItemElectric : machineValidator().test(i, s, c)));
-		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
-		addComponent(new ComponentElectrodynamic(this, true, true).voltage(baseVoltage).maxJoules(max).setInputDirections(Direction.SOUTH).setOutputDirections(Direction.NORTH));
+    public TileBatteryBox(BlockPos worldPosition, BlockState blockState) {
+        this(ElectrodynamicsBlockTypes.TILE_BATTERYBOX.get(), SubtypeMachine.batterybox, 120, 359.0 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition, blockState);
+    }
 
-	}
+    public TileBatteryBox(BlockEntityType<?> type, SubtypeMachine machine, int baseVoltage, double output, double max, BlockPos worldPosition, BlockState blockState) {
+        super(type, worldPosition, blockState);
+        this.baseVoltage = baseVoltage;
+        powerOutput = property(new Property<>(PropertyType.Double, "powerOutput", output));
+        maxJoules = property(new Property<>(PropertyType.Double, "maxJoulesStored", max));
+        receiveLimitLeft = property(new Property<>(PropertyType.Double, "receiveLimitLeft", output * currentCapacityMultiplier.get()));
+        addComponent(new ComponentTickable(this).tickServer(this::tickServer));
+        addComponent(new ComponentPacketHandler(this));
+        addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(1).upgrades(3)).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid((i, s, c) -> i == 0 ? s.getItem() instanceof ItemElectric : machineValidator().test(i, s, c)));
+        addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+        addComponent(new ComponentElectrodynamic(this, true, true).voltage(baseVoltage).maxJoules(max).setInputDirections(Direction.SOUTH).setOutputDirections(Direction.NORTH));
 
-	protected void tickServer(ComponentTickable tickable) {
-		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-		Direction facing = getFacing();
-		if (output == null) {
-			output = new CachedTileOutput(level, worldPosition.relative(facing.getOpposite()));
-		}
-		if (tickable.getTicks() % 40 == 0) {
-			output.update(worldPosition.relative(facing.getOpposite()));
-		}
-		if (electro.getJoulesStored() > 0 && output.valid()) {
+    }
 
-			electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput.get() * currentCapacityMultiplier.get()), electro.getVoltage()), false).getJoules());
-		}
-		if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
-			electro.joules(electro.getMaxJoulesStored());
-		}
-		electro.drainElectricItem(0);
-	}
+    protected void tickServer(ComponentTickable tickable) {
+        ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+        Direction facing = getFacing();
+        if (output == null) {
+            output = new CachedTileOutput(level, worldPosition.relative(facing.getOpposite()));
+        }
+        if (tickable.getTicks() % 40 == 0) {
+            output.update(worldPosition.relative(facing.getOpposite()));
+        }
+        if (electro.getJoulesStored() > 0 && output.valid()) {
 
-	@Override
-	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> capability, Direction face) {
-		Direction facing = getFacing();
-		if (capability == ForgeCapabilities.ENERGY && (face == facing || face == facing.getOpposite())) {
-			return (LazyOptional<T>) LazyOptional.of(() -> this);
-		}
-		return super.getCapability(capability, face);
-	}
+            electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput.get() * currentCapacityMultiplier.get()), electro.getVoltage()), false).getJoules());
+        }
+        if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
+            electro.joules(electro.getMaxJoulesStored());
+        }
+        electro.drainElectricItem(0);
+    }
 
-	// this is changed so all the battery boxes can convert FE to joules, regardless of voltage
-	@Override
-	public int receiveEnergy(int maxReceive, boolean simulate) {
+    @Nullable
+    public IEnergyStorage getFECapability(@Nullable Direction side) {
+        if (side == null) {
+            return null;
+        }
 
-		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+        return side == getFacing() ? inputDispatcher : outputDispatcher;
 
-		int receive = (int) Math.min(maxReceive, powerOutput.get() * currentCapacityMultiplier.get());
+    }
 
-		int accepted = Math.min(receive, (int) (electro.getMaxJoulesStored() - electro.getJoulesStored()));
+    // this is changed so all the battery boxes can convert FE to joules, regardless of voltage
+    @Override
+    public int receiveEnergy(int maxReceive, boolean simulate) {
 
-		if (!simulate) {
-			electro.joules(electro.getJoulesStored() + accepted);
-		}
+        ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-		return accepted;
-	}
+        int receive = (int) Math.min(maxReceive, powerOutput.get() * currentCapacityMultiplier.get());
 
-	// we still mandate 120V for all FE cables here though
-	@Override
-	public int extractEnergy(int maxExtract, boolean simulate) {
+        int accepted = Math.min(receive, (int) (electro.getMaxJoulesStored() - electro.getJoulesStored()));
 
-		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+        if (!simulate) {
+            electro.joules(electro.getJoulesStored() + accepted);
+        }
 
-		int extract = (int) Math.min(maxExtract, powerOutput.get() * currentCapacityMultiplier.get());
+        return accepted;
+    }
 
-		int taken = Math.min(extract, (int) electro.getJoulesStored());
+    // we still mandate 120V for all FE cables here though
+    @Override
+    public int extractEnergy(int maxExtract, boolean simulate) {
 
-		if (!simulate) {
+        ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-			electro.joules(electro.getJoulesStored() - taken);
+        int extract = (int) Math.min(maxExtract, powerOutput.get() * currentCapacityMultiplier.get());
 
-			if (electro.getVoltage() > ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) {
-				electro.overVoltage(TransferPack.joulesVoltage(taken, electro.getVoltage()));
-			}
+        int taken = Math.min(extract, (int) electro.getJoulesStored());
 
-		}
+        if (!simulate) {
 
-		return taken;
-	}
+            electro.joules(electro.getJoulesStored() - taken);
 
-	@Override
-	public int getEnergyStored() {
-		return (int) Math.min(Integer.MAX_VALUE, this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getJoulesStored());
-	}
+            if (electro.getVoltage() > ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) {
+                electro.overVoltage(TransferPack.joulesVoltage(taken, electro.getVoltage()));
+            }
 
-	@Override
-	public int getMaxEnergyStored() {
-		return (int) Math.min(Integer.MAX_VALUE, this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getMaxJoulesStored());
-	}
+        }
 
-	@Override
-	public boolean canExtract() {
-		return true;
-	}
+        return taken;
+    }
 
-	@Override
-	public boolean canReceive() {
-		return true;
-	}
+    @Override
+    public int getEnergyStored() {
+        return (int) Math.min(Integer.MAX_VALUE, this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getJoulesStored());
+    }
 
-	@Override
-	public void onInventoryChange(ComponentInventory inv, int slot) {
-		super.onInventoryChange(inv, slot);
-		if (inv.getUpgradeContents().size() > 0 && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
-			ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+    @Override
+    public int getMaxEnergyStored() {
+        return (int) Math.min(Integer.MAX_VALUE, this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getMaxJoulesStored());
+    }
 
-			double capacityMultiplier = 1.0;
-			double voltageMultiplier = 1.0;
+    @Override
+    public boolean canExtract() {
+        return true;
+    }
 
-			for (ItemStack stack : inv.getUpgradeContents()) {
-				if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype.isEmpty) {
-					for (int i = 0; i < stack.getCount(); i++) {
-						if (upgrade.subtype == SubtypeItemUpgrade.basiccapacity) {
-							capacityMultiplier = Math.min(capacityMultiplier * 1.5, Math.pow(1.5, 3));
-							voltageMultiplier = Math.min(voltageMultiplier * 2, 2);
-						} else if (upgrade.subtype == SubtypeItemUpgrade.advancedcapacity) {
-							capacityMultiplier = Math.min(capacityMultiplier * 2.25, Math.pow(2.25, 3));
-							voltageMultiplier = Math.min(voltageMultiplier * 4, 4);
-						}
-					}
-				}
-			}
+    @Override
+    public boolean canReceive() {
+        return true;
+    }
 
-			currentCapacityMultiplier.set(capacityMultiplier);
-			currentVoltageMultiplier.set(voltageMultiplier);
+    @Override
+    public void onInventoryChange(ComponentInventory inv, int slot) {
+        super.onInventoryChange(inv, slot);
+        if (inv.getUpgradeContents().size() > 0 && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
+            ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-			receiveLimitLeft.set(powerOutput.get() * currentCapacityMultiplier.get());
+            double capacityMultiplier = 1.0;
+            double voltageMultiplier = 1.0;
 
-			electro.maxJoules(maxJoules.get() * currentCapacityMultiplier.get());
-			electro.voltage(baseVoltage * currentVoltageMultiplier.get());
-		}
-	}
+            for (ItemStack stack : inv.getUpgradeContents()) {
+                if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype.isEmpty) {
+                    for (int i = 0; i < stack.getCount(); i++) {
+                        if (upgrade.subtype == SubtypeItemUpgrade.basiccapacity) {
+                            capacityMultiplier = Math.min(capacityMultiplier * 1.5, Math.pow(1.5, 3));
+                            voltageMultiplier = Math.min(voltageMultiplier * 2, 2);
+                        } else if (upgrade.subtype == SubtypeItemUpgrade.advancedcapacity) {
+                            capacityMultiplier = Math.min(capacityMultiplier * 2.25, Math.pow(2.25, 3));
+                            voltageMultiplier = Math.min(voltageMultiplier * 4, 4);
+                        }
+                    }
+                }
+            }
 
-	@Override
-	public int getComparatorSignal() {
-		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-		return (int) ((electro.getJoulesStored() / Math.max(1, electro.getMaxJoulesStored())) * 15.0);
-	}
+            currentCapacityMultiplier.set(capacityMultiplier);
+            currentVoltageMultiplier.set(voltageMultiplier);
+
+            receiveLimitLeft.set(powerOutput.get() * currentCapacityMultiplier.get());
+
+            electro.maxJoules(maxJoules.get() * currentCapacityMultiplier.get());
+            electro.voltage(baseVoltage * currentVoltageMultiplier.get());
+        }
+    }
+
+    @Override
+    public int getComparatorSignal() {
+        ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+        return (int) ((electro.getJoulesStored() / Math.max(1, electro.getMaxJoulesStored())) * 15.0);
+    }
 
 }

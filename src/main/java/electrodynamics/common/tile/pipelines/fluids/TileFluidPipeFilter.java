@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipeFilter;
 import electrodynamics.prefab.properties.Property;
@@ -19,11 +20,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 public class TileFluidPipeFilter extends GenericTile {
 
@@ -50,38 +49,37 @@ public class TileFluidPipeFilter extends GenericTile {
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentContainerProvider("container.fluidpipefilter", this).createMenu((id, inv) -> new ContainerFluidPipeFilter(id, inv, getCoordsArray())));
 	}
-
+	
 	@Override
-	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-		if (cap != ForgeCapabilities.FLUID_HANDLER || side == null) {
-			return LazyOptional.empty();
-		}
+	public @Nullable IFluidHandler getFluidHandlerCapability(@Nullable Direction side) {
+	    if(side == null || isLocked) {
+	        return null;
+	    }
+	    Direction facing = getFacing();
 
-		Direction facing = getFacing();
+        if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR)) {
+            return CapabilityUtils.EMPTY_FLUID;
+        }
 
-		if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR)) {
-			return LazyOptional.of(() -> CapabilityUtils.EMPTY_FLUID).cast();
-		}
+        if (side == BlockEntityUtils.getRelativeSide(facing, INPUT_DIR)) {
 
-		if (side == BlockEntityUtils.getRelativeSide(facing, INPUT_DIR)) {
+            BlockEntity output = level.getBlockEntity(getBlockPos().relative(side.getOpposite()));
 
-			BlockEntity output = level.getBlockEntity(getBlockPos().relative(side.getOpposite()));
+            if (output == null) {
+                return CapabilityUtils.EMPTY_FLUID;
+            }
+            
+            isLocked = true;
+            
+            IFluidHandler fluid = output.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, output.getBlockPos(), output.getBlockState(), output, side);
 
-			if (output == null) {
-				return LazyOptional.of(() -> CapabilityUtils.EMPTY_FLUID).cast();
-			}
+            isLocked = false;
+            
+            return fluid == null ? CapabilityUtils.EMPTY_FLUID : new FilteredFluidCap(fluid, getFilteredFluids(), isWhitelist.get());
 
-			LazyOptional<IFluidHandler> lazy = output.getCapability(ForgeCapabilities.FLUID_HANDLER, side);
-
-			if (!lazy.isPresent()) {
-				return LazyOptional.of(() -> CapabilityUtils.EMPTY_FLUID).cast();
-			}
-
-			return LazyOptional.of(() -> new FilteredFluidCap(lazy.resolve().get(), getFilteredFluids(), isWhitelist.get())).cast();
-
-		}
-
-		return LazyOptional.empty();
+        }
+        
+        return null;
 	}
 
 	private List<Fluid> getFilteredFluids() {

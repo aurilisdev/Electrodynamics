@@ -4,14 +4,14 @@ import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.blockitem.types.BlockItemDescriptable;
+import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.tile.pipelines.gas.gastransformer.TileGasTransformerAddonTank;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.neoforged.bus.api.IEventBus;
 
 public class UnifiedElectrodynamicsRegister {
 
 	public static void register(IEventBus bus) {
-		ElectrodynamicsRegistries.init();
 		ElectrodynamicsBlocks.BLOCKS.register(bus);
 		ElectrodynamicsBlockTypes.BLOCK_ENTITY_TYPES.register(bus);
 		ElectrodynamicsItems.ITEMS.register(bus);
@@ -21,9 +21,13 @@ public class UnifiedElectrodynamicsRegister {
 		ElectrodynamicsMenuTypes.MENU_TYPES.register(bus);
 		ElectrodynamicsSounds.SOUNDS.register(bus);
 		ElectrodynamicsGases.GASES.register(bus);
+		ElectrodynamicsRegistries.init();
 		ElectrodynamicsParticles.PARTICLES.register(bus);
 		ElectrodynamicsCreativeTabs.CREATIVE_TABS.register(bus);
 		ElectrodynamicsRuleTestTypes.RULE_TEST_TYPES.register(bus);
+		ElectrodynamicsRecipeInit.INGREDIENT_TYPES.register(bus);
+		ElectrodynamicsRecipeInit.RECIPE_TYPES.register(bus);
+        ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
 	}
 
 	static {

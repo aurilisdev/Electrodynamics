@@ -1,37 +1,41 @@
 package electrodynamics.common.packet.types.client;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import electrodynamics.common.packet.BarrierMethods;
+import electrodynamics.common.packet.NetworkHandler;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class PacketRenderJetpackParticles {
+public class PacketRenderJetpackParticles implements CustomPacketPayload {
 
-	private final UUID player;
-	private final boolean isCombat;
+    private final UUID player;
+    private final boolean isCombat;
 
-	public PacketRenderJetpackParticles(UUID uuid, boolean combat) {
-		player = uuid;
-		isCombat = combat;
-	}
+    public PacketRenderJetpackParticles(UUID uuid, boolean combat) {
+        player = uuid;
+        isCombat = combat;
+    }
 
-	public static void handle(PacketRenderJetpackParticles message, Supplier<Context> context) {
-		Context ctx = context.get();
-		ctx.enqueueWork(() -> {
-			BarrierMethods.handleJetpackParticleRendering(message.player, message.isCombat);
-		});
-		ctx.setPacketHandled(true);
-	}
+    public static void handle(PacketRenderJetpackParticles message, PlayPayloadContext context) {
+        BarrierMethods.handleJetpackParticleRendering(message.player, message.isCombat);
+    }
 
-	public static void encode(PacketRenderJetpackParticles message, FriendlyByteBuf buf) {
-		buf.writeUUID(message.player);
-		buf.writeBoolean(message.isCombat);
-	}
+    public static PacketRenderJetpackParticles read(FriendlyByteBuf buf) {
+        return new PacketRenderJetpackParticles(buf.readUUID(), buf.readBoolean());
+    }
 
-	public static PacketRenderJetpackParticles decode(FriendlyByteBuf buf) {
-		return new PacketRenderJetpackParticles(buf.readUUID(), buf.readBoolean());
-	}
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeUUID(player);
+        buf.writeBoolean(isCombat);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return NetworkHandler.PACKET_RENDERJETPACKPARTICLES_PACKETID;
+    }
 
 }

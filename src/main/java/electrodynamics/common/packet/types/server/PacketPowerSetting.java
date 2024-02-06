@@ -1,49 +1,54 @@
 package electrodynamics.common.packet.types.server;
 
-import java.util.function.Supplier;
-
+import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.tile.electricitygrid.generators.TileCreativePowerSource;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class PacketPowerSetting {
+public class PacketPowerSetting implements CustomPacketPayload {
 
-	private final int voltage;
-	private final int power;
+    private final int voltage;
+    private final int power;
 
-	private final BlockPos pos;
+    private final BlockPos pos;
 
-	public PacketPowerSetting(int voltage, int power, BlockPos target) {
-		this.voltage = voltage;
-		this.power = power;
-		pos = target;
-	}
+    public PacketPowerSetting(int voltage, int power, BlockPos target) {
+        this.voltage = voltage;
+        this.power = power;
+        pos = target;
+    }
 
-	public static void handle(PacketPowerSetting message, Supplier<Context> context) {
-		Context ctx = context.get();
-		ctx.enqueueWork(() -> {
-			ServerLevel world = context.get().getSender().serverLevel();
-			if (world != null) {
-				TileCreativePowerSource tile = (TileCreativePowerSource) world.getBlockEntity(message.pos);
-				if (tile != null) {
-					tile.voltage.set(message.voltage);
-					tile.power.set(message.power);
-				}
-			}
-		});
-		ctx.setPacketHandled(true);
-	}
+    public static void handle(PacketPowerSetting message, PlayPayloadContext context) {
+        ServerLevel world = (ServerLevel) context.level().get();
+        if (world == null) {
+            return;
+        }
+        TileCreativePowerSource tile = (TileCreativePowerSource) world.getBlockEntity(message.pos);
+        if (tile == null) {
+            return;
+        }
+        tile.voltage.set(message.voltage);
+        tile.power.set(message.power);
+    }
 
-	public static void encode(PacketPowerSetting pkt, FriendlyByteBuf buf) {
-		buf.writeInt(pkt.voltage);
-		buf.writeInt(pkt.power);
-		buf.writeBlockPos(pkt.pos);
-	}
+    public static PacketPowerSetting read(FriendlyByteBuf buf) {
+        return new PacketPowerSetting(buf.readInt(), buf.readInt(), buf.readBlockPos());
+    }
 
-	public static PacketPowerSetting decode(FriendlyByteBuf buf) {
-		return new PacketPowerSetting(buf.readInt(), buf.readInt(), buf.readBlockPos());
-	}
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeInt(voltage);
+        buf.writeInt(power);
+        buf.writeBlockPos(pos);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return NetworkHandler.PACKET_POWERSETTING_PACKETID;
+    }
 
 }
