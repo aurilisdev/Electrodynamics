@@ -17,9 +17,7 @@ import net.neoforged.neoforge.registries.NewRegistryEvent;
 public class ElectrodynamicsRegistries {
 
 	/* GAS */
-	public static final ResourceLocation GAS_REGISTRY_LOC = new ResourceLocation(References.ID, "gases");
-	public static final ResourceKey<Registry<Gas>> GAS_REGISTRY_KEY = ResourceKey.createRegistryKey(GAS_REGISTRY_LOC);
-	public static final Registry<Gas> GAS_REGISTRY = ElectrodynamicsGases.GASES.makeRegistry(builder -> builder.sync(true).create());
+	
 	
 	//@SubscribeEvent
 	public static void registerRegistries(NewRegistryEvent event) {

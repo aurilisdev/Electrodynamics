@@ -3,6 +3,7 @@ package electrodynamics.compatibility.jei.utils.ingredients;
 import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.api.gas.GasStack;
+import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
@@ -28,7 +29,7 @@ public class IngredientHelperGasStack implements IIngredientHelper<GasStack> {
 
 	@Override
 	public ResourceLocation getResourceLocation(GasStack ingredient) {
-		return ElectrodynamicsRegistries.GAS_REGISTRY.getKey(ingredient.getGas());
+		return ElectrodynamicsGases.GAS_REGISTRY.getKey(ingredient.getGas());
 	}
 
 	@Override

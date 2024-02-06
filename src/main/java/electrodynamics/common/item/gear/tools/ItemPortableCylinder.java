@@ -14,6 +14,7 @@ import electrodynamics.api.inventory.InventoryTickConsumer;
 import electrodynamics.common.item.ItemElectrodynamics;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsCapabilities;
+import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -46,7 +47,7 @@ public class ItemPortableCylinder extends ItemElectrodynamics {
             return;
         }
 
-        ElectrodynamicsRegistries.GAS_REGISTRY.stream().forEach(gas -> {
+        ElectrodynamicsGases.GAS_REGISTRY.stream().forEach(gas -> {
             if (gas.isEmpty()) {
                 return;
             }

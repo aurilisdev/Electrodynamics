@@ -14,6 +14,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import electrodynamics.api.gas.Gas;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
+import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.tags.TagKey;
@@ -34,7 +35,7 @@ public class GasIngredient extends Ingredient {
     instance.group(
 
             //
-            ElectrodynamicsRegistries.GAS_REGISTRY.byNameCodec().fieldOf("gas").forGetter(instance0 -> instance0.gas),
+            ElectrodynamicsGases.GAS_REGISTRY.byNameCodec().fieldOf("gas").forGetter(instance0 -> instance0.gas),
             //
             Codec.DOUBLE.fieldOf("amount").forGetter(instance0 -> instance0.amount),
             //
@@ -53,7 +54,7 @@ public class GasIngredient extends Ingredient {
     instance.group(
 
             //
-            TagKey.codec(ElectrodynamicsRegistries.GAS_REGISTRY_KEY).fieldOf("tag").forGetter(instance0 -> instance0.tag),
+            TagKey.codec(ElectrodynamicsGases.GAS_REGISTRY_KEY).fieldOf("tag").forGetter(instance0 -> instance0.tag),
             //
             Codec.DOUBLE.fieldOf("amount").forGetter(instance0 -> instance0.amount),
             //
@@ -196,7 +197,7 @@ public class GasIngredient extends Ingredient {
         if (gasStacks == null) {
             gasStacks = new ArrayList<>();
             if (tag != null) {
-                ElectrodynamicsRegistries.GAS_REGISTRY.getTag(tag).get().forEach(h -> {
+                ElectrodynamicsGases.GAS_REGISTRY.getTag(tag).get().forEach(h -> {
                     gasStacks.add(new GasStack(h.value(), amount, temperature, pressure));
                 });
             } else if (gas != null) {

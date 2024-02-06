@@ -10,6 +10,7 @@ import electrodynamics.common.fluid.types.liquid.FluidOxygen;
 import electrodynamics.common.fluid.types.liquid.FluidPolyethylene;
 import electrodynamics.common.fluid.types.liquid.FluidSulfate;
 import electrodynamics.common.fluid.types.liquid.FluidSulfuricAcid;
+import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BlockTags;
@@ -334,7 +335,7 @@ public class ElectrodynamicsTags {
 		}
 
 		public static TagKey<Gas> create(ResourceLocation loc) {
-			return TagKey.create(ElectrodynamicsRegistries.GAS_REGISTRY_KEY, loc);
+			return TagKey.create(ElectrodynamicsGases.GAS_REGISTRY_KEY, loc);
 		}
 	}
 

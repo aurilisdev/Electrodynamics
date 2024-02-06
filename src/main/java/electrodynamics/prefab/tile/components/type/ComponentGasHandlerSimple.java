@@ -18,6 +18,7 @@ import electrodynamics.prefab.tile.components.CapabilityInputType;
 import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.utils.IComponentGasHandler;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
+import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.TagKey;
@@ -203,7 +204,7 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
         }
         if (validGasTags != null) {
             for (TagKey<Gas> tag : validGasTags) {
-                ElectrodynamicsRegistries.GAS_REGISTRY.getTag(tag).get().stream().forEach(holder -> {
+                ElectrodynamicsGases.GAS_REGISTRY.getTag(tag).get().stream().forEach(holder -> {
                     validatorGases.add(holder.value());
                 });
             }

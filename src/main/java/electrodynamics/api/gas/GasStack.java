@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import electrodynamics.registers.ElectrodynamicsGases;
-import electrodynamics.registers.ElectrodynamicsRegistries;
+import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -21,7 +21,7 @@ public class GasStack {
     //
     instance.group(
             //
-            ElectrodynamicsRegistries.GAS_REGISTRY.byNameCodec().fieldOf("gas").forGetter(instance0 -> instance0.gas),
+            ElectrodynamicsGases.GAS_REGISTRY.byNameCodec().fieldOf("gas").forGetter(instance0 -> instance0.gas),
             //
             Codec.DOUBLE.fieldOf("amount").forGetter(instance0 -> instance0.amount),
             //
@@ -208,7 +208,7 @@ public class GasStack {
     // This is assumed to be a new tag
     public CompoundTag writeToNbt() {
         CompoundTag tag = new CompoundTag();
-        tag.putString("name", ElectrodynamicsRegistries.GAS_REGISTRY.getKey(getGas()).toString());
+        tag.putString("name", ElectrodynamicsGases.GAS_REGISTRY.getKey(getGas()).toString());
         tag.putDouble("amount", amount);
         tag.putDouble("temperature", temperature);
         tag.putInt("pressure", pressure);
@@ -216,7 +216,7 @@ public class GasStack {
     }
 
     public static GasStack readFromNbt(CompoundTag tag) {
-        Gas gas = ElectrodynamicsRegistries.GAS_REGISTRY.get(new ResourceLocation(tag.getString("name")));
+        Gas gas = ElectrodynamicsGases.GAS_REGISTRY.get(new ResourceLocation(tag.getString("name")));
         double amount = tag.getDouble("amount");
         double temperature = tag.getDouble("temperature");
         int pressure = tag.getInt("pressure");
@@ -224,14 +224,14 @@ public class GasStack {
     }
 
     public void writeToBuffer(FriendlyByteBuf buffer) {
-        buffer.writeId(ElectrodynamicsRegistries.GAS_REGISTRY, gas);
+        buffer.writeId(ElectrodynamicsGases.GAS_REGISTRY, gas);
         buffer.writeDouble(amount);
         buffer.writeDouble(temperature);
         buffer.writeInt(pressure);
     }
 
     public static GasStack readFromBuffer(FriendlyByteBuf buffer) {
-        Gas gas = buffer.readById(ElectrodynamicsRegistries.GAS_REGISTRY);
+        Gas gas = buffer.readById(ElectrodynamicsGases.GAS_REGISTRY);
         double amount = buffer.readDouble();
         double temperature = buffer.readDouble();
         int pressure = buffer.readInt();

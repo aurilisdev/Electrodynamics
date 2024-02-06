@@ -1833,7 +1833,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 	}
 
 	public void addGas(Gas gas, String translation) {
-		add("gas." + modID + "." + ElectrodynamicsRegistries.GAS_REGISTRY.getKey(gas).getPath(), translation);
+		add("gas." + modID + "." + ElectrodynamicsGases.GAS_REGISTRY.getKey(gas).getPath(), translation);
 	}
 
 	public void addContainer(SubtypeMachine key, String translation) {

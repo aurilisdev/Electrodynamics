@@ -18,6 +18,7 @@ import electrodynamics.common.network.utils.GasUtilities;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.common.tile.pipelines.gas.TileGasPipePump;
 import electrodynamics.prefab.network.AbstractNetwork;
+import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -327,7 +328,7 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 			return false;
 		}
 
-		boolean isCorrosive = ElectrodynamicsRegistries.GAS_REGISTRY.getTag(ElectrodynamicsTags.Gases.IS_CORROSIVE).get().contains(new Holder.Direct<>(stack.getGas()));
+		boolean isCorrosive = ElectrodynamicsGases.GAS_REGISTRY.getTag(ElectrodynamicsTags.Gases.IS_CORROSIVE).get().contains(new Holder.Direct<>(stack.getGas()));
 
 		boolean exploded = false;
 		HashSet<SubtypeGasPipe> overloadedPipes = new HashSet<>();
