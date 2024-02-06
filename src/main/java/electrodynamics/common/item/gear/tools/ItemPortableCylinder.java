@@ -46,7 +46,7 @@ public class ItemPortableCylinder extends ItemElectrodynamics {
             return;
         }
 
-        ElectrodynamicsRegistries.GAS_REGISTRY.get().stream().forEach(gas -> {
+        ElectrodynamicsRegistries.GAS_REGISTRY.stream().forEach(gas -> {
             if (gas.isEmpty()) {
                 return;
             }

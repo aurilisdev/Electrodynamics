@@ -28,7 +28,7 @@ public class IngredientHelperGasStack implements IIngredientHelper<GasStack> {
 
 	@Override
 	public ResourceLocation getResourceLocation(GasStack ingredient) {
-		return ElectrodynamicsRegistries.GAS_REGISTRY.get().getKey(ingredient.getGas());
+		return ElectrodynamicsRegistries.GAS_REGISTRY.getKey(ingredient.getGas());
 	}
 
 	@Override

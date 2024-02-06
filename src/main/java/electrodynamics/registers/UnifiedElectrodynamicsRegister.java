@@ -21,7 +21,6 @@ public class UnifiedElectrodynamicsRegister {
 		ElectrodynamicsMenuTypes.MENU_TYPES.register(bus);
 		ElectrodynamicsSounds.SOUNDS.register(bus);
 		ElectrodynamicsGases.GASES.register(bus);
-		ElectrodynamicsRegistries.init();
 		ElectrodynamicsParticles.PARTICLES.register(bus);
 		ElectrodynamicsCreativeTabs.CREATIVE_TABS.register(bus);
 		ElectrodynamicsRuleTestTypes.RULE_TEST_TYPES.register(bus);

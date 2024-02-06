@@ -476,7 +476,7 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
             }
             if (validInputGasTags != null) {
                 for (TagKey<Gas> tag : validInputGasTags) {
-                    ElectrodynamicsRegistries.GAS_REGISTRY.get().getTag(tag).get().stream().forEach(holder -> {
+                    ElectrodynamicsRegistries.GAS_REGISTRY.getTag(tag).get().stream().forEach(holder -> {
                         inputValidatorGases.add(holder.value());
                     });
                 }
@@ -488,7 +488,7 @@ public class ComponentGasHandlerMulti implements IComponentGasHandler {
             }
             if (validOutputGasTags != null) {
                 for (TagKey<Gas> tag : validOutputGasTags) {
-                    ElectrodynamicsRegistries.GAS_REGISTRY.get().getTag(tag).get().stream().forEach(holder -> {
+                    ElectrodynamicsRegistries.GAS_REGISTRY.getTag(tag).get().stream().forEach(holder -> {
                         outputValidatorGases.add(holder.value());
                     });
                 }

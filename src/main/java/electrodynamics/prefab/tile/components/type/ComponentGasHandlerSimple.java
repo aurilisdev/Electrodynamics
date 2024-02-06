@@ -203,7 +203,7 @@ public class ComponentGasHandlerSimple extends PropertyGasTank implements ICompo
         }
         if (validGasTags != null) {
             for (TagKey<Gas> tag : validGasTags) {
-                ElectrodynamicsRegistries.GAS_REGISTRY.get().getTag(tag).get().stream().forEach(holder -> {
+                ElectrodynamicsRegistries.GAS_REGISTRY.getTag(tag).get().stream().forEach(holder -> {
                     validatorGases.add(holder.value());
                 });
             }

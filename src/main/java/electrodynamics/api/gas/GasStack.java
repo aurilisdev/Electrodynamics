@@ -21,7 +21,7 @@ public class GasStack {
     //
     instance.group(
             //
-            ElectrodynamicsRegistries.GAS_REGISTRY.get().byNameCodec().fieldOf("gas").forGetter(instance0 -> instance0.gas),
+            ElectrodynamicsRegistries.GAS_REGISTRY.byNameCodec().fieldOf("gas").forGetter(instance0 -> instance0.gas),
             //
             Codec.DOUBLE.fieldOf("amount").forGetter(instance0 -> instance0.amount),
             //
@@ -208,7 +208,7 @@ public class GasStack {
     // This is assumed to be a new tag
     public CompoundTag writeToNbt() {
         CompoundTag tag = new CompoundTag();
-        tag.putString("name", ElectrodynamicsRegistries.GAS_REGISTRY.get().getKey(getGas()).toString());
+        tag.putString("name", ElectrodynamicsRegistries.GAS_REGISTRY.getKey(getGas()).toString());
         tag.putDouble("amount", amount);
         tag.putDouble("temperature", temperature);
         tag.putInt("pressure", pressure);
@@ -216,7 +216,7 @@ public class GasStack {
     }
 
     public static GasStack readFromNbt(CompoundTag tag) {
-        Gas gas = ElectrodynamicsRegistries.GAS_REGISTRY.get().get(new ResourceLocation(tag.getString("name")));
+        Gas gas = ElectrodynamicsRegistries.GAS_REGISTRY.get(new ResourceLocation(tag.getString("name")));
         double amount = tag.getDouble("amount");
         double temperature = tag.getDouble("temperature");
         int pressure = tag.getInt("pressure");
@@ -224,14 +224,14 @@ public class GasStack {
     }
 
     public void writeToBuffer(FriendlyByteBuf buffer) {
-        buffer.writeId(ElectrodynamicsRegistries.GAS_REGISTRY.get(), gas);
+        buffer.writeId(ElectrodynamicsRegistries.GAS_REGISTRY, gas);
         buffer.writeDouble(amount);
         buffer.writeDouble(temperature);
         buffer.writeInt(pressure);
     }
 
     public static GasStack readFromBuffer(FriendlyByteBuf buffer) {
-        Gas gas = buffer.readById(ElectrodynamicsRegistries.GAS_REGISTRY.get());
+        Gas gas = buffer.readById(ElectrodynamicsRegistries.GAS_REGISTRY);
         double amount = buffer.readDouble();
         double temperature = buffer.readDouble();
         int pressure = buffer.readInt();

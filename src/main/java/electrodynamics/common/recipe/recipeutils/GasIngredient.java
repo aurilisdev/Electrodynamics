@@ -34,7 +34,7 @@ public class GasIngredient extends Ingredient {
     instance.group(
 
             //
-            ElectrodynamicsRegistries.GAS_REGISTRY.get().byNameCodec().fieldOf("gas").forGetter(instance0 -> instance0.gas),
+            ElectrodynamicsRegistries.GAS_REGISTRY.byNameCodec().fieldOf("gas").forGetter(instance0 -> instance0.gas),
             //
             Codec.DOUBLE.fieldOf("amount").forGetter(instance0 -> instance0.amount),
             //
@@ -196,7 +196,7 @@ public class GasIngredient extends Ingredient {
         if (gasStacks == null) {
             gasStacks = new ArrayList<>();
             if (tag != null) {
-                ElectrodynamicsRegistries.GAS_REGISTRY.get().getTag(tag).get().forEach(h -> {
+                ElectrodynamicsRegistries.GAS_REGISTRY.getTag(tag).get().forEach(h -> {
                     gasStacks.add(new GasStack(h.value(), amount, temperature, pressure));
                 });
             } else if (gas != null) {

@@ -27,7 +27,7 @@ public class ElectrodynamicsPsuedoRecipes {
 
 	public static void initRecipes() {
 
-		for (Gas gas : ElectrodynamicsRegistries.GAS_REGISTRY.get().stream().toList()) {
+		for (Gas gas : ElectrodynamicsRegistries.GAS_REGISTRY.stream().toList()) {
 
 			if (gas.isEmpty()) {
 				continue;

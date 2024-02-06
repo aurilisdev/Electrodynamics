@@ -327,7 +327,7 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 			return false;
 		}
 
-		boolean isCorrosive = ElectrodynamicsRegistries.GAS_REGISTRY.get().getTag(ElectrodynamicsTags.Gases.IS_CORROSIVE).get().contains(new Holder.Direct<>(stack.getGas()));
+		boolean isCorrosive = ElectrodynamicsRegistries.GAS_REGISTRY.getTag(ElectrodynamicsTags.Gases.IS_CORROSIVE).get().contains(new Holder.Direct<>(stack.getGas()));
 
 		boolean exploded = false;
 		HashSet<SubtypeGasPipe> overloadedPipes = new HashSet<>();

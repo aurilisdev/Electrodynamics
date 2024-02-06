@@ -13,19 +13,15 @@ import net.neoforged.fml.common.Mod.EventBusSubscriber;
 import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.registries.NewRegistryEvent;
 
-@EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
+//@EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
 public class ElectrodynamicsRegistries {
 
 	/* GAS */
 	public static final ResourceLocation GAS_REGISTRY_LOC = new ResourceLocation(References.ID, "gases");
 	public static final ResourceKey<Registry<Gas>> GAS_REGISTRY_KEY = ResourceKey.createRegistryKey(GAS_REGISTRY_LOC);
-	public static Supplier<Registry<Gas>> GAS_REGISTRY;
-
-	public static void init() {
-	    GAS_REGISTRY = ElectrodynamicsGases.GASES.getRegistry();
-	}
+	public static final Registry<Gas> GAS_REGISTRY = ElectrodynamicsGases.GASES.makeRegistry(builder -> builder.sync(true).create());
 	
-	@SubscribeEvent
+	//@SubscribeEvent
 	public static void registerRegistries(NewRegistryEvent event) {
 	    Electrodynamics.LOGGER.info("firing");
 	    

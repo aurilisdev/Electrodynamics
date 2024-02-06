@@ -18,7 +18,7 @@ public class ProbableGas {
 
     public static final Codec<ProbableGas> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             //
-            ElectrodynamicsRegistries.GAS_REGISTRY.get().byNameCodec().fieldOf("gas").forGetter(instance0 -> instance0.gas.getGas()),
+            ElectrodynamicsRegistries.GAS_REGISTRY.byNameCodec().fieldOf("gas").forGetter(instance0 -> instance0.gas.getGas()),
             //
             Codec.DOUBLE.fieldOf("amount").forGetter(instance0 -> instance0.gas.getAmount()),
             //
@@ -68,7 +68,7 @@ public class ProbableGas {
 
     public static ProbableGas deserialize(JsonObject json) {
         ResourceLocation resourceLocation = new ResourceLocation(GsonHelper.getAsString(json, "gas"));
-        GasStack gas = new GasStack(ElectrodynamicsRegistries.GAS_REGISTRY.get().get(resourceLocation), GsonHelper.getAsDouble(json, "amount"), GsonHelper.getAsDouble(json, "temp"), GsonHelper.getAsInt(json, "pressure"));
+        GasStack gas = new GasStack(ElectrodynamicsRegistries.GAS_REGISTRY.get(resourceLocation), GsonHelper.getAsDouble(json, "amount"), GsonHelper.getAsDouble(json, "temp"), GsonHelper.getAsInt(json, "pressure"));
         double chance = json.get("chance").getAsDouble();
         return new ProbableGas(gas, chance);
     }
