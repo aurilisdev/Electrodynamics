@@ -93,7 +93,7 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 	@Override
 	public List<ItemStack> getDrops(BlockState state, Builder builder) {
 		BlockEntity tile = builder.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-		if (tile instanceof GenericTile machine && machine != null) {
+		if (tile instanceof GenericTile machine) {
 			ItemStack stack = new ItemStack(this);
 			ComponentInventory inv = machine.getComponent(IComponentType.Inventory);
 			if (inv != null) {
