@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.Window;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraftforge.client.gui.overlay.NamedGuiOverlay;
+import net.neoforged.neoforge.client.gui.overlay.NamedGuiOverlay;
 
 public abstract class AbstractPostGuiOverlayHandler {
 

@@ -1,7 +1,7 @@
 package electrodynamics.client.keys.event;
 
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.client.event.InputEvent.Key;
+import net.neoforged.neoforge.client.event.InputEvent.Key;
 
 public abstract class AbstractKeyPressHandler {
 

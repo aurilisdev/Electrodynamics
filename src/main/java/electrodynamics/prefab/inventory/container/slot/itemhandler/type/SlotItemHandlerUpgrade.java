@@ -11,7 +11,7 @@ import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.SlotTyp
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.items.IItemHandler;
+import net.neoforged.neoforge.items.IItemHandler;
 
 public class SlotItemHandlerUpgrade extends SlotItemHandlerGeneric implements IUpgradeSlot {
 

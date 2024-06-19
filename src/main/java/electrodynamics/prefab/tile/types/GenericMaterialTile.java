@@ -8,7 +8,7 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.utils.IComponentFluidHandler;
 import electrodynamics.prefab.tile.components.utils.IComponentGasHandler;
-import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -21,148 +21,150 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 //You come up with a better name :D
 public class GenericMaterialTile extends GenericTile {
 
-	public GenericMaterialTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
-		super(tileEntityTypeIn, worldPos, blockState);
-	}
+    public GenericMaterialTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
+        super(tileEntityTypeIn, worldPos, blockState);
+    }
 
-	@Override
-	public InteractionResult use(Player player, InteractionHand handIn, BlockHitResult hit) {
+    @Override
+    public InteractionResult use(Player player, InteractionHand handIn, BlockHitResult hit) {
 
-		ItemStack stack = player.getItemInHand(handIn);
+        ItemStack stack = player.getItemInHand(handIn);
 
-		Level world = getLevel();
+        Level world = getLevel();
 
-		if (CapabilityUtils.hasFluidItemCap(stack) && hasComponent(IComponentType.FluidHandler)) {
+        IFluidHandlerItem handlerFluidItem = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-			IComponentFluidHandler fluidHandler = getComponent(IComponentType.FluidHandler);
+        if (handlerFluidItem != null && hasComponent(IComponentType.FluidHandler)) {
 
-			IFluidHandlerItem handlerItem = CapabilityUtils.getFluidHandlerItem(stack);
+            IComponentFluidHandler fluidHandler = getComponent(IComponentType.FluidHandler);
 
-			// first try to drain the item
-			for (FluidTank tank : fluidHandler.getInputTanks()) {
+            // first try to drain the item
+            for (FluidTank tank : fluidHandler.getInputTanks()) {
 
-				int space = tank.getSpace();
+                int space = tank.getSpace();
 
-				FluidStack containedFluid = handlerItem.drain(space, FluidAction.SIMULATE);
+                FluidStack containedFluid = handlerFluidItem.drain(space, FluidAction.SIMULATE);
 
-				if (containedFluid.isEmpty()) {
-					continue;
-				}
+                if (containedFluid.isEmpty()) {
+                    continue;
+                }
 
-				if (!world.isClientSide) {
+                if (!world.isClientSide) {
 
-					tank.fill(containedFluid, FluidAction.EXECUTE);
+                    tank.fill(containedFluid, FluidAction.EXECUTE);
 
-					if (!player.isCreative()) {
+                    if (!player.isCreative()) {
 
-						handlerItem.drain(space, FluidAction.EXECUTE);
+                        handlerFluidItem.drain(space, FluidAction.EXECUTE);
 
-					}
+                    }
 
-					world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 1, 1);
+                    world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_EMPTY, SoundSource.PLAYERS, 1, 1);
 
-					player.setItemInHand(handIn, handlerItem.getContainer());
+                    player.setItemInHand(handIn, handlerFluidItem.getContainer());
 
-				}
+                }
 
-				return InteractionResult.CONSUME;
+                return InteractionResult.CONSUME;
 
-			}
-			// now try to fill it
-			for (FluidTank tank : fluidHandler.getOutputTanks()) {
+            }
+            // now try to fill it
+            for (FluidTank tank : fluidHandler.getOutputTanks()) {
 
-				FluidStack tankFluid = tank.getFluid();
+                FluidStack tankFluid = tank.getFluid();
 
-				int taken = handlerItem.fill(tankFluid, FluidAction.EXECUTE);
+                int taken = handlerFluidItem.fill(tankFluid, FluidAction.EXECUTE);
 
-				if (taken <= 0) {
-					continue;
-				}
+                if (taken <= 0) {
+                    continue;
+                }
 
-				if (!world.isClientSide) {
+                if (!world.isClientSide) {
 
-					tank.drain(taken, FluidAction.EXECUTE);
+                    tank.drain(taken, FluidAction.EXECUTE);
 
-					world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
+                    world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
 
-					player.setItemInHand(handIn, handlerItem.getContainer());
+                    player.setItemInHand(handIn, handlerFluidItem.getContainer());
 
-				}
+                }
 
-				return InteractionResult.CONSUME;
+                return InteractionResult.CONSUME;
 
-			}
-		}
-		if (CapabilityUtils.hasGasItemCap(stack) && hasComponent(IComponentType.GasHandler)) {
+            }
+        }
 
-			IComponentGasHandler gasHandler = getComponent(IComponentType.GasHandler);
+        IGasHandlerItem handlerGasItem = stack.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-			IGasHandlerItem handlerItem = CapabilityUtils.getGasHandlerItem(stack);
+        if (handlerGasItem != null && hasComponent(IComponentType.GasHandler)) {
 
-			// first try to drain the item
-			for (GasTank tank : gasHandler.getInputTanks()) {
+            IComponentGasHandler gasHandler = getComponent(IComponentType.GasHandler);
 
-				double space = tank.getSpace();
+            // first try to drain the item
+            for (GasTank tank : gasHandler.getInputTanks()) {
 
-				GasStack containedGas = handlerItem.drainTank(0, space, GasAction.SIMULATE);
+                double space = tank.getSpace();
 
-				if (containedGas.isEmpty()) {
-					continue;
-				}
+                GasStack containedGas = handlerGasItem.drainTank(0, space, GasAction.SIMULATE);
 
-				if (!world.isClientSide) {
+                if (containedGas.isEmpty()) {
+                    continue;
+                }
 
-					tank.fill(containedGas, GasAction.EXECUTE);
+                if (!world.isClientSide) {
 
-					if (!player.isCreative()) {
+                    tank.fill(containedGas, GasAction.EXECUTE);
 
-						handlerItem.drainTank(0, space, GasAction.EXECUTE);
+                    if (!player.isCreative()) {
 
-					}
+                        handlerGasItem.drainTank(0, space, GasAction.EXECUTE);
 
-					world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), SoundSource.PLAYERS, 1, 1);
+                    }
 
-					player.setItemInHand(handIn, handlerItem.getContainer());
+                    world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), SoundSource.PLAYERS, 1, 1);
 
-				}
+                    player.setItemInHand(handIn, handlerGasItem.getContainer());
 
-				return InteractionResult.CONSUME;
+                }
 
-			}
-			// now try to fill it
-			for (GasTank tank : gasHandler.getOutputTanks()) {
+                return InteractionResult.CONSUME;
 
-				GasStack tankGas = tank.getGas();
+            }
+            // now try to fill it
+            for (GasTank tank : gasHandler.getOutputTanks()) {
 
-				double taken = handlerItem.fillTank(0, tankGas, GasAction.EXECUTE);
+                GasStack tankGas = tank.getGas();
 
-				if (taken <= 0) {
-					continue;
-				}
+                double taken = handlerGasItem.fillTank(0, tankGas, GasAction.EXECUTE);
 
-				if (!world.isClientSide) {
+                if (taken <= 0) {
+                    continue;
+                }
 
-					tank.drain(taken, GasAction.EXECUTE);
+                if (!world.isClientSide) {
 
-					world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), SoundSource.PLAYERS, 1, 1);
+                    tank.drain(taken, GasAction.EXECUTE);
 
-					player.setItemInHand(handIn, handlerItem.getContainer());
+                    world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), SoundSource.PLAYERS, 1, 1);
 
-				}
+                    player.setItemInHand(handIn, handlerGasItem.getContainer());
 
-				return InteractionResult.CONSUME;
+                }
 
-			}
-		}
-		return super.use(player, handIn, hit);
-	}
+                return InteractionResult.CONSUME;
+
+            }
+        }
+        return super.use(player, handIn, hit);
+    }
 
 }

@@ -14,113 +14,114 @@ import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import electrodynamics.compatibility.jei.recipecategories.utils.AbstractRecipeCategory;
 import electrodynamics.compatibility.jei.utils.gui.types.BackgroundObject;
-import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 public class FluidItem2GasRecipeCategory<T extends FluidItem2GasRecipe> extends AbstractRecipeCategory<T> {
 
-	public FluidItem2GasRecipeCategory(IGuiHelper guiHelper, Component title, ItemStack inputMachine, BackgroundObject wrapper, RecipeType<T> recipeType, int animationTime) {
-		super(guiHelper, title, inputMachine, wrapper, recipeType, animationTime);
-	}
+    public FluidItem2GasRecipeCategory(IGuiHelper guiHelper, Component title, ItemStack inputMachine, BackgroundObject wrapper, RecipeType<T> recipeType, int animationTime) {
+        super(guiHelper, title, inputMachine, wrapper, recipeType, animationTime);
+    }
 
-	@Override
-	public List<List<ItemStack>> getItemInputs(T recipe) {
-		List<List<ItemStack>> ingredients = new ArrayList<>();
+    @Override
+    public List<List<ItemStack>> getItemInputs(T recipe) {
+        List<List<ItemStack>> ingredients = new ArrayList<>();
 
-		for (CountableIngredient ing : recipe.getCountedIngredients()) {
-			ingredients.add(ing.fetchCountedStacks());
-		}
+        for (CountableIngredient ing : recipe.getCountedIngredients()) {
+            ingredients.add(Arrays.asList(ing.getItems()));
+        }
 
-		for (FluidIngredient ing : recipe.getFluidIngredients()) {
-			List<ItemStack> buckets = new ArrayList<>();
-			for (FluidStack stack : ing.getMatchingFluids()) {
-				ItemStack bucket = new ItemStack(stack.getFluid().getBucket(), 1);
-				if (CapabilityUtils.hasFluidItemCap(bucket)) {
+        for (FluidIngredient ing : recipe.getFluidIngredients()) {
+            List<ItemStack> buckets = new ArrayList<>();
+            for (FluidStack stack : ing.getMatchingFluids()) {
+                ItemStack bucket = new ItemStack(stack.getFluid().getBucket(), 1);
+                IFluidHandlerItem handler = bucket.getCapability(Capabilities.FluidHandler.ITEM);
 
-					IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(bucket);
+                if (handler != null) {
 
-					handler.fill(stack, FluidAction.EXECUTE);
+                    handler.fill(stack, FluidAction.EXECUTE);
 
-					bucket = handler.getContainer();
+                    bucket = handler.getContainer();
 
-				}
-				buckets.add(bucket);
-			}
-			ingredients.add(buckets);
-		}
+                }
+                buckets.add(bucket);
+            }
+            ingredients.add(buckets);
+        }
 
-		return ingredients;
-	}
+        return ingredients;
+    }
 
-	@Override
-	public List<ItemStack> getItemOutputs(T recipe) {
-		List<ItemStack> outputItems = new ArrayList<>();
+    @Override
+    public List<ItemStack> getItemOutputs(T recipe) {
+        List<ItemStack> outputItems = new ArrayList<>();
 
-		if (recipe.hasItemBiproducts()) {
-			outputItems.addAll(Arrays.asList(recipe.getFullItemBiStacks()));
-		}
+        if (recipe.hasItemBiproducts()) {
+            outputItems.addAll(Arrays.asList(recipe.getFullItemBiStacks()));
+        }
 
-		ItemStack bucket = new ItemStack(recipe.getGasRecipeOutput().getGas().getContainer(), 1);
+        ItemStack bucket = new ItemStack(recipe.getGasRecipeOutput().getGas().getContainer(), 1);
 
-		if (!bucket.isEmpty() && CapabilityUtils.hasGasItemCap(bucket)) {
-			
-			IGasHandlerItem handler = CapabilityUtils.getGasHandlerItem(bucket);
-			
-			handler.fillTank(0, recipe.getGasRecipeOutput(), GasAction.EXECUTE);
-			
-			bucket = handler.getContainer();
-			
-			outputItems.add(bucket);
-		}
+        IGasHandlerItem outputHandler = bucket.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-		if (recipe.hasFluidBiproducts()) {
-			for (ProbableFluid stack : recipe.getFluidBiproducts()) {
-				ItemStack temp = new ItemStack(stack.getFullStack().getFluid().getBucket(), 1);
-				if (CapabilityUtils.hasFluidItemCap(temp)) {
+        if (outputHandler != null) {
 
-					IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(temp);
+            outputHandler.fillTank(0, recipe.getGasRecipeOutput(), GasAction.EXECUTE);
 
-					handler.fill(stack.getFullStack(), FluidAction.EXECUTE);
+            bucket = outputHandler.getContainer();
 
-					temp = handler.getContainer();
+            outputItems.add(bucket);
+        }
 
-				}
-				outputItems.add(temp);
-			}
-		}
-		return outputItems;
-	}
+        if (recipe.hasFluidBiproducts()) {
+            for (ProbableFluid stack : recipe.getFluidBiproducts()) {
+                ItemStack temp = new ItemStack(stack.getFullStack().getFluid().getBucket(), 1);
+                IFluidHandlerItem handler = temp.getCapability(Capabilities.FluidHandler.ITEM);
 
-	@Override
-	public List<List<FluidStack>> getFluidInputs(T recipe) {
-		List<List<FluidStack>> ingredients = new ArrayList<>();
-		for (FluidIngredient ing : recipe.getFluidIngredients()) {
-			List<FluidStack> fluids = new ArrayList<>();
-			for (FluidStack stack : ing.getMatchingFluids()) {
-				if (!ForgeRegistries.FLUIDS.getKey(stack.getFluid()).toString().toLowerCase(Locale.ROOT).contains("flow")) {
-					fluids.add(stack);
-				}
-			}
-			ingredients.add(fluids);
-		}
-		return ingredients;
-	}
+                if (handler != null) {
 
-	@Override
-	public List<GasStack> getGasOutputs(T recipe) {
-		List<GasStack> outputFluids = new ArrayList<>();
-		outputFluids.add(recipe.getGasRecipeOutput());
-		if (recipe.hasGasBiproducts()) {
-			outputFluids.addAll(Arrays.asList(recipe.getFullGasBiStacks()));
-		}
-		return outputFluids;
-	}
+                    handler.fill(stack.getFullStack(), FluidAction.EXECUTE);
+
+                    temp = handler.getContainer();
+
+                }
+                outputItems.add(temp);
+            }
+        }
+        return outputItems;
+    }
+
+    @Override
+    public List<List<FluidStack>> getFluidInputs(T recipe) {
+        List<List<FluidStack>> ingredients = new ArrayList<>();
+        for (FluidIngredient ing : recipe.getFluidIngredients()) {
+            List<FluidStack> fluids = new ArrayList<>();
+            for (FluidStack stack : ing.getMatchingFluids()) {
+                if (!BuiltInRegistries.FLUID.getKey(stack.getFluid()).toString().toLowerCase(Locale.ROOT).contains("flow")) {
+                    fluids.add(stack);
+                }
+            }
+            ingredients.add(fluids);
+        }
+        return ingredients;
+    }
+
+    @Override
+    public List<GasStack> getGasOutputs(T recipe) {
+        List<GasStack> outputFluids = new ArrayList<>();
+        outputFluids.add(recipe.getGasRecipeOutput());
+        if (recipe.hasGasBiproducts()) {
+            outputFluids.addAll(Arrays.asList(recipe.getFullGasBiStacks()));
+        }
+        return outputFluids;
+    }
 
 }

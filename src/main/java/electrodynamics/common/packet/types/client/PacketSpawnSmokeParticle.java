@@ -1,15 +1,13 @@
 package electrodynamics.common.packet.types.client;
 
-import java.util.function.Supplier;
-
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
+import electrodynamics.common.packet.BarrierMethods;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class PacketSpawnSmokeParticle {
+public class PacketSpawnSmokeParticle implements CustomPacketPayload {
 
 	private final BlockPos pos;
 
@@ -17,22 +15,22 @@ public class PacketSpawnSmokeParticle {
 		this.pos = pos;
 	}
 
-	public static void handle(PacketSpawnSmokeParticle message, Supplier<Context> context) {
-		Context ctx = context.get();
-		ctx.enqueueWork(() -> {
-			ClientLevel world = Minecraft.getInstance().level;
-			if (world != null) {
-				world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, message.pos.getX() + 0.5, message.pos.getY() + 0.5, message.pos.getZ() + 0.5, 0, 0, 0);
-			}
-		});
-		ctx.setPacketHandled(true);
+	public static void handle(PacketSpawnSmokeParticle message, PlayPayloadContext context) {
+		BarrierMethods.handlerSpawnSmokeParicle(message.pos);
 	}
 
-	public static void encode(PacketSpawnSmokeParticle pkt, FriendlyByteBuf buf) {
-		buf.writeBlockPos(pkt.pos);
-	}
-
-	public static PacketSpawnSmokeParticle decode(FriendlyByteBuf buf) {
+	public static PacketSpawnSmokeParticle read(FriendlyByteBuf buf) {
 		return new PacketSpawnSmokeParticle(buf.readBlockPos());
 	}
+
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeBlockPos(pos);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

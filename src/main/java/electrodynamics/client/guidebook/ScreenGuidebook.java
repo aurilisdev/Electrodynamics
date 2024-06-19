@@ -942,23 +942,23 @@ public class ScreenGuidebook extends GenericScreen<ContainerGuidebook> {
 	}
 
 	@Override
-	public boolean mouseScrolled(double mouseX, double mouseY, double delta) {
+	public boolean mouseScrolled(double mouseX, double mouseY, double deltaX, double deltaY) {
 
 		if (searches.size() == 0) {
 			resetSearchButtons();
-			return super.mouseScrolled(mouseX, mouseY, delta);
+			return super.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
 		}
 
 		if (currPageNumber >= pages.size() - 2) {
 
-			int scrollDelta = delta > 0 ? -1 : 1;
+			int scrollDelta = deltaY > 0 ? -1 : 1;
 
 			scrollIndex = Mth.clamp(scrollIndex + scrollDelta, minScroll, maxScroll);
 
 			updateSearchButtons();
 
 		}
-		return super.mouseScrolled(mouseX, mouseY, delta);
+		return super.mouseScrolled(mouseX, mouseY, deltaX, deltaY);
 	}
 
 	private void updateSearchButtons() {

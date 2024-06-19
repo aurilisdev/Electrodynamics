@@ -29,11 +29,12 @@ import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.core.Holder;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ChapterGases extends Chapter {
 
@@ -74,7 +75,7 @@ public class ChapterGases extends Chapter {
 
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l2.1")).setIndentions(1).setSeparateStart());
 
-		for (RegistryObject<Gas> gas : ElectrodynamicsGases.GASES.getEntries()) {
+		for (DeferredHolder<Gas, ? extends Gas> gas : ElectrodynamicsGases.GASES.getEntries()) {
 			if (gas.get().isEmpty()) {
 				continue;
 			}
@@ -135,7 +136,7 @@ public class ChapterGases extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l8")).setIndentions(1).setSeparateStart());
 		// condensed gases
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l9")).setIndentions(1).setSeparateStart());
-		for (RegistryObject<Gas> gas : ElectrodynamicsGases.GASES.getEntries()) {
+		for (DeferredHolder<Gas, ? extends Gas> gas : ElectrodynamicsGases.GASES.getEntries()) {
 			if (gas.get().isEmpty() || gas.get().getCondensedFluid() == null) {
 				continue;
 			}
@@ -194,8 +195,8 @@ public class ChapterGases extends Chapter {
 		blankLine();
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l13.2")).setSeparateStart());
 		blankLine();
-		for (Gas gas : ElectrodynamicsRegistries.gasRegistry().tags().getTag(ElectrodynamicsTags.Gases.IS_CORROSIVE)) {
-			pageData.add(new TextWrapperObject(gas.getDescription()).setSeparateStart());
+		for (Holder<Gas> gas : ElectrodynamicsGases.GAS_REGISTRY.getTag(ElectrodynamicsTags.Gases.IS_CORROSIVE).get().unwrap().right().get()) {
+			pageData.add(new TextWrapperObject(gas.value().getDescription()).setSeparateStart());
 		}
 		blankLine();
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l13.3")).setSeparateStart());

@@ -1,6 +1,6 @@
 package electrodynamics.common.event.types.player.rightclick;
 
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 
 public abstract class AbstractRightClickBlockHandler {
 

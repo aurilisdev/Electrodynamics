@@ -8,6 +8,7 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import net.minecraft.advancements.critereon.EnchantmentPredicate;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.advancements.critereon.MinMaxBounds;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.loot.packs.VanillaBlockLoot;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -29,7 +30,6 @@ import net.minecraft.world.level.storage.loot.predicates.MatchTool;
 import net.minecraft.world.level.storage.loot.providers.nbt.ContextNbtProvider;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
-import net.minecraftforge.registries.ForgeRegistries;
 
 public abstract class AbstractLootTableProvider extends VanillaBlockLoot {
 
@@ -104,7 +104,7 @@ public abstract class AbstractLootTableProvider extends VanillaBlockLoot {
 	@Override
 	protected Iterable<Block> getKnownBlocks() {
 
-		return ForgeRegistries.BLOCKS.getEntries().stream().filter(e -> e.getKey().location().getNamespace().equals(modID) && !getExcludedBlocks().contains(e.getValue())).map(Map.Entry::getValue).collect(Collectors.toList());
+		return BuiltInRegistries.BLOCK.entrySet().stream().filter(e -> e.getKey().location().getNamespace().equals(modID) && !getExcludedBlocks().contains(e.getValue())).map(Map.Entry::getValue).collect(Collectors.toList());
 	}
 
 	public abstract List<Block> getExcludedBlocks();

@@ -9,15 +9,16 @@ import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.compatibility.jei.recipecategories.utils.psuedorecipes.types.PsuedoFluid2GasRecipe;
 import electrodynamics.compatibility.jei.recipecategories.utils.psuedorecipes.types.PsuedoGas2FluidRecipe;
-import electrodynamics.prefab.utilities.CapabilityUtils;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
-import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
+import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
 public class ElectrodynamicsPsuedoRecipes {
 
@@ -26,7 +27,7 @@ public class ElectrodynamicsPsuedoRecipes {
 
 	public static void initRecipes() {
 
-		for (Gas gas : ElectrodynamicsRegistries.gasRegistry().getValues()) {
+		for (Gas gas : ElectrodynamicsGases.GAS_REGISTRY.stream().toList()) {
 
 			if (gas.isEmpty()) {
 				continue;
@@ -38,20 +39,21 @@ public class ElectrodynamicsPsuedoRecipes {
 
 			ItemStack inputCylinder = new ItemStack(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
 			
-			IGasHandlerItem inputHandler = CapabilityUtils.getGasHandlerItem(inputCylinder);
+			IGasHandlerItem inputHandler = inputCylinder.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
 			
 			inputHandler.fillTank(0, new GasStack(gas, 1000, gas.getCondensationTemp() + 0.00001, Gas.PRESSURE_AT_SEA_LEVEL), GasAction.EXECUTE);
 
 			ItemStack outputBucket = new ItemStack(gas.getCondensedFluid().getBucket());
 			
-			if(CapabilityUtils.hasFluidItemCap(outputBucket)) {
-
-				IFluidHandlerItem outputHandler = CapabilityUtils.getFluidHandlerItem(outputBucket);
-				
-				outputHandler.fill(new FluidStack(gas.getCondensedFluid(), 1000), FluidAction.EXECUTE);
-				
-				outputBucket = outputHandler.getContainer();
+			IFluidHandlerItem outputHandler = outputBucket.getCapability(Capabilities.FluidHandler.ITEM);
+			
+			if(outputHandler == null) {
+			    continue;
 			}
+			
+			outputHandler.fill(new FluidStack(gas.getCondensedFluid(), 1000), FluidAction.EXECUTE);
+            
+            outputBucket = outputHandler.getContainer();
 
 			CONDENSATION_RECIPES.add(new PsuedoGas2FluidRecipe(Arrays.asList(new GasStack(gas, 1000, gas.getCondensationTemp(), 1)), new FluidStack(gas.getCondensedFluid(), 1000), inputCylinder, outputBucket));
 
@@ -65,9 +67,9 @@ public class ElectrodynamicsPsuedoRecipes {
 
 			ItemStack inputBucket = new ItemStack(fluid.getBucket());
 			
-			if(CapabilityUtils.hasFluidItemCap(inputBucket)) {
-				
-				IFluidHandlerItem inputHandler = CapabilityUtils.getFluidHandlerItem(inputBucket);
+			IFluidHandlerItem inputHandler = inputBucket.getCapability(Capabilities.FluidHandler.ITEM);
+			
+			if(inputHandler != null) {
 				
 				inputHandler.fill(new FluidStack(fluid, 1000), FluidAction.EXECUTE);
 				
@@ -77,7 +79,7 @@ public class ElectrodynamicsPsuedoRecipes {
 
 			ItemStack outputCylinder = new ItemStack(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
 			
-			IGasHandlerItem outputHandler = CapabilityUtils.getGasHandlerItem(outputCylinder);
+			IGasHandlerItem outputHandler = outputCylinder.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
 			
 			outputHandler.fillTank(0, new GasStack(gas, 1000, gas.getCondensationTemp() + 0.00001, Gas.PRESSURE_AT_SEA_LEVEL), GasAction.EXECUTE);
 

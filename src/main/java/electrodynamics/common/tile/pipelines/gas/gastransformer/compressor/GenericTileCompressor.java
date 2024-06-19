@@ -1,6 +1,5 @@
 package electrodynamics.common.tile.pipelines.gas.gastransformer.compressor;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.gas.IGasHandler;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
@@ -18,13 +17,13 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryB
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.util.LazyOptional;
 
 public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 
@@ -63,18 +62,18 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 		BlockPos face = getBlockPos().relative(direction.getOpposite(), 2);
 		BlockEntity faceTile = getLevel().getBlockEntity(face);
 		if (faceTile != null) {
-			LazyOptional<IGasHandler> cap = faceTile.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER, direction);
-			if (cap.isPresent()) {
-				IGasHandler gHandler = cap.resolve().get();
-				GasTank gasTank = gasHandler.getOutputTanks()[0];
-				for (int i = 0; i < gHandler.getTanks(); i++) {
-					GasStack tankGas = gasTank.getGas();
-					double amtAccepted = gHandler.fillTank(i, tankGas, GasAction.EXECUTE);
-					GasStack taken = new GasStack(tankGas.getGas(), amtAccepted, tankGas.getTemperature(), tankGas.getPressure());
-					gasTank.drain(taken, GasAction.EXECUTE);
-				}
-
-			}
+		    
+		    IGasHandler handler = faceTile.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_BLOCK, faceTile.getBlockPos(), faceTile.getBlockState(), faceTile, direction);
+		    
+		    if(handler != null) {
+		        GasTank gasTank = gasHandler.getOutputTanks()[0];
+                for (int i = 0; i < handler.getTanks(); i++) {
+                    GasStack tankGas = gasTank.getGas();
+                    double amtAccepted = handler.fillTank(i, tankGas, GasAction.EXECUTE);
+                    GasStack taken = new GasStack(tankGas.getGas(), amtAccepted, tankGas.getTemperature(), tankGas.getPressure());
+                    gasTank.drain(taken, GasAction.EXECUTE);
+                }
+		    }
 		}
 
 		boolean canProcess = checkConditions(processor);

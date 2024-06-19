@@ -2,7 +2,7 @@ package electrodynamics.datagen.server.recipe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.concurrent.CompletableFuture;
 
 import electrodynamics.datagen.server.recipe.types.custom.fluid2gas.ElectrodynamicsElectrolyticSeparatorRecipes;
 import electrodynamics.datagen.server.recipe.types.custom.fluid2item.ElectrodynamicsChemicalCrystallizerRecipes;
@@ -19,16 +19,17 @@ import electrodynamics.datagen.server.recipe.types.custom.item2item.Electrodynam
 import electrodynamics.datagen.server.recipe.types.vanilla.ElectrodynamicsCraftingTableRecipes;
 import electrodynamics.datagen.server.recipe.types.vanilla.ElectrodynamicsSmeltingRecipes;
 import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 
 public class ElectrodynamicsRecipeProvider extends RecipeProvider {
 
 	public final List<AbstractRecipeGenerator> GENERATORS = new ArrayList<>();
 
-	public ElectrodynamicsRecipeProvider(PackOutput output) {
-		super(output);
+	public ElectrodynamicsRecipeProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider) {
+		super(output, lookupProvider);
 		addRecipes();
 	}
 
@@ -49,11 +50,11 @@ public class ElectrodynamicsRecipeProvider extends RecipeProvider {
 		GENERATORS.add(new ElectrodynamicsWireMillRecipes());
 	}
 
-	@Override
-	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-		for (AbstractRecipeGenerator generator : GENERATORS) {
-			generator.addRecipes(consumer);
-		}
-	}
+    @Override
+    protected void buildRecipes(RecipeOutput output) {
+        for (AbstractRecipeGenerator generator : GENERATORS) {
+            generator.addRecipes(output);
+        }
+    }
 
 }

@@ -1,6 +1,6 @@
 package electrodynamics.common.event.types.player.starttracking;
 
-import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 
 public abstract class AbstractPlayerStartTrackingHandler {
 

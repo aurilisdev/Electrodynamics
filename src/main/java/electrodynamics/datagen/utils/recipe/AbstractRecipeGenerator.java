@@ -1,7 +1,5 @@
 package electrodynamics.datagen.utils.recipe;
 
-import java.util.function.Consumer;
-
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -25,7 +23,7 @@ import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.registers.ElectrodynamicsItems;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.Item;
 
 public abstract class AbstractRecipeGenerator {
@@ -82,6 +80,6 @@ public abstract class AbstractRecipeGenerator {
 
 	}
 
-	public abstract void addRecipes(Consumer<FinishedRecipe> consumer);
+	public abstract void addRecipes(RecipeOutput output);
 
 }

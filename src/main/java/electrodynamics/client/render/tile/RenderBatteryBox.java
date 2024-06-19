@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.phys.AABB;
 
 public class RenderBatteryBox extends AbstractTileRenderer<TileBatteryBox> {
 
@@ -58,5 +59,10 @@ public class RenderBatteryBox extends AbstractTileRenderer<TileBatteryBox> {
 		}
 		matrixStackIn.translate(0.5, 0.5, 0.5);
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+	}
+	
+	@Override
+	public AABB getRenderBoundingBox(TileBatteryBox blockEntity) {
+	    return super.getRenderBoundingBox(blockEntity).inflate(2);
 	}
 }

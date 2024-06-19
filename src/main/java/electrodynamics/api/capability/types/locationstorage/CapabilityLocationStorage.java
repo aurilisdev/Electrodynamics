@@ -3,19 +3,12 @@ package electrodynamics.api.capability.types.locationstorage;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jetbrains.annotations.NotNull;
-
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.prefab.utilities.object.Location;
-import net.minecraft.core.Direction;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilitySerializable;
-import net.minecraftforge.common.util.LazyOptional;
+import net.neoforged.neoforge.common.util.INBTSerializable;
 
-public class CapabilityLocationStorage implements ILocationStorage, ICapabilitySerializable<CompoundTag> {
-
-	public final LazyOptional<ILocationStorage> holder = LazyOptional.of(() -> this);
+public class CapabilityLocationStorage implements ILocationStorage, INBTSerializable<CompoundTag> {
 
 	public CapabilityLocationStorage(int size) {
 		// avoids null errors
@@ -25,16 +18,8 @@ public class CapabilityLocationStorage implements ILocationStorage, ICapabilityS
 	}
 
 	@Override
-	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-		if (cap == ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY) {
-			return holder.cast();
-		}
-		return LazyOptional.empty();
-	}
-
-	@Override
 	public CompoundTag serializeNBT() {
-		if (ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY != null) {
+		if (ElectrodynamicsCapabilities.CAPABILITY_LOCATIONSTORAGE_ITEM != null) {
 			CompoundTag nbt = new CompoundTag();
 			nbt.putInt("size", locations.size());
 			for (int i = 0; i < locations.size(); i++) {
@@ -47,7 +32,7 @@ public class CapabilityLocationStorage implements ILocationStorage, ICapabilityS
 
 	@Override
 	public void deserializeNBT(CompoundTag nbt) {
-		if (ElectrodynamicsCapabilities.LOCATION_STORAGE_CAPABILITY != null) {
+		if (ElectrodynamicsCapabilities.CAPABILITY_LOCATIONSTORAGE_ITEM != null) {
 			locations.clear();
 			for (int i = 0; i < nbt.getInt("size"); i++) {
 				locations.add(Location.readFromNBT(nbt, ElectrodynamicsCapabilities.LOCATION_KEY + i));

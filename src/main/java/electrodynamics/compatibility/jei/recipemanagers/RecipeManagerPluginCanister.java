@@ -22,7 +22,7 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 //import mezz.jei.common.recipes.RecipeManagerInternal;
 //import mezz.jei.common.runtime.JeiRuntime;
 //import net.minecraft.world.item.ItemStack;
-//import net.minecraftforge.fluids.FluidStack;
+//import net.neoforged.fluids.FluidStack;
 
 public class RecipeManagerPluginCanister implements IRecipeManagerPlugin {
 

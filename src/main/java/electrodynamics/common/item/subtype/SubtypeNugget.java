@@ -8,7 +8,7 @@ import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
-import net.minecraftforge.common.Tags;
+import net.neoforged.neoforge.common.Tags;
 
 public enum SubtypeNugget implements ISubtype {
 	tin(ElectrodynamicsTags.Items.NUGGET_TIN, ElectrodynamicsTags.Items.INGOT_TIN, () -> ElectrodynamicsItems.getItem(SubtypeIngot.tin)),

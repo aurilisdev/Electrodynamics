@@ -27,7 +27,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
-import net.minecraft.world.phys.AABB;
 
 public class TileHydroelectricGenerator extends GenericGeneratorTile implements ITickableSound {
 	protected CachedTileOutput output;
@@ -47,12 +46,6 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 		addComponent(new ComponentElectrodynamic(this, true, false).setOutputDirections(Direction.NORTH));
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerHydroelectricGenerator.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.hydroelectricgenerator, this).createMenu((id, player) -> new ContainerHydroelectricGenerator(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
-	}
-
-	@Override
-	public AABB getRenderBoundingBox() {
-		Direction facing = getFacing();
-		return super.getRenderBoundingBox().expandTowards(facing.getStepX(), facing.getStepY(), facing.getStepZ());
 	}
 
 	protected void tickServer(ComponentTickable tickable) {

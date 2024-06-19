@@ -2,6 +2,8 @@ package electrodynamics.common.block.connect;
 
 import java.util.HashSet;
 
+import com.mojang.serialization.MapCodec;
+
 import electrodynamics.api.gas.Gas;
 import electrodynamics.api.network.cable.IRefreshableCable;
 import electrodynamics.api.network.cable.type.IGasPipe;
@@ -20,6 +22,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,96 +31,101 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 public class BlockGasPipe extends AbstractRefreshingConnectBlock {
 
-	public static final HashSet<Block> PIPESET = new HashSet<>();
+    public static final HashSet<Block> PIPESET = new HashSet<>();
 
-	public final SubtypeGasPipe pipe;
+    public final SubtypeGasPipe pipe;
 
-	public BlockGasPipe(SubtypeGasPipe pipe) {
-		super(pipe.material.sound(pipe.soundType).strength(0.15f).dynamicShape().noOcclusion(), pipe.radius);
+    public BlockGasPipe(SubtypeGasPipe pipe) {
+        super(pipe.material.sound(pipe.soundType).strength(0.15f).dynamicShape().noOcclusion(), pipe.radius);
 
-		this.pipe = pipe;
+        this.pipe = pipe;
 
-		PIPESET.add(this);
+        PIPESET.add(this);
 
-	}
+    }
 
-	@Override
-	public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		return pipe.insulationMaterial.canCombust;
-	}
+    @Override
+    public boolean isFlammable(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+        return pipe.insulationMaterial.canCombust;
+    }
 
-	@Override
-	public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		if (!pipe.insulationMaterial.canCombust) {
-			return 0;
-		}
+    @Override
+    public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+        if (!pipe.insulationMaterial.canCombust) {
+            return 0;
+        }
 
-		return state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED) ? 0 : 150;
-	}
+        return state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED) ? 0 : 150;
+    }
 
-	@Override
-	public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-		if (!pipe.insulationMaterial.canCombust) {
-			return 0;
-		}
+    @Override
+    public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
+        if (!pipe.insulationMaterial.canCombust) {
+            return 0;
+        }
 
-		return state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED) ? 0 : 400;
-	}
+        return state.hasProperty(BlockStateProperties.WATERLOGGED) && state.getValue(BlockStateProperties.WATERLOGGED) ? 0 : 400;
+    }
 
-	@Override
-	public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
-		super.onCaughtFire(state, world, pos, face, igniter);
-		Scheduler.schedule(5, () -> world.setBlockAndUpdate(pos, ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.getPipeForType(pipe.pipeMaterial, InsulationMaterial.NONE)).defaultBlockState()));
-	}
+    @Override
+    public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
+        super.onCaughtFire(state, world, pos, face, igniter);
+        Scheduler.schedule(5, () -> world.setBlockAndUpdate(pos, ElectrodynamicsBlocks.getBlock(SubtypeGasPipe.getPipeForType(pipe.pipeMaterial, InsulationMaterial.NONE)).defaultBlockState()));
+    }
 
-	@Override
-	public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
-		TileGasPipe tile = (TileGasPipe) worldIn.getBlockEntity(pos);
-		if (worldIn.isClientSide() || tile == null || tile.getNetwork() == null && tile.getNetwork().transmittedThisTick <= 0) {
-			return;
-		}
-		GasNetwork network = tile.getNetwork();
+    @Override
+    public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
+        TileGasPipe tile = (TileGasPipe) worldIn.getBlockEntity(pos);
+        if (worldIn.isClientSide() || tile == null || tile.getNetwork() == null && tile.getNetwork().transmittedThisTick <= 0) {
+            return;
+        }
+        GasNetwork network = tile.getNetwork();
 
-		double multipler = pipe.insulationMaterial == InsulationMaterial.NONE ? 1.0 : 1.2;
+        double multipler = pipe.insulationMaterial == InsulationMaterial.NONE ? 1.0 : 1.2;
 
-		if (network.temperatureOfTransmitted >= Gas.MINIMUM_HEAT_BURN_TEMP * multipler) {
+        if (network.temperatureOfTransmitted >= Gas.MINIMUM_HEAT_BURN_TEMP * multipler) {
 
-			entityIn.hurt(entityIn.damageSources().inFire(), 1.0F);
+            entityIn.hurt(entityIn.damageSources().inFire(), 1.0F);
 
-		} else if (network.temperatureOfTransmitted > 0 && network.temperatureOfTransmitted <= Gas.MINIMUM_FREEZE_TEMP / multipler) {
+        } else if (network.temperatureOfTransmitted > 0 && network.temperatureOfTransmitted <= Gas.MINIMUM_FREEZE_TEMP / multipler) {
 
-			entityIn.hurt(entityIn.damageSources().freeze(), 1.0F);
+            entityIn.hurt(entityIn.damageSources().freeze(), 1.0F);
 
-		}
+        }
 
-	}
+    }
 
-	@Override
-	public BlockState refreshConnections(BlockState otherState, BlockEntity tile, BlockState state, Direction dir) {
-		EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(dir);
-		if (tile instanceof IGasPipe) {
-			return state.setValue(property, EnumConnectType.WIRE);
-		}
-		if (GasUtilities.isGasReciever(tile, dir.getOpposite())) {
-			return state.setValue(property, EnumConnectType.INVENTORY);
-		}
-		if (state.hasProperty(property)) {
-			return state.setValue(property, EnumConnectType.NONE);
-		}
-		return state;
-	}
+    @Override
+    public BlockState refreshConnections(BlockState otherState, BlockEntity tile, BlockState state, Direction dir) {
+        EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(dir);
+        if (tile instanceof IGasPipe) {
+            return state.setValue(property, EnumConnectType.WIRE);
+        }
+        if (GasUtilities.isGasReciever(tile, dir.getOpposite())) {
+            return state.setValue(property, EnumConnectType.INVENTORY);
+        }
+        if (state.hasProperty(property)) {
+            return state.setValue(property, EnumConnectType.NONE);
+        }
+        return state;
+    }
 
-	@Override
-	public IRefreshableCable getCableIfValid(BlockEntity tile) {
-		if (tile instanceof IGasPipe pipe) {
-			return pipe;
-		}
-		return null;
-	}
+    @Override
+    public IRefreshableCable getCableIfValid(BlockEntity tile) {
+        if (tile instanceof IGasPipe pipe) {
+            return pipe;
+        }
+        return null;
+    }
 
-	@Override
-	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return new TileGasPipe(pos, state);
-	}
+    @Override
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+        return new TileGasPipe(pos, state);
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        throw new UnsupportedOperationException("Need to implement CODEC");
+    }
 
 }

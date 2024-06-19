@@ -4,8 +4,8 @@ import java.util.HashMap;
 
 import electrodynamics.prefab.properties.IPropertyType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.fml.event.IModBusEvent;
+import net.neoforged.bus.api.Event;
+import net.neoforged.fml.event.IModBusEvent;
 
 public class RegisterPropertiesEvent extends Event implements IModBusEvent {
 

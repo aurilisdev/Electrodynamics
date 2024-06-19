@@ -2,7 +2,6 @@ package electrodynamics.common.tile.machines.furnace;
 
 import java.util.List;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceDouble;
@@ -24,6 +23,7 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,6 +31,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,7 +40,7 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 
 	protected SmeltingRecipe[] cachedRecipe = null;
 
-	private List<SmeltingRecipe> cachedRecipes = null;
+	private List<RecipeHolder<SmeltingRecipe>> cachedRecipes = null;
 
 	private boolean isSoundPlaying = false;
 
@@ -173,9 +174,9 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 	}
 
 	private SmeltingRecipe getMatchedRecipe(ItemStack stack) {
-		for (SmeltingRecipe recipe : cachedRecipes) {
-			if (recipe.matches(new SimpleContainer(stack), level)) {
-				return recipe;
+		for (RecipeHolder<SmeltingRecipe> recipe : cachedRecipes) {
+			if (recipe.value().matches(new SimpleContainer(stack), level)) {
+				return recipe.value();
 			}
 		}
 		return null;

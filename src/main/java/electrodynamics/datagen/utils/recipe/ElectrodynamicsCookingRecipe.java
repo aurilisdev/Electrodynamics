@@ -1,145 +1,152 @@
 package electrodynamics.datagen.utils.recipe;
 
-import java.util.function.Consumer;
-
 import javax.annotation.Nullable;
 
-import com.google.gson.JsonObject;
-
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.advancements.Criterion;
+import net.minecraft.data.recipes.RecipeBuilder;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.BlastingRecipe;
 import net.minecraft.world.item.crafting.CookingBookCategory;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.item.crafting.SmokingRecipe;
+import net.neoforged.neoforge.common.conditions.ICondition;
 
-public class ElectrodynamicsCookingRecipe implements FinishedRecipe {
+public abstract class ElectrodynamicsCookingRecipe<T extends ElectrodynamicsCookingRecipe<T, A>, A extends AbstractCookingRecipe> implements RecipeBuilder {
 
-	private final ResourceLocation id;
-	private final CookingBookCategory category;
-	private final Ingredient ingredient;
-	private final Item result;
-	private final float experience;
-	private final int cookingTime;
-	private final RecipeSerializer<? extends AbstractCookingRecipe> serializer;
+    private final String group;
+    private final ResourceLocation id;
+    private final CookingBookCategory category;
+    private final Item result;
+    private final float experience;
+    private final int cookingTime;
 
-	private ElectrodynamicsCookingRecipe(ResourceLocation id, Ingredient input, Item result, float experience, int cookingTime, RecipeSerializer<? extends AbstractCookingRecipe> serializer) {
-		this.id = id;
-		this.category = CookingBookCategory.MISC;
-		ingredient = input;
-		this.result = result;
-		this.experience = experience;
-		this.cookingTime = cookingTime;
-		this.serializer = serializer;
-	}
+    private Ingredient ingredient;
 
-	@Override
-	@Nullable
-	public JsonObject serializeAdvancement() {
-		return null;
-	}
+    @Nullable
+    private ICondition[] conditions;
 
-	@Override
-	public void serializeRecipeData(JsonObject pJson) {
-		pJson.addProperty("category", this.category.getSerializedName());
-		pJson.add("ingredient", this.ingredient.toJson());
-		pJson.addProperty("result", BuiltInRegistries.ITEM.getKey(this.result).toString());
-		pJson.addProperty("experience", this.experience);
-		pJson.addProperty("cookingtime", this.cookingTime);
-	}
+    private ElectrodynamicsCookingRecipe(ResourceLocation id, String group, Item result, float experience, int cookingTime) {
+        this.id = id;
+        this.group = group;
+        this.category = CookingBookCategory.MISC;
+        this.result = result;
+        this.experience = experience;
+        this.cookingTime = cookingTime;
+    }
 
-	@Override
-	public ResourceLocation getId() {
-		return id;
-	}
+    @Override
+    public RecipeBuilder unlockedBy(String pName, Criterion<?> pCriterion) {
+        return this;
+    }
 
-	@Override
-	public RecipeSerializer<?> getType() {
-		return serializer;
-	}
+    @Override
+    public RecipeBuilder group(String pGroupName) {
+        return this;
+    }
 
-	@Override
-	@Nullable
-	public ResourceLocation getAdvancementId() {
-		return null;
-	}
+    @Override
+    public Item getResult() {
+        return result;
+    }
 
-	public static SmeltingBuilder smeltingRecipe(Item result, float experience, int smeltTime) {
-		return new SmeltingBuilder(result, experience, smeltTime);
-	}
+    @Override
+    public void save(RecipeOutput output, ResourceLocation altName) {
+        if (conditions != null) {
+            output.withConditions(conditions).accept(id, makeRecipe(), null);
+        } else {
+            output.accept(id, makeRecipe(), null);
+        }
+    }
 
-	public static SmokingBuilder smokingRecipe(Item result, float experience, int smeltTime) {
-		return new SmokingBuilder(result, experience, smeltTime);
-	}
+    @Override
+    public void save(RecipeOutput output) {
+        this.save(output, id);
+    }
 
-	public static BlastingBuilder blastingRecipe(Item result, float experience, int smeltTime) {
-		return new BlastingBuilder(result, experience, smeltTime);
-	}
+    @Override
+    public void save(RecipeOutput output, String name) {
+        this.save(output, id);
+    }
 
-	public static class Builder {
+    public T input(Item item) {
+        return input(new ItemStack(item));
+    }
 
-		private final Item result;
-		private final float experience;
-		private final int smeltTime;
-		private final RecipeSerializer<? extends AbstractCookingRecipe> serializer;
-		private Ingredient input;
+    public T input(ItemStack item) {
+        return input(Ingredient.of(item));
+    }
 
-		private Builder(Item result, float experience, int smeltTime, RecipeSerializer<? extends AbstractCookingRecipe> serializer) {
-			this.result = result;
-			this.experience = experience;
-			this.smeltTime = smeltTime;
-			this.serializer = serializer;
-		}
+    public T input(TagKey<Item> tag) {
+        return input(Ingredient.of(tag));
+    }
 
-		public Builder input(Item item) {
-			return input(new ItemStack(item));
-		}
+    public T input(Ingredient item) {
+        ingredient = item;
+        return (T) this;
+    }
 
-		public Builder input(ItemStack item) {
-			return input(Ingredient.of(item));
-		}
+    public T addConditions(ICondition... conditions) {
+        this.conditions = conditions;
+        return (T) this;
+    }
 
-		public Builder input(TagKey<Item> tag) {
-			return input(Ingredient.of(tag));
-		}
+    public abstract A makeRecipe();
 
-		public Builder input(Ingredient item) {
-			input = item;
-			return this;
-		}
+    public static SmeltingBuilder smeltingRecipe(ResourceLocation id, String group, Item result, float experience, int smeltTime) {
+        return new SmeltingBuilder(id, group, result, experience, smeltTime);
+    }
 
-		public void complete(String parent, String name, Consumer<FinishedRecipe> consumer) {
-			consumer.accept(new ElectrodynamicsCookingRecipe(new ResourceLocation(parent, name), input, result, experience, smeltTime, serializer));
-		}
+    public static SmokingBuilder smokingRecipe(ResourceLocation id, String group, Item result, float experience, int smeltTime) {
+        return new SmokingBuilder(id, group, result, experience, smeltTime);
+    }
 
-	}
+    public static BlastingBuilder blastingRecipe(ResourceLocation id, String group, Item result, float experience, int smeltTime) {
+        return new BlastingBuilder(id, group, result, experience, smeltTime);
+    }
 
-	public static class SmeltingBuilder extends Builder {
+    public static class SmeltingBuilder extends ElectrodynamicsCookingRecipe<SmeltingBuilder, SmeltingRecipe> {
 
-		private SmeltingBuilder(Item result, float experience, int smeltTime) {
-			super(result, experience, smeltTime, RecipeSerializer.SMELTING_RECIPE);
-		}
+        private SmeltingBuilder(ResourceLocation id, String group, Item result, float experience, int smeltTime) {
+            super(id, group, result, experience, smeltTime);
+        }
 
-	}
+        @Override
+        public SmeltingRecipe makeRecipe() {
+            return new SmeltingRecipe(super.group, super.category, super.ingredient, new ItemStack(super.result), super.experience, super.cookingTime);
+        }
 
-	public static class SmokingBuilder extends Builder {
+    }
 
-		private SmokingBuilder(Item result, float experience, int smeltTime) {
-			super(result, experience, smeltTime, RecipeSerializer.SMOKING_RECIPE);
-		}
+    public static class SmokingBuilder extends ElectrodynamicsCookingRecipe<SmokingBuilder, SmokingRecipe> {
 
-	}
+        private SmokingBuilder(ResourceLocation id, String group, Item result, float experience, int smeltTime) {
+            super(id, group, result, experience, smeltTime);
+        }
 
-	public static class BlastingBuilder extends Builder {
+        @Override
+        public SmokingRecipe makeRecipe() {
+            return new SmokingRecipe(super.group, super.category, super.ingredient, new ItemStack(super.result), super.experience, super.cookingTime);
+        }
 
-		private BlastingBuilder(Item result, float experience, int smeltTime) {
-			super(result, experience, smeltTime, RecipeSerializer.BLASTING_RECIPE);
-		}
+    }
 
-	}
+    public static class BlastingBuilder extends ElectrodynamicsCookingRecipe<BlastingBuilder, BlastingRecipe> {
+
+        private BlastingBuilder(ResourceLocation id, String group, Item result, float experience, int smeltTime) {
+            super(id, group, result, experience, smeltTime);
+        }
+
+        @Override
+        public BlastingRecipe makeRecipe() {
+            return new BlastingRecipe(super.group, super.category, super.ingredient, new ItemStack(super.result), super.experience, super.cookingTime);
+        }
+
+    }
 
 }

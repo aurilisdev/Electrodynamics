@@ -1,38 +1,81 @@
 plugins {
+    id 'java-library'
 	id 'eclipse'
 	id 'maven-publish'
-	id 'net.minecraftforge.gradle' version "${forge_gradle_version}"
-	id 'org.spongepowered.mixin' version "${mixin_gradle_version}"
-	id 'org.parchmentmc.librarian.forgegradle' version "${parchent_librarian_version}.+"
+	id 'net.neoforged.gradle.userdev' version "${forge_gradle_version}"
     id 'com.matthewprenger.cursegradle' version "${cursegradle_version}"
 }
 
+repositories {
+	mavenLocal()
+	maven {
+       // location of the maven that hosts JEI files since January 2023
+       name = "Jared's maven"
+       url = "https://maven.blamejared.com/"
+    }
+    maven {
+       // location of a maven mirror for JEI files, as a fallback
+       name = "ModMaven"
+       url = "https://modmaven.dev"
+    }
+}
 
-//apply plugin: 'net.minecraftforge.gradle'
-//apply plugin: 'org.spongepowered.mixin'
-//apply plugin: 'org.parchmentmc.librarian.forgegradle'
-
-//apply plugin: 'eclipse'
-//apply plugin: 'maven-publish'
-//apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remapper/main/classremapper.gradle'
+group = mod_group_id
+version = "${minecraft_version}-" + mod_version
 
 libsDirName = "../output"
 distsDirName = "../output"
 
-group = electrodynamics_group
-version = "${minecraft_version}-" + electrodynamics_version
-
 base {
 
-	archivesName = electrodynamics_name
+	archivesName = mod_name
 
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-
-
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+
+
+
+minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
+
+runs {
+
+    configureEach {
+    
+        workingDirectory project.file('run')
+        
+        systemProperty 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+        
+        systemProperty 'forge.logging.console.level', 'debug'
+        
+        systemProperty 'mixin.debug.export', 'true'
+        
+        modSource project.sourceSets.main
+    
+    }
+    
+    client {
+    
+    }
+    
+    server {
+    
+    }
+    
+    data {
+    
+        programArguments.addAll '--mod', project.group, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+    
+    }
+
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+/*
+
 minecraft {
     mappings channel: 'parchment', version: "${parchment_version}-${minecraft_version}"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -96,35 +139,47 @@ minecraft {
         }
     }
 }
-mixin {
-    add sourceSets.main, "electrodynamics.refmap.json"
-}
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
+*/
 
 dependencies {
-	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
-    annotationProcessor "org.spongepowered:mixin:${mixin_annotationprocessor_version}:processor"
+	implementation("net.neoforged:neoforge:${forge_version}")
+    compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
+     // at runtime, use the full JEI jar for NeoForge
+    runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 }
 
-repositories {
-	mavenCentral()
-	maven {
-	    // location of the maven that hosts JEI files since January 2023
-	    name = "Jared's maven"
-	    url = "https://maven.blamejared.com/"
-	}
-	maven {
-   		// location of a maven mirror for JEI files, as a fallback
-    	name = "ModMaven"
-    	url = "https://modmaven.dev"
-  	}
 
+
+tasks.withType(ProcessResources).configureEach {
+    var replaceProperties = [
+            minecraft_version : minecraft_version, 
+            minecraft_version_range : minecraft_version_range,
+            neo_version : forge_version, 
+            neo_version_range : forge_version_range,
+            loader_version_range : loader_version_range,
+            mod_id : mod_id, 
+            mod_name : mod_name, 
+            mod_license : mod_license, 
+            mod_version : version,
+            credits : mod_credits,
+            mod_authors : mod_authors, 
+            mod_description: mod_desc,
+    ]
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml']) {
+        expand replaceProperties + [project: project]
+    }
 }
 
+
+task getDeps(type: Copy) {
+	duplicatesStrategy 'exclude'
+}
+
+/*
 tasks.named('jar', Jar).configure {
 	
 	manifest {
@@ -140,10 +195,9 @@ tasks.named('jar', Jar).configure {
         ])
     }
 
-	finalizedBy 'reobfJar'
-
 }
 
+*/
 tasks.register('sourcesJar', Jar).configure {
 	dependsOn classes
 	from sourceSets.main.allSource
@@ -153,10 +207,6 @@ tasks.register('sourcesJar', Jar).configure {
 tasks.register('deobfJar', Jar).configure {
 	from sourceSets.main.output
 	archiveClassifier = 'deobf'
-}
-
-tasks.named('publish').configure {
-	dependsOn 'reobfJar'
 }
 
 /*
@@ -169,10 +219,12 @@ task deobfJar(type: Jar) {
 	classifier = 'deobf'
 }
 */
+
 artifacts {
 	archives sourcesJar
 	archives deobfJar
 }
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -197,7 +249,11 @@ curseforge {
     addGameVersion "${minecraft_version}"
 
     mainArtifact(jar) {
-      displayName=project.name+" ${electrodynamics_version}"
+      displayName=project.name+" ${mod_version}"
     }
   }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }

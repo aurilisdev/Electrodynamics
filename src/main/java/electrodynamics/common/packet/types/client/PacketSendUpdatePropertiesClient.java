@@ -1,80 +1,72 @@
 package electrodynamics.common.packet.types.client;
 
 import java.util.HashSet;
-import java.util.function.Supplier;
 
+import electrodynamics.common.packet.BarrierMethods;
+import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.prefab.properties.IPropertyType;
 import electrodynamics.prefab.properties.IPropertyType.BufferReader;
 import electrodynamics.prefab.properties.IPropertyType.BufferWriter;
 import electrodynamics.prefab.properties.PropertyManager;
 import electrodynamics.prefab.properties.PropertyManager.PropertyWrapper;
 import electrodynamics.prefab.tile.IPropertyHolderTile;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class PacketSendUpdatePropertiesClient {
+public class PacketSendUpdatePropertiesClient implements CustomPacketPayload {
 
-	private final BlockPos pos;
-	private final HashSet<PropertyWrapper> values;
+    private final BlockPos pos;
+    private final HashSet<PropertyWrapper> values;
 
-	public PacketSendUpdatePropertiesClient(IPropertyHolderTile tile) {
-		this(tile.getTile().getBlockPos(), tile.getPropertyManager().getClientUpdateProperties());
-	}
+    public PacketSendUpdatePropertiesClient(IPropertyHolderTile tile) {
+        this(tile.getTile().getBlockPos(), tile.getPropertyManager().getClientUpdateProperties());
+    }
 
-	public PacketSendUpdatePropertiesClient(BlockPos pos, HashSet<PropertyWrapper> dirtyProperties) {
-		this.pos = pos;
-		values = dirtyProperties;
-	}
+    public PacketSendUpdatePropertiesClient(BlockPos pos, HashSet<PropertyWrapper> dirtyProperties) {
+        this.pos = pos;
+        values = dirtyProperties;
+    }
 
-	public static void handle(PacketSendUpdatePropertiesClient message, Supplier<Context> context) {
-		Context ctx = context.get();
-		ctx.enqueueWork(() -> {
-			ClientLevel world = Minecraft.getInstance().level;
-			if (world != null) {
-				BlockEntity tile = world.getBlockEntity(message.pos);
-				if (tile instanceof IPropertyHolderTile holder) {
-					for (PropertyWrapper wrapper : message.values) {
+    public static void handle(PacketSendUpdatePropertiesClient message, PlayPayloadContext context) {
+        BarrierMethods.handlePropertiesUpdateClient(message.pos, message.values);
+    }
 
-						holder.getPropertyManager().update(wrapper.index(), wrapper.value());
+    public static PacketSendUpdatePropertiesClient read(FriendlyByteBuf buf) {
+        BlockPos pos = buf.readBlockPos();
 
-					}
-				}
-			}
-		});
-		ctx.setPacketHandled(true);
-	}
+        int size = buf.readInt();
+        HashSet<PropertyWrapper> properties = new HashSet<>();
 
-	public static void encode(PacketSendUpdatePropertiesClient message, FriendlyByteBuf buf) {
-		buf.writeBlockPos(message.pos);
-		buf.writeInt(message.values.size());
-		message.values.forEach(wrapper -> {
-			buf.writeInt(wrapper.index());
-			buf.writeResourceLocation(wrapper.type().getId());
-			wrapper.type().writeToBuffer(new BufferWriter(wrapper.property().get(), buf));
-		});
-	}
+        int index;
+        IPropertyType propertyType;
 
-	public static PacketSendUpdatePropertiesClient decode(FriendlyByteBuf buf) {
-		BlockPos pos = buf.readBlockPos();
+        for (int i = 0; i < size; i++) {
 
-		int size = buf.readInt();
-		HashSet<PropertyWrapper> properties = new HashSet<>();
+            index = buf.readInt();
+            propertyType = PropertyManager.REGISTERED_PROPERTIES.get(buf.readResourceLocation());
+            properties.add(new PropertyWrapper(index, propertyType, propertyType.readFromBuffer(new BufferReader(buf)), null));
 
-		int index;
-		IPropertyType propertyType;
+        }
+        return new PacketSendUpdatePropertiesClient(pos, properties);
+    }
 
-		for (int i = 0; i < size; i++) {
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeBlockPos(pos);
+        buf.writeInt(values.size());
+        values.forEach(wrapper -> {
+            buf.writeInt(wrapper.index());
+            buf.writeResourceLocation(wrapper.type().getId());
+            wrapper.type().writeToBuffer(new BufferWriter(wrapper.property().get(), buf));
+        });
+    }
 
-			index = buf.readInt();
-			propertyType = PropertyManager.REGISTERED_PROPERTIES.get(buf.readResourceLocation());
-			properties.add(new PropertyWrapper(index, propertyType, propertyType.readFromBuffer(new BufferReader(buf)), null));
-
-		}
-		return new PacketSendUpdatePropertiesClient(pos, properties);
-	}
+    @Override
+    public ResourceLocation id() {
+        return NetworkHandler.PACKET_SENDUPDATEPROPERTIESCLIENT_PACKETID;
+    }
 
 }

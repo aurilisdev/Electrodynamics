@@ -34,6 +34,7 @@ import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.inventory.InventoryMenu;
@@ -46,8 +47,8 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class RenderingUtils {
 
@@ -260,7 +261,7 @@ public class RenderingUtils {
 			CrashReport crashreport = CrashReport.forThrowable(throwable, "Rendering item");
 			CrashReportCategory crashreportcategory = crashreport.addCategory("Item being rendered");
 			crashreportcategory.setDetail("Item Type", () -> String.valueOf(stack.getItem()));
-			crashreportcategory.setDetail("Registry Name", () -> String.valueOf(net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(stack.getItem())));
+			crashreportcategory.setDetail("Registry Name", () -> String.valueOf(BuiltInRegistries.ITEM.getKey(stack.getItem())));
 			crashreportcategory.setDetail("Item Damage", () -> String.valueOf(stack.getDamageValue()));
 			crashreportcategory.setDetail("Item NBT", () -> String.valueOf(stack.getTag()));
 			crashreportcategory.setDetail("Item Foil", () -> String.valueOf(stack.hasFoil()));

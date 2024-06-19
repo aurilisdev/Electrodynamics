@@ -22,7 +22,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.lighting.LevelLightEngine;
-import net.minecraftforge.fluids.IFluidBlock;
+import net.neoforged.neoforge.fluids.IFluidBlock;
 
 public class WorldUtils {
 

@@ -16,8 +16,8 @@ import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 
 public class RenderFermentationPlant extends AbstractTileRenderer<TileFermentationPlant> {
 
@@ -77,6 +77,11 @@ public class RenderFermentationPlant extends AbstractTileRenderer<TileFermentati
 		}
 		matrixStackIn.popPose();
 
+	}
+	
+	@Override
+	public AABB getRenderBoundingBox(TileFermentationPlant blockEntity) {
+	    return super.getRenderBoundingBox(blockEntity).inflate(1);
 	}
 
 }

@@ -3,12 +3,11 @@ package electrodynamics.common.tile.pipelines.gas;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.gas.IGasHandler;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
@@ -24,13 +23,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 
 public abstract class GenericTileGasPipe extends GenericConnectTile implements IGasPipe {
 
 	public GasNetwork gasNetwork;
-	private IGasHandler[] capability = new IGasHandler[Direction.values().length];
+	private final IGasHandler[] capability = new IGasHandler[6];
 	private boolean[] connections = new boolean[6];
 	private BlockEntity[] tileConnections = new BlockEntity[6];
 
@@ -104,13 +101,13 @@ public abstract class GenericTileGasPipe extends GenericConnectTile implements I
 	public GasNetwork getNetwork() {
 		return getNetwork(true);
 	}
-
+	
 	@Override
-	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction dir) {
-		if (cap == ElectrodynamicsCapabilities.GAS_HANDLER) {
-			return LazyOptional.of(() -> capability[dir.ordinal()]).cast();
-		}
-		return LazyOptional.empty();
+	public @Nullable IGasHandler getGasHandlerCapability(@Nullable Direction side) {
+	    if(side == null) {
+	        return null;
+	    }
+	    return capability[side.ordinal()];
 	}
 
 	@Override

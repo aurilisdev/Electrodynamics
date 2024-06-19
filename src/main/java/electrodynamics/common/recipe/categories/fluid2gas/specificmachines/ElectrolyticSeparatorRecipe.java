@@ -1,5 +1,7 @@
 package electrodynamics.common.recipe.categories.fluid2gas.specificmachines;
 
+import java.util.List;
+
 import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.recipe.categories.fluid2gas.Fluid2GasRecipe;
@@ -17,8 +19,8 @@ public class ElectrolyticSeparatorRecipe extends Fluid2GasRecipe {
 	public static final String MOD_ID = electrodynamics.api.References.ID;
 	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
 
-	public ElectrolyticSeparatorRecipe(ResourceLocation recipeID, FluidIngredient[] inputFluids, GasStack outputGas, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidbiproducts, ProbableGas[] gasBiproducts) {
-		super(recipeID, inputFluids, outputGas, experience, ticks, usagePerTick, itemBiproducts, fluidbiproducts, gasBiproducts);
+	public ElectrolyticSeparatorRecipe(String recipeGroup, List<FluidIngredient> inputFluidIngredients, GasStack outputGasStack, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
+		super(recipeGroup, inputFluidIngredients, outputGasStack, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
 
 	}
 

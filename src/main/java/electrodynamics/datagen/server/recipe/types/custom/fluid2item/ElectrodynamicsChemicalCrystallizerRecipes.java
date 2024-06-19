@@ -1,16 +1,14 @@
 package electrodynamics.datagen.server.recipe.types.custom.fluid2item;
 
-import java.util.function.Consumer;
-
 import electrodynamics.api.References;
 import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
+import electrodynamics.common.recipe.categories.fluid2item.specificmachines.ChemicalCrystalizerRecipe;
 import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
 import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.FinishedRecipeItemOutput;
+import electrodynamics.datagen.utils.recipe.builders.Fluid2ItemBuilder;
+import electrodynamics.datagen.utils.recipe.builders.ElectrodynamicsRecipeBuilder.RecipeCategory;
 import electrodynamics.registers.ElectrodynamicsItems;
-import net.minecraft.data.recipes.FinishedRecipe;
+import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -31,40 +29,40 @@ public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGe
 	}
 
 	@Override
-	public void addRecipes(Consumer<FinishedRecipe> consumer) {
+	public void addRecipes(RecipeOutput output) {
 
-		newRecipe(new ItemStack(Items.CLAY_BALL), 0, 200, 800.0, "clay_ball")
+		newRecipe(new ItemStack(Items.CLAY_BALL), 0, 200, 800.0, "clay_ball", modID)
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.CLAY, 200)
 				//
-				.complete(consumer);
+				.save(output);
 
-		newRecipe(new ItemStack(Items.OBSIDIAN), 0, 200, 800.0, "obsidian_from_lava")
+		newRecipe(new ItemStack(Items.OBSIDIAN), 0, 200, 800.0, "obsidian_from_lava", modID)
 				//
 				.addFluidTagInput(FluidTags.LAVA, 1000)
 				//
-				.complete(consumer);
+				.save(output);
 
-		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS.get()), 0, 200, 800.0, "plastic_fibers")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS.get()), 0, 200, 800.0, "plastic_fibers", modID)
 				//
 				.addFluidTagInput(ElectrodynamicsTags.Fluids.POLYETHLYENE, 1000)
 				//
-				.complete(consumer);
+				.save(output);
 
 		for (SubtypeSulfateFluid fluid : SubtypeSulfateFluid.values()) {
 			if (fluid.crystal != null) {
-				newRecipe(new ItemStack(fluid.crystal.get()), 0, 200, 800.0, "crystal_" + fluid.name() + "_from_sulfate")
+				newRecipe(new ItemStack(fluid.crystal.get()), 0, 200, 800.0, "crystal_" + fluid.name() + "_from_sulfate", modID)
 						//
 						.addFluidTagInput(fluid.tag, 200)
 						//
-						.complete(consumer);
+						.save(output);
 			}
 		}
 
 	}
 
-	public FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_2_ITEM, modID, "chemical_crystallizer/" + name);
+	public Fluid2ItemBuilder<ChemicalCrystalizerRecipe> newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name, String group) {
+		return new Fluid2ItemBuilder<>(ChemicalCrystalizerRecipe::new, stack, RecipeCategory.FLUID_2_ITEM, modID, "chemical_crystallizer/" + name, group, xp, ticks, usagePerTick);
 	}
 
 }

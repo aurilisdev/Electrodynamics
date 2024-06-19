@@ -1,8 +1,7 @@
 package electrodynamics.common.tile.pipelines.gas;
 
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.gas.IGasHandler;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
@@ -10,174 +9,177 @@ import electrodynamics.common.tile.pipelines.GenericTileValve;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
 
 public class TileGasValve extends GenericTileValve {
 
-	public TileGasValve(BlockPos pos, BlockState state) {
-		super(ElectrodynamicsBlockTypes.TILE_GASVALVE.get(), pos, state);
-	}
+    private boolean isLocked = false;
 
-	@Override
-	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
+    public TileGasValve(BlockPos pos, BlockState state) {
+        super(ElectrodynamicsBlockTypes.TILE_GASVALVE.get(), pos, state);
+    }
 
-		if (side == null || cap != ElectrodynamicsCapabilities.GAS_HANDLER) {
-			return LazyOptional.empty();
-		}
+    @Override
+    public @Nullable IGasHandler getGasHandlerCapability(@Nullable Direction side) {
+        if (side == null || isLocked) {
+            return null;
+        }
 
-		Direction facing = getFacing();
+        Direction facing = getFacing();
 
-		if (BlockEntityUtils.getRelativeSide(facing, INPUT_DIR) == side || BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR) == side) {
+        if (BlockEntityUtils.getRelativeSide(facing, INPUT_DIR) == side || BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR) == side) {
 
-			BlockEntity relative = level.getBlockEntity(worldPosition.relative(side.getOpposite()));
+            BlockEntity relative = level.getBlockEntity(worldPosition.relative(side.getOpposite()));
 
-			if (relative == null) {
-				return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
-			}
+            if (relative == null) {
+                return CapabilityUtils.EMPTY_GAS;
+            }
 
-			LazyOptional<IGasHandler> handler = relative.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER, side);
+            isLocked = true;
 
-			if (handler.isPresent()) {
-				return LazyOptional.of(() -> new CapDispatcher(handler.resolve().get())).cast();
-			}
-		}
-		return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
-	}
+            IGasHandler gas = relative.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_BLOCK, relative.getBlockPos(), relative.getBlockState(), relative, side);
 
-	private class CapDispatcher implements IGasHandler {
+            isLocked = false;
 
-		private final IGasHandler parent;
+            return gas == null ? CapabilityUtils.EMPTY_GAS : new CapDispatcher(gas);
+        }
 
-		private CapDispatcher(IGasHandler parent) {
-			this.parent = parent;
-		}
+        return null;
+    }
 
-		@Override
-		public int getTanks() {
-			if (isClosed || isLocked) {
-				return 0;
-			}
-			isLocked = true;
-			int tanks = parent.getTanks();
-			isLocked = false;
-			return tanks;
-		}
+    private class CapDispatcher implements IGasHandler {
 
-		@Override
-		public GasStack getGasInTank(int tank) {
-			if (isClosed || isLocked) {
-				return GasStack.EMPTY;
-			}
-			isLocked = true;
-			GasStack stack = parent.getGasInTank(tank);
-			isLocked = false;
-			return stack;
-		}
+        private final IGasHandler parent;
 
-		@Override
-		public double getTankCapacity(int tank) {
-			if (isClosed || isLocked) {
-				return 0;
-			}
-			isLocked = true;
-			double cap = parent.getTankCapacity(tank);
-			isLocked = false;
-			return cap;
-		}
+        private CapDispatcher(IGasHandler parent) {
+            this.parent = parent;
+        }
 
-		@Override
-		public double getTankMaxTemperature(int tank) {
-			if (isClosed || isLocked) {
-				return 0;
-			}
-			isLocked = true;
-			double temp = parent.getTankMaxTemperature(tank);
-			isLocked = false;
-			return temp;
-		}
+        @Override
+        public int getTanks() {
+            if (isClosed || isLocked) {
+                return 0;
+            }
+            isLocked = true;
+            int tanks = parent.getTanks();
+            isLocked = false;
+            return tanks;
+        }
 
-		@Override
-		public int getTankMaxPressure(int tank) {
-			if (isClosed || isLocked) {
-				return 0;
-			}
-			isLocked = true;
-			int pres = parent.getTankMaxPressure(tank);
-			isLocked = false;
-			return pres;
-		}
+        @Override
+        public GasStack getGasInTank(int tank) {
+            if (isClosed || isLocked) {
+                return GasStack.EMPTY;
+            }
+            isLocked = true;
+            GasStack stack = parent.getGasInTank(tank);
+            isLocked = false;
+            return stack;
+        }
 
-		@Override
-		public boolean isGasValid(int tank, GasStack gas) {
-			if (isClosed || isLocked) {
-				return false;
-			}
-			isLocked = true;
-			boolean valid = parent.isGasValid(tank, gas);
-			isLocked = false;
-			return valid;
-		}
+        @Override
+        public double getTankCapacity(int tank) {
+            if (isClosed || isLocked) {
+                return 0;
+            }
+            isLocked = true;
+            double cap = parent.getTankCapacity(tank);
+            isLocked = false;
+            return cap;
+        }
 
-		@Override
-		public double fillTank(int tank, GasStack gas, GasAction action) {
-			if (isClosed || isLocked) {
-				return 0;
-			}
-			isLocked = true;
-			double fill = parent.fillTank(tank, gas, action);
-			isLocked = false;
-			return fill;
-		}
+        @Override
+        public double getTankMaxTemperature(int tank) {
+            if (isClosed || isLocked) {
+                return 0;
+            }
+            isLocked = true;
+            double temp = parent.getTankMaxTemperature(tank);
+            isLocked = false;
+            return temp;
+        }
 
-		@Override
-		public GasStack drainTank(int tank, GasStack gas, GasAction action) {
-			if (isClosed || isLocked) {
-				return GasStack.EMPTY;
-			}
-			isLocked = true;
-			GasStack drain = parent.drainTank(tank, tank, action);
-			isLocked = false;
-			return drain;
-		}
+        @Override
+        public int getTankMaxPressure(int tank) {
+            if (isClosed || isLocked) {
+                return 0;
+            }
+            isLocked = true;
+            int pres = parent.getTankMaxPressure(tank);
+            isLocked = false;
+            return pres;
+        }
 
-		@Override
-		public GasStack drainTank(int tank, double maxFill, GasAction action) {
-			if (isClosed || isLocked) {
-				return GasStack.EMPTY;
-			}
-			isLocked = true;
-			GasStack drain = parent.drainTank(tank, maxFill, action);
-			isLocked = false;
-			return drain;
-		}
+        @Override
+        public boolean isGasValid(int tank, GasStack gas) {
+            if (isClosed || isLocked) {
+                return false;
+            }
+            isLocked = true;
+            boolean valid = parent.isGasValid(tank, gas);
+            isLocked = false;
+            return valid;
+        }
 
-		@Override
-		public double heat(int tank, double deltaTemperature, GasAction action) {
-			if (isClosed || isLocked) {
-				return -1;
-			}
-			isLocked = true;
-			double heat = parent.heat(tank, deltaTemperature, action);
-			isLocked = false;
-			return heat;
-		}
+        @Override
+        public double fillTank(int tank, GasStack gas, GasAction action) {
+            if (isClosed || isLocked) {
+                return 0;
+            }
+            isLocked = true;
+            double fill = parent.fillTank(tank, gas, action);
+            isLocked = false;
+            return fill;
+        }
 
-		@Override
-		public double bringPressureTo(int tank, int atm, GasAction action) {
-			if (isClosed || isLocked) {
-				return -1;
-			}
-			isLocked = true;
-			double pres = parent.bringPressureTo(tank, atm, action);
-			isLocked = false;
-			return pres;
-		}
+        @Override
+        public GasStack drainTank(int tank, GasStack gas, GasAction action) {
+            if (isClosed || isLocked) {
+                return GasStack.EMPTY;
+            }
+            isLocked = true;
+            GasStack drain = parent.drainTank(tank, tank, action);
+            isLocked = false;
+            return drain;
+        }
 
-	}
+        @Override
+        public GasStack drainTank(int tank, double maxFill, GasAction action) {
+            if (isClosed || isLocked) {
+                return GasStack.EMPTY;
+            }
+            isLocked = true;
+            GasStack drain = parent.drainTank(tank, maxFill, action);
+            isLocked = false;
+            return drain;
+        }
+
+        @Override
+        public double heat(int tank, double deltaTemperature, GasAction action) {
+            if (isClosed || isLocked) {
+                return -1;
+            }
+            isLocked = true;
+            double heat = parent.heat(tank, deltaTemperature, action);
+            isLocked = false;
+            return heat;
+        }
+
+        @Override
+        public double bringPressureTo(int tank, int atm, GasAction action) {
+            if (isClosed || isLocked) {
+                return -1;
+            }
+            isLocked = true;
+            double pres = parent.bringPressureTo(tank, atm, action);
+            isLocked = false;
+            return pres;
+        }
+
+    }
 
 }

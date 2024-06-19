@@ -2,7 +2,6 @@ package electrodynamics.common.tile.machines.arcfurnace;
 
 import java.util.List;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnace;
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnaceDouble;
@@ -24,6 +23,7 @@ import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,6 +32,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.BlastingRecipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.block.state.BlockState;
 
@@ -39,7 +40,7 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 
 	protected BlastingRecipe[] cachedRecipe = null;
 
-	private List<BlastingRecipe> cachedRecipes = null;
+	private List<RecipeHolder<BlastingRecipe>> cachedRecipes = null;
 
 	private boolean isSoundPlaying = false;
 
@@ -172,9 +173,9 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 	}
 
 	private BlastingRecipe getMatchedRecipe(ItemStack stack) {
-		for (BlastingRecipe recipe : cachedRecipes) {
-			if (recipe.matches(new SimpleContainer(stack), level)) {
-				return recipe;
+		for (RecipeHolder<BlastingRecipe> recipe : cachedRecipes) {
+			if (recipe.value().matches(new SimpleContainer(stack), level)) {
+				return recipe.value();
 			}
 		}
 		return null;

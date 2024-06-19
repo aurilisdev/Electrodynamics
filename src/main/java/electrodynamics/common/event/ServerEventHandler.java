@@ -17,24 +17,24 @@ import electrodynamics.common.event.types.player.rightclick.AbstractRightClickBl
 import electrodynamics.common.event.types.player.rightclick.HandlerWrench;
 import electrodynamics.common.event.types.player.starttracking.AbstractPlayerStartTrackingHandler;
 import electrodynamics.common.event.types.player.starttracking.HandlerJetpackSound;
-import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.server.PacketPlayerInformation;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
 import electrodynamics.registers.ElectrodynamicsGases;
-import net.minecraftforge.event.AddReloadListenerEvent;
-import net.minecraftforge.event.TickEvent.PlayerTickEvent;
-import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
-import net.minecraftforge.event.server.ServerStartedEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.LogicalSide;
+import net.neoforged.fml.common.Mod.EventBusSubscriber;
+import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
+import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import net.neoforged.neoforge.event.TickEvent.PlayerTickEvent;
+import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
+import net.neoforged.neoforge.event.entity.living.LivingHurtEvent;
+import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
+import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
 public class ServerEventHandler {
@@ -87,7 +87,7 @@ public class ServerEventHandler {
 	@SubscribeEvent
 	public static void tick(PlayerTickEvent event) {
 		if (event.side == LogicalSide.CLIENT && event.player.level().getLevelData().getDayTime() % 50 == 10) {
-			NetworkHandler.CHANNEL.sendToServer(new PacketPlayerInformation());
+		    PacketDistributor.SERVER.noArg().send(new PacketPlayerInformation());
 		}
 	}
 

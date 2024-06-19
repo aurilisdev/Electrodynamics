@@ -1,13 +1,15 @@
 package electrodynamics.common.packet.types.client;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
 import electrodynamics.common.packet.BarrierMethods;
+import electrodynamics.common.packet.NetworkHandler;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class PacketJetpackEquipedSound {
+public class PacketJetpackEquipedSound implements CustomPacketPayload {
 
 	private final UUID player;
 
@@ -15,20 +17,22 @@ public class PacketJetpackEquipedSound {
 		player = uuid;
 	}
 
-	public static void handle(PacketJetpackEquipedSound message, Supplier<Context> context) {
-		Context ctx = context.get();
-		ctx.enqueueWork(() -> {
-			BarrierMethods.handlePacketJetpackEquipedSound(message.player);
-		});
-		ctx.setPacketHandled(true);
+	public static void handle(PacketJetpackEquipedSound message, PlayPayloadContext context) {
+	    BarrierMethods.handlePacketJetpackEquipedSound(message.player);
 	}
 
-	public static void encode(PacketJetpackEquipedSound message, FriendlyByteBuf buf) {
-		buf.writeUUID(message.player);
-	}
-
-	public static PacketJetpackEquipedSound decode(FriendlyByteBuf buf) {
+	public static PacketJetpackEquipedSound read(FriendlyByteBuf buf) {
 		return new PacketJetpackEquipedSound(buf.readUUID());
 	}
+
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeUUID(player);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return NetworkHandler.PACKET_JETPACKEQUIPEDSOUND_PACKETID;
+    }
 
 }

@@ -12,13 +12,13 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public abstract class FluidNonPlaceable extends Fluid {
 
-	private final java.util.function.Supplier<RegistryObject<Item>> itemSupplier;
+	private final java.util.function.Supplier<DeferredHolder<Item, Item>> itemSupplier;
 
-	protected FluidNonPlaceable(java.util.function.Supplier<RegistryObject<Item>> itemSupplier) {
+	protected FluidNonPlaceable(java.util.function.Supplier<DeferredHolder<Item, Item>> itemSupplier) {
 		this.itemSupplier = itemSupplier;
 	}
 

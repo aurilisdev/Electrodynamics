@@ -1,6 +1,5 @@
 package electrodynamics.common.tile.electricitygrid.generators;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.multiblock.Subnode;
 import electrodynamics.api.multiblock.parent.IMultiblockParentTile;
 import electrodynamics.common.block.BlockMachine;
@@ -15,6 +14,7 @@ import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.utilities.object.TargetValue;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
@@ -22,10 +22,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 public class TileAdvancedSolarPanel extends TileSolarPanel implements IMultiblockParentTile {
 
@@ -43,12 +40,6 @@ public class TileAdvancedSolarPanel extends TileSolarPanel implements IMultibloc
 		double temp = level.getBiomeManager().getBiome(getBlockPos()).value().getBaseTemperature();
 		double lerped = Mth.lerp((temp + 1) / 3.0, 1.5, 3) / 3.0;
 		return TransferPack.ampsVoltage(getMultiplier() * Constants.ADVANCEDSOLARPANEL_AMPERAGE * lerped * mod * (level.isRaining() || level.isThundering() ? 0.8f : 1), this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getVoltage());
-	}
-
-	@Override
-	@OnlyIn(value = Dist.CLIENT)
-	public AABB getRenderBoundingBox() {
-		return super.getRenderBoundingBox().inflate(2);
 	}
 
 	@Override

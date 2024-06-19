@@ -6,10 +6,9 @@ import org.jetbrains.annotations.Nullable;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandlerModifiable;
-import net.minecraftforge.items.ItemHandlerHelper;
-import net.minecraftforge.items.wrapper.SidedInvWrapper;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 
 public class IndexedSidedInvWrapper extends SidedInvWrapper {
 
@@ -22,11 +21,11 @@ public class IndexedSidedInvWrapper extends SidedInvWrapper {
 		component = inv;
 	}
 
-	public static LazyOptional<IItemHandlerModifiable>[] create(ComponentInventory inv, Direction... sides) {
-		LazyOptional<IItemHandlerModifiable>[] ret = new LazyOptional[sides.length];
+	public static IItemHandlerModifiable[] create(ComponentInventory inv, Direction... sides) {
+	    IItemHandlerModifiable[] ret = new IItemHandlerModifiable[sides.length];
 		for (int x = 0; x < sides.length; x++) {
 			final Direction side = sides[x];
-			ret[x] = LazyOptional.of(() -> new IndexedSidedInvWrapper(inv, side));
+			ret[x] = new IndexedSidedInvWrapper(inv, side);
 		}
 		return ret;
 	}

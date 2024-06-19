@@ -2,8 +2,8 @@ package electrodynamics.datagen.client;
 
 import electrodynamics.api.References;
 import net.minecraft.data.PackOutput;
-import net.minecraftforge.client.model.generators.BlockModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.client.model.generators.BlockModelProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
 /**
  * Unused class for now; do not remove please

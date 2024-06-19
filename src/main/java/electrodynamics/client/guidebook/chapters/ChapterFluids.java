@@ -27,8 +27,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ChapterFluids extends Chapter {
 
@@ -65,7 +65,7 @@ public class ChapterFluids extends Chapter {
 
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l2.1")).setIndentions(1).setSeparateStart());
 
-		for (RegistryObject<Fluid> fluid : ElectrodynamicsFluids.FLUIDS.getEntries()) {
+		for (DeferredHolder<Fluid, ? extends Fluid> fluid : ElectrodynamicsFluids.FLUIDS.getEntries()) {
 			pageData.add(new FluidWrapperObject(0, 0, 32, 32, 36, fluid.get(), new GraphicTextDescriptor(36, 11, fluid.get().getFluidType().getDescription()))
 
 					.onTooltip(new OnTooltip() {

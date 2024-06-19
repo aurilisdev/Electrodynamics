@@ -3,10 +3,10 @@ package electrodynamics.prefab.block;
 import java.util.Arrays;
 import java.util.List;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.IWrenchable;
 import electrodynamics.prefab.tile.components.IComponentType;
+import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import net.minecraft.core.BlockPos;
@@ -98,12 +98,18 @@ public abstract class GenericEntityBlock extends BaseEntityBlock implements IWre
 			ComponentInventory inv = machine.getComponent(IComponentType.Inventory);
 			if (inv != null) {
 				Containers.dropContents(machine.getLevel(), machine.getBlockPos(), inv.getItems());
-				tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC).ifPresent(el -> {
-					double joules = el.getJoulesStored();
-					if (joules > 0) {
-						stack.getOrCreateTag().putDouble("joules", joules);
-					}
-				});
+				
+				if(machine.hasComponent(IComponentType.Electrodynamic)) {
+				    
+				    ComponentElectrodynamic electro = machine.getComponent(IComponentType.Electrodynamic);
+				    
+				    double joules = electro.getJoulesStored();
+                    if (joules > 0) {
+                        stack.getOrCreateTag().putDouble("joules", joules);
+                    }
+				    
+				}
+
 			}
 			return Arrays.asList(stack);
 

@@ -5,17 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import org.jetbrains.annotations.Nullable;
-
 import electrodynamics.api.References;
-import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
 import electrodynamics.api.creativetab.CreativeTabSupplier;
 import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.inventory.container.item.ContainerElectricDrill;
 import electrodynamics.common.item.ItemDrillHead;
-import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.prefab.item.ElectricItemProperties;
@@ -27,7 +23,6 @@ import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -48,15 +43,13 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterColorHandlersEvent;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.ItemStackHandler;
 
 public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric, CreativeTabSupplier {
 
@@ -78,51 +71,6 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 		this.properties = properties;
 		this.creativeTab = creativeTab;
 		DRILLS.add(this);
-	}
-
-	@Override
-	public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-		return new CapabilityItemStackHandler(SLOT_COUNT, stack).setOnChange((item, cap, slot) -> {
-
-			int fortune = 0;
-			boolean silkTouch = false;
-			double speedBoost = 1;
-
-			for (ItemStack content : cap.getItems()) {
-				if (!content.isEmpty() && content.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype.isEmpty) {
-					for (int i = 0; i < content.getCount(); i++) {
-
-						switch (upgrade.subtype) {
-
-						case basicspeed:
-							speedBoost = Math.min(speedBoost * 1.5, Math.pow(1.5, 3));
-							break;
-						case advancedspeed:
-							speedBoost = Math.min(speedBoost * 2.25, Math.pow(2.25, 3));
-							break;
-						case fortune:
-							if (!silkTouch) {
-								fortune = Math.min(fortune + 1, 9);
-							}
-							break;
-						case silktouch:
-							if (fortune == 0) {
-								silkTouch = true;
-							}
-							break;
-						default:
-							break;
-						}
-					}
-				}
-			}
-
-			CompoundTag tag = stack.getOrCreateTag();
-			tag.putInt(NBTUtils.FORTUNE_ENCHANT, fortune);
-			tag.putBoolean(NBTUtils.SILK_TOUCH_ENCHANT, silkTouch);
-			tag.putDouble(NBTUtils.SPEED_ENCHANT, speedBoost);
-
-		});
 	}
 
 	@Override
@@ -248,11 +196,10 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 
 	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack) {
 		return new SimpleMenuProvider((id, inv, play) -> {
-			LazyOptional<IItemHandler> capability = stack.getCapability(ForgeCapabilities.ITEM_HANDLER);
-			IItemHandler handler = new ItemStackHandler();
-			if (capability.isPresent()) {
-				handler = capability.resolve().get();
-			}
+		    IItemHandler handler = stack.getCapability(Capabilities.ItemHandler.ITEM);
+		    if(handler == null) {
+		        handler = new ItemStackHandler(SLOT_COUNT);
+		    }
 			return new ContainerElectricDrill(id, player.getInventory(), handler);
 		}, CONTAINER_TITLE);
 	}

@@ -22,6 +22,7 @@ import com.google.gson.JsonObject;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.packet.types.client.PacketSetClientCoalGenFuels;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.packs.resources.Resource;
@@ -34,115 +35,113 @@ import net.minecraft.util.profiling.ProfilerFiller;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.OnDatapackSyncEvent;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.PacketDistributor.PacketTarget;
-import net.minecraftforge.network.simple.SimpleChannel;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.PacketDistributor.PacketTarget;
 
 public class CoalGeneratorFuelRegister extends SimplePreparableReloadListener<JsonObject> {
 
-	public static CoalGeneratorFuelRegister INSTANCE = null;
+    public static CoalGeneratorFuelRegister INSTANCE = null;
 
-	public static final String KEY = "values";
-	public static final String FOLDER = "machines";
-	public static final String FILE_NAME = "coal_generator_fuels";
+    public static final String KEY = "values";
+    public static final String FOLDER = "machines";
+    public static final String FILE_NAME = "coal_generator_fuels";
 
-	protected static final String JSON_EXTENSION = ".json";
-	protected static final int JSON_EXTENSION_LENGTH = JSON_EXTENSION.length();
+    protected static final String JSON_EXTENSION = ".json";
+    protected static final int JSON_EXTENSION_LENGTH = JSON_EXTENSION.length();
 
-	private static final Gson GSON = new Gson();
+    private static final Gson GSON = new Gson();
 
-	private final HashSet<Item> fuels = new HashSet<>();
+    private final HashSet<Item> fuels = new HashSet<>();
 
-	private final HashSet<TagKey<Item>> tags = new HashSet<>();
+    private final HashSet<TagKey<Item>> tags = new HashSet<>();
 
-	private final Logger logger = Electrodynamics.LOGGER;
+    private final Logger logger = Electrodynamics.LOGGER;
 
-	@Override
-	protected JsonObject prepare(ResourceManager manager, ProfilerFiller profiler) {
-		JsonObject combinedFuelsJson = new JsonObject();
+    @Override
+    protected JsonObject prepare(ResourceManager manager, ProfilerFiller profiler) {
+        JsonObject combinedFuelsJson = new JsonObject();
 
-		List<Entry<ResourceLocation, Resource>> resources = new ArrayList<>(manager.listResources(FOLDER, CoalGeneratorFuelRegister::isJson).entrySet());
-		Collections.reverse(resources);
-		JsonArray combinedArray = new JsonArray();
-		for (Entry<ResourceLocation, Resource> entry : resources) {
-			ResourceLocation loc = entry.getKey();
-			final String namespace = loc.getNamespace();
-			final String filePath = loc.getPath();
-			final String dataPath = filePath.substring(FOLDER.length() + 1, filePath.length() - JSON_EXTENSION_LENGTH);
+        List<Entry<ResourceLocation, Resource>> resources = new ArrayList<>(manager.listResources(FOLDER, CoalGeneratorFuelRegister::isJson).entrySet());
+        Collections.reverse(resources);
+        JsonArray combinedArray = new JsonArray();
+        for (Entry<ResourceLocation, Resource> entry : resources) {
+            ResourceLocation loc = entry.getKey();
+            final String namespace = loc.getNamespace();
+            final String filePath = loc.getPath();
+            final String dataPath = filePath.substring(FOLDER.length() + 1, filePath.length() - JSON_EXTENSION_LENGTH);
 
-			final ResourceLocation jsonFile = new ResourceLocation(namespace, dataPath);
+            final ResourceLocation jsonFile = new ResourceLocation(namespace, dataPath);
 
-			Resource resource = entry.getValue();
-			try (final InputStream inputStream = resource.open(); final Reader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));) {
-				final JsonObject json = (JsonObject) GsonHelper.fromJson(GSON, reader, JsonElement.class);
-				combinedArray.addAll(json.get(KEY).getAsJsonArray());
-			} catch (RuntimeException | IOException exception) {
-				logger.error("Data loader for {} could not read data {} from file {} in data pack {}", FOLDER, jsonFile, loc, resource.sourcePackId(), exception);
-			}
+            Resource resource = entry.getValue();
+            try (final InputStream inputStream = resource.open(); final Reader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));) {
+                final JsonObject json = (JsonObject) GsonHelper.fromJson(GSON, reader, JsonElement.class);
+                combinedArray.addAll(json.get(KEY).getAsJsonArray());
+            } catch (RuntimeException | IOException exception) {
+                logger.error("Data loader for {} could not read data {} from file {} in data pack {}", FOLDER, jsonFile, loc, resource.sourcePackId(), exception);
+            }
 
-		}
-		combinedFuelsJson.add(KEY, combinedArray);
+        }
+        combinedFuelsJson.add(KEY, combinedArray);
 
-		return combinedFuelsJson;
-	}
+        return combinedFuelsJson;
+    }
 
-	@Override
-	protected void apply(JsonObject json, ResourceManager manager, ProfilerFiller profiler) {
-		fuels.clear();
-		tags.clear();
-		ArrayList<String> list = GSON.fromJson(json.get(KEY).getAsJsonArray(), ArrayList.class);
-		list.forEach(key -> {
-			if (key.charAt(0) == '#') {
-				tags.add(ItemTags.create(new ResourceLocation(key.substring(1))));
-			} else {
-				fuels.add(ForgeRegistries.ITEMS.getValue(new ResourceLocation(key)));
-			}
-		});
+    @Override
+    protected void apply(JsonObject json, ResourceManager manager, ProfilerFiller profiler) {
+        fuels.clear();
+        tags.clear();
+        ArrayList<String> list = GSON.fromJson(json.get(KEY).getAsJsonArray(), ArrayList.class);
+        list.forEach(key -> {
+            if (key.charAt(0) == '#') {
+                tags.add(ItemTags.create(new ResourceLocation(key.substring(1))));
+            } else {
+                fuels.add(BuiltInRegistries.ITEM.get(new ResourceLocation(key)));
+            }
+        });
 
-	}
+    }
 
-	public void generateTagValues() {
-		tags.forEach(tag -> {
-			for (ItemStack item : Ingredient.of(tag).getItems()) {
-				fuels.add(item.getItem());
-			}
-		});
-		tags.clear();
-	}
+    public void generateTagValues() {
+        tags.forEach(tag -> {
+            for (ItemStack item : Ingredient.of(tag).getItems()) {
+                fuels.add(item.getItem());
+            }
+        });
+        tags.clear();
+    }
 
-	public void setClientValues(HashSet<Item> fuels) {
-		this.fuels.clear();
-		this.fuels.addAll(fuels);
-	}
+    public void setClientValues(HashSet<Item> fuels) {
+        this.fuels.clear();
+        this.fuels.addAll(fuels);
+    }
 
-	public CoalGeneratorFuelRegister subscribeAsSyncable(final SimpleChannel channel) {
-		MinecraftForge.EVENT_BUS.addListener(getDatapackSyncListener(channel));
-		return this;
-	}
+    public CoalGeneratorFuelRegister subscribeAsSyncable() {
+        NeoForge.EVENT_BUS.addListener(getDatapackSyncListener());
+        return this;
+    }
 
-	public HashSet<Item> getFuels() {
-		return fuels;
-	}
+    public HashSet<Item> getFuels() {
+        return fuels;
+    }
 
-	public boolean isFuel(Item item) {
-		return fuels.contains(item);
-	}
+    public boolean isFuel(Item item) {
+        return fuels.contains(item);
+    }
 
-	private Consumer<OnDatapackSyncEvent> getDatapackSyncListener(final SimpleChannel channel) {
-		return event -> {
-			generateTagValues();
-			ServerPlayer player = event.getPlayer();
-			PacketSetClientCoalGenFuels packet = new PacketSetClientCoalGenFuels(fuels);
-			PacketTarget target = player == null ? PacketDistributor.ALL.noArg() : PacketDistributor.PLAYER.with(() -> player);
-			channel.send(target, packet);
-		};
-	}
+    private Consumer<OnDatapackSyncEvent> getDatapackSyncListener() {
+        return event -> {
+            generateTagValues();
+            ServerPlayer player = event.getPlayer();
+            PacketSetClientCoalGenFuels packet = new PacketSetClientCoalGenFuels(fuels);
+            PacketTarget target = player == null ? PacketDistributor.ALL.noArg() : PacketDistributor.PLAYER.with(player);
+            target.send(packet);
+        };
+    }
 
-	private static boolean isJson(final ResourceLocation filename) {
-		return filename.getPath().contains(FILE_NAME + JSON_EXTENSION);
-	}
+    private static boolean isJson(final ResourceLocation filename) {
+        return filename.getPath().contains(FILE_NAME + JSON_EXTENSION);
+    }
 
 }

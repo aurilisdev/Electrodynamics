@@ -26,7 +26,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public enum PropertyType implements IPropertyType {
 
@@ -154,7 +154,7 @@ public enum PropertyType implements IPropertyType {
 	//
 	Gasstack(writer -> ((GasStack) writer.value()).writeToBuffer(writer.buf()), reader -> GasStack.readFromBuffer(reader.buf()), writer -> writer.tag().put(writer.prop().getName(), ((GasStack) writer.prop().get()).writeToNbt()), reader -> GasStack.readFromNbt(reader.tag().getCompound(reader.prop().getName()))),
 	//
-	Itemstack((thisStack, otherStack) -> ((ItemStack) thisStack).equals((ItemStack) otherStack, false), writer -> writer.buf().writeItem((ItemStack) writer.value()), reader -> reader.buf().readItem(), writer -> writer.tag().put(writer.prop().getName(), ((ItemStack) writer.prop().get()).save(new CompoundTag())), reader -> ItemStack.of(reader.tag().getCompound(reader.prop().getName()))),
+	Itemstack((thisStack, otherStack) -> ItemStack.matches(((ItemStack) thisStack), (ItemStack) otherStack), writer -> writer.buf().writeItem((ItemStack) writer.value()), reader -> reader.buf().readItem(), writer -> writer.tag().put(writer.prop().getName(), ((ItemStack) writer.prop().get()).save(new CompoundTag())), reader -> ItemStack.of(reader.tag().getCompound(reader.prop().getName()))),
 	//
 	Block(writer -> {
 		writer.buf().writeItem(new ItemStack(((net.minecraft.world.level.block.Block) writer.value()).asItem()));

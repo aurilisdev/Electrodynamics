@@ -16,11 +16,11 @@ import electrodynamics.datagen.utils.AbstractLootTableProvider;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsBlocks;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider {
 
@@ -179,7 +179,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 
 	}
 
-	public <T extends GenericTile> void addMachineTable(Block block, RegistryObject<BlockEntityType<T>> tilereg, boolean items, boolean fluids, boolean gases, boolean energy, boolean additional) {
+	public <T extends GenericTile> void addMachineTable(Block block, DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> tilereg, boolean items, boolean fluids, boolean gases, boolean energy, boolean additional) {
 		add(block, machineTable(name(block), block, tilereg.get(), items, fluids, gases, energy, additional));
 	}
 
@@ -189,12 +189,12 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 	 * @author SeaRobber69
 	 * @param reg The block that will be added
 	 */
-	public void addSilkTouchOnlyTable(RegistryObject<Block> reg) {
+	public void addSilkTouchOnlyTable(DeferredHolder<Block, Block> reg) {
 		Block block = reg.get();
 		add(block, createSilkTouchOnlyTable(name(block), block));
 	}
 
-	public void addFortuneAndSilkTouchTable(RegistryObject<Block> reg, Item nonSilk, int minDrop, int maxDrop) {
+	public void addFortuneAndSilkTouchTable(DeferredHolder<Block, Block> reg, Item nonSilk, int minDrop, int maxDrop) {
 		addFortuneAndSilkTouchTable(reg.get(), nonSilk, minDrop, maxDrop);
 	}
 
@@ -202,7 +202,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 		add(block, createSilkTouchAndFortuneTable(name(block), block, nonSilk, minDrop, maxDrop));
 	}
 
-	public void addSimpleBlock(RegistryObject<Block> reg) {
+	public void addSimpleBlock(DeferredHolder<Block, Block> reg) {
 		addSimpleBlock(reg.get());
 	}
 
@@ -212,7 +212,7 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 	}
 
 	public String name(Block block) {
-		return ForgeRegistries.BLOCKS.getKey(block).getPath();
+		return BuiltInRegistries.BLOCK.getKey(block).getPath();
 	}
 
 	@Override

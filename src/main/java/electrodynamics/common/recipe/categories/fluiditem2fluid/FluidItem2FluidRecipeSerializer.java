@@ -1,10 +1,10 @@
 package electrodynamics.common.recipe.categories.fluiditem2fluid;
 
-import java.lang.reflect.Constructor;
+import java.util.List;
 
-import com.google.gson.JsonObject;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.common.recipe.ElectrodynamicsRecipeSerializer;
 import electrodynamics.common.recipe.recipeutils.CountableIngredient;
 import electrodynamics.common.recipe.recipeutils.FluidIngredient;
@@ -12,72 +12,81 @@ import electrodynamics.common.recipe.recipeutils.ProbableFluid;
 import electrodynamics.common.recipe.recipeutils.ProbableGas;
 import electrodynamics.common.recipe.recipeutils.ProbableItem;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class FluidItem2FluidRecipeSerializer<T extends FluidItem2FluidRecipe> extends ElectrodynamicsRecipeSerializer<T> {
 
-	public FluidItem2FluidRecipeSerializer(Class<T> recipeClass) {
-		super(recipeClass);
+    private final FluidItem2FluidRecipe.Factory<T> factory;
+    private final Codec<T> codec;
+    
+	public FluidItem2FluidRecipeSerializer(FluidItem2FluidRecipe.Factory<T> factory) {
+		this.factory = factory;
+		codec = RecordCodecBuilder.create(instance -> instance.group(
+                //
+                Codec.STRING.fieldOf(GROUP).forGetter(instance0 -> instance0.getGroup()),
+                //
+                CountableIngredient.LIST_CODEC.fieldOf(ITEM_INPUTS).forGetter(instance0 -> instance0.getCountedIngredients()),
+                //
+                FluidIngredient.LIST_CODEC.fieldOf(FLUID_INPUTS).forGetter(instance0 -> instance0.getFluidIngredients()),
+                //
+                FluidStack.CODEC.fieldOf(OUTPUT).forGetter(instance0 -> instance0.getFluidRecipeOutput()),
+                //
+                Codec.DOUBLE.optionalFieldOf(EXPERIENCE, 0.0).forGetter(instance0 -> instance0.getXp()),
+                //
+                Codec.INT.fieldOf(TICKS).forGetter(instance0 -> instance0.getTicks()),
+                //
+                Codec.DOUBLE.fieldOf(USAGE_PER_TICK).forGetter(instance0 -> instance0.getUsagePerTick()),
+                //
+                ProbableItem.LIST_CODEC.optionalFieldOf(ITEM_BIPRODUCTS, null).forGetter(instance0 -> instance0.getItemBiproducts()),
+                //
+                ProbableFluid.LIST_CODEC.optionalFieldOf(FLUID_BIPRODUCTS, null).forGetter(instance0 -> instance0.getFluidBiproducts()),
+                //
+                ProbableGas.LIST_CODEC.optionalFieldOf(GAS_BIPRODUCTS, null).forGetter(instance0 -> instance0.getGasBiproducts())
+        //
+
+        )
+                //
+                .apply(instance, factory::create)
+
+        );
 	}
 
 	@Override
-	public T fromJson(ResourceLocation recipeId, JsonObject recipeJson) {
-		CountableIngredient[] inputs = getItemIngredients(recipeId, recipeJson);
-		FluidIngredient[] fluidInputs = getFluidIngredients(recipeId, recipeJson);
-		FluidStack output = getFluidOutput(recipeId, recipeJson);
-		double experience = getExperience(recipeJson);
-		int ticks = getTicks(recipeId, recipeJson);
-		double usagePerTick = getTicks(recipeId, recipeJson);
-		ProbableItem[] itemBi = getItemBiproducts(recipeId, recipeJson);
-		ProbableFluid[] fluidBi = getFluidBiproducts(recipeId, recipeJson);
-		ProbableGas[] gasBi = getGasBiproducts(recipeId, recipeJson);
-		try {
-			Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient[].class, FluidIngredient[].class, FluidStack.class, double.class, int.class, double.class, ProbableItem[].class, ProbableFluid[].class, ProbableGas[].class);
-			return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output, experience, ticks, usagePerTick, itemBi, fluidBi, gasBi);
-		} catch (Exception e) {
-			Electrodynamics.LOGGER.info(e.getMessage());
-		}
-		Electrodynamics.LOGGER.info("returning null at " + recipeId);
-		return null;
+	public Codec<T> codec() {
+	    return codec;
 	}
 
 	@Override
-	public T fromNetwork(ResourceLocation recipeId, FriendlyByteBuf buffer) {
-		boolean hasItemBi = buffer.readBoolean();
+	public T fromNetwork(FriendlyByteBuf buffer) {
+		String group = buffer.readUtf();
+	    boolean hasItemBi = buffer.readBoolean();
 		boolean hasFluidBi = buffer.readBoolean();
 		boolean hasGasBi = buffer.readBoolean();
-		CountableIngredient[] inputs = CountableIngredient.readList(buffer);
-		FluidIngredient[] fluidInputs = FluidIngredient.readList(buffer);
+		List<CountableIngredient> inputs = CountableIngredient.readList(buffer);
+		List<FluidIngredient> fluidInputs = FluidIngredient.readList(buffer);
 		FluidStack output = buffer.readFluidStack();
 		double experience = buffer.readDouble();
 		int ticks = buffer.readInt();
 		double usagePerTick = buffer.readDouble();
-		ProbableItem[] itemBi = null;
-		ProbableFluid[] fluidBi = null;
-		ProbableGas[] gasBi = null;
-		if (hasItemBi) {
-			itemBi = ProbableItem.readList(buffer);
-		}
-		if (hasFluidBi) {
-			fluidBi = ProbableFluid.readList(buffer);
+		List<ProbableItem> itemBi = null;
+        List<ProbableFluid> fluidBi = null;
+        List<ProbableGas> gasBi = null;
+        if (hasItemBi) {
+            itemBi = ProbableItem.readList(buffer);
+        }
+        if (hasFluidBi) {
+            fluidBi = ProbableFluid.readList(buffer);
 
-		}
-		if (hasGasBi) {
-			gasBi = ProbableGas.readList(buffer);
-		}
-		try {
-			Constructor<T> recipeConstructor = getRecipeClass().getDeclaredConstructor(ResourceLocation.class, CountableIngredient[].class, FluidIngredient[].class, FluidStack.class, double.class, int.class, double.class, ProbableItem[].class, ProbableFluid[].class, ProbableGas[].class);
-			return recipeConstructor.newInstance(recipeId, inputs, fluidInputs, output, experience, ticks, usagePerTick, itemBi, fluidBi, gasBi);
-		} catch (Exception e) {
-			Electrodynamics.LOGGER.info(e.getMessage());
-		}
-		Electrodynamics.LOGGER.info("returning null at " + recipeId);
-		return null;
+        }
+        if (hasGasBi) {
+            gasBi = ProbableGas.readList(buffer);
+        }
+		return factory.create(group, inputs, fluidInputs, output, experience, ticks, usagePerTick, itemBi, fluidBi, gasBi);
 	}
 
 	@Override
 	public void toNetwork(FriendlyByteBuf buffer, T recipe) {
+	    buffer.writeUtf(recipe.getGroup());
 		buffer.writeBoolean(recipe.hasItemBiproducts());
 		buffer.writeBoolean(recipe.hasFluidBiproducts());
 		buffer.writeBoolean(recipe.hasGasBiproducts());

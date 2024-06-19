@@ -1,8 +1,8 @@
 package electrodynamics.api.screen.component;
 
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.fluids.IFluidTank;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
+import net.neoforged.neoforge.fluids.IFluidTank;
 
 @OnlyIn(Dist.CLIENT)
 @FunctionalInterface

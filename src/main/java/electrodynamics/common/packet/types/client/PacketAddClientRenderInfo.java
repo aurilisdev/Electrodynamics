@@ -1,49 +1,44 @@
 package electrodynamics.common.packet.types.client;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
-import electrodynamics.client.render.event.levelstage.HandlerSeismicScanner;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
+import electrodynamics.common.packet.BarrierMethods;
+import electrodynamics.common.packet.NetworkHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class PacketAddClientRenderInfo {
+public class PacketAddClientRenderInfo implements CustomPacketPayload {
 
-	private final UUID playerId;
-	private final BlockPos pos;
+    private final UUID playerId;
+    private final BlockPos pos;
 
-	public PacketAddClientRenderInfo(UUID uuid, BlockPos pos) {
-		playerId = uuid;
-		this.pos = pos;
-	}
+    public PacketAddClientRenderInfo(UUID uuid, BlockPos pos) {
+        playerId = uuid;
+        this.pos = pos;
+    }
 
-	public static void handle(PacketAddClientRenderInfo message, Supplier<Context> context) {
-		Context ctx = context.get();
-		ctx.enqueueWork(() -> {
-			Minecraft minecraft = Minecraft.getInstance();
-			ClientLevel world = minecraft.level;
-			if (world != null && minecraft.player != null) {
-				if (minecraft.player.getUUID().equals(message.playerId)) {
-					HandlerSeismicScanner.addBlock(message.pos);
-				}
+    public static void handle(PacketAddClientRenderInfo message, PlayPayloadContext context) {
+        BarrierMethods.handleAddClientRenderInfo(message.playerId, message.pos);
+    }
 
-			}
-		});
-		ctx.setPacketHandled(true);
-	}
+    public static PacketAddClientRenderInfo read(FriendlyByteBuf buf) {
+        return new PacketAddClientRenderInfo(buf.readUUID(), new BlockPos(buf.readInt(), buf.readInt(), buf.readInt()));
+    }
 
-	public static void encode(PacketAddClientRenderInfo message, FriendlyByteBuf buf) {
-		buf.writeUUID(message.playerId);
-		buf.writeInt(message.pos.getX());
-		buf.writeInt(message.pos.getY());
-		buf.writeInt(message.pos.getZ());
-	}
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeUUID(playerId);
+        buf.writeInt(pos.getX());
+        buf.writeInt(pos.getY());
+        buf.writeInt(pos.getZ());
+    }
 
-	public static PacketAddClientRenderInfo decode(FriendlyByteBuf buf) {
-		return new PacketAddClientRenderInfo(buf.readUUID(), new BlockPos(buf.readInt(), buf.readInt(), buf.readInt()));
-	}
+    @Override
+    public ResourceLocation id() {
+        return NetworkHandler.PACKET_ADDCLIENTRENDERINFO_PACKETID;
+    }
 
 }

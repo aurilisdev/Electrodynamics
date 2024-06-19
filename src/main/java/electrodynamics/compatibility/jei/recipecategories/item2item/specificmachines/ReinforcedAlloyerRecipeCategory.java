@@ -23,32 +23,32 @@ import net.minecraft.world.item.ItemStack;
 
 public class ReinforcedAlloyerRecipeCategory extends Item2ItemRecipeCategory<ReinforcedAlloyerRecipe> {
 
-	public static final BackgroundObject BACK_WRAP = new BackgroundObject(132, 58);
+    public static final BackgroundObject BACK_WRAP = new BackgroundObject(132, 58);
 
-	public static final ItemSlotObject INPUT_SLOT_1 = new ItemSlotObject(SlotType.NORMAL, 17, 11, RecipeIngredientRole.INPUT);
-	public static final ItemSlotObject INPUT_SLOT_2 = new ItemSlotObject(SlotType.NORMAL, 17, 30, RecipeIngredientRole.INPUT);
-	public static final ItemSlotObject OUTPUT_SLOT = new ItemSlotObject(SlotType.BIG, 69, 16, RecipeIngredientRole.OUTPUT);
-	public static final ItemSlotObject BIPRODUCT_SLOT = new ItemSlotObject(SlotType.NORMAL, 100, 20, RecipeIngredientRole.OUTPUT);
+    public static final ItemSlotObject INPUT_SLOT_1 = new ItemSlotObject(SlotType.NORMAL, 17, 11, RecipeIngredientRole.INPUT);
+    public static final ItemSlotObject INPUT_SLOT_2 = new ItemSlotObject(SlotType.NORMAL, 17, 30, RecipeIngredientRole.INPUT);
+    public static final ItemSlotObject OUTPUT_SLOT = new ItemSlotObject(SlotType.BIG, 69, 16, RecipeIngredientRole.OUTPUT);
+    public static final ItemSlotObject BIPRODUCT_SLOT = new ItemSlotObject(SlotType.NORMAL, 100, 20, RecipeIngredientRole.OUTPUT);
 
-	public static final ArrowAnimatedObject ANIM_ARROW = new ArrowAnimatedObject(ProgressBars.PROGRESS_ARROW_RIGHT, 41, 23, StartDirection.LEFT);
+    public static final ArrowAnimatedObject ANIM_ARROW = new ArrowAnimatedObject(ProgressBars.PROGRESS_ARROW_RIGHT, 41, 23, StartDirection.LEFT);
 
-	public static final PowerLabelWrapperElectroRecipe POWER_LABEL = new PowerLabelWrapperElectroRecipe(2, 49, 960);
-	public static final BiproductPercentWrapperElectroRecipe ITEM_LABEL = new BiproductPercentWrapperElectroRecipe(100, 40, false);
-	public static final TimeLabelWrapperElectroRecipe TIME_LABEL = new TimeLabelWrapperElectroRecipe(130, 49);
+    public static final PowerLabelWrapperElectroRecipe POWER_LABEL = new PowerLabelWrapperElectroRecipe(2, 49, 960);
+    public static final BiproductPercentWrapperElectroRecipe ITEM_LABEL = new BiproductPercentWrapperElectroRecipe(100, 40, false);
+    public static final TimeLabelWrapperElectroRecipe TIME_LABEL = new TimeLabelWrapperElectroRecipe(130, 49);
 
-	public static final int ANIM_TIME = 50;
+    public static final int ANIM_TIME = 50;
 
-	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.reinforcedalloyer));
+    public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeMachine.reinforcedalloyer));
 
-	public static final RecipeType<ReinforcedAlloyerRecipe> RECIPE_TYPE = RecipeType.create(References.ID, ReinforcedAlloyerRecipe.RECIPE_GROUP, ReinforcedAlloyerRecipe.class);
+    public static final RecipeType<ReinforcedAlloyerRecipe> RECIPE_TYPE = RecipeType.create(References.ID, ReinforcedAlloyerRecipe.RECIPE_GROUP, ReinforcedAlloyerRecipe.class);
 
-	public ReinforcedAlloyerRecipeCategory(IGuiHelper guiHelper) {
-		super(guiHelper, ElectroTextUtils.jeiTranslated(ReinforcedAlloyerRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
-		ElectrodynamicsJEIPlugin.addDO2OClickArea(RECIPE_TYPE);
-		setInputSlots(guiHelper, INPUT_SLOT_1, INPUT_SLOT_2);
-		setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);
-		setAnimatedArrows(guiHelper, ANIM_ARROW);
-		setLabels(POWER_LABEL, ITEM_LABEL, TIME_LABEL);
-	}
+    public ReinforcedAlloyerRecipeCategory(IGuiHelper guiHelper) {
+        super(guiHelper, ElectroTextUtils.jeiTranslated(ReinforcedAlloyerRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
+        ElectrodynamicsJEIPlugin.addDO2OClickArea(RECIPE_TYPE);
+        setInputSlots(guiHelper, INPUT_SLOT_1, INPUT_SLOT_2);
+        setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);
+        setAnimatedArrows(guiHelper, ANIM_ARROW);
+        setLabels(POWER_LABEL, ITEM_LABEL, TIME_LABEL);
+    }
 
 }

@@ -31,7 +31,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 
 public class TileWindmill extends GenericGeneratorTile implements IMultiblockParentTile, ITickableSound {
@@ -55,11 +54,6 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerWindmill.VALID_UPGRADES).valid(machineValidator()));
 		addComponent(new ComponentContainerProvider(SubtypeMachine.windmill, this).createMenu((id, player) -> new ContainerWindmill(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 
-	}
-
-	@Override
-	public AABB getRenderBoundingBox() {
-		return super.getRenderBoundingBox().expandTowards(0, 1.5, 0);
 	}
 
 	protected void tickServer(ComponentTickable tickable) {

@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.client.event.RenderLevelStageEvent.Stage;
+import net.neoforged.neoforge.client.event.RenderLevelStageEvent.Stage;
 
 public class HandlerSeismicScanner extends AbstractLevelStageHandler {
 

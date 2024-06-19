@@ -1,10 +1,10 @@
 package electrodynamics.compatibility.jei.screenhandlers.cliableingredients;
 
-import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.ITypedIngredient;
+import mezz.jei.api.neoforge.NeoForgeTypes;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraftforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.FluidStack;
 
 public class ClickableFluidIngredient extends AbstractClickableIngredient<FluidStack> {
 
@@ -30,7 +30,7 @@ public class ClickableFluidIngredient extends AbstractClickableIngredient<FluidS
 
 		@Override
 		public IIngredientType<FluidStack> getType() {
-			return ForgeTypes.FLUID_STACK;
+			return NeoForgeTypes.FLUID_STACK;
 		}
 
 		@Override

@@ -23,6 +23,7 @@ import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.Direction;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -30,16 +31,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.PressurePlateBlock;
 import net.minecraft.world.level.block.SnowyDirtBlock;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.ModelFile.ExistingModelFile;
-import net.minecraftforge.client.model.generators.loaders.ObjModelBuilder;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.BlockModelBuilder;
+import net.neoforged.neoforge.client.model.generators.BlockStateProvider;
+import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.ModelFile.ExistingModelFile;
+import net.neoforged.neoforge.client.model.generators.loaders.ObjModelBuilder;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredHolder;
 
 public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 
@@ -317,7 +317,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return null;
 	}
 
-	public ItemModelBuilder simpleBlock(RegistryObject<Block> block, ResourceLocation texture, boolean registerItem) {
+	public ItemModelBuilder simpleBlock(DeferredHolder<Block, Block> block, ResourceLocation texture, boolean registerItem) {
 		return simpleBlock(block.get(), texture, registerItem);
 	}
 
@@ -325,7 +325,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return simpleBlock(block, models().cubeAll(name(block), texture), registerItem);
 	}
 
-	public ItemModelBuilder glassBlock(RegistryObject<Block> block, ResourceLocation texture, boolean registerItem) {
+	public ItemModelBuilder glassBlock(DeferredHolder<Block, Block> block, ResourceLocation texture, boolean registerItem) {
 		return glassBlock(block.get(), texture, registerItem);
 	}
 
@@ -342,11 +342,11 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return null;
 	}
 
-	public ItemModelBuilder simpleBlockCustomRenderType(RegistryObject<Block> block, ResourceLocation texture, ResourceLocation renderType, boolean registerItem) {
+	public ItemModelBuilder simpleBlockCustomRenderType(DeferredHolder<Block, Block> block, ResourceLocation texture, ResourceLocation renderType, boolean registerItem) {
 		return simpleBlockCustomRenderType(block.get(), texture, renderType, registerItem);
 	}
 
-	public ItemModelBuilder airBlock(RegistryObject<Block> block, String particleTexture, boolean registerItem) {
+	public ItemModelBuilder airBlock(DeferredHolder<Block, Block> block, String particleTexture, boolean registerItem) {
 		return airBlock(block.get(), particleTexture, registerItem);
 	}
 
@@ -359,7 +359,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return null;
 	}
 
-	public ItemModelBuilder bottomSlabBlock(RegistryObject<Block> block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, boolean registerItem) {
+	public ItemModelBuilder bottomSlabBlock(DeferredHolder<Block, Block> block, ResourceLocation side, ResourceLocation bottom, ResourceLocation top, boolean registerItem) {
 		return bottomSlabBlock(block.get(), side, bottom, top, registerItem);
 	}
 
@@ -372,11 +372,11 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return null;
 	}
 
-	public ItemModelBuilder horrRotatedBlock(RegistryObject<Block> block, ModelFile modelFile, boolean registerItem) {
+	public ItemModelBuilder horrRotatedBlock(DeferredHolder<Block, Block> block, ModelFile modelFile, boolean registerItem) {
 		return horrRotatedBlock(block, modelFile, 0, 0, registerItem);
 	}
 
-	public ItemModelBuilder horrRotatedBlock(RegistryObject<Block> block, ModelFile modelFile, int yRotationOffset, int xRotation, boolean registerItem) {
+	public ItemModelBuilder horrRotatedBlock(DeferredHolder<Block, Block> block, ModelFile modelFile, int yRotationOffset, int xRotation, boolean registerItem) {
 		return horrRotatedBlock(block.get(), modelFile, yRotationOffset, xRotation, registerItem);
 	}
 
@@ -392,11 +392,11 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return null;
 	}
 
-	public ItemModelBuilder horrRotatedLitBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, boolean registerItem) {
+	public ItemModelBuilder horrRotatedLitBlock(DeferredHolder<Block, Block> block, ModelFile off, ModelFile on, boolean registerItem) {
 		return horrRotatedBlock(block, on, 0, 0, registerItem);
 	}
 
-	public ItemModelBuilder horrRotatedLitBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, int yRotationOffset, int xRotation, boolean registerItem) {
+	public ItemModelBuilder horrRotatedLitBlock(DeferredHolder<Block, Block> block, ModelFile off, ModelFile on, int yRotationOffset, int xRotation, boolean registerItem) {
 		return horrRotatedLitBlock(block.get(), off, on, yRotationOffset, xRotation, registerItem);
 	}
 
@@ -413,7 +413,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 
 	}
 
-	public ItemModelBuilder redstoneToggleBlock(RegistryObject<Block> block, ModelFile off, ModelFile on, boolean registerItem) {
+	public ItemModelBuilder redstoneToggleBlock(DeferredHolder<Block, Block> block, ModelFile off, ModelFile on, boolean registerItem) {
 		return redstoneToggleBlock(block.get(), off, on, registerItem);
 	}
 
@@ -427,7 +427,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	}
 
 	/*
-	 * private void omniDirBlock(RegistryObject<Block> block, ModelFile model, boolean registerItem) { getVariantBuilder(block.get()).partialState().with(GenericEntityBlock.FACING, Direction.NORTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model) .rotationY(0).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model) .rotationY(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model) .rotationY(180).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model) .rotationY(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.NORTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.UP).modelForState().modelFile(model) .rotationY(0).rotationX(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST) .with(OverdriveBlockStates.VERTICAL_FACING,
+	 * private void omniDirBlock(DeferredHolder<Block, Block> block, ModelFile model, boolean registerItem) { getVariantBuilder(block.get()).partialState().with(GenericEntityBlock.FACING, Direction.NORTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model) .rotationY(0).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model) .rotationY(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model) .rotationY(180).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.NONE).modelForState().modelFile(model) .rotationY(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.NORTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.UP).modelForState().modelFile(model) .rotationY(0).rotationX(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST) .with(OverdriveBlockStates.VERTICAL_FACING,
 	 * VerticalFacing.UP).modelForState().modelFile(model) .rotationY(90).rotationX(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.UP).modelForState().modelFile(model) .rotationY(180).rotationX(270).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.UP).modelForState().modelFile(model) .rotationY(270).rotationX(270).addModel().partialState() .with(GenericEntityBlock.FACING, Direction.NORTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.DOWN).modelForState().modelFile(model) .rotationY(0).rotationX(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.EAST) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.DOWN).modelForState().modelFile(model) .rotationY(90).rotationX(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.SOUTH) .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.DOWN).modelForState().modelFile(model) .rotationY(180).rotationX(90).addModel().partialState().with(GenericEntityBlock.FACING, Direction.WEST)
 	 * .with(OverdriveBlockStates.VERTICAL_FACING, VerticalFacing.DOWN).modelForState().modelFile(model) .rotationY(270).rotationX(90).addModel(); if (registerItem) simpleBlockItem(block.get(), model); }
 	 * 
@@ -478,7 +478,7 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return null;
 	}
 
-	public ItemModelBuilder crossBlock(RegistryObject<Block> block, ResourceLocation texture, @Nullable ResourceLocation renderType, boolean registerItem) {
+	public ItemModelBuilder crossBlock(DeferredHolder<Block, Block> block, ResourceLocation texture, @Nullable ResourceLocation renderType, boolean registerItem) {
 		return crossBlock(block.get(), texture, renderType, registerItem);
 	}
 
@@ -500,8 +500,8 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 		return models().withExistingParent("block/" + name, "cube").customLoader(ObjModelBuilder::begin).flipV(true).modelLocation(modLoc("models/" + modelLoc + ".obj")).end();
 	}
 
-	public BlockModelBuilder blockTopBottom(RegistryObject<Block> block, String top, String bottom, String side) {
-		return models().cubeBottomTop(ForgeRegistries.BLOCKS.getKey(block.get()).getPath(), new ResourceLocation(modID, side), new ResourceLocation(modID, bottom), new ResourceLocation(modID, top));
+	public BlockModelBuilder blockTopBottom(DeferredHolder<Block, Block> block, String top, String bottom, String side) {
+		return models().cubeBottomTop(BuiltInRegistries.BLOCK.getKey(block.get()).getPath(), new ResourceLocation(modID, side), new ResourceLocation(modID, bottom), new ResourceLocation(modID, top));
 	}
 
 	public ItemModelBuilder blockItem(Block block, ModelFile model) {
@@ -509,19 +509,19 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	}
 
 	public ResourceLocation key(Block block) {
-		return ForgeRegistries.BLOCKS.getKey(block);
+		return BuiltInRegistries.BLOCK.getKey(block);
 	}
 
 	public String name(Block block) {
 		return key(block).getPath();
 	}
 
-	public ExistingModelFile existingBlock(RegistryObject<Block> block) {
+	public ExistingModelFile existingBlock(DeferredHolder<Block, Block> block) {
 		return existingBlock(block.getId());
 	}
 
 	public ExistingModelFile existingBlock(Block block) {
-		return existingBlock(ForgeRegistries.BLOCKS.getKey(block));
+		return existingBlock(BuiltInRegistries.BLOCK.getKey(block));
 	}
 
 	public ExistingModelFile existingBlock(ResourceLocation loc) {

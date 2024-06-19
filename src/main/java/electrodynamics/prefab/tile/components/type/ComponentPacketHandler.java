@@ -2,7 +2,6 @@ package electrodynamics.prefab.tile.components.type;
 
 import java.util.List;
 
-import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.client.PacketSendUpdatePropertiesClient;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.IComponent;
@@ -12,52 +11,52 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkDirection;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 public class ComponentPacketHandler implements IComponent {
 
-	private GenericTile holder;
+    private GenericTile holder;
 
-	public ComponentPacketHandler(GenericTile holder) {
-		this.holder = holder;
-	}
+    public ComponentPacketHandler(GenericTile holder) {
+        this.holder = holder;
+    }
 
-	@Override
-	public void holder(GenericTile holder) {
-		this.holder = holder;
-	}
+    @Override
+    public void holder(GenericTile holder) {
+        this.holder = holder;
+    }
 
-	@Override
-	public GenericTile getHolder() {
-		return holder;
-	}
+    @Override
+    public GenericTile getHolder() {
+        return holder;
+    }
 
-	public void sendProperties() {
-		Level world = holder.getLevel();
+    public void sendProperties() {
+        Level world = holder.getLevel();
 
-		if (world == null || world.isClientSide || !holder.getPropertyManager().isDirty() || holder.getPropertyManager().getClientUpdateProperties().isEmpty()) {
-			return;
-		}
+        if (world == null || world.isClientSide || !holder.getPropertyManager().isDirty() || holder.getPropertyManager().getClientUpdateProperties().isEmpty()) {
+            return;
+        }
 
-		BlockPos pos = holder.getBlockPos();
+        BlockPos pos = holder.getBlockPos();
 
-		if (world instanceof ServerLevel level) {
-			List<ServerPlayer> players = level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false);
+        if (world instanceof ServerLevel level) {
+            List<ServerPlayer> players = level.getChunkSource().chunkMap.getPlayers(new ChunkPos(pos), false);
 
-			if (players.isEmpty()) {
-				return;
-			}
+            if (players.isEmpty()) {
+                return;
+            }
 
-			PacketSendUpdatePropertiesClient packet = new PacketSendUpdatePropertiesClient(holder);
+            PacketSendUpdatePropertiesClient packet = new PacketSendUpdatePropertiesClient(holder);
 
-			players.forEach(p -> NetworkHandler.CHANNEL.sendTo(packet, p.connection.connection, NetworkDirection.PLAY_TO_CLIENT));
+            players.forEach(p -> PacketDistributor.PLAYER.with(p).send(packet));
 
-			holder.getPropertyManager().clean();
-		}
-	}
+            holder.getPropertyManager().clean();
+        }
+    }
 
-	@Override
-	public IComponentType getType() {
-		return IComponentType.PacketHandler;
-	}
+    @Override
+    public IComponentType getType() {
+        return IComponentType.PacketHandler;
+    }
 }

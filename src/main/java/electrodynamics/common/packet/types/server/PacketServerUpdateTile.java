@@ -1,16 +1,17 @@
 package electrodynamics.common.packet.types.server;
 
-import java.util.function.Supplier;
-
 import electrodynamics.api.tile.IPacketServerUpdateTile;
+import electrodynamics.common.packet.NetworkHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class PacketServerUpdateTile {
+public class PacketServerUpdateTile implements CustomPacketPayload {
 	private final BlockPos target;
 	private final CompoundTag nbt;
 
@@ -19,26 +20,29 @@ public class PacketServerUpdateTile {
 		this.target = target;
 	}
 
-	public static void handle(PacketServerUpdateTile message, Supplier<Context> context) {
-		Context ctx = context.get();
-		ctx.enqueueWork(() -> {
-			ServerLevel world = context.get().getSender().serverLevel();
-			if (world != null) {
-				BlockEntity tile = world.getBlockEntity(message.target);
-				if (tile instanceof IPacketServerUpdateTile serv) {
-					serv.readCustomUpdate(message.nbt);
-				}
-			}
-		});
-		ctx.setPacketHandled(true);
+	public static void handle(PacketServerUpdateTile message, PlayPayloadContext context) {
+	    ServerLevel world = (ServerLevel) context.level().get();
+        if (world == null) {
+            return;
+        }
+        BlockEntity tile = world.getBlockEntity(message.target);
+        if (tile instanceof IPacketServerUpdateTile serv) {
+            serv.readCustomUpdate(message.nbt);
+        }
 	}
 
-	public static void encode(PacketServerUpdateTile pkt, FriendlyByteBuf buf) {
-		buf.writeNbt(pkt.nbt);
-		buf.writeBlockPos(pkt.target);
-	}
-
-	public static PacketServerUpdateTile decode(FriendlyByteBuf buf) {
+	public static PacketServerUpdateTile read(FriendlyByteBuf buf) {
 		return new PacketServerUpdateTile(buf.readNbt(), buf.readBlockPos());
 	}
+
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeNbt(nbt);
+        buf.writeBlockPos(target);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return NetworkHandler.PACKET_SERVERUPDATETILE_PACKETID;
+    }
 }

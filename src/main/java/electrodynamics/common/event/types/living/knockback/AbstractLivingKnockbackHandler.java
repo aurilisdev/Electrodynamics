@@ -1,6 +1,6 @@
 package electrodynamics.common.event.types.living.knockback;
 
-import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
+import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 
 public abstract class AbstractLivingKnockbackHandler {
 

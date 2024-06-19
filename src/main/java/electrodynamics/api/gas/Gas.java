@@ -63,7 +63,7 @@ public class Gas {
 	}
 
 	public boolean isEmpty() {
-		return this == empty();
+		return this == ElectrodynamicsGases.EMPTY.get();
 	}
 
 	public double getCondensationTemp() {
@@ -87,9 +87,9 @@ public class Gas {
 	public String toString() {
 		return description.getString() + ",\tcondensation temp : " + condensationTemp + " K,\tcondensed fluid: " + condensedFluid.getFluidType().getDescription().getString();
 	}
-
-	public static Gas empty() {
-		return ElectrodynamicsGases.EMPTY.get();
+	
+	public boolean doesCondense() {
+	    return condensationTemp > 0;
 	}
 
 }

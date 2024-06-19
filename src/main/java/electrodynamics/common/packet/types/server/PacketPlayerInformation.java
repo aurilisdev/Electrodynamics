@@ -1,17 +1,18 @@
 package electrodynamics.common.packet.types.server;
 
 import java.util.List;
-import java.util.function.Supplier;
 
 import electrodynamics.common.packet.NetworkHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.repository.Pack;
-import net.minecraftforge.fml.loading.FMLLoader;
-import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
-import net.minecraftforge.network.NetworkEvent.Context;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.fml.loading.moddiscovery.ModInfo;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-public class PacketPlayerInformation {
+public class PacketPlayerInformation implements CustomPacketPayload {
 
 	private String information;
 
@@ -31,17 +32,21 @@ public class PacketPlayerInformation {
 		information = info;
 	}
 
-	public static void handle(PacketPlayerInformation message, Supplier<Context> context) {
-		Context ctx = context.get();
-		ctx.enqueueWork(() -> NetworkHandler.playerInformation.put(context.get().getSender().getName().getString(), message.information));
-		ctx.setPacketHandled(true);
+	public static void handle(PacketPlayerInformation message, PlayPayloadContext context) {
+	    NetworkHandler.playerInformation.put(context.channelHandlerContext().name(), message.information);
 	}
 
-	public static void encode(PacketPlayerInformation pkt, FriendlyByteBuf buf) {
-		buf.writeUtf(pkt.information);
-	}
-
-	public static PacketPlayerInformation decode(FriendlyByteBuf buf) {
+	public static PacketPlayerInformation read(FriendlyByteBuf buf) {
 		return new PacketPlayerInformation(buf.readUtf(999999));
 	}
+
+    @Override
+    public void write(FriendlyByteBuf buf) {
+        buf.writeUtf(information);
+    }
+
+    @Override
+    public ResourceLocation id() {
+        return NetworkHandler.PACKET_PLAYERINFORMATION_PACKETID;
+    }
 }

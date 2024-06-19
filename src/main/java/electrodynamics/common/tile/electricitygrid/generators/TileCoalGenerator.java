@@ -31,7 +31,7 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.ForgeHooks;
+import net.neoforged.neoforge.common.CommonHooks;
 
 public class TileCoalGenerator extends GenericGeneratorTile {
 	protected CachedTileOutput output;
@@ -69,7 +69,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 		ComponentInventory inv = getComponent(IComponentType.Inventory);
 		ItemStack fuel = inv.getItem(0);
 		if (burnTime.get() <= 0 && !fuel.isEmpty()) {
-			burnTime.set(ForgeHooks.getBurnTime(fuel, null));
+			burnTime.set(CommonHooks.getBurnTime(fuel, null));
 			fuel.shrink(1);
 			maxBurnTime.set(Math.max(burnTime.get(), 1));
 		}
