@@ -2,7 +2,6 @@ package electrodynamics.common.tile.pipelines;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCreativeFluidSource;
-import electrodynamics.common.tile.pipelines.fluids.GenericTileFluidPipe;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;

@@ -107,6 +107,11 @@ dependencies {
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
+    runtimeOnly fg.deobf("maven.modrinth:spark:${spark_version}")
+    runtimeOnly fg.deobf("maven.modrinth:embeddium:${embeddium_version}")
+    runtimeOnly fg.deobf("maven.modrinth:oculus:${oculus_version}")
+    runtimeOnly fg.deobf("maven.modrinth:distanthorizons:${distanthorizons_version}")
+
     annotationProcessor "org.spongepowered:mixin:${mixin_annotationprocessor_version}:processor"
 }
 
@@ -122,6 +127,9 @@ repositories {
     	name = "ModMaven"
     	url = "https://modmaven.dev"
   	}
+    maven {
+        url = "https://api.modrinth.com/maven"
+    }
 
 }
 
