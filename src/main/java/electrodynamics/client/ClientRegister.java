@@ -7,6 +7,7 @@ import java.util.List;
 import electrodynamics.api.References;
 import electrodynamics.client.guidebook.ModuleElectrodynamics;
 import electrodynamics.client.guidebook.ScreenGuidebook;
+import electrodynamics.client.modelbakers.bakerypes.CableModelLoader;
 import electrodynamics.client.particle.plasmaball.ParticlePlasmaBall;
 import electrodynamics.client.render.entity.RenderEnergyBlast;
 import electrodynamics.client.render.entity.RenderMetalRod;
@@ -110,6 +111,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.ModelEvent.RegisterAdditional;
+import net.minecraftforge.client.event.ModelEvent.RegisterGeometryLoaders;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -371,6 +373,11 @@ public class ClientRegister {
 	@SubscribeEvent
 	public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
 		event.registerReloadListener(AtlasHolderElectrodynamicsCustom.INSTANCE = new AtlasHolderElectrodynamicsCustom(Minecraft.getInstance().textureManager));
+	}
+
+	@SubscribeEvent
+	public static void registerGeometryLoaders(final RegisterGeometryLoaders event) {
+		event.register(CableModelLoader.ID, CableModelLoader.INSTANCE);
 	}
 
 }

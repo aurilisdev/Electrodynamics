@@ -2,18 +2,12 @@ package electrodynamics.common.block.connect.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-
-import com.google.common.collect.Maps;
 
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.prefab.block.GenericEntityBlockWaterloggable;
 import electrodynamics.prefab.tile.types.GenericConnectTile;
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -27,9 +21,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.BooleanOp;
@@ -39,27 +33,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggable {
 
-	public static final Map<Direction, EnumProperty<EnumConnectType>> FACING_TO_PROPERTY_MAP = Util.make(Maps.newEnumMap(Direction.class), map -> {
-		map.put(Direction.NORTH, EnumConnectType.NORTH);
-		map.put(Direction.EAST, EnumConnectType.EAST);
-		map.put(Direction.SOUTH, EnumConnectType.SOUTH);
-		map.put(Direction.WEST, EnumConnectType.WEST);
-		map.put(Direction.UP, EnumConnectType.UP);
-		map.put(Direction.DOWN, EnumConnectType.DOWN);
-	});
-
-	public static final Map<Direction, EnumProperty<EnumConnectType>> DIRECTION_TO_CONNECTTYPE_MAP = Util.make(Maps.newEnumMap(Direction.class), map -> {
-		map.put(Direction.UP, EnumConnectType.UP);
-		map.put(Direction.DOWN, EnumConnectType.DOWN);
-		map.put(Direction.NORTH, EnumConnectType.NORTH);
-		map.put(Direction.EAST, EnumConnectType.EAST);
-		map.put(Direction.SOUTH, EnumConnectType.SOUTH);
-		map.put(Direction.WEST, EnumConnectType.WEST);
-	});
-
 	protected final VoxelShape[] boundingBoxes = new VoxelShape[7];
 
-	protected HashMap<HashSet<Direction>, VoxelShape> shapestates = new HashMap<>();
+	protected HashMap<EnumConnectType[], VoxelShape> shapestates = new HashMap<>();
 	protected boolean locked = false;
 
 	public AbstractConnectBlock(Properties properties, double radius) {
@@ -104,12 +80,21 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 		}
 
 		VoxelShape shape = boundingBoxes[6];
-		HashSet<Direction> checked = new HashSet<>();
+		EnumConnectType[] checked = new EnumConnectType[6];
+		
+		BlockEntity entity = worldIn.getBlockEntity(pos);
+		
+		if(!(entity instanceof GenericConnectTile)) {
+			return Shapes.empty();
+		}
+		
+		EnumConnectType[] connections = ((GenericConnectTile) entity).readConnections();
 
-		for (Direction dir : Direction.values()) {
-
-			if (!EnumConnectType.NONE.equals(state.getValue(DIRECTION_TO_CONNECTTYPE_MAP.get(dir)))) {
-				checked.add(dir);
+		for (int i = 0; i < 6; i++) {
+			EnumConnectType connection = connections[i];
+			
+			if (connection != EnumConnectType.NONE) {
+				checked[i] = connection;
 			}
 
 		}
@@ -119,10 +104,15 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 			return Shapes.join(shapestates.get(checked), camoShape, BooleanOp.OR);
 		}
 		locked = false;
-		for (Direction dir : checked) {
-			if (dir != null) {
-				shape = Shapes.join(shape, boundingBoxes[dir.ordinal()], BooleanOp.OR);
+		for (int i = 0; i < 6; i++) {
+			
+			EnumConnectType connection = checked[i];
+			
+			if(connection == null) {
+				continue;
 			}
+			
+			shape = Shapes.join(shape, boundingBoxes[i], BooleanOp.OR);
 		}
 		while (locked) {
 			System.out.println("Bounding box collided with another block's bounding box!");
@@ -137,7 +127,6 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 	@Override
 	public void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
 		super.createBlockStateDefinition(builder);
-		builder.add(EnumConnectType.UP, EnumConnectType.DOWN, EnumConnectType.NORTH, EnumConnectType.EAST, EnumConnectType.SOUTH, EnumConnectType.WEST);
 		builder.add(ElectrodynamicsBlockStates.HAS_SCAFFOLDING);
 	}
 

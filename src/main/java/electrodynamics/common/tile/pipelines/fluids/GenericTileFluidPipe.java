@@ -14,6 +14,7 @@ import electrodynamics.api.network.cable.type.IFluidPipe;
 import electrodynamics.common.network.type.FluidNetwork;
 import electrodynamics.common.network.utils.FluidUtilities;
 import electrodynamics.prefab.network.AbstractNetwork;
+import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.tile.types.GenericConnectTile;
 import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.core.BlockPos;
@@ -49,6 +50,7 @@ public abstract class GenericTileFluidPipe extends GenericConnectTile implements
 
 	protected GenericTileFluidPipe(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
 		super(tileEntityTypeIn, pos, state);
+		addComponent(new ComponentTickable(this));
 		for (Direction dir : Direction.values()) {
 			handler.add(new IFluidHandler() {
 

@@ -12,6 +12,7 @@ import electrodynamics.common.block.subtype.SubtypeGasPipe.InsulationMaterial;
 import electrodynamics.common.network.type.GasNetwork;
 import electrodynamics.common.network.utils.GasUtilities;
 import electrodynamics.common.tile.pipelines.gas.TileGasPipe;
+import electrodynamics.prefab.tile.types.GenericConnectTile;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
@@ -24,7 +25,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 public class BlockGasPipe extends AbstractRefreshingConnectBlock {
 
@@ -94,16 +94,14 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock {
 
 	@Override
 	public BlockState refreshConnections(BlockState otherState, BlockEntity tile, BlockState state, Direction dir) {
-		EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(dir);
+		GenericConnectTile connect = (GenericConnectTile) tile;
+		EnumConnectType connection = EnumConnectType.NONE;
 		if (tile instanceof IGasPipe) {
-			return state.setValue(property, EnumConnectType.WIRE);
+			connection = EnumConnectType.WIRE;
+		} else if (GasUtilities.isGasReciever(tile, dir.getOpposite())) {
+			connection = EnumConnectType.INVENTORY;
 		}
-		if (GasUtilities.isGasReciever(tile, dir.getOpposite())) {
-			return state.setValue(property, EnumConnectType.INVENTORY);
-		}
-		if (state.hasProperty(property)) {
-			return state.setValue(property, EnumConnectType.NONE);
-		}
+		connect.writeConnection(dir, connection);
 		return state;
 	}
 

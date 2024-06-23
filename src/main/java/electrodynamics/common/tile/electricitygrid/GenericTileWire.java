@@ -15,6 +15,7 @@ import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodyn
 import electrodynamics.api.network.cable.type.IConductor;
 import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.prefab.network.AbstractNetwork;
+import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.tile.types.GenericConnectTile;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.Scheduler;
