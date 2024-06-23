@@ -580,12 +580,10 @@ public class ComponentFluidHandlerMulti implements IComponentFluidHandler {
 				return LazyOptional.empty();
 
 			}
-
 			if (inputType == CapabilityInputType.INPUT) {
-				return inputSidedOptionals[side.ordinal()].cast();
+				return  inputSidedOptionals[side.ordinal()] == null ? LazyOptional.empty().cast() : inputSidedOptionals[side.ordinal()].cast();
 			}
-			return outputSidedOptionals[side.ordinal()].cast();
-
+            return outputSidedOptionals[side.ordinal()] == null ? LazyOptional.empty().cast() : outputSidedOptionals[side.ordinal()].cast();
 		}
 
 		@Override
