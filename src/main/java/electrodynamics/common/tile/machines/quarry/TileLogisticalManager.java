@@ -2,7 +2,13 @@ package electrodynamics.common.tile.machines.quarry;
 
 import java.util.Optional;
 
+import org.jetbrains.annotations.NotNull;
+
+import electrodynamics.client.modelbakers.modelproperties.ModelPropertyConnections;
+import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.common.item.ItemDrillHead;
+import electrodynamics.prefab.properties.Property;
+import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
@@ -16,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
@@ -24,6 +31,22 @@ public class TileLogisticalManager extends GenericTile {
 
 	private TileQuarry[] quarries = new TileQuarry[6];
 	private BlockEntity[] inventories = new BlockEntity[6];
+
+	// DUNSWE
+
+	public static final int DOWN_MASK = 0b11110000000000000000000000000000;
+	public static final int UP_MASK = 0b00001111000000000000000000000000;
+	public static final int NORTH_MASK = 0b00000000111100000000000000000000;
+	public static final int SOUTH_MASK = 0b00000000000011110000000000000000;
+	public static final int WEST_MASK = 0b00000000000000001111000000000000;
+	public static final int EAST_MASK = 0b00000000000000000000111100000000;
+
+	public final Property<Integer> connections = property(new Property<>(PropertyType.Integer, "connections", 0).onChange((property, block) -> {
+		if (!level.isClientSide) {
+			return;
+		}
+		requestModelDataUpdate();
+	}));
 
 	public TileLogisticalManager(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsBlockTypes.TILE_LOGISTICALMANAGER.get(), pos, state);
@@ -149,6 +172,81 @@ public class TileLogisticalManager extends GenericTile {
 			return true;
 		}
 		return entity instanceof Container;
+	}
+
+	public EnumConnectType readConnection(Direction dir) {
+
+		int connectionData = connections.get();
+		int extracted = 0;
+		switch (dir) {
+		case DOWN:
+			extracted = connectionData & DOWN_MASK;
+			break;
+		case UP:
+			extracted = connectionData & UP_MASK;
+			break;
+		case NORTH:
+			extracted = connectionData & NORTH_MASK;
+			break;
+		case SOUTH:
+			extracted = connectionData & SOUTH_MASK;
+			break;
+		case WEST:
+			extracted = connectionData & WEST_MASK;
+			break;
+		case EAST:
+			extracted = connectionData & EAST_MASK;
+			break;
+		default:
+			break;
+		}
+
+		return EnumConnectType.values()[(extracted << dir.ordinal() * 4)];
+
+	}
+
+	public void writeConnection(Direction dir, EnumConnectType connection) {
+
+		int connectionData = connections.get();
+
+		switch (dir) {
+		case DOWN:
+			connectionData = connectionData & ~DOWN_MASK;
+			break;
+		case UP:
+			connectionData = connectionData & ~UP_MASK;
+			break;
+		case NORTH:
+			connectionData = connectionData & ~NORTH_MASK;
+			break;
+		case SOUTH:
+			connectionData = connectionData & ~SOUTH_MASK;
+			break;
+		case WEST:
+			connectionData = connectionData & ~WEST_MASK;
+			break;
+		case EAST:
+			connectionData = connectionData & ~EAST_MASK;
+			break;
+		default:
+			break;
+		}
+		connectionData = connectionData | (connection.ordinal() >> dir.ordinal() * 4);
+
+		connections.set(connectionData);
+	}
+
+	public EnumConnectType[] readConnections() {
+		EnumConnectType[] connections = new EnumConnectType[6];
+		for (Direction dir : Direction.values()) {
+			connections[dir.ordinal()] = readConnection(dir);
+		}
+		return connections;
+	}
+
+	@Override
+	public @NotNull ModelData getModelData() {
+		return ModelData.builder().with(ModelPropertyConnections.INSTANCE, readConnections()).build();
 	}
 
 }

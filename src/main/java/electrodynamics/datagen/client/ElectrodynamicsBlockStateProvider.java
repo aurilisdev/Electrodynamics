@@ -20,6 +20,7 @@ import electrodynamics.common.block.subtype.SubtypeWire.Conductor;
 import electrodynamics.common.block.subtype.SubtypeWire.InsulationMaterial;
 import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
 import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
+import electrodynamics.datagen.utils.GeneratedBlockStateCableModel;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.Direction;
@@ -433,8 +434,18 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	 * 
 	 */
 	public void wire(Block block, ModelFile none, ModelFile side, boolean registerItem) {
-		getMultipartBuilder(block).part().modelFile(none).addModel().useOr().condition(EnumConnectType.UP, EnumConnectType.NONE).condition(EnumConnectType.DOWN, EnumConnectType.NONE).condition(EnumConnectType.NORTH, EnumConnectType.NONE).condition(EnumConnectType.EAST, EnumConnectType.NONE).condition(EnumConnectType.SOUTH, EnumConnectType.NONE).condition(EnumConnectType.WEST, EnumConnectType.NONE).end().part().rotationX(270).modelFile(side).addModel().useOr().condition(EnumConnectType.UP, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationX(90).modelFile(side).addModel().useOr().condition(EnumConnectType.DOWN, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(0).modelFile(side).addModel().useOr().condition(EnumConnectType.NORTH, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(90).modelFile(side).addModel().useOr().condition(EnumConnectType.EAST, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(180).modelFile(side).addModel().useOr().condition(EnumConnectType.SOUTH, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(270).modelFile(side).addModel().useOr().condition(EnumConnectType.WEST, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end();
+		registeredBlocks.put(block, new GeneratedBlockStateCableModel(none, side, side));
+		/*
+		getMultipartBuilder(block).part()
+			.modelFile(none).addModel().useOr()
+			.condition(EnumConnectType.UP, EnumConnectType.NONE)
+			.condition(EnumConnectType.DOWN, EnumConnectType.NONE)
+			.condition(EnumConnectType.NORTH, EnumConnectType.NONE)
+			.condition(EnumConnectType.EAST, EnumConnectType.NONE)
+			.condition(EnumConnectType.SOUTH, EnumConnectType.NONE)
+			.condition(EnumConnectType.WEST, EnumConnectType.NONE).end().part().rotationX(270).modelFile(side).addModel().useOr().condition(EnumConnectType.UP, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationX(90).modelFile(side).addModel().useOr().condition(EnumConnectType.DOWN, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(0).modelFile(side).addModel().useOr().condition(EnumConnectType.NORTH, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(90).modelFile(side).addModel().useOr().condition(EnumConnectType.EAST, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(180).modelFile(side).addModel().useOr().condition(EnumConnectType.SOUTH, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end().part().rotationY(270).modelFile(side).addModel().useOr().condition(EnumConnectType.WEST, EnumConnectType.WIRE, EnumConnectType.INVENTORY).end();
 
+		*/
 		if (registerItem) {
 			simpleBlockItem(block, none);
 		}

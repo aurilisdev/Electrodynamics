@@ -17,6 +17,7 @@ import electrodynamics.api.network.cable.type.IGasPipe;
 import electrodynamics.common.network.type.GasNetwork;
 import electrodynamics.common.network.utils.GasUtilities;
 import electrodynamics.prefab.network.AbstractNetwork;
+import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.tile.types.GenericConnectTile;
 import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.core.BlockPos;
@@ -36,6 +37,7 @@ public abstract class GenericTileGasPipe extends GenericConnectTile implements I
 
 	public GenericTileGasPipe(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
 		super(tileEntityTypeIn, worldPos, blockState);
+		addComponent(new ComponentTickable(this));
 		for (Direction dir : Direction.values()) {
 			capability[dir.ordinal()] = new IGasHandler() {
 
