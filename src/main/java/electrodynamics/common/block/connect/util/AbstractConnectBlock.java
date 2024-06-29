@@ -36,7 +36,7 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 	protected final VoxelShape[] boundingBoxes = new VoxelShape[7];
 
 	protected HashMap<EnumConnectType[], VoxelShape> shapestates = new HashMap<>();
-	protected boolean locked = false;
+	//protected boolean locked = false;
 
 	public AbstractConnectBlock(Properties properties, double radius) {
 		super(properties);
@@ -98,12 +98,9 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 			}
 
 		}
-		locked = true;
 		if (shapestates.containsKey(checked)) {
-			locked = false;
 			return Shapes.join(shapestates.get(checked), camoShape, BooleanOp.OR);
 		}
-		locked = false;
 		for (int i = 0; i < 6; i++) {
 			
 			EnumConnectType connection = checked[i];
@@ -113,9 +110,6 @@ public abstract class AbstractConnectBlock extends GenericEntityBlockWaterloggab
 			}
 			
 			shape = Shapes.join(shape, boundingBoxes[i], BooleanOp.OR);
-		}
-		while (locked) {
-			System.out.println("Bounding box collided with another block's bounding box!");
 		}
 		shapestates.put(checked, shape);
 		if (shape == null) {
