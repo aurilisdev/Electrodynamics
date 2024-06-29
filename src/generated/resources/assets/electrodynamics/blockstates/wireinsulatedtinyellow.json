@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wireinsulatedtinyellow_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wireinsulatedtinyellow_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wireinsulatedtinyellow_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wireinsulatedtinyellow"
+    }
   }
 }

@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wiretin_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wiretin_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wiretin_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wiretin"
+    }
   }
 }

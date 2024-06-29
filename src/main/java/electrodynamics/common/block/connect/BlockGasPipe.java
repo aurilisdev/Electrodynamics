@@ -93,15 +93,18 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock {
 	}
 
 	@Override
-	public BlockState refreshConnections(BlockState otherState, BlockEntity tile, BlockState state, Direction dir) {
-		GenericConnectTile connect = (GenericConnectTile) tile;
+	public BlockState refreshConnections(BlockState otherState, BlockEntity otherTile, BlockState state, BlockEntity thisTile, Direction dir) {
+		if(!(thisTile instanceof GenericConnectTile)) {
+			return state;
+		}
+		GenericConnectTile thisConnect = (GenericConnectTile) thisTile;
 		EnumConnectType connection = EnumConnectType.NONE;
-		if (tile instanceof IGasPipe) {
+		if (otherTile instanceof IGasPipe) {
 			connection = EnumConnectType.WIRE;
-		} else if (GasUtilities.isGasReciever(tile, dir.getOpposite())) {
+		} else if (GasUtilities.isGasReciever(otherTile, dir.getOpposite())) {
 			connection = EnumConnectType.INVENTORY;
 		}
-		connect.writeConnection(dir, connection);
+		thisConnect.writeConnection(dir, connection);
 		return state;
 	}
 

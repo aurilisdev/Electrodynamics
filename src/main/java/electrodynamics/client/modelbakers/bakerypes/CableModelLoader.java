@@ -47,9 +47,9 @@ public class CableModelLoader implements IGeometryLoader<CableModelLoader.WirePa
 
 	@Override
 	public WirePartGeometry read(JsonObject json, JsonDeserializationContext context) throws JsonParseException {
-		BlockModel none = context.deserialize(GsonHelper.getAsJsonArray(json, EnumConnectType.NONE.toString()), BlockModel.class);
-		BlockModel wire = context.deserialize(GsonHelper.getAsJsonArray(json, EnumConnectType.WIRE.toString()), BlockModel.class);
-		BlockModel inventory = context.deserialize(GsonHelper.getAsJsonArray(json, EnumConnectType.INVENTORY.toString()), BlockModel.class);
+		BlockModel none = context.deserialize(GsonHelper.getAsJsonObject(json, EnumConnectType.NONE.toString()), BlockModel.class);
+		BlockModel wire = context.deserialize(GsonHelper.getAsJsonObject(json, EnumConnectType.WIRE.toString()), BlockModel.class);
+		BlockModel inventory = context.deserialize(GsonHelper.getAsJsonObject(json, EnumConnectType.INVENTORY.toString()), BlockModel.class);
 		return new WirePartGeometry(none, wire, inventory);
 	}
 
@@ -181,7 +181,7 @@ public class CableModelLoader implements IGeometryLoader<CableModelLoader.WirePa
 				quads.addAll(this.none.getQuads(state, side, rand, extraData, renderType));
 			}
 
-			return null;
+			return quads;
 		}
 
 		@Override

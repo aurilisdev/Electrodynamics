@@ -13,8 +13,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.Fluids;
 
 public abstract class AbstractRefreshingConnectBlock extends AbstractConnectBlock {
 
@@ -28,18 +26,14 @@ public abstract class AbstractRefreshingConnectBlock extends AbstractConnectBloc
 		BlockPos relPos;
 		for (Direction dir : Direction.values()) {
 			relPos = pos.relative(dir);
-			stateIn = refreshConnections(worldIn.getBlockState(relPos), worldIn.getBlockEntity(relPos), stateIn, dir);
+			stateIn = refreshConnections(worldIn.getBlockState(relPos), worldIn.getBlockEntity(relPos), stateIn, worldIn.getBlockEntity(pos), dir);
 		}
 		worldIn.setBlockAndUpdate(pos, stateIn);
 	}
 
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
-		stateIn = super.updateShape(stateIn, facing, facingState, world, currentPos, facingPos);
-		if (stateIn.getValue(BlockStateProperties.WATERLOGGED)) {
-			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
-		}
-		return refreshConnections(facingState, world.getBlockEntity(facingPos), stateIn, facing);
+		return refreshConnections(facingState, world.getBlockEntity(facingPos), super.updateShape(stateIn, facing, facingState, world, currentPos, facingPos), world.getBlockEntity(currentPos), facing);
 	}
 
 	@Override
@@ -57,7 +51,7 @@ public abstract class AbstractRefreshingConnectBlock extends AbstractConnectBloc
 		BlockPos relPos;
 		for (Direction dir : Direction.values()) {
 			relPos = pos.relative(dir);
-			state = refreshConnections(worldIn.getBlockState(relPos), worldIn.getBlockEntity(relPos), state, dir);
+			state = refreshConnections(worldIn.getBlockState(relPos), worldIn.getBlockEntity(relPos), state, worldIn.getBlockEntity(pos), dir);
 		}
 		state = state.setValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING, state.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING));
 		worldIn.setBlockAndUpdate(pos, state);
@@ -77,7 +71,7 @@ public abstract class AbstractRefreshingConnectBlock extends AbstractConnectBloc
 		conductor.refreshNetworkIfChange();
 	}
 
-	public abstract BlockState refreshConnections(BlockState otherState, BlockEntity tile, BlockState thisState, Direction dir);
+	public abstract BlockState refreshConnections(BlockState otherState, BlockEntity otherTile, BlockState thisState, BlockEntity thisTile, Direction dir);
 
 	@Nullable
 	public abstract IRefreshableCable getCableIfValid(BlockEntity tile);

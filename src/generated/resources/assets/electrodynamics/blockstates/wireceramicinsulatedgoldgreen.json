@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedgoldgreen_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedgoldgreen_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedgoldgreen_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wireceramicinsulatedgoldgreen"
+    }
   }
 }

@@ -20,7 +20,8 @@ import electrodynamics.common.block.subtype.SubtypeWire.Conductor;
 import electrodynamics.common.block.subtype.SubtypeWire.InsulationMaterial;
 import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
 import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
-import electrodynamics.datagen.utils.GeneratedBlockStateCableModel;
+import electrodynamics.datagen.utils.model.GeneratedBlockStateCableModel;
+import electrodynamics.datagen.utils.model.WireModelBuilder;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.Direction;
@@ -434,7 +435,9 @@ public class ElectrodynamicsBlockStateProvider extends BlockStateProvider {
 	 * 
 	 */
 	public void wire(Block block, ModelFile none, ModelFile side, boolean registerItem) {
-		registeredBlocks.put(block, new GeneratedBlockStateCableModel(none, side, side));
+		ModelFile model = models().withExistingParent(name(block), new ResourceLocation("cube")).customLoader(WireModelBuilder::begin).models(none, side, side).end().renderType(new ResourceLocation("cutout"));
+		
+		getVariantBuilder(block).partialState().addModels(new ConfiguredModel(model));
 		/*
 		getMultipartBuilder(block).part()
 			.modelFile(none).addModel().useOr()

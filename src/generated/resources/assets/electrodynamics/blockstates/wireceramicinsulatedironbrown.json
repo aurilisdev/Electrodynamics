@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedironbrown_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedironbrown_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedironbrown_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wireceramicinsulatedironbrown"
+    }
   }
 }

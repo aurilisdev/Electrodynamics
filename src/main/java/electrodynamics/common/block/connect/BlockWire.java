@@ -358,15 +358,22 @@ public class BlockWire extends AbstractRefreshingConnectBlock {
 	}
 
 	@Override
-	public BlockState refreshConnections(BlockState otherState, BlockEntity tile, BlockState state, Direction dir) {
-		GenericConnectTile connect = (GenericConnectTile) tile;
+	public BlockState refreshConnections(BlockState otherState, BlockEntity otherTile, BlockState state, BlockEntity thisTile, Direction dir) {
+		if(!(thisTile instanceof GenericConnectTile)) {
+			return state;
+		}
+		GenericConnectTile thisConnect = (GenericConnectTile) thisTile;
 		EnumConnectType connection = EnumConnectType.NONE;
-		if (tile instanceof IConductor conductor && (conductor.getWireType().isDefaultColor() || wire.isDefaultColor() || conductor.getWireColor() == wire.color)) {
-			connection = EnumConnectType.WIRE;
-		} else if (ElectricityUtils.isElectricReceiver(tile, dir.getOpposite()) || checkRedstone(otherState)) {
+		if (otherTile instanceof IConductor conductor) {
+			if(conductor.getWireType().isDefaultColor() || wire.isDefaultColor() || conductor.getWireColor() == wire.color) {
+				connection = EnumConnectType.WIRE;
+			} else {
+				connection = EnumConnectType.NONE;
+			}
+		} else if (ElectricityUtils.isElectricReceiver(otherTile, dir.getOpposite()) || checkRedstone(otherState)) {
 			connection = EnumConnectType.INVENTORY;
 		}
-		connect.writeConnection(dir, connection);
+		thisConnect.writeConnection(dir, connection);
 		return state;
 	}
 

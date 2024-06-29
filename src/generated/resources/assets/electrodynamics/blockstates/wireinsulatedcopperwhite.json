@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wireinsulatedcopperwhite_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wireinsulatedcopperwhite_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wireinsulatedcopperwhite_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wireinsulatedcopperwhite"
+    }
   }
 }

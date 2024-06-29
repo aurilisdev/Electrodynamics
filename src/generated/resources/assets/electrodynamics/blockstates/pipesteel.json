@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/pipe/pipesteel_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/pipe/pipesteel_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/pipe/pipesteel_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/pipesteel"
+    }
   }
 }

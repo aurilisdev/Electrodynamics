@@ -36,15 +36,18 @@ public class BlockFluidPipe extends AbstractRefreshingConnectBlock {
 	}
 
 	@Override
-	public BlockState refreshConnections(BlockState otherState, BlockEntity tile, BlockState state, Direction dir) {
-		GenericConnectTile connect = (GenericConnectTile) tile;
+	public BlockState refreshConnections(BlockState otherState, BlockEntity otherTile, BlockState state, BlockEntity thisTile, Direction dir) {
+		if(!(thisTile instanceof GenericConnectTile)) {
+			return state;
+		}
+		GenericConnectTile thisConnect = (GenericConnectTile) thisTile;
 		EnumConnectType connection = EnumConnectType.NONE;
-		if (tile instanceof IFluidPipe) {
+		if (otherTile instanceof IFluidPipe) {
 			connection = EnumConnectType.WIRE;
-		} else if (FluidUtilities.isFluidReceiver(tile, dir.getOpposite())) {
+		} else if (FluidUtilities.isFluidReceiver(otherTile, dir.getOpposite())) {
 			connection = EnumConnectType.INVENTORY;
 		}
-		connect.writeConnection(dir, connection);
+		thisConnect.writeConnection(dir, connection);
 		return state;
 	}
 
