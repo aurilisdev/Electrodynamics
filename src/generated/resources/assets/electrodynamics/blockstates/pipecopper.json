@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/pipe/pipecopper_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/pipe/pipecopper_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/pipe/pipecopper_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/pipecopper"
+    }
   }
 }

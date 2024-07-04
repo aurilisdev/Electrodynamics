@@ -13,9 +13,10 @@ import com.google.common.collect.Sets;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.api.network.cable.type.IConductor;
+import electrodynamics.common.block.connect.util.EnumConnectType;
+import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
 import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.prefab.network.AbstractNetwork;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.tile.types.GenericConnectTile;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.prefab.utilities.Scheduler;
@@ -264,6 +265,25 @@ public abstract class GenericTileWire extends GenericConnectTile implements ICon
 	@Override
 	public void onLoad() {
 		super.onLoad();
+		//TODO remove in next version release; this is a temp hack for now
+		if(super.connections.get() == 0) {
+			for(Direction dir : Direction.values()) {
+				BlockPos relative = getBlockPos().relative(dir);
+				EnumConnectType connection = EnumConnectType.NONE;
+				BlockEntity otherTile = level.getBlockEntity(relative);
+				if (otherTile instanceof IConductor conductor) {
+					if(conductor.getWireType().isDefaultColor() || getWireType().isDefaultColor() || conductor.getWireColor() == getWireColor()) {
+						connection = EnumConnectType.WIRE;
+					} else {
+						connection = EnumConnectType.NONE;
+					}
+				} else if (ElectricityUtils.isElectricReceiver(otherTile, dir.getOpposite()) || (level.getBlockState(relative).isSignalSource() && getWireType().wireClass == WireClass.LOGISTICAL)) {
+					connection = EnumConnectType.INVENTORY;
+				}
+				writeConnection(dir, connection);
+			}
+		}
+		//end temp hack
 		Scheduler.schedule(1, this::refreshNetwork);
 	}
 

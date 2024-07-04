@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wirehighlyinsulatedsuperconductiveyellow_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wirehighlyinsulatedsuperconductiveyellow_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wirehighlyinsulatedsuperconductiveyellow_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wirehighlyinsulatedsuperconductiveyellow"
+    }
   }
 }

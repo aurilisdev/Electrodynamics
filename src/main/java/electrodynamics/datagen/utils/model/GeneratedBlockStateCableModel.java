@@ -1,4 +1,4 @@
-package electrodynamics.datagen.utils;
+package electrodynamics.datagen.utils.model;
 
 import com.google.gson.JsonObject;
 
@@ -29,15 +29,18 @@ public class GeneratedBlockStateCableModel implements IGeneratedBlockState {
 		json.addProperty("loader", References.ID + ":" + CableModelLoader.ID);
 
 		JsonObject noneElement = new JsonObject();
-		noneElement.addProperty("model", none.getLocation().toString());
+		noneElement.addProperty("parent", none.getLocation().toString());
+		
+		
+		
 		json.add(EnumConnectType.NONE.toString(), noneElement);
 
 		JsonObject wireElement = new JsonObject();
-		wireElement.addProperty("model", wire.getLocation().toString());
+		wireElement.addProperty("parent", wire.getLocation().toString());
 		json.add(EnumConnectType.WIRE.toString(), wireElement);
 
 		JsonObject inventoryElement = new JsonObject();
-		inventoryElement.addProperty("model", inventory.getLocation().toString());
+		inventoryElement.addProperty("parent", inventory.getLocation().toString());
 		json.add(EnumConnectType.INVENTORY.toString(), inventoryElement);
 
 		return json;

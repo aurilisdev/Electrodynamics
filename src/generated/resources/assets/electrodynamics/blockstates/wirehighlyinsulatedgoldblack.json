@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wirehighlyinsulatedgoldblack_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wirehighlyinsulatedgoldblack_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wirehighlyinsulatedgoldblack_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wirehighlyinsulatedgoldblack"
+    }
   }
 }

@@ -16,22 +16,23 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 
-public abstract class GenericConnectTile extends GenericTile {
+public abstract class GenericConnectTile extends GenericTile implements IConnectTile {
 
 	// DUNSWE
 
-	public static final int DOWN_MASK = 0b11110000000000000000000000000000;
-	public static final int UP_MASK = 0b00001111000000000000000000000000;
-	public static final int NORTH_MASK = 0b00000000111100000000000000000000;
-	public static final int SOUTH_MASK = 0b00000000000011110000000000000000;
-	public static final int WEST_MASK = 0b00000000000000001111000000000000;
-	public static final int EAST_MASK = 0b00000000000000000000111100000000;
+	public static final int DOWN_MASK = 0b00000000000000000000000000001111;
+	public static final int UP_MASK = 0b00000000000000000000000011110000;
+	public static final int NORTH_MASK = 0b00000000000000000000111100000000;
+	public static final int SOUTH_MASK = 0b00000000000000001111000000000000;
+	public static final int WEST_MASK = 0b00000000000011110000000000000000;
+	public static final int EAST_MASK = 0b00000000111100000000000000000000;
 
-	public final Property<Integer> connections = property(new Property<>(PropertyType.Integer, "connections", 0).onChange((property, block) -> {
+	public final Property<Integer> connections = property(new Property<>(PropertyType.Integer, "connections", 0).onChange((property, old) -> {
 		if(!level.isClientSide) {
 			return;
 		}
 		requestModelDataUpdate();
+		
 	}));
 
 	public final Property<BlockState> camoflaugedBlock = property(new Property<>(PropertyType.Blockstate, "camoflaugedblock", Blocks.AIR.defaultBlockState())).onChange((property, block) -> {
@@ -78,12 +79,17 @@ public abstract class GenericConnectTile extends GenericTile {
 		super.onPlace(oldState, isMoving);
 		if (!level.isClientSide) {
 			this.<ComponentPacketHandler>getComponent(IComponentType.PacketHandler).sendProperties();
-		}
+		} 
 	}
 
 	public EnumConnectType readConnection(Direction dir) {
 
 		int connectionData = connections.get();
+		
+		if(connectionData == 0) {
+			return EnumConnectType.NONE;
+		}
+		
 		int extracted = 0;
 		switch (dir) {
 		case DOWN:
@@ -108,39 +114,42 @@ public abstract class GenericConnectTile extends GenericTile {
 			break;
 		}
 		
-		return EnumConnectType.values()[(extracted << dir.ordinal() * 4)];
+		//return EnumConnectType.NONE;
+		
+		return EnumConnectType.values()[(extracted >> (dir.ordinal() * 4))];
 
 	}
 	
 	public void writeConnection(Direction dir, EnumConnectType connection) {
 		
-		int connectionData = connections.get();
+		int connectionData = this.connections.get();
+		int masked;
 
 		switch (dir) {
 		case DOWN:
-			connectionData = connectionData & ~DOWN_MASK;
+			masked = connectionData & ~DOWN_MASK;
 			break;
 		case UP:
-			connectionData = connectionData & ~UP_MASK;
+			masked = connectionData & ~UP_MASK;
 			break;
 		case NORTH:
-			connectionData = connectionData & ~NORTH_MASK;
+			masked = connectionData & ~NORTH_MASK;
 			break;
 		case SOUTH:
-			connectionData = connectionData & ~SOUTH_MASK;
+			masked = connectionData & ~SOUTH_MASK;
 			break;
 		case WEST:
-			connectionData = connectionData & ~WEST_MASK;
+			masked = connectionData & ~WEST_MASK;
 			break;
 		case EAST:
-			connectionData = connectionData & ~EAST_MASK;
+			masked = connectionData & ~EAST_MASK;
 			break;
 		default:
+			masked = 0;
 			break;
 		}
-		connectionData = connectionData | (connection.ordinal() >> dir.ordinal() * 4);
 		
-		connections.set(connectionData);
+		connections.set(masked | (connection.ordinal() << (dir.ordinal() * 4)));
 	}
 	
 	public EnumConnectType[] readConnections() {
@@ -155,5 +164,7 @@ public abstract class GenericConnectTile extends GenericTile {
 	public @NotNull ModelData getModelData() {
 		return ModelData.builder().with(ModelPropertyConnections.INSTANCE, readConnections()).build();
 	}
+	
+	
 
 }

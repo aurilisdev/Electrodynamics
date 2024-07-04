@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/logisticalmanager_inventory"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/logisticalmanager_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/logisticalmanager_inventory"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/logisticalmanager"
+    }
   }
 }

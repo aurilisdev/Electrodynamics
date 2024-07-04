@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.common.tile.machines.quarry.TileLogisticalManager;
 import electrodynamics.prefab.block.GenericEntityBlockWaterloggable;
+import electrodynamics.prefab.tile.types.IConnectTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,14 +15,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -38,7 +36,6 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 	protected final VoxelShape[] boundingBoxes = new VoxelShape[7];
 
 	protected HashMap<EnumConnectType[], VoxelShape> shapestates = new HashMap<>();
-	protected boolean locked = false;
 
 	public BlockLogisticalManager() {
 		super(Properties.copy(Blocks.IRON_BLOCK).strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
@@ -67,44 +64,39 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 	}
 
 	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
+	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+
 		VoxelShape shape = boundingBoxes[6];
 		EnumConnectType[] checked = new EnumConnectType[6];
-
-		BlockEntity entity = level.getBlockEntity(pos);
-
-		if (!(entity instanceof TileLogisticalManager)) {
+		
+		BlockEntity entity = worldIn.getBlockEntity(pos);
+		
+		if(!(entity instanceof IConnectTile)) {
 			return Shapes.empty();
 		}
-
-		EnumConnectType[] connections = ((TileLogisticalManager) entity).readConnections();
+		
+		EnumConnectType[] connections = ((IConnectTile) entity).readConnections();
 
 		for (int i = 0; i < 6; i++) {
 			EnumConnectType connection = connections[i];
-
+			
 			if (connection != EnumConnectType.NONE) {
 				checked[i] = connection;
 			}
 
 		}
-		locked = true;
 		if (shapestates.containsKey(checked)) {
-			locked = false;
 			return shapestates.get(checked);
 		}
-		locked = false;
 		for (int i = 0; i < 6; i++) {
-
+			
 			EnumConnectType connection = checked[i];
-
-			if (connection == null) {
+			
+			if(connection == null) {
 				continue;
 			}
-
+			
 			shape = Shapes.join(shape, boundingBoxes[i], BooleanOp.OR);
-		}
-		while (locked) {
-			System.out.println("Bounding box collided with another block's bounding box!");
 		}
 		shapestates.put(checked, shape);
 		if (shape == null) {
@@ -145,12 +137,10 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 
 	@Override
 	public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor world, BlockPos currentPos, BlockPos facingPos) {
-		if (stateIn.getValue(BlockStateProperties.WATERLOGGED) == Boolean.TRUE) {
-			world.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(world));
-		}
+		stateIn = super.updateShape(stateIn, facing, facingState, world, currentPos, facingPos);
 		TileLogisticalManager tile = (TileLogisticalManager) world.getBlockEntity(currentPos);
 		EnumConnectType connection = EnumConnectType.NONE;
-		if (tile == null || world.isClientSide()) {
+		if (tile == null) {
 			return stateIn;
 		}
 		if (TileLogisticalManager.isQuarry(facingPos, world)) {
@@ -160,28 +150,6 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 		}
 		tile.writeConnection(facing, connection);
 		return stateIn;
-	}
-
-	@Override
-	public void onPlace(BlockState state, Level worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		super.onPlace(state, worldIn, pos, oldState, isMoving);
-		if (!worldIn.isClientSide) {
-			BlockEntity tile = worldIn.getBlockEntity(pos);
-			if (tile instanceof TileLogisticalManager manager) {
-				manager.refreshConnections();
-			}
-		}
-	}
-
-	@Override
-	public void onNeighborChange(BlockState state, LevelReader world, BlockPos pos, BlockPos neighbor) {
-		super.onNeighborChange(state, world, pos, neighbor);
-		if (!world.isClientSide()) {
-			BlockEntity tile = world.getBlockEntity(pos);
-			if (tile instanceof TileLogisticalManager manager) {
-				manager.refreshConnections();
-			}
-		}
 	}
 
 }

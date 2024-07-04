@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedsuperconductivegreen_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedsuperconductivegreen_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedsuperconductivegreen_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wireceramicinsulatedsuperconductivegreen"
+    }
   }
 }

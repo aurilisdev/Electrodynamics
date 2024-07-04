@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wirehighlyinsulatedironyellow_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wirehighlyinsulatedironyellow_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wirehighlyinsulatedironyellow_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wirehighlyinsulatedironyellow"
+    }
   }
 }

@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wireinsulatedtinbrown_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wireinsulatedtinbrown_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wireinsulatedtinbrown_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wireinsulatedtinbrown"
+    }
   }
 }

@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wirelogisticsironblue_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wirelogisticsironblue_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wirelogisticsironblue_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wirelogisticsironblue"
+    }
   }
 }

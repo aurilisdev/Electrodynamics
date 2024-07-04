@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import com.google.common.collect.Sets;
 
 import electrodynamics.api.network.cable.type.IFluidPipe;
+import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.common.network.type.FluidNetwork;
 import electrodynamics.common.network.utils.FluidUtilities;
 import electrodynamics.prefab.network.AbstractNetwork;
@@ -229,6 +230,20 @@ public abstract class GenericTileFluidPipe extends GenericConnectTile implements
 	@Override
 	public void onLoad() {
 		super.onLoad();
+		// TODO remove in next version release; this is a temp hack for now
+		if (super.connections.get() == 0) {
+			for (Direction dir : Direction.values()) {
+				EnumConnectType connection = EnumConnectType.NONE;
+				BlockEntity otherTile = level.getBlockEntity(getBlockPos().relative(dir));
+				if (otherTile instanceof IFluidPipe) {
+					connection = EnumConnectType.WIRE;
+				} else if (FluidUtilities.isFluidReceiver(otherTile, dir.getOpposite())) {
+					connection = EnumConnectType.INVENTORY;
+				}
+				writeConnection(dir, connection);
+			}
+		}
+		// end temp hack
 		Scheduler.schedule(1, this::refreshNetwork);
 	}
 }

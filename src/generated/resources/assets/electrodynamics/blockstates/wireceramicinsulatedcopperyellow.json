@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedcopperyellow_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedcopperyellow_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedcopperyellow_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wireceramicinsulatedcopperyellow"
+    }
   }
 }

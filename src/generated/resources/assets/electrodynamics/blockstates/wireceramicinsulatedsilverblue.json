@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedsilverblue_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedsilverblue_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedsilverblue_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wireceramicinsulatedsilverblue"
+    }
   }
 }

@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wirelogisticssuperconductiveblue_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wirelogisticssuperconductiveblue_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wirelogisticssuperconductiveblue_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wirelogisticssuperconductiveblue"
+    }
   }
 }

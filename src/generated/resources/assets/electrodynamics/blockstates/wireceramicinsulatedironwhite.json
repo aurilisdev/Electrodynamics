@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedironwhite_side"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedironwhite_none"
-  },
-  "wire": {
-    "model": "electrodynamics:block/wire/wireceramicinsulatedironwhite_side"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/wireceramicinsulatedironwhite"
+    }
   }
 }

@@ -1,12 +1,7 @@
 {
-  "inventory": {
-    "model": "electrodynamics:block/gaspipe/gaspipeuninsulatedsteelside"
-  },
-  "loader": "electrodynamics:electrodynamicscableloader",
-  "none": {
-    "model": "electrodynamics:block/gaspipe/gaspipeuninsulatedsteelcenter"
-  },
-  "wire": {
-    "model": "electrodynamics:block/gaspipe/gaspipeuninsulatedsteelside"
+  "variants": {
+    "": {
+      "model": "electrodynamics:block/gaspipeuninsulatedsteel"
+    }
   }
 }
