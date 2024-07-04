@@ -2,7 +2,6 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
@@ -21,6 +20,7 @@ import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.item.ItemMultiDigger;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.math.Color;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -44,7 +44,7 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -101,6 +101,7 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 							speedBoost = Math.min(speedBoost * 2.25, Math.pow(2.25, 3));
 							break;
 						case fortune:
+
 							if (!silkTouch) {
 								fortune = Math.min(fortune + 1, 9);
 							}
@@ -118,8 +119,19 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 			}
 
 			CompoundTag tag = stack.getOrCreateTag();
-			tag.putInt(NBTUtils.FORTUNE_ENCHANT, fortune);
-			tag.putBoolean(NBTUtils.SILK_TOUCH_ENCHANT, silkTouch);
+
+			ItemUtils.removeEnchantment(item, Enchantments.BLOCK_FORTUNE);
+
+			if (fortune > 0) {
+				stack.enchant(Enchantments.BLOCK_FORTUNE, fortune);
+			}
+
+			ItemUtils.removeEnchantment(item, Enchantments.SILK_TOUCH);
+
+			if (silkTouch) {
+				stack.enchant(Enchantments.SILK_TOUCH, 1);
+			}
+
 			tag.putDouble(NBTUtils.SPEED_ENCHANT, speedBoost);
 
 		});
@@ -172,11 +184,11 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 	public double getPowerUsage(ItemStack stack) {
 		double multiplier = Math.max(1, getSpeedBoost(stack));
 
-		if (hasSilkTouch(stack)) {
+		if (EnchantmentHelper.getEnchantments(stack).getOrDefault(Enchantments.SILK_TOUCH, 0) > 0) {
 			multiplier += 3;
 		}
 
-		int fortune = getFortuneLevel(stack);
+		int fortune = EnchantmentHelper.getEnchantments(stack).getOrDefault(Enchantments.BLOCK_FORTUNE, 0);
 
 		if (fortune > 0) {
 			multiplier += fortune;
@@ -203,25 +215,9 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 		IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
 		tooltip.add(ElectroTextUtils.tooltip("electricdrill.miningspeed", ChatFormatter.getChatDisplayShort(getHead(stack).speedBoost * 100, DisplayUnit.PERCENTAGE).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
 		tooltip.add(ElectroTextUtils.tooltip("electricdrill.usage", ChatFormatter.getChatDisplayShort(Math.max(getPowerUsage(stack), POWER_USAGE), DisplayUnit.JOULES).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
-		double speedboost = getSpeedBoost(stack);
-		if (speedboost > 1) {
-			tooltip.add(ElectroTextUtils.tooltip("electricdrill.overclock", ChatFormatter.getChatDisplayShort(speedboost * 100, DisplayUnit.PERCENTAGE).withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY));
-		}
-		int fortune = getFortuneLevel(stack);
-		if (fortune > 0) {
-			tooltip.add(ElectroTextUtils.tooltip("electricdrill.fortunelevel", fortune).withStyle(ChatFormatting.DARK_PURPLE));
-		}
-		if (hasSilkTouch(stack)) {
-			tooltip.add(ElectroTextUtils.tooltip("electricdrill.silktouch").withStyle(ChatFormatting.DARK_PURPLE));
-		}
-	}
 
-	@Override
-	public boolean isFoil(ItemStack pStack) {
-		if (getFortuneLevel(pStack) > 0 || hasSilkTouch(pStack)) {
-			return true;
-		}
-		return super.isFoil(pStack);
+		tooltip.add(ElectroTextUtils.tooltip("electricdrill.overclock", ChatFormatter.getChatDisplayShort(getSpeedBoost(stack) * 100, DisplayUnit.PERCENTAGE).withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY));
+
 	}
 
 	@Override
@@ -280,34 +276,6 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 
 		return true;
 
-	}
-
-	@Override
-	public Map<Enchantment, Integer> getAllEnchantments(ItemStack stack) {
-
-		int fortune = getFortuneLevel(stack);
-		boolean silkTouch = hasSilkTouch(stack);
-
-		Map<Enchantment, Integer> map = super.getAllEnchantments(stack);
-
-		if (fortune > 0) {
-			map.put(Enchantments.BLOCK_FORTUNE, fortune);
-		}
-
-		if (silkTouch) {
-			map.put(Enchantments.SILK_TOUCH, 1);
-		}
-
-		return map;
-
-	}
-
-	public static int getFortuneLevel(ItemStack stack) {
-		return stack.getOrCreateTag().getInt(NBTUtils.FORTUNE_ENCHANT);
-	}
-
-	public static boolean hasSilkTouch(ItemStack stack) {
-		return stack.getOrCreateTag().getBoolean(NBTUtils.SILK_TOUCH_ENCHANT);
 	}
 
 	public static double getSpeedBoost(ItemStack stack) {

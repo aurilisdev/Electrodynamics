@@ -1,12 +1,19 @@
 package electrodynamics.prefab.utilities;
 
+import java.util.Iterator;
+
 import javax.annotation.Nullable;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.block.Block;
 
 public class ItemUtils {
@@ -51,6 +58,18 @@ public class ItemUtils {
 			}
 		}
 		return false;
+	}
+	
+	public static void removeEnchantment(ItemStack item, Enchantment enchantment) {
+		ListTag listtag = item.getOrCreateTag().getList("Enchantments", 10);
+		Iterator<Tag> iterator = listtag.iterator();
+		CompoundTag itTag;
+		while(iterator.hasNext()) {
+			itTag = (CompoundTag) iterator.next();
+			if(itTag.contains("id") && new ResourceLocation(itTag.getString("id")).equals(EnchantmentHelper.getEnchantmentId(enchantment))) {
+				iterator.remove();
+			}
+		}
 	}
 
 }
