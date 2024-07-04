@@ -15,7 +15,7 @@ import com.google.gson.JsonParseException;
 import electrodynamics.client.modelbakers.ModelStateRotation;
 import electrodynamics.client.modelbakers.modelproperties.ModelPropertyConnections;
 import electrodynamics.common.block.connect.util.EnumConnectType;
-import electrodynamics.prefab.tile.types.GenericConnectTile;
+import electrodynamics.prefab.tile.types.IConnectTile;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.BlockModel;
@@ -33,6 +33,7 @@ import net.minecraft.util.GsonHelper;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockAndTintGetter;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.client.ChunkRenderTypeSet;
 import net.minecraftforge.client.model.IDynamicBakedModel;
 import net.minecraftforge.client.model.data.ModelData;
 import net.minecraftforge.client.model.geometry.IGeometryBakingContext;
@@ -40,13 +41,14 @@ import net.minecraftforge.client.model.geometry.IGeometryLoader;
 import net.minecraftforge.client.model.geometry.IUnbakedGeometry;
 
 public class CableModelLoader implements IGeometryLoader<CableModelLoader.WirePartGeometry> {
-	
+
 	public static final String ID = "electrodynamicscableloader";
 
 	public static final CableModelLoader INSTANCE = new CableModelLoader();
 
 	@Override
 	public WirePartGeometry read(JsonObject json, JsonDeserializationContext context) throws JsonParseException {
+
 		BlockModel none = context.deserialize(GsonHelper.getAsJsonObject(json, EnumConnectType.NONE.toString()), BlockModel.class);
 		BlockModel wire = context.deserialize(GsonHelper.getAsJsonObject(json, EnumConnectType.WIRE.toString()), BlockModel.class);
 		BlockModel inventory = context.deserialize(GsonHelper.getAsJsonObject(json, EnumConnectType.INVENTORY.toString()), BlockModel.class);
@@ -63,6 +65,7 @@ public class CableModelLoader implements IGeometryLoader<CableModelLoader.WirePa
 			this.none = none;
 			this.wire = wire;
 			this.inventory = inventory;
+
 		}
 
 		@Override
@@ -104,6 +107,7 @@ public class CableModelLoader implements IGeometryLoader<CableModelLoader.WirePa
 		private final boolean isGui3d;
 		private final boolean isSideLit;
 		private final TextureAtlasSprite particle;
+		// render type for general model defined by this one
 		private final BakedModel none;
 		private final BakedModel[] wires;
 		private final BakedModel[] inventories;
@@ -149,6 +153,13 @@ public class CableModelLoader implements IGeometryLoader<CableModelLoader.WirePa
 		}
 
 		@Override
+		public ChunkRenderTypeSet getRenderTypes(@NotNull BlockState state, @NotNull RandomSource rand, @NotNull ModelData data) {
+
+			return none.getRenderTypes(state, rand, data);
+
+		}
+
+		@Override
 		public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction side, @NotNull RandomSource rand, @NotNull ModelData extraData, @Nullable RenderType renderType) {
 			EnumConnectType[] data = extraData.get(ModelPropertyConnections.INSTANCE);
 			if (data == null) {
@@ -186,7 +197,7 @@ public class CableModelLoader implements IGeometryLoader<CableModelLoader.WirePa
 
 		@Override
 		public @NotNull ModelData getModelData(@NotNull BlockAndTintGetter level, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull ModelData modelData) {
-			if (level.getBlockEntity(pos) instanceof GenericConnectTile tile) {
+			if (level.getBlockEntity(pos) instanceof IConnectTile tile) {
 				return ModelData.builder().with(ModelPropertyConnections.INSTANCE, tile.readConnections()).build();
 			}
 			return modelData;

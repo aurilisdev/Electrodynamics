@@ -1,7 +1,5 @@
 package electrodynamics.common.tile.machines.quarry;
 
-import java.util.Optional;
-
 import org.jetbrains.annotations.NotNull;
 
 import electrodynamics.client.modelbakers.modelproperties.ModelPropertyConnections;
@@ -13,6 +11,7 @@ import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.prefab.tile.components.IComponentType;
 import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.prefab.tile.types.IConnectTile;
 import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import net.minecraft.core.BlockPos;
@@ -27,21 +26,21 @@ import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
 
-public class TileLogisticalManager extends GenericTile {
+public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
 	private TileQuarry[] quarries = new TileQuarry[6];
 	private BlockEntity[] inventories = new BlockEntity[6];
 
 	// DUNSWE
 
-	public static final int DOWN_MASK = 0b11110000000000000000000000000000;
-	public static final int UP_MASK = 0b00001111000000000000000000000000;
-	public static final int NORTH_MASK = 0b00000000111100000000000000000000;
-	public static final int SOUTH_MASK = 0b00000000000011110000000000000000;
-	public static final int WEST_MASK = 0b00000000000000001111000000000000;
-	public static final int EAST_MASK = 0b00000000000000000000111100000000;
+	public static final int DOWN_MASK = 0b00000000000000000000000000001111;
+	public static final int UP_MASK = 0b00000000000000000000000011110000;
+	public static final int NORTH_MASK = 0b00000000000000000000111100000000;
+	public static final int SOUTH_MASK = 0b00000000000000001111000000000000;
+	public static final int WEST_MASK = 0b00000000000011110000000000000000;
+	public static final int EAST_MASK = 0b00000000111100000000000000000000;
 
-	public final Property<Integer> connections = property(new Property<>(PropertyType.Integer, "connections", 0).onChange((property, block) -> {
+	public final Property<Integer> connections = property(new Property<>(PropertyType.Integer, "connections", 0).onChange((property, old) -> {
 		if (!level.isClientSide) {
 			return;
 		}
@@ -56,20 +55,24 @@ public class TileLogisticalManager extends GenericTile {
 	private void tickServer(ComponentTickable tick) {
 		for (int i = 0; i < 6; i++) {
 			BlockEntity inventory = inventories[i];
-			if (inventory != null) {
-				LazyOptional<IItemHandler> lazy = inventory.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.values()[i].getOpposite());
-				if (lazy.isPresent()) {
-					Optional<IItemHandler> nonlazy = lazy.resolve();
-					if (nonlazy.isPresent()) {
-						IItemHandler handler = nonlazy.get();
-						for (TileQuarry quarry : quarries) {
-							if (quarry != null) {
-								manipulateItems(quarry.getComponent(IComponentType.Inventory), handler);
-							}
-						}
-					}
-				}
+
+			if (inventory == null) {
+				continue;
 			}
+			LazyOptional<IItemHandler> lazy = inventory.getCapability(ForgeCapabilities.ITEM_HANDLER, Direction.values()[i].getOpposite());
+
+			if (!lazy.isPresent()) {
+				continue;
+			}
+
+			IItemHandler handler = lazy.resolve().get();
+			for (TileQuarry quarry : quarries) {
+				if (quarry == null) {
+					continue;
+				}
+				manipulateItems(quarry.getComponent(IComponentType.Inventory), handler);
+			}
+
 		}
 
 	}
@@ -96,12 +99,15 @@ public class TileLogisticalManager extends GenericTile {
 		inventories = new BlockEntity[6];
 		for (Direction dir : Direction.values()) {
 			BlockEntity entity = level.getBlockEntity(getBlockPos().relative(dir));
-			if (entity != null) {
-				if (entity instanceof TileQuarry quarry) {
-					quarries[dir.ordinal()] = quarry;
-				} else if (entity.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).isPresent()) {
-					inventories[dir.ordinal()] = entity;
-				}
+
+			if (entity == null) {
+				continue;
+			}
+
+			if (entity instanceof TileQuarry quarry) {
+				quarries[dir.ordinal()] = quarry;
+			} else if (entity.getCapability(ForgeCapabilities.ITEM_HANDLER, dir.getOpposite()).isPresent()) {
+				inventories[dir.ordinal()] = entity;
 			}
 		}
 	}
@@ -177,6 +183,11 @@ public class TileLogisticalManager extends GenericTile {
 	public EnumConnectType readConnection(Direction dir) {
 
 		int connectionData = connections.get();
+
+		if (connectionData == 0) {
+			return EnumConnectType.NONE;
+		}
+
 		int extracted = 0;
 		switch (dir) {
 		case DOWN:
@@ -201,39 +212,42 @@ public class TileLogisticalManager extends GenericTile {
 			break;
 		}
 
-		return EnumConnectType.values()[(extracted << dir.ordinal() * 4)];
+		// return EnumConnectType.NONE;
+
+		return EnumConnectType.values()[(extracted >> (dir.ordinal() * 4))];
 
 	}
 
 	public void writeConnection(Direction dir, EnumConnectType connection) {
 
-		int connectionData = connections.get();
+		int connectionData = this.connections.get();
+		int masked;
 
 		switch (dir) {
 		case DOWN:
-			connectionData = connectionData & ~DOWN_MASK;
+			masked = connectionData & ~DOWN_MASK;
 			break;
 		case UP:
-			connectionData = connectionData & ~UP_MASK;
+			masked = connectionData & ~UP_MASK;
 			break;
 		case NORTH:
-			connectionData = connectionData & ~NORTH_MASK;
+			masked = connectionData & ~NORTH_MASK;
 			break;
 		case SOUTH:
-			connectionData = connectionData & ~SOUTH_MASK;
+			masked = connectionData & ~SOUTH_MASK;
 			break;
 		case WEST:
-			connectionData = connectionData & ~WEST_MASK;
+			masked = connectionData & ~WEST_MASK;
 			break;
 		case EAST:
-			connectionData = connectionData & ~EAST_MASK;
+			masked = connectionData & ~EAST_MASK;
 			break;
 		default:
+			masked = 0;
 			break;
 		}
-		connectionData = connectionData | (connection.ordinal() >> dir.ordinal() * 4);
 
-		connections.set(connectionData);
+		connections.set(masked | (connection.ordinal() << (dir.ordinal() * 4)));
 	}
 
 	public EnumConnectType[] readConnections() {

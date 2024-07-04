@@ -12,8 +12,8 @@ import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.api.capability.types.gas.IGasHandler;
 import electrodynamics.api.gas.GasAction;
 import electrodynamics.api.gas.GasStack;
-import electrodynamics.api.network.cable.type.IFluidPipe;
 import electrodynamics.api.network.cable.type.IGasPipe;
+import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.common.network.type.GasNetwork;
 import electrodynamics.common.network.utils.GasUtilities;
 import electrodynamics.prefab.network.AbstractNetwork;
@@ -159,7 +159,7 @@ public abstract class GenericTileGasPipe extends GenericConnectTile implements I
 		ArrayList<GasNetwork> foundNetworks = new ArrayList<>();
 		for (Direction dir : Direction.values()) {
 			BlockEntity facing = level.getBlockEntity(new BlockPos(worldPosition).relative(dir));
-			if (facing instanceof IFluidPipe p && p.getNetwork() instanceof GasNetwork n) {
+			if (facing instanceof IGasPipe p && p.getNetwork() instanceof GasNetwork n) {
 				foundNetworks.add(n);
 			}
 		}
@@ -243,6 +243,20 @@ public abstract class GenericTileGasPipe extends GenericConnectTile implements I
 	@Override
 	public void onLoad() {
 		super.onLoad();
+		// TODO remove in next version release; this is a temp hack for now
+		if (super.connections.get() == 0) {
+			for (Direction dir : Direction.values()) {
+				EnumConnectType connection = EnumConnectType.NONE;
+				BlockEntity otherTile = level.getBlockEntity(getBlockPos().relative(dir));
+				if (otherTile instanceof IGasPipe) {
+					connection = EnumConnectType.WIRE;
+				} else if (GasUtilities.isGasReciever(otherTile, dir.getOpposite())) {
+					connection = EnumConnectType.INVENTORY;
+				}
+				writeConnection(dir, connection);
+			}
+		}
+		// end temp hack
 		Scheduler.schedule(1, this::refreshNetwork);
 	}
 

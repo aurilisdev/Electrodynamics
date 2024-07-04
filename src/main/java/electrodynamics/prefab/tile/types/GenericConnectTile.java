@@ -16,7 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.client.model.data.ModelData;
 
-public abstract class GenericConnectTile extends GenericTile {
+public abstract class GenericConnectTile extends GenericTile implements IConnectTile {
 
 	// DUNSWE
 
