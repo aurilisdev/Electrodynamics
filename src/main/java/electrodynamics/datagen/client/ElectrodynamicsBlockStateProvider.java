@@ -3,7 +3,6 @@ package electrodynamics.datagen.client;
 import javax.annotation.Nullable;
 
 import electrodynamics.api.References;
-import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates.AddonTankNeighborType;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates.ManipulatorHeatingStatus;
@@ -20,7 +19,6 @@ import electrodynamics.common.block.subtype.SubtypeWire.Conductor;
 import electrodynamics.common.block.subtype.SubtypeWire.InsulationMaterial;
 import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
 import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
-import electrodynamics.datagen.utils.model.GeneratedBlockStateCableModel;
 import electrodynamics.datagen.utils.model.WireModelBuilder;
 import electrodynamics.prefab.block.GenericEntityBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
