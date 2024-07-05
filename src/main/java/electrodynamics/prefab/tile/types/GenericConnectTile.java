@@ -1,7 +1,6 @@
 package electrodynamics.prefab.tile.types;
 
 import org.jetbrains.annotations.NotNull;
-
 import electrodynamics.client.modelbakers.modelproperties.ModelPropertyConnections;
 import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.prefab.properties.Property;
@@ -152,7 +151,8 @@ public abstract class GenericConnectTile extends GenericTile implements IConnect
 		connections.set(masked | (connection.ordinal() << (dir.ordinal() * 4)));
 	}
 	
-	public EnumConnectType[] readConnections() {
+	@Override
+  public EnumConnectType[] readConnections() {
 		EnumConnectType[] connections = new EnumConnectType[6];
 		for(Direction dir : Direction.values()) {
 			connections[dir.ordinal()] = readConnection(dir);

@@ -1,9 +1,7 @@
 package electrodynamics.prefab.tile;
 
 import java.util.UUID;
-
 import org.jetbrains.annotations.NotNull;
-
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.References;
 import electrodynamics.api.capability.ElectrodynamicsCapabilities;
@@ -21,7 +19,6 @@ import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.prefab.tile.components.type.ComponentName;
 import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
 import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
 import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ItemUtils;
 import net.minecraft.core.BlockPos;

@@ -1,7 +1,6 @@
 package electrodynamics.common.tile.machines.quarry;
 
 import org.jetbrains.annotations.NotNull;
-
 import electrodynamics.client.modelbakers.modelproperties.ModelPropertyConnections;
 import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.common.item.ItemDrillHead;
@@ -250,7 +249,8 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
 		connections.set(masked | (connection.ordinal() << (dir.ordinal() * 4)));
 	}
 
-	public EnumConnectType[] readConnections() {
+	@Override
+  public EnumConnectType[] readConnections() {
 		EnumConnectType[] connections = new EnumConnectType[6];
 		for (Direction dir : Direction.values()) {
 			connections[dir.ordinal()] = readConnection(dir);
