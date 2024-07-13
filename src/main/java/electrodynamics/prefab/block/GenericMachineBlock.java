@@ -24,57 +24,73 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class GenericMachineBlock extends GenericEntityBlockWaterloggable {
 
-	protected BlockEntitySupplier<BlockEntity> blockEntitySupplier;
+    protected BlockEntitySupplier<BlockEntity> blockEntitySupplier;
 
-	public static HashMap<BlockPos, LivingEntity> IPLAYERSTORABLE_MAP = new HashMap<>();
+    public static HashMap<BlockPos, LivingEntity> IPLAYERSTORABLE_MAP = new HashMap<>();
+    @Deprecated
+    private boolean removesFaceable = false;
 
-	public GenericMachineBlock(BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
-		super(Properties.copy(Blocks.IRON_BLOCK).strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
-		registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
-		this.blockEntitySupplier = blockEntitySupplier;
+    public GenericMachineBlock(BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
+	super(Properties.copy(Blocks.IRON_BLOCK).strength(3.5F).sound(SoundType.METAL).noOcclusion()
+		.requiresCorrectToolForDrops());
+	registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
+	this.blockEntitySupplier = blockEntitySupplier;
+    }
+
+    @Deprecated
+    public GenericMachineBlock(BlockEntitySupplier<BlockEntity> blockEntitySupplier, boolean removeFaceable) {
+	super(Properties.copy(Blocks.IRON_BLOCK).strength(3.5F).sound(SoundType.METAL).noOcclusion()
+		.requiresCorrectToolForDrops());
+	registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
+	this.blockEntitySupplier = blockEntitySupplier;
+	removesFaceable = true;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+	if (state.hasProperty(GenericEntityBlock.FACING)) {
+	    return VoxelShapes.getShape(worldIn.getBlockState(pos).getBlock(),
+		    state.getValue(GenericEntityBlock.FACING));
+
 	}
+	return super.getShape(state, worldIn, pos, context);
+    }
 
-	@Override
-	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-		if (state.hasProperty(GenericEntityBlock.FACING)) {
-
-			return VoxelShapes.getShape(worldIn.getBlockState(pos).getBlock(), state.getValue(GenericEntityBlock.FACING));
-
-		}
-		return super.getShape(state, worldIn, pos, context);
+    @Override
+    public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer,
+	    ItemStack pStack) {
+	if (isIPlayerStorable()) {
+	    IPLAYERSTORABLE_MAP.put(pPos, pPlacer);
 	}
+	super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
+    }
 
-	@Override
-	public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
-		if (isIPlayerStorable()) {
-			IPLAYERSTORABLE_MAP.put(pPos, pPlacer);
-		}
-		super.setPlacedBy(pLevel, pPos, pState, pPlacer, pStack);
-	}
+    @Override
+    public final BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+	return blockEntitySupplier.create(pos, state);
+    }
 
-	@Override
-	public final BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return blockEntitySupplier.create(pos, state);
-	}
+    @Override
+    public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
+	return 1;
+    }
 
-	@Override
-	public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
-		return 1;
-	}
+    @Override
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
+	if (!removesFaceable)
+	    return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection().getOpposite());
+	return super.getStateForPlacement(context);
+    }
 
-	@Override
-	public BlockState getStateForPlacement(BlockPlaceContext context) {
-		return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection().getOpposite());
-	}
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+	super.createBlockStateDefinition(builder);
+	if (!removesFaceable)
+	    builder.add(FACING);
+    }
 
-	@Override
-	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		super.createBlockStateDefinition(builder);
-		builder.add(FACING);
-	}
-
-	public boolean isIPlayerStorable() {
-		return false;
-	}
+    public boolean isIPlayerStorable() {
+	return false;
+    }
 
 }
