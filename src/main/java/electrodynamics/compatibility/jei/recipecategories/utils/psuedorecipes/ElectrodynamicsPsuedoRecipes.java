@@ -25,6 +25,9 @@ public class ElectrodynamicsPsuedoRecipes {
 	public static final HashSet<PsuedoGas2FluidRecipe> CONDENSATION_RECIPES = new HashSet<>();
 
 	public static void initRecipes() {
+		// Take care to clear pseudorecipes from previous reload
+		CONDENSATION_RECIPES.clear();
+		EVAPORATION_RECIPES.clear();
 
 		for (Gas gas : ElectrodynamicsRegistries.gasRegistry().getValues()) {
 
