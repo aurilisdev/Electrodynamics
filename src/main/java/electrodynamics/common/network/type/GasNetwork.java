@@ -93,10 +93,16 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 
 		GasStack copy = transfer.copy();
 
+		// Don't allow more than how much can be transferred at once throughout the network
+		// Fails if there is a pipe in the network that is not in the "path" and it has lower throughput,
+		// but it's either this, pathfinding through the network or discarding throughput completely
+		// (at which point copper and steel pipes are exactly the same)
+		copy.setAmount(Math.min(copy.getAmount(), networkMaxTransfer));
+
 		// BlockPos senderPos = ignored.get(0).getBlockPos();
 		GasStack taken = new GasStack(transfer.getGas(), 0, transfer.getTemperature(), transfer.getPressure());
 
-		Pair<GasStack, Set<TileGasPipePump>> priorityTaken = emitToPumps(transfer, ignored);
+		Pair<GasStack, Set<TileGasPipePump>> priorityTaken = emitToPumps(copy, ignored);
 
 		copy.shrink(priorityTaken.getFirst().getAmount());
 		taken.grow(priorityTaken.getFirst().getAmount());

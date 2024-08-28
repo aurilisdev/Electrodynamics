@@ -62,9 +62,15 @@ public class FluidNetwork extends AbstractNetwork<IFluidPipe, SubtypeFluidPipe, 
 		}
 
 		FluidStack initial = transfer.copy();
+
+		// Don't allow more than how much can be transferred at once throughout the network
+		// Fails if there is a pipe in the network that is not in the "path" and it has lower throughput,
+		// but it's either this, pathfinding through the network or discarding throughput completely
+		initial.setAmount(Math.min(initial.getAmount(), (int) networkMaxTransfer));
+
 		FluidStack taken = new FluidStack(transfer.getFluid(), 0);
 
-		Pair<FluidStack, Set<TileFluidPipePump>> priorityFilled = emitToPumps(transfer, ignored);
+		Pair<FluidStack, Set<TileFluidPipePump>> priorityFilled = emitToPumps(initial, ignored);
 
 		initial.shrink(priorityFilled.getFirst().getAmount());
 		taken.grow(priorityFilled.getFirst().getAmount());
