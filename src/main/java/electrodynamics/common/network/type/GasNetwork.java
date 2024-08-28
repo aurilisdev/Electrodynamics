@@ -18,6 +18,7 @@ import electrodynamics.common.network.utils.GasUtilities;
 import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.common.tile.pipelines.gas.TileGasPipePump;
 import electrodynamics.prefab.network.AbstractNetwork;
+import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -343,7 +344,7 @@ public class GasNetwork extends AbstractNetwork<IGasPipe, SubtypeGasPipe, BlockE
 		for (SubtypeGasPipe pipe : overloadedPipes) {
 			for (IGasPipe gasPipe : conductorTypeMap.get(pipe)) {
 				if (live) {
-					gasPipe.destroyViolently();
+					Scheduler.schedule(1, gasPipe::destroyViolently);
 				}
 				exploded = true;
 			}
