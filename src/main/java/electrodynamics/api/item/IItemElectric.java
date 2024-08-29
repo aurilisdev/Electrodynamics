@@ -133,12 +133,14 @@ public interface IItemElectric {
 		for (int i = 0; i < inv.items.size(); i++) {
 			ItemStack playerItem = inv.getItem(i).copy();
 
-			if (!playerItem.isEmpty() && playerItem.getItem() instanceof IItemElectric electric && electric.isEnergyStorageOnly() && electric.getJoulesStored(playerItem) > 0 && electric.getElectricProperties().extract.getVoltage() == electricItem.getElectricProperties().extract.getVoltage()) {
+			// Only allow batteries that have the same receive and extract voltage
+			if (!playerItem.isEmpty() && playerItem.getItem() instanceof IItemElectric electric && electric.isEnergyStorageOnly() && electric.getJoulesStored(playerItem) > 0 && electric.getElectricProperties().extract.getVoltage() == electricItem.getElectricProperties().extract.getVoltage() && electric.getElectricProperties().receive.getVoltage() == electricItem.getElectricProperties().receive.getVoltage()) {
 				ItemStack currBattery = electricItem.getCurrentBattery(tool);
 				if (currBattery.isEmpty()) {
 					return;
 				}
 				double joulesStored = electricItem.getJoulesStored(tool);
+				electricItem.setCurrentBattery(tool, playerItem);
 				IItemElectric.setEnergyStored(tool, electric.getJoulesStored(playerItem));
 				IItemElectric.setEnergyStored(currBattery, joulesStored);
 				inv.setItem(i, ItemStack.EMPTY);
@@ -174,7 +176,7 @@ public interface IItemElectric {
 		IItemElectric thisElectric = (IItemElectric) stack.getItem();
 		IItemElectric otherElectric = (IItemElectric) other.getItem();
 
-		if (otherElectric.getJoulesStored(other) == 0 || otherElectric.getElectricProperties().receive.getVoltage() != thisElectric.getElectricProperties().receive.getVoltage()) {
+		if (otherElectric.getJoulesStored(other) == 0 || otherElectric.getElectricProperties().receive.getVoltage() != thisElectric.getElectricProperties().receive.getVoltage() || thisElectric.getElectricProperties().extract.getVoltage() != otherElectric.getElectricProperties().extract.getVoltage()) {
 			return false;
 		}
 
@@ -211,9 +213,13 @@ public interface IItemElectric {
 	default void setCurrentBattery(ItemStack tool, ItemStack battery) {
 		CompoundTag tag = tool.getOrCreateTag();
 		tag.remove(CURRENT_BATTERY);
-
-		IItemElectric.setMaximumCapacity(tool, getMaximumCapacity(tool));
-
+		if (battery.getItem() instanceof IItemElectric electric) {
+			// If the battery is an electric item, use its capacity
+			IItemElectric.setMaximumCapacity(tool, electric.getMaximumCapacity(battery));
+		} else {
+			// Failsafe, use the capacity of the current item instead (previous behaviour)
+			IItemElectric.setMaximumCapacity(tool, getMaximumCapacity(tool));
+		}
 		tag.put(CURRENT_BATTERY, battery.save(new CompoundTag()));
 	}
 
