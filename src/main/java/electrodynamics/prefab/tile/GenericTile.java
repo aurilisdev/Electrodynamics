@@ -1,6 +1,9 @@
 package electrodynamics.prefab.tile;
 
 import java.util.UUID;
+
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.jetbrains.annotations.NotNull;
 import electrodynamics.api.IWrenchItem;
 import electrodynamics.api.References;
@@ -118,8 +121,14 @@ public abstract class GenericTile extends BlockEntity implements Nameable, IProp
 		super.load(compound);
 		for (Property<?> prop : propertyManager.getProperties()) {
 			if (prop.shouldSave()) {
+				Object previousValue = prop.get();
 				prop.load(prop.getType().readFromTag(new TagReader(prop, compound)));
 				compound.remove(prop.getName());
+				// Only request a sync from the server for properties whose value is different from the previous
+				// (or if the previous value was null, for whatever reason)
+				if (FMLEnvironment.dist == Dist.DEDICATED_SERVER && (previousValue == null || !previousValue.equals(prop.get()))) {
+					propertyManager.setDirty(prop);
+				}
 			}
 		}
 		for (IComponent component : components) {
