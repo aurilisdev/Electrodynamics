@@ -28,7 +28,7 @@ public class FluidItem2ItemRecipeSerializer<T extends FluidItem2ItemRecipe> exte
 		ItemStack output = getItemOutput(recipeId, recipeJson);
 		double experience = getExperience(recipeJson);
 		int ticks = getTicks(recipeId, recipeJson);
-		double usagePerTick = getTicks(recipeId, recipeJson);
+		double usagePerTick = getUsagePerTick(recipeId, recipeJson);
 		ProbableItem[] itemBi = getItemBiproducts(recipeId, recipeJson);
 		ProbableFluid[] fluidBi = getFluidBiproducts(recipeId, recipeJson);
 		ProbableGas[] gasBi = getGasBiproducts(recipeId, recipeJson);
