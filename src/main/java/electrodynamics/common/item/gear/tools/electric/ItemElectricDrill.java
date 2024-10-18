@@ -166,7 +166,7 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 			return 0;
 		}
 
-		float normalized = (float) Math.max(1, getHead(stack).speedBoost * getSpeedBoost(stack) / 2.0);
+		float normalized = (float) Math.max(1, getHead(stack).speedBoost * getSpeedBoost(stack));
 
 		return super.getDestroySpeed(stack, state) * normalized;
 
