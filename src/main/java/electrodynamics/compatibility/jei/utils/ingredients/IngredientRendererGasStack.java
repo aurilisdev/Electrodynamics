@@ -81,7 +81,7 @@ public class IngredientRendererGasStack implements IIngredientRenderer<GasStack>
 
 	@Override
 	public int getHeight() {
-		return tooltipHeight - 1;
+		return tooltipHeight;
 	}
 
 }
