@@ -147,7 +147,7 @@ public class ItemCombatArmor extends ItemElectrodynamicsArmor implements IItemEl
         items.add(empty);
 
         ItemStack charged = new ItemStack(this);
-        IItemElectric.setEnergyStored(charged, properties.capacity);
+        IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
         items.add(charged);
         break;
       case CHEST:
@@ -268,7 +268,7 @@ public class ItemCombatArmor extends ItemElectrodynamicsArmor implements IItemEl
     ItemCombatArmor combat = (ItemCombatArmor) stack.getItem();
     switch (combat.getEquipmentSlot()) {
       case HEAD, LEGS:
-        return getJoulesStored(stack) < properties.capacity;
+        return getJoulesStored(stack) < getMaximumCapacity(stack);
       case CHEST:
         return ItemJetpack.staticIsBarVisible(stack);
       case FEET:
@@ -283,7 +283,7 @@ public class ItemCombatArmor extends ItemElectrodynamicsArmor implements IItemEl
     ItemCombatArmor combat = (ItemCombatArmor) stack.getItem();
     switch (combat.getEquipmentSlot()) {
       case HEAD, LEGS:
-        return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
+        return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
       case CHEST:
         return ItemJetpack.staticGetBarWidth(stack);
       case FEET:
