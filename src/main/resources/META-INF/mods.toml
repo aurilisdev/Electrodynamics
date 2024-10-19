@@ -8,7 +8,7 @@ version="${file.jarVersion}" #mandatory
 displayName="Electrodynamics" #mandatory
 displayURL="https://github.com/aurilisdev/Electrodynamics" #optional
 logoFile="electrodynamics.png" #optional
-credits="Thanks to all contributors. French translation by Roi Pasteque." #optional
+credits="Thanks to all contributors. Roi Pasteque, FITFC, Quarkrus, JSBurger, 9thCore." #optional
 authors="aurilisdev, skip999" #optional
 description='''
 '''
