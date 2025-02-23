@@ -17,6 +17,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class Item2ItemRecipeSerializer<T extends Item2ItemRecipe> extends ElectrodynamicsRecipeSerializer<T> {
 
+    @SuppressWarnings("unused")
     private final Item2ItemRecipe.Factory<T> factory;
     private final MapCodec<T> codec;
     private final StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;

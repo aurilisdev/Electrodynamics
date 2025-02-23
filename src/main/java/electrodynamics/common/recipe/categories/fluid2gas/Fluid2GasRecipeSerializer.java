@@ -17,7 +17,8 @@ import net.minecraft.network.codec.StreamCodec;
 
 public class Fluid2GasRecipeSerializer<T extends Fluid2GasRecipe> extends ElectrodynamicsRecipeSerializer<T> {
 
-    private final Fluid2GasRecipe.Factory<T> factory;
+    @SuppressWarnings("unused")
+	private final Fluid2GasRecipe.Factory<T> factory;
     private final MapCodec<T> codec;
 
     private final StreamCodec<RegistryFriendlyByteBuf, T> streamCodec;

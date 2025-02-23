@@ -60,7 +60,6 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
 
     public static final double POWER_USAGE = 1666666.66667 / (120.0 * 20.0);
 
-    private static final String SUBTYPE = "subtype";
     private final ElectricItemProperties properties;
 
     public ItemElectricDrill(ElectricItemProperties properties, Holder<CreativeModeTab> creativeTab) {

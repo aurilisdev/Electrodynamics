@@ -61,7 +61,8 @@ public class GasCollectorChromoCardsProvider implements DataProvider {
         jsons.put("sulfurdioxide", toJson(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.sulfurdioxide), ElectrodynamicsGases.SULFUR_DIOXIDE.value(), 1, 373, Gas.PRESSURE_AT_SEA_LEVEL, BiomeTags.IS_NETHER));
     }
 
-    private JsonObject toJson(TagKey<Item> tag, Gas gas, int amount, int temperature, int pressure, @Nullable TagKey<Biome> biomeTag) {
+    @SuppressWarnings("unused")
+	private JsonObject toJson(TagKey<Item> tag, Gas gas, int amount, int temperature, int pressure, @Nullable TagKey<Biome> biomeTag) {
         return toJson("#" + tag.location().toString(), gas, amount, temperature, pressure, biomeTag);
     }
 

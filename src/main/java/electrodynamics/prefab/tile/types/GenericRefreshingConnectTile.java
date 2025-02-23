@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
+@SuppressWarnings("unchecked")
 public abstract class GenericRefreshingConnectTile<CABLETYPE, CONDUCTOR extends GenericRefreshingConnectTile<CABLETYPE, CONDUCTOR, NETWORK>, NETWORK extends AbstractNetwork<CONDUCTOR, CABLETYPE, ?, NETWORK>> extends GenericConnectTile implements IRefreshableCable<CABLETYPE, NETWORK> {
 
     private final EnumConnectType[] previousConnections = {EnumConnectType.NONE, EnumConnectType.NONE, EnumConnectType.NONE, EnumConnectType.NONE, EnumConnectType.NONE, EnumConnectType.NONE};
@@ -99,7 +100,7 @@ public abstract class GenericRefreshingConnectTile<CABLETYPE, CONDUCTOR extends 
         return network;
     }
 
-    @Override
+	@Override
     public void createNetworkFromThis() {
         network = createInstanceConductor(Sets.newHashSet((CONDUCTOR) this));
         network.refreshNewNetwork();
@@ -116,7 +117,7 @@ public abstract class GenericRefreshingConnectTile<CABLETYPE, CONDUCTOR extends 
     }
 
     @Override
-    public void updateNetwork(Direction[] dirs) {
+    public void updateNetwork(Direction... dirs) {
         if (isRemoved()) {
             return;
         }

@@ -75,6 +75,7 @@ public class ScreenComponentFluidGauge extends AbstractScreenComponentGauge {
 		return texture.getLocation();
 	}
 
+	@SuppressWarnings("removal")
 	@Override
 	protected List<? extends FormattedCharSequence> getTooltips() {
 		List<FormattedCharSequence> tooltips = new ArrayList<>();

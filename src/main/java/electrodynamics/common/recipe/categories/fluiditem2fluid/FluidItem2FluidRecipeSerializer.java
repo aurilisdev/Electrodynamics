@@ -18,6 +18,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 
 public class FluidItem2FluidRecipeSerializer<T extends FluidItem2FluidRecipe> extends ElectrodynamicsRecipeSerializer<T> {
 
+    @SuppressWarnings("unused")
     private final FluidItem2FluidRecipe.Factory<T> factory;
     private final MapCodec<T> codec;
 

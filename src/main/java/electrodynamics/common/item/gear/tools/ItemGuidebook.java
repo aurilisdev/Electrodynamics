@@ -20,6 +20,7 @@ import net.minecraft.world.level.Level;
 
 public class ItemGuidebook extends ItemElectrodynamics {
 
+    @SuppressWarnings("unused")
 	private static final String LINK = "https://wiki.aurilis.dev";
 	private static final Component CONTAINER_TITLE = Component.translatable("container.guidebook");
 

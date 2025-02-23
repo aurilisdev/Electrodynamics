@@ -157,7 +157,8 @@ public enum SubtypeGasPipe implements ISubtype, IGasPipe {
         private final double heatLoss;// degree Kelvin per Pipe
         private final int maxPressure;// atm
 
-        private final boolean corrodedByAcid;
+        @SuppressWarnings("unused")
+		private final boolean corrodedByAcid;
 
         private final String tooltipName;
 
