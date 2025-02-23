@@ -53,8 +53,6 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 
 			if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric electricItem) {
 
-				ComponentElectrodynamic electro = charger.getComponent(IComponentType.Electrodynamic);
-
 				chargingPercentage = electricItem.getJoulesStored(chargingItem) / electricItem.getElectricProperties().capacity * 100;
 				chargingPercentage = electricItem.getJoulesStored(chargingItem) / electricItem.getMaximumCapacity(chargingItem) * 100;
 			}

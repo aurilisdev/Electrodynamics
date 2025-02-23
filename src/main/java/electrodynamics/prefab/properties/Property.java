@@ -5,6 +5,7 @@ import java.util.function.Consumer;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.packet.types.server.PacketSendUpdatePropertiesServer;
+import electrodynamics.prefab.properties.IPropertyType.TagReader;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.Block;
@@ -19,7 +20,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
  */
 public class Property<T> {
     private PropertyManager manager;
-    private final IPropertyType type;
+    private final IPropertyType<T, ?> type;
     private boolean isDirty = true;
     private boolean shouldSave = true;
     private boolean shouldUpdateClient = true;
@@ -42,7 +43,7 @@ public class Property<T> {
 
     private boolean alreadySynced = false;
 
-    public Property(IPropertyType type, String name, T defaultValue) {
+    public Property(IPropertyType<T, ?> type, String name, T defaultValue) {
         this.type = type;
         if (name == null || name.length() == 0) {
             throw new RuntimeException("The property's name cannot be null or empty");
@@ -55,7 +56,7 @@ public class Property<T> {
         return value;
     }
 
-    public IPropertyType getType() {
+    public IPropertyType<T, ?> getType() {
         return type;
     }
 
@@ -85,17 +86,16 @@ public class Property<T> {
         this.manager = manager;
     }
 
-    public Property<T> set(Object updated) {
+    @SuppressWarnings("unchecked")
+	public Property<T> set(Object updated) {
 
         if (alreadySynced) {
             return this;
         }
-        /*
-        if (!updated.getClass().equals(value.getClass())) {
+        if (updated == null || !updated.getClass().equals(value.getClass())) {
             throw new RuntimeException("Value " + updated + " being set for " + getName() + " on tile " + getPropertyManager().getOwner() + " is an invalid data type!");
         }
 
-         */
         checkForChange((T) updated);
         T old = value;
         value = (T) updated;
@@ -207,9 +207,8 @@ public class Property<T> {
 
     public void loadFromTag(CompoundTag tag, HolderLookup.Provider registries) {
         try {
-            T data = (T) getType().readFromTag(new IPropertyType.TagReader(this, tag, registries));
+            T data = (T) getType().readFromTag(new TagReader<T>(this, tag, registries));
             if (data != null) {
-                T old = value;
                 value = data;
                 onChange.accept(this, value);
             }

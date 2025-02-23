@@ -37,7 +37,6 @@ public class ParticleLavaWithPhysics extends TextureSheetParticle {
     @Override
     public int getLightColor(float partialTick) {
         int i = super.getLightColor(partialTick);
-        int j = 240;
         int k = i >> 16 & 0xFF;
         return 240 | k << 16;
     }

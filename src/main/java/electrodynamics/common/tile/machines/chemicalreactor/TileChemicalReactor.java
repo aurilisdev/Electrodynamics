@@ -137,21 +137,21 @@ public class TileChemicalReactor extends GenericGasTile {
 
         if (locRecipe.hasItemBiproducts()) {
             ComponentInventory inv = getComponent(IComponentType.Inventory);
-            boolean itemBiRoom = pr.roomInItemBiSlots(inv.getBiprodsForProcessor(pr.getProcessorNumber()), locRecipe.getFullItemBiStacks());
+            boolean itemBiRoom = ComponentProcessor.roomInItemBiSlots(inv.getBiprodsForProcessor(pr.getProcessorNumber()), locRecipe.getFullItemBiStacks());
             if (!itemBiRoom) {
                 return false;
             }
         }
         if (locRecipe.hasFluidBiproducts()) {
             ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
-            boolean fluidBiRoom = pr.roomInBiproductFluidTanks(fluidHandler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
+            boolean fluidBiRoom = ComponentProcessor.roomInBiproductFluidTanks(fluidHandler.getOutputTanks(), locRecipe.getFullFluidBiStacks());
             if (!fluidBiRoom) {
                 return false;
             }
         }
         if (locRecipe.hasGasBiproducts()) {
             ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
-            boolean gasBiRoom = pr.roomInBiproductGasTanks(gasHandler.getOutputTanks(), locRecipe.getFullGasBiStacks());
+            boolean gasBiRoom = ComponentProcessor.roomInBiproductGasTanks(gasHandler.getOutputTanks(), locRecipe.getFullGasBiStacks());
             if (!gasBiRoom) {
                 return false;
             }

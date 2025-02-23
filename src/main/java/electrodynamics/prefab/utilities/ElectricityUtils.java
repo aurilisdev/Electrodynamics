@@ -28,7 +28,6 @@ public class ElectricityUtils {
                 if (ItemUtils.isIngredientMember(insulatingItems, armor.getItem())) {
                     float damage = (float) transfer.getAmps() / 10.0f;
                     if (Math.random() < damage) {
-                        int integerDamage = (int) Math.max(1, damage);
                         if (armor.getDamageValue() > armor.getMaxDamage()) {
                             armor.setCount(0);
                         }

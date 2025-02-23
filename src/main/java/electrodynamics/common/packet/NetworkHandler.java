@@ -8,7 +8,6 @@ import electrodynamics.common.packet.types.client.PacketAddClientRenderInfo;
 import electrodynamics.common.packet.types.client.PacketJetpackEquipedSound;
 import electrodynamics.common.packet.types.client.PacketRenderJetpackParticles;
 import electrodynamics.common.packet.types.client.PacketResetGuidebookPages;
-import electrodynamics.common.packet.types.client.PacketSendUpdatePropertiesClient;
 import electrodynamics.common.packet.types.client.PacketSetClientCoalGenFuels;
 import electrodynamics.common.packet.types.client.PacketSetClientCombustionFuel;
 import electrodynamics.common.packet.types.client.PacketSetClientGasCollectorCards;
@@ -45,7 +44,6 @@ public class NetworkHandler {
         registry.playToClient(PacketJetpackEquipedSound.TYPE, PacketJetpackEquipedSound.CODEC, PacketJetpackEquipedSound::handle);
         registry.playToClient(PacketRenderJetpackParticles.TYPE, PacketRenderJetpackParticles.CODEC, PacketRenderJetpackParticles::handle);
         registry.playToClient(PacketResetGuidebookPages.TYPE, PacketResetGuidebookPages.CODEC, PacketResetGuidebookPages::handle);
-        registry.playToClient(PacketSendUpdatePropertiesClient.TYPE, PacketSendUpdatePropertiesClient.CODEC, PacketSendUpdatePropertiesClient::handle);
         registry.playToClient(PacketSetClientCoalGenFuels.TYPE, PacketSetClientCoalGenFuels.CODEC, PacketSetClientCoalGenFuels::handle);
         registry.playToClient(PacketSetClientCombustionFuel.TYPE, PacketSetClientCombustionFuel.CODEC, PacketSetClientCombustionFuel::handle);
         registry.playToClient(PacketSetClientGasCollectorCards.TYPE, PacketSetClientGasCollectorCards.CODEC, PacketSetClientGasCollectorCards::handle);

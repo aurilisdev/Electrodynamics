@@ -68,7 +68,6 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) {
 
-        EnumConnectType[] checked = new EnumConnectType[6];
 
         BlockEntity entity = level.getBlockEntity(pos);
 

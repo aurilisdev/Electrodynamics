@@ -199,7 +199,6 @@ public class PropertyTypes {
                 Tag fluidTag = new CompoundTag();
                 fluidTag = FluidStack.OPTIONAL_CODEC.encode(writer.prop().get(), NbtOps.INSTANCE, fluidTag).getOrThrow();
                 writer.tag().put(writer.prop().getName(), fluidTag);
-                int i = 0;
             },
             //
             reader -> FluidStack.OPTIONAL_CODEC.decode(NbtOps.INSTANCE, reader.tag().getCompound(reader.prop().getName())).getOrThrow().getFirst()

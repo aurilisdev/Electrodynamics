@@ -21,7 +21,6 @@ public class HandlerCompositeArmor extends AbstractLivingDamageHandler {
 
 	@Override
 	public void handle(LivingDamageEvent.Pre event) {
-		LivingEntity entity = event.getEntity();
 		if (event.getSource().is(DamageTypes.FALL)) {
 			return;
 		}

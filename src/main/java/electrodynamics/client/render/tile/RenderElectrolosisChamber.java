@@ -213,7 +213,6 @@ public class RenderElectrolosisChamber extends AbstractTileRenderer<TileElectrol
 
         switch (tile.getFacing()) {
             case WEST:
-
                 return RENDER_WEST.move(tile.getBlockPos());
             case EAST:
                 return RENDER_EAST.move(tile.getBlockPos());

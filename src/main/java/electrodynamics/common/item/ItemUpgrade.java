@@ -113,6 +113,7 @@ public class ItemUpgrade extends ItemElectrodynamics {
 		return super.use(world, player, hand);
 	}
 
+	@SuppressWarnings("removal")
 	@Override
 	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 		if (!entity.level().isClientSide && entity.isShiftKeyDown()) {
