@@ -1,5 +1,7 @@
 package electrodynamics.api.multiblock.parent;
 
+import javax.annotation.Nonnull;
+
 import electrodynamics.api.multiblock.Subnode;
 import electrodynamics.api.multiblock.child.IMultiblockChildBlock;
 import electrodynamics.common.tile.TileMultiSubnode;
@@ -17,6 +19,8 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
 
 public interface IMultiblockParentTile {
 
@@ -25,7 +29,8 @@ public interface IMultiblockParentTile {
 	 * 
 	 * Yes, using an array is a little more confusing, however it gives a fixed index to a subnode
 	 * 
-	 * This is useful as it means a subnode can look itself up on the parent tile really quickly and reliably if there's a data point it needs to reference
+	 * This is useful as it means a subnode can look itself up on the parent tile really quickly and reliably if there's a data point
+	 * it needs to reference
 	 * 
 	 * 
 	 */
@@ -70,7 +75,13 @@ public interface IMultiblockParentTile {
 
 		/*
 		 * 
-		 * Iterator<Subnode> it = getSubNodes().iterator(); while (it.hasNext()) { BlockPos inPos = it.next().pos(); BlockPos offset = pos.offset(inPos); BlockState inState = world.getBlockState(offset); Block inBlock = inState.getBlock(); if (update) { if (inState.getMaterial().isReplaceable()) { world.setBlockAndUpdate(offset, ElectrodynamicsBlocks.multi.defaultBlockState()); } TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset); if (subnode != null) { subnode.nodePos.set(pos); } } else if (inBlock instanceof IMultiblockChildBlock) { TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset); if (subnode != null && subnode.nodePos.get().equals(pos)) { world.setBlockAndUpdate(offset, Blocks.AIR.defaultBlockState()); } } }
+		 * Iterator<Subnode> it = getSubNodes().iterator(); while (it.hasNext()) { BlockPos inPos = it.next().pos(); BlockPos offset =
+		 * pos.offset(inPos); BlockState inState = world.getBlockState(offset); Block inBlock = inState.getBlock(); if (update) { if
+		 * (inState.getMaterial().isReplaceable()) { world.setBlockAndUpdate(offset, ElectrodynamicsBlocks.multi.defaultBlockState()); }
+		 * TileMultiSubnode subnode = (TileMultiSubnode) world.getBlockEntity(offset); if (subnode != null) { subnode.nodePos.set(pos); }
+		 * } else if (inBlock instanceof IMultiblockChildBlock) { TileMultiSubnode subnode = (TileMultiSubnode)
+		 * world.getBlockEntity(offset); if (subnode != null && subnode.nodePos.get().equals(pos)) { world.setBlockAndUpdate(offset,
+		 * Blocks.AIR.defaultBlockState()); } } }
 		 * 
 		 */
 	}
@@ -110,4 +121,10 @@ public interface IMultiblockParentTile {
 	default int getSignal(TileMultiSubnode subnode, Direction dir) {
 		return 0;
 	}
+
+	@Nonnull
+	default public <T> LazyOptional<T> getSubnodeCapability(@Nonnull Capability<T> cap, Direction side) {
+		return LazyOptional.empty();
+	}
+
 }

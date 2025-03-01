@@ -176,7 +176,7 @@ public class WorldUtils {
 	private static ChunkSection getBlockStorage(BlockPos pos) {
 		Chunk chunk = getChunk(null, pos);
 		for (ChunkSection section : chunk.getSections()) {
-			if (section.bottomBlockY() > pos.getY()) {
+			if (section == null || section.bottomBlockY() > pos.getY()) {
 				continue;
 			}
 			return section;
