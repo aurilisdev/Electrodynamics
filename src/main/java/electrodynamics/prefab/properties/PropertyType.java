@@ -1,6 +1,7 @@
 package electrodynamics.prefab.properties;
 
 import electrodynamics.api.References;
+import electrodynamics.prefab.utilities.CodecUtils;
 import electrodynamics.prefab.utilities.object.Location;
 import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.block.BlockState;
@@ -11,8 +12,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.NBTDynamicOps;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -172,7 +175,134 @@ public enum PropertyType implements IPropertyType {
 	//
 	Transferpack(writer -> ((TransferPack) writer.value).writeToBuffer(writer.buf), reader -> TransferPack.readFromBuffer(reader.buf), writer -> writer.tag.put(writer.prop.getName(), ((TransferPack) writer.prop.get()).writeToTag()), reader -> TransferPack.readFromTag(reader.tag.getCompound(reader.prop.getName()))),
 	//
-	;
+	Vec3(
+			//
+			writer -> {
+				Vector3d val = (Vector3d) writer.value;
+				writer.buf.writeDouble(val.x);
+				writer.buf.writeDouble(val.y);
+				writer.buf.writeDouble(val.z);
+			}, reader -> {
+				return new Vector3d(reader.buf.readDouble(), reader.buf.readDouble(), reader.buf.readDouble());
+			},
+			//
+			writer -> CodecUtils.VEC3_CODEC.encodeStart(NBTDynamicOps.INSTANCE, (Vector3d) writer.prop.get()).result().ifPresent(tag -> writer.tag.put(writer.prop.getName(), tag)),
+			//
+			reader -> CodecUtils.VEC3_CODEC.decode(NBTDynamicOps.INSTANCE, reader.tag.get(reader.prop.getName())).result().get().getFirst()
+	//
+	),
+	//
+	IntegerList(
+			//
+			(thisList, otherList) -> {
+				List<Integer> thisCasted = (List<Integer>) thisList;
+				List<Integer> otherCasted = (List<Integer>) otherList;
+				if (thisCasted.size() != otherCasted.size()) {
+					return false;
+				}
+				int a, b;
+				for (int i = 0; i < thisCasted.size(); i++) {
+					a = thisCasted.get(i);
+					b = otherCasted.get(i);
+					if (a != b) {
+						return false;
+					}
+				}
+				return true;
+			},
+			//
+			writer -> {
+				List<Integer> list = (List<java.lang.Integer>) writer.value;
+				writer.buf.writeInt(list.size());
+				for (int i : list) {
+					writer.buf.writeInt(i);
+				}
+			}, reader -> {
+				List<Integer> list = new ArrayList<>();
+				int size = reader.buf.readInt();
+				for (int i = 0; i < size; i++) {
+					list.add(reader.buf.readInt());
+				}
+				return list;
+			},
+			//
+			writer -> {
+				List<Integer> list = (List<java.lang.Integer>) writer.prop.get();
+				CompoundNBT data = new CompoundNBT();
+				data.putInt("size", list.size());
+				for (int i = 0; i < list.size(); i++) {
+					data.putInt("" + i, list.get(i));
+				}
+				writer.tag.put(writer.prop.getName(), data);
+			},
+			//
+			reader -> {
+				List<Integer> list = new ArrayList<>();
+				CompoundNBT data = reader.tag.getCompound(reader.prop.getName());
+				int size = data.getInt("size");
+				for (int i = 0; i < size; i++) {
+					list.add(data.getInt("" + i));
+				}
+				return list;
+			}
+	//
+	),
+	//
+	StringList(
+			//
+			(thisList, otherList) -> {
+				List<String> thisCasted = (List<String>) thisList;
+				List<String> otherCasted = (List<String>) otherList;
+				if (thisCasted.size() != otherCasted.size()) {
+					return false;
+				}
+				String a, b;
+				for (int i = 0; i < thisCasted.size(); i++) {
+					a = thisCasted.get(i);
+					b = otherCasted.get(i);
+					if (a != b) {
+						return false;
+					}
+				}
+				return true;
+			},
+			//
+			writer -> {
+				List<String> list = (List<String>) writer.value;
+				writer.buf.writeInt(list.size());
+				for (String i : list) {
+					writer.buf.writeUtf(i);
+				}
+			}, reader -> {
+				List<String> list = new ArrayList<>();
+				int size = reader.buf.readInt();
+				for (int i = 0; i < size; i++) {
+					list.add(reader.buf.readUtf());
+				}
+				return list;
+			},
+			//
+			writer -> {
+				List<String> list = (List<String>) writer.prop.get();
+				CompoundNBT data = new CompoundNBT();
+				data.putInt("size", list.size());
+				for (int i = 0; i < list.size(); i++) {
+					data.putString("" + i, list.get(i));
+				}
+				writer.tag.put(writer.prop.getName(), data);
+			},
+			//
+			reader -> {
+				List<String> list = new ArrayList<>();
+				CompoundNBT data = reader.tag.getCompound(reader.prop.getName());
+				int size = data.getInt("size");
+				for (int i = 0; i < size; i++) {
+					list.add(data.getString("" + i));
+				}
+				return list;
+			}
+	//
+	);
 
 	private final ResourceLocation id;
 

@@ -13,6 +13,7 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalBlock;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
@@ -212,5 +213,15 @@ public abstract class GenericEntityBlock extends Block implements IWrenchable {
 	
 	@Override
 	public abstract TileEntity createTileEntity(BlockState state, IBlockReader world);
+	
+	@Override
+	public void setPlacedBy(World level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+		super.setPlacedBy(level, pos, state, placer, stack);
+		TileEntity blockentity = level.getBlockEntity(pos);
+		if (blockentity instanceof GenericTile) {
+			GenericTile generic = (GenericTile) blockentity;
+			generic.setPlacedBy(placer, stack);
+		}
+	}
 
 }

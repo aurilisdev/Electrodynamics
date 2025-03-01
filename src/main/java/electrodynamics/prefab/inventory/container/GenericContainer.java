@@ -20,6 +20,7 @@ public abstract class GenericContainer extends Container {
 	public final int slotCount;
 	protected int playerInvOffset = 0;
 	private int nextIndex = 0;
+	protected final PlayerEntity player;
 
 	public int nextIndex() {
 		return nextIndex++;
@@ -28,6 +29,7 @@ public abstract class GenericContainer extends Container {
 	// Specialized constructor for screen with no player inv
 	protected GenericContainer(ContainerType<?> type, int id, PlayerInventory playerInv) {
 		super(type, id);
+		player = playerInv.player;
 		inventory = new Inventory(0);
 		world = playerInv.player.level;
 		slotCount = 0;
@@ -35,6 +37,7 @@ public abstract class GenericContainer extends Container {
 
 	protected GenericContainer(ContainerType<?> type, int id, PlayerInventory playerinv, IInventory inventory) {
 		super(type, id);
+		player = playerinv.player;
 		checkContainerSize(inventory, inventory.getContainerSize());
 		this.inventory = inventory;
 		world = playerinv.player.level;
