@@ -1,5 +1,6 @@
 package electrodynamics.common.tile.machines.quarry;
 
+import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -8,7 +9,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
-public class TileFrame extends BlockEntity {
+public class TileFrame extends GenericTile {
 
 	public BlockPos ownerQuarryPos = null;
 
