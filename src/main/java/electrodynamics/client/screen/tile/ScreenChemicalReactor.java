@@ -2,21 +2,21 @@ package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerChemicalReactor;
 import electrodynamics.common.tile.machines.chemicalreactor.TileChemicalReactor;
-import electrodynamics.prefab.screen.component.types.ScreenComponentCondensedFluid;
-import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGasPressure;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGasTemperature;
-import electrodynamics.prefab.screen.component.types.wrapper.WrapperCyclableFluidGauge;
-import electrodynamics.prefab.screen.component.types.wrapper.WrapperCyclableGasGauge;
-import electrodynamics.prefab.screen.component.types.wrapper.WrapperInventoryIO;
-import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
-import electrodynamics.prefab.screen.types.GenericMaterialScreen;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import voltaic.prefab.screen.component.types.ScreenComponentCondensedFluid;
+import voltaic.prefab.screen.component.types.ScreenComponentProgress;
+import voltaic.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
+import voltaic.prefab.screen.component.types.guitab.ScreenComponentGasPressure;
+import voltaic.prefab.screen.component.types.guitab.ScreenComponentGasTemperature;
+import voltaic.prefab.screen.component.types.wrapper.WrapperCyclableFluidGauge;
+import voltaic.prefab.screen.component.types.wrapper.WrapperCyclableGasGauge;
+import voltaic.prefab.screen.component.types.wrapper.WrapperInventoryIO;
+import voltaic.prefab.screen.component.utils.AbstractScreenComponentInfo;
+import voltaic.prefab.screen.types.GenericMaterialScreen;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
 
 public class ScreenChemicalReactor extends GenericMaterialScreen<ContainerChemicalReactor> {
     public ScreenChemicalReactor(ContainerChemicalReactor container, Inventory inv, Component titleIn) {
@@ -29,8 +29,8 @@ public class ScreenChemicalReactor extends GenericMaterialScreen<ContainerChemic
             GenericTile furnace = container.getSafeHost();
             if (furnace != null) {
                 ComponentProcessor processor = furnace.getComponent(IComponentType.Processor);
-                if (processor.isActive()) {
-                    return processor.operatingTicks.get() / processor.requiredTicks.get();
+                if (processor.isActive(0)) {
+                    return processor.operatingTicks.getValue()[0] / processor.requiredTicks.getValue()[0];
                 }
             }
             return 0;

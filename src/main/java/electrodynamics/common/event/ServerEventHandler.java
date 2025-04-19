@@ -3,21 +3,14 @@ package electrodynamics.common.event;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.References;
-import electrodynamics.api.multiblock.assemblybased.CommandScanMultiblock;
-import electrodynamics.common.event.types.living.equipmentchange.AbstractEquipmentChangeHandler;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.event.types.living.equipmentchange.HandlerJetpackEquiped;
-import electrodynamics.common.event.types.living.incomingdamage.AbstractIncomingDamageHandler;
 import electrodynamics.common.event.types.living.incomingdamage.HandlerCombatArmor;
-import electrodynamics.common.event.types.living.knockback.AbstractLivingKnockbackHandler;
 import electrodynamics.common.event.types.living.knockback.HandlerJetpackKnockbackImpulse;
-import electrodynamics.common.event.types.living.livingdamage.AbstractLivingDamageHandler;
 import electrodynamics.common.event.types.living.livingdamage.HandlerCompositeArmor;
 import electrodynamics.common.event.types.living.livingdamage.HandlerHydraulicBoots;
 import electrodynamics.common.event.types.living.livingdamage.HandlerJetpackDamage;
-import electrodynamics.common.event.types.player.rightclick.AbstractRightClickBlockHandler;
 import electrodynamics.common.event.types.player.rightclick.HandlerWrench;
-import electrodynamics.common.event.types.player.starttracking.AbstractPlayerStartTrackingHandler;
 import electrodynamics.common.event.types.player.starttracking.HandlerJetpackSound;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
@@ -28,7 +21,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
-import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
@@ -36,8 +28,10 @@ import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import voltaic.Voltaic;
+import voltaic.common.event.type.*;
 
-@EventBusSubscriber(modid = References.ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.GAME)
 public class ServerEventHandler {
 
 	private static final List<AbstractRightClickBlockHandler> RIGHT_CLICK_HANDLERS = new ArrayList<>();
@@ -101,7 +95,7 @@ public class ServerEventHandler {
 		event.addListener(ThermoelectricGeneratorHeatRegister.INSTANCE);
 		event.addListener(GasCollectorChromoCardsRegister.INSTANCE);
 
-		if(ModList.get().isLoaded(References.MEKANISM_ID)) {
+		if(ModList.get().isLoaded(Voltaic.MEKANISM_ID)) {
 			MekanismHandler.addDataListener(event);
 		}
 
@@ -112,11 +106,6 @@ public class ServerEventHandler {
 		CoalGeneratorFuelRegister.INSTANCE.generateTagValues();
 		ThermoelectricGeneratorHeatRegister.INSTANCE.generateTagValues();
 		GasCollectorChromoCardsRegister.INSTANCE.generateTagValues();
-	}
-
-	@SubscribeEvent
-	public static void registerCommands(RegisterCommandsEvent event) {
-		CommandScanMultiblock.register(event.getDispatcher());
 	}
 
 	// TODO: Why was this commented?

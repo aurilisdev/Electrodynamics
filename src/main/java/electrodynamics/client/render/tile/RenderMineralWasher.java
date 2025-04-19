@@ -6,11 +6,6 @@ import org.joml.Vector3f;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.tile.machines.TileMineralWasher;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -23,6 +18,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
+import voltaic.prefab.utilities.math.Color;
 
 public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher> {
 
@@ -63,7 +64,7 @@ public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher>
 
         FluidStack fluid = multi.getFluidInTank(0, true);
 
-        if (!tile.<ComponentProcessor>getComponent(IComponentType.Processor).isActive() || fluid.isEmpty() || level().getRandom().nextDouble() > 0.15) {
+        if (!tile.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) || fluid.isEmpty() || level().getRandom().nextDouble() > 0.15) {
             return;
         }
 

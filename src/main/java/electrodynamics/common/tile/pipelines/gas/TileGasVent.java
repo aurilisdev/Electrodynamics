@@ -1,22 +1,17 @@
 package electrodynamics.common.tile.pipelines.gas;
 
-import electrodynamics.api.capability.types.gas.IGasHandlerItem;
-import electrodynamics.api.gas.GasAction;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerGasVent;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerSimple;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.types.GenericMaterialTile;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.IGasHandlerItem;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.types.GenericMaterialTile;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileGasVent extends GenericMaterialTile {
 
@@ -25,8 +20,8 @@ public class TileGasVent extends GenericMaterialTile {
         addComponent(new ComponentTickable(this).tickServer(this::tickServer));
         addComponent(new ComponentPacketHandler(this));
         addComponent(new ComponentGasHandlerSimple(this, "", 128000, 1000000, 1000000).universalInput());
-        addComponent(new ComponentInventory(this, InventoryBuilder.newInv().gasInputs(1)).valid((slot, stack, i) -> stack.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM) != null));
-        addComponent(new ComponentContainerProvider(SubtypeMachine.gasvent, this).createMenu((id, player) -> new ContainerGasVent(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+        addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().gasInputs(1)).valid((slot, stack, i) -> stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM) != null));
+        addComponent(new ComponentContainerProvider(SubtypeMachine.gasvent.tag(), this).createMenu((id, player) -> new ContainerGasVent(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
     public void tickServer(ComponentTickable tickable) {
@@ -45,7 +40,7 @@ public class TileGasVent extends GenericMaterialTile {
 
         }
 
-        IGasHandlerItem handler = input.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
+        IGasHandlerItem handler = input.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
         if (handler == null) {
             return;

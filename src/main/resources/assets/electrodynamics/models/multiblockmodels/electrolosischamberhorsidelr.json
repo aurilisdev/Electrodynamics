@@ -1,5 +1,5 @@
 {
-  "loader": "electrodynamics:electrodynamicsmultiblockmodelloader",
+  "loader": "voltaic:voltaicmultiblockmodelloader",
   "parent": "minecraft:block/cube",
   "textures": {
     "particle": "electrodynamics:block/multiblock/electrolosischamberhorside",

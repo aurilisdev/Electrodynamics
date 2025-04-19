@@ -7,13 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipeFilter;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyTypes;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +16,13 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentPacketHandler;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.CapabilityUtils;
 
 public class TileFluidPipeFilter extends GenericTile {
 
@@ -32,17 +32,17 @@ public class TileFluidPipeFilter extends GenericTile {
 	private boolean isLocked = false;
 
 	@SuppressWarnings("rawtypes")
-	public final Property[] filteredFluids = {
+	public final SingleProperty[] filteredFluids = {
 			//
-			property(new Property<>(PropertyTypes.FLUID_STACK, "fluidone", FluidStack.EMPTY)),
+			property(new SingleProperty<>(PropertyTypes.FLUID_STACK, "fluidone", FluidStack.EMPTY)),
 			//
-			property(new Property<>(PropertyTypes.FLUID_STACK, "fluidtwo", FluidStack.EMPTY)),
+			property(new SingleProperty<>(PropertyTypes.FLUID_STACK, "fluidtwo", FluidStack.EMPTY)),
 			//
-			property(new Property<>(PropertyTypes.FLUID_STACK, "fluidthree", FluidStack.EMPTY)),
+			property(new SingleProperty<>(PropertyTypes.FLUID_STACK, "fluidthree", FluidStack.EMPTY)),
 			//
-			property(new Property<>(PropertyTypes.FLUID_STACK, "fluidfour", FluidStack.EMPTY)) };
+			property(new SingleProperty<>(PropertyTypes.FLUID_STACK, "fluidfour", FluidStack.EMPTY)) };
 
-	public final Property<Boolean> isWhitelist = property(new Property<>(PropertyTypes.BOOLEAN, "iswhitelist", false));
+	public final SingleProperty<Boolean> isWhitelist = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "iswhitelist", false));
 
 	public TileFluidPipeFilter(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsTiles.TILE_FLUIDPIPEFILTER.get(), worldPos, blockState);
@@ -75,7 +75,7 @@ public class TileFluidPipeFilter extends GenericTile {
 
             isLocked = false;
             
-            return fluid == null ? CapabilityUtils.EMPTY_FLUID : new FilteredFluidCap(fluid, getFilteredFluids(), isWhitelist.get());
+            return fluid == null ? CapabilityUtils.EMPTY_FLUID : new FilteredFluidCap(fluid, getFilteredFluids(), isWhitelist.getValue());
 
         }
         
@@ -84,9 +84,9 @@ public class TileFluidPipeFilter extends GenericTile {
 
 	private List<Fluid> getFilteredFluids() {
 		List<Fluid> fluids = new ArrayList<>();
-		for (Property<FluidStack> prop : filteredFluids) {
-			if (!prop.get().isEmpty()) {
-				fluids.add(prop.get().getFluid());
+		for (SingleProperty<FluidStack> prop : filteredFluids) {
+			if (!prop.getValue().isEmpty()) {
+				fluids.add(prop.getValue().getFluid());
 			}
 		}
 		return fluids;

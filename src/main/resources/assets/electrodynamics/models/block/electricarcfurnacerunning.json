@@ -4,7 +4,7 @@
   "textures": {
     "0": "electrodynamics:block/model/electricarcfurnacerunning",
     "2": "minecraft:block/lava_still",
-    "particle": "electrodynamics:block/steelcasing"
+    "particle": "voltaic:block/steelcasing"
   },
   "elements": [
     {

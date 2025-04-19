@@ -1,9 +1,8 @@
 package electrodynamics.registers;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.item.ContainerElectricDrill;
-import electrodynamics.common.inventory.container.item.ContainerGuidebook;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.inventory.container.tile.ContainerAdvancedCompressor;
 import electrodynamics.common.inventory.container.tile.ContainerAdvancedDecompressor;
@@ -64,7 +63,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ElectrodynamicsMenuTypes {
-	public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Registries.MENU, References.ID);
+	public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Registries.MENU, Electrodynamics.ID);
 
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerCoalGenerator>> CONTAINER_COALGENERATOR = register(SubtypeMachine.coalgenerator.tag(), ContainerCoalGenerator::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerElectricFurnace>> CONTAINER_ELECTRICFURNACE = register(SubtypeMachine.electricfurnace.tag(), ContainerElectricFurnace::new);
@@ -97,7 +96,6 @@ public class ElectrodynamicsMenuTypes {
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerCoolantResavoir>> CONTAINER_COOLANTRESAVOIR = register("coolantresavoir", ContainerCoolantResavoir::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerMotorComplex>> CONTAINER_MOTORCOMPLEX = register("motorcomplex", ContainerMotorComplex::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerQuarry>> CONTAINER_QUARRY = register("quarry", ContainerQuarry::new);
-	public static final DeferredHolder<MenuType<?>,MenuType<ContainerGuidebook>> CONTAINER_GUIDEBOOK = register("guidebook", ContainerGuidebook::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerGasTankGeneric>> CONTAINER_GASTANK = register("gastank", ContainerGasTankGeneric::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerCompressor>> CONTAINER_COMPRESSOR = register("compressor", ContainerCompressor::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerDecompressor>> CONTAINER_DECOMPRESSOR = register("decompressor", ContainerDecompressor::new);

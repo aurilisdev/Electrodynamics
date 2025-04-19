@@ -7,7 +7,7 @@
 	],
 	"textures": {
 		"texture": "electrodynamics:block/model/gascylindersteel",
-		"particle": "electrodynamics:block/steelcasing"
+		"particle": "voltaic:block/steelcasing"
 	},
 	"elements": [
 		{

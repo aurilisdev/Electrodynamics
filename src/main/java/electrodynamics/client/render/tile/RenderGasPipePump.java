@@ -5,9 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.pipelines.gas.TileGasPipePump;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
@@ -15,6 +13,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
+import voltaic.client.VoltaicClientRegister;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.utilities.RenderingUtils;
 
 public class RenderGasPipePump extends AbstractTileRenderer<TileGasPipePump> {
 
@@ -62,7 +63,7 @@ public class RenderGasPipePump extends AbstractTileRenderer<TileGasPipePump> {
 			box2 = aabb(9, 13 - offset2, 12, 11, 17 - offset2, 14);
 		}
 
-		TextureAtlasSprite whiteTexture = ClientRegister.getSprite(ClientRegister.TEXTURE_WHITE);
+		TextureAtlasSprite whiteTexture = VoltaicClientRegister.whiteSprite();
 		float u0 = whiteTexture.getU0();
 		float u1 = whiteTexture.getU1();
 		float v0 = whiteTexture.getV0();

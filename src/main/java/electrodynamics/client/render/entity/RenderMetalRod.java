@@ -5,9 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import electrodynamics.client.ClientRegister;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -19,6 +17,8 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import voltaic.client.VoltaicClientRegister;
+import voltaic.prefab.utilities.RenderingUtils;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderMetalRod extends EntityRenderer<EntityMetalRod> {
@@ -38,7 +38,7 @@ public class RenderMetalRod extends EntityRenderer<EntityMetalRod> {
 
 		matrixStack.pushPose();
 
-		TextureAtlasSprite sprite = ClientRegister.getSprite(ClientRegister.TEXTURE_WHITE);
+		TextureAtlasSprite sprite = VoltaicClientRegister.whiteSprite();
 
 		matrixStack.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTicks, entity.yRotO, entity.getYRot()) - 90.0F));
 		matrixStack.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTicks, entity.xRotO, entity.getXRot())));

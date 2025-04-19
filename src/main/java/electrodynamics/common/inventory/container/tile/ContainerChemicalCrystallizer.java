@@ -1,18 +1,20 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.machines.TileChemicalCrystallizer;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotFluid;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotRestricted;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
-import electrodynamics.prefab.inventory.container.types.GenericContainerBlockEntity;
-import electrodynamics.prefab.utilities.math.Color;
+import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import voltaic.common.item.ItemUpgrade;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.inventory.container.slot.item.type.SlotFluid;
+import voltaic.prefab.inventory.container.slot.item.type.SlotRestricted;
+import voltaic.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
+import voltaic.prefab.utilities.math.Color;
 
 public class ContainerChemicalCrystallizer extends GenericContainerBlockEntity<TileChemicalCrystallizer> {
 
@@ -30,8 +32,8 @@ public class ContainerChemicalCrystallizer extends GenericContainerBlockEntity<T
 	public void addInventorySlots(Container inv, Inventory playerinv) {
 		addSlot(new SlotRestricted(inv, nextIndex(), 114, 31).setIOColor(new Color(255, 0, 0, 255)));
 		addSlot(new SlotFluid(inv, nextIndex(), 38, 51));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 14, VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 34, VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 54, VALID_UPGRADES));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 14, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 34, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
+		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 54, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
 	}
 }

@@ -3,7 +3,6 @@ package electrodynamics.common.packet.types.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.reloadlistener.GasCollectorChromoCardsRegister;
 import net.minecraft.core.registries.Registries;
@@ -17,6 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
+import voltaic.api.gas.GasStack;
 
 public class PacketSetClientGasCollectorCards implements CustomPacketPayload {
 

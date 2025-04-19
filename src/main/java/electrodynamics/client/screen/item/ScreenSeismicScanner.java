@@ -3,26 +3,10 @@ package electrodynamics.client.screen.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.item.gear.tools.electric.ItemSeismicScanner;
 import electrodynamics.common.packet.types.server.PacketSeismicScanner;
-import electrodynamics.prefab.inventory.container.slot.itemhandler.SlotItemHandlerGeneric;
-import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.button.ScreenComponentButton;
-import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
-import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
-import electrodynamics.prefab.screen.component.types.ScreenComponentSlot;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGuiTab;
-import electrodynamics.prefab.screen.component.utils.AbstractScreenComponent;
-import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.RenderingUtils;
-import electrodynamics.prefab.utilities.math.Color;
-import electrodynamics.prefab.utilities.object.Location;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -33,6 +17,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.network.PacketDistributor;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.prefab.inventory.container.slot.itemhandler.SlotItemHandlerGeneric;
+import voltaic.prefab.screen.GenericScreen;
+import voltaic.prefab.screen.component.button.ScreenComponentButton;
+import voltaic.prefab.screen.component.types.ScreenComponentMultiLabel;
+import voltaic.prefab.screen.component.types.ScreenComponentSimpleLabel;
+import voltaic.prefab.screen.component.types.ScreenComponentSlot;
+import voltaic.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
+import voltaic.prefab.screen.component.types.guitab.ScreenComponentGuiTab;
+import voltaic.prefab.screen.component.utils.AbstractScreenComponent;
+import voltaic.prefab.screen.component.utils.AbstractScreenComponentInfo;
+import voltaic.prefab.utilities.RenderingUtils;
+import voltaic.prefab.utilities.math.Color;
+import voltaic.prefab.utilities.object.Location;
+import voltaic.registers.VoltaicDataComponentTypes;
 
 public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner> {
 
@@ -94,8 +94,8 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
         componentsToHide.add(addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> {
             ItemStack ownerItem = menu.getOwnerItem();
 
-            Location playerLoc = ownerItem.getOrDefault(ElectrodynamicsDataComponentTypes.LOCATION_1, new Location(0, 0, 0));
-            Location blockLoc = ownerItem.getOrDefault(ElectrodynamicsDataComponentTypes.LOCATION_2, new Location(0, 0, 0));
+            Location playerLoc = ownerItem.getOrDefault(VoltaicDataComponentTypes.LOCATION_1, new Location(0, 0, 0));
+            Location blockLoc = ownerItem.getOrDefault(VoltaicDataComponentTypes.LOCATION_2, new Location(0, 0, 0));
 
             if (blockLoc.equals(playerLoc)) {
                 graphics.drawString(font, ElectroTextUtils.gui("seismicscanner.xcoordna"), 30, 90, Color.TEXT_GRAY.color(), false);
@@ -132,7 +132,7 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
                     if (hand == null) {
                         return;
                     }
-                    ItemSeismicScanner.ScannerMode mode = ItemSeismicScanner.ScannerMode.values()[owner.getOrDefault(ElectrodynamicsDataComponentTypes.ENUM, 0)];
+                    ItemSeismicScanner.ScannerMode mode = ItemSeismicScanner.ScannerMode.values()[owner.getOrDefault(VoltaicDataComponentTypes.ENUM, 0)];
                     if (mode == ItemSeismicScanner.ScannerMode.PASSIVE) {
                         mode = ItemSeismicScanner.ScannerMode.ACTIVE;
                     } else {
@@ -145,7 +145,7 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
                     if (owner.isEmpty()) {
                         return Component.empty();
                     }
-                    ItemSeismicScanner.ScannerMode mode = ItemSeismicScanner.ScannerMode.values()[owner.getOrDefault(ElectrodynamicsDataComponentTypes.ENUM, 0)];
+                    ItemSeismicScanner.ScannerMode mode = ItemSeismicScanner.ScannerMode.values()[owner.getOrDefault(VoltaicDataComponentTypes.ENUM, 0)];
                     return mode == ItemSeismicScanner.ScannerMode.PASSIVE ? ElectroTextUtils.gui("seismicscanner.scanpassive") : ElectroTextUtils.gui("seismicscanner.scanactive");
                 })));
 
@@ -157,15 +157,15 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
     }
 
     private Component getPatternDurability(ItemStack owner) {
-        if (owner.getOrDefault(ElectrodynamicsDataComponentTypes.BLOCK, Blocks.AIR) == Blocks.AIR) {
+        if (owner.getOrDefault(VoltaicDataComponentTypes.BLOCK, Blocks.AIR) == Blocks.AIR) {
             return ElectroTextUtils.gui("seismicscanner.nopattern");
         } else {
-            return ChatFormatter.getChatDisplayShort(owner.getOrDefault(ElectrodynamicsDataComponentTypes.PATTERN_INTEGRITY, 0.0) / ItemSeismicScanner.FULL_PATTERN * 100, DisplayUnit.PERCENTAGE);
+            return ChatFormatter.getChatDisplayShort(owner.getOrDefault(VoltaicDataComponentTypes.PATTERN_INTEGRITY, 0.0) / ItemSeismicScanner.FULL_PATTERN * 100, DisplayUnits.PERCENTAGE);
         }
     }
 
     private Component getPatternName(ItemStack owner) {
-        Block block = owner.getOrDefault(ElectrodynamicsDataComponentTypes.BLOCK, Blocks.AIR);
+        Block block = owner.getOrDefault(VoltaicDataComponentTypes.BLOCK, Blocks.AIR);
         if (block == Blocks.AIR) {
             return ElectroTextUtils.gui("seismicscanner.nopatternstored");
         } else {
@@ -182,7 +182,7 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
         int x = (int) getGuiWidth() + 21;
         int y = (int) getGuiHeight() + 73;
 
-        Block pattern = menu.getOwnerItem().getOrDefault(ElectrodynamicsDataComponentTypes.BLOCK, Blocks.AIR);
+        Block pattern = menu.getOwnerItem().getOrDefault(VoltaicDataComponentTypes.BLOCK, Blocks.AIR);
 
         if (pattern == Blocks.AIR) {
             ScreenComponentSlot.IconType icon = ScreenComponentSlot.IconType.CUBE_OUTLINE;
@@ -204,9 +204,9 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
         ArrayList<FormattedCharSequence> list = new ArrayList<>();
         ItemStack ownerItem = menu.getOwnerItem();
         if (ownerItem.getItem() instanceof ItemSeismicScanner scanner) {
-            list.add(ElectroTextUtils.gui("machine.usage", ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20.0, DisplayUnit.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-            list.add(ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(120, DisplayUnit.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-            list.add(ElectroTextUtils.gui("machine.stored", ChatFormatter.getChatDisplayShort(scanner.getJoulesStored(ownerItem), DisplayUnit.JOULES).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+            list.add(ElectroTextUtils.gui("machine.usage", ChatFormatter.getChatDisplayShort(ItemSeismicScanner.JOULES_PER_SCAN / 20.0, DisplayUnits.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+            list.add(ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(120, DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+            list.add(ElectroTextUtils.gui("machine.stored", ChatFormatter.getChatDisplayShort(scanner.getJoulesStored(ownerItem), DisplayUnits.JOULES).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
         }
         return list;
     }

@@ -1,6 +1,6 @@
 package electrodynamics.datagen.server.recipe.types.custom.item2item;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
 import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
@@ -8,11 +8,6 @@ import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.recipe.categories.item2item.specificmachines.MineralCrusherRecipe;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.builders.ElectrodynamicsRecipeBuilder.RecipeCategory;
-import electrodynamics.datagen.utils.recipe.builders.Item2ItemBuilder;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.ItemTags;
@@ -20,6 +15,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
+import voltaic.common.recipe.recipeutils.ProbableItem;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
+import voltaic.datagen.utils.server.recipe.builders.BaseRecipeBuilder;
+import voltaic.datagen.utils.server.recipe.builders.Item2ItemBuilder;
 
 public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerator {
 
@@ -33,7 +33,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
     }
 
     public ElectrodynamicsMineralCrusherRecipes() {
-        this(References.ID);
+        this(Electrodynamics.ID);
     }
 
     @Override
@@ -105,7 +105,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 
         newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.chromite), 3), 0.3F, 200, 450.0, "oxide_chromite_from_ore", modID)
                 //
-                .addItemTagInput(ElectrodynamicsTags.Items.ORE_CHROMIUM, 1)
+                .addItemTagInput(VoltaicTags.Items.ORE_CHROMIUM, 1)
                 //
                 .addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.iron)), 0.4))
                 //
@@ -135,7 +135,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 
         newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.lead), 3), 0.3F, 200, 450.0, "imp_dust_lead_from_ore", modID)
                 //
-                .addItemTagInput(ElectrodynamicsTags.Items.ORE_LEAD, 1)
+                .addItemTagInput(VoltaicTags.Items.ORE_LEAD, 1)
                 //
                 .addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.silver)), 0.4))
                 //
@@ -143,7 +143,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 
         newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.molybdenum), 3), 0.3F, 200, 450.0, "imp_dust_molybdenum_from_ore", modID)
                 //
-                .addItemTagInput(ElectrodynamicsTags.Items.ORE_MOLYBDENUM, 1)
+                .addItemTagInput(VoltaicTags.Items.ORE_MOLYBDENUM, 1)
                 //
                 .addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.sulfur)), 0.3))
                 //
@@ -159,7 +159,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 
         newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.silver), 3), 0.2F, 200, 450.0, "imp_dust_silver_from_ore", modID)
                 //
-                .addItemTagInput(ElectrodynamicsTags.Items.ORE_SILVER, 1)
+                .addItemTagInput(VoltaicTags.Items.ORE_SILVER, 1)
                 //
                 .addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.gold)), 0.1))
                 //
@@ -167,7 +167,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 
         newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.tin), 3), 0.3F, 200, 450.0, "imp_dust_tin_from_ore", modID)
                 //
-                .addItemTagInput(ElectrodynamicsTags.Items.ORE_TIN, 1)
+                .addItemTagInput(VoltaicTags.Items.ORE_TIN, 1)
                 //
                 .addItemBiproduct(new ProbableItem(new ItemStack(Items.QUARTZ), 0.3))
                 //
@@ -175,7 +175,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 
         newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.vanadium), 3), 0.3F, 200, 450.0, "imp_dust_vanadium_from_ore", modID)
                 //
-                .addItemTagInput(ElectrodynamicsTags.Items.ORE_VANADIUM, 1)
+                .addItemTagInput(VoltaicTags.Items.ORE_VANADIUM, 1)
                 //
                 .addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.lead)), 0.2))
                 //
@@ -183,19 +183,19 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 
         newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.niter), 4), 0.1F, 200, 450.0, "niter_dust_from_ore", modID)
                 //
-                .addItemTagInput(ElectrodynamicsTags.Items.ORE_SALTPETER, 1)
+                .addItemTagInput(VoltaicTags.Items.ORE_SALTPETER, 1)
                 //
                 .save(output);
 
         newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.sulfur), 4), 0.1F, 200, 450.0, "sulfur_dust_from_ore", modID)
                 //
-                .addItemTagInput(ElectrodynamicsTags.Items.ORE_SULFUR, 1)
+                .addItemTagInput(VoltaicTags.Items.ORE_SULFUR, 1)
                 //
                 .save(output);
 
         newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.dititanium), 3), 0.5F, 200, 450.0, "oxide_titanium_from_ore", modID)
                 //
-                .addItemTagInput(ElectrodynamicsTags.Items.ORE_TITANIUM, 1)
+                .addItemTagInput(VoltaicTags.Items.ORE_TITANIUM, 1)
                 //
                 .addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.iron)), 0.3))
                 //
@@ -223,13 +223,13 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 
         newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.salt), 5), 0.1F, 200, 450.0, "salt_from_halite_ore", modID)
                 //
-                .addItemTagInput(ElectrodynamicsTags.Items.ORE_SALT, 1)
+                .addItemTagInput(VoltaicTags.Items.ORE_SALT, 1)
                 //
                 .save(output);
 
         newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_RAWORE.getValue(SubtypeRawOre.fluorite), 2), 0.1F, 200, 450.0, "fluorite_crystal_from_fluorite_ore", modID)
                 //
-                .addItemTagInput(ElectrodynamicsTags.Items.ORE_FLUORITE, 1)
+                .addItemTagInput(VoltaicTags.Items.ORE_FLUORITE, 1)
                 //
                 .save(output);
 
@@ -261,7 +261,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
     }
 
     public Item2ItemBuilder<MineralCrusherRecipe> newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name, String group) {
-        return new Item2ItemBuilder<>(MineralCrusherRecipe::new, stack, RecipeCategory.ITEM_2_ITEM, modID, "mineral_crusher/" + name, group, xp, ticks, usagePerTick);
+        return new Item2ItemBuilder<>(MineralCrusherRecipe::new, stack, BaseRecipeBuilder.RecipeCategory.ITEM_2_ITEM, modID, "mineral_crusher/" + name, group, xp, ticks, usagePerTick);
     }
 
 }

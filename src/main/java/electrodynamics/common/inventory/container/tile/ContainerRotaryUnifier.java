@@ -1,15 +1,17 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.compatibility.TileRotaryUnifier;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
-import electrodynamics.prefab.inventory.container.types.GenericContainerBlockEntity;
+import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import voltaic.common.item.ItemUpgrade;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerRotaryUnifier extends GenericContainerBlockEntity<TileRotaryUnifier> {
 
@@ -26,9 +28,9 @@ public class ContainerRotaryUnifier extends GenericContainerBlockEntity<TileRota
     @Override
     public void addInventorySlots(Container inv, Inventory playerinv) {
 
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
+        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
+        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
+        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
 
     }
 }

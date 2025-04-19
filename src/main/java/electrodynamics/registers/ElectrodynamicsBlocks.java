@@ -1,14 +1,8 @@
 package electrodynamics.registers;
 
-import electrodynamics.api.References;
-import electrodynamics.api.registration.BulkDeferredHolder;
-import electrodynamics.api.tile.IMachine;
-import electrodynamics.common.block.BlockCustomGlass;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.BlockFrame;
 import electrodynamics.common.block.BlockLogisticalManager;
-import electrodynamics.common.block.BlockMachine;
-import electrodynamics.common.block.BlockMultiSubnode;
-import electrodynamics.common.block.BlockMultiblockSlave;
 import electrodynamics.common.block.BlockOre;
 import electrodynamics.common.block.BlockSeismicMarker;
 import electrodynamics.common.block.chemicalreactor.BlockChemicalReactor;
@@ -17,7 +11,6 @@ import electrodynamics.common.block.connect.BlockFluidPipe;
 import electrodynamics.common.block.connect.BlockGasPipe;
 import electrodynamics.common.block.connect.BlockLogisticalWire;
 import electrodynamics.common.block.connect.BlockWire;
-import electrodynamics.common.block.connect.util.BlockScaffold;
 import electrodynamics.common.block.gastransformer.BlockAdvancedCompressor;
 import electrodynamics.common.block.gastransformer.BlockCompressor;
 import electrodynamics.common.block.gastransformer.thermoelectricmanipulator.BlockAdvancedThermoelectricManipulator;
@@ -35,9 +28,7 @@ import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
 import electrodynamics.common.block.voxelshapes.ElectrodynamicsVoxelShapes;
-import electrodynamics.common.block.voxelshapes.VoxelShapeProvider;
 import electrodynamics.common.tile.compatibility.TileRotaryUnifier;
-import electrodynamics.prefab.block.GenericMachineBlock;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -47,10 +38,17 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import voltaic.api.registration.BulkDeferredHolder;
+import voltaic.api.tile.IMachine;
+import voltaic.common.block.BlockCustomGlass;
+import voltaic.common.block.BlockMachine;
+import voltaic.common.block.connect.BlockScaffold;
+import voltaic.common.block.voxelshapes.VoxelShapeProvider;
+import voltaic.prefab.block.GenericMachineBlock;
 
 public class ElectrodynamicsBlocks {
 
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, References.ID);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(Registries.BLOCK, Electrodynamics.ID);
 
     public static final BulkDeferredHolder<Block, BlockOre, SubtypeOre> BLOCKS_ORE = new BulkDeferredHolder<>(SubtypeOre.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockOre(subtype)));
     public static final BulkDeferredHolder<Block, BlockOre, SubtypeOreDeepslate> BLOCKS_DEEPSLATEORE = new BulkDeferredHolder<>(SubtypeOreDeepslate.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockOre(subtype)));
@@ -106,11 +104,10 @@ public class ElectrodynamicsBlocks {
         }
     });
     public static final BulkDeferredHolder<Block, BlockFluidPipe, SubtypeFluidPipe> BLOCKS_FLUIDPIPE = new BulkDeferredHolder<>(SubtypeFluidPipe.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockFluidPipe(subtype)));
-    public static final BulkDeferredHolder<Block, BlockCustomGlass, SubtypeGlass> BLOCKS_CUSTOMGLASS = new BulkDeferredHolder<>(SubtypeGlass.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockCustomGlass(subtype)));
+    public static final BulkDeferredHolder<Block, BlockCustomGlass, SubtypeGlass> BLOCKS_CUSTOMGLASS = new BulkDeferredHolder<>(SubtypeGlass.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockCustomGlass(subtype.hardness, subtype.resistance)));
     public static final BulkDeferredHolder<Block, Block, SubtypeResourceBlock> BLOCKS_RESOURCE = new BulkDeferredHolder<>(SubtypeResourceBlock.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new Block(subtype.getProperties().strength(subtype.getHardness(), subtype.getResistance()).sound(subtype.getSoundType()))));
     public static final BulkDeferredHolder<Block, BlockGasPipe, SubtypeGasPipe> BLOCKS_GASPIPE = new BulkDeferredHolder<>(SubtypeGasPipe.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockGasPipe(subtype)));
 
-    public static final DeferredHolder<Block, BlockMultiSubnode> BLOCK_MULTISUBNODE = BLOCKS.register("multisubnode", BlockMultiSubnode::new);
     public static final DeferredHolder<Block, BlockSeismicMarker> BLOCK_SEISMICMARKER = BLOCKS.register("seismicmarker", BlockSeismicMarker::new);
     public static final DeferredHolder<Block, BlockFrame> BLOCK_FRAME = BLOCKS.register("frame", () -> new BlockFrame(0));
     public static final DeferredHolder<Block, BlockFrame> BLOCK_FRAME_CORNER = BLOCKS.register("framecorner", () -> new BlockFrame(1));
@@ -127,6 +124,5 @@ public class ElectrodynamicsBlocks {
     public static final DeferredHolder<Block, BlockChemicalReactorExtra> BLOCK_CHEMICALREACTOREXTRA_MIDDLE = BLOCKS.register("chemicalreactorextramiddle", () -> new BlockChemicalReactorExtra(BlockChemicalReactorExtra.Location.MIDDLE));
     public static final DeferredHolder<Block, BlockChemicalReactorExtra> BLOCK_CHEMICALREACTOREXTRA_TOP = BLOCKS.register("chemicalreactorextratop", () -> new BlockChemicalReactorExtra(BlockChemicalReactorExtra.Location.TOP));
 
-    public static final DeferredHolder<Block, BlockMultiblockSlave> BLOCK_MULTIBLOCK_SLAVE = BLOCKS.register("multiblockslave", BlockMultiblockSlave::new);
 
 }

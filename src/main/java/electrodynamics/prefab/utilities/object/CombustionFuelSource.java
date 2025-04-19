@@ -5,13 +5,14 @@ import java.util.List;
 import com.google.gson.JsonObject;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.Voltaic;
+import voltaic.common.recipe.recipeutils.FluidIngredient;
 
 public class CombustionFuelSource {
 
@@ -19,7 +20,7 @@ public class CombustionFuelSource {
 	public static final String USAGE_AMOUNT = "usage_per_burn";
 	public static final String POWER_MULTIPLIER = "power_multiplier";
 
-	public static final CombustionFuelSource EMPTY = new CombustionFuelSource(FluidTags.create(Electrodynamics.vanillarl("air")), 0, 0);
+	public static final CombustionFuelSource EMPTY = new CombustionFuelSource(FluidTags.create(Voltaic.vanillarl("air")), 0, 0);
 
 	private FluidIngredient fuel;
 	private double powerMultiplier;

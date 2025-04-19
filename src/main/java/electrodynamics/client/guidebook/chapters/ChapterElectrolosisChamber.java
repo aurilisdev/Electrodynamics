@@ -4,19 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.client.guidebook.ScreenGuidebook;
-import electrodynamics.client.guidebook.utils.components.Chapter;
-import electrodynamics.client.guidebook.utils.components.Module;
-import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
-import electrodynamics.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper;
-import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.settings.Constants;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -26,6 +16,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.level.block.Blocks;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.client.guidebook.ScreenGuidebook;
+import voltaic.client.guidebook.utils.components.Chapter;
+import voltaic.client.guidebook.utils.components.Module;
+import voltaic.client.guidebook.utils.pagedata.OnTooltip;
+import voltaic.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper;
+import voltaic.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
+import voltaic.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
+import voltaic.client.guidebook.utils.pagedata.text.TextWrapperObject;
 
 public class ChapterElectrolosisChamber extends Chapter {
 
@@ -47,7 +47,7 @@ public class ChapterElectrolosisChamber extends Chapter {
 
     @Override
     public void addData() {
-        pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electrolosischamber.l1", ElectroTextUtils.guidebook("chapter.electrolosischamber.multiply").withStyle(ChatFormatting.BOLD), ChatFormatter.getChatDisplayShort(Constants.ELECTROLOSIS_CHAMBER_TARGET_JOULES * 20, DisplayUnit.WATT).withStyle(ChatFormatting.BOLD))).setIndentions(1).setSeparateStart());
+        pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electrolosischamber.l1", ElectroTextUtils.guidebook("chapter.electrolosischamber.multiply").withStyle(ChatFormatting.BOLD), ChatFormatter.getChatDisplayShort(ElectroConstants.ELECTROLOSIS_CHAMBER_TARGET_JOULES * 20, DisplayUnits.WATT).withStyle(ChatFormatting.BOLD))).setIndentions(1).setSeparateStart());
         pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electrolosischamber.l2", ElectroTextUtils.guidebook("chapter.electrolosischamber.impurefluid").withStyle(ChatFormatting.BOLD))).setIndentions(1).setSeparateStart());
         pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electrolosischamber.l3",
                 ElectroTextUtils.guidebook("chapter.electrolosischamber.count", Component.literal("49").withStyle(ChatFormatting.BOLD), ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get().getName()),

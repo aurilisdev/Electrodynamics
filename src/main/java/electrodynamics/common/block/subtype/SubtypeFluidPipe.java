@@ -1,7 +1,7 @@
 package electrodynamics.common.block.subtype;
 
-import electrodynamics.api.ISubtype;
-import electrodynamics.api.network.cable.type.IFluidPipe;
+import voltaic.api.ISubtype;
+import voltaic.api.network.cable.type.IFluidPipe;
 
 public enum SubtypeFluidPipe implements ISubtype, IFluidPipe {
     copper(5000),

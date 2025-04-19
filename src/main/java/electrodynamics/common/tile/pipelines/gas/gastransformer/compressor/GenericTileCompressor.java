@@ -1,29 +1,26 @@
 package electrodynamics.common.tile.pipelines.gas.gastransformer.compressor;
 
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.api.gas.GasTank;
 import electrodynamics.common.inventory.container.tile.ContainerCompressor;
 import electrodynamics.common.tile.pipelines.gas.gastransformer.GenericTileGasTransformer;
-import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasStack;
+import voltaic.api.gas.GasTank;
+import voltaic.prefab.sound.SoundBarrierMethods;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public abstract class GenericTileCompressor extends GenericTileGasTransformer {
+
     public GenericTileCompressor(BlockEntityType<?> type, BlockPos worldPos, BlockState blockState) {
         super(type, worldPos, blockState);
-        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(getUsagePerTick() * 10));
+        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE).maxJoules(getUsagePerTick() * 10));
     }
 
     @Override
@@ -37,7 +34,7 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
     }
 
     @Override
-    public boolean canProcess(ComponentProcessor processor) {
+    public boolean canProcess(ComponentProcessor processor, int procNumber) {
 
         ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
 
@@ -64,7 +61,7 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 
         ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-        if (electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.get()) {
+        if (electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.getValue()) {
             return false;
         }
 
@@ -84,9 +81,9 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
     }
 
     @Override
-    public void process(ComponentProcessor processor) {
+    public void process(ComponentProcessor processor, int procNumber) {
 
-        int conversionRate = (int) (getConversionRate() * processor.operatingSpeed.get());
+        int conversionRate = (int) (getConversionRate() * processor.operatingSpeed.getValue());
 
         ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
         GasTank inputTank = gasHandler.getInputTanks()[0];

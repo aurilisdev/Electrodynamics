@@ -5,25 +5,19 @@ import java.util.List;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.recipeutils.AbstractMaterialRecipe;
-import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.recipe.recipeutils.GasIngredient;
-import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.common.recipe.recipeutils.ProbableGas;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.api.gas.GasStack;
+import voltaic.common.recipe.recipeutils.*;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
+import voltaic.prefab.tile.components.type.ComponentGasHandlerMulti;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
 
 public class ChemicalReactorRecipe extends AbstractMaterialRecipe {
 
@@ -55,14 +49,14 @@ public class ChemicalReactorRecipe extends AbstractMaterialRecipe {
     }
 
     @Override
-    public boolean matchesRecipe(ComponentProcessor pr) {
+    public boolean matchesRecipe(ComponentProcessor pr, int index) {
 
         int valid = 0b000;
 
         if (hasItemInputs()) {
-            Pair<List<Integer>, Boolean> itemPair = areItemsValid(getCountedIngredients(), ((ComponentInventory) pr.getHolder().getComponent(IComponentType.Inventory)).getInputsForProcessor(pr.getProcessorNumber()));
+            Pair<List<Integer>, Boolean> itemPair = areItemsValid(getCountedIngredients(), ((ComponentInventory) pr.getHolder().getComponent(IComponentType.Inventory)).getInputsForProcessor(index));
             if (itemPair.getSecond()) {
-                setItemArrangement(pr.getProcessorNumber(), itemPair.getFirst());
+                setItemArrangement(index, itemPair.getFirst());
                 valid = valid | 1 << 2;
             } else {
                 return false;
@@ -147,11 +141,11 @@ public class ChemicalReactorRecipe extends AbstractMaterialRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ElectrodynamicsRecipeInit.CHEMICAL_REACTOR_SERIALIZER.get();
+        return ElectrodynamicsRecipies.CHEMICAL_REACTOR_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ElectrodynamicsRecipeInit.CHEMICAL_REACTOR_TYPE.get();
+        return ElectrodynamicsRecipies.CHEMICAL_REACTOR_TYPE.get();
     }
 }

@@ -1,21 +1,22 @@
 package electrodynamics.client.screen.tile;
 
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerCircuitMonitor;
 import electrodynamics.common.tile.electricitygrid.TileCircuitMonitor;
-import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.button.ScreenComponentButton;
-import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
-import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
-import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.player.Inventory;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnit;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.prefab.screen.GenericScreen;
+import voltaic.prefab.screen.component.button.ScreenComponentButton;
+import voltaic.prefab.screen.component.editbox.ScreenComponentEditBox;
+import voltaic.prefab.screen.component.types.ScreenComponentMultiLabel;
+import voltaic.prefab.screen.component.types.ScreenComponentSimpleLabel;
+import voltaic.prefab.utilities.math.Color;
 
 public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor> {
 
@@ -36,9 +37,9 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 				return;
 			}
 
-			DisplayUnit units = getUnit(monitor.networkProperty.get());
+			DisplayUnit units = getUnit(monitor.networkProperty.getValue());
 
-			Component combined = getPropertyLabel(monitor.networkProperty.get()).append(" ").append(getOperatorLabel(monitor.booleanOperator.get())).append(" ").append(ChatFormatter.getChatDisplayShort(monitor.value.get(), units)).withStyle(ChatFormatting.BOLD);
+			Component combined = getPropertyLabel(monitor.networkProperty.getValue()).append(" ").append(getOperatorLabel(monitor.booleanOperator.getValue())).append(" ").append(ChatFormatter.getChatDisplayShort(monitor.value.getValue(), units)).withStyle(ChatFormatting.BOLD);
 
 			int offset = (int) ((150 - font.width(combined)) / 2.0);
 
@@ -61,42 +62,42 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 			if (monitor == null) {
 				return;
 			}
-			monitor.networkProperty.set(0);
+			monitor.networkProperty.setValue(0);
 		}));
 		addComponent(new ScreenComponentButton<>(13, 70, 70, 20).setLabel(getPropertyLabel(1)).setOnPress(button -> {
 			TileCircuitMonitor monitor = menu.getSafeHost();
 			if (monitor == null) {
 				return;
 			}
-			monitor.networkProperty.set(1);
+			monitor.networkProperty.setValue(1);
 		}));
 		addComponent(new ScreenComponentButton<>(13, 90, 70, 20).setLabel(getPropertyLabel(2)).setOnPress(button -> {
 			TileCircuitMonitor monitor = menu.getSafeHost();
 			if (monitor == null) {
 				return;
 			}
-			monitor.networkProperty.set(2);
+			monitor.networkProperty.setValue(2);
 		}));
 		addComponent(new ScreenComponentButton<>(93, 50, 70, 20).setLabel(getPropertyLabel(3)).setOnPress(button -> {
 			TileCircuitMonitor monitor = menu.getSafeHost();
 			if (monitor == null) {
 				return;
 			}
-			monitor.networkProperty.set(3);
+			monitor.networkProperty.setValue(3);
 		}));
 		addComponent(new ScreenComponentButton<>(93, 70, 70, 20).setLabel(getPropertyLabel(4)).setOnPress(button -> {
 			TileCircuitMonitor monitor = menu.getSafeHost();
 			if (monitor == null) {
 				return;
 			}
-			monitor.networkProperty.set(4);
+			monitor.networkProperty.setValue(4);
 		}));
 		addComponent(new ScreenComponentButton<>(93, 90, 70, 20).setLabel(getPropertyLabel(5)).setOnPress(button -> {
 			TileCircuitMonitor monitor = menu.getSafeHost();
 			if (monitor == null) {
 				return;
 			}
-			monitor.networkProperty.set(5);
+			monitor.networkProperty.setValue(5);
 		}));
 
 		// boolean operator
@@ -106,42 +107,42 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 			if (monitor == null) {
 				return;
 			}
-			monitor.booleanOperator.set(0);
+			monitor.booleanOperator.setValue(0);
 		}));
 		addComponent(new ScreenComponentButton<>(39, 130, 20, 20).setLabel(getOperatorLabel(1)).setOnPress(button -> {
 			TileCircuitMonitor monitor = menu.getSafeHost();
 			if (monitor == null) {
 				return;
 			}
-			monitor.booleanOperator.set(1);
+			monitor.booleanOperator.setValue(1);
 		}));
 		addComponent(new ScreenComponentButton<>(65, 130, 20, 20).setLabel(getOperatorLabel(2)).setOnPress(button -> {
 			TileCircuitMonitor monitor = menu.getSafeHost();
 			if (monitor == null) {
 				return;
 			}
-			monitor.booleanOperator.set(2);
+			monitor.booleanOperator.setValue(2);
 		}));
 		addComponent(new ScreenComponentButton<>(91, 130, 20, 20).setLabel(getOperatorLabel(3)).setOnPress(button -> {
 			TileCircuitMonitor monitor = menu.getSafeHost();
 			if (monitor == null) {
 				return;
 			}
-			monitor.booleanOperator.set(3);
+			monitor.booleanOperator.setValue(3);
 		}));
 		addComponent(new ScreenComponentButton<>(117, 130, 20, 20).setLabel(getOperatorLabel(4)).setOnPress(button -> {
 			TileCircuitMonitor monitor = menu.getSafeHost();
 			if (monitor == null) {
 				return;
 			}
-			monitor.booleanOperator.set(4);
+			monitor.booleanOperator.setValue(4);
 		}));
 		addComponent(new ScreenComponentButton<>(143, 130, 20, 20).setLabel(getOperatorLabel(5)).setOnPress(button -> {
 			TileCircuitMonitor monitor = menu.getSafeHost();
 			if (monitor == null) {
 				return;
 			}
-			monitor.booleanOperator.set(5);
+			monitor.booleanOperator.setValue(5);
 		}));
 
 		// entered value
@@ -158,7 +159,7 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 			needsUpdate = false;
 			TileCircuitMonitor monitor = menu.getSafeHost();
 			if (monitor != null) {
-				value.setValue("" + monitor.value.get());
+				value.setValue("" + monitor.value.getValue());
 			}
 		}
 	}
@@ -182,7 +183,7 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 
 		}
 
-		monitor.value.set(value);
+		monitor.value.setValue(value);
 
 	}
 
@@ -214,12 +215,12 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 
 	private DisplayUnit getUnit(int label) {
 		return switch (label) {
-		case 0, 5 -> DisplayUnit.WATT;
-		case 1, 3 -> DisplayUnit.VOLTAGE;
-		case 2 -> DisplayUnit.AMPERE;
-		case 4 -> DisplayUnit.RESISTANCE;
+		case 0, 5 -> DisplayUnits.WATT;
+		case 1, 3 -> DisplayUnits.VOLTAGE;
+		case 2 -> DisplayUnits.AMPERE;
+		case 4 -> DisplayUnits.RESISTANCE;
 
-		default -> DisplayUnit.WATT;
+		default -> DisplayUnits.WATT;
 		};
 	}
 

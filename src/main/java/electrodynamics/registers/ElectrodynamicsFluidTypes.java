@@ -13,8 +13,7 @@ import static electrodynamics.registers.ElectrodynamicsFluids.FLUID_OXYGEN;
 import static electrodynamics.registers.ElectrodynamicsFluids.FLUID_POLYETHYLENE;
 import static electrodynamics.registers.ElectrodynamicsFluids.FLUID_SULFURICACID;
 
-import electrodynamics.api.References;
-import electrodynamics.api.registration.BulkDeferredHolder;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.fluid.subtype.SubtypeCrudeMineralFluid;
 import electrodynamics.common.fluid.subtype.SubtypeDirtyMineralFluid;
 import electrodynamics.common.fluid.subtype.SubtypeImpureMineralFluid;
@@ -25,9 +24,10 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import voltaic.api.registration.BulkDeferredHolder;
 
 public class ElectrodynamicsFluidTypes {
-	public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, References.ID);
+	public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, Electrodynamics.ID);
 
 
 	public static final DeferredHolder<FluidType, FluidType> FLUID_TYPE_AMMONIA = FLUID_TYPES.register("fluidammonia", () -> FLUID_AMMONIA.get().getFluidType());

@@ -4,18 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import electrodynamics.Electrodynamics;
-import electrodynamics.api.fluid.PropertyFluidTank;
-import electrodynamics.client.ClientRegister;
-import electrodynamics.client.particle.fluiddrop.ParticleOptionFluidDrop;
+import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.common.tile.machines.chemicalreactor.TileChemicalReactor;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.utilities.RenderingUtils;
-import electrodynamics.prefab.utilities.math.Color;
-import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -27,6 +17,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.Voltaic;
+import voltaic.api.fluid.PropertyFluidTank;
+import voltaic.client.particle.fluiddrop.ParticleOptionFluidDrop;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
+import voltaic.prefab.utilities.RenderingUtils;
+import voltaic.prefab.utilities.math.Color;
+import voltaic.prefab.utilities.math.MathUtils;
 
 public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReactor> {
     public RenderChemicalReactor(BlockEntityRendererProvider.Context context) {
@@ -60,7 +61,7 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
 
         ComponentProcessor processor = tile.getComponent(IComponentType.Processor);
 
-        boolean active = processor.isActive();
+        boolean active = processor.isActive(0);
 
         poseStack.pushPose();
 
@@ -68,13 +69,13 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
 
         poseStack.translate(0, 1.0, 0);
 
-        float progress = (float) (processor.operatingTicks.get() / processor.requiredTicks.get());
+        float progress = (float) (processor.operatingTicks.getValue()[0] / processor.requiredTicks.getValue()[0]);
 
         float rotation = progress * 90.0F;
 
         poseStack.mulPose(MathUtils.rotVectorQuaternionDeg(rotation, MathUtils.YP));
 
-        RenderingUtils.renderModel(getModel(ClientRegister.MODEL_CHEMICALREACTOR_ROTOR), tile, RenderType.solid(), poseStack, bufferSource, packedLight, packedOverlay);
+        RenderingUtils.renderModel(getModel(ElectrodynamicsClientRegister.MODEL_CHEMICALREACTOR_ROTOR), tile, RenderType.solid(), poseStack, bufferSource, packedLight, packedOverlay);
 
         poseStack.popPose();
 
@@ -86,7 +87,7 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
         ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
 
 
-        if (tile.hasItemInputs.get()) {
+        if (tile.hasItemInputs.getValue()) {
 
             poseStack.translate(0.5, 0.5, 0.5);
 
@@ -129,7 +130,7 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
         //render fluids
 
 
-        if (tile.hasFluidInputs.get()) {
+        if (tile.hasFluidInputs.getValue()) {
 
             ComponentFluidHandlerMulti multi = tile.getComponent(IComponentType.FluidHandler);
 
@@ -140,7 +141,7 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
             FluidStack stack1 = tanks[0].getFluid();
             FluidStack stack2 = tanks[1].getFluid();
 
-            if (tile.hasItemInputs.get() && active && tile.getLevel().random.nextDouble() < 0.4) {
+            if (tile.hasItemInputs.getValue() && active && tile.getLevel().random.nextDouble() < 0.4) {
 
                 Color color;
 
@@ -162,7 +163,7 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
 
                 } else {
 
-                    if (Electrodynamics.RANDOM.nextBoolean()) {
+                    if (Voltaic.RANDOM.nextBoolean()) {
                         IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack1.getFluid());
 
                         TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(attributes.getStillTexture());
@@ -185,14 +186,14 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
                 double y = tile.getBlockPos().getY();
                 double z = tile.getBlockPos().getZ();
 
-                x += Electrodynamics.RANDOM.nextDouble(0.5) + 0.25;
-                y += 1.6875;//Electrodynamics.RANDOM.nextDouble(0.375) + 1.3125;
-                z += Electrodynamics.RANDOM.nextDouble(0.5) + 0.25;
+                x += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
+                y += 1.6875;//Voltaic.RANDOM.nextDouble(0.375) + 1.3125;
+                z += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
 
 
                 minecraft().particleEngine.createParticle(new ParticleOptionFluidDrop().setParameters(color.rFloat(), color.gFloat(), color.bFloat(), 0.5F), x, y, z, 0, -0.1, 0);
 
-            } else if (!tile.hasItemInputs.get()) {
+            } else if (!tile.hasItemInputs.getValue()) {
 
                 if (stack1.isEmpty()) {
                     poseStack.translate(0, 1, 0);
@@ -212,9 +213,9 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
                         double y = tile.getBlockPos().getY();
                         double z = tile.getBlockPos().getZ();
 
-                        x += Electrodynamics.RANDOM.nextDouble(0.5) + 0.25;
-                        y += Electrodynamics.RANDOM.nextDouble(0.375) + 1.3125;
-                        z += Electrodynamics.RANDOM.nextDouble(0.5) + 0.25;
+                        x += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
+                        y += Voltaic.RANDOM.nextDouble(0.375) + 1.3125;
+                        z += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
 
                         minecraft().particleEngine.createParticle(ParticleTypes.BUBBLE, x, y, z, 0, 0, 0);
 
@@ -236,7 +237,7 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
 
         poseStack.pushPose();
 
-        if (tile.hasGasInputs.get() && active && tile.getLevel().getRandom().nextDouble() < 0.8) {
+        if (tile.hasGasInputs.getValue() && active && tile.getLevel().getRandom().nextDouble() < 0.8) {
 
             double x = tile.getBlockPos().getX();
             double y = tile.getBlockPos().getY();
@@ -244,31 +245,31 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
 
             y += 1.25;
 
-            if (Electrodynamics.RANDOM.nextBoolean()) {
+            if (Voltaic.RANDOM.nextBoolean()) {
 
-                x += Electrodynamics.RANDOM.nextDouble(0.875) + 0.0625;
+                x += Voltaic.RANDOM.nextDouble(0.875) + 0.0625;
 
-                if (Electrodynamics.RANDOM.nextBoolean()) {
-                    z += Electrodynamics.RANDOM.nextDouble(0.125) + 0.0625;
+                if (Voltaic.RANDOM.nextBoolean()) {
+                    z += Voltaic.RANDOM.nextDouble(0.125) + 0.0625;
                 } else {
-                    z += Electrodynamics.RANDOM.nextDouble(0.125) + 0.8125;
+                    z += Voltaic.RANDOM.nextDouble(0.125) + 0.8125;
                 }
 
 
             } else {
-                z += Electrodynamics.RANDOM.nextDouble(0.875) + 0.0625;
+                z += Voltaic.RANDOM.nextDouble(0.875) + 0.0625;
 
-                if (Electrodynamics.RANDOM.nextBoolean()) {
-                    x += Electrodynamics.RANDOM.nextDouble(0.125) + 0.0625;
+                if (Voltaic.RANDOM.nextBoolean()) {
+                    x += Voltaic.RANDOM.nextDouble(0.125) + 0.0625;
                 } else {
-                    x += Electrodynamics.RANDOM.nextDouble(0.125) + 0.8125;
+                    x += Voltaic.RANDOM.nextDouble(0.125) + 0.8125;
                 }
             }
 
 
-            //x += Electrodynamics.RANDOM.nextDouble(0.5) + 0.25;
-            //y += 1.6875;//Electrodynamics.RANDOM.nextDouble(0.375) + 1.3125;
-            //z += Electrodynamics.RANDOM.nextDouble(0.5) + 0.25;
+            //x += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
+            //y += 1.6875;//Voltaic.RANDOM.nextDouble(0.375) + 1.3125;
+            //z += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
 
             minecraft().particleEngine.createParticle(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
 

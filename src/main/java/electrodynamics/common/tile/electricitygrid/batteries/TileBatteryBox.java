@@ -4,26 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
-import electrodynamics.common.item.ItemUpgrade;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.prefab.item.ItemElectric;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyTypes;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.CapabilityUtils.FEInputDispatcher;
-import electrodynamics.prefab.utilities.CapabilityUtils.FEOutputDispatcher;
 import electrodynamics.prefab.utilities.ElectricityUtils;
-import electrodynamics.prefab.utilities.object.CachedTileOutput;
-import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,17 +12,30 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.energy.IEnergyStorage;
+import voltaic.common.item.ItemUpgrade;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.item.ItemElectric;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.CapabilityUtils;
+import voltaic.prefab.utilities.object.CachedTileOutput;
+import voltaic.prefab.utilities.object.TransferPack;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
-    private final FEInputDispatcher inputDispatcher = new FEInputDispatcher(this);
-    private final FEOutputDispatcher outputDispatcher = new FEOutputDispatcher(this);
+    private final CapabilityUtils.FEInputDispatcher inputDispatcher = new CapabilityUtils.FEInputDispatcher(this);
+    private final CapabilityUtils.FEOutputDispatcher outputDispatcher = new CapabilityUtils.FEOutputDispatcher(this);
 
-    public final Property<Double> powerOutput;
-    public final Property<Double> maxJoules;
-    public Property<Double> currentCapacityMultiplier = property(new Property<>(PropertyTypes.DOUBLE, "currentCapacityMultiplier", 1.0));
-    public Property<Double> currentVoltageMultiplier = property(new Property<>(PropertyTypes.DOUBLE, "currentVoltageMultiplier", 1.0));
-    protected Property<Double> receiveLimitLeft;
+    public final SingleProperty<Double> powerOutput;
+    public final SingleProperty<Double> maxJoules;
+    public SingleProperty<Double> currentCapacityMultiplier = property(new SingleProperty<>(PropertyTypes.DOUBLE, "currentCapacityMultiplier", 1.0));
+    public SingleProperty<Double> currentVoltageMultiplier = property(new SingleProperty<>(PropertyTypes.DOUBLE, "currentVoltageMultiplier", 1.0));
+    protected SingleProperty<Double> receiveLimitLeft;
     protected CachedTileOutput output;
 
     public final int baseVoltage;
@@ -50,19 +44,19 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
     public static final BlockEntityUtils.MachineDirection INPUT = BlockEntityUtils.MachineDirection.FRONT;
 
     public TileBatteryBox(BlockPos worldPosition, BlockState blockState) {
-        this(ElectrodynamicsTiles.TILE_BATTERYBOX.get(), SubtypeMachine.batterybox, 120, 359.0 * ElectrodynamicsCapabilities.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition, blockState);
+        this(ElectrodynamicsTiles.TILE_BATTERYBOX.get(), SubtypeMachine.batterybox, 120, 359.0 * VoltaicCapabilities.DEFAULT_VOLTAGE / 20.0, 10000000, worldPosition, blockState);
     }
 
     public TileBatteryBox(BlockEntityType<?> type, SubtypeMachine machine, int baseVoltage, double output, double max, BlockPos worldPosition, BlockState blockState) {
         super(type, worldPosition, blockState);
         this.baseVoltage = baseVoltage;
-        powerOutput = property(new Property<>(PropertyTypes.DOUBLE, "powerOutput", output));
-        maxJoules = property(new Property<>(PropertyTypes.DOUBLE, "maxJoulesStored", max));
-        receiveLimitLeft = property(new Property<>(PropertyTypes.DOUBLE, "receiveLimitLeft", output * currentCapacityMultiplier.get()));
+        powerOutput = property(new SingleProperty<>(PropertyTypes.DOUBLE, "powerOutput", output));
+        maxJoules = property(new SingleProperty<>(PropertyTypes.DOUBLE, "maxJoulesStored", max));
+        receiveLimitLeft = property(new SingleProperty<>(PropertyTypes.DOUBLE, "receiveLimitLeft", output * currentCapacityMultiplier.getValue()));
         addComponent(new ComponentTickable(this).tickServer(this::tickServer));
         addComponent(new ComponentPacketHandler(this));
-        addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(1).upgrades(3)).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid((i, s, c) -> i == 0 ? s.getItem() instanceof ItemElectric : machineValidator().test(i, s, c)));
-        addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+        addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().inputs(1).upgrades(3)).validUpgrades(ContainerBatteryBox.VALID_UPGRADES).valid((i, s, c) -> i == 0 ? s.getItem() instanceof ItemElectric : machineValidator().test(i, s, c)));
+        addComponent(new ComponentContainerProvider(machine.tag(), this).createMenu((id, player) -> new ContainerBatteryBox(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
         addComponent(new ComponentElectrodynamic(this, true, true).voltage(baseVoltage).maxJoules(max).setInputDirections(INPUT).setOutputDirections(OUTPUT));
 
     }
@@ -78,7 +72,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
         }
         if (electro.getJoulesStored() > 0 && output.valid()) {
 
-            electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput.get() * currentCapacityMultiplier.get()), electro.getVoltage()), false).getJoules());
+            electro.joules(electro.getJoulesStored() - ElectricityUtils.receivePower(output.getSafe(), facing, TransferPack.joulesVoltage(Math.min(electro.getJoulesStored(), powerOutput.getValue() * currentCapacityMultiplier.getValue()), electro.getVoltage()), false).getJoules());
         }
         if (electro.getJoulesStored() > electro.getMaxJoulesStored()) {
             electro.joules(electro.getMaxJoulesStored());
@@ -110,7 +104,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
         ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-        int receive = (int) Math.min(maxReceive, powerOutput.get() * currentCapacityMultiplier.get());
+        int receive = (int) Math.min(maxReceive, powerOutput.getValue() * currentCapacityMultiplier.getValue());
 
         int accepted = Math.min(receive, (int) (electro.getMaxJoulesStored() - electro.getJoulesStored()));
 
@@ -127,7 +121,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
         ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-        int extract = (int) Math.min(maxExtract, powerOutput.get() * currentCapacityMultiplier.get());
+        int extract = (int) Math.min(maxExtract, powerOutput.getValue() * currentCapacityMultiplier.getValue());
 
         int taken = Math.min(extract, (int) electro.getJoulesStored());
 
@@ -135,7 +129,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
             electro.joules(electro.getJoulesStored() - taken);
 
-            if (electro.getVoltage() > ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) {
+            if (electro.getVoltage() > VoltaicCapabilities.DEFAULT_VOLTAGE) {
                 electro.overVoltage(TransferPack.joulesVoltage(taken, electro.getVoltage()));
             }
 
@@ -187,13 +181,13 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
                 }
             }
 
-            currentCapacityMultiplier.set(capacityMultiplier);
-            currentVoltageMultiplier.set(voltageMultiplier);
+            currentCapacityMultiplier.setValue(capacityMultiplier);
+            currentVoltageMultiplier.setValue(voltageMultiplier);
 
-            receiveLimitLeft.set(powerOutput.get() * currentCapacityMultiplier.get());
+            receiveLimitLeft.setValue(powerOutput.getValue() * currentCapacityMultiplier.getValue());
 
-            electro.maxJoules(maxJoules.get() * currentCapacityMultiplier.get());
-            electro.voltage(baseVoltage * currentVoltageMultiplier.get());
+            electro.maxJoules(maxJoules.getValue() * currentCapacityMultiplier.getValue());
+            electro.voltage(baseVoltage * currentVoltageMultiplier.getValue());
         }
     }
 

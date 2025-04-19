@@ -4,7 +4,7 @@
     "down": "electrodynamics:block/multiblock/electrolosischamberbulkhead",
     "east": "electrodynamics:block/multiblock/electrolosischamberbulkhead",
     "north": "electrodynamics:block/electrolosischamberfront",
-    "particle": "electrodynamics:block/multisubnode",
+    "particle": "voltaic:block/steelcasing",
     "south": "electrodynamics:block/multiblock/electrolosischambercontacts",
     "up": "electrodynamics:block/multiblock/electrolosischamberbulkhead",
     "west": "electrodynamics:block/multiblock/electrolosischamberbulkhead"

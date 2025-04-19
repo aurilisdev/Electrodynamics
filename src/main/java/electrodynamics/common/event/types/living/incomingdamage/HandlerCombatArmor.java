@@ -3,12 +3,13 @@ package electrodynamics.common.event.types.living.incomingdamage;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
+import voltaic.api.gas.GasStack;
+import voltaic.common.event.type.AbstractIncomingDamageHandler;
+import voltaic.registers.VoltaicDataComponentTypes;
 
 public class HandlerCombatArmor extends AbstractIncomingDamageHandler {
 
@@ -28,7 +29,7 @@ public class HandlerCombatArmor extends AbstractIncomingDamageHandler {
             return;
         }
 
-        GasStack gas = armorPieces.get(1).getOrDefault(ElectrodynamicsDataComponentTypes.GAS_STACK, GasStack.EMPTY);
+        GasStack gas = armorPieces.get(1).getOrDefault(VoltaicDataComponentTypes.GAS_STACK, GasStack.EMPTY);
 
         if(gas.isEmpty()){
             return;
@@ -36,7 +37,7 @@ public class HandlerCombatArmor extends AbstractIncomingDamageHandler {
 
         gas.shrink(1);
 
-        armorPieces.get(1).set(ElectrodynamicsDataComponentTypes.GAS_STACK, gas.copy());
+        armorPieces.get(1).set(VoltaicDataComponentTypes.GAS_STACK, gas.copy());
 
         event.setCanceled(true);
 

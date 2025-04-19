@@ -2,12 +2,12 @@ package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipeFilter;
 import electrodynamics.common.tile.pipelines.fluid.TileFluidPipeFilter;
-import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.button.ScreenComponentButton;
-import electrodynamics.prefab.screen.component.types.ScreenComponentFluidFilter;
+import electrodynamics.prefab.screen.component.ScreenComponentFluidFilter;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import voltaic.prefab.screen.GenericScreen;
+import voltaic.prefab.screen.component.button.ScreenComponentButton;
 
 public class ScreenFluidPipeFilter extends GenericScreen<ContainerFluidPipeFilter> {
 
@@ -27,13 +27,13 @@ public class ScreenFluidPipeFilter extends GenericScreen<ContainerFluidPipeFilte
             if (filter == null) {
                 return Component.empty();
             }
-            return filter.isWhitelist.get() ? ElectroTextUtils.gui("filter.whitelist") : ElectroTextUtils.gui("filter.blacklist");
+            return filter.isWhitelist.getValue() ? ElectroTextUtils.gui("filter.whitelist") : ElectroTextUtils.gui("filter.blacklist");
         }).setOnPress(button -> {
             TileFluidPipeFilter filter = menu.getSafeHost();
             if (filter == null) {
                 return;
             }
-            filter.isWhitelist.set(!filter.isWhitelist.get());
+            filter.isWhitelist.setValue(!filter.isWhitelist.getValue());
 
         }));
 

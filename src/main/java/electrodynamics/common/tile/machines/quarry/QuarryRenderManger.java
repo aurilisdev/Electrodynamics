@@ -7,17 +7,17 @@ import javax.annotation.Nullable;
 
 import com.mojang.datafixers.util.Pair;
 
-import electrodynamics.client.render.event.levelstage.HandlerQuarryArm;
+import electrodynamics.client.event.levelstage.HandlerQuarryArm;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.math.PrecisionVector;
-import electrodynamics.prefab.utilities.object.Location;
 import electrodynamics.prefab.utilities.object.QuarryArmDataHolder;
 import electrodynamics.prefab.utilities.object.QuarryArmFrameWrapper;
 import electrodynamics.prefab.utilities.object.QuarryWheelDataHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.AABB;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.math.PrecisionVector;
+import voltaic.prefab.utilities.object.Location;
 
 /**
  * Handles creation of all required AABBs and render data that is then used in the {@link HandlerQuarryArm} renderer
@@ -36,17 +36,17 @@ public class QuarryRenderManger {
 	public void render(TileQuarry quarry) {
 		BlockPos pos = quarry.getBlockPos();
 		HandlerQuarryArm.removeRenderData(pos);
-		if (!quarry.hasCorners() || quarry.miningPos.get() == null || quarry.miningPos.get().equals(BlockEntityUtils.OUT_OF_REACH)) {
+		if (!quarry.hasCorners() || quarry.miningPos.getValue() == null || quarry.miningPos.getValue().equals(BlockEntityUtils.OUT_OF_REACH)) {
 			return;
 		}
-		onRight = quarry.cornerOnRight.get();
+		onRight = quarry.cornerOnRight.getValue();
 		currentFrame = getCurrentFrame(quarry);
 		if (currentFrame == null) {
 			return;
 		}
 
-		BlockPos start = quarry.corners.get().get(3);
-		BlockPos end = quarry.corners.get().get(0);
+		BlockPos start = quarry.corners.getValue().get(3);
+		BlockPos end = quarry.corners.getValue().get(0);
 
 		double widthLeft, widthRight, widthTop, widthBottom;
 		AABB headAabb = null;
@@ -213,7 +213,7 @@ public class QuarryRenderManger {
 		default:
 			break;
 		}
-		HandlerQuarryArm.addRenderData(pos, new QuarryArmDataHolder(lightSegments, darkSegments, titanium, Pair.of(headPos, headAabb), headType, leftWheel, rightWheel, topWheel, bottomWheel, quarry.running.get(), quarry.progressCounter.get(), quarry.speed.get(), quarry.corners.get(), markerLineSigns));
+		HandlerQuarryArm.addRenderData(pos, new QuarryArmDataHolder(lightSegments, darkSegments, titanium, Pair.of(headPos, headAabb), headType, leftWheel, rightWheel, topWheel, bottomWheel, quarry.running.getValue(), quarry.progressCounter.getValue(), quarry.speed.getValue(), quarry.corners.getValue(), markerLineSigns));
 
 	}
 
@@ -1450,37 +1450,37 @@ public class QuarryRenderManger {
 
 	@Nullable
 	private QuarryArmFrameWrapper getCurrentFrame(TileQuarry quarry) {
-		if (quarry.miningPos.get().equals(BlockEntityUtils.OUT_OF_REACH)) {
+		if (quarry.miningPos.getValue().equals(BlockEntityUtils.OUT_OF_REACH)) {
 			return new QuarryArmFrameWrapper(null, 0, 0, 0);
 		}
 
-		if (quarry.prevMiningPos.get().equals(BlockEntityUtils.OUT_OF_REACH) || quarry.prevMiningPos.get().equals(quarry.miningPos.get())) {
-			return new QuarryArmFrameWrapper(new Location(quarry.miningPos.get()).add(-0.5, -0.5, -0.5), 0, 0, 0);
+		if (quarry.prevMiningPos.getValue().equals(BlockEntityUtils.OUT_OF_REACH) || quarry.prevMiningPos.getValue().equals(quarry.miningPos.getValue())) {
+			return new QuarryArmFrameWrapper(new Location(quarry.miningPos.getValue()).add(-0.5, -0.5, -0.5), 0, 0, 0);
 		}
 
-		if (!quarry.hasHead.get() || !quarry.isMotorComplexPowered()) {
+		if (!quarry.hasHead.getValue() || !quarry.isMotorComplexPowered()) {
 			return currentFrame;
 		}
 
-		int numberOfFrames = quarry.speed.get();
+		int numberOfFrames = quarry.speed.getValue();
 		if (numberOfFrames == 0) {
 			numberOfFrames = 1;
 		}
 
-		double deltaX = (quarry.miningPos.get().getX() - quarry.prevMiningPos.get().getX()) / (double) numberOfFrames;
-		double deltaY = (quarry.miningPos.get().getY() - quarry.prevMiningPos.get().getY()) / (double) numberOfFrames;
-		double deltaZ = (quarry.miningPos.get().getZ() - quarry.prevMiningPos.get().getZ()) / (double) numberOfFrames;
+		double deltaX = (quarry.miningPos.getValue().getX() - quarry.prevMiningPos.getValue().getX()) / (double) numberOfFrames;
+		double deltaY = (quarry.miningPos.getValue().getY() - quarry.prevMiningPos.getValue().getY()) / (double) numberOfFrames;
+		double deltaZ = (quarry.miningPos.getValue().getZ() - quarry.prevMiningPos.getValue().getZ()) / (double) numberOfFrames;
 
 		if (Math.abs(deltaX) + Math.abs(deltaY) + Math.abs(deltaZ) == 0) {
-			return new QuarryArmFrameWrapper(new Location(quarry.miningPos.get().offset(0, -1, 0)), 0, 0, 0);
+			return new QuarryArmFrameWrapper(new Location(quarry.miningPos.getValue().offset(0, -1, 0)), 0, 0, 0);
 		}
-		float degress = 360.0F * ((float) quarry.progressCounter.get() / (float) numberOfFrames);
-		int currFrame = quarry.progressCounter.get() % numberOfFrames;
+		float degress = 360.0F * ((float) quarry.progressCounter.getValue() / (float) numberOfFrames);
+		int currFrame = quarry.progressCounter.getValue() % numberOfFrames;
 
 		int signX = (int) Math.signum(deltaX);
 		int signZ = (int) Math.signum(deltaZ);
 
-		return new QuarryArmFrameWrapper(new Location(quarry.prevMiningPos.get().getX() + deltaX * currFrame, quarry.prevMiningPos.get().getY() + deltaY * currFrame, quarry.prevMiningPos.get().getZ() + deltaZ * currFrame), signX, signZ, degress);
+		return new QuarryArmFrameWrapper(new Location(quarry.prevMiningPos.getValue().getX() + deltaX * currFrame, quarry.prevMiningPos.getValue().getY() + deltaY * currFrame, quarry.prevMiningPos.getValue().getZ() + deltaZ * currFrame), signX, signZ, degress);
 
 	}
 

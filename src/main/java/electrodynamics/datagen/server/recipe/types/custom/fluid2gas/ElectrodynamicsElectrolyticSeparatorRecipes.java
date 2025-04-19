@@ -1,16 +1,16 @@
 package electrodynamics.datagen.server.recipe.types.custom.fluid2gas;
 
-import electrodynamics.api.References;
-import electrodynamics.api.gas.Gas;
-import electrodynamics.api.gas.GasStack;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.recipe.categories.fluid2gas.specificmachines.ElectrolyticSeparatorRecipe;
-import electrodynamics.common.recipe.recipeutils.ProbableGas;
-import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.builders.ElectrodynamicsRecipeBuilder.RecipeCategory;
-import electrodynamics.datagen.utils.recipe.builders.Fluid2GasBuilder;
 import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.FluidTags;
+import voltaic.api.gas.Gas;
+import voltaic.api.gas.GasStack;
+import voltaic.common.recipe.recipeutils.ProbableGas;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
+import voltaic.datagen.utils.server.recipe.builders.BaseRecipeBuilder;
+import voltaic.datagen.utils.server.recipe.builders.Fluid2GasBuilder;
 
 public class ElectrodynamicsElectrolyticSeparatorRecipes extends AbstractRecipeGenerator {
 
@@ -24,7 +24,7 @@ public class ElectrodynamicsElectrolyticSeparatorRecipes extends AbstractRecipeG
 	}
 
 	public ElectrodynamicsElectrolyticSeparatorRecipes() {
-		this(References.ID);
+		this(Electrodynamics.ID);
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class ElectrodynamicsElectrolyticSeparatorRecipes extends AbstractRecipeG
 	}
 
 	public Fluid2GasBuilder<ElectrolyticSeparatorRecipe> newRecipe(GasStack stack, float xp, int ticks, double usagePerTick, String name, String group) {
-		return new Fluid2GasBuilder<>(ElectrolyticSeparatorRecipe::new, stack, RecipeCategory.FLUID_2_GAS, modID, "electrolytic_separator/" + name, group, xp, ticks, usagePerTick);
+		return new Fluid2GasBuilder<>(ElectrolyticSeparatorRecipe::new, stack, BaseRecipeBuilder.RecipeCategory.FLUID_2_GAS, modID, "electrolytic_separator/" + name, group, xp, ticks, usagePerTick);
 	}
 
 }

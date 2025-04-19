@@ -1,26 +1,10 @@
 package electrodynamics.common.tile.pipelines.gas;
 
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerDO2OProcessor;
 import electrodynamics.common.inventory.container.tile.ContainerGasCollector;
-import electrodynamics.common.network.utils.GasUtilities;
 import electrodynamics.common.reloadlistener.GasCollectorChromoCardsRegister;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSound;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerSimple;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.types.GenericGasTile;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
@@ -29,6 +13,16 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasStack;
+import voltaic.common.network.utils.GasUtilities;
+import voltaic.prefab.sound.ITickableSound;
+import voltaic.prefab.sound.SoundBarrierMethods;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.types.GenericGasTile;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileGasCollector extends GenericGasTile implements ITickableSound {
 
@@ -40,10 +34,10 @@ public class TileGasCollector extends GenericGasTile implements ITickableSound {
         super(ElectrodynamicsTiles.TILE_GASCOLLECTOR.get(), worldPos, blockState);
         addComponent(new ComponentPacketHandler(this));
         addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickClient(this::tickClient));
-        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2.0).maxJoules(Constants.GAS_COLLECTOR_USAGE_PER_TICK * 20));
+        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2.0).maxJoules(ElectroConstants.GAS_COLLECTOR_USAGE_PER_TICK * 20));
         addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().inputs(1).gasOutputs(1).upgrades(3)).validUpgrades(ContainerDO2OProcessor.VALID_UPGRADES).valid(machineValidator()));
         addComponent(new ComponentProcessor(this).canProcess(this::canProcess).process(this::process));
-        addComponent(new ComponentContainerProvider(SubtypeMachine.gascollector, this).createMenu((id, player) -> new ContainerGasCollector(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+        addComponent(new ComponentContainerProvider(SubtypeMachine.gascollector.tag(), this).createMenu((id, player) -> new ContainerGasCollector(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
         addComponent(new ComponentGasHandlerSimple(this, "", 5000, 1000, 10).setOutputDirections(BlockEntityUtils.MachineDirection.BACK).setOnGasCondensed(getCondensedHandler()));
     }
 
@@ -62,15 +56,15 @@ public class TileGasCollector extends GenericGasTile implements ITickableSound {
 
     }
 
-    private void process(ComponentProcessor componentProcessor) {
+    private void process(ComponentProcessor componentProcessor, int procNumber) {
         ComponentInventory inv = getComponent(IComponentType.Inventory);
         ItemStack card = inv.getItem(CARD_SLOT);
         GasCollectorChromoCardsRegister.AtmosphericResult result = GasCollectorChromoCardsRegister.INSTANCE.getResult(card.getItem());
         ComponentGasHandlerSimple tank = getComponent(IComponentType.GasHandler);
-        tank.fill(new GasStack(result.stack().getGas(), (int) (result.stack().getAmount() * componentProcessor.operatingSpeed.get()), result.stack().getTemperature(), result.stack().getPressure()), GasAction.EXECUTE);
+        tank.fill(new GasStack(result.stack().getGas(), (int) (result.stack().getAmount() * componentProcessor.operatingSpeed.getValue()), result.stack().getTemperature(), result.stack().getPressure()), GasAction.EXECUTE);
     }
 
-    private boolean canProcess(ComponentProcessor componentProcessor) {
+    private boolean canProcess(ComponentProcessor componentProcessor, int procNumber) {
         boolean valid = checkRecipe(componentProcessor);
         if (BlockEntityUtils.isLit(this) ^ valid) {
             BlockEntityUtils.updateLit(this, valid);
@@ -80,7 +74,7 @@ public class TileGasCollector extends GenericGasTile implements ITickableSound {
 
     private boolean checkRecipe(ComponentProcessor componentProcessor) {
         ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-        if(electro.getJoulesStored() < componentProcessor.getUsage()){
+        if(electro.getJoulesStored() < componentProcessor.getUsage(0)){
             return false;
         }
         ComponentInventory inv = getComponent(IComponentType.Inventory);
@@ -114,12 +108,12 @@ public class TileGasCollector extends GenericGasTile implements ITickableSound {
 
     @Override
     public boolean shouldPlaySound() {
-        return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive();
+        return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
     }
 
     @Override
     public int getComparatorSignal() {
-        return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive() ? 15 : 0;
+        return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
     }
 
 }

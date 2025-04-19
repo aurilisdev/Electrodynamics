@@ -3,16 +3,16 @@ package electrodynamics.common.recipe.categories.item2item.specificmachines;
 import java.util.List;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
-import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.common.recipe.recipeutils.ProbableGas;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import voltaic.common.recipe.categories.item2item.Item2ItemRecipe;
+import voltaic.common.recipe.recipeutils.CountableIngredient;
+import voltaic.common.recipe.recipeutils.ProbableFluid;
+import voltaic.common.recipe.recipeutils.ProbableGas;
+import voltaic.common.recipe.recipeutils.ProbableItem;
 
 public class EnergizedAlloyerRecipe extends Item2ItemRecipe {
 
@@ -25,12 +25,12 @@ public class EnergizedAlloyerRecipe extends Item2ItemRecipe {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_SERIALIZER.get();
+		return ElectrodynamicsRecipies.ENERGIZED_ALLOYER_SERIALIZER.get();
 	}
 
 	@Override
 	public RecipeType<?> getType() {
-		return ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE.get();
+		return ElectrodynamicsRecipies.ENERGIZED_ALLOYER_TYPE.get();
 	}
 
 }

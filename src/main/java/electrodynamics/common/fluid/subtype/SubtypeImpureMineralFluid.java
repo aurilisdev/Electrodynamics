@@ -2,10 +2,10 @@ package electrodynamics.common.fluid.subtype;
 
 import java.util.function.Supplier;
 
-import electrodynamics.api.ISubtype;
-import electrodynamics.prefab.utilities.math.Color;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.world.level.material.Fluid;
+import voltaic.api.ISubtype;
+import voltaic.prefab.utilities.math.Color;
 
 public enum SubtypeImpureMineralFluid implements ISubtype {
     copper(() -> ElectrodynamicsFluids.FLUIDS_PUREMINERAL.getValue(SubtypePureMineralFluid.copper), Color.WHITE),

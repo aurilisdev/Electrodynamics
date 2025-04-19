@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.common.item.subtype.SubtypeCeramic;
-import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.registers.ElectrodynamicsCreativeTabs;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.sounds.SoundSource;
@@ -16,8 +14,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import voltaic.common.item.ItemVoltaic;
+import voltaic.prefab.utilities.ItemUtils;
+import voltaic.registers.VoltaicDataComponentTypes;
 
-public class ItemCeramic extends ItemElectrodynamics {
+public class ItemCeramic extends ItemVoltaic {
 	public SubtypeCeramic subtype;
 
 	public ItemCeramic(SubtypeCeramic subtype) {
@@ -39,10 +40,10 @@ public class ItemCeramic extends ItemElectrodynamics {
 
 		ItemStack chestplate = armorPieces.get(2);
 		if (chestplate.getItem() == ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get() || chestplate.getItem() == ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()) {
-			int stored = chestplate.getOrDefault(ElectrodynamicsDataComponentTypes.PLATES, 0);
+			int stored = chestplate.getOrDefault(VoltaicDataComponentTypes.PLATES, 0);
 			if (stored < 2) {
 				world.playSound(null, player.getOnPos(), ElectrodynamicsSounds.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
-				chestplate.set(ElectrodynamicsDataComponentTypes.PLATES, stored + 1);
+				chestplate.set(VoltaicDataComponentTypes.PLATES, stored + 1);
 				if (!player.isCreative()) {
 					handStack.shrink(1);
 					player.setItemInHand(hand, handStack);

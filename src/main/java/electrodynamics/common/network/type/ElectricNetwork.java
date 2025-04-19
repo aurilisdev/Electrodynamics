@@ -8,19 +8,19 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.api.network.cable.type.IWire;
-import electrodynamics.common.network.NetworkRegistry;
 import electrodynamics.common.tile.electricitygrid.GenericTileWire;
-import electrodynamics.prefab.network.AbstractNetwork;
 import electrodynamics.prefab.utilities.ElectricityUtils;
-import electrodynamics.prefab.utilities.Scheduler;
-import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
+import voltaic.api.electricity.ICapabilityElectrodynamic;
+import voltaic.api.network.cable.type.IWire;
+import voltaic.common.network.NetworkRegistry;
+import voltaic.prefab.network.AbstractNetwork;
+import voltaic.prefab.utilities.Scheduler;
+import voltaic.prefab.utilities.object.TransferPack;
+import voltaic.registers.VoltaicCapabilities;
 
 public class ElectricNetwork extends AbstractNetwork<GenericTileWire, IWire, TransferPack, ElectricNetwork> implements ICapabilityElectrodynamic {
 
@@ -214,7 +214,7 @@ public class ElectricNetwork extends AbstractNetwork<GenericTileWire, IWire, Tra
     @Override
     public void updateRecieverStatistics(BlockEntity reciever, Direction dir) {
 
-        ICapabilityElectrodynamic electro = reciever.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, reciever.getBlockPos(), reciever.getBlockState(), reciever, dir);
+        ICapabilityElectrodynamic electro = reciever.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, reciever.getBlockPos(), reciever.getBlockState(), reciever, dir);
 
         if (electro == null || electro.getVoltage() < 0) {
             return;
@@ -422,7 +422,7 @@ public class ElectricNetwork extends AbstractNetwork<GenericTileWire, IWire, Tra
 
                 final LoadProfile profile = new LoadProfile(lastPerTile.getOrDefault(lastPerTile, TransferPack.EMPTY), loadProfile.maximumAvailable());
 
-                ICapabilityElectrodynamic electro = tile.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, direction);
+                ICapabilityElectrodynamic electro = tile.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, direction);
 
                 if (electro == null) {
 
@@ -431,7 +431,7 @@ public class ElectricNetwork extends AbstractNetwork<GenericTileWire, IWire, Tra
                     if (fe == null) {
                         capLoad = TransferPack.EMPTY;
                     } else {
-                        capLoad = TransferPack.joulesVoltage(fe.receiveEnergy(Integer.MAX_VALUE, true), ElectrodynamicsCapabilities.DEFAULT_VOLTAGE);
+                        capLoad = TransferPack.joulesVoltage(fe.receiveEnergy(Integer.MAX_VALUE, true), VoltaicCapabilities.DEFAULT_VOLTAGE);
                     }
 
                 } else {

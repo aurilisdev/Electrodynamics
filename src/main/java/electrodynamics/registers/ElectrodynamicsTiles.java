@@ -2,14 +2,12 @@ package electrodynamics.registers;
 
 import com.google.common.collect.Sets;
 
-import electrodynamics.api.References;
-import electrodynamics.api.multiblock.assemblybased.TileMultiblockSlave;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.connect.BlockFluidPipe;
 import electrodynamics.common.block.connect.BlockGasPipe;
 import electrodynamics.common.block.connect.BlockLogisticalWire;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.tile.TileMultiSubnode;
 import electrodynamics.common.tile.compatibility.TileRotaryUnifier;
 import electrodynamics.common.tile.electricitygrid.TileCircuitBreaker;
 import electrodynamics.common.tile.electricitygrid.TileCircuitMonitor;
@@ -103,7 +101,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ElectrodynamicsTiles {
-	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, References.ID);
+	public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITY_TYPES = DeferredRegister.create(Registries.BLOCK_ENTITY_TYPE, Electrodynamics.ID);
 
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<TileCoalGenerator>> TILE_COALGENERATOR = BLOCK_ENTITY_TYPES.register(SubtypeMachine.coalgenerator.tag(), () -> new BlockEntityType<>(TileCoalGenerator::new, Sets.newHashSet(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.coalgenerator)), null));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<TileSolarPanel>> TILE_SOLARPANEL = BLOCK_ENTITY_TYPES.register(SubtypeMachine.solarpanel.tag(), () -> new BlockEntityType<>(TileSolarPanel::new, Sets.newHashSet(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.solarpanel)), null));
@@ -163,7 +161,6 @@ public class ElectrodynamicsTiles {
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<TileChemicalCrystallizer>> TILE_CHEMICALCRYSTALLIZER = BLOCK_ENTITY_TYPES.register(SubtypeMachine.chemicalcrystallizer.tag(), () -> new BlockEntityType<>(TileChemicalCrystallizer::new, Sets.newHashSet(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chemicalcrystallizer)), null));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<TileCircuitBreaker>> TILE_CIRCUITBREAKER = BLOCK_ENTITY_TYPES.register(SubtypeMachine.circuitbreaker.tag(), () -> new BlockEntityType<>(TileCircuitBreaker::new, Sets.newHashSet(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.circuitbreaker)), null));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<TileMultimeterBlock>> TILE_MULTIMETERBLOCK = BLOCK_ENTITY_TYPES.register(SubtypeMachine.multimeterblock.tag(), () -> new BlockEntityType<>(TileMultimeterBlock::new, Sets.newHashSet(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.multimeterblock)), null));
-	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<TileMultiSubnode>> TILE_MULTI = BLOCK_ENTITY_TYPES.register("multisubnode", () -> new BlockEntityType<>(TileMultiSubnode::new, Sets.newHashSet(ElectrodynamicsBlocks.BLOCK_MULTISUBNODE.get()), null));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<TileWire>> TILE_WIRE = BLOCK_ENTITY_TYPES.register("wiregenerictile", () -> new BlockEntityType<>(TileWire::new, BlockWire.WIRES, null));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<TileLogisticalWire>> TILE_LOGISTICALWIRE = BLOCK_ENTITY_TYPES.register("wirelogisticaltile", () -> new BlockEntityType<>(TileLogisticalWire::new, BlockLogisticalWire.WIRES, null));
 	public static final DeferredHolder<BlockEntityType<?>,BlockEntityType<TileFluidPipe>> TILE_PIPE = BLOCK_ENTITY_TYPES.register("pipegenerictile", () -> new BlockEntityType<>(TileFluidPipe::new, BlockFluidPipe.PIPESET, null));
@@ -210,7 +207,6 @@ public class ElectrodynamicsTiles {
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileChemicalReactorDummy>> TILE_CHEMICALREACTOR_DUMMY = BLOCK_ENTITY_TYPES.register("chemicalreactordummy", () -> new BlockEntityType<>(TileChemicalReactorDummy::new, Sets.newHashSet(ElectrodynamicsBlocks.BLOCK_CHEMICALREACTOREXTRA_MIDDLE.get(), ElectrodynamicsBlocks.BLOCK_CHEMICALREACTOREXTRA_TOP.get()), null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileCreativeGasSource>> TILE_CREATIVEGASSOURCE = BLOCK_ENTITY_TYPES.register(SubtypeMachine.creativegassource.tag(), () -> new BlockEntityType<>(TileCreativeGasSource::new, Sets.newHashSet(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.creativegassource)), null));
 
-	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileMultiblockSlave>> TILE_MULTIBLOCK_SLAVE = BLOCK_ENTITY_TYPES.register("multiblockslave", () -> new BlockEntityType<>(TileMultiblockSlave::new, Sets.newHashSet(ElectrodynamicsBlocks.BLOCK_MULTIBLOCK_SLAVE.get()), null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileElectrolosisChamber>> TILE_ELECTROLOSISCHAMBER = BLOCK_ENTITY_TYPES.register(SubtypeMachine.electrolosischamber.tag(), () -> new BlockEntityType<>(TileElectrolosisChamber::new, Sets.newHashSet(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electrolosischamber)), null));
 	public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TileRotaryUnifier>> TILE_ROTARYUNIFIER = BLOCK_ENTITY_TYPES.register("rotaryunifier", () -> new BlockEntityType<>(TileRotaryUnifier::new, Sets.newHashSet(ElectrodynamicsBlocks.BLOCK_ROTARYUNIFIER.get()), null));
 }

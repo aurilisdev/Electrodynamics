@@ -1,19 +1,6 @@
 package electrodynamics.common.tile.pipelines.fluid;
 
-import electrodynamics.common.network.utils.FluidUtilities;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyTypes;
-import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSound;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.object.CachedTileOutput;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
@@ -24,22 +11,34 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.common.network.utils.FluidUtilities;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.sound.ITickableSound;
+import voltaic.prefab.sound.SoundBarrierMethods;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
+import voltaic.prefab.tile.components.type.ComponentPacketHandler;
+import voltaic.prefab.tile.components.type.ComponentTickable;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.object.CachedTileOutput;
 
 public class TileElectricPump extends GenericTile implements ITickableSound {
 
-	private Property<Boolean> isGenerating = property(new Property<>(PropertyTypes.BOOLEAN, "isGenerating", false));
+	private SingleProperty<Boolean> isGenerating = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "isGenerating", false));
 
+	protected CachedTileOutput output;
 	private boolean isSoundPlaying = false;
 
 	public TileElectricPump(BlockPos worldPosition, BlockState blockState) {
 		super(ElectrodynamicsTiles.TILE_ELECTRICPUMP.get(), worldPosition, blockState);
-		addComponent(new ComponentElectrodynamic(this, false, true).maxJoules(Constants.ELECTRICPUMP_USAGE_PER_TICK * 20).setInputDirections(BlockEntityUtils.MachineDirection.TOP));
+		addComponent(new ComponentElectrodynamic(this, false, true).maxJoules(ElectroConstants.ELECTRICPUMP_USAGE_PER_TICK * 20).setInputDirections(BlockEntityUtils.MachineDirection.TOP));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickClient(this::tickClient));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentFluidHandlerMulti(this).setOutputTanks(1, 0).setOutputDirections(BlockEntityUtils.MachineDirection.RIGHT).setOutputFluidTags(FluidTags.WATER));
 	}
-
-	protected CachedTileOutput output;
 
 	protected void tickServer(ComponentTickable tickable) {
 		Direction direction = getFacing().getClockWise();
@@ -51,12 +50,12 @@ public class TileElectricPump extends GenericTile implements ITickableSound {
 		if (tickable.getTicks() % 20 == 0) {
 			output.update(worldPosition.relative(direction));
 			FluidState state = level.getFluidState(worldPosition.relative(Direction.DOWN));
-			if (isGenerating.get() != (state.isSource() && state.getType() == Fluids.WATER)) {
-				isGenerating.set(electro.getJoulesStored() > Constants.ELECTRICPUMP_USAGE_PER_TICK && state.isSource() && state.getType() == Fluids.WATER);
+			if (isGenerating.getValue() != (state.isSource() && state.getType() == Fluids.WATER)) {
+				isGenerating.setValue(electro.getJoulesStored() > ElectroConstants.ELECTRICPUMP_USAGE_PER_TICK && state.isSource() && state.getType() == Fluids.WATER);
 			}
 		}
-		if (isGenerating.get() == Boolean.TRUE && output.valid()) {
-			electro.joules(electro.getJoulesStored() - Constants.ELECTRICPUMP_USAGE_PER_TICK);
+		if (isGenerating.getValue() && output.valid()) {
+			electro.joules(electro.getJoulesStored() - ElectroConstants.ELECTRICPUMP_USAGE_PER_TICK);
 			FluidUtilities.receiveFluid(output.getSafe(), direction.getOpposite(), new FluidStack(Fluids.WATER, 200), false);
 		}
 	}
@@ -83,12 +82,12 @@ public class TileElectricPump extends GenericTile implements ITickableSound {
 
 	@Override
 	public boolean shouldPlaySound() {
-		return isGenerating.get();
+		return isGenerating.getValue();
 	}
 
 	@Override
 	public int getComparatorSignal() {
-		return isGenerating.get() ? 15 : 0;
+		return isGenerating.getValue() ? 15 : 0;
 	}
 
 }

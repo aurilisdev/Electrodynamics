@@ -1,19 +1,19 @@
 package electrodynamics.datagen.server.recipe.types.custom.item2item;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.item.subtype.SubtypeIngot;
 import electrodynamics.common.recipe.categories.item2item.specificmachines.ReinforcedAlloyerRecipe;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.builders.ElectrodynamicsRecipeBuilder.RecipeCategory;
-import electrodynamics.datagen.utils.recipe.builders.Item2ItemBuilder;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.Tags;
+import voltaic.common.recipe.recipeutils.ProbableItem;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
+import voltaic.datagen.utils.server.recipe.builders.BaseRecipeBuilder;
+import voltaic.datagen.utils.server.recipe.builders.Item2ItemBuilder;
 
 public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGenerator {
 
@@ -27,7 +27,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 	}
 
 	public ElectrodynamicsReinforcedAlloyerRecipes() {
-		this(References.ID);
+		this(Electrodynamics.ID);
 	}
 
 	@Override
@@ -35,9 +35,9 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 
 		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_CUSTOMGLASS.getValue(SubtypeGlass.aluminum), 5), 0.5F, 50, 50.0, "aluminum_glass", modID)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_ALUMINUM, 1)
+				.addItemTagInput(VoltaicTags.Items.INGOT_ALUMINUM, 1)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.DUST_SALTPETER, 1)
+				.addItemTagInput(VoltaicTags.Items.DUST_SALTPETER, 1)
 				//
 				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.5))
 				//
@@ -45,7 +45,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 
 		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.bronze), 7), 0.1F, 50, 50.0, "ingot_bronze", modID)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_TIN, 1)
+				.addItemTagInput(VoltaicTags.Items.INGOT_TIN, 1)
 				//
 				.addItemTagInput(Tags.Items.INGOTS_COPPER, 4)
 				//
@@ -55,7 +55,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 
 		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_CUSTOMGLASS.getValue(SubtypeGlass.clear), 16), 0.1F, 50, 50.0, "clear_glass", modID)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.COAL_COKE, 1)
+				.addItemTagInput(VoltaicTags.Items.COAL_COKE, 1)
 				//
 				.addItemTagInput(Tags.Items.SANDS, 16)
 				//
@@ -63,9 +63,9 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 
 		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.hslasteel), 2), 0.3F, 50, 50.0, "ingot_hsla_steel", modID)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_STAINLESSSTEEL, 1)
+				.addItemTagInput(VoltaicTags.Items.INGOT_STAINLESSSTEEL, 1)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_MOLYBDENUM, 1)
+				.addItemTagInput(VoltaicTags.Items.INGOT_MOLYBDENUM, 1)
 				//
 				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 1))
 				//
@@ -91,9 +91,9 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 
 		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.stainlesssteel), 34), 0.4F, 50, 50.0, "ingot_stainless_steel", modID)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_CHROMIUM, 1)
+				.addItemTagInput(VoltaicTags.Items.INGOT_CHROMIUM, 1)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_STEEL, 34)
+				.addItemTagInput(VoltaicTags.Items.INGOT_STEEL, 34)
 				//
 				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.75))
 				//
@@ -103,7 +103,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 				//
 				.addItemTagInput(Tags.Items.INGOTS_IRON, 2)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.COAL_COKE, 1)
+				.addItemTagInput(VoltaicTags.Items.COAL_COKE, 1)
 				//
 				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.5))
 				//
@@ -111,7 +111,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 
 		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.superconductive), 4), 0.3F, 50, 50.0, "ingot_superconductive_endereye", modID)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_SILVER, 5)
+				.addItemTagInput(VoltaicTags.Items.INGOT_SILVER, 5)
 				//
 				.addItemStackInput(new ItemStack(Items.ENDER_EYE, 4))
 				//
@@ -121,7 +121,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 
 		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.superconductive), 4), 0.3F, 50, 50.0, "ingot_superconductive_netherite", modID)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_SILVER, 5)
+				.addItemTagInput(VoltaicTags.Items.INGOT_SILVER, 5)
 				//
 				.addItemTagInput(Tags.Items.INGOTS_NETHERITE, 1)
 				//
@@ -131,9 +131,9 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 
 		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.titaniumcarbide), 4), 0.3F, 50, 50.0, "ingot_titanium_carbide", modID)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_TITANIUM, 1)
+				.addItemTagInput(VoltaicTags.Items.INGOT_TITANIUM, 1)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.COAL_COKE, 1)
+				.addItemTagInput(VoltaicTags.Items.COAL_COKE, 1)
 				//
 				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 1))
 				//
@@ -141,9 +141,9 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 
 		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.vanadiumsteel), 8), 0.3F, 50, 50.0, "vanadium_steel_ingot", modID)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_STEEL, 8)
+				.addItemTagInput(VoltaicTags.Items.INGOT_STEEL, 8)
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_VANADIUM, 1)
+				.addItemTagInput(VoltaicTags.Items.INGOT_VANADIUM, 1)
 				//
 				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.75))
 				//
@@ -152,7 +152,7 @@ public class ElectrodynamicsReinforcedAlloyerRecipes extends AbstractRecipeGener
 	}
 
 	public Item2ItemBuilder<ReinforcedAlloyerRecipe> newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name, String group) {
-		return new Item2ItemBuilder<>(ReinforcedAlloyerRecipe::new, stack, RecipeCategory.ITEM_2_ITEM, modID, "reinforced_alloyer/" + name, group, xp, ticks, usagePerTick);
+		return new Item2ItemBuilder<>(ReinforcedAlloyerRecipe::new, stack, BaseRecipeBuilder.RecipeCategory.ITEM_2_ITEM, modID, "reinforced_alloyer/" + name, group, xp, ticks, usagePerTick);
 	}
 
 }

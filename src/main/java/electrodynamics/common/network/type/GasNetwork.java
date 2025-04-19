@@ -10,18 +10,18 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.mojang.datafixers.util.Pair;
 
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.api.network.cable.type.IGasPipe;
-import electrodynamics.common.network.NetworkRegistry;
-import electrodynamics.common.network.utils.GasUtilities;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.common.tile.pipelines.gas.GenericTileGasPipe;
 import electrodynamics.common.tile.pipelines.gas.TileGasPipePump;
-import electrodynamics.prefab.network.AbstractNetwork;
-import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasStack;
+import voltaic.api.network.cable.type.IGasPipe;
+import voltaic.common.network.NetworkRegistry;
+import voltaic.common.network.utils.GasUtilities;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.prefab.network.AbstractNetwork;
+import voltaic.prefab.utilities.Scheduler;
 
 // NOTE to add in pipe heat loss, uncomment commented code
 public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, GasStack, GasNetwork> {
@@ -315,7 +315,7 @@ public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, Ga
 
     private boolean checkForOverloadAndHandle(GasStack stack, boolean live) {
 
-        boolean isCorrosive = stack.is(ElectrodynamicsTags.Gases.IS_CORROSIVE);
+        boolean isCorrosive = stack.is(VoltaicTags.Gases.IS_CORROSIVE);
 
         if (stack.getPressure() <= maxPressure && !isCorrosive) {
             return false;
@@ -403,7 +403,7 @@ public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, Ga
     public void updateRecieverStatistics(BlockEntity reciever, Direction dir) {
 
         if (reciever instanceof TileGasPipePump pump) {
-            int priority = pump.priority.get();
+            int priority = pump.priority.getValue();
             HashSet<TileGasPipePump> set = priorityPumpMap.getOrDefault(priority, new HashSet<>());
             set.add(pump);
             priorityPumpMap.put(priority, set);

@@ -3,13 +3,14 @@ package electrodynamics.common.event.types.living.livingdamage;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import voltaic.common.event.type.AbstractLivingDamageHandler;
+import voltaic.registers.VoltaicDataComponentTypes;
 
 public class HandlerCompositeArmor extends AbstractLivingDamageHandler {
 
@@ -28,10 +29,10 @@ public class HandlerCompositeArmor extends AbstractLivingDamageHandler {
 
 		if (compareArmor(armorPieces, COMPOSITE_ARMOR) || compareArmor(armorPieces, COMBAT_ARMOR)) {
 			ItemStack stack = armorPieces.get(2);
-			int stored = stack.getOrDefault(ElectrodynamicsDataComponentTypes.PLATES, 0);
+			int stored = stack.getOrDefault(VoltaicDataComponentTypes.PLATES, 0);
 			if (event.getOriginalDamage() >= LETHAL_DAMAGE_AMOUNT && stored > 0) {
 				event.setNewDamage((float) Math.sqrt(event.getOriginalDamage()));
-				stack.set(ElectrodynamicsDataComponentTypes.PLATES, stored);
+				stack.set(VoltaicDataComponentTypes.PLATES, stored);
                 event.getEntity().getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(), ElectrodynamicsSounds.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
 			}
 		}

@@ -6,7 +6,7 @@
 	],
 	"textures": {
 		"0": "electrodynamics:block/model/compressorsidetankt",
-		"particle": "electrodynamics:block/steelcasing"
+		"particle": "voltaic:block/steelcasing"
 	},
 	"elements": [
 		{

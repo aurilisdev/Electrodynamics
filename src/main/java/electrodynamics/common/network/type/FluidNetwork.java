@@ -9,15 +9,15 @@ import java.util.Set;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 
-import electrodynamics.api.network.cable.type.IFluidPipe;
-import electrodynamics.common.network.NetworkRegistry;
-import electrodynamics.common.network.utils.FluidUtilities;
 import electrodynamics.common.tile.pipelines.fluid.GenericTileFluidPipe;
 import electrodynamics.common.tile.pipelines.fluid.TileFluidPipePump;
-import electrodynamics.prefab.network.AbstractNetwork;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.api.network.cable.type.IFluidPipe;
+import voltaic.common.network.NetworkRegistry;
+import voltaic.common.network.utils.FluidUtilities;
+import voltaic.prefab.network.AbstractNetwork;
 
 public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPipe, FluidStack, FluidNetwork> {
 
@@ -229,7 +229,7 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
     public void updateRecieverStatistics(BlockEntity reciever, Direction dir) {
 
         if (reciever instanceof TileFluidPipePump pump) {
-            int priority = pump.priority.get();
+            int priority = pump.priority.getValue();
             HashSet<TileFluidPipePump> set = priorityPumpMap.getOrDefault(priority, new HashSet<>());
             set.add(pump);
             priorityPumpMap.put(priority, set);

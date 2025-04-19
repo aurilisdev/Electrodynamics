@@ -6,14 +6,15 @@ import org.joml.Matrix4f;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.tile.electricitygrid.transformer.TileAdvancedTransformer;
-import electrodynamics.prefab.utilities.math.Color;
-import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.utilities.math.Color;
+import voltaic.prefab.utilities.math.MathUtils;
 
 public abstract class RenderAdvancedTransformer extends AbstractTileRenderer<TileAdvancedTransformer> {
 
@@ -93,7 +94,7 @@ public abstract class RenderAdvancedTransformer extends AbstractTileRenderer<Til
 
         @Override
         public String getTurnsString(TileAdvancedTransformer transformer) {
-            int ratio = transformer.coilRatio.get().intValue();
+            int ratio = transformer.coilRatio.getValue().intValue();
 
             return "1 : " + ratio;
         }
@@ -107,7 +108,7 @@ public abstract class RenderAdvancedTransformer extends AbstractTileRenderer<Til
 
         @Override
         public String getTurnsString(TileAdvancedTransformer transformer) {
-            int ratio = (int) (1.0 / transformer.coilRatio.get());
+            int ratio = (int) (1.0 / transformer.coilRatio.getValue());
 
             return ratio + " : 1";
         }

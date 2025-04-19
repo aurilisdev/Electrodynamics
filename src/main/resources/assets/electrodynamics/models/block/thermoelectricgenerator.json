@@ -4,7 +4,7 @@
 	"ambientocclusion": "false",
 	"textures": {
 		"0": "electrodynamics:block/model/thermoelectricgenerator",
-		"particle": "electrodynamics:block/steelcasing"
+		"particle": "voltaic:block/steelcasing"
 	},
 	"elements": [
 		{

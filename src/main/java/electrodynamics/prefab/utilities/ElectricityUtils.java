@@ -1,11 +1,6 @@
 package electrodynamics.prefab.utilities;
 
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.common.tile.electricitygrid.GenericTileWire;
-import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
-import electrodynamics.registers.ElectrodynamicsDamageTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -18,12 +13,18 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
+import voltaic.api.electricity.ICapabilityElectrodynamic;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.prefab.utilities.ItemUtils;
+import voltaic.prefab.utilities.object.TransferPack;
+import voltaic.registers.VoltaicCapabilities;
+import voltaic.registers.VoltaicDamageTypes;
 
 public class ElectricityUtils {
 
     public static void electrecuteEntity(Entity entity, TransferPack transfer) {
         if (transfer.getVoltage() <= 960.0 && entity instanceof LivingEntity living) {
-            Ingredient insulatingItems = Ingredient.of(ElectrodynamicsTags.Items.INSULATES_PLAYER_FEET);
+            Ingredient insulatingItems = Ingredient.of(VoltaicTags.Items.INSULATES_PLAYER_FEET);
             for (ItemStack armor : living.getArmorSlots()) {
                 if (ItemUtils.isIngredientMember(insulatingItems, armor.getItem())) {
                     float damage = (float) transfer.getAmps() / 10.0f;
@@ -36,11 +37,11 @@ public class ElectricityUtils {
                 }
             }
         }
-        entity.hurt(entity.damageSources().source(ElectrodynamicsDamageTypes.ELECTRICITY, entity), (float) Math.min(9999, Math.max(0, transfer.getAmps())));
+        entity.hurt(entity.damageSources().source(VoltaicDamageTypes.ELECTRICITY, entity), (float) Math.min(9999, Math.max(0, transfer.getAmps())));
     }
 
     public static boolean isElectricReceiver(BlockEntity tile, Direction dir) {
-        return tile != null && (tile.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, dir) != null || tile.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, dir) != null);
+        return tile != null && (tile.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, dir) != null || tile.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, dir) != null);
     }
 
     public static boolean isConductor(BlockEntity acceptor, GenericTileWire requesterWire) {
@@ -56,7 +57,7 @@ public class ElectricityUtils {
             return TransferPack.EMPTY;
         }
 
-        ICapabilityElectrodynamic electro = tile.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, direction);
+        ICapabilityElectrodynamic electro = tile.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, direction);
 
         if (electro != null) {
 
@@ -68,11 +69,11 @@ public class ElectricityUtils {
 
         if (fe != null) {
             TransferPack returner = TransferPack.joulesVoltage(fe.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());
-            if (transfer.getVoltage() > ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) {
+            if (transfer.getVoltage() > VoltaicCapabilities.DEFAULT_VOLTAGE) {
                 Level world = tile.getLevel();
                 BlockPos pos = tile.getBlockPos();
                 world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-                world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / ElectrodynamicsCapabilities.DEFAULT_VOLTAGE), ExplosionInteraction.BLOCK);
+                world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / VoltaicCapabilities.DEFAULT_VOLTAGE), ExplosionInteraction.BLOCK);
             }
             return returner;
         }

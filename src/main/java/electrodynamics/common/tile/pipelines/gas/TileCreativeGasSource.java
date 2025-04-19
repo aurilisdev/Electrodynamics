@@ -1,27 +1,19 @@
 package electrodynamics.common.tile.pipelines.gas;
 
-import electrodynamics.api.capability.types.gas.IGasHandler;
-import electrodynamics.api.capability.types.gas.IGasHandlerItem;
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.api.gas.GasTank;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCreativeGasSource;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerSimple;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.gas.*;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileCreativeGasSource extends GenericTile {
     public TileCreativeGasSource(BlockPos worldPos, BlockState blockState) {
@@ -29,8 +21,8 @@ public class TileCreativeGasSource extends GenericTile {
         addComponent(new ComponentTickable(this).tickServer(this::tickServer));
         addComponent(new ComponentPacketHandler(this));
         addComponent(new ComponentGasHandlerSimple(this, "", 128000, 1000000, 1000000).setOutputDirections(BlockEntityUtils.MachineDirection.values()));
-        addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().gasInputs(1).gasOutputs(1)).valid((slot, stack, i) -> stack.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM) != null));
-        addComponent(new ComponentContainerProvider(SubtypeMachine.creativegassource, this).createMenu((id, player) -> new ContainerCreativeGasSource(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+        addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().gasInputs(1).gasOutputs(1)).valid((slot, stack, i) -> stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM) != null));
+        addComponent(new ComponentContainerProvider(SubtypeMachine.creativegassource.tag(), this).createMenu((id, player) -> new ContainerCreativeGasSource(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
     private void tickServer(ComponentTickable tick) {
@@ -45,7 +37,7 @@ public class TileCreativeGasSource extends GenericTile {
         // set tank fluid from slot 1
         if (!input.isEmpty()) {
 
-            IGasHandlerItem handler = input.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
+            IGasHandlerItem handler = input.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
             if (handler != null) {
 
@@ -60,7 +52,7 @@ public class TileCreativeGasSource extends GenericTile {
         // fill item in slot 2
         if (!output.isEmpty()) {
 
-            IGasHandlerItem handler = output.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
+            IGasHandlerItem handler = output.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
             if (handler != null) {
 
@@ -86,7 +78,7 @@ public class TileCreativeGasSource extends GenericTile {
                 continue;
             }
 
-            IGasHandler handler = faceTile.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_BLOCK, faceTile.getBlockPos(), faceTile.getBlockState(), faceTile, direction);
+            IGasHandler handler = faceTile.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK, faceTile.getBlockPos(), faceTile.getBlockState(), faceTile, direction);
 
             if (handler == null) {
                 continue;

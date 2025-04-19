@@ -2,24 +2,17 @@ package electrodynamics.common.tile.machines;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerFermentationPlant;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.types.GenericMaterialTile;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.types.GenericMaterialTile;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileFermentationPlant extends GenericMaterialTile {
 
@@ -29,18 +22,18 @@ public class TileFermentationPlant extends GenericMaterialTile {
         super(ElectrodynamicsTiles.TILE_FERMENTATIONPLANT.get(), worldPosition, blockState);
         addComponent(new ComponentTickable(this).tickClient(this::tickClient));
         addComponent(new ComponentPacketHandler(this));
-        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE));
-        addComponent(new ComponentFluidHandlerMulti(this).setTanks(1, 1, new int[] { MAX_TANK_CAPACITY }, new int[] { MAX_TANK_CAPACITY }).setInputDirections(BlockEntityUtils.MachineDirection.LEFT).setOutputDirections(BlockEntityUtils.MachineDirection.RIGHT).setRecipeType(ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE.get()));
-        addComponent(new ComponentInventory(this, InventoryBuilder.newInv().processors(1, 1, 0, 0).bucketInputs(1).bucketOutputs(1).upgrades(3))
+        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE));
+        addComponent(new ComponentFluidHandlerMulti(this).setTanks(1, 1, new int[] { MAX_TANK_CAPACITY }, new int[] { MAX_TANK_CAPACITY }).setInputDirections(BlockEntityUtils.MachineDirection.LEFT).setOutputDirections(BlockEntityUtils.MachineDirection.RIGHT).setRecipeType(ElectrodynamicsRecipies.FERMENTATION_PLANT_TYPE.get()));
+        addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().processors(1, 1, 0, 0).bucketInputs(1).bucketOutputs(1).upgrades(3))
                 //
                 .setDirectionsBySlot(0, BlockEntityUtils.MachineDirection.FRONT, BlockEntityUtils.MachineDirection.BACK, BlockEntityUtils.MachineDirection.TOP, BlockEntityUtils.MachineDirection.BOTTOM).validUpgrades(ContainerFermentationPlant.VALID_UPGRADES).valid(machineValidator()));
-        addComponent(new ComponentProcessor(this).canProcess(processor -> processor.outputToFluidPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(processor, ElectrodynamicsRecipeInit.FERMENTATION_PLANT_TYPE.get())).process(component -> component.processFluidItem2FluidRecipe(component)));
-        addComponent(new ComponentContainerProvider(SubtypeMachine.fermentationplant, this).createMenu((id, player) -> new ContainerFermentationPlant(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+        addComponent(new ComponentProcessor(this).canProcess((processor, procNumber) -> processor.outputToFluidPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(procNumber, ElectrodynamicsRecipies.FERMENTATION_PLANT_TYPE.get())).process(ComponentProcessor::processFluidItem2FluidRecipe));
+        addComponent(new ComponentContainerProvider(SubtypeMachine.fermentationplant.tag(), this).createMenu((id, player) -> new ContainerFermentationPlant(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 
     }
 
     protected void tickClient(ComponentTickable tickable) {
-        if (this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive()) {
+        if (this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0)) {
             if (level.random.nextDouble() < 0.15) {
                 level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
             }
@@ -53,7 +46,7 @@ public class TileFermentationPlant extends GenericMaterialTile {
 
     @Override
     public int getComparatorSignal() {
-        return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive() ? 15 : 0;
+        return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
     }
 
 }

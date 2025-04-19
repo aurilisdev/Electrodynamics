@@ -5,7 +5,6 @@ import java.util.EnumMap;
 import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
 import electrodynamics.registers.ElectrodynamicsArmorMaterials;
 import net.minecraft.Util;
 import net.minecraft.core.Holder;
@@ -16,8 +15,9 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
+import voltaic.common.item.gear.ItemVoltaicArmor;
 
-public class ItemRubberArmor extends ItemElectrodynamicsArmor {
+public class ItemRubberArmor extends ItemVoltaicArmor {
 
 	public static final EnumMap<Type, Integer> DEFENSE_MAP = Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(Type.HELMET, 0);

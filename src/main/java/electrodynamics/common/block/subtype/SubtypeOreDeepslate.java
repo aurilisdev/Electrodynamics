@@ -6,10 +6,10 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import electrodynamics.api.ISubtype;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import voltaic.api.ISubtype;
 
 public enum SubtypeOreDeepslate implements ISubtype {
 

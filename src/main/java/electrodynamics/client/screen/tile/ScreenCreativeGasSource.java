@@ -2,17 +2,17 @@ package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerCreativeGasSource;
 import electrodynamics.common.tile.pipelines.gas.TileCreativeGasSource;
-import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
-import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
-import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
-import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
-import electrodynamics.prefab.screen.types.GenericMaterialScreen;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerSimple;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import voltaic.prefab.screen.component.ScreenComponentGeneric;
+import voltaic.prefab.screen.component.types.ScreenComponentProgress;
+import voltaic.prefab.screen.component.types.ScreenComponentSimpleLabel;
+import voltaic.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
+import voltaic.prefab.screen.types.GenericMaterialScreen;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentGasHandlerSimple;
+import voltaic.prefab.utilities.math.Color;
 
 public class ScreenCreativeGasSource extends GenericMaterialScreen<ContainerCreativeGasSource> {
     public ScreenCreativeGasSource(ContainerCreativeGasSource container, Inventory inv, Component titleIn) {

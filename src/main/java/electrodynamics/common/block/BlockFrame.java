@@ -35,6 +35,7 @@ import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import voltaic.common.block.states.VoltaicBlockStates;
 
 public class BlockFrame extends BaseEntityBlock {
 
@@ -46,7 +47,7 @@ public class BlockFrame extends BaseEntityBlock {
 
     public BlockFrame(int type) {
         super(Blocks.IRON_BLOCK.properties().strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
-        registerDefaultState(stateDefinition.any().setValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY, Boolean.FALSE).setValue(ElectrodynamicsBlockStates.WATERLOGGED, false).setValue(ElectrodynamicsBlockStates.FACING, Direction.NORTH));
+        registerDefaultState(stateDefinition.any().setValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY, Boolean.FALSE).setValue(VoltaicBlockStates.WATERLOGGED, false).setValue(VoltaicBlockStates.FACING, Direction.NORTH));
         this.type = type;
     }
 
@@ -66,7 +67,7 @@ public class BlockFrame extends BaseEntityBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-        return super.getStateForPlacement(context).setValue(ElectrodynamicsBlockStates.WATERLOGGED, fluidstate.getType() == Fluids.WATER).setValue(ElectrodynamicsBlockStates.FACING, context.getHorizontalDirection().getOpposite());
+        return super.getStateForPlacement(context).setValue(VoltaicBlockStates.WATERLOGGED, fluidstate.getType() == Fluids.WATER).setValue(VoltaicBlockStates.FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
@@ -88,8 +89,8 @@ public class BlockFrame extends BaseEntityBlock {
     protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY);
-        builder.add(ElectrodynamicsBlockStates.WATERLOGGED);
-        builder.add(ElectrodynamicsBlockStates.FACING);
+        builder.add(VoltaicBlockStates.WATERLOGGED);
+        builder.add(VoltaicBlockStates.FACING);
     }
 
     @Override
@@ -109,7 +110,7 @@ public class BlockFrame extends BaseEntityBlock {
 
     @Override
     public BlockState updateShape(BlockState stateIn, Direction facing, BlockState facingState, LevelAccessor worldIn, BlockPos currentPos, BlockPos facingPos) {
-        if (stateIn.getValue(ElectrodynamicsBlockStates.WATERLOGGED) == Boolean.TRUE) {
+        if (stateIn.getValue(VoltaicBlockStates.WATERLOGGED) == Boolean.TRUE) {
             worldIn.scheduleTick(currentPos, Fluids.WATER, Fluids.WATER.getTickDelay(worldIn));
         }
         return super.updateShape(stateIn, facing, facingState, worldIn, currentPos, facingPos);
@@ -117,7 +118,7 @@ public class BlockFrame extends BaseEntityBlock {
 
     @Override
     public FluidState getFluidState(BlockState state) {
-        return state.getValue(ElectrodynamicsBlockStates.WATERLOGGED) == Boolean.TRUE ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+        return state.getValue(VoltaicBlockStates.WATERLOGGED) == Boolean.TRUE ? Fluids.WATER.getSource(false) : super.getFluidState(state);
     }
 
     @Override
@@ -139,9 +140,9 @@ public class BlockFrame extends BaseEntityBlock {
     public static void writeToNbt(CompoundTag tag, String key, BlockState state) {
         CompoundTag data = new CompoundTag();
 
-        data.putInt("facing", state.getValue(ElectrodynamicsBlockStates.FACING).ordinal());
-        // data.putString("facing", state.getValue(ElectrodynamicsBlockStates.FACING).name());
-        data.putBoolean("waterlogged", state.getValue(ElectrodynamicsBlockStates.WATERLOGGED));
+        data.putInt("facing", state.getValue(VoltaicBlockStates.FACING).ordinal());
+        // data.putString("facing", state.getValue(VoltaicBlockStates.FACING).name());
+        data.putBoolean("waterlogged", state.getValue(VoltaicBlockStates.WATERLOGGED));
         data.putBoolean("decay", state.getValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY));
         tag.put(key, data);
     }
@@ -162,8 +163,8 @@ public class BlockFrame extends BaseEntityBlock {
         } else {
             dir = tag.getInt("facing");
         }
-        state.setValue(ElectrodynamicsBlockStates.FACING, Direction.values()[dir]);
-        state.setValue(ElectrodynamicsBlockStates.WATERLOGGED, tag.getBoolean("waterlogged"));
+        state.setValue(VoltaicBlockStates.FACING, Direction.values()[dir]);
+        state.setValue(VoltaicBlockStates.WATERLOGGED, tag.getBoolean("waterlogged"));
         state.setValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY, tag.getBoolean("decay"));
         return state;
     }

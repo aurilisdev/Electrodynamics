@@ -4,26 +4,18 @@ import java.util.HashSet;
 
 import com.mojang.serialization.MapCodec;
 
-import electrodynamics.api.References;
-import electrodynamics.api.electricity.IInsulator;
-import electrodynamics.api.network.cable.type.IWire;
-import electrodynamics.common.block.connect.util.AbstractRefreshingConnectBlock;
-import electrodynamics.common.block.connect.util.EnumConnectType;
-import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.block.subtype.SubtypeWire.InsulationMaterial;
 import electrodynamics.common.block.subtype.SubtypeWire.WireClass;
 import electrodynamics.common.block.subtype.SubtypeWire.WireColor;
 import electrodynamics.common.network.type.ElectricNetwork;
-import electrodynamics.common.settings.Constants;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.common.tile.electricitygrid.GenericTileWire;
 import electrodynamics.common.tile.electricitygrid.TileLogisticalWire;
 import electrodynamics.common.tile.electricitygrid.TileWire;
 import electrodynamics.common.tile.electricitygrid.transformer.TileGenericTransformer;
 import electrodynamics.prefab.utilities.ElectricityUtils;
-import electrodynamics.prefab.utilities.Scheduler;
-import electrodynamics.prefab.utilities.math.Color;
-import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -56,6 +48,14 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.common.Tags;
+import voltaic.api.electricity.IInsulator;
+import voltaic.api.network.cable.type.IWire;
+import voltaic.common.block.connect.AbstractRefreshingConnectBlock;
+import voltaic.common.block.connect.EnumConnectType;
+import voltaic.common.block.states.VoltaicBlockStates;
+import voltaic.prefab.utilities.Scheduler;
+import voltaic.prefab.utilities.math.Color;
+import voltaic.prefab.utilities.object.TransferPack;
 
 public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 
@@ -306,12 +306,12 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
             curScaffold = generic.getScaffoldBlock();
         }
         newWire = Block.updateFromNeighbourShapes(newWire, level, pos);
-        newWire = newWire.setValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING, oldWire.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING));
+        newWire = newWire.setValue(VoltaicBlockStates.HAS_SCAFFOLDING, oldWire.getValue(VoltaicBlockStates.HAS_SCAFFOLDING));
         level.setBlockAndUpdate(pos, newWire);
         if (level.getBlockEntity(pos) instanceof GenericTileWire generic) {
-            generic.camoflaugedBlock.set(curCamo);
+            generic.camoflaugedBlock.setValue(curCamo);
             if (!curScaffold.isAir()) {
-                generic.scaffoldBlock.set(curScaffold);
+                generic.scaffoldBlock.setValue(curScaffold);
             }
         }
     }
@@ -356,7 +356,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
             return 0;
         }
 
-        return state.hasProperty(ElectrodynamicsBlockStates.WATERLOGGED) && state.getValue(ElectrodynamicsBlockStates.WATERLOGGED) ? 0 : 150;
+        return state.hasProperty(VoltaicBlockStates.WATERLOGGED) && state.getValue(VoltaicBlockStates.WATERLOGGED) ? 0 : 150;
     }
 
     @Override
@@ -365,7 +365,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
             return 0;
         }
 
-        return state.hasProperty(ElectrodynamicsBlockStates.WATERLOGGED) && state.getValue(ElectrodynamicsBlockStates.WATERLOGGED) ? 0 : 400;
+        return state.hasProperty(VoltaicBlockStates.WATERLOGGED) && state.getValue(VoltaicBlockStates.WATERLOGGED) ? 0 : 400;
     }
 
     @Override
@@ -421,7 +421,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 
-        if (!Constants.CONDUCTORS_BURN_SURROUNDINGS) {
+        if (!ElectroConstants.CONDUCTORS_BURN_SURROUNDINGS) {
             return;
         }
 
@@ -472,7 +472,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
                 }
                 if (overMaxVoltage) {
 
-                    if (isFlammable || relative.getBlock().getExplosionResistance() < Constants.BLOCK_VAPORIZATION_HARDNESS) {
+                    if (isFlammable || relative.getBlock().getExplosionResistance() < ElectroConstants.BLOCK_VAPORIZATION_HARDNESS) {
 
                         level.playSound(null, relativePos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
                         level.destroyBlock(relativePos, false);
@@ -532,7 +532,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 
     }
 
-    @EventBusSubscriber(value = Dist.CLIENT, modid = References.ID, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
     private static class ColorHandlerInternal {
 
         @SubscribeEvent

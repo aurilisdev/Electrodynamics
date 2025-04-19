@@ -2,14 +2,14 @@ package electrodynamics.client.keys;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import net.minecraft.client.KeyMapping;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 
-@EventBusSubscriber(modid = References.ID, bus = EventBusSubscriber.Bus.MOD, value = { Dist.CLIENT })
+@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD, value = { Dist.CLIENT })
 public class KeyBinds {
 
 	// Category
@@ -38,7 +38,7 @@ public class KeyBinds {
 	}
 
 	private static KeyMapping registerKey(String name, int keyCode, RegisterKeyMappingsEvent event) {
-		final var key = new KeyMapping("key." + References.ID + "." + name, keyCode, KeyBinds.ELECTRODYNAMICS_CATEGORY);
+		final var key = new KeyMapping("key." + Electrodynamics.ID + "." + name, keyCode, KeyBinds.ELECTRODYNAMICS_CATEGORY);
 		event.register(key);
 		return key;
 	}

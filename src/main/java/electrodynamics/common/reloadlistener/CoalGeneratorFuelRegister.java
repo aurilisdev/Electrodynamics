@@ -38,6 +38,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import voltaic.Voltaic;
 
 public class CoalGeneratorFuelRegister extends SimplePreparableReloadListener<JsonObject> {
 
@@ -56,7 +57,7 @@ public class CoalGeneratorFuelRegister extends SimplePreparableReloadListener<Js
 
     private final HashSet<TagKey<Item>> tags = new HashSet<>();
 
-    private final Logger logger = Electrodynamics.LOGGER;
+    private final Logger logger = Voltaic.LOGGER;
 
     @Override
     protected JsonObject prepare(ResourceManager manager, ProfilerFiller profiler) {

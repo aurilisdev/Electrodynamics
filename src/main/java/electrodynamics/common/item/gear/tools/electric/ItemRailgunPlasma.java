@@ -1,12 +1,8 @@
 package electrodynamics.common.item.gear.tools.electric;
 
-import electrodynamics.api.fluid.FluidStackComponent;
-import electrodynamics.api.item.IItemTemperate;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
-import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.Holder;
@@ -22,6 +18,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.api.fluid.FluidStackComponent;
+import voltaic.api.item.IItemTemperate;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.registers.VoltaicDataComponentTypes;
 
 public class ItemRailgunPlasma extends ItemRailgun {
 
@@ -66,7 +66,7 @@ public class ItemRailgunPlasma extends ItemRailgun {
 
 		railgun.extractPower(gunStack, JOULES_PER_SHOT, false);
 		world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_FIRE.get(), SoundSource.PLAYERS, 1, 1);
-		FluidStack fluidStack = gunStack.getOrDefault(ElectrodynamicsDataComponentTypes.FLUID_STACK.get(), FluidStackComponent.EMPTY).fluid;
+		FluidStack fluidStack = gunStack.getOrDefault(VoltaicDataComponentTypes.FLUID_STACK.get(), FluidStackComponent.EMPTY).fluid;
 
 		if (fluidStack.isEmpty()) {
 			railgun.recieveHeat(gunStack, TEMPERATURE_PER_SHOT, false);
@@ -76,7 +76,7 @@ public class ItemRailgunPlasma extends ItemRailgun {
 			} else {
 				fluidStack.shrink(COOLANT_PER_SHOT);
 				world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), SoundSource.PLAYERS, 0.25F, 1);
-				gunStack.set(ElectrodynamicsDataComponentTypes.FLUID_STACK, new FluidStackComponent(fluidStack.copy()));
+				gunStack.set(VoltaicDataComponentTypes.FLUID_STACK, new FluidStackComponent(fluidStack.copy()));
 			}
 		}
 

@@ -3,16 +3,7 @@ package electrodynamics.common.item.gear.tools;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.capability.types.gas.IGasHandlerItem;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.gas.Gas;
-import electrodynamics.api.gas.GasHandlerItemStack;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.api.inventory.InventoryTickConsumer;
-import electrodynamics.common.item.ItemElectrodynamics;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
@@ -23,8 +14,19 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.gas.Gas;
+import voltaic.api.gas.GasHandlerItemStack;
+import voltaic.api.gas.GasStack;
+import voltaic.api.gas.IGasHandlerItem;
+import voltaic.api.inventory.InventoryTickConsumer;
+import voltaic.common.item.ItemVoltaic;
+import voltaic.prefab.utilities.VoltaicTextUtils;
+import voltaic.registers.VoltaicCapabilities;
+import voltaic.registers.VoltaicGases;
 
-public class ItemPortableCylinder extends ItemElectrodynamics {
+public class ItemPortableCylinder extends ItemVoltaic {
 
     public static final int MAX_GAS_CAPCITY = 5000;
 
@@ -42,17 +44,17 @@ public class ItemPortableCylinder extends ItemElectrodynamics {
 
         items.add(new ItemStack(this));
 
-        if (ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM == null) {
+        if (VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM == null) {
             return;
         }
 
-        ElectrodynamicsGases.GAS_REGISTRY.stream().forEach(gas -> {
+        VoltaicGases.GAS_REGISTRY.stream().forEach(gas -> {
             if (gas.isEmpty()) {
                 return;
             }
             ItemStack temp = new ItemStack(this);
 
-            IGasHandlerItem handler = temp.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
+            IGasHandlerItem handler = temp.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
             if (handler == null) {
                 return;
@@ -76,28 +78,27 @@ public class ItemPortableCylinder extends ItemElectrodynamics {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltips, TooltipFlag isAdvanced) {
 
-        IGasHandlerItem handler = stack.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
+        IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
         if (handler == null) {
 
             super.appendHoverText(stack, context, tooltips, isAdvanced);
 
-            return;
 
         }
 
         GasStack gas = handler.getGasInTank(0);
         if (gas.isEmpty()) {
-            tooltips.add(ElectroTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(MAX_GAS_CAPCITY)).withStyle(ChatFormatting.DARK_GRAY));
+            tooltips.add(VoltaicTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(MAX_GAS_CAPCITY)).withStyle(ChatFormatting.DARK_GRAY));
         } else {
             tooltips.add(gas.getGas().getDescription().copy().withStyle(ChatFormatting.GRAY));
-            tooltips.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_GAS_CAPCITY)).withStyle(ChatFormatting.DARK_GRAY));
-            tooltips.add(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN).withStyle(ChatFormatting.DARK_GRAY));
-            tooltips.add(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnit.PRESSURE_ATM).withStyle(ChatFormatting.DARK_GRAY));
+            tooltips.add(VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_GAS_CAPCITY)).withStyle(ChatFormatting.DARK_GRAY));
+            tooltips.add(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnits.TEMPERATURE_KELVIN).withStyle(ChatFormatting.DARK_GRAY));
+            tooltips.add(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnits.PRESSURE_ATM).withStyle(ChatFormatting.DARK_GRAY));
         }
         if (Screen.hasShiftDown()) {
-            tooltips.add(ElectroTextUtils.tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
-            tooltips.add(ElectroTextUtils.tooltip("maxtemperature", ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
+            tooltips.add(ElectroTextUtils.tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnits.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
+            tooltips.add(ElectroTextUtils.tooltip("maxtemperature", ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnits.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
         }
         super.appendHoverText(stack, context, tooltips, isAdvanced);
     }
@@ -105,7 +106,7 @@ public class ItemPortableCylinder extends ItemElectrodynamics {
     @Override
     public int getBarWidth(ItemStack stack) {
 
-        IGasHandlerItem handler = stack.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
+        IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
         if (handler == null) {
             return 13;
@@ -118,7 +119,7 @@ public class ItemPortableCylinder extends ItemElectrodynamics {
     @Override
     public boolean isBarVisible(ItemStack stack) {
 
-        IGasHandlerItem handler = stack.getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_ITEM);
+        IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
         if (handler == null) {
             return false;

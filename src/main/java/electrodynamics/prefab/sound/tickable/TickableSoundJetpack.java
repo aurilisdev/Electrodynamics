@@ -2,9 +2,6 @@ package electrodynamics.prefab.sound.tickable;
 
 import java.util.UUID;
 
-import electrodynamics.prefab.utilities.ItemUtils;
-import electrodynamics.prefab.utilities.WorldUtils;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.client.Minecraft;
@@ -14,6 +11,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import voltaic.prefab.utilities.ItemUtils;
+import voltaic.prefab.utilities.WorldUtils;
+import voltaic.registers.VoltaicDataComponentTypes;
 
 public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 
@@ -42,7 +42,7 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 
 	public float getPlayedVolume() {
 		ItemStack jetpack = originPlayer.getItemBySlot(EquipmentSlot.CHEST);
-		if (jetpack.getOrDefault(ElectrodynamicsDataComponentTypes.USED, false)) {
+		if (jetpack.getOrDefault(VoltaicDataComponentTypes.USED, false)) {
 			double distance = WorldUtils.distanceBetweenPositions(originPlayer.blockPosition(), Minecraft.getInstance().player.blockPosition());
 			if (distance > 0 && distance <= MAX_DISTANCE) {
 				return (float) (0.5F / distance);

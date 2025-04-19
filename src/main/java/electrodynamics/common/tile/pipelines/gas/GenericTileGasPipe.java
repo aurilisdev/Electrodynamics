@@ -6,18 +6,18 @@ import org.jetbrains.annotations.Nullable;
 
 import com.google.common.collect.Lists;
 
-import electrodynamics.api.capability.types.gas.IGasHandler;
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.api.network.cable.type.IGasPipe;
 import electrodynamics.common.network.type.GasNetwork;
-import electrodynamics.prefab.tile.types.GenericRefreshingConnectTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasStack;
+import voltaic.api.gas.IGasHandler;
+import voltaic.api.network.cable.type.IGasPipe;
+import voltaic.prefab.tile.types.GenericRefreshingConnectTile;
 
 public abstract class GenericTileGasPipe extends GenericRefreshingConnectTile<IGasPipe, GenericTileGasPipe, GasNetwork> {
     private final IGasHandler[] capability = new IGasHandler[6];

@@ -10,22 +10,20 @@ import java.util.concurrent.CompletableFuture;
 
 import javax.annotation.Nullable;
 
-import electrodynamics.api.References;
-import electrodynamics.api.network.cable.type.IWire;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.datagen.client.ElectrodynamicsBlockModelsProvider;
 import electrodynamics.datagen.client.ElectrodynamicsBlockStateProvider;
 import electrodynamics.datagen.client.ElectrodynamicsItemModelsProvider;
 import electrodynamics.datagen.client.ElectrodynamicsLangKeyProvider;
-import electrodynamics.datagen.client.ElectrodynamicsLangKeyProvider.Locale;
 import electrodynamics.datagen.client.ElectrodynamicsSoundProvider;
 import electrodynamics.datagen.server.CoalGeneratorFuelSourceProvider;
 import electrodynamics.datagen.server.CombustionChamberFuelSourceProvider;
 import electrodynamics.datagen.server.ElectrodynamicsLootTablesProvider;
 import electrodynamics.datagen.server.GasCollectorChromoCardsProvider;
 import electrodynamics.datagen.server.ThermoelectricGenHeatSourceProvider;
-import electrodynamics.datagen.server.advancement.ElectrodynamicsAdvancementProvider;
-import electrodynamics.datagen.server.multiblock.ElectrodynamicsMultiblockProvider;
+import electrodynamics.datagen.server.ElectrodynamicsAdvancementProvider;
+import electrodynamics.datagen.server.ElectrodynamicsMultiblockProvider;
 import electrodynamics.datagen.server.recipe.ElectrodynamicsRecipeProvider;
 import electrodynamics.datagen.server.tags.ElectrodynamicsTagsProvider;
 import electrodynamics.registers.ElectrodynamicsDamageTypes;
@@ -43,8 +41,10 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
+import voltaic.api.network.cable.type.IWire;
+import voltaic.datagen.utils.client.BaseLangKeyProvider;
 
-@EventBusSubscriber(modid = References.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
 
     public static final HashMap<IWire.IWireClass, HashSet<SubtypeWire>> WIRES = new HashMap<>();
@@ -116,7 +116,7 @@ public class DataGenerators {
                     //
                     .add(NeoForgeRegistries.Keys.BIOME_MODIFIERS, ElectrodynamicsFeatures::registerModifiers)
                     //
-                    , Set.of(References.ID));
+                    , Set.of(Electrodynamics.ID));
 
             generator.addProvider(true, datapacks);
             ElectrodynamicsTagsProvider.addTagProviders(generator, output, datapacks.getRegistryProvider(), helper);
@@ -128,7 +128,7 @@ public class DataGenerators {
             generator.addProvider(true, new ElectrodynamicsBlockStateProvider(output, helper));
             generator.addProvider(true, new ElectrodynamicsBlockModelsProvider(output, helper));
             generator.addProvider(true, new ElectrodynamicsItemModelsProvider(output, helper));
-            generator.addProvider(true, new ElectrodynamicsLangKeyProvider(output, Locale.EN_US));
+            generator.addProvider(true, new ElectrodynamicsLangKeyProvider(output, BaseLangKeyProvider.Locale.EN_US));
             generator.addProvider(true, new ElectrodynamicsSoundProvider(output, helper));
         }
     }

@@ -4,32 +4,10 @@ import java.util.List;
 
 import org.jetbrains.annotations.Nullable;
 
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasTank;
 import electrodynamics.common.block.chemicalreactor.BlockChemicalReactorExtra;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalReactor;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import electrodynamics.common.recipe.categories.chemicalreactor.ChemicalReactorRecipe;
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.recipe.recipeutils.GasIngredient;
-import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.common.recipe.recipeutils.ProbableGas;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyTypes;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.types.GenericGasTile;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.ItemUtils;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -41,25 +19,36 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import net.neoforged.neoforge.items.IItemHandler;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasTank;
+import voltaic.common.recipe.recipeutils.*;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.types.GenericGasTile;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.ItemUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileChemicalReactor extends GenericGasTile {
 
     public static final int MAX_FLUID_TANK_CAPACITY = 5000;
     public static final int MAX_GAS_TANK_CAPACITY = 5000;
 
-    public final Property<Boolean> hasItemInputs = property(new Property<>(PropertyTypes.BOOLEAN, "hasiteminputs", false));
-    public final Property<Boolean> hasFluidInputs = property(new Property<>(PropertyTypes.BOOLEAN, "hasfluidinputs", false));
-    public final Property<Boolean> hasGasInputs = property(new Property<>(PropertyTypes.BOOLEAN, "hasgasinputs", false));
+    public final SingleProperty<Boolean> hasItemInputs = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "hasiteminputs", false));
+    public final SingleProperty<Boolean> hasFluidInputs = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "hasfluidinputs", false));
+    public final SingleProperty<Boolean> hasGasInputs = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "hasgasinputs", false));
 
     public TileChemicalReactor(BlockPos worldPos, BlockState blockState) {
         super(ElectrodynamicsTiles.TILE_CHEMICALREACTOR.get(), worldPos, blockState);
         addComponent(new ComponentTickable(this));
         addComponent(new ComponentPacketHandler(this));
         addComponent(new ComponentContainerProvider("container.chemicalreactor", this).createMenu((id, player) -> new ContainerChemicalReactor(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
-        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.TOP, BlockEntityUtils.MachineDirection.BOTTOM).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 4));
+        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.TOP, BlockEntityUtils.MachineDirection.BOTTOM).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 4));
         addComponent(new ComponentFluidHandlerMulti(this).setTanks(2, 2, new int[]{MAX_FLUID_TANK_CAPACITY, MAX_FLUID_TANK_CAPACITY}, new int[]{MAX_FLUID_TANK_CAPACITY, MAX_FLUID_TANK_CAPACITY}).setInputDirections(BlockEntityUtils.MachineDirection.FRONT, BlockEntityUtils.MachineDirection.RIGHT)
                 //
-                .setOutputDirections(BlockEntityUtils.MachineDirection.BACK, BlockEntityUtils.MachineDirection.LEFT).setRecipeType(ElectrodynamicsRecipeInit.CHEMICAL_REACTOR_TYPE.get()));
+                .setOutputDirections(BlockEntityUtils.MachineDirection.BACK, BlockEntityUtils.MachineDirection.LEFT).setRecipeType(ElectrodynamicsRecipies.CHEMICAL_REACTOR_TYPE.get()));
         addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().processors(1, 2, 1, 3).bucketInputs(2).bucketOutputs(2).gasInputs(2).gasOutputs(2).upgrades(3)).setDirectionsBySlot(0, BlockEntityUtils.MachineDirection.BACK)
                 //
                 .setDirectionsBySlot(1, BlockEntityUtils.MachineDirection.RIGHT).setSlotsByDirection(BlockEntityUtils.MachineDirection.LEFT, 2).setSlotsByDirection(BlockEntityUtils.MachineDirection.FRONT, 3, 4, 5).validUpgrades(ContainerChemicalReactor.VALID_UPGRADES).valid(machineValidator()));
@@ -67,46 +56,45 @@ public class TileChemicalReactor extends GenericGasTile {
                 //
                 .setInputTanks(2, arr(MAX_GAS_TANK_CAPACITY, MAX_GAS_TANK_CAPACITY), arr(1000, 1000), arr(1024, 1024)).setOutputTanks(2, arr(MAX_GAS_TANK_CAPACITY, MAX_GAS_TANK_CAPACITY), arr(1000, 1000), arr(1024, 1024)).setCondensedHandler(getCondensedHandler())
                 //
-                .setRecipeType(ElectrodynamicsRecipeInit.CHEMICAL_REACTOR_TYPE.get()));
+                .setRecipeType(ElectrodynamicsRecipies.CHEMICAL_REACTOR_TYPE.get()));
         addComponent(new ComponentProcessor(this).canProcess(this::canProcess).process(this::process));
     }
 
-    private boolean canProcess(ComponentProcessor pr) {
+    private boolean canProcess(ComponentProcessor pr, int procNumber) {
         pr.consumeBucket().consumeGasCylinder().dispenseGasCylinder().dispenseBucket().outputToGasPipe();
         outputToPipe();
         ChemicalReactorRecipe locRecipe;
-        if (!pr.checkExistingRecipe(pr)) {
-            pr.setShouldKeepProgress(false);
-            pr.operatingTicks.set(0.0);
-            locRecipe = (ChemicalReactorRecipe) pr.getRecipe(pr, ElectrodynamicsRecipeInit.CHEMICAL_REACTOR_TYPE.get());
+        if (!pr.checkExistingRecipe(procNumber)) {
+            pr.setShouldKeepProgress(false, procNumber);
+            pr.operatingTicks.setValue(0.0, procNumber);
+            locRecipe = (ChemicalReactorRecipe) pr.getRecipe(ElectrodynamicsRecipies.CHEMICAL_REACTOR_TYPE.get(), procNumber);
             if (locRecipe == null) {
-                hasItemInputs.set(false);
-                hasFluidInputs.set(false);
-                hasGasInputs.set(false);
+                hasItemInputs.setValue(false);
+                hasFluidInputs.setValue(false);
+                hasGasInputs.setValue(false);
                 return false;
             }
         } else {
-            pr.setShouldKeepProgress(true);
-            locRecipe = (ChemicalReactorRecipe) pr.getRecipe();
+            pr.setShouldKeepProgress(true, procNumber);
+            locRecipe = (ChemicalReactorRecipe) pr.getRecipe(procNumber);
         }
-        pr.setRecipe(locRecipe);
-        hasItemInputs.set(locRecipe.hasItemInputs());
-        hasFluidInputs.set(locRecipe.hasFluidInputs());
-        hasGasInputs.set(locRecipe.hasGasInputs());
+        pr.setRecipe(locRecipe, procNumber);
+        hasItemInputs.setValue(locRecipe.hasItemInputs());
+        hasFluidInputs.setValue(locRecipe.hasFluidInputs());
+        hasGasInputs.setValue(locRecipe.hasGasInputs());
 
-        pr.requiredTicks.set((double) locRecipe.getTicks());
-        pr.usage.set(locRecipe.getUsagePerTick());
+        pr.requiredTicks.setValue((double) locRecipe.getTicks(), procNumber);
+        pr.usage.setValue(locRecipe.getUsagePerTick(), procNumber);
 
         ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-        electro.maxJoules(pr.usage.get() * pr.operatingSpeed.get() * 10 * pr.totalProcessors);
 
-        if (electro.getJoulesStored() < pr.getUsage()) {
+        if (electro.getJoulesStored() < pr.getUsage(procNumber)) {
             return false;
         }
 
         if (locRecipe.hasItemOutput()) {
             ComponentInventory inv = getComponent(IComponentType.Inventory);
-            ItemStack output = inv.getOutputContents().get(pr.getProcessorNumber());
+            ItemStack output = inv.getOutputContents().get(procNumber);
             ItemStack result = locRecipe.getItemRecipeOutput();
             boolean isEmpty = output.isEmpty();
             if (!isEmpty && !ItemUtils.testItems(output.getItem(), result.getItem())) {
@@ -137,7 +125,11 @@ public class TileChemicalReactor extends GenericGasTile {
 
         if (locRecipe.hasItemBiproducts()) {
             ComponentInventory inv = getComponent(IComponentType.Inventory);
+<<<<<<< Updated upstream
             boolean itemBiRoom = ComponentProcessor.roomInItemBiSlots(inv.getBiprodsForProcessor(pr.getProcessorNumber()), locRecipe.getFullItemBiStacks());
+=======
+            boolean itemBiRoom = pr.roomInItemBiSlots(inv.getBiprodsForProcessor(procNumber), locRecipe.getFullItemBiStacks());
+>>>>>>> Stashed changes
             if (!itemBiRoom) {
                 return false;
             }
@@ -159,17 +151,15 @@ public class TileChemicalReactor extends GenericGasTile {
         return true;
     }
 
-    private void process(ComponentProcessor pr) {
-        if (pr.getRecipe() == null) {
+    private void process(ComponentProcessor pr, int procNumber) {
+        if (pr.getRecipe(procNumber) == null) {
             return;
         }
-        ChemicalReactorRecipe locRecipe = (ChemicalReactorRecipe) pr.getRecipe();
+        ChemicalReactorRecipe locRecipe = (ChemicalReactorRecipe) pr.getRecipe(procNumber);
 
         ComponentInventory inv = getComponent(IComponentType.Inventory);
         ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
         ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
-
-        int procNumber = pr.getProcessorNumber();
 
         if (locRecipe.hasItemBiproducts()) {
 
@@ -222,7 +212,7 @@ public class TileChemicalReactor extends GenericGasTile {
         }
 
         if (locRecipe.hasItemInputs()) {
-            List<Integer> slotOrientation = locRecipe.getItemArrangment(pr.getProcessorNumber());
+            List<Integer> slotOrientation = locRecipe.getItemArrangment(procNumber);
             List<Integer> inputs = inv.getInputSlotsForProcessor(procNumber);
             for (int i = 0; i < slotOrientation.size(); i++) {
                 int index = inputs.get(slotOrientation.get(i));

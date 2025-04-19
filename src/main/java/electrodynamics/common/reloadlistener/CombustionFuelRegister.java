@@ -35,6 +35,7 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.network.PacketDistributor;
+import voltaic.Voltaic;
 
 public class CombustionFuelRegister extends SimplePreparableReloadListener<HashSet<JsonObject>> {
 
@@ -49,7 +50,7 @@ public class CombustionFuelRegister extends SimplePreparableReloadListener<HashS
 
     private final HashSet<CombustionFuelSource> fuels = new HashSet<>();
 
-    private final Logger logger = Electrodynamics.LOGGER;
+    private final Logger logger = Voltaic.LOGGER;
 
     @Override
     protected HashSet<JsonObject> prepare(ResourceManager manager, ProfilerFiller profiler) {

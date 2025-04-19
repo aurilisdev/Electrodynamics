@@ -2,17 +2,7 @@ package electrodynamics.common.tile.machines.quarry;
 
 import org.jetbrains.annotations.NotNull;
 
-import electrodynamics.client.modelbakers.modelproperties.ModelPropertyConnections;
-import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.common.item.ItemDrillHead;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyTypes;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.types.IConnectTile;
-import electrodynamics.prefab.utilities.Scheduler;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -24,6 +14,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.items.IItemHandler;
+import voltaic.client.model.block.modelproperties.ModelPropertyConnections;
+import voltaic.common.block.connect.EnumConnectType;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentTickable;
+import voltaic.prefab.tile.types.IConnectTile;
+import voltaic.prefab.utilities.Scheduler;
 
 public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
@@ -39,12 +39,12 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
     public static final int WEST_MASK = 0b00000000000011110000000000000000;
     public static final int EAST_MASK = 0b00000000111100000000000000000000;
 
-    public final Property<Integer> connections = property(new Property<>(PropertyTypes.INTEGER, "connections", 0).setShouldUpdateOnChange().onChange((property, old) -> {
+    public final SingleProperty<Integer> connections = property(new SingleProperty<>(PropertyTypes.INTEGER, "connections", 0).onChange((property, old) -> {
         requestModelDataUpdate();
         if(level != null && level.isClientSide()){
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 8); //
         }
-    }).onTileLoaded(property -> requestModelDataUpdate()));
+    }).onTileLoaded(property -> requestModelDataUpdate())).setShouldUpdateOnChange();
 
     public TileLogisticalManager(BlockPos pos, BlockState state) {
         super(ElectrodynamicsTiles.TILE_LOGISTICALMANAGER.get(), pos, state);
@@ -183,7 +183,7 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
     public EnumConnectType readConnection(Direction dir) {
 
-        int connectionData = connections.get();
+        int connectionData = connections.getValue();
 
         if (connectionData == 0) {
             return EnumConnectType.NONE;
@@ -221,7 +221,7 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
     public void writeConnection(Direction dir, EnumConnectType connection) {
 
-        int connectionData = this.connections.get();
+        int connectionData = this.connections.getValue();
         int masked;
 
         switch (dir) {
@@ -248,7 +248,7 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
                 break;
         }
 
-        connections.set(masked | (connection.ordinal() << (dir.ordinal() * 4)));
+        connections.setValue(masked | (connection.ordinal() << (dir.ordinal() * 4)));
     }
 
     @Override

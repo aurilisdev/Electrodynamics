@@ -2,9 +2,7 @@ package electrodynamics.datagen.server.tags.types;
 
 import java.util.concurrent.CompletableFuture;
 
-import electrodynamics.api.References;
-import electrodynamics.common.block.BlockCustomGlass;
-import electrodynamics.common.block.BlockMachine;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.BlockOre;
 import electrodynamics.common.block.connect.BlockFluidPipe;
 import electrodynamics.common.block.connect.BlockWire;
@@ -12,7 +10,6 @@ import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
@@ -22,11 +19,14 @@ import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import voltaic.common.block.BlockCustomGlass;
+import voltaic.common.block.BlockMachine;
+import voltaic.common.tags.VoltaicTags;
 
 public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
 
     public ElectrodynamicsBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, References.ID, existingFileHelper);
+        super(output, lookupProvider, Electrodynamics.ID, existingFileHelper);
     }
 
     @Override
@@ -56,8 +56,6 @@ public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
                 .add(ElectrodynamicsBlocks.BLOCK_LOGISTICALMANAGER.get())
                 //
                 .add(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get())
-                //
-                .add(ElectrodynamicsBlocks.BLOCK_MULTISUBNODE.get())
                 //
                 .add(ElectrodynamicsBlocks.BLOCK_COMPRESSOR.get())
                 //
@@ -129,8 +127,6 @@ public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
                 //
                 .add(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get())
                 //
-                .add(ElectrodynamicsBlocks.BLOCK_MULTISUBNODE.get())
-                //
                 .add(ElectrodynamicsBlocks.BLOCK_COMPRESSOR.get())
                 //
                 .add(ElectrodynamicsBlocks.BLOCK_DECOMPRESSOR.get())
@@ -191,13 +187,13 @@ public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
             tag(block.blockTag).add(ElectrodynamicsBlocks.BLOCKS_RAWORE.getValue(block));
         }
 
-        TagAppender<Block> ores = tag(ElectrodynamicsTags.Blocks.ORES);
+        TagAppender<Block> ores = tag(VoltaicTags.Blocks.ORES);
 
         for (SubtypeOre ore : SubtypeOre.values()) {
             ores.addTag(ore.blockTag);
         }
 
-        tag(ElectrodynamicsTags.Blocks.ELECTRIC_DRILL_BLOCKS).addTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_SHOVEL);
+        tag(VoltaicTags.Blocks.ELECTRIC_DRILL_BLOCKS).addTags(BlockTags.MINEABLE_WITH_PICKAXE, BlockTags.MINEABLE_WITH_SHOVEL);
     }
 
 }

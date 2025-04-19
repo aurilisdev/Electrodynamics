@@ -1,27 +1,22 @@
 package electrodynamics.common.tile.pipelines.gas.tank;
 
-import electrodynamics.api.gas.Gas;
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerGasTankGeneric;
-import electrodynamics.common.network.utils.GasUtilities;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyTypes;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerSimple;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.types.GenericGasTile;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.gas.Gas;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasStack;
+import voltaic.common.network.utils.GasUtilities;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.types.GenericGasTile;
+import voltaic.prefab.utilities.BlockEntityUtils;
 
 public class GenericTileGasTank extends GenericGasTile {
 
@@ -29,15 +24,15 @@ public class GenericTileGasTank extends GenericGasTile {
 
 	public static final double HEAT_LOSS = 0.0025; // .05 / 20
 
-	public final Property<Double> insulationBonus = property(new Property<>(PropertyTypes.DOUBLE, "insulationbonus", 1.0));
+	public final SingleProperty<Double> insulationBonus = property(new SingleProperty<>(PropertyTypes.DOUBLE, "insulationbonus", 1.0));
 
 	public GenericTileGasTank(BlockEntityType<?> type, BlockPos pos, BlockState state, SubtypeMachine machine, int capacity, int maxPressure, int maxTemperature) {
 		super(type, pos, state);
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentGasHandlerSimple(this, "", capacity, maxTemperature, maxPressure).setInputDirections(BlockEntityUtils.MachineDirection.TOP).setOutputDirections(BlockEntityUtils.MachineDirection.BOTTOM).setOnGasCondensed(getCondensedHandler()));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(6).gasInputs(1).gasOutputs(1)).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> new ContainerGasTankGeneric(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().inputs(6).gasInputs(1).gasOutputs(1)).valid(machineValidator()));
+		addComponent(new ComponentContainerProvider(machine.tag(), this).createMenu((id, player) -> new ContainerGasTankGeneric(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
 	public void tickServer(ComponentTickable tick) {
@@ -52,7 +47,7 @@ public class GenericTileGasTank extends GenericGasTile {
 
 			int deltaT = (int) Math.signum(Gas.ROOM_TEMPERATURE - gasIn.getTemperature());
 
-			int temperatureDecrease = (int) (Math.max(1, HEAT_LOSS / Math.max(1.0, insulationBonus.get())) * deltaT);
+			int temperatureDecrease = (int) (Math.max(1, HEAT_LOSS / Math.max(1.0, insulationBonus.getValue())) * deltaT);
 
 			handler.heat(0, temperatureDecrease, GasAction.EXECUTE);
 
@@ -90,7 +85,7 @@ public class GenericTileGasTank extends GenericGasTile {
 
 		}
 
-		this.insulationBonus.set(insulationBonus);
+		this.insulationBonus.setValue(insulationBonus);
 
 	}
 

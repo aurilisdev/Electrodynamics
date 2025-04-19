@@ -2,14 +2,14 @@ package electrodynamics.common.block.subtype;
 
 import java.util.Locale;
 
-import electrodynamics.api.ISubtype;
-import electrodynamics.api.gas.Gas;
-import electrodynamics.api.network.cable.type.IGasPipe;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import voltaic.api.ISubtype;
+import voltaic.api.gas.Gas;
+import voltaic.api.network.cable.type.IGasPipe;
 
 public enum SubtypeGasPipe implements ISubtype, IGasPipe {
 

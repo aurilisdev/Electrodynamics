@@ -1,29 +1,23 @@
 package electrodynamics.common.tile.machines;
 
-import electrodynamics.Electrodynamics;
-import electrodynamics.client.particle.lavawithphysics.ParticleOptionLavaWithPhysics;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerDO2OProcessor;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSound;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.Voltaic;
+import voltaic.client.particle.lavawithphysics.ParticleOptionLavaWithPhysics;
+import voltaic.prefab.sound.ITickableSound;
+import voltaic.prefab.sound.SoundBarrierMethods;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileEnergizedAlloyer extends GenericTile implements ITickableSound {
 
@@ -33,17 +27,17 @@ public class TileEnergizedAlloyer extends GenericTile implements ITickableSound 
 		super(ElectrodynamicsTiles.TILE_ENERGIZEDALLOYER.get(), worldPosition, blockState);
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BACK).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 4));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().processors(1, 2, 1, 1).upgrades(3)).setSlotsByDirection(BlockEntityUtils.MachineDirection.TOP, 0).setSlotsByDirection(BlockEntityUtils.MachineDirection.RIGHT, 1)
+		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BACK).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 4));
+		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().processors(1, 2, 1, 1).upgrades(3)).setSlotsByDirection(BlockEntityUtils.MachineDirection.TOP, 0).setSlotsByDirection(BlockEntityUtils.MachineDirection.RIGHT, 1)
 				//
 				.setDirectionsBySlot(2, BlockEntityUtils.MachineDirection.BOTTOM, BlockEntityUtils.MachineDirection.LEFT).setDirectionsBySlot(3, BlockEntityUtils.MachineDirection.BOTTOM, BlockEntityUtils.MachineDirection.LEFT).validUpgrades(ContainerDO2OProcessor.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.energizedalloyer, this).createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.energizedalloyer.tag(), this).createMenu((id, player) -> new ContainerDO2OProcessor(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 
-		addComponent(new ComponentProcessor(this).canProcess(this::canProcessEnergAlloy).process(component -> component.processItem2ItemRecipe(component)));
+		addComponent(new ComponentProcessor(this).canProcess(this::canProcessEnergAlloy).process(ComponentProcessor::processItem2ItemRecipe));
 	}
 
-	protected boolean canProcessEnergAlloy(ComponentProcessor component) {
-		boolean canProcess = component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.ENERGIZED_ALLOYER_TYPE.get());
+	protected boolean canProcessEnergAlloy(ComponentProcessor component, int procNumber) {
+		boolean canProcess = component.canProcessItem2ItemRecipe(procNumber, ElectrodynamicsRecipies.ENERGIZED_ALLOYER_TYPE.get());
 		if (BlockEntityUtils.isLit(this) ^ canProcess) {
 			BlockEntityUtils.updateLit(this, canProcess);
 		}
@@ -57,7 +51,7 @@ public class TileEnergizedAlloyer extends GenericTile implements ITickableSound 
 		if (level.random.nextDouble() < 0.2) {
 			Direction direction = getFacing();
 
-			double axisShift = Electrodynamics.RANDOM.nextDouble(0.63) + 0.185;
+			double axisShift = Voltaic.RANDOM.nextDouble(0.63) + 0.185;
 
 			float scale = 0.1F * (level.random.nextFloat() * 0.5F + 0.5F) * 2.0F * (level.random.nextFloat() * 2.0F + 0.2F);
 			int lifetime = (int)(4.0F / (level.random.nextFloat() * 0.9F + 0.1F));
@@ -79,8 +73,8 @@ public class TileEnergizedAlloyer extends GenericTile implements ITickableSound 
 
 			int randInt = level.random.nextIntBetweenInclusive(0,2);
 
-			axisShift = Electrodynamics.RANDOM.nextDouble(0.64) + 0.18;
-			yShift = Electrodynamics.RANDOM.nextDouble(0.38) + 0.37;
+			axisShift = Voltaic.RANDOM.nextDouble(0.64) + 0.18;
+			yShift = Voltaic.RANDOM.nextDouble(0.38) + 0.37;
 
 			xShift = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : axisShift;
 			zShift = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : axisShift;
@@ -94,8 +88,8 @@ public class TileEnergizedAlloyer extends GenericTile implements ITickableSound 
 				direction = direction.getCounterClockWise();
 			}
 
-			axisShift = Electrodynamics.RANDOM.nextDouble(0.64) + 0.18;
-			yShift = Electrodynamics.RANDOM.nextDouble(0.38) + 0.37;
+			axisShift = Voltaic.RANDOM.nextDouble(0.64) + 0.18;
+			yShift = Voltaic.RANDOM.nextDouble(0.38) + 0.37;
 
 			xShift = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : axisShift;
 			zShift = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : axisShift;
@@ -115,12 +109,12 @@ public class TileEnergizedAlloyer extends GenericTile implements ITickableSound 
 
 	@Override
 	public boolean shouldPlaySound() {
-		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive();
+		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
 	}
 
 	@Override
 	public int getComparatorSignal() {
-		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive() ? 15 : 0;
+		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
 	}
 
 }

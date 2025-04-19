@@ -3,7 +3,7 @@
   "category": "misc",
   "key": {
     "B": {
-      "type": "electrodynamics:enchantmentingredient",
+      "type": "voltaic:enchantmentingredient",
       "enchantments": [
         "c:increase_block_drops"
       ],
