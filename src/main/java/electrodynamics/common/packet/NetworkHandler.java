@@ -7,8 +7,11 @@ import electrodynamics.common.packet.types.client.PacketAddClientRenderInfo;
 import electrodynamics.common.packet.types.client.PacketJetpackEquipedSound;
 import electrodynamics.common.packet.types.client.PacketRenderJetpackParticles;
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import electrodynamics.common.packet.types.client.PacketResetGuidebookPages;
 =======
+=======
+>>>>>>> Stashed changes
 import electrodynamics.common.packet.types.client.PacketSendUpdatePropertiesClient;
 >>>>>>> Stashed changes
 import electrodynamics.common.packet.types.client.PacketSetClientCoalGenFuels;
@@ -42,8 +45,11 @@ public class NetworkHandler {
         registry.playToClient(PacketJetpackEquipedSound.TYPE, PacketJetpackEquipedSound.CODEC, PacketJetpackEquipedSound::handle);
         registry.playToClient(PacketRenderJetpackParticles.TYPE, PacketRenderJetpackParticles.CODEC, PacketRenderJetpackParticles::handle);
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         registry.playToClient(PacketResetGuidebookPages.TYPE, PacketResetGuidebookPages.CODEC, PacketResetGuidebookPages::handle);
 =======
+=======
+>>>>>>> Stashed changes
         registry.playToClient(PacketSendUpdatePropertiesClient.TYPE, PacketSendUpdatePropertiesClient.CODEC, PacketSendUpdatePropertiesClient::handle);
 >>>>>>> Stashed changes
         registry.playToClient(PacketSetClientCoalGenFuels.TYPE, PacketSetClientCoalGenFuels.CODEC, PacketSetClientCoalGenFuels::handle);
