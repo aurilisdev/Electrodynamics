@@ -29,11 +29,11 @@ description = '''${mod_description}'''
 config = "${mod_id}.mixins.json"
 
 [[dependencies.electrodynamics]]
-modId = "voltaic"
-mandatory = true
-versionRange = "[1.)"
-ordering = "NONE"
-side = "BOTH"
+    modId = "voltaic"
+    mandatory = true
+    versionRange = "[1.0,)"
+    ordering = "NONE"
+    side = "BOTH"
 
 [[accessTransformers]]
 

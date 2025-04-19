@@ -44,7 +44,7 @@ public class TileChemicalReactor extends GenericGasTile {
         super(ElectrodynamicsTiles.TILE_CHEMICALREACTOR.get(), worldPos, blockState);
         addComponent(new ComponentTickable(this));
         addComponent(new ComponentPacketHandler(this));
-        addComponent(new ComponentContainerProvider("container.chemicalreactor", this).createMenu((id, player) -> new ContainerChemicalReactor(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+        addComponent(new ComponentContainerProvider("chemicalreactor", this).createMenu((id, player) -> new ContainerChemicalReactor(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
         addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.TOP, BlockEntityUtils.MachineDirection.BOTTOM).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 4));
         addComponent(new ComponentFluidHandlerMulti(this).setTanks(2, 2, new int[]{MAX_FLUID_TANK_CAPACITY, MAX_FLUID_TANK_CAPACITY}, new int[]{MAX_FLUID_TANK_CAPACITY, MAX_FLUID_TANK_CAPACITY}).setInputDirections(BlockEntityUtils.MachineDirection.FRONT, BlockEntityUtils.MachineDirection.RIGHT)
                 //

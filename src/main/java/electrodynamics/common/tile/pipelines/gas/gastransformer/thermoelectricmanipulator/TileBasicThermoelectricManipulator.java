@@ -46,7 +46,7 @@ public class TileBasicThermoelectricManipulator extends GenericTileThermoelectri
 
     @Override
     public ComponentContainerProvider getContainerProvider() {
-        return new ComponentContainerProvider("container.thermoelectricmanipulator", this).createMenu((id, inv) -> new ContainerThermoelectricManipulator(id, inv, getComponent(IComponentType.Inventory), getCoordsArray()));
+        return new ComponentContainerProvider("thermoelectricmanipulator", this).createMenu((id, inv) -> new ContainerThermoelectricManipulator(id, inv, getComponent(IComponentType.Inventory), getCoordsArray()));
     }
 
     @Override

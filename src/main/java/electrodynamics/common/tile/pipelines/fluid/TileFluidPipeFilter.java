@@ -47,7 +47,7 @@ public class TileFluidPipeFilter extends GenericTile {
 	public TileFluidPipeFilter(BlockPos worldPos, BlockState blockState) {
 		super(ElectrodynamicsTiles.TILE_FLUIDPIPEFILTER.get(), worldPos, blockState);
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentContainerProvider("container.fluidpipefilter", this).createMenu((id, inv) -> new ContainerFluidPipeFilter(id, inv, getCoordsArray())));
+		addComponent(new ComponentContainerProvider("fluidpipefilter", this).createMenu((id, inv) -> new ContainerFluidPipeFilter(id, inv, getCoordsArray())));
 	}
 	
 	@Override

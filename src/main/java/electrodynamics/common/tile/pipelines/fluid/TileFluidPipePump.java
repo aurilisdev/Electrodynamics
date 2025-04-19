@@ -54,7 +54,7 @@ public class TileFluidPipePump extends GenericTile {
         addComponent(new ComponentTickable(this).tickServer(this::tickServer));
         addComponent(new ComponentPacketHandler(this));
         addComponent(new ComponentElectrodynamic(this, false, true).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE).maxJoules(ElectroConstants.PIPE_PUMP_USAGE_PER_TICK * 10).setInputDirections(BlockEntityUtils.MachineDirection.LEFT));
-        addComponent(new ComponentContainerProvider("container.fluidpipepump", this).createMenu((id, inv) -> new ContainerFluidPipePump(id, inv, getCoordsArray())));
+        addComponent(new ComponentContainerProvider("fluidpipepump", this).createMenu((id, inv) -> new ContainerFluidPipePump(id, inv, getCoordsArray())));
     }
 
     public void tickServer(ComponentTickable tick) {
