@@ -6,17 +6,6 @@ import electrodynamics.Electrodynamics;
 import electrodynamics.common.packet.types.client.PacketAddClientRenderInfo;
 import electrodynamics.common.packet.types.client.PacketJetpackEquipedSound;
 import electrodynamics.common.packet.types.client.PacketRenderJetpackParticles;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-import electrodynamics.common.packet.types.client.PacketResetGuidebookPages;
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-import electrodynamics.common.packet.types.client.PacketSendUpdatePropertiesClient;
->>>>>>> Stashed changes
 import electrodynamics.common.packet.types.client.PacketSetClientCoalGenFuels;
 import electrodynamics.common.packet.types.client.PacketSetClientCombustionFuel;
 import electrodynamics.common.packet.types.client.PacketSetClientGasCollectorCards;
@@ -47,17 +36,6 @@ public class NetworkHandler {
         registry.playToClient(PacketAddClientRenderInfo.TYPE, PacketAddClientRenderInfo.CODEC, PacketAddClientRenderInfo::handle);
         registry.playToClient(PacketJetpackEquipedSound.TYPE, PacketJetpackEquipedSound.CODEC, PacketJetpackEquipedSound::handle);
         registry.playToClient(PacketRenderJetpackParticles.TYPE, PacketRenderJetpackParticles.CODEC, PacketRenderJetpackParticles::handle);
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-        registry.playToClient(PacketResetGuidebookPages.TYPE, PacketResetGuidebookPages.CODEC, PacketResetGuidebookPages::handle);
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-        registry.playToClient(PacketSendUpdatePropertiesClient.TYPE, PacketSendUpdatePropertiesClient.CODEC, PacketSendUpdatePropertiesClient::handle);
->>>>>>> Stashed changes
         registry.playToClient(PacketSetClientCoalGenFuels.TYPE, PacketSetClientCoalGenFuels.CODEC, PacketSetClientCoalGenFuels::handle);
         registry.playToClient(PacketSetClientCombustionFuel.TYPE, PacketSetClientCombustionFuel.CODEC, PacketSetClientCombustionFuel::handle);
         registry.playToClient(PacketSetClientGasCollectorCards.TYPE, PacketSetClientGasCollectorCards.CODEC, PacketSetClientGasCollectorCards::handle);

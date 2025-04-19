@@ -2,22 +2,6 @@ package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
 import electrodynamics.common.tile.machines.charger.GenericTileCharger;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
-import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
-import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressBars;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.types.wrapper.WrapperInventoryIO;
-import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -32,8 +16,6 @@ import voltaic.prefab.screen.component.types.ScreenComponentProgress;
 import voltaic.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
 import voltaic.prefab.screen.component.types.wrapper.WrapperInventoryIO;
 import voltaic.prefab.screen.component.utils.AbstractScreenComponentInfo;
-import voltaic.prefab.tile.components.IComponentType;
-import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.utilities.math.Color;
 
 public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric> {
