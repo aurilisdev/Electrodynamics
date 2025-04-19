@@ -1,14 +1,12 @@
 package electrodynamics.common.inventory.container.tile;
 
 import electrodynamics.common.tile.pipelines.gas.TileGasCollector;
-import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
-import voltaic.common.item.ItemUpgrade;
 import voltaic.common.item.subtype.SubtypeItemUpgrade;
 import voltaic.prefab.inventory.container.slot.item.SlotGeneric;
 import voltaic.prefab.inventory.container.slot.item.type.SlotGas;
@@ -32,8 +30,8 @@ public class ContainerGasCollector extends GenericContainerBlockEntity<TileGasCo
     public void addInventorySlots(Container inv, Inventory playerinv) {
         addSlot(new SlotGeneric(inv, nextIndex(), 25, 34).setIOColor(new Color(0, 240, 255, 255)));
         addSlot(new SlotGas(inv, nextIndex(), 121, 51));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
+        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
+        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
+        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
     }
 }

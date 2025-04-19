@@ -1,14 +1,12 @@
 package electrodynamics.common.inventory.container.tile;
 
 import electrodynamics.common.tile.machines.chemicalreactor.TileChemicalReactor;
-import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
-import voltaic.common.item.ItemUpgrade;
 import voltaic.common.item.subtype.SubtypeItemUpgrade;
 import voltaic.prefab.inventory.container.slot.item.SlotGeneric;
 import voltaic.prefab.inventory.container.slot.item.type.SlotRestricted;
@@ -45,8 +43,8 @@ public class ContainerChemicalReactor extends GenericContainerBlockEntity<TileCh
         //addSlot(new SlotGas(inv, nextIndex(), 27, 104));
         //addSlot(new SlotGas(inv, nextIndex(), 113, 73));
         //addSlot(new SlotGas(inv, nextIndex(), 113, 104));
-        addSlot(new SlotUpgrade(inv, nextIndex(8), 153, 22, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 42, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 62, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
+        addSlot(new SlotUpgrade(inv, nextIndex(8), 153, 22, VALID_UPGRADES));
+        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 42, VALID_UPGRADES));
+        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 62, VALID_UPGRADES));
     }
 }

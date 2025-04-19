@@ -871,7 +871,6 @@ public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {
 			addTooltip("servolegs.none", "NONE");
 			addTooltip("currbattery", "Battery: %s");
 			addTooltip("gasvent", "Voids gases");
-			addTooltip("validupgrades", "Valid Upgrades:");
 			addTooltip("electricdrill.miningspeed", "Mining Speed: %s");
 
 			addTooltip("pipematerial", "Material: %s");

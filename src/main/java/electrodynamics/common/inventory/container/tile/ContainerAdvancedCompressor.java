@@ -31,9 +31,9 @@ public class ContainerAdvancedCompressor extends GenericContainerBlockEntity<Gen
         setPlayerInvOffset(47);
         addSlot(new SlotGas(inv, nextIndex(), 20, 50));
         addSlot(new SlotGas(inv, nextIndex(), 109, 50));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, ElectrodynamicsItems.ITEMS_UPGRADE.getSpecificValuesArray(new ItemUpgrade[0], VALID_UPGRADES)));
+        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
+        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
+        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
     }
 
 }
