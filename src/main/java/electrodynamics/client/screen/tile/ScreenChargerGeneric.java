@@ -4,6 +4,7 @@ import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
 import electrodynamics.common.tile.machines.charger.GenericTileCharger;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import electrodynamics.prefab.screen.GenericScreen;
 import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
 import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
@@ -11,6 +12,8 @@ import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.Pro
 import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
 import electrodynamics.prefab.screen.component.types.wrapper.WrapperInventoryIO;
 import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 =======

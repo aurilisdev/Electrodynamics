@@ -8,8 +8,11 @@ import electrodynamics.common.packet.types.client.PacketJetpackEquipedSound;
 import electrodynamics.common.packet.types.client.PacketRenderJetpackParticles;
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 import electrodynamics.common.packet.types.client.PacketResetGuidebookPages;
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
 import electrodynamics.common.packet.types.client.PacketSendUpdatePropertiesClient;
@@ -46,8 +49,11 @@ public class NetworkHandler {
         registry.playToClient(PacketRenderJetpackParticles.TYPE, PacketRenderJetpackParticles.CODEC, PacketRenderJetpackParticles::handle);
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         registry.playToClient(PacketResetGuidebookPages.TYPE, PacketResetGuidebookPages.CODEC, PacketResetGuidebookPages::handle);
 =======
+=======
+>>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
         registry.playToClient(PacketSendUpdatePropertiesClient.TYPE, PacketSendUpdatePropertiesClient.CODEC, PacketSendUpdatePropertiesClient::handle);
