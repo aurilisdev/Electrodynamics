@@ -1,10 +1,10 @@
 package electrodynamics.common.tile.machines.wiremill;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorTriple;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.common.inventory.container.ContainerO2OProcessorTriple;
 import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 

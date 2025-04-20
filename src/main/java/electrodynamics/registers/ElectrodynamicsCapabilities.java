@@ -1,7 +1,6 @@
 package electrodynamics.registers;
 
 import electrodynamics.Electrodynamics;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import electrodynamics.common.item.gear.armor.types.ItemCombatArmor;

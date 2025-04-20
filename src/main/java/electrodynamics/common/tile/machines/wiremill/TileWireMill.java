@@ -1,7 +1,6 @@
 package electrodynamics.common.tile.machines.wiremill;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
 import electrodynamics.registers.ElectrodynamicsRecipies;
 import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.registers.ElectrodynamicsSounds;
@@ -10,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.common.inventory.container.ContainerO2OProcessor;
 import voltaic.prefab.sound.ITickableSound;
 import voltaic.prefab.sound.SoundBarrierMethods;
 import voltaic.prefab.tile.GenericTile;

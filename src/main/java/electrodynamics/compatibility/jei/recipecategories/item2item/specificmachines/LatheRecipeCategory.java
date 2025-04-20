@@ -3,7 +3,6 @@ package electrodynamics.compatibility.jei.recipecategories.item2item.specificmac
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.categories.item2item.specificmachines.LatheRecipe;
-import electrodynamics.compatibility.jei.ElectrodynamicsJEIPlugin;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import mezz.jei.api.gui.drawable.IDrawableAnimated.StartDirection;
@@ -11,6 +10,7 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.world.item.ItemStack;
+import voltaic.compatibility.jei.VoltaicJEIPlugin;
 import voltaic.compatibility.jei.recipecategories.item2item.Item2ItemRecipeCategory;
 import voltaic.compatibility.jei.utils.gui.types.ArrowAnimatedObject;
 import voltaic.compatibility.jei.utils.gui.types.BackgroundObject;
@@ -43,7 +43,7 @@ public class LatheRecipeCategory extends Item2ItemRecipeCategory<LatheRecipe> {
 
     public LatheRecipeCategory(IGuiHelper guiHelper) {
         super(guiHelper, ElectroTextUtils.jeiTranslated(LatheRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
-        ElectrodynamicsJEIPlugin.addO2OClickArea(RECIPE_TYPE);
+        VoltaicJEIPlugin.addO2OCategory(RECIPE_TYPE);
         setInputSlots(guiHelper, INPUT_SLOT);
         setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);
         setAnimatedArrows(guiHelper, ANIM_ARROW);

@@ -1,10 +1,10 @@
 package electrodynamics.common.tile.machines.mineralcrusher;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorDouble;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.common.inventory.container.ContainerO2OProcessorDouble;
 import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 

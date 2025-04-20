@@ -10,7 +10,6 @@ import electrodynamics.Electrodynamics;
 import electrodynamics.client.screen.tile.ScreenChemicalCrystallizer;
 import electrodynamics.client.screen.tile.ScreenChemicalMixer;
 import electrodynamics.client.screen.tile.ScreenChemicalReactor;
-import electrodynamics.client.screen.tile.ScreenDO2OProcessor;
 import electrodynamics.client.screen.tile.ScreenElectricArcFurnace;
 import electrodynamics.client.screen.tile.ScreenElectricArcFurnaceDouble;
 import electrodynamics.client.screen.tile.ScreenElectricArcFurnaceTriple;
@@ -22,9 +21,6 @@ import electrodynamics.client.screen.tile.ScreenElectrolyticSeparator;
 import electrodynamics.client.screen.tile.ScreenFermentationPlant;
 import electrodynamics.client.screen.tile.ScreenGasCollector;
 import electrodynamics.client.screen.tile.ScreenMineralWasher;
-import electrodynamics.client.screen.tile.ScreenO2OProcessor;
-import electrodynamics.client.screen.tile.ScreenO2OProcessorDouble;
-import electrodynamics.client.screen.tile.ScreenO2OProcessorTriple;
 import electrodynamics.client.screen.tile.ScreenThermoelectricManipulator;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.registers.ElectrodynamicsRecipies;
@@ -64,7 +60,6 @@ import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.registration.IAdvancedRegistration;
 import mezz.jei.api.registration.IExtraIngredientRegistration;
 import mezz.jei.api.registration.IGuiHandlerRegistration;
-import mezz.jei.api.registration.IModIngredientRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
@@ -82,8 +77,6 @@ import voltaic.api.electricity.formatting.ChatFormatter;
 import voltaic.api.electricity.formatting.DisplayUnits;
 import voltaic.api.gas.Gas;
 import voltaic.api.gas.GasStack;
-import voltaic.compatibility.jei.utils.ingredients.IngredientHelperGasStack;
-import voltaic.compatibility.jei.utils.ingredients.IngredientRendererGasStack;
 import voltaic.compatibility.jei.utils.ingredients.VoltaicJeiTypes;
 import voltaic.registers.VoltaicGases;
 
@@ -91,9 +84,6 @@ import voltaic.registers.VoltaicGases;
 public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
     public static final ResourceLocation ID = Electrodynamics.rl( "jei");
-
-    public static List<mezz.jei.api.recipe.RecipeType<?>> O2O_CLICK_AREAS = new ArrayList<>();
-    public static List<mezz.jei.api.recipe.RecipeType<?>> DO2O_CLICK_AREAS = new ArrayList<>();
 
     private static final int FULL_FLUID_SQUARE = 1600;
 
@@ -236,10 +226,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registry) {
-        registry.addRecipeClickArea(ScreenO2OProcessor.class, 48, 35, 22, 15, O2O_CLICK_AREAS.toArray(new mezz.jei.api.recipe.RecipeType[O2O_CLICK_AREAS.size()]));
-        registry.addRecipeClickArea(ScreenO2OProcessorDouble.class, 48, 25, 22, 35, O2O_CLICK_AREAS.toArray(new mezz.jei.api.recipe.RecipeType[O2O_CLICK_AREAS.size()]));
-        registry.addRecipeClickArea(ScreenO2OProcessorTriple.class, 48, 25, 22, 55, O2O_CLICK_AREAS.toArray(new mezz.jei.api.recipe.RecipeType[O2O_CLICK_AREAS.size()]));
-        registry.addRecipeClickArea(ScreenDO2OProcessor.class, 48, 35, 22, 15, DO2O_CLICK_AREAS.toArray(new mezz.jei.api.recipe.RecipeType[DO2O_CLICK_AREAS.size()]));
         registry.addRecipeClickArea(ScreenElectricFurnace.class, 85, 35, 22, 15, ElectricFurnaceRecipeCategory.RECIPE_TYPE);
         registry.addRecipeClickArea(ScreenElectricFurnaceDouble.class, 85, 25, 22, 35, ElectricFurnaceRecipeCategory.RECIPE_TYPE);
         registry.addRecipeClickArea(ScreenElectricFurnaceTriple.class, 85, 25, 22, 55, ElectricFurnaceRecipeCategory.RECIPE_TYPE);
@@ -275,14 +261,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
             }
         }
 
-    }
-
-    public static void addO2OClickArea(mezz.jei.api.recipe.RecipeType<?> type) {
-        O2O_CLICK_AREAS.add(type);
-    }
-
-    public static void addDO2OClickArea(mezz.jei.api.recipe.RecipeType<?> type) {
-        DO2O_CLICK_AREAS.add(type);
     }
 
     @Override

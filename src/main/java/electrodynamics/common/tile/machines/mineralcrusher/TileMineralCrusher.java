@@ -1,7 +1,6 @@
 package electrodynamics.common.tile.machines.mineralcrusher;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
 import electrodynamics.registers.ElectrodynamicsRecipies;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
@@ -14,6 +13,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.api.particle.ParticleAPI;
+import voltaic.common.inventory.container.ContainerO2OProcessor;
 import voltaic.prefab.sound.ITickableSound;
 import voltaic.prefab.sound.SoundBarrierMethods;
 import voltaic.prefab.tile.GenericTile;
