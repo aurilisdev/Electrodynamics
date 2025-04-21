@@ -7,11 +7,9 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsArmorMaterials;
 import electrodynamics.registers.ElectrodynamicsCreativeTabs;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
@@ -29,8 +27,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import voltaic.common.item.gear.ItemVoltaicArmor;
+import voltaic.registers.VoltaicDataComponentTypes;
 
-public class ItemCompositeArmor extends ItemElectrodynamicsArmor {
+public class ItemCompositeArmor extends ItemVoltaicArmor {
 
 	public static final EnumMap<Type, Integer> DEFENSE_MAP = Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
 		map.put(Type.HELMET, 6);
@@ -52,7 +52,7 @@ public class ItemCompositeArmor extends ItemElectrodynamicsArmor {
 
 		if (getEquipmentSlot() == EquipmentSlot.CHEST) {
 			ItemStack filled = new ItemStack(this);
-			filled.set(ElectrodynamicsDataComponentTypes.PLATES, 2);
+			filled.set(VoltaicDataComponentTypes.PLATES, 2);
 			items.add(filled);
 		}
 
@@ -82,7 +82,7 @@ public class ItemCompositeArmor extends ItemElectrodynamicsArmor {
 	}
 
 	protected static void staticAppendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-		tooltip.add(ElectroTextUtils.tooltip("ceramicplatecount", Component.translatable(stack.getOrDefault(ElectrodynamicsDataComponentTypes.PLATES, 0) + "")).withStyle(ChatFormatting.AQUA));
+		tooltip.add(ElectroTextUtils.tooltip("ceramicplatecount", Component.translatable(stack.getOrDefault(VoltaicDataComponentTypes.PLATES, 0) + "")).withStyle(ChatFormatting.AQUA));
 	}
 
 

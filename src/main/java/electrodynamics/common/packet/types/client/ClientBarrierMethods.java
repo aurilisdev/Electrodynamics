@@ -4,8 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
 
-import electrodynamics.client.guidebook.ScreenGuidebook;
-import electrodynamics.client.render.event.levelstage.HandlerSeismicScanner;
+import electrodynamics.client.event.levelstage.HandlerSeismicScanner;
 import electrodynamics.common.item.gear.armor.types.ItemCombatArmor;
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
@@ -102,15 +101,6 @@ public class ClientBarrierMethods {
             return;
         }
         CoalGeneratorFuelRegister.INSTANCE.setClientValues(fuels);
-    }
-
-    public static void handlerSetGuidebookInitFlag() {
-        Minecraft minecraft = Minecraft.getInstance();
-        ClientLevel world = minecraft.level;
-        if (world == null || minecraft.player == null) {
-            return;
-        }
-        ScreenGuidebook.setInitNotHappened();
     }
 
     public static void handlerClientThermoGenHeatSources(HashMap<Fluid, Double> heatSources) {

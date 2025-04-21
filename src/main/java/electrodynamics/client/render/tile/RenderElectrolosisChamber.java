@@ -5,11 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.common.tile.machines.TileElectrolosisChamber;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -19,6 +15,11 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.Voltaic;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
+import voltaic.prefab.utilities.RenderingUtils;
 
 public class RenderElectrolosisChamber extends AbstractTileRenderer<TileElectrolosisChamber> {
 
@@ -160,7 +161,7 @@ public class RenderElectrolosisChamber extends AbstractTileRenderer<TileElectrol
     @Override
     public void render(@NotNull TileElectrolosisChamber tile, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
-        if (!tile.isFormed.get()) {
+        if (!tile.isFormed.getValue()) {
             return;
         }
 
@@ -181,7 +182,7 @@ public class RenderElectrolosisChamber extends AbstractTileRenderer<TileElectrol
         }
 
 
-        if (!tile.isActive.get()) {
+        if (!tile.isActive.getValue()) {
             poseStack.popPose();
             return;
         }
@@ -200,7 +201,7 @@ public class RenderElectrolosisChamber extends AbstractTileRenderer<TileElectrol
                 continue;
             }
             pos = tile.getBlockPos().offset(positions[i]);
-            minecraft().particleEngine.createParticle(ParticleTypes.BUBBLE, pos.getX() + Electrodynamics.RANDOM.nextDouble(1.0), pos.getY() + Electrodynamics.RANDOM.nextDouble(1.0), pos.getZ() + Electrodynamics.RANDOM.nextDouble(1.0), 0, 0, 0);
+            minecraft().particleEngine.createParticle(ParticleTypes.BUBBLE, pos.getX() + Voltaic.RANDOM.nextDouble(1.0), pos.getY() + Voltaic.RANDOM.nextDouble(1.0), pos.getZ() + Voltaic.RANDOM.nextDouble(1.0), 0, 0, 0);
         }
 
 

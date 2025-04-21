@@ -3,16 +3,16 @@ package electrodynamics.common.recipe.categories.fluid2fluid.specificmachines;
 import java.util.List;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.fluid2fluid.Fluid2FluidRecipe;
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.common.recipe.recipeutils.ProbableGas;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.common.recipe.categories.fluid2fluid.Fluid2FluidRecipe;
+import voltaic.common.recipe.recipeutils.FluidIngredient;
+import voltaic.common.recipe.recipeutils.ProbableFluid;
+import voltaic.common.recipe.recipeutils.ProbableGas;
+import voltaic.common.recipe.recipeutils.ProbableItem;
 
 public class ElectrolosisChamberRecipe extends Fluid2FluidRecipe {
 
@@ -24,11 +24,11 @@ public class ElectrolosisChamberRecipe extends Fluid2FluidRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ElectrodynamicsRecipeInit.ELECTROLOSIS_CHAMBER_SERIALIZER.get();
+        return ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ElectrodynamicsRecipeInit.ELECTROLOSIS_CHAMBER_TYPE.get();
+        return ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_TYPE.get();
     }
 }

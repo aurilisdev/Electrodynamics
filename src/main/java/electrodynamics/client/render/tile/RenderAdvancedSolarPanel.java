@@ -4,15 +4,16 @@ import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import electrodynamics.client.ClientRegister;
+import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.common.tile.electricitygrid.generators.TileAdvancedSolarPanel;
-import electrodynamics.prefab.utilities.RenderingUtils;
-import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.phys.AABB;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.utilities.RenderingUtils;
+import voltaic.prefab.utilities.math.MathUtils;
 
 public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedSolarPanel> {
 
@@ -44,7 +45,7 @@ public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedS
 
 		matrixStackIn.scale(2, 2, 2);
 
-		BakedModel ibakedmodel = getModel(ClientRegister.MODEL_ADVSOLARTOP);
+		BakedModel ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_ADVSOLARTOP);
 
 		RenderingUtils.renderModel(ibakedmodel, solarPanel, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 	}

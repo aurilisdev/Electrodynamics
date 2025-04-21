@@ -1,21 +1,21 @@
 package electrodynamics.client.render.itemdecorators;
 
-import electrodynamics.api.fluid.FluidStackComponent;
-import electrodynamics.api.screen.ITexture;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
-import electrodynamics.prefab.utilities.RenderingUtils;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.IItemDecorator;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.api.fluid.FluidStackComponent;
+import voltaic.api.screen.ITexture;
+import voltaic.prefab.utilities.RenderingUtils;
+import voltaic.registers.VoltaicDataComponentTypes;
 
 public class ItemDecoratorRailgun implements IItemDecorator {
     @Override
     public boolean render(GuiGraphics guiGraphics, Font font, ItemStack stack, int x, int y) {
 
-        FluidStack fluid = stack.getOrDefault(ElectrodynamicsDataComponentTypes.FLUID_STACK.get(), FluidStackComponent.EMPTY).fluid;
+        FluidStack fluid = stack.getOrDefault(VoltaicDataComponentTypes.FLUID_STACK.get(), FluidStackComponent.EMPTY).fluid;
 
         if(fluid.isEmpty() || fluid.getAmount() == ItemRailgun.CAPACITY) {
             return false;

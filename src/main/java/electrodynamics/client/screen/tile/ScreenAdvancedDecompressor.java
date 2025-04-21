@@ -2,20 +2,20 @@ package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerAdvancedDecompressor;
 import electrodynamics.common.tile.pipelines.gas.gastransformer.compressor.GenericTileAdvancedCompressor;
-import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
-import electrodynamics.prefab.screen.component.button.ScreenComponentButton;
-import electrodynamics.prefab.screen.component.types.ScreenComponentCondensedFluid;
-import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
-import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGasPressure;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGasTemperature;
-import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
-import electrodynamics.prefab.screen.types.GenericMaterialScreen;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import voltaic.prefab.screen.component.ScreenComponentGeneric;
+import voltaic.prefab.screen.component.button.ScreenComponentButton;
+import voltaic.prefab.screen.component.types.ScreenComponentCondensedFluid;
+import voltaic.prefab.screen.component.types.ScreenComponentProgress;
+import voltaic.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
+import voltaic.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
+import voltaic.prefab.screen.component.types.guitab.ScreenComponentGasPressure;
+import voltaic.prefab.screen.component.types.guitab.ScreenComponentGasTemperature;
+import voltaic.prefab.screen.component.utils.AbstractScreenComponentInfo;
+import voltaic.prefab.screen.types.GenericMaterialScreen;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentGasHandlerMulti;
 
 public class ScreenAdvancedDecompressor extends GenericMaterialScreen<ContainerAdvancedDecompressor> {
     public ScreenAdvancedDecompressor(ContainerAdvancedDecompressor container, Inventory inv, Component titleIn) {
@@ -23,7 +23,7 @@ public class ScreenAdvancedDecompressor extends GenericMaterialScreen<ContainerA
         inventoryLabelY += 47;
         imageHeight += 47;
         addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.DECOMPRESS_ARROW_OFF, 65, 40).onTooltip(
-                (graphics, component, xAxis, yAxis) -> graphics.renderTooltip(getFontRenderer(), Component.literal("1.0 / " + 1.0 / container.getSafeHost().pressureMultiplier.get()), xAxis, yAxis)
+                (graphics, component, xAxis, yAxis) -> graphics.renderTooltip(getFontRenderer(), Component.literal("1.0 / " + 1.0 / container.getSafeHost().pressureMultiplier.getValue()), xAxis, yAxis)
         ));
         addComponent(new ScreenComponentGasGauge(() -> {
             GenericTileAdvancedCompressor.TileAdvancedDecompressor boiler = container.getSafeHost();
@@ -58,56 +58,56 @@ public class ScreenAdvancedDecompressor extends GenericMaterialScreen<ContainerA
             if (compressor == null) {
                 return;
             }
-            compressor.pressureMultiplier.set(1.0 / 2.0);
+            compressor.pressureMultiplier.setValue(1.0 / 2.0);
         }));
         addComponent(new ScreenComponentButton<>(48, 75, 40, 20).setLabel(Component.literal("1/4")).setOnPress(button -> {
             GenericTileAdvancedCompressor.TileAdvancedDecompressor compressor = menu.getSafeHost();
             if (compressor == null) {
                 return;
             }
-            compressor.pressureMultiplier.set(1.0 / 4.0);
+            compressor.pressureMultiplier.setValue(1.0 / 4.0);
         }));
         addComponent(new ScreenComponentButton<>(88, 75, 40, 20).setLabel(Component.literal("1/8")).setOnPress(button -> {
             GenericTileAdvancedCompressor.TileAdvancedDecompressor compressor = menu.getSafeHost();
             if (compressor == null) {
                 return;
             }
-            compressor.pressureMultiplier.set(1.0 / 8.0);
+            compressor.pressureMultiplier.setValue(1.0 / 8.0);
         }));
         addComponent(new ScreenComponentButton<>(128, 75, 40, 20).setLabel(Component.literal("1/16")).setOnPress(button -> {
             GenericTileAdvancedCompressor.TileAdvancedDecompressor compressor = menu.getSafeHost();
             if (compressor == null) {
                 return;
             }
-            compressor.pressureMultiplier.set(1.0 / 16.0);
+            compressor.pressureMultiplier.setValue(1.0 / 16.0);
         }));
         addComponent(new ScreenComponentButton<>(8, 95, 40, 20).setLabel(Component.literal("1/32")).setOnPress(button -> {
             GenericTileAdvancedCompressor.TileAdvancedDecompressor compressor = menu.getSafeHost();
             if (compressor == null) {
                 return;
             }
-            compressor.pressureMultiplier.set(1.0 / 32.0);
+            compressor.pressureMultiplier.setValue(1.0 / 32.0);
         }));
         addComponent(new ScreenComponentButton<>(48, 95, 40, 20).setLabel(Component.literal("1/64")).setOnPress(button -> {
             GenericTileAdvancedCompressor.TileAdvancedDecompressor compressor = menu.getSafeHost();
             if (compressor == null) {
                 return;
             }
-            compressor.pressureMultiplier.set(1.0 / 64.0);
+            compressor.pressureMultiplier.setValue(1.0 / 64.0);
         }));
         addComponent(new ScreenComponentButton<>(88, 95, 40, 20).setLabel(Component.literal("1/128")).setOnPress(button -> {
             GenericTileAdvancedCompressor.TileAdvancedDecompressor compressor = menu.getSafeHost();
             if (compressor == null) {
                 return;
             }
-            compressor.pressureMultiplier.set(1.0 / 128.0);
+            compressor.pressureMultiplier.setValue(1.0 / 128.0);
         }));
         addComponent(new ScreenComponentButton<>(128, 95, 40, 20).setLabel(Component.literal("1/256")).setOnPress(button -> {
             GenericTileAdvancedCompressor.TileAdvancedDecompressor compressor = menu.getSafeHost();
             if (compressor == null) {
                 return;
             }
-            compressor.pressureMultiplier.set(1.0 / 256.0);
+            compressor.pressureMultiplier.setValue(1.0 / 256.0);
         }));
     }
 }

@@ -3,9 +3,7 @@ package electrodynamics.registers;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.References;
-import electrodynamics.api.creativetab.CreativeTabSupplier;
-import electrodynamics.api.registration.BulkDeferredHolder;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeGlass;
@@ -15,15 +13,11 @@ import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.blockitem.types.BlockItemDescriptable;
-import electrodynamics.common.blockitem.types.BlockItemFluidPipe;
-import electrodynamics.common.blockitem.types.BlockItemGasPipe;
-import electrodynamics.common.blockitem.types.BlockItemWire;
-import electrodynamics.common.item.ItemBoneMeal;
+import electrodynamics.common.blockitem.BlockItemFluidPipe;
+import electrodynamics.common.blockitem.BlockItemGasPipe;
+import electrodynamics.common.blockitem.BlockItemWire;
 import electrodynamics.common.item.ItemCeramic;
 import electrodynamics.common.item.ItemDrillHead;
-import electrodynamics.common.item.ItemElectrodynamics;
-import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.gear.armor.types.ItemCombatArmor;
 import electrodynamics.common.item.gear.armor.types.ItemCompositeArmor;
 import electrodynamics.common.item.gear.armor.types.ItemHydraulicBoots;
@@ -32,10 +26,8 @@ import electrodynamics.common.item.gear.armor.types.ItemNightVisionGoggles;
 import electrodynamics.common.item.gear.armor.types.ItemRubberArmor;
 import electrodynamics.common.item.gear.armor.types.ItemServoLeggings;
 import electrodynamics.common.item.gear.tools.ItemCanister;
-import electrodynamics.common.item.gear.tools.ItemGuidebook;
 import electrodynamics.common.item.gear.tools.ItemMultimeter;
 import electrodynamics.common.item.gear.tools.ItemPortableCylinder;
-import electrodynamics.common.item.gear.tools.ItemWrench;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
@@ -52,15 +44,11 @@ import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeNugget;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.item.subtype.SubtypeRod;
-import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.prefab.item.ItemElectric;
-import electrodynamics.prefab.utilities.object.TransferPack;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ArmorItem.Type;
 import net.minecraft.world.item.CreativeModeTab;
@@ -74,9 +62,20 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import voltaic.Voltaic;
+import voltaic.api.creativetab.CreativeTabSupplier;
+import voltaic.api.registration.BulkDeferredHolder;
+import voltaic.common.blockitem.BlockItemDescriptable;
+import voltaic.common.item.ItemBoneMeal;
+import voltaic.common.item.ItemUpgrade;
+import voltaic.common.item.ItemVoltaic;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.prefab.item.ItemElectric;
+import voltaic.prefab.utilities.object.TransferPack;
 
 public class ElectrodynamicsItems {
-	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, References.ID);
+	public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(Registries.ITEM, Electrodynamics.ID);
 
 	/* BLOCKS */
 	public static final BulkDeferredHolder<Item, BlockItemDescriptable, SubtypeOre> ITEMS_ORE = new BulkDeferredHolder<>(SubtypeOre.values(), subtype -> ITEMS.register(subtype.tag(), () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(subtype), new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
@@ -97,7 +96,7 @@ public class ElectrodynamicsItems {
 	public static final DeferredHolder<Item, BlockItemDescriptable> ITEM_ROTARYUNIFIER = ITEMS.register("rotaryunifier", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_ROTARYUNIFIER.get(), new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN) {
 		@Override
 		public boolean isAllowedInCreativeTab(CreativeModeTab tab) {
-			if(ModList.get().isLoaded(References.MEKANISM_ID)) {
+			if(ModList.get().isLoaded(Voltaic.MEKANISM_ID)) {
 				return super.isAllowedInCreativeTab(tab);
 			}
 			return false;
@@ -122,48 +121,45 @@ public class ElectrodynamicsItems {
 
 	/* ITEMS */
 
-	public static final BulkDeferredHolder<Item, ItemElectrodynamics, SubtypeRawOre> ITEMS_RAWORE = new BulkDeferredHolder<>(SubtypeRawOre.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
-	public static final BulkDeferredHolder<Item, ItemElectrodynamics, SubtypeIngot> ITEMS_INGOT = new BulkDeferredHolder<>(SubtypeIngot.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
-	public static final BulkDeferredHolder<Item, ItemElectrodynamics, SubtypeNugget> ITEMS_NUGGET = new BulkDeferredHolder<>(SubtypeNugget.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
-	public static final BulkDeferredHolder<Item, ItemElectrodynamics, SubtypeDust> ITEMS_DUST = new BulkDeferredHolder<>(SubtypeDust.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
-	public static final BulkDeferredHolder<Item, ItemElectrodynamics, SubtypeImpureDust> ITEMS_IMPUREDUST = new BulkDeferredHolder<>(SubtypeImpureDust.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
-	public static final BulkDeferredHolder<Item, ItemElectrodynamics, SubtypeCrystal> ITEMS_CRYSTAL = new BulkDeferredHolder<>(SubtypeCrystal.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
-	public static final BulkDeferredHolder<Item, ItemElectrodynamics, SubtypeOxide> ITEMS_OXIDE = new BulkDeferredHolder<>(SubtypeOxide.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
-	public static final BulkDeferredHolder<Item, ItemElectrodynamics, SubtypeGear> ITEMS_GEAR = new BulkDeferredHolder<>(SubtypeGear.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
-	public static final BulkDeferredHolder<Item, ItemElectrodynamics, SubtypePlate> ITEMS_PLATE = new BulkDeferredHolder<>(SubtypePlate.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
-	public static final BulkDeferredHolder<Item, ItemElectrodynamics, SubtypeCircuit> ITEMS_CIRCUIT = new BulkDeferredHolder<>(SubtypeCircuit.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
-	public static final BulkDeferredHolder<Item, ItemElectrodynamics, SubtypeRod> ITEMS_ROD = new BulkDeferredHolder<>(SubtypeRod.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
-	public static final BulkDeferredHolder<Item, ItemElectrodynamics, SubtypeChromotographyCard> ITEMS_CHROMOTOGRAPHYCARD = new BulkDeferredHolder<>(SubtypeChromotographyCard.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
-	public static final BulkDeferredHolder<Item, ItemUpgrade, SubtypeItemUpgrade> ITEMS_UPGRADE = new BulkDeferredHolder<>(SubtypeItemUpgrade.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemUpgrade(new Item.Properties(), subtype)));
+	public static final BulkDeferredHolder<Item, ItemVoltaic, SubtypeRawOre> ITEMS_RAWORE = new BulkDeferredHolder<>(SubtypeRawOre.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
+	public static final BulkDeferredHolder<Item, ItemVoltaic, SubtypeIngot> ITEMS_INGOT = new BulkDeferredHolder<>(SubtypeIngot.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
+	public static final BulkDeferredHolder<Item, ItemVoltaic, SubtypeNugget> ITEMS_NUGGET = new BulkDeferredHolder<>(SubtypeNugget.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
+	public static final BulkDeferredHolder<Item, ItemVoltaic, SubtypeDust> ITEMS_DUST = new BulkDeferredHolder<>(SubtypeDust.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
+	public static final BulkDeferredHolder<Item, ItemVoltaic, SubtypeImpureDust> ITEMS_IMPUREDUST = new BulkDeferredHolder<>(SubtypeImpureDust.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
+	public static final BulkDeferredHolder<Item, ItemVoltaic, SubtypeCrystal> ITEMS_CRYSTAL = new BulkDeferredHolder<>(SubtypeCrystal.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
+	public static final BulkDeferredHolder<Item, ItemVoltaic, SubtypeOxide> ITEMS_OXIDE = new BulkDeferredHolder<>(SubtypeOxide.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
+	public static final BulkDeferredHolder<Item, ItemVoltaic, SubtypeGear> ITEMS_GEAR = new BulkDeferredHolder<>(SubtypeGear.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
+	public static final BulkDeferredHolder<Item, ItemVoltaic, SubtypePlate> ITEMS_PLATE = new BulkDeferredHolder<>(SubtypePlate.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
+	public static final BulkDeferredHolder<Item, ItemVoltaic, SubtypeCircuit> ITEMS_CIRCUIT = new BulkDeferredHolder<>(SubtypeCircuit.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
+	public static final BulkDeferredHolder<Item, ItemVoltaic, SubtypeRod> ITEMS_ROD = new BulkDeferredHolder<>(SubtypeRod.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
+	public static final BulkDeferredHolder<Item, ItemVoltaic, SubtypeChromotographyCard> ITEMS_CHROMOTOGRAPHYCARD = new BulkDeferredHolder<>(SubtypeChromotographyCard.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN)));
+	public static final BulkDeferredHolder<Item, ItemUpgrade, SubtypeItemUpgrade> ITEMS_UPGRADE = new BulkDeferredHolder<>(SubtypeItemUpgrade.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemUpgrade(new Item.Properties(), subtype, ElectrodynamicsCreativeTabs.MAIN)));
 	public static final BulkDeferredHolder<Item, ItemCeramic, SubtypeCeramic> ITEMS_CERAMIC = new BulkDeferredHolder<>(SubtypeCeramic.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemCeramic(subtype)));
 	public static final BulkDeferredHolder<Item, ItemDrillHead, SubtypeDrillHead> ITEMS_DRILLHEAD = new BulkDeferredHolder<>(SubtypeDrillHead.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemDrillHead(subtype)));
 
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_COAL_COKE = ITEMS.register("coalcoke", () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_SLAG = ITEMS.register("slag", () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_SHEETPLASTIC = ITEMS.register("sheetplastic", () -> new ItemElectrodynamics(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_RAWCOMPOSITEPLATING = ITEMS.register("compositeplatingraw", () -> new ItemElectrodynamics(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_COMPOSITEPLATING = ITEMS.register("compositeplating", () -> new ItemElectrodynamics(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_COAL_COKE = ITEMS.register("coalcoke", () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_SLAG = ITEMS.register("slag", () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_SHEETPLASTIC = ITEMS.register("sheetplastic", () -> new ItemVoltaic(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_RAWCOMPOSITEPLATING = ITEMS.register("compositeplatingraw", () -> new ItemVoltaic(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_COMPOSITEPLATING = ITEMS.register("compositeplating", () -> new ItemVoltaic(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
 	public static final DeferredHolder<Item, ItemBoneMeal> ITEM_MOLYBDENUMFERTILIZER = ITEMS.register("molybdenumfertilizer", () -> new ItemBoneMeal(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_INSULATION = ITEMS.register("insulation", () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_CERAMICINSULATION = ITEMS.register("insulationceramic", () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_COIL = ITEMS.register("coil", () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_LAMINATEDCOIL = ITEMS.register("laminatedcoil", () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_TITANIUM_COIL = ITEMS.register("titaniumheatcoil", () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_MOTOR = ITEMS.register("motor", () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate", () -> new ItemElectrodynamics(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_PLASTIC_FIBERS = ITEMS.register("plasticfibers", () -> new ItemElectrodynamics(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_MECHANICALVALVE = ITEMS.register("mechanicalvalve", () -> new ItemElectrodynamics(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_PRESSUREGAGE = ITEMS.register("pressuregauge", () -> new ItemElectrodynamics(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_FIBERGLASSSHEET = ITEMS.register("fiberglasssheet", () -> new ItemElectrodynamics(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_INSULATION = ITEMS.register("insulation", () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_CERAMICINSULATION = ITEMS.register("insulationceramic", () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_COIL = ITEMS.register("coil", () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_LAMINATEDCOIL = ITEMS.register("laminatedcoil", () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_TITANIUM_COIL = ITEMS.register("titaniumheatcoil", () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_MOTOR = ITEMS.register("motor", () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_SOLARPANELPLATE = ITEMS.register("solarpanelplate", () -> new ItemVoltaic(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_PLASTIC_FIBERS = ITEMS.register("plasticfibers", () -> new ItemVoltaic(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_MECHANICALVALVE = ITEMS.register("mechanicalvalve", () -> new ItemVoltaic(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_PRESSUREGAGE = ITEMS.register("pressuregauge", () -> new ItemVoltaic(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_FIBERGLASSSHEET = ITEMS.register("fiberglasssheet", () -> new ItemVoltaic(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN));
 
-	public static final DeferredHolder<Item, ItemElectrodynamics> ITEM_BATTERY = ITEMS.register("battery", () -> new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667).extract(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).receive(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).setIsEnergyStorageOnly().stacksTo(1), ElectrodynamicsCreativeTabs.MAIN, item -> Items.AIR));
+	public static final DeferredHolder<Item, ItemVoltaic> ITEM_BATTERY = ITEMS.register("battery", () -> new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667).extract(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).receive(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).setIsEnergyStorageOnly().stacksTo(1), ElectrodynamicsCreativeTabs.MAIN, item -> Items.AIR));
 	public static final DeferredHolder<Item, ItemElectric> ITEM_LITHIUMBATTERY = ITEMS.register("lithiumbattery", () -> new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(4 * 1666666.66667).extract(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240)).receive(TransferPack.joulesVoltage(4 * 1666666.66667 / (120.0 * 20.0), 240)).setIsEnergyStorageOnly().stacksTo(1), ElectrodynamicsCreativeTabs.MAIN, item -> Items.AIR));
 	public static final DeferredHolder<Item, ItemElectric> ITEM_CARBYNEBATTERY = ITEMS.register("carbynebattery", () -> new ItemElectric((ElectricItemProperties) new ElectricItemProperties().capacity(8 * 1666666.66667).extract(TransferPack.joulesVoltage(8 * 1666666.66667 / (120.0 * 20.0), 480)).receive(TransferPack.joulesVoltage(8 * 1666666.66667 / (120.0 * 20.0), 480)).setIsEnergyStorageOnly().stacksTo(1), ElectrodynamicsCreativeTabs.MAIN, item -> Items.AIR));
 
-	public static final DeferredHolder<Item, ItemWrench> ITEM_WRENCH = ITEMS.register("wrench", () -> new ItemWrench(new Item.Properties().stacksTo(1), ElectrodynamicsCreativeTabs.MAIN));
 	public static final DeferredHolder<Item, ItemMultimeter> ITEM_MULTIMETER = ITEMS.register("multimeter", () -> new ItemMultimeter(new Item.Properties().stacksTo(1), ElectrodynamicsCreativeTabs.MAIN));
-
-	public static final DeferredHolder<Item, ItemGuidebook> GUIDEBOOK = ITEMS.register("guidebook", () -> new ItemGuidebook(new Item.Properties(), ElectrodynamicsCreativeTabs.MAIN));
 
 	public static final DeferredHolder<Item, ItemElectricDrill> ITEM_ELECTRICDRILL = ITEMS.register("electricdrill", () -> new ItemElectricDrill((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667).extract(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).receive(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).stacksTo(1), ElectrodynamicsCreativeTabs.MAIN));
 	public static final DeferredHolder<Item, ItemElectricChainsaw> ITEM_ELECTRICCHAINSAW = ITEMS.register("electricchainsaw", () -> new ItemElectricChainsaw((ElectricItemProperties) new ElectricItemProperties().capacity(1666666.66667).extract(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).receive(TransferPack.joulesVoltage(1666666.66667 / (120.0 * 20.0), 120)).stacksTo(1), ElectrodynamicsCreativeTabs.MAIN));
@@ -194,7 +190,7 @@ public class ElectrodynamicsItems {
 	public static final DeferredHolder<Item, ItemPortableCylinder> ITEM_PORTABLECYLINDER = ITEMS.register("portablecylinder", () -> new ItemPortableCylinder(new Item.Properties().stacksTo(1), ElectrodynamicsCreativeTabs.MAIN));
 
 
-	@EventBusSubscriber(value = Dist.CLIENT, modid = References.ID, bus = EventBusSubscriber.Bus.MOD)
+	@EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
 	private static class ElectroCreativeRegistry {
 
 		@SubscribeEvent

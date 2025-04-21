@@ -4,9 +4,7 @@ import java.util.stream.Stream;
 
 import com.mojang.serialization.MapCodec;
 
-import electrodynamics.common.block.voxelshapes.VoxelShapeProvider;
 import electrodynamics.common.tile.machines.quarry.TileSeismicMarker;
-import electrodynamics.prefab.block.GenericMachineBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -17,6 +15,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.Shapes;
+import voltaic.common.block.voxelshapes.VoxelShapeProvider;
+import voltaic.prefab.block.GenericMachineBlock;
 
 public class BlockSeismicMarker extends GenericMachineBlock {
 

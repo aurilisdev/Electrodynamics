@@ -3,17 +3,13 @@ package electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachine
 import java.util.List;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
-import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.common.recipe.recipeutils.ProbableGas;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipe;
+import voltaic.common.recipe.recipeutils.*;
 
 public class MineralWasherRecipe extends FluidItem2FluidRecipe {
 
@@ -26,12 +22,12 @@ public class MineralWasherRecipe extends FluidItem2FluidRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ElectrodynamicsRecipeInit.MINERAL_WASHER_SERIALIZER.get();
+        return ElectrodynamicsRecipies.MINERAL_WASHER_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ElectrodynamicsRecipeInit.MINERAL_WASHER_TYPE.get();
+        return ElectrodynamicsRecipies.MINERAL_WASHER_TYPE.get();
     }
 
 }

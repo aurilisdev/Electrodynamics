@@ -2,12 +2,13 @@ package electrodynamics.common.event.types.living.livingdamage;
 
 import java.util.ArrayList;
 
-import electrodynamics.prefab.utilities.ItemUtils;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
+import voltaic.common.event.type.AbstractLivingDamageHandler;
+import voltaic.prefab.utilities.ItemUtils;
+import voltaic.registers.VoltaicDataComponentTypes;
 
 public class HandlerJetpackDamage extends AbstractLivingDamageHandler {
 
@@ -27,7 +28,7 @@ public class HandlerJetpackDamage extends AbstractLivingDamageHandler {
 			return;
 		}
 
-		chestplate.set(ElectrodynamicsDataComponentTypes.HURT, true);
+		chestplate.set(VoltaicDataComponentTypes.HURT, true);
 
 	}
 

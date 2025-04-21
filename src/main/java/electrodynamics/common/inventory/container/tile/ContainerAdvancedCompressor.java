@@ -1,16 +1,18 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.pipelines.gas.gastransformer.compressor.GenericTileAdvancedCompressor;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotGas;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
-import electrodynamics.prefab.inventory.container.types.GenericContainerBlockEntity;
+import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import voltaic.common.item.ItemUpgrade;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.inventory.container.slot.item.type.SlotGas;
+import voltaic.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerAdvancedCompressor extends GenericContainerBlockEntity<GenericTileAdvancedCompressor.TileAdvancedCompressor> {
 

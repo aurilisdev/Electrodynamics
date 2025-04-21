@@ -1,5 +1,5 @@
 {
-  "loader": "electrodynamics:electrodynamicsmultiblockmodelloader",
+  "loader": "voltaic:voltaicmultiblockmodelloader",
   "credit": "skip999",
   "texture_size": [
     32,
@@ -934,6 +934,5 @@
         }
       }
     }
-  ],
-  "loader": "electrodynamics:electrodynamicsmultiblockmodelloader"
+  ]
 }

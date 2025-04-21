@@ -1,7 +1,6 @@
 package electrodynamics.client.guidebook;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.api.References;
 import electrodynamics.client.guidebook.chapters.ChapterArmor;
 import electrodynamics.client.guidebook.chapters.ChapterElectricity;
 import electrodynamics.client.guidebook.chapters.ChapterElectrolosisChamber;
@@ -17,10 +16,10 @@ import electrodynamics.client.guidebook.chapters.ChapterQuarry;
 import electrodynamics.client.guidebook.chapters.ChapterTips;
 import electrodynamics.client.guidebook.chapters.ChapterTools;
 import electrodynamics.client.guidebook.chapters.ChapterUpgrades;
-import electrodynamics.client.guidebook.utils.components.Module;
-import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.MutableComponent;
+import voltaic.client.guidebook.utils.components.Module;
+import voltaic.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
 
 public final class ModuleElectrodynamics extends Module {
 
@@ -33,7 +32,7 @@ public final class ModuleElectrodynamics extends Module {
 
 	@Override
 	public MutableComponent getTitle() {
-		return ElectroTextUtils.guidebook(References.ID);
+		return ElectroTextUtils.guidebook(Electrodynamics.ID);
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package electrodynamics.common.item.subtype;
 
-import electrodynamics.api.ISubtype;
+import voltaic.api.ISubtype;
 
 public enum SubtypeCeramic implements ISubtype {
 	wet,

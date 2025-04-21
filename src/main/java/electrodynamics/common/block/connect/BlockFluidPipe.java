@@ -4,10 +4,6 @@ import java.util.HashSet;
 
 import com.mojang.serialization.MapCodec;
 
-import electrodynamics.api.network.cable.type.IFluidPipe;
-import electrodynamics.common.block.connect.util.AbstractRefreshingConnectBlock;
-import electrodynamics.common.block.connect.util.EnumConnectType;
-import electrodynamics.common.network.utils.FluidUtilities;
 import electrodynamics.common.tile.pipelines.fluid.GenericTileFluidPipe;
 import electrodynamics.common.tile.pipelines.fluid.TileFluidPipe;
 import net.minecraft.core.BlockPos;
@@ -18,6 +14,10 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.network.cable.type.IFluidPipe;
+import voltaic.common.block.connect.AbstractRefreshingConnectBlock;
+import voltaic.common.block.connect.EnumConnectType;
+import voltaic.common.network.utils.FluidUtilities;
 
 public class BlockFluidPipe extends AbstractRefreshingConnectBlock<GenericTileFluidPipe> {
 

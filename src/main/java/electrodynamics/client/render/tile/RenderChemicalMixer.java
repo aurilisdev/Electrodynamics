@@ -5,13 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import electrodynamics.client.ClientRegister;
+import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.common.tile.machines.TileChemicalMixer;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.utilities.RenderingUtils;
-import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -21,6 +16,12 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
+import voltaic.prefab.utilities.RenderingUtils;
+import voltaic.prefab.utilities.math.MathUtils;
 
 public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer> {
 
@@ -31,7 +32,7 @@ public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer>
     @Override
     public void render(@NotNull TileChemicalMixer tileEntityIn, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
-        BakedModel ibakedmodel = getModel(ClientRegister.MODEL_CHEMICALMIXERBASE);
+        BakedModel ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_CHEMICALMIXERBASE);
         matrixStackIn.pushPose();
         RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
         matrixStackIn.translate(0, 1 / 16.0, 0);
@@ -39,15 +40,15 @@ public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer>
         matrixStackIn.popPose();
 
         matrixStackIn.pushPose();
-        ibakedmodel = getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
+        ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_CHEMICALMIXERBLADES);
         matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
 
         ComponentProcessor proc = tileEntityIn.getComponent(IComponentType.Processor);
 
         float degrees = 0.0F;
 
-        if (proc.isActive()) {
-            degrees = proc.operatingTicks.get().floatValue() / Math.max(proc.requiredTicks.get().floatValue(), 1.0F) * 360.0F * proc.operatingSpeed.get().floatValue() * 2.0F;
+        if (proc.isActive(0)) {
+            degrees = proc.operatingTicks.getValue()[0].floatValue() / Math.max(proc.requiredTicks.getValue()[0].floatValue(), 1.0F) * 360.0F * proc.operatingSpeed.getValue().floatValue() * 2.0F;
         }
 
         matrixStackIn.mulPose(MathUtils.rotQuaternionDeg(0, degrees, 0));

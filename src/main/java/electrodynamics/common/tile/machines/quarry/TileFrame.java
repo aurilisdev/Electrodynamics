@@ -1,6 +1,5 @@
 package electrodynamics.common.tile.machines.quarry;
 
-import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -8,6 +7,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.prefab.tile.GenericTile;
 
 public class TileFrame extends GenericTile {
 

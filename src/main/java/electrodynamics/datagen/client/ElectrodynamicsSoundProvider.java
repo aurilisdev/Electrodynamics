@@ -1,27 +1,15 @@
 package electrodynamics.datagen.client;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.data.PackOutput;
-import net.minecraft.sounds.SoundEvent;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.common.data.SoundDefinition;
-import net.neoforged.neoforge.common.data.SoundDefinition.Sound;
-import net.neoforged.neoforge.common.data.SoundDefinition.SoundType;
-import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import voltaic.datagen.utils.client.BaseSoundProvider;
 
-public class ElectrodynamicsSoundProvider extends SoundDefinitionsProvider {
-
-	private final String modID;
+public class ElectrodynamicsSoundProvider extends BaseSoundProvider {
 
 	public ElectrodynamicsSoundProvider(PackOutput output, ExistingFileHelper helper) {
-		this(output, helper, References.ID);
-	}
-
-	public ElectrodynamicsSoundProvider(PackOutput output, ExistingFileHelper helper, String modID) {
-		super(output, modID, helper);
-		this.modID = modID;
+		super(output, helper, Electrodynamics.ID);
 	}
 
 	@Override
@@ -56,10 +44,6 @@ public class ElectrodynamicsSoundProvider extends SoundDefinitionsProvider {
 		add(ElectrodynamicsSounds.SOUND_COMPRESSORRUNNING);
 		add(ElectrodynamicsSounds.SOUND_DECOMPRESSORRUNNING);
 		add(ElectrodynamicsSounds.SOUND_TRANSFORMERHUM);
-	}
-
-	private void add(DeferredHolder<SoundEvent, SoundEvent> sound) {
-		add(sound.get(), SoundDefinition.definition().subtitle("subtitles." + modID + "." + sound.getId().getPath()).with(Sound.sound(sound.getId(), SoundType.SOUND)));
 	}
 
 }

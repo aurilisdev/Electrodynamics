@@ -1,10 +1,7 @@
 package electrodynamics.datagen.server.recipe.types.custom.fluiditem2fluid;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.FermentationPlantRecipe;
-import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.builders.ElectrodynamicsRecipeBuilder.RecipeCategory;
-import electrodynamics.datagen.utils.recipe.builders.FluidItem2FluidBuilder;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.FluidTags;
@@ -12,6 +9,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
+import voltaic.datagen.utils.server.recipe.builders.BaseRecipeBuilder;
+import voltaic.datagen.utils.server.recipe.builders.FluidItem2FluidBuilder;
 
 public class ElectrodynamicsFermentationPlantRecipes extends AbstractRecipeGenerator {
 
@@ -25,7 +25,7 @@ public class ElectrodynamicsFermentationPlantRecipes extends AbstractRecipeGener
 	}
 
 	public ElectrodynamicsFermentationPlantRecipes() {
-		this(References.ID);
+		this(Electrodynamics.ID);
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class ElectrodynamicsFermentationPlantRecipes extends AbstractRecipeGener
 	}
 
 	public FluidItem2FluidBuilder<FermentationPlantRecipe> newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name, String group) {
-		return new FluidItem2FluidBuilder<>(FermentationPlantRecipe::new, stack, RecipeCategory.FLUID_ITEM_2_FLUID, modID, "fermentation_plant/" + name, group, xp, ticks, usagePerTick);
+		return new FluidItem2FluidBuilder<>(FermentationPlantRecipe::new, stack, BaseRecipeBuilder.RecipeCategory.FLUID_ITEM_2_FLUID, modID, "fermentation_plant/" + name, group, xp, ticks, usagePerTick);
 	}
 
 }

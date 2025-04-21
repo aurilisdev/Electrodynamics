@@ -11,8 +11,7 @@ import javax.annotation.Nullable;
 
 import com.google.gson.JsonObject;
 
-import electrodynamics.api.References;
-import electrodynamics.api.gas.Gas;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.item.subtype.SubtypeChromotographyCard;
 import electrodynamics.common.reloadlistener.GasCollectorChromoCardsRegister;
 import electrodynamics.registers.ElectrodynamicsGases;
@@ -25,10 +24,12 @@ import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.biome.Biome;
+import voltaic.api.gas.Gas;
+import voltaic.registers.VoltaicGases;
 
 public class GasCollectorChromoCardsProvider implements DataProvider {
 
-    public static final String LOC = "data/" + References.ID + "/" + GasCollectorChromoCardsRegister.FOLDER + "/";
+    public static final String LOC = "data/" + Electrodynamics.ID + "/" + GasCollectorChromoCardsRegister.FOLDER + "/";
 
     private final PackOutput output;
 
@@ -73,7 +74,7 @@ public class GasCollectorChromoCardsProvider implements DataProvider {
     private JsonObject toJson(String item, Gas gas, int amount, int temperature, int pressure, @Nullable TagKey<Biome> biomeTag) {
         JsonObject json = new JsonObject();
         json.addProperty(GasCollectorChromoCardsRegister.ITEM_KEY, item);
-        json.addProperty(GasCollectorChromoCardsRegister.GAS_KEY, ElectrodynamicsGases.GAS_REGISTRY.getKey(gas).toString());
+        json.addProperty(GasCollectorChromoCardsRegister.GAS_KEY, VoltaicGases.GAS_REGISTRY.getKey(gas).toString());
         json.addProperty(GasCollectorChromoCardsRegister.AMOUNT_KEY, amount);
         json.addProperty(GasCollectorChromoCardsRegister.TEMPERATURE_KEY, temperature);
         json.addProperty(GasCollectorChromoCardsRegister.PRESSURE_KEY, pressure);

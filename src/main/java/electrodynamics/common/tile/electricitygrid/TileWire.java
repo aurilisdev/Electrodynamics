@@ -1,17 +1,17 @@
 package electrodynamics.common.tile.electricitygrid;
 
-import electrodynamics.api.network.cable.type.IWire;
 import electrodynamics.common.block.connect.BlockWire;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyTypes;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.network.cable.type.IWire;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
 
 public class TileWire extends GenericTileWire {
 
-	public Property<Double> transmit = property(new Property<>(PropertyTypes.DOUBLE, "transmit", 0.0));
+	public SingleProperty<Double> transmit = property(new SingleProperty<>(PropertyTypes.DOUBLE, "transmit", 0.0));
 
 	public IWire wire = null;
 	public IWire.IWireColor color = null;

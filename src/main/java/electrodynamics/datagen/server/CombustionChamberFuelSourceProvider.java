@@ -10,17 +10,17 @@ import java.util.concurrent.CompletableFuture;
 
 import com.google.gson.JsonObject;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import voltaic.common.tags.VoltaicTags;
 
 public class CombustionChamberFuelSourceProvider implements DataProvider {
 
-	public static final String LOC = "data/" + References.ID + "/" + CombustionFuelRegister.FOLDER + "/";
+	public static final String LOC = "data/" + Electrodynamics.ID + "/" + CombustionFuelRegister.FOLDER + "/";
 
 	private final PackOutput output;
 
@@ -46,8 +46,8 @@ public class CombustionChamberFuelSourceProvider implements DataProvider {
 	}
 
 	private void addFuels() {
-		jsons.put("ethanol", CombustionFuelSource.toJson(ElectrodynamicsTags.Fluids.ETHANOL, 1, 1));
-		jsons.put("hydrogen", CombustionFuelSource.toJson(ElectrodynamicsTags.Fluids.HYDROGEN, 1000, 1));
+		jsons.put("ethanol", CombustionFuelSource.toJson(VoltaicTags.Fluids.ETHANOL, 1, 1));
+		jsons.put("hydrogen", CombustionFuelSource.toJson(VoltaicTags.Fluids.HYDROGEN, 1000, 1));
 	}
 
 	@Override

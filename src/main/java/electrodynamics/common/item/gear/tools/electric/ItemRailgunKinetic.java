@@ -5,14 +5,9 @@ import java.util.List;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import electrodynamics.api.fluid.FluidStackComponent;
-import electrodynamics.api.item.IItemTemperate;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.core.Holder;
@@ -26,10 +21,15 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.api.fluid.FluidStackComponent;
+import voltaic.api.item.IItemTemperate;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.registers.VoltaicDataComponentTypes;
 
 public class ItemRailgunKinetic extends ItemRailgun {
 
-    private static final List<Ingredient> RAILGUN_AMMO = List.of(Ingredient.of(ElectrodynamicsTags.Items.ROD_STEEL), Ingredient.of(ElectrodynamicsTags.Items.ROD_STAINLESSSTEEL), Ingredient.of(ElectrodynamicsTags.Items.ROD_HSLASTEEL));
+    private static final List<Ingredient> RAILGUN_AMMO = List.of(Ingredient.of(VoltaicTags.Items.ROD_STEEL), Ingredient.of(VoltaicTags.Items.ROD_STAINLESSSTEEL), Ingredient.of(VoltaicTags.Items.ROD_HSLASTEEL));
 
     public static final double JOULES_PER_SHOT = 100000.0;
     private static final int OVERHEAT_TEMPERATURE = 400;
@@ -103,7 +103,7 @@ public class ItemRailgunKinetic extends ItemRailgun {
 
         world.addFreshEntity(projectile);
 
-        FluidStack fluidStack = gunStack.getOrDefault(ElectrodynamicsDataComponentTypes.FLUID_STACK.get(), FluidStackComponent.EMPTY).fluid;
+        FluidStack fluidStack = gunStack.getOrDefault(VoltaicDataComponentTypes.FLUID_STACK.get(), FluidStackComponent.EMPTY).fluid;
 
         if (fluidStack.isEmpty()) {
             railgun.recieveHeat(gunStack, TEMPERATURE_PER_SHOT, false);
@@ -113,7 +113,7 @@ public class ItemRailgunKinetic extends ItemRailgun {
             } else {
                 fluidStack.shrink(COOLANT_PER_SHOT);
                 world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), SoundSource.PLAYERS, 0.25F, 1);
-                gunStack.set(ElectrodynamicsDataComponentTypes.FLUID_STACK, new FluidStackComponent(fluidStack.copy()));
+                gunStack.set(VoltaicDataComponentTypes.FLUID_STACK, new FluidStackComponent(fluidStack.copy()));
             }
         }
 

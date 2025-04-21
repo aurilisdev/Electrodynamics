@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.api.References;
 import electrodynamics.common.item.gear.armor.types.ItemCombatArmor;
 import electrodynamics.common.item.gear.armor.types.ItemCompositeArmor;
 import electrodynamics.common.item.gear.armor.types.ItemHydraulicBoots;
@@ -26,7 +25,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ElectrodynamicsArmorMaterials {
 
-    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, References.ID);
+    public static final DeferredRegister<ArmorMaterial> ARMOR_MATERIALS = DeferredRegister.create(Registries.ARMOR_MATERIAL, Electrodynamics.ID);
 
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> COMPOSITE_ARMOR = register("composite_armor", ItemCompositeArmor.DEFENSE_MAP, 0, 2.0F, 4.0F, ElectrodynamicsSounds.SOUND_EQUIPHEAVYARMOR, () -> Ingredient.EMPTY, Electrodynamics.rl("textures/model/armor/compositearmor.png"));
     public static final DeferredHolder<ArmorMaterial, ArmorMaterial> COMBAT_ARMOR = register("combat_armor", ItemCombatArmor.DEFENSE_MAP, 0, 2.0F, 4.0F, ElectrodynamicsSounds.SOUND_EQUIPHEAVYARMOR, () -> Ingredient.EMPTY, Electrodynamics.rl("textures/model/armor/combatarmor.png"));

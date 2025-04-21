@@ -6,28 +6,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import electrodynamics.api.References;
-import electrodynamics.api.gas.GasStack;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.recipe.categories.chemicalreactor.ChemicalReactorRecipe;
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.recipe.recipeutils.GasIngredient;
-import electrodynamics.compatibility.jei.recipecategories.utils.AbstractRecipeCategory;
-import electrodynamics.compatibility.jei.utils.gui.types.ArrowAnimatedObject;
-import electrodynamics.compatibility.jei.utils.gui.types.BackgroundObject;
-import electrodynamics.compatibility.jei.utils.gui.types.ItemSlotObject;
-import electrodynamics.compatibility.jei.utils.gui.types.fluidgauge.AbstractFluidGaugeObject;
-import electrodynamics.compatibility.jei.utils.gui.types.fluidgauge.FluidGaugeObject;
-import electrodynamics.compatibility.jei.utils.gui.types.gasgauge.AbstractGasGaugeObject;
-import electrodynamics.compatibility.jei.utils.gui.types.gasgauge.GasGaugeObject;
-import electrodynamics.compatibility.jei.utils.ingredients.ElectrodynamicsJeiTypes;
-import electrodynamics.compatibility.jei.utils.ingredients.IngredientRendererGasStack;
-import electrodynamics.compatibility.jei.utils.label.types.BiproductPercentWrapperElectroRecipe;
-import electrodynamics.compatibility.jei.utils.label.types.PowerLabelWrapperElectroRecipe;
-import electrodynamics.compatibility.jei.utils.label.types.TimeLabelWrapperElectroRecipe;
-import electrodynamics.prefab.screen.component.types.ScreenComponentProgress;
-import electrodynamics.prefab.screen.component.types.ScreenComponentSlot;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.math.MathUtils;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -38,6 +19,25 @@ import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.api.gas.GasStack;
+import voltaic.common.recipe.recipeutils.FluidIngredient;
+import voltaic.common.recipe.recipeutils.GasIngredient;
+import voltaic.compatibility.jei.recipecategories.AbstractRecipeCategory;
+import voltaic.compatibility.jei.utils.gui.types.ArrowAnimatedObject;
+import voltaic.compatibility.jei.utils.gui.types.BackgroundObject;
+import voltaic.compatibility.jei.utils.gui.types.ItemSlotObject;
+import voltaic.compatibility.jei.utils.gui.types.fluidgauge.AbstractFluidGaugeObject;
+import voltaic.compatibility.jei.utils.gui.types.fluidgauge.FluidGaugeObject;
+import voltaic.compatibility.jei.utils.gui.types.gasgauge.AbstractGasGaugeObject;
+import voltaic.compatibility.jei.utils.gui.types.gasgauge.GasGaugeObject;
+import voltaic.compatibility.jei.utils.ingredients.IngredientRendererGasStack;
+import voltaic.compatibility.jei.utils.ingredients.VoltaicJeiTypes;
+import voltaic.compatibility.jei.utils.label.types.BiproductPercentWrapperElectroRecipe;
+import voltaic.compatibility.jei.utils.label.types.PowerLabelWrapperElectroRecipe;
+import voltaic.compatibility.jei.utils.label.types.TimeLabelWrapperElectroRecipe;
+import voltaic.prefab.screen.component.types.ScreenComponentProgress;
+import voltaic.prefab.screen.component.types.ScreenComponentSlot;
+import voltaic.prefab.utilities.math.MathUtils;
 
 public class ChemicalReactorRecipeCategory extends AbstractRecipeCategory<ChemicalReactorRecipe> {
 
@@ -76,7 +76,7 @@ public class ChemicalReactorRecipeCategory extends AbstractRecipeCategory<Chemic
 
     public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.BLOCK_CHEMICALREACTOR.get());
 
-    public static final RecipeType<ChemicalReactorRecipe> RECIPE_TYPE = RecipeType.create(References.ID, ChemicalReactorRecipe.RECIPE_GROUP, ChemicalReactorRecipe.class);
+    public static final RecipeType<ChemicalReactorRecipe> RECIPE_TYPE = RecipeType.create(Electrodynamics.ID, ChemicalReactorRecipe.RECIPE_GROUP, ChemicalReactorRecipe.class);
     public ChemicalReactorRecipeCategory(IGuiHelper guiHelper) {
         super(guiHelper, ElectroTextUtils.jeiTranslated(ChemicalReactorRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
         setInputSlots(guiHelper, INPUT_SLOT1, INPUT_SLOT2);
@@ -344,7 +344,7 @@ public class ChemicalReactorRecipeCategory extends AbstractRecipeCategory<Chemic
 
             int oneMinusHeight = wrapper.getHeight() - height;
 
-            builder.addSlot(role, wrapper.getX() + 1, wrapper.getY() + wrapper.getHeight() - height).addIngredients(ElectrodynamicsJeiTypes.GAS_STACK, stacks).setCustomRenderer(ElectrodynamicsJeiTypes.GAS_STACK, new IngredientRendererGasStack(maxGaugeCap, -oneMinusHeight + 1, height, wrapper.getBarsTexture()));
+            builder.addSlot(role, wrapper.getX() + 1, wrapper.getY() + wrapper.getHeight() - height).addIngredients(VoltaicJeiTypes.GAS_STACK, stacks).setCustomRenderer(VoltaicJeiTypes.GAS_STACK, new IngredientRendererGasStack(maxGaugeCap, -oneMinusHeight + 1, height, wrapper.getBarsTexture()));
         }
 
     }
@@ -382,7 +382,7 @@ public class ChemicalReactorRecipeCategory extends AbstractRecipeCategory<Chemic
 
             int oneMinusHeight = wrapper.getHeight() - height;
 
-            builder.addSlot(role, wrapper.getX() + 1, wrapper.getY() + wrapper.getHeight() - height).addIngredient(ElectrodynamicsJeiTypes.GAS_STACK, stack).setCustomRenderer(ElectrodynamicsJeiTypes.GAS_STACK, new IngredientRendererGasStack(maxGaugeCap, -oneMinusHeight + 1, height, wrapper.getBarsTexture()));
+            builder.addSlot(role, wrapper.getX() + 1, wrapper.getY() + wrapper.getHeight() - height).addIngredient(VoltaicJeiTypes.GAS_STACK, stack).setCustomRenderer(VoltaicJeiTypes.GAS_STACK, new IngredientRendererGasStack(maxGaugeCap, -oneMinusHeight + 1, height, wrapper.getBarsTexture()));
         }
     }
 }

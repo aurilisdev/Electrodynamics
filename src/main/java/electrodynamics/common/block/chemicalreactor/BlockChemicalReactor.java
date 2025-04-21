@@ -2,10 +2,7 @@ package electrodynamics.common.block.chemicalreactor;
 
 import org.jetbrains.annotations.Nullable;
 
-import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
-import electrodynamics.common.block.voxelshapes.VoxelShapeProvider;
 import electrodynamics.common.tile.machines.chemicalreactor.TileChemicalReactor;
-import electrodynamics.prefab.block.GenericMachineBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,6 +13,9 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
+import voltaic.common.block.states.VoltaicBlockStates;
+import voltaic.common.block.voxelshapes.VoxelShapeProvider;
+import voltaic.prefab.block.GenericMachineBlock;
 
 public class BlockChemicalReactor extends GenericMachineBlock {
     public BlockChemicalReactor() {
@@ -40,7 +40,7 @@ public class BlockChemicalReactor extends GenericMachineBlock {
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         super.setPlacedBy(level, pos, pState, pPlacer, pStack);
-        level.setBlockAndUpdate(pos.offset(BlockChemicalReactorExtra.Location.MIDDLE.offsetUpFromParent), ElectrodynamicsBlocks.BLOCK_CHEMICALREACTOREXTRA_MIDDLE.get().defaultBlockState().setValue(ElectrodynamicsBlockStates.WATERLOGGED, false).setValue(ElectrodynamicsBlockStates.FACING, pState.getValue(ElectrodynamicsBlockStates.FACING)));
-        level.setBlockAndUpdate(pos.offset(BlockChemicalReactorExtra.Location.TOP.offsetUpFromParent), ElectrodynamicsBlocks.BLOCK_CHEMICALREACTOREXTRA_TOP.get().defaultBlockState().setValue(ElectrodynamicsBlockStates.WATERLOGGED, false).setValue(ElectrodynamicsBlockStates.FACING, pState.getValue(ElectrodynamicsBlockStates.FACING)));
+        level.setBlockAndUpdate(pos.offset(BlockChemicalReactorExtra.Location.MIDDLE.offsetUpFromParent), ElectrodynamicsBlocks.BLOCK_CHEMICALREACTOREXTRA_MIDDLE.get().defaultBlockState().setValue(VoltaicBlockStates.WATERLOGGED, false).setValue(VoltaicBlockStates.FACING, pState.getValue(VoltaicBlockStates.FACING)));
+        level.setBlockAndUpdate(pos.offset(BlockChemicalReactorExtra.Location.TOP.offsetUpFromParent), ElectrodynamicsBlocks.BLOCK_CHEMICALREACTOREXTRA_TOP.get().defaultBlockState().setValue(VoltaicBlockStates.WATERLOGGED, false).setValue(VoltaicBlockStates.FACING, pState.getValue(VoltaicBlockStates.FACING)));
     }
 }

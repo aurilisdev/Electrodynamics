@@ -1,20 +1,8 @@
 package electrodynamics.common.tile.machines.charger;
 
-import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -26,6 +14,13 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
+import voltaic.api.item.IItemElectric;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.object.TransferPack;
+import voltaic.registers.VoltaicCapabilities;
 
 public abstract class GenericTileCharger extends GenericTile {
 
@@ -35,9 +30,9 @@ public abstract class GenericTileCharger extends GenericTile {
         super(typeIn, worldPosition, blockState);
         addComponent(new ComponentPacketHandler(this));
         addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BACK).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * voltageMultiplier).maxJoules(2000.0 * voltageMultiplier));
-        addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(BATTERY_COUNT + 1).outputs(1)).valid(machineValidator()).setDirectionsBySlot(0, BlockEntityUtils.MachineDirection.RIGHT, BlockEntityUtils.MachineDirection.TOP).setDirectionsBySlot(4, BlockEntityUtils.MachineDirection.LEFT, BlockEntityUtils.MachineDirection.BOTTOM));
-        addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> new ContainerChargerGeneric(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BACK).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * voltageMultiplier).maxJoules(2000.0 * voltageMultiplier));
+        addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().inputs(BATTERY_COUNT + 1).outputs(1)).valid(machineValidator()).setDirectionsBySlot(0, BlockEntityUtils.MachineDirection.RIGHT, BlockEntityUtils.MachineDirection.TOP).setDirectionsBySlot(4, BlockEntityUtils.MachineDirection.LEFT, BlockEntityUtils.MachineDirection.BOTTOM));
+        addComponent(new ComponentContainerProvider(machine.tag(), this).createMenu((id, player) -> new ContainerChargerGeneric(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 
     }
 
@@ -119,7 +114,7 @@ public abstract class GenericTileCharger extends GenericTile {
 
 			double machineVoltage = electro.getVoltage();
 
-			if (machineVoltage > ElectrodynamicsCapabilities.DEFAULT_VOLTAGE) {
+			if (machineVoltage > VoltaicCapabilities.DEFAULT_VOLTAGE) {
 
 				level.setBlockAndUpdate(worldPosition, Blocks.AIR.defaultBlockState());
 				level.explode(null, worldPosition.getX(), worldPosition.getY(), worldPosition.getZ(), 2f, ExplosionInteraction.BLOCK);
@@ -164,7 +159,7 @@ public abstract class GenericTileCharger extends GenericTile {
                     electro.overVoltage(TransferPack.joulesVoltage(electro.getJoulesStored(), battVoltage));
                     return true;
                 } else if (electro.getMaxJoulesStored() - electro.getJoulesStored() > 0) {
-                    electro.joules(electro.getJoulesStored() + electricItem.extractPower(battery, Constants.CHARGER_USAGE_PER_TICK, false).getJoules());
+                    electro.joules(electro.getJoulesStored() + electricItem.extractPower(battery, ElectroConstants.CHARGER_USAGE_PER_TICK, false).getJoules());
                 }
             }
         }

@@ -2,18 +2,9 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
 
-import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.packet.types.client.PacketAddClientRenderInfo;
-import electrodynamics.prefab.inventory.container.types.GenericContainerItem;
-import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.WorldUtils;
-import electrodynamics.prefab.utilities.object.Location;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
@@ -40,6 +31,15 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.network.PacketDistributor;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.item.CapabilityItemStackHandler;
+import voltaic.prefab.inventory.container.types.GenericContainerItem;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.prefab.item.ItemElectric;
+import voltaic.prefab.utilities.WorldUtils;
+import voltaic.prefab.utilities.object.Location;
+import voltaic.registers.VoltaicDataComponentTypes;
 
 public class ItemSeismicScanner extends ItemElectric {
 
@@ -65,10 +65,10 @@ public class ItemSeismicScanner extends ItemElectric {
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltips, TooltipFlag flag) {
         super.appendHoverText(stack, context, tooltips, flag);
-        tooltips.add(ElectroTextUtils.tooltip("seismicscanner.range", stack.getOrDefault(ElectrodynamicsDataComponentTypes.RANGE.get(), 1) * RADUIS_BLOCKS).withStyle(ChatFormatting.YELLOW));
-        int cooldown = stack.getOrDefault(ElectrodynamicsDataComponentTypes.TIMER, 0);
+        tooltips.add(ElectroTextUtils.tooltip("seismicscanner.range", stack.getOrDefault(VoltaicDataComponentTypes.RANGE.get(), 1) * RADUIS_BLOCKS).withStyle(ChatFormatting.YELLOW));
+        int cooldown = stack.getOrDefault(VoltaicDataComponentTypes.TIMER, 0);
         if (cooldown > 0) {
-            tooltips.add(ElectroTextUtils.tooltip("seismicscanner.cooldown", ChatFormatter.getChatDisplay(cooldown, DisplayUnit.TIME_TICKS)).withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
+            tooltips.add(ElectroTextUtils.tooltip("seismicscanner.cooldown", ChatFormatter.getChatDisplay(cooldown, DisplayUnits.TIME_TICKS)).withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
         }
 
     }
@@ -83,11 +83,11 @@ public class ItemSeismicScanner extends ItemElectric {
         BlockState state = context.getLevel().getBlockState(context.getClickedPos());
 
         if (state.isAir()) {
-            stack.remove(ElectrodynamicsDataComponentTypes.BLOCK);
-            stack.remove(ElectrodynamicsDataComponentTypes.PATTERN_INTEGRITY);
+            stack.remove(VoltaicDataComponentTypes.BLOCK);
+            stack.remove(VoltaicDataComponentTypes.PATTERN_INTEGRITY);
         } else {
-            stack.set(ElectrodynamicsDataComponentTypes.BLOCK, state.getBlock());
-            stack.set(ElectrodynamicsDataComponentTypes.PATTERN_INTEGRITY, FULL_PATTERN);
+            stack.set(VoltaicDataComponentTypes.BLOCK, state.getBlock());
+            stack.set(VoltaicDataComponentTypes.PATTERN_INTEGRITY, FULL_PATTERN);
         }
 
 
@@ -121,18 +121,18 @@ public class ItemSeismicScanner extends ItemElectric {
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected) {
         if (!world.isClientSide) {
 
-            int time = stack.getOrDefault(ElectrodynamicsDataComponentTypes.TIMER, 0);
+            int time = stack.getOrDefault(VoltaicDataComponentTypes.TIMER, 0);
 
             if (time <= 0) {
-                if (stack.getOrDefault(ElectrodynamicsDataComponentTypes.USED, false)) {
+                if (stack.getOrDefault(VoltaicDataComponentTypes.USED, false)) {
 
                     performScan(world, stack, entity);
-                    stack.remove(ElectrodynamicsDataComponentTypes.USED);
-                } else if (ScannerMode.values()[stack.getOrDefault(ElectrodynamicsDataComponentTypes.ENUM, 0)] == ScannerMode.ACTIVE) {
+                    stack.remove(VoltaicDataComponentTypes.USED);
+                } else if (ScannerMode.values()[stack.getOrDefault(VoltaicDataComponentTypes.ENUM, 0)] == ScannerMode.ACTIVE) {
                     performScan(world, stack, entity);
                 }
             } else {
-                stack.set(ElectrodynamicsDataComponentTypes.TIMER, time - 1);
+                stack.set(VoltaicDataComponentTypes.TIMER, time - 1);
             }
         }
         super.inventoryTick(stack, world, entity, itemSlot, isSelected);
@@ -147,15 +147,15 @@ public class ItemSeismicScanner extends ItemElectric {
 
         ItemSeismicScanner seismic = (ItemSeismicScanner) stack.getItem();
 
-        boolean isTimerUp = stack.getOrDefault(ElectrodynamicsDataComponentTypes.TIMER, 0) <= 0;
+        boolean isTimerUp = stack.getOrDefault(VoltaicDataComponentTypes.TIMER, 0) <= 0;
         boolean isPowered = seismic.getJoulesStored(stack) >= JOULES_PER_SCAN;
 
         if (!isTimerUp || !isPowered) {
             return;
         }
 
-        Block pattern = stack.getOrDefault(ElectrodynamicsDataComponentTypes.BLOCK, Blocks.AIR);
-        double patternIntegrity = stack.getOrDefault(ElectrodynamicsDataComponentTypes.PATTERN_INTEGRITY, 0.0);
+        Block pattern = stack.getOrDefault(VoltaicDataComponentTypes.BLOCK, Blocks.AIR);
+        double patternIntegrity = stack.getOrDefault(VoltaicDataComponentTypes.PATTERN_INTEGRITY, 0.0);
 
         Block toScanFor = Blocks.AIR;
 
@@ -173,30 +173,30 @@ public class ItemSeismicScanner extends ItemElectric {
             toScanFor = pattern;
             patternIntegrity -= PATTERN_PER_SCAN;
             if (patternIntegrity <= 0) {
-                stack.remove(ElectrodynamicsDataComponentTypes.BLOCK);
-                stack.remove(ElectrodynamicsDataComponentTypes.PATTERN_INTEGRITY);
+                stack.remove(VoltaicDataComponentTypes.BLOCK);
+                stack.remove(VoltaicDataComponentTypes.PATTERN_INTEGRITY);
             } else {
-                stack.set(ElectrodynamicsDataComponentTypes.PATTERN_INTEGRITY, patternIntegrity);
+                stack.set(VoltaicDataComponentTypes.PATTERN_INTEGRITY, patternIntegrity);
             }
 
         }
 
         if (toScanFor == Blocks.AIR) {
-            stack.remove(ElectrodynamicsDataComponentTypes.BLOCK);
-            stack.remove(ElectrodynamicsDataComponentTypes.PATTERN_INTEGRITY);
+            stack.remove(VoltaicDataComponentTypes.BLOCK);
+            stack.remove(VoltaicDataComponentTypes.PATTERN_INTEGRITY);
             return;
         }
 
         seismic.extractPower(stack, JOULES_PER_SCAN, false);
 
-        stack.set(ElectrodynamicsDataComponentTypes.TIMER, COOLDOWN);
+        stack.set(VoltaicDataComponentTypes.TIMER, COOLDOWN);
 
         world.playSound(null, entity.blockPosition(), ElectrodynamicsSounds.SOUND_SEISMICSCANNER.get(), SoundSource.PLAYERS, 1, 1);
 
         Location playerPos = new Location(entity.getOnPos());
-        Location blockPos = new Location(WorldUtils.getClosestBlockToCenter(world, playerPos.toBlockPos(), RADUIS_BLOCKS * stack.getOrDefault(ElectrodynamicsDataComponentTypes.RANGE, 1), toScanFor));
-        stack.set(ElectrodynamicsDataComponentTypes.LOCATION_1, playerPos);
-        stack.set(ElectrodynamicsDataComponentTypes.LOCATION_2, blockPos);
+        Location blockPos = new Location(WorldUtils.getClosestBlockToCenter(world, playerPos.toBlockPos(), RADUIS_BLOCKS * stack.getOrDefault(VoltaicDataComponentTypes.RANGE, 1), toScanFor));
+        stack.set(VoltaicDataComponentTypes.LOCATION_1, playerPos);
+        stack.set(VoltaicDataComponentTypes.LOCATION_2, blockPos);
         PacketDistributor.sendToPlayer((ServerPlayer) entity, new PacketAddClientRenderInfo(entity.getUUID(), blockPos.toBlockPos()));
 
     }

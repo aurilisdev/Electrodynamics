@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import electrodynamics.api.ISubtype;
+import voltaic.api.ISubtype;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.world.item.Item;
 

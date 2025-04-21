@@ -2,15 +2,9 @@ package electrodynamics.common.tile.pipelines.gas.gastransformer.compressor;
 
 import electrodynamics.common.inventory.container.tile.ContainerCompressor;
 import electrodynamics.common.inventory.container.tile.ContainerDecompressor;
-import electrodynamics.common.settings.Constants;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.common.tile.pipelines.gas.gastransformer.IAddonTankManager;
 import electrodynamics.common.tile.pipelines.gas.gastransformer.TileGasTransformerAddonTank;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
@@ -20,6 +14,12 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentGasHandlerMulti;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
+import voltaic.prefab.tile.components.type.ComponentTickable;
+import voltaic.prefab.utilities.BlockEntityUtils;
 
 public abstract class GenericTileBasicCompressor extends GenericTileCompressor implements IAddonTankManager {
 
@@ -48,7 +48,7 @@ public abstract class GenericTileBasicCompressor extends GenericTileCompressor i
         BlockState aboveState = getLevel().getBlockState(abovePos);
         BlockEntity aboveTile;
         int tankCount = 0;
-        for (int i = 0; i < Constants.GAS_TRANSFORMER_ADDON_TANK_LIMIT; i++) {
+        for (int i = 0; i < ElectroConstants.GAS_TRANSFORMER_ADDON_TANK_LIMIT; i++) {
             if (!aboveState.is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK)) {
                 break;
             }
@@ -62,8 +62,8 @@ public abstract class GenericTileBasicCompressor extends GenericTileCompressor i
             tankCount++;
         }
         ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
-        handler.getInputTanks()[0].setCapacity(Constants.GAS_TRANSFORMER_BASE_INPUT_CAPCITY + Constants.GAS_TRANSFORMER_ADDON_TANK_CAPCITY * tankCount);
-        handler.getOutputTanks()[0].setCapacity(Constants.GAS_TRANSFORMER_BASE_OUTPUT_CAPCITY + Constants.GAS_TRANSFORMER_ADDON_TANK_CAPCITY * tankCount);
+        handler.getInputTanks()[0].setCapacity(ElectroConstants.GAS_TRANSFORMER_BASE_INPUT_CAPCITY + ElectroConstants.GAS_TRANSFORMER_ADDON_TANK_CAPCITY * tankCount);
+        handler.getOutputTanks()[0].setCapacity(ElectroConstants.GAS_TRANSFORMER_BASE_OUTPUT_CAPCITY + ElectroConstants.GAS_TRANSFORMER_ADDON_TANK_CAPCITY * tankCount);
     }
 
     @Override
@@ -100,12 +100,12 @@ public abstract class GenericTileBasicCompressor extends GenericTileCompressor i
 
         @Override
         public double getUsagePerTick() {
-            return Constants.COMPRESSOR_USAGE_PER_TICK;
+            return ElectroConstants.COMPRESSOR_USAGE_PER_TICK;
         }
 
         @Override
         public int getConversionRate() {
-            return Constants.COMPRESSOR_CONVERSION_RATE;
+            return ElectroConstants.COMPRESSOR_CONVERSION_RATE;
         }
     }
 
@@ -131,12 +131,12 @@ public abstract class GenericTileBasicCompressor extends GenericTileCompressor i
 
         @Override
         public double getUsagePerTick() {
-            return Constants.DECOMPRESSOR_USAGE_PER_TICK;
+            return ElectroConstants.DECOMPRESSOR_USAGE_PER_TICK;
         }
 
         @Override
         public int getConversionRate() {
-            return Constants.DECOMPRESSOR_CONVERSION_RATE;
+            return ElectroConstants.DECOMPRESSOR_CONVERSION_RATE;
         }
     }
 

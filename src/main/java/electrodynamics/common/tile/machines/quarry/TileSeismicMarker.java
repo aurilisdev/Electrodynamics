@@ -3,19 +3,19 @@ package electrodynamics.common.tile.machines.quarry;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.client.render.event.levelstage.HandlerMarkerLines;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.client.event.levelstage.HandlerMarkerLines;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.type.ComponentTickable;
 
 public class TileSeismicMarker extends GenericTile {
 
-	public static final int MAX_RADIUS = Math.max(Math.min(Constants.MARKER_RADIUS, 128), 2);
+	public static final int MAX_RADIUS = Math.max(Math.min(ElectroConstants.MARKER_RADIUS, 128), 2);
 
 	public TileSeismicMarker(BlockPos pos, BlockState state) {
 		super(ElectrodynamicsTiles.TILE_SEISMICMARKER.get(), pos, state);

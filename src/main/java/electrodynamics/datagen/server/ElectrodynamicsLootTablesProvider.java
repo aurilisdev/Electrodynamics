@@ -2,7 +2,7 @@ package electrodynamics.datagen.server;
 
 import java.util.List;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeGlass;
@@ -12,25 +12,16 @@ import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.datagen.utils.AbstractLootTableProvider;
-import electrodynamics.prefab.tile.GenericTile;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import voltaic.datagen.utils.server.loottable.BaseLootTablesProvider;
 
-public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider {
-
-    public ElectrodynamicsLootTablesProvider(String modID, HolderLookup.Provider provider) {
-        super(provider, modID);
-    }
+public class ElectrodynamicsLootTablesProvider extends BaseLootTablesProvider {
 
     public ElectrodynamicsLootTablesProvider(HolderLookup.Provider provider) {
-        this(References.ID, provider);
+        super(Electrodynamics.ID, provider);
     }
 
     @Override
@@ -193,46 +184,9 @@ public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider
 
     }
 
-    public <T extends GenericTile> void addMachineTable(Block block, DeferredHolder<BlockEntityType<?>, BlockEntityType<T>> tilereg, boolean items, boolean fluids, boolean gases, boolean energy, boolean additional) {
-        add(block, machineTable(name(block), block, tilereg.get(), items, fluids, gases, energy, additional));
-    }
-
-    /**
-     * Adds the block to the loottables silk touch only
-     *
-     * @param reg The block that will be added
-     * @author SeaRobber69
-     */
-    public void addSilkTouchOnlyTable(DeferredHolder<Block, ? extends Block> reg) {
-        Block block = reg.get();
-        add(block, createSilkTouchOnlyTable(name(block), block));
-    }
-
-    public void addFortuneAndSilkTouchTable(DeferredHolder<Block, ? extends Block> reg, Item nonSilk, int minDrop, int maxDrop) {
-        addFortuneAndSilkTouchTable(reg.get(), nonSilk, minDrop, maxDrop);
-    }
-
-    public void addFortuneAndSilkTouchTable(Block block, Item nonSilk, int minDrop, int maxDrop) {
-        add(block, createSilkTouchAndFortuneTable(name(block), block, nonSilk, minDrop, maxDrop));
-    }
-
-    public void addSimpleBlock(DeferredHolder<Block, ? extends Block> reg) {
-        addSimpleBlock(reg.get());
-    }
-
-    public void addSimpleBlock(Block block) {
-
-        add(block, createSimpleBlockTable(name(block), block));
-    }
-
-    public String name(Block block) {
-        return BuiltInRegistries.BLOCK.getKey(block).getPath();
-    }
-
     @Override
     public List<Block> getExcludedBlocks() {
-        return List.of(ElectrodynamicsBlocks.BLOCK_MULTISUBNODE.get(), ElectrodynamicsBlocks.BLOCK_FRAME.get(), ElectrodynamicsBlocks.BLOCK_FRAME_CORNER.get(), ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get(), ElectrodynamicsBlocks.BLOCK_CHEMICALREACTOREXTRA_MIDDLE.get(), ElectrodynamicsBlocks.BLOCK_CHEMICALREACTOREXTRA_TOP.get(),
-                ElectrodynamicsBlocks.BLOCK_MULTIBLOCK_SLAVE.get());
+        return List.of(ElectrodynamicsBlocks.BLOCK_FRAME.get(), ElectrodynamicsBlocks.BLOCK_FRAME_CORNER.get(), ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get(), ElectrodynamicsBlocks.BLOCK_CHEMICALREACTOREXTRA_MIDDLE.get(), ElectrodynamicsBlocks.BLOCK_CHEMICALREACTOREXTRA_TOP.get());
     }
 
 }

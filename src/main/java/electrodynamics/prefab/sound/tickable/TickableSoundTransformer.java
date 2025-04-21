@@ -1,9 +1,10 @@
 package electrodynamics.prefab.sound.tickable;
 
-import electrodynamics.common.settings.Constants;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.common.tile.electricitygrid.transformer.TileGenericTransformer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+import voltaic.prefab.sound.TickableSoundTile;
 
 public class TickableSoundTransformer extends TickableSoundTile<TileGenericTransformer> {
 
@@ -23,8 +24,8 @@ public class TickableSoundTransformer extends TickableSoundTile<TileGenericTrans
 
 		double multiplier = 1;
 
-		if (Constants.TRANSFORMER_SOUND_LOAD_TARGET > 0) {
-			multiplier = tile.lastTransfer.get().getWatts() / Constants.TRANSFORMER_SOUND_LOAD_TARGET;
+		if (ElectroConstants.TRANSFORMER_SOUND_LOAD_TARGET > 0) {
+			multiplier = tile.lastTransfer.getValue().getWatts() / ElectroConstants.TRANSFORMER_SOUND_LOAD_TARGET;
 			multiplier = Math.min(multiplier, 1);
 			// lastMultiplier = multiplier;
 		}

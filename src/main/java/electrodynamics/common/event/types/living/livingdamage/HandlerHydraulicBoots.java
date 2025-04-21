@@ -1,6 +1,5 @@
 package electrodynamics.common.event.types.living.livingdamage;
 
-import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.sounds.SoundSource;
@@ -12,6 +11,8 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import voltaic.common.event.type.AbstractLivingDamageHandler;
+import voltaic.prefab.utilities.ItemUtils;
 
 public class HandlerHydraulicBoots extends AbstractLivingDamageHandler {
 

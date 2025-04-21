@@ -1,9 +1,8 @@
 package electrodynamics.registers;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.item.ContainerElectricDrill;
-import electrodynamics.common.inventory.container.item.ContainerGuidebook;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.inventory.container.tile.ContainerAdvancedCompressor;
 import electrodynamics.common.inventory.container.tile.ContainerAdvancedDecompressor;
@@ -22,7 +21,6 @@ import electrodynamics.common.inventory.container.tile.ContainerCoolantResavoir;
 import electrodynamics.common.inventory.container.tile.ContainerCreativeFluidSource;
 import electrodynamics.common.inventory.container.tile.ContainerCreativeGasSource;
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
-import electrodynamics.common.inventory.container.tile.ContainerDO2OProcessor;
 import electrodynamics.common.inventory.container.tile.ContainerDecompressor;
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnace;
 import electrodynamics.common.inventory.container.tile.ContainerElectricArcFurnaceDouble;
@@ -45,9 +43,6 @@ import electrodynamics.common.inventory.container.tile.ContainerGasVent;
 import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
 import electrodynamics.common.inventory.container.tile.ContainerMineralWasher;
 import electrodynamics.common.inventory.container.tile.ContainerMotorComplex;
-import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
-import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorDouble;
-import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorTriple;
 import electrodynamics.common.inventory.container.tile.ContainerPotentiometer;
 import electrodynamics.common.inventory.container.tile.ContainerQuarry;
 import electrodynamics.common.inventory.container.tile.ContainerRotaryUnifier;
@@ -64,7 +59,7 @@ import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ElectrodynamicsMenuTypes {
-	public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Registries.MENU, References.ID);
+	public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(Registries.MENU, Electrodynamics.ID);
 
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerCoalGenerator>> CONTAINER_COALGENERATOR = register(SubtypeMachine.coalgenerator.tag(), ContainerCoalGenerator::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerElectricFurnace>> CONTAINER_ELECTRICFURNACE = register(SubtypeMachine.electricfurnace.tag(), ContainerElectricFurnace::new);
@@ -73,10 +68,6 @@ public class ElectrodynamicsMenuTypes {
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerElectricArcFurnace>> CONTAINER_ELECTRICARCFURNACE = register(SubtypeMachine.electricarcfurnace.tag(), ContainerElectricArcFurnace::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerElectricArcFurnaceDouble>> CONTAINER_ELECTRICARCFURNACEDOUBLE = register(SubtypeMachine.electricarcfurnacedouble.tag(), ContainerElectricArcFurnaceDouble::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerElectricArcFurnaceTriple>> CONTAINER_ELECTRICARCFURNACETRIPLE = register(SubtypeMachine.electricarcfurnacetriple.tag(), ContainerElectricArcFurnaceTriple::new);
-	public static final DeferredHolder<MenuType<?>,MenuType<ContainerO2OProcessor>> CONTAINER_O2OPROCESSOR = register("o2oprocessor", ContainerO2OProcessor::new);
-	public static final DeferredHolder<MenuType<?>,MenuType<ContainerO2OProcessorDouble>> CONTAINER_O2OPROCESSORDOUBLE = register("o2oprocessordouble", ContainerO2OProcessorDouble::new);
-	public static final DeferredHolder<MenuType<?>,MenuType<ContainerO2OProcessorTriple>> CONTAINER_O2OPROCESSORTRIPLE = register("o2oprocessortriple", ContainerO2OProcessorTriple::new);
-	public static final DeferredHolder<MenuType<?>,MenuType<ContainerDO2OProcessor>> CONTAINER_DO2OPROCESSOR = register("do2oprocessor", ContainerDO2OProcessor::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerBatteryBox>> CONTAINER_BATTERYBOX = register(SubtypeMachine.batterybox.tag(), ContainerBatteryBox::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerFermentationPlant>> CONTAINER_FERMENTATIONPLANT = register(SubtypeMachine.fermentationplant.tag(), ContainerFermentationPlant::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerMineralWasher>> CONTAINER_MINERALWASHER = register(SubtypeMachine.mineralwasher.tag(), ContainerMineralWasher::new);
@@ -97,7 +88,6 @@ public class ElectrodynamicsMenuTypes {
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerCoolantResavoir>> CONTAINER_COOLANTRESAVOIR = register("coolantresavoir", ContainerCoolantResavoir::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerMotorComplex>> CONTAINER_MOTORCOMPLEX = register("motorcomplex", ContainerMotorComplex::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerQuarry>> CONTAINER_QUARRY = register("quarry", ContainerQuarry::new);
-	public static final DeferredHolder<MenuType<?>,MenuType<ContainerGuidebook>> CONTAINER_GUIDEBOOK = register("guidebook", ContainerGuidebook::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerGasTankGeneric>> CONTAINER_GASTANK = register("gastank", ContainerGasTankGeneric::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerCompressor>> CONTAINER_COMPRESSOR = register("compressor", ContainerCompressor::new);
 	public static final DeferredHolder<MenuType<?>,MenuType<ContainerDecompressor>> CONTAINER_DECOMPRESSOR = register("decompressor", ContainerDecompressor::new);

@@ -5,18 +5,8 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-import electrodynamics.api.References;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.fluid.FluidStackComponent;
-import electrodynamics.api.item.IItemTemperate;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.prefab.item.ItemElectric;
-import electrodynamics.prefab.item.TemperateItemProperties;
+import electrodynamics.Electrodynamics;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.math.Color;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -31,6 +21,17 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.fluid.FluidStackComponent;
+import voltaic.api.item.IItemTemperate;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.prefab.item.ItemElectric;
+import voltaic.prefab.item.TemperateItemProperties;
+import voltaic.prefab.utilities.VoltaicTextUtils;
+import voltaic.prefab.utilities.math.Color;
+import voltaic.registers.VoltaicDataComponentTypes;
 
 public abstract class ItemRailgun extends ItemElectric implements IItemTemperate {
 
@@ -56,13 +57,13 @@ public abstract class ItemRailgun extends ItemElectric implements IItemTemperate
 	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, context, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("railguntemp", ChatFormatter.getChatDisplayShort(IItemTemperate.getTemperature(stack), DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.YELLOW));
-		tooltip.add(ElectroTextUtils.tooltip("railgunmaxtemp", ChatFormatter.getChatDisplayShort(overheatTemperature, DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.YELLOW));
+		tooltip.add(ElectroTextUtils.tooltip("railguntemp", ChatFormatter.getChatDisplayShort(IItemTemperate.getTemperature(stack), DisplayUnits.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.YELLOW));
+		tooltip.add(ElectroTextUtils.tooltip("railgunmaxtemp", ChatFormatter.getChatDisplayShort(overheatTemperature, DisplayUnits.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.YELLOW));
 		if (IItemTemperate.getTemperature(stack) >= getOverheatTemp()) {
 			tooltip.add(ElectroTextUtils.tooltip("railgunoverheat").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
 		}
-		FluidStack fluid = stack.getOrDefault(ElectrodynamicsDataComponentTypes.FLUID_STACK.get(), FluidStackComponent.EMPTY).fluid;
-		tooltip.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(fluid.getAmount()), ChatFormatter.formatFluidMilibuckets(CAPACITY)).withStyle(ChatFormatting.GRAY));
+		FluidStack fluid = stack.getOrDefault(VoltaicDataComponentTypes.FLUID_STACK.get(), FluidStackComponent.EMPTY).fluid;
+		tooltip.add(VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(fluid.getAmount()), ChatFormatter.formatFluidMilibuckets(CAPACITY)).withStyle(ChatFormatting.GRAY));
 	}
 
 	@Override
@@ -102,10 +103,10 @@ public abstract class ItemRailgun extends ItemElectric implements IItemTemperate
 	}
 
 	public static Predicate<FluidStack> getPredicate() {
-		return fluid -> fluid.getFluid().builtInRegistryHolder().is(ElectrodynamicsTags.Fluids.AMMONIA);
+		return fluid -> fluid.getFluid().builtInRegistryHolder().is(VoltaicTags.Fluids.AMMONIA);
 	}
 
-	@EventBusSubscriber(value = Dist.CLIENT, modid = References.ID, bus = EventBusSubscriber.Bus.MOD)
+	@EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
 	private static class ColorHandler {
 
 		@SubscribeEvent

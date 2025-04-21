@@ -1,17 +1,17 @@
 package electrodynamics.datagen.server.recipe.types.custom.fluid2item;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.fluid.subtype.SubtypePureMineralFluid;
 import electrodynamics.common.recipe.categories.fluid2item.specificmachines.ChemicalCrystalizerRecipe;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.builders.ElectrodynamicsRecipeBuilder.RecipeCategory;
-import electrodynamics.datagen.utils.recipe.builders.Fluid2ItemBuilder;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
+import voltaic.datagen.utils.server.recipe.builders.BaseRecipeBuilder;
+import voltaic.datagen.utils.server.recipe.builders.Fluid2ItemBuilder;
 
 public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGenerator {
 
@@ -25,7 +25,7 @@ public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGe
 	}
 
 	public ElectrodynamicsChemicalCrystallizerRecipes() {
-		this(References.ID);
+		this(Electrodynamics.ID);
 	}
 
 	@Override
@@ -33,7 +33,7 @@ public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGe
 
 		newRecipe(new ItemStack(Items.CLAY_BALL), 0, 200, 800.0, "clay_ball", modID)
 				//
-				.addFluidTagInput(ElectrodynamicsTags.Fluids.CLAY, 200)
+				.addFluidTagInput(VoltaicTags.Fluids.CLAY, 200)
 				//
 				.save(output);
 
@@ -45,7 +45,7 @@ public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGe
 
 		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS.get()), 0, 200, 800.0, "plastic_fibers", modID)
 				//
-				.addFluidTagInput(ElectrodynamicsTags.Fluids.POLYETHLYENE, 1000)
+				.addFluidTagInput(VoltaicTags.Fluids.POLYETHLYENE, 1000)
 				//
 				.save(output);
 
@@ -62,7 +62,7 @@ public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGe
 	}
 
 	public Fluid2ItemBuilder<ChemicalCrystalizerRecipe> newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name, String group) {
-		return new Fluid2ItemBuilder<>(ChemicalCrystalizerRecipe::new, stack, RecipeCategory.FLUID_2_ITEM, modID, "chemical_crystallizer/" + name, group, xp, ticks, usagePerTick);
+		return new Fluid2ItemBuilder<>(ChemicalCrystalizerRecipe::new, stack, BaseRecipeBuilder.RecipeCategory.FLUID_2_ITEM, modID, "chemical_crystallizer/" + name, group, xp, ticks, usagePerTick);
 	}
 
 }

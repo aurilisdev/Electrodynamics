@@ -1,13 +1,13 @@
 package electrodynamics.client.guidebook.chapters;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.client.guidebook.utils.components.Chapter;
-import electrodynamics.client.guidebook.utils.components.Module;
-import electrodynamics.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
+import voltaic.client.guidebook.utils.components.Chapter;
+import voltaic.client.guidebook.utils.components.Module;
+import voltaic.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
+import voltaic.client.guidebook.utils.pagedata.text.TextWrapperObject;
 
 public class ChapterTips extends Chapter {
 

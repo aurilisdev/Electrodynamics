@@ -3,7 +3,7 @@
   "inventory": {
     "parent": "electrodynamics:block/logisticalmanager_inventory"
   },
-  "loader": "electrodynamics:electrodynamicscableloader",
+  "loader": "voltaic:voltaiccableloader",
   "none": {
     "parent": "electrodynamics:block/logisticalmanager_none"
   },

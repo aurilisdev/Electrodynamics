@@ -1,17 +1,8 @@
 package electrodynamics.registers;
 
-import org.jetbrains.annotations.Nullable;
-
 import electrodynamics.Electrodynamics;
-import electrodynamics.api.References;
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
-import electrodynamics.api.capability.types.gas.IGasHandler;
-import electrodynamics.api.capability.types.gas.IGasHandlerItem;
-import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
-import electrodynamics.api.capability.types.locationstorage.ILocationStorage;
-import electrodynamics.api.gas.GasHandlerItemStack;
-import electrodynamics.common.item.ItemUpgrade;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+
 import electrodynamics.common.item.gear.armor.types.ItemCombatArmor;
 import electrodynamics.common.item.gear.armor.types.ItemHydraulicBoots;
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
@@ -21,35 +12,28 @@ import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import electrodynamics.common.item.gear.tools.electric.ItemSeismicScanner;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
 import electrodynamics.compatibility.mekanism.MekanismHandler;
-import electrodynamics.prefab.tile.GenericTile;
-import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.neoforge.capabilities.BlockCapability;
 import net.neoforged.neoforge.capabilities.Capabilities;
-import net.neoforged.neoforge.capabilities.ItemCapability;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import voltaic.Voltaic;
+import voltaic.api.fluid.RestrictedFluidHandlerItemStack;
+import voltaic.api.gas.GasHandlerItemStack;
+import voltaic.api.item.CapabilityItemStackHandler;
+import voltaic.common.item.ItemUpgrade;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.registers.VoltaicCapabilities;
+import voltaic.registers.VoltaicDataComponentTypes;
 
-@EventBusSubscriber(modid = References.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
 public class ElectrodynamicsCapabilities {
-
-    public static final double DEFAULT_VOLTAGE = 120.0;
-    public static final String LOCATION_KEY = "location";
-
-    public static final BlockCapability<ICapabilityElectrodynamic, @Nullable Direction> CAPABILITY_ELECTRODYNAMIC_BLOCK = BlockCapability.createSided(Electrodynamics.rl("electrodynamicblock"), ICapabilityElectrodynamic.class);
-
-    public static final ItemCapability<ILocationStorage, Void> CAPABILITY_LOCATIONSTORAGE_ITEM = ItemCapability.createVoid(Electrodynamics.rl("locationstorageitem"), ILocationStorage.class);
-
-    public static final ItemCapability<IGasHandlerItem, Void> CAPABILITY_GASHANDLER_ITEM = ItemCapability.createVoid(Electrodynamics.rl("gashandleritem"), IGasHandlerItem.class);
-    public static final BlockCapability<IGasHandler, @Nullable Direction> CAPABILITY_GASHANDLER_BLOCK = BlockCapability.createSided(Electrodynamics.rl("gashandlerblock"), IGasHandler.class);
 
     @SubscribeEvent
     public static void register(RegisterCapabilitiesEvent event) {
@@ -115,7 +99,7 @@ public class ElectrodynamicsCapabilities {
 
                     });
 
-                    onChangeWrapper.owner().set(ElectrodynamicsDataComponentTypes.SPEED, speedBoost);
+                    onChangeWrapper.owner().set(VoltaicDataComponentTypes.SPEED, speedBoost);
 
                     double multiplier = 1;
 
@@ -127,7 +111,7 @@ public class ElectrodynamicsCapabilities {
                         multiplier += fortune;
                     }
 
-                    onChangeWrapper.owner().set(ElectrodynamicsDataComponentTypes.POWER_USAGE, ItemElectricDrill.POWER_USAGE * multiplier);
+                    onChangeWrapper.owner().set(VoltaicDataComponentTypes.POWER_USAGE, ItemElectricDrill.POWER_USAGE * multiplier);
 
                 }), ElectrodynamicsItems.ITEM_ELECTRICDRILL.get());
 
@@ -152,7 +136,7 @@ public class ElectrodynamicsCapabilities {
                 }
             }
 
-            wrapper.owner().set(ElectrodynamicsDataComponentTypes.RANGE, range);
+            wrapper.owner().set(VoltaicDataComponentTypes.RANGE, range);
         }), ElectrodynamicsItems.ITEM_SEISMICSCANNER.get());
 
         // Reinforced Cannister
@@ -161,11 +145,11 @@ public class ElectrodynamicsCapabilities {
 
         // Portable Cylinder
 
-        event.registerItem(CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemPortableCylinder.MAX_GAS_CAPCITY, ItemPortableCylinder.MAX_TEMPERATURE, ItemPortableCylinder.MAX_PRESSURE), ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
+        event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemPortableCylinder.MAX_GAS_CAPCITY, ItemPortableCylinder.MAX_TEMPERATURE, ItemPortableCylinder.MAX_PRESSURE), ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
 
         // Jetpack
 
-        event.registerItem(CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemJetpack.MAX_CAPACITY, ItemJetpack.MAX_TEMPERATURE, ItemJetpack.MAX_PRESSURE).setPredicate(ItemJetpack.getGasValidator()), ElectrodynamicsItems.ITEM_JETPACK.get());
+        event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemJetpack.MAX_CAPACITY, ItemJetpack.MAX_TEMPERATURE, ItemJetpack.MAX_PRESSURE).setPredicate(ItemJetpack.getGasValidator()), ElectrodynamicsItems.ITEM_JETPACK.get());
 
         // Hydraulic Boots
 
@@ -173,15 +157,15 @@ public class ElectrodynamicsCapabilities {
 
         // Combat Helmet
 
-        event.registerItem(CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemCombatArmor.HELMET_CAPACITY, ItemCombatArmor.HELMET_MAX_TEMP, ItemCombatArmor.HELMET_MAX_PRESSURE).setPredicate(ItemCombatArmor.getHelmetGasValidator()), ElectrodynamicsItems.ITEM_COMBATHELMET.get());
+        event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemCombatArmor.HELMET_CAPACITY, ItemCombatArmor.HELMET_MAX_TEMP, ItemCombatArmor.HELMET_MAX_PRESSURE).setPredicate(ItemCombatArmor.getHelmetGasValidator()), ElectrodynamicsItems.ITEM_COMBATHELMET.get());
 
         // Combat Chestplate
 
-        event.registerItem(CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemJetpack.MAX_CAPACITY, ItemJetpack.MAX_TEMPERATURE, ItemJetpack.MAX_PRESSURE).setPredicate(ItemJetpack.getGasValidator()), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get());
+        event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemJetpack.MAX_CAPACITY, ItemJetpack.MAX_TEMPERATURE, ItemJetpack.MAX_PRESSURE).setPredicate(ItemJetpack.getGasValidator()), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get());
 
         // Combat Leggings
 
-        event.registerItem(CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemCombatArmor.LEGGINGS_CAPACITY, ItemCombatArmor.LEGGINGS_MAX_TEMP, ItemCombatArmor.LEGGINGS_MAX_PRESSURE).setPredicate(ItemCombatArmor.getLeggingsGasValidator()), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get());
+        event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemCombatArmor.LEGGINGS_CAPACITY, ItemCombatArmor.LEGGINGS_MAX_TEMP, ItemCombatArmor.LEGGINGS_MAX_PRESSURE).setPredicate(ItemCombatArmor.getLeggingsGasValidator()), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get());
 
         // Combat Boots
 
@@ -195,15 +179,15 @@ public class ElectrodynamicsCapabilities {
         /* TILES */
 
         ElectrodynamicsTiles.BLOCK_ENTITY_TYPES.getEntries().forEach(entry -> {
-            event.registerBlockEntity(CAPABILITY_ELECTRODYNAMIC_BLOCK, (BlockEntityType<? extends GenericTile>) entry.get(), (tile, context) -> tile.getElectrodynamicCapability(context));
+            event.registerBlockEntity(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, (BlockEntityType<? extends GenericTile>) entry.get(), (tile, context) -> tile.getElectrodynamicCapability(context));
             event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, (BlockEntityType<? extends GenericTile>) entry.get(), (tile, context) -> tile.getFluidHandlerCapability(context));
-            event.registerBlockEntity(CAPABILITY_GASHANDLER_BLOCK, (BlockEntityType<? extends GenericTile>) entry.get(), (tile, context) -> tile.getGasHandlerCapability(context));
+            event.registerBlockEntity(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK, (BlockEntityType<? extends GenericTile>) entry.get(), (tile, context) -> tile.getGasHandlerCapability(context));
             event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, (BlockEntityType<? extends GenericTile>) entry.get(), (tile, context) -> tile.getItemHandlerCapability(context));
         });
 
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ElectrodynamicsTiles.TILE_BATTERYBOX.get(), (tile, context) -> tile.getFECapability(context));
 
-        if(ModList.get().isLoaded(References.MEKANISM_ID)) {
+        if(ModList.get().isLoaded(Voltaic.MEKANISM_ID)) {
             MekanismHandler.registerCapabilities(event);
         }
 

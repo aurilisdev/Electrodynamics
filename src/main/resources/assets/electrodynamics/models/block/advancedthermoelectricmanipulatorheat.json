@@ -8,7 +8,7 @@
 	"textures": {
 		"0": "electrodynamics:block/model/advancedthermoelectricmanipulatorheat",
 		"1": "electrodynamics:block/model/advancedthermoelectricmanipulatordials",
-		"particle": "electrodynamics:block/steelcasing"
+		"particle": "voltaic:block/steelcasing"
 	},
 	"elements": [
 		{

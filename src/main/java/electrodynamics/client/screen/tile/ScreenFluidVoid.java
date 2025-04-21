@@ -1,9 +1,9 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerFluidVoid;
-import electrodynamics.prefab.screen.GenericScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import voltaic.prefab.screen.GenericScreen;
 
 public class ScreenFluidVoid extends GenericScreen<ContainerFluidVoid> {
 

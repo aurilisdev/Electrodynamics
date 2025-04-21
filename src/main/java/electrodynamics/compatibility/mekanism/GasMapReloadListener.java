@@ -18,8 +18,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import electrodynamics.Electrodynamics;
-import electrodynamics.api.gas.Gas;
 import electrodynamics.registers.ElectrodynamicsGases;
 import mekanism.api.MekanismAPI;
 import mekanism.api.chemical.Chemical;
@@ -29,6 +27,9 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.profiling.ProfilerFiller;
+import voltaic.Voltaic;
+import voltaic.api.gas.Gas;
+import voltaic.registers.VoltaicGases;
 
 public class GasMapReloadListener extends SimplePreparableReloadListener<JsonObject> {
 
@@ -44,7 +45,7 @@ public class GasMapReloadListener extends SimplePreparableReloadListener<JsonObj
     public final HashMap<Gas, Chemical> gasToChemicalMap = new HashMap<>();
     public final HashMap<Chemical, Gas> chemicalToGasMap = new HashMap<>();
 
-    private final Logger logger = Electrodynamics.LOGGER;
+    private final Logger logger = Voltaic.LOGGER;
 
     @Override
     protected JsonObject prepare(ResourceManager manager, ProfilerFiller profiler) {
@@ -92,7 +93,7 @@ public class GasMapReloadListener extends SimplePreparableReloadListener<JsonObj
             ResourceLocation gasKey = ResourceLocation.parse(set.getKey());
             ResourceLocation chemicalKey = ResourceLocation.parse(set.getValue().getAsString());
 
-            Gas gas = ElectrodynamicsGases.GAS_REGISTRY.get(gasKey);
+            Gas gas = VoltaicGases.GAS_REGISTRY.get(gasKey);
             Chemical chemical = MekanismAPI.CHEMICAL_REGISTRY.get(chemicalKey);
 
             gasToChemicalMap.put(gas, chemical);

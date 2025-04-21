@@ -22,11 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import electrodynamics.Electrodynamics;
-import electrodynamics.api.gas.Gas;
-import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.packet.types.client.PacketSetClientGasCollectorCards;
-import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
@@ -46,6 +42,10 @@ import net.minecraft.world.level.biome.Biome;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import voltaic.Voltaic;
+import voltaic.api.gas.Gas;
+import voltaic.api.gas.GasStack;
+import voltaic.registers.VoltaicGases;
 
 public class GasCollectorChromoCardsRegister extends SimplePreparableReloadListener<HashSet<JsonObject>> {
 
@@ -69,7 +69,7 @@ public class GasCollectorChromoCardsRegister extends SimplePreparableReloadListe
 
     private final HashMap<TagKey<Item>, AtmosphericResult> tags = new HashMap<>();
 
-    private final Logger logger = Electrodynamics.LOGGER;
+    private final Logger logger = Voltaic.LOGGER;
 
     @Override
     protected HashSet<JsonObject> prepare(ResourceManager manager, ProfilerFiller profiler) {
@@ -106,7 +106,7 @@ public class GasCollectorChromoCardsRegister extends SimplePreparableReloadListe
         json.forEach(set -> {
 
             String item = set.get(ITEM_KEY).getAsString();
-            Gas gas = ElectrodynamicsGases.GAS_REGISTRY.get(ResourceKey.create(ElectrodynamicsGases.GAS_REGISTRY_KEY, ResourceLocation.parse(set.get(GAS_KEY).getAsString())));
+            Gas gas = VoltaicGases.GAS_REGISTRY.get(ResourceKey.create(VoltaicGases.GAS_REGISTRY_KEY, ResourceLocation.parse(set.get(GAS_KEY).getAsString())));
             int amount = set.get(AMOUNT_KEY).getAsInt();
             int temperature = set.get(TEMPERATURE_KEY).getAsInt();
             int pressure = set.get(PRESSURE_KEY).getAsInt();

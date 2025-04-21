@@ -1,27 +1,9 @@
 package electrodynamics.common.tile.electricitygrid.generators;
 
-import electrodynamics.api.multiblock.subnodebased.parent.IMultiblockParentBlock;
-import electrodynamics.api.multiblock.subnodebased.parent.IMultiblockParentTile;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerWindmill;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.common.tile.TileMultiSubnode;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyTypes;
-import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSound;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.prefab.utilities.ElectricityUtils;
-import electrodynamics.prefab.utilities.object.CachedTileOutput;
-import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
@@ -34,15 +16,28 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import voltaic.api.multiblock.subnodebased.TileMultiSubnode;
+import voltaic.api.multiblock.subnodebased.parent.IMultiblockParentBlock;
+import voltaic.api.multiblock.subnodebased.parent.IMultiblockParentTile;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.sound.ITickableSound;
+import voltaic.prefab.sound.SoundBarrierMethods;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.object.CachedTileOutput;
+import voltaic.prefab.utilities.object.TransferPack;
 
 public class TileWindmill extends GenericGeneratorTile implements IMultiblockParentTile, ITickableSound {
 
 	protected CachedTileOutput output;
-	private Property<Boolean> isGenerating = property(new Property<>(PropertyTypes.BOOLEAN, "isGenerating", false));
-	public Property<Boolean> directionFlag = property(new Property<>(PropertyTypes.BOOLEAN, "directionFlag", false));
-	public Property<Double> generating = property(new Property<>(PropertyTypes.DOUBLE, "generating", 0.0));
-	private Property<Double> multiplier = property(new Property<>(PropertyTypes.DOUBLE, "multiplier", 1.0));
-	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyTypes.BOOLEAN, "redstonesignal", false));
+	private SingleProperty<Boolean> isGenerating = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "isGenerating", false));
+	public SingleProperty<Boolean> directionFlag = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "directionFlag", false));
+	public SingleProperty<Double> generating = property(new SingleProperty<>(PropertyTypes.DOUBLE, "generating", 0.0));
+	private SingleProperty<Double> multiplier = property(new SingleProperty<>(PropertyTypes.DOUBLE, "multiplier", 1.0));
+	private SingleProperty<Boolean> hasRedstoneSignal = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "redstonesignal", false));
 	public double savedTickRotation;
 	public double rotationSpeed;
 
@@ -53,35 +48,35 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
 		addComponent(new ComponentElectrodynamic(this, true, false).setOutputDirections(BlockEntityUtils.MachineDirection.BOTTOM));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerWindmill.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.windmill, this).createMenu((id, player) -> new ContainerWindmill(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerWindmill.VALID_UPGRADES).valid(machineValidator()));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.windmill.tag(), this).createMenu((id, player) -> new ContainerWindmill(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
-		if (hasRedstoneSignal.get()) {
-			generating.set(false);
+		if (hasRedstoneSignal.getValue()) {
+			generating.setValue(false);
 			return;
 		}
 		Direction facing = getFacing();
 		if (tickable.getTicks() % 40 == 0) {
-			isGenerating.set(level.isEmptyBlock(worldPosition.relative(facing).relative(Direction.UP)));
+			isGenerating.setValue(level.isEmptyBlock(worldPosition.relative(facing).relative(Direction.UP)));
 			float height = Math.max(0, level.getHeight());
 			double f = Math.log10((Math.max(0, getBlockPos().getY()) + height / 10.0) * 10.0 / height);
-			generating.set(Constants.WINDMILL_MAX_AMPERAGE * Mth.clamp(f, 0, 1));
+			generating.setValue(ElectroConstants.WINDMILL_MAX_AMPERAGE * Mth.clamp(f, 0, 1));
 		}
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(Direction.DOWN));
 		}
 		output.update(worldPosition.relative(Direction.DOWN));
-		if (isGenerating.get() && output.valid()) {
+		if (isGenerating.getValue() && output.valid()) {
 			ElectricityUtils.receivePower(output.getSafe(), Direction.UP, getProduced(), false);
 		}
 	}
 
 	protected void tickCommon(ComponentTickable tickable) {
-		savedTickRotation += (directionFlag.get() ? 1 : -1) * rotationSpeed;
-		rotationSpeed = Mth.clamp(rotationSpeed + 0.05 * (isGenerating.get() ? 1 : -1), 0.0, 1.0);
+		savedTickRotation += (directionFlag.getValue() ? 1 : -1) * rotationSpeed;
+		rotationSpeed = Mth.clamp(rotationSpeed + 0.05 * (isGenerating.getValue() ? 1 : -1), 0.0, 1.0);
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
@@ -96,7 +91,7 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 		if (level.isClientSide) {
 			return;
 		}
-		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
+		hasRedstoneSignal.setValue(level.hasNeighborSignal(getBlockPos()));
 	}
 
 	@Override
@@ -106,7 +101,7 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 
 	@Override
 	public boolean shouldPlaySound() {
-		return isGenerating.get();
+		return isGenerating.getValue();
 	}
 
 	@Override
@@ -116,22 +111,22 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 
 	@Override
 	public void setMultiplier(double val) {
-		multiplier.set(val);
+		multiplier.setValue(val);
 	}
 
 	@Override
 	public double getMultiplier() {
-		return multiplier.get();
+		return multiplier.getValue();
 	}
 
 	@Override
 	public TransferPack getProduced() {
-		return TransferPack.ampsVoltage(generating.get() * multiplier.get(), this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getVoltage());
+		return TransferPack.ampsVoltage(generating.getValue() * multiplier.getValue(), this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getVoltage());
 	}
 
 	@Override
 	public int getComparatorSignal() {
-		return isGenerating.get() ? 15 : 0;
+		return isGenerating.getValue() ? 15 : 0;
 	}
 
 	@Override

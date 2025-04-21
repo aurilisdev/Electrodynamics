@@ -1,15 +1,15 @@
 package electrodynamics.common.inventory.container.item;
 
-import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.prefab.inventory.container.slot.itemhandler.type.SlotItemHandlerUpgrade;
-import electrodynamics.prefab.inventory.container.types.GenericContainerItem;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import voltaic.api.item.CapabilityItemStackHandler;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.inventory.container.slot.itemhandler.type.SlotItemHandlerUpgrade;
+import voltaic.prefab.inventory.container.types.GenericContainerItem;
 
 public class ContainerElectricDrill extends GenericContainerItem {
 

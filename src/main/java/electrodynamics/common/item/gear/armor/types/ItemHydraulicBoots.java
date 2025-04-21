@@ -8,10 +8,6 @@ import java.util.function.Predicate;
 import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsArmorMaterials;
 import electrodynamics.registers.ElectrodynamicsCreativeTabs;
@@ -32,8 +28,13 @@ import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.fluid.RestrictedFluidHandlerItemStack;
+import voltaic.common.item.gear.ItemVoltaicArmor;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.prefab.utilities.VoltaicTextUtils;
 
-public class ItemHydraulicBoots extends ItemElectrodynamicsArmor {
+public class ItemHydraulicBoots extends ItemVoltaicArmor {
 
     public static final EnumMap<Type, Integer> DEFENSE_MAP = Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
         map.put(Type.HELMET, 0);
@@ -95,7 +96,7 @@ public class ItemHydraulicBoots extends ItemElectrodynamicsArmor {
 
         }
 
-        tooltip.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(handler.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY));
+        tooltip.add(VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(handler.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY));
 
         super.appendHoverText(stack, context, tooltip, flagIn);
     }
@@ -154,7 +155,7 @@ public class ItemHydraulicBoots extends ItemElectrodynamicsArmor {
     }
 
     public static Predicate<FluidStack> getPredicate() {
-        return fluid -> fluid.getFluid().builtInRegistryHolder().is(ElectrodynamicsTags.Fluids.HYDRAULIC_FLUID);
+        return fluid -> fluid.getFluid().builtInRegistryHolder().is(VoltaicTags.Fluids.HYDRAULIC_FLUID);
     }
 
     @Override

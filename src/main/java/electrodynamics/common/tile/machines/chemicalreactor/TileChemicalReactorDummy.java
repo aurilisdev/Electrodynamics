@@ -2,14 +2,7 @@ package electrodynamics.common.tile.machines.chemicalreactor;
 
 import org.jetbrains.annotations.Nullable;
 
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
 import electrodynamics.common.block.chemicalreactor.BlockChemicalReactorExtra;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.CapabilityInputType;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,6 +15,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.items.IItemHandler;
+import voltaic.api.electricity.ICapabilityElectrodynamic;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.CapabilityInputType;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
+import voltaic.prefab.tile.components.type.ComponentInventory;
 
 public class TileChemicalReactorDummy extends GenericTile {
 

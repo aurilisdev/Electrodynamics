@@ -1,20 +1,20 @@
 package electrodynamics.client.render.itemdecorators;
 
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.api.screen.ITexture;
 import electrodynamics.common.item.gear.armor.types.ItemCombatArmor;
-import electrodynamics.prefab.utilities.RenderingUtils;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.IItemDecorator;
+import voltaic.api.gas.GasStack;
+import voltaic.api.screen.ITexture;
+import voltaic.prefab.utilities.RenderingUtils;
+import voltaic.registers.VoltaicDataComponentTypes;
 
 public class ItemDecoratorCombatHelmet implements IItemDecorator {
     @Override
     public boolean render(GuiGraphics guiGraphics, Font font, ItemStack stack, int x, int y) {
 
-        GasStack gas = stack.getOrDefault(ElectrodynamicsDataComponentTypes.GAS_STACK.get(), GasStack.EMPTY);
+        GasStack gas = stack.getOrDefault(VoltaicDataComponentTypes.GAS_STACK.get(), GasStack.EMPTY);
 
         if(gas.isEmpty() || gas.getAmount() == ItemCombatArmor.HELMET_CAPACITY){
             return false;

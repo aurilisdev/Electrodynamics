@@ -1,23 +1,10 @@
 package electrodynamics.common.tile.pipelines.gas.gastransformer.compressor;
 
-import electrodynamics.api.capability.types.gas.IGasHandler;
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.api.gas.GasTank;
 import electrodynamics.common.inventory.container.tile.ContainerAdvancedCompressor;
 import electrodynamics.common.inventory.container.tile.ContainerAdvancedDecompressor;
-import electrodynamics.common.settings.Constants;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.common.tile.pipelines.gas.gastransformer.IMultiblockGasTransformer;
 import electrodynamics.common.tile.pipelines.gas.gastransformer.TileGasTransformerSideBlock;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyTypes;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
@@ -26,16 +13,29 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasStack;
+import voltaic.api.gas.GasTank;
+import voltaic.api.gas.IGasHandler;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentGasHandlerMulti;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
+import voltaic.prefab.tile.components.type.ComponentTickable;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public abstract class GenericTileAdvancedCompressor extends GenericTileCompressor implements IMultiblockGasTransformer {
 
     public boolean hasBeenDestroyed = false;
 
-    public final Property<Double> pressureMultiplier;
+    public final SingleProperty<Double> pressureMultiplier;
 
     public GenericTileAdvancedCompressor(BlockEntityType<?> type, BlockPos worldPos, BlockState blockState, double defaultMultiplier) {
         super(type, worldPos, blockState);
-        pressureMultiplier = property(new Property<>(PropertyTypes.DOUBLE, "pressuremultiplier", defaultMultiplier));
+        pressureMultiplier = property(new SingleProperty<>(PropertyTypes.DOUBLE, "pressuremultiplier", defaultMultiplier));
     }
 
 
@@ -58,9 +58,9 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
     public void updateAddonTanks(int count, boolean isLeft) {
         ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
         if (isLeft) {
-            handler.getInputTanks()[0].setCapacity(Constants.GAS_TRANSFORMER_BASE_INPUT_CAPCITY + Constants.GAS_TRANSFORMER_ADDON_TANK_CAPCITY * count);
+            handler.getInputTanks()[0].setCapacity(ElectroConstants.GAS_TRANSFORMER_BASE_INPUT_CAPCITY + ElectroConstants.GAS_TRANSFORMER_ADDON_TANK_CAPCITY * count);
         } else {
-            handler.getOutputTanks()[0].setCapacity(Constants.GAS_TRANSFORMER_BASE_OUTPUT_CAPCITY + Constants.GAS_TRANSFORMER_ADDON_TANK_CAPCITY * count);
+            handler.getOutputTanks()[0].setCapacity(ElectroConstants.GAS_TRANSFORMER_BASE_OUTPUT_CAPCITY + ElectroConstants.GAS_TRANSFORMER_ADDON_TANK_CAPCITY * count);
         }
     }
 
@@ -107,7 +107,7 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
         BlockEntity faceTile = getLevel().getBlockEntity(face);
         if (faceTile != null) {
 
-            IGasHandler handler = faceTile.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_BLOCK, faceTile.getBlockPos(), faceTile.getBlockState(), faceTile, direction.getOpposite());
+            IGasHandler handler = faceTile.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK, faceTile.getBlockPos(), faceTile.getBlockState(), faceTile, direction.getOpposite());
 
             if (handler != null) {
                 GasTank gasTank = gasHandler.getOutputTanks()[0];
@@ -136,7 +136,7 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
 
     @Override
     public double getPressureMultiplier() {
-        return pressureMultiplier.get();
+        return pressureMultiplier.getValue();
     }
 
     public static class TileAdvancedCompressor extends GenericTileAdvancedCompressor {
@@ -156,12 +156,12 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
 
         @Override
         public double getUsagePerTick() {
-            return Constants.ADVACNED_COMPRESSOR_USAGE_PER_TICK;
+            return ElectroConstants.ADVACNED_COMPRESSOR_USAGE_PER_TICK;
         }
 
         @Override
         public int getConversionRate() {
-            return Constants.ADVACNED_COMPRESSOR_CONVERSION_RATE;
+            return ElectroConstants.ADVACNED_COMPRESSOR_CONVERSION_RATE;
         }
     }
 
@@ -182,12 +182,12 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
 
         @Override
         public double getUsagePerTick() {
-            return Constants.ADVANCED_DECOMPRESSOR_USAGE_PER_TICK;
+            return ElectroConstants.ADVANCED_DECOMPRESSOR_USAGE_PER_TICK;
         }
 
         @Override
         public int getConversionRate() {
-            return Constants.ADVANCED_DECOMPRESSOR_CONVERSION_RATE;
+            return ElectroConstants.ADVANCED_DECOMPRESSOR_CONVERSION_RATE;
         }
     }
 

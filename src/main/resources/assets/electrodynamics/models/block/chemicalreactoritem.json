@@ -7,7 +7,7 @@
   ],
   "textures": {
     "0": "electrodynamics:block/model/chemicalreactor",
-    "particle": "electrodynamics:block/steelcasing"
+    "particle": "voltaic:block/steelcasing"
   },
   "groups": [
     {
@@ -112,7 +112,7 @@
       "parent": "minecraft:block/cube_all",
       "textures": {
         "0": "electrodynamics:block/model/chemicalreactor",
-        "particle": "electrodynamics:block/steelcasing"
+        "particle": "voltaic:block/steelcasing"
       },
       "elements": [
         {
@@ -2597,7 +2597,7 @@
       "parent": "minecraft:block/cube_all",
       "textures": {
         "0": "electrodynamics:block/model/chemicalreactor",
-        "particle": "electrodynamics:block/steelcasing"
+        "particle": "voltaic:block/steelcasing"
       },
       "elements": [
         {

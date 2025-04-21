@@ -3,10 +3,7 @@ package electrodynamics.common.block.gastransformer.util;
 import com.mojang.serialization.MapCodec;
 
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
-import electrodynamics.common.block.states.ElectrodynamicsBlockStates.AddonTankNeighborType;
-import electrodynamics.common.block.voxelshapes.VoxelShapeProvider;
 import electrodynamics.common.tile.pipelines.gas.gastransformer.TileGasTransformerAddonTank;
-import electrodynamics.prefab.block.GenericMachineBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -18,6 +15,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.phys.shapes.Shapes;
+import voltaic.common.block.voxelshapes.VoxelShapeProvider;
+import voltaic.prefab.block.GenericMachineBlock;
 
 public class BlockGasTransformerAddonTank extends GenericMachineBlock {
 
@@ -29,7 +28,7 @@ public class BlockGasTransformerAddonTank extends GenericMachineBlock {
 
     public BlockGasTransformerAddonTank() {
         super(TileGasTransformerAddonTank::new, SHAPE);
-        registerDefaultState(stateDefinition.any().setValue(ElectrodynamicsBlockStates.ADDONTANK_NEIGHBOR_STATUS, AddonTankNeighborType.NONE));
+        registerDefaultState(stateDefinition.any().setValue(ElectrodynamicsBlockStates.ADDONTANK_NEIGHBOR_STATUS, ElectrodynamicsBlockStates.AddonTankNeighborType.NONE));
     }
 
     @Override
@@ -52,15 +51,15 @@ public class BlockGasTransformerAddonTank extends GenericMachineBlock {
         BlockState below = world.getBlockState(pos.below());
         boolean isTankBelow = below.is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE) || below.is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK) || below.is(ElectrodynamicsBlocks.BLOCK_ADVANCED_THERMOELECTRICMANIPULATOR) || below.is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR) || below.is(ElectrodynamicsBlocks.BLOCK_DECOMPRESSOR);
         boolean isTankAbove = above.is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK);
-        AddonTankNeighborType type;
+        ElectrodynamicsBlockStates.AddonTankNeighborType type;
         if (isTankAbove && isTankBelow) {
-            type = AddonTankNeighborType.BOTTOMANDTOPTANK;
+            type = ElectrodynamicsBlockStates.AddonTankNeighborType.BOTTOMANDTOPTANK;
         } else if (isTankAbove) {
-            type = AddonTankNeighborType.TOPTANK;
+            type = ElectrodynamicsBlockStates.AddonTankNeighborType.TOPTANK;
         } else if (isTankBelow) {
-            type = AddonTankNeighborType.BOTTOMTANK;
+            type = ElectrodynamicsBlockStates.AddonTankNeighborType.BOTTOMTANK;
         } else {
-            type = AddonTankNeighborType.NONE;
+            type = ElectrodynamicsBlockStates.AddonTankNeighborType.NONE;
         }
         return baseState.setValue(ElectrodynamicsBlockStates.ADDONTANK_NEIGHBOR_STATUS, type);
     }

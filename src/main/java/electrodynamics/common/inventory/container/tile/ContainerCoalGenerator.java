@@ -2,15 +2,15 @@ package electrodynamics.common.inventory.container.tile;
 
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.tile.electricitygrid.generators.TileCoalGenerator;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotRestricted;
-import electrodynamics.prefab.inventory.container.types.GenericContainerBlockEntity;
-import electrodynamics.prefab.utilities.math.Color;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import voltaic.prefab.inventory.container.slot.item.type.SlotRestricted;
+import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
+import voltaic.prefab.utilities.math.Color;
 
 public class ContainerCoalGenerator extends GenericContainerBlockEntity<TileCoalGenerator> {
 

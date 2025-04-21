@@ -2,18 +2,18 @@ package electrodynamics.common.tile.pipelines.gas;
 
 import org.jetbrains.annotations.Nullable;
 
-import electrodynamics.api.capability.types.gas.IGasHandler;
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.tile.pipelines.GenericTileValve;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.CapabilityUtils;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasStack;
+import voltaic.api.gas.IGasHandler;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.CapabilityUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileGasValve extends GenericTileValve {
 
@@ -41,7 +41,7 @@ public class TileGasValve extends GenericTileValve {
 
             isLocked = true;
 
-            IGasHandler gas = relative.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_GASHANDLER_BLOCK, relative.getBlockPos(), relative.getBlockState(), relative, side);
+            IGasHandler gas = relative.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK, relative.getBlockPos(), relative.getBlockState(), relative, side);
 
             isLocked = false;
 

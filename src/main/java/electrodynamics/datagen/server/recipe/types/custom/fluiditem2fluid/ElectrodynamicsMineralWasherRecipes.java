@@ -1,13 +1,9 @@
 package electrodynamics.datagen.server.recipe.types.custom.fluiditem2fluid;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.fluid.subtype.SubtypeRoyalMineralFluid;
 import electrodynamics.common.fluid.subtype.SubtypeSulfateFluid;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.MineralWasherRecipe;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.builders.ElectrodynamicsRecipeBuilder.RecipeCategory;
-import electrodynamics.datagen.utils.recipe.builders.FluidItem2FluidBuilder;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.FluidTags;
@@ -15,6 +11,10 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
+import voltaic.datagen.utils.server.recipe.builders.BaseRecipeBuilder;
+import voltaic.datagen.utils.server.recipe.builders.FluidItem2FluidBuilder;
 
 public class ElectrodynamicsMineralWasherRecipes extends AbstractRecipeGenerator {
 
@@ -28,7 +28,7 @@ public class ElectrodynamicsMineralWasherRecipes extends AbstractRecipeGenerator
 	}
 
 	public ElectrodynamicsMineralWasherRecipes() {
-		this(References.ID);
+		this(Electrodynamics.ID);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ElectrodynamicsMineralWasherRecipes extends AbstractRecipeGenerator
 						//
 						.addItemTagInput(fluid.source, 1)
 						//
-						.addFluidTagInput(ElectrodynamicsTags.Fluids.SULFURIC_ACID, 1000)
+						.addFluidTagInput(VoltaicTags.Fluids.SULFURIC_ACID, 1000)
 						//
 						.save(output);
 			}
@@ -60,7 +60,7 @@ public class ElectrodynamicsMineralWasherRecipes extends AbstractRecipeGenerator
 						//
 						.addItemTagInput(fluid.source, 1)
 						//
-						.addFluidTagInput(ElectrodynamicsTags.Fluids.AQUA_REGIA, 1000)
+						.addFluidTagInput(VoltaicTags.Fluids.AQUA_REGIA, 1000)
 						//
 						.save(output);
 			}
@@ -69,7 +69,7 @@ public class ElectrodynamicsMineralWasherRecipes extends AbstractRecipeGenerator
 	}
 
 	public FluidItem2FluidBuilder<MineralWasherRecipe> newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name, String group) {
-		return new FluidItem2FluidBuilder<>(MineralWasherRecipe::new, stack, RecipeCategory.FLUID_ITEM_2_FLUID, modID, "mineral_washer/" + name, group, xp, ticks, usagePerTick);
+		return new FluidItem2FluidBuilder<>(MineralWasherRecipe::new, stack, BaseRecipeBuilder.RecipeCategory.FLUID_ITEM_2_FLUID, modID, "mineral_washer/" + name, group, xp, ticks, usagePerTick);
 	}
 
 }

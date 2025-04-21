@@ -1,11 +1,6 @@
 package electrodynamics.datagen.client;
 
-import java.util.Locale;
-
-import javax.annotation.Nullable;
-
-import electrodynamics.api.References;
-import electrodynamics.client.ClientRegister;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -23,7 +18,6 @@ import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeNugget;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
@@ -32,32 +26,18 @@ import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.datagen.DataGenerators;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsItems;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluids;
-import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
-import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
-import net.neoforged.neoforge.client.model.generators.ModelFile;
-import net.neoforged.neoforge.client.model.generators.ModelFile.ExistingModelFile;
-import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.datagen.utils.client.BaseItemModelsProvider;
 
-public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
-
-	public final String modID;
-
-	public ElectrodynamicsItemModelsProvider(PackOutput output, ExistingFileHelper existingFileHelper, String modID) {
-		super(output, modID, existingFileHelper);
-		this.modID = modID;
-	}
+public class ElectrodynamicsItemModelsProvider extends BaseItemModelsProvider {
 
 	public ElectrodynamicsItemModelsProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-		this(output, existingFileHelper, References.ID);
+		super(output, existingFileHelper, Electrodynamics.ID);
 	}
 
 	@Override
@@ -96,10 +76,8 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		layeredItem(ElectrodynamicsItems.ITEM_RUBBERBOOTS, Parent.GENERATED, itemLoc("armor/rubberboots"));
 
 		getBucketModel(ElectrodynamicsItems.ITEM_CANISTERREINFORCED, Parent.FORGE_DEFAULT).fluid(Fluids.WATER).applyFluidLuminosity(true).applyTint(true).end().texture("base", itemLoc("canisterreinforced/base")).texture("fluid", itemLoc("canisterreinforced/fluid"));
-		layeredItem(ElectrodynamicsItems.GUIDEBOOK, Parent.GENERATED, itemLoc("guidebook"));
 		layeredBuilder(name(ElectrodynamicsItems.ITEM_MULTIMETER), Parent.GENERATED, itemLoc("multimeter")).transforms().transform(ItemDisplayContext.GUI).scale(0.9F).end();
 		layeredBuilder(name(ElectrodynamicsItems.ITEM_SEISMICSCANNER), Parent.GENERATED, itemLoc("seismicscanner")).transforms().transform(ItemDisplayContext.GUI).scale(0.75F).end();
-		layeredItem(ElectrodynamicsItems.ITEM_WRENCH, Parent.GENERATED, itemLoc("wrench"));
 		layeredItem(ElectrodynamicsItems.ITEM_BATTERY, Parent.GENERATED, itemLoc("battery"));
 		layeredItem(ElectrodynamicsItems.ITEM_LITHIUMBATTERY, Parent.GENERATED, itemLoc("lithiumbattery"));
 		layeredItem(ElectrodynamicsItems.ITEM_CARBYNEBATTERY, Parent.GENERATED, itemLoc("carbynebattery"));
@@ -223,107 +201,6 @@ public class ElectrodynamicsItemModelsProvider extends ItemModelProvider {
 		simpleBlockItem(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.gaspipepump), existingBlock(blockLoc("gaspipepumpitem")));
 		simpleBlockItem(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fluidpipepump), existingBlock(blockLoc("fluidpipepumpitem")));
 
-	}
-
-	public void layeredItem(DeferredHolder<Item, ? extends Item> item, Parent parent, ResourceLocation... textures) {
-		layeredItem(name(item), parent, textures);
-	}
-
-	public void layeredItem(Item item, Parent parent, ResourceLocation... textures) {
-		layeredItem(name(item), parent, textures);
-	}
-
-	public void layeredItem(String name, Parent parent, ResourceLocation... textures) {
-		layeredBuilder(name, parent, textures);
-	}
-
-	public void toggleableItem(DeferredHolder<Item, ? extends Item> item, String toggle, Parent parentOff, Parent parentOn, ResourceLocation[] offText, ResourceLocation[] onText) {
-		toggleableItem(name(item), toggle, parentOff, parentOn, offText, onText);
-	}
-
-	public void toggleableItem(String name, String toggle, Parent parentOff, Parent parentOn, ResourceLocation[] offText, ResourceLocation[] onText) {
-		ItemModelBuilder off = layeredBuilder(name, parentOff, offText);
-		ItemModelBuilder on = layeredBuilder(name + toggle, parentOn, onText);
-		off.override().predicate(ClientRegister.ON, 1.0F).model(on).end();
-	}
-
-	public ItemModelBuilder layeredBuilder(String name, Parent parent, ResourceLocation... textures) {
-		if (textures == null || textures.length == 0) {
-			throw new UnsupportedOperationException("You need to provide at least one texture");
-		}
-		ItemModelBuilder builder = withExistingParent(name, parent.loc());
-		int counter = 0;
-		for (ResourceLocation location : textures) {
-			builder.texture("layer" + counter, location);
-			counter++;
-		}
-		return builder;
-	}
-
-	public DynamicFluidContainerModelBuilder<ItemModelBuilder> getBucketModel(DeferredHolder<Item, ? extends Item> item, Parent parent) {
-		return getBucketModel(name(item), parent);
-	}
-
-	public DynamicFluidContainerModelBuilder<ItemModelBuilder> getBucketModel(String name, Parent parent) {
-		return withExistingParent(name, parent.loc).customLoader(DynamicFluidContainerModelBuilder::begin);
-	}
-
-	public ItemModelBuilder simpleBlockItem(Block block, ModelFile model) {
-		return getBuilder(key(block).getPath()).parent(model);
-	}
-
-	public ResourceLocation key(Block block) {
-		return BuiltInRegistries.BLOCK.getKey(block);
-	}
-
-	public ResourceLocation itemLoc(String texture) {
-		return modLoc("item/" + texture);
-	}
-
-	public ResourceLocation blockLoc(String texture) {
-		return modLoc("block/" + texture);
-	}
-
-	public String name(DeferredHolder<Item, ? extends Item> item) {
-		return name(item.get());
-	}
-
-	public String name(Item item) {
-		return BuiltInRegistries.ITEM.getKey(item).getPath();
-	}
-
-	public ExistingModelFile existingBlock(DeferredHolder<Block, ? extends Block> block) {
-		return existingBlock(block.getId());
-	}
-
-	public ExistingModelFile existingBlock(Block block) {
-		return existingBlock(BuiltInRegistries.BLOCK.getKey(block));
-	}
-
-	public ExistingModelFile existingBlock(ResourceLocation loc) {
-		return getExistingFile(loc);
-	}
-
-	public enum Parent {
-
-		GENERATED(),
-		HANDHELD(),
-		FORGE_DEFAULT("neoforge", "item/default");
-
-		@Nullable
-		private final ResourceLocation loc;
-
-		Parent() {
-			loc = null;
-		}
-
-		Parent(String id, String loc) {
-			this.loc = ResourceLocation.fromNamespaceAndPath(id, loc);
-		}
-
-		public ResourceLocation loc() {
-			return loc == null ? ResourceLocation.parse(toString().toLowerCase(Locale.ROOT)) : loc;
-		}
 	}
 
 }

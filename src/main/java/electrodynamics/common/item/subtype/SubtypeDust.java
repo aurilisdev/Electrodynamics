@@ -4,37 +4,37 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import electrodynamics.api.ISubtype;
+import voltaic.api.ISubtype;
 import electrodynamics.common.block.subtype.SubtypeGlass;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypeDust implements ISubtype {
-	iron(ElectrodynamicsTags.Items.DUST_IRON, () -> Items.IRON_INGOT, 200),
-	gold(ElectrodynamicsTags.Items.DUST_GOLD, () -> Items.GOLD_INGOT, 200),
-	copper(ElectrodynamicsTags.Items.DUST_COPPER, () -> Items.COPPER_INGOT, 200),
-	tin(ElectrodynamicsTags.Items.DUST_TIN, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.tin), 200),
-	silver(ElectrodynamicsTags.Items.DUST_SILVER, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.silver), 200),
-	steel(ElectrodynamicsTags.Items.DUST_STEEL, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.steel), 200),
-	lead(ElectrodynamicsTags.Items.DUST_LEAD, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.lead), 200),
-	bronze(ElectrodynamicsTags.Items.DUST_BRONZE, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.bronze), 200),
-	superconductive(ElectrodynamicsTags.Items.DUST_SUPERCONDUCTIVE, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.superconductive), 200),
-	endereye(ElectrodynamicsTags.Items.DUST_ENDEREYE),
-	vanadium(ElectrodynamicsTags.Items.DUST_VANADIUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.vanadium), 200),
-	sulfur(ElectrodynamicsTags.Items.DUST_SULFUR),
-	niter(ElectrodynamicsTags.Items.DUST_SALTPETER),
-	obsidian(ElectrodynamicsTags.Items.DUST_OBSIDIAN),
-	lithium(ElectrodynamicsTags.Items.DUST_LITHIUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.lithium), 200),
-	salt(ElectrodynamicsTags.Items.DUST_SALT),
-	silica(ElectrodynamicsTags.Items.DUST_SILICA, () -> ElectrodynamicsItems.ITEMS_CUSTOMGLASS.getValue(SubtypeGlass.clear), 200),
-	molybdenum(ElectrodynamicsTags.Items.DUST_MOLYBDENUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.molybdenum), 200),
-	netherite(ElectrodynamicsTags.Items.DUST_NETHERITE, () -> Items.NETHERITE_SCRAP, 200),
-	aluminum(ElectrodynamicsTags.Items.DUST_ALUMINUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.aluminum), 200),
-	chromium(ElectrodynamicsTags.Items.DUST_CHROMIUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.chromium), 200),
-	titanium(ElectrodynamicsTags.Items.DUST_TITANIUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.titanium), 200);
+	iron(VoltaicTags.Items.DUST_IRON, () -> Items.IRON_INGOT, 200),
+	gold(VoltaicTags.Items.DUST_GOLD, () -> Items.GOLD_INGOT, 200),
+	copper(VoltaicTags.Items.DUST_COPPER, () -> Items.COPPER_INGOT, 200),
+	tin(VoltaicTags.Items.DUST_TIN, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.tin), 200),
+	silver(VoltaicTags.Items.DUST_SILVER, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.silver), 200),
+	steel(VoltaicTags.Items.DUST_STEEL, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.steel), 200),
+	lead(VoltaicTags.Items.DUST_LEAD, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.lead), 200),
+	bronze(VoltaicTags.Items.DUST_BRONZE, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.bronze), 200),
+	superconductive(VoltaicTags.Items.DUST_SUPERCONDUCTIVE, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.superconductive), 200),
+	endereye(VoltaicTags.Items.DUST_ENDEREYE),
+	vanadium(VoltaicTags.Items.DUST_VANADIUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.vanadium), 200),
+	sulfur(VoltaicTags.Items.DUST_SULFUR),
+	niter(VoltaicTags.Items.DUST_SALTPETER),
+	obsidian(VoltaicTags.Items.DUST_OBSIDIAN),
+	lithium(VoltaicTags.Items.DUST_LITHIUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.lithium), 200),
+	salt(VoltaicTags.Items.DUST_SALT),
+	silica(VoltaicTags.Items.DUST_SILICA, () -> ElectrodynamicsItems.ITEMS_CUSTOMGLASS.getValue(SubtypeGlass.clear), 200),
+	molybdenum(VoltaicTags.Items.DUST_MOLYBDENUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.molybdenum), 200),
+	netherite(VoltaicTags.Items.DUST_NETHERITE, () -> Items.NETHERITE_SCRAP, 200),
+	aluminum(VoltaicTags.Items.DUST_ALUMINUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.aluminum), 200),
+	chromium(VoltaicTags.Items.DUST_CHROMIUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.chromium), 200),
+	titanium(VoltaicTags.Items.DUST_TITANIUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.titanium), 200);
 
 	public final TagKey<Item> tag;
 	@Nullable

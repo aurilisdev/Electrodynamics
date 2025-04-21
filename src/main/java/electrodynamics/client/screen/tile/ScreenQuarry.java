@@ -3,33 +3,32 @@ package electrodynamics.client.screen.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.inventory.container.tile.ContainerQuarry;
-import electrodynamics.common.settings.Constants;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.common.tile.machines.quarry.TileCoolantResavoir;
 import electrodynamics.common.tile.machines.quarry.TileMotorComplex;
 import electrodynamics.common.tile.machines.quarry.TileQuarry;
 import electrodynamics.common.tile.machines.quarry.TileSeismicRelay;
-import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGuiTab;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGuiTab.GuiInfoTabTextures;
-import electrodynamics.prefab.screen.component.types.wrapper.WrapperInventoryIO;
-import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.entity.player.Inventory;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.prefab.screen.GenericScreen;
+import voltaic.prefab.screen.component.types.ScreenComponentSlot;
+import voltaic.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
+import voltaic.prefab.screen.component.types.guitab.ScreenComponentGuiTab;
+import voltaic.prefab.screen.component.types.wrapper.WrapperInventoryIO;
+import voltaic.prefab.screen.component.utils.AbstractScreenComponentInfo;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.math.Color;
 
 public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 
@@ -37,10 +36,10 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		super(container, inv, titleIn);
 		imageHeight += 58;
 		inventoryLabelY += 58;
-		addComponent(new ScreenComponentGuiTab(GuiInfoTabTextures.REGULAR, IconType.MINING_LOCATION, this::getMiningLocationInformation, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 5));
-		addComponent(new ScreenComponentGuiTab(GuiInfoTabTextures.REGULAR, IconType.QUARRY_COMPONENTS, this::getComponentInformation, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 4));
-		addComponent(new ScreenComponentGuiTab(GuiInfoTabTextures.REGULAR, IconType.FLUID_BLUE, this::getFluidInformation, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 3));
-		addComponent(new ScreenComponentGuiTab(GuiInfoTabTextures.REGULAR, IconType.ENCHANTMENT, this::getEnchantmentInformation, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 2));
+		addComponent(new ScreenComponentGuiTab(ScreenComponentGuiTab.GuiInfoTabTextures.REGULAR, ScreenComponentSlot.IconType.MINING_LOCATION, this::getMiningLocationInformation, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 5));
+		addComponent(new ScreenComponentGuiTab(ScreenComponentGuiTab.GuiInfoTabTextures.REGULAR, ScreenComponentSlot.IconType.QUARRY_COMPONENTS, this::getComponentInformation, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 4));
+		addComponent(new ScreenComponentGuiTab(ScreenComponentGuiTab.GuiInfoTabTextures.REGULAR, ScreenComponentSlot.IconType.FLUID_BLUE, this::getFluidInformation, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 3));
+		addComponent(new ScreenComponentGuiTab(ScreenComponentGuiTab.GuiInfoTabTextures.REGULAR, ScreenComponentSlot.IconType.ENCHANTMENT, this::getEnchantmentInformation, -AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 2));
 		addComponent(new ScreenComponentElectricInfo(this::getElectricInformation, -AbstractScreenComponentInfo.SIZE + 1, 2));
 
 		new WrapperInventoryIO(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75, 82 + 58, 8, 72 + 58);
@@ -51,9 +50,9 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		TileQuarry quarry = menu.getSafeHost();
 		if (quarry != null) {
 			ComponentElectrodynamic electro = quarry.getComponent(IComponentType.Electrodynamic);
-			list.add(ElectroTextUtils.gui("quarry.ringusage", ChatFormatter.getChatDisplayShort(quarry.setupPowerUsage.get() * 20, DisplayUnit.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(ElectroTextUtils.gui("quarry.miningusage", ChatFormatter.getChatDisplayShort(quarry.quarryPowerUsage.get() * 20, DisplayUnit.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-			list.add(ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnit.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("quarry.ringusage", ChatFormatter.getChatDisplayShort(quarry.setupPowerUsage.getValue() * 20, DisplayUnits.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("quarry.miningusage", ChatFormatter.getChatDisplayShort(quarry.quarryPowerUsage.getValue() * 20, DisplayUnits.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+			list.add(ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		}
 		return list;
 	}
@@ -64,9 +63,9 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		if (quarry == null) {
 			return list;
 		}
-		list.add(ElectroTextUtils.gui("quarry.fortune", Component.literal(quarry.fortuneLevel.get() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		list.add(ElectroTextUtils.gui("quarry.silktouch", Component.literal(quarry.silkTouchLevel.get() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		list.add(ElectroTextUtils.gui("quarry.unbreaking", Component.literal(quarry.unbreakingLevel.get() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("quarry.fortune", Component.literal(quarry.fortuneLevel.getValue() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("quarry.silktouch", Component.literal(quarry.silkTouchLevel.getValue() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("quarry.unbreaking", Component.literal(quarry.unbreakingLevel.getValue() + "").withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		return list;
 
 	}
@@ -82,7 +81,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		if (complex == null) {
 			text = Component.literal("N/A");
 		} else {
-			text = ChatFormatter.getChatDisplayShort(complex.speed.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK, DisplayUnit.BUCKETS);
+			text = ChatFormatter.getChatDisplayShort(complex.speed.getValue() * ElectroConstants.QUARRY_WATERUSAGE_PER_BLOCK, DisplayUnits.BUCKETS);
 		}
 		list.add(ElectroTextUtils.gui("quarry.wateruse", text.withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		return list;
@@ -102,7 +101,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 			formatting = ChatFormatting.RED;
 		} else {
 			ComponentElectrodynamic electro = complex.getComponent(IComponentType.Electrodynamic);
-			if (electro.getJoulesStored() >= Constants.MOTORCOMPLEX_USAGE_PER_TICK * complex.powerMultiplier.get()) {
+			if (electro.getJoulesStored() >= ElectroConstants.MOTORCOMPLEX_USAGE_PER_TICK * complex.powerMultiplier.getValue()) {
 				formatting = ChatFormatting.GREEN;
 			} else {
 				formatting = ChatFormatting.YELLOW;
@@ -126,7 +125,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 
 		if (resavoir == null) {
 			formatting = ChatFormatting.RED;
-		} else if (complex == null || resavoir.hasEnoughFluid((int) (complex.powerMultiplier.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK))) {
+		} else if (complex == null || resavoir.hasEnoughFluid((int) (complex.powerMultiplier.getValue() * ElectroConstants.QUARRY_WATERUSAGE_PER_BLOCK))) {
 			formatting = ChatFormatting.GREEN;
 		} else {
 			formatting = ChatFormatting.YELLOW;
@@ -146,15 +145,15 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		}
 
 		Component location;
-		if (quarry.miningPos.get().equals(BlockEntityUtils.OUT_OF_REACH)) {
+		if (quarry.miningPos.getValue().equals(BlockEntityUtils.OUT_OF_REACH)) {
 			location = ElectroTextUtils.gui("quarry.notavailable").withStyle(ChatFormatting.RED);
 		} else {
-			location = Component.literal(quarry.miningPos.get().toShortString()).withStyle(ChatFormatting.GRAY);
+			location = Component.literal(quarry.miningPos.getValue().toShortString()).withStyle(ChatFormatting.GRAY);
 		}
 
 		list.add(ElectroTextUtils.gui("quarry.miningposition", location).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 
-		if (quarry.hasHead.get()) {
+		if (quarry.hasHead.getValue()) {
 			location = ElectroTextUtils.gui("quarry.hashead").withStyle(ChatFormatting.GRAY);
 		} else {
 			location = ElectroTextUtils.gui("quarry.nohead").withStyle(ChatFormatting.RED);
@@ -174,7 +173,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 			return;
 		}
 		// void card
-		if (quarry.hasItemVoid.get()) {
+		if (quarry.hasItemVoid.getValue()) {
 			graphics.drawString(font, ElectroTextUtils.gui("quarry.voiditems"), 85, 14, Color.TEXT_GRAY.color(), false);
 		} else {
 			graphics.drawString(font, ElectroTextUtils.gui("quarry.needvoidcard"), 85, 14, Color.TEXT_GRAY.color(), false);
@@ -185,13 +184,13 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		graphics.drawString(font, ElectroTextUtils.gui("quarry.status"), 5, 32, Color.TEXT_GRAY.color(), false);
 
 		int height = 42;
-		if (!quarry.isAreaCleared.get()) {
+		if (!quarry.isAreaCleared.getValue()) {
 			graphics.drawString(font, ElectroTextUtils.gui("quarry.clearingarea"), 10, height, Color.TEXT_GRAY.color(), false);
-		} else if (!quarry.hasRing.get()) {
+		} else if (!quarry.hasRing.getValue()) {
 			graphics.drawString(font, ElectroTextUtils.gui("quarry.setup"), 10, height, Color.TEXT_GRAY.color(), false);
-		} else if (quarry.running.get()) {
+		} else if (quarry.running.getValue()) {
 			graphics.drawString(font, ElectroTextUtils.gui("quarry.mining"), 10, height, Color.TEXT_GRAY.color(), false);
-		} else if (quarry.isFinished.get()) {
+		} else if (quarry.isFinished.getValue()) {
 			graphics.drawString(font, ElectroTextUtils.gui("quarry.finished"), 10, height, Color.TEXT_GRAY.color(), false);
 		} else {
 			graphics.drawString(font, ElectroTextUtils.gui("quarry.notmining"), 10, height, Color.TEXT_GRAY.color(), false);
@@ -205,13 +204,13 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 	}
 
 	private String getErrorKey(TileQuarry quarry) {
-		if (!quarry.hasSeismicRelay.get()) {
+		if (!quarry.hasSeismicRelay.getValue()) {
 			return "quarry.norelay";
 		}
-		if (!quarry.hasMotorComplex.get()) {
+		if (!quarry.hasMotorComplex.getValue()) {
 			return "quarry.nomotorcomplex";
 		}
-		if (!quarry.hasCoolantResavoir.get()) {
+		if (!quarry.hasCoolantResavoir.getValue()) {
 			return "quarry.nocoolantresavoir";
 		}
 		if (!quarry.hasCorners()) {
@@ -219,17 +218,17 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 		}
 		if (!quarry.isMotorComplexPowered()) {
 			return "quarry.motorcomplexnotpowered";
-		} else if (!quarry.isPowered.get()) {
+		} else if (!quarry.isPowered.getValue()) {
 			return "quarry.nopower";
-		} else if (quarry.isTryingToMineFrame.get()) {
+		} else if (quarry.isTryingToMineFrame.getValue()) {
 			return "quarry.miningframe";
-		} else if (!quarry.isAreaCleared.get()) {
+		} else if (!quarry.isAreaCleared.getValue()) {
 			return "quarry.areanotclear";
-		} else if (!quarry.hasRing.get()) {
+		} else if (!quarry.hasRing.getValue()) {
 			return "quarry.noring";
-		} else if (!quarry.hasHead.get()) {
+		} else if (!quarry.hasHead.getValue()) {
 			return "quarry.missinghead";
-		} else if (!quarry.getFluidResavoir().hasEnoughFluid((int) (quarry.getMotorComplex().powerMultiplier.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK))) {
+		} else if (!quarry.getFluidResavoir().hasEnoughFluid((int) (quarry.getMotorComplex().powerMultiplier.getValue() * ElectroConstants.QUARRY_WATERUSAGE_PER_BLOCK))) {
 			return "quarry.nocoolant";
 		} else if (!quarry.<ComponentInventory>getComponent(IComponentType.Inventory).areOutputsEmpty()) {
 			return "quarry.inventoryroom";

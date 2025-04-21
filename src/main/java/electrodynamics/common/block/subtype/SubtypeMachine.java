@@ -1,14 +1,6 @@
 package electrodynamics.common.block.subtype;
 
-import java.util.function.Supplier;
-
-import electrodynamics.api.ISubtype;
-import electrodynamics.api.multiblock.subnodebased.Subnode;
-import electrodynamics.api.multiblock.subnodebased.parent.IMultiblockParentBlock;
-import electrodynamics.api.tile.IMachine;
-import electrodynamics.api.tile.MachineProperties;
 import electrodynamics.common.block.voxelshapes.ElectrodynamicsVoxelShapes;
-import electrodynamics.common.block.voxelshapes.VoxelShapeProvider;
 import electrodynamics.common.tile.electricitygrid.TileCircuitBreaker;
 import electrodynamics.common.tile.electricitygrid.TileCircuitMonitor;
 import electrodynamics.common.tile.electricitygrid.TileCurrentRegulator;
@@ -87,6 +79,14 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import voltaic.api.ISubtype;
+import voltaic.api.multiblock.subnodebased.Subnode;
+import voltaic.api.multiblock.subnodebased.parent.IMultiblockParentBlock;
+import voltaic.api.tile.IMachine;
+import voltaic.api.tile.MachineProperties;
+import voltaic.common.block.voxelshapes.VoxelShapeProvider;
+
+import java.util.function.Supplier;
 
 public enum SubtypeMachine implements ISubtype, IMachine {
 

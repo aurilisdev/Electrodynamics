@@ -1,15 +1,6 @@
 package electrodynamics.common.tile.electricitygrid;
 
-import electrodynamics.Electrodynamics;
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,6 +10,14 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.Voltaic;
+import voltaic.api.electricity.ICapabilityElectrodynamic;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.tile.components.type.ComponentTickable;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.object.TransferPack;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileCircuitBreaker extends GenericTile {
 
@@ -72,7 +71,7 @@ public class TileCircuitBreaker extends GenericTile {
 
         isLocked = true;
 
-        ICapabilityElectrodynamic electro = level.getCapability(ElectrodynamicsCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, output.getOpposite());
+        ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, output.getOpposite());
 
         if (electro == null) {
             isLocked = false;
@@ -91,7 +90,7 @@ public class TileCircuitBreaker extends GenericTile {
         }
 
         if (electro.getAmpacity() > 0 && electro.getAmpacity() < transfer.getAmpsInTicks()) {
-            Electrodynamics.LOGGER.info("tripped");
+            Voltaic.LOGGER.info("tripped");
             tripped = true;
             tripCurveTimer = TRIP_CURVE;
             level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
@@ -104,27 +103,27 @@ public class TileCircuitBreaker extends GenericTile {
 
         if (debug) {
 
-            TransferPack accepted = electro.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, transfer.getVoltage()), debug);
+            TransferPack accepted = electro.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * ElectroConstants.CIRCUITBREAKER_EFFICIENCY, transfer.getVoltage()), debug);
 
             isLocked = false;
 
             if (accepted.getJoules() > 0) {
 
-                return TransferPack.joulesVoltage(accepted.getJoules() / Constants.CIRCUITBREAKER_EFFICIENCY, accepted.getVoltage());
+                return TransferPack.joulesVoltage(accepted.getJoules() / ElectroConstants.CIRCUITBREAKER_EFFICIENCY, accepted.getVoltage());
 
             }
             return TransferPack.EMPTY;
 
         }
 
-        TransferPack accepted = electro.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, transfer.getVoltage()), debug);
+        TransferPack accepted = electro.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * ElectroConstants.CIRCUITBREAKER_EFFICIENCY, transfer.getVoltage()), debug);
 
         isLocked = false;
 
-        return TransferPack.joulesVoltage(accepted.getJoules() / Constants.CIRCUITBREAKER_EFFICIENCY, accepted.getVoltage());
+        return TransferPack.joulesVoltage(accepted.getJoules() / ElectroConstants.CIRCUITBREAKER_EFFICIENCY, accepted.getVoltage());
     }
 
-    public TransferPack getConnectedLoad(LoadProfile lastEnergy, Direction dir) {
+    public TransferPack getConnectedLoad(ICapabilityElectrodynamic.LoadProfile lastEnergy, Direction dir) {
 
         if (recievedRedstoneSignal || isLocked || tripped) {
             return TransferPack.EMPTY;
@@ -144,7 +143,7 @@ public class TileCircuitBreaker extends GenericTile {
 
         isLocked = true;
 
-        ICapabilityElectrodynamic electro = level.getCapability(ElectrodynamicsCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, output.getOpposite());
+        ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, output.getOpposite());
 
         if (electro == null) {
             isLocked = false;
@@ -173,7 +172,7 @@ public class TileCircuitBreaker extends GenericTile {
 
         }
 
-        LoadProfile transformed = new LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.lastUsage().getVoltage()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage()));
+        ICapabilityElectrodynamic.LoadProfile transformed = new ICapabilityElectrodynamic.LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * ElectroConstants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.lastUsage().getVoltage()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * ElectroConstants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage()));
 
         isLocked = true;
 
@@ -181,7 +180,7 @@ public class TileCircuitBreaker extends GenericTile {
 
         isLocked = false;
 
-        return TransferPack.joulesVoltage(returner.getJoules() / Constants.CIRCUITBREAKER_EFFICIENCY, returner.getVoltage());
+        return TransferPack.joulesVoltage(returner.getJoules() / ElectroConstants.CIRCUITBREAKER_EFFICIENCY, returner.getVoltage());
     }
 
     public double getMinimumVoltage() {
@@ -195,7 +194,7 @@ public class TileCircuitBreaker extends GenericTile {
         }
         isLocked = true;
 
-        ICapabilityElectrodynamic electro = output.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getBlockPos(), output.getBlockState(), output, facing.getOpposite());
+        ICapabilityElectrodynamic electro = output.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getBlockPos(), output.getBlockState(), output, facing.getOpposite());
 
         if (electro == null) {
             isLocked = false;
@@ -219,7 +218,7 @@ public class TileCircuitBreaker extends GenericTile {
         }
         isLocked = true;
 
-        ICapabilityElectrodynamic electro = output.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getBlockPos(), output.getBlockState(), output, facing.getOpposite());
+        ICapabilityElectrodynamic electro = output.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getBlockPos(), output.getBlockState(), output, facing.getOpposite());
 
         if (electro == null) {
             isLocked = false;

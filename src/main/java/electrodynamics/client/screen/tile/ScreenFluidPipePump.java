@@ -2,14 +2,14 @@ package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipePump;
 import electrodynamics.common.tile.pipelines.fluid.TileFluidPipePump;
-import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
-import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import voltaic.prefab.screen.GenericScreen;
+import voltaic.prefab.screen.component.editbox.ScreenComponentEditBox;
+import voltaic.prefab.screen.component.types.ScreenComponentSimpleLabel;
+import voltaic.prefab.utilities.math.Color;
 
 public class ScreenFluidPipePump extends GenericScreen<ContainerFluidPipePump> {
 
@@ -53,7 +53,7 @@ public class ScreenFluidPipePump extends GenericScreen<ContainerFluidPipePump> {
 			this.priority.setValue(priority + "");
 		}
 
-		pump.priority.set(priority);
+		pump.priority.setValue(priority);
 
 	}
 
@@ -64,7 +64,7 @@ public class ScreenFluidPipePump extends GenericScreen<ContainerFluidPipePump> {
 			needsUpdate = false;
 			TileFluidPipePump pump = menu.getSafeHost();
 			if (pump != null) {
-				priority.setValue("" + pump.priority.get());
+				priority.setValue("" + pump.priority.getValue());
 			}
 		}
 	}

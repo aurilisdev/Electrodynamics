@@ -2,26 +2,26 @@ package electrodynamics.common.item.subtype;
 
 import java.util.function.Supplier;
 
-import electrodynamics.api.ISubtype;
-import electrodynamics.common.tags.ElectrodynamicsTags;
+import voltaic.api.ISubtype;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypeImpureDust implements ISubtype {
-	iron(ElectrodynamicsTags.Items.IMPURE_DUST_IRON, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.iron)),
-	gold(ElectrodynamicsTags.Items.IMPURE_DUST_GOLD, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.gold)),
-	copper(ElectrodynamicsTags.Items.IMPURE_DUST_COPPER, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.copper)),
-	tin(ElectrodynamicsTags.Items.IMPURE_DUST_TIN, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.tin)),
-	silver(ElectrodynamicsTags.Items.IMPURE_DUST_SILVER, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.silver)),
-	lead(ElectrodynamicsTags.Items.IMPURE_DUST_LEAD, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.lead)),
-	vanadium(ElectrodynamicsTags.Items.IMPURE_DUST_VANADIUM, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.vanadium)),
-	lithium(ElectrodynamicsTags.Items.IMPURE_DUST_LITHIUM, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.lithium)),
-	molybdenum(ElectrodynamicsTags.Items.IMPURE_DUST_MOLYBDENUM, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.molybdenum)),
-	netherite(ElectrodynamicsTags.Items.IMPURE_DUST_NETHERITE, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.netherite)),
-	aluminum(ElectrodynamicsTags.Items.IMPURE_DUST_ALUMINUM, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.aluminum)),
-	chromium(ElectrodynamicsTags.Items.IMPURE_DUST_CHROMIUM, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.chromium)),
-	titanium(ElectrodynamicsTags.Items.IMPURE_DUST_TITANIUM, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.titanium));
+	iron(VoltaicTags.Items.IMPURE_DUST_IRON, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.iron)),
+	gold(VoltaicTags.Items.IMPURE_DUST_GOLD, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.gold)),
+	copper(VoltaicTags.Items.IMPURE_DUST_COPPER, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.copper)),
+	tin(VoltaicTags.Items.IMPURE_DUST_TIN, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.tin)),
+	silver(VoltaicTags.Items.IMPURE_DUST_SILVER, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.silver)),
+	lead(VoltaicTags.Items.IMPURE_DUST_LEAD, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.lead)),
+	vanadium(VoltaicTags.Items.IMPURE_DUST_VANADIUM, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.vanadium)),
+	lithium(VoltaicTags.Items.IMPURE_DUST_LITHIUM, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.lithium)),
+	molybdenum(VoltaicTags.Items.IMPURE_DUST_MOLYBDENUM, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.molybdenum)),
+	netherite(VoltaicTags.Items.IMPURE_DUST_NETHERITE, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.netherite)),
+	aluminum(VoltaicTags.Items.IMPURE_DUST_ALUMINUM, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.aluminum)),
+	chromium(VoltaicTags.Items.IMPURE_DUST_CHROMIUM, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.chromium)),
+	titanium(VoltaicTags.Items.IMPURE_DUST_TITANIUM, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.titanium));
 
 
 	public final TagKey<Item> tag;

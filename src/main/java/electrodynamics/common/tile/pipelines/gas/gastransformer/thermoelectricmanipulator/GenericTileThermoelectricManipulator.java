@@ -2,25 +2,9 @@ package electrodynamics.common.tile.pipelines.gas.gastransformer.thermoelectricm
 
 import java.util.function.BiConsumer;
 
-import electrodynamics.api.gas.Gas;
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.api.gas.GasTank;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.inventory.container.tile.ContainerThermoelectricManipulator;
 import electrodynamics.common.tile.pipelines.gas.gastransformer.GenericTileGasTransformer;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyTypes;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.utils.IComponentFluidHandler;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
 import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,6 +16,19 @@ import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import voltaic.api.gas.Gas;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasStack;
+import voltaic.api.gas.GasTank;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.components.utils.IComponentFluidHandler;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.registers.VoltaicCapabilities;
+import voltaic.registers.VoltaicGases;
 
 public abstract class GenericTileThermoelectricManipulator extends GenericTileGasTransformer {
 
@@ -40,7 +37,7 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
      * loop with the steam turbine from Nuclear Science.
      */
 
-    public final Property<Integer> targetTemperature = property(new Property<>(PropertyTypes.INTEGER, "targettemperature", Gas.ROOM_TEMPERATURE));
+    public final SingleProperty<Integer> targetTemperature = property(new SingleProperty<>(PropertyTypes.INTEGER, "targettemperature", Gas.ROOM_TEMPERATURE));
 
     private boolean isFluid = false;
     private boolean changeState = false;
@@ -49,12 +46,12 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
     public GenericTileThermoelectricManipulator(BlockEntityType<?> type, BlockPos worldPos, BlockState blockState) {
         super(type, worldPos, blockState);
-        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(getUsagePerTick() * 10));
+        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE).maxJoules(getUsagePerTick() * 10));
         addComponent(getFluidHandler());
     }
 
     @Override
-    public boolean canProcess(ComponentProcessor processor) {
+    public boolean canProcess(ComponentProcessor processor, int procNumber) {
 
         Direction facing = getFacing();
 
@@ -110,11 +107,11 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
         ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-        if (electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.get()) {
+        if (electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.getValue()) {
             return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF, false);
         }
 
-        if (inputTank.getGas().getGas().getCondensationTemp() >= targetTemperature.get()) {
+        if (inputTank.getGas().getGas().getCondensationTemp() >= targetTemperature.getValue()) {
 
             // gas is condensed
             ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
@@ -137,9 +134,9 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
             ElectrodynamicsBlockStates.ManipulatorHeatingStatus status;
 
-            if (inputTank.getGas().getTemperature() < targetTemperature.get()) {
+            if (inputTank.getGas().getTemperature() < targetTemperature.getValue()) {
                 status = ElectrodynamicsBlockStates.ManipulatorHeatingStatus.HEAT;
-            } else if (inputTank.getGas().getTemperature() > targetTemperature.get()) {
+            } else if (inputTank.getGas().getTemperature() > targetTemperature.getValue()) {
                 status = ElectrodynamicsBlockStates.ManipulatorHeatingStatus.COOL;
             } else {
                 status = ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF;
@@ -163,9 +160,9 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
         ElectrodynamicsBlockStates.ManipulatorHeatingStatus status;
 
-        if (inputTank.getGas().getTemperature() < targetTemperature.get()) {
+        if (inputTank.getGas().getTemperature() < targetTemperature.getValue()) {
             status = ElectrodynamicsBlockStates.ManipulatorHeatingStatus.HEAT;
-        } else if (inputTank.getGas().getTemperature() > targetTemperature.get()) {
+        } else if (inputTank.getGas().getTemperature() > targetTemperature.getValue()) {
             status = ElectrodynamicsBlockStates.ManipulatorHeatingStatus.COOL;
         } else {
             status = ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF;
@@ -187,7 +184,7 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
         ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-        if (electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.get()) {
+        if (electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.getValue()) {
             return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF, false);
         }
 
@@ -199,13 +196,13 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
             return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF, false);
         }
 
-        evaporatedGas = ElectrodynamicsGases.MAPPED_GASSES.getOrDefault(BuiltInRegistries.FLUID.wrapAsHolder(inputTank.getFluid().getFluid()), ElectrodynamicsGases.EMPTY.value());
+        evaporatedGas = VoltaicGases.MAPPED_GASSES.getOrDefault(BuiltInRegistries.FLUID.wrapAsHolder(inputTank.getFluid().getFluid()), VoltaicGases.EMPTY.value());
 
         if (evaporatedGas.isEmpty()) {
             return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF, false);
         }
 
-        if (targetTemperature.get() <= evaporatedGas.getCondensationTemp()) {
+        if (targetTemperature.getValue() <= evaporatedGas.getCondensationTemp()) {
             return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF, false);
         }
 
@@ -217,11 +214,11 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
     }
 
     @Override
-    public void process(ComponentProcessor processor) {
+    public void process(ComponentProcessor processor, int procNumber) {
         ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
         ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
 
-        int conversionRate = (int) (getConversionRate() * processor.operatingSpeed.get());
+        int conversionRate = (int) (getConversionRate() * processor.operatingSpeed.getValue());
 
         // fluid to gas
         if (isFluid && changeState) {
@@ -229,7 +226,7 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
             FluidTank inputTank = fluidHandler.getInputTanks()[0];
             GasTank outputTank = gasHandler.getOutputTanks()[0];
 
-            int deltaT = targetTemperature.get() - evaporatedGas.getCondensationTemp();
+            int deltaT = targetTemperature.getValue() - evaporatedGas.getCondensationTemp();
 
             conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
 
@@ -261,7 +258,7 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
             GasTank inputTank = gasHandler.getInputTanks()[0];
             FluidTank outputTank = fluidHandler.getOutputTanks()[0];
 
-            int targetTemp = targetTemperature.get() < inputTank.getGas().getGas().getCondensationTemp() ? inputTank.getGas().getGas().getCondensationTemp() : targetTemperature.get();
+            int targetTemp = targetTemperature.getValue() < inputTank.getGas().getGas().getCondensationTemp() ? inputTank.getGas().getGas().getCondensationTemp() : targetTemperature.getValue();
 
             int deltaT = targetTemp - inputTank.getGas().getTemperature();
 
@@ -305,7 +302,7 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
             GasTank inputTank = gasHandler.getInputTanks()[0];
             GasTank outputTank = gasHandler.getOutputTanks()[0];
 
-            int deltaT = targetTemperature.get() - inputTank.getGas().getTemperature();
+            int deltaT = targetTemperature.getValue() - inputTank.getGas().getTemperature();
 
             conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
 

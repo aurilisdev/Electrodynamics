@@ -7,15 +7,9 @@ import java.util.function.Consumer;
 import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
-import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
-import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsArmorMaterials;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
@@ -39,8 +33,15 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.item.IItemElectric;
+import voltaic.common.item.gear.ItemVoltaicArmor;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.prefab.utilities.VoltaicTextUtils;
+import voltaic.registers.VoltaicDataComponentTypes;
 
-public class ItemServoLeggings extends ItemElectrodynamicsArmor implements IItemElectric {
+public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric {
 
     public static final EnumMap<Type, Integer> DEFENSE_MAP = Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
         map.put(Type.HELMET, 0);
@@ -95,20 +96,20 @@ public class ItemServoLeggings extends ItemElectrodynamicsArmor implements IItem
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
         super.appendHoverText(stack, context, tooltip, flagIn);
-        tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-        tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
         staticAppendTooltips(stack, context, tooltip, flagIn);
     }
 
     protected static void staticAppendTooltips(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
         IItemElectric.addBatteryTooltip(stack, context, tooltip);
-        if (stack.getOrDefault(ElectrodynamicsDataComponentTypes.ON, false)) {
+        if (stack.getOrDefault(VoltaicDataComponentTypes.ON, false)) {
             tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.DARK_GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
         } else {
             tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.DARK_GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
         }
 
-        tooltip.add(getModeText(stack.getOrDefault(ElectrodynamicsDataComponentTypes.MODE, 0)));
+        tooltip.add(getModeText(stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0)));
     }
 
     public static Component getModeText(int mode) {
@@ -143,30 +144,30 @@ public class ItemServoLeggings extends ItemElectrodynamicsArmor implements IItem
     protected static void wearingTick(ItemStack stack, Level world, Player player) {
         if (!world.isClientSide) {
             IItemElectric legs = (IItemElectric) stack.getItem();
-            if (stack.getOrDefault(ElectrodynamicsDataComponentTypes.ON, false) && legs.getJoulesStored(stack) >= JOULES_PER_TICK) {
-                switch (stack.getOrDefault(ElectrodynamicsDataComponentTypes.MODE, 0)) {
+            if (stack.getOrDefault(VoltaicDataComponentTypes.ON, false) && legs.getJoulesStored(stack) >= JOULES_PER_TICK) {
+                switch (stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0)) {
                     case 0:
-                        stack.set(ElectrodynamicsDataComponentTypes.RESET, false);
-                        stack.set(ElectrodynamicsDataComponentTypes.SUCESS, true);
+                        stack.set(VoltaicDataComponentTypes.RESET, false);
+                        stack.set(VoltaicDataComponentTypes.SUCESS, true);
 						player.getAttribute(Attributes.STEP_HEIGHT).addPermanentModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
                         legs.extractPower(stack, JOULES_PER_TICK, false);
                         break;
                     case 1:
-                        stack.set(ElectrodynamicsDataComponentTypes.RESET, false);
-                        stack.set(ElectrodynamicsDataComponentTypes.SUCESS, true);
+                        stack.set(VoltaicDataComponentTypes.RESET, false);
+                        stack.set(VoltaicDataComponentTypes.SUCESS, true);
                         player.getAttribute(Attributes.STEP_HEIGHT).addPermanentModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
                         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false, false, false));
                         legs.extractPower(stack, JOULES_PER_TICK, false);
                         break;
                     case 2:
-                        stack.set(ElectrodynamicsDataComponentTypes.RESET, false);
-                        stack.set(ElectrodynamicsDataComponentTypes.SUCESS, false);
+                        stack.set(VoltaicDataComponentTypes.RESET, false);
+                        stack.set(VoltaicDataComponentTypes.SUCESS, false);
                         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false, false, false));
                         legs.extractPower(stack, JOULES_PER_TICK, false);
                         break;
                     case 3:
-                        stack.set(ElectrodynamicsDataComponentTypes.SUCESS, false);
-                        if (!stack.getOrDefault(ElectrodynamicsDataComponentTypes.RESET, false)) {
+                        stack.set(VoltaicDataComponentTypes.SUCESS, false);
+                        if (!stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
                             player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
                         }
                         break;
@@ -174,26 +175,26 @@ public class ItemServoLeggings extends ItemElectrodynamicsArmor implements IItem
                         break;
                 }
             } else {
-                stack.set(ElectrodynamicsDataComponentTypes.SUCESS, false);
-                if (!stack.getOrDefault(ElectrodynamicsDataComponentTypes.RESET, false)) {
+                stack.set(VoltaicDataComponentTypes.SUCESS, false);
+                if (!stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
                     player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
 
                 }
             }
-        } else if (stack.getOrDefault(ElectrodynamicsDataComponentTypes.RESET, false)) {
-            switch (stack.getOrDefault(ElectrodynamicsDataComponentTypes.MODE, 0)) {
+        } else if (stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
+            switch (stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0)) {
                 case 0, 1:
                     player.getAttribute(Attributes.STEP_HEIGHT).addPermanentModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
                     break;
                 case 2, 3:
-                    if (!stack.getOrDefault(ElectrodynamicsDataComponentTypes.RESET, false)) {
+                    if (!stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
                         player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
                     }
                     break;
                 default:
                     break;
             }
-        } else if (!stack.getOrDefault(ElectrodynamicsDataComponentTypes.RESET, false)) {
+        } else if (!stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
             player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
         }
 

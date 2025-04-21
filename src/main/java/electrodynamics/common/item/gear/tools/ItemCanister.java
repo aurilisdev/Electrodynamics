@@ -3,10 +3,6 @@ package electrodynamics.common.item.gear.tools;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.inventory.InventoryTickConsumer;
-import electrodynamics.common.item.ItemElectrodynamics;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -34,8 +30,13 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.fluid.RestrictedFluidHandlerItemStack;
+import voltaic.api.inventory.InventoryTickConsumer;
+import voltaic.common.item.ItemVoltaic;
+import voltaic.prefab.utilities.VoltaicTextUtils;
 
-public class ItemCanister extends ItemElectrodynamics {
+public class ItemCanister extends ItemVoltaic {
 
     public static final int MAX_FLUID_CAPACITY = 5000;
 
@@ -102,7 +103,7 @@ public class ItemCanister extends ItemElectrodynamics {
         if(!restricted.getFluid().isEmpty()) {
             tooltip.add(restricted.getFluid().getFluidType().getDescription().copy().withStyle(ChatFormatting.GRAY));
         }
-        tooltip.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(restricted.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_FLUID_CAPACITY)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(restricted.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_FLUID_CAPACITY)).withStyle(ChatFormatting.DARK_GRAY));
 
         super.appendHoverText(stack, context, tooltip, flagIn);
     }

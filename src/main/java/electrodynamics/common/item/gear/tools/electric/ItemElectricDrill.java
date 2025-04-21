@@ -3,22 +3,12 @@ package electrodynamics.common.item.gear.tools.electric;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.References;
-import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
-import electrodynamics.api.creativetab.CreativeTabSupplier;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.item.IItemElectric;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.inventory.container.item.ContainerElectricDrill;
 import electrodynamics.common.item.ItemDrillHead;
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.prefab.inventory.container.types.GenericContainerItem;
-import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.math.Color;
-import electrodynamics.registers.ElectrodynamicsDataComponentTypes;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
@@ -47,6 +37,17 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import voltaic.api.creativetab.CreativeTabSupplier;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.item.CapabilityItemStackHandler;
+import voltaic.api.item.IItemElectric;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.prefab.inventory.container.types.GenericContainerItem;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.prefab.utilities.VoltaicTextUtils;
+import voltaic.prefab.utilities.math.Color;
+import voltaic.registers.VoltaicDataComponentTypes;
 
 public class ItemElectricDrill extends DiggerItem implements IItemElectric, CreativeTabSupplier {
 
@@ -63,7 +64,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
     private final ElectricItemProperties properties;
 
     public ItemElectricDrill(ElectricItemProperties properties, Holder<CreativeModeTab> creativeTab) {
-        super(ElectricItemTier.ELECTRIC_DRILL, ElectrodynamicsTags.Blocks.ELECTRIC_DRILL_BLOCKS, properties.durability(0).attributes(createAttributes(ElectricItemTier.ELECTRIC_DRILL, 4, -2.4F)));
+        super(ElectricItemTier.ELECTRIC_DRILL, VoltaicTags.Blocks.ELECTRIC_DRILL_BLOCKS, properties.durability(0).attributes(createAttributes(ElectricItemTier.ELECTRIC_DRILL, 4, -2.4F)));
         this.properties = properties;
         this.creativeTab = creativeTab;
         DRILLS.add(this);
@@ -102,7 +103,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
     @Override
     public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
 
-        IItemElectric.setEnergyStored(stack, getJoulesStored(stack) - stack.getOrDefault(ElectrodynamicsDataComponentTypes.POWER_USAGE, POWER_USAGE));
+        IItemElectric.setEnergyStored(stack, getJoulesStored(stack) - stack.getOrDefault(VoltaicDataComponentTypes.POWER_USAGE, POWER_USAGE));
 
         return super.mineBlock(stack, worldIn, state, pos, entityLiving);
     }
@@ -119,14 +120,14 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-        tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 
         IItemElectric.addBatteryTooltip(stack, context, tooltip);
-        tooltip.add(ElectroTextUtils.tooltip("electricdrill.miningspeed", ChatFormatter.getChatDisplayShort(getHead(stack).speedBoost * 100, DisplayUnit.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-        tooltip.add(ElectroTextUtils.tooltip("electricdrill.usage", ChatFormatter.getChatDisplayShort(stack.getOrDefault(ElectrodynamicsDataComponentTypes.POWER_USAGE, POWER_USAGE), DisplayUnit.JOULES).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(ElectroTextUtils.tooltip("electricdrill.miningspeed", ChatFormatter.getChatDisplayShort(getHead(stack).speedBoost * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(ElectroTextUtils.tooltip("electricdrill.usage", ChatFormatter.getChatDisplayShort(stack.getOrDefault(VoltaicDataComponentTypes.POWER_USAGE, POWER_USAGE), DisplayUnits.JOULES).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 
-        tooltip.add(ElectroTextUtils.tooltip("electricdrill.overclock", ChatFormatter.getChatDisplayShort(getSpeedBoost(stack) * 100, DisplayUnit.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(ElectroTextUtils.tooltip("electricdrill.overclock", ChatFormatter.getChatDisplayShort(getSpeedBoost(stack) * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
     }
 
     @Override
@@ -187,18 +188,18 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
     }
 
     public static double getSpeedBoost(ItemStack stack) {
-        return stack.getOrDefault(ElectrodynamicsDataComponentTypes.SPEED, 0.0);
+        return stack.getOrDefault(VoltaicDataComponentTypes.SPEED, 0.0);
     }
 
     public static SubtypeDrillHead getHead(ItemStack stack) {
-        return SubtypeDrillHead.values()[stack.getOrDefault(ElectrodynamicsDataComponentTypes.ENUM, 0)];
+        return SubtypeDrillHead.values()[stack.getOrDefault(VoltaicDataComponentTypes.ENUM, 0)];
     }
 
     public static void saveHead(ItemStack stack, SubtypeDrillHead head) {
-        stack.set(ElectrodynamicsDataComponentTypes.ENUM, head.ordinal());
+        stack.set(VoltaicDataComponentTypes.ENUM, head.ordinal());
     }
 
-	@EventBusSubscriber(value = Dist.CLIENT, modid = References.ID, bus = EventBusSubscriber.Bus.MOD)
+	@EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
     private static class ColorHandler {
 
         @SubscribeEvent

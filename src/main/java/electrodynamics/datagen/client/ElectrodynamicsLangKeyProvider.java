@@ -1,7 +1,6 @@
 package electrodynamics.datagen.client;
 
-import electrodynamics.api.References;
-import electrodynamics.api.gas.Gas;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeGlass;
@@ -26,7 +25,6 @@ import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeNugget;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
@@ -51,31 +49,15 @@ import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
-import net.minecraft.core.Holder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.material.Fluid;
-import net.neoforged.neoforge.common.data.LanguageProvider;
-import net.neoforged.neoforge.registries.DeferredHolder;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.datagen.utils.client.BaseLangKeyProvider;
 
-public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
-
-	public final Locale locale;
-	public final String modID;
-
-	public ElectrodynamicsLangKeyProvider(PackOutput output, Locale locale, String modID) {
-		super(output, modID, locale.toString());
-		this.locale = locale;
-		this.modID = modID;
-	}
+public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {
 
 	public ElectrodynamicsLangKeyProvider(PackOutput output, Locale local) {
-		this(output, local, References.ID);
+		super(output, local, Electrodynamics.ID);
 	}
 
 	@Override
@@ -109,10 +91,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addItem(ElectrodynamicsItems.ITEM_INSULATION, "Insulation");
 			addItem(ElectrodynamicsItems.ITEM_JETPACK, "Jetpack");
 			addItem(ElectrodynamicsItems.ITEM_KINETICRAILGUN, "Kinetic Rail Gun");
-			addItem(ElectrodynamicsItems.GUIDEBOOK, "EEC 1st Edition");
 			addItem(ElectrodynamicsItems.ITEM_CANISTERREINFORCED, "Reinforced Canister");
 			addItem(ElectrodynamicsItems.ITEM_PORTABLECYLINDER, "Portable Gas Cylinder");
-			addItem(ElectrodynamicsItems.ITEM_WRENCH, "Wrench");
 			addItem(ElectrodynamicsItems.ITEM_MECHANIZEDCROSSBOW, "Mechanized Crossbow");
 			addItem(ElectrodynamicsItems.ITEM_MULTIMETER, "Handheld Multimeter");
 			addItem(ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES, "Night Vision Goggles");
@@ -304,7 +284,6 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addBlock(ElectrodynamicsBlocks.BLOCK_FRAME_CORNER, "Quarry Frame Corner");
 			addBlock(ElectrodynamicsBlocks.BLOCK_LOGISTICALMANAGER, "Logistical Manager");
 			addBlock(ElectrodynamicsBlocks.BLOCK_SEISMICMARKER, "Seismic Marker");
-			addBlock(ElectrodynamicsBlocks.BLOCK_MULTISUBNODE, "Multiblock Subnode");
 
 			addBlock(ElectrodynamicsBlocks.BLOCKS_CUSTOMGLASS.getValue(SubtypeGlass.aluminum), "ALON");
 			addBlock(ElectrodynamicsBlocks.BLOCKS_CUSTOMGLASS.getValue(SubtypeGlass.clear), "Clear Glass");
@@ -741,8 +720,6 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addFluid(ElectrodynamicsFluids.FLUIDS_ROYALMINERAL.getValue(SubtypeRoyalMineralFluid.titanium), "Royal Titanium Solution");
 			addFluid(ElectrodynamicsFluids.FLUIDS_ROYALMINERAL.getValue(SubtypeRoyalMineralFluid.vanadium), "Royal Vanadium Solution");
 
-
-			addGas(ElectrodynamicsGases.EMPTY, "Empty");
 			addGas(ElectrodynamicsGases.HYDROGEN, "Hydrogen");
 			addGas(ElectrodynamicsGases.OXYGEN, "Oxygen");
 			addGas(ElectrodynamicsGases.STEAM, "Steam");
@@ -803,7 +780,6 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addContainer(SubtypeMachine.wiremilldouble, "Double Wire Mill");
 			addContainer(SubtypeMachine.wiremilltriple, "Triple Wire Mill");
 
-			addContainer("guidebook", "Guidebook");
 			addContainer("seismicscanner", "Sonic Scanner");
 			addContainer("electricdrill", "Electric Drill");
 
@@ -895,7 +871,6 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addTooltip("servolegs.none", "NONE");
 			addTooltip("currbattery", "Battery: %s");
 			addTooltip("gasvent", "Voids gases");
-			addTooltip("validupgrades", "Valid Upgrades:");
 			addTooltip("electricdrill.miningspeed", "Mining Speed: %s");
 
 			addTooltip("pipematerial", "Material: %s");
@@ -1079,79 +1054,6 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuiLabel("operator", "Operator");
 			addGuiLabel("value", "Value");
 
-			addGuiLabel("displayunit.infinity.name", "Infinite");
-
-			addGuiLabel("displayunit.ampere.name", "Ampere");
-			addGuiLabel("displayunit.ampere.nameplural", "Amperes");
-			addGuiLabel("displayunit.ampere.symbol", "A");
-			addGuiLabel("displayunit.amphour.name", "Amp Hour");
-			addGuiLabel("displayunit.amphour.nameplural", "Amp Hours");
-			addGuiLabel("displayunit.amphour.symbol", "Ah");
-			addGuiLabel("displayunit.voltage.name", "Volt");
-			addGuiLabel("displayunit.voltage.nameplural", "Volts");
-			addGuiLabel("displayunit.voltage.symbol", "V");
-			addGuiLabel("displayunit.watt.name", "Watt");
-			addGuiLabel("displayunit.watt.nameplural", "Watts");
-			addGuiLabel("displayunit.watt.symbol", "W");
-			addGuiLabel("displayunit.watthour.name", "Watt Hour");
-			addGuiLabel("displayunit.watthour.nameplural", "Watt Hours");
-			addGuiLabel("displayunit.watthour.symbol", "Wh");
-			addGuiLabel("displayunit.resistance.name", "Ohm");
-			addGuiLabel("displayunit.resistance.nameplural", "Ohms");
-			addGuiLabel("displayunit.resistance.symbol", "" + '\u03A9');
-			addGuiLabel("displayunit.conductance.name", "Siemen");
-			addGuiLabel("displayunit.conductance.nameplural", "Siemens");
-			addGuiLabel("displayunit.conductance.symbol", "S");
-			addGuiLabel("displayunit.joules.name", "Joule");
-			addGuiLabel("displayunit.joules.nameplural", "Joules");
-			addGuiLabel("displayunit.joules.symbol", "J");
-			addGuiLabel("displayunit.buckets.name", "Bucket");
-			addGuiLabel("displayunit.buckets.nameplural", "Buckets");
-			addGuiLabel("displayunit.buckets.symbol", "B");
-			addGuiLabel("displayunit.tempkelvin.name", "Kelvin");
-			addGuiLabel("displayunit.tempkelvin.nameplural", "Kelvin");
-			addGuiLabel("displayunit.tempkelvin.symbol", "K");
-			addGuiLabel("displayunit.tempcelcius.name", "Celcius");
-			addGuiLabel("displayunit.tempcelcius.nameplural", "Celcius");
-			addGuiLabel("displayunit.tempcelcius.symbol", "C");
-			addGuiLabel("displayunit.tempfahrenheit.name", "Fahrenheit");
-			addGuiLabel("displayunit.tempfahrenheit.nameplural", "Fahrenheit");
-			addGuiLabel("displayunit.tempfahrenheit.symbol", "F");
-			addGuiLabel("displayunit.timeseconds.name", "Second");
-			addGuiLabel("displayunit.timeseconds.nameplural", "Seconds");
-			addGuiLabel("displayunit.timeseconds.symbol", "s");
-			addGuiLabel("displayunit.pressureatm.name", "Atmosphere");
-			addGuiLabel("displayunit.pressureatm.nameplural", "Atmospheres");
-			addGuiLabel("displayunit.pressureatm.symbol", "ATM");
-			addGuiLabel("displayunit.percentage.name", "Percent");
-			addGuiLabel("displayunit.percentage.nameplural", "Percent");
-			addGuiLabel("displayunit.percentage.symbol", "%");
-
-			addGuiLabel("displayunit.timeticks.name", "Tick");
-			addGuiLabel("displayunit.timeticks.nameplural", "Ticks");
-			addGuiLabel("displayunit.timeticks.symbol", "t");
-
-			addGuiLabel("displayunit.forgeenergyunit.name", "Forge Energy Unit");
-			addGuiLabel("displayunit.forgeenergyunit.nameplural", "Forge Energy Units");
-			addGuiLabel("displayunit.forgeenergyunit.symbol", "FE");
-
-			addGuiLabel("measurementunit.pico.name", "Pico");
-			addGuiLabel("measurementunit.pico.symbol", "p");
-			addGuiLabel("measurementunit.nano.name", "Nano");
-			addGuiLabel("measurementunit.nano.symbol", "n");
-			addGuiLabel("measurementunit.micro.name", "Micro");
-			addGuiLabel("measurementunit.micro.symbol", "" + '\u00B5');
-			addGuiLabel("measurementunit.milli.name", "Milli");
-			addGuiLabel("measurementunit.milli.symbol", "m");
-			addGuiLabel("measurementunit.none.name", "");
-			addGuiLabel("measurementunit.none.symbol", "");
-			addGuiLabel("measurementunit.kilo.name", "Kilo");
-			addGuiLabel("measurementunit.kilo.symbol", "k");
-			addGuiLabel("measurementunit.mega.name", "Mega");
-			addGuiLabel("measurementunit.mega.symbol", "M");
-			addGuiLabel("measurementunit.giga.name", "Giga");
-			addGuiLabel("measurementunit.giga.symbol", "G");
-
 			add("keycategory.electrodynamics", "Electrodynamics");
 			addKeyLabel("jetpackascend", "Ascend with Jetpack");
 			addKeyLabel("togglenvgs", "Toggle Night Vision Goggles");
@@ -1189,8 +1091,6 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addDamageSource("electricity", "%s was electrocuted");
 			addDamageSource("acceleratedbolt", "%1$s was perforated by %2$s");
 			addDamageSource("plasmabolt", "%1$s was vaporized by %2$s");
-
-			addChatMessage("guidebookclick", "Click Here");
 
 			addSubtitle(ElectrodynamicsSounds.SOUND_HUM, "Machine Hums");
 			addSubtitle(ElectrodynamicsSounds.SOUND_MINERALCRUSHER, "Hammer crushes");
@@ -1336,13 +1236,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addAdvancement("multimeter.title", "Multimetering");
 			addAdvancement("multimeter.desc", "Make a Multimeter!");
 
-			addGuidebook("title", "Electrodynamics Electric Code 1st Edition");
-			addGuidebook("titlequote", "\"There is nothing more permanent than a temporary solution.\"");
-
-			addGuidebook("availablemodules", "Available Modules");
-			addGuidebook("chapters", "Chapters");
-
-			addGuidebook(References.ID, "Electrodynamics");
+			addGuidebook(Electrodynamics.ID, "Electrodynamics");
 
 			addGuidebook("chapter.gettingstarted", "Getting Started");
 
@@ -1968,118 +1862,13 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 			addGuidebook("chapter.electrolosischamber.l8", "Instead, speed is measured by the energy satisfaction of the machine, the rating of which is displayed via the energy tab in the GUI. A satisfaction of 100% will result in the chamber processing 1 milibucket of fluid per tick. Any greater than this will result in the chamber processing multiple milibuckets of fluid every tick. In" +
 					" short, the more power you throw at it, the faster it will go.");
 
-			addGuidebook("searchparameters", "Parameters");
-			addGuidebook("selectall", "All");
-			addGuidebook("selectnone", "None");
-			addGuidebook("casesensitive", "Case-Sensitive");
-
 		}
 
-	}
-
-	public void addItem(DeferredHolder<Item, ? extends Item> item, String translation) {
-		add(item.get(), translation);
-	}
-
-	public void addItem(Item item, String translation) {
-		add(item, translation);
-	}
-
-	public void addBlock(DeferredHolder<Block, ? extends Block> block, String translation) {
-		add(block.get(), translation);
-	}
-
-	public void addBlock(Block block, String translation) {
-		add(block, translation);
-	}
-
-	public void addTooltip(String key, String translation) {
-		add("tooltip." + modID + "." + key, translation);
-	}
-
-	public void addFluid(DeferredHolder<Fluid, ? extends Fluid> fluid, String translation){
-		addFluid(fluid.get(), translation);
-	}
-	public void addFluid(Fluid fluid, String translation) {
-		add("fluid." + modID + "." + BuiltInRegistries.FLUID.getKey(fluid).getPath(), translation);
-	}
-
-	public void addGas(Holder<Gas> gas, String translation) {
-		addGas(gas.value(), translation);
-	}
-
-	public void addGas(Gas gas, String translation) {
-		add("gas." + modID + "." + ElectrodynamicsGases.GAS_REGISTRY.getKey(gas).getPath(), translation);
 	}
 
 	public void addContainer(SubtypeMachine key, String translation) {
 		addContainer(key.name(), translation);
 	}
 
-	public void addContainer(String key, String translation) {
-		add("container." + key, translation);
-	}
-
-	public void addCommand(String key, String translation) {
-		add("command." + modID + "." + key, translation);
-	}
-
-	public void addSubtitle(String key, String translation) {
-		add("subtitles." + modID + "." + key, translation);
-	}
-
-	public void addSubtitle(DeferredHolder<SoundEvent, SoundEvent> sound, String translation) {
-		addSubtitle(sound.getId().getPath(), translation);
-	}
-
-	public void addGuiLabel(String key, String translation) {
-		add("gui." + modID + "." + key, translation);
-	}
-
-	@Override
-	public void addDimension(ResourceKey<Level> dim, String translation) {
-		addDimension(dim.location().getPath(), translation);
-	}
-
-	public void addDimension(String key, String translation) {
-		add("dimension." + modID + "." + key, translation);
-	}
-
-	public void addKeyLabel(String key, String translation) {
-		add("key." + modID + "." + key, translation);
-	}
-
-	public void addJei(String key, String translation) {
-		add("jei." + key, translation);
-	}
-
-	public void addDamageSource(String key, String translation) {
-		add("death.attack." + key, translation);
-	}
-
-	public void addChatMessage(String key, String translation) {
-		add("chat." + modID + "." + key, translation);
-	}
-
-	public void addGuidebook(String key, String translation) {
-		add("guidebook." + modID + "." + key, translation);
-	}
-
-	public void addAdvancement(String key, String translation) {
-		add("advancement." + modID + "." + key, translation);
-	}
-
-	public void addCreativeTab(String key, String translation) {
-		add("creativetab." + modID + "." + key, translation);
-	}
-
-	public static enum Locale {
-		EN_US;
-
-		@Override
-		public String toString() {
-			return super.toString().toLowerCase(java.util.Locale.ROOT);
-		}
-	}
 
 }

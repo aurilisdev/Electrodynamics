@@ -5,12 +5,8 @@ import java.util.List;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import electrodynamics.api.electricity.formatting.ChatFormatter;
 import electrodynamics.common.tile.compatibility.TileRotaryUnifier;
-import electrodynamics.prefab.screen.component.ScreenComponentGeneric;
-import electrodynamics.prefab.screen.component.types.gauges.AbstractScreenComponentGauge;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import mekanism.api.chemical.Chemical;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.client.render.MekanismRenderer;
@@ -19,6 +15,11 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.prefab.screen.component.ScreenComponentGeneric;
+import voltaic.prefab.screen.component.types.gauges.AbstractScreenComponentGauge;
+import voltaic.prefab.utilities.RenderingUtils;
+import voltaic.prefab.utilities.VoltaicTextUtils;
 
 public class ScreenComponentChemicalGauge extends ScreenComponentGeneric {
 
@@ -36,9 +37,9 @@ public class ScreenComponentChemicalGauge extends ScreenComponentGeneric {
                 Chemical chemical = stack.getChemical();
                 if (stack.getAmount() > 0) {
                     tooltips.add(Component.translatable(chemical.getTranslationKey()).getVisualOrderText());
-                    tooltips.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(stack.getAmount()), ChatFormatter.formatFluidMilibuckets(TileRotaryUnifier.MAX_CHEM_AMOUNT)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+                    tooltips.add(VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(stack.getAmount()), ChatFormatter.formatFluidMilibuckets(TileRotaryUnifier.MAX_CHEM_AMOUNT)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
                 } else {
-                    tooltips.add(ElectroTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(TileRotaryUnifier.MAX_CHEM_AMOUNT)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+                    tooltips.add(VoltaicTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(TileRotaryUnifier.MAX_CHEM_AMOUNT)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
                 }
             }
             if (!tooltips.isEmpty()) {

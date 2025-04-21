@@ -1,14 +1,14 @@
 package electrodynamics.datagen.server.recipe.types.custom.fluid2fluid;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.fluid.subtype.SubtypeImpureMineralFluid;
 import electrodynamics.common.recipe.categories.fluid2fluid.specificmachines.ElectrolosisChamberRecipe;
-import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.builders.ElectrodynamicsRecipeBuilder;
-import electrodynamics.datagen.utils.recipe.builders.Fluid2FluidBuilder;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.neoforged.neoforge.fluids.FluidStack;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
+import voltaic.datagen.utils.server.recipe.builders.BaseRecipeBuilder;
+import voltaic.datagen.utils.server.recipe.builders.Fluid2FluidBuilder;
 
 public class ElectrodynamicsElectrolosisChamberRecipes extends AbstractRecipeGenerator {
 
@@ -19,7 +19,7 @@ public class ElectrodynamicsElectrolosisChamberRecipes extends AbstractRecipeGen
     }
 
     public ElectrodynamicsElectrolosisChamberRecipes() {
-        this(References.ID);
+        this(Electrodynamics.ID);
     }
 
     @Override
@@ -37,6 +37,6 @@ public class ElectrodynamicsElectrolosisChamberRecipes extends AbstractRecipeGen
     }
 
     public Fluid2FluidBuilder<ElectrolosisChamberRecipe> newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name, String group) {
-        return new Fluid2FluidBuilder<>(ElectrolosisChamberRecipe::new, stack, ElectrodynamicsRecipeBuilder.RecipeCategory.FLUID_2_FLUID, modID, "electrolosis_chamber/" + name, group, xp, ticks, usagePerTick);
+        return new Fluid2FluidBuilder<>(ElectrolosisChamberRecipe::new, stack, BaseRecipeBuilder.RecipeCategory.FLUID_2_FLUID, modID, "electrolosis_chamber/" + name, group, xp, ticks, usagePerTick);
     }
 }

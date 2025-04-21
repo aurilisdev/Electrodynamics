@@ -3,19 +3,8 @@ package electrodynamics.compatibility.mekanism;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-import electrodynamics.api.gas.Gas;
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.api.gas.PropertyGasTank;
-import electrodynamics.common.network.utils.GasUtilities;
-import electrodynamics.common.settings.Constants;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.common.tile.compatibility.TileRotaryUnifier;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import mekanism.api.Action;
 import mekanism.api.chemical.Chemical;
@@ -29,10 +18,21 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
+import voltaic.api.gas.Gas;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasStack;
+import voltaic.api.gas.PropertyGasTank;
+import voltaic.common.network.utils.GasUtilities;
+import voltaic.prefab.properties.types.SinglePropertyType;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
+import voltaic.prefab.utilities.BlockEntityUtils;
 
 public class MekanismHandler {
 
-    public static final PropertyType<ChemicalStack, RegistryFriendlyByteBuf> CHEMICAL_STACK = new PropertyType<>(
+    public static final SinglePropertyType<ChemicalStack, RegistryFriendlyByteBuf> CHEMICAL_STACK = new SinglePropertyType<>(
             //
             Objects::equals,
             //
@@ -40,7 +40,7 @@ public class MekanismHandler {
             //
             writer -> {
                 Tag fluidTag = new CompoundTag();
-                fluidTag = ChemicalStack.OPTIONAL_CODEC.encode(writer.prop().get(), NbtOps.INSTANCE, fluidTag).getOrThrow();
+                fluidTag = ChemicalStack.OPTIONAL_CODEC.encode(writer.prop().getValue(), NbtOps.INSTANCE, fluidTag).getOrThrow();
                 writer.tag().put(writer.prop().getName(), fluidTag);
             },
             //
@@ -57,7 +57,7 @@ public class MekanismHandler {
             if (context == null || context != tile.chemicalIO) {
                 return null;
             }
-            Property<ChemicalStack> prop = getProp(tile);
+            SingleProperty<ChemicalStack> prop = getProp(tile);
             return new IChemicalHandler() {
                 @Override
                 public int getChemicalTanks() {
@@ -66,12 +66,12 @@ public class MekanismHandler {
 
                 @Override
                 public ChemicalStack getChemicalInTank(int tank) {
-                    return prop.get();
+                    return prop.getValue();
                 }
 
                 @Override
                 public void setChemicalInTank(int tank, ChemicalStack stack) {
-                    prop.set(stack);
+                    prop.setValue(stack);
                 }
 
                 @Override
@@ -81,7 +81,7 @@ public class MekanismHandler {
 
                 @Override
                 public boolean isValid(int tank, ChemicalStack stack) {
-                    return GasMapReloadListener.INSTANCE.chemicalToGasMap.containsKey(stack.getChemical()) && (prop.get().is(stack.getChemical()) || prop.get().isEmpty());
+                    return GasMapReloadListener.INSTANCE.chemicalToGasMap.containsKey(stack.getChemical()) && (prop.getValue().is(stack.getChemical()) || prop.getValue().isEmpty());
                 }
 
                 @Override
@@ -90,43 +90,43 @@ public class MekanismHandler {
                     ChemicalStack returner = stack.copy();
 
 
-                    if (!tile.conversionIsFlipped.get()) {
+                    if (!tile.conversionIsFlipped.getValue()) {
                         return returner;
                     }
                     if (stack.isEmpty() || !isValid(tank, stack)) {
                         return returner;
                     }
                     if (action.simulate()) {
-                        if (prop.get().isEmpty()) {
+                        if (prop.getValue().isEmpty()) {
                             returner.shrink(Math.min(TileRotaryUnifier.MAX_CHEM_AMOUNT, stack.getAmount()));
                             return returner;
                         }
-                        if (!ChemicalStack.isSameChemical(prop.get(), stack)) {
+                        if (!ChemicalStack.isSameChemical(prop.getValue(), stack)) {
                             return stack;
                         }
-                        returner.shrink(Math.min(TileRotaryUnifier.MAX_CHEM_AMOUNT - prop.get().getAmount(), stack.getAmount()));
+                        returner.shrink(Math.min(TileRotaryUnifier.MAX_CHEM_AMOUNT - prop.getValue().getAmount(), stack.getAmount()));
                         return returner;
                     }
-                    if (prop.get().isEmpty()) {
+                    if (prop.getValue().isEmpty()) {
                         long accepted = Math.min(TileRotaryUnifier.MAX_CHEM_AMOUNT, stack.getAmount());
                         returner.shrink(accepted);
-                        prop.set(stack.copyWithAmount(accepted));
+                        prop.setValue(stack.copyWithAmount(accepted));
                         return returner;
                     }
-                    if (!ChemicalStack.isSameChemical(prop.get(), stack)) {
+                    if (!ChemicalStack.isSameChemical(prop.getValue(), stack)) {
                         return stack;
                     }
-                    long filled = TileRotaryUnifier.MAX_CHEM_AMOUNT - prop.get().getAmount();
+                    long filled = TileRotaryUnifier.MAX_CHEM_AMOUNT - prop.getValue().getAmount();
 
-                    ChemicalStack chem = prop.get().copy();
+                    ChemicalStack chem = prop.getValue().copy();
 
                     if (stack.getAmount() < filled) {
                         chem.grow(stack.getAmount());
-                        prop.set(chem);
+                        prop.setValue(chem);
                         filled = stack.getAmount();
                     } else {
                         chem.setAmount(TileRotaryUnifier.MAX_CHEM_AMOUNT);
-                        prop.set(chem);
+                        prop.setValue(chem);
                     }
                     returner.shrink(filled);
                     return returner;
@@ -134,18 +134,18 @@ public class MekanismHandler {
 
                 @Override
                 public ChemicalStack extractChemical(int tank, long amount, Action action) {
-                    if (tile.conversionIsFlipped.get()) {
+                    if (tile.conversionIsFlipped.getValue()) {
                         return ChemicalStack.EMPTY;
                     }
                     long drained = TileRotaryUnifier.MAX_CHEM_AMOUNT;
-                    if (prop.get().getAmount() < drained) {
-                        drained = prop.get().getAmount();
+                    if (prop.getValue().getAmount() < drained) {
+                        drained = prop.getValue().getAmount();
                     }
-                    ChemicalStack stack = prop.get().copyWithAmount(drained);
+                    ChemicalStack stack = prop.getValue().copyWithAmount(drained);
                     if (action.execute() && drained > 0) {
-                        ChemicalStack chem = prop.get().copy();
+                        ChemicalStack chem = prop.getValue().copy();
                         chem.shrink(drained);
-                        prop.set(chem);
+                        prop.setValue(chem);
                     }
                     return stack;
                 }
@@ -155,34 +155,34 @@ public class MekanismHandler {
     }
 
     public static int addProperty(TileRotaryUnifier tile) {
-        return tile.property(new Property<>(CHEMICAL_STACK, "chemicalstackprop", ChemicalStack.EMPTY)).getIndex();
+        return tile.property(new SingleProperty<>(CHEMICAL_STACK, "chemicalstackprop", ChemicalStack.EMPTY)).index();
     }
 
     public static Predicate<GasStack> getTankPredicate() {
         return stack -> GasMapReloadListener.INSTANCE.gasToChemicalMap.containsKey(stack.getGas());
     }
 
-    public static Property<ChemicalStack> getProp(TileRotaryUnifier tile) {
-        return (Property<ChemicalStack>) tile.getPropertyManager().getProperties().get(tile.chemStackIndex);
+    public static SingleProperty<ChemicalStack> getProp(TileRotaryUnifier tile) {
+        return (SingleProperty<ChemicalStack>) tile.getPropertyManager().getProperties().get(tile.chemStackIndex);
     }
 
     public static boolean canProcess(TileRotaryUnifier tile, ComponentProcessor proc) {
 
-        Property<ChemicalStack> prop = getProp(tile);
+        SingleProperty<ChemicalStack> prop = getProp(tile);
         ;
         PropertyGasTank tank = tile.gasTank;
-        int rate = (int) (Constants.ROTARY_UNIFIER_CONVERSION_RATE * proc.operatingSpeed.get());
+        int rate = (int) (ElectroConstants.ROTARY_UNIFIER_CONVERSION_RATE * proc.operatingSpeed.getValue());
         ComponentElectrodynamic electro = tile.getComponent(IComponentType.Electrodynamic);
 
-        if (tile.conversionIsFlipped.get()) {
+        if (tile.conversionIsFlipped.getValue()) {
 
             GasUtilities.outputToPipe(tile, tank.asArray(), BlockEntityUtils.MachineDirection.RIGHT.mappedDir);
 
-            if (electro.getJoulesStored() < proc.getUsage() || prop.get().isEmpty()) {
+            if (electro.getJoulesStored() < proc.getUsage(0) || prop.getValue().isEmpty()) {
                 return false;
             }
 
-            Gas gas = GasMapReloadListener.INSTANCE.chemicalToGasMap.get(prop.get().getChemical());
+            Gas gas = GasMapReloadListener.INSTANCE.chemicalToGasMap.get(prop.getValue().getChemical());
 
             if (gas == null) {
                 return false;
@@ -202,26 +202,26 @@ public class MekanismHandler {
 
             BlockEntity faceTile = tile.getLevel().getBlockEntity(tile.getBlockPos().relative(tile.chemicalIO));
 
-            if (faceTile != null && !prop.get().isEmpty()) {
+            if (faceTile != null && !prop.getValue().isEmpty()) {
                 IChemicalHandler handler = faceTile.getLevel().getCapability(Capabilities.CHEMICAL.block(), faceTile.getBlockPos(), faceTile.getBlockState(), faceTile, tile.chemicalIO.getOpposite());
 
                 if (handler != null) {
                     for (int i = 0; i < handler.getChemicalTanks(); i++) {
 
-                        ChemicalStack storedChem = prop.get().copy();
+                        ChemicalStack storedChem = prop.getValue().copy();
 
                         ChemicalStack accepted = handler.insertChemical(storedChem, Action.EXECUTE);
 
                         storedChem.shrink(accepted.getAmount());
 
-                        prop.set(storedChem);
+                        prop.setValue(storedChem);
                     }
                 }
 
 
             }
 
-            if (electro.getJoulesStored() < proc.getUsage()) {
+            if (electro.getJoulesStored() < proc.getUsage(0)) {
                 return false;
             }
 
@@ -233,11 +233,11 @@ public class MekanismHandler {
 
             Chemical chemical = GasMapReloadListener.INSTANCE.gasToChemicalMap.get(gas.getGas());
 
-            if (chemical == null || (!prop.get().isEmpty() && !prop.get().is(chemical)) || gas.getTemperature() > gas.getGas().getCondensationTemp() + 1) {
+            if (chemical == null || (!prop.getValue().isEmpty() && !prop.getValue().is(chemical)) || gas.getTemperature() > gas.getGas().getCondensationTemp() + 1) {
                 return false;
             }
 
-            return (Math.max(0, TileRotaryUnifier.MAX_CHEM_AMOUNT - prop.get().getAmount())) > 0;
+            return (Math.max(0, TileRotaryUnifier.MAX_CHEM_AMOUNT - prop.getValue().getAmount())) > 0;
 
         }
 
@@ -245,34 +245,34 @@ public class MekanismHandler {
 
     public static void process(TileRotaryUnifier tile, ComponentProcessor proc) {
 
-        Property<ChemicalStack> prop = getProp(tile);
+        SingleProperty<ChemicalStack> prop = getProp(tile);
         ;
         PropertyGasTank tank = tile.gasTank;
-        int rate = (int) (Constants.ROTARY_UNIFIER_CONVERSION_RATE * proc.operatingSpeed.get());
+        int rate = (int) (ElectroConstants.ROTARY_UNIFIER_CONVERSION_RATE * proc.operatingSpeed.getValue());
 
-        if (tile.conversionIsFlipped.get()) {
+        if (tile.conversionIsFlipped.getValue()) {
 
-            Gas gas = GasMapReloadListener.INSTANCE.chemicalToGasMap.get(prop.get().getChemical());
+            Gas gas = GasMapReloadListener.INSTANCE.chemicalToGasMap.get(prop.getValue().getChemical());
             GasStack proposed = new GasStack(gas, rate, gas.getCondensationTemp() + 1, Gas.PRESSURE_AT_SEA_LEVEL);
             int accepted = tank.fill(proposed, GasAction.EXECUTE);
 
-            ChemicalStack chemicalStack = prop.get().copy();
+            ChemicalStack chemicalStack = prop.getValue().copy();
             chemicalStack.shrink(accepted);
-            prop.set(chemicalStack);
+            prop.setValue(chemicalStack);
 
 
         } else {
 
             GasStack gas = tank.getGas();
             Chemical chemical = GasMapReloadListener.INSTANCE.gasToChemicalMap.get(gas.getGas());
-            int accepted = (int) Math.min(rate, Math.max(gas.getAmount(), TileRotaryUnifier.MAX_CHEM_AMOUNT - prop.get().getAmount()));
+            int accepted = (int) Math.min(rate, Math.max(gas.getAmount(), TileRotaryUnifier.MAX_CHEM_AMOUNT - prop.getValue().getAmount()));
 
-            if (prop.get().isEmpty()) {
-                prop.set(new ChemicalStack(chemical, accepted));
+            if (prop.getValue().isEmpty()) {
+                prop.setValue(new ChemicalStack(chemical, accepted));
             } else {
-                ChemicalStack stack = prop.get().copy();
+                ChemicalStack stack = prop.getValue().copy();
                 stack.grow(accepted);
-                prop.set(stack);
+                prop.setValue(stack);
             }
             tank.drain(accepted, GasAction.EXECUTE);
 

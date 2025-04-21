@@ -1,11 +1,6 @@
 package electrodynamics.common.inventory.container.tile;
 
 import electrodynamics.common.tile.pipelines.gas.tank.GenericTileGasTank;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotGas;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotRestricted;
-import electrodynamics.prefab.inventory.container.types.GenericContainerBlockEntity;
-import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.IconType;
-import electrodynamics.prefab.screen.component.types.ScreenComponentSlot.SlotType;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
@@ -13,6 +8,10 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import voltaic.prefab.inventory.container.slot.item.type.SlotGas;
+import voltaic.prefab.inventory.container.slot.item.type.SlotRestricted;
+import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
+import voltaic.prefab.screen.component.types.ScreenComponentSlot;
 
 public class ContainerGasTankGeneric extends GenericContainerBlockEntity<GenericTileGasTank> {
 
@@ -26,37 +25,37 @@ public class ContainerGasTankGeneric extends GenericContainerBlockEntity<Generic
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotRestricted(SlotType.NORMAL, IconType.FIBERGLASS_SHEET_DARK, inv, nextIndex(), 130, 14) {
+		addSlot(new SlotRestricted(ScreenComponentSlot.SlotType.NORMAL, ScreenComponentSlot.IconType.FIBERGLASS_SHEET_DARK, inv, nextIndex(), 130, 14) {
 			@Override
 			public int getMaxStackSize() {
 				return 1;
 			}
 		}.setRestriction(ElectrodynamicsItems.ITEM_FIBERGLASSSHEET.get()));
-		addSlot(new SlotRestricted(SlotType.NORMAL, IconType.FIBERGLASS_SHEET_DARK, inv, nextIndex(), 130, 34) {
+		addSlot(new SlotRestricted(ScreenComponentSlot.SlotType.NORMAL, ScreenComponentSlot.IconType.FIBERGLASS_SHEET_DARK, inv, nextIndex(), 130, 34) {
 			@Override
 			public int getMaxStackSize() {
 				return 1;
 			}
 		}.setRestriction(ElectrodynamicsItems.ITEM_FIBERGLASSSHEET.get()));
-		addSlot(new SlotRestricted(SlotType.NORMAL, IconType.FIBERGLASS_SHEET_DARK, inv, nextIndex(), 130, 54) {
+		addSlot(new SlotRestricted(ScreenComponentSlot.SlotType.NORMAL, ScreenComponentSlot.IconType.FIBERGLASS_SHEET_DARK, inv, nextIndex(), 130, 54) {
 			@Override
 			public int getMaxStackSize() {
 				return 1;
 			}
 		}.setRestriction(ElectrodynamicsItems.ITEM_FIBERGLASSSHEET.get()));
-		addSlot(new SlotRestricted(SlotType.NORMAL, IconType.FIBERGLASS_SHEET_DARK, inv, nextIndex(), 150, 14) {
+		addSlot(new SlotRestricted(ScreenComponentSlot.SlotType.NORMAL, ScreenComponentSlot.IconType.FIBERGLASS_SHEET_DARK, inv, nextIndex(), 150, 14) {
 			@Override
 			public int getMaxStackSize() {
 				return 1;
 			}
 		}.setRestriction(ElectrodynamicsItems.ITEM_FIBERGLASSSHEET.get()));
-		addSlot(new SlotRestricted(SlotType.NORMAL, IconType.FIBERGLASS_SHEET_DARK, inv, nextIndex(), 150, 34) {
+		addSlot(new SlotRestricted(ScreenComponentSlot.SlotType.NORMAL, ScreenComponentSlot.IconType.FIBERGLASS_SHEET_DARK, inv, nextIndex(), 150, 34) {
 			@Override
 			public int getMaxStackSize() {
 				return 1;
 			}
 		}.setRestriction(ElectrodynamicsItems.ITEM_FIBERGLASSSHEET.get()));
-		addSlot(new SlotRestricted(SlotType.NORMAL, IconType.FIBERGLASS_SHEET_DARK, inv, nextIndex(), 150, 54) {
+		addSlot(new SlotRestricted(ScreenComponentSlot.SlotType.NORMAL, ScreenComponentSlot.IconType.FIBERGLASS_SHEET_DARK, inv, nextIndex(), 150, 54) {
 			@Override
 			public int getMaxStackSize() {
 				return 1;

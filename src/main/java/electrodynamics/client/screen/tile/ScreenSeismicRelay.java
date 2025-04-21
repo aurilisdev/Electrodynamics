@@ -4,15 +4,15 @@ import java.util.List;
 
 import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
 import electrodynamics.common.tile.machines.quarry.TileSeismicRelay;
-import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.types.ScreenComponentMultiLabel;
-import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import voltaic.prefab.screen.GenericScreen;
+import voltaic.prefab.screen.component.types.ScreenComponentMultiLabel;
+import voltaic.prefab.screen.component.types.ScreenComponentSimpleLabel;
+import voltaic.prefab.utilities.math.Color;
 
 public class ScreenSeismicRelay extends GenericScreen<ContainerSeismicRelay> {
 
@@ -24,7 +24,7 @@ public class ScreenSeismicRelay extends GenericScreen<ContainerSeismicRelay> {
 			TileSeismicRelay relay = menu.getSafeHost();
 
 			if (relay != null) {
-				List<BlockPos> markers = relay.markerLocs.get();
+				List<BlockPos> markers = relay.markerLocs.getValue();
 				if (!markers.isEmpty()) {
 					renderCoordinate(graphics, markers.get(0), 0, 1);
 				} else {

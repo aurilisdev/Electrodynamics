@@ -1,13 +1,6 @@
 package electrodynamics.common.tile.electricitygrid;
 
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,6 +10,12 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.electricity.ICapabilityElectrodynamic;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.object.TransferPack;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileRelay extends GenericTile {
 
@@ -48,21 +47,21 @@ public class TileRelay extends GenericTile {
 
         isLocked = true;
 
-        ICapabilityElectrodynamic electro = tile.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, output.getOpposite());
+        ICapabilityElectrodynamic electro = tile.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, output.getOpposite());
 
         if (electro == null) {
             isLocked = false;
             return TransferPack.EMPTY;
         }
 
-        TransferPack accepted = electro.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * Constants.RELAY_EFFICIENCY, transfer.getVoltage()), debug);
+        TransferPack accepted = electro.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * ElectroConstants.RELAY_EFFICIENCY, transfer.getVoltage()), debug);
 
         isLocked = false;
 
-        return TransferPack.joulesVoltage(accepted.getJoules() / Constants.RELAY_EFFICIENCY, accepted.getVoltage());
+        return TransferPack.joulesVoltage(accepted.getJoules() / ElectroConstants.RELAY_EFFICIENCY, accepted.getVoltage());
     }
 
-    public TransferPack getConnectedLoad(LoadProfile lastEnergy, Direction dir) {
+    public TransferPack getConnectedLoad(ICapabilityElectrodynamic.LoadProfile lastEnergy, Direction dir) {
 
         if (recievedRedstoneSignal || isLocked) {
             return TransferPack.EMPTY;
@@ -80,11 +79,11 @@ public class TileRelay extends GenericTile {
             return TransferPack.EMPTY;
         }
 
-        LoadProfile transformed = new LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * Constants.RELAY_EFFICIENCY, lastEnergy.lastUsage().getVoltage()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * Constants.RELAY_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage()));
+        ICapabilityElectrodynamic.LoadProfile transformed = new ICapabilityElectrodynamic.LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * ElectroConstants.RELAY_EFFICIENCY, lastEnergy.lastUsage().getVoltage()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * ElectroConstants.RELAY_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage()));
 
         isLocked = true;
 
-        ICapabilityElectrodynamic electro = tile.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, dir);
+        ICapabilityElectrodynamic electro = tile.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, dir);
 
         if (electro == null) {
             isLocked = false;
@@ -94,7 +93,7 @@ public class TileRelay extends GenericTile {
         TransferPack returner = electro.getConnectedLoad(transformed, dir);
 
         isLocked = false;
-        return TransferPack.joulesVoltage(returner.getJoules() / Constants.RELAY_EFFICIENCY, returner.getVoltage());
+        return TransferPack.joulesVoltage(returner.getJoules() / ElectroConstants.RELAY_EFFICIENCY, returner.getVoltage());
 
     }
 
@@ -109,7 +108,7 @@ public class TileRelay extends GenericTile {
         }
         isLocked = true;
 
-        ICapabilityElectrodynamic electro = output.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getBlockPos(), output.getBlockState(), output, facing.getOpposite());
+        ICapabilityElectrodynamic electro = output.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getBlockPos(), output.getBlockState(), output, facing.getOpposite());
 
         if (electro == null) {
             isLocked = false;
@@ -133,7 +132,7 @@ public class TileRelay extends GenericTile {
         }
         isLocked = true;
 
-        ICapabilityElectrodynamic electro = output.getLevel().getCapability(ElectrodynamicsCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getBlockPos(), output.getBlockState(), output, facing.getOpposite());
+        ICapabilityElectrodynamic electro = output.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getBlockPos(), output.getBlockState(), output, facing.getOpposite());
 
         if (electro == null) {
             isLocked = false;

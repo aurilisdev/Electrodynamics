@@ -5,29 +5,29 @@ import java.util.List;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyTypes;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.prefab.utilities.ElectricityUtils;
-import electrodynamics.prefab.utilities.object.CachedTileOutput;
-import electrodynamics.prefab.utilities.object.TransferPack;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.tile.components.type.ComponentPacketHandler;
+import voltaic.prefab.tile.components.type.ComponentTickable;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.object.CachedTileOutput;
+import voltaic.prefab.utilities.object.TransferPack;
 
 public class TileCreativePowerSource extends GenericTile {
 
 	private static final int POWER_MULTIPLIER = 1000000;
 
-	public Property<Integer> voltage = property(new Property<>(PropertyTypes.INTEGER, "setvoltage", 0));
-	public Property<Double> power = property(new Property<>(PropertyTypes.DOUBLE, "setpower", 0.0));
-	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyTypes.BOOLEAN, "redstonesignal", false));
+	public final SingleProperty<Integer> voltage = property(new SingleProperty<>(PropertyTypes.INTEGER, "setvoltage", 0));
+	public final SingleProperty<Double> power = property(new SingleProperty<>(PropertyTypes.DOUBLE, "setpower", 0.0));
+	private final SingleProperty<Boolean> hasRedstoneSignal = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "redstonesignal", false));
 
 	protected List<CachedTileOutput> outputs;
 
@@ -36,11 +36,11 @@ public class TileCreativePowerSource extends GenericTile {
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentElectrodynamic(this, true, false).setOutputDirections(BlockEntityUtils.MachineDirection.values()).voltage(-1));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.creativepowersource, this).createMenu((id, player) -> new ContainerCreativePowerSource(id, player, getCoordsArray())));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.creativepowersource.tag(), this).createMenu((id, player) -> new ContainerCreativePowerSource(id, player, getCoordsArray())));
 	}
 
 	private void tickServer(ComponentTickable tick) {
-		if (hasRedstoneSignal.get()) {
+		if (hasRedstoneSignal.getValue()) {
 			return;
 		}
 		// ComponentElectrodynamic electro = getComponent(ComponentType.Electrodynamic);
@@ -57,12 +57,12 @@ public class TileCreativePowerSource extends GenericTile {
 			}
 		}
 
-		if (voltage.get() <= 0) {
+		if (voltage.getValue() <= 0) {
 			return;
 		}
 
 		// electro.voltage(power.get());
-		TransferPack output = TransferPack.joulesVoltage(power.get() * POWER_MULTIPLIER / 20.0, voltage.get());
+		TransferPack output = TransferPack.joulesVoltage(power.getValue() * POWER_MULTIPLIER / 20.0, voltage.getValue());
 		for (int i = 0; i < outputs.size(); i++) {
 			CachedTileOutput cache = outputs.get(i);
 			Direction dir = Direction.values()[i];
@@ -75,7 +75,7 @@ public class TileCreativePowerSource extends GenericTile {
 
 	@Override
 	public int getComparatorSignal() {
-		return power.get() > 0 ? 15 : 0;
+		return power.getValue() > 0 ? 15 : 0;
 	}
 
 	@Override
@@ -83,6 +83,6 @@ public class TileCreativePowerSource extends GenericTile {
 		if (level.isClientSide) {
 			return;
 		}
-		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
+		hasRedstoneSignal.setValue(level.hasNeighborSignal(getBlockPos()));
 	}
 }

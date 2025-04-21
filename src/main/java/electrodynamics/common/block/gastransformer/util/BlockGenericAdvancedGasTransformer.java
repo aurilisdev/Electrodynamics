@@ -2,10 +2,6 @@ package electrodynamics.common.block.gastransformer.util;
 
 import com.mojang.serialization.MapCodec;
 
-import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
-import electrodynamics.common.block.voxelshapes.VoxelShapeProvider;
-import electrodynamics.prefab.block.GenericMachineBlock;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -17,6 +13,10 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType.BlockEntitySupplier;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.common.block.states.VoltaicBlockStates;
+import voltaic.common.block.voxelshapes.VoxelShapeProvider;
+import voltaic.prefab.block.GenericMachineBlock;
+import voltaic.prefab.utilities.BlockEntityUtils;
 
 public abstract class BlockGenericAdvancedGasTransformer extends GenericMachineBlock {
 
@@ -26,10 +26,10 @@ public abstract class BlockGenericAdvancedGasTransformer extends GenericMachineB
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        if (!state.hasProperty(ElectrodynamicsBlockStates.FACING)) {
+        if (!state.hasProperty(VoltaicBlockStates.FACING)) {
             return false;
         }
-        Direction facing = state.getValue(ElectrodynamicsBlockStates.FACING);
+        Direction facing = state.getValue(VoltaicBlockStates.FACING);
         BlockState left = level.getBlockState(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
         BlockState right = level.getBlockState(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
         return left.isAir() && right.isAir() && super.canSurvive(state, level, pos);
@@ -38,9 +38,9 @@ public abstract class BlockGenericAdvancedGasTransformer extends GenericMachineB
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(level, pos, state, placer, stack);
-        Direction facing = state.getValue(ElectrodynamicsBlockStates.FACING);
-        level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)), ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get().defaultBlockState().setValue(ElectrodynamicsBlockStates.WATERLOGGED, false).setValue(ElectrodynamicsBlockStates.FACING, facing));
-        level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)), ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get().defaultBlockState().setValue(ElectrodynamicsBlockStates.WATERLOGGED, false).setValue(ElectrodynamicsBlockStates.FACING, facing));
+        Direction facing = state.getValue(VoltaicBlockStates.FACING);
+        level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)), ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get().defaultBlockState().setValue(VoltaicBlockStates.WATERLOGGED, false).setValue(VoltaicBlockStates.FACING, facing));
+        level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)), ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get().defaultBlockState().setValue(VoltaicBlockStates.WATERLOGGED, false).setValue(VoltaicBlockStates.FACING, facing));
     }
 
     @Override

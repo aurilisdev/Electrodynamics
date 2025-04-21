@@ -2,12 +2,7 @@ package electrodynamics.common.block;
 
 import com.mojang.serialization.MapCodec;
 
-import electrodynamics.common.block.connect.util.AbstractConnectBlock;
-import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.common.tile.machines.quarry.TileLogisticalManager;
-import electrodynamics.prefab.block.GenericEntityBlockWaterloggable;
-import electrodynamics.prefab.tile.types.IConnectTile;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -24,6 +19,11 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import voltaic.common.block.connect.AbstractConnectBlock;
+import voltaic.common.block.connect.EnumConnectType;
+import voltaic.prefab.block.GenericEntityBlockWaterloggable;
+import voltaic.prefab.tile.types.IConnectTile;
+import voltaic.prefab.utilities.BlockEntityUtils;
 
 /**
  * INVENTORY corresponds to a chest WIRE corresponds to a Quarry

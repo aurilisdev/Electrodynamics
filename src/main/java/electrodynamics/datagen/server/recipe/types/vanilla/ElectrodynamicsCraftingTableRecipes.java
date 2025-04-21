@@ -2,7 +2,7 @@ package electrodynamics.datagen.server.recipe.types.vanilla;
 
 import com.google.common.collect.Lists;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeGlass;
@@ -21,22 +21,22 @@ import electrodynamics.common.item.subtype.SubtypeCrystal;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeNugget;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
-import electrodynamics.common.recipe.recipeutils.EnchantmentIngredient;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.datagen.DataGenerators;
-import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.ShapedCraftingRecipeBuilder;
-import electrodynamics.datagen.utils.recipe.ShapelessCraftingRecipeBuilder;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.Tags;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.common.recipe.recipeutils.EnchantmentIngredient;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
+import voltaic.datagen.utils.server.recipe.ShapedCraftingRecipeBuilder;
+import voltaic.datagen.utils.server.recipe.ShapelessCraftingRecipeBuilder;
 
 public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator {
 
@@ -57,13 +57,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('C', ItemTags.COALS)
                 //
-                .addKey('T', ElectrodynamicsTags.Items.INGOT_TIN)
+                .addKey('T', VoltaicTags.Items.INGOT_TIN)
                 //
                 .addKey('R', Tags.Items.DUSTS_REDSTONE)
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.copper))
                 //
-                .complete(References.ID, "battery_basic", output);
+                .complete(Electrodynamics.ID, "battery_basic", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_LITHIUMBATTERY.get(), 1)
                 //
@@ -73,15 +73,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SWS")
                 //
-                .addKey('L', ElectrodynamicsTags.Items.PLATE_LITHIUM)
+                .addKey('L', VoltaicTags.Items.PLATE_LITHIUM)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('C', ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.thionylchloride))
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.gold))
                 //
-                .complete(References.ID, "battery_lithium", output);
+                .complete(Electrodynamics.ID, "battery_lithium", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_CARBYNEBATTERY.get(), 1)
                 //
@@ -93,11 +93,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('S', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.superconductive))
                 //
-                .addKey('T', ElectrodynamicsTags.Items.PLATE_TITANIUMCARBIDE)
+                .addKey('T', VoltaicTags.Items.PLATE_TITANIUMCARBIDE)
                 //
-                .addKey('N', ElectrodynamicsTags.Items.DUST_NETHERITE)
+                .addKey('N', VoltaicTags.Items.DUST_NETHERITE)
                 //
-                .complete(References.ID, "battery_carbyne", output);
+                .complete(Electrodynamics.ID, "battery_carbyne", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.fuse), 1)
                 //
@@ -113,7 +113,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.copper))
                 //
-                .complete(References.ID, "ceramic_fuse", output);
+                .complete(Electrodynamics.ID, "ceramic_fuse", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate), 1)
                 //
@@ -121,7 +121,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('#', ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.cooked))
                 //
-                .complete(References.ID, "ceramic_plate", output);
+                .complete(Electrodynamics.ID, "ceramic_plate", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.wet), 4)
                 //
@@ -137,7 +137,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('W', Items.WATER_BUCKET)
                 //
-                .complete(References.ID, "wet_ceramic", output);
+                .complete(Electrodynamics.ID, "wet_ceramic", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_CIRCUIT.getValue(SubtypeCircuit.basic), 1)
                 //
@@ -147,13 +147,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("WRW")
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_COPPER_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
                 //
                 .addKey('R', Tags.Items.DUSTS_REDSTONE)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .complete(References.ID, "circuit_basic", output);
+                .complete(Electrodynamics.ID, "circuit_basic", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_CIRCUIT.getValue(SubtypeCircuit.advanced), 1)
                 //
@@ -165,11 +165,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('Q', Tags.Items.GEMS_QUARTZ)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('D', Tags.Items.GEMS_DIAMOND)
                 //
-                .complete(References.ID, "circuit_advanced", output);
+                .complete(Electrodynamics.ID, "circuit_advanced", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_CIRCUIT.getValue(SubtypeCircuit.elite), 1)
                 //
@@ -181,11 +181,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('G', Tags.Items.INGOTS_GOLD)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
                 .addKey('B', Tags.Items.STORAGE_BLOCKS_LAPIS)
                 //
-                .complete(References.ID, "circuit_elite", output);
+                .complete(Electrodynamics.ID, "circuit_elite", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_CIRCUIT.getValue(SubtypeCircuit.ultimate), 1)
                 //
@@ -195,13 +195,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("OPO")
                 //
-                .addKey('O', ElectrodynamicsTags.Items.DUST_OBSIDIAN)
+                .addKey('O', VoltaicTags.Items.DUST_OBSIDIAN)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .complete(References.ID, "circuit_ultimate", output);
+                .complete(Electrodynamics.ID, "circuit_ultimate", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_COIL.get(), 1)
                 //
@@ -215,7 +215,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('I', Tags.Items.INGOTS_IRON)
                 //
-                .complete(References.ID, "copper_coil", output);
+                .complete(Electrodynamics.ID, "copper_coil", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_LAMINATEDCOIL.get(), 1)
                 //
@@ -225,11 +225,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern(" P ")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLASTIC)
+                .addKey('P', VoltaicTags.Items.PLASTIC)
                 //
                 .addKey('C', ElectrodynamicsItems.ITEM_COIL.get())
                 //
-                .complete(References.ID, "copper_coil_laminated", output);
+                .complete(Electrodynamics.ID, "copper_coil_laminated", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_RAWCOMPOSITEPLATING.get(), 6)
                 //
@@ -239,13 +239,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PPP")
                 //
-                .addKey('T', ElectrodynamicsTags.Items.PLATE_TITANIUM)
+                .addKey('T', VoltaicTags.Items.PLATE_TITANIUM)
                 //
                 .addKey('C', ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate))
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLASTIC)
+                .addKey('P', VoltaicTags.Items.PLASTIC)
                 //
-                .complete(References.ID, "raw_composite_plating", output);
+                .complete(Electrodynamics.ID, "raw_composite_plating", output);
 
         for (SubtypeNugget nugget : SubtypeNugget.values()) {
             ShapedCraftingRecipeBuilder.start(nugget.productIngot.get(), 1)
@@ -258,7 +258,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addKey('N', nugget.tag)
                     //
-                    .complete(References.ID, nugget.name() + "_nuggets_to_" + nugget.name() + "_ingot", output);
+                    .complete(Electrodynamics.ID, nugget.name() + "_nuggets_to_" + nugget.name() + "_ingot", output);
         }
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_DRILLHEAD.getValue(SubtypeDrillHead.hslasteel), 1)
@@ -267,11 +267,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("IPI")
                 //
-                .addKey('I', ElectrodynamicsTags.Items.INGOT_HSLASTEEL)
+                .addKey('I', VoltaicTags.Items.INGOT_HSLASTEEL)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_HSLASTEEL)
                 //
-                .complete(References.ID, "drill_head_hslasteel", output);
+                .complete(Electrodynamics.ID, "drill_head_hslasteel", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_DRILLHEAD.getValue(SubtypeDrillHead.stainlesssteel), 1)
                 //
@@ -279,11 +279,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("IPI")
                 //
-                .addKey('I', ElectrodynamicsTags.Items.INGOT_STAINLESSSTEEL)
+                .addKey('I', VoltaicTags.Items.INGOT_STAINLESSSTEEL)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
-                .complete(References.ID, "drill_head_stainlesssteel", output);
+                .complete(Electrodynamics.ID, "drill_head_stainlesssteel", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_DRILLHEAD.getValue(SubtypeDrillHead.steel), 1)
                 //
@@ -291,11 +291,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("IPI")
                 //
-                .addKey('I', ElectrodynamicsTags.Items.INGOT_STEEL)
+                .addKey('I', VoltaicTags.Items.INGOT_STEEL)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .complete(References.ID, "drill_head_steel", output);
+                .complete(Electrodynamics.ID, "drill_head_steel", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_DRILLHEAD.getValue(SubtypeDrillHead.titanium), 1)
                 //
@@ -303,11 +303,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("IPI")
                 //
-                .addKey('I', ElectrodynamicsTags.Items.INGOT_TITANIUM)
+                .addKey('I', VoltaicTags.Items.INGOT_TITANIUM)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_TITANIUM)
+                .addKey('P', VoltaicTags.Items.PLATE_TITANIUM)
                 //
-                .complete(References.ID, "drill_head_titanium", output);
+                .complete(Electrodynamics.ID, "drill_head_titanium", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_DRILLHEAD.getValue(SubtypeDrillHead.titaniumcarbide), 1)
                 //
@@ -315,11 +315,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("IPI")
                 //
-                .addKey('I', ElectrodynamicsTags.Items.INGOT_TITANIUMCARBIDE)
+                .addKey('I', VoltaicTags.Items.INGOT_TITANIUMCARBIDE)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_TITANIUMCARBIDE)
+                .addKey('P', VoltaicTags.Items.PLATE_TITANIUMCARBIDE)
                 //
-                .complete(References.ID, "drill_head_titaniumcarbide", output);
+                .complete(Electrodynamics.ID, "drill_head_titaniumcarbide", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.superconductive), 9)
                 //
@@ -329,13 +329,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("#S#")
                 //
-                .addKey('#', ElectrodynamicsTags.Items.DUST_ENDEREYE)
+                .addKey('#', VoltaicTags.Items.DUST_ENDEREYE)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.DUST_SILVER)
+                .addKey('S', VoltaicTags.Items.DUST_SILVER)
                 //
-                .addKey('G', ElectrodynamicsTags.Items.DUST_GOLD)
+                .addKey('G', VoltaicTags.Items.DUST_GOLD)
                 //
-                .complete(References.ID, "dust_superconductive", output);
+                .complete(Electrodynamics.ID, "dust_superconductive", output);
 
         for (SubtypeResourceBlock block : SubtypeResourceBlock.values()) {
             ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_RESOURCEBLOCK.getValue(block), 1)
@@ -348,7 +348,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addKey('I', block.sourceIngot)
                     //
-                    .complete(References.ID, "resource_block_" + block.name(), output);
+                    .complete(Electrodynamics.ID, "resource_block_" + block.name(), output);
         }
 
         for (SubtypeRawOreBlock block : SubtypeRawOreBlock.values()) {
@@ -362,7 +362,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addKey('R', block.sourceRawOre)
                     //
-                    .complete(References.ID, "raw_ore_block_" + block.name(), output);
+                    .complete(Electrodynamics.ID, "raw_ore_block_" + block.name(), output);
         }
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_STEELSCAFFOLD.get(), 32)
@@ -373,9 +373,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SSS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.ROD_STEEL)
+                .addKey('S', VoltaicTags.Items.ROD_STEEL)
                 //
-                .complete(References.ID, "steel_scaffold", output);
+                .complete(Electrodynamics.ID, "steel_scaffold", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.copper), 1)
                 //
@@ -385,7 +385,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('C', Tags.Items.INGOTS_COPPER)
                 //
-                .complete(References.ID, "wire_copper", output);
+                .complete(Electrodynamics.ID, "wire_copper", output);
 
         for (SubtypeGear gear : SubtypeGear.values()) {
             ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_GEAR.getValue(gear), 1)
@@ -398,7 +398,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addKey('I', gear.sourceIngot)
                     //
-                    .complete(References.ID, "gear_" + gear.name(), output);
+                    .complete(Electrodynamics.ID, "gear_" + gear.name(), output);
         }
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.oxygen), 1)
@@ -413,11 +413,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.copper))
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
-                .complete(References.ID, "chromotographycard_" + SubtypeChromotographyCard.oxygen.name(), output);
+                .complete(Electrodynamics.ID, "chromotographycard_" + SubtypeChromotographyCard.oxygen.name(), output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.carbondioxide), 1)
                 //
@@ -427,15 +427,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern(" C ")
                 //
-                .addKey('G', ElectrodynamicsTags.Items.COAL_COKE)
+                .addKey('G', VoltaicTags.Items.COAL_COKE)
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.tin))
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
-                .complete(References.ID, "chromotographycard_" + SubtypeChromotographyCard.carbondioxide.name(), output);
+                .complete(Electrodynamics.ID, "chromotographycard_" + SubtypeChromotographyCard.carbondioxide.name(), output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.nitrogen), 1)
                 //
@@ -449,11 +449,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.iron))
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
-                .complete(References.ID, "chromotographycard_" + SubtypeChromotographyCard.nitrogen.name(), output);
+                .complete(Electrodynamics.ID, "chromotographycard_" + SubtypeChromotographyCard.nitrogen.name(), output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.argon), 1)
                 //
@@ -467,11 +467,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.gold))
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
-                .complete(References.ID, "chromotographycard_" + SubtypeChromotographyCard.argon.name(), output);
+                .complete(Electrodynamics.ID, "chromotographycard_" + SubtypeChromotographyCard.argon.name(), output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.sulfurdioxide), 1)
                 //
@@ -481,15 +481,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern(" C ")
                 //
-                .addKey('G', ElectrodynamicsTags.Items.DUST_SULFUR)
+                .addKey('G', VoltaicTags.Items.DUST_SULFUR)
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.iron))
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
-                .complete(References.ID, "chromotographycard_" + SubtypeChromotographyCard.sulfurdioxide.name(), output);
+                .complete(Electrodynamics.ID, "chromotographycard_" + SubtypeChromotographyCard.sulfurdioxide.name(), output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_MOTOR.get(), 1)
                 //
@@ -499,13 +499,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern(" S ")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.INGOT_STEEL)
+                .addKey('S', VoltaicTags.Items.INGOT_STEEL)
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_COPPER_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
                 //
                 .addKey('C', ElectrodynamicsItems.ITEM_COIL.get())
                 //
-                .complete(References.ID, "motor_steel", output);
+                .complete(Electrodynamics.ID, "motor_steel", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_MOTOR.get(), 4)
                 //
@@ -515,13 +515,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern(" S ")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.INGOT_STAINLESSSTEEL)
+                .addKey('S', VoltaicTags.Items.INGOT_STAINLESSSTEEL)
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_COPPER_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
                 //
                 .addKey('C', ElectrodynamicsItems.ITEM_COIL.get())
                 //
-                .complete(References.ID, "motor_stainlesssteel", output);
+                .complete(Electrodynamics.ID, "motor_stainlesssteel", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_PIPE.getValue(SubtypeFluidPipe.copper), 10)
                 //
@@ -533,7 +533,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('I', Tags.Items.INGOTS_COPPER)
                 //
-                .complete(References.ID, "fluidpipe_copper_horizontal", output);
+                .complete(Electrodynamics.ID, "fluidpipe_copper_horizontal", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_PIPE.getValue(SubtypeFluidPipe.copper), 10)
                 //
@@ -545,7 +545,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('I', Tags.Items.INGOTS_COPPER)
                 //
-                .complete(References.ID, "fluidpipe_copper_vertical", output);
+                .complete(Electrodynamics.ID, "fluidpipe_copper_vertical", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_PIPE.getValue(SubtypeFluidPipe.steel), 4)
                 //
@@ -555,9 +555,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("III")
                 //
-                .addKey('I', ElectrodynamicsTags.Items.INGOT_STEEL)
+                .addKey('I', VoltaicTags.Items.INGOT_STEEL)
                 //
-                .complete(References.ID, "fluidpipe_steel_horizontal", output);
+                .complete(Electrodynamics.ID, "fluidpipe_steel_horizontal", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_PIPE.getValue(SubtypeFluidPipe.steel), 4)
                 //
@@ -567,9 +567,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("I I")
                 //
-                .addKey('I', ElectrodynamicsTags.Items.INGOT_STEEL)
+                .addKey('I', VoltaicTags.Items.INGOT_STEEL)
                 //
-                .complete(References.ID, "fluidpipe_steel_vertical", output);
+                .complete(Electrodynamics.ID, "fluidpipe_steel_vertical", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_GASPIPE.getValue(SubtypeGasPipe.UNINSULATEDCOPPER), 10)
                 //
@@ -579,9 +579,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PPP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_COPPER)
+                .addKey('P', VoltaicTags.Items.PLATE_COPPER)
                 //
-                .complete(References.ID, "gaspipe_copper_horizontal", output);
+                .complete(Electrodynamics.ID, "gaspipe_copper_horizontal", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_GASPIPE.getValue(SubtypeGasPipe.UNINSULATEDCOPPER), 10)
                 //
@@ -591,9 +591,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("P P")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_COPPER)
+                .addKey('P', VoltaicTags.Items.PLATE_COPPER)
                 //
-                .complete(References.ID, "gaspipe_copper_vertical", output);
+                .complete(Electrodynamics.ID, "gaspipe_copper_vertical", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_GASPIPE.getValue(SubtypeGasPipe.UNINSULATEDSTEEL), 3)
                 //
@@ -603,9 +603,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PPP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .complete(References.ID, "gaspipe_steel_horizontal", output);
+                .complete(Electrodynamics.ID, "gaspipe_steel_horizontal", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_GASPIPE.getValue(SubtypeGasPipe.UNINSULATEDSTEEL), 3)
                 //
@@ -615,9 +615,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("P P")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .complete(References.ID, "gaspipe_steel_vertical", output);
+                .complete(Electrodynamics.ID, "gaspipe_steel_vertical", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_GASPIPE.getValue(SubtypeGasPipe.UNINSULATEDPLASTIC), 6)
                 //
@@ -627,9 +627,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PPP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLASTIC)
+                .addKey('P', VoltaicTags.Items.PLASTIC)
                 //
-                .complete(References.ID, "gaspipe_plastic_horizontal", output);
+                .complete(Electrodynamics.ID, "gaspipe_plastic_horizontal", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_GASPIPE.getValue(SubtypeGasPipe.UNINSULATEDPLASTIC), 6)
                 //
@@ -639,9 +639,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("P P")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLASTIC)
+                .addKey('P', VoltaicTags.Items.PLASTIC)
                 //
-                .complete(References.ID, "gaspipe_plastic_vertical", output);
+                .complete(Electrodynamics.ID, "gaspipe_plastic_vertical", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.bronze), 1)
                 //
@@ -649,9 +649,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("II")
                 //
-                .addKey('I', ElectrodynamicsTags.Items.INGOT_BRONZE)
+                .addKey('I', VoltaicTags.Items.INGOT_BRONZE)
                 //
-                .complete(References.ID, "plate_bronze", output);
+                .complete(Electrodynamics.ID, "plate_bronze", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.copper), 1)
                 //
@@ -661,7 +661,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('I', Tags.Items.INGOTS_COPPER)
                 //
-                .complete(References.ID, "plate_copper", output);
+                .complete(Electrodynamics.ID, "plate_copper", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.iron), 1)
                 //
@@ -671,7 +671,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('I', Tags.Items.INGOTS_IRON)
                 //
-                .complete(References.ID, "plate_iron", output);
+                .complete(Electrodynamics.ID, "plate_iron", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.lead), 1)
                 //
@@ -679,9 +679,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("II")
                 //
-                .addKey('I', ElectrodynamicsTags.Items.INGOT_LEAD)
+                .addKey('I', VoltaicTags.Items.INGOT_LEAD)
                 //
-                .complete(References.ID, "plate_lead", output);
+                .complete(Electrodynamics.ID, "plate_lead", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.steel), 1)
                 //
@@ -689,9 +689,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("II")
                 //
-                .addKey('I', ElectrodynamicsTags.Items.INGOT_STEEL)
+                .addKey('I', VoltaicTags.Items.INGOT_STEEL)
                 //
-                .complete(References.ID, "plate_steel", output);
+                .complete(Electrodynamics.ID, "plate_steel", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_SEISMICMARKER.get(), 1)
                 //
@@ -701,11 +701,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern(" P ")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('A', Tags.Items.GEMS_AMETHYST)
                 //
-                .complete(References.ID, "seismic_marker", output);
+                .complete(Electrodynamics.ID, "seismic_marker", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_SOLARPANELPLATE.get(), 1)
                 //
@@ -727,7 +727,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('C', Tags.Items.INGOTS_COPPER)
                 //
-                .complete(References.ID, "solar_panel_plate", output);
+                .complete(Electrodynamics.ID, "solar_panel_plate", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.advancedcapacity), 1)
                 //
@@ -737,15 +737,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("CBC")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('B', ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basiccapacity))
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_COPPER_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
-                .complete(References.ID, "upgrade_advanced_capacity", output);
+                .complete(Electrodynamics.ID, "upgrade_advanced_capacity", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.advancedspeed), 1)
                 //
@@ -755,17 +755,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("CGC")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_BRONZE)
+                .addKey('G', VoltaicTags.Items.GEAR_BRONZE)
                 //
                 .addKey('B', ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basicspeed))
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_COPPER_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
-                .complete(References.ID, "upgrade_advanced_speed", output);
+                .complete(Electrodynamics.ID, "upgrade_advanced_speed", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basiccapacity), 1)
                 //
@@ -775,15 +775,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("CBC")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('B', ElectrodynamicsItems.ITEM_BATTERY.get())
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_COPPER_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
-                .complete(References.ID, "upgrade_basic_capacity", output);
+                .complete(Electrodynamics.ID, "upgrade_basic_capacity", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basicspeed), 1)
                 //
@@ -793,15 +793,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("CGC")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_BRONZE)
+                .addKey('G', VoltaicTags.Items.GEAR_BRONZE)
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_GOLD_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_GOLD_WIRES)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
-                .complete(References.ID, "upgrade_basic_speed", output);
+                .complete(Electrodynamics.ID, "upgrade_basic_speed", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.experience), 1)
                 //
@@ -811,13 +811,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PBP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_BRONZE)
+                .addKey('P', VoltaicTags.Items.PLATE_BRONZE)
                 //
                 .addKey('B', Items.GLASS_BOTTLE)
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_COPPER_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
                 //
-                .complete(References.ID, "upgrade_experience", output);
+                .complete(Electrodynamics.ID, "upgrade_experience", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.fortune), 1)
                 //
@@ -827,13 +827,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PCP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
                 .addKey('B', new EnchantmentIngredient(Ingredient.of(Items.ENCHANTED_BOOK), Lists.newArrayList(Tags.Enchantments.INCREASE_BLOCK_DROPS), false))
                 //
-                .complete(References.ID, "upgrade_fortune", output);
+                .complete(Electrodynamics.ID, "upgrade_fortune", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.improvedsolarcell), 1)
                 //
@@ -845,13 +845,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('P', ElectrodynamicsItems.ITEM_SOLARPANELPLATE.get())
                 //
-                .addKey('B', ElectrodynamicsTags.Items.PLATE_BRONZE)
+                .addKey('B', VoltaicTags.Items.PLATE_BRONZE)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .complete(References.ID, "upgrade_improved_solar_cell", output);
+                .complete(Electrodynamics.ID, "upgrade_improved_solar_cell", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput), 1)
                 //
@@ -861,13 +861,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("A")
                 //
-                .addKey('A', ElectrodynamicsTags.Items.PLATE_ALUMINUM)
+                .addKey('A', VoltaicTags.Items.PLATE_ALUMINUM)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('P', Items.STICKY_PISTON)
                 //
-                .complete(References.ID, "upgrade_item_input", output);
+                .complete(Electrodynamics.ID, "upgrade_item_input", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput), 1)
                 //
@@ -877,13 +877,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("A")
                 //
-                .addKey('A', ElectrodynamicsTags.Items.PLATE_ALUMINUM)
+                .addKey('A', VoltaicTags.Items.PLATE_ALUMINUM)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('P', Items.PISTON)
                 //
-                .complete(References.ID, "upgrade_item_output", output);
+                .complete(Electrodynamics.ID, "upgrade_item_output", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemvoid), 1)
                 //
@@ -893,13 +893,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("P")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('C', Items.CACTUS)
                 //
-                .addKey('B', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('B', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
-                .complete(References.ID, "upgrade_item_void", output);
+                .complete(Electrodynamics.ID, "upgrade_item_void", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.range), 1)
                 //
@@ -909,13 +909,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PWP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_COPPER_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
                 //
-                .addKey('B', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('B', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
-                .complete(References.ID, "upgrade_range", output);
+                .complete(Electrodynamics.ID, "upgrade_range", output);
 
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.silktouch), 1)
@@ -926,13 +926,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PCP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ULTIMATE)
                 //
-                .addKey('B', new EnchantmentIngredient(Ingredient.of(Items.ENCHANTED_BOOK), Lists.newArrayList(ElectrodynamicsTags.Enchantments.SILK_TOUCH), false))
+                .addKey('B', new EnchantmentIngredient(Ingredient.of(Items.ENCHANTED_BOOK), Lists.newArrayList(VoltaicTags.Enchantments.SILK_TOUCH), false))
                 //
-                .complete(References.ID, "upgrade_silk_touch", output);
+                .complete(Electrodynamics.ID, "upgrade_silk_touch", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.stator), 1)
                 //
@@ -942,13 +942,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PCP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('C', ElectrodynamicsItems.ITEM_COIL.get())
                 //
                 .addKey('R', Tags.Items.DUSTS_REDSTONE)
                 //
-                .complete(References.ID, "upgrade_stator", output);
+                .complete(Electrodynamics.ID, "upgrade_stator", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.unbreaking), 1)
                 //
@@ -958,51 +958,51 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PCP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
-                .addKey('B', new EnchantmentIngredient(Ingredient.of(Items.ENCHANTED_BOOK), Lists.newArrayList(ElectrodynamicsTags.Enchantments.UNBREAKING), false))
+                .addKey('B', new EnchantmentIngredient(Ingredient.of(Items.ENCHANTED_BOOK), Lists.newArrayList(VoltaicTags.Enchantments.UNBREAKING), false))
                 //
-                .complete(References.ID, "upgrade_unbreaking", output);
+                .complete(Electrodynamics.ID, "upgrade_unbreaking", output);
 
         ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput), 1)
                 //
                 .addIngredient(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput))
                 //
-                .complete(References.ID, "upgrade_item_output_reset", output);
+                .complete(Electrodynamics.ID, "upgrade_item_output_reset", output);
 
         ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput), 1)
                 //
                 .addIngredient(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput))
                 //
-                .complete(References.ID, "upgrade_item_input_reset", output);
+                .complete(Electrodynamics.ID, "upgrade_item_input_reset", output);
 
         for (SubtypeNugget nugget : SubtypeNugget.values()) {
             ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_NUGGET.getValue(nugget), 9)
                     //
                     .addIngredient(nugget.sourceIngot)
                     //
-                    .complete(References.ID, nugget.name() + "_ingot_to_" + nugget.name() + "_nuggets", output);
+                    .complete(Electrodynamics.ID, nugget.name() + "_ingot_to_" + nugget.name() + "_nuggets", output);
 
         }
 
         ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.bronze), 3)
                 //
-                .addIngredient(ElectrodynamicsTags.Items.DUST_COPPER)
+                .addIngredient(VoltaicTags.Items.DUST_COPPER)
                 //
-                .addIngredient(ElectrodynamicsTags.Items.DUST_COPPER)
+                .addIngredient(VoltaicTags.Items.DUST_COPPER)
                 //
-                .addIngredient(ElectrodynamicsTags.Items.DUST_TIN)
+                .addIngredient(VoltaicTags.Items.DUST_TIN)
                 //
-                .complete(References.ID, "dust_bronze", output);
+                .complete(Electrodynamics.ID, "dust_bronze", output);
 
         for (SubtypeResourceBlock block : SubtypeResourceBlock.values()) {
             ShapelessCraftingRecipeBuilder.start(block.productIngot.get(), 9)
                     //
                     .addIngredient(ElectrodynamicsItems.ITEMS_RESOURCEBLOCK.getValue(block))
                     //
-                    .complete(References.ID, block.name() + "_ingot_from_storage_block", output);
+                    .complete(Electrodynamics.ID, block.name() + "_ingot_from_storage_block", output);
         }
 
         for (SubtypeRawOreBlock block : SubtypeRawOreBlock.values()) {
@@ -1010,52 +1010,52 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addIngredient(ElectrodynamicsItems.ITEMS_RAWOREBLOCK.getValue(block))
                     //
-                    .complete(References.ID, "raw_ore_" + block.name() + "_from_storage_block", output);
+                    .complete(Electrodynamics.ID, "raw_ore_" + block.name() + "_from_storage_block", output);
         }
 
         ShapelessCraftingRecipeBuilder.start(Items.GUNPOWDER, 6)
                 //
-                .addIngredient(ElectrodynamicsTags.Items.DUST_SULFUR)
+                .addIngredient(VoltaicTags.Items.DUST_SULFUR)
                 //
-                .addIngredient(ElectrodynamicsTags.Items.DUST_SALTPETER)
+                .addIngredient(VoltaicTags.Items.DUST_SALTPETER)
                 //
                 .addIngredient(ItemTags.COALS)
                 //
-                .complete(References.ID, "gunpowder", output);
+                .complete(Electrodynamics.ID, "gunpowder", output);
 
         ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_INSULATION.get(), 20)
                 //
-                .addIngredient(ElectrodynamicsTags.Items.PLASTIC)
+                .addIngredient(VoltaicTags.Items.PLASTIC)
                 //
-                .complete(References.ID, "insulation_from_plastic", output);
+                .complete(Electrodynamics.ID, "insulation_from_plastic", output);
 
         ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_INSULATION.get(), 1)
                 //
                 .addIngredient(ItemTags.WOOL)
                 //
-                .complete(References.ID, "insulation_from_wool", output);
+                .complete(Electrodynamics.ID, "insulation_from_wool", output);
 
         ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_INSULATION.get(), 6)
                 //
                 .addIngredient(Tags.Items.LEATHERS)
                 //
-                .complete(References.ID, "insulation_from_leather", output);
+                .complete(Electrodynamics.ID, "insulation_from_leather", output);
 
         ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_INSULATION.get(), 3)
                 //
                 .addIngredient(Items.RABBIT_HIDE)
                 //
-                .complete(References.ID, "insulation_from_rabbit_hide", output);
+                .complete(Electrodynamics.ID, "insulation_from_rabbit_hide", output);
 
         ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_MOLYBDENUMFERTILIZER.get(), 8)
                 //
                 .addIngredient(Items.BONE_MEAL)
                 //
-                .addIngredient(ElectrodynamicsTags.Items.DUST_MOLYBDENUM)
+                .addIngredient(VoltaicTags.Items.DUST_MOLYBDENUM)
                 //
-                .addIngredient(ElectrodynamicsTags.Items.DUST_MOLYBDENUM)
+                .addIngredient(VoltaicTags.Items.DUST_MOLYBDENUM)
                 //
-                .complete(References.ID, "molybdenum_fertilizer", output);
+                .complete(Electrodynamics.ID, "molybdenum_fertilizer", output);
 
         ShapelessCraftingRecipeBuilder.start(Items.OBSIDIAN, 2)
                 //
@@ -1063,7 +1063,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addIngredient(Items.LAVA_BUCKET)
                 //
-                .complete(References.ID, "obsidian", output);
+                .complete(Electrodynamics.ID, "obsidian", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_MECHANICALVALVE.get(), 1)
                 //
@@ -1073,15 +1073,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SSS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('L', Items.LEVER)
                 //
-                .addKey('B', ElectrodynamicsTags.Items.GEAR_BRONZE)
+                .addKey('B', VoltaicTags.Items.GEAR_BRONZE)
                 //
-                .addKey('I', ElectrodynamicsTags.Items.GEAR_IRON)
+                .addKey('I', VoltaicTags.Items.GEAR_IRON)
                 //
-                .complete(References.ID, "mechanical_valve", output);
+                .complete(Electrodynamics.ID, "mechanical_valve", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_PRESSUREGAGE.get(), 1)
                 //
@@ -1091,19 +1091,19 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("IGI")
                 //
-                .addKey('I', ElectrodynamicsTags.Items.PLATE_IRON)
+                .addKey('I', VoltaicTags.Items.PLATE_IRON)
                 //
                 .addKey('P', Tags.Items.GLASS_PANES)
                 //
                 .addKey('C', ElectrodynamicsItems.ITEM_COIL.get())
                 //
-                .addKey('R', ElectrodynamicsTags.Items.ROD_STEEL)
+                .addKey('R', VoltaicTags.Items.ROD_STEEL)
                 //
                 .addKey('D', Tags.Items.DUSTS_REDSTONE)
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_TIN)
+                .addKey('G', VoltaicTags.Items.GEAR_TIN)
                 //
-                .complete(References.ID, "pressure_gauge", output);
+                .complete(Electrodynamics.ID, "pressure_gauge", output);
     }
 
     private void addMachine(RecipeOutput output) {
@@ -1116,15 +1116,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PCP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
                 .addKey('O', ElectrodynamicsItems.ITEM_LAMINATEDCOIL.get())
                 //
                 .addKey('T', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.downgradetransformer))
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
-                .complete(References.ID, "machine_advanced_downgrade_transformer", output);
+                .complete(Electrodynamics.ID, "machine_advanced_downgrade_transformer", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.advancedupgradetransformer), 1)
                 //
@@ -1134,17 +1134,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("CPW")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
                 .addKey('O', ElectrodynamicsItems.ITEM_LAMINATEDCOIL.get())
                 //
                 .addKey('T', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.upgradetransformer))
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.copper))
                 //
-                .complete(References.ID, "machine_advanced_upgrade_transformer", output);
+                .complete(Electrodynamics.ID, "machine_advanced_upgrade_transformer", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.advancedsolarpanel), 1)
                 //
@@ -1156,11 +1156,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('S', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.solarpanel))
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('I', Tags.Items.INGOTS_IRON)
                 //
-                .complete(References.ID, "machine_advanced_solar_panel", output);
+                .complete(Electrodynamics.ID, "machine_advanced_solar_panel", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.batterybox), 1)
                 //
@@ -1172,11 +1172,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('B', ElectrodynamicsItems.ITEM_BATTERY.get())
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_COPPER_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
                 //
-                .complete(References.ID, "machine_battery_box_basic", output);
+                .complete(Electrodynamics.ID, "machine_battery_box_basic", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.carbynebatterybox), 1)
                 //
@@ -1188,11 +1188,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('B', ElectrodynamicsItems.ITEM_CARBYNEBATTERY.get())
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_HSLASTEEL)
                 //
-                .addKey('W', ElectrodynamicsTags.Items.THICK_SUPERCONDUCTIVE_WIRES)
+                .addKey('W', VoltaicTags.Items.THICK_SUPERCONDUCTIVE_WIRES)
                 //
-                .complete(References.ID, "machine_battery_box_carbyne", output);
+                .complete(Electrodynamics.ID, "machine_battery_box_carbyne", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.chargerhv), 1)
                 //
@@ -1202,17 +1202,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PCP")
                 //
-                .addKey('W', ElectrodynamicsTags.Items.THICK_SUPERCONDUCTIVE_WIRES)
+                .addKey('W', VoltaicTags.Items.THICK_SUPERCONDUCTIVE_WIRES)
                 //
                 .addKey('N', Items.NETHERITE_SCRAP)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.chargermv))
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_HSLASTEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ULTIMATE)
                 //
-                .complete(References.ID, "machine_charger_hv", output);
+                .complete(Electrodynamics.ID, "machine_charger_hv", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.chargerlv), 1)
                 //
@@ -1222,15 +1222,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PCP")
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_COPPER_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('B', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.batterybox))
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
-                .complete(References.ID, "machine_charger_lv", output);
+                .complete(Electrodynamics.ID, "machine_charger_lv", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.chargermv), 1)
                 //
@@ -1240,15 +1240,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PCP")
                 //
-                .addKey('W', ElectrodynamicsTags.Items.THICK_GOLD_WIRES)
+                .addKey('W', VoltaicTags.Items.THICK_GOLD_WIRES)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
                 .addKey('L', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.chargerlv))
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
-                .complete(References.ID, "machine_charger_mv", output);
+                .complete(Electrodynamics.ID, "machine_charger_mv", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.chemicalcrystallizer), 1)
                 //
@@ -1258,15 +1258,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SCS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_BRONZE)
+                .addKey('G', VoltaicTags.Items.GEAR_BRONZE)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
-                .complete(References.ID, "machine_chemical_crystallizer", output);
+                .complete(Electrodynamics.ID, "machine_chemical_crystallizer", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.chemicalmixer), 1)
                 //
@@ -1276,15 +1276,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SCS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_BRONZE)
+                .addKey('G', VoltaicTags.Items.GEAR_BRONZE)
                 //
-                .complete(References.ID, "machine_chemical_mixer", output);
+                .complete(Electrodynamics.ID, "machine_chemical_mixer", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.circuitbreaker), 1)
                 //
@@ -1294,15 +1294,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SCS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('B', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.relay))
                 //
                 .addKey('F', ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.fuse))
                 //
-                .complete(References.ID, "machine_circuit_breaker", output);
+                .complete(Electrodynamics.ID, "machine_circuit_breaker", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.circuitmonitor), 1)
                 //
@@ -1316,13 +1316,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('R', Items.COMPARATOR)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.multimeterblock))
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
-                .complete(References.ID, "machine_circuit_monitor", output);
+                .complete(Electrodynamics.ID, "machine_circuit_monitor", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.relay), 1)
                 //
@@ -1332,7 +1332,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SCS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.copper))
                 //
@@ -1342,7 +1342,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('C', ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate))
                 //
-                .complete(References.ID, "machine_relay", output);
+                .complete(Electrodynamics.ID, "machine_relay", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.potentiometer), 1)
                 //
@@ -1352,13 +1352,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("ACA")
                 //
-                .addKey('A', ElectrodynamicsTags.Items.PLATE_ALUMINUM)
+                .addKey('A', VoltaicTags.Items.PLATE_ALUMINUM)
                 //
                 .addKey('C', ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate))
                 //
                 .addKey('G', ItemTags.COALS)
                 //
-                .complete(References.ID, "machine_potentiometer", output);
+                .complete(Electrodynamics.ID, "machine_potentiometer", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.coalgenerator), 1)
                 //
@@ -1368,13 +1368,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SMS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('F', Items.FURNACE)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .complete(References.ID, "machine_coal_generator_steel", output);
+                .complete(Electrodynamics.ID, "machine_coal_generator_steel", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.coalgenerator), 1)
                 //
@@ -1384,13 +1384,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("BMB")
                 //
-                .addKey('B', ElectrodynamicsTags.Items.PLATE_BRONZE)
+                .addKey('B', VoltaicTags.Items.PLATE_BRONZE)
                 //
                 .addKey('F', Items.FURNACE)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .complete(References.ID, "machine_coal_generator_bronze", output);
+                .complete(Electrodynamics.ID, "machine_coal_generator_bronze", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.combustionchamber), 1)
                 //
@@ -1400,17 +1400,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PCP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_IRON)
+                .addKey('G', VoltaicTags.Items.GEAR_IRON)
                 //
                 .addKey('W', ElectrodynamicsItems.ITEM_COIL.get())
                 //
                 .addKey('C', Items.CAULDRON)
                 //
-                .complete(References.ID, "machine_combustion_chamber", output);
+                .complete(Electrodynamics.ID, "machine_combustion_chamber", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.coolantresavoir), 1)
                 //
@@ -1420,13 +1420,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SCS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('T', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.tanksteel))
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
-                .complete(References.ID, "machine_coolant_resavoir", output);
+                .complete(Electrodynamics.ID, "machine_coolant_resavoir", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.creativefluidsource), 1)
                 //
@@ -1440,7 +1440,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('B', Items.BEDROCK)
                 //
-                .complete(References.ID, "machine_creative_fluid_source", output);
+                .complete(Electrodynamics.ID, "machine_creative_fluid_source", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.creativepowersource), 1)
                 //
@@ -1454,7 +1454,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('N', Items.NETHER_STAR)
                 //
-                .complete(References.ID, "machine_creative_power_source", output);
+                .complete(Electrodynamics.ID, "machine_creative_power_source", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.currentregulator), 1)
                 //
@@ -1464,17 +1464,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SAS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('A', ElectrodynamicsTags.Items.PLATE_ALUMINUM)
+                .addKey('A', VoltaicTags.Items.PLATE_ALUMINUM)
                 //
                 .addKey('D', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.downgradetransformer))
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('U', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.upgradetransformer))
                 //
-                .complete(References.ID, "machine_current_regulator", output);
+                .complete(Electrodynamics.ID, "machine_current_regulator", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.downgradetransformer), 1)
                 //
@@ -1486,13 +1486,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('I', Tags.Items.INGOTS_IRON)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.INGOT_STEEL)
+                .addKey('S', VoltaicTags.Items.INGOT_STEEL)
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.copper))
                 //
                 .addKey('C', ElectrodynamicsItems.ITEM_COIL.get())
                 //
-                .complete(References.ID, "machine_downgrade_transformer", output);
+                .complete(Electrodynamics.ID, "machine_downgrade_transformer", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricfurnace), 1)
                 //
@@ -1502,13 +1502,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SMS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .complete(References.ID, "machine_electric_furnace", output);
+                .complete(Electrodynamics.ID, "machine_electric_furnace", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricfurnacedouble), 1)
                 //
@@ -1518,15 +1518,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("CSC")
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('G', Tags.Items.INGOTS_GOLD)
                 //
                 .addKey('F', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricfurnace))
                 //
-                .complete(References.ID, "machine_electric_furnace_double", output);
+                .complete(Electrodynamics.ID, "machine_electric_furnace_double", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricfurnacetriple), 1)
                 //
@@ -1536,15 +1536,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("COC")
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
-                .addKey('O', ElectrodynamicsTags.Items.DUST_OBSIDIAN)
+                .addKey('O', VoltaicTags.Items.DUST_OBSIDIAN)
                 //
                 .addKey('D', Tags.Items.GEMS_DIAMOND)
                 //
                 .addKey('F', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricfurnacedouble))
                 //
-                .complete(References.ID, "machine_electric_furnace_triple", output);
+                .complete(Electrodynamics.ID, "machine_electric_furnace_triple", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricpump), 1)
                 //
@@ -1554,13 +1554,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SPS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
                 .addKey('P', Items.PISTON)
                 //
-                .complete(References.ID, "machine_electric_pump", output);
+                .complete(Electrodynamics.ID, "machine_electric_pump", output);
 
         ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricarcfurnace), 1)
                 //
@@ -1568,7 +1568,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addIngredient(Items.BLAST_FURNACE)
                 //
-                .complete(References.ID, "machine_electric_arc_furnace", output);
+                .complete(Electrodynamics.ID, "machine_electric_arc_furnace", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricarcfurnacedouble), 1)
                 //
@@ -1578,15 +1578,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("CSC")
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('G', Tags.Items.INGOTS_GOLD)
                 //
                 .addKey('E', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricarcfurnace))
                 //
-                .complete(References.ID, "machine_electric_arc_furnace_double", output);
+                .complete(Electrodynamics.ID, "machine_electric_arc_furnace_double", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricarcfurnacetriple), 1)
                 //
@@ -1596,15 +1596,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("COC")
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
-                .addKey('O', ElectrodynamicsTags.Items.DUST_OBSIDIAN)
+                .addKey('O', VoltaicTags.Items.DUST_OBSIDIAN)
                 //
                 .addKey('D', Tags.Items.GEMS_DIAMOND)
                 //
                 .addKey('E', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricarcfurnacedouble))
                 //
-                .complete(References.ID, "machine_electric_arc_furnace_triple", output);
+                .complete(Electrodynamics.ID, "machine_electric_arc_furnace_triple", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electrolyticseparator), 1)
                 //
@@ -1614,15 +1614,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PCP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
                 .addKey('T', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gastanksteel))
                 //
                 .addKey('X', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.upgradetransformer))
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
-                .complete(References.ID, "machine_electrolytic_separator", output);
+                .complete(Electrodynamics.ID, "machine_electrolytic_separator", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.energizedalloyer), 1)
                 //
@@ -1632,15 +1632,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("AEA")
                 //
-                .addKey('A', ElectrodynamicsTags.Items.PLATE_ALUMINUM)
+                .addKey('A', VoltaicTags.Items.PLATE_ALUMINUM)
                 //
                 .addKey('C', ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate))
                 //
                 .addKey('T', ElectrodynamicsItems.ITEM_TITANIUM_COIL.get())
                 //
-                .addKey('E', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('E', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
-                .complete(References.ID, "machine_energized_alloyer", output);
+                .complete(Electrodynamics.ID, "machine_energized_alloyer", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fermentationplant), 1)
                 //
@@ -1650,17 +1650,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("IFI")
                 //
-                .addKey('I', ElectrodynamicsTags.Items.PLATE_IRON)
+                .addKey('I', VoltaicTags.Items.PLATE_IRON)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .addKey('B', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('B', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('C', Items.CAULDRON)
                 //
                 .addKey('F', Items.FURNACE)
                 //
-                .complete(References.ID, "machine_fermentation_plant", output);
+                .complete(Electrodynamics.ID, "machine_fermentation_plant", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidvoid), 1)
                 //
@@ -1670,13 +1670,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SBS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('B', Items.BUCKET)
                 //
                 .addKey('C', Items.CACTUS)
                 //
-                .complete(References.ID, "machine_fluid_void", output);
+                .complete(Electrodynamics.ID, "machine_fluid_void", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gascollector), 1)
                 //
@@ -1686,15 +1686,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SSS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
                 .addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
                 //
-                .complete(References.ID, "machine_gascollector", output);
+                .complete(Electrodynamics.ID, "machine_gascollector", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gasvent), 1)
                 //
@@ -1704,13 +1704,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SBS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('B', Items.IRON_BARS)
                 //
                 .addKey('C', Items.CACTUS)
                 //
-                .complete(References.ID, "machine_gas_vent", output);
+                .complete(Electrodynamics.ID, "machine_gas_vent", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.lithiumbatterybox), 1)
                 //
@@ -1722,11 +1722,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('B', ElectrodynamicsItems.ITEM_LITHIUMBATTERY.get())
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_GOLD_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_GOLD_WIRES)
                 //
-                .complete(References.ID, "battery_box_lithium", output);
+                .complete(Electrodynamics.ID, "battery_box_lithium", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.lathe), 1)
                 //
@@ -1736,15 +1736,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("AWA")
                 //
-                .addKey('A', ElectrodynamicsTags.Items.PLATE_ALUMINUM)
+                .addKey('A', VoltaicTags.Items.PLATE_ALUMINUM)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.wiremill))
                 //
-                .complete(References.ID, "lathe", output);
+                .complete(Electrodynamics.ID, "lathe", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_LOGISTICALMANAGER.get(), 1)
                 //
@@ -1754,13 +1754,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SCS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('P', Items.PISTON)
                 //
-                .complete(References.ID, "machine_logistical_manager", output);
+                .complete(Electrodynamics.ID, "machine_logistical_manager", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.hydroelectricgenerator), 1)
                 //
@@ -1776,9 +1776,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('W', ItemTags.PLANKS)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .complete(References.ID, "machine_hydroelectric_generator", output);
+                .complete(Electrodynamics.ID, "machine_hydroelectric_generator", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralcrusher), 1)
                 //
@@ -1788,17 +1788,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SWS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_BRONZE)
+                .addKey('G', VoltaicTags.Items.GEAR_BRONZE)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_BRONZE)
+                .addKey('P', VoltaicTags.Items.PLATE_BRONZE)
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.copper))
                 //
-                .complete(References.ID, "machine_mineral_crusher", output);
+                .complete(Electrodynamics.ID, "machine_mineral_crusher", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralcrusherdouble), 1)
                 //
@@ -1808,7 +1808,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("EDE")
                 //
-                .addKey('E', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('E', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
                 .addKey('D', Tags.Items.GEMS_DIAMOND)
                 //
@@ -1816,7 +1816,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('C', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralcrusher))
                 //
-                .complete(References.ID, "machine_mineral_crusher_double", output);
+                .complete(Electrodynamics.ID, "machine_mineral_crusher_double", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralcrushertriple), 1)
                 //
@@ -1826,7 +1826,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("UVU")
                 //
-                .addKey('U', ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE)
+                .addKey('U', VoltaicTags.Items.CIRCUITS_ULTIMATE)
                 //
                 .addKey('V', ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.vanadium))
                 //
@@ -1834,7 +1834,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('C', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralcrusherdouble))
                 //
-                .complete(References.ID, "machine_mineral_crusher_triple", output);
+                .complete(Electrodynamics.ID, "machine_mineral_crusher_triple", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralgrinder), 1)
                 //
@@ -1844,15 +1844,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PGP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_COPPER)
+                .addKey('G', VoltaicTags.Items.GEAR_COPPER)
                 //
-                .complete(References.ID, "machine_mineral_grinder", output);
+                .complete(Electrodynamics.ID, "machine_mineral_grinder", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralgrinderdouble), 1)
                 //
@@ -1862,15 +1862,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("CGC")
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
-                .addKey('B', ElectrodynamicsTags.Items.GEAR_BRONZE)
+                .addKey('B', VoltaicTags.Items.GEAR_BRONZE)
                 //
                 .addKey('G', Tags.Items.INGOTS_GOLD)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralgrinder))
                 //
-                .complete(References.ID, "machine_mineral_grinder_double", output);
+                .complete(Electrodynamics.ID, "machine_mineral_grinder_double", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralgrindertriple), 1)
                 //
@@ -1880,15 +1880,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("CDC")
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_STEEL)
+                .addKey('G', VoltaicTags.Items.GEAR_STEEL)
                 //
-                .addKey('D', ElectrodynamicsTags.Items.DUST_SUPERCONDUCTIVE)
+                .addKey('D', VoltaicTags.Items.DUST_SUPERCONDUCTIVE)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralgrinderdouble))
                 //
-                .complete(References.ID, "machine_mineral_grinder_triple", output);
+                .complete(Electrodynamics.ID, "machine_mineral_grinder_triple", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralwasher), 1)
                 //
@@ -1898,17 +1898,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PEP")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_STEEL)
+                .addKey('G', VoltaicTags.Items.GEAR_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ULTIMATE)
                 //
                 .addKey('P', ElectrodynamicsItems.ITEMS_PIPE.getValue(SubtypeFluidPipe.steel))
                 //
                 .addKey('E', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricpump))
                 //
-                .complete(References.ID, "machine_mineral_washer", output);
+                .complete(Electrodynamics.ID, "machine_mineral_washer", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.motorcomplex), 1)
                 //
@@ -1918,15 +1918,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PGP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_STEEL)
+                .addKey('G', VoltaicTags.Items.GEAR_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .complete(References.ID, "machine_motor_complex", output);
+                .complete(Electrodynamics.ID, "machine_motor_complex", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.multimeterblock), 1)
                 //
@@ -1936,11 +1936,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern(" S ")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.INGOT_STEEL)
+                .addKey('S', VoltaicTags.Items.INGOT_STEEL)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MULTIMETER.get())
                 //
-                .complete(References.ID, "machine_multimeter_block", output);
+                .complete(Electrodynamics.ID, "machine_multimeter_block", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.oxidationfurnace), 1)
                 //
@@ -1950,17 +1950,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PMP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_STEEL)
+                .addKey('G', VoltaicTags.Items.GEAR_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
                 .addKey('F', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricfurnace))
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .complete(References.ID, "machine_oxidation_furnace", output);
+                .complete(Electrodynamics.ID, "machine_oxidation_furnace", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.quarry), 1)
                 //
@@ -1970,13 +1970,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PCP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
                 .addKey('D', Items.DIAMOND_PICKAXE)
                 //
-                .complete(References.ID, "machine_quarry", output);
+                .complete(Electrodynamics.ID, "machine_quarry", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.reinforcedalloyer), 1)
                 //
@@ -1988,13 +1988,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('C', ElectrodynamicsItems.ITEM_COMPOSITEPLATING.get())
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
                 .addKey('A', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.energizedalloyer))
                 //
                 .addKey('T', ElectrodynamicsItems.ITEM_TITANIUM_COIL.get())
                 //
-                .complete(References.ID, "machine_reinforced_alloyer", output);
+                .complete(Electrodynamics.ID, "machine_reinforced_alloyer", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.seismicrelay), 1)
                 //
@@ -2004,15 +2004,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("MAM")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('A', Tags.Items.GEMS_AMETHYST)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ULTIMATE)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_SEISMICMARKER.get())
                 //
-                .complete(References.ID, "machine_seismic_relay", output);
+                .complete(Electrodynamics.ID, "machine_seismic_relay", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.solarpanel), 1)
                 //
@@ -2024,15 +2024,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('S', ElectrodynamicsItems.ITEM_SOLARPANELPLATE.get())
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('I', Tags.Items.INGOTS_IRON)
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.copper))
                 //
-                .complete(References.ID, "machine_solar_panel", output);
+                .complete(Electrodynamics.ID, "machine_solar_panel", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.tanksteel), 1)
                 //
@@ -2042,13 +2042,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SGS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('G', Tags.Items.GLASS_BLOCKS)
                 //
                 .addKey('C', Items.CAULDRON)
                 //
-                .complete(References.ID, "machine_tank_steel", output);
+                .complete(Electrodynamics.ID, "machine_tank_steel", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.tankreinforced), 1)
                 //
@@ -2058,13 +2058,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SGS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
                 .addKey('G', ElectrodynamicsItems.ITEMS_CUSTOMGLASS.getValue(SubtypeGlass.clear))
                 //
                 .addKey('T', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.tanksteel))
                 //
-                .complete(References.ID, "machine_tank_reinforced", output);
+                .complete(Electrodynamics.ID, "machine_tank_reinforced", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.tankhsla), 1)
                 //
@@ -2074,13 +2074,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SGS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_HSLASTEEL)
                 //
                 .addKey('G', ElectrodynamicsItems.ITEMS_CUSTOMGLASS.getValue(SubtypeGlass.aluminum))
                 //
                 .addKey('T', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.tankreinforced))
                 //
-                .complete(References.ID, "machine_tank_hsla", output);
+                .complete(Electrodynamics.ID, "machine_tank_hsla", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_COMPRESSOR_ADDONTANK.get(), 1)
                 //
@@ -2090,11 +2090,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SSS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('C', Items.CAULDRON)
                 //
-                .complete(References.ID, "pressurized_tank", output);
+                .complete(Electrodynamics.ID, "pressurized_tank", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gastanksteel), 1)
                 //
@@ -2104,13 +2104,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern(" S ")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('P', ElectrodynamicsItems.ITEM_COMPRESSOR_ADDONTANK.get())
                 //
                 .addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
                 //
-                .complete(References.ID, "machine_gastank_steel", output);
+                .complete(Electrodynamics.ID, "machine_gastank_steel", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gastankreinforced), 1)
                 //
@@ -2120,11 +2120,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SSS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
                 .addKey('T', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gastanksteel))
                 //
-                .complete(References.ID, "machine_gastank_reinforced", output);
+                .complete(Electrodynamics.ID, "machine_gastank_reinforced", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gastankhsla), 1)
                 //
@@ -2134,11 +2134,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SSS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_HSLASTEEL)
                 //
                 .addKey('T', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gastankreinforced))
                 //
-                .complete(References.ID, "machine_gastank_hsla", output);
+                .complete(Electrodynamics.ID, "machine_gastank_hsla", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.thermoelectricgenerator), 1)
                 //
@@ -2150,15 +2150,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('I', Tags.Items.INGOTS_IRON)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.INGOT_STEEL)
+                .addKey('S', VoltaicTags.Items.INGOT_STEEL)
                 //
                 .addKey('C', Tags.Items.INGOTS_COPPER)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('F', Items.FURNACE)
                 //
-                .complete(References.ID, "machine_thermoelectric_generator", output);
+                .complete(Electrodynamics.ID, "machine_thermoelectric_generator", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.upgradetransformer), 1)
                 //
@@ -2170,13 +2170,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('I', Tags.Items.INGOTS_IRON)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.INGOT_STEEL)
+                .addKey('S', VoltaicTags.Items.INGOT_STEEL)
                 //
                 .addKey('W', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.copper))
                 //
                 .addKey('C', ElectrodynamicsItems.ITEM_COIL.get())
                 //
-                .complete(References.ID, "machine_upgrade_transformer", output);
+                .complete(Electrodynamics.ID, "machine_upgrade_transformer", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.windmill), 1)
                 //
@@ -2186,15 +2186,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("ISI")
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_IRON)
+                .addKey('G', VoltaicTags.Items.GEAR_IRON)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('I', Tags.Items.INGOTS_IRON)
                 //
-                .complete(References.ID, "machine_windmill", output);
+                .complete(Electrodynamics.ID, "machine_windmill", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.wiremill), 1)
                 //
@@ -2204,15 +2204,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PGP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('B', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('B', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_BRONZE)
+                .addKey('G', VoltaicTags.Items.GEAR_BRONZE)
                 //
-                .complete(References.ID, "machine_wiremill", output);
+                .complete(Electrodynamics.ID, "machine_wiremill", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.wiremilldouble), 1)
                 //
@@ -2222,15 +2222,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("CGC")
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_BRONZE)
+                .addKey('G', VoltaicTags.Items.GEAR_BRONZE)
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_SILVER_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_SILVER_WIRES)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.wiremill))
                 //
-                .complete(References.ID, "machine_wiremill_double", output);
+                .complete(Electrodynamics.ID, "machine_wiremill_double", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.wiremilltriple), 1)
                 //
@@ -2240,15 +2240,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("CGC")
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_STEEL)
+                .addKey('G', VoltaicTags.Items.GEAR_STEEL)
                 //
-                .addKey('W', ElectrodynamicsTags.Items.CERAMIC_SILVER_WIRES)
+                .addKey('W', VoltaicTags.Items.CERAMIC_SILVER_WIRES)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.wiremilldouble))
                 //
-                .complete(References.ID, "machine_wiremill_triple", output);
+                .complete(Electrodynamics.ID, "machine_wiremill_triple", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_COMPRESSOR.get(), 1)
                 //
@@ -2258,19 +2258,19 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("CMG")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
                 .addKey('T', ElectrodynamicsItems.ITEM_COMPRESSOR_ADDONTANK.get())
                 //
                 .addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
                 .addKey('G', ElectrodynamicsItems.ITEM_PRESSUREGAGE.get())
                 //
-                .complete(References.ID, "machine_compressor", output);
+                .complete(Electrodynamics.ID, "machine_compressor", output);
 
         ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_DECOMPRESSOR.get(), 1)
                 //
@@ -2278,7 +2278,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addIngredient(ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
                 //
-                .complete(References.ID, "machine_decompressor", output);
+                .complete(Electrodynamics.ID, "machine_decompressor", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_THERMOELECTRIC_MANIPULATOR.get(), 1)
                 //
@@ -2288,13 +2288,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("MOC")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
                 .addKey('T', ElectrodynamicsItems.ITEM_COMPRESSOR_ADDONTANK.get())
                 //
                 .addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
@@ -2302,7 +2302,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('O', ElectrodynamicsItems.ITEM_COIL.get())
                 //
-                .complete(References.ID, "machine_thermoelectric_manipulator", output);
+                .complete(Electrodynamics.ID, "machine_thermoelectric_manipulator", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidvalve), 1)
                 //
@@ -2314,7 +2314,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('R', Tags.Items.DUSTS_REDSTONE)
                 //
-                .complete(References.ID, "pipe_fluidvalve", output);
+                .complete(Electrodynamics.ID, "pipe_fluidvalve", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gasvalve), 1)
                 //
@@ -2326,7 +2326,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('R', Tags.Items.DUSTS_REDSTONE)
                 //
-                .complete(References.ID, "pipe_gasvalve", output);
+                .complete(Electrodynamics.ID, "pipe_gasvalve", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidpipepump), 1)
                 //
@@ -2336,7 +2336,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern(" M ")
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
                 //
@@ -2344,7 +2344,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .complete(References.ID, "pipe_fluidpump", output);
+                .complete(Electrodynamics.ID, "pipe_fluidpump", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gaspipepump), 1)
                 //
@@ -2354,7 +2354,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern(" M ")
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
                 //
@@ -2362,7 +2362,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .complete(References.ID, "pipe_gaspump", output);
+                .complete(Electrodynamics.ID, "pipe_gaspump", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidpipefilter), 1)
                 //
@@ -2372,7 +2372,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern(" # ")
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
                 //
@@ -2380,7 +2380,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('#', Items.PAPER)
                 //
-                .complete(References.ID, "pipe_fluidfilter", output);
+                .complete(Electrodynamics.ID, "pipe_fluidfilter", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gaspipefilter), 1)
                 //
@@ -2390,7 +2390,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern(" # ")
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
                 //
@@ -2398,7 +2398,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('#', Items.PAPER)
                 //
-                .complete(References.ID, "pipe_gasfilter", output);
+                .complete(Electrodynamics.ID, "pipe_gasfilter", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_CHEMICALREACTOR.get(), 1)
                 //
@@ -2408,11 +2408,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("WPW")
                 //
-                .addKey('G', ElectrodynamicsTags.Items.GEAR_TIN)
+                .addKey('G', VoltaicTags.Items.GEAR_TIN)
                 //
                 .addKey('F', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gastanksteel))
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
                 .addKey('A', ElectrodynamicsItems.ITEMS_CUSTOMGLASS.getValue(SubtypeGlass.aluminum))
                 //
@@ -2422,7 +2422,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('P', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gastanksteel))
                 //
-                .complete(References.ID, "machine_chemicalreactor", output);
+                .complete(Electrodynamics.ID, "machine_chemicalreactor", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_ADVANCEDCOMPRESSOR.get(), 1)
                 //
@@ -2432,9 +2432,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("OWO")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
                 .addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
                 //
@@ -2444,7 +2444,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('O', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .complete(References.ID, "machine_advancedcompressor", output);
+                .complete(Electrodynamics.ID, "machine_advancedcompressor", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_ADVANCEDDECOMPRESSOR.get(), 1)
                 //
@@ -2454,9 +2454,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("OWO")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
                 .addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
                 //
@@ -2466,7 +2466,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('O', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .complete(References.ID, "machine_advanceddecompressor", output);
+                .complete(Electrodynamics.ID, "machine_advanceddecompressor", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_ADVANCED_THERMOELECTRIC_MANIPULATOR.get(), 1)
                 //
@@ -2476,9 +2476,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("WCW")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
                 .addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
                 //
@@ -2488,7 +2488,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('C', ElectrodynamicsItems.ITEM_TITANIUM_COIL.get())
                 //
-                .complete(References.ID, "machine_advancedthermoelectricmanipulator", output);
+                .complete(Electrodynamics.ID, "machine_advancedthermoelectricmanipulator", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electrolosischamber), 1)
                 //
@@ -2498,15 +2498,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("ICI")
                 //
-                .addKey('I', ElectrodynamicsTags.Items.INGOT_CHROMIUM)
+                .addKey('I', VoltaicTags.Items.INGOT_CHROMIUM)
                 //
                 .addKey('T', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.upgradetransformer))
                 //
                 .addKey('E', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electrolyticseparator))
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ULTIMATE)
                 //
-                .complete(References.ID, "machine_electrolosischamber", output);
+                .complete(Electrodynamics.ID, "machine_electrolosischamber", output);
 
 
 
@@ -2522,11 +2522,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("S")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
                 .addKey('A', ElectrodynamicsItems.ITEMS_CUSTOMGLASS.getValue(SubtypeGlass.aluminum))
                 //
-                .complete(References.ID, "reinforced_canister", output);
+                .complete(Electrodynamics.ID, "reinforced_canister", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get(), 1)
                 //
@@ -2536,11 +2536,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("S")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
                 .addKey('V', ElectrodynamicsItems.ITEM_MECHANICALVALVE.get())
                 //
-                .complete(References.ID, "portable_cylinder", output);
+                .complete(Electrodynamics.ID, "portable_cylinder", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_COMBATBOOTS.get(), 1)
                 //
@@ -2550,15 +2550,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("TBT")
                 //
-                .addKey('T', ElectrodynamicsTags.Items.PLATE_TITANIUMCARBIDE)
+                .addKey('T', VoltaicTags.Items.PLATE_TITANIUMCARBIDE)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_HSLASTEEL)
                 //
                 .addKey('H', ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get())
                 //
                 .addKey('B', ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get())
                 //
-                .complete(References.ID, "combat_boots", output);
+                .complete(Electrodynamics.ID, "combat_boots", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get(), 1)
                 //
@@ -2568,15 +2568,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("TCT")
                 //
-                .addKey('T', ElectrodynamicsTags.Items.PLATE_TITANIUMCARBIDE)
+                .addKey('T', VoltaicTags.Items.PLATE_TITANIUMCARBIDE)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_HSLASTEEL)
                 //
                 .addKey('J', ElectrodynamicsItems.ITEM_JETPACK.get())
                 //
                 .addKey('C', ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get())
                 //
-                .complete(References.ID, "combat_chestplate", output);
+                .complete(Electrodynamics.ID, "combat_chestplate", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_COMBATHELMET.get(), 1)
                 //
@@ -2586,15 +2586,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("THT")
                 //
-                .addKey('T', ElectrodynamicsTags.Items.PLATE_TITANIUMCARBIDE)
+                .addKey('T', VoltaicTags.Items.PLATE_TITANIUMCARBIDE)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_HSLASTEEL)
                 //
                 .addKey('N', ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get())
                 //
                 .addKey('H', ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get())
                 //
-                .complete(References.ID, "combat_helmet", output);
+                .complete(Electrodynamics.ID, "combat_helmet", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get(), 1)
                 //
@@ -2604,15 +2604,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("TLT")
                 //
-                .addKey('T', ElectrodynamicsTags.Items.PLATE_TITANIUMCARBIDE)
+                .addKey('T', VoltaicTags.Items.PLATE_TITANIUMCARBIDE)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_HSLASTEEL)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get())
                 //
                 .addKey('L', ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS.get())
                 //
-                .complete(References.ID, "combat_leggings", output);
+                .complete(Electrodynamics.ID, "combat_leggings", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get(), 1)
                 //
@@ -2622,9 +2622,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('P', ElectrodynamicsItems.ITEM_COMPOSITEPLATING.get())
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .complete(References.ID, "composite_boots", output);
+                .complete(Electrodynamics.ID, "composite_boots", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get(), 1)
                 //
@@ -2636,9 +2636,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('P', ElectrodynamicsItems.ITEM_COMPOSITEPLATING.get())
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLASTIC)
+                .addKey('S', VoltaicTags.Items.PLASTIC)
                 //
-                .complete(References.ID, "composite_chestplate", output);
+                .complete(Electrodynamics.ID, "composite_chestplate", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get(), 1)
                 //
@@ -2650,7 +2650,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('G', ElectrodynamicsItems.ITEMS_CUSTOMGLASS.getValue(SubtypeGlass.aluminum))
                 //
-                .complete(References.ID, "composite_helmet", output);
+                .complete(Electrodynamics.ID, "composite_helmet", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS.get(), 1)
                 //
@@ -2662,7 +2662,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('P', ElectrodynamicsItems.ITEM_COMPOSITEPLATING.get())
                 //
-                .complete(References.ID, "composite_leggings", output);
+                .complete(Electrodynamics.ID, "composite_leggings", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_ELECTRICBATON.get(), 1)
                 //
@@ -2672,15 +2672,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("BC ")
                 //
-                .addKey('T', ElectrodynamicsTags.Items.ROD_STEEL)
+                .addKey('T', VoltaicTags.Items.ROD_STEEL)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLASTIC)
+                .addKey('P', VoltaicTags.Items.PLASTIC)
                 //
                 .addKey('B', ElectrodynamicsItems.ITEM_LITHIUMBATTERY.get())
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
-                .complete(References.ID, "electric_baton", output);
+                .complete(Electrodynamics.ID, "electric_baton", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW.get(), 1)
                 //
@@ -2688,9 +2688,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("IMB")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLASTIC)
+                .addKey('P', VoltaicTags.Items.PLASTIC)
                 //
                 .addKey('I', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.iron))
                 //
@@ -2698,7 +2698,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('B', ElectrodynamicsItems.ITEM_BATTERY.get())
                 //
-                .complete(References.ID, "electric_chainsaw", output);
+                .complete(Electrodynamics.ID, "electric_chainsaw", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_ELECTRICDRILL.get(), 1)
                 //
@@ -2710,21 +2710,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('R', ElectrodynamicsTags.Items.ROD_STEEL)
+                .addKey('R', VoltaicTags.Items.ROD_STEEL)
                 //
                 .addKey('B', ElectrodynamicsItems.ITEM_BATTERY.get())
                 //
-                .complete(References.ID, "electric_drill", output);
-
-        ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.GUIDEBOOK.get(), 1)
-                //
-                .addIngredient(Items.BOOK)
-                //
-                .addIngredient(ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.copper))
-                //
-                .complete(References.ID, "guidebook", output);
+                .complete(Electrodynamics.ID, "electric_drill", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get(), 1)
                 //
@@ -2740,9 +2732,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('W', ItemTags.WOOL)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .complete(References.ID, "hydraulic_boots", output);
+                .complete(Electrodynamics.ID, "hydraulic_boots", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_CERAMICINSULATION.get(), 6)
                 //
@@ -2756,7 +2748,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('B', Items.IRON_BARS)
                 //
-                .complete(References.ID, "ceramic_insulation", output);
+                .complete(Electrodynamics.ID, "ceramic_insulation", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_JETPACK.get(), 1)
                 //
@@ -2766,15 +2758,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("P P")
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('T', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gastanksteel))
                 //
                 .addKey('P', ElectrodynamicsItems.ITEMS_GASPIPE.getValue(SubtypeGasPipe.UNINSULATEDSTEEL))
                 //
-                .complete(References.ID, "jetpack", output);
+                .complete(Electrodynamics.ID, "jetpack", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_MECHANIZEDCROSSBOW.get(), 1)
                 //
@@ -2784,9 +2776,9 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern(" MB")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('S', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('b', Items.CROSSBOW)
                 //
@@ -2794,7 +2786,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('B', ElectrodynamicsItems.ITEM_BATTERY.get())
                 //
-                .complete(References.ID, "mechanized_crossbow", output);
+                .complete(Electrodynamics.ID, "mechanized_crossbow", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_MULTIMETER.get(), 1)
                 //
@@ -2804,13 +2796,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("SWS")
                 //
-                .addKey('S', ElectrodynamicsTags.Items.INGOT_STEEL)
+                .addKey('S', VoltaicTags.Items.INGOT_STEEL)
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_COPPER_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
-                .complete(References.ID, "multimeter", output);
+                .complete(Electrodynamics.ID, "multimeter", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get(), 1)
                 //
@@ -2824,13 +2816,13 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('P', Items.LIME_STAINED_GLASS_PANE)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ADVANCED)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ADVANCED)
                 //
                 .addKey('G', Items.GLOW_INK_SAC)
                 //
                 .addKey('B', ElectrodynamicsItems.ITEM_BATTERY.get())
                 //
-                .complete(References.ID, "night_vision_goggles", output);
+                .complete(Electrodynamics.ID, "night_vision_goggles", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_RUBBERBOOTS.get(), 1)
                 //
@@ -2840,7 +2832,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('I', ElectrodynamicsItems.ITEM_INSULATION.get())
                 //
-                .complete(References.ID, "rubber_boots", output);
+                .complete(Electrodynamics.ID, "rubber_boots", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_KINETICRAILGUN.get(), 1)
                 //
@@ -2856,15 +2848,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('S', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.superconductive))
                 //
-                .addKey('B', ElectrodynamicsTags.Items.STORAGE_BLOCK_STAINLESSSTEEL)
+                .addKey('B', VoltaicTags.Items.STORAGE_BLOCK_STAINLESSSTEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ELITE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ELITE)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STAINLESSSTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STAINLESSSTEEL)
                 //
-                .addKey('R', ElectrodynamicsTags.Items.ROD_STAINLESSSTEEL)
+                .addKey('R', VoltaicTags.Items.ROD_STAINLESSSTEEL)
                 //
-                .complete(References.ID, "rail_gun_kinetic", output);
+                .complete(Electrodynamics.ID, "rail_gun_kinetic", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_PLASMARAILGUN.get(), 1)
                 //
@@ -2880,15 +2872,15 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addKey('S', ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.superconductive))
                 //
-                .addKey('B', ElectrodynamicsTags.Items.STORAGE_BLOCK_HSLASTEEL)
+                .addKey('B', VoltaicTags.Items.STORAGE_BLOCK_HSLASTEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_ULTIMATE)
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_HSLASTEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_HSLASTEEL)
                 //
-                .addKey('R', ElectrodynamicsTags.Items.ROD_TITANIUMCARBIDE)
+                .addKey('R', VoltaicTags.Items.ROD_TITANIUMCARBIDE)
                 //
-                .complete(References.ID, "rail_gun_plasma", output);
+                .complete(Electrodynamics.ID, "rail_gun_plasma", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_SEISMICSCANNER.get(), 1)
                 //
@@ -2898,17 +2890,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("PCP")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
                 .addKey('Q', Tags.Items.GEMS_QUARTZ)
                 //
                 .addKey('A', Tags.Items.GEMS_AMETHYST)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('B', ElectrodynamicsItems.ITEM_BATTERY.get())
                 //
-                .complete(References.ID, "seismic_scanner", output);
+                .complete(Electrodynamics.ID, "seismic_scanner", output);
 
         ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get(), 1)
                 //
@@ -2918,29 +2910,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                 //
                 .addPattern("B B")
                 //
-                .addKey('P', ElectrodynamicsTags.Items.PLATE_STEEL)
+                .addKey('P', VoltaicTags.Items.PLATE_STEEL)
                 //
-                .addKey('C', ElectrodynamicsTags.Items.CIRCUITS_BASIC)
+                .addKey('C', VoltaicTags.Items.CIRCUITS_BASIC)
                 //
                 .addKey('M', ElectrodynamicsItems.ITEM_MOTOR.get())
                 //
-                .addKey('W', ElectrodynamicsTags.Items.INSULATED_COPPER_WIRES)
+                .addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
                 //
                 .addKey('B', ElectrodynamicsItems.ITEM_BATTERY.get())
                 //
-                .complete(References.ID, "servo_leggings", output);
-
-        ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_WRENCH.get(), 1)
-                //
-                .addPattern(" S ")
-                //
-                .addPattern(" SS")
-                //
-                .addPattern("S  ")
-                //
-                .addKey('S', ElectrodynamicsTags.Items.INGOT_STEEL)
-                //
-                .complete(References.ID, "wrench", output);
+                .complete(Electrodynamics.ID, "servo_leggings", output);
 
     }
 
@@ -2957,7 +2937,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
                     //
-                    .complete(References.ID, "wire_" + wire.name(), output);
+                    .complete(Electrodynamics.ID, "wire_" + wire.name(), output);
 
         }
 
@@ -2972,7 +2952,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addIngredient(Tags.Items.DUSTS_REDSTONE)
                     //
-                    .complete(References.ID, "wire_" + wire.name(), output);
+                    .complete(Electrodynamics.ID, "wire_" + wire.name(), output);
 
         }
 
@@ -2987,7 +2967,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addIngredient(ElectrodynamicsItems.ITEM_CERAMICINSULATION.get())
                     //
-                    .complete(References.ID, "wire_" + wire.name(), output);
+                    .complete(Electrodynamics.ID, "wire_" + wire.name(), output);
 
         }
 
@@ -3010,7 +2990,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
                     //
-                    .complete(References.ID, "wire_" + wire.name(), output);
+                    .complete(Electrodynamics.ID, "wire_" + wire.name(), output);
 
         }
 
@@ -3031,7 +3011,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addKey('D', wire.getWireColor().getDyeTag())
                     //
-                    .complete(References.ID, "wire_" + wire.name() + "_multi", output);
+                    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_multi", output);
 
             ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 1)
                     //
@@ -3039,7 +3019,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addIngredient(wire.getWireColor().getDyeTag())
                     //
-                    .complete(References.ID, "wire_" + wire.name() + "_single", output);
+                    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_single", output);
         }
 
         // Highly Insulated Wires
@@ -3059,7 +3039,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addKey('D', wire.getWireColor().getDyeTag())
                     //
-                    .complete(References.ID, "wire_" + wire.name() + "_multi", output);
+                    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_multi", output);
 
             ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 1)
                     //
@@ -3067,7 +3047,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addIngredient(wire.getWireColor().getDyeTag())
                     //
-                    .complete(References.ID, "wire_" + wire.name() + "_single", output);
+                    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_single", output);
         }
 
         // Ceramic Insulated Wires
@@ -3087,7 +3067,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addKey('D', wire.getWireColor().getDyeTag())
                     //
-                    .complete(References.ID, "wire_" + wire.name() + "_multi", output);
+                    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_multi", output);
 
             ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 1)
                     //
@@ -3095,7 +3075,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addIngredient(wire.getWireColor().getDyeTag())
                     //
-                    .complete(References.ID, "wire_" + wire.name() + "_single", output);
+                    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_single", output);
         }
 
         // Ceramic Insulated Wires
@@ -3115,7 +3095,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addKey('D', wire.getWireColor().getDyeTag())
                     //
-                    .complete(References.ID, "wire_" + wire.name() + "_multi", output);
+                    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_multi", output);
 
             ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 1)
                     //
@@ -3123,7 +3103,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
                     //
                     .addIngredient(wire.getWireColor().getDyeTag())
                     //
-                    .complete(References.ID, "wire_" + wire.name() + "_single", output);
+                    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_single", output);
         }
 
     }

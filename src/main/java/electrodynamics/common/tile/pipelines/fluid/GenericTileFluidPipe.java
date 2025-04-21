@@ -4,9 +4,7 @@ import java.util.Set;
 
 import com.google.common.collect.Lists;
 
-import electrodynamics.api.network.cable.type.IFluidPipe;
 import electrodynamics.common.network.type.FluidNetwork;
-import electrodynamics.prefab.tile.types.GenericRefreshingConnectTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -14,6 +12,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import voltaic.api.network.cable.type.IFluidPipe;
+import voltaic.prefab.tile.types.GenericRefreshingConnectTile;
 
 public abstract class GenericTileFluidPipe extends GenericRefreshingConnectTile<IFluidPipe, GenericTileFluidPipe, FluidNetwork> {
 

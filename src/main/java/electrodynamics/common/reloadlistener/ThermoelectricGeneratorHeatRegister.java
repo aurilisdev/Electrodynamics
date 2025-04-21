@@ -35,6 +35,7 @@ import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import voltaic.Voltaic;
 
 public class ThermoelectricGeneratorHeatRegister extends SimplePreparableReloadListener<JsonObject> {
 
@@ -52,7 +53,7 @@ public class ThermoelectricGeneratorHeatRegister extends SimplePreparableReloadL
 
     private final HashMap<TagKey<Fluid>, Double> tags = new HashMap<>();
 
-    private final Logger logger = Electrodynamics.LOGGER;
+    private final Logger logger = Voltaic.LOGGER;
 
     @Override
     protected JsonObject prepare(ResourceManager manager, ProfilerFiller profiler) {

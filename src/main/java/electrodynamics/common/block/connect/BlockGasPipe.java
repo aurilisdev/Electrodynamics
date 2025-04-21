@@ -4,12 +4,7 @@ import java.util.HashSet;
 
 import com.mojang.serialization.MapCodec;
 
-import electrodynamics.api.gas.Gas;
-import electrodynamics.api.network.cable.type.IGasPipe;
-import electrodynamics.common.block.connect.util.AbstractRefreshingConnectBlock;
-import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.common.network.type.GasNetwork;
-import electrodynamics.common.network.utils.GasUtilities;
 import electrodynamics.common.tile.pipelines.gas.GenericTileGasPipe;
 import electrodynamics.common.tile.pipelines.gas.TileGasPipe;
 import net.minecraft.core.BlockPos;
@@ -20,6 +15,11 @@ import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.gas.Gas;
+import voltaic.api.network.cable.type.IGasPipe;
+import voltaic.common.block.connect.AbstractRefreshingConnectBlock;
+import voltaic.common.block.connect.EnumConnectType;
+import voltaic.common.network.utils.GasUtilities;
 
 public class BlockGasPipe extends AbstractRefreshingConnectBlock<GenericTileGasPipe> {
 

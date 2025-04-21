@@ -4,18 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipePump;
 import electrodynamics.common.network.type.FluidNetwork;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyTypes;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.CapabilityUtils;
-import electrodynamics.registers.ElectrodynamicsCapabilities;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -23,6 +12,17 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.tile.components.type.ComponentPacketHandler;
+import voltaic.prefab.tile.components.type.ComponentTickable;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.CapabilityUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileFluidPipePump extends GenericTile {
 
@@ -31,7 +31,7 @@ public class TileFluidPipePump extends GenericTile {
 
     private boolean isLocked = false;
 
-    public final Property<Integer> priority = property(new Property<>(PropertyTypes.INTEGER, "pumppriority", 0).onChange((prop, oldval) -> {
+    public final SingleProperty<Integer> priority = property(new SingleProperty<>(PropertyTypes.INTEGER, "pumppriority", 0).onChange((prop, oldval) -> {
 
         if (level == null || level.isClientSide) {
             return;
@@ -43,7 +43,7 @@ public class TileFluidPipePump extends GenericTile {
             FluidNetwork network = pipe.getNetwork();
 
             if (network != null) {
-                network.updateFluidPipePumpStats(this, prop.get(), oldval);
+                network.updateFluidPipePumpStats(this, prop.getValue(), oldval);
             }
         }
 
@@ -53,15 +53,15 @@ public class TileFluidPipePump extends GenericTile {
         super(ElectrodynamicsTiles.TILE_FLUIDPIPEPUMP.get(), pos, state);
         addComponent(new ComponentTickable(this).tickServer(this::tickServer));
         addComponent(new ComponentPacketHandler(this));
-        addComponent(new ComponentElectrodynamic(this, false, true).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(Constants.PIPE_PUMP_USAGE_PER_TICK * 10).setInputDirections(BlockEntityUtils.MachineDirection.LEFT));
-        addComponent(new ComponentContainerProvider("container.fluidpipepump", this).createMenu((id, inv) -> new ContainerFluidPipePump(id, inv, getCoordsArray())));
+        addComponent(new ComponentElectrodynamic(this, false, true).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE).maxJoules(ElectroConstants.PIPE_PUMP_USAGE_PER_TICK * 10).setInputDirections(BlockEntityUtils.MachineDirection.LEFT));
+        addComponent(new ComponentContainerProvider("fluidpipepump", this).createMenu((id, inv) -> new ContainerFluidPipePump(id, inv, getCoordsArray())));
     }
 
     public void tickServer(ComponentTickable tick) {
 
         ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-        electro.joules(Math.max(electro.getJoulesStored() - Constants.PIPE_PUMP_USAGE_PER_TICK, 0));
+        electro.joules(Math.max(electro.getJoulesStored() - ElectroConstants.PIPE_PUMP_USAGE_PER_TICK, 0));
 
     }
 
@@ -98,7 +98,7 @@ public class TileFluidPipePump extends GenericTile {
     }
 
     public boolean isPowered() {
-        return this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getJoulesStored() >= Constants.PIPE_PUMP_USAGE_PER_TICK;
+        return this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getJoulesStored() >= ElectroConstants.PIPE_PUMP_USAGE_PER_TICK;
     }
 
 }

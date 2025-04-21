@@ -2,13 +2,7 @@ package electrodynamics.common.tile.pipelines.gas.gastransformer;
 
 import java.util.Optional;
 
-import electrodynamics.api.capability.types.gas.IGasHandler;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.CapabilityInputType;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.utils.IComponentFluidHandler;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
@@ -25,6 +19,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
+import voltaic.api.gas.IGasHandler;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.CapabilityInputType;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.utils.IComponentFluidHandler;
+import voltaic.prefab.utilities.BlockEntityUtils;
 
 public class TileGasTransformerSideBlock extends GenericTile implements IAddonTankManager {
 
@@ -62,7 +62,7 @@ public class TileGasTransformerSideBlock extends GenericTile implements IAddonTa
         BlockState aboveState = getLevel().getBlockState(abovePos);
         BlockEntity aboveTile;
         int tankCount = 0;
-        for (int i = 0; i < Constants.GAS_TRANSFORMER_ADDON_TANK_LIMIT; i++) {
+        for (int i = 0; i < ElectroConstants.GAS_TRANSFORMER_ADDON_TANK_LIMIT; i++) {
             if (!aboveState.is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK)) {
                 break;
             }

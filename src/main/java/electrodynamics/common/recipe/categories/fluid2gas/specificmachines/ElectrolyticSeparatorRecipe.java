@@ -3,16 +3,16 @@ package electrodynamics.common.recipe.categories.fluid2gas.specificmachines;
 import java.util.List;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.fluid2gas.Fluid2GasRecipe;
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.common.recipe.recipeutils.ProbableGas;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import voltaic.api.gas.GasStack;
+import voltaic.common.recipe.categories.fluid2gas.Fluid2GasRecipe;
+import voltaic.common.recipe.recipeutils.FluidIngredient;
+import voltaic.common.recipe.recipeutils.ProbableFluid;
+import voltaic.common.recipe.recipeutils.ProbableGas;
+import voltaic.common.recipe.recipeutils.ProbableItem;
 
 public class ElectrolyticSeparatorRecipe extends Fluid2GasRecipe {
 
@@ -26,12 +26,12 @@ public class ElectrolyticSeparatorRecipe extends Fluid2GasRecipe {
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPARATOR_SERIALIZER.get();
+		return ElectrodynamicsRecipies.ELECTROLYTIC_SEPARATOR_SERIALIZER.get();
 	}
 
 	@Override
 	public RecipeType<?> getType() {
-		return ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE.get();
+		return ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get();
 	}
 
 }
