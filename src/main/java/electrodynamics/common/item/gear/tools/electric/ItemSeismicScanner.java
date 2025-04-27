@@ -3,16 +3,10 @@ package electrodynamics.common.item.gear.tools.electric;
 import java.util.List;
 import java.util.function.Supplier;
 
-import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
 import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.client.PacketAddClientRenderInfo;
-import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.prefab.item.ItemElectric;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.prefab.utilities.WorldUtils;
-import electrodynamics.prefab.utilities.object.Location;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
@@ -33,10 +27,16 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.network.NetworkDirection;
+import voltaic.api.item.CapabilityItemStackHandler;
+import voltaic.prefab.inventory.container.types.GenericContainerItem;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.prefab.item.ItemElectric;
+import voltaic.prefab.utilities.CapabilityUtils;
+import voltaic.prefab.utilities.NBTUtils;
+import voltaic.prefab.utilities.WorldUtils;
+import voltaic.prefab.utilities.object.Location;
 
 public class ItemSeismicScanner extends ItemElectric {
 
@@ -99,20 +99,20 @@ public class ItemSeismicScanner extends ItemElectric {
 					NetworkHandler.CHANNEL.sendTo(new PacketAddClientRenderInfo(player.getUUID(), blockPos.toBlockPos()), ((ServerPlayer) player).connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 				}
 			} else {
-				player.openMenu(getMenuProvider(world, player, scanner));
+				player.openMenu(getMenuProvider(world, player, scanner, hand));
 			}
 		}
 		return super.use(world, player, hand);
 	}
 
-	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack) {
+	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack, InteractionHand hand) {
 		return new SimpleMenuProvider((id, inv, play) -> {
-			LazyOptional<IItemHandler> capability = stack.getCapability(ForgeCapabilities.ITEM_HANDLER);
-			IItemHandler handler = new ItemStackHandler();
-			if (capability.isPresent()) {
-				handler = capability.resolve().get();
+			IItemHandler capability = stack.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(CapabilityUtils.EMPTY_ITEM_HANDLER);
+			CapabilityItemStackHandler handler = new CapabilityItemStackHandler(SLOT_COUNT, stack);
+			if (capability != CapabilityUtils.EMPTY_ITEM_HANDLER) {
+				handler = (CapabilityItemStackHandler) capability;
 			}
-			return new ContainerSeismicScanner(id, player.getInventory(), handler);
+			return new ContainerSeismicScanner(id, player.getInventory(), handler, GenericContainerItem.makeData(hand));
 		}, CONTAINER_TITLE);
 	}
 

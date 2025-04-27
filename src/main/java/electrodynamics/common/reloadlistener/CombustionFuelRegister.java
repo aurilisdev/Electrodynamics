@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.common.packet.types.client.PacketSetClientCombustionFuel;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import net.minecraft.resources.ResourceLocation;
@@ -37,6 +36,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.PacketDistributor.PacketTarget;
 import net.minecraftforge.network.simple.SimpleChannel;
+import voltaic.Voltaic;
 
 public class CombustionFuelRegister extends SimplePreparableReloadListener<HashSet<JsonObject>> {
 
@@ -51,7 +51,7 @@ public class CombustionFuelRegister extends SimplePreparableReloadListener<HashS
 
 	private final HashSet<CombustionFuelSource> fuels = new HashSet<>();
 
-	private final Logger logger = Electrodynamics.LOGGER;
+	private final Logger logger = Voltaic.LOGGER;
 
 	@Override
 	protected HashSet<JsonObject> prepare(ResourceManager manager, ProfilerFiller profiler) {

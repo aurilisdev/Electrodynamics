@@ -4,13 +4,13 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import voltaic.common.recipe.recipeutils.FluidIngredient;
 
 public class CombustionFuelSource {
 

@@ -2,7 +2,7 @@ package electrodynamics.registers;
 
 import java.util.List;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.common.settings.OreConfig;
@@ -79,11 +79,11 @@ public class ElectrodynamicsFeatures {
 	}
 
 	private static ResourceKey<ConfiguredFeature<?, ?>> configured(String name) {
-		return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(References.ID, name));
+		return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(Electrodynamics.ID, name));
 	}
 
 	private static OreConfiguration dualOre(SubtypeOre ore, SubtypeOreDeepslate deepOre) {
-		return new OreConfiguration(List.of(OreConfiguration.target(new RuleTestOre(ore, null, BlockTags.STONE_ORE_REPLACEABLES), ElectrodynamicsBlocks.getBlock(ore).defaultBlockState()), OreConfiguration.target(new RuleTestOre(null, deepOre, BlockTags.DEEPSLATE_ORE_REPLACEABLES), ElectrodynamicsBlocks.getBlock(deepOre).defaultBlockState())), ore.veinSize);
+		return new OreConfiguration(List.of(OreConfiguration.target(new RuleTestOre(ore, null, BlockTags.STONE_ORE_REPLACEABLES),ElectrodynamicsBlocks.BLOCKS_ORE.getValue(ore).defaultBlockState()), OreConfiguration.target(new RuleTestOre(null, deepOre, BlockTags.DEEPSLATE_ORE_REPLACEABLES), ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getValue(deepOre).defaultBlockState())), ore.veinSize);
 	}
 
 	/* PLACED FEATURES */
@@ -131,7 +131,7 @@ public class ElectrodynamicsFeatures {
 	}
 
 	private static ResourceKey<PlacedFeature> placed(String name) {
-		return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(References.ID, name));
+		return ResourceKey.create(Registries.PLACED_FEATURE, new ResourceLocation(Electrodynamics.ID, name));
 	}
 
 	private static List<PlacementModifier> orePlacement(int count, int minY, int maxY) {
@@ -185,7 +185,7 @@ public class ElectrodynamicsFeatures {
 	}
 
 	private static ResourceKey<BiomeModifier> modifier(String name) {
-		return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(References.ID, name));
+		return ResourceKey.create(ForgeRegistries.Keys.BIOME_MODIFIERS, new ResourceLocation(Electrodynamics.ID, name));
 	}
 
 }

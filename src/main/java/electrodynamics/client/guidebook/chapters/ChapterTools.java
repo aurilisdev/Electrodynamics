@@ -3,18 +3,8 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.client.guidebook.ScreenGuidebook;
-import electrodynamics.client.guidebook.utils.components.Chapter;
-import electrodynamics.client.guidebook.utils.components.Module;
-import electrodynamics.client.guidebook.utils.pagedata.OnKeyPress;
-import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
-import electrodynamics.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.common.item.subtype.SubtypeRod;
-import electrodynamics.compatibility.jei.JeiBuffer;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
@@ -23,6 +13,16 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.ItemStack;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.client.guidebook.ScreenGuidebook;
+import voltaic.client.guidebook.utils.components.Chapter;
+import voltaic.client.guidebook.utils.components.Module;
+import voltaic.client.guidebook.utils.pagedata.OnKeyPress;
+import voltaic.client.guidebook.utils.pagedata.OnTooltip;
+import voltaic.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
+import voltaic.client.guidebook.utils.pagedata.text.TextWrapperObject;
+import voltaic.compatibility.jei.JeiBuffer;
 
 public class ChapterTools extends Chapter {
 
@@ -72,9 +72,9 @@ public class ChapterTools extends Chapter {
 
 		}));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tools.ammo")).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeRod.steel).getDescription()).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeRod.stainlesssteel).getDescription()).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectrodynamicsItems.getItem(SubtypeRod.hslasteel).getDescription()).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.steel).getDescription()).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.stainlesssteel).getDescription()).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.hslasteel).getDescription()).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tools.damage")).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tools.roddamage", ElectroTextUtils.guidebook("chapter.tools.steel"), 16)).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tools.roddamage", ElectroTextUtils.guidebook("chapter.tools.stainless"), 20)).setIndentions(1).setSeparateStart());
@@ -115,6 +115,7 @@ public class ChapterTools extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tools.roddamage", ElectroTextUtils.guidebook("chapter.tools.initial"), Component.literal("" + 40).append(ElectroTextUtils.guidebook("chapter.tools.ap")))).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tools.roddamage", ElectroTextUtils.guidebook("chapter.tools.after", "1s"), Component.literal("" + 20).append(ElectroTextUtils.guidebook("chapter.tools.ap")))).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tools.apnote").withStyle(ChatFormatting.ITALIC)).setSeparateStart());
+
 
 		// Seismic Scanner
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_SEISMICSCANNER.get().getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
@@ -171,11 +172,11 @@ public class ChapterTools extends Chapter {
 
 		}));
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tools.electricdrilll1")).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.drillhead", ElectroTextUtils.guidebook("chapter.quarry.steelhead"), ChatFormatter.getChatDisplayShort(SubtypeDrillHead.steel.speedBoost * 100, DisplayUnit.PERCENTAGE))).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.drillhead", ElectroTextUtils.guidebook("chapter.quarry.stainlesshead"), ChatFormatter.getChatDisplayShort(SubtypeDrillHead.stainlesssteel.speedBoost * 100, DisplayUnit.PERCENTAGE))).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.drillhead", ElectroTextUtils.guidebook("chapter.quarry.hslahead"), ChatFormatter.getChatDisplayShort(SubtypeDrillHead.hslasteel.speedBoost * 100, DisplayUnit.PERCENTAGE))).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.drillhead", ElectroTextUtils.guidebook("chapter.quarry.titaniumhead"), ChatFormatter.getChatDisplayShort(SubtypeDrillHead.titanium.speedBoost * 100, DisplayUnit.PERCENTAGE))).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.drillhead", ElectroTextUtils.guidebook("chapter.quarry.carbidehead"), ChatFormatter.getChatDisplayShort(SubtypeDrillHead.titaniumcarbide.speedBoost * 100, DisplayUnit.PERCENTAGE))).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.drillhead", ElectroTextUtils.guidebook("chapter.quarry.steelhead"), ChatFormatter.getChatDisplayShort(SubtypeDrillHead.steel.speedBoost * 100, DisplayUnits.PERCENTAGE))).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.drillhead", ElectroTextUtils.guidebook("chapter.quarry.stainlesshead"), ChatFormatter.getChatDisplayShort(SubtypeDrillHead.stainlesssteel.speedBoost * 100, DisplayUnits.PERCENTAGE))).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.drillhead", ElectroTextUtils.guidebook("chapter.quarry.hslahead"), ChatFormatter.getChatDisplayShort(SubtypeDrillHead.hslasteel.speedBoost * 100, DisplayUnits.PERCENTAGE))).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.drillhead", ElectroTextUtils.guidebook("chapter.quarry.titaniumhead"), ChatFormatter.getChatDisplayShort(SubtypeDrillHead.titanium.speedBoost * 100, DisplayUnits.PERCENTAGE))).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.drillhead", ElectroTextUtils.guidebook("chapter.quarry.carbidehead"), ChatFormatter.getChatDisplayShort(SubtypeDrillHead.titaniumcarbide.speedBoost * 100, DisplayUnits.PERCENTAGE))).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tools.electricdrilll2")).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.tools.electricdrilll3")).setIndentions(1).setSeparateStart());
 

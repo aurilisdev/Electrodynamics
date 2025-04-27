@@ -3,7 +3,6 @@ package electrodynamics.common.packet.types.client;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import electrodynamics.common.packet.BarrierMethods;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
 
@@ -20,7 +19,7 @@ public class PacketRenderJetpackParticles {
 	public static void handle(PacketRenderJetpackParticles message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			BarrierMethods.handleJetpackParticleRendering(message.player, message.isCombat);
+			ClientBarrierMethods.handleJetpackParticleRendering(message.player, message.isCombat);
 		});
 		ctx.setPacketHandled(true);
 	}

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.common.item.subtype.SubtypeCeramic;
-import electrodynamics.prefab.utilities.ItemUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsCreativeTabs;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
@@ -17,8 +15,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import voltaic.common.item.ItemVoltaic;
+import voltaic.prefab.utilities.ItemUtils;
+import voltaic.prefab.utilities.NBTUtils;
 
-public class ItemCeramic extends ItemElectrodynamics {
+public class ItemCeramic extends ItemVoltaic {
 	public SubtypeCeramic subtype;
 
 	public ItemCeramic(SubtypeCeramic subtype) {
@@ -31,7 +32,7 @@ public class ItemCeramic extends ItemElectrodynamics {
 
 		ItemStack handStack = player.getItemInHand(hand);
 
-		if (world.isClientSide || !ItemUtils.testItems(handStack.getItem(), ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeCeramic.plate).get())) {
+		if (world.isClientSide || !ItemUtils.testItems(handStack.getItem(), ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate))) {
 			return InteractionResultHolder.pass(player.getItemInHand(hand));
 		}
 

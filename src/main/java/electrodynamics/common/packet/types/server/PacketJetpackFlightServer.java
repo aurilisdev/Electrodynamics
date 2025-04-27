@@ -4,8 +4,6 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
-import electrodynamics.prefab.utilities.ItemUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -14,6 +12,8 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.network.NetworkEvent.Context;
+import voltaic.prefab.utilities.ItemUtils;
+import voltaic.prefab.utilities.NBTUtils;
 
 public class PacketJetpackFlightServer {
 

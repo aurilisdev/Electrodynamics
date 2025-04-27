@@ -5,26 +5,14 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.api.References;
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.types.gas.IGasHandlerItem;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.gas.Gas;
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasHandlerItemStack;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.client.ClientRegister;
+import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.client.keys.KeyBinds;
-import electrodynamics.client.render.model.armor.types.ModelJetpack;
+import electrodynamics.client.model.armor.ModelJetpack;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
-import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.client.PacketRenderJetpackParticles;
 import electrodynamics.common.packet.types.server.PacketJetpackFlightServer;
-import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsCreativeTabs;
 import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.ChatFormatting;
@@ -52,8 +40,19 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.network.PacketDistributor;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.gas.Gas;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasHandlerItemStack;
+import voltaic.api.gas.GasStack;
+import voltaic.api.gas.IGasHandlerItem;
+import voltaic.common.item.gear.ItemVoltaicArmor;
+import voltaic.prefab.utilities.NBTUtils;
+import voltaic.prefab.utilities.VoltaicTextUtils;
+import voltaic.registers.VoltaicCapabilities;
 
-public class ItemJetpack extends ItemElectrodynamicsArmor {
+public class ItemJetpack extends ItemVoltaicArmor {
 
 	// public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 	public static final int MAX_CAPACITY = 30000;
@@ -62,9 +61,9 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 	public static final double VERT_SPEED_INCREASE = 0.5;
 	public static final double TERMINAL_VERTICAL_VELOCITY = 1;
 	public static final int MAX_PRESSURE = 4;
-	public static final double MAX_TEMPERATURE = Gas.ROOM_TEMPERATURE;
+	public static final int MAX_TEMPERATURE = Gas.ROOM_TEMPERATURE;
 
-	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/jetpack.png";
+	private static final String ARMOR_TEXTURE_LOCATION = Electrodynamics.ID + ":textures/model/armor/jetpack.png";
 
 	public static final float OFFSET = 0.1F;
 
@@ -82,7 +81,7 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 			@Override
 			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-				ModelJetpack<LivingEntity> model = new ModelJetpack<>(ClientRegister.JETPACK.bakeRoot());
+				ModelJetpack<LivingEntity> model = new ModelJetpack<>(ElectrodynamicsClientRegister.JETPACK.bakeRoot());
 
 				model.crouching = properties.crouching;
 				model.riding = properties.riding;
@@ -101,12 +100,12 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 	@Override
 	public void addCreativeModeItems(CreativeModeTab tab, List<ItemStack> items) {
 		super.addCreativeModeItems(tab, items);
-		if (!CapabilityUtils.isGasItemNull()) {
+		if (VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM != null) {
 			ItemStack full = new ItemStack(this);
 
 			GasStack gas = new GasStack(ElectrodynamicsGases.HYDROGEN.get(), MAX_CAPACITY, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL);
 
-			full.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> cap.fillTank(0, gas, GasAction.EXECUTE));
+			full.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM).ifPresent(cap -> cap.fill(gas, GasAction.EXECUTE));
 
 			items.add(full);
 
@@ -121,23 +120,23 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 	}
 
 	public static void staticAppendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flagIn) {
-		if (!CapabilityUtils.isGasItemNull()) {
+		if (VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM != null) {
 
-			stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> {
+			stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM).ifPresent(cap -> {
 				GasStack gas = cap.getGasInTank(0);
 				// tooltips.add(gas.getGas().getDescription());
 				if (gas.isEmpty()) {
-					tooltips.add(ElectroTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)));
-				} else {
-					tooltips.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)));
-					tooltips.add(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnit.TEMPERATURE_KELVIN));
-					tooltips.add(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnit.PRESSURE_ATM));
-				}
+                    tooltips.add(VoltaicTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY));
+                } else {
+                    tooltips.add(VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY));
+                    tooltips.add(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnits.TEMPERATURE_KELVIN).withStyle(ChatFormatting.GRAY));
+                    tooltips.add(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnits.PRESSURE_ATM).withStyle(ChatFormatting.GRAY));
+                }
 
 			});
 			if (Screen.hasShiftDown()) {
-				tooltips.add(ElectroTextUtils.tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnit.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
-				tooltips.add(ElectroTextUtils.tooltip("maxtemperature", ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
+				tooltips.add(ElectroTextUtils.tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnits.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
+                tooltips.add(ElectroTextUtils.tooltip("maxtemperature", ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnits.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
 			}
 		}
 		// cheesing sync issues one line of code at a time
@@ -167,15 +166,13 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 	public static void armorTick(ItemStack stack, Level world, Player player, float particleZ, boolean isCombat) {
 		if (world.isClientSide) {
 
-			Electrodynamics.LOGGER.info(player.getDeltaMovement().y);
-
 			ArmorItem item = (ArmorItem) stack.getItem();
 			if (item.getEquipmentSlot() == EquipmentSlot.CHEST && stack.hasTag()) {
 				boolean isDown = KeyBinds.jetpackAscend.isDown();
 				int mode = stack.hasTag() ? stack.getTag().getInt(NBTUtils.MODE) : 0;
-				boolean enoughFuel = stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> cap.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
+				boolean enoughFuel = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM).map(cap -> cap.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
 				if (enoughFuel) {
-					IGasHandlerItem handler = (IGasHandlerItem) stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).cast().resolve().get();
+					IGasHandlerItem handler = (IGasHandlerItem) stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM).cast().resolve().get();
 					int pressure = handler.getGasInTank(0).getPressure();
 					if (mode == 0 && isDown) {
 						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY * pressure, player, stack);
@@ -235,7 +232,7 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 	}
 
 	public static boolean staticIsBarVisible(ItemStack stack) {
-		return stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> (13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0)).orElse(false);
+		return stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM).map(cap -> (13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0)).orElse(false);
 	}
 
 	@Override
@@ -244,7 +241,7 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 	}
 
 	public static int staticGetBarWidth(ItemStack stack) {
-		return (int) Math.round(stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> (13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0))).orElse(13.0));
+		return (int) Math.round(stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM).map(cap -> (13.0 * cap.getGasInTank(0).getAmount() / cap.getTankCapacity(0))).orElse(13.0));
 	}
 
 	@Override
@@ -263,7 +260,7 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 
 	public static boolean staticCanElytraFly(ItemStack stack, LivingEntity entity) {
 		int mode = stack.hasTag() ? stack.getTag().getInt(NBTUtils.MODE) : 0;
-		return mode == 2 && stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).map(cap -> cap.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
+		return mode == 2 && stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM).map(cap -> cap.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
 	}
 
 	@Override
@@ -350,7 +347,7 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 	}
 
 	protected static void drainHydrogen(ItemStack stack) {
-		stack.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER_ITEM).ifPresent(cap -> cap.drainTank(0, ItemJetpack.USAGE_PER_TICK, GasAction.EXECUTE));
+		stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM).ifPresent(cap -> cap.drain(ItemJetpack.USAGE_PER_TICK, GasAction.EXECUTE));
 	}
 
 	protected static void sendPacket(Player player, boolean state, double prevDeltaMove) {
@@ -391,7 +388,7 @@ public class ItemJetpack extends ItemElectrodynamicsArmor {
 
 		@Override
 		public String getName() {
-			return References.ID + ":jetpack";
+			return Electrodynamics.ID + ":jetpack";
 		}
 
 		@Override

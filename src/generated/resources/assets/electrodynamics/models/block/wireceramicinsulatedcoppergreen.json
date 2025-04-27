@@ -3,7 +3,7 @@
   "inventory": {
     "parent": "electrodynamics:block/wire/wireceramicinsulatedcoppergreen_side"
   },
-  "loader": "electrodynamics:electrodynamicscableloader",
+  "loader": "voltaic:voltaiccableloader",
   "none": {
     "parent": "electrodynamics:block/wire/wireceramicinsulatedcoppergreen_none"
   },

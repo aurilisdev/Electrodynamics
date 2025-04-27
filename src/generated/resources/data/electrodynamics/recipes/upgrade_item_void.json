@@ -13,12 +13,11 @@
     }
   },
   "pattern": [
-    "PCP",
-    "CBC",
-    "PCP"
+    "C",
+    "B",
+    "P"
   ],
   "result": {
-    "count": 4,
     "item": "electrodynamics:upgradeitemvoid"
   },
   "show_notification": false

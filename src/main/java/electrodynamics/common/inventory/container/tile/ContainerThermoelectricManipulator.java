@@ -1,19 +1,19 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.common.tile.pipelines.gas.gastransformer.thermoelectricmanipulator.TileThermoelectricManipulator;
-import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotFluid;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotGas;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import electrodynamics.common.tile.pipelines.gas.gastransformer.thermoelectricmanipulator.GenericTileThermoelectricManipulator;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.inventory.container.slot.item.type.SlotFluid;
+import voltaic.prefab.inventory.container.slot.item.type.SlotGas;
+import voltaic.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
-public class ContainerThermoelectricManipulator extends GenericContainerBlockEntity<TileThermoelectricManipulator> {
+public class ContainerThermoelectricManipulator extends GenericContainerBlockEntity<GenericTileThermoelectricManipulator> {
 
 	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
 
@@ -27,7 +27,7 @@ public class ContainerThermoelectricManipulator extends GenericContainerBlockEnt
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		playerInvOffset = 30;
+		setPlayerInvOffset(30);
 		addSlot(new SlotFluid(inv, nextIndex(), 27, 19));
 		addSlot(new SlotFluid(inv, nextIndex(), 113, 19));
 		addSlot(new SlotGas(inv, nextIndex(), 27, 50));

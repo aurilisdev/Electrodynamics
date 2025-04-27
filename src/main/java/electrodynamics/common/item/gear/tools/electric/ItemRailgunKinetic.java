@@ -7,12 +7,9 @@ import java.util.function.Supplier;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-import electrodynamics.api.item.IItemTemperate;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.sounds.SoundSource;
@@ -24,14 +21,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import voltaic.api.item.IItemTemperate;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.prefab.item.ElectricItemProperties;
 
 public class ItemRailgunKinetic extends ItemRailgun {
 
 	public static final double JOULES_PER_SHOT = 100000.0;
-	private static final int OVERHEAT_TEMPERATURE = 400;
-	private static final int TEMPERATURE_PER_SHOT = 300;
-	private static final double TEMPERATURE_REDUCED_PER_TICK = 2.0;
-	private static final double OVERHEAT_WARNING_THRESHOLD = 0.75;
+	public static final int OVERHEAT_TEMPERATURE = 400;
+	public static final int TEMPERATURE_PER_SHOT = 300;
+	public static final double TEMPERATURE_REDUCED_PER_TICK = 2.0;
+	public static final double OVERHEAT_WARNING_THRESHOLD = 0.75;
 
 	public ItemRailgunKinetic(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
 		super(properties, creativeTab, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK, item -> ElectrodynamicsItems.ITEM_LITHIUMBATTERY.get());
@@ -110,9 +110,9 @@ public class ItemRailgunKinetic extends ItemRailgun {
 	 */
 	public List<Ingredient> getRailgunAmmo() {
 		List<Ingredient> railgunAmmo = new ArrayList<>();
-		railgunAmmo.add(Ingredient.of(ElectrodynamicsTags.Items.ROD_STEEL));
-		railgunAmmo.add(Ingredient.of(ElectrodynamicsTags.Items.ROD_STAINLESSSTEEL));
-		railgunAmmo.add(Ingredient.of(ElectrodynamicsTags.Items.ROD_HSLASTEEL));
+		railgunAmmo.add(Ingredient.of(VoltaicTags.Items.ROD_STEEL));
+		railgunAmmo.add(Ingredient.of(VoltaicTags.Items.ROD_STAINLESSSTEEL));
+		railgunAmmo.add(Ingredient.of(VoltaicTags.Items.ROD_HSLASTEEL));
 		return railgunAmmo;
 	}
 }

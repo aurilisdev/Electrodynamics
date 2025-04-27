@@ -2,17 +2,8 @@ package electrodynamics.common.tile.electricitygrid;
 
 import org.jetbrains.annotations.NotNull;
 
-import electrodynamics.Electrodynamics;
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -20,183 +11,227 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.Voltaic;
+import voltaic.api.electricity.ICapabilityElectrodynamic;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.tile.components.type.ComponentTickable;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.CapabilityUtils;
+import voltaic.prefab.utilities.object.TransferPack;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileCircuitBreaker extends GenericTile {
 
-	public static final int TRIP_CURVE = 20;
+    public static final int TRIP_CURVE = 20;
 
-	private boolean recievedRedstoneSignal = false;
-	private boolean tripped = false;
+    private boolean recievedRedstoneSignal = false;
+    private boolean tripped = false;
 
-	private int tripCurveTimer = 0;
+    private int tripCurveTimer = 0;
 
-	private boolean isLocked = false;
+    private boolean isLocked = false;
 
-	public TileCircuitBreaker(BlockPos worldPosition, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_CIRCUITBREAKER.get(), worldPosition, blockState);
-		addComponent(new ComponentElectrodynamic(this, true, true).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setOutputDirections(Direction.SOUTH).setInputDirections(Direction.NORTH).voltage(-1).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
-		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-	}
+    public static final BlockEntityUtils.MachineDirection OUTPUT = BlockEntityUtils.MachineDirection.FRONT;
+    public static final BlockEntityUtils.MachineDirection INPUT = BlockEntityUtils.MachineDirection.BACK;
 
-	public void tickServer(ComponentTickable tickable) {
-		if (tripCurveTimer > 0) {
-			tripCurveTimer--;
-			return;
-		}
-		if (tripped) {
-			level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
-		}
-		tripped = false;
-	}
+    public TileCircuitBreaker(BlockPos worldPosition, BlockState blockState) {
+        super(ElectrodynamicsTiles.TILE_CIRCUITBREAKER.get(), worldPosition, blockState);
+        addComponent(new ComponentElectrodynamic(this, true, true).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setOutputDirections(OUTPUT).setInputDirections(INPUT)
+                //
+                .voltage(-1).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
+        addComponent(new ComponentTickable(this).tickServer(this::tickServer));
+    }
 
-	// will not transfer power if is recieving redstone signal, voltage exceeds recieving end voltage, or if current exceeds recieving
-	// end current if recieving end is wire
-	public TransferPack receivePower(TransferPack transfer, boolean debug) {
+    public void tickServer(ComponentTickable tickable) {
+        if (tripCurveTimer > 0) {
+            tripCurveTimer--;
+            return;
+        }
+        if (tripped) {
+            level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
+        }
+        tripped = false;
+    }
 
-		if (recievedRedstoneSignal || isLocked || tripped) {
-			return TransferPack.EMPTY;
-		}
+    // will not transfer power if is recieving redstone signal, voltage exceeds recieving end voltage, or if current exceeds
+    // recieving
+    // end current if recieving end is wire
+    public TransferPack receivePower(TransferPack transfer, boolean debug) {
 
-		Direction output = BlockEntityUtils.getRelativeSide(getFacing(), Direction.SOUTH);
+        if (recievedRedstoneSignal || isLocked || tripped) {
+            return TransferPack.EMPTY;
+        }
 
-		BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
+        Direction output = BlockEntityUtils.getRelativeSide(getFacing(), OUTPUT.mappedDir);
 
-		if (tile == null) {
-			return TransferPack.EMPTY;
-		}
+        BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
 
-		return tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> {
+        if (tile == null) {
+            return TransferPack.EMPTY;
+        }
 
-			if (cap.getMinimumVoltage() > -1 && cap.getMinimumVoltage() < transfer.getVoltage()) {
-				tripped = true;
-				tripCurveTimer = TRIP_CURVE;
-				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
+        isLocked = true;
 
-				return transfer;
-			}
+        ICapabilityElectrodynamic electro = tile.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getOpposite()).orElse(CapabilityUtils.EMPTY_ELECTRO);
 
-			if (cap.getAmpacity() > 0 && cap.getAmpacity() < transfer.getAmpsInTicks()) {
-				Electrodynamics.LOGGER.info("tripped");
-				tripped = true;
-				tripCurveTimer = TRIP_CURVE;
-				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
+        if (electro == CapabilityUtils.EMPTY_ELECTRO) {
+            isLocked = false;
 
-				return transfer;
+            return TransferPack.EMPTY;
+        }
 
-			}
+        if (electro.getMinimumVoltage() > -1 && electro.getMinimumVoltage() < transfer.getVoltage()) {
+            tripped = true;
+            tripCurveTimer = TRIP_CURVE;
+            level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
 
-			if (debug) {
+            isLocked = false;
 
-				isLocked = true;
+            return transfer;
+        }
 
-				TransferPack accepted = cap.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, transfer.getVoltage()), debug);
+        if (electro.getAmpacity() > 0 && electro.getAmpacity() < transfer.getAmpsInTicks()) {
+            Voltaic.LOGGER.info("tripped");
+            tripped = true;
+            tripCurveTimer = TRIP_CURVE;
+            level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
 
-				isLocked = false;
+            isLocked = false;
 
-				if (accepted.getJoules() > 0) {
+            return transfer;
 
-					return TransferPack.joulesVoltage(accepted.getJoules() / Constants.CIRCUITBREAKER_EFFICIENCY, accepted.getVoltage());
+        }
 
-				}
-				return TransferPack.EMPTY;
+        if (debug) {
 
-			}
+            TransferPack accepted = electro.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * ElectroConstants.CIRCUITBREAKER_EFFICIENCY, transfer.getVoltage()), debug);
 
-			isLocked = true;
+            isLocked = false;
 
-			TransferPack accepted = cap.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, transfer.getVoltage()), debug);
+            if (accepted.getJoules() > 0) {
 
-			isLocked = false;
+                return TransferPack.joulesVoltage(accepted.getJoules() / ElectroConstants.CIRCUITBREAKER_EFFICIENCY, accepted.getVoltage());
 
-			return TransferPack.joulesVoltage(accepted.getJoules() / Constants.CIRCUITBREAKER_EFFICIENCY, accepted.getVoltage());
+            }
+            return TransferPack.EMPTY;
 
-		}).orElse(TransferPack.EMPTY);
-	}
+        }
 
-	public TransferPack getConnectedLoad(LoadProfile lastEnergy, Direction dir) {
+        TransferPack accepted = electro.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * ElectroConstants.CIRCUITBREAKER_EFFICIENCY, transfer.getVoltage()), debug);
 
-		if (recievedRedstoneSignal || isLocked || tripped) {
-			return TransferPack.EMPTY;
-		}
+        isLocked = false;
 
-		Direction output = BlockEntityUtils.getRelativeSide(getFacing(), Direction.SOUTH);
+        return TransferPack.joulesVoltage(accepted.getJoules() / ElectroConstants.CIRCUITBREAKER_EFFICIENCY, accepted.getVoltage());
+    }
 
-		if (dir.getOpposite() != output) {
-			return TransferPack.EMPTY;
-		}
+    public TransferPack getConnectedLoad(ICapabilityElectrodynamic.LoadProfile lastEnergy, Direction dir) {
 
-		BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
+        if (recievedRedstoneSignal || isLocked || tripped) {
+            return TransferPack.EMPTY;
+        }
 
-		if (tile == null) {
-			return TransferPack.EMPTY;
-		}
+        Direction output = BlockEntityUtils.getRelativeSide(getFacing(), OUTPUT.mappedDir);
 
-		isLocked = true;
+        if (dir != output.getOpposite()) {
+            return TransferPack.EMPTY;
+        }
 
-		TransferPack load = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> {
+        BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
 
-			if (cap.getMinimumVoltage() > -1 && (cap.getMinimumVoltage() < lastEnergy.lastUsage().getVoltage() || cap.getMinimumVoltage() < lastEnergy.maximumAvailable().getVoltage())) {
-				tripped = true;
-				tripCurveTimer = TRIP_CURVE;
-				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
+        if (tile == null) {
+            return TransferPack.EMPTY;
+        }
 
-				return TransferPack.EMPTY;
-			}
+        isLocked = true;
 
-			if (cap.getAmpacity() > 0 && cap.getAmpacity() <= lastEnergy.lastUsage().getAmpsInTicks()) {
+        ICapabilityElectrodynamic electro = tile.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getOpposite()).orElse(CapabilityUtils.EMPTY_ELECTRO);
 
-				tripped = true;
-				tripCurveTimer = TRIP_CURVE;
-				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
+        if (electro == CapabilityUtils.EMPTY_ELECTRO) {
+            isLocked = false;
+            return TransferPack.EMPTY;
+        }
 
-				return TransferPack.EMPTY;
+        if (electro.getMinimumVoltage() > -1 && (electro.getMinimumVoltage() < lastEnergy.lastUsage().getVoltage() || electro.getMinimumVoltage() < lastEnergy.maximumAvailable().getVoltage())) {
+            tripped = true;
+            tripCurveTimer = TRIP_CURVE;
+            level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
 
-			}
+            isLocked = false;
 
-			LoadProfile transformed = new LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.lastUsage().getVoltage()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage()));
+            return TransferPack.EMPTY;
+        }
 
-			isLocked = true;
-			TransferPack returner = cap.getConnectedLoad(transformed, dir);
-			isLocked = false;
-			return TransferPack.joulesVoltage(returner.getJoules() / Constants.CIRCUITBREAKER_EFFICIENCY, returner.getVoltage());
-		}).orElse(TransferPack.EMPTY);
+        if (electro.getAmpacity() > 0 && electro.getAmpacity() <= lastEnergy.lastUsage().getAmpsInTicks()) {
 
-		isLocked = false;
+            tripped = true;
+            tripCurveTimer = TRIP_CURVE;
+            level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
 
-		return load;
-	}
+            isLocked = false;
 
-	public double getMinimumVoltage() {
-		Direction facing = getFacing();
-		if (isLocked) {
-			return 0;
-		}
-		BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
-		if (output == null) {
-			return -1;
-		}
-		isLocked = true;
-		double minimumVoltage = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(@NotNull ICapabilityElectrodynamic::getMinimumVoltage).orElse(-1.0);
-		isLocked = false;
-		return minimumVoltage;
-	}
+            return TransferPack.EMPTY;
 
-	public double getAmpacity() {
-		Direction facing = getFacing();
-		if (isLocked) {
-			return 0;
-		}
-		BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
-		if (output == null) {
-			return -1;
-		}
-		isLocked = true;
-		double ampacity = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(@NotNull ICapabilityElectrodynamic::getAmpacity).orElse(-1.0);
-		isLocked = false;
-		return ampacity;
-	}
+        }
 
-	@Override
+        ICapabilityElectrodynamic.LoadProfile transformed = new ICapabilityElectrodynamic.LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * ElectroConstants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.lastUsage().getVoltage()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * ElectroConstants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage()));
+
+        isLocked = true;
+
+        TransferPack returner = electro.getConnectedLoad(transformed, dir);
+
+        isLocked = false;
+
+        return TransferPack.joulesVoltage(returner.getJoules() / ElectroConstants.CIRCUITBREAKER_EFFICIENCY, returner.getVoltage());
+    }
+
+    public double getMinimumVoltage() {
+        Direction facing = getFacing();
+        if (isLocked) {
+            return 0;
+        }
+        BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
+        if (output == null) {
+            return -1;
+        }
+        isLocked = true;
+
+        ICapabilityElectrodynamic electro = output.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, facing.getOpposite()).orElse(CapabilityUtils.EMPTY_ELECTRO);
+
+        if (electro == CapabilityUtils.EMPTY_ELECTRO) {
+            isLocked = false;
+            return -1;
+        }
+
+        double minimumVoltage = electro.getMinimumVoltage();
+
+        isLocked = false;
+        return minimumVoltage;
+    }
+
+    public double getAmpacity() {
+        Direction facing = getFacing();
+        if (isLocked) {
+            return 0;
+        }
+        BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
+        if (output == null) {
+            return -1;
+        }
+        isLocked = true;
+
+        ICapabilityElectrodynamic electro = output.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, facing.getOpposite()).orElse(CapabilityUtils.EMPTY_ELECTRO);
+
+        if (electro == CapabilityUtils.EMPTY_ELECTRO) {
+            isLocked = false;
+            return -1;
+        }
+        double ampacity = electro.getAmpacity();
+        isLocked = false;
+        return ampacity;
+    }
+
+    @Override
 	public void saveAdditional(@NotNull CompoundTag compound) {
 		super.saveAdditional(compound);
 		compound.putBoolean("hasredstonesignal", recievedRedstoneSignal);
@@ -212,35 +247,35 @@ public class TileCircuitBreaker extends GenericTile {
 		tripCurveTimer = compound.getInt("timer");
 	}
 
-	@Override
-	public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
-		if (level.isClientSide) {
-			return;
-		}
-		recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
-		if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
-			BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
-			if (recievedRedstoneSignal) {
-				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
-			} else {
-				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
-			}
-		}
-	}
+    @Override
+    public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
+        if (level.isClientSide) {
+            return;
+        }
+        recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
+        if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
+            BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
+            if (recievedRedstoneSignal) {
+                level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
+            } else {
+                level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
+            }
+        }
+    }
 
-	@Override
-	public void onPlace(BlockState oldState, boolean isMoving) {
-		super.onPlace(oldState, isMoving);
-		if (level.isClientSide) {
-			return;
-		}
-		recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
-		if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
-			BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
-			if (recievedRedstoneSignal) {
-				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
-			}
-		}
-	}
+    @Override
+    public void onPlace(BlockState oldState, boolean isMoving) {
+        super.onPlace(oldState, isMoving);
+        if (level.isClientSide) {
+            return;
+        }
+        recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
+        if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
+            BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
+            if (recievedRedstoneSignal) {
+                level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
+            }
+        }
+    }
 
 }

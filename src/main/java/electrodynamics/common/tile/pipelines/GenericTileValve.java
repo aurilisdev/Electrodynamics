@@ -1,19 +1,16 @@
 package electrodynamics.common.tile.pipelines;
 
-import org.jetbrains.annotations.NotNull;
-
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.utilities.BlockEntityUtils;
 
 public class GenericTileValve extends GenericTile {
 
-	public static final Direction INPUT_DIR = Direction.SOUTH;
-	public static final Direction OUTPUT_DIR = Direction.NORTH;
+	public static final BlockEntityUtils.MachineDirection INPUT_DIR = BlockEntityUtils.MachineDirection.FRONT;
+	public static final BlockEntityUtils.MachineDirection OUTPUT_DIR = BlockEntityUtils.MachineDirection.BACK;
 
 	public boolean isClosed = false;
 
@@ -59,17 +56,15 @@ public class GenericTileValve extends GenericTile {
 	}
 
 	@Override
-	public void saveAdditional(@NotNull CompoundTag compound) {
+	protected void saveAdditional(CompoundTag compound) {
 		super.saveAdditional(compound);
 
 		compound.putBoolean("valveisclosed", isClosed);
 	}
 
 	@Override
-	public void load(@NotNull CompoundTag compound) {
+	public void load(CompoundTag compound) {
 		super.load(compound);
-
 		isClosed = compound.getBoolean("valveisclosed");
 	}
-
 }

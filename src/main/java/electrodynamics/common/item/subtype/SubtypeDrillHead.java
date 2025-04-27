@@ -2,9 +2,9 @@ package electrodynamics.common.item.subtype;
 
 import java.util.Locale;
 
-import electrodynamics.api.ISubtype;
-import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.resources.ResourceLocation;
+import voltaic.api.ISubtype;
+import voltaic.prefab.utilities.math.Color;
 
 public enum SubtypeDrillHead implements ISubtype {
 	steel(200, false, new Color(194, 194, 194, 255), 1), // 194, 194, 194

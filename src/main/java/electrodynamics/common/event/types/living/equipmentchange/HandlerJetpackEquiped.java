@@ -2,7 +2,6 @@ package electrodynamics.common.event.types.living.equipmentchange;
 
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.client.PacketJetpackEquipedSound;
-import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -10,6 +9,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.network.PacketDistributor;
+import voltaic.common.event.type.AbstractEquipmentChangeHandler;
+import voltaic.prefab.utilities.ItemUtils;
 
 public class HandlerJetpackEquiped extends AbstractEquipmentChangeHandler {
 

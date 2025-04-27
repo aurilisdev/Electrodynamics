@@ -3,7 +3,7 @@ package electrodynamics.common.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.registers.ElectrodynamicsCreativeTabs;
 import net.minecraft.world.item.Item;
@@ -12,8 +12,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import voltaic.common.item.ItemVoltaic;
 
-public class ItemDrillHead extends ItemElectrodynamics {
+public class ItemDrillHead extends ItemVoltaic {
 
 	private static final List<ItemDrillHead> HEADS = new ArrayList<>();
 
@@ -25,7 +26,7 @@ public class ItemDrillHead extends ItemElectrodynamics {
 		HEADS.add(this);
 	}
 
-	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = References.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 	private static class ColorHandler {
 
 		@SubscribeEvent

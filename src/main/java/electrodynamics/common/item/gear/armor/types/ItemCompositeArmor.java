@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import electrodynamics.api.References;
-import electrodynamics.client.ClientRegister;
-import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
+import electrodynamics.Electrodynamics;
+import electrodynamics.client.ElectrodynamicsClientRegister;
+import electrodynamics.client.model.armor.ModelCompositeArmor;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
-import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsCreativeTabs;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
@@ -34,10 +32,12 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import voltaic.common.item.gear.ItemVoltaicArmor;
+import voltaic.prefab.utilities.NBTUtils;
 
-public class ItemCompositeArmor extends ItemElectrodynamicsArmor {
+public class ItemCompositeArmor extends ItemVoltaicArmor {
 
-	public static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/compositearmor.png";
+	public static final String ARMOR_TEXTURE_LOCATION = Electrodynamics.ID + ":textures/model/armor/compositearmor.png";
 
 	public ItemCompositeArmor(Type slot) {
 		super(CompositeArmor.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).fireResistant().setNoRepair(), () -> ElectrodynamicsCreativeTabs.MAIN.get());
@@ -63,16 +63,16 @@ public class ItemCompositeArmor extends ItemElectrodynamicsArmor {
 
 				if (isBoth) {
 					if (hasChest) {
-						model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_COMB_CHEST.bakeRoot(), getEquipmentSlot());
+						model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_COMB_CHEST.bakeRoot(), getEquipmentSlot());
 					} else {
-						model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), getEquipmentSlot());
+						model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), getEquipmentSlot());
 					}
 				} else if (getEquipmentSlot() == EquipmentSlot.FEET) {
-					model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_BOOTS.bakeRoot(), getEquipmentSlot());
+					model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_BOOTS.bakeRoot(), getEquipmentSlot());
 				} else if (hasChest) {
-					model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(), getEquipmentSlot());
+					model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(), getEquipmentSlot());
 				} else {
-					model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), getEquipmentSlot());
+					model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), getEquipmentSlot());
 				}
 
 				model.crouching = properties.crouching;
@@ -137,7 +137,7 @@ public class ItemCompositeArmor extends ItemElectrodynamicsArmor {
 	}
 
 	public enum CompositeArmor implements ICustomArmor {
-		COMPOSITE_ARMOR(References.ID + ":composite", new int[] { 6, 12, 16, 6 }, 2.0f);
+		COMPOSITE_ARMOR(Electrodynamics.ID + ":composite", new int[] { 6, 12, 16, 6 }, 2.0f);
 
 		private final String name;
 		private final int[] damageReductionAmountArray;

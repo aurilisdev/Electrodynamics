@@ -5,9 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import electrodynamics.client.ClientRegister;
-import electrodynamics.common.tile.pipelines.fluids.TileFluidPipePump;
-import electrodynamics.prefab.utilities.RenderingUtils;
+import electrodynamics.common.tile.pipelines.fluid.TileFluidPipePump;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
@@ -15,6 +13,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.AABB;
+import voltaic.client.VoltaicClientRegister;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.utilities.RenderingUtils;
 
 public class RenderFluidPipePump extends AbstractTileRenderer<TileFluidPipePump> {
 
@@ -62,7 +63,7 @@ public class RenderFluidPipePump extends AbstractTileRenderer<TileFluidPipePump>
 			box2 = aabb(9, 13 - offset2, 12, 11, 17 - offset2, 14);
 		}
 
-		TextureAtlasSprite whiteTexture = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_WHITE);
+		TextureAtlasSprite whiteTexture = VoltaicClientRegister.whiteSprite();
 		float u0 = whiteTexture.getU0();
 		float u1 = whiteTexture.getU1();
 		float v0 = whiteTexture.getV0();
@@ -70,8 +71,8 @@ public class RenderFluidPipePump extends AbstractTileRenderer<TileFluidPipePump>
 
 		VertexConsumer builder = bufferSource.getBuffer(Sheets.solidBlockSheet());
 
-		RenderingUtils.renderFilledBox(poseStack, builder, box1, 67.0F / 256.0F, 67.0F / 256.0F, 67.0F / 256.0F, 1, u0, v0, u1, v1, packedLight, packedOverlay);
-		RenderingUtils.renderFilledBox(poseStack, builder, box2, 67.0F / 256.0F, 67.0F / 256.0F, 67.0F / 256.0F, 1, u0, v0, u1, v1, packedLight, packedOverlay);
+		RenderingUtils.renderFilledBox(poseStack, builder, box1, 67.0F / 256.0F, 67.0F / 256.0F, 67.0F / 256.0F, 1, u0, v0, u1, v1, packedLight, packedOverlay, RenderingUtils.ALL_FACES);
+		RenderingUtils.renderFilledBox(poseStack, builder, box2, 67.0F / 256.0F, 67.0F / 256.0F, 67.0F / 256.0F, 1, u0, v0, u1, v1, packedLight, packedOverlay, RenderingUtils.ALL_FACES);
 
 		poseStack.popPose();
 

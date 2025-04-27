@@ -2,24 +2,10 @@ package electrodynamics.common.tile.electricitygrid.generators;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSound;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.prefab.utilities.ElectricityUtils;
-import electrodynamics.prefab.utilities.object.CachedTileOutput;
-import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
 import electrodynamics.registers.ElectrodynamicsSounds;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -28,36 +14,40 @@ import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.sound.ITickableSound;
+import voltaic.prefab.sound.SoundBarrierMethods;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.object.CachedTileOutput;
+import voltaic.prefab.utilities.object.TransferPack;
 
 public class TileHydroelectricGenerator extends GenericGeneratorTile implements ITickableSound {
 	protected CachedTileOutput output;
-	public Property<Boolean> isGenerating = property(new Property<>(PropertyType.Boolean, "isGenerating", false));
-	public Property<Boolean> directionFlag = property(new Property<>(PropertyType.Boolean, "directionFlag", false));
-	public Property<Double> multiplier = property(new Property<>(PropertyType.Double, "multiplier", 1.0));
-	private Property<Boolean> hasRedstoneSignal = property(new Property<>(PropertyType.Boolean, "redstonesignal", false));
+	public SingleProperty<Boolean> isGenerating = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "isGenerating", false));
+	public SingleProperty<Boolean> directionFlag = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "directionFlag", false));
+	public SingleProperty<Double> multiplier = property(new SingleProperty<>(PropertyTypes.DOUBLE, "multiplier", 1.0));
+	private SingleProperty<Boolean> hasRedstoneSignal = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "redstonesignal", false));
 	public double savedTickRotation;
 	public double rotationSpeed;
 
 	private boolean isSoundPlaying = false;
 
 	public TileHydroelectricGenerator(BlockPos worldPosition, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_HYDROELECTRICGENERATOR.get(), worldPosition, blockState, 2.25, SubtypeItemUpgrade.stator);
+		super(ElectrodynamicsTiles.TILE_HYDROELECTRICGENERATOR.get(), worldPosition, blockState, 2.25, SubtypeItemUpgrade.stator);
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickCommon(this::tickCommon).tickClient(this::tickClient));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this, true, false).setOutputDirections(Direction.NORTH));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerHydroelectricGenerator.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.hydroelectricgenerator, this).createMenu((id, player) -> new ContainerHydroelectricGenerator(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
-	}
-
-	@Override
-	public AABB getRenderBoundingBox() {
-		Direction facing = getFacing();
-		return super.getRenderBoundingBox().expandTowards(facing.getStepX(), facing.getStepY(), facing.getStepZ());
+		addComponent(new ComponentElectrodynamic(this, true, false).setOutputDirections(BlockEntityUtils.MachineDirection.BACK));
+		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().upgrades(1)).validUpgrades(ContainerHydroelectricGenerator.VALID_UPGRADES).valid(machineValidator()));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.hydroelectricgenerator.tag(), this).createMenu((id, player) -> new ContainerHydroelectricGenerator(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
 	protected void tickServer(ComponentTickable tickable) {
-		if (hasRedstoneSignal.get()) {
-			isGenerating.set(false);
+		if (hasRedstoneSignal.getValue()) {
+			isGenerating.setValue(false);
 			return;
 		}
 		Direction facing = getFacing();
@@ -67,33 +57,33 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 		if (tickable.getTicks() % 20 == 0) {
 			BlockPos shift = worldPosition.relative(facing);
 			BlockState onShift = level.getBlockState(shift);
-			isGenerating.set(onShift.getFluidState().getType() == Fluids.FLOWING_WATER);
-			if (isGenerating.get() && onShift.getBlock() instanceof LiquidBlock) {
+			isGenerating.setValue(onShift.getFluidState().getType() == Fluids.FLOWING_WATER);
+			if (isGenerating.getValue() && onShift.getBlock() instanceof LiquidBlock) {
 				int amount = level.getBlockState(shift).getValue(LiquidBlock.LEVEL);
 				shift = worldPosition.relative(facing).relative(facing.getClockWise());
 				onShift = level.getBlockState(shift);
 				if (onShift.getBlock() instanceof LiquidBlock && amount > onShift.getValue(LiquidBlock.LEVEL)) {
-					directionFlag.set(true);
+					directionFlag.setValue(true);
 				} else {
 					shift = worldPosition.relative(facing).relative(facing.getClockWise().getOpposite());
 					onShift = level.getBlockState(shift);
 					if (onShift.getBlock() instanceof LiquidBlock && amount >= onShift.getValue(LiquidBlock.LEVEL)) {
-						directionFlag.set(false);
+						directionFlag.setValue(false);
 					} else {
-						isGenerating.set(false);
+						isGenerating.setValue(false);
 					}
 				}
 			}
 			output.update(worldPosition.relative(facing.getOpposite()));
 		}
-		if (isGenerating.get() && output.valid()) {
+		if (isGenerating.getValue() && output.valid()) {
 			ElectricityUtils.receivePower(output.getSafe(), facing, getProduced(), false);
 		}
 	}
 
 	protected void tickCommon(ComponentTickable tickable) {
-		savedTickRotation += (directionFlag.get() ? 1 : -1) * rotationSpeed;
-		rotationSpeed = Mth.clamp(rotationSpeed + 0.05 * (isGenerating.get() ? 1 : -1), 0.0, 1.0);
+		savedTickRotation += (directionFlag.getValue() ? 1 : -1) * rotationSpeed;
+		rotationSpeed = Mth.clamp(rotationSpeed + 0.05 * (isGenerating.getValue() ? 1 : -1), 0.0, 1.0);
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
@@ -121,28 +111,28 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 
 	@Override
 	public boolean shouldPlaySound() {
-		return isGenerating.get();
+		return isGenerating.getValue();
 	}
 
 	@Override
 	public void setMultiplier(double val) {
-		multiplier.set(val);
+		multiplier.setValue(val);
 	}
 
 	@Override
 	public double getMultiplier() {
-		return multiplier.get();
+		return multiplier.getValue();
 	}
 
 	@Override
 	public TransferPack getProduced() {
-		return TransferPack.ampsVoltage(Constants.HYDROELECTRICGENERATOR_AMPERAGE * (isGenerating.get() ? multiplier.get() : 0), this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getVoltage());
+		return TransferPack.ampsVoltage(ElectroConstants.HYDROELECTRICGENERATOR_AMPERAGE * (isGenerating.getValue() ? multiplier.getValue() : 0), this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getVoltage());
 
 	}
 
 	@Override
 	public int getComparatorSignal() {
-		return isGenerating.get() ? 15 : 0;
+		return isGenerating.getValue() ? 15 : 0;
 	}
 
 	@Override
@@ -150,7 +140,13 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 		if (level.isClientSide) {
 			return;
 		}
-		hasRedstoneSignal.set(level.hasNeighborSignal(getBlockPos()));
+		hasRedstoneSignal.setValue(level.hasNeighborSignal(getBlockPos()));
 	}
+	
+	@Override
+	public AABB getRenderBoundingBox() {
+		Direction facing = getFacing();
+		return super.getRenderBoundingBox().expandTowards(facing.getStepX(), facing.getStepY(), facing.getStepZ());
+	}	
 
 }

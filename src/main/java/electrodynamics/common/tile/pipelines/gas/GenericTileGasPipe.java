@@ -1,263 +1,125 @@
 package electrodynamics.common.tile.pipelines.gas;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Set;
 
 import org.jetbrains.annotations.NotNull;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.types.gas.IGasHandler;
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.api.network.cable.type.IGasPipe;
-import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.common.network.type.GasNetwork;
-import electrodynamics.common.network.utils.GasUtilities;
-import electrodynamics.prefab.network.AbstractNetwork;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.types.GenericConnectTile;
-import electrodynamics.prefab.utilities.Scheduler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasStack;
+import voltaic.api.gas.IGasHandler;
+import voltaic.api.network.cable.type.IGasPipe;
+import voltaic.prefab.tile.types.GenericRefreshingConnectTile;
+import voltaic.registers.VoltaicCapabilities;
 
-public abstract class GenericTileGasPipe extends GenericConnectTile implements IGasPipe {
+public abstract class GenericTileGasPipe extends GenericRefreshingConnectTile<IGasPipe, GenericTileGasPipe, GasNetwork> {
+    private final IGasHandler[] capability = new IGasHandler[6];
 
-	public GasNetwork gasNetwork;
-	private IGasHandler[] capability = new IGasHandler[Direction.values().length];
-	private boolean[] connections = new boolean[6];
-	private BlockEntity[] tileConnections = new BlockEntity[6];
+    public GenericTileGasPipe(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
+        super(tileEntityTypeIn, worldPos, blockState);
+        for (Direction dir : Direction.values()) {
+            capability[dir.ordinal()] = new IGasHandler() {
 
-	public GenericTileGasPipe(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
-		super(tileEntityTypeIn, worldPos, blockState);
-		addComponent(new ComponentTickable(this));
-		for (Direction dir : Direction.values()) {
-			capability[dir.ordinal()] = new IGasHandler() {
+                @Override
+                public boolean isGasValid(int tank, GasStack gas) {
+                    return gas != null;
+                }
 
-				@Override
-				public boolean isGasValid(int tank, GasStack gas) {
-					return gas != null;
-				}
+                @Override
+                public int heat(int tank, int deltaTemperature, GasAction action) {
+                    return -1;
+                }
 
-				@Override
-				public double heat(int tank, double deltaTemperature, GasAction action) {
-					return -1;
-				}
+                @Override
+                public int getTanks() {
+                    return 1;
+                }
 
-				@Override
-				public int getTanks() {
-					return 1;
-				}
+                @Override
+                public int getTankMaxTemperature(int tank) {
+                    return -1;
+                }
 
-				@Override
-				public double getTankMaxTemperature(int tank) {
-					return -1;
-				}
+                @Override
+                public int getTankMaxPressure(int tank) {
+                    return getNetwork() == null ? 0 : getNetwork().maxPressure;
+                }
 
-				@Override
-				public int getTankMaxPressure(int tank) {
-					return getNetwork() == null ? 0 : getNetwork().maxPressure;
-				}
+                @Override
+                public int getTankCapacity(int tank) {
+                    return 0;
+                }
 
-				@Override
-				public double getTankCapacity(int tank) {
-					return 0;
-				}
+                @Override
+                public GasStack getGasInTank(int tank) {
+                    return GasStack.EMPTY;
+                }
 
-				@Override
-				public GasStack getGasInTank(int tank) {
-					return GasStack.EMPTY;
-				}
+                @Override
+                public int fill(GasStack gas, GasAction action) {
+                    if (action == GasAction.SIMULATE || getNetwork() == null || gas.isEmpty()) {
+                        return 0;
+                    }
+                    return getNetwork().emit(gas, Lists.newArrayList(level.getBlockEntity(worldPos.relative(dir))), action == GasAction.SIMULATE).getAmount();
+                }
 
-				@Override
-				public double fillTank(int tank, GasStack gas, GasAction action) {
-					if (action == GasAction.SIMULATE || getNetwork() == null) {
-						return 0;
-					}
-					return gasNetwork.emit(gas, Lists.newArrayList(level.getBlockEntity(worldPos.relative(dir))), action == GasAction.SIMULATE).getAmount();
-				}
+                @Override
+                public GasStack drain(int maxFill, GasAction action) {
+                    return GasStack.EMPTY;
+                }
 
-				@Override
-				public GasStack drainTank(int tank, double maxFill, GasAction action) {
-					return GasStack.EMPTY;
-				}
+                @Override
+                public GasStack drain(GasStack gas, GasAction action) {
+                    return GasStack.EMPTY;
+                }
 
-				@Override
-				public GasStack drainTank(int tank, GasStack gas, GasAction action) {
-					return GasStack.EMPTY;
-				}
+                @Override
+                public int bringPressureTo(int tank, int atm, GasAction action) {
+                    return -1;
+                }
+            };
+        }
+    }
+    
+    @Override
+    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
+    	if(cap == VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK && side != null) {
+    		LazyOptional.of(() -> capability[side.ordinal()]).cast();
+    	}
+    	return LazyOptional.empty();
+    }
 
-				@Override
-				public double bringPressureTo(int tank, int atm, GasAction action) {
-					return -1;
-				}
-			};
-		}
-	}
+    @Override
+    public double getMaxTransfer() {
+        return getCableType().getMaxTransfer();
+    }
 
-	@Override
-	public GasNetwork getNetwork() {
-		return getNetwork(true);
-	}
+    @Override
+    public GasNetwork createInstance(Set<GasNetwork> gasNetworks) {
+        return new GasNetwork(gasNetworks);
+    }
 
-	@Override
-	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction dir) {
-		if (cap == ElectrodynamicsCapabilities.GAS_HANDLER) {
-			return LazyOptional.of(() -> capability[dir.ordinal()]).cast();
-		}
-		return LazyOptional.empty();
-	}
+    @Override
+    public GasNetwork createInstanceConductor(Set<GenericTileGasPipe> genericTileGasPipes) {
+        return new GasNetwork(genericTileGasPipes);
+    }
 
-	@Override
-	public GasNetwork getNetwork(boolean createIfNull) {
-		if (gasNetwork == null && createIfNull) {
-			HashSet<IGasPipe> adjacentPipes = getConnectedPipes();
-			HashSet<GasNetwork> connectedNets = new HashSet<>();
-			for (IGasPipe wire : adjacentPipes) {
-				if (wire.getNetwork(false) != null && wire.getNetwork() instanceof GasNetwork net) {
-					connectedNets.add(net);
-				}
-			}
-			if (connectedNets.isEmpty()) {
-				gasNetwork = new GasNetwork(Sets.newHashSet(this));
-			} else {
-				if (connectedNets.size() == 1) {
-					gasNetwork = (GasNetwork) connectedNets.toArray()[0];
-				} else {
-					gasNetwork = new GasNetwork(connectedNets, false);
-				}
-				gasNetwork.conductorSet.add(this);
-			}
-		}
-		return gasNetwork;
-	}
-
-	private HashSet<IGasPipe> getConnectedPipes() {
-		HashSet<IGasPipe> set = new HashSet<>();
-		for (Direction dir : Direction.values()) {
-			BlockEntity facing = level.getBlockEntity(new BlockPos(worldPosition).relative(dir));
-			if (facing instanceof IGasPipe p) {
-				set.add(p);
-			}
-		}
-		return set;
-	}
-
-	@Override
-	public void refreshNetwork() {
-		if (level.isClientSide) {
-			return;
-		}
-		updateAdjacent();
-		ArrayList<GasNetwork> foundNetworks = new ArrayList<>();
-		for (Direction dir : Direction.values()) {
-			BlockEntity facing = level.getBlockEntity(new BlockPos(worldPosition).relative(dir));
-			if (facing instanceof IGasPipe p && p.getNetwork() instanceof GasNetwork n) {
-				foundNetworks.add(n);
-			}
-		}
-		if (!foundNetworks.isEmpty()) {
-			foundNetworks.get(0).conductorSet.add(this);
-			gasNetwork = foundNetworks.get(0);
-			if (foundNetworks.size() > 1) {
-				foundNetworks.remove(0);
-				for (GasNetwork network : foundNetworks) {
-					getNetwork().merge(network);
-				}
-			}
-		}
-		getNetwork().refresh();
-	}
-
-	@Override
-	public void refreshNetworkIfChange() {
-		if (updateAdjacent()) {
-			refreshNetwork();
-		}
-	}
-
-	public boolean updateAdjacent() {
-		boolean flag = false;
-		for (Direction dir : Direction.values()) {
-			BlockEntity tile = level.getBlockEntity(worldPosition.relative(dir));
-			boolean is = GasUtilities.isGasReciever(tile, dir.getOpposite());
-			if (connections[dir.ordinal()] != is) {
-				connections[dir.ordinal()] = is;
-				tileConnections[dir.ordinal()] = tile;
-				flag = true;
-			}
-
-		}
-		return flag;
-	}
-
-	@Override
-	public void removeFromNetwork() {
-		if (gasNetwork != null) {
-			gasNetwork.removeFromNetwork(this);
-		}
-
-	}
-
-	@Override
-	public void setNetwork(AbstractNetwork<?, ?, ?, ?> network) {
-		if (gasNetwork != network && network instanceof GasNetwork g) {
-			removeFromNetwork();
-			gasNetwork = g;
-		}
-	}
-
-	@Override
-	public AbstractNetwork<?, ?, ?, ?> getAbstractNetwork() {
-		return gasNetwork;
-	}
-
-	@Override
-	public BlockEntity[] getAdjacentConnections() {
-		return tileConnections;
-	}
-
-	@Override
-	public void setRemoved() {
-		if (!level.isClientSide && gasNetwork != null) {
-			gasNetwork.split(this);
-		}
-		super.setRemoved();
-	}
-
-	@Override
-	public void onChunkUnloaded() {
-		super.onChunkUnloaded();
-		if (!level.isClientSide && gasNetwork != null) {
-			gasNetwork.split(this);
-		}
-	}
-
-	@Override
-	public void onLoad() {
-		super.onLoad();
-		// TODO remove in next version release; this is a temp hack for now
-		if (super.connections.get() == 0) {
-			for (Direction dir : Direction.values()) {
-				EnumConnectType connection = EnumConnectType.NONE;
-				BlockEntity otherTile = level.getBlockEntity(getBlockPos().relative(dir));
-				if (otherTile instanceof IGasPipe) {
-					connection = EnumConnectType.WIRE;
-				} else if (GasUtilities.isGasReciever(otherTile, dir.getOpposite())) {
-					connection = EnumConnectType.INVENTORY;
-				}
-				writeConnection(dir, connection);
-			}
-		}
-		// end temp hack
-		Scheduler.schedule(1, this::refreshNetwork);
-	}
-
+    @Override
+    public void destroyViolently() {
+        if (level.isClientSide) {
+            return;
+        }
+        level.playSound(null, getBlockPos(), SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 1.0F, 1.0F);
+        level.destroyBlock(getBlockPos(), false);
+    }
 }

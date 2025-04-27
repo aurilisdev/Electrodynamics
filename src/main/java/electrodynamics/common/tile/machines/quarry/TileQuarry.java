@@ -11,34 +11,16 @@ import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
-import org.jetbrains.annotations.NotNull;
-
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.tile.IPlayerStorable;
-import electrodynamics.client.render.event.levelstage.HandlerQuarryArm;
+import electrodynamics.client.event.levelstage.HandlerQuarryArm;
 import electrodynamics.common.block.BlockFrame;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerQuarry;
 import electrodynamics.common.item.ItemDrillHead;
-import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.block.GenericEntityBlock;
-import electrodynamics.prefab.block.GenericMachineBlock;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.InventoryUtils;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.registers.ElectrodynamicsBlocks;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -57,10 +39,22 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.common.util.FakePlayerFactory;
+import voltaic.api.tile.IPlayerStorable;
+import voltaic.common.block.states.VoltaicBlockStates;
+import voltaic.common.item.ItemUpgrade;
+import voltaic.prefab.block.GenericMachineBlock;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.ListProperty;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.ItemUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 /**
  * Loosely based on Quarry concept from Buildcraft with aspects of Extra Utilities's Ender Quarry
@@ -72,9 +66,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	private static final int CAPACITY = 10000;
 	private static final BlockState AIR = Blocks.AIR.defaultBlockState();
-	private static final int CLEAR_SKIP = Math.max(Math.min(Constants.CLEARING_AIR_SKIP, 128), 0);
-
-	public static final BlockPos OUT_OF_REACH = new BlockPos(0, -1000, 0);
+	private static final int CLEAR_SKIP = Math.max(Math.min(ElectroConstants.CLEARING_AIR_SKIP, 128), 0);
 
 	public static final int DRILL_HEAD_INDEX = 0;
 
@@ -83,10 +75,10 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	/* FRAME PARAMETERS */
 
-	public final Property<Boolean> hasCoolantResavoir;
-	public final Property<Boolean> hasMotorComplex;
-	public final Property<Boolean> hasSeismicRelay;
-	public final Property<Boolean> hasRing;
+	public final SingleProperty<Boolean> hasCoolantResavoir = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "hascoolantresavoir", false));
+	public final SingleProperty<Boolean> hasMotorComplex = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "hasmotorcomplex", false));
+	public final SingleProperty<Boolean> hasSeismicRelay = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "hasseismicrelay", false));
+	public final SingleProperty<Boolean> hasRing = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "hasring", false));
 
 	private TileMotorComplex complex = null;
 	private TileCoolantResavoir resavoir = null;
@@ -104,15 +96,15 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	private boolean lastIsCorner = false;
 
-	private HashMap<BlockPos, BlockState> brokenFrames = new HashMap<>();
-	private HashSet<BlockPos> repairedFrames = new HashSet<>();
+	private final HashMap<BlockPos, BlockState> brokenFrames = new HashMap<>();
+	private final HashSet<BlockPos> repairedFrames = new HashSet<>();
 
-	public final Property<List<BlockPos>> corners;
-	public final Property<Boolean> cornerOnRight;
+	public final ListProperty<BlockPos> corners = property(new ListProperty<>(PropertyTypes.BLOCK_POS_LIST, "corners", List.of(BlockEntityUtils.OUT_OF_REACH, BlockEntityUtils.OUT_OF_REACH, BlockEntityUtils.OUT_OF_REACH, BlockEntityUtils.OUT_OF_REACH)));
+	public final SingleProperty<Boolean> cornerOnRight = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "corneronright", false));
 
 	private boolean hasHandledDecay = false;
 
-	public final Property<Boolean> isAreaCleared;
+	public final SingleProperty<Boolean> isAreaCleared = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "areaClear", false));
 
 	private int heightShiftCA = 0;
 	private int widthShiftCA = 0;
@@ -128,32 +120,32 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	private int widthShiftMiner = 0;
 	private int tickDelayMiner = 0;
 
-	public final Property<BlockPos> miningPos;
-	public final Property<BlockPos> prevMiningPos;
+	public final SingleProperty<BlockPos> miningPos = property(new SingleProperty<>(PropertyTypes.BLOCK_POS, "miningpos", BlockEntityUtils.OUT_OF_REACH));
+	public final SingleProperty<BlockPos> prevMiningPos = property(new SingleProperty<>(PropertyTypes.BLOCK_POS, "prevminingpos", BlockEntityUtils.OUT_OF_REACH));
 
-	public final Property<Boolean> isFinished;
+	public final SingleProperty<Boolean> isFinished = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "isfinished", false));
 
 	private boolean widthReverse = false;
 	private boolean lengthReverse = false;
 
-	public final Property<Double> quarryPowerUsage;
-	public final Property<Double> setupPowerUsage;
-	public final Property<Boolean> isPowered;
-	public final Property<Boolean> hasHead;
-	public final Property<Integer> currHead;
+	public final SingleProperty<Double> quarryPowerUsage = property(new SingleProperty<>(PropertyTypes.DOUBLE, "quarrypowerusage", 0.0));
+	public final SingleProperty<Double> setupPowerUsage = property(new SingleProperty<>(PropertyTypes.DOUBLE, "setuppowerusage", 0.0));
+	public final SingleProperty<Boolean> isPowered = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "ispowered", false));
+	public final SingleProperty<Boolean> hasHead = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "hashead", false));
+	public final SingleProperty<Integer> currHead = property(new SingleProperty<>(PropertyTypes.INTEGER, "headtype", -1));
 
-	public final Property<Boolean> hasItemVoid;
-	public final Property<Integer> fortuneLevel;
-	public final Property<Integer> silkTouchLevel;
-	public final Property<Integer> unbreakingLevel;
+	public final SingleProperty<Boolean> hasItemVoid = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "hasitemvoid", false));
+	public final SingleProperty<Integer> fortuneLevel = property(new SingleProperty<>(PropertyTypes.INTEGER, "fortunelevel", 0));
+	public final SingleProperty<Integer> silkTouchLevel = property(new SingleProperty<>(PropertyTypes.INTEGER, "silktouchlevel", 0));
+	public final SingleProperty<Integer> unbreakingLevel = property(new SingleProperty<>(PropertyTypes.INTEGER, "unbreakinglevel", 0));
 
 	// these values are used to deal with client tick desync and provide more
 	// complex information
 	// on how the quarry should be rendered
-	public final Property<Integer> speed;
-	public final Property<Integer> progressCounter;
-	public final Property<Boolean> running;
-	public final Property<Boolean> isTryingToMineFrame;
+	public final SingleProperty<Integer> speed = property(new SingleProperty<>(PropertyTypes.INTEGER, "speed", 0));
+	public final SingleProperty<Integer> progressCounter = property(new SingleProperty<>(PropertyTypes.INTEGER, "progresscounter", 0));
+	public final SingleProperty<Boolean> running = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "isrunning", false));
+	public final SingleProperty<Boolean> isTryingToMineFrame = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "istryingtomineframe", false));
 
 	private int widthShiftMaintainMining = 0;
 	private boolean cont = false;
@@ -162,53 +154,25 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	private QuarryRenderManger renderHandler = null;
 
 	public TileQuarry(BlockPos pos, BlockState state) {
-		super(ElectrodynamicsBlockTypes.TILE_QUARRY.get(), pos, state);
-
-		hasMotorComplex = property(new Property<>(PropertyType.Boolean, "hasmotorcomplex", false));
-		hasCoolantResavoir = property(new Property<>(PropertyType.Boolean, "hascoolantresavoir", false));
-		hasSeismicRelay = property(new Property<>(PropertyType.Boolean, "hasseismicrelay", false));
-		hasRing = property(new Property<>(PropertyType.Boolean, "hasring", false));
-		cornerOnRight = property(new Property<>(PropertyType.Boolean, "corneronright", false));
-		isAreaCleared = property(new Property<>(PropertyType.Boolean, "areaClear", false));
-
-		corners = property(new Property<>(PropertyType.BlockPosList, "corners", List.of(OUT_OF_REACH, OUT_OF_REACH, OUT_OF_REACH, OUT_OF_REACH)));
-		miningPos = property(new Property<>(PropertyType.BlockPos, "miningpos", OUT_OF_REACH));
-		prevMiningPos = property(new Property<>(PropertyType.BlockPos, "prevminingpos", OUT_OF_REACH));
-
-		quarryPowerUsage = property(new Property<>(PropertyType.Double, "quarrypowerusage", 0.0));
-		setupPowerUsage = property(new Property<>(PropertyType.Double, "setuppowerusage", 0.0));
-		isPowered = property(new Property<>(PropertyType.Boolean, "ispowered", false));
-		hasHead = property(new Property<>(PropertyType.Boolean, "hashead", false));
-		currHead = property(new Property<>(PropertyType.Integer, "headtype", -1));
-
-		hasItemVoid = property(new Property<>(PropertyType.Boolean, "hasitemvoid", false));
-		fortuneLevel = property(new Property<>(PropertyType.Integer, "fortunelevel", 0));
-		silkTouchLevel = property(new Property<>(PropertyType.Integer, "silktouchlevel", 0));
-		unbreakingLevel = property(new Property<>(PropertyType.Integer, "unbreakinglevel", 0));
-
-		isFinished = property(new Property<>(PropertyType.Boolean, "isfinished", false));
-		speed = property(new Property<>(PropertyType.Integer, "speed", 0));
-		progressCounter = property(new Property<>(PropertyType.Integer, "progresscounter", 0));
-		running = property(new Property<>(PropertyType.Boolean, "isrunning", false));
-		isTryingToMineFrame = property(new Property<>(PropertyType.Boolean, "istryingtomineframe", false));
+		super(ElectrodynamicsTiles.TILE_QUARRY.get(), pos, state);
 
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(Constants.QUARRY_USAGE_PER_TICK * CAPACITY));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().inputs(7).outputs(9).upgrades(3)).validUpgrades(ContainerQuarry.VALID_UPGRADES).valid(machineValidator()).setSlotsByDirection(Direction.NORTH, 0, 7, 8, 9, 10, 11, 12, 13, 14, 15));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.quarry, this).createMenu((id, player) -> new ContainerQuarry(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2).maxJoules(ElectroConstants.QUARRY_USAGE_PER_TICK * CAPACITY));
+		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().inputs(7).outputs(9).upgrades(3)).validUpgrades(ContainerQuarry.VALID_UPGRADES).valid(machineValidator()).setSlotsByDirection(BlockEntityUtils.MachineDirection.FRONT, 0, 7, 8, 9, 10, 11, 12, 13, 14, 15));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.quarry.tag(), this).createMenu((id, player) -> new ContainerQuarry(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
 	private void tickServer(ComponentTickable tick) {
-		if (isFinished.get()) {
-			running.set(false);
+		if (isFinished.getValue()) {
+			running.setValue(false);
 			if (!hasHandledDecay) {
 				handleFramesDecay();
 				hasHandledDecay = true;
 			}
 			return;
 		}
-		speed.set(complex == null ? 0 : complex.speed.get() + tickDelayMiner);
+		speed.setValue(complex == null ? 0 : complex.speed.getValue() + tickDelayMiner);
 		BlockPos pos = getBlockPos();
 		if (GenericMachineBlock.IPLAYERSTORABLE_MAP.containsKey(pos)) {
 			setPlayer(GenericMachineBlock.IPLAYERSTORABLE_MAP.get(pos));
@@ -221,23 +185,23 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		}
 
 		// return if the quarry still does not have components
-		if (!hasSeismicRelay.get()) {
-			running.set(false);
-			if (hasCorners() && !hasHandledDecay && isAreaCleared.get()) {
+		if (!hasSeismicRelay.getValue()) {
+			running.setValue(false);
+			if (hasCorners() && !hasHandledDecay && isAreaCleared.getValue()) {
 				handleFramesDecay();
 			}
 			return;
 		}
 
 		// return if the quarry still does not have components
-		if (!hasSeismicRelay.get()) {
-			running.set(false);
+		if (!hasSeismicRelay.getValue()) {
+			running.setValue(false);
 			return;
 		}
 
 		// if the quarry can still mine and doesn't have a ring, remedy that
-		if (!hasRing.get() && tick.getTicks() % (3 + tickDelayCA) == 0 && !isFinished.get()) {
-			if (isAreaCleared.get()) {
+		if (!hasRing.getValue() && tick.getTicks() % (3 + tickDelayCA) == 0 && !isFinished.getValue()) {
+			if (isAreaCleared.getValue()) {
 				checkRing();
 			} else {
 				clearArea();
@@ -245,8 +209,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		}
 
 		// if the quarry still doesn't have a ring return
-		if (!hasRing.get()) {
-			running.set(false);
+		if (!hasRing.getValue()) {
+			running.setValue(false);
 			return;
 		}
 
@@ -266,73 +230,73 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 		// if the quarry components are invalid, return
 		if (areComponentsNull()) {
-			running.set(false);
+			running.setValue(false);
 			return;
 		}
 
 		// remove blocks from the mined area
-		if (tick.getTicks() % 4 == 0 && Constants.MAINTAIN_MINING_AREA) {
+		if (tick.getTicks() % 4 == 0 && ElectroConstants.MAINTAIN_MINING_AREA) {
 			maintainMiningArea();
 		}
 
 		boolean shouldFail = false;
 		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-		isPowered.set(electro.getJoulesStored() >= quarryPowerUsage.get());
+		isPowered.setValue(electro.getJoulesStored() >= quarryPowerUsage.getValue());
 
 		// if there isn't enough power don't do anything
-		if (!isPowered.get()) {
-			running.set(false);
+		if (!isPowered.getValue()) {
+			running.setValue(false);
 			shouldFail = true;
 		}
 
 		// if the motor complex is in an invalid state return
-		if (!complex.isPowered.get() || complex.speed.get() <= 0) {
-			running.set(false);
+		if (!complex.isPowered.getValue() || complex.speed.getValue() <= 0) {
+			running.setValue(false);
 			shouldFail = true;
 		}
 
-		int fluidUse = (int) (complex.powerMultiplier.get() * Constants.QUARRY_WATERUSAGE_PER_BLOCK);
+		int fluidUse = (int) (complex.powerMultiplier.getValue() * ElectroConstants.QUARRY_WATERUSAGE_PER_BLOCK);
 		ComponentInventory inv = getComponent(IComponentType.Inventory);
 		if (inv.getItem(DRILL_HEAD_INDEX).getItem() instanceof ItemDrillHead head) {
-			hasHead.set(true);
+			hasHead.setValue(true);
 			writeHeadType(head.head);
 		} else {
-			hasHead.set(false);
+			hasHead.setValue(false);
 			writeHeadType(null);
-			running.set(false);
+			running.setValue(false);
 		}
 
 		if (shouldFail) {
 			return;
 		}
 
-		if (!inv.areOutputsEmpty() || !resavoir.hasEnoughFluid(fluidUse) || !hasHead.get()) {
-			running.set(false);
+		if (!inv.areOutputsEmpty() || !resavoir.hasEnoughFluid(fluidUse) || !hasHead.getValue()) {
+			running.setValue(false);
 			return;
 		}
 
-		running.set(true);
-		progressCounter.set(progressCounter.get() + 1);
+		running.setValue(true);
+		progressCounter.setValue(progressCounter.getValue() + 1);
 
-		if (progressCounter.get() < speed.get()) {
+		if (progressCounter.getValue() < speed.getValue()) {
 			return;
 		}
 
 		// if there is no room for mined blocks, the fluid resavoir doesn't have enough
 		// fluid, or there isn't a drill head, return
 
-		progressCounter.set(0);
+		progressCounter.setValue(0);
 
-		if (canMineIfFrame(world.getBlockState(miningPos.get()), miningPos.get())) {
-			isTryingToMineFrame.set(true);
+		if (canMineIfFrame(world.getBlockState(miningPos.getValue()), miningPos.getValue())) {
+			isTryingToMineFrame.setValue(true);
 			return;
 		}
-		isTryingToMineFrame.set(false);
+		isTryingToMineFrame.setValue(false);
 
 		resavoir.drainFluid(fluidUse);
-		BlockPos cornerStart = corners.get().get(3);
-		BlockPos cornerEnd = corners.get().get(0);
+		BlockPos cornerStart = corners.getValue().get(3);
+		BlockPos cornerEnd = corners.getValue().get(0);
 		int deltaW = (int) Math.signum(cornerStart.getX() - cornerEnd.getX());
 		int deltaL = (int) Math.signum(cornerStart.getZ() - cornerEnd.getZ());
 		int width = cornerStart.getX() - cornerEnd.getX() - 2 * deltaW;
@@ -341,18 +305,18 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		// deals with the issue of the client pos always being one tick behind
 		// the server's
 		cont = true;
-		if (!miningPos.get().equals(OUT_OF_REACH)) {
-			BlockState miningState = world.getBlockState(miningPos.get());
-			float strength = miningState.getDestroySpeed(world, miningPos.get());
+		if (!miningPos.getValue().equals(BlockEntityUtils.OUT_OF_REACH)) {
+			BlockState miningState = world.getBlockState(miningPos.getValue());
+			float strength = miningState.getDestroySpeed(world, miningPos.getValue());
 			if (!skipBlock(miningState) && strength >= 0) {
-				cont = mineBlock(miningPos.get(), miningState, strength, world, inv.getItem(0), inv, getPlayer((ServerLevel) world));
+				cont = mineBlock(miningPos.getValue(), miningState, strength, world, inv.getItem(0), inv, getPlayer((ServerLevel) world));
 			}
 		}
-		prevMiningPos.set(new BlockPos(miningPos.get()));
+		prevMiningPos.setValue(new BlockPos(miningPos.getValue()));
 
-		miningPos.set(new BlockPos(cornerStart.getX() - widthShiftMiner - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - lengthShiftMiner - deltaL));
+		miningPos.setValue(new BlockPos(cornerStart.getX() - widthShiftMiner - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - lengthShiftMiner - deltaL));
 
-		BlockState state = world.getBlockState(miningPos.get());
+		BlockState state = world.getBlockState(miningPos.getValue());
 		boolean shouldSkip = true;
 
 		// if the mined block shouldn't be skipped then don't skip it
@@ -362,11 +326,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		// loop until either the mining skip limit is reached or a non-skipable block is
 		// found
 		while (shouldSkip) {
-			if (miningPos.get().getY() <= world.getMinBuildHeight()) {
+			if (miningPos.getValue().getY() <= world.getMinBuildHeight()) {
 				heightShiftMiner = 1;
-				isFinished.set(true);
-				progressCounter.set(0);
-				running.set(false);
+				isFinished.setValue(true);
+				progressCounter.setValue(0);
+				running.setValue(false);
 				break;
 			}
 			if (lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length) {
@@ -384,14 +348,14 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			} else {
 				lengthShiftMiner += deltaL;
 			}
-			miningPos.set(new BlockPos(cornerStart.getX() - widthShiftMiner - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - lengthShiftMiner - deltaL));
-			state = world.getBlockState(miningPos.get());
+			miningPos.setValue(new BlockPos(cornerStart.getX() - widthShiftMiner - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - lengthShiftMiner - deltaL));
+			state = world.getBlockState(miningPos.getValue());
 			shouldSkip = skipBlock(state);
 		}
-		float strength = state.getDestroySpeed(world, miningPos.get());
+		float strength = state.getDestroySpeed(world, miningPos.getValue());
 		tickDelayMiner = (int) strength;
 		if (!shouldSkip && strength >= 0) {
-			electro.joules(electro.getJoulesStored() - quarryPowerUsage.get());
+			electro.joules(electro.getJoulesStored() - quarryPowerUsage.getValue());
 		}
 		if (shouldSkip) {
 			if (lengthReverse ? lengthShiftMiner == 0 : lengthShiftMiner == length) {
@@ -399,11 +363,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				if (widthReverse ? widthShiftMiner == 0 : widthShiftMiner == width) {
 					widthReverse = !widthReverse;
 					heightShiftMiner++;
-					if (miningPos.get().getY() <= world.getMinBuildHeight()) {
+					if (miningPos.getValue().getY() <= world.getMinBuildHeight()) {
 						heightShiftMiner = 1;
-						isFinished.set(true);
-						progressCounter.set(0);
-						running.set(false);
+						isFinished.setValue(true);
+						progressCounter.setValue(0);
+						running.setValue(false);
 					}
 				} else if (widthReverse) {
 					widthShiftMiner -= deltaW;
@@ -428,14 +392,14 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	 */
 	private void maintainMiningArea() {
 		Level world = getLevel();
-		BlockPos cornerStart = corners.get().get(3);
-		BlockPos cornerEnd = corners.get().get(0);
+		BlockPos cornerStart = corners.getValue().get(3);
+		BlockPos cornerEnd = corners.getValue().get(0);
 		int deltaW = (int) Math.signum(cornerStart.getX() - cornerEnd.getX());
 		int deltaL = (int) Math.signum(cornerStart.getZ() - cornerEnd.getZ());
 		int width = cornerStart.getX() - cornerEnd.getX() - 2 * deltaW;
 		int length = cornerStart.getZ() - cornerEnd.getZ();
 		BlockPos startPos = new BlockPos(cornerStart.getX() - widthShiftMaintainMining - deltaW, cornerStart.getY(), cornerStart.getZ() - deltaL);
-		BlockPos endPos = new BlockPos(cornerStart.getX() - widthShiftMaintainMining - deltaW, miningPos.get().getY() + 1, cornerStart.getZ() - length + deltaL);
+		BlockPos endPos = new BlockPos(cornerStart.getX() - widthShiftMaintainMining - deltaW, miningPos.getValue().getY() + 1, cornerStart.getZ() - length + deltaL);
 		Iterator<BlockPos> positions = BlockPos.betweenClosedStream(startPos, endPos).iterator();
 		BlockPos pos;
 		while (positions.hasNext()) {
@@ -448,11 +412,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				lengthShiftMiner = newLengthShift;
 				widthShiftMaintainMining = 0;
 				heightShiftMiner = startPos.getY() - pos.getY() - 1;
-				prevMiningPos.set(new BlockPos(miningPos.get()));
-				miningPos.set(pos);
+				prevMiningPos.setValue(new BlockPos(miningPos.getValue()));
+				miningPos.setValue(pos);
 				widthReverse = false;
 				lengthReverse = false;
-				progressCounter.set(0);
+				progressCounter.setValue(0);
 				return;
 			}
 		}
@@ -470,8 +434,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	 */
 	private void cleanRing() {
 		Level world = getLevel();
-		BlockPos cornerStart = corners.get().get(3);
-		BlockPos cornerEnd = corners.get().get(0);
+		BlockPos cornerStart = corners.getValue().get(3);
+		BlockPos cornerEnd = corners.getValue().get(0);
 		int deltaW = (int) Math.signum(cornerStart.getX() - cornerEnd.getX());
 		int deltaL = (int) Math.signum(cornerStart.getZ() - cornerEnd.getZ());
 		int width = cornerStart.getX() - cornerEnd.getX() - 2 * deltaW;
@@ -482,7 +446,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		positions.forEach(pos -> {
 			BlockState state = world.getBlockState(pos);
 			if (!skipBlock(state)) {
-				boolean canMine = world.destroyBlock(pos, false, getPlayer((ServerLevel) world)) || Constants.BYPASS_CLAIMS;
+				boolean canMine = world.destroyBlock(pos, false, getPlayer((ServerLevel) world)) || ElectroConstants.BYPASS_CLAIMS;
 				if (canMine) {
 					world.setBlockAndUpdate(pos, AIR);
 					world.playSound(null, pos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 0.5F, 1.0F);
@@ -501,7 +465,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		if (sucess) {
 			SubtypeDrillHead head = ((ItemDrillHead) drillHead.getItem()).head;
 			if (!head.isUnbreakable) {
-				int durabilityUsed = (int) (Math.ceil(strength) / (unbreakingLevel.get() + 1.0F));
+				int durabilityUsed = (int) (Math.ceil(strength) / (unbreakingLevel.getValue() + 1.0F));
 				if (drillHead.getDamageValue() + durabilityUsed >= drillHead.getMaxDamage()) {
 					world.playSound(null, getBlockPos(), SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
 					drillHead.shrink(1);
@@ -511,10 +475,10 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			}
 			// TODO make this work with custom mining tiers
 			ItemStack pickaxe = new ItemStack(Items.NETHERITE_PICKAXE);
-			if (silkTouchLevel.get() > 0) {
-				pickaxe.enchant(Enchantments.SILK_TOUCH, silkTouchLevel.get());
-			} else if (fortuneLevel.get() > 0) {
-				pickaxe.enchant(Enchantments.BLOCK_FORTUNE, fortuneLevel.get());
+			if (silkTouchLevel.getValue() > 0) {
+				pickaxe.enchant(Enchantments.SILK_TOUCH, silkTouchLevel.getValue());
+			} else if (fortuneLevel.getValue() > 0) {
+				pickaxe.enchant(Enchantments.BLOCK_FORTUNE, fortuneLevel.getValue());
 			}
 			List<ItemStack> lootItems = Block.getDrops(state, (ServerLevel) world, pos, null, null, pickaxe);
 			List<ItemStack> voidItemStacks = inv.getInputContents().subList(1, inv.getInputContents().size());
@@ -522,7 +486,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			voidItemStacks.forEach(h -> voidItems.add(h.getItem()));
 			List<ItemStack> items = new ArrayList<>();
 
-			if (hasItemVoid.get()) {
+			if (hasItemVoid.getValue()) {
 				lootItems.forEach(lootItem -> {
 					if (!voidItems.contains(lootItem.getItem())) {
 						items.add(lootItem);
@@ -531,7 +495,45 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			} else {
 				items.addAll(lootItems);
 			}
-			InventoryUtils.addItemsToInventory(inv, items, inv.getOutputStartIndex(), inv.getOutputContents().size());
+
+			int max = inv.getOutputStartIndex() + inv.getOutputContents().size();
+
+			for(ItemStack item : items) {
+
+				for (int i = inv.getOutputStartIndex(); i < max; i++) {
+
+					ItemStack contained = inv.getItem(i);
+
+					int room = contained.getMaxStackSize() - contained.getCount();
+
+					int amtAccepted = Math.min(room, item.getCount());
+
+					if(amtAccepted == 0) {
+						continue;
+					}
+
+					if (contained.isEmpty()) {
+
+						inv.setItem(i, new ItemStack(item.getItem(), amtAccepted));
+
+						item.shrink(amtAccepted);
+
+					} else if (ItemUtils.testItems(item.getItem(), contained.getItem())) {
+
+						contained.grow(amtAccepted);
+
+						item.shrink(amtAccepted);
+
+						inv.setChanged();
+
+					}
+					if(item.isEmpty()) {
+						break;
+					}
+				}
+
+			}
+
 			world.playSound(null, pos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
 		}
 		return sucess;
@@ -540,12 +542,12 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	// responsible for clearing initial obstructions from the mining area
 	private void clearArea() {
 		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-		setupPowerUsage.set(Constants.QUARRY_USAGE_PER_TICK);
-		isPowered.set(electro.getJoulesStored() >= setupPowerUsage.get());
-		if (hasCorners() && isPowered.get()) {
+		setupPowerUsage.setValue(ElectroConstants.QUARRY_USAGE_PER_TICK);
+		isPowered.setValue(electro.getJoulesStored() >= setupPowerUsage.getValue());
+		if (hasCorners() && isPowered.getValue()) {
 			Level world = getLevel();
-			BlockPos start = corners.get().get(3);
-			BlockPos end = corners.get().get(0);
+			BlockPos start = corners.getValue().get(3);
+			BlockPos end = corners.getValue().get(0);
 			int width = start.getX() - end.getX();
 			int height = start.getZ() - end.getZ();
 			int deltaW = (int) Math.signum(width);
@@ -553,17 +555,17 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			BlockPos checkPos = new BlockPos(start.getX() - widthShiftCA, start.getY(), start.getZ() - heightShiftCA);
 			BlockState state = world.getBlockState(checkPos);
 			if (canMineIfFrame(state, checkPos)) {
-				isTryingToMineFrame.set(true);
+				isTryingToMineFrame.setValue(true);
 				return;
 			}
-			isTryingToMineFrame.set(true);
+			isTryingToMineFrame.setValue(true);
 			float strength = state.getDestroySpeed(world, checkPos);
 			int blockSkip = 0;
 			while (skipBlock(state) && blockSkip < CLEAR_SKIP) {
 				if (heightShiftCA == height) {
 					heightShiftCA = 0;
 					if (widthShiftCA == width) {
-						isAreaCleared.set(true);
+						isAreaCleared.setValue(true);
 						widthShiftCA = 0;
 						tickDelayCA = 0;
 						return;
@@ -576,11 +578,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 				state = world.getBlockState(checkPos);
 				blockSkip++;
 			}
-			if (strength >= 0 && electro.getJoulesStored() >= setupPowerUsage.get() * strength) {
+			if (strength >= 0 && electro.getJoulesStored() >= setupPowerUsage.getValue() * strength) {
 				boolean sucess = false;
 				if (!skipBlock(state)) {
 					tickDelayCA = (int) Math.ceil(strength / 5.0F);
-					electro.joules(electro.getJoulesStored() - setupPowerUsage.get() * strength);
+					electro.joules(electro.getJoulesStored() - setupPowerUsage.getValue() * strength);
 					sucess = world.destroyBlock(checkPos, false, getPlayer((ServerLevel) world));
 					if (sucess) {
 						world.playSound(null, checkPos, state.getSoundType().getBreakSound(), SoundSource.BLOCKS, 1.0F, 1.0F);
@@ -590,7 +592,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 					if (heightShiftCA == height) {
 						heightShiftCA = 0;
 						if (widthShiftCA == width) {
-							isAreaCleared.set(true);
+							isAreaCleared.setValue(true);
 							widthShiftCA = 0;
 							tickDelayCA = 0;
 						} else {
@@ -639,33 +641,33 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	private void checkRing() {
 		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-		if (electro.getJoulesStored() < Constants.QUARRY_USAGE_PER_TICK && hasCorners()) {
+		if (electro.getJoulesStored() < ElectroConstants.QUARRY_USAGE_PER_TICK && hasCorners()) {
 			return;
 		}
-		electro.joules(electro.getJoulesStored() - Constants.QUARRY_USAGE_PER_TICK);
-		BlockState cornerState = ElectrodynamicsBlocks.blockFrameCorner.defaultBlockState().setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE);
+		electro.joules(electro.getJoulesStored() - ElectroConstants.QUARRY_USAGE_PER_TICK);
+		BlockState cornerState = ElectrodynamicsBlocks.BLOCK_FRAME_CORNER.get().defaultBlockState().setValue(VoltaicBlockStates.WATERLOGGED, false);
 		Level world = getLevel();
-		BlockPos frontOfQuarry = corners.get().get(0);
-		BlockPos foqFar = corners.get().get(1);
-		BlockPos foqCorner = corners.get().get(2);
-		BlockPos farCorner = corners.get().get(3);
+		BlockPos frontOfQuarry = corners.getValue().get(0);
+		BlockPos foqFar = corners.getValue().get(1);
+		BlockPos foqCorner = corners.getValue().get(2);
+		BlockPos farCorner = corners.getValue().get(3);
 		Direction facing = getFacing().getOpposite();
 		if (prevPos != null) {
 			if (hasAllStrips()) {
-				hasRing.set(true);
+				hasRing.setValue(true);
 				prevPos = null;
-				isFinished.set(false);
+				isFinished.setValue(false);
 				heightShiftMiner = 1;
 				widthShiftMiner = 0;
 				lengthShiftMiner = 0;
-				quarryPowerUsage.set(0.0);
-				setupPowerUsage.set(0.0);
-				BlockPos cornerStart = corners.get().get(3);
-				BlockPos cornerEnd = corners.get().get(0);
+				quarryPowerUsage.setValue(0.0);
+				setupPowerUsage.setValue(0.0);
+				BlockPos cornerStart = corners.getValue().get(3);
+				BlockPos cornerEnd = corners.getValue().get(0);
 				int deltaW = (int) Math.signum(cornerStart.getX() - cornerEnd.getX());
 				int deltaL = (int) Math.signum(cornerStart.getZ() - cornerEnd.getZ());
-				miningPos.set(new BlockPos(cornerStart.getX() - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - deltaL));
-				prevMiningPos.set(new BlockPos(miningPos.get()));
+				miningPos.setValue(new BlockPos(cornerStart.getX() - deltaW, cornerStart.getY() - heightShiftMiner, cornerStart.getZ() - deltaL));
+				prevMiningPos.setValue(new BlockPos(miningPos.getValue()));
 			}
 		}
 		switch (facing) {
@@ -748,10 +750,10 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			currPos = startPos;
 		}
 		if (canMineIfFrame(world.getBlockState(currPos), currPos)) {
-			isTryingToMineFrame.set(true);
+			isTryingToMineFrame.setValue(true);
 			return;
 		}
-		isTryingToMineFrame.set(false);
+		isTryingToMineFrame.setValue(false);
 
 		if ((currPosX ? currPos.getX() : currPos.getZ()) == startCV) {
 			world.setBlockAndUpdate(startPos, cornerState);
@@ -770,13 +772,13 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			currPos = null;
 			return;
 		} else {
-			world.setBlockAndUpdate(currPos, ElectrodynamicsBlocks.blockFrame.defaultBlockState().setValue(GenericEntityBlock.FACING, frameFace).setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE));
+			world.setBlockAndUpdate(currPos, ElectrodynamicsBlocks.BLOCK_FRAME.get().defaultBlockState().setValue(VoltaicBlockStates.FACING, frameFace).setValue(VoltaicBlockStates.WATERLOGGED, false));
 			repairedFrames.add(currPos);
 			prevIsCorner = false;
 		}
 		world.playSound(null, currPos, SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 0.5F, 1.0F);
 		prevPos = new BlockPos(currPos.getX(), currPos.getY(), currPos.getZ());
-		currPos = currPos.relative(cornerOnRight.get() ? relative.getOpposite() : relative);
+		currPos = currPos.relative(cornerOnRight.getValue() ? relative.getOpposite() : relative);
 	}
 
 	private void strip(Level world, BlockPos startPos, int endCV, Direction relative, Direction frameFace, boolean currPosX, boolean left) {
@@ -784,11 +786,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			currPos = startPos.relative(relative);
 		}
 		if (canMineIfFrame(world.getBlockState(currPos), currPos)) {
-			isTryingToMineFrame.set(true);
+			isTryingToMineFrame.setValue(true);
 			return;
 		}
-		isTryingToMineFrame.set(false);
-		world.setBlockAndUpdate(currPos, ElectrodynamicsBlocks.blockFrame.defaultBlockState().setValue(GenericEntityBlock.FACING, cornerOnRight.get() ? frameFace.getOpposite() : frameFace).setValue(BlockStateProperties.WATERLOGGED, Boolean.FALSE));
+		isTryingToMineFrame.setValue(false);
+		world.setBlockAndUpdate(currPos, ElectrodynamicsBlocks.BLOCK_FRAME.get().defaultBlockState().setValue(VoltaicBlockStates.FACING, cornerOnRight.getValue() ? frameFace.getOpposite() : frameFace).setValue(VoltaicBlockStates.WATERLOGGED, false));
 		repairedFrames.add(currPos);
 		world.playSound(null, currPos, SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 0.5F, 1.0F);
 		prevPos = new BlockPos(currPos.getX(), currPos.getY(), currPos.getZ());
@@ -818,38 +820,38 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 		if (leftEntity != null && leftEntity instanceof TileMotorComplex complexin && complexin.getFacing() == left) {
 			complex = complexin;
-			hasMotorComplex.set(true);
+			hasMotorComplex.setValue(true);
 		} else if (rightEntity != null && rightEntity instanceof TileMotorComplex complexin && complexin.getFacing() == right) {
 			complex = complexin;
-			hasMotorComplex.set(true);
+			hasMotorComplex.setValue(true);
 		} else {
 			complex = null;
-			hasMotorComplex.set(false);
+			hasMotorComplex.setValue(false);
 		}
 
 		if (leftEntity != null && leftEntity instanceof TileSeismicRelay relayin && relayin.getFacing() == facing.getOpposite()) {
-			corners.set(relayin.markerLocs.get());
-			corners.forceDirty();
-			cornerOnRight.set(relayin.cornerOnRight);
+			corners.wipeList();
+			corners.addValues(relayin.markerLocs.getValue());
+			cornerOnRight.setValue(relayin.cornerOnRight);
 			relay = relayin;
-			hasSeismicRelay.set(true);
+			hasSeismicRelay.setValue(true);
 		} else if (rightEntity != null && rightEntity instanceof TileSeismicRelay relayin && relayin.getFacing() == facing.getOpposite()) {
-			corners.set(relayin.markerLocs.get());
-			corners.forceDirty();
-			cornerOnRight.set(relayin.cornerOnRight);
+			corners.wipeList();
+			corners.addValues(relayin.markerLocs.getValue());
+			cornerOnRight.setValue(relayin.cornerOnRight);
 			relay = relayin;
-			hasSeismicRelay.set(true);
+			hasSeismicRelay.setValue(true);
 		} else {
 			relay = null;
-			hasSeismicRelay.set(false);
+			hasSeismicRelay.setValue(false);
 		}
 
 		if (aboveEntity != null && aboveEntity instanceof TileCoolantResavoir resavoirin) {
 			resavoir = resavoirin;
-			hasCoolantResavoir.set(true);
+			hasCoolantResavoir.setValue(true);
 		} else {
 			resavoir = null;
-			hasCoolantResavoir.set(false);
+			hasCoolantResavoir.setValue(false);
 		}
 
 	}
@@ -863,11 +865,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	public boolean hasCorners() {
-		return corners.get().size() > 3;
+		return corners.getValue().size() > 3;
 	}
 
 	private boolean skipBlock(BlockState state) {
-		return state.isAir() || !state.getFluidState().is(Fluids.EMPTY) || state.is(Blocks.BEDROCK) || miningPos.get().getY() == level.getMinBuildHeight();
+		return state.isAir() || !state.getFluidState().is(Fluids.EMPTY) || state.is(Blocks.BEDROCK) || miningPos.getValue().getY() == level.getMinBuildHeight();
 	}
 
 	private void tickClient(ComponentTickable tick) {
@@ -878,9 +880,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	@Override
-	public void saveAdditional(@NotNull CompoundTag compound) {
+	protected void saveAdditional(CompoundTag compound) {
 		super.saveAdditional(compound);
-
 		CompoundTag data = new CompoundTag();
 
 		data.putBoolean("bottomStrip", hasBottomStrip);
@@ -944,9 +945,8 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	@Override
-	public void load(@NotNull CompoundTag compound) {
+	public void load(CompoundTag compound) {
 		super.load(compound);
-
 		CompoundTag data = compound.getCompound("quarrydata");
 
 		hasBottomStrip = data.getBoolean("bottomStrip");
@@ -1025,25 +1025,24 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	public void handleFramesDecay() {
-		miningPos.set(OUT_OF_REACH);
-		prevMiningPos.set(OUT_OF_REACH);
+		miningPos.setValue(BlockEntityUtils.OUT_OF_REACH);
+		prevMiningPos.setValue(BlockEntityUtils.OUT_OF_REACH);
 		hasHandledDecay = true;
-		isAreaCleared.set(false);
-		hasRing.set(false);
+		isAreaCleared.setValue(false);
+		hasRing.setValue(false);
 		hasBottomStrip = false;
 		hasTopStrip = false;
 		hasLeftStrip = false;
 		hasRightStrip = false;
 		lengthReverse = false;
 		widthReverse = false;
-		isFinished.set(true);
+		isFinished.setValue(true);
 		isChanged = true;
-		progressCounter.set(0);
-		running.set(false);
+		progressCounter.setValue(0);
+		running.setValue(false);
 		brokenFrames.clear();
 		repairedFrames.clear();
-		corners.set(new ArrayList<>());
-		corners.forceDirty();
+		corners.wipeList();
 		handleFramesDecayNoVarUpdate();
 	}
 
@@ -1052,11 +1051,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			return;
 		}
 		Level world = getLevel();
-		BlockPos frontOfQuarry = corners.get().get(0);
-		BlockPos foqFar = corners.get().get(1);
-		BlockPos foqCorner = corners.get().get(2);
-		BlockPos farCorner = corners.get().get(3);
-		for (BlockPos pos : corners.get()) {
+		BlockPos frontOfQuarry = corners.getValue().get(0);
+		BlockPos foqFar = corners.getValue().get(1);
+		BlockPos foqCorner = corners.getValue().get(2);
+		BlockPos farCorner = corners.getValue().get(3);
+		for (BlockPos pos : corners.getValue()) {
 			world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 		}
 		BlockPos.betweenClosedStream(foqCorner, frontOfQuarry).forEach(pos -> updateState(world, pos));
@@ -1067,7 +1066,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	private static void updateState(Level world, BlockPos pos) {
 		BlockState state = world.getBlockState(pos);
-		if (state.is(ElectrodynamicsBlocks.blockFrame) || state.is(ElectrodynamicsBlocks.blockFrameCorner)) {
+		if (state.is(ElectrodynamicsBlocks.BLOCK_FRAME.get()) || state.is(ElectrodynamicsBlocks.BLOCK_FRAME_CORNER.get())) {
 			world.setBlockAndUpdate(pos, state.setValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY, Boolean.TRUE));
 		}
 	}
@@ -1147,25 +1146,25 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 					}
 				}
 			}
-			this.hasItemVoid.set(hasItemVoid);
-			this.fortuneLevel.set(fortuneLevel);
-			this.silkTouchLevel.set(silkTouchLevel);
-			this.unbreakingLevel.set(unbreakingLevel);
-			quarryPowerUsage.set(Constants.QUARRY_USAGE_PER_TICK * quarryPowerMultiplier);
+			this.hasItemVoid.setValue(hasItemVoid);
+			this.fortuneLevel.setValue(fortuneLevel);
+			this.silkTouchLevel.setValue(silkTouchLevel);
+			this.unbreakingLevel.setValue(unbreakingLevel);
+			quarryPowerUsage.setValue(ElectroConstants.QUARRY_USAGE_PER_TICK * quarryPowerMultiplier);
 		}
 	}
 
 	private void writeHeadType(SubtypeDrillHead head) {
 		if (head == null) {
-			currHead.set(-1);
+			currHead.setValue(-1);
 		} else {
-			currHead.set(head.ordinal());
+			currHead.setValue(head.ordinal());
 		}
 	}
 
 	@Nullable
 	public SubtypeDrillHead readHeadType() {
-		return currHead.get() == -1 ? null : SubtypeDrillHead.values()[currHead.get()];
+		return currHead.getValue() == -1 ? null : SubtypeDrillHead.values()[currHead.getValue()];
 	}
 
 	@Nullable
@@ -1208,17 +1207,17 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	public boolean isMotorComplexPowered() {
 		if (!level.isClientSide) {
-			return complex != null && complex.isPowered.get();
+			return complex != null && complex.isPowered.getValue();
 		}
 		TileMotorComplex complex = getMotorComplex();
 		if (complex == null) {
 			return false;
 		}
-		return complex.isPowered.get();
+		return complex.isPowered.getValue();
 	}
 
 	public boolean canMineIfFrame(BlockState state, BlockPos pos) {
-		if (state.is(ElectrodynamicsBlocks.blockFrame) || state.is(ElectrodynamicsBlocks.blockFrameCorner)) {
+		if (state.is(ElectrodynamicsBlocks.BLOCK_FRAME.get()) || state.is(ElectrodynamicsBlocks.BLOCK_FRAME_CORNER.get())) {
 			BlockEntity entity = level.getBlockEntity(pos);
 			if (entity != null && entity instanceof TileFrame frame) {
 				return frame.ownerQuarryPos != null;
@@ -1229,7 +1228,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 	@Override
 	public int getComparatorSignal() {
-		return isFinished.get() ? 15 : 0;
+		return isFinished.getValue() ? 15 : 0;
 	}
 
 }

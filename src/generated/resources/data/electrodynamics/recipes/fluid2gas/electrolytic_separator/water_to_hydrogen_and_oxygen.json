@@ -10,19 +10,19 @@
   },
   "gasbi": {
     "0": {
-      "amount": 2000.0,
+      "amount": 2000,
       "chance": 1.0,
       "gas": "electrodynamics:hydrogen",
       "pressure": 1,
-      "temp": 293.0
+      "temp": 293
     },
     "count": 1
   },
   "output": {
-    "amount": 1000.0,
+    "amount": 1000,
     "gas": "electrodynamics:oxygen",
     "pressure": 1,
-    "temp": 293.0
+    "temp": 293
   },
   "ticks": 200,
   "usagepertick": 250.0

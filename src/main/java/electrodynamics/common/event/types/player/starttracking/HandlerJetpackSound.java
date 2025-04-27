@@ -2,7 +2,6 @@ package electrodynamics.common.event.types.player.starttracking;
 
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.client.PacketJetpackEquipedSound;
-import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -11,6 +10,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerEvent.StartTracking;
 import net.minecraftforge.network.NetworkDirection;
+import voltaic.common.event.type.AbstractPlayerStartTrackingHandler;
+import voltaic.prefab.utilities.ItemUtils;
 
 public class HandlerJetpackSound extends AbstractPlayerStartTrackingHandler {
 

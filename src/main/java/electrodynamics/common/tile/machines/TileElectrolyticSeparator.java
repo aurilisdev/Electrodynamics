@@ -1,57 +1,49 @@
 package electrodynamics.common.tile.machines;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectrolyticSeparator;
-import electrodynamics.common.network.utils.GasUtilities;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSound;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.types.GenericGasTile;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import electrodynamics.registers.ElectrodynamicsSounds;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.common.network.utils.GasUtilities;
+import voltaic.prefab.sound.ITickableSound;
+import voltaic.prefab.sound.SoundBarrierMethods;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.types.GenericGasTile;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileElectrolyticSeparator extends GenericGasTile implements ITickableSound {
 
 	public static final int MAX_INPUT_TANK_CAPACITY = 5000;
-	public static final double MAX_OUTPUT_TANK_CAPACITY = 5000.0;
+	public static final int MAX_OUTPUT_TANK_CAPACITY = 5000;
 	public long clientTicks = 0;
 
-	private static final Direction OXYGEN_DIRECTION = Direction.EAST;
-	private static final Direction HYDROGEN_DIRECTION = Direction.WEST;
+	private static final BlockEntityUtils.MachineDirection OXYGEN_DIRECTION = BlockEntityUtils.MachineDirection.RIGHT;
+	private static final BlockEntityUtils.MachineDirection HYDROGEN_DIRECTION = BlockEntityUtils.MachineDirection.LEFT;
 
 	private boolean isSoundPlaying = false;
 
 	public TileElectrolyticSeparator(BlockPos worldPos, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_ELECTROLYTICSEPARATOR.get(), worldPos, blockState);
+		super(ElectrodynamicsTiles.TILE_ELECTROLYTICSEPARATOR.get(), worldPos, blockState);
 		addComponent(new ComponentTickable(this).tickClient(this::tickClient).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.SOUTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2));
-		addComponent(new ComponentFluidHandlerMulti(this).setInputDirections(Direction.NORTH).setInputTanks(1, arr(MAX_INPUT_TANK_CAPACITY)).setRecipeType(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE.get()));
-		addComponent(new ComponentGasHandlerMulti(this).setOutputDirections(OXYGEN_DIRECTION, HYDROGEN_DIRECTION).setOutputTanks(2, arr(MAX_OUTPUT_TANK_CAPACITY, MAX_OUTPUT_TANK_CAPACITY), arr(1000.0, 1000.0), arr(1024, 1024)).setRecipeType(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE.get()).setCondensedHandler(getCondensedHandler()));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().bucketInputs(1).gasOutputs(2).upgrades(3)).validUpgrades(ContainerElectrolyticSeparator.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentProcessor(this).canProcess(component -> component.consumeBucket().dispenseGasCylinder().canProcessFluid2GasRecipe(component, ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPERATOR_TYPE.get())).process(component -> component.processFluid2GasRecipe(component)));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.electrolyticseparator, this).createMenu((id, player) -> new ContainerElectrolyticSeparator(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.FRONT).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2));
+		addComponent(new ComponentFluidHandlerMulti(this).setInputDirections(BlockEntityUtils.MachineDirection.BACK).setInputTanks(1, arr(MAX_INPUT_TANK_CAPACITY)).setRecipeType(ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get()));
+		addComponent(new ComponentGasHandlerMulti(this).setOutputDirections(OXYGEN_DIRECTION, HYDROGEN_DIRECTION).setOutputTanks(2, arr(MAX_OUTPUT_TANK_CAPACITY, MAX_OUTPUT_TANK_CAPACITY), arr(1000, 1000), arr(1024, 1024)).setRecipeType(ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get()).setCondensedHandler(getCondensedHandler()));
+		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().bucketInputs(1).gasOutputs(2).upgrades(3)).validUpgrades(ContainerElectrolyticSeparator.VALID_UPGRADES).valid(machineValidator()));
+		addComponent(new ComponentProcessor(this).canProcess((component, procNumber) -> component.consumeBucket().dispenseGasCylinder().canProcessFluid2GasRecipe(procNumber, ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get())).process(ComponentProcessor::processFluid2GasRecipe));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.electrolyticseparator.tag(), this).createMenu((id, player) -> new ContainerElectrolyticSeparator(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
 	public void tickServer(ComponentTickable tickable) {
 		ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
-		GasUtilities.outputToPipe(this, handler.getOutputTanks()[0].asArray(), OXYGEN_DIRECTION);
-		GasUtilities.outputToPipe(this, handler.getOutputTanks()[1].asArray(), HYDROGEN_DIRECTION);
+		GasUtilities.outputToPipe(this, handler.getOutputTanks()[0].asArray(), OXYGEN_DIRECTION.mappedDir);
+		GasUtilities.outputToPipe(this, handler.getOutputTanks()[1].asArray(), HYDROGEN_DIRECTION.mappedDir);
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
@@ -75,12 +67,12 @@ public class TileElectrolyticSeparator extends GenericGasTile implements ITickab
 
 	@Override
 	public boolean shouldPlaySound() {
-		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive();
+		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
 	}
 
 	@Override
 	public int getComparatorSignal() {
-		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive() ? 15 : 0;
+		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
 	}
 
 }

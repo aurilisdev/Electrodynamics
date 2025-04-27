@@ -4,11 +4,11 @@
   "iteminputs": {
     "0": {
       "count": 1,
-      "tag": "forge:oxide/sulfurdichloride"
+      "tag": "forge:oxides/sulfurdichloride"
     },
     "1": {
       "count": 1,
-      "tag": "forge:oxide/trisulfur"
+      "tag": "forge:oxides/trisulfur"
     },
     "count": 2
   },

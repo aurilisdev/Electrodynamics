@@ -2,9 +2,6 @@ package electrodynamics.prefab.sound.tickable;
 
 import java.util.UUID;
 
-import electrodynamics.prefab.utilities.ItemUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.prefab.utilities.WorldUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.client.Minecraft;
@@ -14,6 +11,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import voltaic.prefab.utilities.ItemUtils;
+import voltaic.prefab.utilities.NBTUtils;
+import voltaic.prefab.utilities.WorldUtils;
 
 public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 

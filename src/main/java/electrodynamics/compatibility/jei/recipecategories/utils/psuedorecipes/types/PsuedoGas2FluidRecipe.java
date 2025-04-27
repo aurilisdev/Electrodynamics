@@ -3,10 +3,10 @@ package electrodynamics.compatibility.jei.recipecategories.utils.psuedorecipes.t
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.common.recipe.recipeutils.GasIngredient;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import voltaic.api.gas.GasStack;
+import voltaic.common.recipe.recipeutils.GasIngredient;
 
 public class PsuedoGas2FluidRecipe {
 

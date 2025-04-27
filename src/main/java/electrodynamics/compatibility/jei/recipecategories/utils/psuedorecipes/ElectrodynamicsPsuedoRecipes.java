@@ -3,21 +3,23 @@ package electrodynamics.compatibility.jei.recipecategories.utils.psuedorecipes;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import electrodynamics.api.capability.types.gas.IGasHandlerItem;
-import electrodynamics.api.gas.Gas;
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasStack;
 import electrodynamics.compatibility.jei.recipecategories.utils.psuedorecipes.types.PsuedoFluid2GasRecipe;
 import electrodynamics.compatibility.jei.recipecategories.utils.psuedorecipes.types.PsuedoGas2FluidRecipe;
-import electrodynamics.prefab.utilities.CapabilityUtils;
-import electrodynamics.registers.ElectrodynamicsGases;
 import electrodynamics.registers.ElectrodynamicsItems;
-import electrodynamics.registers.ElectrodynamicsRegistries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import voltaic.api.gas.Gas;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasStack;
+import voltaic.api.gas.IGasHandlerItem;
+import voltaic.prefab.utilities.CapabilityUtils;
+import voltaic.registers.VoltaicCapabilities;
+import voltaic.registers.VoltaicGases;
+import voltaic.registers.VoltaicRegistries;
 
 public class ElectrodynamicsPsuedoRecipes {
 
@@ -25,11 +27,11 @@ public class ElectrodynamicsPsuedoRecipes {
 	public static final HashSet<PsuedoGas2FluidRecipe> CONDENSATION_RECIPES = new HashSet<>();
 
 	public static void initRecipes() {
-		// Take care to clear pseudorecipes from previous reload
-		CONDENSATION_RECIPES.clear();
-		EVAPORATION_RECIPES.clear();
 
-		for (Gas gas : ElectrodynamicsRegistries.gasRegistry().getValues()) {
+		EVAPORATION_RECIPES.clear();
+		CONDENSATION_RECIPES.clear();
+
+		for (Gas gas : VoltaicRegistries.gasRegistry().getValues()) {
 
 			if (gas.isEmpty()) {
 				continue;
@@ -41,26 +43,27 @@ public class ElectrodynamicsPsuedoRecipes {
 
 			ItemStack inputCylinder = new ItemStack(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
 			
-			IGasHandlerItem inputHandler = CapabilityUtils.getGasHandlerItem(inputCylinder);
+			IGasHandlerItem inputHandler = inputCylinder.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM).orElse(CapabilityUtils.EMPTY_GAS_ITEM);
 			
-			inputHandler.fillTank(0, new GasStack(gas, 1000, gas.getCondensationTemp() + 0.00001, Gas.PRESSURE_AT_SEA_LEVEL), GasAction.EXECUTE);
+			inputHandler.fill(new GasStack(gas, 1000, gas.getCondensationTemp() + 1, Gas.PRESSURE_AT_SEA_LEVEL), GasAction.EXECUTE);
 
 			ItemStack outputBucket = new ItemStack(gas.getCondensedFluid().getBucket());
 			
-			if(CapabilityUtils.hasFluidItemCap(outputBucket)) {
-
-				IFluidHandlerItem outputHandler = CapabilityUtils.getFluidHandlerItem(outputBucket);
-				
-				outputHandler.fill(new FluidStack(gas.getCondensedFluid(), 1000), FluidAction.EXECUTE);
-				
-				outputBucket = outputHandler.getContainer();
+			IFluidHandlerItem outputHandler = outputBucket.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(CapabilityUtils.EMPTY_FLUID_ITEM);
+			
+			if(outputHandler == CapabilityUtils.EMPTY_FLUID_ITEM) {
+			    continue;
 			}
+			
+			outputHandler.fill(new FluidStack(gas.getCondensedFluid(), 1000), FluidAction.EXECUTE);
+            
+            outputBucket = outputHandler.getContainer();
 
 			CONDENSATION_RECIPES.add(new PsuedoGas2FluidRecipe(Arrays.asList(new GasStack(gas, 1000, gas.getCondensationTemp(), 1)), new FluidStack(gas.getCondensedFluid(), 1000), inputCylinder, outputBucket));
 
 		}
 
-		ElectrodynamicsGases.MAPPED_GASSES.forEach((fluid, gas) -> {
+		VoltaicGases.MAPPED_GASSES.forEach((fluid, gas) -> {
 
 			if (fluid.isSame(Fluids.EMPTY)) {
 				return;
@@ -68,9 +71,9 @@ public class ElectrodynamicsPsuedoRecipes {
 
 			ItemStack inputBucket = new ItemStack(fluid.getBucket());
 			
-			if(CapabilityUtils.hasFluidItemCap(inputBucket)) {
-				
-				IFluidHandlerItem inputHandler = CapabilityUtils.getFluidHandlerItem(inputBucket);
+			IFluidHandlerItem inputHandler = inputBucket.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(CapabilityUtils.EMPTY_FLUID_ITEM);
+			
+			if(inputHandler != CapabilityUtils.EMPTY_FLUID_ITEM) {
 				
 				inputHandler.fill(new FluidStack(fluid, 1000), FluidAction.EXECUTE);
 				
@@ -80,9 +83,9 @@ public class ElectrodynamicsPsuedoRecipes {
 
 			ItemStack outputCylinder = new ItemStack(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
 			
-			IGasHandlerItem outputHandler = CapabilityUtils.getGasHandlerItem(outputCylinder);
+			IGasHandlerItem outputHandler = outputCylinder.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM).orElse(CapabilityUtils.EMPTY_GAS_ITEM);
 			
-			outputHandler.fillTank(0, new GasStack(gas, 1000, gas.getCondensationTemp() + 0.00001, Gas.PRESSURE_AT_SEA_LEVEL), GasAction.EXECUTE);
+			outputHandler.fill(new GasStack(gas, 1000, gas.getCondensationTemp() + 1, Gas.PRESSURE_AT_SEA_LEVEL), GasAction.EXECUTE);
 
 			outputCylinder = outputHandler.getContainer();
 

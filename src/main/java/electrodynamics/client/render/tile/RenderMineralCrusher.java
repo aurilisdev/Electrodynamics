@@ -4,12 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import electrodynamics.client.ClientRegister;
+import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.common.tile.machines.mineralcrusher.TileMineralCrusher;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.utilities.RenderingUtils;
-import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -18,6 +14,12 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
+import voltaic.prefab.utilities.RenderingUtils;
+import voltaic.prefab.utilities.math.MathUtils;
 
 public class RenderMineralCrusher extends AbstractTileRenderer<TileMineralCrusher> {
 
@@ -26,27 +28,27 @@ public class RenderMineralCrusher extends AbstractTileRenderer<TileMineralCrushe
 	}
 
 	@Override
-	public void render(@NotNull TileMineralCrusher tileEntityIn, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(@NotNull TileMineralCrusher tile, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
 		matrixStackIn.pushPose();
 
-		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
+		RenderingUtils.prepareRotationalTileModel(tile, matrixStackIn);
 
 		matrixStackIn.translate(0, 1.0 / 16.0, 0);
 
-		double ticks = (tileEntityIn.clientRunningTicks + (tileEntityIn.getProcessor(0).operatingTicks.get() > 0 ? partialTicks : 0)) * 12.068965533797893 / 20 % 12.068965533797893;
+		double ticks = (tile.clientRunningTicks + (tile.<ComponentProcessor>getComponent(IComponentType.Processor).operatingTicks.getValue()[0] > 0 ? partialTicks : 0)) * 12.068965533797893 / 20 % 12.068965533797893;
 
 		double progress = ticks < 10.010392739868964 ? Math.sin(0.05 * Math.PI * ticks) : (Math.sin(0.29 * Math.PI * ticks) + 1) / 1.3;
 
 		matrixStackIn.translate(0, progress / 8.0 - 1 / 8.0, 0);
 
-		BakedModel ibakedmodel = getModel(ClientRegister.MODEL_MINERALCRUSHERHANDLE);
+		BakedModel ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_MINERALCRUSHERHANDLE);
 
-		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+		RenderingUtils.renderModel(ibakedmodel, tile, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 
 		matrixStackIn.popPose();
 
-		ComponentInventory inv = tileEntityIn.getComponent(IComponentType.Inventory);
+		ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
 
 		ItemStack stack = inv.getInputsForProcessor(0).get(0);
 
@@ -54,7 +56,7 @@ public class RenderMineralCrusher extends AbstractTileRenderer<TileMineralCrushe
 			return;
 		}
 
-		Direction dir = tileEntityIn.getFacing();
+		Direction dir = tile.getFacing();
 
 		matrixStackIn.pushPose();
 
@@ -76,7 +78,7 @@ public class RenderMineralCrusher extends AbstractTileRenderer<TileMineralCrushe
 
 		}
 
-		renderItem(stack, ItemDisplayContext.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, tileEntityIn.getLevel(), 0);
+		renderItem(stack, ItemDisplayContext.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, tile.getLevel(), 0);
 
 		matrixStackIn.popPose();
 	}

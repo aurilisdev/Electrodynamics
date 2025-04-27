@@ -2,11 +2,9 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.function.Supplier;
 
-import electrodynamics.api.item.IItemTemperate;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
-import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.sounds.SoundSource;
@@ -20,6 +18,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import voltaic.api.item.IItemTemperate;
+import voltaic.prefab.item.ElectricItemProperties;
 
 public class ItemRailgunPlasma extends ItemRailgun {
 

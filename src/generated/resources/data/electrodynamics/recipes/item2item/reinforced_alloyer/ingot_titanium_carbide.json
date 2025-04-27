@@ -4,8 +4,10 @@
   "itembi": {
     "0": {
       "chance": 1.0,
-      "count": 1,
-      "item": "electrodynamics:slag"
+      "item": {
+        "Count": 1,
+        "id": "electrodynamics:slag"
+      }
     },
     "count": 1
   },
