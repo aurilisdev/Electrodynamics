@@ -4,12 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.inventory.InventoryTickConsumer;
-import electrodynamics.common.item.ItemElectrodynamics;
-import electrodynamics.prefab.utilities.CapabilityUtils;
-import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -38,8 +32,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.registries.ForgeRegistries;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.fluid.RestrictedFluidHandlerItemStack;
+import voltaic.api.inventory.InventoryTickConsumer;
+import voltaic.common.item.ItemVoltaic;
+import voltaic.prefab.utilities.CapabilityUtils;
+import voltaic.prefab.utilities.VoltaicTextUtils;
 
-public class ItemCanister extends ItemElectrodynamics {
+public class ItemCanister extends ItemVoltaic {
 
 	public static final int MAX_FLUID_CAPACITY = 5000;
 
@@ -53,7 +53,7 @@ public class ItemCanister extends ItemElectrodynamics {
 	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
 		items.add(new ItemStack(this));
-		if (!CapabilityUtils.isFluidItemNull()) {
+		if (ForgeCapabilities.FLUID_HANDLER_ITEM != null) {
 			for (Fluid liq : ForgeRegistries.FLUIDS.getValues()) {
 				if (liq.isSame(Fluids.EMPTY)) {
 					continue;
@@ -80,13 +80,13 @@ public class ItemCanister extends ItemElectrodynamics {
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		if (!CapabilityUtils.isFluidItemNull()) {
+		if (ForgeCapabilities.FLUID_HANDLER_ITEM != null) {
 			stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> {
-				if (!((RestrictedFluidHandlerItemStack) h).getFluid().isEmpty()) {
-					RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
-					tooltip.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(cap.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_FLUID_CAPACITY)).withStyle(ChatFormatting.GRAY));
-					tooltip.add(cap.getFluid().getDisplayName().copy().withStyle(ChatFormatting.DARK_GRAY));
-				}
+				RestrictedFluidHandlerItemStack restricted = (RestrictedFluidHandlerItemStack) h;
+				if(!restricted.getFluid().isEmpty()) {
+		            tooltip.add(restricted.getFluid().getDisplayName().copy().withStyle(ChatFormatting.GRAY));
+		        }
+		        tooltip.add(VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(restricted.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_FLUID_CAPACITY)).withStyle(ChatFormatting.DARK_GRAY));
 			});
 		}
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
@@ -133,11 +133,11 @@ public class ItemCanister extends ItemElectrodynamics {
 		
 		FluidStack sourceFluid = new FluidStack(state.getFluidState().getType(), 1000);
 		
-		if(!CapabilityUtils.hasFluidItemCap(stack)) {
+		IFluidHandlerItem handler = stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).orElse(CapabilityUtils.EMPTY_FLUID_ITEM);
+		
+		if(handler == CapabilityUtils.EMPTY_FLUID_ITEM) {
 			return;
 		}
-		
-		IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(stack);
 		
 		int accepted = handler.fill(sourceFluid, FluidAction.SIMULATE);
 		

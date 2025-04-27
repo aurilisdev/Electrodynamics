@@ -5,13 +5,13 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.api.References;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
+import voltaic.Voltaic;
+import voltaic.prefab.utilities.RenderingUtils;
 
 public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 
@@ -36,9 +36,9 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 
 		// matrixStack.translate(0.5, 0.5, 0.5);
 
-		int r = Electrodynamics.RANDOM.nextInt(0, 50);
-		int g = Electrodynamics.RANDOM.nextInt(10, 40);
-		int b = Electrodynamics.RANDOM.nextInt(60, 100);
+		int r = Voltaic.RANDOM.nextInt(0, 50);
+		int g = Voltaic.RANDOM.nextInt(10, 40);
+		int b = Voltaic.RANDOM.nextInt(60, 100);
 
 		float red = (235 - r) / 256.0F;
 		float green = (120 - g) / 256.0F;
@@ -63,7 +63,7 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 
 	@Override
 	public @NotNull ResourceLocation getTextureLocation(@NotNull EntityEnergyBlast entity) {
-		return new ResourceLocation(References.ID, "custom/plasmaorb");
+		return Electrodynamics.rl("custom/plasmaorb");
 	}
 
 }

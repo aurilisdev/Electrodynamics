@@ -3,7 +3,7 @@
   "inventory": {
     "parent": "electrodynamics:block/gaspipe/gaspipeuninsulatedsteelside"
   },
-  "loader": "electrodynamics:electrodynamicscableloader",
+  "loader": "voltaic:voltaiccableloader",
   "none": {
     "parent": "electrodynamics:block/gaspipe/gaspipeuninsulatedsteelcenter"
   },

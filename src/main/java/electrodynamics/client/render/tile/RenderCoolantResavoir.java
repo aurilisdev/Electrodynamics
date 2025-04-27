@@ -6,15 +6,16 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import electrodynamics.common.tile.machines.quarry.TileCoolantResavoir;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerSimple;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.world.phys.AABB;
 import net.minecraftforge.fluids.FluidStack;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentFluidHandlerSimple;
+import voltaic.prefab.utilities.RenderingUtils;
 
 public class RenderCoolantResavoir extends AbstractTileRenderer<TileCoolantResavoir> {
 
@@ -37,7 +38,7 @@ public class RenderCoolantResavoir extends AbstractTileRenderer<TileCoolantResav
 			float yHeight = Math.max(Math.min((float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y), MIN_Y);
 			AABB aabb = new AABB(MIN_X, MIN_Y, MIN_Z, MAX_X, yHeight, MAX_Z);
 			VertexConsumer builder = source.getBuffer(Sheets.translucentCullBlockSheet());
-			RenderingUtils.renderFluidBox(stack, Minecraft.getInstance(), builder, aabb, fluid, light, overlay);
+			RenderingUtils.renderFluidBox(stack, Minecraft.getInstance(), builder, aabb, fluid, light, overlay, RenderingUtils.ALL_FACES);
 		}
 	}
 

@@ -10,12 +10,11 @@
     }
   },
   "pattern": [
-    "SSS",
-    "A A",
-    "SSS"
+    "S",
+    "A",
+    "S"
   ],
   "result": {
-    "count": 4,
     "item": "electrodynamics:canisterreinforced"
   },
   "show_notification": false

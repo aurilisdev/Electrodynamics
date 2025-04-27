@@ -4,8 +4,10 @@
   "itembi": {
     "0": {
       "chance": 0.1,
-      "count": 1,
-      "item": "minecraft:cobblestone"
+      "item": {
+        "Count": 1,
+        "id": "minecraft:cobblestone"
+      }
     },
     "count": 1
   },

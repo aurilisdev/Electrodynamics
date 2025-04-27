@@ -5,266 +5,269 @@ import java.util.List;
 
 import org.jetbrains.annotations.NotNull;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.types.gas.IGasHandler;
-import electrodynamics.api.gas.Gas;
-import electrodynamics.api.gas.GasAction;
-import electrodynamics.api.gas.GasStack;
 import electrodynamics.common.inventory.container.tile.ContainerGasPipeFilter;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.CapabilityUtils;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.LazyOptional;
+import voltaic.api.gas.Gas;
+import voltaic.api.gas.GasAction;
+import voltaic.api.gas.GasStack;
+import voltaic.api.gas.IGasHandler;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentPacketHandler;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.CapabilityUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileGasPipeFilter extends GenericTile {
 
-	public static final Direction INPUT_DIR = Direction.SOUTH;
-	public static final Direction OUTPUT_DIR = Direction.NORTH;
+    public static final BlockEntityUtils.MachineDirection INPUT_DIR = BlockEntityUtils.MachineDirection.FRONT;
+    public static final BlockEntityUtils.MachineDirection OUTPUT_DIR = BlockEntityUtils.MachineDirection.BACK;
 
-	private boolean isLocked = false;
+    private boolean isLocked = false;
 
-	@SuppressWarnings("rawtypes")
-	public final Property[] filteredGases = {
-			//
-			property(new Property<>(PropertyType.Gasstack, "gasone", GasStack.EMPTY)),
-			//
-			property(new Property<>(PropertyType.Gasstack, "gastwo", GasStack.EMPTY)),
-			//
-			property(new Property<>(PropertyType.Gasstack, "gasthree", GasStack.EMPTY)),
-			//
-			property(new Property<>(PropertyType.Gasstack, "gasfour", GasStack.EMPTY)) };
+    @SuppressWarnings("rawtypes")
+    public final SingleProperty[] filteredGases = {
+            //
+            property(new SingleProperty<>(PropertyTypes.GAS_STACK, "gasone", GasStack.EMPTY)),
+            //
+            property(new SingleProperty<>(PropertyTypes.GAS_STACK, "gastwo", GasStack.EMPTY)),
+            //
+            property(new SingleProperty<>(PropertyTypes.GAS_STACK, "gasthree", GasStack.EMPTY)),
+            //
+            property(new SingleProperty<>(PropertyTypes.GAS_STACK, "gasfour", GasStack.EMPTY)) };
 
-	public final Property<Boolean> isWhitelist = property(new Property<>(PropertyType.Boolean, "iswhitelist", false));
+    public final SingleProperty<Boolean> isWhitelist = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "iswhitelist", false));
 
-	public TileGasPipeFilter(BlockPos worldPos, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_GASPIPEFILTER.get(), worldPos, blockState);
-		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentContainerProvider("container.gaspipefilter", this).createMenu((id, inv) -> new ContainerGasPipeFilter(id, inv, getCoordsArray())));
-	}
+    public TileGasPipeFilter(BlockPos worldPos, BlockState blockState) {
+        super(ElectrodynamicsTiles.TILE_GASPIPEFILTER.get(), worldPos, blockState);
+        addComponent(new ComponentPacketHandler(this));
+        addComponent(new ComponentContainerProvider("gaspipefilter", this).createMenu((id, inv) -> new ContainerGasPipeFilter(id, inv, getCoordsArray())));
+    }
+    
+    @Override
+    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
+    	if(cap != VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK || side == null || isLocked) {
+    		return LazyOptional.empty();
+    	}
+    	
+    	Direction facing = getFacing();
 
-	@Override
-	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-		if (cap != ElectrodynamicsCapabilities.GAS_HANDLER || side == null) {
-			return LazyOptional.empty();
-		}
+        if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR.mappedDir)) {
+            return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
+        }
 
-		Direction facing = getFacing();
+        if (side == BlockEntityUtils.getRelativeSide(facing, INPUT_DIR.mappedDir)) {
 
-		if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR)) {
-			return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
-		}
+            BlockEntity output = level.getBlockEntity(getBlockPos().relative(side.getOpposite()));
 
-		if (side == BlockEntityUtils.getRelativeSide(facing, INPUT_DIR)) {
+            if (output == null) {
+                return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
+            }
 
-			BlockEntity output = level.getBlockEntity(getBlockPos().relative(side.getOpposite()));
+            isLocked = true;
 
-			if (output == null) {
-				return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
-			}
+            IGasHandler gas = output.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK, side).orElse(CapabilityUtils.EMPTY_GAS);
 
-			LazyOptional<IGasHandler> lazy = output.getCapability(ElectrodynamicsCapabilities.GAS_HANDLER, side);
+            isLocked = false;
 
-			if (!lazy.isPresent()) {
-				return LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast();
-			}
+            return gas == CapabilityUtils.EMPTY_GAS ? LazyOptional.of(() -> CapabilityUtils.EMPTY_GAS).cast() : LazyOptional.of(() -> new FilteredGasCap(gas, getFilteredGases(), isWhitelist.getValue())).cast();
 
-			return LazyOptional.of(() -> new FilteredGasCap(lazy.resolve().get(), getFilteredGases(), isWhitelist.get())).cast();
+        }
+        
+    	return LazyOptional.empty();
+    }
 
-		}
+    private List<Gas> getFilteredGases() {
+        List<Gas> gases = new ArrayList<>();
 
-		return LazyOptional.empty();
-	}
+        for (SingleProperty<GasStack> prop : filteredGases) {
+            if (!prop.getValue().isEmpty()) {
+                gases.add(prop.getValue().getGas());
+            }
+        }
 
-	private List<Gas> getFilteredGases() {
-		List<Gas> gases = new ArrayList<>();
+        return gases;
+    }
 
-		for (Property<GasStack> prop : filteredGases) {
-			if (!prop.get().isEmpty()) {
-				gases.add(prop.get().getGas());
-			}
-		}
+    private class FilteredGasCap implements IGasHandler {
 
-		return gases;
-	}
+        private final IGasHandler outputCap;
+        private final List<Gas> validGases;
+        private final boolean whitelist;
 
-	private class FilteredGasCap implements IGasHandler {
+        private FilteredGasCap(IGasHandler outputCap, List<Gas> validGases, boolean whitelist) {
+            this.outputCap = outputCap;
+            this.validGases = validGases;
+            this.whitelist = whitelist;
+        }
 
-		private final IGasHandler outputCap;
-		private final List<Gas> validGases;
-		private final boolean whitelist;
+        @Override
+        public int getTanks() {
+            if (isLocked) {
+                return 0;
+            }
+            isLocked = true;
+            int count = outputCap.getTanks();
+            isLocked = false;
+            return count;
+        }
 
-		private FilteredGasCap(IGasHandler outputCap, List<Gas> validGases, boolean whitelist) {
-			this.outputCap = outputCap;
-			this.validGases = validGases;
-			this.whitelist = whitelist;
-		}
+        @Override
+        public GasStack getGasInTank(int tank) {
+            if (isLocked) {
+                return GasStack.EMPTY;
+            }
+            isLocked = true;
+            GasStack stack = outputCap.getGasInTank(tank);
+            isLocked = false;
+            return stack;
+        }
 
-		@Override
-		public int getTanks() {
-			if (isLocked) {
-				return 0;
-			}
-			isLocked = true;
-			int count = outputCap.getTanks();
-			isLocked = false;
-			return count;
-		}
+        @Override
+        public int getTankCapacity(int tank) {
+            if (isLocked) {
+                return 0;
+            }
+            isLocked = true;
+            int cap = outputCap.getTankCapacity(tank);
+            isLocked = false;
+            return cap;
+        }
 
-		@Override
-		public GasStack getGasInTank(int tank) {
-			if (isLocked) {
-				return GasStack.EMPTY;
-			}
-			isLocked = true;
-			GasStack stack = outputCap.getGasInTank(tank);
-			isLocked = false;
-			return stack;
-		}
+        @Override
+        public int getTankMaxTemperature(int tank) {
+            if (isLocked) {
+                return 0;
+            }
+            isLocked = true;
+            int temp = outputCap.getTankMaxTemperature(tank);
 
-		@Override
-		public double getTankCapacity(int tank) {
-			if (isLocked) {
-				return 0;
-			}
-			isLocked = true;
-			double cap = outputCap.getTankCapacity(tank);
-			isLocked = false;
-			return cap;
-		}
+            isLocked = false;
+            return temp;
+        }
 
-		@Override
-		public double getTankMaxTemperature(int tank) {
-			if (isLocked) {
-				return 0;
-			}
-			isLocked = true;
-			double temp = outputCap.getTankMaxTemperature(tank);
+        @Override
+        public int getTankMaxPressure(int tank) {
+            if (isLocked) {
+                return 0;
+            }
+            isLocked = true;
+            int pres = outputCap.getTankMaxPressure(tank);
+            isLocked = false;
+            return pres;
+        }
 
-			isLocked = false;
-			return temp;
-		}
+        @Override
+        public boolean isGasValid(int tank, GasStack gas) {
 
-		@Override
-		public int getTankMaxPressure(int tank) {
-			if (isLocked) {
-				return 0;
-			}
-			isLocked = true;
-			int pres = outputCap.getTankMaxPressure(tank);
-			isLocked = false;
-			return pres;
-		}
+            if (isLocked) {
+                return false;
+            }
 
-		@Override
-		public boolean isGasValid(int tank, GasStack gas) {
+            if (whitelist) {
 
-			if (isLocked) {
-				return false;
-			}
+                if (validGases.isEmpty()) {
+                    return false;
+                }
 
-			if (whitelist) {
+                if (validGases.contains(gas.getGas())) {
+                    isLocked = true;
+                    boolean valid = outputCap.isGasValid(tank, gas);
 
-				if (validGases.isEmpty()) {
-					return false;
-				}
+                    isLocked = false;
+                    return valid;
+                }
 
-				if (validGases.contains(gas.getGas())) {
-					isLocked = true;
-					boolean valid = outputCap.isGasValid(tank, gas);
+                return false;
 
-					isLocked = false;
-					return valid;
-				}
+            }
 
-				return false;
+            if (validGases.isEmpty() || !validGases.contains(gas.getGas())) {
 
-			}
+                isLocked = true;
+                boolean valid = outputCap.isGasValid(tank, gas);
 
-			if (validGases.isEmpty() || !validGases.contains(gas.getGas())) {
+                isLocked = false;
 
-				isLocked = true;
-				boolean valid = outputCap.isGasValid(tank, gas);
+                return valid;
+            }
 
-				isLocked = false;
+            return false;
+        }
 
-				return valid;
-			}
+        @Override
+        public int fill(GasStack gas, GasAction action) {
+            if (isLocked) {
+                return 0;
+            }
+            for(int i = 0; i < outputCap.getTanks(); i++){
+                if (isGasValid(i, gas)) {
+                    isLocked = true;
+                    int fill = outputCap.fill(gas, action);
 
-			return false;
-		}
+                    isLocked = false;
+                    return fill;
+                }
+            }
 
-		@Override
-		public double fillTank(int tank, GasStack gas, GasAction action) {
-			if (isLocked) {
-				return 0;
-			}
-			if (isGasValid(tank, gas)) {
-				isLocked = true;
-				double fill = outputCap.fillTank(tank, gas, action);
+            return 0;
+        }
 
-				isLocked = false;
-				return fill;
-			}
-			return 0;
-		}
+        @Override
+        public GasStack drain(GasStack gas, GasAction action) {
+            if (isLocked) {
+                return GasStack.EMPTY;
+            }
+            isLocked = true;
+            GasStack drain = outputCap.drain(gas, action);
 
-		@Override
-		public GasStack drainTank(int tank, GasStack gas, GasAction action) {
-			if (isLocked) {
-				return GasStack.EMPTY;
-			}
-			isLocked = true;
-			GasStack drain = outputCap.drainTank(tank, tank, action);
+            isLocked = false;
+            return drain;
+        }
 
-			isLocked = false;
-			return drain;
-		}
+        @Override
+        public GasStack drain(int maxFill, GasAction action) {
+            if (isLocked) {
+                return GasStack.EMPTY;
+            }
+            isLocked = true;
+            GasStack drain = outputCap.drain(maxFill, action);
+            isLocked = false;
+            return drain;
+        }
 
-		@Override
-		public GasStack drainTank(int tank, double maxFill, GasAction action) {
-			if (isLocked) {
-				return GasStack.EMPTY;
-			}
-			isLocked = true;
-			GasStack drain = outputCap.drainTank(tank, maxFill, action);
-			isLocked = false;
-			return drain;
-		}
+        @Override
+        public int heat(int tank, int deltaTemperature, GasAction action) {
+            if (isLocked) {
+                return -1;
+            }
+            isLocked = true;
+            int heat = outputCap.heat(tank, deltaTemperature, action);
 
-		@Override
-		public double heat(int tank, double deltaTemperature, GasAction action) {
-			if (isLocked) {
-				return -1;
-			}
-			isLocked = true;
-			double heat = outputCap.heat(tank, deltaTemperature, action);
+            isLocked = false;
+            return heat;
+        }
 
-			isLocked = false;
-			return heat;
-		}
+        @Override
+        public int bringPressureTo(int tank, int atm, GasAction action) {
+            if (isLocked) {
+                return -1;
+            }
+            isLocked = true;
+            int pres = outputCap.bringPressureTo(tank, atm, action);
 
-		@Override
-		public double bringPressureTo(int tank, int atm, GasAction action) {
-			if (isLocked) {
-				return -1;
-			}
-			isLocked = true;
-			double pres = outputCap.bringPressureTo(tank, atm, action);
+            isLocked = false;
+            return pres;
+        }
 
-			isLocked = false;
-			return pres;
-		}
-
-	}
+    }
 
 }

@@ -1,27 +1,15 @@
 package electrodynamics.datagen.client;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.data.PackOutput;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.SoundDefinition;
-import net.minecraftforge.common.data.SoundDefinition.Sound;
-import net.minecraftforge.common.data.SoundDefinition.SoundType;
-import net.minecraftforge.common.data.SoundDefinitionsProvider;
-import net.minecraftforge.registries.RegistryObject;
+import voltaic.datagen.utils.client.BaseSoundProvider;
 
-public class ElectrodynamicsSoundProvider extends SoundDefinitionsProvider {
-
-	private final String modID;
+public class ElectrodynamicsSoundProvider extends BaseSoundProvider {
 
 	public ElectrodynamicsSoundProvider(PackOutput output, ExistingFileHelper helper) {
-		this(output, helper, References.ID);
-	}
-
-	public ElectrodynamicsSoundProvider(PackOutput output, ExistingFileHelper helper, String modID) {
-		super(output, modID, helper);
-		this.modID = modID;
+		super(output, helper, Electrodynamics.ID);
 	}
 
 	@Override
@@ -56,10 +44,6 @@ public class ElectrodynamicsSoundProvider extends SoundDefinitionsProvider {
 		add(ElectrodynamicsSounds.SOUND_COMPRESSORRUNNING);
 		add(ElectrodynamicsSounds.SOUND_DECOMPRESSORRUNNING);
 		add(ElectrodynamicsSounds.SOUND_TRANSFORMERHUM);
-	}
-
-	private void add(RegistryObject<SoundEvent> sound) {
-		add(sound.get(), SoundDefinition.definition().subtitle("subtitles." + modID + "." + sound.getId().getPath()).with(Sound.sound(sound.getId(), SoundType.SOUND)));
 	}
 
 }

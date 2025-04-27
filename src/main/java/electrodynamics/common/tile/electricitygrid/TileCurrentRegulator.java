@@ -1,155 +1,174 @@
 package electrodynamics.common.tile.electricitygrid;
 
-import org.jetbrains.annotations.NotNull;
-
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.electricity.ICapabilityElectrodynamic;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.CapabilityUtils;
+import voltaic.prefab.utilities.object.TransferPack;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileCurrentRegulator extends GenericTile {
 
-	private boolean isLocked = false;
+    private boolean isLocked = false;
 
-	public TileCurrentRegulator(BlockPos worldPos, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_CURRENTREGULATOR.get(), worldPos, blockState);
-		addComponent(new ComponentElectrodynamic(this, true, true).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setOutputDirections(Direction.SOUTH).setInputDirections(Direction.NORTH).voltage(-1).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
-	}
+    public static final BlockEntityUtils.MachineDirection OUTPUT = BlockEntityUtils.MachineDirection.FRONT;
+    public static final BlockEntityUtils.MachineDirection INPUT = BlockEntityUtils.MachineDirection.BACK;
 
-	public TransferPack receivePower(TransferPack transfer, boolean debug) {
+    public TileCurrentRegulator(BlockPos worldPos, BlockState blockState) {
+        super(ElectrodynamicsTiles.TILE_CURRENTREGULATOR.get(), worldPos, blockState);
+        addComponent(new ComponentElectrodynamic(this, true, true).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setOutputDirections(OUTPUT).setInputDirections(INPUT).voltage(-1)
+                //
+                .getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
+    }
 
-		if (isLocked) {
-			return TransferPack.EMPTY;
-		}
+    public TransferPack receivePower(TransferPack transfer, boolean debug) {
 
-		Direction output = BlockEntityUtils.getRelativeSide(getFacing(), Direction.SOUTH);
+        if (isLocked) {
+            return TransferPack.EMPTY;
+        }
 
-		BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
+        Direction output = BlockEntityUtils.getRelativeSide(getFacing(), OUTPUT.mappedDir);
 
-		if (tile == null) {
-			return TransferPack.EMPTY;
-		}
+        BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
 
-		return tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> {
+        if (tile == null) {
+            return TransferPack.EMPTY;
+        }
 
-			isLocked = true;
+        isLocked = true;
 
-			TransferPack accepted = cap.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * Constants.CURRENTREGULATOR_EFFICIENCY, transfer.getVoltage()), debug);
+        ICapabilityElectrodynamic electro = tile.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getOpposite()).orElse(CapabilityUtils.EMPTY_ELECTRO);
 
-			isLocked = false;
+        if (electro == CapabilityUtils.EMPTY_ELECTRO) {
+            isLocked = false;
+            return TransferPack.EMPTY;
+        }
 
-			TransferPack adjusted = TransferPack.joulesVoltage(accepted.getJoules() / Constants.CURRENTREGULATOR_EFFICIENCY, accepted.getVoltage());
+        TransferPack accepted = electro.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * ElectroConstants.CURRENTREGULATOR_EFFICIENCY, transfer.getVoltage()), debug);
 
-			double ampacityInTicks = cap.getAmpacity();
+        isLocked = false;
 
-			if (ampacityInTicks < 0) {
-				return adjusted;
-			}
+        TransferPack adjusted = TransferPack.joulesVoltage(accepted.getJoules() / ElectroConstants.CURRENTREGULATOR_EFFICIENCY, accepted.getVoltage());
 
-			double currentInTicks = adjusted.getAmpsInTicks();
+        double ampacityInTicks = electro.getAmpacity();
 
-			if (currentInTicks > ampacityInTicks) {
+        if (ampacityInTicks < 0) {
+            return adjusted;
+        }
 
-				adjusted = TransferPack.ampsVoltage(ampacityInTicks, adjusted.getVoltage());
+        double currentInTicks = adjusted.getAmpsInTicks();
 
-			}
+        if (currentInTicks > ampacityInTicks) {
 
-			return adjusted;
+            adjusted = TransferPack.ampsVoltage(ampacityInTicks, adjusted.getVoltage());
 
-		}).orElse(TransferPack.EMPTY);
-	}
+        }
 
-	public TransferPack getConnectedLoad(LoadProfile lastEnergy, Direction dir) {
+        return adjusted;
+    }
 
-		if (isLocked) {
-			return TransferPack.EMPTY;
-		}
+    public TransferPack getConnectedLoad(ICapabilityElectrodynamic.LoadProfile lastEnergy, Direction dir) {
 
-		Direction output = BlockEntityUtils.getRelativeSide(getFacing(), Direction.SOUTH);
+        if (isLocked) {
+            return TransferPack.EMPTY;
+        }
 
-		if (dir.getOpposite() != output) {
-			return TransferPack.EMPTY;
-		}
+        Direction output = BlockEntityUtils.getRelativeSide(getFacing(), OUTPUT.mappedDir);
 
-		BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
+        if (dir != output.getOpposite()) {
+            return TransferPack.EMPTY;
+        }
 
-		if (tile == null) {
-			return TransferPack.EMPTY;
-		}
+        BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
 
-		isLocked = true;
+        if (tile == null) {
+            return TransferPack.EMPTY;
+        }
 
-		TransferPack load = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> {
+        isLocked = true;
 
-			LoadProfile transformed = new LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.lastUsage().getVoltage()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * Constants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage()));
+        ICapabilityElectrodynamic electro = tile.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getOpposite()).orElse(CapabilityUtils.EMPTY_ELECTRO);
 
-			isLocked = true;
+        if (electro == CapabilityUtils.EMPTY_ELECTRO) {
+            isLocked = false;
+            return TransferPack.EMPTY;
+        }
 
-			TransferPack returner = cap.getConnectedLoad(transformed, dir);
+        ICapabilityElectrodynamic.LoadProfile transformed = new ICapabilityElectrodynamic.LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * ElectroConstants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.lastUsage().getVoltage()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * ElectroConstants.CIRCUITBREAKER_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage()));
 
-			isLocked = false;
+        TransferPack returner = electro.getConnectedLoad(transformed, dir);
 
-			TransferPack adjusted = TransferPack.joulesVoltage(returner.getJoules() / Constants.CIRCUITBREAKER_EFFICIENCY, returner.getVoltage());
+        isLocked = false;
 
-			double ampacityInTicks = cap.getAmpacity();
+        TransferPack adjusted = TransferPack.joulesVoltage(returner.getJoules() / ElectroConstants.CIRCUITBREAKER_EFFICIENCY, returner.getVoltage());
 
-			if (ampacityInTicks < 0) {
-				return adjusted;
-			}
+        double ampacityInTicks = electro.getAmpacity();
 
-			double currentInTicks = adjusted.getAmpsInTicks();
+        if (ampacityInTicks < 0) {
+            return adjusted;
+        }
 
-			if (currentInTicks > ampacityInTicks) {
+        double currentInTicks = adjusted.getAmpsInTicks();
 
-				adjusted = TransferPack.ampsVoltage(ampacityInTicks, adjusted.getVoltage());
+        if (currentInTicks > ampacityInTicks) {
 
-			}
+            adjusted = TransferPack.ampsVoltage(ampacityInTicks, adjusted.getVoltage());
 
-			return adjusted;
-		}).orElse(TransferPack.EMPTY);
+        }
 
-		isLocked = false;
+        return adjusted;
+    }
 
-		return load;
-	}
+    public double getMinimumVoltage() {
+        Direction facing = getFacing();
+        if (isLocked) {
+            return 0;
+        }
+        BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
+        if (output == null) {
+            return -1;
+        }
+        isLocked = true;
 
-	public double getMinimumVoltage() {
-		Direction facing = getFacing();
-		if (isLocked) {
-			return 0;
-		}
-		BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
-		if (output == null) {
-			return -1;
-		}
-		isLocked = true;
-		double minimumVoltage = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(@NotNull ICapabilityElectrodynamic::getMinimumVoltage).orElse(-1.0);
-		isLocked = false;
-		return minimumVoltage;
-	}
+        ICapabilityElectrodynamic electro = output.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, facing.getOpposite()).orElse(CapabilityUtils.EMPTY_ELECTRO);
 
-	public double getAmpacity() {
-		Direction facing = getFacing();
-		if (isLocked) {
-			return 0;
-		}
-		BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
-		if (output == null) {
-			return -1;
-		}
-		isLocked = true;
-		double ampacity = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(@NotNull ICapabilityElectrodynamic::getAmpacity).orElse(-1.0);
-		isLocked = false;
-		return ampacity;
-	}
+        if (electro == CapabilityUtils.EMPTY_ELECTRO) {
+            isLocked = false;
+            return -1;
+        }
+
+        double minimumVoltage = electro.getMinimumVoltage();
+        isLocked = false;
+        return minimumVoltage;
+    }
+
+    public double getAmpacity() {
+        Direction facing = getFacing();
+        if (isLocked) {
+            return 0;
+        }
+        BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
+        if (output == null) {
+            return -1;
+        }
+        isLocked = true;
+
+        ICapabilityElectrodynamic electro = output.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, facing.getOpposite()).orElse(CapabilityUtils.EMPTY_ELECTRO);
+
+        if (electro == CapabilityUtils.EMPTY_ELECTRO) {
+            isLocked = false;
+            return -1;
+        }
+        double ampacity = electro.getAmpacity();
+        isLocked = false;
+        return ampacity;
+    }
 
 }

@@ -1,14 +1,15 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipePump;
-import electrodynamics.common.tile.pipelines.fluids.TileFluidPipePump;
-import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
-import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
+import electrodynamics.common.tile.pipelines.fluid.TileFluidPipePump;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import voltaic.prefab.screen.GenericScreen;
+import voltaic.prefab.screen.component.editbox.ScreenComponentEditBox;
+import voltaic.prefab.screen.component.types.ScreenComponentSimpleLabel;
+import voltaic.prefab.utilities.math.Color;
 
 public class ScreenFluidPipePump extends GenericScreen<ContainerFluidPipePump> {
 
@@ -19,14 +20,14 @@ public class ScreenFluidPipePump extends GenericScreen<ContainerFluidPipePump> {
 	public ScreenFluidPipePump(ContainerFluidPipePump screenContainer, Inventory inv, Component titleIn) {
 		super(screenContainer, inv, titleIn);
 
-		addComponent(priority = new ScreenComponentEditBox(94, 35, 59, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(1).setResponder(this::setPriority).setFilter(ScreenComponentEditBox.POSITIVE_INTEGER));
-		addComponent(new ScreenComponentSimpleLabel(20, 39, 10, 4210752, ElectroTextUtils.gui("prioritypump.priority")));
+		addComponent(priority = new ScreenComponentEditBox(94, 35, 59, 16, getFontRenderer()).setTextColor(Color.WHITE).setTextColorUneditable(Color.WHITE).setMaxLength(1).setResponder(this::setPriority).setFilter(ScreenComponentEditBox.POSITIVE_INTEGER));
+		addComponent(new ScreenComponentSimpleLabel(20, 39, 10, Color.TEXT_GRAY, ElectroTextUtils.gui("prioritypump.priority")));
 
 	}
 
 	private void setPriority(String prior) {
 
-		TileFluidPipePump pump = menu.getHostFromIntArray();
+		TileFluidPipePump pump = menu.getSafeHost();
 
 		if (pump == null) {
 			return;
@@ -52,9 +53,7 @@ public class ScreenFluidPipePump extends GenericScreen<ContainerFluidPipePump> {
 			this.priority.setValue(priority + "");
 		}
 
-		pump.priority.set(priority);
-
-		pump.priority.updateServer();
+		pump.priority.setValue(priority);
 
 	}
 
@@ -63,9 +62,9 @@ public class ScreenFluidPipePump extends GenericScreen<ContainerFluidPipePump> {
 		super.render(graphics, mouseX, mouseY, partialTicks);
 		if (needsUpdate) {
 			needsUpdate = false;
-			TileFluidPipePump pump = menu.getHostFromIntArray();
+			TileFluidPipePump pump = menu.getSafeHost();
 			if (pump != null) {
-				priority.setValue("" + pump.priority.get());
+				priority.setValue("" + pump.priority.getValue());
 			}
 		}
 	}

@@ -10,12 +10,11 @@
     }
   },
   "pattern": [
-    "SVS",
-    "S S",
-    "SSS"
+    "V",
+    "S",
+    "S"
   ],
   "result": {
-    "count": 4,
     "item": "electrodynamics:portablecylinder"
   },
   "show_notification": false

@@ -4,17 +4,11 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import electrodynamics.api.References;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.item.IItemElectric;
-import electrodynamics.client.ClientRegister;
-import electrodynamics.client.render.model.armor.types.ModelServoLeggings;
+import electrodynamics.Electrodynamics;
+import electrodynamics.client.ElectrodynamicsClientRegister;
+import electrodynamics.client.model.armor.ModelServoLeggings;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
-import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
-import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
@@ -37,15 +31,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.item.IItemElectric;
+import voltaic.common.item.gear.ItemVoltaicArmor;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.prefab.utilities.NBTUtils;
+import voltaic.prefab.utilities.VoltaicTextUtils;
 
-public class ItemServoLeggings extends ItemElectrodynamicsArmor implements IItemElectric {
+public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric {
 
 	public static final int JOULES_PER_TICK = 5;
 	public static final int DURATION_SECONDS = 1;
 
 	public static final float DEFAULT_VANILLA_STEPUP = 0.6F;
 
-	private static final String ARMOR_TEXTURE = References.ID + ":textures/model/armor/servoleggings.png";
+	private static final String ARMOR_TEXTURE = Electrodynamics.ID + ":textures/model/armor/servoleggings.png";
 
 	final ElectricItemProperties properties;
 
@@ -60,7 +61,7 @@ public class ItemServoLeggings extends ItemElectrodynamicsArmor implements IItem
 			@Override
 			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-				ModelServoLeggings<LivingEntity> model = new ModelServoLeggings<>(ClientRegister.SERVO_LEGGINGS.bakeRoot());
+				ModelServoLeggings<LivingEntity> model = new ModelServoLeggings<>(ElectrodynamicsClientRegister.SERVO_LEGGINGS.bakeRoot());
 
 				model.crouching = properties.crouching;
 				model.riding = properties.riding;
@@ -104,8 +105,8 @@ public class ItemServoLeggings extends ItemElectrodynamicsArmor implements IItem
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, world, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY));
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 		staticAppendTooltips(stack, world, tooltip, flagIn);
 	}
 
@@ -237,7 +238,7 @@ public class ItemServoLeggings extends ItemElectrodynamicsArmor implements IItem
 
 		@Override
 		public String getName() {
-			return References.ID + ":servoleggings";
+			return Electrodynamics.ID + ":servoleggings";
 		}
 
 		@Override

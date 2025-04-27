@@ -4,8 +4,10 @@
   "itembi": {
     "0": {
       "chance": 0.3,
-      "count": 1,
-      "item": "minecraft:quartz"
+      "item": {
+        "Count": 1,
+        "id": "minecraft:quartz"
+      }
     },
     "count": 1
   },

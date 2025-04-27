@@ -1,36 +1,35 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerCompressor;
-import electrodynamics.common.tile.pipelines.gas.gastransformer.compressor.GenericTileCompressor;
-import electrodynamics.prefab.screen.component.types.ScreenComponentCondensedFluid;
-import electrodynamics.prefab.screen.component.types.ScreenComponentGeneric;
-import electrodynamics.prefab.screen.component.types.ScreenComponentProgress.ProgressTextures;
-import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
-import electrodynamics.prefab.screen.component.types.gauges.ScreenComponentGasGaugeInput;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGasPressure;
-import electrodynamics.prefab.screen.component.types.guitab.ScreenComponentGasTemperature;
-import electrodynamics.prefab.screen.component.utils.AbstractScreenComponentInfo;
-import electrodynamics.prefab.screen.types.GenericMaterialScreen;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentGasHandlerMulti;
+import electrodynamics.common.tile.pipelines.gas.gastransformer.compressor.GenericTileBasicCompressor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import voltaic.prefab.screen.component.ScreenComponentGeneric;
+import voltaic.prefab.screen.component.types.ScreenComponentCondensedFluid;
+import voltaic.prefab.screen.component.types.ScreenComponentProgress;
+import voltaic.prefab.screen.component.types.gauges.ScreenComponentGasGauge;
+import voltaic.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
+import voltaic.prefab.screen.component.types.guitab.ScreenComponentGasPressure;
+import voltaic.prefab.screen.component.types.guitab.ScreenComponentGasTemperature;
+import voltaic.prefab.screen.component.utils.AbstractScreenComponentInfo;
+import voltaic.prefab.screen.types.GenericMaterialScreen;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentGasHandlerMulti;
 
 public class ScreenCompressor extends GenericMaterialScreen<ContainerCompressor> {
 
 	public ScreenCompressor(ContainerCompressor container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
-		addComponent(new ScreenComponentGeneric(ProgressTextures.COMPRESS_ARROW_OFF, 65, 40));
-		addComponent(new ScreenComponentGasGaugeInput(() -> {
-			GenericTileCompressor boiler = container.getHostFromIntArray();
+		addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.COMPRESS_ARROW_OFF, 65, 40));
+		addComponent(new ScreenComponentGasGauge(() -> {
+			GenericTileBasicCompressor.TileCompressor boiler = container.getSafeHost();
 			if (boiler != null) {
 				return boiler.<ComponentGasHandlerMulti>getComponent(IComponentType.GasHandler).getInputTanks()[0];
 			}
 			return null;
 		}, 41, 18));
 		addComponent(new ScreenComponentGasGauge(() -> {
-			GenericTileCompressor boiler = container.getHostFromIntArray();
+			GenericTileBasicCompressor.TileCompressor boiler = container.getSafeHost();
 			if (boiler != null) {
 				return boiler.<ComponentGasHandlerMulti>getComponent(IComponentType.GasHandler).getOutputTanks()[0];
 			}
@@ -41,7 +40,7 @@ public class ScreenCompressor extends GenericMaterialScreen<ContainerCompressor>
 		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
 
 		addComponent(new ScreenComponentCondensedFluid(() -> {
-			GenericTileCompressor generic = container.getHostFromIntArray();
+			GenericTileBasicCompressor.TileCompressor generic = container.getSafeHost();
 			if (generic == null) {
 				return null;
 			}

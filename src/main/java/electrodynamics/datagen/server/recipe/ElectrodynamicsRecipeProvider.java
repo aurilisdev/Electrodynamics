@@ -18,10 +18,10 @@ import electrodynamics.datagen.server.recipe.types.custom.item2item.Electrodynam
 import electrodynamics.datagen.server.recipe.types.custom.item2item.ElectrodynamicsWireMillRecipes;
 import electrodynamics.datagen.server.recipe.types.vanilla.ElectrodynamicsCraftingTableRecipes;
 import electrodynamics.datagen.server.recipe.types.vanilla.ElectrodynamicsSmeltingRecipes;
-import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
 
 public class ElectrodynamicsRecipeProvider extends RecipeProvider {
 

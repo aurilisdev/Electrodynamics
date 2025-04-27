@@ -4,11 +4,12 @@ import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
-import electrodynamics.prefab.tile.types.GenericConnectTile;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.common.block.states.VoltaicBlockStates;
+import voltaic.prefab.tile.types.GenericConnectTile;
 
 public class RenderConnectBlock extends AbstractTileRenderer<GenericConnectTile> {
 
@@ -20,7 +21,7 @@ public class RenderConnectBlock extends AbstractTileRenderer<GenericConnectTile>
 	public void render(@NotNull GenericConnectTile tile, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 		BlockState state = tile.getBlockState();
 
-		if (!state.getValue(ElectrodynamicsBlockStates.HAS_SCAFFOLDING)) {
+		if (!state.getValue(VoltaicBlockStates.HAS_SCAFFOLDING)) {
 			return;
 		}
 

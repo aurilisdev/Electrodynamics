@@ -2,15 +2,8 @@ package electrodynamics.common.tile.electricitygrid;
 
 import org.jetbrains.annotations.NotNull;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic;
-import electrodynamics.api.capability.types.electrodynamic.ICapabilityElectrodynamic.LoadProfile;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.object.TransferPack;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -18,101 +11,142 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.electricity.ICapabilityElectrodynamic;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.CapabilityUtils;
+import voltaic.prefab.utilities.object.TransferPack;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileRelay extends GenericTile {
 
-	private boolean recievedRedstoneSignal = false;
+    private boolean recievedRedstoneSignal = false;
 
-	private boolean isLocked = false;
+    private boolean isLocked = false;
 
-	public TileRelay(BlockPos worldPos, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_RELAY.get(), worldPos, blockState);
-		addComponent(new ComponentElectrodynamic(this, true, true).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setOutputDirections(Direction.SOUTH).setInputDirections(Direction.NORTH).voltage(-1).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
-	}
+    public static final BlockEntityUtils.MachineDirection OUTPUT = BlockEntityUtils.MachineDirection.FRONT;
+    public static final BlockEntityUtils.MachineDirection INPUT = BlockEntityUtils.MachineDirection.BACK;
 
-	public TransferPack receivePower(TransferPack transfer, boolean debug) {
-		if (recievedRedstoneSignal || isLocked) {
-			return TransferPack.EMPTY;
-		}
-		Direction output = BlockEntityUtils.getRelativeSide(getFacing(), Direction.SOUTH);
+    public TileRelay(BlockPos worldPos, BlockState blockState) {
+        super(ElectrodynamicsTiles.TILE_RELAY.get(), worldPos, blockState);
+        addComponent(new ComponentElectrodynamic(this, true, true).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setOutputDirections(OUTPUT).setInputDirections(INPUT)
+                //
+                .voltage(-1).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
+    }
 
-		BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
+    public TransferPack receivePower(TransferPack transfer, boolean debug) {
+        if (recievedRedstoneSignal || isLocked) {
+            return TransferPack.EMPTY;
+        }
+        Direction output = BlockEntityUtils.getRelativeSide(getFacing(), OUTPUT.mappedDir);
 
-		if (tile == null) {
-			return TransferPack.EMPTY;
-		}
+        BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
 
-		return tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, output.getOpposite()).map(cap -> {
+        if (tile == null) {
+            return TransferPack.EMPTY;
+        }
 
-			isLocked = true;
+        isLocked = true;
 
-			TransferPack accepted = cap.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * Constants.RELAY_EFFICIENCY, transfer.getVoltage()), debug);
+        ICapabilityElectrodynamic electro = tile.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getOpposite()).orElse(CapabilityUtils.EMPTY_ELECTRO);
 
-			isLocked = false;
+        if (electro == CapabilityUtils.EMPTY_ELECTRO) {
+            isLocked = false;
+            return TransferPack.EMPTY;
+        }
 
-			return TransferPack.joulesVoltage(accepted.getJoules() / Constants.RELAY_EFFICIENCY, accepted.getVoltage());
+        TransferPack accepted = electro.receivePower(TransferPack.joulesVoltage(transfer.getJoules() * ElectroConstants.RELAY_EFFICIENCY, transfer.getVoltage()), debug);
 
-		}).orElse(TransferPack.EMPTY);
-	}
+        isLocked = false;
 
-	public TransferPack getConnectedLoad(LoadProfile lastEnergy, Direction dir) {
+        return TransferPack.joulesVoltage(accepted.getJoules() / ElectroConstants.RELAY_EFFICIENCY, accepted.getVoltage());
+    }
 
-		if (recievedRedstoneSignal || isLocked) {
-			return TransferPack.EMPTY;
-		}
+    public TransferPack getConnectedLoad(ICapabilityElectrodynamic.LoadProfile lastEnergy, Direction dir) {
 
-		Direction output = BlockEntityUtils.getRelativeSide(getFacing(), Direction.SOUTH);
+        if (recievedRedstoneSignal || isLocked) {
+            return TransferPack.EMPTY;
+        }
 
-		if (dir.getOpposite() != output) {
-			return TransferPack.EMPTY;
-		}
+        Direction output = BlockEntityUtils.getRelativeSide(getFacing(), OUTPUT.mappedDir);
 
-		BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
+        if (dir != output.getOpposite()) {
+            return TransferPack.EMPTY;
+        }
 
-		if (tile == null) {
-			return TransferPack.EMPTY;
-		}
+        BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
 
-		LoadProfile transformed = new LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * Constants.RELAY_EFFICIENCY, lastEnergy.lastUsage().getVoltage()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * Constants.RELAY_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage()));
+        if (tile == null) {
+            return TransferPack.EMPTY;
+        }
 
-		isLocked = true;
-		TransferPack returner = tile.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, dir).map(cap -> cap.getConnectedLoad(transformed, dir)).orElse(TransferPack.EMPTY);
-		isLocked = false;
-		return TransferPack.joulesVoltage(returner.getJoules() / Constants.RELAY_EFFICIENCY, returner.getVoltage());
+        ICapabilityElectrodynamic.LoadProfile transformed = new ICapabilityElectrodynamic.LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * ElectroConstants.RELAY_EFFICIENCY, lastEnergy.lastUsage().getVoltage()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * ElectroConstants.RELAY_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage()));
 
-	}
+        isLocked = true;
 
-	public double getMinimumVoltage() {
-		Direction facing = getFacing();
-		if (isLocked) {
-			return 0;
-		}
-		BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
-		if (output == null) {
-			return -1;
-		}
-		isLocked = true;
-		double minimumVoltage = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(@NotNull ICapabilityElectrodynamic::getMinimumVoltage).orElse(-1.0);
-		isLocked = false;
-		return minimumVoltage;
-	}
+        ICapabilityElectrodynamic electro = tile.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, dir).orElse(CapabilityUtils.EMPTY_ELECTRO);
 
-	public double getAmpacity() {
-		Direction facing = getFacing();
-		if (isLocked) {
-			return 0;
-		}
-		BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
-		if (output == null) {
-			return -1;
-		}
-		isLocked = true;
-		double ampacity = output.getCapability(ElectrodynamicsCapabilities.ELECTRODYNAMIC, facing).map(@NotNull ICapabilityElectrodynamic::getAmpacity).orElse(-1.0);
-		isLocked = false;
-		return ampacity;
-	}
+        if (electro == CapabilityUtils.EMPTY_ELECTRO) {
+            isLocked = false;
+            return TransferPack.EMPTY;
+        }
 
-	@Override
+        TransferPack returner = electro.getConnectedLoad(transformed, dir);
+
+        isLocked = false;
+        return TransferPack.joulesVoltage(returner.getJoules() / ElectroConstants.RELAY_EFFICIENCY, returner.getVoltage());
+
+    }
+
+    public double getMinimumVoltage() {
+        Direction facing = getFacing();
+        if (isLocked) {
+            return 0;
+        }
+        BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
+        if (output == null) {
+            return -1;
+        }
+        isLocked = true;
+
+        ICapabilityElectrodynamic electro = output.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, facing.getOpposite()).orElse(CapabilityUtils.EMPTY_ELECTRO);
+
+        if (electro == CapabilityUtils.EMPTY_ELECTRO) {
+            isLocked = false;
+            return -1;
+        }
+
+        double minimumVoltage = electro.getMinimumVoltage();
+
+        isLocked = false;
+        return minimumVoltage;
+    }
+
+    public double getAmpacity() {
+        Direction facing = getFacing();
+        if (isLocked) {
+            return 0;
+        }
+        BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
+        if (output == null) {
+            return -1;
+        }
+        isLocked = true;
+
+        ICapabilityElectrodynamic electro = output.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, facing.getOpposite()).orElse(CapabilityUtils.EMPTY_ELECTRO);
+
+        if (electro == null) {
+            isLocked = false;
+            return -1;
+        }
+        double ampacity = electro.getAmpacity();
+
+        isLocked = false;
+        return ampacity;
+    }
+
+    @Override
 	public void saveAdditional(@NotNull CompoundTag compound) {
 		super.saveAdditional(compound);
 		compound.putBoolean("hasredstonesignal", recievedRedstoneSignal);
@@ -124,35 +158,35 @@ public class TileRelay extends GenericTile {
 		recievedRedstoneSignal = compound.getBoolean("hasredstonesignal");
 	}
 
-	@Override
-	public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
-		if (level.isClientSide) {
-			return;
-		}
-		recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
-		if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
-			BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
-			if (recievedRedstoneSignal) {
-				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
-			} else {
-				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
-			}
-		}
-	}
+    @Override
+    public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
+        if (level.isClientSide) {
+            return;
+        }
+        recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
+        if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
+            BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
+            if (recievedRedstoneSignal) {
+                level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
+            } else {
+                level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
+            }
+        }
+    }
 
-	@Override
-	public void onPlace(BlockState oldState, boolean isMoving) {
-		super.onPlace(oldState, isMoving);
-		if (level.isClientSide) {
-			return;
-		}
-		recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
-		if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
-			BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
-			if (recievedRedstoneSignal) {
-				level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
-			}
-		}
-	}
+    @Override
+    public void onPlace(BlockState oldState, boolean isMoving) {
+        super.onPlace(oldState, isMoving);
+        if (level.isClientSide) {
+            return;
+        }
+        recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
+        if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
+            BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
+            if (recievedRedstoneSignal) {
+                level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
+            }
+        }
+    }
 
 }

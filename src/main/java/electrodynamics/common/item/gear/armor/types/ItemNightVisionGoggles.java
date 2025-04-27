@@ -4,17 +4,11 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import electrodynamics.api.References;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.item.IItemElectric;
-import electrodynamics.client.ClientRegister;
-import electrodynamics.client.render.model.armor.types.ModelNightVisionGoggles;
+import electrodynamics.Electrodynamics;
+import electrodynamics.client.ElectrodynamicsClientRegister;
+import electrodynamics.client.model.armor.ModelNightVisionGoggles;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
-import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
-import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
@@ -39,16 +33,23 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.item.IItemElectric;
+import voltaic.common.item.gear.ItemVoltaicArmor;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.prefab.utilities.NBTUtils;
+import voltaic.prefab.utilities.VoltaicTextUtils;
 
-public class ItemNightVisionGoggles extends ItemElectrodynamicsArmor implements IItemElectric {
+public class ItemNightVisionGoggles extends ItemVoltaicArmor implements IItemElectric {
 
 	private final ElectricItemProperties properties;
 
 	public static final int JOULES_PER_TICK = 5;
 	public static final int DURATION_SECONDS = 12;
 
-	private static final String ARMOR_TEXTURE_OFF = References.ID + ":textures/model/armor/nightvisiongogglesoff.png";
-	private static final String ARMOR_TEXTURE_ON = References.ID + ":textures/model/armor/nightvisiongoggleson.png";
+	private static final String ARMOR_TEXTURE_OFF = Electrodynamics.ID + ":textures/model/armor/nightvisiongogglesoff.png";
+	private static final String ARMOR_TEXTURE_ON = Electrodynamics.ID + ":textures/model/armor/nightvisiongoggleson.png";
 
 	public ItemNightVisionGoggles(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
 		super(NightVisionGoggles.NVGS, Type.HELMET, properties, creativeTab);
@@ -61,7 +62,7 @@ public class ItemNightVisionGoggles extends ItemElectrodynamicsArmor implements 
 		consumer.accept(new IClientItemExtensions() {
 			@Override
 			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
-				ModelNightVisionGoggles<LivingEntity> model = new ModelNightVisionGoggles<>(ClientRegister.NIGHT_VISION_GOGGLES.bakeRoot());
+				ModelNightVisionGoggles<LivingEntity> model = new ModelNightVisionGoggles<>(ElectrodynamicsClientRegister.NIGHT_VISION_GOGGLES.bakeRoot());
 
 				model.crouching = properties.crouching;
 				model.riding = properties.riding;
@@ -122,14 +123,14 @@ public class ItemNightVisionGoggles extends ItemElectrodynamicsArmor implements 
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, world, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY));
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		IItemElectric.addBatteryTooltip(stack, world, tooltip);
 		if (stack.hasTag() && stack.getTag().getBoolean(NBTUtils.ON)) {
 			tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
 		} else {
 			tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
 		}
-		IItemElectric.addBatteryTooltip(stack, world, tooltip);
 	}
 
 	@Override
@@ -169,7 +170,7 @@ public class ItemNightVisionGoggles extends ItemElectrodynamicsArmor implements 
 
 		@Override
 		public String getName() {
-			return References.ID + ":nvgs";
+			return Electrodynamics.ID + ":nvgs";
 		}
 
 		@Override

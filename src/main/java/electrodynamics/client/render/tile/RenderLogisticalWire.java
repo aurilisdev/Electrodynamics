@@ -4,7 +4,6 @@ import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import electrodynamics.common.block.BlockMachine;
 import electrodynamics.common.tile.electricitygrid.TileLogisticalWire;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,6 +11,8 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Con
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.util.RandomSource;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.common.block.states.VoltaicBlockStates;
 
 public class RenderLogisticalWire extends AbstractTileRenderer<TileLogisticalWire> {
 
@@ -22,7 +23,7 @@ public class RenderLogisticalWire extends AbstractTileRenderer<TileLogisticalWir
 	@Override
 	public void render(@NotNull TileLogisticalWire tile, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
-		if (!tile.getBlockState().getValue(BlockMachine.ON)) {
+		if (!tile.getBlockState().getValue(VoltaicBlockStates.LIT)) {
 			return;
 		}
 

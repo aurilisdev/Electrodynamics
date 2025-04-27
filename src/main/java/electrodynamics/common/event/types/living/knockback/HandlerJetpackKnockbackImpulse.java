@@ -2,12 +2,13 @@ package electrodynamics.common.event.types.living.knockback;
 
 import java.util.ArrayList;
 
-import electrodynamics.prefab.utilities.ItemUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
+import voltaic.common.event.type.AbstractLivingKnockbackHandler;
+import voltaic.prefab.utilities.ItemUtils;
+import voltaic.prefab.utilities.NBTUtils;
 
 /**
  * This event should deal with the jetpack user getting yeeted into the ground when flying if damaged

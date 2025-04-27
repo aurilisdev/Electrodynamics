@@ -13,12 +13,11 @@
     }
   },
   "pattern": [
-    "ACA",
-    "CPC",
-    "ACA"
+    "C",
+    "P",
+    "A"
   ],
   "result": {
-    "count": 4,
     "item": "electrodynamics:upgradeiteminput"
   },
   "show_notification": false

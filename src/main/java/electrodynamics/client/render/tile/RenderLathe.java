@@ -4,12 +4,8 @@ import org.jetbrains.annotations.NotNull;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import electrodynamics.client.ClientRegister;
+import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.common.tile.machines.TileLathe;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.utilities.RenderingUtils;
-import electrodynamics.prefab.utilities.math.MathUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -17,6 +13,12 @@ import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
+import voltaic.prefab.utilities.RenderingUtils;
+import voltaic.prefab.utilities.math.MathUtils;
 
 public class RenderLathe extends AbstractTileRenderer<TileLathe> {
 
@@ -37,7 +39,7 @@ public class RenderLathe extends AbstractTileRenderer<TileLathe> {
 
 		float progressDegrees = 0.0F;
 
-		if (tile.isProcessorActive()) {
+		if (tile.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0)) {
 
 			progressDegrees = 360.0f * (float) progress;
 
@@ -46,7 +48,7 @@ public class RenderLathe extends AbstractTileRenderer<TileLathe> {
 		poseStack.mulPose(MathUtils.rotVectorQuaternionDeg(progressDegrees, MathUtils.YP));
 		// matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), progressDegrees, true));
 
-		BakedModel lathe = getModel(ClientRegister.MODEL_LATHESHAFT);
+		BakedModel lathe = getModel(ElectrodynamicsClientRegister.MODEL_LATHESHAFT);
 
 		RenderingUtils.renderModel(lathe, tile, RenderType.solid(), poseStack, bufferIn, combinedLightIn, combinedOverlayIn);
 

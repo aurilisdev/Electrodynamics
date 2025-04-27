@@ -1,0 +1,43 @@
+package electrodynamics.common.block.gastransformer.util;
+
+import electrodynamics.registers.ElectrodynamicsBlocks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType.BlockEntitySupplier;
+import net.minecraft.world.level.block.state.BlockState;
+import voltaic.common.block.states.VoltaicBlockStates;
+import voltaic.common.block.voxelshapes.VoxelShapeProvider;
+import voltaic.prefab.block.GenericMachineBlock;
+import voltaic.prefab.utilities.BlockEntityUtils;
+
+public abstract class BlockGenericAdvancedGasTransformer extends GenericMachineBlock {
+
+    public BlockGenericAdvancedGasTransformer(BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
+        super(blockEntitySupplier, VoxelShapeProvider.DEFAULT);
+    }
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        if (!state.hasProperty(VoltaicBlockStates.FACING)) {
+            return false;
+        }
+        Direction facing = state.getValue(VoltaicBlockStates.FACING);
+        BlockState left = level.getBlockState(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
+        BlockState right = level.getBlockState(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
+        return left.isAir() && right.isAir() && super.canSurvive(state, level, pos);
+    }
+
+    @Override
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        super.setPlacedBy(level, pos, state, placer, stack);
+        Direction facing = state.getValue(VoltaicBlockStates.FACING);
+        level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)), ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get().defaultBlockState().setValue(VoltaicBlockStates.WATERLOGGED, false).setValue(VoltaicBlockStates.FACING, facing));
+        level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)), ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get().defaultBlockState().setValue(VoltaicBlockStates.WATERLOGGED, false).setValue(VoltaicBlockStates.FACING, facing));
+    }
+
+}

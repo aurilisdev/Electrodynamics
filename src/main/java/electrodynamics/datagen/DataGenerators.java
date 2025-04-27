@@ -1,18 +1,22 @@
 package electrodynamics.datagen;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
-import electrodynamics.api.References;
+import javax.annotation.Nullable;
+
+import electrodynamics.Electrodynamics;
+import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.datagen.client.ElectrodynamicsBlockModelsProvider;
 import electrodynamics.datagen.client.ElectrodynamicsBlockStateProvider;
 import electrodynamics.datagen.client.ElectrodynamicsItemModelsProvider;
 import electrodynamics.datagen.client.ElectrodynamicsLangKeyProvider;
-import electrodynamics.datagen.client.ElectrodynamicsLangKeyProvider.Locale;
 import electrodynamics.datagen.client.ElectrodynamicsSoundProvider;
-import electrodynamics.datagen.client.ElectrodynamicsTextureAtlasProvider;
 import electrodynamics.datagen.server.CoalGeneratorFuelSourceProvider;
 import electrodynamics.datagen.server.CombustionChamberFuelSourceProvider;
 import electrodynamics.datagen.server.ElectrodynamicsAdvancementProvider;
@@ -36,9 +40,49 @@ import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
+import voltaic.api.network.cable.type.IWire;
+import voltaic.datagen.utils.client.BaseLangKeyProvider.Locale;
 
-@Mod.EventBusSubscriber(modid = References.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = Electrodynamics.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
+	
+	public static final HashMap<IWire.IWireClass, HashSet<SubtypeWire>> WIRES = new HashMap<>();
+
+    static {
+        for (SubtypeWire wire : SubtypeWire.values()) {
+            HashSet<SubtypeWire> wireSet = WIRES.getOrDefault(wire.getWireClass(), new HashSet<>());
+            wireSet.add(wire);
+            WIRES.put(wire.getWireClass(), wireSet);
+        }
+    }
+
+    @Nullable
+    public static SubtypeWire getWire(IWire.IWireMaterial conductor, SubtypeWire.InsulationMaterial insulation, SubtypeWire.WireClass wireClass, SubtypeWire.WireColor color) {
+
+        for (SubtypeWire wire : WIRES.getOrDefault(wireClass, new HashSet<>())) {
+            if (wire.getWireMaterial() == conductor && wire.getInsulation() == insulation && wire.getWireClass() == wireClass && wire.getWireColor() == color) {
+                return wire;
+            }
+        }
+        return null;
+    }
+
+    public static SubtypeWire[] getWires(IWire.IWireMaterial[] conductors, SubtypeWire.InsulationMaterial insulation, SubtypeWire.WireClass wireClass, SubtypeWire.WireColor... colors) {
+
+        List<SubtypeWire> list = new ArrayList<>();
+
+        SubtypeWire wire;
+        for (IWire.IWireMaterial conductor : conductors) {
+            for (SubtypeWire.WireColor color : colors) {
+                wire = getWire(conductor, insulation, wireClass, color);
+                if (wire != null) {
+                    list.add(wire);
+                }
+            }
+        }
+
+        return list.toArray(new SubtypeWire[0]);
+    }
 
 	@SubscribeEvent
 	public static void gatherData(GatherDataEvent event) {
@@ -69,7 +113,7 @@ public class DataGenerators {
 					//
 					.add(ForgeRegistries.Keys.BIOME_MODIFIERS, ElectrodynamicsFeatures::registerModifiers)
 			//
-					, Set.of(References.ID));
+					, Set.of(Electrodynamics.ID));
 
 			generator.addProvider(true, datapacks);
 			ElectrodynamicsTagsProvider.addTagProviders(generator, output, datapacks.getRegistryProvider(), helper);
@@ -80,7 +124,6 @@ public class DataGenerators {
 			generator.addProvider(true, new ElectrodynamicsItemModelsProvider(output, helper));
 			generator.addProvider(true, new ElectrodynamicsLangKeyProvider(output, Locale.EN_US));
 			generator.addProvider(true, new ElectrodynamicsSoundProvider(output, helper));
-			generator.addProvider(true, new ElectrodynamicsTextureAtlasProvider(output, helper));
 		}
 	}
 

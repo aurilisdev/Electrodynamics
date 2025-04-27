@@ -2,17 +2,17 @@ package electrodynamics.datagen.server.recipe.types.custom.fluid2gas;
 
 import java.util.function.Consumer;
 
-import electrodynamics.api.References;
-import electrodynamics.api.gas.Gas;
-import electrodynamics.api.gas.GasStack;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.recipeutils.ProbableGas;
-import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
-import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.FinishedRecipeGasOutput;
+import electrodynamics.Electrodynamics;
 import electrodynamics.registers.ElectrodynamicsGases;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.FluidTags;
+import voltaic.api.gas.Gas;
+import voltaic.api.gas.GasStack;
+import voltaic.common.recipe.recipeutils.ProbableGas;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
+import voltaic.datagen.utils.server.recipe.FinishedRecipeBase.RecipeCategory;
+import voltaic.datagen.utils.server.recipe.FinishedRecipeGasOutput;
 
 public class ElectrodynamicsElectrolyticSeparatorRecipes extends AbstractRecipeGenerator {
 
@@ -26,7 +26,7 @@ public class ElectrodynamicsElectrolyticSeparatorRecipes extends AbstractRecipeG
 	}
 
 	public ElectrodynamicsElectrolyticSeparatorRecipes() {
-		this(References.ID);
+		this(Electrodynamics.ID);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class ElectrodynamicsElectrolyticSeparatorRecipes extends AbstractRecipeG
 	}
 
 	public FinishedRecipeGasOutput newRecipe(GasStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeGasOutput.of(ElectrodynamicsRecipeInit.ELECTROLYTIC_SEPARATOR_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_2_GAS, modID, "electrolytic_separator/" + name);
+		return FinishedRecipeGasOutput.of(ElectrodynamicsRecipies.ELECTROLYTIC_SEPARATOR_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_2_GAS, modID, "electrolytic_separator/" + name);
 	}
 
 }

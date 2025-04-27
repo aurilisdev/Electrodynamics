@@ -2,8 +2,7 @@ package electrodynamics.common.item.gear.armor.types;
 
 import java.util.function.Supplier;
 
-import electrodynamics.api.References;
-import electrodynamics.common.item.gear.armor.ItemElectrodynamicsArmor;
+import electrodynamics.Electrodynamics;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -13,8 +12,9 @@ import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import voltaic.common.item.gear.ItemVoltaicArmor;
 
-public class ItemRubberArmor extends ItemElectrodynamicsArmor {
+public class ItemRubberArmor extends ItemVoltaicArmor {
 
 	public ItemRubberArmor(Type slot, Properties properties, Supplier<CreativeModeTab> creativeTab) {
 		super(ArmorMaterialRubber.rubber, slot, properties, creativeTab);
@@ -22,7 +22,7 @@ public class ItemRubberArmor extends ItemElectrodynamicsArmor {
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		return References.ID + ":textures/model/armor/rubberarmor.png";
+		return Electrodynamics.ID + ":textures/model/armor/rubberarmor.png";
 	}
 
 	public enum ArmorMaterialRubber implements ArmorMaterial {

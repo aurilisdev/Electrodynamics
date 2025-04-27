@@ -1,16 +1,17 @@
 package electrodynamics.common.inventory.container.tile;
 
 import electrodynamics.common.tile.electricitygrid.TileCircuitMonitor;
-import electrodynamics.prefab.inventory.container.ContainerBlockEntityEmpty;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
-public class ContainerCircuitMonitor extends ContainerBlockEntityEmpty<TileCircuitMonitor> {
+public class ContainerCircuitMonitor extends GenericContainerBlockEntity<TileCircuitMonitor> {
 
 	public ContainerCircuitMonitor(int id, Inventory playerinv, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_CIRCUITMONITOR.get(), id, playerinv, inventorydata);
+		super(ElectrodynamicsMenuTypes.CONTAINER_CIRCUITMONITOR.get(), id, playerinv, EMPTY, inventorydata);
 	}
 
 	public ContainerCircuitMonitor(int id, Inventory playerinv) {
@@ -18,13 +19,12 @@ public class ContainerCircuitMonitor extends ContainerBlockEntityEmpty<TileCircu
 	}
 
 	@Override
-	public int getPlayerInvOffset() {
-		return 40;
+	public void addInventorySlots(Container inv, Inventory playerinv) {
+		setPlayerInvOffset(40);
 	}
 
 	@Override
-	protected void addPlayerInventory(Inventory playerinv) {
+	public void addPlayerInventory(Inventory playerinv) {
 
 	}
-
 }

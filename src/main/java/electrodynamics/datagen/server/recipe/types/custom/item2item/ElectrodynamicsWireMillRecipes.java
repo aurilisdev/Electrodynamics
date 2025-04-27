@@ -2,20 +2,20 @@ package electrodynamics.datagen.server.recipe.types.custom.item2item;
 
 import java.util.function.Consumer;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.item.subtype.SubtypeNugget;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
-import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.FinishedRecipeItemOutput;
 import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.common.Tags;
+import voltaic.common.recipe.recipeutils.ProbableItem;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
+import voltaic.datagen.utils.server.recipe.FinishedRecipeBase.RecipeCategory;
+import voltaic.datagen.utils.server.recipe.FinishedRecipeItemOutput;
 
 public class ElectrodynamicsWireMillRecipes extends AbstractRecipeGenerator {
 
@@ -29,21 +29,21 @@ public class ElectrodynamicsWireMillRecipes extends AbstractRecipeGenerator {
 	}
 
 	public ElectrodynamicsWireMillRecipes() {
-		this(References.ID);
+		this(Electrodynamics.ID);
 	}
 
 	@Override
 	public void addRecipes(Consumer<FinishedRecipe> consumer) {
 
-		newRecipe(new ItemStack(WIRES[SubtypeWire.copper.ordinal()]), 0.1F, 200, 125.0, "copper_wire_from_ingot")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.copper)), 0.1F, 200, 125.0, "copper_wire_from_ingot")
 				//
 				.addItemTagInput(Tags.Items.INGOTS_COPPER, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeNugget.copper)), 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_NUGGET.getValue(SubtypeNugget.copper)), 1))
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(WIRES[SubtypeWire.gold.ordinal()]), 0.2F, 200, 125.0, "gold_wire_from_ingot")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.gold)), 0.2F, 200, 125.0, "gold_wire_from_ingot")
 				//
 				.addItemTagInput(Tags.Items.INGOTS_GOLD, 1)
 				//
@@ -51,7 +51,7 @@ public class ElectrodynamicsWireMillRecipes extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(WIRES[SubtypeWire.iron.ordinal()]), 0.1F, 200, 125.0, "iron_wire_from_ingot")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.iron)), 0.1F, 200, 125.0, "iron_wire_from_ingot")
 				//
 				.addItemTagInput(Tags.Items.INGOTS_IRON, 1)
 				//
@@ -59,40 +59,40 @@ public class ElectrodynamicsWireMillRecipes extends AbstractRecipeGenerator {
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(WIRES[SubtypeWire.silver.ordinal()]), 0.1F, 200, 125.0, "silver_wire_from_ingot")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.silver)), 0.1F, 200, 125.0, "silver_wire_from_ingot")
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_SILVER, 1)
+				.addItemTagInput(VoltaicTags.Items.INGOT_SILVER, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeNugget.silver)), 1))
-				//
-				.complete(consumer);
-
-		newRecipe(new ItemStack(WIRES[SubtypeWire.superconductive.ordinal()]), 0.1F, 200, 125.0, "superconductive_wire_from_ingot")
-				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_SUPERCONDUCTIVE, 1)
-				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeNugget.superconductive)), 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_NUGGET.getValue(SubtypeNugget.silver)), 1))
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(WIRES[SubtypeWire.tin.ordinal()]), 0.1F, 200, 125.0, "tin_wire_from_ingot")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.superconductive)), 0.1F, 200, 125.0, "superconductive_wire_from_ingot")
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_TIN, 1)
+				.addItemTagInput(VoltaicTags.Items.INGOT_SUPERCONDUCTIVE, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeNugget.tin)), 1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_NUGGET.getValue(SubtypeNugget.superconductive)), 1))
+				//
+				.complete(consumer);
+
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.tin)), 0.1F, 200, 125.0, "tin_wire_from_ingot")
+				//
+				.addItemTagInput(VoltaicTags.Items.INGOT_TIN, 1)
+				//
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_NUGGET.getValue(SubtypeNugget.tin)), 1))
 				//
 				.complete(consumer);
 
 		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_TITANIUM_COIL.get()), 0.1F, 200, 125.0, "titanium_coil")
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.INGOT_TITANIUM, 9)
+				.addItemTagInput(VoltaicTags.Items.INGOT_TITANIUM, 9)
 				//
 				.complete(consumer);
 
 	}
 
 	public FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.WIRE_MILL_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, modID, "wire_mill/" + name);
+		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipies.WIRE_MILL_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, modID, "wire_mill/" + name);
 	}
 
 }

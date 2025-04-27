@@ -6,23 +6,12 @@ import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 
-import electrodynamics.api.References;
-import electrodynamics.api.capability.types.itemhandler.CapabilityItemStackHandler;
-import electrodynamics.api.creativetab.CreativeTabSupplier;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.item.IItemElectric;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.inventory.container.item.ContainerElectricDrill;
 import electrodynamics.common.item.ItemDrillHead;
-import electrodynamics.common.item.ItemUpgrade;
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
-import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.prefab.item.ItemMultiDigger;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.ItemUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.prefab.utilities.math.Color;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
@@ -52,11 +41,23 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
-import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
+import voltaic.api.creativetab.CreativeTabSupplier;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.item.CapabilityItemStackHandler;
+import voltaic.api.item.IItemElectric;
+import voltaic.common.item.ItemUpgrade;
+import voltaic.prefab.inventory.container.types.GenericContainerItem;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.prefab.item.ItemMultiDigger;
+import voltaic.prefab.utilities.CapabilityUtils;
+import voltaic.prefab.utilities.ItemUtils;
+import voltaic.prefab.utilities.NBTUtils;
+import voltaic.prefab.utilities.VoltaicTextUtils;
+import voltaic.prefab.utilities.math.Color;
 
 public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric, CreativeTabSupplier {
 
@@ -210,13 +211,14 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY));
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
-		IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
-		tooltip.add(ElectroTextUtils.tooltip("electricdrill.miningspeed", ChatFormatter.getChatDisplayShort(getHead(stack).speedBoost * 100, DisplayUnit.PERCENTAGE).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
-		tooltip.add(ElectroTextUtils.tooltip("electricdrill.usage", ChatFormatter.getChatDisplayShort(Math.max(getPowerUsage(stack), POWER_USAGE), DisplayUnit.JOULES).withStyle(ChatFormatting.WHITE)).withStyle(ChatFormatting.GRAY));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 
-		tooltip.add(ElectroTextUtils.tooltip("electricdrill.overclock", ChatFormatter.getChatDisplayShort(getSpeedBoost(stack) * 100, DisplayUnit.PERCENTAGE).withStyle(ChatFormatting.GREEN)).withStyle(ChatFormatting.GRAY));
+        IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
+        tooltip.add(ElectroTextUtils.tooltip("electricdrill.miningspeed", ChatFormatter.getChatDisplayShort(getHead(stack).speedBoost * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(ElectroTextUtils.tooltip("electricdrill.usage", ChatFormatter.getChatDisplayShort(getPowerUsage(stack), DisplayUnits.JOULES).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+
+        tooltip.add(ElectroTextUtils.tooltip("electricdrill.overclock", ChatFormatter.getChatDisplayShort(getSpeedBoost(stack) * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 
 	}
 
@@ -235,21 +237,21 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 
 		if (!level.isClientSide) {
 
-			player.openMenu(getMenuProvider(level, player, player.getItemInHand(hand)));
+			player.openMenu(getMenuProvider(level, player, player.getItemInHand(hand), hand));
 
 		}
 
 		return super.use(level, player, hand);
 	}
 
-	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack) {
+	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack, InteractionHand hand) {
 		return new SimpleMenuProvider((id, inv, play) -> {
-			LazyOptional<IItemHandler> capability = stack.getCapability(ForgeCapabilities.ITEM_HANDLER);
-			IItemHandler handler = new ItemStackHandler();
-			if (capability.isPresent()) {
-				handler = capability.resolve().get();
+			IItemHandler capability = stack.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(CapabilityUtils.EMPTY_ITEM_HANDLER);
+			CapabilityItemStackHandler handler = new CapabilityItemStackHandler(SLOT_COUNT, stack);
+			if (capability != CapabilityUtils.EMPTY_ITEM_HANDLER) {
+				handler = (CapabilityItemStackHandler) capability;
 			}
-			return new ContainerElectricDrill(id, player.getInventory(), handler);
+			return new ContainerElectricDrill(id, player.getInventory(), handler, GenericContainerItem.makeData(hand));
 		}, CONTAINER_TITLE);
 	}
 
@@ -258,7 +260,7 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 
 		if (!other.isEmpty() && other.getItem() instanceof ItemDrillHead head) {
 
-			ItemStack oldHead = new ItemStack(ElectrodynamicsItems.getItem(getHead(stack)));
+			ItemStack oldHead = new ItemStack(ElectrodynamicsItems.ITEMS_DRILLHEAD.getValue(getHead(stack)));
 
 			saveHead(stack, head.head);
 
@@ -290,7 +292,7 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
 		stack.getOrCreateTag().putInt(SUBTYPE, head.ordinal());
 	}
 
-	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = References.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 	private static class ColorHandler {
 
 		@SubscribeEvent
