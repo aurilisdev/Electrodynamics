@@ -6,7 +6,7 @@
 	],
 	"textures": {
 		"0": "electrodynamics:block/logisticalmanager/logisticalmanager_inventory",
-		"particle": "electrodynamics:block/steelcasing"
+		"particle": "voltaic:block/steelcasing"
 	},
 	"elements": [
 		{

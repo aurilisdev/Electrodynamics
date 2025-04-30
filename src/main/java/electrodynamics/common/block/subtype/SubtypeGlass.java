@@ -1,6 +1,6 @@
 package electrodynamics.common.block.subtype;
 
-import electrodynamics.api.ISubtype;
+import voltaic.api.ISubtype;
 
 public enum SubtypeGlass implements ISubtype {
 	clear(2, 100),

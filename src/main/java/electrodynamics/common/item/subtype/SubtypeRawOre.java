@@ -4,23 +4,23 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import electrodynamics.api.ISubtype;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import voltaic.api.ISubtype;
+import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypeRawOre implements ISubtype {
-	silver(ElectrodynamicsTags.Items.RAW_ORE_SILVER, () -> ElectrodynamicsItems.getItem(SubtypeImpureDust.silver), () -> ElectrodynamicsItems.getItem(SubtypeDust.silver)),
-	lead(ElectrodynamicsTags.Items.RAW_ORE_LEAD, () -> ElectrodynamicsItems.getItem(SubtypeImpureDust.lead), () -> ElectrodynamicsItems.getItem(SubtypeDust.lead)),
-	tin(ElectrodynamicsTags.Items.RAW_ORE_TIN, () -> ElectrodynamicsItems.getItem(SubtypeImpureDust.tin), () -> ElectrodynamicsItems.getItem(SubtypeDust.tin)),
-	chromium(ElectrodynamicsTags.Items.RAW_ORE_CHROMIUM, () -> ElectrodynamicsItems.getItem(SubtypeOxide.chromite), null),
-	titanium(ElectrodynamicsTags.Items.RAW_ORE_TITANIUM, () -> ElectrodynamicsItems.getItem(SubtypeOxide.dititanium), null),
-	vanadinite(ElectrodynamicsTags.Items.RAW_ORE_VANADIUM, () -> ElectrodynamicsItems.getItem(SubtypeImpureDust.vanadium), () -> ElectrodynamicsItems.getItem(SubtypeDust.vanadium)),
-	lepidolite(ElectrodynamicsTags.Items.RAW_ORE_LEPIDOLITE, () -> ElectrodynamicsItems.getItem(SubtypeImpureDust.lithium), null),
-	fluorite(ElectrodynamicsTags.Items.RAW_ORE_FLUORITE, null, null),
-	uranium(ElectrodynamicsTags.Items.RAW_ORE_URANIUM, null, null),
-	thorium(ElectrodynamicsTags.Items.RAW_ORE_THORIUM, null, null);
+	silver(VoltaicTags.Items.RAW_ORE_SILVER, () -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.silver), () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.silver)),
+	lead(VoltaicTags.Items.RAW_ORE_LEAD, () -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.lead), () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.lead)),
+	tin(VoltaicTags.Items.RAW_ORE_TIN, () -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.tin), () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.tin)),
+	chromium(VoltaicTags.Items.RAW_ORE_CHROMIUM, () -> ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.chromite), null),
+	titanium(VoltaicTags.Items.RAW_ORE_TITANIUM, () -> ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.dititanium), null),
+	vanadinite(VoltaicTags.Items.RAW_ORE_VANADIUM, () -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.vanadium), () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.vanadium)),
+	lepidolite(VoltaicTags.Items.RAW_ORE_LEPIDOLITE, () -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.lithium), null),
+	fluorite(VoltaicTags.Items.RAW_ORE_FLUORITE, null, null),
+	uranium(VoltaicTags.Items.RAW_ORE_URANIUM, null, null),
+	thorium(VoltaicTags.Items.RAW_ORE_THORIUM, null, null);
 
 	public final TagKey<Item> tag;
 	@Nullable

@@ -6,7 +6,7 @@ import java.nio.file.Path;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -18,7 +18,7 @@ import net.minecraftforge.common.Tags;
 
 public class CoalGeneratorFuelSourceProvider implements DataProvider {
 
-	public static final String LOC = "data/" + References.ID + "/" + CoalGeneratorFuelRegister.FOLDER + "/" + CoalGeneratorFuelRegister.FILE_NAME;
+	public static final String LOC = "data/" + Electrodynamics.ID + "/" + CoalGeneratorFuelRegister.FOLDER + "/" + CoalGeneratorFuelRegister.FILE_NAME;
 
 	private final DataGenerator dataGenerator;
 

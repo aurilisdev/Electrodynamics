@@ -4,15 +4,15 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import electrodynamics.api.electricity.generator.IElectricGenerator;
-import electrodynamics.common.item.ItemUpgrade;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.api.electricity.generator.IElectricGenerator;
+import voltaic.common.item.ItemUpgrade;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.type.ComponentInventory;
 
 public abstract class GenericGeneratorTile extends GenericTile implements IElectricGenerator {
 

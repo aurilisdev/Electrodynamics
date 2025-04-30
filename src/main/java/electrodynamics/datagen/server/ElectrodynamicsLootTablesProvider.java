@@ -4,189 +4,150 @@ import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.datagen.utils.AbstractLootTableProvider;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import voltaic.datagen.utils.server.loottable.BaseLootTablesProvider;
 
-public class ElectrodynamicsLootTablesProvider extends AbstractLootTableProvider {
+public class ElectrodynamicsLootTablesProvider extends BaseLootTablesProvider {
 
 	public ElectrodynamicsLootTablesProvider(DataGenerator generator) {
-		super(generator);
+		super(generator, Electrodynamics.ID);
 	}
 
 	@Override
 	protected void addTables() {
 
 		for (SubtypeFluidPipe pipe : SubtypeFluidPipe.values()) {
-			addSimpleBlock(ElectrodynamicsBlocks.getBlock(pipe));
-		}
+            addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_FLUIDPIPE.getValue(pipe));
+        }
 
-		for (SubtypeWire wire : SubtypeWire.values()) {
-			addSimpleBlock(ElectrodynamicsBlocks.getBlock(wire));
-		}
+        for (SubtypeWire wire : SubtypeWire.values()) {
+            addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(wire));
+        }
 
-		for (SubtypeGlass glass : SubtypeGlass.values()) {
-			addSimpleBlock(ElectrodynamicsBlocks.getBlock(glass));
-		}
+        for (SubtypeGlass glass : SubtypeGlass.values()) {
+            addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_CUSTOMGLASS.getValue(glass));
+        }
 
-		for (SubtypeOre ore : SubtypeOre.values()) {
-			Block block = ElectrodynamicsBlocks.getBlock(ore);
-			addFortuneAndSilkTouchTable(block, ore.nonSilkLootItem == null ? block.asItem() : ore.nonSilkLootItem.get(), ore.minDrop, ore.maxDrop);
-		}
+        for (SubtypeOre ore : SubtypeOre.values()) {
+            Block block = ElectrodynamicsBlocks.BLOCKS_ORE.getValue(ore);
 
-		for (SubtypeOreDeepslate ore : SubtypeOreDeepslate.values()) {
-			Block block = ElectrodynamicsBlocks.getBlock(ore);
-			addFortuneAndSilkTouchTable(block, ore.nonSilkLootItem == null ? block.asItem() : ore.nonSilkLootItem.get(), ore.minDrop, ore.maxDrop);
-		}
+            if (ore.nonSilkLootItem == null) {
+                addSimpleBlock(block);
+            } else {
+                addFortuneAndSilkTouchTable(block, ore.nonSilkLootItem.get(), ore.minDrop, ore.maxDrop);
+            }
 
-		for (SubtypeResourceBlock storage : SubtypeResourceBlock.values()) {
-			addSimpleBlock(ElectrodynamicsBlocks.getBlock(storage));
-		}
+        }
 
-		for (SubtypeRawOreBlock raw : SubtypeRawOreBlock.values()) {
-			addSimpleBlock(ElectrodynamicsBlocks.getBlock(raw));
-		}
+        for (SubtypeOreDeepslate ore : SubtypeOreDeepslate.values()) {
+            Block block = ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getValue(ore);
 
-		addSimpleBlock(ElectrodynamicsBlocks.blockLogisticalManager);
-		addSimpleBlock(ElectrodynamicsBlocks.blockSeismicMarker);
+            if (ore.nonSilkLootItem == null) {
+                addSimpleBlock(block);
+            } else {
+                addFortuneAndSilkTouchTable(block, ore.nonSilkLootItem.get(), ore.minDrop, ore.maxDrop);
+            }
+        }
 
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnace), ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACE);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacedouble), ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACEDOUBLE);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacetriple), ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACETRIPLE);
+        for (SubtypeResourceBlock storage : SubtypeResourceBlock.values()) {
+            addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getValue(storage));
+        }
 
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnace), ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACE);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacedouble), ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACEDOUBLE);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacetriple), ElectrodynamicsBlockTypes.TILE_ELECTRICARCFURNACETRIPLE);
+        for (SubtypeRawOreBlock raw : SubtypeRawOreBlock.values()) {
+            addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_RAWORE.getValue(raw));
+        }
 
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremill), ElectrodynamicsBlockTypes.TILE_WIREMILL);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilldouble), ElectrodynamicsBlockTypes.TILE_WIREMILLDOUBLE);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilltriple), ElectrodynamicsBlockTypes.TILE_WIREMILLTRIPLE);
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCK_LOGISTICALMANAGER.get());
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCK_SEISMICMARKER.get());
 
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusher), ElectrodynamicsBlockTypes.TILE_MINERALCRUSHER);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusherdouble), ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERDOUBLE);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrushertriple), ElectrodynamicsBlockTypes.TILE_MINERALCRUSHERTRIPLE);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricfurnace), ElectrodynamicsTiles.TILE_ELECTRICFURNACE, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricfurnacedouble), ElectrodynamicsTiles.TILE_ELECTRICFURNACEDOUBLE, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricfurnacetriple), ElectrodynamicsTiles.TILE_ELECTRICFURNACETRIPLE, true, false, false, true, false);
 
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrinder), ElectrodynamicsBlockTypes.TILE_MINERALGRINDER);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrinderdouble), ElectrodynamicsBlockTypes.TILE_MINERALGRINDERDOUBLE);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrindertriple), ElectrodynamicsBlockTypes.TILE_MINERALGRINDERTRIPLE);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricarcfurnace), ElectrodynamicsTiles.TILE_ELECTRICARCFURNACE, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricarcfurnacedouble), ElectrodynamicsTiles.TILE_ELECTRICARCFURNACEDOUBLE, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricarcfurnacetriple), ElectrodynamicsTiles.TILE_ELECTRICARCFURNACETRIPLE, true, false, false, true, false);
 
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.batterybox), ElectrodynamicsBlockTypes.TILE_BATTERYBOX);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.lithiumbatterybox), ElectrodynamicsBlockTypes.TILE_LITHIUMBATTERYBOX);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.carbynebatterybox), ElectrodynamicsBlockTypes.TILE_CARBYNEBATTERYBOX);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.wiremill), ElectrodynamicsTiles.TILE_WIREMILL, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.wiremilldouble), ElectrodynamicsTiles.TILE_WIREMILLDOUBLE, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.wiremilltriple), ElectrodynamicsTiles.TILE_WIREMILLTRIPLE, true, false, false, true, false);
 
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.oxidationfurnace), ElectrodynamicsBlockTypes.TILE_OXIDATIONFURNACE);
-		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.downgradetransformer));
-		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.upgradetransformer));
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coalgenerator), ElectrodynamicsBlockTypes.TILE_COALGENERATOR);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.solarpanel), ElectrodynamicsBlockTypes.TILE_SOLARPANEL);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedsolarpanel), ElectrodynamicsBlockTypes.TILE_ADVANCEDSOLARPANEL);
-		addETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricpump), ElectrodynamicsBlockTypes.TILE_ELECTRICPUMP);
-		addETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.thermoelectricgenerator), ElectrodynamicsBlockTypes.TILE_THERMOELECTRICGENERATOR);
-		addIEFTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.fermentationplant), ElectrodynamicsBlockTypes.TILE_FERMENTATIONPLANT);
-		addIEFTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.combustionchamber), ElectrodynamicsBlockTypes.TILE_COMBUSTIONCHAMBER);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.hydroelectricgenerator), ElectrodynamicsBlockTypes.TILE_HYDROELECTRICGENERATOR);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.windmill), ElectrodynamicsBlockTypes.TILE_WINDMILL);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralcrusher), ElectrodynamicsTiles.TILE_MINERALCRUSHER, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralcrusherdouble), ElectrodynamicsTiles.TILE_MINERALCRUSHERDOUBLE, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralcrushertriple), ElectrodynamicsTiles.TILE_MINERALCRUSHERTRIPLE, true, false, false, true, false);
 
-		addIEFTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralwasher), ElectrodynamicsBlockTypes.TILE_MINERALWASHER);
-		addIEFTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalmixer), ElectrodynamicsBlockTypes.TILE_CHEMICALMIXER);
-		addIEFTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalcrystallizer), ElectrodynamicsBlockTypes.TILE_CHEMICALCRYSTALLIZER);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralgrinder), ElectrodynamicsTiles.TILE_MINERALGRINDER, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralgrinderdouble), ElectrodynamicsTiles.TILE_MINERALGRINDERDOUBLE, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralgrindertriple), ElectrodynamicsTiles.TILE_MINERALGRINDERTRIPLE, true, false, false, true, false);
 
-		addETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitbreaker), ElectrodynamicsBlockTypes.TILE_CIRCUITBREAKER);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.multimeterblock), ElectrodynamicsBlockTypes.TILE_MULTIMETERBLOCK);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.energizedalloyer), ElectrodynamicsBlockTypes.TILE_ENERGIZEDALLOYER);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.lathe), ElectrodynamicsBlockTypes.TILE_LATHE);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.reinforcedalloyer), ElectrodynamicsBlockTypes.TILE_REINFORCEDALLOYER);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.batterybox), ElectrodynamicsTiles.TILE_BATTERYBOX, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.lithiumbatterybox), ElectrodynamicsTiles.TILE_LITHIUMBATTERYBOX, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.carbynebatterybox), ElectrodynamicsTiles.TILE_CARBYNEBATTERYBOX, true, false, false, true, false);
 
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargerlv), ElectrodynamicsBlockTypes.TILE_CHARGERLV);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargermv), ElectrodynamicsBlockTypes.TILE_CHARGERMV);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargerhv), ElectrodynamicsBlockTypes.TILE_CHARGERHV);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.oxidationfurnace), ElectrodynamicsTiles.TILE_OXIDATIONFURNACE, true, false, false, true, false);
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.downgradetransformer));
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.upgradetransformer));
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.advancedupgradetransformer));
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.advanceddowngradetransformer));
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.coalgenerator), ElectrodynamicsTiles.TILE_COALGENERATOR, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.solarpanel), ElectrodynamicsTiles.TILE_SOLARPANEL, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.advancedsolarpanel), ElectrodynamicsTiles.TILE_ADVANCEDSOLARPANEL, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricpump), ElectrodynamicsTiles.TILE_ELECTRICPUMP, false, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.thermoelectricgenerator), ElectrodynamicsTiles.TILE_THERMOELECTRICGENERATOR, false, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fermentationplant), ElectrodynamicsTiles.TILE_FERMENTATIONPLANT, true, true, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.combustionchamber), ElectrodynamicsTiles.TILE_COMBUSTIONCHAMBER, true, true, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.hydroelectricgenerator), ElectrodynamicsTiles.TILE_HYDROELECTRICGENERATOR, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.windmill), ElectrodynamicsTiles.TILE_WINDMILL, true, false, false, true, false);
 
-		addIFTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tanksteel), ElectrodynamicsBlockTypes.TILE_TANKSTEEL);
-		addIFTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tankreinforced), ElectrodynamicsBlockTypes.TILE_TANKREINFORCED);
-		addIFTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tankhsla), ElectrodynamicsBlockTypes.TILE_TANKHSLA);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralwasher), ElectrodynamicsTiles.TILE_MINERALWASHER, true, true, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chemicalmixer), ElectrodynamicsTiles.TILE_CHEMICALMIXER, true, true, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chemicalcrystallizer), ElectrodynamicsTiles.TILE_CHEMICALCRYSTALLIZER, true, true, false, true, false);
 
-		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativepowersource));
-		addSimpleBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativefluidsource));
-		addITable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.fluidvoid), ElectrodynamicsBlockTypes.TILE_FLUIDVOID);
-		addIEFTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electrolyticseparator), ElectrodynamicsBlockTypes.TILE_ELECTROLYTICSEPARATOR);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.circuitbreaker), ElectrodynamicsTiles.TILE_CIRCUITBREAKER, false, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.multimeterblock), ElectrodynamicsTiles.TILE_MULTIMETERBLOCK, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.energizedalloyer), ElectrodynamicsTiles.TILE_ENERGIZEDALLOYER, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.lathe), ElectrodynamicsTiles.TILE_LATHE, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.reinforcedalloyer), ElectrodynamicsTiles.TILE_REINFORCEDALLOYER, true, false, false, true, false);
 
-		addITable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.seismicrelay), ElectrodynamicsBlockTypes.TILE_SEISMICRELAY);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.quarry), ElectrodynamicsBlockTypes.TILE_QUARRY);
-		addIFTable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coolantresavoir), ElectrodynamicsBlockTypes.TILE_COOLANTRESAVOIR);
-		addIETable(ElectrodynamicsBlocks.getBlock(SubtypeMachine.motorcomplex), ElectrodynamicsBlockTypes.TILE_MOTORCOMPLEX);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chargerlv), ElectrodynamicsTiles.TILE_CHARGERLV, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chargermv), ElectrodynamicsTiles.TILE_CHARGERMV, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chargerhv), ElectrodynamicsTiles.TILE_CHARGERHV, true, false, false, true, false);
 
-	}
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.tanksteel), ElectrodynamicsTiles.TILE_TANKSTEEL, true, true, false, false, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.tankreinforced), ElectrodynamicsTiles.TILE_TANKREINFORCED, true, true, false, false, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.tankhsla), ElectrodynamicsTiles.TILE_TANKHSLA, true, true, false, false, false);
 
-	public <T extends GenericTile> void addITable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
-		lootTables.put(block, itemTable(name(block), block, tilereg.get()));
-	}
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.creativepowersource));
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.creativefluidsource));
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fluidvoid), ElectrodynamicsTiles.TILE_FLUIDVOID, true, false, false, false, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electrolyticseparator), ElectrodynamicsTiles.TILE_ELECTROLYTICSEPARATOR, true, true, false, true, false);
 
-	public <T extends GenericTile> void addETable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.seismicrelay), ElectrodynamicsTiles.TILE_SEISMICRELAY, true, false, false, false, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.quarry), ElectrodynamicsTiles.TILE_QUARRY, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.coolantresavoir), ElectrodynamicsTiles.TILE_COOLANTRESAVOIR, true, false, false, true, false);
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.motorcomplex), ElectrodynamicsTiles.TILE_MOTORCOMPLEX, true, false, false, true, false);
 
-		lootTables.put(block, energyTable(name(block), block, tilereg.get()));
-	}
+        addMachineTable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electrolyticseparator), ElectrodynamicsTiles.TILE_ELECTROLYTICSEPARATOR, true, true, true, true, false);
 
-	public <T extends GenericTile> void addFTable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fluidvalve));
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fluidpipepump));
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fluidpipefilter));
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.potentiometer));
 
-		lootTables.put(block, fluidTable(name(block), block, tilereg.get()));
-	}
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.relay));
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.circuitmonitor));
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.currentregulator));
 
-	public <T extends GenericTile> void addIETable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
+        addSimpleBlock(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get());
 
-		lootTables.put(block, itemEnergyTable(name(block), block, tilereg.get()));
-	}
-
-	public <T extends GenericTile> void addIFTable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
-
-		lootTables.put(block, itemFluidTable(name(block), block, tilereg.get()));
-	}
-
-	public <T extends GenericTile> void addIEFTable(Block block, RegistryObject<BlockEntityType<T>> tilereg) {
-
-		lootTables.put(block, itemEnergyFluidTable(name(block), block, tilereg.get()));
-	}
-
-	/**
-	 * Adds the block to the loottables silk touch only
-	 *
-	 * @author SeaRobber69
-	 * @param reg The block that will be added
-	 */
-	public void addSilkTouchOnlyTable(RegistryObject<Block> reg) {
-		Block block = reg.get();
-		lootTables.put(block, createSilkTouchOnlyTable(name(block), block));
-	}
-
-	public void addFortuneAndSilkTouchTable(RegistryObject<Block> reg, Item nonSilk, int minDrop, int maxDrop) {
-		addFortuneAndSilkTouchTable(reg.get(), nonSilk, minDrop, maxDrop);
-	}
-
-	public void addFortuneAndSilkTouchTable(Block block, Item nonSilk, int minDrop, int maxDrop) {
-		lootTables.put(block, createSilkTouchAndFortuneTable(name(block), block, nonSilk, minDrop, maxDrop));
-	}
-
-	public void addSimpleBlock(RegistryObject<Block> reg) {
-		addSimpleBlock(reg.get());
-	}
-
-	public void addSimpleBlock(Block block) {
-
-		lootTables.put(block, createSimpleBlockTable(name(block), block));
-	}
-
-	public String name(Block block) {
-		return ForgeRegistries.BLOCKS.getKey(block).getPath();
 	}
 
 }

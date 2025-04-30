@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,lit=false": {
+      "model": "electrodynamics:block/relay",
+      "y": 180
+    },
+    "facing=east,lit=true": {
+      "model": "electrodynamics:block/relayon",
+      "y": 180
+    },
+    "facing=north,lit=false": {
+      "model": "electrodynamics:block/relay",
+      "y": 90
+    },
+    "facing=north,lit=true": {
+      "model": "electrodynamics:block/relayon",
+      "y": 90
+    },
+    "facing=south,lit=false": {
+      "model": "electrodynamics:block/relay",
+      "y": 270
+    },
+    "facing=south,lit=true": {
+      "model": "electrodynamics:block/relayon",
+      "y": 270
+    },
+    "facing=west,lit=false": {
+      "model": "electrodynamics:block/relay"
+    },
+    "facing=west,lit=true": {
+      "model": "electrodynamics:block/relayon"
+    }
+  }
+}

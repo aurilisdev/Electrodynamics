@@ -4,7 +4,7 @@
   "texture_size" : [ 64, 64 ],
   "textures" : {
     "1" : "electrodynamics:block/model/tanksteel",
-    "particle" : "electrodynamics:block/steelcasing"
+    "particle" : "voltaic:block/steelcasing"
   },
   "loader" : "forge:composite",
   "children" : {

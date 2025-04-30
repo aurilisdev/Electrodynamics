@@ -1,73 +1,47 @@
 package electrodynamics;
 
-import java.util.Random;
-import java.util.function.Consumer;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import electrodynamics.api.References;
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
-import electrodynamics.client.ClientRegister;
+import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
-import electrodynamics.common.block.voxelshapes.ElectrodynamicsVoxelShapeRegistry;
-import electrodynamics.common.condition.ConfigCondition;
+import electrodynamics.common.block.voxelshapes.ElectrodynamicsVoxelShapes;
 import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
 import electrodynamics.common.event.ServerEventHandler;
-import electrodynamics.common.eventbus.RegisterPropertiesEvent;
+import electrodynamics.common.eventbus.RegisterWiresEvent;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.client.PacketResetGuidebookPages;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
-import electrodynamics.common.settings.Constants;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.common.settings.OreConfig;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.prefab.configuration.ConfigurationHandler;
-import electrodynamics.prefab.properties.PropertyManager;
-import electrodynamics.prefab.properties.PropertyType;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModLoader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.network.PacketDistributor;
-import net.minecraftforge.network.PacketDistributor.PacketTarget;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegisterEvent;
+import voltaic.prefab.configuration.ConfigurationHandler;
 
-@Mod(References.ID)
-@EventBusSubscriber(modid = References.ID, bus = Bus.MOD)
+@Mod(Electrodynamics.ID)
+@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
 public class Electrodynamics {
 
-	public static Logger LOGGER = LogManager.getLogger(electrodynamics.api.References.ID);
-
-	public static final Random RANDOM = new Random();
+	public static final String ID = "electrodynamics";
+	public static final String NAME = "Electrodynamics";
 
 	public Electrodynamics() {
-		ConfigurationHandler.registerConfig(Constants.class);
+		ConfigurationHandler.registerConfig(ElectroConstants.class);
 		ConfigurationHandler.registerConfig(OreConfig.class);
 		// MUST GO BEFORE BLOCKS!!!!
 		ElectrodynamicsBlockStates.init();
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
 		UnifiedElectrodynamicsRegister.register(bus);
-		Electrodynamics.LOGGER.info("Starting Electrodynamics recipe engine");
-		ElectrodynamicsRecipeInit.RECIPE_TYPES.register(bus);
-		ElectrodynamicsRecipeInit.RECIPE_SERIALIZER.register(bus);
 		ElectrodynamicsAttributeModifiers.init();
+		bus.register(RegisterWiresEvent.class);
 
 	}
 
@@ -78,38 +52,17 @@ public class Electrodynamics {
 		CombustionFuelRegister.INSTANCE = new CombustionFuelRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
 		CoalGeneratorFuelRegister.INSTANCE = new CoalGeneratorFuelRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
 		ThermoelectricGeneratorHeatRegister.INSTANCE = new ThermoelectricGeneratorHeatRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
-		MinecraftForge.EVENT_BUS.addListener(getGuidebookListener());
-		ElectrodynamicsTags.init();
 		//CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to 1.19.2
 
 		event.enqueueWork(() -> {
-			RegisterPropertiesEvent properties = new RegisterPropertiesEvent();
 
-			ModLoader.get().postEvent(properties);
+			RegisterWiresEvent wiresEvent = new RegisterWiresEvent();
 
-			PropertyManager.registerProperties(properties.getRegisteredProperties());
+			MinecraftForge.EVENT_BUS.post(wiresEvent);
+
+			wiresEvent.process();
 		});
-		ElectrodynamicsVoxelShapeRegistry.init();
-	}
-	
-	@SubscribeEvent
-	public static void registerConditions(RegisterEvent event) {
-		if (event.getRegistryKey().equals(ForgeRegistries.Keys.RECIPE_SERIALIZERS)) {
-			CraftingHelper.register(ConfigCondition.Serializer.INSTANCE);
-		}
-	}
-
-	@SubscribeEvent
-	public static void registerProperties(RegisterPropertiesEvent event) {
-		for (PropertyType type : PropertyType.values()) {
-			event.registerProperty(type);
-		}
-	}
-
-	@SubscribeEvent
-	public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-		ElectrodynamicsCapabilities.register(event);
-
+		ElectrodynamicsVoxelShapes.init();
 	}
 
 	// I wonder how long this bug has been there
@@ -117,19 +70,12 @@ public class Electrodynamics {
 	@OnlyIn(Dist.CLIENT)
 	public static void onClientSetup(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
-			ClientRegister.setup();
+			ElectrodynamicsClientRegister.setup();
 		});
 	}
 
-	// Don't really have a better place to put this for now
-	private static Consumer<OnDatapackSyncEvent> getGuidebookListener() {
-
-		return event -> {
-			ServerPlayer player = event.getPlayer();
-			PacketTarget target = player == null ? PacketDistributor.ALL.noArg() : PacketDistributor.PLAYER.with(() -> player);
-			NetworkHandler.CHANNEL.send(target, new PacketResetGuidebookPages());
-		};
-
+	public static final ResourceLocation rl(String path) {
+		return new ResourceLocation(ID, path);
 	}
 
 }

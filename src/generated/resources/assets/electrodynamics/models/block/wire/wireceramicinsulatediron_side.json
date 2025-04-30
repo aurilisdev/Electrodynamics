@@ -1,7 +1,9 @@
 {
   "parent": "electrodynamics:parent/ceramicinsulatedwire_side",
+  "render_type": "minecraft:cutout",
   "textures": {
-    "particle": "#texture",
-    "texture": "electrodynamics:block/wire/wireceramicinsulatediron"
+    "insulationbase": "electrodynamics:block/wire/insulationceramic_base",
+    "insulationcolor": "electrodynamics:block/wire/insulationceramic",
+    "particle": "#insulationcolor"
   }
 }

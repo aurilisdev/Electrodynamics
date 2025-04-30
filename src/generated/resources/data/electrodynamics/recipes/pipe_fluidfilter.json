@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": {
+      "item": "minecraft:paper"
+    },
+    "C": {
+      "tag": "forge:circuits/basic"
+    },
+    "P": {
+      "item": "electrodynamics:pipesteel"
+    },
+    "V": {
+      "tag": "forge:gears/bronze"
+    }
+  },
+  "pattern": [
+    " C ",
+    "VPV",
+    " # "
+  ],
+  "result": {
+    "item": "electrodynamics:fluidpipefilter"
+  }
+}

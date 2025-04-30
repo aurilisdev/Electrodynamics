@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": {
+      "tag": "forge:dyes/blue"
+    },
+    "W": {
+      "tag": "forge:wires/insulated_gold"
+    }
+  },
+  "pattern": [
+    "WWW",
+    "WDW",
+    "WWW"
+  ],
+  "result": {
+    "count": 8,
+    "item": "electrodynamics:wireinsulatedgoldblue"
+  }
+}

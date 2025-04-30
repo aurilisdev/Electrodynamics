@@ -2,13 +2,13 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "electrodynamics:wireinsulatedsilver"
+      "tag": "forge:wires/insulated_silver"
     },
     {
-      "item": "electrodynamics:wireinsulatedsilver"
+      "tag": "forge:wires/insulated_silver"
     },
     {
-      "item": "electrodynamics:wireinsulatedsilver"
+      "tag": "forge:wires/insulated_silver"
     },
     {
       "item": "electrodynamics:insulation"

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import electrodynamics.api.References;
-import electrodynamics.client.ClientRegister;
-import electrodynamics.client.render.model.armor.types.ModelCompositeArmor;
+import electrodynamics.Electrodynamics;
+import electrodynamics.client.ElectrodynamicsClientRegister;
+import electrodynamics.client.model.armor.ModelCompositeArmor;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.registers.ElectrodynamicsCreativeTabs;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.ChatFormatting;
@@ -33,13 +33,15 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import voltaic.common.item.gear.ItemVoltaicArmor;
+import voltaic.prefab.utilities.NBTUtils;
 
-public class ItemCompositeArmor extends ArmorItem {
+public class ItemCompositeArmor extends ItemVoltaicArmor {
 
-	public static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/compositearmor.png";
+	public static final String ARMOR_TEXTURE_LOCATION = Electrodynamics.ID + ":textures/model/armor/compositearmor.png";
 
 	public ItemCompositeArmor(EquipmentSlot slot) {
-		super(CompositeArmor.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).tab(References.CORETAB).fireResistant().setNoRepair());
+		super(CompositeArmor.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).fireResistant().setNoRepair(), () -> ElectrodynamicsCreativeTabs.MAIN);
 	}
 
 	@Override
@@ -54,24 +56,24 @@ public class ItemCompositeArmor extends ArmorItem {
 				List<ItemStack> armorPieces = new ArrayList<>();
 				entity.getArmorSlots().forEach(armorPieces::add);
 
-				boolean isBoth = ItemStack.isSameIgnoreDurability(armorPieces.get(0), armorPiecesArray[3]) && ItemStack.isSameIgnoreDurability(armorPieces.get(1), armorPiecesArray[2]);
+				boolean isBoth = armorPieces.get(0).getItem() == armorPiecesArray[3].getItem() && armorPieces.get(1).getItem() == armorPiecesArray[2].getItem();
 
-				boolean hasChest = ItemStack.isSameIgnoreDurability(armorPieces.get(2), armorPiecesArray[1]);
+				boolean hasChest = armorPieces.get(2).getItem() == armorPiecesArray[1].getItem();
 
 				ModelCompositeArmor<LivingEntity> model;
 
 				if (isBoth) {
 					if (hasChest) {
-						model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_COMB_CHEST.bakeRoot(), slot);
+						model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_COMB_CHEST.bakeRoot(), getSlot());
 					} else {
-						model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), slot);
+						model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), getSlot());
 					}
-				} else if (slot == EquipmentSlot.FEET) {
-					model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_BOOTS.bakeRoot(), slot);
+				} else if (getSlot() == EquipmentSlot.FEET) {
+					model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_BOOTS.bakeRoot(), getSlot());
 				} else if (hasChest) {
-					model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(), slot);
+					model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(), getSlot());
 				} else {
-					model = new ModelCompositeArmor<>(ClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), slot);
+					model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), getSlot());
 				}
 
 				model.crouching = properties.crouching;
@@ -84,18 +86,15 @@ public class ItemCompositeArmor extends ArmorItem {
 	}
 
 	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		if (!allowedIn(group)) {
-			return;
-		}
-		ItemStack filled = new ItemStack(this);
-		if (getSlot() == EquipmentSlot.CHEST) {
+	public void fillItemCategory(CreativeModeTab category, NonNullList<ItemStack> items) {
+		super.fillItemCategory(category, items);
+		if (getSlot() == EquipmentSlot.CHEST && allowedIn(category)) {
+			ItemStack filled = new ItemStack(this);
 			CompoundTag tag = filled.getOrCreateTag();
 			tag.putInt(NBTUtils.PLATES, 2);
 			items.add(filled);
 		}
-		ItemStack empty = new ItemStack(this);
-		items.add(empty);
+
 	}
 
 	@Override
@@ -123,7 +122,7 @@ public class ItemCompositeArmor extends ArmorItem {
 
 	protected static void staticAppendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		int plates = stack.hasTag() ? stack.getTag().getInt(NBTUtils.PLATES) : 0;
-		tooltip.add(ElectroTextUtils.tooltip("ceramicplatecount", plates).withStyle(ChatFormatting.AQUA));
+		tooltip.add(ElectroTextUtils.tooltip("ceramicplatecount", Component.translatable(plates + "")).withStyle(ChatFormatting.AQUA));
 	}
 
 	@Override
@@ -138,7 +137,7 @@ public class ItemCompositeArmor extends ArmorItem {
 	}
 
 	public enum CompositeArmor implements ICustomArmor {
-		COMPOSITE_ARMOR(References.ID + ":composite", new int[] { 6, 12, 16, 6 }, 2.0f);
+		COMPOSITE_ARMOR(Electrodynamics.ID + ":composite", new int[] { 6, 12, 16, 6 }, 2.0f);
 
 		private final String name;
 		private final int[] damageReductionAmountArray;
@@ -149,16 +148,6 @@ public class ItemCompositeArmor extends ArmorItem {
 			this.name = name;
 			this.damageReductionAmountArray = damageReductionAmountArray;
 			this.toughness = toughness;
-		}
-
-		@Override
-		public int getDurabilityForSlot(EquipmentSlot slotIn) {
-			return 2000;
-		}
-
-		@Override
-		public int getDefenseForSlot(EquipmentSlot slotIn) {
-			return damageReductionAmountArray[slotIn.getIndex()];
 		}
 
 		@Override
@@ -179,6 +168,16 @@ public class ItemCompositeArmor extends ArmorItem {
 		@Override
 		public float getKnockbackResistance() {
 			return 4;
+		}
+
+		@Override
+		public int getDurabilityForSlot(EquipmentSlot slot) {
+			return 2000;
+		}
+
+		@Override
+		public int getDefenseForSlot(EquipmentSlot slot) {
+			return damageReductionAmountArray[slot.getIndex()];
 		}
 
 	}

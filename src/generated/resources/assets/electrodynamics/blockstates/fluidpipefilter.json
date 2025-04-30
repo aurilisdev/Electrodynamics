@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "electrodynamics:block/fluidpipefilter"
+    },
+    "facing=north": {
+      "model": "electrodynamics:block/fluidpipefilter",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/fluidpipefilter",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/fluidpipefilter",
+      "y": 180
+    }
+  }
+}

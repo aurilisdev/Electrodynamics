@@ -4,8 +4,10 @@
   "itembi": {
     "0": {
       "chance": 0.1,
-      "count": 1,
-      "item": "electrodynamics:impuredustgold"
+      "item": {
+        "Count": 1,
+        "id": "electrodynamics:impuredustgold"
+      }
     },
     "count": 1
   },

@@ -11,7 +11,7 @@
       "item": "electrodynamics:wiremilldouble"
     },
     "W": {
-      "item": "electrodynamics:wireceramicinsulatedsilver"
+      "tag": "forge:wires/ceramic_silver"
     }
   },
   "pattern": [

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "D": {
+      "tag": "forge:dyes/red"
+    },
+    "W": {
+      "tag": "forge:wires/thick_tin"
+    }
+  },
+  "pattern": [
+    "WWW",
+    "WDW",
+    "WWW"
+  ],
+  "result": {
+    "count": 8,
+    "item": "electrodynamics:wirehighlyinsulatedtinred"
+  }
+}

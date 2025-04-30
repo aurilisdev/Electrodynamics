@@ -1,23 +1,12 @@
 package electrodynamics.common.tile.machines.furnace;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
+import java.util.List;
+
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnace;
-import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceDouble;
-import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceTriple;
-import electrodynamics.common.item.ItemUpgrade;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSound;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.*;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.utilities.BlockEntityUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.registers.ElectrodynamicsSounds;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -26,9 +15,19 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-
-import java.util.List;
+import voltaic.Voltaic;
+import voltaic.common.item.ItemUpgrade;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.sound.ITickableSound;
+import voltaic.prefab.sound.SoundBarrierMethods;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.prefab.utilities.NBTUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileElectricFurnace extends GenericTile implements ITickableSound {
 
@@ -38,35 +37,102 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 
 	private boolean isSoundPlaying = false;
 
+	private final int procCount;
+
 	public TileElectricFurnace(BlockPos worldPosition, BlockState blockState) {
-		this(SubtypeMachine.electricfurnace, 0, worldPosition, blockState);
+		this(ElectrodynamicsTiles.TILE_ELECTRICFURNACE.get(), 1, worldPosition, blockState);
+
+		addComponent(new ComponentContainerProvider(SubtypeMachine.electricfurnace.tag(), this).createMenu((id, player) -> new ContainerElectricFurnace(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+
 	}
 
-	public TileElectricFurnace(SubtypeMachine machine, int extra, BlockPos worldPosition, BlockState blockState) {
-		super(extra == 1 ? ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACEDOUBLE.get() : extra == 2 ? ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACETRIPLE.get() : ElectrodynamicsBlockTypes.TILE_ELECTRICFURNACE.get(), worldPosition, blockState);
+	public TileElectricFurnace(BlockEntityType<?> type, int procCount, BlockPos worldPosition, BlockState blockState) {
+		super(type, worldPosition, blockState);
 
-		int processorCount = extra + 1;
+		this.procCount = procCount;
+
 		int inputsPerProc = 1;
 		int outputPerProc = 1;
 
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * Math.pow(2, extra)).maxJoules(Constants.ELECTRICFURNACE_USAGE_PER_TICK * 20 * (extra + 1)));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().processors(processorCount, inputsPerProc, outputPerProc, 0).upgrades(3)).validUpgrades(ContainerElectricFurnace.VALID_UPGRADES).valid(machineValidator()).implementMachineInputsAndOutputs());
-		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> (extra == 0 ? new ContainerElectricFurnace(id, player, getComponent(IComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerElectricFurnaceDouble(id, player, getComponent(IComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerElectricFurnaceTriple(id, player, getComponent(IComponentType.Inventory), getCoordsArray()) : null)));
+		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BACK).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * Math.pow(2, procCount - 1)).maxJoules(ElectroConstants.ELECTRICFURNACE_USAGE_PER_TICK * 20 * procCount));
+		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().processors(procCount, inputsPerProc, outputPerProc, 0).upgrades(3)).validUpgrades(ContainerElectricFurnace.VALID_UPGRADES).valid(machineValidator()).implementMachineInputsAndOutputs());
+		addComponent(new ComponentProcessor(this, procCount).canProcess(this::canProcess).process(this::process));
 
-		for (int i = 0; i <= extra; i++) {
-			addProcessor(new ComponentProcessor(this, i, extra + 1).canProcess(this::canProcess).process(this::process).requiredTicks(Constants.ELECTRICFURNACE_REQUIRED_TICKS).usage(Constants.ELECTRICFURNACE_USAGE_PER_TICK));
-		}
-		cachedRecipe = new SmeltingRecipe[extra + 1];
+		cachedRecipe = new SmeltingRecipe[procCount];
 	}
 
-	protected void process(ComponentProcessor component) {
+	protected boolean canProcess(ComponentProcessor component, int procNumber) {
+		boolean canProcess = checkConditions(component, procNumber);
+
+		if (BlockEntityUtils.isLit(this) ^ (canProcess || component.isAnyActive()) || component.isActive(procNumber)) {
+			BlockEntityUtils.updateLit(this, canProcess || component.isActive(procNumber));
+		}
+
+		return canProcess;
+	}
+
+	private boolean checkConditions(ComponentProcessor component, int procNumber) {
+		component.setShouldKeepProgress(true, procNumber);
 		ComponentInventory inv = getComponent(IComponentType.Inventory);
-		ItemStack input = inv.getInputsForProcessor(component.getProcessorNumber()).get(0);
-		ItemStack output = inv.getOutputsForProcessor(component.getProcessorNumber()).get(0);
-		ItemStack result = cachedRecipe[component.getProcessorNumber()].getResultItem();
-		int index = inv.getOutputSlots().get(component.getProcessorNumber());
+		ItemStack input = inv.getInputsForProcessor(procNumber).get(0);
+		if (input.isEmpty()) {
+			component.setShouldKeepProgress(false, procNumber);
+			component.operatingTicks.setValue(0.0, procNumber);
+			component.usage(0.0, procNumber);
+			return false;
+		}
+
+		cachedRecipes = level.getRecipeManager().getAllRecipesFor(RecipeType.SMELTING);
+		if (cachedRecipes == null) {
+		}
+
+		if (cachedRecipe == null) {
+			component.setShouldKeepProgress(false, procNumber);
+			component.operatingTicks.setValue(0.0, procNumber);
+			component.usage(0.0, procNumber);
+			return false;
+		}
+
+		if (cachedRecipe[procNumber] == null) {
+			cachedRecipe[procNumber] = getMatchedRecipe(input);
+			if (cachedRecipe[procNumber] == null) {
+				component.setShouldKeepProgress(false, procNumber);
+				component.operatingTicks.setValue(0.0, procNumber);
+				component.usage(0.0, procNumber);
+				return false;
+			}
+		}
+
+		if (!cachedRecipe[procNumber].matches(new SimpleContainer(input), level)) {
+			cachedRecipe[procNumber] = null;
+			component.setShouldKeepProgress(false, procNumber);
+			component.operatingTicks.setValue(0.0, procNumber);
+			component.usage(0.0, procNumber);
+			return false;
+		}
+		
+		component.usage.setValue(ElectroConstants.ELECTRICFURNACE_USAGE_PER_TICK, procNumber);
+		component.requiredTicks.setValue((double) ElectroConstants.ELECTRICFURNACE_REQUIRED_TICKS, procNumber);
+
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+		if (electro.getJoulesStored() < component.getUsage(procNumber) * component.operatingSpeed.getValue()) {
+			return false;
+		}
+
+		ItemStack output = inv.getOutputContents().get(procNumber);
+		ItemStack result = cachedRecipe[procNumber].getResultItem();
+		return (output.isEmpty() || output.getItem() == result.getItem()) && output.getCount() + result.getCount() <= output.getMaxStackSize();
+
+	}
+
+	protected void process(ComponentProcessor component, int procNumber) {
+		ComponentInventory inv = getComponent(IComponentType.Inventory);
+		ItemStack input = inv.getInputsForProcessor(procNumber).get(0);
+		ItemStack output = inv.getOutputsForProcessor(procNumber).get(0);
+		ItemStack result = cachedRecipe[procNumber].getResultItem();
+		int index = inv.getOutputSlots().get(procNumber);
 		if (!output.isEmpty()) {
 			output.setCount(output.getCount() + result.getCount());
 			inv.setItem(index, output);
@@ -74,82 +140,117 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 			inv.setItem(index, result.copy());
 		}
 		input.shrink(1);
-		inv.setItem(inv.getInputSlotsForProcessor(component.getProcessorNumber()).get(0), input.copy());
+		inv.setItem(inv.getInputSlotsForProcessor(procNumber).get(0), input.copy());
 		for (ItemStack stack : inv.getUpgradeContents()) {
 			if (!stack.isEmpty() && ((ItemUpgrade) stack.getItem()).subtype == SubtypeItemUpgrade.experience) {
 				CompoundTag tag = stack.getOrCreateTag();
-				tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + cachedRecipe[component.getProcessorNumber()].getExperience());
+				tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + cachedRecipe[procNumber].getExperience());
 				break;
 			}
 		}
 	}
 
-	protected boolean canProcess(ComponentProcessor component) {
-		boolean canProcess = checkConditions(component);
-
-		if (BlockEntityUtils.isLit(this) ^ canProcess || isProcessorActive()) {
-			BlockEntityUtils.updateLit(this, canProcess || isProcessorActive());
-		}
-
-		return canProcess;
-	}
-
-	private boolean checkConditions(ComponentProcessor component) {
-		component.setShouldKeepProgress(true);
-		ComponentInventory inv = getComponent(IComponentType.Inventory);
-		ItemStack input = inv.getInputsForProcessor(component.getProcessorNumber()).get(0);
-		if (input.isEmpty()) {
-			component.setShouldKeepProgress(false);
-			return false;
-		}
-
-		if (cachedRecipes == null) {
-			cachedRecipes = level.getRecipeManager().getAllRecipesFor(RecipeType.SMELTING);
-		}
-
-		if (cachedRecipe == null) {
-			component.setShouldKeepProgress(false);
-			return false;
-		}
-
-		if (cachedRecipe[component.getProcessorNumber()] == null) {
-			cachedRecipe[component.getProcessorNumber()] = getMatchedRecipe(input);
-			if (cachedRecipe[component.getProcessorNumber()] == null) {
-				component.setShouldKeepProgress(false);
-				return false;
-			}
-			component.operatingTicks.set(0.0);
-		}
-
-		if (!cachedRecipe[component.getProcessorNumber()].matches(new SimpleContainer(input), level)) {
-			cachedRecipe[component.getProcessorNumber()] = null;
-			component.setShouldKeepProgress(false);
-			return false;
-		}
-
-		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-		if (electro.getJoulesStored() < component.getUsage() * component.operatingSpeed.get()) {
-			return false;
-		}
-		electro.maxJoules(component.getUsage() * component.operatingSpeed.get() * 10 * component.totalProcessors);
-
-		ItemStack output = inv.getOutputContents().get(component.getProcessorNumber());
-		ItemStack result = cachedRecipe[component.getProcessorNumber()].getResultItem();
-		return (output.isEmpty() || output.getItem() == result.getItem()) && output.getCount() + result.getCount() <= output.getMaxStackSize();
-
-	}
-
 	protected void tickClient(ComponentTickable tickable) {
-		if (!isProcessorActive()) {
+		if (!this.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive()) {
 			return;
 		}
-		if (level.random.nextDouble() < 0.15) {
+
+		double threshhold = 0.15;
+
+
+		if(procCount == 2){
+			threshhold = 0.20;
+		} else if (procCount == 3){
+			threshhold = 0.30;
+		}
+
+		double random = level.random.nextDouble();
+
+		if (random < threshhold) {
+
 			Direction direction = getFacing();
-			double d4 = level.random.nextDouble();
-			double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : d4;
-			double d6 = level.random.nextDouble();
-			double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : d4;
-			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
+			double axisShift = 0;
+			double yShift = 0;
+
+			switch(procCount){
+
+				case 1:
+
+					axisShift = Voltaic.RANDOM.nextDouble(0.64) + 0.18;
+					yShift = Voltaic.RANDOM.nextDouble(0.57) + 0.25;
+
+					double xShift = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : axisShift;
+					double zShift = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : axisShift;
+
+					level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + xShift, worldPosition.getY() + yShift, worldPosition.getZ() + zShift, 0.0D, 0.0D, 0.0D);
+					level.addParticle(ParticleTypes.FLAME, worldPosition.getX() + xShift, worldPosition.getY() + yShift, worldPosition.getZ() + zShift, 0.0D, 0.0D, 0.0D);
+
+					break;
+				case 2:
+
+					int randInt = level.random.nextIntBetweenInclusive(0,2);
+
+					axisShift = Voltaic.RANDOM.nextDouble(0.64) + 0.18;
+					yShift = Voltaic.RANDOM.nextDouble(0.38) + 0.37;
+
+					xShift = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : axisShift;
+					zShift = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : axisShift;
+
+					level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + xShift, worldPosition.getY() + yShift, worldPosition.getZ() + zShift, 0.0D, 0.0D, 0.0D);
+					level.addParticle(ParticleTypes.FLAME, worldPosition.getX() + xShift, worldPosition.getY() + yShift, worldPosition.getZ() + zShift, 0.0D, 0.0D, 0.0D);
+
+					if(randInt == 1) {
+						direction = direction.getClockWise();
+					} else if (randInt == 2) {
+						direction = direction.getCounterClockWise();
+					}
+
+					axisShift = Voltaic.RANDOM.nextDouble(0.64) + 0.18;
+					yShift = Voltaic.RANDOM.nextDouble(0.38) + 0.37;
+
+					xShift = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : axisShift;
+					zShift = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : axisShift;
+
+					level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + xShift, worldPosition.getY() + yShift, worldPosition.getZ() + zShift, 0.0D, 0.0D, 0.0D);
+					//level.addParticle(ParticleTypes.FLAME, worldPosition.getX() + xShift, worldPosition.getY() + yShift, worldPosition.getZ() + zShift, 0.0D, 0.0D, 0.0D);
+
+					break;
+				case 3:
+
+					randInt = level.random.nextIntBetweenInclusive(0,2);
+
+					axisShift = Voltaic.RANDOM.nextDouble(0.64) + 0.18;
+					yShift = Voltaic.RANDOM.nextDouble(0.38) + 0.37;
+
+					xShift = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : axisShift;
+					zShift = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : axisShift;
+
+					level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + xShift, worldPosition.getY() + yShift, worldPosition.getZ() + zShift, 0.0D, 0.0D, 0.0D);
+					level.addParticle(ParticleTypes.FLAME, worldPosition.getX() + xShift, worldPosition.getY() + yShift, worldPosition.getZ() + zShift, 0.0D, 0.0D, 0.0D);
+
+					if(randInt == 1) {
+						direction = direction.getClockWise();
+					} else if (randInt == 2) {
+						direction = direction.getCounterClockWise();
+					}
+
+					axisShift = Voltaic.RANDOM.nextDouble(0.64) + 0.18;
+					yShift = Voltaic.RANDOM.nextDouble(0.38) + 0.37;
+
+					xShift = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : axisShift;
+					zShift = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : axisShift;
+
+					level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + xShift, worldPosition.getY() + yShift, worldPosition.getZ() + zShift, 0.0D, 0.0D, 0.0D);
+
+
+					break;
+				default:
+					break;
+
+
+			}
+
+
 		}
 		if (!isSoundPlaying) {
 			isSoundPlaying = true;
@@ -164,7 +265,7 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 
 	@Override
 	public boolean shouldPlaySound() {
-		return isProcessorActive();
+		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive();
 	}
 
 	private SmeltingRecipe getMatchedRecipe(ItemStack stack) {
@@ -178,7 +279,7 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 
 	@Override
 	public int getComparatorSignal() {
-		return (int) (((double) getNumActiveProcessors() / (double) Math.max(1, getNumProcessors())) * 15.0);
+		return (int) (((double) this.<ComponentProcessor>getComponent(IComponentType.Processor).getTotalActive() / (double) Math.max(1, this.<ComponentProcessor>getComponent(IComponentType.Processor).getProcessorCount())) * 15.0);
 	}
 
 }

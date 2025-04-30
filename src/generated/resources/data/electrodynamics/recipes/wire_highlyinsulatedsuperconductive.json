@@ -2,13 +2,13 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "electrodynamics:wireinsulatedsuperconductive"
+      "tag": "forge:wires/insulated_superconductive"
     },
     {
-      "item": "electrodynamics:wireinsulatedsuperconductive"
+      "tag": "forge:wires/insulated_superconductive"
     },
     {
-      "item": "electrodynamics:wireinsulatedsuperconductive"
+      "tag": "forge:wires/insulated_superconductive"
     },
     {
       "item": "electrodynamics:insulation"

@@ -2,13 +2,9 @@ package electrodynamics.common.block.connect;
 
 import java.util.HashSet;
 
-import electrodynamics.api.network.cable.IRefreshableCable;
-import electrodynamics.api.network.cable.type.IFluidPipe;
-import electrodynamics.common.block.connect.util.AbstractRefreshingConnectBlock;
-import electrodynamics.common.block.connect.util.EnumConnectType;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
-import electrodynamics.common.network.FluidUtilities;
-import electrodynamics.common.tile.pipelines.fluids.TileFluidPipe;
+import electrodynamics.common.tile.pipelines.fluid.GenericTileFluidPipe;
+import electrodynamics.common.tile.pipelines.fluid.TileFluidPipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Block;
@@ -16,13 +12,16 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.EnumProperty;
+import voltaic.api.network.cable.type.IFluidPipe;
+import voltaic.common.block.connect.AbstractRefreshingConnectBlock;
+import voltaic.common.block.connect.EnumConnectType;
+import voltaic.common.network.utils.FluidUtilities;
 
-public class BlockFluidPipe extends AbstractRefreshingConnectBlock {
+public class BlockFluidPipe extends AbstractRefreshingConnectBlock<GenericTileFluidPipe> {
 
 	public static final HashSet<Block> PIPESET = new HashSet<>();
 
-	public final SubtypeFluidPipe pipe;
+    public final IFluidPipe pipe;
 
 	public BlockFluidPipe(SubtypeFluidPipe pipe) {
 		super(Properties.copy(Blocks.IRON_BLOCK).sound(SoundType.METAL).strength(0.15f).dynamicShape().noOcclusion(), 3);
@@ -36,26 +35,22 @@ public class BlockFluidPipe extends AbstractRefreshingConnectBlock {
 	}
 
 	@Override
-	public BlockState refreshConnections(BlockState otherState, BlockEntity tile, BlockState state, Direction dir) {
-		EnumProperty<EnumConnectType> property = FACING_TO_PROPERTY_MAP.get(dir);
-		if (tile instanceof IFluidPipe) {
-			return state.setValue(property, EnumConnectType.WIRE);
-		}
-		if (FluidUtilities.isFluidReceiver(tile, dir.getOpposite())) {
-			return state.setValue(property, EnumConnectType.INVENTORY);
-		}
-		if (state.hasProperty(property)) {
-			return state.setValue(property, EnumConnectType.NONE);
-		}
-		return state;
-	}
+    public EnumConnectType getConnection(BlockState otherState, BlockEntity otherTile, GenericTileFluidPipe thisConductor, Direction dir) {
+        EnumConnectType connection = EnumConnectType.NONE;
+        if (otherTile instanceof GenericTileFluidPipe) {
+            connection = EnumConnectType.WIRE;
+        } else if (FluidUtilities.isFluidReceiver(otherTile, dir.getOpposite())) {
+            connection = EnumConnectType.INVENTORY;
+        }
+        return connection;
+    }
 
-	@Override
-	public IRefreshableCable getCableIfValid(BlockEntity tile) {
-		if (tile instanceof IFluidPipe pipe) {
-			return pipe;
-		}
-		return null;
-	}
+    @Override
+    public GenericTileFluidPipe getCableIfValid(BlockEntity tile) {
+        if (tile instanceof GenericTileFluidPipe pipe) {
+            return pipe;
+        }
+        return null;
+    }
 
 }
