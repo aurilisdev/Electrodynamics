@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "electrodynamics:ceramicplate"
+    },
+    "I": {
+      "tag": "forge:ingots/copper"
+    },
+    "L": {
+      "item": "minecraft:lever"
+    },
+    "S": {
+      "tag": "forge:plates/steel"
+    },
+    "W": {
+      "item": "electrodynamics:wirecopper"
+    }
+  },
+  "pattern": [
+    "SLS",
+    "WIW",
+    "SCS"
+  ],
+  "result": {
+    "item": "electrodynamics:relay"
+  }
+}

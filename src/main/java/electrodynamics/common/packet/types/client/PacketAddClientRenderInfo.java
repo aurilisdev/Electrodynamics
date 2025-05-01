@@ -3,7 +3,7 @@ package electrodynamics.common.packet.types.client;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import electrodynamics.client.render.event.levelstage.HandlerSeismicScanner;
+import electrodynamics.client.event.levelstage.HandlerSeismicScanner;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;

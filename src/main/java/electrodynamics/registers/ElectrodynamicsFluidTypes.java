@@ -1,46 +1,26 @@
 package electrodynamics.registers;
 
-import electrodynamics.api.ISubtype;
-import electrodynamics.api.References;
-import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import voltaic.api.registration.BulkRegistryObject;
 
-import java.util.Map.Entry;
-
-import static electrodynamics.registers.ElectrodynamicsFluids.*;
-import static electrodynamics.registers.UnifiedElectrodynamicsRegister.supplier;
+import electrodynamics.Electrodynamics;
+import electrodynamics.common.fluid.subtype.SubtypeSulfateFluid;
 
 public class ElectrodynamicsFluidTypes {
-    public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, References.ID);
+	public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, Electrodynamics.ID);
 
-    // liquids
-    public static FluidType fluidTypeEthanol;
-    public static FluidType fluidTypeSulfuricAcid;
-    public static FluidType fluidTypeHydrogenFluoride;
-    public static FluidType fluidTypePolyethylene;
-    public static FluidType fluidTypeClay;
-    public static FluidType fluidTypeHydraulic;
-    // gasses
-
-    public static FluidType fluiTypedOxygen;
-    public static FluidType fluidTypeHydrogen;
-
-    static {
-        // Liquids
-        FLUID_TYPES.register("fluidethanol", supplier(() -> fluidEthanol.getFluidType()));
-        FLUID_TYPES.register("fluidsulfuricacid", supplier(() -> fluidSulfuricAcid.getFluidType()));
-        FLUID_TYPES.register("fluidhydrogenfluoride", supplier(() -> fluidHydrogenFluoride.getFluidType()));
-        FLUID_TYPES.register("fluidpolyethylene", supplier(() -> fluidPolyethylene.getFluidType()));
-        FLUID_TYPES.register("fluidclay", supplier(() -> fluidClay.getFluidType()));
-        FLUID_TYPES.register("fluidhydraulic", supplier(() -> fluidHydraulic.getFluidType()));
-        for (Entry<ISubtype, RegistryObject<Fluid>> entry : SUBTYPEFLUID_REGISTRY_MAP.entrySet()) {
-            FLUID_TYPES.register("fluidsulfate" + entry.getKey().tag(), supplier(() -> entry.getValue().get().getFluidType()));
-        }
-        // Gasses
-        FLUID_TYPES.register("fluidoxygen", supplier(() -> fluidOxygen.getFluidType()));
-        FLUID_TYPES.register("fluidhydrogen", supplier(() -> fluidHydrogen.getFluidType()));
-    }
+	public static final RegistryObject<FluidType> FLUID_TYPE_AMMONIA = FLUID_TYPES.register("fluidammonia", () -> ElectrodynamicsFluids.FLUID_AMMONIA.get().getFluidType());
+	public static final RegistryObject<FluidType> FLUID_TYPE_CLAY = FLUID_TYPES.register("fluidclay", () -> ElectrodynamicsFluids.FLUID_CLAY.get().getFluidType());
+	public static final RegistryObject<FluidType> FLUID_TYPE_ETHANOL = FLUID_TYPES.register("fluidethanol", () -> ElectrodynamicsFluids.FLUID_ETHANOL.get().getFluidType());
+	public static final RegistryObject<FluidType> FLUID_TYPE_HYDRAULIC = FLUID_TYPES.register("fluidhydraulic", () -> ElectrodynamicsFluids.FLUID_HYDRAULIC.get().getFluidType());
+	public static final RegistryObject<FluidType> FLUID_TYPE_HYDROFLUORICACID = FLUID_TYPES.register("fluidhydrofluoricacid", () -> ElectrodynamicsFluids.FLUID_HYDROFLUORICACID.get().getFluidType());
+	public static final RegistryObject<FluidType> FLUID_TYPE_HYDROGEN = FLUID_TYPES.register("fluidhydrogen", () -> ElectrodynamicsFluids.FLUID_HYDROGEN.get().getFluidType());
+	public static final RegistryObject<FluidType> FLUID_TYPE_OXYGEN = FLUID_TYPES.register("fluidoxygen", () -> ElectrodynamicsFluids.FLUID_OXYGEN.get().getFluidType());
+	public static final RegistryObject<FluidType> FLUID_TYPE_POLYETHYLENE = FLUID_TYPES.register("fluidpolyethylene", () -> ElectrodynamicsFluids.FLUID_POLYETHYLENE.get().getFluidType());
+	public static final RegistryObject<FluidType> FLUID_TYPE_SULFURICACID = FLUID_TYPES.register("fluidsulfuricacid", () -> ElectrodynamicsFluids.FLUID_SULFURICACID.get().getFluidType());
+	
+	public static final BulkRegistryObject<FluidType, SubtypeSulfateFluid> FLUID_TYPES_SULFATE = new BulkRegistryObject<>(SubtypeSulfateFluid.values(), subtype -> FLUID_TYPES.register("fluidsulfate" + subtype.tag(), () -> ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(subtype).getFluidType()));
 }

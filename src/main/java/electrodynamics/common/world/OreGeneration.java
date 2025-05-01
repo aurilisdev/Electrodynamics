@@ -1,7 +1,6 @@
 package electrodynamics.common.world;
 
 import electrodynamics.common.block.subtype.SubtypeOre;
-import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.common.settings.OreConfig;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
@@ -34,11 +33,11 @@ public class OreGeneration {
 
 			if (allowSulfur && level.getBlockState(pos).is(BlockTags.STONE_ORE_REPLACEABLES)) {
 
-				level.setBlock(offset, ElectrodynamicsBlocks.getBlock(SubtypeOre.sulfur).defaultBlockState(), 3);
+				level.setBlock(offset, ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.sulfur).defaultBlockState(), 3);
 
 			} else if (allowDeepSulfur && level.getBlockState(pos).is(BlockTags.DEEPSLATE_ORE_REPLACEABLES)) {
 
-				level.setBlock(offset, ElectrodynamicsBlocks.getBlock(SubtypeOreDeepslate.sulfur).defaultBlockState(), 3);
+				level.setBlock(offset, ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.sulfur).defaultBlockState(), 3);
 
 			}
 		}

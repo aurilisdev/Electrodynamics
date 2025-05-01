@@ -28,11 +28,6 @@
                   "op": "replace",
                   "source": "fluid",
                   "target": "BlockEntityTag"
-                },
-                {
-                  "op": "replace",
-                  "source": "additional",
-                  "target": "BlockEntityTag.additional"
                 }
               ],
               "source": "block_entity"

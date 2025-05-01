@@ -3,15 +3,16 @@ package electrodynamics.common.event.types.living.hurt;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import voltaic.common.event.type.AbstractLivingDamageHandler;
+import voltaic.prefab.utilities.NBTUtils;
 
-public class HandlerCompositeArmor extends AbstractLivingHurtHandler {
+public class HandlerCompositeArmor extends AbstractLivingDamageHandler {
 
 	private static final float LETHAL_DAMAGE_AMOUNT = 18.0f;
 
@@ -19,7 +20,7 @@ public class HandlerCompositeArmor extends AbstractLivingHurtHandler {
 	private static final ItemStack[] COMBAT_ARMOR = new ItemStack[] { new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get()) };
 
 	@Override
-	public void handle(LivingHurtEvent event) {
+	public void handle(LivingDamageEvent event) {
 		if (event.getSource().isFall()) {
 			return;
 		}

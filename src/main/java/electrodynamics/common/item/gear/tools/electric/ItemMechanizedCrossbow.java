@@ -2,14 +2,10 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
 import java.util.function.Predicate;
-
+import java.util.function.Supplier;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.item.IItemElectric;
-import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
@@ -39,10 +35,17 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.item.IItemElectric;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.prefab.utilities.VoltaicTextUtils;
 
 public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IItemElectric {
 
 	private final ElectricItemProperties properties;
+
+	private final Supplier<CreativeModeTab> creativeTab;
 
 	public static final int JOULES_PER_SHOT = 5000;
 	public static final int NUMBER_OF_SHOTS = 200;
@@ -50,9 +53,10 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	public static final int PROJECTILE_RANGE = 20;
 	public static final int PROJECTILE_SPEED = 3;
 
-	public ItemMechanizedCrossbow(ElectricItemProperties properties) {
+	public ItemMechanizedCrossbow(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
 		super(properties);
 		this.properties = properties;
+		this.creativeTab = creativeTab;
 	}
 
 	@Override
@@ -83,15 +87,13 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 			arrow.shrink(1);
 		}
 
-		mechanized.extractPower(crossbow, JOULES_PER_SHOT, false);
+		Vec3 playerUpVector = player.getUpVector(1.0F);
 
-		Vec3 playerUp = player.getUpVector(1.0F);
+		Quaternion quaternion = new Quaternion(new Vector3f(playerUpVector), 0, true);
 
-		Quaternion quaternion = new Quaternion(new Vector3f(playerUp), 0, true);
+		Vec3 playerViewVector = player.getViewVector(1.0F);
 
-		Vec3 playerView = player.getViewVector(1.0F);
-
-		Vector3f viewVector = new Vector3f(playerView);
+		Vector3f viewVector = new Vector3f(playerViewVector);
 
 		viewVector.transform(quaternion);
 
@@ -143,31 +145,37 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 		}
 		return ItemStack.EMPTY;
 	}
+	
+	@Override
+	protected boolean allowedIn(CreativeModeTab category) {
+		return creativeTab != null && creativeTab.get() == category;
+	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
 
-		if (!allowedIn(group)) {
+		if(!allowedIn(group)) {
 			return;
 		}
-
-		ItemStack charged = new ItemStack(this);
-		IItemElectric.setEnergyStored(charged, properties.capacity);
-		items.add(charged);
-
+		
 		ItemStack empty = new ItemStack(this);
 		IItemElectric.setEnergyStored(empty, 0);
 		items.add(empty);
+
+		ItemStack charged = new ItemStack(this);
+		IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
+		items.add(charged);
+
 	}
 
 	@Override
 	public int getBarWidth(ItemStack stack) {
-		return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
+		return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
 	}
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return getJoulesStored(stack) < properties.capacity;
+		return getJoulesStored(stack) < getMaximumCapacity(stack);
 	}
 
 	@Override
@@ -178,8 +186,8 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY));
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 		IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
 	}
 

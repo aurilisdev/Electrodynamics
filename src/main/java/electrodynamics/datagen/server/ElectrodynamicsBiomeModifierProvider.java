@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 
 import com.google.gson.JsonObject;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.datagen.utils.SimpleOreFeatureProvider;
 import electrodynamics.datagen.utils.SimpleOreFeatureProvider.BiomeModifierType;
 import electrodynamics.registers.ElectrodynamicsFeatures;
@@ -23,7 +23,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ElectrodynamicsBiomeModifierProvider implements DataProvider {
 
-	public static final String FORGE_BIOME_MODIFIERS_BASE = "data/" + References.ID + "/forge/biome_modifier/";
+	public static final String FORGE_BIOME_MODIFIERS_BASE = "data/" + Electrodynamics.ID + "/forge/biome_modifier/";
 
 	private final DataGenerator dataGenerator;
 

@@ -6,17 +6,18 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.tile.electricitygrid.TileMultimeterBlock;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.math.Color;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.utilities.math.Color;
 
 public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBlock> {
 
@@ -45,7 +46,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			rotateMatrix(stack, dir);
 
-			Component transfer = ElectroTextUtils.gui("multimeterblock.transfer", ChatFormatter.getDisplayShort(multimeter.joules.get() * 20.0, DisplayUnit.WATT, 3));
+			Component transfer = ElectroTextUtils.gui("multimeterblock.transfer", ChatFormatter.getDisplayShort(multimeter.joules.getValue() * 20.0, DisplayUnits.WATT, 2));
 
 			float scale = 0.0215f / (font.width(transfer) / 32f);
 
@@ -67,7 +68,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			rotateMatrix(stack, dir);
 
-			Component voltage = ElectroTextUtils.gui("multimeterblock.voltage", ChatFormatter.getDisplayShort(multimeter.voltage.get(), DisplayUnit.VOLTAGE, 3));
+			Component voltage = ElectroTextUtils.gui("multimeterblock.voltage", ChatFormatter.getDisplayShort(multimeter.voltage.getValue(), DisplayUnits.VOLTAGE, 2));
 
 			scale = 0.0215f / (font.width(voltage) / 32f);
 
@@ -89,12 +90,12 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			rotateMatrix(stack, dir);
 
-			double minVolt = multimeter.minVoltage.get();
+			double minVolt = multimeter.minVoltage.getValue();
 			if (minVolt < 0) {
-				minVolt = multimeter.voltage.get();
+				minVolt = multimeter.voltage.getValue();
 			}
 
-			Component minVoltage = ElectroTextUtils.gui("multimeterblock.minvoltage", ChatFormatter.getDisplayShort(minVolt, DisplayUnit.VOLTAGE, 3));
+			Component minVoltage = ElectroTextUtils.gui("multimeterblock.minvoltage", ChatFormatter.getDisplayShort(minVolt, DisplayUnits.VOLTAGE, 2));
 
 			scale = 0.0215f / (font.width(minVoltage) / 32f);
 
@@ -116,7 +117,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			rotateMatrix(stack, dir);
 
-			Component resistance = ElectroTextUtils.gui("multimeterblock.resistance", ChatFormatter.getDisplayShort(multimeter.resistance.get(), DisplayUnit.RESISTANCE, 3));
+			Component resistance = ElectroTextUtils.gui("multimeterblock.resistance", ChatFormatter.getDisplayShort(multimeter.resistance.getValue(), DisplayUnits.RESISTANCE, 2));
 
 			scale = 0.0215f / (font.width(resistance) / 32f);
 
@@ -138,7 +139,7 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
 
 			rotateMatrix(stack, dir);
 
-			Component loss = ElectroTextUtils.gui("multimeterblock.loss", ChatFormatter.getDisplayShort(multimeter.loss.get() * 20, DisplayUnit.WATT, 3));
+			Component loss = ElectroTextUtils.gui("multimeterblock.loss", ChatFormatter.getDisplayShort(multimeter.loss.getValue() * 20, DisplayUnits.WATT, 2));
 
 			scale = 0.0215f / (font.width(loss) / 32f);
 

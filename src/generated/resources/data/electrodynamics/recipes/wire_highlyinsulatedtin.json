@@ -2,13 +2,13 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "electrodynamics:wireinsulatedtin"
+      "tag": "forge:wires/insulated_tin"
     },
     {
-      "item": "electrodynamics:wireinsulatedtin"
+      "tag": "forge:wires/insulated_tin"
     },
     {
-      "item": "electrodynamics:wireinsulatedtin"
+      "tag": "forge:wires/insulated_tin"
     },
     {
       "item": "electrodynamics:insulation"

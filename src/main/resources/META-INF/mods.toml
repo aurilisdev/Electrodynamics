@@ -12,3 +12,9 @@ credits="Thanks to all contributors. French translation by Roi Pasteque." #optio
 authors="aurilisdev, skip999" #optional
 description='''
 '''
+[[dependencies.electrodynamics]]
+    modId="voltaic"
+    mandatory=true
+    versionRange="[1.0,)"
+    ordering="NONE"
+    side="BOTH"

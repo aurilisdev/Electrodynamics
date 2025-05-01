@@ -4,8 +4,10 @@
   "itembi": {
     "0": {
       "chance": 1.0,
-      "count": 1,
-      "item": "minecraft:gold_nugget"
+      "item": {
+        "Count": 1,
+        "id": "minecraft:gold_nugget"
+      }
     },
     "count": 1
   },

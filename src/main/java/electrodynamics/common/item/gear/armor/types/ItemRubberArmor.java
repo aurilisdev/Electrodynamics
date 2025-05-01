@@ -1,29 +1,28 @@
 package electrodynamics.common.item.gear.armor.types;
 
-import electrodynamics.api.References;
+import java.util.function.Supplier;
+
+import electrodynamics.Electrodynamics;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
+import voltaic.common.item.gear.ItemVoltaicArmor;
 
-public class ItemRubberArmor extends ArmorItem {
+public class ItemRubberArmor extends ItemVoltaicArmor {
 
-	public ItemRubberArmor(ArmorMaterial materialIn, EquipmentSlot slot, Properties builderIn) {
-		super(materialIn, slot, builderIn);
-	}
-
-	public ItemRubberArmor(EquipmentSlot slot, Properties builderIn) {
-		this(ArmorMaterialRubber.rubber, slot, builderIn);
+	public ItemRubberArmor(EquipmentSlot slot, Properties properties, Supplier<CreativeModeTab> creativeTab) {
+		super(ArmorMaterialRubber.rubber, slot, properties, creativeTab);
 	}
 
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		return References.ID + ":textures/model/armor/rubberarmor.png";
+		return Electrodynamics.ID + ":textures/model/armor/rubberarmor.png";
 	}
 
 	public enum ArmorMaterialRubber implements ArmorMaterial {

@@ -4,11 +4,11 @@
   "iteminputs": {
     "0": {
       "count": 1,
-      "tag": "forge:oxide/disulfur"
+      "tag": "forge:oxides/disulfur"
     },
     "1": {
       "count": 1,
-      "tag": "forge:oxide/vanadium"
+      "tag": "forge:oxides/vanadium"
     },
     "count": 2
   },

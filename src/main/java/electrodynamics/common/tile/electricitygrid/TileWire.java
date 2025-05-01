@@ -1,31 +1,31 @@
 package electrodynamics.common.tile.electricitygrid;
 
 import electrodynamics.common.block.connect.BlockWire;
-import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
+import voltaic.api.network.cable.type.IWire;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
 
 public class TileWire extends GenericTileWire {
-	public Property<Double> transmit = property(new Property<>(PropertyType.Double, "transmit", 0.0));
+
+	public SingleProperty<Double> transmit = property(new SingleProperty<>(PropertyTypes.DOUBLE, "transmit", 0.0));
+
+	public IWire wire = null;
+	public IWire.IWireColor color = null;
 
 	public TileWire(BlockPos pos, BlockState state) {
-		super(ElectrodynamicsBlockTypes.TILE_WIRE.get(), pos, state);
+		super(ElectrodynamicsTiles.TILE_WIRE.get(), pos, state);
 	}
 
 	public TileWire(BlockEntityType<TileLogisticalWire> tileEntityType, BlockPos pos, BlockState state) {
 		super(tileEntityType, pos, state);
 	}
 
-	public SubtypeWire wire = null;
-
 	@Override
-	public SubtypeWire getWireType() {
+	public IWire getCableType() {
 		if (wire == null) {
 			wire = ((BlockWire) getBlockState().getBlock()).wire;
 		}
@@ -33,14 +33,11 @@ public class TileWire extends GenericTileWire {
 	}
 
 	@Override
-	public void saveAdditional(@NotNull CompoundTag compound) {
-		compound.putInt("ord", getWireType().ordinal());
-		super.saveAdditional(compound);
+	public IWire.IWireColor getWireColor() {
+		if (color == null) {
+			color = ((BlockWire) getBlockState().getBlock()).wire.getWireColor();
+		}
+		return color;
 	}
 
-	@Override
-	public void load(@NotNull CompoundTag compound) {
-		super.load(compound);
-		wire = SubtypeWire.values()[compound.getInt("ord")];
-	}
 }

@@ -4,8 +4,10 @@
   "itembi": {
     "0": {
       "chance": 0.75,
-      "count": 1,
-      "item": "electrodynamics:slag"
+      "item": {
+        "Count": 1,
+        "id": "electrodynamics:slag"
+      }
     },
     "count": 1
   },
@@ -15,13 +17,13 @@
       "tag": "forge:ingots/chromium"
     },
     "1": {
-      "count": 3,
+      "count": 34,
       "tag": "forge:ingots/steel"
     },
     "count": 2
   },
   "output": {
-    "count": 4,
+    "count": 34,
     "item": "electrodynamics:ingotstainlesssteel"
   },
   "ticks": 50,

@@ -5,7 +5,7 @@ import java.nio.file.Path;
 
 import com.google.gson.JsonObject;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
@@ -16,7 +16,7 @@ import net.minecraft.world.level.material.Fluid;
 
 public class ThermoelectricGenHeatSourceProvider implements DataProvider {
 
-	public static final String LOC = "data/" + References.ID + "/" + ThermoelectricGeneratorHeatRegister.FOLDER + "/" + ThermoelectricGeneratorHeatRegister.FILE_NAME;
+	public static final String LOC = "data/" + Electrodynamics.ID + "/" + ThermoelectricGeneratorHeatRegister.FOLDER + "/" + ThermoelectricGeneratorHeatRegister.FILE_NAME;
 
 	private final DataGenerator dataGenerator;
 

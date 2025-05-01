@@ -21,7 +21,7 @@
 						16,
 						10
 					],
-					"texture": "#texture",
+					"texture": "#insulation",
 					"tintindex": 0
 				},
 				"west": {
@@ -31,7 +31,7 @@
 						6,
 						10
 					],
-					"texture": "#texture",
+					"texture": "#insulation",
 					"tintindex": 0
 				},
 				"north": {
@@ -41,7 +41,7 @@
 						10,
 						10
 					],
-					"texture": "#texture",
+					"texture": "#insulation",
 					"tintindex": 0
 				},
 				"south": {
@@ -51,7 +51,7 @@
 						10,
 						10
 					],
-					"texture": "#texture",
+					"texture": "#insulation",
 					"tintindex": 0
 				},
 				"up": {
@@ -61,7 +61,7 @@
 						10,
 						6
 					],
-					"texture": "#texture",
+					"texture": "#insulation",
 					"tintindex": 0
 				},
 				"down": {
@@ -71,7 +71,7 @@
 						10,
 						16
 					],
-					"texture": "#texture",
+					"texture": "#insulation",
 					"tintindex": 0
 				}
 			}

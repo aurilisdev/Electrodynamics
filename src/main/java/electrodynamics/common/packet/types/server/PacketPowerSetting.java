@@ -28,8 +28,8 @@ public class PacketPowerSetting {
 			if (world != null) {
 				TileCreativePowerSource tile = (TileCreativePowerSource) world.getBlockEntity(message.pos);
 				if (tile != null) {
-					tile.voltage.set(message.voltage);
-					tile.power.set(message.power);
+					tile.voltage.setValue(message.voltage);
+					tile.power.setValue(message.power);
 				}
 			}
 		});

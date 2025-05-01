@@ -6,18 +6,14 @@
     },
     "S": {
       "tag": "forge:plates/stainlesssteel"
-    },
-    "T": {
-      "tag": "forge:plates/titanium"
     }
   },
   "pattern": [
-    "STS",
-    "A A",
-    "STS"
+    "S",
+    "A",
+    "S"
   ],
   "result": {
-    "count": 4,
     "item": "electrodynamics:canisterreinforced"
   }
 }

@@ -2,16 +2,12 @@ package electrodynamics.common.item.gear.armor.types;
 
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-import electrodynamics.api.References;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.item.IItemElectric;
-import electrodynamics.client.ClientRegister;
-import electrodynamics.client.render.model.armor.types.ModelServoLeggings;
+import electrodynamics.Electrodynamics;
+import electrodynamics.client.ElectrodynamicsClientRegister;
+import electrodynamics.client.model.armor.ModelServoLeggings;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
-import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.prefab.utilities.NBTUtils;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
@@ -30,28 +26,34 @@ import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.item.IItemElectric;
+import voltaic.common.item.gear.ItemVoltaicArmor;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.prefab.utilities.NBTUtils;
+import voltaic.prefab.utilities.VoltaicTextUtils;
 
-public class ItemServoLeggings extends ArmorItem implements IItemElectric {
+public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric {
 
 	public static final int JOULES_PER_TICK = 5;
 	public static final int DURATION_SECONDS = 1;
 
 	public static final float DEFAULT_VANILLA_STEPUP = 0.6F;
 
-	private static final String ARMOR_TEXTURE = References.ID + ":textures/model/armor/servoleggings.png";
+	private static final String ARMOR_TEXTURE = Electrodynamics.ID + ":textures/model/armor/servoleggings.png";
 
 	final ElectricItemProperties properties;
 
-	public ItemServoLeggings(ElectricItemProperties pProperties) {
-		super(ServoLeggings.SERVOLEGGINGS, EquipmentSlot.LEGS, pProperties);
-		properties = pProperties;
+	public ItemServoLeggings(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
+		super(ServoLeggings.SERVOLEGGINGS, EquipmentSlot.LEGS, properties, creativeTab);
+		this.properties = properties;
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 			@Override
 			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-				ModelServoLeggings<LivingEntity> model = new ModelServoLeggings<>(ClientRegister.SERVO_LEGGINGS.bakeRoot());
+				ModelServoLeggings<LivingEntity> model = new ModelServoLeggings<>(ElectrodynamicsClientRegister.SERVO_LEGGINGS.bakeRoot());
 
 				model.crouching = properties.crouching;
 				model.riding = properties.riding;
@@ -69,22 +71,6 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 				return model;
 			}
 		});
-	}
-
-	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-
-		if (!allowedIn(group)) {
-			return;
-		}
-
-		ItemStack charged = new ItemStack(this);
-		IItemElectric.setEnergyStored(charged, properties.capacity);
-		items.add(charged);
-
-		ItemStack empty = new ItemStack(this);
-		IItemElectric.setEnergyStored(empty, 0);
-		items.add(empty);
 	}
 
 	@Override
@@ -109,19 +95,19 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 
 	@Override
 	public int getBarWidth(ItemStack stack) {
-		return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
+		return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
 	}
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return getJoulesStored(stack) < properties.capacity;
+		return getJoulesStored(stack) < getMaximumCapacity(stack);
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, world, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY));
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 		staticAppendTooltips(stack, world, tooltip, flagIn);
 	}
 
@@ -150,6 +136,23 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 		case 3 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("servolegs.none").withStyle(ChatFormatting.RED));
 		default -> Component.literal("");
 		};
+	}
+
+	@Override
+	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+
+		if(!allowedIn(group)) {
+			return;
+		}
+		
+		ItemStack empty = new ItemStack(this);
+		IItemElectric.setEnergyStored(empty, 0);
+		items.add(empty);
+
+		ItemStack charged = new ItemStack(this);
+		IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
+		items.add(charged);
+
 	}
 
 	@Override
@@ -250,7 +253,7 @@ public class ItemServoLeggings extends ArmorItem implements IItemElectric {
 
 		@Override
 		public String getName() {
-			return References.ID + ":servoleggings";
+			return Electrodynamics.ID + ":servoleggings";
 		}
 
 		@Override

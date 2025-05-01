@@ -3,7 +3,6 @@ package electrodynamics.common.packet.types.client;
 import java.util.UUID;
 import java.util.function.Supplier;
 
-import electrodynamics.common.packet.BarrierMethods;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
 
@@ -18,7 +17,7 @@ public class PacketJetpackEquipedSound {
 	public static void handle(PacketJetpackEquipedSound message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			BarrierMethods.handlePacketJetpackEquipedSound(message.player);
+			ClientBarrierMethods.handlePacketJetpackEquipedSound(message.player);
 		});
 		ctx.setPacketHandled(true);
 	}

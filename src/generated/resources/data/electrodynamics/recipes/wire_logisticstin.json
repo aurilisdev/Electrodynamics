@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "electrodynamics:wireinsulatedtin"
+      "tag": "forge:wires/insulated_tin"
     },
     {
       "tag": "forge:dusts/redstone"

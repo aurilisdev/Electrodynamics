@@ -4,8 +4,10 @@
   "itembi": {
     "0": {
       "chance": 1.0,
-      "count": 2,
-      "item": "electrodynamics:nuggetstainlesssteel"
+      "item": {
+        "Count": 2,
+        "id": "electrodynamics:nuggetstainlesssteel"
+      }
     },
     "count": 1
   },

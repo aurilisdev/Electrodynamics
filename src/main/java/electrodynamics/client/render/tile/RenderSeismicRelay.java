@@ -5,10 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
-import electrodynamics.client.ClientRegister;
 import electrodynamics.common.tile.machines.quarry.TileQuarry;
 import electrodynamics.common.tile.machines.quarry.TileSeismicRelay;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -16,6 +14,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
+import voltaic.client.VoltaicClientRegister;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.utilities.RenderingUtils;
 
 public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 
@@ -30,24 +31,24 @@ public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 
 	@Override
 	public void render(TileSeismicRelay tile, float tick, @NotNull PoseStack stack, @NotNull MultiBufferSource source, int light, int overlay) {
-		if (tile.clientLocs.size() > 3) {
+		if (tile.markerLocs.getValue().size() > 3) {
 			Minecraft minecraft = Minecraft.getInstance();
 			VertexConsumer sheetBuilder = source.getBuffer(RenderingUtils.beaconType());
-			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, LEFT, 1.0F, 0F, 0F, 1.0F, 255, 0);
-			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, UP, 1.0F, 0F, 0F, 1.0F, 255, 0);
-			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, RIGHT, 1.0F, 0F, 0F, 1.0F, 255, 0);
-			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, DOWN, 1.0F, 0F, 0F, 1.0F, 255, 0);
+			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, LEFT, 1.0F, 0F, 0F, 1.0F, 255, 0, RenderingUtils.ALL_FACES);
+			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, UP, 1.0F, 0F, 0F, 1.0F, 255, 0, RenderingUtils.ALL_FACES);
+			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, RIGHT, 1.0F, 0F, 0F, 1.0F, 255, 0, RenderingUtils.ALL_FACES);
+			RenderingUtils.renderSolidColorBox(stack, minecraft, sheetBuilder, DOWN, 1.0F, 0F, 0F, 1.0F, 255, 0, RenderingUtils.ALL_FACES);
 
 			Direction facing = tile.getFacing().getOpposite();
 
 			boolean doesQuarryHaveRing = false;
 			BlockEntity entity = level().getBlockEntity(tile.getBlockPos().relative(facing.getClockWise()));
 			if (entity instanceof TileQuarry quarry) {
-				doesQuarryHaveRing = quarry.hasRing.get();
+				doesQuarryHaveRing = quarry.hasRing.getValue();
 			}
 			entity = level().getBlockEntity(tile.getBlockPos().relative(facing.getCounterClockWise()));
 			if (entity instanceof TileQuarry quarry) {
-				doesQuarryHaveRing = quarry.hasRing.get();
+				doesQuarryHaveRing = quarry.hasRing.getValue();
 			}
 
 			if (!doesQuarryHaveRing) {
@@ -83,9 +84,9 @@ public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 				alpha = 1.0F - alpha / half;
 			}
 
-			TextureAtlasSprite whiteTexture = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_WHITE);
+			TextureAtlasSprite whiteTexture = VoltaicClientRegister.whiteSprite();
 
-			RenderingUtils.renderFilledBoxNoOverlay(stack, sheetBuilder, beam, 1.0F, 0, 0, alpha, whiteTexture.getU0(), whiteTexture.getV0(), whiteTexture.getV1(), whiteTexture.getV1(), 255);
+			RenderingUtils.renderFilledBoxNoOverlay(stack, sheetBuilder, beam, 1.0F, 0, 0, alpha, whiteTexture.getU0(), whiteTexture.getV0(), whiteTexture.getV1(), whiteTexture.getV1(), 255, RenderingUtils.ALL_FACES);
 		}
 	}
 

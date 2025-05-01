@@ -4,15 +4,11 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import electrodynamics.api.References;
-import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.client.ClientRegister;
-import electrodynamics.client.render.model.armor.types.ModelHydraulicBoots;
+import electrodynamics.Electrodynamics;
+import electrodynamics.client.ElectrodynamicsClientRegister;
+import electrodynamics.client.model.armor.ModelHydraulicBoots;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.prefab.utilities.CapabilityUtils;
-import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.registers.ElectrodynamicsCreativeTabs;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
@@ -24,7 +20,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -36,21 +31,26 @@ import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import net.minecraftforge.registries.ForgeRegistries;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.fluid.RestrictedFluidHandlerItemStack;
+import voltaic.common.item.gear.ItemVoltaicArmor;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.prefab.utilities.VoltaicTextUtils;
 
-public class ItemHydraulicBoots extends ArmorItem {
+public class ItemHydraulicBoots extends ItemVoltaicArmor {
 
 	public static final int MAX_CAPACITY = 2000;
 
-	private static final String TEXTURE_LOCATION = References.ID + ":textures/model/armor/hydraulicboots.png";
+	private static final String TEXTURE_LOCATION = Electrodynamics.ID + ":textures/model/armor/hydraulicboots.png";
 
 	public ItemHydraulicBoots() {
-		super(HydraulicBoots.HYDRAULIC_BOOTS, EquipmentSlot.FEET, new Item.Properties().tab(References.CORETAB).stacksTo(1));
+		super(HydraulicBoots.HYDRAULIC_BOOTS, EquipmentSlot.FEET, new Item.Properties().stacksTo(1), () -> ElectrodynamicsCreativeTabs.MAIN);
 	}
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY).setValidator(getFuelValidator());
+		return new RestrictedFluidHandlerItemStack(stack, MAX_CAPACITY).setValidator(getPredicate());
 	}
 
 	@Override
@@ -60,7 +60,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 			@Override
 			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-				ModelHydraulicBoots<LivingEntity> model = new ModelHydraulicBoots<>(ClientRegister.HYDRAULIC_BOOTS.bakeRoot());
+				ModelHydraulicBoots<LivingEntity> model = new ModelHydraulicBoots<>(ElectrodynamicsClientRegister.HYDRAULIC_BOOTS.bakeRoot());
 
 				model.crouching = properties.crouching;
 				model.riding = properties.riding;
@@ -74,23 +74,20 @@ public class ItemHydraulicBoots extends ArmorItem {
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
 
-		if (!allowedIn(tab)) {
-			return;
-		}
-
-		items.add(new ItemStack(this));
-		if (!CapabilityUtils.isFluidItemNull()) {
+		super.fillItemCategory(tab, items);
+		if (ForgeCapabilities.FLUID_HANDLER_ITEM != null && allowedIn(tab)) {
 			ItemStack full = new ItemStack(this);
-			full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fill(new FluidStack(ElectrodynamicsFluids.fluidHydraulic, MAX_CAPACITY), FluidAction.EXECUTE));
+			full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).setFluid(new FluidStack(ElectrodynamicsFluids.FLUID_HYDRAULIC.get(), MAX_CAPACITY)));
 			items.add(full);
 
 		}
+
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
-		if (!CapabilityUtils.isFluidItemNull()) {
-			stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> tooltip.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(h.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY)));
+		if (ForgeCapabilities.FLUID_HANDLER_ITEM != null) {
+			stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(handler -> VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(handler.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY));
 		}
 		super.appendHoverText(stack, world, tooltip, flagIn);
 	}
@@ -144,8 +141,8 @@ public class ItemHydraulicBoots extends ArmorItem {
 		return slotChanged;
 	}
 
-	public static Predicate<FluidStack> getFuelValidator() {
-		return fluid -> fluid.getFluid().is(ElectrodynamicsTags.Fluids.HYDRAULIC_FLUID);
+	public static Predicate<FluidStack> getPredicate() {
+		return fluid -> ForgeRegistries.FLUIDS.tags().getTag(VoltaicTags.Fluids.HYDRAULIC_FLUID).contains(fluid.getFluid());
 	}
 
 	public enum HydraulicBoots implements ICustomArmor {
@@ -168,7 +165,7 @@ public class ItemHydraulicBoots extends ArmorItem {
 
 		@Override
 		public String getName() {
-			return References.ID + ":hydraulic_boots";
+			return Electrodynamics.ID + ":hydraulic_boots";
 		}
 
 		@Override

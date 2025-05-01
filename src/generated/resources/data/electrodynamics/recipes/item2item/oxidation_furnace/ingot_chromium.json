@@ -4,19 +4,21 @@
   "itembi": {
     "0": {
       "chance": 0.75,
-      "count": 1,
-      "item": "electrodynamics:slag"
+      "item": {
+        "Count": 1,
+        "id": "electrodynamics:slag"
+      }
     },
     "count": 1
   },
   "iteminputs": {
     "0": {
       "count": 1,
-      "tag": "forge:oxide/chromium"
+      "tag": "forge:oxides/chromium"
     },
     "1": {
       "count": 1,
-      "tag": "forge:oxide/calciumcarbonate"
+      "tag": "forge:oxides/calciumcarbonate"
     },
     "count": 2
   },
