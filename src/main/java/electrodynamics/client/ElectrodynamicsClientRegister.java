@@ -5,6 +5,7 @@ import java.util.List;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.client.guidebook.ModuleElectrodynamics;
+import electrodynamics.client.model.armor.ModelCombatArmor;
 import electrodynamics.client.model.armor.ModelCompositeArmor;
 import electrodynamics.client.model.armor.ModelHydraulicBoots;
 import electrodynamics.client.model.armor.ModelJetpack;
@@ -126,11 +127,11 @@ public class ElectrodynamicsClientRegister {
 
     public static final LayerDefinition SERVO_LEGGINGS = ModelServoLeggings.createBodyLayer();
 
-    public static final LayerDefinition COMBAT_ARMOR_LAYER_LEG_NOCHEST = ModelCompositeArmor.createBodyLayer(1, true);
-    public static final LayerDefinition COMBAT_ARMOR_LAYER_BOOTS = ModelCompositeArmor.createBodyLayer(2, false);
-    public static final LayerDefinition COMBAT_ARMOR_LAYER_COMB_NOCHEST = ModelCompositeArmor.createBodyLayer(3, true);
-    public static final LayerDefinition COMBAT_ARMOR_LAYER_LEG_CHEST = ModelCompositeArmor.createBodyLayer(1, false);
-    public static final LayerDefinition COMBAT_ARMOR_LAYER_COMB_CHEST = ModelCompositeArmor.createBodyLayer(3, false);
+    public static final LayerDefinition COMBAT_ARMOR_LAYER_LEG_NOCHEST = ModelCombatArmor.createBodyLayer(1, true);
+    public static final LayerDefinition COMBAT_ARMOR_LAYER_BOOTS = ModelCombatArmor.createBodyLayer(2, false);
+    public static final LayerDefinition COMBAT_ARMOR_LAYER_COMB_NOCHEST = ModelCombatArmor.createBodyLayer(3, true);
+    public static final LayerDefinition COMBAT_ARMOR_LAYER_LEG_CHEST = ModelCombatArmor.createBodyLayer(1, false);
+    public static final LayerDefinition COMBAT_ARMOR_LAYER_COMB_CHEST = ModelCombatArmor.createBodyLayer(3, false);
 
     public static final ResourceLocation MODEL_ADVSOLARTOP = Electrodynamics.rl("block/advancedsolarpaneltop");
     public static final ResourceLocation MODEL_BATTERYBOX = Electrodynamics.rl("block/batterybox");

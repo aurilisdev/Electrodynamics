@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.client.ElectrodynamicsClientRegister;
-import electrodynamics.client.model.armor.ModelCompositeArmor;
+import electrodynamics.client.model.armor.ModelCombatArmor;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsGases;
@@ -85,20 +85,20 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 
 				boolean hasChest = armorPieces.get(2).getItem() == armorPiecesArray[1].getItem();
 
-				ModelCompositeArmor<LivingEntity> model;
+				ModelCombatArmor<LivingEntity> model;
 
 				if (isBoth) {
 					if (hasChest) {
-						model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_COMB_CHEST.bakeRoot(), getEquipmentSlot());
+						model = new ModelCombatArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_COMB_CHEST.bakeRoot(), getEquipmentSlot());
 					} else {
-						model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), getEquipmentSlot());
+						model = new ModelCombatArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), getEquipmentSlot());
 					}
 				} else if (getEquipmentSlot() == EquipmentSlot.FEET) {
-					model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_BOOTS.bakeRoot(), getEquipmentSlot());
+					model = new ModelCombatArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_BOOTS.bakeRoot(), getEquipmentSlot());
 				} else if (hasChest) {
-					model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_LEG_CHEST.bakeRoot(), getEquipmentSlot());
+					model = new ModelCombatArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_LEG_CHEST.bakeRoot(), getEquipmentSlot());
 				} else {
-					model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), getEquipmentSlot());
+					model = new ModelCombatArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), getEquipmentSlot());
 				}
 
 				model.crouching = properties.crouching;

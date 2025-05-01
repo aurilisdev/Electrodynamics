@@ -13,7 +13,6 @@ import electrodynamics.common.recipe.categories.item2item.specificmachines.Miner
 import electrodynamics.common.recipe.categories.item2item.specificmachines.OxidationFurnaceRecipe;
 import electrodynamics.common.recipe.categories.item2item.specificmachines.ReinforcedAlloyerRecipe;
 import electrodynamics.common.recipe.categories.item2item.specificmachines.WireMillRecipe;
-import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.registries.DeferredRegister;
