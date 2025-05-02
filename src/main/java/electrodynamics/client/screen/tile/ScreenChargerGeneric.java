@@ -73,7 +73,7 @@ public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric>
 		new WrapperInventoryIO(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75, 82, 8, 72);
 	}
 
-	private Component getChargeCapableFormatted(double chargeCapable, ChatFormatting formatColor) {
+	private static Component getChargeCapableFormatted(double chargeCapable, ChatFormatting formatColor) {
 		return ElectroTextUtils.gui("genericcharger.chargecapable", ChatFormatter.getChatDisplayShort(chargeCapable, DisplayUnits.PERCENTAGE)).withStyle(formatColor).withStyle(ChatFormatting.DARK_GRAY);
 	}
 

@@ -95,7 +95,7 @@ public abstract class GenericTileBasicCompressor extends GenericTileCompressor i
 
         @Override
         public ComponentContainerProvider getContainerProvider() {
-            return new ComponentContainerProvider("container.compressor", this).createMenu((id, inv) -> new ContainerCompressor(id, inv, getComponent(IComponentType.Inventory), getCoordsArray()));
+            return new ComponentContainerProvider("compressor", this).createMenu((id, inv) -> new ContainerCompressor(id, inv, getComponent(IComponentType.Inventory), getCoordsArray()));
         }
 
         @Override

@@ -227,7 +227,7 @@ public class RenderElectrolosisChamber extends AbstractTileRenderer<TileElectrol
         return super.getRenderBoundingBox(tile);
     }
 
-    private Pair[] getFluidAABBs(Direction facing) {
+    private static Pair[] getFluidAABBs(Direction facing) {
         switch (facing) {
             case WEST:
                 return FLUID_WEST;
@@ -242,7 +242,7 @@ public class RenderElectrolosisChamber extends AbstractTileRenderer<TileElectrol
         return new Pair[]{};
     }
 
-    private BlockPos[] getBlockPositions(Direction facing) {
+    private static BlockPos[] getBlockPositions(Direction facing) {
         switch (facing) {
             case WEST:
                 return POSITION_WEST;

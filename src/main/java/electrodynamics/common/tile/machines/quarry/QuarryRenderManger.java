@@ -217,7 +217,7 @@ public class QuarryRenderManger {
 
 	}
 
-	private void vertical(double x, double y, double z, double deltaY, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, List<Pair<PrecisionVector, AABB>> titanium) {
+	private static void vertical(double x, double y, double z, double deltaY, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, List<Pair<PrecisionVector, AABB>> titanium) {
 		int i = 0;
 		/* Vertical Arm Segment */
 
@@ -390,7 +390,7 @@ public class QuarryRenderManger {
 
 	}
 
-	private void northOnRight(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
+	private static void northOnRight(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
 		/* LEFT */
 
 		int i = 1;
@@ -469,7 +469,7 @@ public class QuarryRenderManger {
 
 	}
 
-	private void northOnLeft(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
+	private static void northOnLeft(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
 		/* LEFT */
 
 		int i = wholeWidthLeft - 1;
@@ -667,7 +667,7 @@ public class QuarryRenderManger {
 
 	}
 
-	private void southOnRight(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
+	private static void southOnRight(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
 		/* LEFT */
 
 		int i = 0;
@@ -747,7 +747,7 @@ public class QuarryRenderManger {
 
 	}
 
-	private void southOnLeft(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
+	private static void southOnLeft(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
 		/* LEFT */
 
 		int i = 0;
@@ -911,7 +911,7 @@ public class QuarryRenderManger {
 
 	}
 
-	private void eastOnRight(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
+	private static void eastOnRight(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
 		/* LEFT */
 
 		int i = 0;
@@ -1021,7 +1021,7 @@ public class QuarryRenderManger {
 
 	}
 
-	private void eastOnLeft(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
+	private static void eastOnLeft(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
 		/* LEFT */
 
 		int i = 0;
@@ -1221,7 +1221,7 @@ public class QuarryRenderManger {
 
 	}
 
-	private void westOnRight(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
+	private static void westOnRight(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
 		/* LEFT */
 
 		int i = 0;
@@ -1336,7 +1336,7 @@ public class QuarryRenderManger {
 
 	}
 
-	private void westOnLeft(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
+	private static void westOnLeft(double x, double y, double z, List<Pair<PrecisionVector, AABB>> darkSegments, List<Pair<PrecisionVector, AABB>> lightSegments, double widthLeft, double widthRight, int wholeWidthLeft, int wholeWidthRight, double remainderWidthLeft, double remainderWidthRight) {
 		/* LEFT */
 
 		int i = 0;

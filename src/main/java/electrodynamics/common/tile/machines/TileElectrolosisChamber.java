@@ -146,7 +146,7 @@ public class TileElectrolosisChamber extends TileMultiblockController {
 
     }
 
-    private boolean testRecipe(ElectrolosisChamberRecipe recipe, FluidTank[] inputTanks) {
+    private static boolean testRecipe(ElectrolosisChamberRecipe recipe, FluidTank[] inputTanks) {
         Pair<List<Integer>, Boolean> pair = VoltaicRecipe.areFluidsValid(recipe.getFluidIngredients(), inputTanks);
         if (pair.getSecond()) {
             recipe.setFluidArrangement(pair.getFirst());

@@ -165,7 +165,8 @@ public class ItemJetpack extends ItemVoltaicArmor {
                 boolean enoughFuel = handler == null ? false : handler.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK;
 
                 if (enoughFuel) {
-                    int pressure = handler.getGasInTank(0).getPressure();
+                    @SuppressWarnings("null") // no it cannot be null?!? compiler issue due to advanced boolean above.
+		    int pressure = handler.getGasInTank(0).getPressure(); 
                     if (mode == 0 && isDown) {
                         double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY * pressure, player, stack);
                         renderClientParticles(world, player, particleZ);

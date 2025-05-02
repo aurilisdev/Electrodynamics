@@ -34,13 +34,11 @@ public class ThermoelectricGenHeatSourceProvider implements DataProvider {
 		return CompletableFuture.allOf(DataProvider.saveStable(cache, json, parent));
 	}
 
-	private void getFuels(JsonObject json) {
-
+	private static void getFuels(JsonObject json) {
 		addTag(FluidTags.LAVA, 1.0, json);
-
 	}
 
-	private void addTag(TagKey<Fluid> fluid, double multiplier, JsonObject json) {
+	private static void addTag(TagKey<Fluid> fluid, double multiplier, JsonObject json) {
 		json.addProperty("#" + fluid.location().toString(), multiplier);
 	}
 

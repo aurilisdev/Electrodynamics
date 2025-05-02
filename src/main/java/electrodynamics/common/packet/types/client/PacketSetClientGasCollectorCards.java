@@ -55,10 +55,7 @@ public class PacketSetClientGasCollectorCards implements CustomPacketPayload {
                 GasStack stack = GasStack.STREAM_CODEC.decode(buf);
                 ResourceKey<Biome> biome = null;
                 TagKey<Biome> biomeTag = null;
-                if(!buf.readBoolean()) {
-                    biome = null;
-                    biomeTag = null;
-                } else {
+                if(buf.readBoolean())  {
                     if(buf.readBoolean()) {
                         biome = ResourceKey.create(Registries.BIOME, buf.readResourceLocation());
                     } else {

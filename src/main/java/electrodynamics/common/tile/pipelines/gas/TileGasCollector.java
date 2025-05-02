@@ -98,9 +98,8 @@ public class TileGasCollector extends GenericGasTile implements ITickableSound {
             Biome biome = getLevel().getBiome(getBlockPos()).value();
             if(result.biome() != null) {
                 return getLevel().registryAccess().registry(Registries.BIOME).get().get(result.biome()) == biome;
-            } else {
-                return getLevel().registryAccess().registry(Registries.BIOME).get().getOrCreateTag(result.biomeTag()).contains(new Holder.Direct<>(biome));
             }
+	    return getLevel().registryAccess().registry(Registries.BIOME).get().getOrCreateTag(result.biomeTag()).contains(new Holder.Direct<>(biome));
         }
 
         return true;

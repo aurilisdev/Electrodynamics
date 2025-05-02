@@ -80,10 +80,8 @@ public class ItemPortableCylinder extends ItemVoltaic {
         IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
         if (handler == null) {
-
             super.appendHoverText(stack, context, tooltips, isAdvanced);
-
-
+            return;
         }
 
         GasStack gas = handler.getGasInTank(0);

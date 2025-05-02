@@ -156,21 +156,19 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 
     }
 
-    private Component getPatternDurability(ItemStack owner) {
+    private static Component getPatternDurability(ItemStack owner) {
         if (owner.getOrDefault(VoltaicDataComponentTypes.BLOCK, Blocks.AIR) == Blocks.AIR) {
             return ElectroTextUtils.gui("seismicscanner.nopattern");
-        } else {
-            return ChatFormatter.getChatDisplayShort(owner.getOrDefault(VoltaicDataComponentTypes.PATTERN_INTEGRITY, 0.0) / ItemSeismicScanner.FULL_PATTERN * 100, DisplayUnits.PERCENTAGE);
         }
+	return ChatFormatter.getChatDisplayShort(owner.getOrDefault(VoltaicDataComponentTypes.PATTERN_INTEGRITY, 0.0) / ItemSeismicScanner.FULL_PATTERN * 100, DisplayUnits.PERCENTAGE);
     }
 
-    private Component getPatternName(ItemStack owner) {
+    private static Component getPatternName(ItemStack owner) {
         Block block = owner.getOrDefault(VoltaicDataComponentTypes.BLOCK, Blocks.AIR);
         if (block == Blocks.AIR) {
             return ElectroTextUtils.gui("seismicscanner.nopatternstored");
-        } else {
-            return block.getName();
         }
+	return block.getName();
     }
 
     @Override

@@ -37,7 +37,7 @@ public class CoalGeneratorFuelSourceProvider implements DataProvider {
 		return CompletableFuture.allOf(DataProvider.saveStable(cache, json, parent));
 	}
 
-	private void getFuels(JsonObject object) {
+	private static void getFuels(JsonObject object) {
 		JsonArray json = new JsonArray();
 
 		addTag(ItemTags.COALS, json);
@@ -46,7 +46,7 @@ public class CoalGeneratorFuelSourceProvider implements DataProvider {
 		object.add(CoalGeneratorFuelRegister.KEY, json);
 	}
 
-	private void addTag(TagKey<Item> item, JsonArray json) {
+	private static void addTag(TagKey<Item> item, JsonArray json) {
 		json.add("#" + item.location().toString());
 	}
 

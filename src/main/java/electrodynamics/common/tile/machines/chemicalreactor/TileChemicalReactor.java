@@ -136,7 +136,7 @@ public class TileChemicalReactor extends GenericGasTile {
 
         if (locRecipe.hasItemBiproducts()) {
             ComponentInventory inv = getComponent(IComponentType.Inventory);
-            boolean itemBiRoom = pr.roomInItemBiSlots(inv.getBiprodsForProcessor(procNumber), locRecipe.getFullItemBiStacks());
+            boolean itemBiRoom = ComponentProcessor.roomInItemBiSlots(inv.getBiprodsForProcessor(procNumber), locRecipe.getFullItemBiStacks());
             if (!itemBiRoom) {
                 return false;
             }

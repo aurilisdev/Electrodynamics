@@ -31,7 +31,6 @@ public class TileGasPipeFilter extends GenericTile {
 
     private boolean isLocked = false;
 
-    @SuppressWarnings("rawtypes")
     public final SingleProperty[] filteredGases = {
             //
             property(new SingleProperty<>(PropertyTypes.GAS_STACK, "gasone", GasStack.EMPTY)),

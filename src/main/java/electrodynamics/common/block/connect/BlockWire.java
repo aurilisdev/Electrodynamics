@@ -297,7 +297,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
-    private void handleDataCopyAndSet(BlockState newWire, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack, BlockState oldWire) {
+    private static void handleDataCopyAndSet(BlockState newWire, Level level, BlockPos pos, Player player, InteractionHand hand, ItemStack stack, BlockState oldWire) {
         BlockState curCamo = Blocks.AIR.defaultBlockState();
         BlockState curScaffold = Blocks.AIR.defaultBlockState();
         BlockEntity entity = level.getBlockEntity(pos);
@@ -316,7 +316,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
         }
     }
 
-    private void handlePlayerItemDrops(Player player, Item... items) {
+    private static void handlePlayerItemDrops(Player player, Item... items) {
 
         for (Item item : items) {
 

@@ -31,7 +31,6 @@ public class TileFluidPipeFilter extends GenericTile {
 
 	private boolean isLocked = false;
 
-	@SuppressWarnings("rawtypes")
 	public final SingleProperty[] filteredFluids = {
 			//
 			property(new SingleProperty<>(PropertyTypes.FLUID_STACK, "fluidone", FluidStack.EMPTY)),

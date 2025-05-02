@@ -62,16 +62,16 @@ public class GasCollectorChromoCardsProvider implements DataProvider {
         jsons.put("sulfurdioxide", toJson(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.sulfurdioxide), ElectrodynamicsGases.SULFUR_DIOXIDE.value(), 1, 373, Gas.PRESSURE_AT_SEA_LEVEL, BiomeTags.IS_NETHER));
     }
 
-    @SuppressWarnings("unused")
-	private JsonObject toJson(TagKey<Item> tag, Gas gas, int amount, int temperature, int pressure, @Nullable TagKey<Biome> biomeTag) {
+    @SuppressWarnings("unused") // TODO: Is this needed?
+    private static JsonObject toJson(TagKey<Item> tag, Gas gas, int amount, int temperature, int pressure, @Nullable TagKey<Biome> biomeTag) {
         return toJson("#" + tag.location().toString(), gas, amount, temperature, pressure, biomeTag);
     }
 
-    private JsonObject toJson(Item item, Gas gas, int amount, int temperature, int pressure, @Nullable TagKey<Biome> biomeTag) {
+    private static JsonObject toJson(Item item, Gas gas, int amount, int temperature, int pressure, @Nullable TagKey<Biome> biomeTag) {
         return toJson(BuiltInRegistries.ITEM.getKey(item).toString(), gas, amount, temperature, pressure, biomeTag);
     }
 
-    private JsonObject toJson(String item, Gas gas, int amount, int temperature, int pressure, @Nullable TagKey<Biome> biomeTag) {
+    private static JsonObject toJson(String item, Gas gas, int amount, int temperature, int pressure, @Nullable TagKey<Biome> biomeTag) {
         JsonObject json = new JsonObject();
         json.addProperty(GasCollectorChromoCardsRegister.ITEM_KEY, item);
         json.addProperty(GasCollectorChromoCardsRegister.GAS_KEY, VoltaicGases.GAS_REGISTRY.getKey(gas).toString());
