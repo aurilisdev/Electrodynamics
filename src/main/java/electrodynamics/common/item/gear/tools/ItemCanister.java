@@ -3,7 +3,6 @@ package electrodynamics.common.item.gear.tools;
 import java.util.ArrayList;
 import java.util.List;
 
-import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;

@@ -2,14 +2,14 @@ package electrodynamics.datagen.server.tags.types;
 
 import java.util.concurrent.CompletableFuture;
 
-import electrodynamics.Electrodynamics;
-import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import org.jetbrains.annotations.Nullable;
 
+import electrodynamics.Electrodynamics;
 import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
 import net.minecraft.resources.ResourceKey;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import voltaic.api.gas.Gas;

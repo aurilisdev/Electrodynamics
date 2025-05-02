@@ -3,10 +3,7 @@ package electrodynamics.common.block.states;
 import java.util.Locale;
 
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.level.block.HorizontalDirectionalBlock;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
 public class ElectrodynamicsBlockStates {

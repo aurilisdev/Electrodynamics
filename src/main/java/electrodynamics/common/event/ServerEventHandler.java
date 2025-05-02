@@ -29,7 +29,12 @@ import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import voltaic.Voltaic;
-import voltaic.common.event.type.*;
+import voltaic.common.event.type.AbstractEquipmentChangeHandler;
+import voltaic.common.event.type.AbstractIncomingDamageHandler;
+import voltaic.common.event.type.AbstractLivingDamageHandler;
+import voltaic.common.event.type.AbstractLivingKnockbackHandler;
+import voltaic.common.event.type.AbstractPlayerStartTrackingHandler;
+import voltaic.common.event.type.AbstractRightClickBlockHandler;
 
 @EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.GAME)
 public class ServerEventHandler {

@@ -1,5 +1,7 @@
 package electrodynamics.common.block.subtype;
 
+import java.util.function.Supplier;
+
 import electrodynamics.common.block.voxelshapes.ElectrodynamicsVoxelShapes;
 import electrodynamics.common.tile.electricitygrid.TileCircuitBreaker;
 import electrodynamics.common.tile.electricitygrid.TileCircuitMonitor;
@@ -85,8 +87,6 @@ import voltaic.api.multiblock.subnodebased.parent.IMultiblockParentBlock;
 import voltaic.api.tile.IMachine;
 import voltaic.api.tile.MachineProperties;
 import voltaic.common.block.voxelshapes.VoxelShapeProvider;
-
-import java.util.function.Supplier;
 
 public enum SubtypeMachine implements ISubtype, IMachine {
 

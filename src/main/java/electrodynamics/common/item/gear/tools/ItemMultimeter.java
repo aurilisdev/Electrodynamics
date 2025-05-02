@@ -2,7 +2,6 @@ package electrodynamics.common.item.gear.tools;
 
 import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.common.tile.electricitygrid.TileWire;
-import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;

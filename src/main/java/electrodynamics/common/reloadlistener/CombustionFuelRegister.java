@@ -19,7 +19,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.common.packet.types.client.PacketSetClientCombustionFuel;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import net.minecraft.resources.ResourceLocation;

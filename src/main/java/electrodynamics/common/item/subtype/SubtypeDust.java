@@ -4,12 +4,12 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import voltaic.api.ISubtype;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import voltaic.api.ISubtype;
 import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypeDust implements ISubtype {

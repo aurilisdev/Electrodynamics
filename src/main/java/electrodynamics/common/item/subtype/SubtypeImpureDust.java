@@ -2,10 +2,10 @@ package electrodynamics.common.item.subtype;
 
 import java.util.function.Supplier;
 
-import voltaic.api.ISubtype;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import voltaic.api.ISubtype;
 import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypeImpureDust implements ISubtype {

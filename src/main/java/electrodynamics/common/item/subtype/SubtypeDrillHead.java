@@ -3,8 +3,8 @@ package electrodynamics.common.item.subtype;
 import java.util.Locale;
 
 import electrodynamics.Electrodynamics;
-import voltaic.api.ISubtype;
 import net.minecraft.resources.ResourceLocation;
+import voltaic.api.ISubtype;
 import voltaic.prefab.utilities.math.Color;
 
 public enum SubtypeDrillHead implements ISubtype {

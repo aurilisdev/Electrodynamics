@@ -1,9 +1,9 @@
 package electrodynamics.common.item.subtype;
 
-import voltaic.api.ISubtype;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.Tags;
+import voltaic.api.ISubtype;
 import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypePlate implements ISubtype {

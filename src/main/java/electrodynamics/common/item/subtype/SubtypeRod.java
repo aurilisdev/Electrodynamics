@@ -1,8 +1,8 @@
 package electrodynamics.common.item.subtype;
 
-import voltaic.api.ISubtype;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import voltaic.api.ISubtype;
 import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypeRod implements ISubtype {

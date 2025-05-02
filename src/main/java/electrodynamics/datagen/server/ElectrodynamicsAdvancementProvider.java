@@ -31,6 +31,7 @@ public class ElectrodynamicsAdvancementProvider extends BaseAdvancementProvider 
         super(output, registries, Electrodynamics.ID);
     }
     
+    @Override
     public void generate(HolderLookup.Provider registries) {
 
         advancement("dispenseguidebook")

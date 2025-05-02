@@ -2,12 +2,12 @@ package electrodynamics.common.item.subtype;
 
 import java.util.function.Supplier;
 
-import voltaic.api.ISubtype;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.Tags;
+import voltaic.api.ISubtype;
 import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypeNugget implements ISubtype {

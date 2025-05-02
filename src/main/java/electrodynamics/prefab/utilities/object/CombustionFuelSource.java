@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 
-import electrodynamics.Electrodynamics;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.FluidTags;

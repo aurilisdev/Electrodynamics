@@ -1,12 +1,12 @@
 package electrodynamics;
 
-import electrodynamics.common.eventbus.RegisterWiresEvent;
 import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.block.voxelshapes.ElectrodynamicsVoxelShapes;
 import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
 import electrodynamics.common.event.ServerEventHandler;
+import electrodynamics.common.eventbus.RegisterWiresEvent;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.reloadlistener.GasCollectorChromoCardsRegister;

@@ -4,9 +4,9 @@ import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
-import voltaic.api.ISubtype;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.world.item.Item;
+import voltaic.api.ISubtype;
 
 public enum SubtypeCrystal implements ISubtype {
 	iron(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.iron)),

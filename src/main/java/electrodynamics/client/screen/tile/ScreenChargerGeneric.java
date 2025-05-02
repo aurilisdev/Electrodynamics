@@ -16,8 +16,6 @@ import voltaic.prefab.screen.component.types.ScreenComponentProgress;
 import voltaic.prefab.screen.component.types.guitab.ScreenComponentElectricInfo;
 import voltaic.prefab.screen.component.types.wrapper.WrapperInventoryIO;
 import voltaic.prefab.screen.component.utils.AbstractScreenComponentInfo;
-import voltaic.prefab.tile.components.IComponentType;
-import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.utilities.math.Color;
 
 public class ScreenChargerGeneric extends GenericScreen<ContainerChargerGeneric> {

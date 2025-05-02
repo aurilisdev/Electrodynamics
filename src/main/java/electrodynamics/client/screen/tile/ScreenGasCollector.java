@@ -7,7 +7,6 @@ import electrodynamics.common.inventory.container.tile.ContainerGasCollector;
 import electrodynamics.common.reloadlistener.GasCollectorChromoCardsRegister;
 import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.common.tile.pipelines.gas.TileGasCollector;
-import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;

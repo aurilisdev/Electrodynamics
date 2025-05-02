@@ -6,7 +6,6 @@ import java.util.List;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import electrodynamics.common.tile.compatibility.TileRotaryUnifier;
-import electrodynamics.prefab.utilities.ElectroTextUtils;
 import mekanism.api.chemical.Chemical;
 import mekanism.api.chemical.ChemicalStack;
 import mekanism.client.render.MekanismRenderer;
