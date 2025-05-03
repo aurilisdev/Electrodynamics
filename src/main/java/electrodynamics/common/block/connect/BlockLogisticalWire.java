@@ -2,6 +2,7 @@ package electrodynamics.common.block.connect;
 
 import java.util.HashSet;
 
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.tile.electricitygrid.TileLogisticalWire;
 import net.minecraft.core.BlockPos;
@@ -10,6 +11,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterColorHandlersEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import voltaic.common.block.states.VoltaicBlockStates;
 import voltaic.prefab.utilities.math.Color;
 
@@ -41,5 +46,25 @@ public class BlockLogisticalWire extends BlockWire {
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 		return new TileLogisticalWire(pos, state);
 	}
+	
+	@EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
+    private static class ColorHandler {
+
+        @SubscribeEvent
+        public static void registerColoredBlocks(RegisterColorHandlersEvent.Block event) {
+            WIRES.forEach(block -> event.register((state, level, pos, tintIndex) -> {
+                if (tintIndex == 0) {
+                    return ((BlockLogisticalWire) block).wire.getWireColor().getColor().color();
+                }
+                if (tintIndex != 1) {
+                    return 0xFFFFFFFF;
+                }
+                if (state.getValue(VoltaicBlockStates.LIT)) {
+                    return REDSTONE_ON.color();
+                }
+                return REDSTONE_OFF.color();
+            }, block));
+        }
+    }
 
 }
