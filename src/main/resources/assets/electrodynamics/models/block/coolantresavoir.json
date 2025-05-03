@@ -1,13 +1,13 @@
 {
 	"credit": "skip999",
-	"parent": "minecraft:block/cube_all",
+	"parent" : "minecraft:block/cube_all",
 	"texture_size": [
 		128,
 		128
 	],
 	"textures": {
 		"0": "electrodynamics:block/model/coolantresavoir",
-		"particle": "electrodynamics:block/steelcasing"
+		"particle": "voltaic:block/steelcasing"
 	},
 	"groups": [
 		{
@@ -1534,6 +1534,7 @@
 							"texture": "#0"
 						}
 					}
+				
 				}
 			]
 		},
@@ -1544,7 +1545,7 @@
 				"0": "electrodynamics:block/model/coolantresavoir",
 				"particle": "electrodynamics:block/model/coolantresavoir"
 			},
-			"elements": [
+			"elements" : [
 				{
 					"from": [
 						2,

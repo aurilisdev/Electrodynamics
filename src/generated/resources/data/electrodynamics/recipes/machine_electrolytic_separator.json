@@ -7,7 +7,7 @@
   ],
   "key": {
     "P": {
-      "tag": "forge:plates/steel"
+      "tag": "forge:plates/stainlesssteel"
     },
     "C": {
       "tag": "forge:circuits/advanced"

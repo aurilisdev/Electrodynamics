@@ -13,7 +13,7 @@
       "tag": "forge:gears/bronze"
     },
     "W": {
-      "item": "electrodynamics:wireinsulatedsilver"
+      "tag": "forge:wires/insulated_silver"
     },
     "M": {
       "item": "electrodynamics:wiremill"

@@ -2,5 +2,13 @@
   "parent": "minecraft:item/handheld",
   "textures": {
     "layer0": "electrodynamics:item/tools/electricbaton"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "minecraft:on": 1.0
+      },
+      "model": "electrodynamics:item/electricbatonon"
+    }
+  ]
 }

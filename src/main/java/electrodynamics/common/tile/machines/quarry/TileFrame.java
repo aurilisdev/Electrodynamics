@@ -1,7 +1,6 @@
 package electrodynamics.common.tile.machines.quarry;
 
-import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
@@ -13,11 +12,9 @@ public class TileFrame extends BlockEntity {
 	public BlockPos ownerQuarryPos = null;
 
 	private static final String KEY = "quarrypos";
-	
-	private boolean noParentFlag = false;
 
 	public TileFrame(BlockPos pos, BlockState state) {
-		super(ElectrodynamicsBlockTypes.TILE_QUARRY_FRAME.get(), pos, state);
+		super(ElectrodynamicsTiles.TILE_QUARRY_FRAME.get(), pos, state);
 	}
 
 	public void purposefullyDestroyed() {
@@ -48,20 +45,7 @@ public class TileFrame extends BlockEntity {
 		super.load(tag);
 		if (tag.contains(KEY)) {
 			ownerQuarryPos = NbtUtils.readBlockPos(tag.getCompound(KEY));
-		} else {
-			noParentFlag = true;
 		}
 	}
-	
-	@Override
-	public void onLoad() {
-		super.onLoad();
-		
-		if(!level.isClientSide && ownerQuarryPos == null && noParentFlag) {
-			level.setBlockAndUpdate(getBlockPos(), getBlockState().setValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY, true));
-		}
-		
-	}
-
 
 }

@@ -13,7 +13,7 @@
       "item": "electrodynamics:carbynebattery"
     },
     "W": {
-      "item": "electrodynamics:wirehighlyinsulatedsuperconductive"
+      "tag": "forge:wires/thick_superconductive"
     }
   },
   "result": {

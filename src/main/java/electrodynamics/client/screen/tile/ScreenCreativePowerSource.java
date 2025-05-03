@@ -2,16 +2,17 @@ package electrodynamics.client.screen.tile;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.electricity.formatting.MeasurementUnit;
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
 import electrodynamics.common.tile.electricitygrid.generators.TileCreativePowerSource;
-import electrodynamics.prefab.screen.GenericScreen;
-import electrodynamics.prefab.screen.component.editbox.ScreenComponentEditBox;
-import electrodynamics.prefab.screen.component.types.ScreenComponentSimpleLabel;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.electricity.formatting.MeasurementUnits;
+import voltaic.prefab.screen.GenericScreen;
+import voltaic.prefab.screen.component.editbox.ScreenComponentEditBox;
+import voltaic.prefab.screen.component.types.ScreenComponentSimpleLabel;
+import voltaic.prefab.utilities.math.Color;
 
 public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePowerSource> {
 
@@ -22,12 +23,12 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 
 	public ScreenCreativePowerSource(ContainerCreativePowerSource container, Inventory inv, Component titleIn) {
 		super(container, inv, titleIn);
-		addComponent(voltage = new ScreenComponentEditBox(80, 27, 49, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setMaxLength(6).setFilter(ScreenComponentEditBox.POSITIVE_INTEGER).setResponder(this::setVoltage));
-		addComponent(power = new ScreenComponentEditBox(80, 45, 49, 16, getFontRenderer()).setTextColor(-1).setTextColorUneditable(-1).setFilter(ScreenComponentEditBox.POSITIVE_DECIMAL).setResponder(this::setPower));
-		addComponent(new ScreenComponentSimpleLabel(40, 31, 10, 4210752, ElectroTextUtils.gui("creativepowersource.voltage")));
-		addComponent(new ScreenComponentSimpleLabel(40, 49, 10, 4210752, ElectroTextUtils.gui("creativepowersource.power")));
-		addComponent(new ScreenComponentSimpleLabel(131, 31, 10, 4210752, DisplayUnit.VOLTAGE.getSymbol()));
-		addComponent(new ScreenComponentSimpleLabel(131, 49, 10, 4210752, MeasurementUnit.MEGA.getSymbol().copy().append(DisplayUnit.WATT.getSymbol())));
+		addComponent(voltage = new ScreenComponentEditBox(80, 27, 49, 16, getFontRenderer()).setTextColor(Color.WHITE).setTextColorUneditable(Color.WHITE).setMaxLength(6).setFilter(ScreenComponentEditBox.POSITIVE_INTEGER).setResponder(this::setVoltage));
+		addComponent(power = new ScreenComponentEditBox(80, 45, 49, 16, getFontRenderer()).setTextColor(Color.WHITE).setTextColorUneditable(Color.WHITE).setFilter(ScreenComponentEditBox.POSITIVE_DECIMAL).setResponder(this::setPower));
+		addComponent(new ScreenComponentSimpleLabel(40, 31, 10, Color.TEXT_GRAY, ElectroTextUtils.gui("creativepowersource.voltage")));
+		addComponent(new ScreenComponentSimpleLabel(40, 49, 10, Color.TEXT_GRAY, ElectroTextUtils.gui("creativepowersource.power")));
+		addComponent(new ScreenComponentSimpleLabel(131, 31, 10, Color.TEXT_GRAY, DisplayUnits.VOLTAGE.getSymbol()));
+		addComponent(new ScreenComponentSimpleLabel(131, 49, 10, Color.TEXT_GRAY, MeasurementUnits.MEGA.getSymbol().copy().append(DisplayUnits.WATT.getSymbol())));
 	}
 
 	private void setVoltage(String val) {
@@ -49,15 +50,13 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 
 		}
 
-		TileCreativePowerSource tile = menu.getHostFromIntArray();
+		TileCreativePowerSource tile = menu.getSafeHost();
 
 		if (tile == null) {
 			return;
 		}
 
-		tile.voltage.set(voltage);
-
-		tile.voltage.updateServer();
+		tile.voltage.setValue(voltage);
 	}
 
 	private void setPower(String val) {
@@ -80,27 +79,25 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 
 		}
 
-		TileCreativePowerSource tile = menu.getHostFromIntArray();
+		TileCreativePowerSource tile = menu.getSafeHost();
 
 		if (tile == null) {
 			return;
 		}
 
-		tile.power.set(power);
-
-		tile.power.updateServer();
+		tile.power.setValue(power);
 
 	}
 
 	@Override
-	public void render(PoseStack stack, int mouseX, int mouseY, float partialTicks) {
-		super.render(stack, mouseX, mouseY, partialTicks);
+	public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
+		super.render(poseStack, mouseX, mouseY, partialTicks);
 		if (needsUpdate) {
 			needsUpdate = false;
-			TileCreativePowerSource source = menu.getHostFromIntArray();
+			TileCreativePowerSource source = menu.getSafeHost();
 			if (source != null) {
-				voltage.setValue("" + source.voltage.get());
-				power.setValue("" + source.power.get());
+				voltage.setValue("" + source.voltage.getValue());
+				power.setValue("" + source.power.getValue());
 			}
 		}
 	}

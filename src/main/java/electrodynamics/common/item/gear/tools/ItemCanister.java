@@ -2,12 +2,8 @@ package electrodynamics.common.item.gear.tools;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
-import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.inventory.InventoryTickConsumer;
-import electrodynamics.prefab.utilities.CapabilityUtils;
-import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -37,39 +33,41 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.registries.ForgeRegistries;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.fluid.RestrictedFluidHandlerItemStack;
+import voltaic.api.inventory.InventoryTickConsumer;
+import voltaic.common.item.ItemVoltaic;
+import voltaic.prefab.utilities.CapabilityUtils;
+import voltaic.prefab.utilities.VoltaicTextUtils;
 
-public class ItemCanister extends Item {
+public class ItemCanister extends ItemVoltaic {
 
 	public static final int MAX_FLUID_CAPACITY = 5000;
-	public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 
 	public static final List<InventoryTickConsumer> INVENTORY_TICK_CONSUMERS = new ArrayList<>();
 
-	public ItemCanister(Item.Properties itemProperty) {
-		super(itemProperty);
+	public ItemCanister(Item.Properties properties, Supplier<CreativeModeTab> creativeTab) {
+		super(properties, creativeTab);
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-
-		if (!allowdedIn(group)) {
+		if(!allowdedIn(group)) {
 			return;
 		}
-
 		items.add(new ItemStack(this));
-		if (!CapabilityUtils.isFluidItemNull()) {
+		if (CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null) {
 			for (Fluid liq : ForgeRegistries.FLUIDS.getValues()) {
-				if (liq == Fluids.EMPTY || liq == Fluids.FLOWING_LAVA || liq == Fluids.FLOWING_WATER) {
+				if (liq.isSame(Fluids.EMPTY)) {
 					continue;
 				}
 				ItemStack temp = new ItemStack(this);
-				temp.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-					((RestrictedFluidHandlerItemStack) h).fill(new FluidStack(liq, MAX_FLUID_CAPACITY), FluidAction.EXECUTE);
-				});
+				temp.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).setFluid(new FluidStack(liq, MAX_FLUID_CAPACITY)));
 				items.add(temp);
 
 			}
 		}
+
 	}
 
 	@Override
@@ -80,18 +78,18 @@ public class ItemCanister extends Item {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_FLUID_CAPACITY);
+		return new RestrictedFluidHandlerItemStack.SwapEmpty(stack, stack, MAX_FLUID_CAPACITY);
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		if (!CapabilityUtils.isFluidItemNull()) {
+		if (CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null) {
 			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> {
-				if (!((RestrictedFluidHandlerItemStack) h).getFluid().isEmpty()) {
-					RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
-					tooltip.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(cap.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_FLUID_CAPACITY)).withStyle(ChatFormatting.GRAY));
-					tooltip.add(cap.getFluid().getDisplayName().copy().withStyle(ChatFormatting.DARK_GRAY));
-				}
+				RestrictedFluidHandlerItemStack restricted = (RestrictedFluidHandlerItemStack) h;
+				if(!restricted.getFluid().isEmpty()) {
+		            tooltip.add(restricted.getFluid().getDisplayName().copy().withStyle(ChatFormatting.GRAY));
+		        }
+		        tooltip.add(VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(restricted.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_FLUID_CAPACITY)).withStyle(ChatFormatting.DARK_GRAY));
 			});
 		}
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
@@ -107,7 +105,7 @@ public class ItemCanister extends Item {
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().getFluid().isSame(EMPTY_FLUID)).orElse(false);
+		return stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(h -> !((RestrictedFluidHandlerItemStack) h).getFluid().isEmpty()).orElse(false);
 	}
 
 	@Override
@@ -117,43 +115,43 @@ public class ItemCanister extends Item {
 	}
 
 	public void useCanister(Level world, Player player, InteractionHand hand) {
-
+		
 		ItemStack stack = player.getItemInHand(hand);
-
+		
 		HitResult trace = getPlayerPOVHitResult(world, player, net.minecraft.world.level.ClipContext.Fluid.ANY);
-
-		if (world.isClientSide || trace.getType() == Type.MISS || trace.getType() == Type.ENTITY) {
+		
+		if(world.isClientSide || trace.getType() == Type.MISS || trace.getType() == Type.ENTITY) {
 			return;
 		}
-
+		
 		BlockHitResult blockTrace = (BlockHitResult) trace;
-
+		
 		BlockPos pos = blockTrace.getBlockPos();
-
+		
 		BlockState state = world.getBlockState(pos);
-
-		if (!state.getFluidState().isSource() || state.getFluidState().isEmpty()) {
+		
+		if(!state.getFluidState().isSource() || state.getFluidState().isEmpty()) {
 			return;
 		}
-
+		
 		FluidStack sourceFluid = new FluidStack(state.getFluidState().getType(), 1000);
-
-		if (!CapabilityUtils.hasFluidItemCap(stack)) {
+		
+		IFluidHandlerItem handler = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).orElse(CapabilityUtils.EMPTY_FLUID_ITEM);
+		
+		if(handler == CapabilityUtils.EMPTY_FLUID_ITEM) {
 			return;
 		}
-
-		IFluidHandlerItem handler = CapabilityUtils.getFluidHandlerItem(stack);
-
+		
 		int accepted = handler.fill(sourceFluid, FluidAction.SIMULATE);
-
-		if (accepted < 1000) {
+		
+		if(accepted < 1000) {
 			return;
 		}
-
+		
 		handler.fill(sourceFluid, FluidAction.EXECUTE);
-
+		
 		world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-
+		
 		world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
 	}
 

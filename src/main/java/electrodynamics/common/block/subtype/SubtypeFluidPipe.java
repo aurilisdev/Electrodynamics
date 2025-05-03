@@ -1,35 +1,36 @@
 package electrodynamics.common.block.subtype;
 
-import electrodynamics.api.ISubtype;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.common.Tags;
+import voltaic.api.ISubtype;
+import voltaic.api.network.cable.type.IFluidPipe;
 
-public enum SubtypeFluidPipe implements ISubtype {
-	copper(5000, Tags.Items.INGOTS_COPPER),
-	steel(10000, ElectrodynamicsTags.Items.INGOT_STEEL);
+public enum SubtypeFluidPipe implements ISubtype, IFluidPipe {
+    copper(5000),
+    steel(10000);
 
-	public final long maxTransfer;
-	public final TagKey<Item> sourceIngot;
+    private final long maxTransfer;
 
-	SubtypeFluidPipe(long maxTransfer, TagKey<Item> sourceIngot) {
-		this.maxTransfer = maxTransfer;
-		this.sourceIngot = sourceIngot;
-	}
+    SubtypeFluidPipe(long maxTransfer) {
+        this.maxTransfer = maxTransfer;
 
-	@Override
-	public String tag() {
-		return "pipe" + name();
-	}
+    }
 
-	@Override
-	public String forgeTag() {
-		return tag();
-	}
+    @Override
+    public String tag() {
+        return "pipe" + name();
+    }
 
-	@Override
-	public boolean isItem() {
-		return false;
-	}
+    @Override
+    public String forgeTag() {
+        return tag();
+    }
+
+    @Override
+    public boolean isItem() {
+        return false;
+    }
+
+    @Override
+    public long getMaxTransfer() {
+        return maxTransfer;
+    }
 }

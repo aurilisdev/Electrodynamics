@@ -2,20 +2,22 @@ package electrodynamics.registers;
 
 import java.util.function.Supplier;
 
-import electrodynamics.api.ISubtype;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.blockitem.BlockItemDescriptable;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.common.blockitem.BlockItemDescriptable;
+import voltaic.prefab.utilities.VoltaicTextUtils;
 
 public class UnifiedElectrodynamicsRegister {
 
 	public static void register(IEventBus bus) {
 		ElectrodynamicsBlocks.BLOCKS.register(bus);
-		ElectrodynamicsBlockTypes.BLOCK_ENTITY_TYPES.register(bus);
+		ElectrodynamicsTiles.BLOCK_ENTITY_TYPES.register(bus);
 		ElectrodynamicsItems.ITEMS.register(bus);
 		ElectrodynamicsFluids.FLUIDS.register(bus);
 		ElectrodynamicsEntities.ENTITIES.register(bus);
@@ -24,81 +26,85 @@ public class UnifiedElectrodynamicsRegister {
 		ElectrodynamicsMenuTypes.MENU_TYPES.register(bus);
 		ElectrodynamicsSounds.SOUNDS.register(bus);
 		ElectrodynamicsRuleTestTypes.RULE_TEST_TYPES.register(bus);
+		ElectrodynamicsRecipies.RECIPE_TYPES.register(bus);
+		ElectrodynamicsRecipies.RECIPE_SERIALIZER.register(bus);
 	}
 
 	static {
 		// machines
 		// cleaner and simpler is it not?
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnace), ElectroTextUtils.voltageTooltip(120));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacedouble), ElectroTextUtils.voltageTooltip(240));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacetriple), ElectroTextUtils.voltageTooltip(480));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremill), ElectroTextUtils.voltageTooltip(120));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilldouble), ElectroTextUtils.voltageTooltip(240));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilltriple), ElectroTextUtils.voltageTooltip(480));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusher), ElectroTextUtils.voltageTooltip(240));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusherdouble), ElectroTextUtils.voltageTooltip(480));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrushertriple), ElectroTextUtils.voltageTooltip(960));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrinder), ElectroTextUtils.voltageTooltip(120));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrinderdouble), ElectroTextUtils.voltageTooltip(240));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrindertriple), ElectroTextUtils.voltageTooltip(480));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.oxidationfurnace), ElectroTextUtils.voltageTooltip(240));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralwasher), ElectroTextUtils.voltageTooltip(480));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalmixer), ElectroTextUtils.voltageTooltip(240));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalcrystallizer), ElectroTextUtils.voltageTooltip(240));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.energizedalloyer), ElectroTextUtils.voltageTooltip(480));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.reinforcedalloyer), ElectroTextUtils.voltageTooltip(960));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.lathe), ElectroTextUtils.voltageTooltip(240));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargerlv), ElectroTextUtils.voltageTooltip(120));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargermv), ElectroTextUtils.voltageTooltip(240));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargerhv), ElectroTextUtils.voltageTooltip(480));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.fermentationplant), ElectroTextUtils.voltageTooltip(120));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricpump), ElectroTextUtils.voltageTooltip(120));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.electrolyticseparator), ElectroTextUtils.voltageTooltip(240));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnace), ElectroTextUtils.voltageTooltip(120));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacedouble), ElectroTextUtils.voltageTooltip(240));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricarcfurnacetriple), ElectroTextUtils.voltageTooltip(480));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricfurnace), VoltaicTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricfurnacedouble), VoltaicTextUtils.voltageTooltip(240));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricfurnacetriple), VoltaicTextUtils.voltageTooltip(480));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.wiremill), VoltaicTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.wiremilldouble), VoltaicTextUtils.voltageTooltip(240));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.wiremilltriple), VoltaicTextUtils.voltageTooltip(480));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralcrusher), VoltaicTextUtils.voltageTooltip(240));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralcrusherdouble), VoltaicTextUtils.voltageTooltip(480));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralcrushertriple), VoltaicTextUtils.voltageTooltip(960));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralgrinder), VoltaicTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralgrinderdouble), VoltaicTextUtils.voltageTooltip(240));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralgrindertriple), VoltaicTextUtils.voltageTooltip(480));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.oxidationfurnace), VoltaicTextUtils.voltageTooltip(240));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralwasher), VoltaicTextUtils.voltageTooltip(480));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chemicalmixer), VoltaicTextUtils.voltageTooltip(240));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chemicalcrystallizer), VoltaicTextUtils.voltageTooltip(240));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.energizedalloyer), VoltaicTextUtils.voltageTooltip(480));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.reinforcedalloyer), VoltaicTextUtils.voltageTooltip(960));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.lathe), VoltaicTextUtils.voltageTooltip(240));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chargerlv), VoltaicTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chargermv), VoltaicTextUtils.voltageTooltip(240));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chargerhv), VoltaicTextUtils.voltageTooltip(480));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fermentationplant), VoltaicTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricpump), VoltaicTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electrolyticseparator), VoltaicTextUtils.voltageTooltip(240));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricarcfurnace), VoltaicTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricarcfurnacedouble), VoltaicTextUtils.voltageTooltip(240));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricarcfurnacetriple), VoltaicTextUtils.voltageTooltip(480));
+
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fluidpipepump), VoltaicTextUtils.voltageTooltip(120));
+
 		// generators
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.solarpanel), ElectroTextUtils.voltageTooltip(120));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedsolarpanel), ElectroTextUtils.voltageTooltip(240));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.thermoelectricgenerator), ElectroTextUtils.voltageTooltip(120));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.combustionchamber), ElectroTextUtils.voltageTooltip(120));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.hydroelectricgenerator), ElectroTextUtils.voltageTooltip(120));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.windmill), ElectroTextUtils.voltageTooltip(120));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.coalgenerator), ElectroTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.solarpanel), VoltaicTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.advancedsolarpanel), VoltaicTextUtils.voltageTooltip(240));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.thermoelectricgenerator), VoltaicTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.combustionchamber), VoltaicTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.hydroelectricgenerator), VoltaicTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.windmill), VoltaicTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.coalgenerator), VoltaicTextUtils.voltageTooltip(120));
 
 		// misc
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.downgradetransformer), ElectroTextUtils.tooltip("transformer.energyloss"));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.upgradetransformer), ElectroTextUtils.tooltip("transformer.energyloss"));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.batterybox), ElectroTextUtils.voltageTooltip(120));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.lithiumbatterybox), ElectroTextUtils.voltageTooltip(240));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.carbynebatterybox), ElectroTextUtils.voltageTooltip(480));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativepowersource), ElectroTextUtils.tooltip("creativepowersource.joke"));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativefluidsource), ElectroTextUtils.tooltip("creativefluidsource.joke"));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.fluidvoid), ElectroTextUtils.tooltip("fluidvoid"));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.tanksteel), ElectroTextUtils.tooltip("fluidtank.capacity", ChatFormatter.getChatDisplayShort(8, DisplayUnit.BUCKETS)));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.tankreinforced), ElectroTextUtils.tooltip("fluidtank.capacity", ChatFormatter.getChatDisplayShort(32, DisplayUnit.BUCKETS)));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.tankhsla), ElectroTextUtils.tooltip("fluidtank.capacity", ChatFormatter.getChatDisplayShort(128, DisplayUnit.BUCKETS)));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockSeismicMarker, ElectroTextUtils.tooltip("seismicmarker.redstone"));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.seismicrelay), ElectroTextUtils.tooltip("seismicrelay.use"));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.coolantresavoir), ElectroTextUtils.tooltip("coolantresavoir.place"));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.motorcomplex), ElectroTextUtils.tooltip("motorcomplex.use"));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockFrame, ElectroTextUtils.tooltip("blockframe.joke"));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockFrameCorner, ElectroTextUtils.tooltip("blockframe.joke"));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.getBlock(SubtypeMachine.quarry), ElectroTextUtils.tooltip("quarry.power"));
-		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.blockLogisticalManager, ElectroTextUtils.tooltip("logisticalmanager.use"));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.downgradetransformer), ElectroTextUtils.tooltip("transformer.energyloss", ChatFormatter.getChatDisplayShort(ElectroConstants.TRANSFORMER_EFFICIENCY * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.upgradetransformer), ElectroTextUtils.tooltip("transformer.energyloss", ChatFormatter.getChatDisplayShort(ElectroConstants.TRANSFORMER_EFFICIENCY * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.advanceddowngradetransformer), ElectroTextUtils.tooltip("transformer.energyloss", ChatFormatter.getChatDisplayShort(ElectroConstants.TRANSFORMER_EFFICIENCY * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.advancedupgradetransformer), ElectroTextUtils.tooltip("transformer.energyloss", ChatFormatter.getChatDisplayShort(ElectroConstants.TRANSFORMER_EFFICIENCY * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.circuitbreaker), ElectroTextUtils.tooltip("transformer.energyloss", ChatFormatter.getChatDisplayShort(ElectroConstants.CIRCUITBREAKER_EFFICIENCY * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.relay), ElectroTextUtils.tooltip("transformer.energyloss", ChatFormatter.getChatDisplayShort(ElectroConstants.RELAY_EFFICIENCY * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.currentregulator), ElectroTextUtils.tooltip("transformer.energyloss", ChatFormatter.getChatDisplayShort(ElectroConstants.CURRENTREGULATOR_EFFICIENCY * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.batterybox), VoltaicTextUtils.voltageTooltip(120));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.lithiumbatterybox), VoltaicTextUtils.voltageTooltip(240));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.carbynebatterybox), VoltaicTextUtils.voltageTooltip(480));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.creativepowersource), ElectroTextUtils.tooltip("creativepowersource.joke").withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.creativefluidsource), ElectroTextUtils.tooltip("creativefluidsource.joke").withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fluidvoid), ElectroTextUtils.tooltip("fluidvoid").withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.tanksteel), ElectroTextUtils.tooltip("fluidtank.capacity", ChatFormatter.getChatDisplayShort(8, DisplayUnits.BUCKETS).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.tankreinforced), ElectroTextUtils.tooltip("fluidtank.capacity", ChatFormatter.getChatDisplayShort(32, DisplayUnits.BUCKETS).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.tankhsla), ElectroTextUtils.tooltip("fluidtank.capacity", ChatFormatter.getChatDisplayShort(128, DisplayUnits.BUCKETS).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCK_SEISMICMARKER.get(), ElectroTextUtils.tooltip("seismicmarker.redstone").withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.seismicrelay), ElectroTextUtils.tooltip("seismicrelay.use").withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.coolantresavoir), ElectroTextUtils.tooltip("coolantresavoir.place").withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.motorcomplex), ElectroTextUtils.tooltip("motorcomplex.use").withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCK_FRAME.get(), ElectroTextUtils.tooltip("blockframe.joke").withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCK_FRAME_CORNER.get(), ElectroTextUtils.tooltip("blockframe.joke").withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.quarry), ElectroTextUtils.tooltip("quarry.power").withStyle(ChatFormatting.DARK_GRAY));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCK_LOGISTICALMANAGER.get(), ElectroTextUtils.tooltip("logisticalmanager.use").withStyle(ChatFormatting.DARK_GRAY));
 
-	}
+		// BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.gasvalve),
+		// ElectroTextUtils.tooltip("gasvalve").withStyle(ChatFormatting.DARK_GRAY));
+		// BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fluidvalve),
+		// ElectroTextUtils.tooltip("fluidvalve"));
+		BlockItemDescriptable.addDescription(() -> ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.potentiometer), ElectroTextUtils.tooltip("potentiometer.use").withStyle(ChatFormatting.DARK_GRAY));
 
-	public static <T> Supplier<? extends T> supplier(Supplier<? extends T> entry) {
-		return entry;
-	}
-
-	public static <T> Supplier<? extends T> supplier(Supplier<? extends T> entry, ISubtype en) {
-		return entry;
-	}
-
-	public static Block getSafeBlock(ISubtype type) {
-		return ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(type).get();
 	}
 
 }

@@ -1,8 +1,8 @@
 package electrodynamics.common.settings;
 
-import electrodynamics.api.configuration.BooleanValue;
-import electrodynamics.api.configuration.Configuration;
-import electrodynamics.api.configuration.DoubleValue;
+import voltaic.api.configuration.BooleanValue;
+import voltaic.api.configuration.Configuration;
+import voltaic.api.configuration.DoubleValue;
 
 @Configuration(name = "electrodynamics_ore_config")
 public class OreConfig {
@@ -91,4 +91,5 @@ public class OreConfig {
 	// Multipliers
 	@DoubleValue(def = 1)
 	public static double ORE_GENERATION_MULTIPLIER = 1;
+
 }

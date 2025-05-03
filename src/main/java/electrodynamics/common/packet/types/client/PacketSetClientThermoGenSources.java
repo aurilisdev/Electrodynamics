@@ -3,7 +3,6 @@ package electrodynamics.common.packet.types.client;
 import java.util.HashMap;
 import java.util.function.Supplier;
 
-import electrodynamics.common.packet.BarrierMethods;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,7 +19,7 @@ public class PacketSetClientThermoGenSources {
 	public static void handle(PacketSetClientThermoGenSources message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			BarrierMethods.handlerClientThermoGenHeatSources(message.heatSources);
+			ClientBarrierMethods.handlerClientThermoGenHeatSources(message.heatSources);
 		});
 		ctx.setPacketHandled(true);
 	}
@@ -41,5 +40,5 @@ public class PacketSetClientThermoGenSources {
 		}
 		return new PacketSetClientThermoGenSources(values);
 	}
-	
+
 }

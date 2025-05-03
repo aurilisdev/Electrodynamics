@@ -2,7 +2,7 @@ package electrodynamics.client.keys;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.client.ClientRegistry;
 
@@ -33,7 +33,7 @@ public class KeyBinds {
 	}
 
 	private static KeyMapping registerKey(String name, String category, int keyCode) {
-		final var key = new KeyMapping("key." + References.ID + "." + name, keyCode, category);
+		final var key = new KeyMapping("key." + Electrodynamics.ID + "." + name, keyCode, category);
 		ClientRegistry.registerKeyBinding(key);
 		return key;
 	}

@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "electrodynamics:wirehighlyinsulatedtin",
+    "electrodynamics:wirehighlyinsulatedtinred",
+    "electrodynamics:wirehighlyinsulatedtinwhite",
+    "electrodynamics:wirehighlyinsulatedtingreen",
+    "electrodynamics:wirehighlyinsulatedtinblue",
+    "electrodynamics:wirehighlyinsulatedtinyellow",
+    "electrodynamics:wirehighlyinsulatedtinbrown"
+  ]
+}

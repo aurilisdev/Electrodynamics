@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "electrodynamics:wirelogisticssilver",
+    "electrodynamics:wirelogisticssilverred",
+    "electrodynamics:wirelogisticssilverwhite",
+    "electrodynamics:wirelogisticssilvergreen",
+    "electrodynamics:wirelogisticssilverblue",
+    "electrodynamics:wirelogisticssilveryellow",
+    "electrodynamics:wirelogisticssilverbrown"
+  ]
+}

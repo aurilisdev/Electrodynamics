@@ -2,13 +2,13 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "electrodynamics:wireinsulatedcopper"
+      "tag": "forge:wires/insulated_copper"
     },
     {
-      "item": "electrodynamics:wireinsulatedcopper"
+      "tag": "forge:wires/insulated_copper"
     },
     {
-      "item": "electrodynamics:wireinsulatedcopper"
+      "tag": "forge:wires/insulated_copper"
     },
     {
       "item": "electrodynamics:insulation"

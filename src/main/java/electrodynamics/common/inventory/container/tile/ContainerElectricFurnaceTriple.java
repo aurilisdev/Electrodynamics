@@ -1,26 +1,22 @@
 package electrodynamics.common.inventory.container.tile;
 
 import electrodynamics.common.tile.machines.furnace.TileElectricFurnaceTriple;
-import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
-import electrodynamics.prefab.inventory.container.slot.item.SlotGeneric;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotRestricted;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
-import electrodynamics.prefab.utilities.math.Color;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
+import voltaic.prefab.inventory.container.slot.item.SlotGeneric;
+import voltaic.prefab.inventory.container.slot.item.type.SlotRestricted;
+import voltaic.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
+import voltaic.prefab.utilities.math.Color;
 
 public class ContainerElectricFurnaceTriple extends GenericContainerBlockEntity<TileElectricFurnaceTriple> {
 
 	public ContainerElectricFurnaceTriple(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(9));
-	}
-
-	public ContainerElectricFurnaceTriple(int id, Inventory playerinv, Container inventory) {
-		this(id, playerinv, inventory, new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainer(9), new SimpleContainerData(3));
 	}
 
 	public ContainerElectricFurnaceTriple(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
@@ -29,7 +25,7 @@ public class ContainerElectricFurnaceTriple extends GenericContainerBlockEntity<
 
 	@Override
 	public void addInventorySlots(Container inv, Inventory playerinv) {
-		playerInvOffset = 20;
+		setPlayerInvOffset(20);
 		addSlot(new SlotGeneric(inv, nextIndex(), 56, 24).setIOColor(new Color(0, 240, 255, 255)));
 		addSlot(new SlotGeneric(inv, nextIndex(), 56, 44).setIOColor(new Color(0, 240, 255, 255)));
 		addSlot(new SlotGeneric(inv, nextIndex(), 56, 64).setIOColor(new Color(0, 240, 255, 255)));

@@ -17,7 +17,7 @@
     }
   },
   "output": {
-    "fluid": "electrodynamics:fluidhydrogenfluoride",
+    "fluid": "electrodynamics:fluidhydrofluoricacid",
     "amount": 1000
   },
   "experience": 0.0

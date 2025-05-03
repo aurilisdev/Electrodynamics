@@ -17,8 +17,10 @@
   "itembi": {
     "count": 1,
     "0": {
-      "item": "electrodynamics:dustsulfur",
-      "count": 1,
+      "item": {
+        "id": "electrodynamics:dustsulfur",
+        "Count": 1
+      },
       "chance": 0.3
     }
   }

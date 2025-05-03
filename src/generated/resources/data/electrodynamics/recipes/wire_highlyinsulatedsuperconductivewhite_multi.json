@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "WDW",
+    "WWW"
+  ],
+  "key": {
+    "D": {
+      "tag": "forge:dyes/white"
+    },
+    "W": {
+      "tag": "forge:wires/thick_superconductive"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:wirehighlyinsulatedsuperconductivewhite",
+    "count": 8
+  }
+}

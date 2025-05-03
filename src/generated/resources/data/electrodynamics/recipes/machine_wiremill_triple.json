@@ -13,7 +13,7 @@
       "tag": "forge:gears/steel"
     },
     "W": {
-      "item": "electrodynamics:wireceramicinsulatedsilver"
+      "tag": "forge:wires/ceramic_silver"
     },
     "M": {
       "item": "electrodynamics:wiremilldouble"
