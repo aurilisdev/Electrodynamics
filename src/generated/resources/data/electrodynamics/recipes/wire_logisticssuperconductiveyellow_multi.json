@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "WDW",
+    "WWW"
+  ],
+  "key": {
+    "D": {
+      "tag": "forge:dyes/yellow"
+    },
+    "W": {
+      "tag": "forge:wires/logistical_superconductive"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:wirelogisticssuperconductiveyellow",
+    "count": 8
+  }
+}

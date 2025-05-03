@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "electrodynamics:wireceramicinsulatedsilver",
+    "electrodynamics:wireceramicinsulatedsilverred",
+    "electrodynamics:wireceramicinsulatedsilverwhite",
+    "electrodynamics:wireceramicinsulatedsilvergreen",
+    "electrodynamics:wireceramicinsulatedsilverblue",
+    "electrodynamics:wireceramicinsulatedsilveryellow",
+    "electrodynamics:wireceramicinsulatedsilverbrown"
+  ]
+}

@@ -1,64 +1,29 @@
 package electrodynamics.registers;
 
-import static electrodynamics.registers.UnifiedElectrodynamicsRegister.supplier;
-
-import java.util.HashMap;
-
-import electrodynamics.api.ISubtype;
-import electrodynamics.api.References;
-import electrodynamics.common.fluid.types.gas.FluidHydrogen;
-import electrodynamics.common.fluid.types.gas.FluidOxygen;
-import electrodynamics.common.fluid.types.liquid.FluidClay;
-import electrodynamics.common.fluid.types.liquid.FluidConcrete;
-import electrodynamics.common.fluid.types.liquid.FluidEthanol;
-import electrodynamics.common.fluid.types.liquid.FluidHydraulic;
-import electrodynamics.common.fluid.types.liquid.FluidHydrogenFluoride;
-import electrodynamics.common.fluid.types.liquid.FluidPolyethylene;
-import electrodynamics.common.fluid.types.liquid.FluidSulfate;
-import electrodynamics.common.fluid.types.liquid.FluidSulfuricAcid;
-import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
+import electrodynamics.Electrodynamics;
+import electrodynamics.common.fluid.subtype.SubtypeSulfateFluid;
+import electrodynamics.common.fluid.types.FluidSulfate;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import voltaic.api.registration.BulkRegistryObject;
+import voltaic.common.fluid.FluidNonPlaceable;
+import voltaic.prefab.utilities.math.Color;
 
 public class ElectrodynamicsFluids {
-	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, References.ID);
+	public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, Electrodynamics.ID);
 
-	public static final HashMap<ISubtype, RegistryObject<Fluid>> SUBTYPEFLUID_REGISTRY_MAP = new HashMap<>();
-
-	// Liquids
-	public static FluidEthanol fluidEthanol;
-	public static FluidSulfuricAcid fluidSulfuricAcid;
-	public static FluidHydrogenFluoride fluidHydrogenFluoride;
-	public static FluidPolyethylene fluidPolyethylene;
-	public static FluidConcrete fluidCement;
-	public static FluidClay fluidClay;
-	public static FluidHydraulic fluidHydraulic;
-
-	// Gasses
-	public static FluidOxygen fluidOxygen;
-	public static FluidHydrogen fluidHydrogen;
-
-	static {
-		// Liquids
-		FLUIDS.register("fluidethanol", supplier(() -> fluidEthanol = new FluidEthanol()));
-		FLUIDS.register("fluidsulfuricacid", supplier(() -> fluidSulfuricAcid = new FluidSulfuricAcid()));
-		FLUIDS.register("fluidhydrogenfluoride", supplier(() -> fluidHydrogenFluoride = new FluidHydrogenFluoride()));
-		FLUIDS.register("fluidpolyethylene", supplier(() -> fluidPolyethylene = new FluidPolyethylene()));
-		FLUIDS.register("fluidconcrete", supplier(() -> fluidCement = new FluidConcrete()));
-		FLUIDS.register("fluidclay", supplier(() -> fluidClay = new FluidClay()));
-		FLUIDS.register("fluidhydraulic", supplier(() -> fluidHydraulic = new FluidHydraulic()));
-		for (SubtypeSulfateFluid mineral : SubtypeSulfateFluid.values()) {
-			SUBTYPEFLUID_REGISTRY_MAP.put(mineral, FLUIDS.register("fluidsulfate" + mineral.name(), supplier(() -> new FluidSulfate(mineral))));
-		}
-		// Gasses
-		FLUIDS.register("fluidoxygen", supplier(() -> fluidOxygen = new FluidOxygen()));
-		FLUIDS.register("fluidhydrogen", supplier(() -> fluidHydrogen = new FluidHydrogen()));
-
-	}
-
-	public static Fluid getFluid(ISubtype value) {
-		return SUBTYPEFLUID_REGISTRY_MAP.get(value).get();
-	}
+	public static final RegistryObject<FluidNonPlaceable> FLUID_AMMONIA = FLUIDS.register("fluidammonia", () -> new FluidNonPlaceable(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), Electrodynamics.ID, "fluidammonia", "ammonia", Color.WHITE));//new Color(255, 242, 252, 255)
+	public static final RegistryObject<FluidNonPlaceable> FLUID_CLAY = FLUIDS.register("fluidclay", () -> new FluidNonPlaceable(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), Electrodynamics.ID, "fluidclay", "clay", Color.WHITE)); //new Color(105, 110, 121, 255)
+	public static final RegistryObject<FluidNonPlaceable> FLUID_ETHANOL = FLUIDS.register("fluidethanol", () -> new FluidNonPlaceable(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), Electrodynamics.ID, "fluidethanol", "ethanol", new Color(116, 121, 45, 230)));
+	public static final RegistryObject<FluidNonPlaceable> FLUID_HYDRAULIC = FLUIDS.register("fluidhydraulic", () -> new FluidNonPlaceable(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(),Electrodynamics.ID, "fluidhydraulic", "hydraulic", Color.WHITE)); //new Color(202, 191, 11, 255)
+	public static final RegistryObject<FluidNonPlaceable> FLUID_HYDROFLUORICACID = FLUIDS.register("fluidhydrofluoricacid", () -> new FluidNonPlaceable(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), Electrodynamics.ID, "fluidhydrofluoricacid", "hydrofluoricacid", new Color(152, 135, 0, 233)));
+	public static final RegistryObject<FluidNonPlaceable> FLUID_HYDROGEN = FLUIDS.register("fluidhydrogen", () -> new FluidNonPlaceable(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), Electrodynamics.ID, "fluidhydrogen", "hydrogen", Color.WHITE));
+	public static final RegistryObject<FluidNonPlaceable> FLUID_OXYGEN = FLUIDS.register("fluidoxygen", () -> new FluidNonPlaceable(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), Electrodynamics.ID, "fluidoxygen", "oxygen", new Color(139, 203, 239, 255)));
+	public static final RegistryObject<FluidNonPlaceable> FLUID_POLYETHYLENE = FLUIDS.register("fluidpolyethylene", () -> new FluidNonPlaceable(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), Electrodynamics.ID, "fluidpolyethylene", "polyethylene", new Color(140, 140, 140, 233)));
+	public static final RegistryObject<FluidNonPlaceable> FLUID_SULFURICACID = FLUIDS.register("fluidsulfuricacid", () -> new FluidNonPlaceable(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), Electrodynamics.ID, "fluidsulfuricacid", "sulfuricacid", new Color(152, 135, 0, 233)));
+	public static final RegistryObject<FluidNonPlaceable> FLUID_CONCRETE = FLUIDS.register("fluidconcrete", () -> new FluidNonPlaceable(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), Electrodynamics.ID, "fluidconcrete", "concrete", Color.WHITE));
+	
+	public static final BulkRegistryObject<FluidSulfate, SubtypeSulfateFluid> FLUIDS_SULFATE = new BulkRegistryObject<>(SubtypeSulfateFluid.values(), subtype -> FLUIDS.register("fluidsulfate" + subtype.name(), () -> new FluidSulfate(subtype, Electrodynamics.ID, "fluidsulfate" + subtype.name(), "sulfate/" + subtype.name(), Color.WHITE)));
 }

@@ -6,16 +6,17 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 
-import electrodynamics.client.ClientRegister;
+import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.common.tile.machines.quarry.TileMotorComplex;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentTickable;
+import voltaic.prefab.utilities.RenderingUtils;
 
 public class RenderMotorComplex extends AbstractTileRenderer<TileMotorComplex> {
 
@@ -32,11 +33,11 @@ public class RenderMotorComplex extends AbstractTileRenderer<TileMotorComplex> {
 		float clientTicks = tile.<ComponentTickable>getComponent(IComponentType.Tickable).getTicks();
 		float progressDegrees = 0.0F;
 
-		if (tile.isPowered.get()) {
-			progressDegrees = 360.0f * (float) Math.sin(clientTicks / tile.speed.get());
+		if (tile.isPowered.getValue()) {
+			progressDegrees = 360.0f * (float) Math.sin(clientTicks / tile.speed.getValue());
 		}
 
-		BakedModel shaft = getModel(ClientRegister.MODEL_MOTORCOMPLEXROTOR);
+		BakedModel shaft = getModel(ElectrodynamicsClientRegister.MODEL_MOTORCOMPLEXROTOR);
 
 		switch (facing) {
 		case EAST -> {

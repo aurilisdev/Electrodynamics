@@ -4,20 +4,16 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import electrodynamics.api.References;
-import electrodynamics.api.capability.types.fluid.RestrictedFluidHandlerItemStack;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.client.ClientRegister;
+import electrodynamics.Electrodynamics;
+import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.client.keys.KeyBinds;
-import electrodynamics.client.render.model.armor.types.ModelJetpack;
+import electrodynamics.client.model.armor.ModelJetpack;
 import electrodynamics.common.item.gear.armor.ICustomArmor;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.client.PacketRenderJetpackParticles;
 import electrodynamics.common.packet.types.server.PacketJetpackFlightServer;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.prefab.utilities.CapabilityUtils;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.registers.ElectrodynamicsCreativeTabs;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.HumanoidModel;
@@ -49,16 +45,24 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.registries.ForgeRegistries;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.fluid.RestrictedFluidHandlerItemStack;
+import voltaic.common.item.gear.ItemVoltaicArmor;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.prefab.utilities.NBTUtils;
+import voltaic.prefab.utilities.VoltaicTextUtils;
 
-public class ItemJetpack extends ArmorItem {
+public class ItemJetpack extends ItemVoltaicArmor {
 
+	// public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 	public static final int MAX_CAPACITY = 30000;
 
 	public static final int USAGE_PER_TICK = 1;
 	public static final double VERT_SPEED_INCREASE = 0.5;
 	public static final double TERMINAL_VERTICAL_VELOCITY = 1;
 
-	private static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/jetpack.png";
+	private static final String ARMOR_TEXTURE_LOCATION = Electrodynamics.ID + ":textures/model/armor/jetpack.png";
 
 	public static final float OFFSET = 0.1F;
 
@@ -66,7 +70,7 @@ public class ItemJetpack extends ArmorItem {
 	public static final String WAS_HURT_KEY = "washurt";
 
 	public ItemJetpack() {
-		super(Jetpack.JETPACK, EquipmentSlot.CHEST, new Item.Properties().tab(References.CORETAB).stacksTo(1));
+		super(Jetpack.JETPACK, EquipmentSlot.CHEST, new Item.Properties().stacksTo(1), () -> ElectrodynamicsCreativeTabs.MAIN);
 	}
 
 	@Override
@@ -76,7 +80,7 @@ public class ItemJetpack extends ArmorItem {
 			@Override
 			public HumanoidModel<?> getArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-				ModelJetpack<LivingEntity> model = new ModelJetpack<>(ClientRegister.JETPACK.bakeRoot());
+				ModelJetpack<LivingEntity> model = new ModelJetpack<>(ElectrodynamicsClientRegister.JETPACK.bakeRoot());
 
 				model.crouching = properties.crouching;
 				model.riding = properties.riding;
@@ -89,23 +93,21 @@ public class ItemJetpack extends ArmorItem {
 
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new RestrictedFluidHandlerItemStack(stack, stack, MAX_CAPACITY).setValidator(getFuelPredicate());
+		return new RestrictedFluidHandlerItemStack(stack, MAX_CAPACITY).setValidator(getValidator());
 	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab tab, NonNullList<ItemStack> items) {
-
-		if (!allowdedIn(tab)) {
-			return;
-		}
-
-		items.add(new ItemStack(this));
-		if (!CapabilityUtils.isFluidItemNull()) {
+		super.fillItemCategory(tab, items);
+		if (CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null && allowdedIn(tab)) {
 			ItemStack full = new ItemStack(this);
-			full.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).fill(new FluidStack(ElectrodynamicsFluids.fluidHydrogen, MAX_CAPACITY), FluidAction.EXECUTE));
+
+			full.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(cap -> cap.fill(new FluidStack(ElectrodynamicsFluids.FLUID_HYDROGEN.get(), ItemJetpack.MAX_CAPACITY), FluidAction.EXECUTE));
+
 			items.add(full);
 
 		}
+
 	}
 
 	@Override
@@ -115,18 +117,8 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	public static void staticAppendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flagIn) {
-		if (!CapabilityUtils.isFluidItemNull()) {
-
-			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(cap -> {
-				FluidStack fluid = cap.getFluidInTank(0);
-				// tooltips.add(gas.getGas().getDescription());
-				if (fluid.isEmpty()) {
-					tooltips.add(ElectroTextUtils.ratio(new TextComponent("0"), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)));
-				} else {
-					tooltips.add(ElectroTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(fluid.getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)));
-				}
-
-			});
+		if (CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY != null) {
+			stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).ifPresent(handler -> VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(handler.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY));
 		}
 		// cheesing sync issues one line of code at a time
 		if (stack.hasTag()) {
@@ -142,7 +134,7 @@ public class ItemJetpack extends ArmorItem {
 		case 1 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("jetpack.modehover").withStyle(ChatFormatting.AQUA));
 		case 2 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("jetpack.modeelytra").withStyle(ChatFormatting.YELLOW));
 		case 3 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("jetpack.modeoff").withStyle(ChatFormatting.RED));
-		default -> ElectroTextUtils.empty();
+		default -> TextComponent.EMPTY;
 		};
 	}
 
@@ -162,20 +154,21 @@ public class ItemJetpack extends ArmorItem {
 				boolean enoughFuel = stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).map(cap -> cap.getFluidInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK).orElse(false);
 				if (enoughFuel) {
 					IFluidHandlerItem handler = (IFluidHandlerItem) stack.getCapability(CapabilityFluidHandler.FLUID_HANDLER_ITEM_CAPABILITY).cast().resolve().get();
+					int pressure = 1;
 					if (mode == 0 && isDown) {
-						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY, player, stack);
+						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY * pressure, player, stack);
 						renderClientParticles(world, player, particleZ);
 						sendPacket(player, true, deltaY);
 					} else if (mode == 1 && isDown) {
-						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2.0, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2.0, player, stack);
+						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2.0 * pressure, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2.0 * pressure, player, stack);
 						renderClientParticles(world, player, particleZ);
 						sendPacket(player, true, deltaY);
 					} else if (mode == 1 && player.getFeetBlockState().isAir()) {
-						double deltaY = hoverWithJetpack(player, stack);
+						double deltaY = hoverWithJetpack(pressure, player, stack);
 						renderClientParticles(world, player, particleZ);
 						sendPacket(player, true, deltaY);
 					} else if (mode == 2 && isDown) {
-						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 4.0, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 4.0, player, stack);
+						double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 4.0 * pressure, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 4.0 * pressure, player, stack);
 						sendPacket(player, true, deltaY);
 						// TODO elytra fuel particles?
 					} else {
@@ -237,6 +230,10 @@ public class ItemJetpack extends ArmorItem {
 		return slotChanged;
 	}
 
+	public static Predicate<FluidStack> getValidator() {
+		return fluid -> ForgeRegistries.FLUIDS.tags().getTag(VoltaicTags.Fluids.HYDROGEN).contains(fluid.getFluid());
+	}
+
 	@Override
 	public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
 		return staticCanElytraFly(stack, entity);
@@ -253,7 +250,7 @@ public class ItemJetpack extends ArmorItem {
 	}
 
 	public static boolean staticElytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
-		if (entity.getLevel().isClientSide) {
+		if (entity.level.isClientSide) {
 			return true;
 		}
 		int nextFlightTick = flightTicks + 1;
@@ -285,7 +282,7 @@ public class ItemJetpack extends ArmorItem {
 		return currMovement.y;
 	}
 
-	protected static double hoverWithJetpack(Player player, ItemStack jetpack) {
+	protected static double hoverWithJetpack(double multiplier, Player player, ItemStack jetpack) {
 
 		Vec3 movement = player.getDeltaMovement();
 
@@ -294,7 +291,7 @@ public class ItemJetpack extends ArmorItem {
 		}
 
 		if (player.isShiftKeyDown()) {
-			movement = new Vec3(movement.x, -0.3, movement.z);
+			movement = new Vec3(movement.x, -0.3 * multiplier, movement.z);
 		} else {
 			movement = new Vec3(movement.x, 0, movement.z);
 		}
@@ -362,10 +359,6 @@ public class ItemJetpack extends ArmorItem {
 		return deg;
 	}
 
-	public static Predicate<FluidStack> getFuelPredicate() {
-		return fluid -> fluid.getFluid().is(ElectrodynamicsTags.Fluids.HYDROGEN);
-	}
-
 	public enum Jetpack implements ICustomArmor {
 		JETPACK;
 
@@ -386,7 +379,7 @@ public class ItemJetpack extends ArmorItem {
 
 		@Override
 		public String getName() {
-			return References.ID + ":jetpack";
+			return Electrodynamics.ID + ":jetpack";
 		}
 
 		@Override

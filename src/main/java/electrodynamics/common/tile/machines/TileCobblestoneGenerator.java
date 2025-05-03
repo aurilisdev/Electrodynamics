@@ -1,52 +1,52 @@
 package electrodynamics.common.tile.machines;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerCobblestoneGenerator;
-import electrodynamics.common.item.ItemUpgrade;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
+import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.state.BlockState;
+import voltaic.common.item.ItemUpgrade;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
+import voltaic.prefab.tile.components.type.ComponentPacketHandler;
+import voltaic.prefab.tile.components.type.ComponentTickable;
+import voltaic.prefab.utilities.BlockEntityUtils.MachineDirection;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileCobblestoneGenerator extends GenericTile {
 
-	public final Property<Double> progress = property(new Property<>(PropertyType.Double, "generatorProgress", 0.0));
-	public final Property<Boolean> isPowered = property(new Property<>(PropertyType.Boolean, "generatorIsPowered", false));
-	public final Property<Double> speed = property(new Property<>(PropertyType.Double, "generatorSpeed", 0.0));
-	public final Property<Double> usage = property(new Property<>(PropertyType.Double, "generatorUsage", 1.0));
+	public final SingleProperty<Double> progress = property(new SingleProperty<>(PropertyTypes.DOUBLE, "generatorProgress", 0.0));
+	public final SingleProperty<Boolean> isPowered = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "generatorIsPowered", false));
+	public final SingleProperty<Double> speed = property(new SingleProperty<>(PropertyTypes.DOUBLE, "generatorSpeed", 0.0));
+	public final SingleProperty<Double> usage = property(new SingleProperty<>(PropertyTypes.DOUBLE, "generatorUsage", 1.0));
 
 	public static final int OUTPUT_SLOT = 0;
 
 	public TileCobblestoneGenerator(BlockPos worldPos, BlockState blockState) {
-		super(ElectrodynamicsBlockTypes.TILE_COBBLESTONEGENERATOR.get(), worldPos, blockState);
+		super(ElectrodynamicsTiles.TILE_COBBLESTONEGENERATOR.get(), worldPos, blockState);
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.DOWN).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE).maxJoules(Constants.COBBLE_GEN_USAGE_PER_TICK * 10));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().outputs(1).upgrades(3)).validUpgrades(ContainerCobblestoneGenerator.VALID_UPGRADES).valid(machineValidator()).setDirectionsBySlot(0, Direction.UP, Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.cobblestonegenerator, this).createMenu((id, player) -> new ContainerCobblestoneGenerator(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(MachineDirection.BOTTOM).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE).maxJoules(ElectroConstants.COBBLE_GEN_USAGE_PER_TICK * 10));
+		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().outputs(1).upgrades(3)).validUpgrades(ContainerCobblestoneGenerator.VALID_UPGRADES).valid(machineValidator()).setDirectionsBySlot(0, MachineDirection.TOP, MachineDirection.FRONT, MachineDirection.LEFT, MachineDirection.BACK, MachineDirection.RIGHT));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.cobblestonegenerator.tag(), this).createMenu((id, player) -> new ContainerCobblestoneGenerator(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
 	private void tickServer(ComponentTickable tick) {
 
 		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-		if (electro.getJoulesStored() < usage.get()) {
-			isPowered.set(false);
+		if (electro.getJoulesStored() < usage.getValue()) {
+			isPowered.setValue(false);
 			return;
 		}
 
@@ -57,9 +57,9 @@ public class TileCobblestoneGenerator extends GenericTile {
 			return;
 		}
 
-		if (progress.get() < Constants.COBBLE_GEN_REQUIRED_TICKS) {
-			progress.set(progress.get() + speed.get());
-			electro.joules(electro.getJoulesStored() - usage.get());
+		if (progress.getValue() < ElectroConstants.COBBLE_GEN_REQUIRED_TICKS) {
+			progress.setValue(progress.getValue() + speed.getValue());
+			electro.joules(electro.getJoulesStored() - usage.getValue());
 			return;
 		}
 
@@ -97,9 +97,9 @@ public class TileCobblestoneGenerator extends GenericTile {
 				}
 			}
 
-			this.speed.set(speed);
+			this.speed.setValue(speed);
 
-			this.usage.set(Constants.COBBLE_GEN_USAGE_PER_TICK * speed);
+			this.usage.setValue(ElectroConstants.COBBLE_GEN_USAGE_PER_TICK * speed);
 
 		}
 		super.onInventoryChange(inv, slot);

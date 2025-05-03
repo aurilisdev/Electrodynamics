@@ -17,8 +17,10 @@
   "itembi": {
     "count": 1,
     "0": {
-      "item": "electrodynamics:nuggetcopper",
-      "count": 1,
+      "item": {
+        "id": "electrodynamics:nuggetcopper",
+        "Count": 1
+      },
       "chance": 1.0
     }
   }

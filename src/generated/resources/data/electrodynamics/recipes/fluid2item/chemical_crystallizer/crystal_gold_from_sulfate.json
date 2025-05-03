@@ -5,7 +5,7 @@
   "fluidinputs": {
     "count": 1,
     "0": {
-      "tag": "forge:sulfate_gold",
+      "tag": "forge:sulfates/gold",
       "amount": 200
     }
   },

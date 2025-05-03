@@ -3,17 +3,18 @@ package electrodynamics.common.event.types.living.hurt;
 import java.util.ArrayList;
 
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
-import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
+import voltaic.common.event.type.AbstractLivingDamageHandler;
+import voltaic.prefab.utilities.ItemUtils;
 
-public class HandlerJetpackDamage extends AbstractLivingHurtHandler {
+public class HandlerJetpackDamage extends AbstractLivingDamageHandler {
 
 	//this way we know the impulse was because of the player being hurt
 	@Override
-	public void handle(LivingHurtEvent event) {
+	public void handle(LivingDamageEvent event) {
 
 		Entity entity = event.getEntity();
 		ArrayList<ItemStack> armor = new ArrayList<>();

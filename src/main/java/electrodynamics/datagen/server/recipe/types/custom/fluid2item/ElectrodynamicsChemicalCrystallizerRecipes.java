@@ -2,20 +2,20 @@ package electrodynamics.datagen.server.recipe.types.custom.fluid2item;
 
 import java.util.function.Consumer;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeConcrete;
-import electrodynamics.common.fluid.types.liquid.subtype.SubtypeSulfateFluid;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
-import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.FinishedRecipeItemOutput;
+import electrodynamics.common.fluid.subtype.SubtypeSulfateFluid;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
+import voltaic.datagen.utils.server.recipe.FinishedRecipeBase.RecipeCategory;
+import voltaic.datagen.utils.server.recipe.FinishedRecipeItemOutput;
 
 public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGenerator {
 
@@ -29,7 +29,7 @@ public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGe
 	}
 
 	public ElectrodynamicsChemicalCrystallizerRecipes() {
-		this(References.ID);
+		this(Electrodynamics.ID);
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGe
 
 		newRecipe(new ItemStack(Items.CLAY_BALL), 0, 200, 800.0, "clay_ball")
 				//
-				.addFluidTagInput(ElectrodynamicsTags.Fluids.CLAY, 200)
+				.addFluidTagInput(VoltaicTags.Fluids.CLAY, 200)
 				//
 				.complete(consumer);
 
@@ -47,9 +47,15 @@ public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGe
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_SHEETPLASTIC.get()), 0, 200, 800.0, "plastic_sheet")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS.get()), 0, 200, 800.0, "plastic_fibers")
 				//
-				.addFluidTagInput(ElectrodynamicsTags.Fluids.POLYETHLYENE, 500)
+				.addFluidTagInput(VoltaicTags.Fluids.POLYETHLYENE, 1000)
+				//
+				.complete(consumer);
+
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_CONCRETE.getValue(SubtypeConcrete.regular)), 0, CHEMICALCRYSTALLIZER_REQUIRED_TICKS, CHEMICALCRYSTALLIZER_USAGE_PER_TICK, "concrete_regular")
+				//
+				.addFluidTagInput(VoltaicTags.Fluids.CONCRETE, 1000)
 				//
 				.complete(consumer);
 
@@ -63,16 +69,10 @@ public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGe
 			}
 		}
 
-		newRecipe(new ItemStack(ElectrodynamicsBlocks.getBlock(SubtypeConcrete.regular)), 0, CHEMICALCRYSTALLIZER_REQUIRED_TICKS, CHEMICALCRYSTALLIZER_USAGE_PER_TICK, "concrete_regular")
-				//
-				.addFluidTagInput(ElectrodynamicsTags.Fluids.CONCRETE, 1000)
-				//
-				.complete(consumer);
-
 	}
 
 	public FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.CHEMICAL_CRYSTALIZER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_2_ITEM, modID, "chemical_crystallizer/" + name);
+		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_2_ITEM, modID, "chemical_crystallizer/" + name);
 	}
 
 }

@@ -26,11 +26,6 @@
                   "source": "itemproperty_size",
                   "target": "BlockEntityTag",
                   "op": "replace"
-                },
-                {
-                  "source": "additional",
-                  "target": "BlockEntityTag.additional",
-                  "op": "replace"
                 }
               ]
             },

@@ -5,7 +5,7 @@
   "fluidinputs": {
     "count": 1,
     "0": {
-      "tag": "forge:sulfate_netherite",
+      "tag": "forge:sulfates/netherite",
       "amount": 200
     }
   },

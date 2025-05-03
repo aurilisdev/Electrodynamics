@@ -1,5 +1,5 @@
 {
-	"ambientocclusion": "false",
+	"credit": "skip999",
 	"elements": [
 		{
 			"from": [
@@ -16,62 +16,136 @@
 				"north": {
 					"uv": [
 						6,
-						6,
-						10,
+						5,
+						11,
 						10
 					],
-					"texture": "#texture",
+					"texture": "#insulation",
 					"tintindex": 0
 				},
 				"east": {
 					"uv": [
 						6,
-						6,
-						10,
+						5,
+						11,
 						10
 					],
-					"texture": "#texture",
+					"texture": "#insulation",
 					"tintindex": 0
 				},
 				"south": {
 					"uv": [
 						6,
-						6,
-						10,
+						5,
+						11,
 						10
 					],
-					"texture": "#texture",
+					"texture": "#insulation",
 					"tintindex": 0
 				},
 				"west": {
 					"uv": [
 						6,
-						6,
-						10,
+						5,
+						11,
 						10
 					],
-					"texture": "#texture",
+					"texture": "#insulation",
 					"tintindex": 0
 				},
 				"up": {
 					"uv": [
 						6,
-						6,
-						10,
+						5,
+						11,
 						10
 					],
-					"texture": "#texture",
+					"texture": "#insulation",
 					"tintindex": 0
 				},
 				"down": {
 					"uv": [
 						6,
-						6,
-						10,
+						5,
+						11,
 						10
 					],
-					"texture": "#texture",
+					"texture": "#insulation",
 					"tintindex": 0
+				}
+			}
+		},
+		{
+			"from": [
+				6,
+				6,
+				6
+			],
+			"to": [
+				10,
+				10,
+				10
+			],
+			"faces": {
+				"north": {
+					"uv": [
+						6,
+						5,
+						11,
+						10
+					],
+					"texture": "#conductor",
+					"tintindex": 2
+				},
+				"east": {
+					"uv": [
+						6,
+						5,
+						11,
+						10
+					],
+					"texture": "#conductor",
+					"tintindex": 2
+				},
+				"south": {
+					"uv": [
+						6,
+						5,
+						11,
+						10
+					],
+					"texture": "#conductor",
+					"tintindex": 2
+				},
+				"west": {
+					"uv": [
+						6,
+						5,
+						11,
+						10
+					],
+					"texture": "#conductor",
+					"tintindex": 2
+				},
+				"up": {
+					"uv": [
+						6,
+						5,
+						11,
+						10
+					],
+					"texture": "#conductor",
+					"tintindex": 2
+				},
+				"down": {
+					"uv": [
+						6,
+						5,
+						11,
+						10
+					],
+					"texture": "#conductor",
+					"tintindex": 2
 				}
 			}
 		}

@@ -21,11 +21,16 @@
                   "source": "joules",
                   "target": "BlockEntityTag.joules",
                   "op": "replace"
-                },
+                }
+              ]
+            },
+            {
+              "function": "minecraft:set_contents",
+              "type": "electrodynamics:circuitbreaker",
+              "entries": [
                 {
-                  "source": "additional",
-                  "target": "BlockEntityTag.additional",
-                  "op": "replace"
+                  "type": "minecraft:dynamic",
+                  "name": "minecraft:contents"
                 }
               ]
             }

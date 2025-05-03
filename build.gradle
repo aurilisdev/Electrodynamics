@@ -3,12 +3,15 @@ buildscript {
         maven { url = 'https://files.minecraftforge.net/maven' }
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         maven { url = 'https://maven.parchmentmc.org' }
+        maven { url = "https://modmaven.dev" }
+   		maven { url = "https://dvs1.progwml6.com/files/maven/" }
         jcenter()
         mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
         classpath group: 'org.spongepowered', name: 'mixingradle', version: '0.7-SNAPSHOT'
+        classpath 'org.ajoberstar:gradle-git:0.6.1'
         classpath 'org.parchmentmc:librarian:1.+'
     }
 }
@@ -27,23 +30,16 @@ apply from: 'https://raw.githubusercontent.com/SizableShrimp/Forge-Class-Remappe
 libsDirName = "../output"
 distsDirName = "../output"
 
-def	version_minor="6"
-def	version_revision='5'
-def	minecraft_version='1.18.2'
-def	version_build='1'
-def	version_major='0'
-
-version = minecraft_version+'-'+version_major+'.'+version_minor+'.'+version_revision+'-'+version_build
-group = 'electrodynamics'
-archivesBaseName = 'Electrodynamics'
+group = electrodynamics_group
+version = "${minecraft_version}-" + electrodynamics_version
+archivesBaseName = electrodynamics_name
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 
-
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'parchment', version: '2022.03.13-1.18.2'
+    mappings channel: 'parchment', version: "${parchment_version}-${minecraft_version}"
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
     runs {
         client {
@@ -112,10 +108,18 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-	minecraft 'net.minecraftforge:forge:1.18.2-40.2.14'
-    compileOnly fg.deobf("mezz.jei:jei-1.18.2-common-api:10.2.1.283")
-    compileOnly fg.deobf("mezz.jei:jei-1.18.2-forge-api:10.2.1.283")
-    runtimeOnly fg.deobf("mezz.jei:jei-1.18.2-forge:10.2.1.283")
+    def Folder = new File("C:/AmpzLibz")
+    if(Folder.exists()) {
+        implementation fileTree(Folder)
+    }
+    def Folder2 = new File("libs")
+    if(Folder2.exists()) {
+        implementation fileTree(Folder2)
+    }
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 
     annotationProcessor 'org.spongepowered:mixin:0.8.4:processor'
 }

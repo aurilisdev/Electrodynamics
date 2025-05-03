@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    "VPV",
+    " M "
+  ],
+  "key": {
+    "P": {
+      "item": "electrodynamics:pipesteel"
+    },
+    "C": {
+      "tag": "forge:circuits/basic"
+    },
+    "V": {
+      "tag": "forge:gears/bronze"
+    },
+    "M": {
+      "item": "electrodynamics:motor"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:fluidpipepump"
+  }
+}

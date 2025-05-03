@@ -1,11 +1,8 @@
 package electrodynamics.prefab.utilities;
 
-import electrodynamics.api.References;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
+import electrodynamics.Electrodynamics;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.Level;
@@ -24,8 +21,6 @@ public class ElectroTextUtils {
 	public static final String ADVANCEMENT_BASE = "advancement";
 	public static final String DIMENSION = "dimension";
 	public static final String CREATIVE_TAB = "creativetab";
-	
-	private static final MutableComponent EMPTY = new TextComponent("");
 
 	public static MutableComponent tooltip(String key, Object... additional) {
 		return translated(TOOLTIP_BASE, key, additional);
@@ -80,7 +75,7 @@ public class ElectroTextUtils {
 	}
 
 	public static MutableComponent translated(String base, String key, Object... additional) {
-		return new TranslatableComponent(base + "." + References.ID + "." + key, additional);
+		return new TranslatableComponent(base + "." + Electrodynamics.ID + "." + key, additional);
 	}
 
 	public static boolean guiExists(String key) {
@@ -100,18 +95,7 @@ public class ElectroTextUtils {
 	}
 
 	public static boolean translationExists(String base, String key) {
-		return I18n.exists(base + "." + References.ID + "." + key);
+		return I18n.exists(base + "." + Electrodynamics.ID + "." + key);
 	}
 
-	public static MutableComponent voltageTooltip(int voltage) {
-		return tooltip("machine.voltage", ChatFormatter.getChatDisplayShort(voltage, DisplayUnit.VOLTAGE));
-	}
-
-	public static MutableComponent ratio(MutableComponent numerator, MutableComponent denominator) {
-		return (MutableComponent) numerator.copy().append(" / ").append(denominator);
-	}
-	
-	public static MutableComponent empty() {
-		return new TextComponent("");
-	}
 }

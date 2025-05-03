@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "PCP",
-    "CBC",
-    "PCP"
+    "C",
+    "B",
+    "P"
   ],
   "key": {
     "P": {
@@ -17,7 +17,6 @@
     }
   },
   "result": {
-    "item": "electrodynamics:upgradeitemvoid",
-    "count": 4
+    "item": "electrodynamics:upgradeitemvoid"
   }
 }

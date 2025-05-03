@@ -1,14 +1,16 @@
 package electrodynamics.client.keys.event;
 
-import electrodynamics.api.item.IItemElectric;
 import electrodynamics.client.keys.KeyBinds;
 import electrodynamics.common.packet.NetworkHandler;
-import electrodynamics.common.packet.types.server.PacketSwapBattery;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.InputEvent.KeyInputEvent;
+import voltaic.api.item.IItemElectric;
+import voltaic.client.event.AbstractKeyPressHandler;
+import voltaic.common.packet.types.server.PacketSwapBattery;
 
 public class HandlerSwapBattery extends AbstractKeyPressHandler {
 

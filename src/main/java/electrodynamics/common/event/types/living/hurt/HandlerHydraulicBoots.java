@@ -1,6 +1,5 @@
 package electrodynamics.common.event.types.living.hurt;
 
-import electrodynamics.prefab.utilities.ItemUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.sounds.SoundSource;
@@ -8,14 +7,16 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
+import voltaic.common.event.type.AbstractLivingDamageHandler;
+import voltaic.prefab.utilities.ItemUtils;
 
-public class HandlerHydraulicBoots extends AbstractLivingHurtHandler {
+public class HandlerHydraulicBoots extends AbstractLivingDamageHandler {
 
 	@Override
-	public void handle(LivingHurtEvent event) {
+	public void handle(LivingDamageEvent event) {
 		DamageSource source = event.getSource();
 		if (!source.isFall()) {
 			return;

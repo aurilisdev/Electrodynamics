@@ -1,9 +1,9 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "ACA",
-    "CPC",
-    "ACA"
+    "C",
+    "P",
+    "A"
   ],
   "key": {
     "P": {
@@ -17,7 +17,6 @@
     }
   },
   "result": {
-    "item": "electrodynamics:upgradeiteminput",
-    "count": 4
+    "item": "electrodynamics:upgradeiteminput"
   }
 }

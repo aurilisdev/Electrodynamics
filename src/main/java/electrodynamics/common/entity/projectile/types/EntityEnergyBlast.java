@@ -1,7 +1,7 @@
 package electrodynamics.common.entity.projectile.types;
 
-import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
+import electrodynamics.registers.ElectrodynamicsDamageSources;
 import electrodynamics.registers.ElectrodynamicsEntities;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -54,7 +54,7 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 
 	@Override
 	public void onHitEntity(EntityHitResult hit) {
-		hit.getEntity().hurt(DamageSources.PLASMA_BOLT, 40F / (tickCount / 40.0f + 1));
+		hit.getEntity().hurt(ElectrodynamicsDamageSources.PLASMA_BOLT, 40F / (tickCount / 40.0f + 1));
 		super.onHitEntity(hit);
 	}
 

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "PCP",
+    " P "
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plastic"
+    },
+    "C": {
+      "item": "electrodynamics:coil"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:laminatedcoil"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "WDW",
+    "WWW"
+  ],
+  "key": {
+    "D": {
+      "tag": "forge:dyes/blue"
+    },
+    "W": {
+      "tag": "forge:wires/ceramic_iron"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:wireceramicinsulatedironblue",
+    "count": 8
+  }
+}

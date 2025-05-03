@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataProvider;
@@ -19,7 +19,7 @@ import net.minecraft.world.level.material.Fluid;
 public class ThermoelectricGenHeatSourceProvider implements DataProvider {
 
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
-	public static final String LOC = "data/" + References.ID + "/" + ThermoelectricGeneratorHeatRegister.FOLDER + "/" + ThermoelectricGeneratorHeatRegister.FILE_NAME;
+	public static final String LOC = "data/" + Electrodynamics.ID + "/" + ThermoelectricGeneratorHeatRegister.FOLDER + "/" + ThermoelectricGeneratorHeatRegister.FILE_NAME;
 
 	private final DataGenerator dataGenerator;
 

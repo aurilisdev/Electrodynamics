@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "electrodynamics:wireceramicinsulatedsuperconductive",
+    "electrodynamics:wireceramicinsulatedsuperconductivered",
+    "electrodynamics:wireceramicinsulatedsuperconductivewhite",
+    "electrodynamics:wireceramicinsulatedsuperconductivegreen",
+    "electrodynamics:wireceramicinsulatedsuperconductiveblue",
+    "electrodynamics:wireceramicinsulatedsuperconductiveyellow",
+    "electrodynamics:wireceramicinsulatedsuperconductivebrown"
+  ]
+}

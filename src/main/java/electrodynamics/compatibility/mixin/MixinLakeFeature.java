@@ -9,7 +9,6 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.common.world.OreGeneration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
@@ -18,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.LakeFeature;
 import net.minecraft.world.level.levelgen.feature.LakeFeature.Configuration;
+import voltaic.Voltaic;
 
 @Mixin(LakeFeature.class)
 public class MixinLakeFeature {
@@ -26,7 +26,7 @@ public class MixinLakeFeature {
 	@Inject(method = "place(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/WorldGenLevel;setBlock(Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;I)Z", ordinal = 0), slice = @Slice(from = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/state/BlockState;is(Lnet/minecraft/tags/TagKey;)Z", shift = At.Shift.BEFORE, ordinal = 0), to = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/feature/LakeFeature;markAboveForPostProcessing(Lnet/minecraft/world/level/WorldGenLevel;Lnet/minecraft/core/BlockPos;)V", ordinal = 1)), locals = LocalCapture.CAPTURE_FAILHARD)
 	private void spawnSulfurInlakes(FeaturePlaceContext<Configuration> context, CallbackInfoReturnable<Boolean> cir, BlockPos blockpos, WorldGenLevel worldgenlevel, Random random, LakeFeature.Configuration config, boolean[] aboolean, int i, BlockState blockstate1, BlockState blockstate2, int j2, int j3, int l3) {
 		BlockPos blockpos2 = blockpos.offset(j2, l3, j3);
-		boolean createSulfur = context.config().fluid().getState(Electrodynamics.RANDOM, blockpos2).getFluidState().is(FluidTags.LAVA);
+		boolean createSulfur = context.config().fluid().getState(Voltaic.RANDOM, blockpos2).getFluidState().is(FluidTags.LAVA);
 		if (createSulfur) {
 			OreGeneration.generateSulfurAround(random, blockpos2, worldgenlevel);
 		}

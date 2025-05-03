@@ -17,8 +17,10 @@
   "itembi": {
     "count": 1,
     "0": {
-      "item": "electrodynamics:nuggettitaniumcarbide",
-      "count": 2,
+      "item": {
+        "id": "electrodynamics:nuggettitaniumcarbide",
+        "Count": 2
+      },
       "chance": 1.0
     }
   }

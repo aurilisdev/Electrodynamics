@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:block/cube",
+  "loader": "voltaic:voltaiccableloader",
+  "none": {
+    "parent": "electrodynamics:block/wire/wirelogisticsgoldwhite_none"
+  },
+  "wire": {
+    "parent": "electrodynamics:block/wire/wirelogisticsgoldwhite_side"
+  },
+  "inventory": {
+    "parent": "electrodynamics:block/wire/wirelogisticsgoldwhite_side"
+  }
+}

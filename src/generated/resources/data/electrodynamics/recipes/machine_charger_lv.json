@@ -16,7 +16,7 @@
       "tag": "forge:circuits/advanced"
     },
     "W": {
-      "item": "electrodynamics:wireinsulatedcopper"
+      "tag": "forge:wires/insulated_copper"
     }
   },
   "result": {

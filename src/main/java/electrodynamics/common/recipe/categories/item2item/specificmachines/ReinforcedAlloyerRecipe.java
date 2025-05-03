@@ -1,33 +1,35 @@
 package electrodynamics.common.recipe.categories.item2item.specificmachines;
 
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.categories.item2item.Item2ItemRecipe;
-import electrodynamics.common.recipe.recipeutils.CountableIngredient;
-import electrodynamics.common.recipe.recipeutils.ProbableFluid;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
+import java.util.List;
+
+import electrodynamics.Electrodynamics;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
+import voltaic.common.recipe.categories.item2item.Item2ItemRecipe;
+import voltaic.common.recipe.recipeutils.CountableIngredient;
+import voltaic.common.recipe.recipeutils.ProbableFluid;
+import voltaic.common.recipe.recipeutils.ProbableItem;
 
 public class ReinforcedAlloyerRecipe extends Item2ItemRecipe {
 
 	public static final String RECIPE_GROUP = "reinforced_alloyer_recipe";
-	public static final String MOD_ID = electrodynamics.api.References.ID;
-	public static final ResourceLocation RECIPE_ID = new ResourceLocation(MOD_ID, RECIPE_GROUP);
+	public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
 
-	public ReinforcedAlloyerRecipe(ResourceLocation recipeID, CountableIngredient[] inputs, ItemStack output, double experience, int ticks, double usagePerTick, ProbableItem[] itemBiproducts, ProbableFluid[] fluidBiproducts) {
-		super(recipeID, inputs, output, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts);
+	public ReinforcedAlloyerRecipe(ResourceLocation group, List<CountableIngredient> inputs, ItemStack output, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts) {
+		super(group, inputs, output, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts);
 	}
 
 	@Override
 	public RecipeSerializer<?> getSerializer() {
-		return ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_SERIALIZER.get();
+		return ElectrodynamicsRecipies.REINFORCED_ALLOYER_SERIALIZER.get();
 	}
 
 	@Override
 	public RecipeType<?> getType() {
-		return ElectrodynamicsRecipeInit.REINFORCED_ALLOYER_TYPE.get();
+		return ElectrodynamicsRecipies.REINFORCED_ALLOYER_TYPE.get();
 	}
 
 }

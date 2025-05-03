@@ -3,7 +3,6 @@ package electrodynamics.common.packet.types.client;
 import java.util.HashSet;
 import java.util.function.Supplier;
 
-import electrodynamics.common.packet.BarrierMethods;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkEvent.Context;
@@ -19,7 +18,7 @@ public class PacketSetClientCombustionFuel {
 	public static void handle(PacketSetClientCombustionFuel message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			BarrierMethods.handlerClientCombustionFuels(message.fuels);
+			ClientBarrierMethods.handlerClientCombustionFuels(message.fuels);
 		});
 		ctx.setPacketHandled(true);
 	}

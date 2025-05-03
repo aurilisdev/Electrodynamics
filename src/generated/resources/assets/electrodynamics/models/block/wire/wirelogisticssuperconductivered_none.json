@@ -1,0 +1,9 @@
+{
+  "parent": "electrodynamics:parent/logisticswire_none",
+  "textures": {
+    "conductor": "electrodynamics:block/wire/logisticswiresuperconductive",
+    "insulation": "electrodynamics:block/wire/logisticswireinsulation_center",
+    "particle": "#insulation",
+    "redstone": "electrodynamics:block/wire/logisticswireredstone_center"
+  }
+}

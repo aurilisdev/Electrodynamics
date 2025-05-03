@@ -1,27 +1,15 @@
 package electrodynamics.datagen.client;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.SoundDefinition;
-import net.minecraftforge.common.data.SoundDefinition.Sound;
-import net.minecraftforge.common.data.SoundDefinition.SoundType;
-import net.minecraftforge.common.data.SoundDefinitionsProvider;
-import net.minecraftforge.registries.RegistryObject;
+import voltaic.datagen.utils.client.BaseSoundProvider;
 
-public class ElectrodynamicsSoundProvider extends SoundDefinitionsProvider {
-
-	private final String modID;
+public class ElectrodynamicsSoundProvider extends BaseSoundProvider {
 
 	public ElectrodynamicsSoundProvider(DataGenerator generator, ExistingFileHelper helper) {
-		this(generator, helper, References.ID);
-	}
-
-	public ElectrodynamicsSoundProvider(DataGenerator generator, ExistingFileHelper helper, String modID) {
-		super(generator, modID, helper);
-		this.modID = modID;
+		super(generator, helper, Electrodynamics.ID);
 	}
 
 	@Override
@@ -45,17 +33,17 @@ public class ElectrodynamicsSoundProvider extends SoundDefinitionsProvider {
 		add(ElectrodynamicsSounds.SOUND_NIGHTVISIONGOGGLESON);
 		add(ElectrodynamicsSounds.SOUND_RAILGUNKINETIC);
 		add(ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO);
-		add(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA);
+		add(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_FIRE);
+		add(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_HIT);
 		add(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_NOPOWER);
 		add(ElectrodynamicsSounds.SOUND_RODIMPACTINGGROUND);
 		add(ElectrodynamicsSounds.SOUND_SEISMICSCANNER);
 		add(ElectrodynamicsSounds.SOUND_WINDMILL);
 		add(ElectrodynamicsSounds.SOUND_BATTERY_SWAP);
+		add(ElectrodynamicsSounds.SOUND_PRESSURERELEASE);
+		add(ElectrodynamicsSounds.SOUND_COMPRESSORRUNNING);
+		add(ElectrodynamicsSounds.SOUND_DECOMPRESSORRUNNING);
 		add(ElectrodynamicsSounds.SOUND_TRANSFORMERHUM);
-	}
-
-	private void add(RegistryObject<SoundEvent> sound) {
-		add(sound.get(), SoundDefinition.definition().subtitle("subtitles." + modID + "." + sound.getId().getPath()).with(Sound.sound(sound.getId(), SoundType.SOUND)));
 	}
 
 }

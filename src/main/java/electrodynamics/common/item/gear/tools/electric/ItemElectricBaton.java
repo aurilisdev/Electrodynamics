@@ -1,15 +1,12 @@
 package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
-import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
@@ -30,14 +27,21 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.item.IItemElectric;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.prefab.utilities.VoltaicTextUtils;
 
 public class ItemElectricBaton extends SwordItem implements IItemElectric {
 
 	private final ElectricItemProperties properties;
+	private final Supplier<CreativeModeTab> creativeTab;
 
-	public ItemElectricBaton(ElectricItemProperties properties) {
+	public ItemElectricBaton(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
 		super(ElectricItemTier.DRILL, 12, -2.4f, properties.durability(0));
 		this.properties = properties;
+		this.creativeTab = creativeTab;
 	}
 
 	@Override
@@ -49,21 +53,27 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric {
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
 		return getJoulesStored(stack) > properties.extract.getJoules() ? super.getAttributeModifiers(slot, stack) : ImmutableMultimap.of();
 	}
+	
+	@Override
+	protected boolean allowdedIn(CreativeModeTab category) {
+		return creativeTab != null && category == creativeTab.get();
+	}
 
 	@Override
 	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-
-		if (!allowdedIn(group)) {
+		
+		if(!allowdedIn(group)) {
 			return;
 		}
-
-		ItemStack charged = new ItemStack(this);
-		IItemElectric.setEnergyStored(charged, properties.capacity);
-		items.add(charged);
 
 		ItemStack empty = new ItemStack(this);
 		IItemElectric.setEnergyStored(empty, 0);
 		items.add(empty);
+
+		ItemStack charged = new ItemStack(this);
+		IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
+		items.add(charged);
+
 	}
 
 	@Override
@@ -79,19 +89,19 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric {
 
 	@Override
 	public int getBarWidth(ItemStack stack) {
-		return (int) Math.round(13.0f * getJoulesStored(stack) / properties.capacity);
+		return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
 	}
 
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
-		return getJoulesStored(stack) < properties.capacity;
+		return getJoulesStored(stack) < getMaximumCapacity(stack);
 	}
 
 	@Override
 	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnit.JOULES)).withStyle(ChatFormatting.GRAY));
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ElectroTextUtils.ratio(ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnit.VOLTAGE), ChatFormatter.getChatDisplayShort(properties.extract.getVoltage(), DisplayUnit.VOLTAGE))).withStyle(ChatFormatting.RED));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 		IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
 	}
 

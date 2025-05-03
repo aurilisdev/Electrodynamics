@@ -3,7 +3,7 @@
 	"parent": "block/cube_all",
 	"textures": {
 		"2": "electrodynamics:block/model/windmill",
-		"particle": "electrodynamics:block/model/windmill"
+		"particle": "voltaic:block/steelcasing"
 	},
 	"elements": [
 		{
