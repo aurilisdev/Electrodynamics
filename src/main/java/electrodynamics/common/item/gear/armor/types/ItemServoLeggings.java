@@ -150,6 +150,7 @@ public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric
 
 	}
 
+	@SuppressWarnings("removal")
 	@Override
 	public void onArmorTick(ItemStack stack, Level world, Player player) {
 		super.onArmorTick(stack, world, player);

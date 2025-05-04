@@ -2,7 +2,6 @@ package electrodynamics.common.blockitem;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.function.Supplier;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.connect.BlockWire;
@@ -16,7 +15,6 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.registries.RegistryObject;
 import voltaic.api.electricity.formatting.ChatFormatter;

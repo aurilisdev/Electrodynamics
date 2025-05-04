@@ -73,6 +73,7 @@ public class ItemNightVisionGoggles extends ItemVoltaicArmor implements IItemEle
 		});
 	}
 
+	@SuppressWarnings("removal")
 	@Override
 	public void onArmorTick(ItemStack stack, Level world, Player player) {
 		super.onArmorTick(stack, world, player);

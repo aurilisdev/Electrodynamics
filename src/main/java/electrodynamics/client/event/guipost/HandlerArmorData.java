@@ -90,7 +90,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 
 	}
 
-	private boolean handleChestplate(ItemStack chestplate, NamedGuiOverlay overlay, GuiGraphics graphics, Window window, Minecraft minecraft, int heightOffset) {
+	private static boolean handleChestplate(ItemStack chestplate, NamedGuiOverlay overlay, GuiGraphics graphics, Window window, Minecraft minecraft, int heightOffset) {
 
 		boolean renderItem = false;
 
@@ -144,7 +144,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 		return renderItem;
 	}
 
-	private boolean handleLeggings(ItemStack leggings, NamedGuiOverlay overlay, GuiGraphics graphics, Window window, Minecraft minecraft, int heightOffset) {
+	private static boolean handleLeggings(ItemStack leggings, NamedGuiOverlay overlay, GuiGraphics graphics, Window window, Minecraft minecraft, int heightOffset) {
 
 		boolean renderItem = false;
 
@@ -172,7 +172,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 		return renderItem;
 	}
 
-	private boolean handleBoots(ItemStack boots, NamedGuiOverlay overlay, GuiGraphics graphics, Window window, Minecraft minecraft, int heightOffset) {
+	private static boolean handleBoots(ItemStack boots, NamedGuiOverlay overlay, GuiGraphics graphics, Window window, Minecraft minecraft, int heightOffset) {
 
 		boolean renderItem = false;
 

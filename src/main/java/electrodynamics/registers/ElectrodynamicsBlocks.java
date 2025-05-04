@@ -46,9 +46,8 @@ public class ElectrodynamicsBlocks {
     public static final BulkRegistryObject<BlockWire, SubtypeWire> BLOCKS_WIRE = new BulkRegistryObject<>(SubtypeWire.values(), subtype -> {
         if(subtype.getWireClass() == WireClass.LOGISTICAL) {
             return BLOCKS.register(subtype.tag(), () -> new BlockLogisticalWire(subtype));
-        } else {
-            return BLOCKS.register(subtype.tag(), () -> new BlockWire(subtype));
         }
+	return BLOCKS.register(subtype.tag(), () -> new BlockWire(subtype));
     });
     public static final BulkRegistryObject<BlockFluidPipe, SubtypeFluidPipe> BLOCKS_FLUIDPIPE = new BulkRegistryObject<>(SubtypeFluidPipe.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockFluidPipe(subtype)));
     public static final BulkRegistryObject<BlockCustomGlass, SubtypeGlass> BLOCKS_CUSTOMGLASS = new BulkRegistryObject<>(SubtypeGlass.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockCustomGlass(subtype.hardness, subtype.resistance)));
@@ -68,5 +67,4 @@ public class ElectrodynamicsBlocks {
     public static final RegistryObject<BlockThermoelectricManipulator> BLOCK_THERMOELECTRICMANIPULATOR = BLOCKS.register("thermoelectricmanipulator", BlockThermoelectricManipulator::new);
     public static final RegistryObject<BlockAdvancedThermoelectricManipulator> BLOCK_ADVANCED_THERMOELECTRICMANIPULATOR = BLOCKS.register("advancedthermoelectricmanipulator", BlockAdvancedThermoelectricManipulator::new);
     public static final RegistryObject<BlockScaffold> BLOCK_STEELSCAFFOLDING = BLOCKS.register("steelscaffold", () -> new BlockScaffold(Properties.copy(Blocks.IRON_BLOCK).requiresCorrectToolForDrops().strength(2.0F, 3.0F).sound(SoundType.METAL).noOcclusion()));
-
 }

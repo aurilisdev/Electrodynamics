@@ -11,13 +11,12 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.entity.projectile.types.EntityEnergyBlast;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.MultiBufferSource.BufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;
 import net.minecraft.resources.ResourceLocation;
 import voltaic.Voltaic;
-import voltaic.prefab.utilities.RenderingUtils;
 import voltaic.prefab.utilities.math.MathUtils;
 
 public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {

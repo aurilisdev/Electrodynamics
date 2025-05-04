@@ -82,16 +82,15 @@ public class ElectrodynamicsItems {
 	public static final BulkRegistryObject<BlockItemDescriptable, SubtypeMachine> ITEMS_MACHINE = new BulkRegistryObject<>(SubtypeMachine.values(), subtype -> {
 		if(subtype == SubtypeMachine.downgradetransformer || subtype == SubtypeMachine.upgradetransformer || subtype == SubtypeMachine.multimeterblock || subtype == SubtypeMachine.circuitbreaker || subtype == SubtypeMachine.relay || subtype == SubtypeMachine.potentiometer || subtype == SubtypeMachine.advanceddowngradetransformer || subtype == SubtypeMachine.advancedupgradetransformer || subtype == SubtypeMachine.circuitmonitor || subtype == SubtypeMachine.currentregulator) {
 			return ITEMS.register(subtype.tag(), () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(subtype), new Item.Properties(), subtype.showInItemGroup() ? ElectrodynamicsCreativeTabs.GRID : null));
-		} else {
-			return ITEMS.register(subtype.tag(), () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(subtype), new Item.Properties(), subtype.showInItemGroup() ? () -> ElectrodynamicsCreativeTabs.MAIN.get() : null));
 		}
+		return ITEMS.register(subtype.tag(), () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(subtype), new Item.Properties(), subtype.showInItemGroup() ? () -> ElectrodynamicsCreativeTabs.MAIN.get() : null));
 
 	});
 
 	public static final RegistryObject<BlockItemDescriptable> ITEM_STEELSCAFFOLD = ITEMS.register("steelscaffold", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get(), new Item.Properties().stacksTo(64), () -> ElectrodynamicsCreativeTabs.MAIN.get()));
 	public static final RegistryObject<BlockItemDescriptable> ITEM_FRAME = ITEMS.register("frame", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_FRAME.get(), new Item.Properties().stacksTo(64), null));
 	public static final RegistryObject<BlockItemDescriptable> ITEM_FRAMECORNER = ITEMS.register("framecorner", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_FRAME_CORNER.get(), new Item.Properties().stacksTo(64), null));
-	public static final RegistryObject<BlockItemDescriptable> ITEM_LOGISTICALMANAGER = ITEMS.register("logisticalmanager", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_LOGISTICALMANAGER.get(), new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN.get()));;
+	public static final RegistryObject<BlockItemDescriptable> ITEM_LOGISTICALMANAGER = ITEMS.register("logisticalmanager", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_LOGISTICALMANAGER.get(), new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN.get()));
 	public static final RegistryObject<BlockItemDescriptable> ITEM_SEISMICMARKER = ITEMS.register("seismicmarker", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_SEISMICMARKER.get(), new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN.get()));
 	public static final RegistryObject<BlockItemDescriptable> ITEM_COMPRESSOR = ITEMS.register("compressor", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_COMPRESSOR.get(), new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN.get()));
 	public static final RegistryObject<BlockItemDescriptable> ITEM_DECOMPRESSOR = ITEMS.register("decompressor", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_DECOMPRESSOR.get(), new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN.get()));

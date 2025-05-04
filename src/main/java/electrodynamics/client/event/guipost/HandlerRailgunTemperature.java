@@ -34,7 +34,7 @@ public class HandlerRailgunTemperature extends AbstractPostGuiOverlayHandler {
 
 	}
 
-	private void renderHeatToolTip(GuiGraphics graphics, Minecraft minecraft, ItemStack item) {
+	private static void renderHeatToolTip(GuiGraphics graphics, Minecraft minecraft, ItemStack item) {
 
 		ItemRailgun railgun = (ItemRailgun) item.getItem();
 		double temperature = IItemTemperate.getTemperature(item);

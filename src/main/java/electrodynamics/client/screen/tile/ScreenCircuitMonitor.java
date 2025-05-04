@@ -187,7 +187,7 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 
 	}
 
-	private MutableComponent getPropertyLabel(int label) {
+	private static MutableComponent getPropertyLabel(int label) {
 		return switch (label) {
 		case 0 -> ElectroTextUtils.gui("networkwattage");
 		case 1 -> ElectroTextUtils.gui("networkvoltage");
@@ -200,7 +200,7 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 		};
 	}
 
-	private MutableComponent getOperatorLabel(int label) {
+	private static MutableComponent getOperatorLabel(int label) {
 		return switch (label) {
 		case 0 -> ElectroTextUtils.gui("equals");
 		case 1 -> ElectroTextUtils.gui("notequals");
@@ -213,7 +213,7 @@ public class ScreenCircuitMonitor extends GenericScreen<ContainerCircuitMonitor>
 		};
 	}
 
-	private DisplayUnit getUnit(int label) {
+	private static DisplayUnit getUnit(int label) {
 		return switch (label) {
 		case 0, 5 -> DisplayUnits.WATT;
 		case 1, 3 -> DisplayUnits.VOLTAGE;

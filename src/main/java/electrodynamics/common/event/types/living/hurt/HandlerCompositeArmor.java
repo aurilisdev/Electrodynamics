@@ -2,6 +2,7 @@ package electrodynamics.common.event.types.living.hurt;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.nbt.CompoundTag;
@@ -40,7 +41,7 @@ public class HandlerCompositeArmor extends AbstractLivingDamageHandler {
 
 	}
 
-	private boolean compareArmor(List<ItemStack> set1, ItemStack[] set2) {
+	private static boolean compareArmor(List<ItemStack> set1, ItemStack[] set2) {
 		if (set1.size() >= 3) {
 			return set1.get(0).getItem() == set2[3].getItem() && set1.get(1).getItem() == set2[2].getItem() && set1.get(2).getItem() == set2[1].getItem() && set1.get(3).getItem() == set2[0].getItem();
 		}

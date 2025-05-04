@@ -118,7 +118,7 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
         Scheduler.schedule(1, this::refreshConnections);
     }
 
-    private void manipulateItems(ComponentInventory quarryInventory, IItemHandler handler) {
+    private static void manipulateItems(ComponentInventory quarryInventory, IItemHandler handler) {
 
         if (quarryInventory.getItem(TileQuarry.DRILL_HEAD_INDEX).isEmpty()) {
             restockDrillHead(quarryInventory, handler);
@@ -128,7 +128,7 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
     }
 
-    private void restockDrillHead(ComponentInventory quarryInventory, IItemHandler handler) {
+    private static void restockDrillHead(ComponentInventory quarryInventory, IItemHandler handler) {
 
         ItemStack stack;
 
@@ -146,7 +146,7 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
     }
 
-    private void addItemsToInventory(ComponentInventory quarryInventory, IItemHandler handler) {
+    private static void addItemsToInventory(ComponentInventory quarryInventory, IItemHandler handler) {
         for (int i = 0; i < quarryInventory.outputs(); i++) {
             int index = i + quarryInventory.getOutputStartIndex();
             ItemStack mined = quarryInventory.getItem(index);

@@ -67,7 +67,7 @@ public class ItemRailgunPlasma extends ItemRailgun {
 		return InteractionResultHolder.pass(gunStack);
 	}
 
-	private void shootNoY(Projectile projectile, Entity shooter, float xRot, float yRot, float zRot, float velocity, float inaccuracy) {
+	private static void shootNoY(Projectile projectile, Entity shooter, float xRot, float yRot, float zRot, float velocity, float inaccuracy) {
 		float velX = -Mth.sin(yRot * ((float) Math.PI / 180F)) * Mth.cos(xRot * ((float) Math.PI / 180F));
 		float velY = -Mth.sin((xRot + zRot) * ((float) Math.PI / 180F));
 		float velZ = Mth.cos(yRot * ((float) Math.PI / 180F)) * Mth.cos(xRot * ((float) Math.PI / 180F));

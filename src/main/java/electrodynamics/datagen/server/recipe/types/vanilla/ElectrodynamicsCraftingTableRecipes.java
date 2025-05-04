@@ -1025,7 +1025,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				.complete(Electrodynamics.ID, "pressure_gauge", consumer);
 	}
 
-	private void addMachine(Consumer<FinishedRecipe> consumer) {
+	private static void addMachine(Consumer<FinishedRecipe> consumer) {
 
 		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.advanceddowngradetransformer), 1)
 				//
@@ -2369,7 +2369,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 
 	}
 
-	private void addGear(Consumer<FinishedRecipe> consumer) {
+	private static void addGear(Consumer<FinishedRecipe> consumer) {
 
 		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), 1)
 				//
@@ -2781,7 +2781,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 
 	}
 
-	private void addWires(Consumer<FinishedRecipe> consumer) {
+	private static void addWires(Consumer<FinishedRecipe> consumer) {
 
 // Insulated Wires
 		for (SubtypeWire wire : DataGenerators.getWires(WireMaterial.values(), InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.BLACK)) {

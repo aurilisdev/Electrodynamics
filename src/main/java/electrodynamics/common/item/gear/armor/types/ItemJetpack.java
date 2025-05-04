@@ -157,6 +157,7 @@ public class ItemJetpack extends ItemVoltaicArmor {
 		};
 	}
 
+	@SuppressWarnings("removal")
 	@Override
 	public void onArmorTick(ItemStack stack, Level world, Player player) {
 		super.onArmorTick(stack, world, player);

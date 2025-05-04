@@ -203,7 +203,7 @@ public class ScreenQuarry extends GenericScreen<ContainerQuarry> {
 
 	}
 
-	private String getErrorKey(TileQuarry quarry) {
+	private static String getErrorKey(TileQuarry quarry) {
 		if (!quarry.hasSeismicRelay.getValue()) {
 			return "quarry.norelay";
 		}

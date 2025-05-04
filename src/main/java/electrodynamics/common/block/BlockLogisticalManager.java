@@ -91,9 +91,8 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
         shapestates[hash] = shape;
         if (shape == null) {
             return Shapes.empty();
-        } else {
-            return shape;
         }
+	return shape;
     }
 
     @Override

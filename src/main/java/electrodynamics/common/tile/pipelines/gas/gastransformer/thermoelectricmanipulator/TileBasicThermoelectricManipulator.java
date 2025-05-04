@@ -12,7 +12,11 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.prefab.tile.components.IComponentType;
-import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
+import voltaic.prefab.tile.components.type.ComponentGasHandlerMulti;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
+import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.tile.components.utils.IComponentFluidHandler;
 import voltaic.prefab.utilities.BlockEntityUtils;
 

@@ -125,6 +125,7 @@ public class ItemCompositeArmor extends ItemVoltaicArmor {
 		tooltip.add(ElectroTextUtils.tooltip("ceramicplatecount", Component.translatable(plates + "")).withStyle(ChatFormatting.AQUA));
 	}
 
+	@SuppressWarnings("removal")
 	@Override
 	public void onArmorTick(ItemStack stack, Level world, Player player) {
 		super.onArmorTick(stack, world, player);
