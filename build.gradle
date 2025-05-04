@@ -103,7 +103,7 @@ mixin {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 dependencies {
-    def Folder = new File("C:/AmpzLibz")
+    def Folder = new File("C:/AmpzLibz/1.20")
     if(Folder.exists()) {
         implementation fileTree(Folder)
     } 
