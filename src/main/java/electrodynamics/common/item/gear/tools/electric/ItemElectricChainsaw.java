@@ -49,7 +49,7 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
 	
 	@Override
 	protected boolean allowdedIn(CreativeModeTab category) {
-		return creativeTab != null && category == creativeTab.get();
+		return creativeTab != null && (category == creativeTab.get() || category == CreativeModeTab.TAB_SEARCH);
 	}
 
 	@Override
