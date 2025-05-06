@@ -145,7 +145,7 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 	
 	@Override
 	protected boolean allowedIn(CreativeModeTab category) {
-		return creativeTab != null && category == creativeTab.get();
+		return creativeTab != null && (category == creativeTab.get() || category == CreativeModeTab.TAB_SEARCH);
 	}
 
 	@Override
