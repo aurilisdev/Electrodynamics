@@ -1,6 +1,6 @@
 package electrodynamics.common.tile.electricitygrid.batteries;
 
-import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerBatteryBox;
@@ -11,6 +11,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import voltaic.common.item.ItemUpgrade;
 import voltaic.common.item.subtype.SubtypeItemUpgrade;
@@ -80,22 +83,20 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
         electro.drainElectricItem(0);
     }
 
-    @Nullable
-    public IEnergyStorage getFECapability(@Nullable Direction side) {
-        if (side == null) {
-            return null;
-        }
+    @Override
+    public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
+    	if(cap == ForgeCapabilities.ENERGY && side != null) {
+    		Direction facing = getFacing();
 
-        Direction facing = getFacing();
-
-        if(side == facing){
-            return inputDispatcher;
-        } else if (side == facing.getOpposite()){
-            return outputDispatcher;
-        } else {
-            return null;
-        }
-
+            if(side == facing){
+                return LazyOptional.of(() -> inputDispatcher).cast();
+            } else if (side == facing.getOpposite()){
+                return LazyOptional.of(() -> outputDispatcher).cast();
+            } else {
+                return LazyOptional.empty();
+            }
+    	}
+    	return super.getCapability(cap, side);
     }
 
     // this is changed so all the battery boxes can convert FE to joules, regardless of voltage
