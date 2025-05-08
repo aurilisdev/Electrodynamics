@@ -1,6 +1,7 @@
 package electrodynamics;
 
 import electrodynamics.client.ElectrodynamicsClientRegister;
+import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.block.voxelshapes.ElectrodynamicsVoxelShapes;
 import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
@@ -12,6 +13,7 @@ import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
 import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.common.settings.OreConfig;
+import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
@@ -62,6 +64,13 @@ public class Electrodynamics {
 		});
 		ElectrodynamicsVoxelShapes.init();
 	}
+	
+	@SubscribeEvent
+    public static void registerWires(RegisterWiresEvent event) {
+        for (BlockWire wire : ElectrodynamicsBlocks.BLOCKS_WIRE.getAllValues()) {
+            event.registerWire(wire);
+        }
+    }
 
 
 	// I wonder how long this bug has been there
