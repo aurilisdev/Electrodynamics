@@ -3,8 +3,8 @@
 	"credit": "aurilisdev",
 	"ambientocclusion": "false",
 	"textures": {
-		"0": "electrodynamics:model/thermoelectricgenerator",
-		"particle": "electrodynamics:block/steelcasing"
+		"0": "electrodynamics:block/model/thermoelectricgenerator",
+		"particle": "voltaic:block/steelcasing"
 	},
 	"elements": [
 		{

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PCP",
+    "CBC",
+    "PCP"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "B": {
+      "item": "minecraft:enchanted_book"
+    },
+    "C": {
+      "tag": "forge:circuits/ultimate"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:upgradesilktouch"
+  }
+}

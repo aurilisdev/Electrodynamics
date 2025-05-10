@@ -1,29 +1,29 @@
 package electrodynamics.common.tile.electricitygrid;
 
 import electrodynamics.common.block.connect.BlockWire;
-import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.prefab.properties.Property;
-import electrodynamics.prefab.properties.PropertyType;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
-import net.minecraft.block.BlockState;
-import net.minecraft.nbt.CompoundNBT;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.tileentity.TileEntityType;
+import voltaic.api.network.cable.type.IWire;
+import voltaic.prefab.properties.types.PropertyTypes;
+import voltaic.prefab.properties.variant.SingleProperty;
 
 public class TileWire extends GenericTileWire {
-	public Property<Double> transmit = property(new Property<>(PropertyType.Double, "transmit", 0.0));
+
+	public SingleProperty<Double> transmit = property(new SingleProperty<>(PropertyTypes.DOUBLE, "transmit", 0.0));
+
+	public IWire wire = null;
+	public IWire.IWireColor color = null;
 
 	public TileWire() {
-		super(ElectrodynamicsBlockTypes.TILE_WIRE.get());
+		super(ElectrodynamicsTiles.TILE_WIRE.get());
 	}
 
 	public TileWire(TileEntityType<TileLogisticalWire> tileEntityType) {
 		super(tileEntityType);
 	}
 
-	public SubtypeWire wire = null;
-
 	@Override
-	public SubtypeWire getWireType() {
+	public IWire getCableType() {
 		if (wire == null) {
 			wire = ((BlockWire) getBlockState().getBlock()).wire;
 		}
@@ -31,14 +31,11 @@ public class TileWire extends GenericTileWire {
 	}
 
 	@Override
-	public CompoundNBT save(CompoundNBT compound) {
-		compound.putInt("ord", getWireType().ordinal());
-		return super.save(compound);
+	public IWire.IWireColor getWireColor() {
+		if (color == null) {
+			color = ((BlockWire) getBlockState().getBlock()).wire.getWireColor();
+		}
+		return color;
 	}
 
-	@Override
-	public void load(BlockState state, CompoundNBT compound) {
-		super.load(state, compound);
-		wire = SubtypeWire.values()[compound.getInt("ord")];
-	}
 }

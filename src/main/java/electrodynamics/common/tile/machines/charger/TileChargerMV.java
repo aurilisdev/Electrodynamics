@@ -1,12 +1,12 @@
 package electrodynamics.common.tile.machines.charger;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsTiles;
 
 public class TileChargerMV extends GenericTileCharger {
 
 	public TileChargerMV() {
-		super(ElectrodynamicsBlockTypes.TILE_CHARGERMV.get(), 2, SubtypeMachine.chargermv);
+		super(ElectrodynamicsTiles.TILE_CHARGERMV.get(), 2, SubtypeMachine.chargermv);
 	}
 
 }

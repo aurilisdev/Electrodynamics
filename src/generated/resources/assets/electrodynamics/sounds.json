@@ -23,6 +23,12 @@
       "electrodynamics:electricpump"
     ]
   },
+  "electrolyticseparator": {
+    "subtitle": "subtitles.electrodynamics.electrolyticseparator",
+    "sounds": [
+      "electrodynamics:electrolyticseparator"
+    ]
+  },
   "equipheavyarmor": {
     "subtitle": "subtitles.electrodynamics.equipheavyarmor",
     "sounds": [
@@ -35,10 +41,28 @@
       "electrodynamics:hum"
     ]
   },
+  "hydraulicboots": {
+    "subtitle": "subtitles.electrodynamics.hydraulicboots",
+    "sounds": [
+      "electrodynamics:hydraulicboots"
+    ]
+  },
   "hydroelectricgenerator": {
     "subtitle": "subtitles.electrodynamics.hydroelectricgenerator",
     "sounds": [
       "electrodynamics:hydroelectricgenerator"
+    ]
+  },
+  "jetpack": {
+    "subtitle": "subtitles.electrodynamics.jetpack",
+    "sounds": [
+      "electrodynamics:jetpack"
+    ]
+  },
+  "jetpackswitchmode": {
+    "subtitle": "subtitles.electrodynamics.jetpackswitchmode",
+    "sounds": [
+      "electrodynamics:jetpackswitchmode"
     ]
   },
   "latherunning": {
@@ -59,6 +83,24 @@
       "electrodynamics:mineralgrinder"
     ]
   },
+  "motorrunning": {
+    "subtitle": "subtitles.electrodynamics.motorrunning",
+    "sounds": [
+      "electrodynamics:motorrunning"
+    ]
+  },
+  "nightvisiongogglesoff": {
+    "subtitle": "subtitles.electrodynamics.nightvisiongogglesoff",
+    "sounds": [
+      "electrodynamics:nightvisiongogglesoff"
+    ]
+  },
+  "nightvisiongoggleson": {
+    "subtitle": "subtitles.electrodynamics.nightvisiongoggleson",
+    "sounds": [
+      "electrodynamics:nightvisiongoggleson"
+    ]
+  },
   "railgunkinetic": {
     "subtitle": "subtitles.electrodynamics.railgunkinetic",
     "sounds": [
@@ -71,10 +113,16 @@
       "electrodynamics:railgunkinetic_noammo"
     ]
   },
-  "railgunplasma": {
-    "subtitle": "subtitles.electrodynamics.railgunplasma",
+  "railgunplasma_fire": {
+    "subtitle": "subtitles.electrodynamics.railgunplasma_fire",
     "sounds": [
-      "electrodynamics:railgunplasma"
+      "electrodynamics:railgunplasma_fire"
+    ]
+  },
+  "railgunplasma_hit": {
+    "subtitle": "subtitles.electrodynamics.railgunplasma_hit",
+    "sounds": [
+      "electrodynamics:railgunplasma_hit"
     ]
   },
   "railgunplasma_nopower": {
@@ -89,10 +137,40 @@
       "electrodynamics:rodhittingground"
     ]
   },
+  "seismicscanner": {
+    "subtitle": "subtitles.electrodynamics.seismicscanner",
+    "sounds": [
+      "electrodynamics:seismicscanner"
+    ]
+  },
   "windmill": {
     "subtitle": "subtitles.electrodynamics.windmill",
     "sounds": [
       "electrodynamics:windmill"
+    ]
+  },
+  "batteryswap": {
+    "subtitle": "subtitles.electrodynamics.batteryswap",
+    "sounds": [
+      "electrodynamics:batteryswap"
+    ]
+  },
+  "pressurerelease": {
+    "subtitle": "subtitles.electrodynamics.pressurerelease",
+    "sounds": [
+      "electrodynamics:pressurerelease"
+    ]
+  },
+  "compressorrunning": {
+    "subtitle": "subtitles.electrodynamics.compressorrunning",
+    "sounds": [
+      "electrodynamics:compressorrunning"
+    ]
+  },
+  "decompressorrunning": {
+    "subtitle": "subtitles.electrodynamics.decompressorrunning",
+    "sounds": [
+      "electrodynamics:decompressorrunning"
     ]
   },
   "transformerhum": {

@@ -2,14 +2,14 @@
   "parent": "electrodynamics:ores",
   "display": {
     "icon": {
-      "item": "electrodynamics:orevanadinite"
+      "item": "electrodynamics:orevanadium"
     },
     "title": {
       "color": "gray",
-      "translate": "advancement.electrodynamics.vanadiumore.title"
+      "translate": "advancement.electrodynamics.rawvanadium.title"
     },
     "description": {
-      "translate": "advancement.electrodynamics.vanadiumore.desc"
+      "translate": "advancement.electrodynamics.rawvanadium.desc"
     },
     "frame": "task",
     "show_toast": true,
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "item": "electrodynamics:orevanadinite"
+            "item": "electrodynamics:orevanadium"
           }
         ]
       }

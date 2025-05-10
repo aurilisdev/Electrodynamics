@@ -16,7 +16,7 @@
       "tag": "forge:gears/bronze"
     },
     "W": {
-      "item": "electrodynamics:wireinsulatedgold"
+      "tag": "forge:wires/insulated_gold"
     }
   },
   "result": {

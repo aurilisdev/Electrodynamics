@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "electrodynamics:wireinsulatediron",
+    "electrodynamics:wireinsulatedironred",
+    "electrodynamics:wireinsulatedironwhite",
+    "electrodynamics:wireinsulatedirongreen",
+    "electrodynamics:wireinsulatedironblue",
+    "electrodynamics:wireinsulatedironyellow",
+    "electrodynamics:wireinsulatedironbrown"
+  ]
+}

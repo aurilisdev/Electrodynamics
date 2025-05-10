@@ -4,13 +4,13 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import electrodynamics.api.electricity.generator.IElectricGenerator;
-import electrodynamics.common.item.ItemUpgrade;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityType;
+import voltaic.api.electricity.generator.IElectricGenerator;
+import voltaic.common.item.ItemUpgrade;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.type.ComponentInventory;
 
 public abstract class GenericGeneratorTile extends GenericTile implements IElectricGenerator {
 
@@ -33,14 +33,15 @@ public abstract class GenericGeneratorTile extends GenericTile implements IElect
 			for (ItemStack stack : inv.getUpgradeContents()) {
 				if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade) {
 					ItemUpgrade upgrade = (ItemUpgrade) stack.getItem();
-					if (upgrade.subtype.isEmpty) {
+					if(upgrade.subtype.isEmpty) {
 						for (int i = 0; i < stack.getCount(); i++) {
 							if (ArrayUtils.contains(validMultipliers, upgrade.subtype)) {
 								setMultiplier(upgradeMultiplier);
 							}
 						}
 					}
-
+					
+					
 				}
 			}
 		}

@@ -6,7 +6,7 @@
     "count": 1,
     "0": {
       "tag": "forge:ores/copper",
-      "count": 2
+      "count": 1
     }
   },
   "output": {
@@ -17,8 +17,10 @@
   "itembi": {
     "count": 1,
     "0": {
-      "item": "minecraft:cobblestone",
-      "count": 1,
+      "item": {
+        "id": "minecraft:cobblestone",
+        "Count": 1
+      },
       "chance": 0.1
     }
   }

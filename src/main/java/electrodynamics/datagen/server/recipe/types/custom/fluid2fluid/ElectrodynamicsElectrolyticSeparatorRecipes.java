@@ -1,0 +1,48 @@
+package electrodynamics.datagen.server.recipe.types.custom.fluid2fluid;
+
+import java.util.function.Consumer;
+
+import electrodynamics.Electrodynamics;
+import electrodynamics.registers.ElectrodynamicsFluids;
+import electrodynamics.registers.ElectrodynamicsRecipies;
+import net.minecraft.data.IFinishedRecipe;
+import net.minecraft.tags.FluidTags;
+import net.minecraftforge.fluids.FluidStack;
+import voltaic.common.recipe.recipeutils.ProbableFluid;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
+import voltaic.datagen.utils.server.recipe.FinishedRecipeBase.RecipeCategory;
+import voltaic.datagen.utils.server.recipe.FinishedRecipeFluidOutput;
+
+public class ElectrodynamicsElectrolyticSeparatorRecipes extends AbstractRecipeGenerator {
+
+	public static int ELECTROLYTICSEPARATOR_REQUIRED_TICKS = 200;
+	public static double ELECTROLYTICSEPARATOR_USAGE_PER_TICK = 250.0;
+
+	private final String modID;
+
+	public ElectrodynamicsElectrolyticSeparatorRecipes(String modID) {
+		this.modID = modID;
+	}
+
+	public ElectrodynamicsElectrolyticSeparatorRecipes() {
+		this(Electrodynamics.ID);
+	}
+
+	@Override
+	public void addRecipes(Consumer<IFinishedRecipe> consumer) {
+
+		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_OXYGEN.get(), 1000), 0, 200, 250.0, "water_to_hydrogen_and_oxygen")
+				//
+				.addFluidTagInput(FluidTags.WATER, 1000)
+				//
+				.addFluidBiproduct(new ProbableFluid(new FluidStack(ElectrodynamicsFluids.FLUID_HYDROGEN.get(), 2000), 1))
+				//
+				.complete(consumer);
+
+	}
+
+	public FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name) {
+		return FinishedRecipeFluidOutput.of(ElectrodynamicsRecipies.ELECTROLYTIC_SEPARATOR_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_2_FLUID, modID, "electrolytic_separator/" + name);
+	}
+
+}

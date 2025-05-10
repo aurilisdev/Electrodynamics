@@ -5,7 +5,10 @@
   "iteminputs": {
     "count": 2,
     "0": {
-      "item": "minecraft:netherite_scrap",
+      "item": {
+        "id": "minecraft:netherite_scrap",
+        "Count": 1
+      },
       "count": 1
     },
     "1": {
@@ -17,5 +20,15 @@
     "item": "minecraft:netherite_ingot",
     "count": 2
   },
-  "experience": 1.0
+  "experience": 1.0,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": {
+        "id": "electrodynamics:slag",
+        "Count": 1
+      },
+      "chance": 0.75
+    }
+  }
 }

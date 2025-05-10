@@ -10,18 +10,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
+import voltaic.common.tags.VoltaicTags;
 
 public class CombustionChamberFuelSourceProvider implements IDataProvider {
 
 	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
-	public static final String LOC = "data/" + References.ID + "/" + CombustionFuelRegister.FOLDER + "/";
+	public static final String LOC = "data/" + Electrodynamics.ID + "/" + CombustionFuelRegister.FOLDER + "/";
 
 	private final DataGenerator dataGenerator;
 
@@ -46,7 +46,7 @@ public class CombustionChamberFuelSourceProvider implements IDataProvider {
 	}
 
 	private void addFuels() {
-		jsons.put("ethanol", CombustionFuelSource.toJson(ElectrodynamicsTags.Fluids.ETHANOL, 1, 1));
+		jsons.put("ethanol", CombustionFuelSource.toJson(VoltaicTags.Fluids.ETHANOL, 1, 1));
 
 	}
 

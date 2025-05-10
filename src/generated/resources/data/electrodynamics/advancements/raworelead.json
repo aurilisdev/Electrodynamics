@@ -6,10 +6,10 @@
     },
     "title": {
       "color": "gray",
-      "translate": "advancement.electrodynamics.leadore.title"
+      "translate": "advancement.electrodynamics.rawlead.title"
     },
     "description": {
-      "translate": "advancement.electrodynamics.leadore.desc"
+      "translate": "advancement.electrodynamics.rawlead.desc"
     },
     "frame": "task",
     "show_toast": true,

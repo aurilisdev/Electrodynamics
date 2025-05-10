@@ -1,19 +1,19 @@
 package electrodynamics.common.item.subtype;
 
-import electrodynamics.api.ISubtype;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import net.minecraft.item.Item;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
+import net.minecraft.tags.ITag.INamedTag;
+import voltaic.api.ISubtype;
+import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypeCircuit implements ISubtype {
-	basic(ElectrodynamicsTags.Items.CIRCUITS_BASIC),
-	advanced(ElectrodynamicsTags.Items.CIRCUITS_ADVANCED),
-	elite(ElectrodynamicsTags.Items.CIRCUITS_ELITE),
-	ultimate(ElectrodynamicsTags.Items.CIRCUITS_ULTIMATE);
+	basic(VoltaicTags.Items.CIRCUITS_BASIC),
+	advanced(VoltaicTags.Items.CIRCUITS_ADVANCED),
+	elite(VoltaicTags.Items.CIRCUITS_ELITE),
+	ultimate(VoltaicTags.Items.CIRCUITS_ULTIMATE);
 
-	public final IOptionalNamedTag<Item> tag;
+	public final INamedTag<Item> tag;
 
-	SubtypeCircuit(IOptionalNamedTag<Item> tag) {
+	SubtypeCircuit(INamedTag<Item> tag) {
 		this.tag = tag;
 	}
 

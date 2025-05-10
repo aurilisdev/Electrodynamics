@@ -2,7 +2,7 @@
   "parent": "electrodynamics:insulatedwiring",
   "display": {
     "icon": {
-      "item": "electrodynamics:wireceramicinsulatedcopper"
+      "item": "electrodynamics:wireceramicinsulatedcopperbrown"
     },
     "title": {
       "color": "gray",
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "item": "electrodynamics:wireceramicinsulatedcopper"
+            "item": "electrodynamics:wireceramicinsulatedcopperbrown"
           }
         ]
       }

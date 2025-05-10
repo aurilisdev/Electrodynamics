@@ -6,10 +6,10 @@
     },
     "title": {
       "color": "gray",
-      "translate": "advancement.electrodynamics.fluoriteore.title"
+      "translate": "advancement.electrodynamics.rawfluorite.title"
     },
     "description": {
-      "translate": "advancement.electrodynamics.fluoriteore.desc"
+      "translate": "advancement.electrodynamics.rawfluorite.desc"
     },
     "frame": "task",
     "show_toast": true,

@@ -1,12 +1,11 @@
 package electrodynamics.client.render.tile;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.client.ClientRegister;
+import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.common.tile.machines.TileLathe;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.IBakedModel;
@@ -16,6 +15,11 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
+import voltaic.prefab.utilities.RenderingUtils;
 
 public class RenderLathe extends AbstractTileRenderer<TileLathe> {
 
@@ -24,7 +28,7 @@ public class RenderLathe extends AbstractTileRenderer<TileLathe> {
 	}
 
 	@Override
-	public void render(TileLathe tile, float partialTicks, MatrixStack poseStack, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(@Nonnull TileLathe tile, float partialTicks, MatrixStack poseStack, @Nonnull IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
 		poseStack.pushPose();
 
@@ -36,7 +40,7 @@ public class RenderLathe extends AbstractTileRenderer<TileLathe> {
 
 		float progressDegrees = 0.0F;
 
-		if (tile.isProcessorActive()) {
+		if (tile.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0)) {
 
 			progressDegrees = 360.0f * (float) progress;
 
@@ -44,7 +48,7 @@ public class RenderLathe extends AbstractTileRenderer<TileLathe> {
 
 		poseStack.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), progressDegrees, true));
 
-		IBakedModel lathe = getModel(ClientRegister.MODEL_LATHESHAFT);
+		IBakedModel lathe = getModel(ElectrodynamicsClientRegister.MODEL_LATHESHAFT);
 
 		RenderingUtils.renderModel(lathe, tile, RenderType.solid(), poseStack, bufferIn, combinedLightIn, combinedOverlayIn);
 

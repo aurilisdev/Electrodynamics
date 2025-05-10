@@ -1,22 +1,22 @@
 package electrodynamics.common.item.subtype;
 
-import electrodynamics.api.ISubtype;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import net.minecraft.item.Item;
+import net.minecraft.tags.ITag.INamedTag;
 import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
+import voltaic.api.ISubtype;
+import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypeGear implements ISubtype {
-	iron(ElectrodynamicsTags.Items.GEAR_IRON, Tags.Items.INGOTS_IRON),
-	copper(ElectrodynamicsTags.Items.GEAR_COPPER, ElectrodynamicsTags.Items.INGOT_COPPER),
-	tin(ElectrodynamicsTags.Items.GEAR_TIN, ElectrodynamicsTags.Items.INGOT_TIN),
-	steel(ElectrodynamicsTags.Items.GEAR_STEEL, ElectrodynamicsTags.Items.INGOT_STEEL),
-	bronze(ElectrodynamicsTags.Items.GEAR_BRONZE, ElectrodynamicsTags.Items.INGOT_BRONZE);
+	iron(VoltaicTags.Items.GEAR_IRON, Tags.Items.INGOTS_IRON),
+	copper(VoltaicTags.Items.GEAR_COPPER, VoltaicTags.Items.INGOT_COPPER),
+	tin(VoltaicTags.Items.GEAR_TIN, VoltaicTags.Items.INGOT_TIN),
+	steel(VoltaicTags.Items.GEAR_STEEL, VoltaicTags.Items.INGOT_STEEL),
+	bronze(VoltaicTags.Items.GEAR_BRONZE, VoltaicTags.Items.INGOT_BRONZE);
 
-	public final IOptionalNamedTag<Item> tag;
-	public final IOptionalNamedTag<Item> sourceIngot;
+	public final INamedTag<Item> tag;
+	public final INamedTag<Item> sourceIngot;
 
-	SubtypeGear(IOptionalNamedTag<Item> tag, IOptionalNamedTag<Item> sourceIngot) {
+	SubtypeGear(INamedTag<Item> tag, INamedTag<Item> sourceIngot) {
 		this.tag = tag;
 		this.sourceIngot = sourceIngot;
 	}

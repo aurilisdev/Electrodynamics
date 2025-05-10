@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:hardened_blocks/concretes"
+    }
+  ],
+  "result": {
+    "item": "electrodynamics:concreteregular"
+  }
+}

@@ -1,16 +1,16 @@
 package electrodynamics.common.inventory.container.tile;
 
 import electrodynamics.common.tile.machines.charger.GenericTileCharger;
-import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotCharging;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotRestricted;
-import electrodynamics.prefab.utilities.math.Color;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
+import voltaic.prefab.inventory.container.slot.item.type.SlotCharging;
+import voltaic.prefab.inventory.container.slot.item.type.SlotRestricted;
+import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
+import voltaic.prefab.utilities.math.Color;
 
 public class ContainerChargerGeneric extends GenericContainerBlockEntity<GenericTileCharger> {
 

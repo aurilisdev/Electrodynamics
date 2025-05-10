@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "WDW",
+    "WWW"
+  ],
+  "key": {
+    "D": {
+      "tag": "forge:dyes/white"
+    },
+    "W": {
+      "tag": "forge:wires/thick_iron"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:wirehighlyinsulatedironwhite",
+    "count": 8
+  }
+}

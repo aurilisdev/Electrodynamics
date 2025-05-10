@@ -2,10 +2,10 @@ package electrodynamics.common.item.gear.armor.types;
 
 import java.util.List;
 
-import electrodynamics.api.References;
-import electrodynamics.client.render.model.armor.types.RenderCompositeArmor;
+import electrodynamics.Electrodynamics;
+import electrodynamics.client.model.armor.RenderCompositeArmor;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.prefab.utilities.NBTUtils;
+import electrodynamics.registers.ElectrodynamicsCreativeTabs;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.client.renderer.entity.model.BipedModel;
@@ -30,13 +30,15 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import voltaic.common.item.gear.ItemVoltaicArmor;
+import voltaic.prefab.utilities.NBTUtils;
 
-public class ItemCompositeArmor extends ArmorItem {
+public class ItemCompositeArmor extends ItemVoltaicArmor {
 
-	public static final String ARMOR_TEXTURE_LOCATION = References.ID + ":textures/model/armor/compositearmor.png";
+	public static final String ARMOR_TEXTURE_LOCATION = Electrodynamics.ID + ":textures/model/armor/compositearmor.png";
 
 	public ItemCompositeArmor(EquipmentSlotType slot) {
-		super(CompositeArmor.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).tab(References.CORETAB).fireResistant().setNoRepair());
+		super(CompositeArmor.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).fireResistant().setNoRepair(), () -> ElectrodynamicsCreativeTabs.MAIN);
 	}
 
 	@Override
@@ -73,18 +75,15 @@ public class ItemCompositeArmor extends ArmorItem {
 	}
 
 	@Override
-	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
-		if (!allowdedIn(group)) {
-			return;
-		}
-		ItemStack filled = new ItemStack(this);
-		if (getSlot() == EquipmentSlotType.CHEST) {
+	public void fillItemCategory(ItemGroup category, NonNullList<ItemStack> items) {
+		super.fillItemCategory(category, items);
+		if (getSlot() == EquipmentSlotType.CHEST && allowdedIn(category)) {
+			ItemStack filled = new ItemStack(this);
 			CompoundNBT tag = filled.getOrCreateTag();
 			tag.putInt(NBTUtils.PLATES, 2);
 			items.add(filled);
 		}
-		ItemStack empty = new ItemStack(this);
-		items.add(empty);
+
 	}
 
 	@Override
@@ -127,7 +126,7 @@ public class ItemCompositeArmor extends ArmorItem {
 	}
 
 	public enum CompositeArmor implements IArmorMaterial {
-		COMPOSITE_ARMOR(References.ID + ":composite", new int[] { 3, 6, 8, 3 }, 2.0f);
+		COMPOSITE_ARMOR(Electrodynamics.ID + ":composite", new int[] { 3, 6, 8, 3 }, 2.0f);
 
 		private final String name;
 		private final int[] damageReductionAmountArray;

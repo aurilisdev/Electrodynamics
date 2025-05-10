@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " I ",
+    "IPI"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/titaniumcarbide"
+    },
+    "I": {
+      "tag": "forge:ingots/titaniumcarbide"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:drillheadtitaniumcarbide"
+  }
+}

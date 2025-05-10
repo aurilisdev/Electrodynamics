@@ -1,12 +1,12 @@
 package electrodynamics.client.guidebook.chapters;
 
-import electrodynamics.client.guidebook.utils.components.Chapter;
-import electrodynamics.client.guidebook.utils.components.Module;
-import electrodynamics.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.item.Items;
 import net.minecraft.util.text.IFormattableTextComponent;
+import voltaic.client.guidebook.utils.components.Chapter;
+import voltaic.client.guidebook.utils.components.Module;
+import voltaic.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
+import voltaic.client.guidebook.utils.pagedata.text.TextWrapperObject;
 
 public class ChapterGettingStarted extends Chapter {
 

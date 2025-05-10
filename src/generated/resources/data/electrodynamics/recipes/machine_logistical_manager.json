@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SCS",
+    "CPC",
+    "SCS"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:piston"
+    },
+    "S": {
+      "tag": "forge:plates/steel"
+    },
+    "C": {
+      "tag": "forge:circuits/basic"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:logisticalmanager"
+  }
+}

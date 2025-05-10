@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "forge:ingots/titaniumcarbide"
+    }
+  ],
+  "result": {
+    "item": "electrodynamics:nuggettitaniumcarbide",
+    "count": 9
+  }
+}

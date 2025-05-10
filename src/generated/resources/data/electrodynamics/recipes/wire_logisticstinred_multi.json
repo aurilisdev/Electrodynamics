@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "WDW",
+    "WWW"
+  ],
+  "key": {
+    "D": {
+      "tag": "forge:dyes/red"
+    },
+    "W": {
+      "tag": "forge:wires/logistical_tin"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:wirelogisticstinred",
+    "count": 8
+  }
+}

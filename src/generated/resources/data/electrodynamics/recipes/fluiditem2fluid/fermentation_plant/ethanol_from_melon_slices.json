@@ -5,7 +5,10 @@
   "iteminputs": {
     "count": 1,
     "0": {
-      "item": "minecraft:melon_slice",
+      "item": {
+        "id": "minecraft:melon_slice",
+        "Count": 1
+      },
       "count": 3
     }
   },

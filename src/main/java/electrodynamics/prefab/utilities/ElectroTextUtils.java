@@ -1,8 +1,6 @@
 package electrodynamics.prefab.utilities;
 
-import electrodynamics.api.References;
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
+import electrodynamics.Electrodynamics;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.text.IFormattableTextComponent;
@@ -80,7 +78,7 @@ public class ElectroTextUtils {
 	}
 
 	public static IFormattableTextComponent translated(String base, String key, Object... additional) {
-		return new TranslationTextComponent(base + "." + References.ID + "." + key, additional);
+		return new TranslationTextComponent(base + "." + Electrodynamics.ID + "." + key, additional);
 	}
 
 	public static boolean guiExists(String key) {
@@ -100,18 +98,7 @@ public class ElectroTextUtils {
 	}
 
 	public static boolean translationExists(String base, String key) {
-		return I18n.exists(base + "." + References.ID + "." + key);
+		return I18n.exists(base + "." + Electrodynamics.ID + "." + key);
 	}
 
-	public static IFormattableTextComponent voltageTooltip(int voltage) {
-		return tooltip("machine.voltage", ChatFormatter.getChatDisplayShort(voltage, DisplayUnit.VOLTAGE));
-	}
-
-	public static IFormattableTextComponent ratio(IFormattableTextComponent numerator, IFormattableTextComponent denominator) {
-		return (IFormattableTextComponent) numerator.copy().append(" / ").append(denominator);
-	}
-	
-	public static IFormattableTextComponent empty() {
-		return new StringTextComponent("");
-	}
 }

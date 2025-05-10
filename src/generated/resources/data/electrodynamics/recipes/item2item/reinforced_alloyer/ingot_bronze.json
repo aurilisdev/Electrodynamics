@@ -17,5 +17,15 @@
     "item": "electrodynamics:ingotbronze",
     "count": 7
   },
-  "experience": 0.10000000149011612
+  "experience": 0.10000000149011612,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": {
+        "id": "electrodynamics:slag",
+        "Count": 1
+      },
+      "chance": 0.5
+    }
+  }
 }

@@ -5,7 +5,10 @@
   "iteminputs": {
     "count": 2,
     "0": {
-      "item": "minecraft:ender_eye",
+      "item": {
+        "id": "minecraft:ender_eye",
+        "Count": 1
+      },
       "count": 4
     },
     "1": {
@@ -17,5 +20,15 @@
     "item": "electrodynamics:ingotsuperconductive",
     "count": 4
   },
-  "experience": 0.30000001192092896
+  "experience": 0.30000001192092896,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": {
+        "id": "electrodynamics:slag",
+        "Count": 1
+      },
+      "chance": 0.9
+    }
+  }
 }

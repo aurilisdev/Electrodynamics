@@ -5,21 +5,21 @@ import java.util.List;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.client.guidebook.ScreenGuidebook;
-import electrodynamics.client.guidebook.utils.components.Chapter;
-import electrodynamics.client.guidebook.utils.components.Module;
-import electrodynamics.client.guidebook.utils.pagedata.OnKeyPress;
-import electrodynamics.client.guidebook.utils.pagedata.OnTooltip;
-import electrodynamics.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
-import electrodynamics.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
-import electrodynamics.compatibility.jei.JeiBuffer;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import voltaic.client.guidebook.ScreenGuidebook;
+import voltaic.client.guidebook.utils.components.Chapter;
+import voltaic.client.guidebook.utils.components.Module;
+import voltaic.client.guidebook.utils.pagedata.OnKeyPress;
+import voltaic.client.guidebook.utils.pagedata.OnTooltip;
+import voltaic.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
+import voltaic.client.guidebook.utils.pagedata.text.TextWrapperObject;
+import voltaic.compatibility.jei.JeiBuffer;
 
 public class ChapterArmor extends Chapter {
 
@@ -44,14 +44,14 @@ public class ChapterArmor extends Chapter {
 
 		// Ceramic Plate Protection
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.armor.ceramicheader").withStyle(TextFormatting.BOLD)).setCentered().setNewPage());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.getItem(SubtypeCeramic.plate)).onTooltip(new OnTooltip() {
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate)).onTooltip(new OnTooltip() {
 
 			@Override
-			public void onTooltip(MatrixStack stack, int xAxis, int yAxis, ScreenGuidebook screen) {
+			public void onTooltip(MatrixStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
 				if (JeiBuffer.isJeiInstalled()) {
 					List<IReorderingProcessor> tooltips = new ArrayList<>();
 					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
-					screen.renderTooltip(stack, tooltips, xAxis, yAxis);
+					screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
 				}
 
 			}
@@ -64,7 +64,7 @@ public class ChapterArmor extends Chapter {
 
 			@Override
 			public Object getJeiLookup() {
-				return new ItemStack(ElectrodynamicsItems.getItem(SubtypeCeramic.plate));
+				return new ItemStack(ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate));
 			}
 
 		}));

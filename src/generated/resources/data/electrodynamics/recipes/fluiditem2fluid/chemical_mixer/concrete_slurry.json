@@ -1,0 +1,27 @@
+{
+  "type": "electrodynamics:chemical_mixer_recipe",
+  "ticks": 200,
+  "usagepertick": 400.0,
+  "iteminputs": {
+    "count": 1,
+    "0": {
+      "item": {
+        "id": "electrodynamics:concretemix",
+        "Count": 1
+      },
+      "count": 1
+    }
+  },
+  "fluidinputs": {
+    "count": 1,
+    "0": {
+      "tag": "minecraft:water",
+      "amount": 1000
+    }
+  },
+  "output": {
+    "fluid": "electrodynamics:fluidconcrete",
+    "amount": 5000
+  },
+  "experience": 0.0
+}

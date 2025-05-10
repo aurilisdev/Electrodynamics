@@ -2,15 +2,14 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
-import electrodynamics.api.item.IItemTemperate;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.prefab.item.ElectricItemProperties;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ActionResult;
@@ -20,17 +19,20 @@ import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.world.World;
+import voltaic.api.item.IItemTemperate;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.prefab.item.ElectricItemProperties;
 
 public class ItemRailgunKinetic extends ItemRailgun {
 
 	public static final double JOULES_PER_SHOT = 100000.0;
-	private static final int OVERHEAT_TEMPERATURE = 400;
-	private static final int TEMPERATURE_PER_SHOT = 300;
-	private static final double TEMPERATURE_REDUCED_PER_TICK = 2.0;
-	private static final double OVERHEAT_WARNING_THRESHOLD = 0.75;
+	public static final int OVERHEAT_TEMPERATURE = 400;
+	public static final int TEMPERATURE_PER_SHOT = 300;
+	public static final double TEMPERATURE_REDUCED_PER_TICK = 2.0;
+	public static final double OVERHEAT_WARNING_THRESHOLD = 0.75;
 
-	public ItemRailgunKinetic(ElectricItemProperties properties) {
-		super(properties, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK);
+	public ItemRailgunKinetic(ElectricItemProperties properties, Supplier<ItemGroup> creativeTab) {
+		super(properties, creativeTab, OVERHEAT_TEMPERATURE, OVERHEAT_WARNING_THRESHOLD, TEMPERATURE_REDUCED_PER_TICK);
 	}
 
 	@Override
@@ -80,30 +82,37 @@ public class ItemRailgunKinetic extends ItemRailgun {
 		projectile.setItem(ammoStack);
 		projectile.setNoGravity(true);
 		projectile.setOwner(player);
-		
+
 		Vector3d vec31 = player.getUpVector(1.0F);
-        Quaternion quaternion = new Quaternion(new Vector3f(vec31), 0, true);
-        Vector3d vec3 = player.getViewVector(1.0F);
-        Vector3f vector3f = new Vector3f(vec3);
-        vector3f.transform(quaternion);
-        projectile.shoot((double)vector3f.x(), (double)vector3f.y(), (double)vector3f.z(), 20.0F, 0.0F);
-		
+
+		Quaternion quaternion = new Quaternion(new Vector3f(vec31), 0, true);
+
+		Vector3d playerViewVector = player.getViewVector(1.0F);
+
+		Vector3f viewVector = new Vector3f(playerViewVector);
+
+		viewVector.transform(quaternion);
+
+		projectile.shoot(viewVector.x(), viewVector.y(), viewVector.z(), 20.0F, 0.0F);
+
 		world.addFreshEntity(projectile);
 		railgun.recieveHeat(gunStack, TEMPERATURE_PER_SHOT, false);
-		ammoStack.shrink(1);
+
+		if (!player.isCreative()) {
+			ammoStack.shrink(1);
+		}
 
 		return ActionResult.pass(gunStack);
 	}
 
 	/*
-	 * Allows easy addition of ammo types in the future Uses the Ingredient of the
-	 * item to allow cross-mod compatibility
+	 * Allows easy addition of ammo types in the future Uses the Ingredient of the item to allow cross-mod compatibility
 	 */
 	public List<Ingredient> getRailgunAmmo() {
 		List<Ingredient> railgunAmmo = new ArrayList<>();
-		railgunAmmo.add(Ingredient.of(ElectrodynamicsTags.Items.ROD_STEEL));
-		railgunAmmo.add(Ingredient.of(ElectrodynamicsTags.Items.ROD_STAINLESSSTEEL));
-		railgunAmmo.add(Ingredient.of(ElectrodynamicsTags.Items.ROD_HSLASTEEL));
+		railgunAmmo.add(Ingredient.of(VoltaicTags.Items.ROD_STEEL));
+		railgunAmmo.add(Ingredient.of(VoltaicTags.Items.ROD_STAINLESSSTEEL));
+		railgunAmmo.add(Ingredient.of(VoltaicTags.Items.ROD_HSLASTEEL));
 		return railgunAmmo;
 	}
 }

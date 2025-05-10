@@ -1,26 +1,17 @@
 package electrodynamics.common.fluid.types;
 
-import electrodynamics.api.References;
-import electrodynamics.common.fluid.FluidNonPlaceable;
-import electrodynamics.common.fluid.types.subtype.SubtypeSulfateFluid;
+import electrodynamics.common.fluid.subtype.SubtypeSulfateFluid;
 import electrodynamics.registers.ElectrodynamicsItems;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidAttributes;
+import voltaic.common.fluid.FluidNonPlaceable;
+import voltaic.prefab.utilities.math.Color;
 
 public class FluidSulfate extends FluidNonPlaceable {
 
-	public static final String FORGE_TAG = "sulfate_";
-
 	public SubtypeSulfateFluid mineral;
 
-	public FluidSulfate(SubtypeSulfateFluid mineral) {
-		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED, References.ID, "fluidsulfate" + mineral.name());
+	public FluidSulfate(SubtypeSulfateFluid mineral, String modId, String id, String texture, Color color) {
+		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), modId, id, texture, color);
 		this.mineral = mineral;
-	}
-
-	@Override
-	protected FluidAttributes createAttributes() {
-		return FluidAttributes.builder(new ResourceLocation(References.ID + ":fluid/sulfate" + mineral.name()), new ResourceLocation(References.ID + ":fluid/sulfate" + mineral.name())).translationKey("fluid.electrodynamics.fluidsulfate" + mineral.name()).build(this);
 	}
 
 }

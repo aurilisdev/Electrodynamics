@@ -1,0 +1,20 @@
+{
+  "type": "electrodynamics:mineral_grinder_recipe",
+  "ticks": 200,
+  "usagepertick": 350.0,
+  "iteminputs": {
+    "count": 1,
+    "0": {
+      "item": {
+        "id": "minecraft:netherite_scrap",
+        "Count": 1
+      },
+      "count": 1
+    }
+  },
+  "output": {
+    "item": "electrodynamics:dustnetherite",
+    "count": 1
+  },
+  "experience": 0.0
+}

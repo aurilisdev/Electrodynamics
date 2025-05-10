@@ -1,0 +1,73 @@
+package electrodynamics.client.screen.tile;
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+
+import electrodynamics.common.inventory.container.tile.ContainerFluidPipePump;
+import electrodynamics.common.tile.pipelines.fluid.TileFluidPipePump;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.util.text.ITextComponent;
+import voltaic.prefab.screen.GenericScreen;
+import voltaic.prefab.screen.component.editbox.ScreenComponentEditBox;
+import voltaic.prefab.screen.component.types.ScreenComponentSimpleLabel;
+import voltaic.prefab.utilities.math.Color;
+
+public class ScreenFluidPipePump extends GenericScreen<ContainerFluidPipePump> {
+
+	private ScreenComponentEditBox priority;
+
+	private boolean needsUpdate = true;
+
+	public ScreenFluidPipePump(ContainerFluidPipePump screenContainer, PlayerInventory inv, ITextComponent titleIn) {
+		super(screenContainer, inv, titleIn);
+
+		addComponent(priority = new ScreenComponentEditBox(94, 35, 59, 16, getFontRenderer()).setTextColor(Color.WHITE).setTextColorUneditable(Color.WHITE).setMaxLength(1).setResponder(this::setPriority).setFilter(ScreenComponentEditBox.POSITIVE_INTEGER));
+		addComponent(new ScreenComponentSimpleLabel(20, 39, 10, Color.TEXT_GRAY, ElectroTextUtils.gui("prioritypump.priority")));
+
+	}
+
+	private void setPriority(String prior) {
+
+		TileFluidPipePump pump = menu.getSafeHost();
+
+		if (pump == null) {
+			return;
+		}
+
+		if (prior.isEmpty()) {
+			return;
+		}
+
+		int priority = 0;
+
+		try {
+			priority = Integer.parseInt(prior);
+		} catch (Exception e) {
+
+		}
+
+		if (priority > 9) {
+			priority = 9;
+			this.priority.setValue(priority + "");
+		} else if (priority < 0) {
+			priority = 0;
+			this.priority.setValue(priority + "");
+		}
+
+		pump.priority.setValue(priority);
+
+	}
+
+	@Override
+	public void render(MatrixStack poseStack, int mouseX, int mouseY, float partialTicks) {
+		super.render(poseStack, mouseX, mouseY, partialTicks);
+		if (needsUpdate) {
+			needsUpdate = false;
+			TileFluidPipePump pump = menu.getSafeHost();
+			if (pump != null) {
+				priority.setValue("" + pump.priority.getValue());
+			}
+		}
+	}
+
+}

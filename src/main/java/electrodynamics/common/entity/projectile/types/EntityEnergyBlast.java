@@ -1,14 +1,12 @@
 package electrodynamics.common.entity.projectile.types;
 
-import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
+import electrodynamics.registers.ElectrodynamicsDamageSources;
 import electrodynamics.registers.ElectrodynamicsEntities;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.projectile.ProjectileItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.world.Explosion.Mode;
@@ -53,7 +51,7 @@ public class EntityEnergyBlast extends EntityCustomProjectile {
 
 	@Override
 	public void onHitEntity(EntityRayTraceResult hit) {
-		hit.getEntity().hurt(DamageSources.PLASMA_BOLT, 40F / (tickCount / 40.0f + 1));
+		hit.getEntity().hurt(ElectrodynamicsDamageSources.PLASMA_BOLT, 40F / (tickCount / 40.0f + 1));
 		super.onHitEntity(hit);
 	}
 

@@ -1,0 +1,8 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": {
+    "tag": "forge:hardened_blocks/concretes"
+  },
+  "result": "electrodynamics:concreteregular",
+  "count": 1
+}

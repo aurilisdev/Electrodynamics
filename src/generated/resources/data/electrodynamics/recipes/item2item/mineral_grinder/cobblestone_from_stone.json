@@ -17,8 +17,10 @@
   "itembi": {
     "count": 1,
     "0": {
-      "item": "minecraft:gravel",
-      "count": 1,
+      "item": {
+        "id": "minecraft:gravel",
+        "Count": 1
+      },
       "chance": 0.4
     }
   }

@@ -1,0 +1,13 @@
+{
+  "parent": "minecraft:block/cube",
+  "loader": "voltaic:voltaiccableloader",
+  "none": {
+    "parent": "electrodynamics:block/logisticalmanager_none"
+  },
+  "wire": {
+    "parent": "electrodynamics:block/logisticalmanager_inventory"
+  },
+  "inventory": {
+    "parent": "electrodynamics:block/logisticalmanager_inventory"
+  }
+}

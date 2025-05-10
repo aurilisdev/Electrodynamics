@@ -1,0 +1,39 @@
+package electrodynamics.common.item;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import electrodynamics.Electrodynamics;
+import electrodynamics.common.item.subtype.SubtypeDrillHead;
+import electrodynamics.registers.ElectrodynamicsCreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.Rarity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ColorHandlerEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
+import voltaic.common.item.ItemVoltaic;
+
+public class ItemDrillHead extends ItemVoltaic {
+
+	private static final List<ItemDrillHead> HEADS = new ArrayList<>();
+
+	public SubtypeDrillHead head;
+
+	public ItemDrillHead(SubtypeDrillHead head) {
+		super(new Item.Properties().defaultDurability(head.durability).durability(head.durability).rarity(head.isUnbreakable ? Rarity.UNCOMMON : Rarity.COMMON), () -> ElectrodynamicsCreativeTabs.MAIN);
+		this.head = head;
+		HEADS.add(this);
+	}
+
+	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+	private static class ColorHandler {
+
+		@SubscribeEvent
+		public static void registerColoredBlocks(ColorHandlerEvent.Item event) {
+			HEADS.forEach(item -> event.getItemColors().register((stack, index) -> item.head.color.color(), item));
+		}
+
+	}
+
+}

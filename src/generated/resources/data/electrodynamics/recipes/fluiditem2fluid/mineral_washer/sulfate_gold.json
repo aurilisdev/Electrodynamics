@@ -5,7 +5,7 @@
   "iteminputs": {
     "count": 1,
     "0": {
-      "tag": "forge:ores/gold",
+      "tag": "minecraft:gold_ores",
       "count": 1
     }
   },

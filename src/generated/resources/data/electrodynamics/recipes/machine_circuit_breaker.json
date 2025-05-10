@@ -1,22 +1,22 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern": [
-    "WCW",
-    "PFP",
-    "WCW"
+    "SCS",
+    "FBF",
+    "SCS"
   ],
   "key": {
-    "P": {
+    "B": {
+      "item": "electrodynamics:relay"
+    },
+    "S": {
       "tag": "forge:plates/steel"
     },
     "C": {
-      "item": "electrodynamics:coil"
+      "tag": "forge:circuits/basic"
     },
     "F": {
       "item": "electrodynamics:ceramicfuse"
-    },
-    "W": {
-      "item": "electrodynamics:wirecopper"
     }
   },
   "result": {

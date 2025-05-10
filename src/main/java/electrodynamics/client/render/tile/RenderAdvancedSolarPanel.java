@@ -1,16 +1,19 @@
 package electrodynamics.client.render.tile;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.client.ClientRegister;
+import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.common.tile.electricitygrid.generators.TileAdvancedSolarPanel;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.utilities.RenderingUtils;
 
 public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedSolarPanel> {
 
@@ -19,7 +22,7 @@ public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedS
 	}
 
 	@Override
-	public void render(TileAdvancedSolarPanel solarPanel, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(TileAdvancedSolarPanel solarPanel, float partialTicks, MatrixStack matrixStackIn, @Nonnull IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
 		matrixStackIn.translate(0.5, 2, 0.5);
 
@@ -35,7 +38,7 @@ public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedS
 
 		matrixStackIn.scale(2, 2, 2);
 
-		IBakedModel ibakedmodel = getModel(ClientRegister.MODEL_ADVSOLARTOP);
+		IBakedModel ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_ADVSOLARTOP);
 
 		RenderingUtils.renderModel(ibakedmodel, solarPanel, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 	}

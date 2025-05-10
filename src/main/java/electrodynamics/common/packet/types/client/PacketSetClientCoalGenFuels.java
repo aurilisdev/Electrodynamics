@@ -3,7 +3,6 @@ package electrodynamics.common.packet.types.client;
 import java.util.HashSet;
 import java.util.function.Supplier;
 
-import electrodynamics.common.packet.BarrierMethods;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketBuffer;
@@ -20,7 +19,7 @@ public class PacketSetClientCoalGenFuels {
 	public static void handle(PacketSetClientCoalGenFuels message, Supplier<Context> context) {
 		Context ctx = context.get();
 		ctx.enqueueWork(() -> {
-			BarrierMethods.handlerClientCoalGenFuels(message.fuels);
+			ClientBarrierMethods.handlerClientCoalGenFuels(message.fuels);
 		});
 		ctx.setPacketHandled(true);
 	}

@@ -2,24 +2,24 @@ package electrodynamics.datagen.server.recipe.types.custom.item2item;
 
 import java.util.function.Consumer;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
 import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.recipe.recipeutils.ProbableItem;
-import electrodynamics.common.tags.ElectrodynamicsTags;
-import electrodynamics.datagen.utils.recipe.AbstractElectrodynamicsFinishedRecipe.RecipeCategory;
-import electrodynamics.datagen.utils.recipe.AbstractRecipeGenerator;
-import electrodynamics.datagen.utils.recipe.FinishedRecipeItemOutput;
 import electrodynamics.registers.ElectrodynamicsItems;
+import electrodynamics.registers.ElectrodynamicsRecipies;
 import net.minecraft.data.IFinishedRecipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
+import voltaic.common.recipe.recipeutils.ProbableItem;
+import voltaic.common.tags.VoltaicTags;
+import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
+import voltaic.datagen.utils.server.recipe.FinishedRecipeBase.RecipeCategory;
+import voltaic.datagen.utils.server.recipe.FinishedRecipeItemOutput;
 
 public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerator {
 
@@ -33,14 +33,14 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 	}
 
 	public ElectrodynamicsMineralCrusherRecipes() {
-		this(References.ID);
+		this(Electrodynamics.ID);
 	}
 
 	@Override
 	public void addRecipes(Consumer<IFinishedRecipe> consumer) {
 
 		for (SubtypePlate plate : SubtypePlate.values()) {
-			newRecipe(new ItemStack(PLATES[plate.ordinal()]), 0.1F, 200, 450.0, "plate_" + plate.name() + "_from_ingot")
+			newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_PLATE.getValue(plate)), 0.1F, 200, 450.0, "plate_" + plate.name() + "_from_ingot")
 					//
 					.addItemTagInput(plate.sourceIngot, 1)
 					//
@@ -51,108 +51,116 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 			if (crystal.crushedItem != null && crystal != SubtypeCrystal.halite) {
 				newRecipe(new ItemStack(crystal.crushedItem.get()), 0.0F, 200, 450.0, "imp_dust_" + crystal.name() + "_from_crystal")
 						//
-						.addItemStackInput(new ItemStack(CRYSTALS[crystal.ordinal()]))
+						.addItemStackInput(new ItemStack(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(crystal)))
 						//
-						.addItemBiproduct(new ProbableItem(new ItemStack(OXIDES[SubtypeOxide.trisulfur.ordinal()]), 0.05))
+						.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.trisulfur)), 0.05))
 						//
 						.complete(consumer);
 			}
 
 		}
 
-		newRecipe(new ItemStack(DUSTS[SubtypeDust.salt.ordinal()], 1), 0.1F, 200, 450.0, "salt_from_halite_crystal")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.salt), 1), 0.1F, 200, 450.0, "salt_from_halite_crystal")
 				//
-				.addItemStackInput(new ItemStack(CRYSTALS[SubtypeCrystal.halite.ordinal()]))
-				//
-				.complete(consumer);
-
-		newRecipe(new ItemStack(OXIDES[SubtypeOxide.chromite.ordinal()], 3), 0.3F, 200, 450.0, "oxide_chromite_from_ore")
-				//
-				.addItemTagInput(ElectrodynamicsTags.Items.ORE_CHROMIUM, 1)
-				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeImpureDust.iron)), 0.4))
+				.addItemStackInput(new ItemStack(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.halite)))
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.copper.ordinal()], 3), 0.3F, 200, 450.0, "imp_dust_copper_from_ore")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.chromite), 3), 0.3F, 200, 450.0, "oxide_chromite_from_ore")
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.ORE_COPPER, 1)
+				.addItemTagInput(VoltaicTags.Items.ORE_CHROMIUM, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeImpureDust.gold)), 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.iron)), 0.4))
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.gold.ordinal()], 3), 0.3F, 200, 450.0, "imp_dust_gold_from_ore")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.copper), 3), 0.3F, 200, 450.0, "imp_dust_copper_from_ore")
+				//
+				.addItemTagInput(VoltaicTags.Items.ORE_COPPER, 1)
+				//
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.gold)), 0.1))
+				//
+				.complete(consumer);
+
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.gold), 3), 0.3F, 200, 450.0, "imp_dust_gold_from_ore")
 				//
 				.addItemTagInput(ItemTags.GOLD_ORES, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeImpureDust.silver)), 0.2))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.silver)), 0.2))
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.iron.ordinal()], 3), 0.3F, 200, 450.0, "imp_dust_iron_from_ore")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.iron), 3), 0.3F, 200, 450.0, "imp_dust_iron_from_ore")
 				//
 				.addItemTagInput(Tags.Items.ORES_IRON, 1)
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.lead.ordinal()], 3), 0.3F, 200, 450.0, "imp_dust_lead_from_ore")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.lead), 3), 0.3F, 200, 450.0, "imp_dust_lead_from_ore")
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.ORE_LEAD, 1)
+				.addItemTagInput(VoltaicTags.Items.ORE_LEAD, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeImpureDust.silver)), 0.4))
-				//
-				.complete(consumer);
-
-		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.molybdenum.ordinal()], 3), 0.3F, 200, 450.0, "imp_dust_molybdenum_from_ore")
-				//
-				.addItemTagInput(ElectrodynamicsTags.Items.ORE_MOLYBDENUM, 1)
-				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeDust.sulfur)), 0.3))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.silver)), 0.4))
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.silver.ordinal()], 3), 0.2F, 200, 450.0, "imp_dust_silver_from_ore")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.molybdenum), 3), 0.3F, 200, 450.0, "imp_dust_molybdenum_from_ore")
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.ORE_SILVER, 1)
+				.addItemTagInput(VoltaicTags.Items.ORE_MOLYBDENUM, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeImpureDust.gold)), 0.1))
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.sulfur)), 0.3))
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.tin.ordinal()], 3), 0.3F, 200, 450.0, "imp_dust_tin_from_ore")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.netherite), 3), 0.3F, 200, 450.0, "imp_dust_netherite_from_ore")
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.ORE_TIN, 1)
+				.addItemTagInput(Tags.Items.ORES_NETHERITE_SCRAP, 1)
+				//
+				.addItemBiproduct(new ProbableItem(new ItemStack(Items.COAL), 0.3))
+				//
+				.complete(consumer);
+
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.silver), 3), 0.2F, 200, 450.0, "imp_dust_silver_from_ore")
+				//
+				.addItemTagInput(VoltaicTags.Items.ORE_SILVER, 1)
+				//
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.gold)), 0.1))
+				//
+				.complete(consumer);
+
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.tin), 3), 0.3F, 200, 450.0, "imp_dust_tin_from_ore")
+				//
+				.addItemTagInput(VoltaicTags.Items.ORE_TIN, 1)
 				//
 				.addItemBiproduct(new ProbableItem(new ItemStack(Items.QUARTZ), 0.3))
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(IMPURE_DUSTS[SubtypeImpureDust.vanadium.ordinal()], 3), 0.3F, 200, 450.0, "imp_dust_vanadium_from_ore")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.vanadium), 3), 0.3F, 200, 450.0, "imp_dust_vanadium_from_ore")
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.ORE_VANADIUM, 1)
+				.addItemTagInput(VoltaicTags.Items.ORE_VANADIUM, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeDust.lead)), 0.2))
-				//
-				.complete(consumer);
-
-		newRecipe(new ItemStack(DUSTS[SubtypeDust.niter.ordinal()], 4), 0.1F, 200, 450.0, "niter_dust_from_ore")
-				//
-				.addItemTagInput(ElectrodynamicsTags.Items.ORE_SALTPETER, 1)
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.lead)), 0.2))
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(DUSTS[SubtypeDust.sulfur.ordinal()], 4), 0.1F, 200, 450.0, "sulfur_dust_from_ore")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.niter), 4), 0.1F, 200, 450.0, "niter_dust_from_ore")
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.ORE_SULFUR, 1)
+				.addItemTagInput(VoltaicTags.Items.ORE_SALTPETER, 1)
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(OXIDES[SubtypeOxide.dititanium.ordinal()], 3), 0.5F, 200, 450.0, "oxide_titanium_from_ore")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.sulfur), 4), 0.1F, 200, 450.0, "sulfur_dust_from_ore")
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.ORE_TITANIUM, 1)
+				.addItemTagInput(VoltaicTags.Items.ORE_SULFUR, 1)
 				//
-				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.getItem(SubtypeImpureDust.iron)), 0.3))
+				.complete(consumer);
+
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.dititanium), 3), 0.5F, 200, 450.0, "oxide_titanium_from_ore")
+				//
+				.addItemTagInput(VoltaicTags.Items.ORE_TITANIUM, 1)
+				//
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.iron)), 0.3))
 				//
 				.complete(consumer);
 
@@ -162,7 +170,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(DUSTS[SubtypeDust.obsidian.ordinal()], 2), 0.1F, 200, 450.0, "dust_obsidian_from_obsidian")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.obsidian), 2), 0.1F, 200, 450.0, "dust_obsidian_from_obsidian")
 				//
 				.addItemTagInput(Tags.Items.OBSIDIAN, 1)
 				//
@@ -176,16 +184,24 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.complete(consumer);
 
-		newRecipe(new ItemStack(DUSTS[SubtypeDust.salt.ordinal()], 5), 0.1F, 200, 450.0, "salt_from_halite_ore")
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.salt), 5), 0.1F, 200, 450.0, "salt_from_halite_ore")
 				//
-				.addItemTagInput(ElectrodynamicsTags.Items.ORE_SALT, 1)
+				.addItemTagInput(VoltaicTags.Items.ORE_SALT, 1)
+				//
+				.complete(consumer);
+
+		newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_SHEETPLASTIC.get(), 2), 0.1F, 200, 450.0, "plastic_sheet_from_plastic_fibers")
+				//
+				.addItemStackInput(new ItemStack(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS.get()))
+				//
+				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.chromiumdisilicide)), 1.0))
 				//
 				.complete(consumer);
 
 	}
 
 	public FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipeInit.MINERAL_CRUSHER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, modID, "mineral_crusher/" + name);
+		return FinishedRecipeItemOutput.of(ElectrodynamicsRecipies.MINERAL_CRUSHER_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.ITEM_2_ITEM, modID, "mineral_crusher/" + name);
 	}
 
 }

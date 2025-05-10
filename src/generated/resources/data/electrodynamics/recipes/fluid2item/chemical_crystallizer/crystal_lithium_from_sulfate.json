@@ -5,7 +5,7 @@
   "fluidinputs": {
     "count": 1,
     "0": {
-      "tag": "forge:sulfate_lithium",
+      "tag": "forge:sulfates/lithium",
       "amount": 200
     }
   },

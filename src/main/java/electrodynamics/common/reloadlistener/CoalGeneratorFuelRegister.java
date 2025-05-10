@@ -20,9 +20,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.common.packet.types.client.PacketSetClientCoalGenFuels;
-import electrodynamics.prefab.reloadlistener.AbstractReloadListener;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -40,6 +38,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.PacketDistributor.PacketTarget;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.minecraftforge.registries.ForgeRegistries;
+import voltaic.Voltaic;
+import voltaic.prefab.reloadlistener.AbstractReloadListener;
 
 public class CoalGeneratorFuelRegister extends AbstractReloadListener<JsonObject> {
 
@@ -58,7 +58,7 @@ public class CoalGeneratorFuelRegister extends AbstractReloadListener<JsonObject
 
 	private final HashSet<IOptionalNamedTag<Item>> tags = new HashSet<>();
 
-	private final Logger logger = Electrodynamics.LOGGER;
+	private final Logger logger = Voltaic.LOGGER;
 
 	@Override
 	protected JsonObject prepare(IResourceManager manager, IProfiler profiler) {

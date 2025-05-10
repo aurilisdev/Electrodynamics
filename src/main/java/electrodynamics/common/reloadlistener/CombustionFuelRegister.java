@@ -19,24 +19,24 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.common.packet.types.client.PacketSetClientCombustionFuel;
-import electrodynamics.prefab.reloadlistener.AbstractReloadListener;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.profiler.IProfiler;
 import net.minecraft.resources.IResource;
 import net.minecraft.resources.IResourceManager;
+import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
 import net.minecraftforge.event.OnDatapackSyncEvent;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.PacketDistributor.PacketTarget;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
+import voltaic.Voltaic;
+import voltaic.prefab.reloadlistener.AbstractReloadListener;
 
 public class CombustionFuelRegister extends AbstractReloadListener<HashSet<JsonObject>> {
 
@@ -51,7 +51,7 @@ public class CombustionFuelRegister extends AbstractReloadListener<HashSet<JsonO
 
 	private final HashSet<CombustionFuelSource> fuels = new HashSet<>();
 
-	private final Logger logger = Electrodynamics.LOGGER;
+	private final Logger logger = Voltaic.LOGGER;
 
 	@Override
 	protected HashSet<JsonObject> prepare(IResourceManager manager, IProfiler profiler) {
@@ -120,12 +120,12 @@ public class CombustionFuelRegister extends AbstractReloadListener<HashSet<JsonO
 		fuels.addAll(values);
 	}
 
-	public IOptionalNamedTag<Fluid>[] getFluidTags() {
-		List<IOptionalNamedTag<Fluid>> values = new ArrayList<>();
+	public INamedTag<Fluid>[] getFluidTags() {
+		List<INamedTag<Fluid>> values = new ArrayList<>();
 		for (CombustionFuelSource source : fuels) {
 			values.add(source.getTag());
 		}
-		IOptionalNamedTag<Fluid>[] arr = new IOptionalNamedTag[values.size()];
+		INamedTag<Fluid>[] arr = new INamedTag[values.size()];
 		return values.toArray(arr);
 	}
 

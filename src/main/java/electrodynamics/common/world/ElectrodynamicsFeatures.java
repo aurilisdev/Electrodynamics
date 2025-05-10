@@ -2,7 +2,7 @@ package electrodynamics.common.world;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import electrodynamics.api.References;
+import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.settings.OreConfig;
 import electrodynamics.common.world.ruletest.RuleTestOre;
@@ -22,7 +22,7 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber(modid = References.ID)
+@Mod.EventBusSubscriber(modid = Electrodynamics.ID)
 public class ElectrodynamicsFeatures {
 
 	public static final IRuleTestType<RuleTestOre> RULE_TEST_ORE = IRuleTestType.register("rule_test_ore", RuleTestOre.CODEC);
@@ -33,7 +33,7 @@ public class ElectrodynamicsFeatures {
 	public static void generateOres(final BiomeLoadingEvent event) {
 		for (SubtypeOre ore : SubtypeOre.values()) {
 
-			OreFeatureConfig feature = new OreFeatureConfig(new RuleTestOre(ore, BlockTags.BASE_STONE_OVERWORLD), ElectrodynamicsBlocks.getBlock(ore).defaultBlockState(), ore.veinSize);
+			OreFeatureConfig feature = new OreFeatureConfig(new RuleTestOre(ore, BlockTags.BASE_STONE_OVERWORLD), ElectrodynamicsBlocks.BLOCKS_ORE.getValue(ore).defaultBlockState(), ore.veinSize);
 
 			ConfiguredPlacement<TopSolidRangeConfig> configuredPlacement = Placement.RANGE.configured(new TopSolidRangeConfig(ore.minY, ore.minY, ore.maxY));
 

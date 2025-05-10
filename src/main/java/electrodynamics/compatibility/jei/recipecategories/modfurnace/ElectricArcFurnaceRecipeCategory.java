@@ -1,0 +1,74 @@
+package electrodynamics.compatibility.jei.recipecategories.modfurnace;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import electrodynamics.Electrodynamics;
+import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.prefab.utilities.ElectroTextUtils;
+import electrodynamics.registers.ElectrodynamicsBlocks;
+import mezz.jei.api.gui.drawable.IDrawableAnimated.StartDirection;
+import mezz.jei.api.helpers.IGuiHelper;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.BlastingRecipe;
+import net.minecraft.item.crafting.Ingredient;
+import voltaic.compatibility.jei.recipecategories.AbstractRecipeCategory;
+import voltaic.compatibility.jei.utils.RecipeType;
+import voltaic.compatibility.jei.utils.gui.ScreenObject;
+import voltaic.compatibility.jei.utils.gui.types.ArrowAnimatedObject;
+import voltaic.compatibility.jei.utils.gui.types.BackgroundObject;
+import voltaic.compatibility.jei.utils.gui.types.ItemSlotObject;
+import voltaic.compatibility.jei.utils.label.types.PowerLabelWrapperConstant;
+import voltaic.compatibility.jei.utils.label.types.TimeLabelWrapperConstant;
+import voltaic.prefab.screen.component.types.ScreenComponentProgress;
+import voltaic.prefab.screen.component.types.ScreenComponentSlot;
+
+public class ElectricArcFurnaceRecipeCategory extends AbstractRecipeCategory<BlastingRecipe> {
+
+	public static final BackgroundObject BACK_WRAP = new BackgroundObject(132, 58);
+
+	public static final ItemSlotObject INPUT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, 22, 20, true);
+	public static final ItemSlotObject OUTPUT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.BIG, 83, 16, false);
+
+	public static final ArrowAnimatedObject ANIM_ARROW = new ArrowAnimatedObject(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, 50, 23, StartDirection.LEFT);
+	public static final ScreenObject FLAME = new ScreenObject(ScreenComponentProgress.ProgressTextures.FLAME_ON, 5, 23);
+
+	public static final PowerLabelWrapperConstant POWER_LABEL = new PowerLabelWrapperConstant(2, 48, ElectroConstants.ELECTRICARCFURNACE_USAGE_PER_TICK, 120);
+	public static final TimeLabelWrapperConstant TIME_LABEL = new TimeLabelWrapperConstant(130, 48, ElectroConstants.ELECTRICARCFURNACE_REQUIRED_TICKS);
+
+	public static final int ANIM_TIME = 50;
+
+	public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricarcfurnace));
+
+	public static final String RECIPE_GROUP = "blasting";
+
+	public static final RecipeType<BlastingRecipe> RECIPE_TYPE = RecipeType.create(Electrodynamics.ID, RECIPE_GROUP, BlastingRecipe.class);
+
+	public ElectricArcFurnaceRecipeCategory(IGuiHelper guiHelper) {
+		super(guiHelper, ElectroTextUtils.jeiTranslated(RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
+		setInputSlots(guiHelper, INPUT_SLOT);
+		setOutputSlots(guiHelper, OUTPUT_SLOT);
+		setScreenObjects(guiHelper, FLAME);
+		setAnimatedArrows(guiHelper, ANIM_ARROW);
+		setLabels(POWER_LABEL, TIME_LABEL);
+	}
+
+	@Override
+	public List<List<ItemStack>> getItemInputs(BlastingRecipe recipe) {
+		List<List<ItemStack>> inputs = new ArrayList<>();
+		for (Ingredient ing : recipe.getIngredients()) {
+			inputs.add(Arrays.asList(ing.getItems()));
+		}
+		return inputs;
+	}
+
+	@Override
+	public List<ItemStack> getItemOutputs(BlastingRecipe recipe) {
+		List<ItemStack> outputs = new ArrayList<>();
+		outputs.add(recipe.getResultItem());
+		return outputs;
+	}
+
+}
