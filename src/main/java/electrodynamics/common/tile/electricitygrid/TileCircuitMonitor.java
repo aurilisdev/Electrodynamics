@@ -83,6 +83,10 @@ public class TileCircuitMonitor extends GenericTile {
 			GenericTileWire wire = (GenericTileWire) blockentity;
 
 			ElectricNetwork network = wire.getNetwork();
+			
+			if(network == null) {
+				return 0;
+			}
 
 			switch (networkProperty.getValue()) {
 			case 0:

@@ -45,6 +45,9 @@ public class TileMultimeterBlock extends GenericTile {
 			if (blockentity instanceof GenericTileWire) {
 				GenericTileWire cond = (GenericTileWire) blockentity;
 				ElectricNetwork network = cond.getNetwork();
+				if(network == null) {
+					return;
+				}
 				joules.setValue(network.getActiveTransmitted());
 				voltage.setValue(network.getActiveVoltage());
 				minVoltage.setValue(network.getMinimumVoltage());

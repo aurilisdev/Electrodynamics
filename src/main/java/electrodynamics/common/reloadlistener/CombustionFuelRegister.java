@@ -12,6 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.annotation.Nullable;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 
@@ -129,13 +131,14 @@ public class CombustionFuelRegister extends AbstractReloadListener<HashSet<JsonO
 		return values.toArray(arr);
 	}
 
+	@Nullable
 	public CombustionFuelSource getFuelFromFluid(FluidStack stack) {
 		for (CombustionFuelSource fuel : fuels) {
 			if (fuel.isFuelSource(stack)) {
 				return fuel;
 			}
 		}
-		return CombustionFuelSource.EMPTY;
+		return null;
 	}
 
 	public CombustionFuelRegister subscribeAsSyncable(final SimpleChannel channel) {

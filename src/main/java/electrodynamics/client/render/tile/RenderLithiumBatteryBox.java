@@ -55,20 +55,20 @@ public class RenderLithiumBatteryBox extends AbstractTileRenderer<TileLithiumBat
 		}
 
 		switch (tileEntityIn.getFacing()) {
-		case NORTH: {
+		case NORTH:
 			matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
 			matrixStackIn.translate(-1, 0, 0);
-		}
-		case SOUTH: {
+			break;
+		case SOUTH:
 			matrixStackIn.mulPose(new Quaternion(0, 270, 0, true));
 			matrixStackIn.translate(0, 0, -1);
-		}
-		case WEST: {
+			break;
+		case WEST:
 			matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
 			matrixStackIn.translate(-1, 0, -1);
-		}
-		default: {
-		}
+			break;
+		default:
+			break;
 		}
 		matrixStackIn.translate(0.5, 0.5, 0.5);
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);

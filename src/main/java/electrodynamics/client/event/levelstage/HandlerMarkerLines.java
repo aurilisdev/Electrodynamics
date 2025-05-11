@@ -28,7 +28,7 @@ public class HandlerMarkerLines extends AbstractLevelStageHandler {
 		IRenderTypeBuffer.Impl buffer = minecraft.renderBuffers().bufferSource();
 		RenderType beaconType = RenderingUtils.beaconType();
 		IVertexBuilder sheetBuilder = buffer.getBuffer(beaconType);
-		Vector3d camPos = minecraft.cameraEntity.position();
+		Vector3d camPos = minecraft.gameRenderer.getMainCamera().getPosition();
 
 		markerLines.forEach((pos, list) -> list.forEach(aabb -> {
 			stack.pushPose();

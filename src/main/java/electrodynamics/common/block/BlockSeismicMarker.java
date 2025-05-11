@@ -17,7 +17,7 @@ import voltaic.prefab.block.GenericMachineBlock;
 
 public class BlockSeismicMarker extends GenericMachineBlock {
 
-	private static final VoxelShapeProvider AABB = VoxelShapeProvider.createOmni(
+	private static final VoxelShapeProvider AxisAlignedBB = VoxelShapeProvider.createOmni(
             //
             Stream.of(
                     //
@@ -42,7 +42,7 @@ public class BlockSeismicMarker extends GenericMachineBlock {
             ).reduce(VoxelShapes::or).get());
 
 	public BlockSeismicMarker() {
-		super(TileSeismicMarker::new, AABB);
+		super(TileSeismicMarker::new, AxisAlignedBB);
 	}
 
 	@Override

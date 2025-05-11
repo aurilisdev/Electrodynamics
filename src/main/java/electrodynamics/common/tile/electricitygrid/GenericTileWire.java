@@ -40,11 +40,17 @@ public abstract class GenericTileWire extends GenericRefreshingConnectTile<IWire
 
                 @Override
                 public double getVoltage() {
+                	if(getNetwork() == null) {
+                		return 0;
+                	}
                     return getNetwork().getVoltage();
                 }
 
                 @Override
                 public double getMinimumVoltage() {
+                	if(getNetwork() == null) {
+                		return 0;
+                	}
                     return getNetwork().getMinimumVoltage();
                 }
 
@@ -60,6 +66,9 @@ public abstract class GenericTileWire extends GenericRefreshingConnectTile<IWire
 
                     boolean isReciever = electro != CapabilityUtils.EMPTY_ELECTRO && electro.isEnergyReceiver();
                     ignored.add(entity);
+                    if(getNetwork() == null) {
+                    	return TransferPack.EMPTY;
+                    }
                     if (!debug) {
                         getNetwork().addProducer(ignored.get(0), transfer.getVoltage(), isReciever);
                     }
@@ -73,31 +82,49 @@ public abstract class GenericTileWire extends GenericRefreshingConnectTile<IWire
 
                 @Override
                 public TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
+                	if(getNetwork() == null) {
+                		return TransferPack.EMPTY;
+                	}
                     return getNetwork().getConnectedLoad(loadProfile, dir);
                 }
 
                 @Override
                 public double getMaximumVoltage() {
+                	if(getNetwork() == null) {
+                		return 0;
+                	}
                     return getNetwork().getActiveVoltage();
                 }
 
                 @Override
                 public double getAmpacity() {
+                	if(getNetwork() == null) {
+                		return 0;
+                	}
                     return getNetwork().getAmpacity();
                 }
 
                 @Override
                 public boolean isEnergyReceiver() {
+                	if(getNetwork() == null) {
+                		return false;
+                	}
                     return getNetwork().isEnergyReceiver();
                 }
 
                 @Override
                 public boolean isEnergyProducer() {
+                	if(getNetwork() == null) {
+                		return false;
+                	}
                     return getNetwork().isEnergyProducer();
                 }
 
                 @Override
                 public void setJoulesStored(double joules) {
+                	if(getNetwork() == null) {
+                		return;
+                	}
                     getNetwork().setJoulesStored(joules);
                 }
 

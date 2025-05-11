@@ -32,6 +32,10 @@ public class ItemMultimeter extends ItemVoltaic {
 		if (tile instanceof TileWire) {
 			TileWire wire = (TileWire) tile;
 			ElectricNetwork net = wire.getNetwork();
+			
+			if(net == null) {
+				return super.useOn(context);
+			}
 
 			IFormattableTextComponent display = new StringTextComponent("");
 

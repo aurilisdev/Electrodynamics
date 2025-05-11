@@ -17,7 +17,7 @@ public class TileLogisticalWire extends TileWire {
 	}
 
 	protected void tickServer(ComponentTickable component) {
-		if (component.getTicks() % 10 == 0) {
+		if (component.getTicks() % 10 == 0 && getNetwork() != null) {
 			boolean shouldPower = getNetwork().getActiveTransmitted() > 0;
 			if (shouldPower != isPowered) {
 				isPowered = shouldPower;

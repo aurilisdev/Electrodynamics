@@ -71,7 +71,7 @@ public class TileCombustionChamber extends GenericMaterialTile implements IElect
 			running.setValue(false);
 			if (tank.getFluidAmount() > 0) {
 				CombustionFuelSource source = CombustionFuelRegister.INSTANCE.getFuelFromFluid(tank.getFluid());
-				if (!source.isEmpty()) {
+				if (source != null) {
 					tank.drain(new FluidStack(tank.getFluid().getFluid(), source.getFuelUsage()), FluidAction.EXECUTE);
 					fuelMultiplier = source.getPowerMultiplier();
 					running.setValue(true);

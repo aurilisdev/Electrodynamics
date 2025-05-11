@@ -18,7 +18,7 @@ public class TileWire extends GenericTileWire {
 		super(ElectrodynamicsTiles.TILE_WIRE.get());
 	}
 
-	public TileWire(TileEntityType<TileLogisticalWire> tileEntityType) {
+	public TileWire(TileEntityType<?> tileEntityType) {
 		super(tileEntityType);
 	}
 

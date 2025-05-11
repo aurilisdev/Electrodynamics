@@ -11,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Matrix4f;
@@ -29,8 +28,7 @@ public class HandlerSeismicScanner extends AbstractLevelStageHandler {
 		Minecraft minecraft = Minecraft.getInstance();
 		IRenderTypeBuffer.Impl buffer = minecraft.renderBuffers().bufferSource();
 		IVertexBuilder builder = buffer.getBuffer(RenderType.LINES);
-		Entity camera = minecraft.cameraEntity;
-		Vector3d camPos = camera.position();
+		Vector3d camPos = minecraft.gameRenderer.getMainCamera().getPosition();
 
 		Iterator<Entry<BlockPos, Long>> it = pingedBlocks.entrySet().iterator();
 		while (it.hasNext()) {
@@ -40,7 +38,7 @@ public class HandlerSeismicScanner extends AbstractLevelStageHandler {
 			stack.translate(-camPos.x, -camPos.y, -camPos.z);
 			WorldRenderer.renderLineBox(stack, builder, box, 1.0F, 1.0F, 1.0F, 1.0F);
 			stack.popPose();
-			if (System.currentTimeMillis() - entry.getValue() > 10000 || minecraft.level.getBlockState(entry.getKey()).isAir()) {
+			if (System.currentTimeMillis() - entry.getValue() > 10000 || minecraft.level.getBlockState(entry.getKey()).isAir(minecraft.level, entry.getKey())) {
 				it.remove();
 			}
 		}

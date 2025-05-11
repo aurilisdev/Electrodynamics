@@ -18,8 +18,6 @@ public class CombustionFuelSource {
 	public static final String USAGE_AMOUNT = "usage_per_burn";
 	public static final String POWER_MULTIPLIER = "power_multiplier";
 
-	public static final CombustionFuelSource EMPTY = new CombustionFuelSource(FluidTags.createOptional(new ResourceLocation("air")), 0, 0);
-
 	private FluidIngredient fuel;
 	private double powerMultiplier;
 	private final INamedTag<Fluid> tag;
@@ -48,10 +46,6 @@ public class CombustionFuelSource {
 
 	public int getFuelUsage() {
 		return fuel.getFluidStack().getAmount();
-	}
-
-	public boolean isEmpty() {
-		return this == EMPTY;
 	}
 
 	public static CombustionFuelSource fromJson(JsonObject json) {

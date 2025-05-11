@@ -6,7 +6,7 @@ import net.minecraft.util.RegistryKey;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
-import net.minecraft.world.Dimension;
+import net.minecraft.world.World;
 
 public class ElectroTextUtils {
 
@@ -69,7 +69,7 @@ public class ElectroTextUtils {
 		return translated(DIMENSION, key, additional);
 	}
 
-	public static IFormattableTextComponent dimension(RegistryKey<Dimension> level, Object... additional) {
+	public static IFormattableTextComponent dimension(RegistryKey<World> level, Object... additional) {
 		return dimension(level.location().getPath(), additional);
 	}
 
@@ -93,7 +93,7 @@ public class ElectroTextUtils {
 		return translationExists(DIMENSION, key);
 	}
 
-	public static boolean dimensionExists(RegistryKey<Dimension> level) {
+	public static boolean dimensionExists(RegistryKey<World> level) {
 		return dimensionExistst(level.location().getPath());
 	}
 

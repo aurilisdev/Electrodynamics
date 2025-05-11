@@ -134,7 +134,7 @@ public class BlockFrame extends Block {
 
 	@Override
 	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
-		if (newState.isAir() && !state.getValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY) && !level.isClientSide) {
+		if (newState.isAir(level, pos) && !state.getValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY) && !level.isClientSide) {
 			TileEntity entity = level.getBlockEntity(pos);
 			if (entity != null && entity instanceof TileFrame) {
 				((TileFrame) entity).purposefullyDestroyed();

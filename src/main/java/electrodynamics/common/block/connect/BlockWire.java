@@ -87,7 +87,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 	public ActionResultType use(BlockState state, World level, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hitResult) {
     	ItemStack stack = player.getItemInHand(hand);
     	
-        if (stack.isEmpty() || state.isAir()) {
+        if (stack.isEmpty() || state.isAir(level, pos)) {
             return ActionResultType.FAIL;
         }
 
@@ -437,6 +437,10 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
         	GenericTileWire tile = (GenericTileWire) blockentity;
 
             ElectricNetwork network = tile.getNetwork();
+            
+            if(network == null) {
+            	return;
+            }
 
             double voltage = network.getActiveVoltage();
 
@@ -456,7 +460,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
                 relativePos = pos.relative(dir);
                 relative = level.getBlockState(relativePos);
 
-                if (relative.isAir()) {
+                if (relative.isAir(level, relativePos)) {
                     continue;
                 }
 
