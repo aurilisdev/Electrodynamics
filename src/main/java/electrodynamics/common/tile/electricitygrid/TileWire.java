@@ -20,7 +20,7 @@ public class TileWire extends GenericTileWire {
 		super(ElectrodynamicsTiles.TILE_WIRE.get(), pos, state);
 	}
 
-	public TileWire(BlockEntityType<TileLogisticalWire> tileEntityType, BlockPos pos, BlockState state) {
+	public TileWire(BlockEntityType<?> tileEntityType, BlockPos pos, BlockState state) {
 		super(tileEntityType, pos, state);
 	}
 
