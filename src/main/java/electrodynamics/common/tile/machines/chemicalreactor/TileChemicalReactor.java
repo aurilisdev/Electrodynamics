@@ -198,7 +198,7 @@ public class TileChemicalReactor extends GenericGasTile {
             List<ProbableGas> gasBi = locRecipe.getGasBiproducts();
             GasTank[] outTanks = gasHandler.getOutputTanks();
             for (int i = 0; i < gasBi.size(); i++) {
-                outTanks[i].fill(gasBi.get(i).roll(), GasAction.EXECUTE);
+                outTanks[i + 1].fill(gasBi.get(i).roll(), GasAction.EXECUTE);
             }
         }
 
