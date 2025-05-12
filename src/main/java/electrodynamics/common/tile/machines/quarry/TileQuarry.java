@@ -869,7 +869,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	private boolean skipBlock(BlockState state) {
-		return state.isAir() || !state.getFluidState().is(Fluids.EMPTY) || state.is(Blocks.BEDROCK) || miningPos.getValue().getY() == level.getMinBuildHeight();
+		return state.isAir() || state.is(Blocks.BEDROCK) || miningPos.getValue().getY() == level.getMinBuildHeight();
 	}
 
 	private void tickClient(ComponentTickable tick) {
