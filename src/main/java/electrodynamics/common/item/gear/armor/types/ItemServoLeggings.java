@@ -149,12 +149,14 @@ public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric
                     case 0:
                         stack.set(VoltaicDataComponentTypes.RESET, false);
                         stack.set(VoltaicDataComponentTypes.SUCESS, true);
+                        player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
 						player.getAttribute(Attributes.STEP_HEIGHT).addPermanentModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
                         legs.extractPower(stack, JOULES_PER_TICK, false);
                         break;
                     case 1:
                         stack.set(VoltaicDataComponentTypes.RESET, false);
                         stack.set(VoltaicDataComponentTypes.SUCESS, true);
+                        player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
                         player.getAttribute(Attributes.STEP_HEIGHT).addPermanentModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
                         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false, false, false));
                         legs.extractPower(stack, JOULES_PER_TICK, false);
@@ -162,6 +164,7 @@ public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric
                     case 2:
                         stack.set(VoltaicDataComponentTypes.RESET, false);
                         stack.set(VoltaicDataComponentTypes.SUCESS, false);
+                        player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
                         player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false, false, false));
                         legs.extractPower(stack, JOULES_PER_TICK, false);
                         break;
@@ -184,6 +187,7 @@ public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric
         } else if (stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
             switch (stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0)) {
                 case 0, 1:
+                    player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
                     player.getAttribute(Attributes.STEP_HEIGHT).addPermanentModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
                     break;
                 case 2, 3:

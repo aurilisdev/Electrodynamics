@@ -82,11 +82,11 @@ configurations {
 dependencies {
     def Folder = new File("C:/AmpzLibz/1.21")
     if(Folder.exists()) {
-        compileOnly fileTree(Folder)
+        implementation fileTree(Folder)
     }
     def Folder2 = new File("libs")
     if(Folder2.exists()) {
-        compileOnly fileTree(Folder2)
+        implementation fileTree(Folder2)
     }
 
     implementation "net.neoforged:neoforge:${neo_version}"

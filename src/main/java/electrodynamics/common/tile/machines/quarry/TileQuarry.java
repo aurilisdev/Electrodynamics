@@ -41,7 +41,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.common.util.FakePlayer;
 import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import voltaic.api.tile.IPlayerStorable;
@@ -875,7 +874,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	private boolean skipBlock(BlockState state) {
-		return state.isAir() || !state.getFluidState().is(Fluids.EMPTY) || state.is(Blocks.BEDROCK) || miningPos.getValue().getY() == level.getMinBuildHeight();
+		return state.isAir() || state.is(Blocks.BEDROCK) || miningPos.getValue().getY() == level.getMinBuildHeight();
 	}
 
 	private void tickClient(ComponentTickable tick) {

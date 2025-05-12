@@ -182,6 +182,12 @@ public class TileChemicalReactor extends GenericGasTile {
                     stack.grow(itemBi.get(index).roll().getCount());
                     inv.setItem(slot, stack);
                 }
+
+                index++;
+
+                if(index >= itemBi.size()) {
+                    break;
+                }
             }
 
         }

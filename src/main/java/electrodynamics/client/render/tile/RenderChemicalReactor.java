@@ -195,10 +195,10 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
 
             } else if (!tile.hasItemInputs.getValue()) {
 
-                if (stack1.isEmpty()) {
+                if (stack1.isEmpty() && !stack2.isEmpty()) {
                     poseStack.translate(0, 1, 0);
                     RenderingUtils.renderFluidBox(poseStack, minecraft(), bufferSource.getBuffer(RenderType.translucentMovingBlock()), new AABB(0.0625, 0.25, 0.0625, 0.9375, 1, 0.9375), stack2, packedLight, packedOverlay, RenderingUtils.ALL_FACES);
-                } else if (stack2.isEmpty()) {
+                } else if (stack2.isEmpty() && !stack1.isEmpty()) {
                     poseStack.translate(0, 1, 0);
                     RenderingUtils.renderFluidBox(poseStack, minecraft(), bufferSource.getBuffer(RenderType.translucentMovingBlock()), new AABB(0.0625, 0.25, 0.0625, 0.9375, 1, 0.9375), stack1, packedLight, packedOverlay, RenderingUtils.ALL_FACES);
                 } else {
