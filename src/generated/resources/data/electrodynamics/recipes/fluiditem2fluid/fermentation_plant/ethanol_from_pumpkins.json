@@ -5,7 +5,10 @@
   "iteminputs": {
     "count": 1,
     "0": {
-      "item": "minecraft:pumpkin",
+      "item": {
+        "id": "minecraft:pumpkin",
+        "Count": 1
+      },
       "count": 12
     }
   },

@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "electrodynamics:concretebricks",
+    "electrodynamics:concreteregular",
+    "electrodynamics:concretetile"
+  ]
+}

@@ -5,7 +5,7 @@
   "iteminputs": {
     "count": 2,
     "0": {
-      "tag": "forge:oxide/dititanium",
+      "tag": "forge:oxides/dititanium",
       "count": 1
     },
     "1": {
@@ -17,5 +17,15 @@
     "item": "electrodynamics:ingottitanium",
     "count": 1
   },
-  "experience": 0.20000000298023224
+  "experience": 0.20000000298023224,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": {
+        "id": "electrodynamics:slag",
+        "Count": 1
+      },
+      "chance": 0.75
+    }
+  }
 }

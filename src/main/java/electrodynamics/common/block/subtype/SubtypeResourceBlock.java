@@ -4,43 +4,44 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import electrodynamics.api.ISubtype;
 import electrodynamics.common.item.subtype.SubtypeIngot;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import electrodynamics.registers.ElectrodynamicsItems;
+import net.minecraft.block.AbstractBlock.Properties;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
+import net.minecraft.tags.ITag.INamedTag;
+import voltaic.api.ISubtype;
+import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypeResourceBlock implements ISubtype {
-    copper(2.0f, 3.0f, Material.METAL, SoundType.METAL, 1, ElectrodynamicsTags.Items.STORAGE_BLOCK_COPPER, ElectrodynamicsTags.Blocks.STORAGE_BLOCK_COPPER, ElectrodynamicsTags.Items.INGOT_COPPER, () -> ElectrodynamicsItems.getItem(SubtypeIngot.copper)), 
-    tin(2.0f, 3.0f, Material.METAL, SoundType.METAL, 1, ElectrodynamicsTags.Items.STORAGE_BLOCK_TIN, ElectrodynamicsTags.Blocks.STORAGE_BLOCK_TIN, ElectrodynamicsTags.Items.INGOT_TIN, () -> ElectrodynamicsItems.getItem(SubtypeIngot.tin)),
-	lead(2.0f, 3.0f, Material.METAL, SoundType.METAL, 2, ElectrodynamicsTags.Items.STORAGE_BLOCK_LEAD, ElectrodynamicsTags.Blocks.STORAGE_BLOCK_LEAD, ElectrodynamicsTags.Items.INGOT_LEAD, () -> ElectrodynamicsItems.getItem(SubtypeIngot.lead)),
-	silver(2.0f, 3.0f, Material.METAL, SoundType.METAL, 2, ElectrodynamicsTags.Items.STORAGE_BLOCK_SILVER, ElectrodynamicsTags.Blocks.STORAGE_BLOCK_SILVER, ElectrodynamicsTags.Items.INGOT_SILVER, () -> ElectrodynamicsItems.getItem(SubtypeIngot.silver)),
-	bronze(2.0f, 3.0f, Material.METAL, SoundType.METAL, 1, ElectrodynamicsTags.Items.STORAGE_BLOCK_BRONZE, ElectrodynamicsTags.Blocks.STORAGE_BLOCK_BRONZE, ElectrodynamicsTags.Items.INGOT_BRONZE, () -> ElectrodynamicsItems.getItem(SubtypeIngot.bronze)),
-	steel(2.0f, 3.0f, Material.METAL, SoundType.METAL, 2, ElectrodynamicsTags.Items.STORAGE_BLOCK_STEEL, ElectrodynamicsTags.Blocks.STORAGE_BLOCK_STEEL, ElectrodynamicsTags.Items.INGOT_STEEL, () -> ElectrodynamicsItems.getItem(SubtypeIngot.steel)),
-	aluminum(2.0f, 3.0f, Material.METAL, SoundType.METAL, 2, ElectrodynamicsTags.Items.STORAGE_BLOCK_ALUMINUM, ElectrodynamicsTags.Blocks.STORAGE_BLOCK_ALUMINUM, ElectrodynamicsTags.Items.INGOT_ALUMINUM, () -> ElectrodynamicsItems.getItem(SubtypeIngot.aluminum)),
-	chromium(2.0f, 3.0f, Material.METAL, SoundType.METAL, 3, ElectrodynamicsTags.Items.STORAGE_BLOCK_CHROMIUM, ElectrodynamicsTags.Blocks.STORAGE_BLOCK_CHROMIUM, ElectrodynamicsTags.Items.INGOT_CHROMIUM, () -> ElectrodynamicsItems.getItem(SubtypeIngot.chromium)),
-	stainlesssteel(2.0f, 3.0f, Material.METAL, SoundType.METAL, 2, ElectrodynamicsTags.Items.STORAGE_BLOCK_STAINLESSSTEEL, ElectrodynamicsTags.Blocks.STORAGE_BLOCK_STAINLESSSTEEL, ElectrodynamicsTags.Items.INGOT_STAINLESSSTEEL, () -> ElectrodynamicsItems.getItem(SubtypeIngot.stainlesssteel)),
-	vanadiumsteel(2.0f, 3.0f, Material.METAL, SoundType.METAL, 2, ElectrodynamicsTags.Items.STORAGE_BLOCK_VANADIUMSTEEL, ElectrodynamicsTags.Blocks.STORAGE_BLOCK_VANADIUMSTEEL, ElectrodynamicsTags.Items.INGOT_VANADIUMSTEEL, () -> ElectrodynamicsItems.getItem(SubtypeIngot.vanadiumsteel)),
-	hslasteel(2.0f, 3.0f, Material.METAL, SoundType.METAL, 3, ElectrodynamicsTags.Items.STORAGE_BLOCK_HSLASTEEL, ElectrodynamicsTags.Blocks.STORAGE_BLOCK_HSLASTEEL, ElectrodynamicsTags.Items.INGOT_HSLASTEEL, () -> ElectrodynamicsItems.getItem(SubtypeIngot.hslasteel)),
-	titanium(2.0f, 3.0f, Material.METAL, SoundType.METAL, 3, ElectrodynamicsTags.Items.STORAGE_BLOCK_TITANIUM, ElectrodynamicsTags.Blocks.STORAGE_BLOCK_TITANIUM, ElectrodynamicsTags.Items.INGOT_TITANIUM, () -> ElectrodynamicsItems.getItem(SubtypeIngot.titanium)),
-	titaniumcarbide(2.0f, 3.0f, Material.METAL, SoundType.METAL, 3, ElectrodynamicsTags.Items.STORAGE_BLOCK_TITANIUMCARBIDE, ElectrodynamicsTags.Blocks.STORAGE_BLOCK_TITANIUMCARBIDE, ElectrodynamicsTags.Items.INGOT_TITANIUMCARBIDE, () -> ElectrodynamicsItems.getItem(SubtypeIngot.titaniumcarbide));
+	tin(2.0f, 3.0f, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL, 1, VoltaicTags.Items.STORAGE_BLOCK_TIN, VoltaicTags.Blocks.STORAGE_BLOCK_TIN, VoltaicTags.Items.INGOT_TIN, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.tin)),
+	copper(2.0f, 3.0f, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL, 1, VoltaicTags.Items.STORAGE_BLOCK_COPPER, VoltaicTags.Blocks.STORAGE_BLOCK_COPPER, VoltaicTags.Items.INGOT_COPPER, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.copper)),
+    lead(2.0f, 3.0f, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL, 2, VoltaicTags.Items.STORAGE_BLOCK_LEAD, VoltaicTags.Blocks.STORAGE_BLOCK_LEAD, VoltaicTags.Items.INGOT_LEAD, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.lead)),
+    silver(2.0f, 3.0f, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL, 2, VoltaicTags.Items.STORAGE_BLOCK_SILVER, VoltaicTags.Blocks.STORAGE_BLOCK_SILVER, VoltaicTags.Items.INGOT_SILVER, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.silver)),
+    bronze(2.0f, 3.0f, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL, 1, VoltaicTags.Items.STORAGE_BLOCK_BRONZE, VoltaicTags.Blocks.STORAGE_BLOCK_BRONZE, VoltaicTags.Items.INGOT_BRONZE, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.bronze)),
+    steel(2.0f, 3.0f, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL, 2, VoltaicTags.Items.STORAGE_BLOCK_STEEL, VoltaicTags.Blocks.STORAGE_BLOCK_STEEL, VoltaicTags.Items.INGOT_STEEL, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.steel)),
+    aluminum(2.0f, 3.0f, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL, 2, VoltaicTags.Items.STORAGE_BLOCK_ALUMINUM, VoltaicTags.Blocks.STORAGE_BLOCK_ALUMINUM, VoltaicTags.Items.INGOT_ALUMINUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.aluminum)),
+    chromium(2.0f, 3.0f, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL, 3, VoltaicTags.Items.STORAGE_BLOCK_CHROMIUM, VoltaicTags.Blocks.STORAGE_BLOCK_CHROMIUM, VoltaicTags.Items.INGOT_CHROMIUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.chromium)),
+    stainlesssteel(2.0f, 3.0f, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL, 2, VoltaicTags.Items.STORAGE_BLOCK_STAINLESSSTEEL, VoltaicTags.Blocks.STORAGE_BLOCK_STAINLESSSTEEL, VoltaicTags.Items.INGOT_STAINLESSSTEEL, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.stainlesssteel)),
+    vanadiumsteel(2.0f, 3.0f, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL, 2, VoltaicTags.Items.STORAGE_BLOCK_VANADIUMSTEEL, VoltaicTags.Blocks.STORAGE_BLOCK_VANADIUMSTEEL, VoltaicTags.Items.INGOT_VANADIUMSTEEL, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.vanadiumsteel)),
+    hslasteel(2.0f, 3.0f, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL, 3, VoltaicTags.Items.STORAGE_BLOCK_HSLASTEEL, VoltaicTags.Blocks.STORAGE_BLOCK_HSLASTEEL, VoltaicTags.Items.INGOT_HSLASTEEL, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.hslasteel)),
+    titanium(2.0f, 3.0f, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL, 3, VoltaicTags.Items.STORAGE_BLOCK_TITANIUM, VoltaicTags.Blocks.STORAGE_BLOCK_TITANIUM, VoltaicTags.Items.INGOT_TITANIUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.titanium)),
+    titaniumcarbide(2.0f, 3.0f, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL, 3, VoltaicTags.Items.STORAGE_BLOCK_TITANIUMCARBIDE, VoltaicTags.Blocks.STORAGE_BLOCK_TITANIUMCARBIDE, VoltaicTags.Items.INGOT_TITANIUMCARBIDE, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.titaniumcarbide));
 
 	private float hardness;
 	private float resistance;
-	private Material material;
+	private Properties material;
 	private SoundType soundType;
 	// 0 = wood, 1 = stone, 2 = iron, 3 = diamond
 	public final int miningLevel;
-	public final IOptionalNamedTag<Item> itemTag;
-	public final IOptionalNamedTag<Block> blockTag;
-	public final IOptionalNamedTag<Item> sourceIngot;
+	public final INamedTag<Item> itemTag;
+	public final INamedTag<Block> blockTag;
+	public final INamedTag<Item> sourceIngot;
 	public final Supplier<Item> productIngot;
 
-	SubtypeResourceBlock(float hardness, float resistance, Material material, SoundType soundType, int miningLevel, IOptionalNamedTag<Item> itemTag, IOptionalNamedTag<Block> blockTag, IOptionalNamedTag<Item> sourceIngot, Supplier<Item> productIngot) {
+	SubtypeResourceBlock(float hardness, float resistance, Properties material, SoundType soundType, int miningLevel, INamedTag<Item> itemTag, INamedTag<Block> blockTag, INamedTag<Item> sourceIngot, Supplier<Item> productIngot) {
 		this.hardness = hardness;
 		this.resistance = resistance;
 		this.material = material;
@@ -60,7 +61,7 @@ public enum SubtypeResourceBlock implements ISubtype {
 		return resistance;
 	}
 
-	public Material getMaterial() {
+	public Properties getProperties() {
 		return material;
 	}
 

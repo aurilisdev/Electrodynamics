@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "electrodynamics:wireinsulatedcopper",
+    "electrodynamics:wireinsulatedcopperred",
+    "electrodynamics:wireinsulatedcopperwhite",
+    "electrodynamics:wireinsulatedcoppergreen",
+    "electrodynamics:wireinsulatedcopperblue",
+    "electrodynamics:wireinsulatedcopperyellow",
+    "electrodynamics:wireinsulatedcopperbrown"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CSC",
+    "GEG",
+    "CSC"
+  ],
+  "key": {
+    "C": {
+      "tag": "forge:circuits/advanced"
+    },
+    "S": {
+      "tag": "forge:plates/steel"
+    },
+    "E": {
+      "item": "electrodynamics:electricarcfurnace"
+    },
+    "G": {
+      "tag": "forge:ingots/gold"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:electricarcfurnacedouble"
+  }
+}

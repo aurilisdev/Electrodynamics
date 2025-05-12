@@ -13,7 +13,7 @@
       "tag": "forge:circuits/elite"
     },
     "W": {
-      "item": "electrodynamics:wirehighlyinsulatedgold"
+      "tag": "forge:wires/thick_gold"
     },
     "L": {
       "item": "electrodynamics:chargerlv"

@@ -2,14 +2,14 @@
   "parent": "electrodynamics:ores",
   "display": {
     "icon": {
-      "item": "electrodynamics:oreuraninite"
+      "item": "electrodynamics:oreuranium"
     },
     "title": {
       "color": "gray",
-      "translate": "advancement.electrodynamics.uraniumore.title"
+      "translate": "advancement.electrodynamics.rawuranium.title"
     },
     "description": {
-      "translate": "advancement.electrodynamics.uraniumore.desc"
+      "translate": "advancement.electrodynamics.rawuranium.desc"
     },
     "frame": "task",
     "show_toast": true,
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "item": "electrodynamics:oreuraninite"
+            "item": "electrodynamics:oreuranium"
           }
         ]
       }

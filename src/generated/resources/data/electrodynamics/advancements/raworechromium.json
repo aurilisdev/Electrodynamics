@@ -2,14 +2,14 @@
   "parent": "electrodynamics:ores",
   "display": {
     "icon": {
-      "item": "electrodynamics:orechromite"
+      "item": "electrodynamics:orechromium"
     },
     "title": {
       "color": "gray",
-      "translate": "advancement.electrodynamics.chromiumore.title"
+      "translate": "advancement.electrodynamics.rawchromium.title"
     },
     "description": {
-      "translate": "advancement.electrodynamics.chromiumore.desc"
+      "translate": "advancement.electrodynamics.rawchromium.desc"
     },
     "frame": "task",
     "show_toast": true,
@@ -25,7 +25,7 @@
       "conditions": {
         "items": [
           {
-            "item": "electrodynamics:orechromite"
+            "item": "electrodynamics:orechromium"
           }
         ]
       }

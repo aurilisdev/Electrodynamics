@@ -7,8 +7,8 @@
 		64
 	],
 	"textures": {
-		"0": "electrodynamics:model/coalgenerator",
-		"particle": "electrodynamics:block/steelcasing"
+		"0": "electrodynamics:block/model/coalgenerator",
+		"particle": "voltaic:block/steelcasing"
 	},
 	"elements": [
 		{

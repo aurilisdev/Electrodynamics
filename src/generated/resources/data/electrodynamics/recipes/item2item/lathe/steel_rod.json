@@ -13,5 +13,15 @@
     "item": "electrodynamics:rodsteel",
     "count": 1
   },
-  "experience": 0.10000000149011612
+  "experience": 0.10000000149011612,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": {
+        "id": "electrodynamics:nuggetsteel",
+        "Count": 2
+      },
+      "chance": 1.0
+    }
+  }
 }

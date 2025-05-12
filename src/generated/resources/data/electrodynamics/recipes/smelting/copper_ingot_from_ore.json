@@ -4,6 +4,6 @@
     "tag": "forge:ores/copper"
   },
   "result": "electrodynamics:ingotcopper",
-  "experience": 0.0,
+  "experience": 0.3,
   "cookingtime": 200
 }

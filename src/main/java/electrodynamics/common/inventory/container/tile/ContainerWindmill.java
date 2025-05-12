@@ -1,15 +1,15 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.electricitygrid.generators.TileWindmill;
-import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerWindmill extends GenericContainerBlockEntity<TileWindmill> {
 

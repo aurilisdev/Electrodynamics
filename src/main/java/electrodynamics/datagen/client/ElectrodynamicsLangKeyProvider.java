@@ -1,24 +1,27 @@
 package electrodynamics.datagen.client;
 
-import electrodynamics.api.References;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
+import electrodynamics.Electrodynamics;
+import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.common.fluid.types.subtype.SubtypeSulfateFluid;
+import electrodynamics.common.fluid.subtype.SubtypeSulfateFluid;
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.common.item.subtype.SubtypeCircuit;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
+import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.common.item.subtype.SubtypeDust;
 import electrodynamics.common.item.subtype.SubtypeGear;
 import electrodynamics.common.item.subtype.SubtypeImpureDust;
 import electrodynamics.common.item.subtype.SubtypeIngot;
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
+import electrodynamics.common.item.subtype.SubtypeNugget;
 import electrodynamics.common.item.subtype.SubtypeOxide;
 import electrodynamics.common.item.subtype.SubtypePlate;
 import electrodynamics.common.item.subtype.SubtypeRod;
+import electrodynamics.common.recipe.categories.fluid2fluid.specificmachines.ElectrolyticSeparatorRecipe;
 import electrodynamics.common.recipe.categories.fluid2item.specificmachines.ChemicalCrystalizerRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.ChemicalMixerRecipe;
 import electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachines.FermentationPlantRecipe;
@@ -34,339 +37,534 @@ import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
-import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.item.Item;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.data.LanguageProvider;
-import net.minecraftforge.fml.RegistryObject;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.datagen.utils.client.BaseLangKeyProvider;
 
-public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
-
-	public final Locale locale;
-	public final String modID;
-
-	public ElectrodynamicsLangKeyProvider(DataGenerator gen, Locale locale, String modID) {
-		super(gen, modID, locale.toString());
-		this.locale = locale;
-		this.modID = modID;
-	}
+public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {
 
 	public ElectrodynamicsLangKeyProvider(DataGenerator gen, Locale local) {
-		this(gen, local, References.ID);
+		super(gen, local, Electrodynamics.ID);
 	}
 
 	@Override
 	protected void addTranslations() {
 
-		add("itemGroup.itemgroup" + References.ID, "Electrodynamics");
+		add("itemGroup.itemgroup" + Electrodynamics.ID + "main", "Electrodynamics");
+		add("itemGroup.itemgroup" + Electrodynamics.ID + "grid", "Electrodynamics Grid");
 
 		addItem(ElectrodynamicsItems.ITEM_BATTERY, "Battery");
 		addItem(ElectrodynamicsItems.ITEM_LITHIUMBATTERY, "Lithium Battery");
+		addItem(ElectrodynamicsItems.ITEM_CARBYNEBATTERY, "Carbyne Battery");
 
 		addItem(ElectrodynamicsItems.ITEM_COMPOSITEHELMET, "Composite Helmet");
 		addItem(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE, "Composite Chestplate");
 		addItem(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS, "Composite Leggings");
 		addItem(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS, "Composite Boots");
 
+		addItem(ElectrodynamicsItems.ITEM_ELECTRICBATON, "Electric Baton");
 		addItem(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW, "Electric Chainsaw");
 		addItem(ElectrodynamicsItems.ITEM_ELECTRICDRILL, "Electric Drill");
 		addItem(ElectrodynamicsItems.ITEM_INSULATION, "Insulation");
 		addItem(ElectrodynamicsItems.ITEM_KINETICRAILGUN, "Kinetic Rail Gun");
-		addItem(ElectrodynamicsItems.ITEM_GUIDEBOOK, "EEC 1st Edition");
 		addItem(ElectrodynamicsItems.ITEM_CANISTERREINFORCED, "Reinforced Canister");
-		addItem(ElectrodynamicsItems.ITEM_WRENCH, "Wrench");
+		addItem(ElectrodynamicsItems.ITEM_MECHANIZEDCROSSBOW, "Mechanized Crossbow");
 		addItem(ElectrodynamicsItems.ITEM_MULTIMETER, "Handheld Multimeter");
 		addItem(ElectrodynamicsItems.ITEM_PLASMARAILGUN, "Plasma Rail Gun");
 		addItem(ElectrodynamicsItems.ITEM_RUBBERBOOTS, "Rubber Boots");
+		addItem(ElectrodynamicsItems.ITEM_SEISMICSCANNER, "Sonic Scanner");
 
 		addItem(ElectrodynamicsItems.ITEM_SHEETPLASTIC, "Polyethylene Sheet");
 		addItem(ElectrodynamicsItems.ITEM_SOLARPANELPLATE, "Solar Panel Plate");
 		addItem(ElectrodynamicsItems.ITEM_TITANIUM_COIL, "Titanium Coil");
-		addItem(ElectrodynamicsItems.ITEM_DRILLHEAD, "Titanium Drill Head");
+		addItem(ElectrodynamicsItems.ITEM_SLAG, "Metallic Slag");
 		addItem(ElectrodynamicsItems.ITEM_CERAMICINSULATION, "Ceramic Insulation");
 		addItem(ElectrodynamicsItems.ITEM_COIL, "Copper Coil");
+		addItem(ElectrodynamicsItems.ITEM_LAMINATEDCOIL, "Laminated Copper Coil");
 		addItem(ElectrodynamicsItems.ITEM_MOLYBDENUMFERTILIZER, "Fertilizer");
 		addItem(ElectrodynamicsItems.ITEM_MOTOR, "Motor");
 		addItem(ElectrodynamicsItems.ITEM_COAL_COKE, "Coal Coke");
 		addItem(ElectrodynamicsItems.ITEM_RAWCOMPOSITEPLATING, "Raw Composite Plating");
 		addItem(ElectrodynamicsItems.ITEM_COMPOSITEPLATING, "Composite Plating");
+		addItem(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS, "Polyethlyene Fibers");
+		addItem(ElectrodynamicsItems.ITEM_CONCRETEMIX, "Electrocrete");
 
-		addItem(ElectrodynamicsItems.getItem(SubtypeCeramic.cooked), "Ceramic");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCeramic.fuse), "Ceramic Fuse");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCeramic.plate), "Ceramic Plate");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCeramic.wet), "Wet Ceramic");
+		addItem(ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.cooked), "Ceramic");
+		addItem(ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.fuse), "Ceramic Fuse");
+		addItem(ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate), "Ceramic Plate");
+		addItem(ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.wet), "Wet Ceramic");
 
-		addItem(ElectrodynamicsItems.getItem(SubtypeCircuit.basic), "Basic Circuit");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCircuit.advanced), "Advanced Circuit");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCircuit.elite), "Elite Circuit");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCircuit.ultimate), "Ultimate Circuit");
+		addItem(ElectrodynamicsItems.ITEMS_CIRCUIT.getValue(SubtypeCircuit.basic), "Basic Circuit");
+		addItem(ElectrodynamicsItems.ITEMS_CIRCUIT.getValue(SubtypeCircuit.advanced), "Advanced Circuit");
+		addItem(ElectrodynamicsItems.ITEMS_CIRCUIT.getValue(SubtypeCircuit.elite), "Elite Circuit");
+		addItem(ElectrodynamicsItems.ITEMS_CIRCUIT.getValue(SubtypeCircuit.ultimate), "Ultimate Circuit");
 
-		addItem(ElectrodynamicsItems.getItem(SubtypeCrystal.copper), "Copper Sulfate Crystal");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCrystal.gold), "Gold Sulfate Crystal");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCrystal.halite), "Halite Crystal");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCrystal.iron), "Iron Sulfate Crystal");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCrystal.lead), "Lead Sulfate Crystal");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCrystal.lithium), "Lithium Sulfate Crystal");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCrystal.molybdenum), "Molybdenum Sulfate Crystal");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCrystal.potassiumchloride), "Sylvite Crystal");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCrystal.silver), "Silver Sulfate Crystal");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCrystal.tin), "Tin Sulfate Crystal");
-		addItem(ElectrodynamicsItems.getItem(SubtypeCrystal.vanadium), "Vanadium Sulfate Crystal");
+		addItem(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.copper), "Copper Crystal");
+		addItem(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.gold), "Gold Crystal");
+		addItem(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.halite), "Halite Crystal");
+		addItem(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.iron), "Iron Crystal");
+		addItem(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.lead), "Lead Crystal");
+		addItem(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.lithium), "Lithium Crystal");
+		addItem(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.molybdenum), "Molybdenum Crystal");
+		addItem(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.netherite), "Carbyne Crystal");
+		addItem(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.potassiumchloride), "Sylvite Crystal");
+		addItem(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.silver), "Silver Crystal");
+		addItem(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.tin), "Tin Crystal");
+		addItem(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.vanadium), "Vanadium Crystal");
 
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.bronze), "Bronze Blend");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.copper), "Copper Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.endereye), "Ender Eye Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.gold), "Gold Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.iron), "Iron Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.lead), "Lead Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.lithium), "Lithium Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.molybdenum), "Molybdenum Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.niter), "Niter");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.obsidian), "Obsidian Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.salt), "Salt");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.silica), "Silica Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.steel), "Steel Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.silver), "Silver Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.sulfur), "Sulfur");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.superconductive), "Superconductive Blend");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.tin), "Tin Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeDust.vanadium), "Vanadium Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DRILLHEAD.getValue(SubtypeDrillHead.hslasteel), "HSLA Drill Head");
+		addItem(ElectrodynamicsItems.ITEMS_DRILLHEAD.getValue(SubtypeDrillHead.stainlesssteel), "Stainless Drill Head");
+		addItem(ElectrodynamicsItems.ITEMS_DRILLHEAD.getValue(SubtypeDrillHead.steel), "Steel Drill Head");
+		addItem(ElectrodynamicsItems.ITEMS_DRILLHEAD.getValue(SubtypeDrillHead.titanium), "Titanium Drill Head");
+		addItem(ElectrodynamicsItems.ITEMS_DRILLHEAD.getValue(SubtypeDrillHead.titaniumcarbide), "Carbide Drill Head");
 
-		addItem(ElectrodynamicsItems.getItem(SubtypeGear.bronze), "Bronze Gear");
-		addItem(ElectrodynamicsItems.getItem(SubtypeGear.copper), "Copper Gear");
-		addItem(ElectrodynamicsItems.getItem(SubtypeGear.iron), "Iron Gear");
-		addItem(ElectrodynamicsItems.getItem(SubtypeGear.steel), "Steel Gear");
-		addItem(ElectrodynamicsItems.getItem(SubtypeGear.tin), "Tin Gear");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.bronze), "Bronze Blend");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.copper), "Copper Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.endereye), "Ender Eye Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.gold), "Gold Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.iron), "Iron Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.lead), "Lead Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.lithium), "Lithium Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.molybdenum), "Molybdenum Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.netherite), "Carbyne Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.niter), "Niter");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.obsidian), "Obsidian Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.salt), "Salt");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.silica), "Silica Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.steel), "Steel Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.silver), "Silver Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.sulfur), "Sulfur");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.superconductive), "Superconductive Blend");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.tin), "Tin Dust");
+		addItem(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.vanadium), "Vanadium Dust");
 
-		addItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.copper), "Impure Copper Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.gold), "Impure Gold Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.iron), "Impure Iron Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.lead), "Impure Lead Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.lithium), "Impure Lithium Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.molybdenum), "Impure Molybdenum Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.silver), "Impure Silver Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.tin), "Impure Tin Dust");
-		addItem(ElectrodynamicsItems.getItem(SubtypeImpureDust.vanadium), "Impure Vanadium Dust");
+		addItem(ElectrodynamicsItems.ITEMS_GEAR.getValue(SubtypeGear.bronze), "Bronze Gear");
+		addItem(ElectrodynamicsItems.ITEMS_GEAR.getValue(SubtypeGear.copper), "Copper Gear");
+		addItem(ElectrodynamicsItems.ITEMS_GEAR.getValue(SubtypeGear.iron), "Iron Gear");
+		addItem(ElectrodynamicsItems.ITEMS_GEAR.getValue(SubtypeGear.steel), "Steel Gear");
+		addItem(ElectrodynamicsItems.ITEMS_GEAR.getValue(SubtypeGear.tin), "Tin Gear");
 
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.aluminum), "Aluminum Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.bronze), "Bronze Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.chromium), "Chromium Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.copper), "Copper Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.hslasteel), "HSLA Steel Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.lead), "Lead Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.lithium), "Lithium Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.molybdenum), "Molybdenum Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.silver), "Silver Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.stainlesssteel), "Stainless Steel Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.steel), "Steel Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.superconductive), "Superconductive Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.tin), "Tin Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.titanium), "Titanium Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.titaniumcarbide), "Titanium Carbide Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.vanadium), "Vanadium Ingot");
-		addItem(ElectrodynamicsItems.getItem(SubtypeIngot.vanadiumsteel), "Vanadium Steel Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.copper), "Impure Copper Dust");
+		addItem(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.gold), "Impure Gold Dust");
+		addItem(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.iron), "Impure Iron Dust");
+		addItem(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.lead), "Impure Lead Dust");
+		addItem(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.lithium), "Impure Lithium Dust");
+		addItem(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.molybdenum), "Impure Molybdenum Dust");
+		addItem(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.netherite), "Impure Carbyne Dust");
+		addItem(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.silver), "Impure Silver Dust");
+		addItem(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.tin), "Impure Tin Dust");
+		addItem(ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.vanadium), "Impure Vanadium Dust");
 
-		addItem(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.advancedcapacity), "Advanced Capacity Upgrade");
-		addItem(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.advancedspeed), "Advanced Speed Upgrade");
-		addItem(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.basiccapacity), "Basic Capacity Upgrade");
-		addItem(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.basicspeed), "Basic Speed Upgrade");
-		addItem(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.experience), "Experience Upgrade");
-		addItem(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.improvedsolarcell), "Solar Cell Upgrade");
-		addItem(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.iteminput), "Auto-Injector Upgrade");
-		addItem(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.itemoutput), "Auto-Ejector Upgrade");
-		addItem(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.range), "Range Upgrade");
-		addItem(ElectrodynamicsItems.getItem(SubtypeItemUpgrade.stator), "Stator Upgrade");
-
-		addItem(ElectrodynamicsItems.getItem(SubtypeOxide.calciumcarbonate), "Calcium Carbonate");
-		addItem(ElectrodynamicsItems.getItem(SubtypeOxide.chromite), "Chromium Oxide");
-		addItem(ElectrodynamicsItems.getItem(SubtypeOxide.chromiumdisilicide), "Chromium Disilicide");
-		addItem(ElectrodynamicsItems.getItem(SubtypeOxide.disulfur), "Sulfur Dioxide");
-		addItem(ElectrodynamicsItems.getItem(SubtypeOxide.dititanium), "Titanium Dioxide");
-		addItem(ElectrodynamicsItems.getItem(SubtypeOxide.sodiumcarbonate), "Sodium Carbonate");
-		addItem(ElectrodynamicsItems.getItem(SubtypeOxide.sulfurdichloride), "Sulfur Dichloride");
-		addItem(ElectrodynamicsItems.getItem(SubtypeOxide.thionylchloride), "Thionyl Chloride");
-		addItem(ElectrodynamicsItems.getItem(SubtypeOxide.trisulfur), "Sulfur Trioxide");
-		addItem(ElectrodynamicsItems.getItem(SubtypeOxide.vanadium), "Vanadium Oxide");
-
-		addItem(ElectrodynamicsItems.getItem(SubtypePlate.aluminum), "Aluminum Plate");
-		addItem(ElectrodynamicsItems.getItem(SubtypePlate.bronze), "Bronze Plate");
-		addItem(ElectrodynamicsItems.getItem(SubtypePlate.hslasteel), "HSLA Steel Plate");
-		addItem(ElectrodynamicsItems.getItem(SubtypePlate.iron), "Iron Plate");
-		addItem(ElectrodynamicsItems.getItem(SubtypePlate.lead), "Lead Plate");
-		addItem(ElectrodynamicsItems.getItem(SubtypePlate.lithium), "Lithium Plate");
-		addItem(ElectrodynamicsItems.getItem(SubtypePlate.stainlesssteel), "Stainless Steel Plate");
-		addItem(ElectrodynamicsItems.getItem(SubtypePlate.steel), "Steel Plate");
-		addItem(ElectrodynamicsItems.getItem(SubtypePlate.titanium), "Titanium Plate");
-		addItem(ElectrodynamicsItems.getItem(SubtypePlate.titaniumcarbide), "Titanium Carbide Plate");
-		addItem(ElectrodynamicsItems.getItem(SubtypePlate.vanadiumsteel), "Vanadium Steel Plate");
-
-		addItem(ElectrodynamicsItems.getItem(SubtypeRod.hslasteel), "HSLA Steel Rod");
-		addItem(ElectrodynamicsItems.getItem(SubtypeRod.stainlesssteel), "Stainless Steel Rod");
-		addItem(ElectrodynamicsItems.getItem(SubtypeRod.steel), "Steel Rod");
-		addItem(ElectrodynamicsItems.getItem(SubtypeRod.titaniumcarbide), "Titanium Carbide Rod");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.aluminum), "Aluminum Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.bronze), "Bronze Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.copper), "Copper Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.chromium), "Chromium Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.hslasteel), "HSLA Steel Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.lead), "Lead Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.lithium), "Lithium Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.molybdenum), "Molybdenum Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.silver), "Silver Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.stainlesssteel), "Stainless Steel Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.steel), "Steel Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.superconductive), "Superconductive Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.tin), "Tin Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.titanium), "Titanium Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.titaniumcarbide), "Titanium Carbide Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.vanadium), "Vanadium Ingot");
+		addItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.vanadiumsteel), "Vanadium Steel Ingot");
 		
-		addBlock(ElectrodynamicsBlocks.multi, "Multiblock Subnode");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.advancedcapacity), "Advanced Capacity Upgrade");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.advancedspeed), "Advanced Speed Upgrade");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basiccapacity), "Basic Capacity Upgrade");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basicspeed), "Basic Speed Upgrade");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.experience), "Experience Upgrade");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.fortune), "Fortune Upgrade");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.improvedsolarcell), "Solar Cell Upgrade");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput), "Auto-Injector Upgrade");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput), "Auto-Ejector Upgrade");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemvoid), "Void Upgrade");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.range), "Range Upgrade");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.silktouch), "Silk Touch Upgrade");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.stator), "Stator Upgrade");
+		addItem(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.unbreaking), "Unbreaking Upgrade");
 
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGlass.aluminum), "ALON");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeGlass.clear), "Clear Glass");
+		addItem(ElectrodynamicsItems.ITEMS_NUGGET.getValue(SubtypeNugget.copper), "Copper Nugget");
+		addItem(ElectrodynamicsItems.ITEMS_NUGGET.getValue(SubtypeNugget.hslasteel), "HSLA Steel Nugget");
+		addItem(ElectrodynamicsItems.ITEMS_NUGGET.getValue(SubtypeNugget.silver), "Silver Nugget");
+		addItem(ElectrodynamicsItems.ITEMS_NUGGET.getValue(SubtypeNugget.steel), "Steel Nugget");
+		addItem(ElectrodynamicsItems.ITEMS_NUGGET.getValue(SubtypeNugget.stainlesssteel), "Stainless Steel Nugget");
+		addItem(ElectrodynamicsItems.ITEMS_NUGGET.getValue(SubtypeNugget.superconductive), "Superconductive Nugget");
+		addItem(ElectrodynamicsItems.ITEMS_NUGGET.getValue(SubtypeNugget.tin), "Tin Nugget");
+		addItem(ElectrodynamicsItems.ITEMS_NUGGET.getValue(SubtypeNugget.titaniumcarbide), "Titanium Carbide Nugget");
 
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.advancedsolarpanel), "Advanced Solar Panel");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.batterybox), "Battery Box");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargerlv), "120V Charger");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargermv), "240V Charger");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chargerhv), "480V Charger");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalcrystallizer), "Chemical Crystallizer");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.chemicalmixer), "Chemical Mixer");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.circuitbreaker), "Circuit Breaker");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coalgenerator), "Coal Generator");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.combustionchamber), "Combustion Chamber");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativefluidsource), "Creative Fluid Source");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.creativepowersource), "Creative Power Source");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.downgradetransformer), "Downgrade Transformer");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnace), "Electric Furnace");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacedouble), "Double Electric Furnace");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacetriple), "Triple Electric Furnace");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricpump), "Electric Pump");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.energizedalloyer), "Energized Alloyer");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.fermentationplant), "Fermentation Plant");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.hydroelectricgenerator), "Hydroelectric Generator");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.lathe), "Lathe");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.lithiumbatterybox), "Lithium Battery Box");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusher), "Mineral Crusher");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrusherdouble), "Double Mineral Crusher");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralcrushertriple), "Triple Mineral Crusher");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrinder), "Mineral Grinder");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrinderdouble), "Double Mineral Grinder");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralgrindertriple), "Triple Mineral Grinder");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.mineralwasher), "Mineral Washer");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.multimeterblock), "Multimeter Block");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.oxidationfurnace), "Chemical Furnace");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.reinforcedalloyer), "Reinforced Alloyer");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.solarpanel), "Solar Panel");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tanksteel), "Steel Tank");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tankreinforced), "Reinforced Tank");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.tankhsla), "HSLA Tank");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.thermoelectricgenerator), "Thermoelectric Generator");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.upgradetransformer), "Upgrade Transformer");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.windmill), "Windmill");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremill), "Wire Mill");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilldouble), "Double Wire Mill");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.wiremilltriple), "Triple Wire Mill");
+		addItem(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.calciumcarbonate), "Calcium Carbonate");
+		addItem(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.chromite), "Chromium Oxide");
+		addItem(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.chromiumdisilicide), "Chromium Disilicide");
+		addItem(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.disulfur), "Sulfur Dioxide");
+		addItem(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.dititanium), "Titanium Dioxide");
+		addItem(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.sodiumcarbonate), "Sodium Carbonate");
+		addItem(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.sulfurdichloride), "Sulfur Dichloride");
+		addItem(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.thionylchloride), "Thionyl Chloride");
+		addItem(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.trisulfur), "Sulfur Trioxide");
+		addItem(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.vanadium), "Vanadium Oxide");
+
+		addItem(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.aluminum), "Aluminum Plate");
+		addItem(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.bronze), "Bronze Plate");
+		addItem(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.hslasteel), "HSLA Steel Plate");
+		addItem(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.iron), "Iron Plate");
+		addItem(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.lead), "Lead Plate");
+		addItem(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.lithium), "Lithium Plate");
+		addItem(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.copper), "Copper Plate");
+		addItem(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.stainlesssteel), "Stainless Steel Plate");
+		addItem(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.steel), "Steel Plate");
+		addItem(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.titanium), "Titanium Plate");
+		addItem(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.titaniumcarbide), "Titanium Carbide Plate");
+		addItem(ElectrodynamicsItems.ITEMS_PLATE.getValue(SubtypePlate.vanadiumsteel), "Vanadium Steel Plate");
+
+		addItem(ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.hslasteel), "HSLA Steel Rod");
+		addItem(ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.stainlesssteel), "Stainless Steel Rod");
+		addItem(ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.steel), "Steel Rod");
+		addItem(ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.titaniumcarbide), "Titanium Carbide Rod");
+
+		addBlock(ElectrodynamicsBlocks.BLOCK_FRAME, "Quarry Frame");
+		addBlock(ElectrodynamicsBlocks.BLOCK_FRAME_CORNER, "Quarry Frame Corner");
+		addBlock(ElectrodynamicsBlocks.BLOCK_LOGISTICALMANAGER, "Logistical Manager");
+		addBlock(ElectrodynamicsBlocks.BLOCK_SEISMICMARKER, "Seismic Marker");
+
+		addBlock(ElectrodynamicsBlocks.BLOCKS_CUSTOMGLASS.getValue(SubtypeGlass.aluminum), "ALON");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_CUSTOMGLASS.getValue(SubtypeGlass.clear), "Clear Glass");
+
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.advancedsolarpanel), "Advanced Solar Panel");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.batterybox), "Battery Box");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.carbynebatterybox), "Carbyne Battery Box");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chargerlv), "120V Charger");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chargermv), "240V Charger");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chargerhv), "480V Charger");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chemicalcrystallizer), "Chemical Crystallizer");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chemicalmixer), "Chemical Mixer");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.circuitbreaker), "Circuit Breaker");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.cobblestonegenerator), "Cobblestone Generator");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.coalgenerator), "Coal Generator");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.combustionchamber), "Combustion Chamber");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.coolantresavoir), "Coolant Resavoir");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.creativefluidsource), "Creative Fluid Source");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.creativepowersource), "Creative Power Source");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.downgradetransformer), "Downgrade Transformer");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricarcfurnace), "Electric Arc Furnace");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricarcfurnacedouble), "Double Electric Arc Furnace");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricarcfurnacetriple), "Triple Electric Arc Furnace");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricfurnace), "Electric Furnace");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricfurnacedouble), "Double Electric Furnace");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricfurnacetriple), "Triple Electric Furnace");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electricpump), "Electric Pump");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.electrolyticseparator), "Electrolytic Separator");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.energizedalloyer), "Energized Alloyer");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fermentationplant), "Fermentation Plant");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fluidvoid), "Fluid Void");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.hydroelectricgenerator), "Hydroelectric Generator");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.lathe), "Lathe");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.lithiumbatterybox), "Lithium Battery Box");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralcrusher), "Mineral Crusher");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralcrusherdouble), "Double Mineral Crusher");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralcrushertriple), "Triple Mineral Crusher");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralgrinder), "Mineral Grinder");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralgrinderdouble), "Double Mineral Grinder");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralgrindertriple), "Triple Mineral Grinder");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.mineralwasher), "Mineral Washer");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.motorcomplex), "Motor Complex");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.multimeterblock), "Multimeter Block");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.oxidationfurnace), "Chemical Furnace");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.quarry), "Quarry");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.reinforcedalloyer), "Reinforced Alloyer");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.seismicrelay), "Seismic Relay");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.solarpanel), "Solar Panel");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.tanksteel), "Steel Tank");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.tankreinforced), "Reinforced Tank");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.tankhsla), "HSLA Tank");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.thermoelectricgenerator), "Thermoelectric Generator");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.upgradetransformer), "Upgrade Transformer");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.windmill), "Windmill");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.wiremill), "Wire Mill");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.wiremilldouble), "Double Wire Mill");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.wiremilltriple), "Triple Wire Mill");
+
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fluidvalve), "Fluid Valve");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fluidpipepump), "Fluid Pipe Pump");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fluidpipefilter), "Fluid Pipe Filter");
+
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.relay), "Relay");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.potentiometer), "Potentiometer");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.currentregulator), "Current Regulator");
+
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.advanceddowngradetransformer), "Downgrade Transformer Mk 2");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.advancedupgradetransformer), "Upgrade Transformer Mk 2");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.circuitmonitor), "Circuit Monitor");
 		
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacerunning), "Electric Furnace");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacedoublerunning), "Double Electric Furnace");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.electricfurnacetriplerunning), "Triple Electric Furnace");
-		
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.oxidationfurnacerunning), "Chemical Furnace");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.energizedalloyerrunning), "Energized Alloyer");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.reinforcedalloyerrunning), "Reinforced Alloyer");
-		
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeMachine.coalgeneratorrunning), "Coal Generator");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_CONCRETE.getValue(SubtypeConcrete.bricks), "Concrete Bricks");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_CONCRETE.getValue(SubtypeConcrete.regular), "Concrete");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_CONCRETE.getValue(SubtypeConcrete.tile), "Concrete Tiles");
 
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.aluminum), "Bauxite Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.chromite), "Chromite Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.copper), "Cuprite Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.fluorite), "Fluorite Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.lead), "Galena Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.lepidolite), "Lepidolite Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.molybdenum), "Molybdenite Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.monazite), "Monazite Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.niter), "Saltpeter Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.halite), "Halite Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.silver), "Argentite Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.sulfur), "Sulfur Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.sylvite), "Sylvite Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.rutile), "Rutile Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.tin), "Cassiterite Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.thorianite), "Thorianite Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.uraninite), "Uraninite Ore");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeOre.vanadinite), "Vanadinite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.aluminum), "Bauxite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.copper), "Cuprite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.chromium), "Chromite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.fluorite), "Fluorite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.lead), "Galena Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.lithium), "Lepidolite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.molybdenum), "Molybdenite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.monazite), "Monazite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.niter), "Saltpeter Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.salt), "Halite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.silver), "Argentite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.sulfur), "Sulfur Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.sylvite), "Sylvite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.titanium), "Rutile Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.tin), "Cassiterite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.thorium), "Thorianite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.uranium), "Uraninite Ore");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.vanadium), "Vanadinite Ore");
 
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeFluidPipe.steel), "Steel Fluid Pipe");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_FLUIDPIPE.getValue(SubtypeFluidPipe.copper), "Copper Fluid Pipe");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_FLUIDPIPE.getValue(SubtypeFluidPipe.steel), "Steel Fluid Pipe");
 
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeResourceBlock.aluminum), "Block of Aluminum");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeResourceBlock.bronze), "Block of Bronze");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeResourceBlock.chromium), "Block of Chromium");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeResourceBlock.copper), "Block of Copper");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeResourceBlock.hslasteel), "Block of HSLA Steel");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeResourceBlock.lead), "Block of Lead");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeResourceBlock.silver), "Block of Silver");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeResourceBlock.stainlesssteel), "Block of Stainless Steel");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeResourceBlock.steel), "Block of Steel");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeResourceBlock.tin), "Block of Tin");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeResourceBlock.titanium), "Block of Titanium");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeResourceBlock.titaniumcarbide), "Block of Titanium Carbide");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeResourceBlock.vanadiumsteel), "Block of Vanadium Steel");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getValue(SubtypeResourceBlock.aluminum), "Block of Aluminum");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getValue(SubtypeResourceBlock.bronze), "Block of Bronze");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getValue(SubtypeResourceBlock.chromium), "Block of Chromium");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getValue(SubtypeResourceBlock.hslasteel), "Block of HSLA Steel");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getValue(SubtypeResourceBlock.lead), "Block of Lead");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getValue(SubtypeResourceBlock.silver), "Block of Silver");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getValue(SubtypeResourceBlock.stainlesssteel), "Block of Stainless Steel");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getValue(SubtypeResourceBlock.steel), "Block of Steel");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getValue(SubtypeResourceBlock.tin), "Block of Tin");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getValue(SubtypeResourceBlock.titanium), "Block of Titanium");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getValue(SubtypeResourceBlock.titaniumcarbide), "Block of Titanium Carbide");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getValue(SubtypeResourceBlock.vanadiumsteel), "Block of Vanadium Steel");
 
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.copper), "Copper Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.gold), "Gold Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.iron), "Iron Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.silver), "Silver Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.superconductive), "Superconductive Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.tin), "Tin Wire");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.copper), "Copper Wire");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.gold), "Gold Wire");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.iron), "Iron Wire");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.silver), "Silver Wire");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.superconductive), "Superconductive Wire");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.tin), "Tin Wire");
 
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedcopper), "Insulated Copper Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedgold), "Insulated Gold Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatediron), "Insulated Iron Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsilver), "Insulated Silver Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedsuperconductive), "Insulated Superconductive Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.insulatedtin), "Insulated Tin Wire");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedcopper), "Insulated Copper Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedgold), "Insulated Gold Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatediron), "Insulated Iron Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsilver), "Insulated Silver Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsuperconductive), "Insulated Superconductive Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedtin), "Insulated Tin Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedcopperred), "Insulated Copper Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedgoldred), "Insulated Gold Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedironred), "Insulated Iron Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsilverred), "Insulated Silver Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsuperconductivered), "Insulated Superconductive Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedtinred), "Insulated Tin Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedcoppergreen), "Insulated Copper Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedgoldgreen), "Insulated Gold Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedirongreen), "Insulated Iron Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsilvergreen), "Insulated Silver Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsuperconductivegreen), "Insulated Superconductive Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedtingreen), "Insulated Tin Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedcopperblue), "Insulated Copper Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedgoldblue), "Insulated Gold Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedironblue), "Insulated Iron Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsilverblue), "Insulated Silver Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsuperconductiveblue), "Insulated Superconductive Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedtinblue), "Insulated Tin Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedcopperwhite), "Insulated Copper Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedgoldwhite), "Insulated Gold Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedironwhite), "Insulated Iron Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsilverwhite), "Insulated Silver Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsuperconductivewhite), "Insulated Superconductive Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedtinwhite), "Insulated Tin Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedcopperyellow), "Insulated Copper Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedgoldyellow), "Insulated Gold Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedironyellow), "Insulated Iron Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsilveryellow), "Insulated Silver Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsuperconductiveyellow), "Insulated Superconductive Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedtinyellow), "Insulated Tin Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedcopperbrown), "Insulated Copper Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedgoldbrown), "Insulated Gold Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedironbrown), "Insulated Iron Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsilverbrown), "Insulated Silver Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedsuperconductivebrown), "Insulated Superconductive Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.insulatedtinbrown), "Insulated Tin Wire (Brown)");
 
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedcopper), "Ceramic Copper Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedgold), "Ceramic Gold Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatediron), "Ceramic Iron Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsilver), "Ceramic Silver Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedsuperconductive), "Ceramic Superconductive Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.ceramicinsulatedtin), "Ceramic Tin Wire");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedcopper), "Ceramic Copper Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedgold), "Ceramic Gold Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatediron), "Ceramic Iron Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsilver), "Ceramic Silver Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsuperconductive), "Ceramic Superconductive Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedtin), "Ceramic Tin Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedcopperred), "Ceramic Copper Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedgoldred), "Ceramic Gold Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedironred), "Ceramic Iron Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsilverred), "Ceramic Silver Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsuperconductivered), "Ceramic Superconductive Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedtinred), "Ceramic Tin Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedcopperwhite), "Ceramic Copper Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedgoldwhite), "Ceramic Gold Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedironwhite), "Ceramic Iron Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsilverwhite), "Ceramic Silver Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsuperconductivewhite), "Ceramic Superconductive Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedtinwhite), "Ceramic Tin Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedcoppergreen), "Ceramic Copper Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedgoldgreen), "Ceramic Gold Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedirongreen), "Ceramic Iron Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsilvergreen), "Ceramic Silver Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsuperconductivegreen), "Ceramic Superconductive Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedtingreen), "Ceramic Tin Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedcopperblue), "Ceramic Copper Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedgoldblue), "Ceramic Gold Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedironblue), "Ceramic Iron Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsilverblue), "Ceramic Silver Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsuperconductiveblue), "Ceramic Superconductive Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedtinblue), "Ceramic Tin Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedcopperyellow), "Ceramic Copper Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedgoldyellow), "Ceramic Gold Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedironyellow), "Ceramic Iron Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsilveryellow), "Ceramic Silver Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsuperconductiveyellow), "Ceramic Superconductive Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedtinyellow), "Ceramic Tin Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedcopperbrown), "Ceramic Copper Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedgoldbrown), "Ceramic Gold Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedironbrown), "Ceramic Iron Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsilverbrown), "Ceramic Silver Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedsuperconductivebrown), "Ceramic Superconductive Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.ceramicinsulatedtinbrown), "Ceramic Tin Wire (Brown)");
 
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticscopper), "Logistical Copper Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsgold), "Logistical Gold Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticsiron), "Logistical Iron Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssilver), "Logistical Silver Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticssuperconductive), "Logistical Superconductive Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.logisticstin), "Logistical Tin Wire");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticscopper), "Logistical Copper Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsgold), "Logistical Gold Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsiron), "Logistical Iron Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssilver), "Logistical Silver Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssuperconductive), "Logistical Superconductive Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticstin), "Logistical Tin Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticscopperred), "Logistical Copper Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsgoldred), "Logistical Gold Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsironred), "Logistical Iron Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssilverred), "Logistical Silver Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssuperconductivered), "Logistical Superconductive Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticstinred), "Logistical Tin Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticscopperwhite), "Logistical Copper Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsgoldwhite), "Logistical Gold Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsironwhite), "Logistical Iron Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssilverwhite), "Logistical Silver Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssuperconductivewhite), "Logistical Superconductive Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticstinwhite), "Logistical Tin Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticscoppergreen), "Logistical Copper Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsgoldgreen), "Logistical Gold Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsirongreen), "Logistical Iron Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssilvergreen), "Logistical Silver Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssuperconductivegreen), "Logistical Superconductive Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticstingreen), "Logistical Tin Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticscopperblue), "Logistical Copper Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsgoldblue), "Logistical Gold Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsironblue), "Logistical Iron Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssilverblue), "Logistical Silver Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssuperconductiveblue), "Logistical Superconductive Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticstinblue), "Logistical Tin Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticscopperyellow), "Logistical Copper Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsgoldyellow), "Logistical Gold Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsironyellow), "Logistical Iron Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssilveryellow), "Logistical Silver Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssuperconductiveyellow), "Logistical Superconductive Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticstinyellow), "Logistical Tin Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticscopperbrown), "Logistical Copper Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsgoldbrown), "Logistical Gold Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticsironbrown), "Logistical Iron Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssilverbrown), "Logistical Silver Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticssuperconductivebrown), "Logistical Superconductive Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.logisticstinbrown), "Logistical Tin Wire (Brown)");
 
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedcopper), "Thick Copper Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedgold), "Thick Gold Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatediron), "Thick Iron Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsilver), "Thick Silver Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedsuperconductive), "Thick Superconductive Wire");
-		addBlock(ElectrodynamicsBlocks.getBlock(SubtypeWire.highlyinsulatedtin), "Thick Tin Wire");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedcopper), "Thick Copper Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedgold), "Thick Gold Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatediron), "Thick Iron Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsilver), "Thick Silver Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsuperconductive), "Thick Superconductive Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedtin), "Thick Tin Wire (Black)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedcopperred), "Thick Copper Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedgoldred), "Thick Gold Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedironred), "Thick Iron Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsilverred), "Thick Silver Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsuperconductivered), "Thick Superconductive Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedtinred), "Thick Tin Wire (Red)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedcoppergreen), "Thick Copper Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedgoldgreen), "Thick Gold Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedirongreen), "Thick Iron Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsilvergreen), "Thick Silver Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsuperconductivegreen), "Thick Superconductive Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedtingreen), "Thick Tin Wire (Green)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedcopperblue), "Thick Copper Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedgoldblue), "Thick Gold Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedironblue), "Thick Iron Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsilverblue), "Thick Silver Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsuperconductiveblue), "Thick Superconductive Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedtinblue), "Thick Tin Wire (Blue)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedcopperwhite), "Thick Copper Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedgoldwhite), "Thick Gold Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedironwhite), "Thick Iron Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsilverwhite), "Thick Silver Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsuperconductivewhite), "Thick Superconductive Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedtinwhite), "Thick Tin Wire (White)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedcopperyellow), "Thick Copper Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedgoldyellow), "Thick Gold Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedironyellow), "Thick Iron Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsilveryellow), "Thick Silver Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsuperconductiveyellow), "Thick Superconductive Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedtinyellow), "Thick Tin Wire (Yellow)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedcopperbrown), "Thick Copper Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedgoldbrown), "Thick Gold Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedironbrown), "Thick Iron Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsilverbrown), "Thick Silver Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedsuperconductivebrown), "Thick Superconductive Wire (Brown)");
+		addBlock(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.highlyinsulatedtinbrown), "Thick Tin Wire (Brown)");
 
-		addFluid(ElectrodynamicsFluids.fluidEthanol, "Ethanol");
-		addFluid(ElectrodynamicsFluids.fluidHydrogenFluoride, "Hydrofluoric Acid");
-		addFluid(ElectrodynamicsFluids.fluidPolyethylene, "Molten Polyethylene");
-		addFluid(ElectrodynamicsFluids.fluidSulfuricAcid, "Sulfuric Acid");
-		addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.copper), "Copper Sulfate");
-		addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.gold), "Gold Sulfate");
-		addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.iron), "Iron Sulfate");
-		addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.lead), "Lead Sulfate");
-		addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.lithium), "Lithium Sulfate");
-		addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.molybdenum), "Molybdenum Sulfate");
-		addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.silver), "Silver Sulfate");
-		addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.tin), "Tin Sulfate");
-		addFluid(ElectrodynamicsFluids.getFluid(SubtypeSulfateFluid.vanadium), "Vanadium Sulfate");
+		addBlock(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING, "Steel Scaffold");
+
+		addFluid(ElectrodynamicsFluids.FLUID_AMMONIA, "Liquid Ammonia");
+		addFluid(ElectrodynamicsFluids.FLUID_CLAY, "Clay Slurry");
+		addFluid(ElectrodynamicsFluids.FLUID_ETHANOL, "Ethanol");
+		addFluid(ElectrodynamicsFluids.FLUID_HYDRAULIC, "Hydraulic Fluid");
+		addFluid(ElectrodynamicsFluids.FLUID_HYDROGEN, "Liquid Hydrogen");
+		addFluid(ElectrodynamicsFluids.FLUID_HYDROFLUORICACID, "Hydrofluoric Acid");
+		addFluid(ElectrodynamicsFluids.FLUID_OXYGEN, "Liquid Oxygen");
+		addFluid(ElectrodynamicsFluids.FLUID_POLYETHYLENE, "Molten Polyethylene");
+		addFluid(ElectrodynamicsFluids.FLUID_SULFURICACID, "Sulfuric Acid");
+		addFluid(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(SubtypeSulfateFluid.copper), "Copper Sulfate Solution");
+		addFluid(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(SubtypeSulfateFluid.gold), "Gold Sulfate Solution");
+		addFluid(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(SubtypeSulfateFluid.iron), "Iron Sulfate Solution");
+		addFluid(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(SubtypeSulfateFluid.lead), "Lead Sulfate Solution");
+		addFluid(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(SubtypeSulfateFluid.lithium), "Lithium Sulfate Solution");
+		addFluid(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(SubtypeSulfateFluid.molybdenum), "Molybdenum Sulfate Solution");
+		addFluid(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(SubtypeSulfateFluid.netherite), "Carbyne Sulfate Solution");
+		addFluid(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(SubtypeSulfateFluid.silver), "Silver Sulfate Solution");
+		addFluid(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(SubtypeSulfateFluid.tin), "Tin Sulfate Solution");
+		addFluid(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(SubtypeSulfateFluid.vanadium), "Vanadium Sulfate Solution");
 
 		addContainer(SubtypeMachine.advancedsolarpanel, "Advanced Solar Panel");
 		addContainer(SubtypeMachine.batterybox, "Battery Box");
+		addContainer(SubtypeMachine.carbynebatterybox, "Carbyne Battery Box");
 		addContainer(SubtypeMachine.chargerlv, "120V Charger");
 		addContainer(SubtypeMachine.chargermv, "240V Charger");
 		addContainer(SubtypeMachine.chargerhv, "480V Charger");
 		addContainer(SubtypeMachine.chemicalcrystallizer, "Chemical Crystallizer");
+		addContainer(SubtypeMachine.cobblestonegenerator, "Cobblestone Generator");
 		addContainer(SubtypeMachine.chemicalmixer, "Chemical Mixer");
 		addContainer(SubtypeMachine.coalgenerator, "Coal Generator");
+		addContainer(SubtypeMachine.coolantresavoir, "Coolant Resavoir");
 		addContainer(SubtypeMachine.combustionchamber, "Combustion Chamber");
 		addContainer(SubtypeMachine.creativefluidsource, "Creative Fluid Source");
 		addContainer(SubtypeMachine.creativepowersource, "Creative Power Source");
+		addContainer(SubtypeMachine.electricarcfurnace, "Arc Furnace");
+		addContainer(SubtypeMachine.electricarcfurnacedouble, "Double Arc Furnace");
+		addContainer(SubtypeMachine.electricarcfurnacetriple, "Triple Arc Furnace");
 		addContainer(SubtypeMachine.electricfurnace, "Electric Furnace");
 		addContainer(SubtypeMachine.electricfurnacedouble, "Double Electric Furnace");
 		addContainer(SubtypeMachine.electricfurnacetriple, "Triple Electric Furnace");
+		addContainer(SubtypeMachine.electrolyticseparator, "Electrolytic Separator");
 		addContainer(SubtypeMachine.energizedalloyer, "Energized Alloyer");
 		addContainer(SubtypeMachine.fermentationplant, "Fermentation Plant");
+		addContainer(SubtypeMachine.fluidvoid, "Fluid Void");
 		addContainer(SubtypeMachine.hydroelectricgenerator, "Hydroelectric Generator");
 		addContainer(SubtypeMachine.lathe, "Lathe");
 		addContainer(SubtypeMachine.lithiumbatterybox, "Lithium Battery Box");
@@ -377,8 +575,11 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addContainer(SubtypeMachine.mineralgrinderdouble, "Double Mineral Grinder");
 		addContainer(SubtypeMachine.mineralgrindertriple, "Triple Mineral Grinder");
 		addContainer(SubtypeMachine.mineralwasher, "Mineral Washer");
+		addContainer(SubtypeMachine.motorcomplex, "Motor Complex");
 		addContainer(SubtypeMachine.oxidationfurnace, "Chemical Furnace");
+		addContainer(SubtypeMachine.quarry, "Quarry");
 		addContainer(SubtypeMachine.reinforcedalloyer, "Reinforced Alloyer");
+		addContainer(SubtypeMachine.seismicrelay, "Seismic Relay");
 		addContainer(SubtypeMachine.solarpanel, "Solar Panel");
 		addContainer(SubtypeMachine.tanksteel, "Steel Tank");
 		addContainer(SubtypeMachine.tankreinforced, "Reinforced Tank");
@@ -388,7 +589,18 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addContainer(SubtypeMachine.wiremilldouble, "Double Wire Mill");
 		addContainer(SubtypeMachine.wiremilltriple, "Triple Wire Mill");
 
-		addContainer("guidebook", "Guidebook");
+		addContainer("seismicscanner", "Sonic Scanner");
+		addContainer("electricdrill", "Electric Drill");
+
+		addContainer("fluidpipepump", "Fluid Pipe Pump");
+		addContainer("fluidpipefilter", "Fluid Pipe Filter");
+
+		addContainer(SubtypeMachine.potentiometer, "Potentiometer");
+
+		addContainer(SubtypeMachine.advanceddowngradetransformer, "Downgrade Transformer Mk 2");
+		addContainer(SubtypeMachine.advancedupgradetransformer, "Upgrade Transformer Mk 2");
+		addContainer(SubtypeMachine.circuitmonitor, "Circuit Monitor");
+		addContainer("rotaryunifier", "Rotary Unifier");
 
 		addTooltip("itemwire.resistance", "Resistance: %s");
 		addTooltip("itemwire.maxamps", "Ampacity: %s");
@@ -396,9 +608,11 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addTooltip("itemwire.info.uninsulated", "Uninsulated!");
 		addTooltip("itemwire.info.fireproof", "Fire-proof");
 		addTooltip("itemwire.info.redstone", "Conducts Redstone");
-		addTooltip("info.capacityupgrade", "Multiplies Energy Capacity and Transfer by %sx");
-		addTooltip("info.capacityupgradevoltage", "Will upgrade machine voltage up to %s");
-		addTooltip("info.speedupgrade", "Multiplies Speed by %sx");
+		addTooltip("info.upgradecapacity", "Capacity: %s");
+		addTooltip("info.upgradeenergytransfer", "Energy Transfer: %s");
+		addTooltip("info.upgradevoltage", "Voltage: %s");
+		addTooltip("info.upgradespeed", "Speed: %s");
+		addTooltip("info.upgradeenergyusage", "Usage: %s");
 		addTooltip("info.itemoutputupgrade", "Ejects items into adjacent inventories");
 		addTooltip("info.iteminputupgrade", "Injects items from adjacent inventories");
 		addTooltip("info.dirlist", "Current Directions:");
@@ -412,11 +626,10 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addTooltip("info.xpusage", "Shift+Right-Click to dispense");
 		addTooltip("info.range", "Increases raduis by 1");
 		addTooltip("info.broken", "NOT WORKING");
-		addTooltip("transformer.energyloss", "Efficiency: 99.25%");
+		addTooltip("transformer.energyloss", "Efficiency: %s");
 		addTooltip("machine.voltage", "Voltage: %s");
-		addTooltip("item.electric.info", "Energy Stored: %s");
-		addTooltip("item.electric.voltage", "I/O Voltage: %s");
-		addTooltip("itemcanister", "1000 mB");
+		addTooltip("item.electric.info", "Stored: %s");
+		addTooltip("item.electric.voltage", "Voltage: %s");
 		addTooltip("railguntemp", "Temperature %s");
 		addTooltip("railgunmaxtemp", "Max Temp: %s");
 		addTooltip("railgunoverheat", "WARNING : OVERHEATING");
@@ -424,20 +637,85 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addTooltip("fluidtank.capacity", "Capacity: %s");
 		addTooltip("creativepowersource.joke", "\"Unlimited Power\" - Buck Rogers from Star Trek");
 		addTooltip("creativefluidsource.joke", "\"More\" - Crylo Ren");
+		addTooltip("creativegassource.joke", "\"Hot Air for a Cool Breeze\"");
+		addTooltip("fluidvoid", "Voids fluids");
+		addTooltip("seismicscanner.range", "Radius: %s Blocks");
+		addTooltip("seismicscanner.cooldown", "COOLDOWN: %s");
+		addTooltip("seismicscanner.oncooldown", "COOLDOWN");
+		addTooltip("seismicscanner.showuse", "Shift + Right-Click to scan");
+		addTooltip("seismicscanner.currentore", "Current Ore: %s");
+		addTooltip("seismicscanner.empty", "[None]");
+		addTooltip("nightvisiongoggles.status", "Status: ");
+		addTooltip("nightvisiongoggles.on", "ON");
+		addTooltip("nightvisiongoggles.off", "OFF");
+		addTooltip("jetpack.mode", "Mode: ");
+		addTooltip("jetpack.moderegular", "Regular");
+		addTooltip("jetpack.modehover", "Hover");
+		addTooltip("jetpack.modeelytra", "Elytra");
+		addTooltip("jetpack.modeoff", "Off");
 		addTooltip("countdown.tickstillcheck", "Ticks left: %s");
-	
-		addTooltip("validupgrades", "Valid Upgrades:");
-		
-		addTooltip("concreteusejoke", "What Minecraft is made of");
+		addTooltip("seismicmarker.redstone", "Apply redstone for guide lines");
+		addTooltip("seismicrelay.use", "Detects and stores Marker rings");
+		addTooltip("coolantresavoir.place", "Place above Quarry");
+		addTooltip("motorcomplex.use", "Controls Speed of Quarry");
+		addTooltip("blockframe.joke", "How did you get this!?!");
+		addTooltip("quarry.power", "Upgrades require power to work");
+		addTooltip("logisticalmanager.use", "Optional: manages quarry inventory");
+		addTooltip("servolegs.step", "STEP");
+		addTooltip("servolegs.both", "BOTH");
+		addTooltip("servolegs.speed", "SPEED");
+		addTooltip("servolegs.none", "NONE");
+		addTooltip("currbattery", "Battery: %s");
+		addTooltip("gasvent", "Voids gases");
+		addTooltip("electricdrill.miningspeed", "Mining Speed: %s");
+
+		addTooltip("pipematerial", "Material: %s");
+		addTooltip("pipeinsulationmaterial", "Insulation: %s");
+		addTooltip("pipemaximumpressure", "Max Pressure: %s");
+		addTooltip("pipeheatloss", "Heat Loss: -%s / block");
+
+		addTooltip("pipematerialcopper", "Copper");
+		addTooltip("pipematerialsteel", "Steel");
+		addTooltip("pipematerialplastic", "Plastic");
+
+		addTooltip("pipethroughput", "Throughput: %s");
+
+		addTooltip("pipeinsulationnone", "None");
+		addTooltip("pipeinsulationwool", "Wool");
+		addTooltip("pipeinsulationceramic", "Ceramic");
+
+		addTooltip("currentgas", "Gas: %s");
+		addTooltip("gasamount", "Amount: %1$s / %2$s");
+		addTooltip("gastemperature", "Temp: %s");
+		addTooltip("gaspressure", "Pressure: %s");
+		addTooltip("maxpressure", "Max Pressure: %s");
+		addTooltip("maxtemperature", "Max Temp: %s");
+
+		addTooltip("tankmaxin", "In %1$s : %2$s");
+		addTooltip("tankmaxout", "Out %1$s : %2$s");
+
+		addTooltip("addontankcap", "Increases capacity by %s");
+		addTooltip("gastank.capacity", "Capacity : %s");
+
+		addTooltip("gasvalve", "Blocks gases when powered with redstone");
+		addTooltip("fluidvalve", "Blocks fluids when powered with redstone");
 
 		addTooltip("guidebookjeiuse", "Press 'U' for uses");
 		addTooltip("guidebookjeirecipe", "Press 'R' for recipes");
 
 		addTooltip("guidebookname", "AKA Guidebook");
 
+		addTooltip("electricdrill.overclock", "Overclock: %s");
+		addTooltip("electricdrill.fortunelevel", "Fortune %s");
+		addTooltip("electricdrill.silktouch", "Silk Touch");
+		addTooltip("electricdrill.usage", "Use / Block: %s");
+
+		addTooltip("potentiometer.use", "A programmable energy void");
+
 		addTooltip("inventoryio", "Inventory I/O");
 		addTooltip("inventoryio.presstoshow", "press to show");
 		addTooltip("inventoryio.presstohide", "press to hide");
+		addTooltip("scannerpattern", "Sonar Pattern");
 		addTooltip("inventoryio.top", "Top");
 		addTooltip("inventoryio.bottom", "Bottom");
 		addTooltip("inventoryio.left", "Left");
@@ -446,9 +724,19 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addTooltip("inventoryio.back", "Back");
 		addTooltip("inventoryio.slotmap", "Slot Map");
 
+		addTooltip("electrolosischamber.satisfaction", "Satisfaction: %s");
+		addTooltip("electrolosischamber.procamount", "Processing Amount: %s");
+
+		addTooltip("rotaryunifier.toggle", "Toggle Conversion");
+		addTooltip("rotaryunifier.use1", "Gas must be 1 degree above");
+		addTooltip("rotaryunifier.use2", "condensation temperature");
+
+		addTooltip("concretemixjoke", "What Minecraft is made of");
+		
 		addGuiLabel("creativepowersource.voltage", "Voltage: ");
 		addGuiLabel("creativepowersource.power", "Power: ");
 		addGuiLabel("creativefluidsource.setfluid", "Set Fluid");
+		addGuiLabel("creativegassource.setgas", "Set Gas");
 		addGuiLabel("machine.usage", "Usage: %s");
 		addGuiLabel("machine.voltage", "Voltage: %s");
 		addGuiLabel("machine.current", "Current: %s");
@@ -457,15 +745,94 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addGuiLabel("machine.stored", "Stored: %s");
 		addGuiLabel("machine.temperature", "Temperature: %s");
 		addGuiLabel("machine.heat", "Heat: %s");
+		addGuiLabel("machine.satisfaction", "Satisfaction: %s");
 		addGuiLabel("coalgenerator.timeleft", "Time Left: %s");
+		addGuiLabel("seismicscanner.dataheader", "Scan Results:");
+		addGuiLabel("seismicscanner.notfound", "Block not found!");
+		addGuiLabel("seismicscanner.xcoord", "X: %s");
+		addGuiLabel("seismicscanner.ycoord", "Y: %s");
+		addGuiLabel("seismicscanner.zcoord", "Z: %s");
+		addGuiLabel("seismicscanner.xcoordna", "X: Not Found");
+		addGuiLabel("seismicscanner.ycoordna", "Y: Not Found");
+		addGuiLabel("seismicscanner.zcoordna", "Z: Not Found");
+		addGuiLabel("seismicscanner.material", "Active Pattern:");
+		addGuiLabel("seismicscanner.pattern", "Scanned Pattern:");
+		addGuiLabel("seismicscanner.patternintegrity", "Integrity: %s");
+		addGuiLabel("seismicscanner.nopattern", "N/A");
+		addGuiLabel("seismicscanner.nopatternstored", "No Pattern");
+		addGuiLabel("seismicscanner.scanpassive", "Passive");
+		addGuiLabel("seismicscanner.scanactive", "Active");
+		addGuiLabel("seismicscanner.performscan", "Scan");
 		addGuiLabel("genericcharger.chargeperc", "Charge: %s");
 		addGuiLabel("genericcharger.chargecapable", "Possible: %s");
+		addGuiLabel("seismicrelay.dataheader", "Markers");
+		addGuiLabel("seismicrelay.posnotfound", "%s , Not Found");
+		addGuiLabel("seismicrelay.posfound", "%1$s , %2$s");
+		addGuiLabel("seismicrelay.posoptional", "%s , Optional");
+		addGuiLabel("motorcomplex.speed", "Ticks per Block: %s");
+
+		addGuiLabel("quarry.ringusage", "Ring Usage: %s");
+		addGuiLabel("quarry.miningusage", "Drill Usage: %s");
+
+		addGuiLabel("quarry.fortune", "Fortune: %s");
+		addGuiLabel("quarry.silktouch", "Silk Touch: %s");
+		addGuiLabel("quarry.unbreaking", "Unbreaking: %s");
+
+		addGuiLabel("quarry.wateruse", "Coolant/Block: %s");
+
+		addGuiLabel("quarry.motorcomplex", "Motor Complex");
+		addGuiLabel("quarry.seismicrelay", "Seismic Relay");
+		addGuiLabel("quarry.coolantresavoir", "Coolant Resavoir");
+
+		addGuiLabel("quarry.voiditems", "Void List");
+		addGuiLabel("quarry.needvoidcard", "No Card");
+
+		addGuiLabel("quarry.status", "Status:");
+		addGuiLabel("quarry.clearingarea", "Clearing...");
+		addGuiLabel("quarry.setup", "Setting Up...");
+		addGuiLabel("quarry.mining", "Mining...");
+		addGuiLabel("quarry.notmining", "Error!");
+		addGuiLabel("quarry.finished", "Finished!");
+
+		addGuiLabel("quarry.miningposition", "Mining At: %s");
+		addGuiLabel("quarry.notavailable", "N/A");
+
+		addGuiLabel("quarry.drillhead", "Drill Head: %s");
+		addGuiLabel("quarry.hashead", "Present");
+		addGuiLabel("quarry.nohead", "Missing");
+
+		addGuiLabel("quarry.errors", "Errors:");
+		addGuiLabel("quarry.norelay", "No Relay");
+		addGuiLabel("quarry.nomotorcomplex", "No Motor");
+		addGuiLabel("quarry.nocoolantresavoir", "No Resavoir");
+		addGuiLabel("quarry.nocorners", "Invalid Corners");
+		addGuiLabel("quarry.motorcomplexnotpowered", "Motor Power");
+		addGuiLabel("quarry.nopower", "Quarry Power");
+		addGuiLabel("quarry.areanotclear", "Area Blocked");
+		addGuiLabel("quarry.noring", "No Ring");
+		addGuiLabel("quarry.missinghead", "No Drill Head");
+		addGuiLabel("quarry.noerrors", "None");
+		addGuiLabel("quarry.miningframe", "Active Frame");
+		addGuiLabel("quarry.nocoolant", "Coolant Levels");
+		addGuiLabel("quarry.inventoryroom", "Inventory Full");
+
+		addGuiLabel("thermoelectricmanipulator.temp", "Temperature:");
+
+		addGuiLabel("prioritypump.priority", "Priority");
+
+		addGuiLabel("filter.blacklist", "Blacklist");
+		addGuiLabel("filter.whitelist", "Whitelist");
 
 		addGuiLabel("multimeterblock.transfer", "Transfer: %s");
 		addGuiLabel("multimeterblock.voltage", "Voltage: %s");
 		addGuiLabel("multimeterblock.resistance", "Resistance: %s");
 		addGuiLabel("multimeterblock.loss", "Loss: %s");
 		addGuiLabel("multimeterblock.minvoltage", "Min Voltage: %s");
+
+		addGuiLabel("potentiometer.watts", "W");
+		addGuiLabel("potentiometer.usage", "Usage");
+
+		addGuiLabel("coilratio", "Turns Ratio");
 
 		addGuiLabel("networkwattage", "Wattage");
 		addGuiLabel("networkvoltage", "Voltage");
@@ -474,83 +841,30 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addGuiLabel("networkresistance", "Resistance");
 		addGuiLabel("networkload", "Load");
 
-		addGuiLabel("displayunit.infinity.name", "Infinite");
+		addGuiLabel("equals", "=");
+		addGuiLabel("notequals", "!=");
+		addGuiLabel("lessthan", "<");
+		addGuiLabel("greaterthan", ">");
+		addGuiLabel("lessthanorequalto", "<=");
+		addGuiLabel("greaterthanorequalto", ">=");
 
-		addGuiLabel("displayunit.ampere.name", "Ampere");
-		addGuiLabel("displayunit.ampere.nameplural", "Amperes");
-		addGuiLabel("displayunit.ampere.symbol", "A");
-		addGuiLabel("displayunit.amphour.name", "Amp Hour");
-		addGuiLabel("displayunit.amphour.nameplural", "Amp Hours");
-		addGuiLabel("displayunit.amphour.symbol", "Ah");
-		addGuiLabel("displayunit.voltage.name", "Volt");
-		addGuiLabel("displayunit.voltage.nameplural", "Volts");
-		addGuiLabel("displayunit.voltage.symbol", "V");
-		addGuiLabel("displayunit.watt.name", "Watt");
-		addGuiLabel("displayunit.watt.nameplural", "Watts");
-		addGuiLabel("displayunit.watt.symbol", "W");
-		addGuiLabel("displayunit.watthour.name", "Watt Hour");
-		addGuiLabel("displayunit.watthour.nameplural", "Watt Hours");
-		addGuiLabel("displayunit.watthour.symbol", "Wh");
-		addGuiLabel("displayunit.resistance.name", "Ohm");
-		addGuiLabel("displayunit.resistance.nameplural", "Ohms");
-		addGuiLabel("displayunit.resistance.symbol", "" + '\u03A9');
-		addGuiLabel("displayunit.conductance.name", "Siemen");
-		addGuiLabel("displayunit.conductance.nameplural", "Siemens");
-		addGuiLabel("displayunit.conductance.symbol", "S");
-		addGuiLabel("displayunit.joules.name", "Joule");
-		addGuiLabel("displayunit.joules.nameplural", "Joules");
-		addGuiLabel("displayunit.joules.symbol", "J");
-		addGuiLabel("displayunit.buckets.name", "Bucket");
-		addGuiLabel("displayunit.buckets.nameplural", "Buckets");
-		addGuiLabel("displayunit.buckets.symbol", "B");
-		addGuiLabel("displayunit.tempkelvin.name", "Kelvin");
-		addGuiLabel("displayunit.tempkelvin.nameplural", "Kelvin");
-		addGuiLabel("displayunit.tempkelvin.symbol", "K");
-		addGuiLabel("displayunit.tempcelcius.name", "Celcius");
-		addGuiLabel("displayunit.tempcelcius.nameplural", "Celcius");
-		addGuiLabel("displayunit.tempcelcius.symbol", "C");
-		addGuiLabel("displayunit.tempfahrenheit.name", "Fahrenheit");
-		addGuiLabel("displayunit.tempfahrenheit.nameplural", "Fahrenheit");
-		addGuiLabel("displayunit.tempfahrenheit.symbol", "F");
-		addGuiLabel("displayunit.timeseconds.name", "Second");
-		addGuiLabel("displayunit.timeseconds.nameplural", "Seconds");
-		addGuiLabel("displayunit.timeseconds.symbol", "s");
-		addGuiLabel("displayunit.pressureatm.name", "Atmosphere");
-		addGuiLabel("displayunit.pressureatm.nameplural", "Atmospheres");
-		addGuiLabel("displayunit.pressureatm.symbol", "ATM");
-		addGuiLabel("displayunit.percentage.name", "Percent");
-		addGuiLabel("displayunit.percentage.nameplural", "Percent");
-		addGuiLabel("displayunit.percentage.symbol", "%");
+		addGuiLabel("property", "Property");
+		addGuiLabel("operator", "Operator");
+		addGuiLabel("value", "Value");
 
-		addGuiLabel("displayunit.timeticks.name", "Tick");
-		addGuiLabel("displayunit.timeticks.nameplural", "Ticks");
-		addGuiLabel("displayunit.timeticks.symbol", "t");
-
-		addGuiLabel("displayunit.forgeenergyunit.name", "Forge Energy Unit");
-		addGuiLabel("displayunit.forgeenergyunit.nameplural", "Forge Energy Units");
-		addGuiLabel("displayunit.forgeenergyunit.symbol", "FE");
-
-		addGuiLabel("measurementunit.pico.name", "Pico");
-		addGuiLabel("measurementunit.pico.symbol", "p");
-		addGuiLabel("measurementunit.nano.name", "Nano");
-		addGuiLabel("measurementunit.nano.symbol", "n");
-		addGuiLabel("measurementunit.micro.name", "Micro");
-		addGuiLabel("measurementunit.micro.symbol", "" + '\u00B5');
-		addGuiLabel("measurementunit.milli.name", "Milli");
-		addGuiLabel("measurementunit.milli.symbol", "m");
-		addGuiLabel("measurementunit.none.name", "");
-		addGuiLabel("measurementunit.none.symbol", "");
-		addGuiLabel("measurementunit.kilo.name", "Kilo");
-		addGuiLabel("measurementunit.kilo.symbol", "k");
-		addGuiLabel("measurementunit.mega.name", "Mega");
-		addGuiLabel("measurementunit.mega.symbol", "M");
-		addGuiLabel("measurementunit.giga.name", "Giga");
-		addGuiLabel("measurementunit.giga.symbol", "G");
+		add("keycategory.electrodynamics", "Electrodynamics");
+		addKeyLabel("jetpackascend", "Ascend with Jetpack");
+		addKeyLabel("togglenvgs", "Toggle Night Vision Goggles");
+		addKeyLabel("jetpackmode", "Switch Jetpack Mode");
+		addKeyLabel("servoleggingsmode", "Switch Servo Leggings Mode");
+		addKeyLabel("toggleservoleggings", "Toggle Servo Leggings");
+		addKeyLabel("swapbattery", "Swap Battery");
 
 		addJei("guilabel.power", "%1$sV %2$skW");
 		addJei("info.item.coalgeneratorfuelsource", "Coal Generator Fuel:\n    Burn Time: %s");
 		addJei("info.fluid.combustionchamberfuel", "Combustion Chamber Fuel:\n    Produces: %1$s \n    Cost: %2$s.");
 
+		addJei(ElectrolyticSeparatorRecipe.RECIPE_GROUP, "Electrolytic Separator");
 		addJei(ChemicalCrystalizerRecipe.RECIPE_GROUP, "Chemical Crystalizer");
 		addJei(MineralWasherRecipe.RECIPE_GROUP, "Mineral Washer");
 		addJei(FermentationPlantRecipe.RECIPE_GROUP, "Fermentation Plant");
@@ -562,13 +876,14 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addJei(MineralCrusherRecipe.RECIPE_GROUP, "Mineral Crusher");
 		addJei(LatheRecipe.RECIPE_GROUP, "Lathe");
 		addJei(EnergizedAlloyerRecipe.RECIPE_GROUP, "Energized Alloyer");
+		addJei("blasting", "Electric Arc Furnace");
 		addJei("smelting", "Electric Furnace");
+		addJei("gas_condensing", "Gas Condensation");
+		addJei("gas_evaporating", "Fluid Evaporation");
 
 		addDamageSource("electricity", "%s was electrocuted");
 		addDamageSource("acceleratedbolt", "%1$s was perforated by %2$s");
 		addDamageSource("plasmabolt", "%1$s was vaporized by %2$s");
-
-		addChatMessage("guidebookclick", "Click Here");
 
 		addSubtitle(ElectrodynamicsSounds.SOUND_HUM, "Machine Hums");
 		addSubtitle(ElectrodynamicsSounds.SOUND_MINERALCRUSHER, "Hammer crushes");
@@ -580,13 +895,26 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addSubtitle(ElectrodynamicsSounds.SOUND_CERAMICPLATEADDED, "Ceramic Plate added");
 		addSubtitle(ElectrodynamicsSounds.SOUND_RAILGUNKINETIC, "Kinetic Railgun fires");
 		addSubtitle(ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO, "Out of rods");
-		addSubtitle(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA, "Plasma Railgun fires");
+		addSubtitle(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_FIRE, "Plasma Railgun fires");
+		addSubtitle(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_HIT, "Plasma Railgun projectile hits");
 		addSubtitle(ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_NOPOWER, "Plasma Railgun has no power");
 		addSubtitle(ElectrodynamicsSounds.SOUND_RODIMPACTINGGROUND, "Rod impacts ground");
 		addSubtitle(ElectrodynamicsSounds.SOUND_LATHEPLAYING, "Lathe spins");
 		addSubtitle(ElectrodynamicsSounds.SOUND_EQUIPHEAVYARMOR, "Equipped heavy armor");
 		addSubtitle(ElectrodynamicsSounds.SOUND_HYDROELECTRICGENERATOR, "Hydroelectric generator spins");
+		addSubtitle(ElectrodynamicsSounds.SOUND_SEISMICSCANNER, "Seismic Ping");
+		addSubtitle(ElectrodynamicsSounds.SOUND_ELECTROLYTICSEPARATOR, "Electrical Sparks");
+		addSubtitle(ElectrodynamicsSounds.SOUND_NIGHTVISIONGOGGLESON, "Night Vision Goggles activated");
+		addSubtitle(ElectrodynamicsSounds.SOUND_NIGHTVISIONGOGGLESOFF, "Night Vision Goggles de-activated");
+		addSubtitle(ElectrodynamicsSounds.SOUND_HYDRAULICBOOTS, "Hydraulic piston fires");
+		addSubtitle(ElectrodynamicsSounds.SOUND_JETPACKSWITCHMODE, "Equipment cycles mode");
+		addSubtitle(ElectrodynamicsSounds.SOUND_JETPACK, "Jetpack engine runs");
+		addSubtitle(ElectrodynamicsSounds.SOUND_BATTERY_SWAP, "Battery is swapped");
+		addSubtitle(ElectrodynamicsSounds.SOUND_PRESSURERELEASE, "Gas hisses");
+		addSubtitle(ElectrodynamicsSounds.SOUND_COMPRESSORRUNNING, "Compressor pressurizes gas");
+		addSubtitle(ElectrodynamicsSounds.SOUND_DECOMPRESSORRUNNING, "Decompressor depressurizes gas");
 		addSubtitle(ElectrodynamicsSounds.SOUND_TRANSFORMERHUM, "Transformer hums");
+		addSubtitle(ElectrodynamicsSounds.SOUND_MOTORRUNNING, "Motor Spins");
 
 		addDimension(World.OVERWORLD, "The Overworld");
 		addDimension(World.NETHER, "The Nether");
@@ -597,26 +925,28 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 		addAdvancement("ores.title", "Mining");
 		addAdvancement("ores.desc", "Make a Wooden Pickaxe!");
-		addAdvancement("vanadiumore.title", "Raw Vanadinite");
-		addAdvancement("vanadiumore.desc", "Find some Vanadinite Ore!");
-		addAdvancement("uraniumore.title", "Uraninite Ore");
-		addAdvancement("uraniumore.desc", "Find some Uraninite Ore!");
-		addAdvancement("titaniumore.title", "Rutile Ore");
-		addAdvancement("titaniumore.desc", "Find some Rutile Ore!");
-		addAdvancement("tinore.title", "Raw Cassiterite Ore");
-		addAdvancement("tinore.desc", "Find some Cassiterite Ore!");
-		addAdvancement("thoriumore.title", "Thorianite Ore");
-		addAdvancement("thoriumore.desc", "Find some Thorianite Ore!");
-		addAdvancement("silverore.title", "Argentite Ore");
-		addAdvancement("silverore.desc", "Find some Argentite Ore!");
-		addAdvancement("lithiumore.title", "Lepidolite Ore");
-		addAdvancement("lithiumore.desc", "Find some Lepidolite Ore!");
-		addAdvancement("leadore.title", "Galena Ore");
-		addAdvancement("leadore.desc", "Find some Galena Ore!");
-		addAdvancement("fluoriteore.title", "Fluorite Ore");
-		addAdvancement("fluoriteore.desc", "Find some Fluorite Ore!");
-		addAdvancement("chromiumore.title", "Chromite Ore");
-		addAdvancement("chromiumore.desc", "Find some Chromite Ore!");
+		addAdvancement("rawvanadium.title", "Raw Vanadinite Crystals");
+		addAdvancement("rawvanadium.desc", "Find some Raw Vanadinite Crystals!");
+		addAdvancement("rawuranium.title", "Raw Uraninite Ore");
+		addAdvancement("rawuranium.desc", "Find some Raw Uraninite Ore!");
+		addAdvancement("rawtitanium.title", "Raw Rutile Ore");
+		addAdvancement("rawtitanium.desc", "Find some Raw Rutile Ore!");
+		addAdvancement("rawtin.title", "Raw Cassiterite Ore");
+		addAdvancement("rawtin.desc", "Find some Raw Cassiterite Ore!");
+		addAdvancement("rawthorium.title", "Raw Thorianite Ore");
+		addAdvancement("rawthorium.desc", "Find some Raw Thorianite Ore!");
+		addAdvancement("rawsilver.title", "Raw Argentite Ore");
+		addAdvancement("rawsilver.desc", "Find some Raw Argentite Ore!");
+		addAdvancement("rawlithium.title", "Raw Lepidolite Ore");
+		addAdvancement("rawlithium.desc", "Find some Raw Lepidolite Ore!");
+		addAdvancement("rawvanadinite.title", "Raw Vanadinite Crystals");
+		addAdvancement("rawvanadinite.desc", "Find some Raw Vanadinite Crystals!");
+		addAdvancement("rawlead.title", "Raw Galena Ore");
+		addAdvancement("rawlead.desc", "Find some Raw Galena Ore!");
+		addAdvancement("rawfluorite.title", "Raw Fluorite Crystals");
+		addAdvancement("rawfluorite.desc", "Find some Raw Fluorite Crystals!");
+		addAdvancement("rawchromium.title", "Raw Chromite Ore");
+		addAdvancement("rawchromium.desc", "Find some Raw Chromite Ore!");
 
 		addAdvancement("basicwiring.title", "Wiring");
 		addAdvancement("basicwiring.desc", "Make your first wires!");
@@ -658,6 +988,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addAdvancement("batterybox.desc", "Make a Battery Box!");
 		addAdvancement("lithiumbatterybox.title", "Lithium Battery Box");
 		addAdvancement("lithiumbatterybox.desc", "Make a Lithium Battery Box!");
+		addAdvancement("carbynebatterybox.title", "Carbyne Battery Box");
+		addAdvancement("carbynebatterybox.desc", "Make a Carbyne Battery Box!");
 
 		addAdvancement("wiremill.title", "Wire Milling");
 		addAdvancement("wiremill.desc", "Make a Wire Mill!");
@@ -672,6 +1004,13 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addAdvancement("doubleelectricfurnace.desc", "Make a Double Electric Furnace!");
 		addAdvancement("tripleelectricfurnace.title", "Triple Smelting");
 		addAdvancement("tripleelectricfurnace.desc", "Make a Triple Electric Furnace!");
+
+		addAdvancement("electricarcfurnace.title", "Electric Blasting");
+		addAdvancement("electricarcfurnace.desc", "Make an Electric Arc Furnace!");
+		addAdvancement("doubleelectricarcfurnace.title", "Double Blasting");
+		addAdvancement("doubleelectricarcfurnace.desc", "Make a Double Electric Arc Furnace!");
+		addAdvancement("tripleelectricarcfurnace.title", "Triple Blasting");
+		addAdvancement("tripleelectricarcfurnace.desc", "Make a Triple Electric Arc Furnace!");
 
 		addAdvancement("mineralgrinder.title", "Mineral Grinding");
 		addAdvancement("mineralgrinder.desc", "Make a Mineral Grinder!");
@@ -690,13 +1029,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addAdvancement("multimeter.title", "Multimetering");
 		addAdvancement("multimeter.desc", "Make a Multimeter!");
 
-		addGuidebook("title", "Electrodynamics Electric Code 1st Edition");
-		addGuidebook("titlequote", "\"There is nothing more permanent than a temporary solution.\"");
-
-		addGuidebook("availablemodules", "Available Modules");
-		addGuidebook("chapters", "Chapters");
-
-		addGuidebook(References.ID, "Electrodynamics");
+		addGuidebook(Electrodynamics.ID, "Electrodynamics");
 
 		addGuidebook("chapter.gettingstarted", "Getting Started");
 
@@ -714,7 +1047,6 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addGuidebook("chapter.ores.miningteir", "Mining Teir: %s");
 		addGuidebook("chapter.ores.material_aluminum", "Aluminum");
 		addGuidebook("chapter.ores.material_chromium", "Chromium");
-		addGuidebook("chapter.ores.material_copper", "Copper");
 		addGuidebook("chapter.ores.material_fluorite", "Fluorite");
 		addGuidebook("chapter.ores.material_salt", "NaCl");
 		addGuidebook("chapter.ores.material_lead", "Lead");
@@ -780,6 +1112,7 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addGuidebook("chapter.electricity.blue", "Blue");
 		addGuidebook("chapter.electricity.red", "Red");
 		addGuidebook("chapter.electricity.purple", "Purple");
+		addGuidebook("chapter.electricity.white", "White");
 
 		addGuidebook("chapter.electricity.l5", "The following pages contain examples of machines with these markings:");
 
@@ -834,8 +1167,15 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addGuidebook("chapter.electricity.l13.4", "Ceramic insulation on the other hand is more expensive than wool, but gains the advantage of being fire-proof:");
 		addGuidebook("chapter.electricity.l13.5", "This makes ceramicly insulated wires especially useful when working around fluids like lava. It should be noted though that ceramic insulation is not as effective as " + "woolen insulation, meaning that if you want to insulate high voltages, you will need to take the risk of fire!");
 
+		addGuidebook("chapter.electricity.l14.1",
+				"Another property of insulated wires is the ability to be dyed different colors. All insulated wires have a default color that is able to connect to any insulation color and wire type. Black is the default color for woolen insulation and brown is the default color for ceramic insulation. If the color is not the default however, it will only be able to connect to wires colored the default color or wires of the same color:");
+		addGuidebook("chapter.electricity.l14.2", "Being able to color-coat wires has several advantages, the largest of which being the ability to run multiple wires in parallel right next to each other without having them connect. This can be very helpful if you are dealing with machine setups where multiple voltages are involved in tight quarters. ");
+
+		addGuidebook("chapter.electricity.l15", "While on the topic of insulation ratings, It is critical to understand that a wire not having sufficiant insulation has greater ramifications than just shocking you. Wires transmitting voltages higher than what they are rated for will have a random chance to set the blocks "
+				+ "surrounding them on fire (excluding other wires). If the wire cannot set a flammable block on fire, either by pure chance or becuase you're trying to game the system, then the wire itself will be destroyed. However, this feature can be disabled in the Electrodynamics config file if desired.");
+
 		addGuidebook("chapter.electricity.l16", "Wires have the ability to be field-modified once placed in the world. If you right-click any insulated wire with Shears (excluding thick wires), it will remove the insulation from the wire. You can also apply woolen and ceramic insulation to an existing wire "
-				+ "by right-clicking the insulation on the wire. A woolen wire can be converted to a logistical wire by right-clicking a piece of redstone on it. Y");
+				+ "by right-clicking the insulation on the wire. A woolen wire can be converted to a logistical wire by right-clicking a piece of redstone on it. You can also dye wires by right-clicking the respective dye onto the wire. Note that this is a less-efficiant way to color wires than crafting them to " + "the respective color!");
 
 		addGuidebook("chapter.electricity.l17.1", "Now that we know how to get energy to a machine and understand it must be at a specific voltage, you're probably wondering how that voltage is achieved. Most power sources in Electrodynamics are either 120 V or 240 V. This works well for many of the basic machines, but simply won't "
 				+ "cut it for more advanced machines that require higher voltages. This is where transformers come in. Transformers function by exchanging voltage for current. This exchange rate can be calculated using what is known as the Turns Ratio, which is given by the formula:");
@@ -845,7 +1185,8 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addGuidebook("chapter.electricity.l17.2", "Where N is the Turns Ratio, Np is the number of primary or input turns, and Ns is the number of secondary or output turns. The output voltage can be calculated by dividing the input voltage by the Turns Ratio. The output current can be calculated by multiplying the input " + "current by the Turns Ratio.");
 		addGuidebook("chapter.electricity.l17.3",
 				"Electrodynamics offers two transformer types: Upgrade and Downgrade. The %1$s Transformer steps up voltage, and the %2$s Transformer steps down voltage. The base upgrade variant has a fixed Turns Ratio of 0.5, and the base downgrade variant has a fixed Turns Ratio "
-						+ "of 2. While cheap and effective, these base units will shock you when touched if they are live.");
+						+ "of 2. While cheap and effective, these base units will shock you when touched if they are live. Electrodynamics also offers improved Mark 2 versions, which while much more expensive, have a programmable turns ratio you can select via the GUI. They are also enclosed and will not shock you when touched. It is "
+						+ "important to note that all transformers do have minor loses, so be wise with your use of them.");
 
 		addGuidebook("chapter.electricity.upgrade", "Upgrade");
 		addGuidebook("chapter.electricity.downgrade", "Downgrade");
@@ -898,8 +1239,26 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 		addGuidebook("chapter.electricity.l19.multimeterblock.1", "The Multimeter Block offers the same functionality as the hand-held variant, but will display the relevant data constantly.");
 
-		addGuidebook("chapter.electricity.l19.circuitbreaker.1", "The Circuit Breaker is a multipurpose block. It is able to act as a manual switch, opening when receiving a redstone and interrupting load. It will also open automatically if it senses that the transmitting voltage will damage a machine or if the transmitting current will damage " + "a wire or machine:");
-		addGuidebook("chapter.electricity.l19.circuitbreaker.2", "However, this protective nature comes at a price, as the Circuit Breaker has a small power loss. This means you will need to be somewhat thoughtful with your use of them!");
+		addGuidebook("chapter.electricity.l19.relay.1", "The Relay will stop the flow of electricity when powered with a redstone signal:");
+		addGuidebook("chapter.electricity.l19.relay.2", "This is particularly useful, as it means that you can turn machines off and on without having to break a wire or waiting for them to fill up. The Relay also does not impose a power loss when power flows across it. This comes at a price however, as it is also a dumb switch, "
+				+ "meaning it can only be opened manually with said redstone signal. This means the Relay is a useful logistical tool, but will not really be effective at protecting your downstream equipment.");
+
+		addGuidebook("chapter.electricity.l19.circuitbreaker.1", "The Circuit Breaker is an improved version of the Relay. Not only is able to be manually opened with a redstone signal, but it will also open automatically if it senses that the transmitting voltage will damage a machine or if the transmitting current will damage " + "a wire or machine:");
+		addGuidebook("chapter.electricity.l19.circuitbreaker.2", "However, this protective nature comes at a price, as the Circuit Breaker has a small power loss. This means you will need to be somewhat more thoughtful with your use of them!");
+
+		addGuidebook("chapter.electricity.l19.currentregulator.1", "The Current Regulator is another protective device offered by Electrodynamics. Unlike the Circuit Breaker which is focused on interrupting power, the Current Regulator will ensure that current does not exceed the maximum rated ampacity of the downstream line "
+				+ "it is protecting. For example, if the ampacity was 20 A and the current was 30 A, the regulator would ensure the downstream current would not exceed 20 A. Unlike the Circuit Breaker and Relay however, the Current Regulator cannot be opened to interrupt load flow.");
+
+		addGuidebook("chapter.electricity.l19.circuitmonitor.1", "The Circuit Monitor can be programmed to output a redstone signal (strength of 15) when a certain condition is met:");
+		addGuidebook("chapter.electricity.l19.circuitmonitor.2",
+				"We will first cover the \"Property\" selection list in the GUI. The %1$s property represents the current wattage of the energy flowing through the wire in real time in units of Watts. The %2$s property represents the current voltage of the energy flowing through the wire in real time "
+						+ "in units of Volts. The %3$s property is the maximum current the wire can achieve before it is damaged in units of Amps. The %4$s property is the voltage of the lowest-voltage machine connected to the wire in units of Volts. The %5$s property is the resistance of the wire in units of Ohms. Finally, the %6$s "
+						+ "property is the maximum possible energy usage of all machines connected to the wire in units of Watts. It is important to note this value can be different from the %7$s property's value.");
+		addGuidebook("chapter.electricity.l19.circuitmonitor.3", "The next section of the GUI is the \"Operator\" selection list, which is the list of boolean operators that can be selected for comparing the \"Property\" and \"Value\" sections. It is hoped by the author of this book you understand what the individual operators mean. The final section "
+				+ " in the GUI is the \"Value\" section. The quantity input into this field is what will be compared against the property selected. It is important to note this value cannot be negative.");
+
+		addGuidebook("chapter.electricity.l19.potentiometer.1",
+				"The Potentiometer is, as the tooltip suggests, a programmable energy sink. If the entered value is less than 0, then the Potentiometer will accept as much energy as the power source it is connected to can produce. If the entered value is greater than 0, then the " + "Potentiometer will accept up to the value entered. The Potentiometer can never be \"filled\" for reference.");
 
 		addGuidebook("chapter.electricity.l20",
 				"Electrodynamics represents its energy in real-world quantities (Joules) as discussed in section 1 of this chapter. As a result, Electrodynamics machines cannot directly use Forge Energy Units (FE). However, this does not mean Electrodynamics cannot interact with FE. Wires are able to "
@@ -956,16 +1315,31 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 		addGuidebook("chapter.fluids.l5.reinforcedcanister.1", "Most Electrodynamics fluids cannot be carried by a Vanilla bucket. For example, it simply doesn't make sense to transfer Sulfuric Acid in a bucket made out of Iron. If you need to manually move fluids such as Sulfuric Acid, you will need to use a Reinforced " + "Canister.");
 
+		addGuidebook("chapter.fluids.l5.fluidvalve.1", "The Fluid Valve is a simple bi-directional switch. In the off-position, it will allow fluids to flow both ways through it like a standard pipe:");
+		addGuidebook("chapter.fluids.l5.fluidvalve.2", "When powered with a redstone signal however, it prevents fluids from flowing through it in any direction. This ability is passive and does not require power.");
+
+		addGuidebook("chapter.fluids.l5.fluidpipepump.1", "The Fluid Pipe Pump has a passive and active ability. Passively, the block acts like a diode, allowing fluids to only flow in one direction:");
+		addGuidebook("chapter.fluids.l5.fluidpipepump.2", "The active ability requires the pump to be powered, and has the downside of only working with Electrodynamics fluid pipes due to the limitations of the game. When powered and connected to an Electrodynamics pipe network, " + "the pump has the ability to take priority on the transmitted fluids. The priority can be programmed in its GUI:");
+		addGuidebook("chapter.fluids.l5.fluidpipepump.3", "The minimum priority is 0 and the maximum is 9. If multiple pumps have the same priority, then the fluid will be split evenly among them.");
+
+		addGuidebook("chapter.fluids.l5.fluidfilterpipe.1", "The Fluid Filter Pipe, similar to the Fluid Pipe Pump, only allows fluids to flow in one direction like a diode. It also is possible to select which fluids pass through the Filter. This ability is passive as well.");
+		addGuidebook("chapter.fluids.l5.fluidfilterpipe.2", "To program a fluid, open the GUI:");
+		addGuidebook("chapter.fluids.l5.fluidfilterpipe.3", "The Fluid Filter Pipe is capable of filtering up to 4 fluids at a time. You will also note there is a \"Whitelist\" and \"Blacklist\" toggle button. In %1$s, the fluids in the filter list will be blocked from flowing through the pipe. Having no fluids selected "
+				+ "means it will allow any fluid through like a normal pipe. In %2$s, the fluids in the filter will be the only fluids allowed to flow through. Having no fluids selected means it will allow no fluids through.");
+		addGuidebook("chapter.fluids.l5.fluidfilterpipe.4", "To add a filtered fluid, take a bucket or otherwise item containing the desiered fluid, and click one of the filter slots:");
+		addGuidebook("chapter.fluids.l5.fluidfilterpipe.5", "It should be noted that the filter is not tag-compatible, meaning Ethanol from Immersive Engineering will not be allowed through even though Ethanol from Electrodynamics is selected as a filtered fluid.");
+
+		addGuidebook("chapter.fluids.whitelist", "Whitelist");
+		addGuidebook("chapter.fluids.blacklist", "Blacklist");
+
+		addGuidebook("chapter.fluids.l5.fluidvoid.1", "The Fluid Void deletes all fluids that are piped into it. It is also able to manually accept fluids from buckets via its GUI. For reference, the Fluid Void is able to accept up to 128 B at a time.");
+
 		addGuidebook("chapter.fluids.l5.fluidtank.1", "Fluid Tanks are Electrodynamics' solution to bulk fluid storage. They accept fluid from the top and output fluid through the bottom. Furthermore, stack two tanks on top of eachother, and the top one will automatically output into the bottom one.");
 
 		addGuidebook("chapter.fluids.fluidtanks", "Fluid Tanks");
 
 		addGuidebook("chapter.fluids.l6", "Should you ever find yourself having input fluid into a machine that you didn't mean to, all hope is not lost. You can click on the input fluid gauge(s) with a bucket or reinforced canister, and the fluid will be extracted from the tank and into the fluid container. Note this does not work "
 				+ "for output fluid gauges, as there is already a bucket slot for fluids to be drained into automatically.");
-
-		addGuidebook("chapter.gases", "Gases");
-
-		addGuidebook("chapter.gases.l1", "While fluids in Electrodynamics may be similar to what you have seen before in other mods, gases are very much more complex and in depth. However, if you pay attention to a few key items, you will find that working with gases can be fairly painless and easy to do. This chapter will cover the following topics:");
 
 		addGuidebook("chapter.generators", "Generators");
 		addGuidebook("chapter.generators.l1", "Electrodynamics offers several power sources for you to consider. Each has its pros and cons, so pick and choose the ones that suit you. It should be notes that all fuel-burning generators can be turned off with a redstone signal.");
@@ -1018,6 +1392,47 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addGuidebook("chapter.machines.charger.4", "The charge of the item placed in one of these slots will be transfered to the item in the charging slot. Along with actual batteries, any item with a charge can be used! However, be mindful of the item's voltage. If it is less than the voltage of the charger, it "
 				+ "will be reduced to a pile of Slag! If the item's voltage is greater than the charger's, the charger will explode!");
 
+		addGuidebook("chapter.quarry", "The Quarry");
+
+		addGuidebook("chapter.quarry.l1", "The Quarry is Electrodynamics' way of providing auto-mining. It takes inspiration from Buildcraft's Quarry and expands upon what it can do. This short walkthrough will provide you the steps on how to set up and operate one yourself.");
+
+		addGuidebook("chapter.quarry.step", "Step %s:");
+
+		addGuidebook("chapter.quarry.step1l1", "Set up a ring of 4 Seismic Markers with one Marker at each corner. The ring must be a minimum of 3x3 and has a default maximum size of 66x66. Placing a redstone signal next to a marker will display guide lines.");
+
+		addGuidebook("chapter.quarry.step2l1", "Place a Seismic Relay down at the outside of one of the corners next to a Seismic Marker. If done correctly, you will hear the sound of an Anvil. The Seismic Markers will also then be collected by the Relay and placed in its inventory.");
+
+		addGuidebook("chapter.quarry.step3l1", "Place a Quarry on either the left or the right side of the Relay. The Quarry must be facing the same direction as the Relay.");
+
+		addGuidebook("chapter.quarry.step4l1", "Place a Coolant Resavoir on top of the Quarry. The Quarry needs a constant supply of Water to remain cool. The faster it runs, the more water it will use!");
+
+		addGuidebook("chapter.quarry.step5l1", "Place a Motor Complex on the side of the Quarry opposite the Seismic Relay. The green port of the Relay must be facing the green port of the Quarry. The Motor Complex controls the speed of the Quarry. It accepts either Basic or Advanced Speed Upgrades, "
+				+ "and has a maximum speed of 1 Block/tick. This can be achieved with 6 Advanced upgrades, but comes with a heafty power consumtion!");
+
+		addGuidebook("chapter.quarry.step6l1", "Power the Quarry and the Motor Complex; both use 240V. The Quarry itself uses power to perform tasks such as clearing amd maintaining the mining ring. The upgrades placed in the Quarry also have a direct impact on its power usage. Note that if blocks are in the way when "
+				+ "the Quarry starts clearing the ring, they will be removed without drops! When the ring is finished, the mining arm will deploy.");
+
+		addGuidebook("chapter.quarry.step7l1", "Open the Quarry GUI. In order to begin mining blocks, the Quarry will need a Drill Head. There are multiple types with varying durabilities:");
+
+		addGuidebook("chapter.quarry.drillhead", "%1$s : %2$s");
+		addGuidebook("chapter.quarry.steelhead", "Steel");
+		addGuidebook("chapter.quarry.stainlesshead", "Stainless");
+		addGuidebook("chapter.quarry.hslahead", "HSLA Steel");
+		addGuidebook("chapter.quarry.titaniumhead", "Titanium");
+		addGuidebook("chapter.quarry.carbidehead", "Carbide");
+		addGuidebook("chapter.quarry.infinitedurability", "Infinite");
+
+		addGuidebook("chapter.quarry.step7l2",
+				"Take the Drill Head of your choice and place it in the bottom left slot of the Quarry GUI. Now direct your attention to the 3 upgrade slots in the GUI. The Quarry itself will not passively use power after setup. However, if you add upgrades, it will begin to, and depending on the " + "upgrade, this can be a substantial amount! Your 4 upgrade options are:");
+
+		addGuidebook("chapter.quarry.step7unbreaking", "The %s reduces the durability used from the Drill Head when a block is mined. A maximum of 3 can be used for an effect of Unbreaking III, and it will cause the Quarry to draw a large amount of power when installed.");
+		addGuidebook("chapter.quarry.step7fortune", "The %s applies the Fortune enchantment to the blocks mined by the Quarry. A maximum of 3 can be used for an effect of Fortune III and it cannot be used in tandem with the Silk Touch Upgrade. The upgrade draws a large amount of power.");
+		addGuidebook("chapter.quarry.step7silktouch", "The %s will apply the Silk Touch enchantment to the blocks mined by the Quarry. A maximum of 1 can be used and it cannot be used in tandem with the Fortune Upgrade. The upgrade will cause the Quarry to draw a huge amount of power.");
+		addGuidebook("chapter.quarry.step7void", "The %s will activate 6 otherwise hidden slots in the GUI. Any items placed in these slots will be voided by the Quarry when mined. The upgrade will cause the Quarry to start drawing its base usage.");
+
+		addGuidebook("chapter.quarry.step8l1", "This step is optional, but highly recommended. Place a Logistical Manager in front of the Quarry, then place a chest on any remaining side of the Manager. The Logistical Manager will automatically transfer items from the Quarry's inventory into an attached chest. "
+				+ "Furthermore, if you place a Drill Head in one of the attached chests, it will automatically be transfered to the Quarry when the existing one breaks.");
+
 		addGuidebook("chapter.upgrades", "Upgrades");
 
 		addGuidebook("chapter.upgrades.injectorheader", "Using the Injector Upgrade:");
@@ -1047,21 +1462,49 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 		addGuidebook("chapter.tools.ap", " AP*");
 		addGuidebook("chapter.tools.apnote", "*ignores armor");
 
-		addGuidebook("chapter.tools.kineticl1", "To use the Kinetic Railgun, hold the gun in one hand and the ammo type of your choice in the other.");
+		addGuidebook("chapter.tools.kineticl1", "To use the Kinetic Railgun, hold the gun in one hand and the ammo type of your choice in the other. The Kinetic Railgun generates %1$s Joules of heat per shot.");
 
 		addGuidebook("chapter.tools.energy", "Energy");
 		addGuidebook("chapter.tools.initial", "Initial");
 		addGuidebook("chapter.tools.after", "After %s");
 
+		addGuidebook("chapter.tools.plasmal1", "The Plasma Railgun generates %1$s Joules of heat per shot.");
+
+		addGuidebook("chapter.tools.seismicl1", "The Seismic Scanner is a very useful item. It is able to scan for a selected block within a 16 block radius from the player. To use the Scanner, Right-Click to access it's GUI and insert the desired block into the scanning slot. Next, Shift + Right-Click to start a "
+				+ "scan. If the Scanner is able to find the block, it will list the coordinates in its GUI and temporarily highlight the block in the world. Note, you will not see the highlight if you can't see the block itself. The Scanner has a 10s cooldown between scans.");
+
+		addGuidebook("chapter.tools.electricdrilll1", "The Electric Drill is a useful mining tool indeed. Not only does it remove the need to constantly craft pickaxes, but it can also be upgraded to suit your needs. Firstly, the drill can have it's current head swapped out with another drill head. Steel is the default head. " + "The following heads provide the following speed boosts:");
+		addGuidebook("chapter.tools.electricdrilll2", "It should be noted this speed boost is passive and does not impact power consumption. To swap out a drill head, hover over the drill in your inventory with the drill head of choice, and Left-Click the drill. The new head will be installed, and you will be left holding " + "the previous drill head.");
+		addGuidebook("chapter.tools.electricdrilll3", "The drill also accepts various upgrades like a machine. Right-Click to open the drill's upgrade GUI to install upgrades. It should be noted that upgrades will increase power usage, so be wise with your usage of them!");
+
 		addGuidebook("chapter.armor", "Armor");
+
+		addGuidebook("chapter.armor.jetpack", "The Jetpack uses Liquid Hydrogen as fuel. It can be filled in either a Fluid Tank or directly in the Electrolyzer. The Jetpack has 4 modes: Regular, Hover, Elytra, and Off. Elytra mode allows you to glide as if you had an Elytra on, and gives you the ability to slowly "
+				+ "ascend.");
+		addGuidebook("chapter.armor.hydraulicboots", "Hydraulic Boots use Hydraulic Fluid as their \"fuel\". They can be filled either in a tank or directly in a Chemical Mixer. Hydraulic Boots will heavily reduce fall damage, but not completely eliminate it.");
+		addGuidebook("chapter.armor.combatchestplate", "The Combat Chestplate uses Liquid Hydrogen as fuel. It can be filled in either a Fluid Tank or directly in the Electrolyzer. The Jetpack has 4 modes: Regular, Hover, Elytra, and Off. Elytra mode allows you to glide as if you had an Elytra on, and gives you the ability to slowly \"\r\n"
+				+ "ascend.");
+		addGuidebook("chapter.armor.combatboots", "Combat Boots use Hydraulic Fluid as their \"fuel\". They can be filled either in a tank or directly in a Chemical Mixer. Combat Boots will heavily reduce fall damage, but not completely eliminate it.");
 
 		addGuidebook("chapter.armor.ceramicheader", "Ceramic Plate Protection:");
 		addGuidebook("chapter.armor.ceramicl1",
-				"Composite and Combat armor have a unique ability: Ceramic Protection. To use this ability, you must first add Ceramic Plates to the chestplate. This is accomplished by Right-Clicking a Ceramic Plate while wearing one of the two chestplates. If sucessfull, you will hear " + "the sound of a velcro strap. A maximum of two plates can be be held by both chestplates.");
+				"Composite armor has a unique ability: Ceramic Protection. To use this ability, you must first add Ceramic Plates to the chestplate. This is accomplished by Right-Clicking a Ceramic Plate while wearing one of the two chestplates. If sucessfull, you will hear " + "the sound of a velcro strap. A maximum of two plates can be be held by both chestplates.");
 
 		addGuidebook("chapter.armor.ceramicl2", "For the ability to trigger, you must be wearing a full set of the armor type, and it must be a complete set. You must then take more than 16 damage. If these conditions are met, you will hear the plate break and a Ceramic Plate will be removed " + "from the chestplate. The damage dealt will then be reduced to its square root.");
 
 		addGuidebook("chapter.misc", "Misc");
+		addGuidebook("chapter.misc.l1",
+				"Electrodynamics pipes and wires can be camouflaged to look like other blocks. This can be especially usefully if you have to run a wire through a wall but don't want to have an awkward hole in it. To hide the cable in question, you will first need to enhance it's structure. This can be accomplished " + "by right-clicking the cable with Scaffolding (not the vanilla kind):");
+
+		addGuidebook("chapter.misc.l2", "Once the Scaffolding has been applied, you can then place the block of your choice. Note that placing the Scaffolding and camouflage block will consume it, but you will also get it back when you break the cable:");
+
+		addGuidebook("chapter.misc.l3", "You can also easily swap the disguising block by simply right-clicking again with a different block:");
+
+		addGuidebook("chapter.misc.l4", "Note that while the cable might glow like the light source it is disguised as, it very much is still a cable. This is particularly important in the case of Wires, which not only can still shock you while hidden, but can also be upgraded still:");
+
+		addGuidebook("chapter.misc.l5", "As mentioned earlier, the cable will drop the scaffolding and disguising block when broken with a pickaxe. However, there are a couple other methods to do this. You can remove the disguising block by right-clicking the cable with a wrench:");
+
+		addGuidebook("chapter.misc.l6", "This will leave the scaffolding in place. To remove the Scaffolding with the wrench as well, right-click again:");
 
 		addGuidebook("chapter.tips", "Tips");
 		addGuidebook("chapter.tips.tip", "Tip %s:");
@@ -1069,106 +1512,17 @@ public class ElectrodynamicsLangKeyProvider extends LanguageProvider {
 
 		addGuidebook("chapter.tips.tip2", "Transmit at High Voltage. This is mentioned in the Electricity chapter, but you should transmit large amounts of power at high voltage and then step it down for distribution. This will help reduce the need for heavy-duty cables as well as the " + "amount of power lost due to the cable's own resistance!");
 
-		addGuidebook("chapter.tips.tip3", "Holding the Control key while hoving over an upgrade slot in a GUI will display what upgrades are valid for said slot.");
+		addGuidebook("chapter.tips.tip3",
+				"If you are using an electric tool from Electrodynamics or one of its surrounding mods, there is a good chance that the tool can have its battery replaced. This can be especially useful when you need to recharge a tool and don't have ready access to a charger. A battery can be replaced in one of two ways. "
+						+ "The first way is to hold the tool in question in your main hand and press the \"R\" key. A battery with a matching voltage will then be selected from your inventory and placed inside of the tool. The current battery inside the tool will be then placed in your inventory. Note, this method will use the first battery it finds in your "
+						+ "inventory, which might mean the battery you want may not be the one that gets used. The second and more precise way to replace a tool's battery is to hover over the tool in question with the battery in your inventory. Then, Right-Click the tool with the battery. If the voltage of the tool matches the voltage of the battery, the "
+						+ "new battery will replace the old battery, and you will be left holding the old battery.");
 
-		addGuidebook("searchparameters", "Parameters");
-		addGuidebook("selectall", "All");
-		addGuidebook("selectnone", "None");
-		addGuidebook("casesensitive", "Case-Sensitive");
-
-	}
-
-	public void addItem(RegistryObject<Item> item, String translation) {
-		add(item.get(), translation);
-	}
-
-	public void addItem(Item item, String translation) {
-		add(item, translation);
-	}
-
-	public void addBlock(RegistryObject<Block> block, String translation) {
-		add(block.get(), translation);
-	}
-
-	public void addBlock(Block block, String translation) {
-		add(block, translation);
-	}
-
-	public void addTooltip(String key, String translation) {
-		add("tooltip." + modID + "." + key, translation);
-	}
-
-	public void addFluid(Fluid fluid, String translation) {
-		add("fluid." + modID + "." + fluid.getRegistryName().getPath(), translation);
+		addGuidebook("chapter.tips.tip4", "Holding the Control key while hoving over an upgrade slot in a GUI will display what upgrades are valid for said slot.");
 	}
 
 	public void addContainer(SubtypeMachine key, String translation) {
 		addContainer(key.name(), translation);
-	}
-
-	public void addContainer(String key, String translation) {
-		add("container." + key, translation);
-	}
-
-	public void addCommand(String key, String translation) {
-		add("command." + modID + "." + key, translation);
-	}
-
-	public void addSubtitle(String key, String translation) {
-		add("subtitles." + modID + "." + key, translation);
-	}
-
-	public void addSubtitle(RegistryObject<SoundEvent> sound, String translation) {
-		addSubtitle(sound.getId().getPath(), translation);
-	}
-
-	public void addGuiLabel(String key, String translation) {
-		add("gui." + modID + "." + key, translation);
-	}
-
-	public void addDimension(RegistryKey<World> dim, String translation) {
-		addDimension(dim.location().getPath(), translation);
-	}
-
-	public void addDimension(String key, String translation) {
-		add("dimension." + modID + "." + key, translation);
-	}
-
-	public void addKeyLabel(String key, String translation) {
-		add("key." + modID + "." + key, translation);
-	}
-
-	public void addJei(String key, String translation) {
-		add("jei." + key, translation);
-	}
-
-	public void addDamageSource(String key, String translation) {
-		add("death.attack." + key, translation);
-	}
-
-	public void addChatMessage(String key, String translation) {
-		add("chat." + modID + "." + key, translation);
-	}
-
-	public void addGuidebook(String key, String translation) {
-		add("guidebook." + modID + "." + key, translation);
-	}
-
-	public void addAdvancement(String key, String translation) {
-		add("advancement." + modID + "." + key, translation);
-	}
-
-	public void addCreativeTab(String key, String translation) {
-		add("creativetab." + modID + "." + key, translation);
-	}
-
-	public static enum Locale {
-		EN_US;
-
-		@Override
-		public String toString() {
-			return super.toString().toLowerCase(java.util.Locale.ROOT);
-		}
 	}
 
 }

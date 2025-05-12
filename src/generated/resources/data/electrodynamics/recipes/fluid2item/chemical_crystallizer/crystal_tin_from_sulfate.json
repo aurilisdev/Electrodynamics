@@ -5,7 +5,7 @@
   "fluidinputs": {
     "count": 1,
     "0": {
-      "tag": "forge:sulfate_tin",
+      "tag": "forge:sulfates/tin",
       "amount": 200
     }
   },

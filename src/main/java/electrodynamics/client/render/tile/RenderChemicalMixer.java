@@ -1,14 +1,12 @@
 package electrodynamics.client.render.tile;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
-import electrodynamics.client.ClientRegister;
+import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.common.tile.machines.TileChemicalMixer;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -19,62 +17,69 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
+import voltaic.prefab.utilities.RenderingUtils;
 
 public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer> {
 
-	public RenderChemicalMixer(TileEntityRendererDispatcher context) {
-		super(context);
-	}
+    public RenderChemicalMixer(TileEntityRendererDispatcher context) {
+        super(context);
+    }
 
-	@Override
-	public void render(TileChemicalMixer tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    @Override
+    public void render(@Nonnull TileChemicalMixer tileEntityIn, float partialTicks, MatrixStack matrixStackIn, @Nonnull IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
-		IBakedModel ibakedmodel = getModel(ClientRegister.MODEL_CHEMICALMIXERBASE);
-		matrixStackIn.pushPose();
-		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
-		matrixStackIn.translate(0, 1 / 16.0, 0);
-		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-		matrixStackIn.popPose();
+        IBakedModel ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_CHEMICALMIXERBASE);
+        matrixStackIn.pushPose();
+        RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
+        matrixStackIn.translate(0, 1 / 16.0, 0);
+        RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+        matrixStackIn.popPose();
 
-		matrixStackIn.pushPose();
-		ibakedmodel = getModel(ClientRegister.MODEL_CHEMICALMIXERBLADES);
-		matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
+        matrixStackIn.pushPose();
+        ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_CHEMICALMIXERBLADES);
+        matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
 
-		ComponentProcessor proc = tileEntityIn.getComponent(IComponentType.Processor);
+        ComponentProcessor proc = tileEntityIn.getComponent(IComponentType.Processor);
 
-		float degrees = 0.0F;
+        float degrees = 0.0F;
 
-		if (proc.isActive()) {
-			degrees = proc.operatingTicks.get().floatValue() / Math.max(proc.requiredTicks.get().floatValue(), 1.0F) * 360.0F * proc.operatingSpeed.get().floatValue() * 2.0F;
-		}
+        if (proc.isActive(0)) {
+            degrees = proc.operatingTicks.getValue()[0].floatValue() / Math.max(proc.requiredTicks.getValue()[0].floatValue(), 1.0F) * 360.0F * proc.operatingSpeed.getValue().floatValue() * 2.0F;
+        }
 
-		matrixStackIn.mulPose(new Quaternion(0, degrees, 0, true));
-		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
-		matrixStackIn.popPose();
+        matrixStackIn.mulPose(new Quaternion(0, degrees, 0, true));
+        RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+        matrixStackIn.popPose();
 
-		matrixStackIn.pushPose();
-		ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(IComponentType.FluidHandler);
-		FluidStack fluid = null;
-		for (FluidTank tank : multi.getInputTanks()) {
-			if (!tank.isEmpty()) {
-				fluid = tank.getFluid();
-				break;
-			}
-		}
-		if (fluid == null) {
-			for (FluidTank tank : multi.getOutputTanks()) {
-				if (!tank.isEmpty()) {
-					fluid = tank.getFluid();
-					break;
-				}
-			}
-		}
-		if (fluid != null) {
-			AxisAlignedBB box = new AxisAlignedBB(2.0D / 16.0D, 7.0D / 16.0D, 2.0D / 16.0D, 14.0D / 16.0D, 10.0D / 16.0D, 14.0D / 16.0D);
-			IVertexBuilder builder = bufferIn.getBuffer(Atlases.translucentCullBlockSheet());
-			RenderingUtils.renderFluidBox(matrixStackIn, Minecraft.getInstance(), builder, box, fluid, combinedLightIn, combinedOverlayIn);
-		}
-		matrixStackIn.popPose();
-	}
+        matrixStackIn.pushPose();
+        ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(IComponentType.FluidHandler);
+        FluidStack fluid = null;
+        for (FluidTank tank : multi.getInputTanks()) {
+            if (!tank.isEmpty()) {
+                fluid = tank.getFluid();
+                break;
+            }
+        }
+        if (fluid == null) {
+            for (FluidTank tank : multi.getOutputTanks()) {
+                if (!tank.isEmpty()) {
+                    fluid = tank.getFluid();
+                    break;
+                }
+            }
+        }
+        if (fluid != null) {
+            AxisAlignedBB box = new AxisAlignedBB(2.0D / 16.0D, 7.0D / 16.0D, 2.0D / 16.0D, 14.0D / 16.0D, 10.0D / 16.0D, 14.0D / 16.0D);
+            IVertexBuilder builder = bufferIn.getBuffer(Atlases.translucentCullBlockSheet());
+            RenderingUtils.renderFluidBox(matrixStackIn, Minecraft.getInstance(), builder, box, fluid, combinedLightIn, combinedOverlayIn, RenderingUtils.ALL_FACES);
+        }
+        matrixStackIn.popPose();
+    }
+
+    
 
 }

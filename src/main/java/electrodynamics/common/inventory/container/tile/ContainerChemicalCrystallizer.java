@@ -1,18 +1,18 @@
 package electrodynamics.common.inventory.container.tile;
 
-import electrodynamics.common.item.subtype.SubtypeItemUpgrade;
 import electrodynamics.common.tile.machines.TileChemicalCrystallizer;
-import electrodynamics.prefab.inventory.container.GenericContainerBlockEntity;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotFluid;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotRestricted;
-import electrodynamics.prefab.inventory.container.slot.item.type.SlotUpgrade;
-import electrodynamics.prefab.utilities.math.Color;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.util.IIntArray;
 import net.minecraft.util.IntArray;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.prefab.inventory.container.slot.item.type.SlotFluid;
+import voltaic.prefab.inventory.container.slot.item.type.SlotRestricted;
+import voltaic.prefab.inventory.container.slot.item.type.SlotUpgrade;
+import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
+import voltaic.prefab.utilities.math.Color;
 
 public class ContainerChemicalCrystallizer extends GenericContainerBlockEntity<TileChemicalCrystallizer> {
 
@@ -28,8 +28,8 @@ public class ContainerChemicalCrystallizer extends GenericContainerBlockEntity<T
 
 	@Override
 	public void addInventorySlots(IInventory inv, PlayerInventory playerinv) {
-		addSlot(new SlotRestricted(inv, nextIndex(), 82, 31).setIOColor(new Color(255, 0, 0, 255)));
-		addSlot(new SlotFluid(inv, nextIndex(), 82, 51));
+		addSlot(new SlotRestricted(inv, nextIndex(), 114, 31).setIOColor(new Color(255, 0, 0, 255)));
+		addSlot(new SlotFluid(inv, nextIndex(), 38, 51));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 14, VALID_UPGRADES));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 34, VALID_UPGRADES));
 		addSlot(new SlotUpgrade(inv, nextIndex(), 150, 54, VALID_UPGRADES));

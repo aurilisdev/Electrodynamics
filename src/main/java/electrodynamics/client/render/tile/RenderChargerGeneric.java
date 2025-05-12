@@ -1,11 +1,10 @@
 package electrodynamics.client.render.tile;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.api.item.IItemElectric;
 import electrodynamics.common.tile.machines.charger.GenericTileCharger;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
@@ -14,6 +13,10 @@ import net.minecraft.item.ToolItem;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
+import voltaic.api.item.IItemElectric;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentInventory;
 
 public class RenderChargerGeneric extends AbstractTileRenderer<GenericTileCharger> {
 
@@ -22,7 +25,7 @@ public class RenderChargerGeneric extends AbstractTileRenderer<GenericTileCharge
 	}
 
 	@Override
-	public void render(GenericTileCharger tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(GenericTileCharger tileEntityIn, float partialTicks, @Nonnull MatrixStack matrixStackIn, @Nonnull IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
 		Direction dir = tileEntityIn.getFacing();
 
@@ -42,50 +45,50 @@ public class RenderChargerGeneric extends AbstractTileRenderer<GenericTileCharge
 
 			if (chargingItem.getItem() instanceof ToolItem) {
 				switch (dir) {
-				case NORTH:
+				case NORTH :
 					matrixStackIn.translate(0.5f, 1.25f, 0.47f);
 					matrixStackIn.scale(0.5f, 0.5f, 0.5f);
 					matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 180, true));
-					break;
-				case EAST:
+				break;
+				case EAST :
 					matrixStackIn.translate(0.53f, 1.25f, 0.5f);
 					matrixStackIn.scale(0.5f, 0.5f, 0.5f);
 					matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 90, true));
-					break;
-				case SOUTH:
+				break;
+				case SOUTH :
 					matrixStackIn.translate(0.5f, 1.25f, 0.53f);
 					matrixStackIn.scale(0.5f, 0.5f, 0.5f);
-					break;
-				case WEST:
+				break;
+				case WEST :
 					matrixStackIn.translate(0.47f, 1.25f, 0.5f);
 					matrixStackIn.scale(0.5f, 0.5f, 0.5f);
 					matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 270, true));
-					break;
-				default:
+				break;
+				default :
 					break;
 				}
 			} else {
 				switch (dir) {
-				case NORTH:
+				case NORTH :
 					matrixStackIn.translate(0.5f, 1.15f, 0.47f);
 					matrixStackIn.scale(0.28f, 0.28f, 0.28f);
 					matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 270, true));
 					break;
-				case EAST:
+				case EAST :
 					matrixStackIn.translate(0.53f, 1.15f, 0.5f);
 					matrixStackIn.scale(0.28f, 0.28f, 0.28f);
 					matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 180, true));
 					break;
-				case SOUTH:
+				case SOUTH :
 					matrixStackIn.translate(0.5f, 1.15f, 0.53f);
 					matrixStackIn.scale(0.28f, 0.28f, 0.28f);
 					matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), 90, true));
 					break;
-				case WEST:
+				case WEST :
 					matrixStackIn.translate(0.47f, 1.15f, 0.5f);
 					matrixStackIn.scale(0.28f, 0.28f, 0.28f);
 					break;
-				default:
+				default :
 					break;
 				}
 			}
@@ -93,6 +96,6 @@ public class RenderChargerGeneric extends AbstractTileRenderer<GenericTileCharge
 			matrixStackIn.popPose();
 		}
 
-	}
+}
 
 }

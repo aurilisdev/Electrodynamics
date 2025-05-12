@@ -17,5 +17,15 @@
     "item": "electrodynamics:glassaluminum",
     "count": 5
   },
-  "experience": 0.5
+  "experience": 0.5,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": {
+        "id": "electrodynamics:slag",
+        "Count": 1
+      },
+      "chance": 0.5
+    }
+  }
 }

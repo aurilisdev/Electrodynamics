@@ -5,7 +5,7 @@
   "iteminputs": {
     "count": 1,
     "0": {
-      "tag": "forge:ores/fluorite",
+      "tag": "forge:raw_materials/fluorite",
       "count": 1
     }
   },
@@ -17,7 +17,7 @@
     }
   },
   "output": {
-    "fluid": "electrodynamics:fluidhydrogenfluoride",
+    "fluid": "electrodynamics:fluidhydrofluoricacid",
     "amount": 1000
   },
   "experience": 0.0

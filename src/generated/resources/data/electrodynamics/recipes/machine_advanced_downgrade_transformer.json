@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    "OTO",
+    "PCP"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/stainlesssteel"
+    },
+    "C": {
+      "tag": "forge:circuits/basic"
+    },
+    "T": {
+      "item": "electrodynamics:downgradetransformer"
+    },
+    "O": {
+      "item": "electrodynamics:laminatedcoil"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:advanceddowngradetransformer"
+  }
+}

@@ -5,7 +5,10 @@
   "iteminputs": {
     "count": 1,
     "0": {
-      "item": "minecraft:sugar_cane",
+      "item": {
+        "id": "minecraft:sugar_cane",
+        "Count": 1
+      },
       "count": 9
     }
   },

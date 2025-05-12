@@ -1,57 +1,48 @@
 package electrodynamics.common.tile.machines.wiremill;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.inventory.container.tile.ContainerO2OProcessor;
-import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorDouble;
-import electrodynamics.common.inventory.container.tile.ContainerO2OProcessorTriple;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.common.settings.Constants;
-import electrodynamics.prefab.sound.SoundBarrierMethods;
-import electrodynamics.prefab.sound.utils.ITickableSound;
-import electrodynamics.prefab.tile.GenericTile;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.registers.ElectrodynamicsSounds;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
+import net.minecraft.tileentity.TileEntityType;
+import voltaic.common.inventory.container.ContainerO2OProcessor;
+import voltaic.prefab.sound.ITickableSound;
+import voltaic.prefab.sound.SoundBarrierMethods;
+import voltaic.prefab.tile.GenericTile;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public class TileWireMill extends GenericTile implements ITickableSound {
 
 	private boolean isSoundPlaying = false;
 
 	public TileWireMill() {
-		this(SubtypeMachine.wiremill, 0);
+		this(ElectrodynamicsTiles.TILE_WIREMILL.get(), 1);
+
+		addComponent(new ComponentContainerProvider(SubtypeMachine.wiremill.tag(), this).createMenu((id, player) -> new ContainerO2OProcessor(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 	}
 
-	public TileWireMill(SubtypeMachine machine, int extra) {
-		super(extra == 1 ? ElectrodynamicsBlockTypes.TILE_WIREMILLDOUBLE.get() : extra == 2 ? ElectrodynamicsBlockTypes.TILE_WIREMILLTRIPLE.get() : ElectrodynamicsBlockTypes.TILE_WIREMILL.get());
+	public TileWireMill(TileEntityType<?> type, int procCount) {
+		super(type);
 
-		int processorCount = extra + 1;
 		int inputsPerProc = 1;
 		int outputPerProc = 1;
 		int biprodsPerProc = 1;
 
 		addComponent(new ComponentPacketHandler(this));
 		addComponent(new ComponentTickable(this).tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * Math.pow(2, extra)).joules(Constants.WIREMILL_USAGE_PER_TICK * 20 * (extra + 1)));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().processors(processorCount, inputsPerProc, outputPerProc, biprodsPerProc).upgrades(3)).validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator()).implementMachineInputsAndOutputs());
-		addComponent(new ComponentContainerProvider(machine, this).createMenu((id, player) -> (extra == 0 ? new ContainerO2OProcessor(id, player, getComponent(IComponentType.Inventory), getCoordsArray()) : extra == 1 ? new ContainerO2OProcessorDouble(id, player, getComponent(IComponentType.Inventory), getCoordsArray()) : extra == 2 ? new ContainerO2OProcessorTriple(id, player, getComponent(IComponentType.Inventory), getCoordsArray()) : null)));
+		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BACK).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * Math.pow(2, procCount - 1)).joules(ElectroConstants.WIREMILL_USAGE_PER_TICK * 20 * procCount));
+		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().processors(procCount, inputsPerProc, outputPerProc, biprodsPerProc).upgrades(3)).validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator()).implementMachineInputsAndOutputs());
+		addComponent(new ComponentProcessor(this, procCount).canProcess((component, procNumber) -> component.canProcessItem2ItemRecipe(procNumber, ElectrodynamicsRecipies.WIRE_MILL_TYPE)).process(ComponentProcessor::processItem2ItemRecipe));
 
-		for (int i = 0; i <= extra; i++) {
-			addProcessor(new ComponentProcessor(this, i, extra + 1).canProcess(component -> component.canProcessItem2ItemRecipe(component, ElectrodynamicsRecipeInit.WIRE_MILL_TYPE)).process(component -> component.processItem2ItemRecipe(component)).requiredTicks(Constants.WIREMILL_REQUIRED_TICKS).usage(Constants.WIREMILL_USAGE_PER_TICK));
-		}
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if (!isProcessorActive()) {
+		if (!this.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive()) {
 			return;
 		}
 
@@ -72,11 +63,12 @@ public class TileWireMill extends GenericTile implements ITickableSound {
 
 	@Override
 	public boolean shouldPlaySound() {
-		return isProcessorActive();
+		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive();
 	}
 
 	@Override
 	public int getComparatorSignal() {
-		return (int) (((double) getNumActiveProcessors() / (double) Math.max(1, getNumProcessors())) * 15.0);
+		return (int) (((double) this.<ComponentProcessor>getComponent(IComponentType.Processor).getTotalActive() / (double) Math.max(1, this.<ComponentProcessor>getComponent(IComponentType.Processor).getProcessorCount())) * 15.0);
 	}
+
 }

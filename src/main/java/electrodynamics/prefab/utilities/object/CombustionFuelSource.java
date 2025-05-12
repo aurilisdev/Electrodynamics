@@ -4,14 +4,13 @@ import java.util.List;
 
 import com.google.gson.JsonObject;
 
-import electrodynamics.common.recipe.recipeutils.FluidIngredient;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.ITag.INamedTag;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
 import net.minecraftforge.fluids.FluidStack;
+import voltaic.common.recipe.recipeutils.FluidIngredient;
 
 public class CombustionFuelSource {
 
@@ -19,13 +18,11 @@ public class CombustionFuelSource {
 	public static final String USAGE_AMOUNT = "usage_per_burn";
 	public static final String POWER_MULTIPLIER = "power_multiplier";
 
-	public static final CombustionFuelSource EMPTY = new CombustionFuelSource(ElectrodynamicsTags.Fluids.EMPTY, 0, 0);
-
 	private FluidIngredient fuel;
 	private double powerMultiplier;
-	private final IOptionalNamedTag<Fluid> tag;
+	private final INamedTag<Fluid> tag;
 
-	private CombustionFuelSource(IOptionalNamedTag<Fluid> tag, int usageAmount, double powerMultiplier) {
+	private CombustionFuelSource(INamedTag<Fluid> tag, int usageAmount, double powerMultiplier) {
 		fuel = new FluidIngredient(tag, usageAmount);
 		this.powerMultiplier = powerMultiplier;
 		this.tag = tag;
@@ -43,7 +40,7 @@ public class CombustionFuelSource {
 		return fuel.getMatchingFluids();
 	}
 
-	public IOptionalNamedTag<Fluid> getTag() {
+	public INamedTag<Fluid> getTag() {
 		return tag;
 	}
 
@@ -51,16 +48,12 @@ public class CombustionFuelSource {
 		return fuel.getFluidStack().getAmount();
 	}
 
-	public boolean isEmpty() {
-		return this == EMPTY;
-	}
-
 	public static CombustionFuelSource fromJson(JsonObject json) {
-		IOptionalNamedTag<Fluid> tag = FluidTags.createOptional(new ResourceLocation(json.get(FLUID_KEY).getAsString()));
+		INamedTag<Fluid> tag = FluidTags.createOptional(new ResourceLocation(json.get(FLUID_KEY).getAsString()));
 		return new CombustionFuelSource(tag, json.get(USAGE_AMOUNT).getAsInt(), json.get(POWER_MULTIPLIER).getAsDouble());
 	}
 
-	public static JsonObject toJson(IOptionalNamedTag<Fluid> fluid, int usageAmount, double powerMultiplier) {
+	public static JsonObject toJson(INamedTag<Fluid> fluid, int usageAmount, double powerMultiplier) {
 		JsonObject json = new JsonObject();
 		json.addProperty(FLUID_KEY, fluid.getName().toString());
 		json.addProperty(USAGE_AMOUNT, usageAmount);
@@ -70,12 +63,12 @@ public class CombustionFuelSource {
 
 	public void writeToBuffer(PacketBuffer buffer) {
 		buffer.writeUtf(fuel.tag.getName().toString());
-		buffer.writeInt(fuel.getAmount());
+		buffer.writeInt(fuel.getFluidStack().getAmount());
 		buffer.writeDouble(powerMultiplier);
 	}
 
 	public static CombustionFuelSource readFromBuffer(PacketBuffer buffer) {
-		IOptionalNamedTag<Fluid> tag = FluidTags.createOptional(new ResourceLocation(buffer.readUtf()));
+		INamedTag<Fluid> tag = FluidTags.createOptional(new ResourceLocation(buffer.readUtf()));
 		return new CombustionFuelSource(tag, buffer.readInt(), buffer.readDouble());
 	}
 

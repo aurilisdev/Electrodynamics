@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SGS",
+    "GMG",
+    "SGS"
+  ],
+  "key": {
+    "S": {
+      "tag": "minecraft:sand"
+    },
+    "G": {
+      "tag": "forge:gravel"
+    },
+    "M": {
+      "tag": "forge:slag"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:concretemix",
+    "count": 4
+  }
+}

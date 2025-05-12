@@ -1,8 +1,8 @@
 package electrodynamics.common.entity.projectile.types;
 
-import electrodynamics.common.damage.DamageSources;
 import electrodynamics.common.entity.projectile.EntityCustomProjectile;
 import electrodynamics.common.item.subtype.SubtypeRod;
+import electrodynamics.registers.ElectrodynamicsDamageSources;
 import electrodynamics.registers.ElectrodynamicsEntities;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
@@ -63,13 +63,13 @@ public class EntityMetalRod extends EntityCustomProjectile {
 	public void onHitEntity(EntityRayTraceResult hit) {
 		switch (number) {
 		case 0:
-			hit.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 16f);
+			hit.getEntity().hurt(ElectrodynamicsDamageSources.ACCELERATED_BOLT, 16f);
 			break;
 		case 1:
-			hit.getEntity().hurt(DamageSources.ACCELERATED_BOLT, 20f);
+			hit.getEntity().hurt(ElectrodynamicsDamageSources.ACCELERATED_BOLT, 20f);
 			break;
 		case 2:
-			hit.getEntity().hurt(DamageSources.ACCELERATED_BOLT_IGNOREARMOR, 4f);
+			hit.getEntity().hurt(ElectrodynamicsDamageSources.ACCELERATED_BOLT_IGNOREARMOR, 4f);
 			break;
 		default:
 		}
@@ -80,11 +80,11 @@ public class EntityMetalRod extends EntityCustomProjectile {
 	protected Item getDefaultItem() {
 		switch (number) {
 		case 0:
-			return ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.steel).get();
+			return ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.steel);
 		case 1:
-			return ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.stainlesssteel).get();
+			return ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.stainlesssteel);
 		case 2:
-			return ElectrodynamicsItems.SUBTYPEITEMREGISTER_MAPPINGS.get(SubtypeRod.hslasteel).get();
+			return ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.hslasteel);
 		default:
 			return super.getDefaultItem();
 		}

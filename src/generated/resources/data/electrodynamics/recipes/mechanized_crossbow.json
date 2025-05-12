@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " S ",
+    "SbC",
+    " MB"
+  ],
+  "key": {
+    "b": {
+      "item": "minecraft:crossbow"
+    },
+    "B": {
+      "item": "electrodynamics:battery"
+    },
+    "S": {
+      "tag": "forge:plates/steel"
+    },
+    "C": {
+      "tag": "forge:circuits/basic"
+    },
+    "M": {
+      "item": "electrodynamics:motor"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:mechanizedcrossbow"
+  }
+}

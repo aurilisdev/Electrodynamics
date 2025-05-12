@@ -2,13 +2,13 @@
   "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
-      "item": "electrodynamics:wireinsulatedgold"
+      "tag": "forge:wires/insulated_gold"
     },
     {
-      "item": "electrodynamics:wireinsulatedgold"
+      "tag": "forge:wires/insulated_gold"
     },
     {
-      "item": "electrodynamics:wireinsulatedgold"
+      "tag": "forge:wires/insulated_gold"
     },
     {
       "item": "electrodynamics:insulation"

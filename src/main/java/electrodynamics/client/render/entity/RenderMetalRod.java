@@ -1,10 +1,10 @@
 package electrodynamics.client.render.entity;
 
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.client.ClientRegister;
 import electrodynamics.common.entity.projectile.types.EntityMetalRod;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -17,6 +17,8 @@ import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import voltaic.client.VoltaicClientRegister;
+import voltaic.prefab.utilities.RenderingUtils;
 
 @OnlyIn(Dist.CLIENT)
 public class RenderMetalRod extends EntityRenderer<EntityMetalRod> {
@@ -32,11 +34,13 @@ public class RenderMetalRod extends EntityRenderer<EntityMetalRod> {
 	}
 
 	@Override
-	public void render(EntityMetalRod entity, float entityYaw, float partialTicks, MatrixStack matrixStack, IRenderTypeBuffer bufferIn, int packedLightIn) {
+	public void render(EntityMetalRod entity, float entityYaw, float partialTicks, MatrixStack matrixStack, @Nonnull IRenderTypeBuffer bufferIn, int packedLightIn) {
 
 		matrixStack.pushPose();
 
-		TextureAtlasSprite sprite = ClientRegister.CACHED_TEXTUREATLASSPRITES.get(ClientRegister.TEXTURE_WHITE);
+		matrixStack.translate(-0.5, -0.5, -0.5);
+
+		TextureAtlasSprite sprite = VoltaicClientRegister.whiteSprite();
 
 		double yaw = entity.yRotO + (entity.yRot - entity.yRotO) * partialTicks - 90.0F;// y lerp - 90
 		double pitch = entity.xRotO + (entity.xRot - entity.xRotO) * partialTicks - 90; // x lerp - 90
@@ -44,21 +48,19 @@ public class RenderMetalRod extends EntityRenderer<EntityMetalRod> {
 		matrixStack.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), (float) yaw, true));
 		matrixStack.mulPose(new Quaternion(new Vector3f(0.0F, 0.0F, 1.0F), (float) pitch, true));
 		matrixStack.mulPose(new Quaternion(new Vector3f(0.0F, 0.0F, 1.0F), 90.0F, true));
-		
-		matrixStack.translate(-0.5, -0.5, -0.5);
 
 		float[] color = getColor(entity.getNumber());
 
-		RenderingUtils.renderFilledBoxNoOverlay(matrixStack, bufferIn.getBuffer(RenderType.solid()), ROD, color[0], color[1], color[2], 1.0F, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), packedLightIn);
+		RenderingUtils.renderFilledBoxNoOverlay(matrixStack, bufferIn.getBuffer(RenderType.solid()), ROD, color[0], color[1], color[2], 1.0F, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), packedLightIn, RenderingUtils.ALL_FACES);
+		// RenderingUtils.renderFilledBoxNoOverlay(matrixStack, bufferIn.getBuffer(RenderType.lightning()), new AxisAlignedBB(0, 0, 0, 1, 1, 1),
+		// color[0], color[1], color[2], 1.0F, sprite.getU0(), sprite.getV0(), sprite.getU1(), sprite.getV1(), packedLightIn);
 
 		matrixStack.popPose();
 	}
 
 	@Override
 	public ResourceLocation getTextureLocation(EntityMetalRod entity) {
-
 		return AtlasTexture.LOCATION_BLOCKS;
-
 	}
 
 	public static float[] getColor(int number) {
@@ -71,5 +73,4 @@ public class RenderMetalRod extends EntityRenderer<EntityMetalRod> {
 			return STEEL_COLOR;
 		}
 	}
-
 }

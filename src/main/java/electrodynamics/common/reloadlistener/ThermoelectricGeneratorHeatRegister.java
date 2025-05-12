@@ -18,9 +18,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
-import electrodynamics.Electrodynamics;
 import electrodynamics.common.packet.types.client.PacketSetClientThermoGenSources;
-import electrodynamics.prefab.reloadlistener.AbstractReloadListener;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.profiler.IProfiler;
@@ -36,6 +34,8 @@ import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.PacketDistributor.PacketTarget;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 import net.minecraftforge.registries.ForgeRegistries;
+import voltaic.Voltaic;
+import voltaic.prefab.reloadlistener.AbstractReloadListener;
 
 public class ThermoelectricGeneratorHeatRegister extends AbstractReloadListener<JsonObject> {
 
@@ -53,7 +53,7 @@ public class ThermoelectricGeneratorHeatRegister extends AbstractReloadListener<
 
 	private final HashMap<IOptionalNamedTag<Fluid>, Double> tags = new HashMap<>();
 
-	private final Logger logger = Electrodynamics.LOGGER;
+	private final Logger logger = Voltaic.LOGGER;
 
 	@Override
 	protected JsonObject prepare(IResourceManager manager, IProfiler profiler) {

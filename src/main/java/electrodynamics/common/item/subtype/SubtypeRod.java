@@ -1,19 +1,19 @@
 package electrodynamics.common.item.subtype;
 
-import electrodynamics.api.ISubtype;
-import electrodynamics.common.tags.ElectrodynamicsTags;
 import net.minecraft.item.Item;
-import net.minecraftforge.common.Tags.IOptionalNamedTag;
+import net.minecraft.tags.ITag.INamedTag;
+import voltaic.api.ISubtype;
+import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypeRod implements ISubtype {
-	steel(ElectrodynamicsTags.Items.ROD_STEEL),
-	stainlesssteel(ElectrodynamicsTags.Items.ROD_STAINLESSSTEEL),
-	hslasteel(ElectrodynamicsTags.Items.ROD_HSLASTEEL),
-	titaniumcarbide(ElectrodynamicsTags.Items.ROD_TITANIUMCARBIDE);
+	steel(VoltaicTags.Items.ROD_STEEL),
+	stainlesssteel(VoltaicTags.Items.ROD_STAINLESSSTEEL),
+	hslasteel(VoltaicTags.Items.ROD_HSLASTEEL),
+	titaniumcarbide(VoltaicTags.Items.ROD_TITANIUMCARBIDE);
 
-	public final IOptionalNamedTag<Item> tag;
+	public final INamedTag<Item> tag;
 
-	SubtypeRod(IOptionalNamedTag<Item> tag) {
+	SubtypeRod(INamedTag<Item> tag) {
 		this.tag = tag;
 	}
 

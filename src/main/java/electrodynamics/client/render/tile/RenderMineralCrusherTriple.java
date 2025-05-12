@@ -1,11 +1,11 @@
 package electrodynamics.client.render.tile;
+
+import javax.annotation.Nonnull;
+
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import electrodynamics.client.ClientRegister;
+import electrodynamics.client.ElectrodynamicsClientRegister;
 import electrodynamics.common.tile.machines.mineralcrusher.TileMineralCrusherTriple;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.utilities.RenderingUtils;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.model.IBakedModel;
@@ -15,6 +15,11 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.vector.Vector3f;
+import voltaic.client.render.AbstractTileRenderer;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
+import voltaic.prefab.utilities.RenderingUtils;
 
 public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineralCrusherTriple> {
 
@@ -23,31 +28,31 @@ public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineral
 	}
 
 	@Override
-	public void render(TileMineralCrusherTriple tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	public void render(@Nonnull TileMineralCrusherTriple tile, float partialTicks, MatrixStack matrixStackIn, @Nonnull IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
 		matrixStackIn.pushPose();
 
-		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
+		RenderingUtils.prepareRotationalTileModel(tile, matrixStackIn);
 
 		matrixStackIn.translate(0, 1.0 / 16.0, 0);
 
-		double ticks = (tileEntityIn.clientRunningTicks + (tileEntityIn.getProcessor(0).operatingTicks.get() > 0 ? partialTicks : 0)) % 20;
+		double ticks = (tile.clientRunningTicks + (tile.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive() ? partialTicks : 0)) % 20;
 
 		double progress = ticks < 10.010392739868964 ? Math.sin(0.05 * Math.PI * ticks) : (Math.sin(0.29 * Math.PI * ticks) + 1) / 1.3;
 
 		matrixStackIn.translate(0, progress / 8.0 - 1 / 8.0, 0);
 
-		IBakedModel ibakedmodel = getModel(ClientRegister.MODEL_MINERALCRUSHERTRIPLEHANDLE);
+		IBakedModel ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_MINERALCRUSHERTRIPLEHANDLE);
 
-		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+		RenderingUtils.renderModel(ibakedmodel, tile, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
 
 		matrixStackIn.popPose();
 
-		ComponentInventory inv = tileEntityIn.getComponent(IComponentType.Inventory);
+		ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
 
 		ItemStack stack = inv.getInputsForProcessor(1).get(0);
 
-		Direction dir = tileEntityIn.getFacing();
+		Direction dir = tile.getFacing();
 
 		if (!stack.isEmpty()) {
 
@@ -70,7 +75,7 @@ public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineral
 
 			}
 
-			renderItem(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, tileEntityIn.getLevel(), 0);
+			renderItem(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, tile.getLevel(), 0);
 
 			matrixStackIn.popPose();
 		}
@@ -98,7 +103,7 @@ public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineral
 
 			}
 
-			renderItem(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, tileEntityIn.getLevel(), 0);
+			renderItem(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, tile.getLevel(), 0);
 
 			matrixStackIn.popPose();
 
@@ -127,7 +132,7 @@ public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineral
 
 			}
 
-			renderItem(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, tileEntityIn.getLevel(), 0);
+			renderItem(stack, TransformType.NONE, combinedLightIn, combinedOverlayIn, matrixStackIn, bufferIn, tile.getLevel(), 0);
 
 			matrixStackIn.popPose();
 		}

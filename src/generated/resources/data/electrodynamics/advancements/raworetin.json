@@ -6,10 +6,10 @@
     },
     "title": {
       "color": "gray",
-      "translate": "advancement.electrodynamics.tinore.title"
+      "translate": "advancement.electrodynamics.rawtin.title"
     },
     "description": {
-      "translate": "advancement.electrodynamics.tinore.desc"
+      "translate": "advancement.electrodynamics.rawtin.desc"
     },
     "frame": "task",
     "show_toast": true,

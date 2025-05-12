@@ -1,13 +1,8 @@
 package electrodynamics.common.item.gear.tools.electric.utils;
 
 import java.util.List;
+import java.util.function.Supplier;
 
-import electrodynamics.api.electricity.formatting.ChatFormatter;
-import electrodynamics.api.electricity.formatting.DisplayUnit;
-import electrodynamics.api.item.IItemTemperate;
-import electrodynamics.prefab.item.ElectricItemProperties;
-import electrodynamics.prefab.item.ItemElectric;
-import electrodynamics.prefab.item.TemperateItemProperties;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -17,6 +12,12 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import voltaic.api.electricity.formatting.ChatFormatter;
+import voltaic.api.electricity.formatting.DisplayUnits;
+import voltaic.api.item.IItemTemperate;
+import voltaic.prefab.item.ElectricItemProperties;
+import voltaic.prefab.item.ItemElectric;
+import voltaic.prefab.item.TemperateItemProperties;
 
 public class ItemRailgun extends ItemElectric implements IItemTemperate {
 
@@ -25,8 +26,8 @@ public class ItemRailgun extends ItemElectric implements IItemTemperate {
 	private double tempThreshold = 0;
 	private double tempPerTick = 0;
 
-	public ItemRailgun(ElectricItemProperties properties, double overheatTemperature, double tempThreshold, double tempPerTick) {
-		super(properties);
+	public ItemRailgun(ElectricItemProperties properties, Supplier<ItemGroup> creativeTab, double overheatTemperature, double tempThreshold, double tempPerTick) {
+		super(properties, creativeTab);
 		this.overheatTemperature = overheatTemperature;
 		this.tempThreshold = tempThreshold;
 		this.tempPerTick = tempPerTick;
@@ -35,8 +36,8 @@ public class ItemRailgun extends ItemElectric implements IItemTemperate {
 	@Override
 	public void appendHoverText(ItemStack stack, World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("railguntemp", ChatFormatter.getChatDisplayShort(IItemTemperate.getTemperature(stack), DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(TextFormatting.YELLOW));
-		tooltip.add(ElectroTextUtils.tooltip("railgunmaxtemp", ChatFormatter.getChatDisplayShort(overheatTemperature, DisplayUnit.TEMPERATURE_CELCIUS)).withStyle(TextFormatting.YELLOW));
+		tooltip.add(ElectroTextUtils.tooltip("railguntemp", ChatFormatter.getChatDisplayShort(IItemTemperate.getTemperature(stack), DisplayUnits.TEMPERATURE_CELCIUS)).withStyle(TextFormatting.YELLOW));
+		tooltip.add(ElectroTextUtils.tooltip("railgunmaxtemp", ChatFormatter.getChatDisplayShort(overheatTemperature, DisplayUnits.TEMPERATURE_CELCIUS)).withStyle(TextFormatting.YELLOW));
 		if (IItemTemperate.getTemperature(stack) >= getOverheatTemp()) {
 			tooltip.add(ElectroTextUtils.tooltip("railgunoverheat").withStyle(TextFormatting.RED, TextFormatting.BOLD));
 		}
@@ -44,16 +45,15 @@ public class ItemRailgun extends ItemElectric implements IItemTemperate {
 
 	@Override
 	public void fillItemCategory(ItemGroup group, NonNullList<ItemStack> items) {
-		super.fillItemCategory(group, items);
-
-		if (!allowdedIn(group)) {
-			return;
-		}
-
-		for (ItemStack stack : items) {
+		NonNullList<ItemStack> superItems = NonNullList.create();
+		super.fillItemCategory(group, superItems);
+		for (ItemStack stack : superItems) {
 			if (stack.getItem() instanceof ItemRailgun) {
 				IItemTemperate.setTemperature(stack, 0);
 			}
+		}
+		if(allowdedIn(group)) {
+			items.addAll(superItems);
 		}
 	}
 

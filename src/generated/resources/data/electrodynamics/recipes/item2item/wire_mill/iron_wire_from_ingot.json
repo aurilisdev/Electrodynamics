@@ -13,5 +13,15 @@
     "item": "electrodynamics:wireiron",
     "count": 1
   },
-  "experience": 0.10000000149011612
+  "experience": 0.10000000149011612,
+  "itembi": {
+    "count": 1,
+    "0": {
+      "item": {
+        "id": "minecraft:iron_nugget",
+        "Count": 1
+      },
+      "chance": 1.0
+    }
+  }
 }

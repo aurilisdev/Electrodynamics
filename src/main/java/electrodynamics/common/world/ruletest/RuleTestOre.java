@@ -29,7 +29,7 @@ public class RuleTestOre extends RuleTest {
 
 	public static final Codec<RuleTestOre> CODEC = RecordCodecBuilder.create(instance ->
 //
-	instance.group(Registry.BLOCK.fieldOf("block").forGetter(instance0 -> ElectrodynamicsBlocks.SUBTYPEBLOCKREGISTER_MAPPINGS.get(instance0.thisOre).get()),
+	instance.group(Registry.BLOCK.fieldOf("block").forGetter(instance0 -> ElectrodynamicsBlocks.BLOCKS_ORE.getValue(instance0.thisOre)),
 			//
 			ITag.codec(() -> TagCollectionManager.getInstance().getBlocks()).fieldOf("canspawnintag").forGetter(instance0 -> instance0.canSpawnIn)).apply(instance, (block, tag) -> {
 				if (block instanceof BlockOre) {
@@ -68,7 +68,7 @@ public class RuleTestOre extends RuleTest {
 		switch (thisOre) {
 		case aluminum:
 			return OreConfig.SPAWN_ALUMINUM_ORE;
-		case chromite:
+		case chromium:
 			return OreConfig.SPAWN_CHROMIUM_ORE;
 		case copper:
 			return OreConfig.SPAWN_COPPER_ORE;
@@ -76,7 +76,7 @@ public class RuleTestOre extends RuleTest {
 			return OreConfig.SPAWN_FLUORITE_ORE;
 		case lead:
 			return OreConfig.SPAWN_LEAD_ORE;
-		case lepidolite:
+		case lithium:
 			return OreConfig.SPAWN_LITHIUM_ORE;
 		case molybdenum:
 			return OreConfig.SPAWN_MOLYBDENUM_ORE;
@@ -84,7 +84,7 @@ public class RuleTestOre extends RuleTest {
 			return OreConfig.SPAWN_MONAZITE_ORE;
 		case niter:
 			return OreConfig.SPAWN_NITER_ORE;
-		case halite:
+		case salt:
 			return OreConfig.SPAWN_SALT_ORE;
 		case silver:
 			return OreConfig.SPAWN_SILVER_ORE;
@@ -92,15 +92,15 @@ public class RuleTestOre extends RuleTest {
 			return OreConfig.SPAWN_SULFUR_ORE;
 		case sylvite:
 			return OreConfig.SPAWN_SYLVITE_ORE;
-		case thorianite:
+		case thorium:
 			return OreConfig.SPAWN_THORIUM_ORE;
 		case tin:
 			return OreConfig.SPAWN_TIN_ORE;
-		case rutile:
+		case titanium:
 			return OreConfig.SPAWN_TITANIUM_ORE;
-		case uraninite:
+		case uranium:
 			return OreConfig.SPAWN_URANIUM_ORE;
-		case vanadinite:
+		case vanadium:
 			return OreConfig.SPAWN_VANADIUM_ORE;
 		default:
 			return false;

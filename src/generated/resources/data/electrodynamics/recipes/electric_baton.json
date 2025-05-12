@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  T",
+    "PT ",
+    "BC "
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plastic"
+    },
+    "B": {
+      "item": "electrodynamics:lithiumbattery"
+    },
+    "C": {
+      "tag": "forge:circuits/advanced"
+    },
+    "T": {
+      "tag": "forge:rods/steel"
+    }
+  },
+  "result": {
+    "item": "electrodynamics:electricbaton"
+  }
+}

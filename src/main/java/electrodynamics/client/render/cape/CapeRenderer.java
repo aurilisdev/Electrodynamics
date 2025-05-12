@@ -20,9 +20,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import electrodynamics.api.References;
-import electrodynamics.prefab.utilities.RenderingUtils;
-import electrodynamics.prefab.utilities.Scheduler;
+import electrodynamics.Electrodynamics;
 import it.unimi.dsi.fastutil.longs.Long2BooleanMap;
 import it.unimi.dsi.fastutil.longs.Long2BooleanOpenHashMap;
 import net.minecraft.block.BlockState;
@@ -48,8 +46,10 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import voltaic.prefab.utilities.RenderingUtils;
+import voltaic.prefab.utilities.Scheduler;
 
-@EventBusSubscriber(modid = References.ID, bus = Bus.FORGE)
+@EventBusSubscriber(modid = Electrodynamics.ID, bus = Bus.FORGE)
 public final class CapeRenderer {
 	private static final LoadingCache<PlayerEntity, RenderCape> capes = CacheBuilder.newBuilder().weakKeys().expireAfterAccess(10, TimeUnit.SECONDS).ticker(new Ticker() {
 		@Override
@@ -280,7 +280,7 @@ public final class CapeRenderer {
 			GlStateManager._enableCull();
 			GlStateManager._enableBlend();
 			GlStateManager._blendFunc(GlStateManager.SourceFactor.SRC_ALPHA.value, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA.value);
-			ResourceLocation fallBackCape = new ResourceLocation(References.ID, "textures/cape/" + Holder.INSTANCE.mapList.get(player.getName().getString().toLowerCase()) + ".png");
+			ResourceLocation fallBackCape = new ResourceLocation(Electrodynamics.ID, "textures/cape/" + Holder.INSTANCE.mapList.get(player.getName().getString().toLowerCase()) + ".png");
 			RenderingUtils.bindTexture(fallBackCape);
 			RenderSystem.enableDepthTest();
 

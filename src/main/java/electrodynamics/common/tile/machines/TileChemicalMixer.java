@@ -1,47 +1,37 @@
 package electrodynamics.common.tile.machines;
 
-import electrodynamics.api.capability.ElectrodynamicsCapabilities;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalMixer;
-import electrodynamics.common.recipe.ElectrodynamicsRecipeInit;
-import electrodynamics.prefab.tile.components.IComponentType;
-import electrodynamics.prefab.tile.components.type.ComponentContainerProvider;
-import electrodynamics.prefab.tile.components.type.ComponentElectrodynamic;
-import electrodynamics.prefab.tile.components.type.ComponentFluidHandlerMulti;
-import electrodynamics.prefab.tile.components.type.ComponentInventory;
-import electrodynamics.prefab.tile.components.type.ComponentInventory.InventoryBuilder;
-import electrodynamics.prefab.tile.components.type.ComponentPacketHandler;
-import electrodynamics.prefab.tile.components.type.ComponentProcessor;
-import electrodynamics.prefab.tile.components.type.ComponentTickable;
-import electrodynamics.prefab.tile.types.GenericFluidTile;
-import electrodynamics.registers.ElectrodynamicsBlockTypes;
+import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.particles.ParticleTypes;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.AxisAlignedBB;
+import voltaic.prefab.tile.components.IComponentType;
+import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.types.GenericMaterialTile;
+import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.registers.VoltaicCapabilities;
 
-public class TileChemicalMixer extends GenericFluidTile {
+public class TileChemicalMixer extends GenericMaterialTile {
 
 	public static final int MAX_TANK_CAPACITY = 5000;
 
 	public TileChemicalMixer() {
-		super(ElectrodynamicsBlockTypes.TILE_CHEMICALMIXER.get());
+		super(ElectrodynamicsTiles.TILE_CHEMICALMIXER.get());
 		addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(Direction.NORTH).voltage(ElectrodynamicsCapabilities.DEFAULT_VOLTAGE * 2));
-		addComponent(new ComponentFluidHandlerMulti(this).setTanks(1, 1, new int[] { MAX_TANK_CAPACITY }, new int[] { MAX_TANK_CAPACITY }).setInputDirections(Direction.EAST).setOutputDirections(Direction.WEST).setRecipeType(ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE));
-		addComponent(new ComponentInventory(this, InventoryBuilder.newInv().processors(1, 1, 0, 0).bucketInputs(1).bucketOutputs(1).upgrades(3)).setDirectionsBySlot(0, Direction.UP, Direction.NORTH, Direction.DOWN).validUpgrades(ContainerChemicalMixer.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentProcessor(this).canProcess(component -> component.outputToFluidPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(component, ElectrodynamicsRecipeInit.CHEMICAL_MIXER_TYPE)).process(component -> component.processFluidItem2FluidRecipe(component)));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.chemicalmixer, this).createMenu((id, player) -> new ContainerChemicalMixer(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BACK).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2));
+		addComponent(new ComponentFluidHandlerMulti(this).setTanks(1, 1, new int[] { MAX_TANK_CAPACITY }, new int[] { MAX_TANK_CAPACITY }).setInputDirections(BlockEntityUtils.MachineDirection.RIGHT).setOutputDirections(BlockEntityUtils.MachineDirection.LEFT).setRecipeType(ElectrodynamicsRecipies.CHEMICAL_MIXER_TYPE));
+		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().processors(1, 1, 0, 0).bucketInputs(1).bucketOutputs(1).upgrades(3))
+				//
+				.setDirectionsBySlot(0, BlockEntityUtils.MachineDirection.FRONT, BlockEntityUtils.MachineDirection.TOP, BlockEntityUtils.MachineDirection.BOTTOM).validUpgrades(ContainerChemicalMixer.VALID_UPGRADES).valid(machineValidator()));
+		addComponent(new ComponentProcessor(this).canProcess((component, procNumber) -> component.outputToFluidPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(procNumber, ElectrodynamicsRecipies.CHEMICAL_MIXER_TYPE)).process(ComponentProcessor::processFluidItem2FluidRecipe));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.chemicalmixer.tag(), this).createMenu((id, player) -> new ContainerChemicalMixer(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
 
-	}
-
-	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
-		return super.getRenderBoundingBox().inflate(1);
 	}
 
 	protected void tickClient(ComponentTickable tickable) {
-		if (!this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive()) {
+		if (!this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0)) {
 			return;
 		}
 
@@ -53,8 +43,12 @@ public class TileChemicalMixer extends GenericFluidTile {
 
 	@Override
 	public int getComparatorSignal() {
-		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive() ? 15 : 0;
+		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
 	}
-
+	
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return super.getRenderBoundingBox().inflate(1);
+	}
 
 }

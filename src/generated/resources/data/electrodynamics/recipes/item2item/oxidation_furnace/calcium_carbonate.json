@@ -5,11 +5,14 @@
   "iteminputs": {
     "count": 2,
     "0": {
-      "item": "minecraft:bone_meal",
+      "item": {
+        "id": "minecraft:bone_meal",
+        "Count": 1
+      },
       "count": 1
     },
     "1": {
-      "tag": "forge:oxide/sodiumcarbonate",
+      "tag": "forge:oxides/sodiumcarbonate",
       "count": 1
     }
   },

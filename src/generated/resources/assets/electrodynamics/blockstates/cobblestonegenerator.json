@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "electrodynamics:block/cobblestonegenerator",
+      "y": 270
+    },
+    "facing=south": {
+      "model": "electrodynamics:block/cobblestonegenerator",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "electrodynamics:block/cobblestonegenerator",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "electrodynamics:block/cobblestonegenerator"
+    }
+  }
+}

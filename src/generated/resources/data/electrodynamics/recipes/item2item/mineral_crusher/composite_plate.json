@@ -5,7 +5,10 @@
   "iteminputs": {
     "count": 1,
     "0": {
-      "item": "electrodynamics:compositeplatingraw",
+      "item": {
+        "id": "electrodynamics:compositeplatingraw",
+        "Count": 1
+      },
       "count": 1
     }
   },
