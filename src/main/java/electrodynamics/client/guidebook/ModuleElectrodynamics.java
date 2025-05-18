@@ -49,5 +49,10 @@ public final class ModuleElectrodynamics extends Module {
 		chapters.add(new ChapterMisc(this));
 		chapters.add(new ChapterTips(this));
 	}
+	
+	@Override
+	public boolean isFirst() {
+		return true;
+	}
 
 }
