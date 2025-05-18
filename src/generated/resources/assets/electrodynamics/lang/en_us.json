@@ -1431,6 +1431,5 @@
   "tooltip.electrodynamics.servolegs.step": "STEP",
   "tooltip.electrodynamics.tankmaxin": "In %1$s : %2$s",
   "tooltip.electrodynamics.tankmaxout": "Out %1$s : %2$s",
-  "tooltip.electrodynamics.transformer.energyloss": "Efficiency: %s",
-  "tooltip.electrodynamics.validupgrades": "Valid Upgrades:"
+  "tooltip.electrodynamics.transformer.energyloss": "Efficiency: %s"
 }
