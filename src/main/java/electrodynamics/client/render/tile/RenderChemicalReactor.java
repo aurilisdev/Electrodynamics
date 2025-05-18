@@ -143,16 +143,16 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
 
             if (tile.hasItemInputs.getValue() && active && tile.getLevel().random.nextDouble() < 0.4) {
 
-                Color color;
+                Color color = null;
 
-                if (stack1.isEmpty()) {
+                if (stack1.isEmpty() && !stack2.isEmpty()) {
                     IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack2.getFluid());
 
                     TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(attributes.getStillTexture());
 
                     color = new Color(sp.getPixelRGBA(0, 5, 5));
                     color = color.multiply(new Color(attributes.getTintColor()));
-                } else if (stack2.isEmpty()) {
+                } else if (stack2.isEmpty() && !stack1.isEmpty()) {
 
                     IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack1.getFluid());
 
@@ -163,14 +163,14 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
 
                 } else {
 
-                    if (Voltaic.RANDOM.nextBoolean()) {
+                    if (Voltaic.RANDOM.nextBoolean() && !stack1.isEmpty()) {
                         IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack1.getFluid());
 
                         TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(attributes.getStillTexture());
 
                         color = new Color(sp.getPixelRGBA(0, 5, 5));
                         color = color.multiply(new Color(attributes.getTintColor()));
-                    } else {
+                    } else if (!stack2.isEmpty()) {
                         IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack2.getFluid());
 
                         TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(attributes.getStillTexture());
@@ -190,8 +190,9 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
                 y += 1.6875;//Voltaic.RANDOM.nextDouble(0.375) + 1.3125;
                 z += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
 
-
-                minecraft().particleEngine.createParticle(new ParticleOptionFluidDrop().setParameters(color.rFloat(), color.gFloat(), color.bFloat(), 0.5F), x, y, z, 0, -0.1, 0);
+                if(color != null) {
+                    minecraft().particleEngine.createParticle(new ParticleOptionFluidDrop().setParameters(color.rFloat(), color.gFloat(), color.bFloat(), 0.5F), x, y, z, 0, -0.1, 0);
+                }
 
             } else if (!tile.hasItemInputs.getValue()) {
 
