@@ -244,6 +244,12 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				//
 				.complete(consumer);
 
+		newRecipe(new ItemStack(Items.BLAZE_POWDER, 10), 0, 100, 500, "blaze_powder_from_blaze_rod")
+				//
+				.addItemTagInput(Tags.Items.RODS_BLAZE, 1)
+				//
+				.complete(consumer);
+
 	}
 
 	public FinishedRecipeItemOutput newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name) {

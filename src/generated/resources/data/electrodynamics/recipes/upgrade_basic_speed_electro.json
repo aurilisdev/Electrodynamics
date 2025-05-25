@@ -1,25 +1,25 @@
 {
   "type": "minecraft:crafting_shaped",
   "key": {
-    "B": {
-      "item": "electrodynamics:battery"
-    },
     "C": {
       "tag": "forge:circuits/basic"
+    },
+    "G": {
+      "tag": "forge:gears/bronze"
     },
     "P": {
       "tag": "forge:plates/steel"
     },
     "W": {
-      "tag": "forge:wires/insulated_copper"
+      "tag": "forge:wires/insulated_gold"
     }
   },
   "pattern": [
-    "PBP",
-    "BWB",
-    "CBC"
+    "PGP",
+    "WWW",
+    "CGC"
   ],
   "result": {
-    "item": "electrodynamics:upgradebasiccapacity"
+    "item": "voltaic:upgradebasicspeed"
   }
 }

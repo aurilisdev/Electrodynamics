@@ -2,21 +2,21 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "B": {
-      "item": "minecraft:glass_bottle"
+      "tag": "forge:circuits/basic"
     },
     "P": {
-      "tag": "forge:plates/bronze"
+      "tag": "forge:plates/steel"
     },
     "W": {
       "tag": "forge:wires/insulated_copper"
     }
   },
   "pattern": [
-    "PBP",
-    "BWB",
-    "PBP"
+    "PWP",
+    "WBW",
+    "PWP"
   ],
   "result": {
-    "item": "electrodynamics:upgradeexperience"
+    "item": "voltaic:upgraderange"
   }
 }
