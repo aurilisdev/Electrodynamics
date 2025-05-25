@@ -3,25 +3,22 @@
   "category": "misc",
   "key": {
     "B": {
-      "item": "electrodynamics:battery"
+      "tag": "c:circuits/basic"
     },
     "C": {
-      "tag": "c:circuits/basic"
+      "item": "minecraft:cactus"
     },
     "P": {
       "tag": "c:plates/steel"
-    },
-    "W": {
-      "tag": "c:wires/insulated_copper"
     }
   },
   "pattern": [
-    "PBP",
-    "BWB",
-    "CBC"
+    "C",
+    "B",
+    "P"
   ],
   "result": {
     "count": 1,
-    "id": "electrodynamics:upgradebasiccapacity"
+    "id": "voltaic:upgradeitemvoid"
   }
 }

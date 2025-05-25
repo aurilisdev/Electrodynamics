@@ -124,6 +124,14 @@ public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, Ga
         // This algorithm is not perfect, but it helps deal with tiles that do not accept the full amount allotted to them
 
         for (BlockEntity tile : recievingTiles) {
+
+            if(tile == null || tile.isRemoved()) {
+                acceptorInputMap.remove(tile);
+                acceptorSet.remove(tile);
+                continue;
+            }
+
+
             gasPerTile = new GasStack(copy.getGas(), copy.getAmount() / size, copy.getTemperature(), copy.getPressure());
             preGasPerTile = gasPerTile.copy();
 

@@ -5,8 +5,8 @@
     "east": "electrodynamics:block/gascollector_fanon",
     "north": "electrodynamics:block/gascollector_fanon",
     "particle": "voltaic:block/steelcasing",
-    "south": "electrodynamics:block/gascollector_back",
+    "south": "electrodynamics:block/gascollector_fanon",
     "up": "electrodynamics:block/gascollector_fanon",
-    "west": "electrodynamics:block/gascollector_fanon"
+    "west": "electrodynamics:block/gascollector_back"
   }
 }

@@ -414,6 +414,12 @@ public class ElectricNetwork extends AbstractNetwork<GenericTileWire, IWire, Tra
 
         for (BlockEntity tile : load) {
 
+            if(tile == null || tile.isRemoved()) {
+                acceptorInputMap.remove(tile);
+                acceptorSet.remove(tile);
+                continue;
+            }
+
             lastPerTile = lastTransfer.getOrDefault(load, new HashMap<>());
 
             boolean noUsage = true;

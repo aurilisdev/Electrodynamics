@@ -2,26 +2,23 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "C": {
+    "B": {
       "tag": "c:circuits/basic"
-    },
-    "G": {
-      "tag": "c:gears/bronze"
     },
     "P": {
       "tag": "c:plates/steel"
     },
     "W": {
-      "tag": "c:wires/insulated_gold"
+      "tag": "c:wires/insulated_copper"
     }
   },
   "pattern": [
-    "PGP",
-    "WWW",
-    "CGC"
+    "PWP",
+    "WBW",
+    "PWP"
   ],
   "result": {
     "count": 1,
-    "id": "electrodynamics:upgradebasicspeed"
+    "id": "voltaic:upgraderange"
   }
 }

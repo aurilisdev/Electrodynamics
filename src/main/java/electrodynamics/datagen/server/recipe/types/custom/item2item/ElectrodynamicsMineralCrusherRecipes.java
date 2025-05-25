@@ -258,6 +258,16 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
                 .addItemStackInput(new ItemStack(Blocks.QUARTZ_BLOCK))
                 //
                 .save(output);
+        newRecipe(new ItemStack(Items.BLAZE_POWDER, 10), 0, 100, 500, "blaze_powder_from_blaze_rod", modID)
+                //
+                .addItemTagInput(Tags.Items.RODS_BLAZE, 1)
+                //
+                .save(output);
+        newRecipe(new ItemStack(Items.WIND_CHARGE, 10), 0, 100, 500, "wind_charge_from_breeze_rod", modID)
+                //
+                .addItemTagInput(Tags.Items.RODS_BREEZE, 1)
+                //
+                .save(output);
     }
 
     public Item2ItemBuilder<MineralCrusherRecipe> newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name, String group) {

@@ -1,0 +1,18 @@
+{
+  "type": "electrodynamics:mineral_crusher_recipe",
+  "group": "electrodynamics",
+  "iteminputs": [
+    {
+      "count": 1,
+      "ingredient": {
+        "tag": "c:rods/breeze"
+      }
+    }
+  ],
+  "output": {
+    "count": 10,
+    "id": "minecraft:wind_charge"
+  },
+  "ticks": 100,
+  "usagepertick": 500.0
+}
