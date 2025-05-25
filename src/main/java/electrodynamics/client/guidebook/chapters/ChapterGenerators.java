@@ -32,6 +32,7 @@ import voltaic.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
 import voltaic.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import voltaic.common.item.subtype.SubtypeItemUpgrade;
 import voltaic.compatibility.jei.JeiBuffer;
+import voltaic.registers.VoltaicItems;
 
 public class ChapterGenerators extends Chapter {
 
@@ -131,7 +132,7 @@ public class ChapterGenerators extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipsolartemperature")).setSeparateStart());
 		blankLine();
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.upgrades").withStyle(TextFormatting.UNDERLINE)).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.improvedsolarcell).getDescription()).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.improvedsolarcell).getDescription()).setIndentions(1).setSeparateStart());
 
 		// Advanced Solar Panel
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.advancedsolarpanel).getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setNewPage());
@@ -167,7 +168,7 @@ public class ChapterGenerators extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipsolartemperature")).setSeparateStart());
 		blankLine();
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.upgrades").withStyle(TextFormatting.UNDERLINE)).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.improvedsolarcell).getDescription()).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.improvedsolarcell).getDescription()).setIndentions(1).setSeparateStart());
 
 		// Windmill
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.windmill).getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setNewPage());
@@ -203,7 +204,7 @@ public class ChapterGenerators extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipidealy", 319)).setIndentions(1).setSeparateStart());
 		blankLine();
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.upgrades").withStyle(TextFormatting.UNDERLINE)).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.stator).getDescription()).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.stator).getDescription()).setIndentions(1).setSeparateStart());
 
 		// Coal Generator
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.coalgenerator).getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setNewPage());
@@ -272,7 +273,7 @@ public class ChapterGenerators extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(ElectroConstants.HYDROELECTRICGENERATOR_AMPERAGE * 120 * 2.25, DisplayUnits.WATT), 120)).setSeparateStart());
 		blankLine();
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.upgrades").withStyle(TextFormatting.UNDERLINE)).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.stator).getDescription()).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.stator).getDescription()).setIndentions(1).setSeparateStart());
 
 		// Combustion Chamber
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.combustionchamber).getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setNewPage());

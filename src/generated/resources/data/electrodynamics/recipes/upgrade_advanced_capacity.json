@@ -10,7 +10,7 @@
       "tag": "forge:plates/steel"
     },
     "B": {
-      "item": "electrodynamics:upgradebasiccapacity"
+      "item": "voltaic:upgradebasiccapacity"
     },
     "C": {
       "tag": "forge:circuits/advanced"
@@ -20,6 +20,6 @@
     }
   },
   "result": {
-    "item": "electrodynamics:upgradeadvancedcapacity"
+    "item": "voltaic:upgradeadvancedcapacity"
   }
 }

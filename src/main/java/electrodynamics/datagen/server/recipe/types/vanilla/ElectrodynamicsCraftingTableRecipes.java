@@ -38,6 +38,7 @@ import voltaic.common.tags.VoltaicTags;
 import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
 import voltaic.datagen.utils.server.recipe.CustomShapedCraftingRecipe;
 import voltaic.datagen.utils.server.recipe.CustomShapelessCraftingRecipe;
+import voltaic.registers.VoltaicItems;
 
 public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator {
 
@@ -554,7 +555,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(Electrodynamics.ID, "solar_panel_plate", consumer);
 
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.advancedcapacity), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.advancedcapacity), 1)
 				//
 				.addPattern("PBP")
 				//
@@ -564,7 +565,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.addKey('P', VoltaicTags.Items.PLATE_STEEL)
 				//
-				.addKey('B', ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basiccapacity))
+				.addKey('B', VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basiccapacity))
 				//
 				.addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
 				//
@@ -572,7 +573,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(Electrodynamics.ID, "upgrade_advanced_capacity", consumer);
 
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.advancedspeed), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.advancedspeed), 1)
 				//
 				.addPattern("PGP")
 				//
@@ -584,7 +585,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.addKey('G', VoltaicTags.Items.GEAR_BRONZE)
 				//
-				.addKey('B', ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basicspeed))
+				.addKey('B', VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basicspeed))
 				//
 				.addKey('W', VoltaicTags.Items.INSULATED_COPPER_WIRES)
 				//
@@ -592,7 +593,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(Electrodynamics.ID, "upgrade_advanced_speed", consumer);
 
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basiccapacity), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basiccapacity), 1)
 				//
 				.addPattern("PBP")
 				//
@@ -610,7 +611,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(Electrodynamics.ID, "upgrade_basic_capacity", consumer);
 
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basicspeed), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.basicspeed), 1)
 				//
 				.addPattern("PGP")
 				//
@@ -628,7 +629,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(Electrodynamics.ID, "upgrade_basic_speed", consumer);
 
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.experience), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.experience), 1)
 				//
 				.addPattern("PBP")
 				//
@@ -646,7 +647,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 
 		ItemStack fortuneBook = new ItemStack(Items.ENCHANTED_BOOK);
 		EnchantedBookItem.addEnchantment(fortuneBook, new EnchantmentData(Enchantments.BLOCK_FORTUNE, 1));
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.fortune), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.fortune), 1)
 				//
 				.addPattern("PCP")
 				//
@@ -662,7 +663,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(Electrodynamics.ID, "upgrade_fortune", consumer);
 
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.improvedsolarcell), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.improvedsolarcell), 1)
 				//
 				.addPattern("PPP")
 				//
@@ -680,7 +681,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(Electrodynamics.ID, "upgrade_improved_solar_cell", consumer);
 
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput), 1)
 				//
 				.addPattern("C")
 				//
@@ -696,7 +697,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(Electrodynamics.ID, "upgrade_item_input", consumer);
 
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput), 1)
 				//
 				.addPattern("C")
 				//
@@ -712,7 +713,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(Electrodynamics.ID, "upgrade_item_output", consumer);
 
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemvoid), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemvoid), 1)
 				//
 				.addPattern("C")
 				//
@@ -728,7 +729,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(Electrodynamics.ID, "upgrade_item_void", consumer);
 
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.range), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.range), 1)
 				//
 				.addPattern("PWP")
 				//
@@ -746,7 +747,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 
 		ItemStack silkTouchBook = new ItemStack(Items.ENCHANTED_BOOK);
 		EnchantedBookItem.addEnchantment(silkTouchBook, new EnchantmentData(Enchantments.SILK_TOUCH, 1));
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.silktouch), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.silktouch), 1)
 				//
 				.addPattern("PCP")
 				//
@@ -762,7 +763,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.complete(Electrodynamics.ID, "upgrade_silk_touch", consumer);
 
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.stator), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.stator), 1)
 				//
 				.addPattern("PCP")
 				//
@@ -780,7 +781,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 
 		ItemStack unbreakingBook = new ItemStack(Items.ENCHANTED_BOOK);
 		EnchantedBookItem.addEnchantment(unbreakingBook, new EnchantmentData(Enchantments.UNBREAKING, 1));
-		CustomShapedCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.unbreaking), 1)
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.unbreaking), 1)
 				//
 				.addPattern("PCP")
 				//
@@ -795,18 +796,6 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				.addKey('B', NBTIngredient.of(unbreakingBook))
 				//
 				.complete(Electrodynamics.ID, "upgrade_unbreaking", consumer);
-
-		CustomShapelessCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput), 1)
-				//
-				.addIngredient(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput))
-				//
-				.complete(Electrodynamics.ID, "upgrade_item_output_reset", consumer);
-
-		CustomShapelessCraftingRecipe.start(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput), 1)
-				//
-				.addIngredient(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput))
-				//
-				.complete(Electrodynamics.ID, "upgrade_item_input_reset", consumer);
 
 		for (SubtypeNugget nugget : SubtypeNugget.values()) {
 			CustomShapelessCraftingRecipe.start(ElectrodynamicsItems.ITEMS_NUGGET.getValue(nugget), 9)
@@ -2315,6 +2304,18 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				.addKey('B', ElectrodynamicsItems.ITEM_BATTERY.get())
 				//
 				.complete(Electrodynamics.ID, "seismic_scanner", consumer);
+
+		CustomShapedCraftingRecipe.start(VoltaicItems.ITEM_WRENCH.get(), 1)
+				//
+				.addPattern(" S ")
+				//
+				.addPattern(" SS")
+				//
+				.addPattern("S  ")
+				//
+				.addKey('S', VoltaicTags.Items.INGOT_STEEL)
+				//
+				.complete(Electrodynamics.ID, "wrench_electro", consumer);
 
 	}
 
