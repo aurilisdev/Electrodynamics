@@ -10,7 +10,7 @@
       "tag": "forge:plates/steel"
     },
     "B": {
-      "item": "electrodynamics:upgradebasicspeed"
+      "item": "voltaic:upgradebasicspeed"
     },
     "C": {
       "tag": "forge:circuits/advanced"
@@ -23,6 +23,6 @@
     }
   },
   "result": {
-    "item": "electrodynamics:upgradeadvancedspeed"
+    "item": "voltaic:upgradeadvancedspeed"
   }
 }

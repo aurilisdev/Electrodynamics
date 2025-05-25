@@ -13,6 +13,7 @@ import voltaic.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
 import voltaic.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
 import voltaic.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import voltaic.common.item.subtype.SubtypeItemUpgrade;
+import voltaic.registers.VoltaicItems;
 
 public class ChapterQuarry extends Chapter {
 
@@ -81,15 +82,15 @@ public class ChapterQuarry extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.drillhead", ElectroTextUtils.guidebook("chapter.quarry.titaniumhead"), SubtypeDrillHead.titanium.durability)).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.drillhead", ElectroTextUtils.guidebook("chapter.quarry.carbidehead"), ElectroTextUtils.guidebook("chapter.quarry.infinitedurability"))).setIndentions(1).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.step7l2")).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.unbreaking).getDescription()).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.fortune).getDescription()).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.silktouch).getDescription()).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemvoid).getDescription()).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.unbreaking).getDescription()).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.fortune).getDescription()).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.silktouch).getDescription()).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemvoid).getDescription()).setIndentions(1).setSeparateStart());
 		blankLine();
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.step7unbreaking", ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.unbreaking).getDescription().copy().withStyle(TextFormatting.BOLD))).setSeparateStart().setIndentions(1));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.step7fortune", ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.fortune).getDescription().copy().withStyle(TextFormatting.BOLD))).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.step7silktouch", ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.silktouch).getDescription().copy().withStyle(TextFormatting.BOLD))).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.step7void", ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemvoid).getDescription().copy().withStyle(TextFormatting.BOLD))).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.step7unbreaking", VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.unbreaking).getDescription().copy().withStyle(TextFormatting.BOLD))).setSeparateStart().setIndentions(1));
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.step7fortune", VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.fortune).getDescription().copy().withStyle(TextFormatting.BOLD))).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.step7silktouch", VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.silktouch).getDescription().copy().withStyle(TextFormatting.BOLD))).setIndentions(1).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.quarry.step7void", VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemvoid).getDescription().copy().withStyle(TextFormatting.BOLD))).setIndentions(1).setSeparateStart());
 		pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, Electrodynamics.rl("textures/screen/guidebook/quarrygui1.png")));
 
 		// Step 8

@@ -116,10 +116,12 @@ public class ElectrodynamicsItemModelsProvider extends BaseItemModelsProvider {
 		for (SubtypeIngot ingot : SubtypeIngot.values()) {
 			layeredItem(ElectrodynamicsItems.ITEMS_INGOT.getValue(ingot), Parent.GENERATED, itemLoc("ingot/" + ingot.tag()));
 		}
+		/*
 
 		for (SubtypeItemUpgrade upgrade : SubtypeItemUpgrade.values()) {
 			layeredBuilder(name(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(upgrade)), Parent.GENERATED, itemLoc("upgrade/" + upgrade.tag())).transforms().transform(Perspective.GUI).scale(0.8F).end();
 		}
+		*/
 
 		for (SubtypeNugget nugget : SubtypeNugget.values()) {
 			layeredItem(ElectrodynamicsItems.ITEMS_NUGGET.getValue(nugget), Parent.GENERATED, itemLoc("nugget/" + nugget.tag()));

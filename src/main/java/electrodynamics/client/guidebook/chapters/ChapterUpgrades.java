@@ -6,7 +6,6 @@ import java.util.List;
 import com.mojang.blaze3d.matrix.MatrixStack;
 
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IReorderingProcessor;
 import net.minecraft.util.text.IFormattableTextComponent;
@@ -20,10 +19,11 @@ import voltaic.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
 import voltaic.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import voltaic.common.item.subtype.SubtypeItemUpgrade;
 import voltaic.compatibility.jei.JeiBuffer;
+import voltaic.registers.VoltaicItems;
 
 public class ChapterUpgrades extends Chapter {
 
-	private static final ItemWrapperObject LOGO = new ItemWrapperObject(7, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.advancedspeed));
+	private static final ItemWrapperObject LOGO = new ItemWrapperObject(7, 10, 32, 32, 32, 2.0F, VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.advancedspeed));
 
 	public ChapterUpgrades(Module module) {
 		super(module);
@@ -42,8 +42,8 @@ public class ChapterUpgrades extends Chapter {
 	@Override
 	public void addData() {
 		// Injector Upgrade tutorial
-		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput).getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setSeparateStart());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput)).onTooltip(new OnTooltip() {
+		pageData.add(new TextWrapperObject(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput).getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setSeparateStart());
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput)).onTooltip(new OnTooltip() {
 
 			@Override
 			public void onTooltip(MatrixStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
@@ -63,7 +63,7 @@ public class ChapterUpgrades extends Chapter {
 
 			@Override
 			public Object getJeiLookup() {
-				return new ItemStack(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput));
+				return new ItemStack(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput));
 			}
 
 		}));
@@ -74,8 +74,8 @@ public class ChapterUpgrades extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.upgrades.l3")));
 
 		// Ejector Upgrade tutorial
-		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput).getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setNewPage());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput)).onTooltip(new OnTooltip() {
+		pageData.add(new TextWrapperObject(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput).getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setNewPage());
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput)).onTooltip(new OnTooltip() {
 
 			@Override
 			public void onTooltip(MatrixStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
@@ -95,7 +95,7 @@ public class ChapterUpgrades extends Chapter {
 
 			@Override
 			public Object getJeiLookup() {
-				return new ItemStack(ElectrodynamicsItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput));
+				return new ItemStack(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput));
 			}
 
 		}));
