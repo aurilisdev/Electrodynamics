@@ -2,23 +2,23 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "C": {
-      "item": "electrodynamics:coil"
+    "B": {
+      "tag": "forge:circuits/basic"
     },
     "P": {
       "tag": "forge:plates/steel"
     },
-    "R": {
-      "tag": "forge:dusts/redstone"
+    "W": {
+      "tag": "forge:wires/insulated_copper"
     }
   },
   "pattern": [
-    "PCP",
-    "CRC",
-    "PCP"
+    "PWP",
+    "WBW",
+    "PWP"
   ],
   "result": {
-    "item": "electrodynamics:upgradestator"
+    "item": "voltaic:upgraderange"
   },
   "show_notification": false
 }

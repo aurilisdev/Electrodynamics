@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": {
+      "tag": "forge:ingots/steel"
+    }
+  },
+  "pattern": [
+    " S ",
+    " SS",
+    "S  "
+  ],
+  "result": {
+    "item": "voltaic:wrench"
+  },
+  "show_notification": false
+}

@@ -243,6 +243,11 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 				.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.chromiumdisilicide)), 1.0))
 				//
 				.complete(consumer);
+		newRecipe(new ItemStack(Items.BLAZE_POWDER, 10), 0, 100, 500, "blaze_powder_from_blaze_rod")
+				//
+				.addItemTagInput(Tags.Items.RODS_BLAZE, 1)
+				//
+				.complete(consumer);
 
 	}
 

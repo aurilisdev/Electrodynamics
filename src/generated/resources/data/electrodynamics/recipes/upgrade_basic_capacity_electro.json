@@ -21,7 +21,7 @@
     "CBC"
   ],
   "result": {
-    "item": "electrodynamics:upgradebasiccapacity"
+    "item": "voltaic:upgradebasiccapacity"
   },
   "show_notification": false
 }
