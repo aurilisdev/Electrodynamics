@@ -426,6 +426,10 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
         if (level.getBlockEntity(pos) instanceof GenericTileWire tile) {
 
             ElectricNetwork network = tile.getNetwork();
+            
+            if(network == null) {
+            	return;
+            }
 
             double voltage = network.getActiveVoltage();
 

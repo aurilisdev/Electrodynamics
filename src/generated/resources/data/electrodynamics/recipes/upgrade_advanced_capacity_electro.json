@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PBP",
+    "BWB",
+    "CBC"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "B": {
+      "item": "voltaic:upgradebasiccapacity"
+    },
+    "C": {
+      "tag": "forge:circuits/advanced"
+    },
+    "W": {
+      "tag": "forge:wires/insulated_copper"
+    }
+  },
+  "result": {
+    "item": "voltaic:upgradeadvancedcapacity"
+  }
+}
