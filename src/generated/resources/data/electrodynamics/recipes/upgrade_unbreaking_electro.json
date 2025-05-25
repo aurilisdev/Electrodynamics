@@ -3,25 +3,24 @@
   "category": "misc",
   "key": {
     "B": {
-      "item": "electrodynamics:upgradebasiccapacity"
+      "type": "forge:partial_nbt",
+      "item": "minecraft:enchanted_book",
+      "nbt": "{StoredEnchantments:[{id:\"minecraft:unbreaking\",lvl:1s}]}"
     },
     "C": {
       "tag": "forge:circuits/advanced"
     },
     "P": {
       "tag": "forge:plates/steel"
-    },
-    "W": {
-      "tag": "forge:wires/insulated_copper"
     }
   },
   "pattern": [
-    "PBP",
-    "BWB",
-    "CBC"
+    "PCP",
+    "CBC",
+    "PCP"
   ],
   "result": {
-    "item": "electrodynamics:upgradeadvancedcapacity"
+    "item": "voltaic:upgradeunbreaking"
   },
   "show_notification": false
 }

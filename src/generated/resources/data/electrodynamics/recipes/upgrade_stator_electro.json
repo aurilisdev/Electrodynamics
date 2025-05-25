@@ -2,23 +2,23 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "B": {
-      "tag": "forge:circuits/basic"
-    },
     "C": {
-      "item": "minecraft:cactus"
+      "item": "electrodynamics:coil"
     },
     "P": {
       "tag": "forge:plates/steel"
+    },
+    "R": {
+      "tag": "forge:dusts/redstone"
     }
   },
   "pattern": [
-    "C",
-    "B",
-    "P"
+    "PCP",
+    "CRC",
+    "PCP"
   ],
   "result": {
-    "item": "electrodynamics:upgradeitemvoid"
+    "item": "voltaic:upgradestator"
   },
   "show_notification": false
 }

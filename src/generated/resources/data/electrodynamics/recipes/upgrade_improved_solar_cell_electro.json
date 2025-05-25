@@ -2,23 +2,26 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "A": {
-      "tag": "forge:plates/aluminum"
+    "B": {
+      "tag": "forge:plates/bronze"
     },
     "C": {
       "tag": "forge:circuits/basic"
     },
     "P": {
-      "item": "minecraft:piston"
+      "item": "electrodynamics:solarpanelplate"
+    },
+    "S": {
+      "tag": "forge:plates/steel"
     }
   },
   "pattern": [
-    "C",
-    "P",
-    "A"
+    "PPP",
+    "BCB",
+    "BSB"
   ],
   "result": {
-    "item": "electrodynamics:upgradeitemoutput"
+    "item": "voltaic:upgradeimprovedsolarcell"
   },
   "show_notification": false
 }

@@ -5,10 +5,10 @@
     "B": {
       "type": "forge:partial_nbt",
       "item": "minecraft:enchanted_book",
-      "nbt": "{StoredEnchantments:[{id:\"minecraft:fortune\",lvl:1s}]}"
+      "nbt": "{StoredEnchantments:[{id:\"minecraft:silk_touch\",lvl:1s}]}"
     },
     "C": {
-      "tag": "forge:circuits/elite"
+      "tag": "forge:circuits/ultimate"
     },
     "P": {
       "tag": "forge:plates/steel"
@@ -20,7 +20,7 @@
     "PCP"
   ],
   "result": {
-    "item": "electrodynamics:upgradefortune"
+    "item": "voltaic:upgradesilktouch"
   },
   "show_notification": false
 }

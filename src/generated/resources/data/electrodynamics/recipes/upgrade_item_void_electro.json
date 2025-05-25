@@ -3,25 +3,22 @@
   "category": "misc",
   "key": {
     "B": {
-      "tag": "forge:plates/bronze"
-    },
-    "C": {
       "tag": "forge:circuits/basic"
     },
-    "P": {
-      "item": "electrodynamics:solarpanelplate"
+    "C": {
+      "item": "minecraft:cactus"
     },
-    "S": {
+    "P": {
       "tag": "forge:plates/steel"
     }
   },
   "pattern": [
-    "PPP",
-    "BCB",
-    "BSB"
+    "C",
+    "B",
+    "P"
   ],
   "result": {
-    "item": "electrodynamics:upgradeimprovedsolarcell"
+    "item": "voltaic:upgradeitemvoid"
   },
   "show_notification": false
 }

@@ -3,22 +3,28 @@
   "category": "misc",
   "key": {
     "B": {
-      "item": "minecraft:glass_bottle"
+      "item": "voltaic:upgradebasicspeed"
+    },
+    "C": {
+      "tag": "forge:circuits/advanced"
+    },
+    "G": {
+      "tag": "forge:gears/bronze"
     },
     "P": {
-      "tag": "forge:plates/bronze"
+      "tag": "forge:plates/steel"
     },
     "W": {
       "tag": "forge:wires/insulated_copper"
     }
   },
   "pattern": [
-    "PBP",
+    "PGP",
     "BWB",
-    "PBP"
+    "CGC"
   ],
   "result": {
-    "item": "electrodynamics:upgradeexperience"
+    "item": "voltaic:upgradeadvancedspeed"
   },
   "show_notification": false
 }
