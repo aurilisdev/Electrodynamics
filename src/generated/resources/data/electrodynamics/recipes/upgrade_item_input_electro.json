@@ -8,7 +8,7 @@
       "tag": "forge:circuits/basic"
     },
     "P": {
-      "item": "minecraft:piston"
+      "item": "minecraft:sticky_piston"
     }
   },
   "pattern": [
@@ -17,6 +17,6 @@
     "A"
   ],
   "result": {
-    "item": "electrodynamics:upgradeitemoutput"
+    "item": "voltaic:upgradeiteminput"
   }
 }
