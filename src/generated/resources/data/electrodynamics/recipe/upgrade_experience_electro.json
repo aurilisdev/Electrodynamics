@@ -3,13 +3,10 @@
   "category": "misc",
   "key": {
     "B": {
-      "item": "electrodynamics:upgradebasiccapacity"
-    },
-    "C": {
-      "tag": "c:circuits/advanced"
+      "item": "minecraft:glass_bottle"
     },
     "P": {
-      "tag": "c:plates/steel"
+      "tag": "c:plates/bronze"
     },
     "W": {
       "tag": "c:wires/insulated_copper"
@@ -18,10 +15,10 @@
   "pattern": [
     "PBP",
     "BWB",
-    "CBC"
+    "PBP"
   ],
   "result": {
     "count": 1,
-    "id": "electrodynamics:upgradeadvancedcapacity"
+    "id": "voltaic:upgradeexperience"
   }
 }

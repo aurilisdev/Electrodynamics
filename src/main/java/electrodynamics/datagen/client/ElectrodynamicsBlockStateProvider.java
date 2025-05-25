@@ -188,9 +188,9 @@ public class ElectrodynamicsBlockStateProvider extends BaseBlockstateProvider {
 
         horrRotatedBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.currentregulator), existingBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.currentregulator)), 180, 0, true);
 
-        redstoneToggleBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.gascollector), //
-                models().cube(SubtypeMachine.gascollector.tag(), blockLoc("gascollector_bottom"), blockLoc("gascollector_fanoff"), blockLoc("gascollector_fanoff"), blockLoc("gascollector_back"), blockLoc("gascollector_fanoff"), blockLoc("gascollector_fanoff")).texture("particle", Voltaic.rl("block/steelcasing")), //
-                models().cube(SubtypeMachine.gascollector.tag() + "on", blockLoc("gascollector_bottom"), blockLoc("gascollector_fanon"), blockLoc("gascollector_fanon"), blockLoc("gascollector_back"), blockLoc("gascollector_fanon"), blockLoc("gascollector_fanon")).texture("particle", Voltaic.rl("block/steelcasing")), //
+        horrRotatedLitBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.gascollector), //
+                models().cube(SubtypeMachine.gascollector.tag(), blockLoc("gascollector_bottom"), blockLoc("gascollector_fanoff"), blockLoc("gascollector_fanoff"), blockLoc("gascollector_fanoff"), blockLoc("gascollector_fanoff"), blockLoc("gascollector_back")).texture("particle", Voltaic.rl("block/steelcasing")), //
+                models().cube(SubtypeMachine.gascollector.tag() + "on", blockLoc("gascollector_bottom"), blockLoc("gascollector_fanon"), blockLoc("gascollector_fanon"), blockLoc("gascollector_fanon"), blockLoc("gascollector_fanon"), blockLoc("gascollector_back")).texture("particle", Voltaic.rl("block/steelcasing")), //
                 true);
 
         horrRotatedBlock(ElectrodynamicsBlocks.BLOCK_CHEMICALREACTOR, existingBlock(blockLoc("chemicalreactorbottom")), false);

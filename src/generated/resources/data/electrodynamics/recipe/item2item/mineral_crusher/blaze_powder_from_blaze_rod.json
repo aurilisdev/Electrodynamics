@@ -1,0 +1,18 @@
+{
+  "type": "electrodynamics:mineral_crusher_recipe",
+  "group": "electrodynamics",
+  "iteminputs": [
+    {
+      "count": 1,
+      "ingredient": {
+        "tag": "c:rods/blaze"
+      }
+    }
+  ],
+  "output": {
+    "count": 10,
+    "id": "minecraft:blaze_powder"
+  },
+  "ticks": 100,
+  "usagepertick": 500.0
+}

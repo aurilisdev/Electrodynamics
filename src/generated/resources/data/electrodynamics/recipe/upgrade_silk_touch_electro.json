@@ -5,7 +5,7 @@
     "B": {
       "type": "voltaic:enchantmentingredient",
       "enchantments": [
-        "c:unbreaking"
+        "c:silk_touch"
       ],
       "ingredient": {
         "item": "minecraft:enchanted_book"
@@ -13,7 +13,7 @@
       "isStrict": false
     },
     "C": {
-      "tag": "c:circuits/advanced"
+      "tag": "c:circuits/ultimate"
     },
     "P": {
       "tag": "c:plates/steel"
@@ -26,6 +26,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "electrodynamics:upgradeunbreaking"
+    "id": "voltaic:upgradesilktouch"
   }
 }

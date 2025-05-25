@@ -3,7 +3,10 @@
   "category": "misc",
   "key": {
     "B": {
-      "tag": "c:circuits/basic"
+      "item": "voltaic:upgradebasiccapacity"
+    },
+    "C": {
+      "tag": "c:circuits/advanced"
     },
     "P": {
       "tag": "c:plates/steel"
@@ -13,12 +16,12 @@
     }
   },
   "pattern": [
-    "PWP",
-    "WBW",
-    "PWP"
+    "PBP",
+    "BWB",
+    "CBC"
   ],
   "result": {
     "count": 1,
-    "id": "electrodynamics:upgraderange"
+    "id": "voltaic:upgradeadvancedcapacity"
   }
 }
