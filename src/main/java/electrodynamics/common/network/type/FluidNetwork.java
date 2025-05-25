@@ -91,6 +91,12 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
         HashSet<Direction> connections;
 
         for (BlockEntity tile : availableAcceptors) {
+        	
+        	if(tile == null || tile.isRemoved()) {
+                acceptorInputMap.remove(tile);
+                acceptorSet.remove(tile);
+                continue;
+            }
 
             perTile = new FluidStack(initial.getFluid(), (int) ((double) initial.getAmount() / (double) size));
             prePerTile = perTile.copy();

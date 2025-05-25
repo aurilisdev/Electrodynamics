@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PGP",
+    "BWB",
+    "CGC"
+  ],
+  "key": {
+    "P": {
+      "tag": "forge:plates/steel"
+    },
+    "B": {
+      "item": "voltaic:upgradebasicspeed"
+    },
+    "C": {
+      "tag": "forge:circuits/advanced"
+    },
+    "G": {
+      "tag": "forge:gears/bronze"
+    },
+    "W": {
+      "tag": "forge:wires/insulated_copper"
+    }
+  },
+  "result": {
+    "item": "voltaic:upgradeadvancedspeed"
+  }
+}
