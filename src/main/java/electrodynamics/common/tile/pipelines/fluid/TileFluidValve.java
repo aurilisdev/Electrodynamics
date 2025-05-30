@@ -26,7 +26,7 @@ public class TileFluidValve extends GenericTileValve {
     
     @Override
     public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
-    	if(cap != CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY && side == null || isLocked) {
+    	if(cap != CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || side == null || isLocked) {
     		return LazyOptional.empty();
     	}
     	

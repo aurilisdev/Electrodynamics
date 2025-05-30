@@ -54,7 +54,7 @@ public class TileWindmill extends GenericGeneratorTile implements IMultiblockPar
 
 	protected void tickServer(ComponentTickable tickable) {
 		if (hasRedstoneSignal.getValue()) {
-			generating.setValue(false);
+			generating.setValue(0.0);
 			return;
 		}
 		Direction facing = getFacing();

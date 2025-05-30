@@ -1091,7 +1091,7 @@ public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {
 		addGuidebook("chapter.ores.material", "Material: %s");
 		addGuidebook("chapter.ores.veinsperchunk", "Veins per Chunk: %s");
 		addGuidebook("chapter.ores.veinsize", "Vein Size: %s");
-		addGuidebook("chapter.ores.miningteir", "Mining Teir: %s");
+		addGuidebook("chapter.ores.miningteir", "Mining Tier: %s");
 		addGuidebook("chapter.ores.material_aluminum", "Aluminum");
 		addGuidebook("chapter.ores.material_chromium", "Chromium");
 		addGuidebook("chapter.ores.material_fluorite", "Fluorite");

@@ -6,7 +6,7 @@
     },
     "title": {
       "color": "gray",
-      "translate": "advancement.electrodynamics.insulatedwiring.title"
+      "translate": "advancement.electrodynamics.insulation.title"
     },
     "description": {
       "translate": "advancement.electrodynamics.insulation.desc"
