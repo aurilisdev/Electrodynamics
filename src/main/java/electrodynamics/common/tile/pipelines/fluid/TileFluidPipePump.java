@@ -70,7 +70,7 @@ public class TileFluidPipePump extends GenericTile {
     @Override
     public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
     	if(cap != ForgeCapabilities.FLUID_HANDLER || side == null || isLocked) {
-    		return LazyOptional.empty();
+    		return super.getCapability(cap, side);
     	}
     	
     	Direction facing = getFacing();
