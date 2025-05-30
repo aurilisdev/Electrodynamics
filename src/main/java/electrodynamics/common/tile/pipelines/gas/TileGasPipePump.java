@@ -69,7 +69,7 @@ public class TileGasPipePump extends GenericTile {
 	@Override
 	public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
 		if(cap != VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK || side == null || isLocked) {
-			return LazyOptional.empty();
+			return super.getCapability(cap, side);
 		}
 		
 		Direction facing = getFacing();
