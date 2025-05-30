@@ -2,7 +2,7 @@
   "replace": false,
   "values": [
     "electrodynamics:concreteregular",
-    "electrodynamics:concretetile",
-    "electrodynamics:concretebricks"
+    "electrodynamics:concretebricks",
+    "electrodynamics:concretetile"
   ]
 }
