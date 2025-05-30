@@ -809,7 +809,7 @@
   "guidebook.electrodynamics.chapter.ores.material_titanium": "Titanium",
   "guidebook.electrodynamics.chapter.ores.material_uranium": "Uranium",
   "guidebook.electrodynamics.chapter.ores.material_vanadium": "Vanadium",
-  "guidebook.electrodynamics.chapter.ores.miningteir": "Mining Teir: %s",
+  "guidebook.electrodynamics.chapter.ores.miningteir": "Mining Tier: %s",
   "guidebook.electrodynamics.chapter.ores.spawnrange": "Y = %1$s to Y = %2$s",
   "guidebook.electrodynamics.chapter.ores.veinsize": "Vein Size: %s",
   "guidebook.electrodynamics.chapter.ores.veinsperchunk": "Veins per Chunk: %s",
