@@ -68,7 +68,7 @@ public class TileFluidPipePump extends GenericTile {
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, Direction side) {
     	if(cap != CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || side == null || isLocked) {
-    		return LazyOptional.empty();
+    		return super.getCapability(cap, side);
     	}
     	
     	Direction facing = getFacing();

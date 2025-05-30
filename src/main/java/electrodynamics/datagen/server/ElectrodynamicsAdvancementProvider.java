@@ -230,7 +230,7 @@ public class ElectrodynamicsAdvancementProvider extends BaseAdvancementProvider 
 
 		Advancement insulation = advancement("insulation")
 				//
-				.display(ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.insulatedcopper), ElectroTextUtils.advancement("insulatedwiring.title").withStyle(TextFormatting.GRAY), ElectroTextUtils.advancement("insulation.desc"), AdvancementBackgrounds.NONE, FrameType.TASK, true, true, false)
+				.display(ElectrodynamicsItems.ITEMS_WIRE.getValue(SubtypeWire.insulatedcopper), ElectroTextUtils.advancement("insulation.title").withStyle(TextFormatting.GRAY), ElectroTextUtils.advancement("insulation.desc"), AdvancementBackgrounds.NONE, FrameType.TASK, true, true, false)
 				//
 				.addCriterion("HasInsulation", InventoryChangeTrigger.Instance.hasItems(ElectrodynamicsItems.ITEM_INSULATION.get()))
 				//

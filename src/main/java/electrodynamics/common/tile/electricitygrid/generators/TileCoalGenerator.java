@@ -16,6 +16,7 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.ForgeHooks;
 import voltaic.common.block.states.VoltaicBlockStates;
 import voltaic.prefab.properties.types.PropertyTypes;
 import voltaic.prefab.properties.variant.SingleProperty;
@@ -66,7 +67,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 		ComponentInventory inv = getComponent(IComponentType.Inventory);
 		ItemStack fuel = inv.getItem(0);
 		if (burnTime.getValue() <= 0 && !fuel.isEmpty()) {
-			burnTime.setValue(fuel.getBurnTime(null));
+			burnTime.setValue(ForgeHooks.getBurnTime(fuel, null));
 			fuel.shrink(1);
 			maxBurnTime.setValue(Math.max(burnTime.getValue(), 1));
 		}
