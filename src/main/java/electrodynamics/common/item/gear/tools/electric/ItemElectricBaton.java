@@ -48,6 +48,11 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
 	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 		return false;
 	}
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return !oldStack.is(newStack.getItem());
+	}
 
 	@Override
 	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {

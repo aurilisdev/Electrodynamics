@@ -46,6 +46,11 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
 	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 		return true;
 	}
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return !oldStack.is(newStack.getItem());
+	}
 
 	@Override
 	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
