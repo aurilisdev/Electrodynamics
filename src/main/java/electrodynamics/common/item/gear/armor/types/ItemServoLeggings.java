@@ -142,55 +142,38 @@ public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric
     }
 
     protected static void wearingTick(ItemStack stack, Level world, Player player) {
-        if (!world.isClientSide) {
-            IItemElectric legs = (IItemElectric) stack.getItem();
-            if (stack.getOrDefault(VoltaicDataComponentTypes.ON, false) && legs.getJoulesStored(stack) >= JOULES_PER_TICK) {
-                switch (stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0)) {
-                    case 0:
-                        stack.set(VoltaicDataComponentTypes.RESET, false);
-                        stack.set(VoltaicDataComponentTypes.SUCESS, true);
-                        player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
-						player.getAttribute(Attributes.STEP_HEIGHT).addPermanentModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
-                        legs.extractPower(stack, JOULES_PER_TICK, false);
-                        break;
-                    case 1:
-                        stack.set(VoltaicDataComponentTypes.RESET, false);
-                        stack.set(VoltaicDataComponentTypes.SUCESS, true);
-                        player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
-                        player.getAttribute(Attributes.STEP_HEIGHT).addPermanentModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
-                        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false, false, false));
-                        legs.extractPower(stack, JOULES_PER_TICK, false);
-                        break;
-                    case 2:
-                        stack.set(VoltaicDataComponentTypes.RESET, false);
-                        stack.set(VoltaicDataComponentTypes.SUCESS, false);
-                        player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
-                        player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false, false, false));
-                        legs.extractPower(stack, JOULES_PER_TICK, false);
-                        break;
-                    case 3:
-                        stack.set(VoltaicDataComponentTypes.SUCESS, false);
-                        if (!stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
-                            player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-            } else {
-                stack.set(VoltaicDataComponentTypes.SUCESS, false);
-                if (!stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
-                    player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
 
-                }
-            }
-        } else if (stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
+        if(world.isClientSide) {
+            return;
+        }
+
+        IItemElectric legs = (IItemElectric) stack.getItem();
+        if (stack.getOrDefault(VoltaicDataComponentTypes.ON, false) && legs.getJoulesStored(stack) >= JOULES_PER_TICK) {
             switch (stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0)) {
-                case 0, 1:
+                case 0:
+                    stack.set(VoltaicDataComponentTypes.RESET, false);
+                    stack.set(VoltaicDataComponentTypes.SUCESS, true);
                     player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
                     player.getAttribute(Attributes.STEP_HEIGHT).addPermanentModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
+                    legs.extractPower(stack, JOULES_PER_TICK, false);
                     break;
-                case 2, 3:
+                case 1:
+                    stack.set(VoltaicDataComponentTypes.RESET, false);
+                    stack.set(VoltaicDataComponentTypes.SUCESS, true);
+                    player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
+                    player.getAttribute(Attributes.STEP_HEIGHT).addPermanentModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
+                    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false, false, false));
+                    legs.extractPower(stack, JOULES_PER_TICK, false);
+                    break;
+                case 2:
+                    stack.set(VoltaicDataComponentTypes.RESET, false);
+                    stack.set(VoltaicDataComponentTypes.SUCESS, false);
+                    player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
+                    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false, false, false));
+                    legs.extractPower(stack, JOULES_PER_TICK, false);
+                    break;
+                case 3:
+                    stack.set(VoltaicDataComponentTypes.SUCESS, false);
                     if (!stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
                         player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
                     }
@@ -198,15 +181,19 @@ public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric
                 default:
                     break;
             }
-        } else if (!stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
-            player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
+        } else {
+            stack.set(VoltaicDataComponentTypes.SUCESS, false);
+            if (!stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
+                player.getAttribute(Attributes.STEP_HEIGHT).removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
+
+            }
         }
 
     }
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return slotChanged;
+        return !oldStack.is(newStack.getItem());
     }
 
 	/*

@@ -86,7 +86,7 @@ public abstract class ItemRailgun extends ItemElectric implements IItemTemperate
 
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return slotChanged;
+		return !oldStack.is(newStack.getItem());
 	}
 
 	public double getMaxTemp() {

@@ -150,7 +150,7 @@ public class ItemHydraulicBoots extends ItemVoltaicArmor {
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return slotChanged;
+        return !oldStack.is(newStack.getItem());
     }
 
     public static Predicate<FluidStack> getPredicate() {

@@ -215,6 +215,11 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
     }
 
     @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return !oldStack.is(newStack.getItem());
+    }
+
+    @Override
     public boolean isAllowedInCreativeTab(CreativeModeTab tab) {
         return creativeTab.value() == tab;
     }
