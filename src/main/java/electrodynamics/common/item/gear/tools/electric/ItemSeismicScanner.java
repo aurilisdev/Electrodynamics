@@ -130,7 +130,7 @@ public class ItemSeismicScanner extends ItemElectric {
 
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return slotChanged;
+		return !oldStack.is(newStack.getItem());
 	}
 
 }

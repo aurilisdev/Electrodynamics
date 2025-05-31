@@ -80,6 +80,11 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric 
 		this.creativeTab = creativeTab;
 		DRILLS.add(this);
 	}
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return !oldStack.is(newStack.getItem());
+	}
 
 	@Override
 	public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
