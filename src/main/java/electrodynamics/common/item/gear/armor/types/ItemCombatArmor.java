@@ -268,7 +268,7 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return slotChanged;
+		return !oldStack.is(newStack.getItem());
 	}
 
 	@Override
