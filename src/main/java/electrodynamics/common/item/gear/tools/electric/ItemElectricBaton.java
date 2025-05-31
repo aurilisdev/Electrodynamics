@@ -49,6 +49,11 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
 	}
 
 	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return !oldStack.is(newStack.getItem());
+	}
+
+	@Override
 	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
 		ItemStack empty = new ItemStack(this);

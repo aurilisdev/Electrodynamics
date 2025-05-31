@@ -97,6 +97,11 @@ public class ItemCompositeArmor extends ItemVoltaicArmor {
 		return ARMOR_TEXTURE_LOCATION;
 	}
 
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return !oldStack.is(newStack.getItem());
+	}
+
 	/*
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
