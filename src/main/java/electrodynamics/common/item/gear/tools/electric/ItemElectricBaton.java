@@ -43,6 +43,11 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric {
 		this.properties = properties;
 		this.creativeTab = creativeTab;
 	}
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return !oldStack.is(newStack.getItem());
+	}
 
 	@Override
 	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
