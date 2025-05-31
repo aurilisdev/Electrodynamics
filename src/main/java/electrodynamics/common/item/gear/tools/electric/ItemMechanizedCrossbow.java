@@ -175,7 +175,7 @@ public class ItemMechanizedCrossbow extends ShootableItem implements IItemElectr
 
 	@Override
 	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return slotChanged;
+		return oldStack.getItem() != newStack.getItem();
 	}
 
 	@Override

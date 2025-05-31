@@ -11,12 +11,10 @@ import com.google.common.collect.ImmutableSet;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.inventory.container.item.ContainerElectricDrill;
-import electrodynamics.common.item.ItemDrillHead;
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.prefab.capability.CapabilityItemStackHandlerElectricDrill;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -90,6 +88,11 @@ public class ItemElectricDrill extends ToolItem implements IItemElectric {
 		this.properties = properties;
 		this.creativeTab = creativeTab;
 		DRILLS.add(this);
+	}
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return oldStack.getItem() != newStack.getItem();
 	}
 
 	@Override

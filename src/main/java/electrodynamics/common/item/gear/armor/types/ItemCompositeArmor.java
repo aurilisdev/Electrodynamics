@@ -40,6 +40,11 @@ public class ItemCompositeArmor extends ItemVoltaicArmor {
 	public ItemCompositeArmor(EquipmentSlotType slot) {
 		super(CompositeArmor.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).fireResistant().setNoRepair(), () -> ElectrodynamicsCreativeTabs.MAIN);
 	}
+	
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+		return oldStack.getItem() != newStack.getItem();
+	}
 
 	@Override
 	@OnlyIn(Dist.CLIENT)
