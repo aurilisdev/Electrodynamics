@@ -94,7 +94,7 @@ public abstract class GenericTileGasPipe extends GenericRefreshingConnectTile<IG
     @Override
     public <T> @NotNull LazyOptional<T> getCapability(@NotNull Capability<T> cap, Direction side) {
     	if(cap == VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK && side != null) {
-    		LazyOptional.of(() -> capability[side.ordinal()]).cast();
+    		return LazyOptional.of(() -> capability[side.ordinal()]).cast();
     	}
     	return LazyOptional.empty();
     }
