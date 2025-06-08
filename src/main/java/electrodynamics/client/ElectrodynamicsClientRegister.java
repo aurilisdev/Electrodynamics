@@ -44,6 +44,8 @@ import electrodynamics.client.render.tile.RenderTankGeneric;
 import electrodynamics.client.render.tile.RenderWindmill;
 import electrodynamics.client.screen.item.ScreenElectricDrill;
 import electrodynamics.client.screen.item.ScreenSeismicScanner;
+import electrodynamics.client.screen.tile.ScreenAdvancedCompressor;
+import electrodynamics.client.screen.tile.ScreenAdvancedDecompressor;
 import electrodynamics.client.screen.tile.ScreenAdvancedDowngradeTransformer;
 import electrodynamics.client.screen.tile.ScreenAdvancedUpgradeTransformer;
 import electrodynamics.client.screen.tile.ScreenBatteryBox;
@@ -225,6 +227,8 @@ public class ElectrodynamicsClientRegister {
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDDOWNGRADETRANSFORMER.get(), ScreenAdvancedDowngradeTransformer::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDUPGRADETRANSFORMER.get(), ScreenAdvancedUpgradeTransformer::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_CIRCUITMONITOR.get(), ScreenCircuitMonitor::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDCOMPRESSOR.get(), ScreenAdvancedCompressor::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDDECOMPRESSOR.get(), ScreenAdvancedDecompressor::new);
 
 		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICBATON.get(), VoltaicClientRegister.ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricBaton) stack.getItem()).getJoulesStored(stack) > ((ItemElectricBaton) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICDRILL.get(), VoltaicClientRegister.ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricDrill) stack.getItem()).getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
