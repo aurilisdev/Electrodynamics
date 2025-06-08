@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraftforge.fluids.FluidStack;
@@ -198,7 +199,12 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
             return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF, false);
         }
 
-        evaporatedGas = VoltaicGases.MAPPED_GASSES.getOrDefault(inputTank.getFluid().getFluid(), VoltaicGases.EMPTY.get());
+        Fluid inputFluid = inputTank.getFluid().getFluid();
+        if(inputFluid instanceof FlowingFluid){
+            inputFluid = ((FlowingFluid) inputFluid).getSource();
+        }
+
+        evaporatedGas = VoltaicGases.MAPPED_GASSES.getOrDefault(inputFluid, VoltaicGases.EMPTY.get());
 
         if (evaporatedGas.isEmpty()) {
             return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF, false);
