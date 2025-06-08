@@ -152,7 +152,7 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
 
         @Override
         public ComponentContainerProvider getContainerProvider() {
-            return new ComponentContainerProvider("container.advancedcompressor", this).createMenu((id, inv) -> new ContainerAdvancedCompressor(id, inv, getComponent(IComponentType.Inventory), getCoordsArray()));
+            return new ComponentContainerProvider("advancedcompressor", this).createMenu((id, inv) -> new ContainerAdvancedCompressor(id, inv, getComponent(IComponentType.Inventory), getCoordsArray()));
         }
 
         @Override
@@ -178,7 +178,7 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
 
         @Override
         public ComponentContainerProvider getContainerProvider() {
-            return new ComponentContainerProvider("container.advanceddecompressor", this).createMenu((id, inv) -> new ContainerAdvancedDecompressor(id, inv, getComponent(IComponentType.Inventory), getCoordsArray()));
+            return new ComponentContainerProvider("advanceddecompressor", this).createMenu((id, inv) -> new ContainerAdvancedDecompressor(id, inv, getComponent(IComponentType.Inventory), getCoordsArray()));
         }
 
         @Override
