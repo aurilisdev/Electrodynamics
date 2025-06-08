@@ -52,7 +52,7 @@ public class ItemPortableCylinder extends ItemVoltaic {
 					continue;
 				}
 				ItemStack temp = new ItemStack(this);
-				temp.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM).ifPresent(cap -> ((GasHandlerItemStack) cap).setGas(new GasStack(gas, MAX_GAS_CAPCITY, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL)));
+				temp.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM).ifPresent(cap -> ((GasHandlerItemStack) cap).setGas(new GasStack(gas, MAX_GAS_CAPCITY, gas.getCondensationTemp() >= Gas.ROOM_TEMPERATURE ? gas.getCondensationTemp() + 1 : Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL)));
 				items.add(temp);
 
 			}
