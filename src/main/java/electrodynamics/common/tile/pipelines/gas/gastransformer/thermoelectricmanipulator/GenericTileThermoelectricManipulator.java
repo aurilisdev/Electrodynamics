@@ -7,7 +7,6 @@ import electrodynamics.common.inventory.container.tile.ContainerThermoelectricMa
 import electrodynamics.common.tile.pipelines.gas.gastransformer.GenericTileGasTransformer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -199,7 +198,7 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
             return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF, false);
         }
 
-        evaporatedGas = VoltaicGases.MAPPED_GASSES.getOrDefault(BuiltInRegistries.FLUID.wrapAsHolder(inputTank.getFluid().getFluid()), VoltaicGases.EMPTY.get());
+        evaporatedGas = VoltaicGases.MAPPED_GASSES.getOrDefault(inputTank.getFluid().getFluid(), VoltaicGases.EMPTY.get());
 
         if (evaporatedGas.isEmpty()) {
             return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF, false);
