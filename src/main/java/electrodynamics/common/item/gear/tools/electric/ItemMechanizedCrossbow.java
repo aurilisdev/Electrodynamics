@@ -60,6 +60,11 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 	}
 
 	@Override
+	public void setDamage(ItemStack stack, int damage) {
+
+	}
+
+	@Override
 	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 		ItemStack crossbow = player.getItemInHand(hand);
 

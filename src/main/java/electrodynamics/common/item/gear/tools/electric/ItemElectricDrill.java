@@ -76,6 +76,11 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
     }
 
     @Override
+    public void setDamage(ItemStack stack, int damage) {
+
+    }
+
+    @Override
     public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
         ItemStack empty = new ItemStack(this);

@@ -53,6 +53,11 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
     }
 
     @Override
+    public void setDamage(ItemStack stack, int damage) {
+
+    }
+
+    @Override
     public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
         ItemStack empty = new ItemStack(this);

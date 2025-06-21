@@ -55,6 +55,11 @@ public abstract class ItemRailgun extends ItemElectric implements IItemTemperate
 	}
 
 	@Override
+	public void setDamage(ItemStack stack, int damage) {
+
+	}
+
+	@Override
 	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
 		super.appendHoverText(stack, context, tooltip, flagIn);
 		tooltip.add(ElectroTextUtils.tooltip("railguntemp", ChatFormatter.getChatDisplayShort(IItemTemperate.getTemperature(stack), DisplayUnits.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.YELLOW));

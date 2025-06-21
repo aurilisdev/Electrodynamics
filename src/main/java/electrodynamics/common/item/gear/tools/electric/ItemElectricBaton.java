@@ -44,6 +44,11 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
 	}
 
 	@Override
+	public void setDamage(ItemStack stack, int damage) {
+
+	}
+
+	@Override
 	public float getAttackDamageBonus(Entity p_345249_, float p_336179_, DamageSource p_345403_) {
 		return super.getAttackDamageBonus(p_345249_, p_336179_, p_345403_);
 	}
