@@ -49,6 +49,19 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
 	}
 
 	@Override
+	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		if(getJoulesStored(stack) < properties.extract.getJoules()) {
+			return false;
+		}
+		return super.hurtEnemy(stack, target, attacker);
+	}
+
+	@Override
+	public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+
+	}
+
+	@Override
 	public float getAttackDamageBonus(Entity p_345249_, float p_336179_, DamageSource p_345403_) {
 		return super.getAttackDamageBonus(p_345249_, p_336179_, p_345403_);
 	}

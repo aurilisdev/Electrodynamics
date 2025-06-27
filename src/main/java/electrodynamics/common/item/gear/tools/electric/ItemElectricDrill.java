@@ -192,6 +192,19 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
 
     }
 
+    @Override
+    public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if(getJoulesStored(stack) < properties.extract.getJoules()) {
+            return false;
+        }
+        return super.hurtEnemy(stack, target, attacker);
+    }
+
+    @Override
+    public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+
+    }
+
     public static double getSpeedBoost(ItemStack stack) {
         return stack.getOrDefault(VoltaicDataComponentTypes.SPEED, 0.0);
     }
