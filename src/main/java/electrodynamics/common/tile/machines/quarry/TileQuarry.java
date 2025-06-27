@@ -27,10 +27,10 @@ import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.FlowingFluidBlock;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -875,7 +875,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	private boolean skipBlock(BlockState state) {
-		return state.isAir() || !state.getFluidState().isEmpty() || state.is(Blocks.BEDROCK) || miningPos.getValue().getY() == 0;
+		return state.isAir() || state.is(Blocks.BEDROCK) || miningPos.getValue().getY() == 0 || state.getBlock() instanceof FlowingFluidBlock;
 	}
 
 	private void tickClient(ComponentTickable tick) {
