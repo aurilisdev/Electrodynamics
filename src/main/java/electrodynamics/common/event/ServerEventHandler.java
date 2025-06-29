@@ -17,6 +17,8 @@ import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.reloadlistener.GasCollectorChromoCardsRegister;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
 import electrodynamics.compatibility.mekanism.MekanismHandler;
+import electrodynamics.registers.ElectrodynamicsItems;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -25,10 +27,13 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingKnockBackEvent;
+import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 import voltaic.Voltaic;
+import voltaic.api.item.IItemElectric;
 import voltaic.common.event.type.AbstractEquipmentChangeHandler;
 import voltaic.common.event.type.AbstractIncomingDamageHandler;
 import voltaic.common.event.type.AbstractLivingDamageHandler;
@@ -111,6 +116,20 @@ public class ServerEventHandler {
 		CoalGeneratorFuelRegister.INSTANCE.generateTagValues();
 		ThermoelectricGeneratorHeatRegister.INSTANCE.generateTagValues();
 		GasCollectorChromoCardsRegister.INSTANCE.generateTagValues();
+	}
+
+	// Fuck this game its becoming so ass to code in
+	@SubscribeEvent
+	public static void handleElectricToolDamage(AttackEntityEvent event) {
+		ItemStack stack = event.getEntity().getWeaponItem();
+		if(stack.isEmpty() || !(stack.is(ElectrodynamicsItems.ITEM_ELECTRICBATON) || stack.is(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW) || stack.is(ElectrodynamicsItems.ITEM_ELECTRICDRILL))) {
+			return;
+		}
+		IItemElectric electric = (IItemElectric) stack.getItem();
+		if(electric.getJoulesStored(stack) >= electric.getElectricProperties().extract.getJoules()) {
+			return;
+		}
+		event.setCanceled(true);
 	}
 
 	// TODO: Why was this commented?
