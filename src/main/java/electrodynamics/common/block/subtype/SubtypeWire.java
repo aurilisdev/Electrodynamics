@@ -13,9 +13,11 @@ import electrodynamics.common.block.connect.BlockWire;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.MaterialColor;
 import net.minecraftforge.common.Tags;
 import voltaic.api.ISubtype;
 import voltaic.api.network.cable.type.IWire;
@@ -379,10 +381,10 @@ public enum SubtypeWire implements ISubtype, IWire {
      */
     public static enum InsulationMaterial implements IInsulationMaterial {
 
-        BARE(false, true, 0, 1, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL),
-        WOOL(true, false, 240, 2, Properties.copy(Blocks.WHITE_WOOL), SoundType.WOOL),
-        THICK_WOOL(true, false, 960, 3, Properties.copy(Blocks.WHITE_WOOL), SoundType.WOOL),
-        CERAMIC(true, true, 480, 3, Properties.copy(Blocks.STONE), SoundType.TUFF);
+    	BARE(false, true, 0, 1, BlockBehaviour.Properties.of(Material.METAL, MaterialColor.METAL).strength(5.0F, 6.0F).sound(SoundType.METAL), SoundType.METAL),
+        WOOL(true, false, 240, 2, BlockBehaviour.Properties.of(Material.WOOL, MaterialColor.SNOW).strength(0.8F).sound(SoundType.WOOL), SoundType.WOOL),
+        THICK_WOOL(true, false, 960, 3, BlockBehaviour.Properties.of(Material.WOOL, MaterialColor.SNOW).strength(0.8F).sound(SoundType.WOOL), SoundType.WOOL),
+        CERAMIC(true, true, 480, 3, BlockBehaviour.Properties.of(Material.STONE, MaterialColor.STONE).strength(1.5F, 6.0F), SoundType.TUFF);
 
         private final boolean insulated;
         private final boolean fireProof;
