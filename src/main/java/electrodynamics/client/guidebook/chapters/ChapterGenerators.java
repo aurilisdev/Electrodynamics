@@ -19,6 +19,7 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.registries.ForgeRegistries;
 import voltaic.api.electricity.formatting.ChatFormatter;
 import voltaic.api.electricity.formatting.DisplayUnits;
@@ -239,7 +240,7 @@ public class ChapterGenerators extends Chapter {
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.fuels").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		for (Item item : CoalGeneratorFuelRegister.INSTANCE.getFuels()) {
 			pageData.add(new TextWrapperObject(item.getDescription()).setSeparateStart());
-			pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.burntime", ChatFormatter.getChatDisplayShort(new ItemStack(item).getBurnTime(null) / 20.0, DisplayUnits.TIME_SECONDS))).setIndentions(1).setSeparateStart());
+			pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.burntime", ChatFormatter.getChatDisplayShort(ForgeHooks.getBurnTime(new ItemStack(item), null) / 20.0, DisplayUnits.TIME_SECONDS))).setIndentions(1).setSeparateStart());
 		}
 
 		// Hydroelectric Generator

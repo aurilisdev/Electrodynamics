@@ -1,19 +1,12 @@
 package electrodynamics.common.block;
 
-import javax.annotation.Nullable;
-
-import electrodynamics.common.block.subtype.SubtypeOre;
-import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DropExperienceBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.api.radiation.RadiationSystem;
 import voltaic.api.radiation.SimpleRadiationSource;
@@ -23,26 +16,13 @@ import voltaic.common.reloadlistener.RadioactiveBlockRegister;
 import voltaic.prefab.utilities.CapabilityUtils;
 import voltaic.registers.VoltaicCapabilities;
 
-public class BlockOre extends DropExperienceBlock {
+public class BlockRawOre extends Block {
 
-	@Nullable
-	public final SubtypeOre ore;
-	@Nullable
-	public final SubtypeOreDeepslate deepOre;
+    public BlockRawOre(Properties properties) {
+        super(properties.randomTicks());
+    }
 
-	public BlockOre(SubtypeOre ore) {
-		super(Properties.copy(Blocks.STONE).requiresCorrectToolForDrops().strength(ore.hardness, ore.resistance).randomTicks(), UniformInt.of(ore.minXP, ore.maxXP));
-		this.ore = ore;
-		deepOre = null;
-	}
-
-	public BlockOre(SubtypeOreDeepslate ore) {
-		super(Properties.copy(Blocks.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(ore.hardness + 1.5f, ore.resistance + 1.5f).randomTicks(), UniformInt.of(ore.minXP, ore.maxXP));
-		deepOre = ore;
-		this.ore = null;
-	}
-	
-	@Override
+    @Override
 	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
         super.entityInside(state, level, pos, entity);
         if (level.getLevelData().getGameTime() % 10 == 0 && !level.isClientSide && entity instanceof LivingEntity living) {
