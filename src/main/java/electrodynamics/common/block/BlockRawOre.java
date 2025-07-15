@@ -1,21 +1,12 @@
 package electrodynamics.common.block;
 
-import javax.annotation.Nullable;
-
-import com.mojang.serialization.MapCodec;
-
-import electrodynamics.common.block.subtype.SubtypeOre;
-import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DropExperienceBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.api.radiation.RadiationSystem;
 import voltaic.api.radiation.SimpleRadiationSource;
@@ -24,28 +15,10 @@ import voltaic.api.radiation.util.RadioactiveObject;
 import voltaic.common.reloadlistener.RadioactiveBlockRegister;
 import voltaic.registers.VoltaicCapabilities;
 
-public class BlockOre extends DropExperienceBlock {
+public class BlockRawOre extends Block {
 
-    @Nullable
-    public final SubtypeOre ore;
-    @Nullable
-    public final SubtypeOreDeepslate deepOre;
-
-    public BlockOre(SubtypeOre ore) {
-        super(UniformInt.of(ore.minXP, ore.maxXP), Blocks.STONE.properties().requiresCorrectToolForDrops().strength(ore.hardness, ore.resistance).randomTicks());
-        this.ore = ore;
-        deepOre = null;
-    }
-
-    public BlockOre(SubtypeOreDeepslate ore) {
-        super(UniformInt.of(ore.minXP, ore.maxXP), Blocks.STONE.properties().sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(ore.hardness + 1.5f, ore.resistance + 1.5f).randomTicks());
-        deepOre = ore;
-        this.ore = null;
-    }
-
-    @Override
-    public MapCodec<? extends DropExperienceBlock> codec() {
-        throw new UnsupportedOperationException("Need to implement CODEC");
+    public BlockRawOre(Properties properties) {
+        super(properties.randomTicks());
     }
 
     @Override
@@ -102,4 +75,5 @@ public class BlockOre extends DropExperienceBlock {
         }
         RadiationSystem.addRadiationSource(level, new SimpleRadiationSource(rad.amount(), rad.strength(), 10, false, 1, pos, false, false));
     }
+
 }

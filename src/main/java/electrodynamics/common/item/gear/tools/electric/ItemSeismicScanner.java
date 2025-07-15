@@ -96,13 +96,8 @@ public class ItemSeismicScanner extends ItemElectric {
 
     @Override
     public InteractionResultHolder<ItemStack> use(final Level world, Player player, InteractionHand hand) {
-        if (!world.isClientSide) {
-            ItemStack scanner = player.getItemInHand(hand);
-
-
-            if (!player.isShiftKeyDown()) {
-                player.openMenu(getMenuProvider(world, player, scanner, hand));
-            }
+        if (!world.isClientSide && !player.isShiftKeyDown()) {
+            player.openMenu(getMenuProvider(world, player, player.getItemInHand(hand), hand));
         }
         return super.use(world, player, hand);
     }

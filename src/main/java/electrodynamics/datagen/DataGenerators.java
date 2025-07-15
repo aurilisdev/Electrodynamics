@@ -24,6 +24,9 @@ import electrodynamics.datagen.server.ElectrodynamicsLootTablesProvider;
 import electrodynamics.datagen.server.ElectrodynamicsMultiblockProvider;
 import electrodynamics.datagen.server.GasCollectorChromoCardsProvider;
 import electrodynamics.datagen.server.ThermoelectricGenHeatSourceProvider;
+import electrodynamics.datagen.server.radiation.ElectrodynamicsRadiationShieldingProvider;
+import electrodynamics.datagen.server.radiation.ElectrodynamicsRadioactiveBlocksProvider;
+import electrodynamics.datagen.server.radiation.ElectrodynamicsRadioactiveItemsProvider;
 import electrodynamics.datagen.server.recipe.ElectrodynamicsRecipeProvider;
 import electrodynamics.datagen.server.tags.ElectrodynamicsTagsProvider;
 import electrodynamics.registers.ElectrodynamicsDamageTypes;
@@ -105,6 +108,9 @@ public class DataGenerators {
             generator.addProvider(true, new CoalGeneratorFuelSourceProvider(output));
             generator.addProvider(true, new ThermoelectricGenHeatSourceProvider(output));
             generator.addProvider(true, new GasCollectorChromoCardsProvider(output));
+            generator.addProvider(true, new ElectrodynamicsRadioactiveBlocksProvider(output));
+            generator.addProvider(true, new ElectrodynamicsRadioactiveItemsProvider(output));
+            generator.addProvider(true, new ElectrodynamicsRadiationShieldingProvider(output));
 
             DatapackBuiltinEntriesProvider datapacks = new DatapackBuiltinEntriesProvider(output, lookupProvider, new RegistrySetBuilder()
                     //

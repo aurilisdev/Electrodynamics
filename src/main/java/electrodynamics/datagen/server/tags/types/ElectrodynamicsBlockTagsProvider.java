@@ -4,6 +4,7 @@ import java.util.concurrent.CompletableFuture;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.BlockOre;
+import electrodynamics.common.block.BlockRawOre;
 import electrodynamics.common.block.connect.BlockFluidPipe;
 import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeOre;
@@ -37,7 +38,7 @@ public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
                 //
                 .add(ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getAllValuesArray(new BlockOre[0]))
                 //
-                .add(ElectrodynamicsBlocks.BLOCKS_RAWORE.getAllValuesArray(new Block[0]))
+                .add(ElectrodynamicsBlocks.BLOCKS_RAWORE.getAllValuesArray(new BlockRawOre[0]))
                 //
                 .add(ElectrodynamicsBlocks.BLOCKS_MACHINE.getAllValuesArray(new BlockMachine[0]))
                 //
@@ -95,7 +96,7 @@ public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
                 //
                 .add(ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getSpecificValuesArray(new BlockOre[0], SubtypeOreDeepslate.getOreForMiningLevel(0)))
                 //
-                .add(ElectrodynamicsBlocks.BLOCKS_RAWORE.getSpecificValuesArray(new Block[0], SubtypeRawOreBlock.getForMiningLevel(0)))
+                .add(ElectrodynamicsBlocks.BLOCKS_RAWORE.getSpecificValuesArray(new BlockRawOre[0], SubtypeRawOreBlock.getForMiningLevel(0)))
                 //
                 .add(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getSpecificValuesArray(new Block[0], SubtypeResourceBlock.getForMiningLevel(0)))
                 //
@@ -115,7 +116,7 @@ public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
                 //
                 .add(ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getSpecificValuesArray(new BlockOre[0], SubtypeOreDeepslate.getOreForMiningLevel(1)))
                 //
-                .add(ElectrodynamicsBlocks.BLOCKS_RAWORE.getSpecificValuesArray(new Block[0], SubtypeRawOreBlock.getForMiningLevel(1)))
+                .add(ElectrodynamicsBlocks.BLOCKS_RAWORE.getSpecificValuesArray(new BlockRawOre[0], SubtypeRawOreBlock.getForMiningLevel(1)))
                 //
                 .add(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getSpecificValuesArray(new Block[0], SubtypeResourceBlock.getForMiningLevel(1)))
                 //
@@ -157,7 +158,7 @@ public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
                 //
                 .add(ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getSpecificValuesArray(new BlockOre[0], SubtypeOreDeepslate.getOreForMiningLevel(2)))
                 //
-                .add(ElectrodynamicsBlocks.BLOCKS_RAWORE.getSpecificValuesArray(new Block[0], SubtypeRawOreBlock.getForMiningLevel(2)))
+                .add(ElectrodynamicsBlocks.BLOCKS_RAWORE.getSpecificValuesArray(new BlockRawOre[0], SubtypeRawOreBlock.getForMiningLevel(2)))
                 //
                 .add(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getSpecificValuesArray(new Block[0], SubtypeResourceBlock.getForMiningLevel(2)));
 
@@ -167,7 +168,7 @@ public class ElectrodynamicsBlockTagsProvider extends BlockTagsProvider {
                 //
                 .add(ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getSpecificValuesArray(new BlockOre[0], SubtypeOreDeepslate.getOreForMiningLevel(3)))
                 //
-                .add(ElectrodynamicsBlocks.BLOCKS_RAWORE.getSpecificValuesArray(new Block[0], SubtypeRawOreBlock.getForMiningLevel(3)))
+                .add(ElectrodynamicsBlocks.BLOCKS_RAWORE.getSpecificValuesArray(new BlockRawOre[0], SubtypeRawOreBlock.getForMiningLevel(3)))
                 //
                 .add(ElectrodynamicsBlocks.BLOCKS_RESOURCE.getSpecificValuesArray(new Block[0], SubtypeResourceBlock.getForMiningLevel(3)));
 

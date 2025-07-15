@@ -1,10 +1,7 @@
 package electrodynamics.registers;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.common.block.BlockFrame;
-import electrodynamics.common.block.BlockLogisticalManager;
-import electrodynamics.common.block.BlockOre;
-import electrodynamics.common.block.BlockSeismicMarker;
+import electrodynamics.common.block.*;
 import electrodynamics.common.block.chemicalreactor.BlockChemicalReactor;
 import electrodynamics.common.block.chemicalreactor.BlockChemicalReactorExtra;
 import electrodynamics.common.block.connect.BlockFluidPipe;
@@ -52,7 +49,7 @@ public class ElectrodynamicsBlocks {
 
     public static final BulkDeferredHolder<Block, BlockOre, SubtypeOre> BLOCKS_ORE = new BulkDeferredHolder<>(SubtypeOre.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockOre(subtype)));
     public static final BulkDeferredHolder<Block, BlockOre, SubtypeOreDeepslate> BLOCKS_DEEPSLATEORE = new BulkDeferredHolder<>(SubtypeOreDeepslate.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockOre(subtype)));
-    public static final BulkDeferredHolder<Block, Block, SubtypeRawOreBlock> BLOCKS_RAWORE = new BulkDeferredHolder<>(SubtypeRawOreBlock.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new Block(Blocks.STONE.properties().requiresCorrectToolForDrops().strength(5.0F, 6.0F))));
+    public static final BulkDeferredHolder<Block, BlockRawOre, SubtypeRawOreBlock> BLOCKS_RAWORE = new BulkDeferredHolder<>(SubtypeRawOreBlock.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockRawOre(Blocks.STONE.properties().requiresCorrectToolForDrops().strength(5.0F, 6.0F))));
     public static final BulkDeferredHolder<Block, BlockMachine, SubtypeMachine> BLOCKS_MACHINE = new BulkDeferredHolder<>(SubtypeMachine.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockMachine(subtype)));
     public static final DeferredHolder<Block, BlockChemicalReactor> BLOCK_CHEMICALREACTOR = BLOCKS.register("chemicalreactor", BlockChemicalReactor::new);
     public static final DeferredHolder<Block, GenericMachineBlock> BLOCK_ROTARYUNIFIER = BLOCKS.register("rotaryunifier", () -> new BlockMachine(new IMachine() {
