@@ -73,7 +73,7 @@ public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher>
 
         TextureAtlasSprite sp = minecraft().getTextureAtlas(ElectrodynamicsClientRegister.BLOCK_ATLAS).apply(attributes.getStillTexture());
 
-        Vector3f color = new Color(attributes.getColor(fluid)).multiply(Color.fromABGR(sp.getPixelRGBA(1, level().getRandom().nextInt(17), level().getRandom().nextInt(17)))).getFloatVector();
+        Vector3f color = new Color(attributes.getColor(fluid)).multiply(Color.fromABGR(sp.getPixelRGBA(1, level().getRandom().nextInt(16), level().getRandom().nextInt(16)))).getFloatVector();
 
         for (int i = 0; i < 2; i++) {
             double x = 0.5 + level().random.nextDouble() * 0.4 - 0.2;
