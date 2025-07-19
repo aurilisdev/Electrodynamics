@@ -10,16 +10,16 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
-import voltaic.api.radiation.RadiationSystem;
-import voltaic.api.radiation.SimpleRadiationSource;
+import net.minecraft.world.phys.AABB;
+import voltaic.api.radiation.RadiationManager;
 import voltaic.api.radiation.util.IRadiationRecipient;
 import voltaic.api.radiation.util.RadioactiveObject;
 import voltaic.common.reloadlistener.RadioactiveBlockRegister;
+import voltaic.common.settings.VoltaicConstants;
 import voltaic.prefab.utilities.CapabilityUtils;
 import voltaic.registers.VoltaicCapabilities;
 
@@ -43,58 +43,38 @@ public class BlockOre extends DropExperienceBlock {
 	}
 	
 	@Override
-	public void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        super.entityInside(state, level, pos, entity);
-        if (level.getLevelData().getGameTime() % 10 == 0 && !level.isClientSide && entity instanceof LivingEntity living) {
-            IRadiationRecipient cap = living.getCapability(VoltaicCapabilities.CAPABILITY_RADIATIONRECIPIENT).orElse(CapabilityUtils.EMPTY_RADIATION_REPIPIENT);
-            if (cap == CapabilityUtils.EMPTY_RADIATION_REPIPIENT) {
-                return;
-            }
-            RadioactiveObject rad = RadioactiveBlockRegister.getValue(state.getBlock());
-            if(rad.amount() <= 0) {
-                return;
-            }
-            cap.recieveRadiation(living, rad.amount(), rad.strength());
-        }
-    }
-
-    //adds permanent radiation source at this blocks location until the block is destroyed
-    @Override
 	public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         super.randomTick(state, level, pos, random);
 
-        if(level.getLevelData().getGameTime() % 10 != 0) {
+        if(!VoltaicConstants.ORES_EMIT_RADIATION || level.getLevelData().getGameTime() % 20 != 0) {
             return;
         }
+
         RadioactiveObject rad = RadioactiveBlockRegister.getValue(state.getBlock());
 
-        if(rad.amount() <= 0 || RadiationSystem.getRadiationSources(level).contains(pos)) {
+        if(rad.amount() <= 0) {
             return;
         }
 
-        RadiationSystem.addRadiationSource(level, new SimpleRadiationSource(rad.amount(), rad.strength(), 10, false, 1, pos, false, false));
-    }
+        for(Entity entity : level.getAllEntities()) {
 
-    @Override
-	public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
-        super.onRemove(state, level, pos, newState, movedByPiston);
-        if(!level.isClientSide) {
-            RadiationSystem.removeRadiationSource(level, pos, false);
+            AABB box = new AABB(pos).inflate(5);
+
+            if(!entity.isAlive() || !(entity instanceof LivingEntity) || !entity.getBoundingBox().intersects(box)) {
+                continue;
+            }
+
+            IRadiationRecipient cap = entity.getCapability(VoltaicCapabilities.CAPABILITY_RADIATIONRECIPIENT).orElse(CapabilityUtils.EMPTY_RADIATION_REPIPIENT);
+            if (cap == CapabilityUtils.EMPTY_RADIATION_REPIPIENT) {
+                continue;
+            }
+
+            double recieved = RadiationManager.getAppliedRadiation(level, pos, entity.getOnPos().above(), rad.amount(), rad.strength());
+
+            cap.recieveRadiation((LivingEntity) entity, recieved, rad.strength());
+
         }
     }
 
-    @Override
-	public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
-        super.onPlace(state, level, pos, oldState, movedByPiston);
-        if(level.isClientSide) {
-            return;
-        }
-        RadioactiveObject rad = RadioactiveBlockRegister.getValue(state.getBlock());
-
-        if(rad.amount() <= 0 || RadiationSystem.getRadiationSources(level).contains(pos)) {
-            return;
-        }
-        RadiationSystem.addRadiationSource(level, new SimpleRadiationSource(rad.amount(), rad.strength(), 10, false, 1, pos, false, false));
-    }
 
 }
