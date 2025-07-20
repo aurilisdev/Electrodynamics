@@ -19,7 +19,7 @@ public class ContainerElectricArcFurnace extends GenericContainerBlockEntity<Til
 	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience };
 
 	public ContainerElectricArcFurnace(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(5), new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainer(5), new SimpleContainerData(5));
 	}
 
 	public ContainerElectricArcFurnace(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {

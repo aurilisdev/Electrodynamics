@@ -11,7 +11,7 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 public class ContainerCreativePowerSource extends GenericContainerBlockEntity<TileCreativePowerSource> {
 
 	public ContainerCreativePowerSource(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainerData(5));
 	}
 
 	public ContainerCreativePowerSource(int id, Inventory playerinv, ContainerData inventorydata) {
