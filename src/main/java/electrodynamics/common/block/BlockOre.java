@@ -52,7 +52,7 @@ public class BlockOre extends DropExperienceBlock {
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         super.randomTick(state, level, pos, random);
 
-        if(!VoltaicConstants.ORES_EMIT_RADIATION || level.getLevelData().getGameTime() % 20 != 0) {
+        if(!VoltaicConstants.ORES_EMIT_RADIATION || level.getLevelData().getGameTime() % VoltaicConstants.ORE_RADIATION_ADMIT_RATE != 0) {
             return;
         }
 
