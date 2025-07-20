@@ -19,7 +19,7 @@ public class ContainerFermentationPlant extends GenericContainerBlockEntity<Tile
 	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience };
 
 	public ContainerFermentationPlant(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(6), new IntArray(3));
+		this(id, playerinv, new Inventory(6), new IntArray(5));
 	}
 
 	public ContainerFermentationPlant(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {

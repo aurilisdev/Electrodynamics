@@ -17,7 +17,7 @@ public class ContainerCoolantResavoir extends GenericContainerBlockEntity<TileCo
 	}
 
 	public ContainerCoolantResavoir(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(1), new IntArray(3));
+		this(id, playerinv, new Inventory(1), new IntArray(5));
 	}
 
 	@Override

@@ -13,7 +13,7 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 public class ContainerCombustionChamber extends GenericContainerBlockEntity<TileCombustionChamber> {
 
 	public ContainerCombustionChamber(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(1), new IntArray(3));
+		this(id, playerinv, new Inventory(1), new IntArray(5));
 	}
 
 	public ContainerCombustionChamber(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {

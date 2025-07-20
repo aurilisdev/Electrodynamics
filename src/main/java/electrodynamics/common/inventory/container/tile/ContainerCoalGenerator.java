@@ -15,7 +15,7 @@ import voltaic.prefab.utilities.math.Color;
 public class ContainerCoalGenerator extends GenericContainerBlockEntity<TileCoalGenerator> {
 
 	public ContainerCoalGenerator(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(1), new IntArray(3));
+		this(id, playerinv, new Inventory(1), new IntArray(5));
 	}
 
 	public ContainerCoalGenerator(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {

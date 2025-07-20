@@ -17,7 +17,7 @@ public class ContainerElectrolyticSeparator extends GenericContainerBlockEntity<
 	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
 
 	public ContainerElectrolyticSeparator(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(6), new IntArray(3));
+		this(id, playerinv, new Inventory(6), new IntArray(5));
 	}
 
 	public ContainerElectrolyticSeparator(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {

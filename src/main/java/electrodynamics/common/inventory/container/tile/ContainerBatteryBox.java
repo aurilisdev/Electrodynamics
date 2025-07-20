@@ -17,7 +17,7 @@ public class ContainerBatteryBox extends GenericContainerBlockEntity<TileBattery
 	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedcapacity, SubtypeItemUpgrade.basiccapacity };
 
 	public ContainerBatteryBox(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(6), new IntArray(3));
+		this(id, playerinv, new Inventory(6), new IntArray(5));
 	}
 
 	public ContainerBatteryBox(int id, PlayerInventory pinv, IInventory inv, IIntArray data) {
