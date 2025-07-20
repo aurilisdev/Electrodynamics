@@ -15,7 +15,7 @@ public class ContainerFluidPipeFilter extends GenericContainerBlockEntity<TileFl
 	}
 
 	public ContainerFluidPipeFilter(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainerData(5));
 	}
 
 	@Override

@@ -16,7 +16,7 @@ import voltaic.prefab.utilities.math.Color;
 public class ContainerElectricArcFurnaceDouble extends GenericContainerBlockEntity<TileElectricArcFurnaceDouble> {
 
 	public ContainerElectricArcFurnaceDouble(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(7) ,new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainer(7) ,new SimpleContainerData(5));
 	}
 
 	public ContainerElectricArcFurnaceDouble(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {

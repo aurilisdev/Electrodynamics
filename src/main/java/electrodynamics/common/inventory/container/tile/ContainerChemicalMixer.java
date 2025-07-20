@@ -20,7 +20,7 @@ public class ContainerChemicalMixer extends GenericContainerBlockEntity<TileChem
 	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience };
 
 	public ContainerChemicalMixer(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(5));
 	}
 
 	public ContainerChemicalMixer(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
