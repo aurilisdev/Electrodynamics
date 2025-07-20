@@ -17,7 +17,7 @@ public class ContainerSeismicRelay extends GenericContainerBlockEntity<TileSeism
 	}
 
 	public ContainerSeismicRelay(int id, Inventory playerinv) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_SEISMICRELAY.get(), id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));
+		super(ElectrodynamicsMenuTypes.CONTAINER_SEISMICRELAY.get(), id, playerinv, new SimpleContainer(1), new SimpleContainerData(5));
 	}
 
 	@Override

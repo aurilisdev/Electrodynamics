@@ -17,7 +17,7 @@ public class ContainerGasVent extends GenericContainerBlockEntity<TileGasVent> {
 	}
 
 	public ContainerGasVent(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(5));
 	}
 
 	@Override

@@ -21,7 +21,7 @@ public class ContainerAdvancedCompressor extends GenericContainerBlockEntity<Gen
     }
 
     public ContainerAdvancedCompressor(int id, Inventory playerInv) {
-        this(id, playerInv, new SimpleContainer(5), new SimpleContainerData(3));
+        this(id, playerInv, new SimpleContainer(5), new SimpleContainerData(5));
     }
 
     @Override

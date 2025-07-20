@@ -22,7 +22,7 @@ public class ContainerThermoelectricManipulator extends GenericContainerBlockEnt
 	}
 
 	public ContainerThermoelectricManipulator(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(7), new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainer(7), new SimpleContainerData(5));
 	}
 
 	@Override

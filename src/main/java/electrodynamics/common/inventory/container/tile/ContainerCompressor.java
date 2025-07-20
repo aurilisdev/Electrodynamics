@@ -21,7 +21,7 @@ public class ContainerCompressor extends GenericContainerBlockEntity<GenericTile
 	}
 
 	public ContainerCompressor(int id, Inventory playerInv) {
-		this(id, playerInv, new SimpleContainer(5), new SimpleContainerData(3));
+		this(id, playerInv, new SimpleContainer(5), new SimpleContainerData(5));
 	}
 
 	@Override
