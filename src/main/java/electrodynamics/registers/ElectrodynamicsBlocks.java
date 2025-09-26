@@ -4,6 +4,7 @@ import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.BlockFrame;
 import electrodynamics.common.block.BlockLogisticalManager;
 import electrodynamics.common.block.BlockOre;
+import electrodynamics.common.block.BlockRawOre;
 import electrodynamics.common.block.BlockSeismicMarker;
 import electrodynamics.common.block.connect.BlockFluidPipe;
 import electrodynamics.common.block.connect.BlockWire;
@@ -34,7 +35,7 @@ public class ElectrodynamicsBlocks {
 
 	public static final BulkRegistryObject<BlockOre, SubtypeOre> BLOCKS_ORE = new BulkRegistryObject<>(SubtypeOre.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockOre(subtype)));
     public static final BulkRegistryObject<BlockOre, SubtypeOreDeepslate> BLOCKS_DEEPSLATEORE = new BulkRegistryObject<>(SubtypeOreDeepslate.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockOre(subtype)));
-    public static final BulkRegistryObject<Block, SubtypeRawOreBlock> BLOCKS_RAWORE = new BulkRegistryObject<>(SubtypeRawOreBlock.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new Block(Properties.copy(Blocks.STONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F))));
+    public static final BulkRegistryObject<BlockRawOre, SubtypeRawOreBlock> BLOCKS_RAWORE = new BulkRegistryObject<>(SubtypeRawOreBlock.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockRawOre(Properties.copy(Blocks.STONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F))));
     public static final BulkRegistryObject<BlockMachine, SubtypeMachine> BLOCKS_MACHINE = new BulkRegistryObject<>(SubtypeMachine.values(), subtype -> BLOCKS.register(subtype.tag(), () -> new BlockMachine(subtype)));
     public static final BulkRegistryObject<BlockWire, SubtypeWire> BLOCKS_WIRE = new BulkRegistryObject<>(SubtypeWire.values(), subtype -> {
         if(subtype.getWireClass() == WireClass.LOGISTICAL) {

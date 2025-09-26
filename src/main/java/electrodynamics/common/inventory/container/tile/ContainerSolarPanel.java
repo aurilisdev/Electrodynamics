@@ -16,7 +16,7 @@ public class ContainerSolarPanel extends GenericContainerBlockEntity<TileSolarPa
 	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.improvedsolarcell };
 
 	public ContainerSolarPanel(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(5));
 	}
 
 	public ContainerSolarPanel(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {

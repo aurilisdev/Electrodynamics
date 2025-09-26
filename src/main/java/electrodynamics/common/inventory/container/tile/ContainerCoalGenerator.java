@@ -19,7 +19,7 @@ public class ContainerCoalGenerator extends GenericContainerBlockEntity<TileCoal
 	}
 
 	public ContainerCoalGenerator(int id, Inventory playerinv, Container inventory) {
-		this(id, playerinv, inventory, new SimpleContainerData(3));
+		this(id, playerinv, inventory, new SimpleContainerData(5));
 	}
 
 	public ContainerCoalGenerator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
