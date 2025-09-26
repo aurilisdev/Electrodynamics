@@ -136,6 +136,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
         tooltip.add(ElectroTextUtils.tooltip("electricdrill.usage", ChatFormatter.getChatDisplayShort(stack.getOrDefault(VoltaicDataComponentTypes.POWER_USAGE, POWER_USAGE), DisplayUnits.JOULES).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
 
         tooltip.add(ElectroTextUtils.tooltip("electricdrill.overclock", ChatFormatter.getChatDisplayShort(getSpeedBoost(stack) * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+        super.appendHoverText(stack, context, tooltip, flagIn);
     }
 
     @Override
@@ -166,6 +167,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
             if (handler == null) {
                 handler = new CapabilityItemStackHandler(SLOT_COUNT, stack);
             }
+            handler.setUser(player);
             return new ContainerElectricDrill(id, player.getInventory(), handler, GenericContainerItem.makeData(hand));
         }, CONTAINER_TITLE);
     }
