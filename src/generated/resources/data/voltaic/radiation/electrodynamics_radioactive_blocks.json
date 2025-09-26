@@ -1,0 +1,18 @@
+{
+  "#c:ores/thorium": {
+    "amount": 500.0,
+    "strength": 1.0
+  },
+  "#c:ores/uranium": {
+    "amount": 100.0,
+    "strength": 1.0
+  },
+  "#c:storage_blocks/rawthorium": {
+    "amount": 500.0,
+    "strength": 1.0
+  },
+  "#c:storage_blocks/rawuranium": {
+    "amount": 450.0,
+    "strength": 1.0
+  }
+}

@@ -8,13 +8,15 @@ import java.util.Locale;
 
 import javax.annotation.Nullable;
 
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.material.MapColor;
 import org.jetbrains.annotations.NotNull;
 
 import electrodynamics.common.block.connect.BlockWire;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.neoforged.neoforge.common.Tags;
@@ -374,10 +376,10 @@ public enum SubtypeWire implements ISubtype, IWire {
      */
     public static enum InsulationMaterial implements IInsulationMaterial {
 
-        BARE(false, true, 0, 1, Blocks.IRON_BLOCK.properties(), SoundType.METAL),
-        WOOL(true, false, 240, 2, Blocks.WHITE_WOOL.properties(), SoundType.WOOL),
-        THICK_WOOL(true, false, 960, 3, Blocks.WHITE_WOOL.properties(), SoundType.WOOL),
-        CERAMIC(true, true, 480, 3, Blocks.STONE.properties(), SoundType.TUFF);
+        BARE(false, true, 0, 1, BlockBehaviour.Properties.of().mapColor(MapColor.METAL).instrument(NoteBlockInstrument.IRON_XYLOPHONE).strength(5.0F, 6.0F).sound(SoundType.METAL), SoundType.METAL),
+        WOOL(true, false, 240, 2, BlockBehaviour.Properties.of().mapColor(MapColor.SNOW).instrument(NoteBlockInstrument.GUITAR).strength(0.8F).sound(SoundType.WOOL).ignitedByLava(), SoundType.WOOL),
+        THICK_WOOL(true, false, 960, 3, BlockBehaviour.Properties.of().mapColor(MapColor.SNOW).instrument(NoteBlockInstrument.GUITAR).strength(0.8F).sound(SoundType.WOOL).ignitedByLava(), SoundType.WOOL),
+        CERAMIC(true, true, 480, 3, BlockBehaviour.Properties.of().mapColor(MapColor.STONE).instrument(NoteBlockInstrument.BASEDRUM).strength(1.5F, 6.0F), SoundType.TUFF);
 
         private final boolean insulated;
         private final boolean fireProof;

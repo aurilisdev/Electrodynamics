@@ -5,7 +5,6 @@ import java.util.HashSet;
 import com.mojang.serialization.MapCodec;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.tile.electricitygrid.TileLogisticalWire;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -18,6 +17,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import voltaic.api.network.cable.type.IWire;
 import voltaic.common.block.states.VoltaicBlockStates;
 import voltaic.prefab.utilities.math.Color;
 
@@ -28,7 +28,7 @@ public class BlockLogisticalWire extends BlockWire {
 
     public static final HashSet<Block> WIRES = new HashSet<>();
 
-    public BlockLogisticalWire(SubtypeWire wire) {
+    public BlockLogisticalWire(IWire wire) {
         super(wire);
         WIRES.add(this);
         stateDefinition.any().setValue(VoltaicBlockStates.LIT, false);

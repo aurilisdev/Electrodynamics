@@ -53,6 +53,11 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
     }
 
     @Override
+    public void setDamage(ItemStack stack, int damage) {
+
+    }
+
+    @Override
     public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
         ItemStack empty = new ItemStack(this);
@@ -77,8 +82,8 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
     }
 
     @Override
-    public boolean hurtEnemy(ItemStack stack, LivingEntity pTarget, LivingEntity pAttacker) {
-        return super.hurtEnemy(stack, pTarget, pAttacker) && getJoulesStored(stack) > properties.extract.getJoules();
+    public void postHurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+
     }
 
     @Override
