@@ -15,7 +15,7 @@ public class ContainerGasPipePump extends GenericContainerBlockEntity<TileGasPip
 	}
 
 	public ContainerGasPipePump(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainerData(5));
 	}
 
 	@Override

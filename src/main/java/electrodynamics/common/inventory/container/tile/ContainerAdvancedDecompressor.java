@@ -21,7 +21,7 @@ public class ContainerAdvancedDecompressor extends GenericContainerBlockEntity<G
     }
 
     public ContainerAdvancedDecompressor(int id, Inventory playerinv) {
-        this(id, playerinv, new SimpleContainer(5), new SimpleContainerData(3));
+        this(id, playerinv, new SimpleContainer(5), new SimpleContainerData(5));
     }
 
     @Override

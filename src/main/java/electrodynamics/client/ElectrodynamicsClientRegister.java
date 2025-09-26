@@ -58,6 +58,7 @@ import electrodynamics.client.screen.tile.ScreenCombustionChamber;
 import electrodynamics.client.screen.tile.ScreenCompressor;
 import electrodynamics.client.screen.tile.ScreenCoolantResavoir;
 import electrodynamics.client.screen.tile.ScreenCreativeFluidSource;
+import electrodynamics.client.screen.tile.ScreenCreativeGasSource;
 import electrodynamics.client.screen.tile.ScreenCreativePowerSource;
 import electrodynamics.client.screen.tile.ScreenDecompressor;
 import electrodynamics.client.screen.tile.ScreenElectricArcFurnace;
@@ -229,6 +230,7 @@ public class ElectrodynamicsClientRegister {
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_CIRCUITMONITOR.get(), ScreenCircuitMonitor::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDCOMPRESSOR.get(), ScreenAdvancedCompressor::new);
 		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDDECOMPRESSOR.get(), ScreenAdvancedDecompressor::new);
+		MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEGASSOURCE.get(), ScreenCreativeGasSource::new);
 
 		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICBATON.get(), VoltaicClientRegister.ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricBaton) stack.getItem()).getJoulesStored(stack) > ((ItemElectricBaton) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
 		ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICDRILL.get(), VoltaicClientRegister.ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricDrill) stack.getItem()).getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);

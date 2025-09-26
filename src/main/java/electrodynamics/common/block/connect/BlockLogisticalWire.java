@@ -3,7 +3,6 @@ package electrodynamics.common.block.connect;
 import java.util.HashSet;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.tile.electricitygrid.TileLogisticalWire;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -15,6 +14,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterColorHandlersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import voltaic.api.network.cable.type.IWire;
 import voltaic.common.block.states.VoltaicBlockStates;
 import voltaic.prefab.utilities.math.Color;
 
@@ -25,7 +25,7 @@ public class BlockLogisticalWire extends BlockWire {
 
     public static final HashSet<Block> WIRES = new HashSet<>();
 
-    public BlockLogisticalWire(SubtypeWire wire) {
+    public BlockLogisticalWire(IWire wire) {
         super(wire);
         WIRES.add(this);
         stateDefinition.any().setValue(VoltaicBlockStates.LIT, false);

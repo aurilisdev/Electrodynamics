@@ -20,7 +20,7 @@ public class ContainerGasTankGeneric extends GenericContainerBlockEntity<Generic
 	}
 
 	public ContainerGasTankGeneric(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(8), new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainer(8), new SimpleContainerData(5));
 	}
 
 	@Override
