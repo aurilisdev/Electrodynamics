@@ -16,7 +16,7 @@ public class ContainerWindmill extends GenericContainerBlockEntity<TileWindmill>
 	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.stator };
 
 	public ContainerWindmill(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(1), new IntArray(3));
+		this(id, playerinv, new Inventory(1), new IntArray(5));
 	}
 
 	public ContainerWindmill(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {

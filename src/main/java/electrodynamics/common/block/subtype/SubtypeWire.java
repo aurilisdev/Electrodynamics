@@ -10,9 +10,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import electrodynamics.common.block.connect.BlockWire;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.AbstractBlock.Properties;
-import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.material.MaterialColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tags.ITag.INamedTag;
@@ -379,10 +381,10 @@ public enum SubtypeWire implements ISubtype, IWire {
      */
     public static enum InsulationMaterial implements IInsulationMaterial {
 
-        BARE(false, true, 0, 1, Properties.copy(Blocks.IRON_BLOCK), SoundType.METAL),
-        WOOL(true, false, 240, 2, Properties.copy(Blocks.WHITE_WOOL), SoundType.WOOL),
-        THICK_WOOL(true, false, 960, 3, Properties.copy(Blocks.WHITE_WOOL), SoundType.WOOL),
-        CERAMIC(true, true, 480, 3, Properties.copy(Blocks.STONE), SoundType.GILDED_BLACKSTONE);
+    	BARE(false, true, 0, 1, AbstractBlock.Properties.of(Material.METAL, MaterialColor.METAL).strength(5.0F, 6.0F).sound(SoundType.METAL), SoundType.METAL),
+        WOOL(true, false, 240, 2, AbstractBlock.Properties.of(Material.WOOL, MaterialColor.SNOW).strength(0.8F).sound(SoundType.WOOL), SoundType.WOOL),
+        THICK_WOOL(true, false, 960, 3, AbstractBlock.Properties.of(Material.WOOL, MaterialColor.SNOW).strength(0.8F).sound(SoundType.WOOL), SoundType.WOOL),
+        CERAMIC(true, true, 480, 3, AbstractBlock.Properties.of(Material.STONE, MaterialColor.STONE).strength(1.5F, 6.0F), SoundType.GILDED_BLACKSTONE);
 
         private final boolean insulated;
         private final boolean fireProof;

@@ -19,7 +19,7 @@ public class ContainerChemicalCrystallizer extends GenericContainerBlockEntity<T
 	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.experience };
 
 	public ContainerChemicalCrystallizer(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(5), new IntArray(3));
+		this(id, playerinv, new Inventory(5), new IntArray(5));
 	}
 
 	public ContainerChemicalCrystallizer(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {

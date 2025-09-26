@@ -18,7 +18,7 @@ public class ContainerCobblestoneGenerator extends GenericContainerBlockEntity<T
 	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput };
 
 	public ContainerCobblestoneGenerator(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(4), new IntArray(3));
+		this(id, playerinv, new Inventory(4), new IntArray(5));
 	}
 
 	public ContainerCobblestoneGenerator(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {

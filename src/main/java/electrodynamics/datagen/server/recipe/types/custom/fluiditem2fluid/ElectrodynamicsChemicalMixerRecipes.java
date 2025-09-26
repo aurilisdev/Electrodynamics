@@ -44,14 +44,6 @@ public class ElectrodynamicsChemicalMixerRecipes extends AbstractRecipeGenerator
 				//
 				.complete(consumer);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_HYDROFLUORICACID.get(), 1000), 0, 200, 400.0, "hydrofluoric_acid")
-				//
-				.addFluidTagInput(VoltaicTags.Fluids.SULFURIC_ACID, 1000)
-				//
-				.addItemTagInput(VoltaicTags.Items.RAW_ORE_FLUORITE, 1)
-				//
-				.complete(consumer);
-
 		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_CLAY.get(), 1000), 0, 200, 400.0, "liquid_clay")
 				//
 				.addFluidTagInput(FluidTags.WATER, 1000)

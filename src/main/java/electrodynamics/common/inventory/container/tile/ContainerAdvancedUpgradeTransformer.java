@@ -15,7 +15,7 @@ public class ContainerAdvancedUpgradeTransformer extends GenericContainerBlockEn
 	}
 
 	public ContainerAdvancedUpgradeTransformer(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new IntArray(3));
+		this(id, playerinv, new IntArray(5));
 	}
 
 	@Override

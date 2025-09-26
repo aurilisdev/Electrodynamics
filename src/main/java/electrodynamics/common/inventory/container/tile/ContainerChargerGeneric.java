@@ -15,7 +15,7 @@ import voltaic.prefab.utilities.math.Color;
 public class ContainerChargerGeneric extends GenericContainerBlockEntity<GenericTileCharger> {
 
 	public ContainerChargerGeneric(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(5), new IntArray(3));
+		this(id, playerinv, new Inventory(5), new IntArray(5));
 	}
 
 	public ContainerChargerGeneric(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {

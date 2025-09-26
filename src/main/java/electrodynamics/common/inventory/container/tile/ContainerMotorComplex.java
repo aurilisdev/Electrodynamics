@@ -20,7 +20,7 @@ public class ContainerMotorComplex extends GenericContainerBlockEntity<TileMotor
 	}
 
 	public ContainerMotorComplex(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(3), new IntArray(3));
+		this(id, playerinv, new Inventory(3), new IntArray(5));
 	}
 
 	@Override

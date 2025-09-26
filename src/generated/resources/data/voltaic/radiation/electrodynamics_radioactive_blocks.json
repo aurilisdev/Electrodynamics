@@ -1,0 +1,10 @@
+{
+  "#forge:ores/thorium": {
+    "strength": 1.0,
+    "amount": 500.0
+  },
+  "#forge:ores/uranium": {
+    "strength": 1.0,
+    "amount": 100.0
+  }
+}

@@ -25,7 +25,7 @@ public class ContainerQuarry extends GenericContainerBlockEntity<TileQuarry> {
 	}
 
 	public ContainerQuarry(int id, PlayerInventory playerinv) {
-		this(id, playerinv, new Inventory(19), new IntArray(3));
+		this(id, playerinv, new Inventory(19), new IntArray(5));
 	}
 
 	@Override

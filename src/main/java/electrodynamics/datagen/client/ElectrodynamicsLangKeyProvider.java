@@ -530,6 +530,7 @@ public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {
 		addFluid(ElectrodynamicsFluids.FLUID_OXYGEN, "Liquid Oxygen");
 		addFluid(ElectrodynamicsFluids.FLUID_POLYETHYLENE, "Molten Polyethylene");
 		addFluid(ElectrodynamicsFluids.FLUID_SULFURICACID, "Sulfuric Acid");
+		addFluid(ElectrodynamicsFluids.FLUID_CONCRETE, "Concrete Slurry");
 		addFluid(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(SubtypeSulfateFluid.copper), "Copper Sulfate Solution");
 		addFluid(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(SubtypeSulfateFluid.gold), "Gold Sulfate Solution");
 		addFluid(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(SubtypeSulfateFluid.iron), "Iron Sulfate Solution");

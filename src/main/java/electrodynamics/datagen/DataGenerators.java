@@ -22,6 +22,9 @@ import electrodynamics.datagen.server.ElectrodynamicsFluidTagsProvider;
 import electrodynamics.datagen.server.ElectrodynamicsItemTagsProvider;
 import electrodynamics.datagen.server.ElectrodynamicsLootTablesProvider;
 import electrodynamics.datagen.server.ThermoelectricGenHeatSourceProvider;
+import electrodynamics.datagen.server.radiation.ElectrodynamicsRadiationShieldingProvider;
+import electrodynamics.datagen.server.radiation.ElectrodynamicsRadioactiveBlocksProvider;
+import electrodynamics.datagen.server.radiation.ElectrodynamicsRadioactiveItemsProvider;
 import electrodynamics.datagen.server.recipe.ElectrodynamicsRecipeProvider;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -86,6 +89,9 @@ public class DataGenerators {
 			generator.addProvider(new CoalGeneratorFuelSourceProvider(generator));
 			generator.addProvider(new ThermoelectricGenHeatSourceProvider(generator));
 			generator.addProvider(new ElectrodynamicsAdvancementProvider(generator));
+			generator.addProvider(new ElectrodynamicsRadioactiveBlocksProvider(generator));
+            generator.addProvider(new ElectrodynamicsRadioactiveItemsProvider(generator));
+            generator.addProvider(new ElectrodynamicsRadiationShieldingProvider(generator));
 		}
 		if (event.includeClient()) {
 			generator.addProvider(new ElectrodynamicsBlockStateProvider(generator, event.getExistingFileHelper()));

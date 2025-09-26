@@ -40,20 +40,31 @@ public class TileElectricPump extends GenericTile implements ITickableSound {
 
 	protected void tickServer(ComponentTickable tickable) {
 		Direction direction = getFacing().getClockWise();
+
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(direction));
 		}
+
 		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-		if (tickable.getTicks() % 20 == 0) {
-			output.update(worldPosition.relative(direction));
-			FluidState state = level.getFluidState(worldPosition.relative(Direction.DOWN));
-			if (isGenerating.getValue() != (state.isSource() && state.getType() == Fluids.WATER)) {
-				isGenerating.setValue(electro.getJoulesStored() > ElectroConstants.ELECTRICPUMP_USAGE_PER_TICK && state.isSource() && state.getType() == Fluids.WATER);
-			}
+		if (electro.getJoulesStored() < ElectroConstants.ELECTRICPUMP_USAGE_PER_TICK) {
+			isGenerating.setValue(false);
+			return;
 		}
+
+		if (tickable.getTicks() % 10 == 0) {
+
+			output.update(worldPosition.relative(direction));
+
+			FluidState state = level.getFluidState(worldPosition.relative(Direction.DOWN));
+
+			isGenerating.setValue(state.isSource() && state.getType() == Fluids.WATER);
+		}
+
 		if (isGenerating.getValue() && output.valid()) {
+
 			electro.joules(electro.getJoulesStored() - ElectroConstants.ELECTRICPUMP_USAGE_PER_TICK);
+
 			FluidUtilities.receiveFluid(output.getSafe(), direction.getOpposite(), new FluidStack(Fluids.WATER, 200), false);
 		}
 	}
