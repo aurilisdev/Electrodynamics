@@ -13,7 +13,7 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 public class ContainerFluidTankGeneric extends GenericContainerBlockEntity<GenericTileFluidTank> {
 
 	public ContainerFluidTankGeneric(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(2), new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainer(2), new SimpleContainerData(5));
 	}
 
 	public ContainerFluidTankGeneric(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {

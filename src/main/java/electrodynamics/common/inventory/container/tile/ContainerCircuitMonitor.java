@@ -15,7 +15,7 @@ public class ContainerCircuitMonitor extends GenericContainerBlockEntity<TileCir
 	}
 
 	public ContainerCircuitMonitor(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainerData(3));
+		this(id, playerinv, new SimpleContainerData(5));
 	}
 
 	@Override
