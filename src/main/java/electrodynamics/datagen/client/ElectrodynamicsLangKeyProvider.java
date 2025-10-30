@@ -112,7 +112,7 @@ public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {
 			addItem(ElectrodynamicsItems.ITEM_COAL_COKE, "Coal Coke");
 			addItem(ElectrodynamicsItems.ITEM_RAWCOMPOSITEPLATING, "Raw Composite Plating");
 			addItem(ElectrodynamicsItems.ITEM_COMPOSITEPLATING, "Composite Plating");
-			addItem(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS, "Polyethlyene Fibers");
+			addItem(ElectrodynamicsItems.ITEM_PLASTIC_FIBERS, "Polyethylene Fibers");
 			addItem(ElectrodynamicsItems.ITEM_MECHANICALVALVE, "Mechanical Valve");
 			addItem(ElectrodynamicsItems.ITEM_PRESSUREGAGE, "Pressure Gauge");
 			addItem(ElectrodynamicsItems.ITEM_FIBERGLASSSHEET, "Fiberglass Sheet");
