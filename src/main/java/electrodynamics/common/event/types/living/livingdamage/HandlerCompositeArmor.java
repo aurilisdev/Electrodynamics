@@ -32,7 +32,7 @@ public class HandlerCompositeArmor extends AbstractLivingDamageHandler {
 			int stored = stack.getOrDefault(VoltaicDataComponentTypes.PLATES, 0);
 			if (event.getOriginalDamage() >= LETHAL_DAMAGE_AMOUNT && stored > 0) {
 				event.setNewDamage((float) Math.sqrt(event.getOriginalDamage()));
-				stack.set(VoltaicDataComponentTypes.PLATES, stored);
+				stack.set(VoltaicDataComponentTypes.PLATES, stored - 1);
                 event.getEntity().getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(), ElectrodynamicsSounds.SOUND_CERAMICPLATEBREAKING.get(), SoundSource.PLAYERS, 1, 1);
 			}
 		}
