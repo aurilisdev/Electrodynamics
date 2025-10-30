@@ -1,7 +1,11 @@
 package electrodynamics.registers;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.common.block.*;
+import electrodynamics.common.block.BlockFrame;
+import electrodynamics.common.block.BlockLogisticalManager;
+import electrodynamics.common.block.BlockOre;
+import electrodynamics.common.block.BlockRawOre;
+import electrodynamics.common.block.BlockSeismicMarker;
 import electrodynamics.common.block.chemicalreactor.BlockChemicalReactor;
 import electrodynamics.common.block.chemicalreactor.BlockChemicalReactorExtra;
 import electrodynamics.common.block.connect.BlockFluidPipe;

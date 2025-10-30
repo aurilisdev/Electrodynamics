@@ -51,7 +51,6 @@ import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.Level;
-import voltaic.common.item.subtype.SubtypeItemUpgrade;
 import voltaic.datagen.utils.client.BaseLangKeyProvider;
 
 public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {

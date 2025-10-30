@@ -31,7 +31,6 @@ import net.neoforged.neoforge.event.entity.player.AttackEntityEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.neoforged.neoforge.event.server.ServerStartedEvent;
-import net.neoforged.neoforge.network.PacketDistributor;
 import voltaic.Voltaic;
 import voltaic.api.item.IItemElectric;
 import voltaic.common.event.type.AbstractEquipmentChangeHandler;
