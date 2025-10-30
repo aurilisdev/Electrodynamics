@@ -1,0 +1,23 @@
+[versions]
+mod = "1.0.0-7"
+minecraft = "1.21.1"
+minecraftRange = "[1.21,1.21.1)"
+# forge deps
+neoforge = "21.1.72"
+neoforgeRange = "[21.0.0-beta,)"
+loaderRange = "[4,)"
+jei = "19.21.0.246"
+mekanism = "1.21.1-10.7.0.55"
+
+[libraries]
+neo-neoforge = { module = "net.neoforged:neoforge", version.ref = "neoforge" }
+jeiApiCommon = { module = "mezz.jei:jei-1.21.1-common-api", version.ref = "jei" }
+jeiApiNeoforge = { module = "mezz.jei:jei-1.21.1-neoforge-api", version.ref = "jei" }
+jei = { module = "mezz.jei:jei-1.21.1-neoforge", version.ref = "jei" }
+mekanism = { module = "mekanism:Mekanism", version.ref = "mekanism" }
+
+[bundles]
+jeiApi = ["jeiApiCommon", "jeiApiNeoforge"]
+
+[plugins]
+userdev = { id = "net.neoforged.gradle.userdev", version = "7.0.192" }

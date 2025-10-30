@@ -11,8 +11,6 @@ import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.reloadlistener.GasCollectorChromoCardsRegister;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
-import electrodynamics.common.settings.ElectroConstants;
-import electrodynamics.common.settings.OreConfig;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import net.minecraft.resources.ResourceLocation;
@@ -25,7 +23,6 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
-import voltaic.prefab.configuration.ConfigurationHandler;
 
 @Mod(Electrodynamics.ID)
 @EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
@@ -35,8 +32,6 @@ public class Electrodynamics {
     public static final String NAME = "Electrodynamics";
 
     public Electrodynamics(IEventBus bus) {
-        ConfigurationHandler.registerConfig(ElectroConstants.class);
-        ConfigurationHandler.registerConfig(OreConfig.class);
         // MUST GO BEFORE BLOCKS!!!!
         ElectrodynamicsBlockStates.init();
         ElectrodynamicsVoxelShapes.init();

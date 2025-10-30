@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
     id 'idea'
     id 'maven-publish'
-    id 'net.neoforged.gradle.userdev' version '7.0.165'
+    alias(libs.plugins.userdev)
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -13,6 +13,11 @@ tasks.named('wrapper', Wrapper).configure {
     // (Verify by checking gradle/wrapper/gradle-wrapper.properties to see if distributionUrl now points to `-all`)
     distributionType = Wrapper.DistributionType.BIN
 }
+var minecraft_version = libs.versions.minecraft.get()
+var minecraft_version_range = libs.versions.minecraftRange.get()
+var neo_version = libs.versions.neoforge.get()
+var neo_version_range = libs.versions.neoforgeRange.get()
+var loader_version_range = libs.versions.loaderRange.get()
 
 group = mod_group_id
 version = "${minecraft_version}-" + mod_version
@@ -29,9 +34,6 @@ base {
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
-
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
-
 
 
 minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
@@ -56,7 +58,7 @@ runs {
     server {
 
         systemProperty 'forge.enabledGameTestNamespaces', project.mod_id
-        programArgument '--nogui'
+        argument '--nogui'
 
     }
 
@@ -68,7 +70,7 @@ runs {
 
     data {
 
-        programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        arguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
 
     }
 }
@@ -89,12 +91,11 @@ dependencies {
         implementation fileTree(Folder2)
     }
 
-    implementation "net.neoforged:neoforge:${neo_version}"
-    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
-    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
-    localRuntime "mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}"
-    compileOnly "mekanism:Mekanism:${mekanism_version}"
-    //runtimeOnly "mekanism:Mekanism:${mekanism_version}"
+    implementation libs.neo.neoforge
+    compileOnly libs.bundles.jeiApi
+    localRuntime libs.jei
+    compileOnly libs.mekanism
+    //localRuntime libs.mekanism
    
 }
 
@@ -121,6 +122,7 @@ tasks.withType(ProcessResources).configureEach {
             neo_version            : neo_version,
             neo_version_range      : neo_version_range,
             loader_version_range   : loader_version_range,
+            mod_credits            : mod_credits,
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_license            : mod_license,
