@@ -62,7 +62,6 @@ public class ElectrodynamicsCapabilities {
                                         speedBoost = Math.min(speedBoost * 2.25, Math.pow(2.25, 3));
                                         break;
                                     case fortune:
-
                                         if (!silkTouch) {
                                             fortune = Math.min(fortune + 1, 9);
                                         }
@@ -91,7 +90,7 @@ public class ElectrodynamicsCapabilities {
                         EnchantmentHelper.updateEnchantments(stack, enchantments -> enchantments.set(fortuneEnchantment, 0));
                         EnchantmentHelper.updateEnchantments(stack, enchantments -> enchantments.set(fortuneEnchantment, finalFortune));
 
-                        Holder<Enchantment> silkTouchEnchantment = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.FORTUNE);
+                        Holder<Enchantment> silkTouchEnchantment = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.SILK_TOUCH);
 
                         EnchantmentHelper.updateEnchantments(stack, enchantments -> enchantments.set(silkTouchEnchantment, 0));
                         EnchantmentHelper.updateEnchantments(stack, enchantments -> enchantments.set(silkTouchEnchantment, finalSilkTouch ? 1 : 0));
