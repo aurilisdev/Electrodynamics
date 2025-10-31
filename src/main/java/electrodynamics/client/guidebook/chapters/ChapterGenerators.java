@@ -8,7 +8,7 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -81,7 +81,7 @@ public class ChapterGenerators extends Chapter {
 			}
 
 		}));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectroConstants.THERMOELECTRICGENERATOR_AMPERAGE * 120, DisplayUnits.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.THERMOELECTRICGENERATOR_AMPERAGE.get() * 120, DisplayUnits.WATT), 120)).setSeparateStart());
 		blankLine();
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.use").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.thermoelectricgeneratoruse")).setSeparateStart());
@@ -122,8 +122,8 @@ public class ChapterGenerators extends Chapter {
 			}
 
 		}));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectroConstants.SOLARPANEL_AMPERAGE * 120, DisplayUnits.WATT), 120)).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(ElectroConstants.SOLARPANEL_AMPERAGE * 120 * 2.25, DisplayUnits.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.SOLARPANEL_AMPERAGE.get() * 120, DisplayUnits.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.SOLARPANEL_AMPERAGE.get() * 120 * 2.25, DisplayUnits.WATT), 120)).setSeparateStart());
 		blankLine();
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tips").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipsolarweather")).setSeparateStart());
@@ -158,8 +158,8 @@ public class ChapterGenerators extends Chapter {
 			}
 
 		}));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectroConstants.ADVANCEDSOLARPANEL_AMPERAGE * 240, DisplayUnits.WATT), 240)).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(ElectroConstants.ADVANCEDSOLARPANEL_AMPERAGE * 240 * 2.25, DisplayUnits.WATT), 240)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.ADVANCEDSOLARPANEL_AMPERAGE.get() * 240, DisplayUnits.WATT), 240)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.ADVANCEDSOLARPANEL_AMPERAGE.get() * 240 * 2.25, DisplayUnits.WATT), 240)).setSeparateStart());
 		blankLine();
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tips").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipsolarweather")).setSeparateStart());
@@ -194,8 +194,8 @@ public class ChapterGenerators extends Chapter {
 			}
 
 		}));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectroConstants.WINDMILL_MAX_AMPERAGE * 120, DisplayUnits.WATT), 120)).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(ElectroConstants.WINDMILL_MAX_AMPERAGE * 120 * 2.25, DisplayUnits.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.WINDMILL_MAX_AMPERAGE.get() * 120, DisplayUnits.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.WINDMILL_MAX_AMPERAGE.get() * 120 * 2.25, DisplayUnits.WATT), 120)).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipminy", 0)).setSeparateStart());
 		blankLine();
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tips").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
@@ -231,7 +231,7 @@ public class ChapterGenerators extends Chapter {
 
 		}));
 		blankLine();
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectroConstants.COALGENERATOR_AMPERAGE * 120, DisplayUnits.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.COALGENERATOR_AMPERAGE.get() * 120, DisplayUnits.WATT), 120)).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tiptemprange", 27, 2500)).setSeparateStart());
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.tipidealtemp", 2500)).setSeparateStart());
 		blankLine();
@@ -267,8 +267,8 @@ public class ChapterGenerators extends Chapter {
 			}
 
 		}));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectroConstants.HYDROELECTRICGENERATOR_AMPERAGE * 120, DisplayUnits.WATT), 120)).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(ElectroConstants.HYDROELECTRICGENERATOR_AMPERAGE * 120 * 2.25, DisplayUnits.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.HYDROELECTRICGENERATOR_AMPERAGE.get() * 120, DisplayUnits.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationupgrade", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.HYDROELECTRICGENERATOR_AMPERAGE.get() * 120 * 2.25, DisplayUnits.WATT), 120)).setSeparateStart());
 		blankLine();
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.upgrades").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		pageData.add(new TextWrapperObject(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.stator).getDescription()).setIndentions(1).setSeparateStart());
@@ -299,7 +299,7 @@ public class ChapterGenerators extends Chapter {
 			}
 
 		}));
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectroConstants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20, DisplayUnits.WATT), 120)).setSeparateStart());
+		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.generationbase", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.COMBUSTIONCHAMBER_JOULES_PER_TICK.get() * 20, DisplayUnits.WATT), 120)).setSeparateStart());
 		blankLine();
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.fuels").withStyle(ChatFormatting.UNDERLINE)).setSeparateStart());
 		for (CombustionFuelSource fuel : CombustionFuelRegister.INSTANCE.getFuels()) {

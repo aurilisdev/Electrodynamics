@@ -1,6 +1,6 @@
 package electrodynamics.common.tile.electricitygrid.transformer;
 
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.prefab.sound.SoundBarrierMethods;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.registers.ElectrodynamicsSounds;
@@ -35,13 +35,17 @@ import voltaic.registers.VoltaicCapabilities;
 
 public abstract class TileGenericTransformer extends GenericTile implements ITickableSound {
 
-    public static final double MAX_VOLTAGE_CAP = VoltaicCapabilities.DEFAULT_VOLTAGE * Math.pow(2, 8); // 120 * 2 ^ 8 = 30,720
-    public static final double MIN_VOLTAGE_CAP = VoltaicCapabilities.DEFAULT_VOLTAGE / Math.pow(2, 8); // 120 / 2 ^ 8 = 0.46875
+    public static final double MAX_VOLTAGE_CAP = VoltaicCapabilities.DEFAULT_VOLTAGE * Math.pow(2, 8); // 120 * 2 ^ 8 =
+												       // 30,720
+    public static final double MIN_VOLTAGE_CAP = VoltaicCapabilities.DEFAULT_VOLTAGE / Math.pow(2, 8); // 120 / 2 ^ 8 =
+												       // 0.46875
 
     public CachedTileOutput output;
 
-    public final SingleProperty<TransferPack> lastTransfer = property(new SingleProperty<>(PropertyTypes.TRANSFER_PACK, "lasttransfer", TransferPack.EMPTY)).setNoSave();
-    public final SingleProperty<Long> lastTransferTime = property(new SingleProperty<>(PropertyTypes.LONG, "lasttransfertime", 0L)).setNoSave();
+    public final SingleProperty<TransferPack> lastTransfer = property(
+	    new SingleProperty<>(PropertyTypes.TRANSFER_PACK, "lasttransfer", TransferPack.EMPTY)).setNoSave();
+    public final SingleProperty<Long> lastTransferTime = property(
+	    new SingleProperty<>(PropertyTypes.LONG, "lasttransfertime", 0L)).setNoSave();
 
     public boolean locked = false;
 
@@ -51,210 +55,242 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
     public static final BlockEntityUtils.MachineDirection INPUT = BlockEntityUtils.MachineDirection.BACK;
 
     public TileGenericTransformer(BlockEntityType<?> type, BlockPos worldPosition, BlockState blockState) {
-        super(type, worldPosition, blockState);
-        addComponent(new ComponentPacketHandler(this));
-        if (ElectroConstants.SHOULD_TRANSFORMER_HUM) {
-            addComponent(new ComponentTickable(this).tickClient(this::tickClient));
-        }
-        addComponent(new ComponentElectrodynamic(this, true, true).receivePower(this::receivePower).getConnectedLoad(this::getConnectedLoad).setOutputDirections(OUTPUT).setInputDirections(INPUT).voltage(-1.0).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
+	super(type, worldPosition, blockState);
+	addComponent(new ComponentPacketHandler(this));
+	if (ElectrodynamicsConfig.INSTANCE.SHOULD_TRANSFORMER_HUM.get()) {
+	    addComponent(new ComponentTickable(this).tickClient(this::tickClient));
+	}
+	addComponent(new ComponentElectrodynamic(this, true, true).receivePower(this::receivePower)
+		.getConnectedLoad(this::getConnectedLoad).setOutputDirections(OUTPUT).setInputDirections(INPUT)
+		.voltage(-1.0).getAmpacity(this::getAmpacity).getMinimumVoltage(this::getMinimumVoltage));
     }
 
     public void tickClient(ComponentTickable tickable) {
-        if (level.getGameTime() - lastTransferTime.getValue() > 20L) {
-            lastTransfer.setValue(TransferPack.EMPTY);
-        }
-        if (!isPlayingSound && shouldPlaySound()) {
-            isPlayingSound = true;
-            SoundBarrierMethods.playTransformerSound(ElectrodynamicsSounds.SOUND_TRANSFORMERHUM.get(), SoundSource.BLOCKS, this, 1.0F, 1.0F, true);
-        }
+	if (level.getGameTime() - lastTransferTime.getValue() > 20L) {
+	    lastTransfer.setValue(TransferPack.EMPTY);
+	}
+	if (!isPlayingSound && shouldPlaySound()) {
+	    isPlayingSound = true;
+	    SoundBarrierMethods.playTransformerSound(ElectrodynamicsSounds.SOUND_TRANSFORMERHUM.get(),
+		    SoundSource.BLOCKS, this, 1.0F, 1.0F, true);
+	}
     }
 
     // We can assume this runs on the server
     public TransferPack receivePower(TransferPack transfer, boolean debug) {
-        Direction facing = getFacing();
-        if (locked) {
-            return TransferPack.EMPTY;
-        }
-        if (output == null) {
-            output = new CachedTileOutput(level, worldPosition.relative(facing));
-        }
-        if (output.getSafe() == null) {
-            return TransferPack.EMPTY;
-        }
-        double resultVoltage = transfer.getVoltage() * getCoilRatio();
-        if (resultVoltage != 0) {
-            resultVoltage = Mth.clamp(resultVoltage, MIN_VOLTAGE_CAP, MAX_VOLTAGE_CAP);
-        }
-        locked = true;
-        TransferPack returner = ElectricityUtils.receivePower(output.getSafe(), facing.getOpposite(), TransferPack.joulesVoltage(transfer.getJoules() * ElectroConstants.TRANSFORMER_EFFICIENCY, resultVoltage), debug);
-        locked = false;
-        TransferPack toReturn = TransferPack.joulesVoltage(returner.getJoules() / ElectroConstants.TRANSFORMER_EFFICIENCY, returner.getVoltage() / getCoilRatio());
-        if (!debug && toReturn.getVoltage() > 0) {
-            lastTransfer.setValue(toReturn);
-            lastTransferTime.setValue(level.getGameTime());
+	Direction facing = getFacing();
+	if (locked) {
+	    return TransferPack.EMPTY;
+	}
+	if (output == null) {
+	    output = new CachedTileOutput(level, worldPosition.relative(facing));
+	}
+	if (output.getSafe() == null) {
+	    return TransferPack.EMPTY;
+	}
+	double resultVoltage = transfer.getVoltage() * getCoilRatio();
+	if (resultVoltage != 0) {
+	    resultVoltage = Mth.clamp(resultVoltage, MIN_VOLTAGE_CAP, MAX_VOLTAGE_CAP);
+	}
+	locked = true;
+	TransferPack returner = ElectricityUtils.receivePower(output.getSafe(), facing.getOpposite(),
+		TransferPack.joulesVoltage(
+			transfer.getJoules() * ElectrodynamicsConfig.INSTANCE.TRANSFORMER_EFFICIENCY.get(),
+			resultVoltage),
+		debug);
+	locked = false;
+	TransferPack toReturn = TransferPack.joulesVoltage(
+		returner.getJoules() / ElectrodynamicsConfig.INSTANCE.TRANSFORMER_EFFICIENCY.get(),
+		returner.getVoltage() / getCoilRatio());
+	if (!debug && toReturn.getVoltage() > 0) {
+	    lastTransfer.setValue(toReturn);
+	    lastTransferTime.setValue(level.getGameTime());
 
-        }
-        return toReturn;
+	}
+	return toReturn;
     }
 
     public TransferPack getConnectedLoad(ICapabilityElectrodynamic.LoadProfile lastEnergy, Direction dir) {
-        Direction facing = getFacing();
-        if (facing.getOpposite() != dir) {
-            return TransferPack.EMPTY;
-        }
-        if (locked) {
-            return TransferPack.EMPTY;
-        }
-        if (output == null) {
-            output = new CachedTileOutput(level, worldPosition.relative(facing));
-        }
-        if (output.getSafe() == null) {
-            return TransferPack.EMPTY;
-        }
-        ICapabilityElectrodynamic.LoadProfile transformed = new ICapabilityElectrodynamic.LoadProfile(TransferPack.joulesVoltage(lastEnergy.lastUsage().getJoules() * ElectroConstants.TRANSFORMER_EFFICIENCY, lastEnergy.lastUsage().getVoltage() * getCoilRatio()), TransferPack.joulesVoltage(lastEnergy.maximumAvailable().getJoules() * ElectroConstants.TRANSFORMER_EFFICIENCY, lastEnergy.maximumAvailable().getVoltage() * getCoilRatio()));
+	Direction facing = getFacing();
+	if (facing.getOpposite() != dir) {
+	    return TransferPack.EMPTY;
+	}
+	if (locked) {
+	    return TransferPack.EMPTY;
+	}
+	if (output == null) {
+	    output = new CachedTileOutput(level, worldPosition.relative(facing));
+	}
+	if (output.getSafe() == null) {
+	    return TransferPack.EMPTY;
+	}
+	ICapabilityElectrodynamic.LoadProfile transformed = new ICapabilityElectrodynamic.LoadProfile(
+		TransferPack.joulesVoltage(
+			lastEnergy.lastUsage().getJoules()
+				* ElectrodynamicsConfig.INSTANCE.TRANSFORMER_EFFICIENCY.get(),
+			lastEnergy.lastUsage().getVoltage() * getCoilRatio()),
+		TransferPack.joulesVoltage(
+			lastEnergy.maximumAvailable().getJoules()
+				* ElectrodynamicsConfig.INSTANCE.TRANSFORMER_EFFICIENCY.get(),
+			lastEnergy.maximumAvailable().getVoltage() * getCoilRatio()));
 
-        locked = true;
+	locked = true;
 
-        BlockEntity outputTile = output.getSafe();
+	BlockEntity outputTile = output.getSafe();
 
-        ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, outputTile.getBlockPos(), outputTile.getBlockState(), outputTile, dir);
+	ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
+		outputTile.getBlockPos(), outputTile.getBlockState(), outputTile, dir);
 
-        TransferPack returner = TransferPack.EMPTY;
+	TransferPack returner = TransferPack.EMPTY;
 
-        if (electro != null) {
-            returner = electro.getConnectedLoad(transformed, dir);
-        }
+	if (electro != null) {
+	    returner = electro.getConnectedLoad(transformed, dir);
+	}
 
-        // TransferPack returner = ((BlockEntity) output.getSafe()).getCapability(VoltaicCapabilities.ELECTRODYNAMIC,
-        // dir).map(cap -> cap.getConnectedLoad(transformed, dir)).orElse(TransferPack.EMPTY);
-        locked = false;
-        return TransferPack.joulesVoltage(returner.getJoules() / ElectroConstants.TRANSFORMER_EFFICIENCY, returner.getVoltage());
+	// TransferPack returner = ((BlockEntity)
+	// output.getSafe()).getCapability(VoltaicCapabilities.ELECTRODYNAMIC,
+	// dir).map(cap -> cap.getConnectedLoad(transformed,
+	// dir)).orElse(TransferPack.EMPTY);
+	locked = false;
+	return TransferPack.joulesVoltage(
+		returner.getJoules() / ElectrodynamicsConfig.INSTANCE.TRANSFORMER_EFFICIENCY.get(),
+		returner.getVoltage());
     }
 
     public double getMinimumVoltage() {
-        Direction facing = getFacing();
-        if (locked) {
-            return 0;
-        }
-        if (output == null) {
-            output = new CachedTileOutput(level, worldPosition.relative(facing));
-        }
-        if (output.getSafe() == null) {
-            return -1;
-        }
-        locked = true;
+	Direction facing = getFacing();
+	if (locked) {
+	    return 0;
+	}
+	if (output == null) {
+	    output = new CachedTileOutput(level, worldPosition.relative(facing));
+	}
+	if (output.getSafe() == null) {
+	    return -1;
+	}
+	locked = true;
 
-        BlockEntity outputTile = output.getSafe();
+	BlockEntity outputTile = output.getSafe();
 
-        ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, outputTile.getBlockPos(), outputTile.getBlockState(), outputTile, facing.getOpposite());
+	ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
+		outputTile.getBlockPos(), outputTile.getBlockState(), outputTile, facing.getOpposite());
 
-        double minimumVoltage = -1;
+	double minimumVoltage = -1;
 
-        if (electro != null) {
-            minimumVoltage = electro.getMinimumVoltage();
-        }
+	if (electro != null) {
+	    minimumVoltage = electro.getMinimumVoltage();
+	}
 
-        // double minimumVoltage = ((BlockEntity) output.getSafe()).getCapability(VoltaicCapabilities.ELECTRODYNAMIC,
-        // facing).map(@NotNull ICapabilityElectrodynamic::getMinimumVoltage).orElse(-1.0) / getCoilRatio();
-        locked = false;
-        return minimumVoltage;
+	// double minimumVoltage = ((BlockEntity)
+	// output.getSafe()).getCapability(VoltaicCapabilities.ELECTRODYNAMIC,
+	// facing).map(@NotNull
+	// ICapabilityElectrodynamic::getMinimumVoltage).orElse(-1.0) / getCoilRatio();
+	locked = false;
+	return minimumVoltage;
     }
 
     public double getAmpacity() {
-        Direction facing = getFacing();
-        if (locked) {
-            return 0;
-        }
-        if (output == null) {
-            output = new CachedTileOutput(level, worldPosition.relative(facing));
-        }
-        if (output.getSafe() == null) {
-            return -1;
-        }
-        locked = true;
+	Direction facing = getFacing();
+	if (locked) {
+	    return 0;
+	}
+	if (output == null) {
+	    output = new CachedTileOutput(level, worldPosition.relative(facing));
+	}
+	if (output.getSafe() == null) {
+	    return -1;
+	}
+	locked = true;
 
-        BlockEntity outputTile = output.getSafe();
+	BlockEntity outputTile = output.getSafe();
 
-        ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, outputTile.getBlockPos(), outputTile.getBlockState(), outputTile, facing.getOpposite());
+	ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
+		outputTile.getBlockPos(), outputTile.getBlockState(), outputTile, facing.getOpposite());
 
-        double ampacity = -1;
+	double ampacity = -1;
 
-        if (electro != null) {
-            ampacity = electro.getAmpacity();
-        }
+	if (electro != null) {
+	    ampacity = electro.getAmpacity();
+	}
 
-        // double ampacity = ((BlockEntity) output.getSafe()).getCapability(VoltaicCapabilities.ELECTRODYNAMIC,
-        // facing).map(@NotNull ICapabilityElectrodynamic::getAmpacity).orElse(-1.0) * getCoilRatio();
-        locked = false;
-        return ampacity;
+	// double ampacity = ((BlockEntity)
+	// output.getSafe()).getCapability(VoltaicCapabilities.ELECTRODYNAMIC,
+	// facing).map(@NotNull ICapabilityElectrodynamic::getAmpacity).orElse(-1.0) *
+	// getCoilRatio();
+	locked = false;
+	return ampacity;
     }
 
     @Override
     public void onEntityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
-        if (level.isClientSide || lastTransfer.getValue().getJoules() <= 0 || level.getGameTime() - lastTransferTime.getValue() > 20L) {
-            return;
-        }
-        ElectricityUtils.electrecuteEntity(entity, lastTransfer.getValue());
-        lastTransfer.setValue(TransferPack.EMPTY);
-        lastTransferTime.setValue(0L);
+	if (level.isClientSide || lastTransfer.getValue().getJoules() <= 0
+		|| level.getGameTime() - lastTransferTime.getValue() > 20L) {
+	    return;
+	}
+	ElectricityUtils.electrecuteEntity(entity, lastTransfer.getValue());
+	lastTransfer.setValue(TransferPack.EMPTY);
+	lastTransferTime.setValue(0L);
     }
 
     @Override
     public void setNotPlaying() {
-        isPlayingSound = false;
+	isPlayingSound = false;
     }
 
     @Override
     public boolean shouldPlaySound() {
-        return lastTransfer.getValue().getVoltage() > 0 && lastTransfer.getValue().getJoules() > 0;
+	return lastTransfer.getValue().getVoltage() > 0 && lastTransfer.getValue().getJoules() > 0;
     }
 
-    // I eliminated world access as that is costly when it doesn't need to be in this case
+    // I eliminated world access as that is costly when it doesn't need to be in
+    // this case
     public abstract double getCoilRatio();
 
     public static final class TileDowngradeTransformer extends TileGenericTransformer {
 
-        public TileDowngradeTransformer(BlockPos worldPosition, BlockState blockState) {
-            super(ElectrodynamicsTiles.TILE_DOWNGRADETRANSFORMER.get(), worldPosition, blockState);
-        }
+	public TileDowngradeTransformer(BlockPos worldPosition, BlockState blockState) {
+	    super(ElectrodynamicsTiles.TILE_DOWNGRADETRANSFORMER.get(), worldPosition, blockState);
+	}
 
-        @Override
-        public double getCoilRatio() {
-            return 0.5;
-        }
+	@Override
+	public double getCoilRatio() {
+	    return 0.5;
+	}
 
-        @Override
-        public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
-            return InteractionResult.FAIL;
-        }
+	@Override
+	public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
+	    return InteractionResult.FAIL;
+	}
 
-        @Override
-        public ItemInteractionResult useWithItem(ItemStack used, Player player, InteractionHand hand, BlockHitResult hit) {
-            return ItemInteractionResult.FAIL;
-        }
+	@Override
+	public ItemInteractionResult useWithItem(ItemStack used, Player player, InteractionHand hand,
+		BlockHitResult hit) {
+	    return ItemInteractionResult.FAIL;
+	}
 
     }
 
     public static final class TileUpgradeTransformer extends TileGenericTransformer {
 
-        public TileUpgradeTransformer(BlockPos worldPosition, BlockState blockState) {
-            super(ElectrodynamicsTiles.TILE_UPGRADETRANSFORMER.get(), worldPosition, blockState);
-        }
+	public TileUpgradeTransformer(BlockPos worldPosition, BlockState blockState) {
+	    super(ElectrodynamicsTiles.TILE_UPGRADETRANSFORMER.get(), worldPosition, blockState);
+	}
 
-        @Override
-        public double getCoilRatio() {
-            return 2;
-        }
+	@Override
+	public double getCoilRatio() {
+	    return 2;
+	}
 
-        @Override
-        public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
-            return InteractionResult.FAIL;
-        }
+	@Override
+	public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
+	    return InteractionResult.FAIL;
+	}
 
-        @Override
-        public ItemInteractionResult useWithItem(ItemStack used, Player player, InteractionHand hand, BlockHitResult hit) {
-            return ItemInteractionResult.FAIL;
-        }
+	@Override
+	public ItemInteractionResult useWithItem(ItemStack used, Player player, InteractionHand hand,
+		BlockHitResult hit) {
+	    return ItemInteractionResult.FAIL;
+	}
 
     }
 

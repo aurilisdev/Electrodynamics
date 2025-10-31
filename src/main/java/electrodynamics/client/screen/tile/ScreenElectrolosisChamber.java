@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.common.inventory.container.tile.ContainerElectrolosisChamber;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.common.tile.machines.TileElectrolosisChamber;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
@@ -88,9 +88,9 @@ public class ScreenElectrolosisChamber extends GenericMaterialScreen<ContainerEl
             return list;
         }
         ComponentElectrodynamic el = chamber.getComponent(IComponentType.Electrodynamic);
-        list.add(ElectroTextUtils.gui("machine.usage", ChatFormatter.getChatDisplayShort(ElectroConstants.ELECTROLOSIS_CHAMBER_TARGET_JOULES * 20, DisplayUnits.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+        list.add(ElectroTextUtils.gui("machine.usage", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.ELECTROLOSIS_CHAMBER_TARGET_JOULES.get() * 20, DisplayUnits.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
         list.add(ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(el.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-        list.add(ElectroTextUtils.tooltip("electrolosischamber.satisfaction", ChatFormatter.getChatDisplayShort(el.getJoulesStored() / ElectroConstants.ELECTROLOSIS_CHAMBER_TARGET_JOULES * 100.0, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+        list.add(ElectroTextUtils.tooltip("electrolosischamber.satisfaction", ChatFormatter.getChatDisplayShort(el.getJoulesStored() / ElectrodynamicsConfig.INSTANCE.ELECTROLOSIS_CHAMBER_TARGET_JOULES.get() * 100.0, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
         return list;
     }
 }

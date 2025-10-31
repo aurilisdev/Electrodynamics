@@ -21,7 +21,7 @@ import voltaic.api.radiation.RadiationManager;
 import voltaic.api.radiation.util.IRadiationRecipient;
 import voltaic.api.radiation.util.RadioactiveObject;
 import voltaic.common.reloadlistener.RadioactiveBlockRegister;
-import voltaic.common.settings.VoltaicConstants;
+import voltaic.common.settings.VoltaicConfig;
 import voltaic.registers.VoltaicCapabilities;
 
 public class BlockOre extends DropExperienceBlock {
@@ -52,7 +52,7 @@ public class BlockOre extends DropExperienceBlock {
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         super.randomTick(state, level, pos, random);
 
-        if(!VoltaicConstants.ORES_EMIT_RADIATION || level.getLevelData().getGameTime() % VoltaicConstants.ORE_RADIATION_ADMIT_RATE != 0) {
+        if(!VoltaicConfig.INSTANCE.ORES_EMIT_RADIATION.get() || level.getLevelData().getGameTime() % VoltaicConfig.INSTANCE.ORE_RADIATION_ADMIT_RATE.get() != 0) {
             return;
         }
 

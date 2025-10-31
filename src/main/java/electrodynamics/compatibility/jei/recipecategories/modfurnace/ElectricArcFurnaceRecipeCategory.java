@@ -6,7 +6,7 @@ import java.util.List;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import mezz.jei.api.gui.drawable.IDrawableAnimated.StartDirection;
@@ -36,8 +36,8 @@ public class ElectricArcFurnaceRecipeCategory extends AbstractRecipeCategory<Bla
 	public static final ArrowAnimatedObject ANIM_ARROW = new ArrowAnimatedObject(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, 50, 23, StartDirection.LEFT);
 	public static final ScreenObject FLAME = new ScreenObject(ScreenComponentProgress.ProgressTextures.FLAME_ON, 5, 23);
 
-	public static final PowerLabelWrapperConstant POWER_LABEL = new PowerLabelWrapperConstant(2, 48, ElectroConstants.ELECTRICARCFURNACE_USAGE_PER_TICK, 120);
-	public static final TimeLabelWrapperConstant TIME_LABEL = new TimeLabelWrapperConstant(130, 48, ElectroConstants.ELECTRICARCFURNACE_REQUIRED_TICKS);
+	public static final PowerLabelWrapperConstant POWER_LABEL = new PowerLabelWrapperConstant(2, 48, ElectrodynamicsConfig.INSTANCE.ELECTRICARCFURNACE_USAGE_PER_TICK.get(), 120);
+	public static final TimeLabelWrapperConstant TIME_LABEL = new TimeLabelWrapperConstant(130, 48, ElectrodynamicsConfig.INSTANCE.ELECTRICARCFURNACE_REQUIRED_TICKS.get());
 
 	public static final int ANIM_TIME = 50;
 

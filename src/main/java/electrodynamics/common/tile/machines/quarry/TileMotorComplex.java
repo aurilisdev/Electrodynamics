@@ -2,7 +2,7 @@ package electrodynamics.common.tile.machines.quarry;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerMotorComplex;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
@@ -25,10 +25,11 @@ import voltaic.registers.VoltaicCapabilities;
 
 public class TileMotorComplex extends GenericTile implements ITickableSound {
 
-    // 10 ticks per block
-    public static final int DEFAULT_SPEED = Math.min(ElectroConstants.MIN_QUARRYBLOCKS_PER_TICK, 100);
+    // 100 ticks per block
+    public static final int DEFAULT_SPEED = Math.min(ElectrodynamicsConfig.INSTANCE.MAX_TICKS_PER_QUARRYBLOCK.get(),
+	    100);
     // 1 tick per block
-    public static final int MAX_SPEED = Math.max(ElectroConstants.MAX_QUARRYBLOCKS_PER_TICK, 1);
+    public static final int MAX_SPEED = Math.max(ElectrodynamicsConfig.INSTANCE.MIN_TICKS_PER_QUARRYBLOCK.get(), 1);
 
     private boolean isSoundPlaying = false;
 
@@ -46,7 +47,7 @@ public class TileMotorComplex extends GenericTile implements ITickableSound {
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.FRONT)
 		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2)
-		.maxJoules(ElectroConstants.MOTORCOMPLEX_USAGE_PER_TICK * 10000));
+		.maxJoules(ElectrodynamicsConfig.INSTANCE.MOTORCOMPLEX_USAGE_PER_TICK.get() * 10000));
 	addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().upgrades(3))
 		.validUpgrades(ContainerMotorComplex.VALID_UPGRADES).valid(machineValidator()));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.motorcomplex.tag(), this)
@@ -57,9 +58,10 @@ public class TileMotorComplex extends GenericTile implements ITickableSound {
     private void tickServer(ComponentTickable tick) {
 	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-	if (electro.getJoulesStored() >= ElectroConstants.MOTORCOMPLEX_USAGE_PER_TICK * powerMultiplier.getValue()) {
+	if (electro.getJoulesStored() >= ElectrodynamicsConfig.INSTANCE.MOTORCOMPLEX_USAGE_PER_TICK.get()
+		* powerMultiplier.getValue()) {
 	    electro.joules(electro.getJoulesStored()
-		    - ElectroConstants.MOTORCOMPLEX_USAGE_PER_TICK * powerMultiplier.getValue());
+		    - ElectrodynamicsConfig.INSTANCE.MOTORCOMPLEX_USAGE_PER_TICK.get() * powerMultiplier.getValue());
 	    isPowered.setValue(true);
 	} else {
 	    isPowered.setValue(false);

@@ -2,7 +2,7 @@ package electrodynamics.common.tile.electricitygrid.generators;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -40,7 +40,7 @@ public class TileAdvancedSolarPanel extends TileSolarPanel implements IMultibloc
 		double mod = 1.0f - Mth.clamp(1.0F - (Mth.cos(level.getTimeOfDay(1f) * ((float) Math.PI * 2f)) * 2.0f + 0.2f), 0.0f, 1.0f);
 		double temp = level.getBiomeManager().getBiome(getBlockPos()).value().getBaseTemperature();
 		double lerped = Mth.lerp((temp + 1) / 3.0, 1.5, 3) / 3.0;
-		return TransferPack.ampsVoltage(getMultiplier() * ElectroConstants.ADVANCEDSOLARPANEL_AMPERAGE * lerped * mod * (level.isRaining() || level.isThundering() ? 0.8f : 1), this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getVoltage());
+		return TransferPack.ampsVoltage(getMultiplier() * ElectrodynamicsConfig.INSTANCE.ADVANCEDSOLARPANEL_AMPERAGE.get() * lerped * mod * (level.isRaining() || level.isThundering() ? 0.8f : 1), this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getVoltage());
 	}
 
 	@Override

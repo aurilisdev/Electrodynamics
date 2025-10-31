@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.compatibility.jei.recipecategories.utils.psuedorecipes.types.PsuedoFluid2GasRecipe;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsBlocks;
@@ -42,7 +42,7 @@ public class EvaporatingFluidRecipeCategory extends AbstractRecipeCategory<Psued
 	private static final ScreenObject IN_GAS_GAUGE = new ScreenObject(JeiTextures.FAKE_GAS_GAUGE, 30, 5);
 	private static final GasGaugeObject OUT_GAS_GAUGE = new GasGaugeObject(108, 5);
 
-	private static final PowerLabelWrapperConstant POWER_LABEL = new PowerLabelWrapperConstant(2, 60, ElectroConstants.THERMOELECTRIC_MANIPULATOR_USAGE_PER_TICK, 120);
+	private static final PowerLabelWrapperConstant POWER_LABEL = new PowerLabelWrapperConstant(2, 60, ElectrodynamicsConfig.INSTANCE.THERMOELECTRIC_MANIPULATOR_USAGE_PER_TICK.get(), 120);
 	private static final AbstractLabelWrapper TEMPERATURE_LABEL = new AbstractLabelWrapper(Color.JEI_TEXT_GRAY, 60, 130, true) {
 
 		@Override

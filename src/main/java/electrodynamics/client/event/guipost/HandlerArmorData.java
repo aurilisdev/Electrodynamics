@@ -4,7 +4,7 @@ import java.util.List;
 
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
 import electrodynamics.common.item.gear.armor.types.ItemServoLeggings;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
@@ -36,7 +36,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
     @Override
     public void renderToScreen(GuiGraphics graphics, DeltaTracker tracker, Minecraft minecraft) {
 
-        if (!ElectroConstants.RENDER_COMBAT_ARMOR_STATUS) {
+        if (!ElectrodynamicsConfig.INSTANCE.RENDER_COMBAT_ARMOR_STATUS.get()) {
             return;
         }
 

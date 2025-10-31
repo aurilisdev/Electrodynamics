@@ -3,7 +3,7 @@ package electrodynamics.compatibility.jei.recipecategories.fluid2fluid.specificm
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.recipe.categories.fluid2fluid.specificmachines.ElectrolosisChamberRecipe;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import mezz.jei.api.gui.drawable.IDrawableAnimated;
@@ -31,7 +31,7 @@ public class ElectrolosisChamberRecipeCategory extends Fluid2FluidRecipeCategory
     public static final FluidGaugeObject IN_GAUGE = new FluidGaugeObject(10, 5);
     public static final FluidGaugeObject OUT_GAUGE = new FluidGaugeObject(108, 5);
 
-    public static final PowerLabelWrapperConstant POWER_LABEL = new PowerLabelWrapperConstant(2, 55, ElectroConstants.ELECTROLOSIS_CHAMBER_TARGET_JOULES, 1920);
+    public static final PowerLabelWrapperConstant POWER_LABEL = new PowerLabelWrapperConstant(2, 55, ElectrodynamicsConfig.INSTANCE.ELECTROLOSIS_CHAMBER_TARGET_JOULES.get(), 1920);
 
     public static final int ANIM_TIME = 50;
 

@@ -2,7 +2,7 @@ package electrodynamics.common.world;
 
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
-import electrodynamics.common.settings.OreConfig;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,12 +14,12 @@ public class OreGeneration {
 
 	public static void generateSulfurAround(RandomSource random, BlockPos pos, WorldGenLevel level) {
 
-		if (OreConfig.DISABLE_ALL_ORES) {
+		if (ElectrodynamicsConfig.INSTANCE.DISABLE_ALL_ORES.isTrue()) {
 			return;
 		}
 
-		boolean allowSulfur = !OreConfig.DISABLE_STONE_ORES && OreConfig.SPAWN_SULFUR_ORE;
-		boolean allowDeepSulfur = !OreConfig.DISABLE_DEEPSLATE_ORES && OreConfig.SPAWN_DEEP_SULFUR_ORE;
+		boolean allowSulfur = ElectrodynamicsConfig.INSTANCE.DISABLE_STONE_ORES.isFalse() && ElectrodynamicsConfig.INSTANCE.SPAWN_SULFUR_ORE.isTrue();
+		boolean allowDeepSulfur = ElectrodynamicsConfig.INSTANCE.DISABLE_DEEPSLATE_ORES.isFalse() && ElectrodynamicsConfig.INSTANCE.SPAWN_DEEP_SULFUR_ORE.isTrue();
 
 		if (!allowSulfur && !allowDeepSulfur) {
 			return;

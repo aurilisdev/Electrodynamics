@@ -1,6 +1,6 @@
 package electrodynamics.common.tile.pipelines.gas.gastransformer;
 
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -26,10 +26,11 @@ public abstract class GenericTileGasTransformer extends GenericGasTile implement
         addComponent(getInventory());
         addComponent(new ComponentProcessor(this).canProcess(this::canProcess).process(this::process).usage(getUsagePerTick(), 0));
         addComponent(new ComponentGasHandlerMulti(this).setTanks(
+		//
+		1, arr(ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_BASE_INPUT_CAPACITY.get()),
+		arr(ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_INPUT_TEMP_CAP.get()), arr(ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_INPUT_PRESSURE_CAP.get()),
                 //
-                1, arr(ElectroConstants.GAS_TRANSFORMER_BASE_INPUT_CAPCITY), arr(ElectroConstants.GAS_TRANSFORMER_INPUT_TEMP_CAP), arr(ElectroConstants.GAS_TRANSFORMER_INPUT_PRESSURE_CAP),
-                //
-                1, arr(ElectroConstants.GAS_TRANSFORMER_BASE_OUTPUT_CAPCITY), arr(ElectroConstants.GAS_TRANSFORMER_OUTPUT_TEMP_CAP), arr(ElectroConstants.GAS_TRANSFORMER_OUTPUT_PRESSURE_CAP)
+                1, arr(ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_BASE_OUTPUT_CAPACITY.get()), arr(ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_OUTPUT_TEMP_CAP.get()), arr(ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_OUTPUT_PRESSURE_CAP.get())
                 //
         ).setInputDirections(BlockEntityUtils.MachineDirection.RIGHT).setOutputDirections(BlockEntityUtils.MachineDirection.LEFT).setCondensedHandler(getCondensedHandler()));
         addComponent(getContainerProvider());

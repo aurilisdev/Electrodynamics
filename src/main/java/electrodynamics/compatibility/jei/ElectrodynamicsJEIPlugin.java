@@ -24,7 +24,7 @@ import electrodynamics.client.screen.tile.ScreenMineralWasher;
 import electrodynamics.client.screen.tile.ScreenThermoelectricManipulator;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.common.tile.electricitygrid.generators.TileCoalGenerator;
 import electrodynamics.compatibility.jei.recipecategories.fluid2fluid.specificmachines.ElectrolosisChamberRecipeCategory;
 import electrodynamics.compatibility.jei.recipecategories.fluid2gas.specificmachines.ElectrolyticSeparatorRecipeCategory;
@@ -257,7 +257,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
         // Fluids
         for (CombustionFuelSource fuel : CombustionFuelRegister.INSTANCE.getFuels()) {
             for (FluidStack fluid : fuel.getFuels()) {
-                registration.addIngredientInfo(new FluidStack(fluid.getFluidHolder(), FULL_FLUID_SQUARE), NeoForgeTypes.FLUID_STACK, ElectroTextUtils.jeiFluidTranslated("combustionchamberfuel", ChatFormatter.getChatDisplayShort(fuel.getPowerMultiplier() * ElectroConstants.COMBUSTIONCHAMBER_JOULES_PER_TICK * 20 / 1000.0, DisplayUnits.WATT), ChatFormatter.formatFluidMilibuckets(fluid.getAmount())));
+                registration.addIngredientInfo(new FluidStack(fluid.getFluidHolder(), FULL_FLUID_SQUARE), NeoForgeTypes.FLUID_STACK, ElectroTextUtils.jeiFluidTranslated("combustionchamberfuel", ChatFormatter.getChatDisplayShort(fuel.getPowerMultiplier() * ElectrodynamicsConfig.INSTANCE.COMBUSTIONCHAMBER_JOULES_PER_TICK.get() * 20 / 1000.0, DisplayUnits.WATT), ChatFormatter.formatFluidMilibuckets(fluid.getAmount())));
             }
         }
 
