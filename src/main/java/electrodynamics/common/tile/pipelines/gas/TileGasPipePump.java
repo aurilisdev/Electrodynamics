@@ -4,7 +4,7 @@ import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.common.inventory.container.tile.ContainerGasPipePump;
 import electrodynamics.common.network.type.GasNetwork;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -52,7 +52,7 @@ public class TileGasPipePump extends GenericTile {
 		super(ElectrodynamicsTiles.TILE_GASPIPEPUMP.get(), pos, state);
 		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this, false, true).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE).maxJoules(ElectroConstants.PIPE_PUMP_USAGE_PER_TICK * 10).setInputDirections(BlockEntityUtils.MachineDirection.LEFT));
+		addComponent(new ComponentElectrodynamic(this, false, true).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE).maxJoules(ElectrodynamicsConfig.INSTANCE.PIPE_PUMP_USAGE_PER_TICK.get() * 10).setInputDirections(BlockEntityUtils.MachineDirection.LEFT));
 		addComponent(new ComponentContainerProvider("gaspipepump", this).createMenu((id, inv) -> new ContainerGasPipePump(id, inv, getCoordsArray())));
 	}
 
@@ -60,7 +60,7 @@ public class TileGasPipePump extends GenericTile {
 
 		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-		electro.joules(Math.max(electro.getJoulesStored() - ElectroConstants.PIPE_PUMP_USAGE_PER_TICK, 0));
+		electro.joules(Math.max(electro.getJoulesStored() - ElectrodynamicsConfig.INSTANCE.PIPE_PUMP_USAGE_PER_TICK.get(), 0));
 
 	}
 	
@@ -79,11 +79,11 @@ public class TileGasPipePump extends GenericTile {
 
             BlockEntity output = level.getBlockEntity(worldPosition.relative(side.getOpposite()));
             if (output == null) {
-                return CapabilityUtils.EMPTY_GAS;
-            }
-            
-            isLocked = true;
-            
+		return CapabilityUtils.EMPTY_GAS;
+	    }
+
+	    isLocked = true;
+
             IGasHandler gas = output.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK, output.getBlockPos(), output.getBlockState(), output, side);
             
             isLocked = false;
@@ -96,7 +96,7 @@ public class TileGasPipePump extends GenericTile {
 	}
 
 	public boolean isPowered() {
-		return this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getJoulesStored() >= ElectroConstants.PIPE_PUMP_USAGE_PER_TICK;
+		return this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getJoulesStored() >= ElectrodynamicsConfig.INSTANCE.PIPE_PUMP_USAGE_PER_TICK.get();
 	}
 
 }

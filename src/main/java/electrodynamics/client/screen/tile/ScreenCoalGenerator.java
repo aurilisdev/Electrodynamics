@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.common.inventory.container.tile.ContainerCoalGenerator;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.common.tile.electricitygrid.generators.TileCoalGenerator;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
@@ -43,7 +43,7 @@ public class ScreenCoalGenerator extends GenericScreen<ContainerCoalGenerator> {
 			if (coal == null) {
 				return;
 			}
-			TransferPack output = TransferPack.ampsVoltage(ElectroConstants.COALGENERATOR_AMPERAGE * Math.min((coal.heat.getValue() - 27.0) / (3000.0 - 27.0), 1), VoltaicCapabilities.DEFAULT_VOLTAGE);
+			TransferPack output = TransferPack.ampsVoltage(ElectrodynamicsConfig.INSTANCE.COALGENERATOR_AMPERAGE.get() * Math.min((coal.heat.getValue() - 27.0) / (3000.0 - 27.0), 1), VoltaicCapabilities.DEFAULT_VOLTAGE);
 			graphics.drawString(font, ElectroTextUtils.gui("coalgenerator.timeleft", ChatFormatter.getChatDisplayShort((double) coal.burnTime.getValue() / 20.0, DisplayUnits.TIME_SECONDS)), inventoryLabelX + 60, inventoryLabelY - 53, 4210752, false);
 			graphics.drawString(font, ElectroTextUtils.gui("machine.current", ChatFormatter.getChatDisplayShort(output.getAmps(), DisplayUnits.AMPERE)), inventoryLabelX + 60, inventoryLabelY - 40, 4210752, false);
 			graphics.drawString(font, ElectroTextUtils.gui("machine.output", ChatFormatter.getChatDisplayShort(output.getWatts(), DisplayUnits.WATT)), inventoryLabelX + 60, inventoryLabelY - 27, 4210752, false);

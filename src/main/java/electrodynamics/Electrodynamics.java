@@ -11,6 +11,7 @@ import electrodynamics.common.reloadlistener.CoalGeneratorFuelRegister;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.reloadlistener.GasCollectorChromoCardsRegister;
 import electrodynamics.common.reloadlistener.ThermoelectricGeneratorHeatRegister;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.UnifiedElectrodynamicsRegister;
 import net.minecraft.resources.ResourceLocation;
@@ -18,51 +19,60 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoader;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.client.gui.ConfigurationScreen;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 @Mod(Electrodynamics.ID)
 @EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
-public class Electrodynamics {
+public final class Electrodynamics {
 
     public static final String ID = "electrodynamics";
     public static final String NAME = "Electrodynamics";
 
-    public Electrodynamics(IEventBus bus) {
-        // MUST GO BEFORE BLOCKS!!!!
-        ElectrodynamicsBlockStates.init();
-        ElectrodynamicsVoxelShapes.init();
-        UnifiedElectrodynamicsRegister.register(bus);
+    public Electrodynamics(IEventBus bus, ModContainer container) {
+	ElectrodynamicsConfig.INSTANCE = new ElectrodynamicsConfig();
+	container.registerConfig(ModConfig.Type.COMMON, ElectrodynamicsConfig.INSTANCE.SPEC);
+	container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+	// MUST GO BEFORE BLOCKS!!!!
+	ElectrodynamicsBlockStates.init();
+	ElectrodynamicsVoxelShapes.init();
+	UnifiedElectrodynamicsRegister.register(bus);
 
-        ElectrodynamicsAttributeModifiers.init();
+	ElectrodynamicsAttributeModifiers.init();
 
     }
 
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event) {
-        ServerEventHandler.init();
-        CombustionFuelRegister.INSTANCE = new CombustionFuelRegister().subscribeAsSyncable();
-        CoalGeneratorFuelRegister.INSTANCE = new CoalGeneratorFuelRegister().subscribeAsSyncable();
-        GasCollectorChromoCardsRegister.INSTANCE = new GasCollectorChromoCardsRegister().subscribeAsSyncable();
-        ThermoelectricGeneratorHeatRegister.INSTANCE = new ThermoelectricGeneratorHeatRegister().subscribeAsSyncable();
-        // CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to
-        // 1.19.2
+	ServerEventHandler.init();
+	CombustionFuelRegister.INSTANCE = new CombustionFuelRegister().subscribeAsSyncable();
+	CoalGeneratorFuelRegister.INSTANCE = new CoalGeneratorFuelRegister().subscribeAsSyncable();
+	GasCollectorChromoCardsRegister.INSTANCE = new GasCollectorChromoCardsRegister().subscribeAsSyncable();
+	ThermoelectricGeneratorHeatRegister.INSTANCE = new ThermoelectricGeneratorHeatRegister().subscribeAsSyncable();
+	// CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably
+	// wrong location after update from 1.18.2 to
+	// 1.19.2
 
-        // RegisterFluidToGasMapEvent map = new RegisterFluidToGasMapEvent();
-        // MinecraftForge.EVENT_BUS.post(map);
-        // ElectrodynamicsGases.MAPPED_GASSES.putAll(map.fluidToGasMap);
+	// RegisterFluidToGasMapEvent map = new RegisterFluidToGasMapEvent();
+	// MinecraftForge.EVENT_BUS.post(map);
+	// ElectrodynamicsGases.MAPPED_GASSES.putAll(map.fluidToGasMap);
 
-        event.enqueueWork(() -> {
+	event.enqueueWork(() -> {
 
-            RegisterWiresEvent wiresEvent = new RegisterWiresEvent();
+	    RegisterWiresEvent wiresEvent = new RegisterWiresEvent();
 
-            ModLoader.postEvent(wiresEvent);
+	    ModLoader.postEvent(wiresEvent);
 
-            wiresEvent.process();
-        });
+	    wiresEvent.process();
+	});
+	UnifiedElectrodynamicsRegister.addDescriptions();
 
     }
 
@@ -70,21 +80,20 @@ public class Electrodynamics {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onClientSetup(FMLClientSetupEvent event) {
-        event.enqueueWork(() -> {
-            ElectrodynamicsClientRegister.setup();
-        });
+	event.enqueueWork(() -> {
+	    ElectrodynamicsClientRegister.setup();
+	});
     }
-
 
     @SubscribeEvent
     public static void registerWires(RegisterWiresEvent event) {
-        for (BlockWire wire : ElectrodynamicsBlocks.BLOCKS_WIRE.getAllValues()) {
-            event.registerWire(wire);
-        }
+	for (BlockWire wire : ElectrodynamicsBlocks.BLOCKS_WIRE.getAllValues()) {
+	    event.registerWire(wire);
+	}
     }
 
     public static final ResourceLocation rl(String path) {
-        return ResourceLocation.fromNamespaceAndPath(ID, path);
+	return ResourceLocation.fromNamespaceAndPath(ID, path);
     }
 
 }

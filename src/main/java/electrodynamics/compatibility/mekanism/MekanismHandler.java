@@ -3,7 +3,7 @@ package electrodynamics.compatibility.mekanism;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.common.tile.compatibility.TileRotaryUnifier;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import mekanism.api.Action;
@@ -170,7 +170,7 @@ public class MekanismHandler {
 
         SingleProperty<ChemicalStack> prop = getProp(tile);
         PropertyGasTank tank = tile.gasTank;
-        int rate = (int) (ElectroConstants.ROTARY_UNIFIER_CONVERSION_RATE * proc.operatingSpeed.getValue());
+        int rate = (int) (ElectrodynamicsConfig.INSTANCE.ROTARY_UNIFIER_CONVERSION_RATE.get() * proc.operatingSpeed.getValue());
         ComponentElectrodynamic electro = tile.getComponent(IComponentType.Electrodynamic);
 
         if (tile.conversionIsFlipped.getValue()) {
@@ -243,7 +243,7 @@ public class MekanismHandler {
 
         SingleProperty<ChemicalStack> prop = getProp(tile);
         PropertyGasTank tank = tile.gasTank;
-        int rate = (int) (ElectroConstants.ROTARY_UNIFIER_CONVERSION_RATE * proc.operatingSpeed.getValue());
+        int rate = (int) (ElectrodynamicsConfig.INSTANCE.ROTARY_UNIFIER_CONVERSION_RATE.get() * proc.operatingSpeed.getValue());
 
         if (tile.conversionIsFlipped.getValue()) {
 

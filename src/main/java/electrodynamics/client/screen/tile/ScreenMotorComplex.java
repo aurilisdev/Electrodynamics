@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import electrodynamics.common.inventory.container.tile.ContainerMotorComplex;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.common.tile.machines.quarry.TileMotorComplex;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
@@ -44,7 +44,7 @@ public class ScreenMotorComplex extends GenericScreen<ContainerMotorComplex> {
 		}
 
 		ComponentElectrodynamic electro = motor.getComponent(IComponentType.Electrodynamic);
-		list.add(ElectroTextUtils.gui("machine.usage", ChatFormatter.getChatDisplayShort(ElectroConstants.MOTORCOMPLEX_USAGE_PER_TICK * motor.powerMultiplier.getValue() * 20, DisplayUnits.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+		list.add(ElectroTextUtils.gui("machine.usage", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.MOTORCOMPLEX_USAGE_PER_TICK.get() * motor.powerMultiplier.getValue() * 20, DisplayUnits.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 		list.add(ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 
 		return list;

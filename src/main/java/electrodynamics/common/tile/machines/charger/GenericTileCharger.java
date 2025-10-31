@@ -2,7 +2,7 @@ package electrodynamics.common.tile.machines.charger;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerChargerGeneric;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
@@ -163,7 +163,7 @@ public abstract class GenericTileCharger extends GenericTile {
                     electro.overVoltage(TransferPack.joulesVoltage(electro.getJoulesStored(), battVoltage));
                     return true;
                 } else if (electro.getMaxJoulesStored() - electro.getJoulesStored() > 0) {
-                    electro.joules(electro.getJoulesStored() + electricItem.extractPower(battery, ElectroConstants.CHARGER_USAGE_PER_TICK, false).getJoules());
+                    electro.joules(electro.getJoulesStored() + electricItem.extractPower(battery, ElectrodynamicsConfig.INSTANCE.CHARGER_USAGE_PER_TICK.get(), false).getJoules());
                 }
             }
         }

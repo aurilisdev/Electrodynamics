@@ -5,7 +5,7 @@ import java.util.List;
 
 import electrodynamics.common.inventory.container.tile.ContainerGasCollector;
 import electrodynamics.common.reloadlistener.GasCollectorChromoCardsRegister;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.common.tile.pipelines.gas.TileGasCollector;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -69,7 +69,7 @@ public class ScreenGasCollector extends GenericMaterialScreen<ContainerGasCollec
         }));
         addComponent(new ScreenComponentGasTemperature(-AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE * 2));
         addComponent(new ScreenComponentGasPressure(-AbstractScreenComponentInfo.SIZE + 1, 2 + AbstractScreenComponentInfo.SIZE));
-        addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2).wattage(ElectroConstants.GAS_COLLECTOR_USAGE_PER_TICK * 20));
+        addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2).wattage(ElectrodynamicsConfig.INSTANCE.GAS_COLLECTOR_USAGE_PER_TICK.get() * 20));
         addComponent(new ScreenComponentCondensedFluid(() -> {
             TileGasCollector electric = container.getSafeHost();
             if (electric == null) {

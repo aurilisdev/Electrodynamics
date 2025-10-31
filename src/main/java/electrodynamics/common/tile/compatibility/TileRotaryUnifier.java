@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import electrodynamics.common.inventory.container.tile.ContainerRotaryUnifier;
-import electrodynamics.common.settings.ElectroConstants;
+import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.compatibility.mekanism.MekanismHandler;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
@@ -56,9 +56,9 @@ public class TileRotaryUnifier extends GenericGasTile implements ITickableSound 
     public TileRotaryUnifier(BlockPos worldPos, BlockState blockState) {
         super(ElectrodynamicsTiles.TILE_ROTARYUNIFIER.get(), worldPos, blockState);
         addComponent(new ComponentTickable(this).tickClient(this::tickClient));
-        addComponent(new ComponentElectrodynamic(this, false, true).maxJoules(ElectroConstants.ROTARY_UNIFIER_USAGE * 20).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 4).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM));
+        addComponent(new ComponentElectrodynamic(this, false, true).maxJoules(ElectrodynamicsConfig.INSTANCE.ROTARY_UNIFIER_USAGE.get() * 20).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 4).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM));
         addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().upgrades(3)).validUpgrades(ContainerRotaryUnifier.VALID_UPGRADES).valid(machineValidator()));
-        addComponent(new ComponentProcessor(this).usage(ElectroConstants.ROTARY_UNIFIER_USAGE, 0).canProcess(this::canProcess).process(this::process));
+        addComponent(new ComponentProcessor(this).usage(ElectrodynamicsConfig.INSTANCE.ROTARY_UNIFIER_USAGE.get(), 0).canProcess(this::canProcess).process(this::process));
         addComponent(new ComponentContainerProvider("rotaryunifier", this).createMenu((id, player) -> new ContainerRotaryUnifier(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
         gasIO = BlockEntityUtils.getRelativeSide(getFacing(), BlockEntityUtils.MachineDirection.RIGHT.mappedDir);
         chemicalIO = BlockEntityUtils.getRelativeSide(getFacing(), BlockEntityUtils.MachineDirection.LEFT.mappedDir);

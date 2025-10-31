@@ -2,7 +2,7 @@
   "feature": "electrodynamics:ore_monazite",
   "placement": [
     {
-      "type": "minecraft:count",
+      "type": "electrodynamics:config_scaled_count",
       "count": 5
     },
     {
