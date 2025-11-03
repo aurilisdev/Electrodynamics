@@ -157,7 +157,9 @@ idea {
         downloadJavadoc = true
     }
 }
-
+java {
+  withSourcesJar()   // <- generates sources JAR
+}
 repositories {
     maven {
         // location of the maven that hosts JEI files since January 2023
