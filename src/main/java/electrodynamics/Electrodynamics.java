@@ -26,6 +26,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
@@ -39,8 +40,9 @@ public final class Electrodynamics {
     public Electrodynamics(IEventBus bus, ModContainer container) {
 	ElectrodynamicsConfig.INSTANCE = new ElectrodynamicsConfig();
 	container.registerConfig(ModConfig.Type.COMMON, ElectrodynamicsConfig.INSTANCE.SPEC);
-	container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-	// MUST GO BEFORE BLOCKS!!!!
+	if (FMLEnvironment.dist == Dist.CLIENT) {
+	    container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+	}	// MUST GO BEFORE BLOCKS!!!!
 	ElectrodynamicsBlockStates.init();
 	ElectrodynamicsVoxelShapes.init();
 	UnifiedElectrodynamicsRegister.register(bus);
