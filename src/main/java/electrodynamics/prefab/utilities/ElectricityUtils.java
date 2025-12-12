@@ -23,62 +23,75 @@ import voltaic.registers.VoltaicDamageTypes;
 public class ElectricityUtils {
 
     public static void electrecuteEntity(Entity entity, TransferPack transfer) {
-        if (transfer.getVoltage() <= 960.0 && entity instanceof LivingEntity living) {
-            Ingredient insulatingItems = Ingredient.of(VoltaicTags.Items.INSULATES_PLAYER_FEET);
-            for (ItemStack armor : living.getArmorSlots()) {
-                if (ItemUtils.isIngredientMember(insulatingItems, armor.getItem())) {
-                    float damage = (float) transfer.getAmps() / 10.0f;
-                    if (Math.random() < damage) {
-                        if (armor.getDamageValue() > armor.getMaxDamage()) {
-                            armor.setCount(0);
-                        }
-                    }
-                    return;
-                }
-            }
-        }
-        entity.hurt(entity.damageSources().source(VoltaicDamageTypes.ELECTRICITY, entity), (float) Math.min(9999, Math.max(0, transfer.getAmps())));
+	if (transfer.getVoltage() <= 960.0 && entity instanceof LivingEntity living) {
+	    Ingredient insulatingItems = Ingredient.of(VoltaicTags.Items.INSULATES_PLAYER_FEET);
+	    for (ItemStack armor : living.getArmorSlots()) {
+		if (ItemUtils.isIngredientMember(insulatingItems, armor.getItem())) {
+		    float damage = (float) transfer.getAmps() / 10.0f;
+		    if (Math.random() < damage) {
+			if (armor.getDamageValue() > armor.getMaxDamage()) {
+			    armor.setCount(0);
+			}
+		    }
+		    return;
+		}
+	    }
+	}
+	entity.hurt(entity.damageSources().source(VoltaicDamageTypes.ELECTRICITY),
+		(float) Math.min(9999, Math.max(0, transfer.getAmps())));
     }
 
     public static boolean isElectricReceiver(BlockEntity tile, Direction dir) {
-        return tile != null && (tile.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, dir) != null || tile.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, dir) != null);
+	return tile != null && (tile.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
+		tile.getBlockPos(), tile.getBlockState(), tile, dir) != null
+		|| tile.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, tile.getBlockPos(),
+			tile.getBlockState(), tile, dir) != null);
     }
 
     public static boolean isConductor(BlockEntity acceptor, GenericTileWire requesterWire) {
-        if (acceptor instanceof GenericTileWire conductor) {
-            return conductor.getCableType().isDefaultColor() || requesterWire.getCableType().isDefaultColor() || conductor.getWireColor() == requesterWire.getWireColor();
-        }
-        return false;
+	if (acceptor instanceof GenericTileWire conductor) {
+	    return conductor.getCableType().isDefaultColor() || requesterWire.getCableType().isDefaultColor()
+		    || conductor.getWireColor() == requesterWire.getWireColor();
+	}
+	return false;
     }
 
-    public static TransferPack receivePower(BlockEntity tile, Direction direction, TransferPack transfer, boolean debug) {
+    public static TransferPack receivePower(BlockEntity tile, Direction direction, TransferPack transfer,
+	    boolean debug) {
 
-        if (tile == null) {
-            return TransferPack.EMPTY;
-        }
+	if (tile == null) {
+	    return TransferPack.EMPTY;
+	}
 
-        ICapabilityElectrodynamic electro = tile.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, direction);
+	ICapabilityElectrodynamic electro = tile.getLevel().getCapability(
+		VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile,
+		direction);
 
-        if (electro != null) {
+	if (electro != null) {
 
-            return electro.receivePower(transfer, debug);
+	    return electro.receivePower(transfer, debug);
 
-        }
+	}
 
-        IEnergyStorage fe = tile.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, tile.getBlockPos(), tile.getBlockState(), tile, direction);
+	IEnergyStorage fe = tile.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, tile.getBlockPos(),
+		tile.getBlockState(), tile, direction);
 
-        if (fe != null) {
-            TransferPack returner = TransferPack.joulesVoltage(fe.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug), transfer.getVoltage());
-            if (transfer.getVoltage() > VoltaicCapabilities.DEFAULT_VOLTAGE) {
-                Level world = tile.getLevel();
-                BlockPos pos = tile.getBlockPos();
-                world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-                world.explode(null, pos.getX(), pos.getY(), pos.getZ(), (float) Math.log10(10 + transfer.getVoltage() / VoltaicCapabilities.DEFAULT_VOLTAGE), ExplosionInteraction.BLOCK);
-            }
-            return returner;
-        }
+	if (fe != null) {
+	    TransferPack returner = TransferPack.joulesVoltage(
+		    fe.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug),
+		    transfer.getVoltage());
+	    if (transfer.getVoltage() > VoltaicCapabilities.DEFAULT_VOLTAGE) {
+		Level world = tile.getLevel();
+		BlockPos pos = tile.getBlockPos();
+		world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+		world.explode(null, pos.getX(), pos.getY(), pos.getZ(),
+			(float) Math.log10(10 + transfer.getVoltage() / VoltaicCapabilities.DEFAULT_VOLTAGE),
+			ExplosionInteraction.BLOCK);
+	    }
+	    return returner;
+	}
 
-        return TransferPack.EMPTY;
+	return TransferPack.EMPTY;
 
     }
 
