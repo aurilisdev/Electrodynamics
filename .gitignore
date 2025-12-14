@@ -55,3 +55,6 @@ runData.launch
 
 runServer.launch
 *.launch
+
+wrapper/
+desktop.ini
