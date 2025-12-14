@@ -38,7 +38,7 @@ public class ElectricityUtils {
 				}
 			}
 		}
-		entity.hurt(entity.damageSources().source(VoltaicDamageTypes.ELECTRICITY, entity), (float) Math.min(9999, Math.max(0, transfer.getAmps())));
+		entity.hurt(entity.damageSources().source(VoltaicDamageTypes.ELECTRICITY), (float) Math.min(9999, Math.max(0, transfer.getAmps())));
 	}
 
 	public static boolean isElectricReceiver(BlockEntity tile, Direction dir) {
