@@ -158,6 +158,7 @@ publishing {
     publications {
         register('mavenJava', MavenPublication) {
             from components.java
+            artifact(tasks.named('deobfJar')) // publishes :deobf
         }
     }
     repositories {
