@@ -593,7 +593,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
     // responsible for clearing initial obstructions from the mining area
     private void clearArea() {
 	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-	setupPowerUsage.setValue(ElectrodynamicsConfig.INSTANCE.QUARRY_USAGE_PER_TICK);
+	setupPowerUsage.setValue(ElectrodynamicsConfig.INSTANCE.QUARRY_USAGE_PER_TICK.get());
 	isPowered.setValue(electro.getJoulesStored() >= setupPowerUsage.getValue());
 	if (hasCorners() && isPowered.getValue()) {
 	    Level world = getLevel();
