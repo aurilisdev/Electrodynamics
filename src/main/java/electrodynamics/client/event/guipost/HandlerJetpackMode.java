@@ -1,8 +1,5 @@
 package electrodynamics.client.event.guipost;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
@@ -17,6 +14,7 @@ import voltaic.api.electricity.formatting.DisplayUnits;
 import voltaic.api.gas.GasStack;
 import voltaic.api.gas.IGasHandlerItem;
 import voltaic.client.event.AbstractPostGuiOverlayHandler;
+import voltaic.prefab.screen.component.CachedComponent;
 import voltaic.prefab.utilities.ItemUtils;
 import voltaic.prefab.utilities.VoltaicTextUtils;
 import voltaic.registers.VoltaicCapabilities;
@@ -24,39 +22,78 @@ import voltaic.registers.VoltaicDataComponentTypes;
 
 public class HandlerJetpackMode extends AbstractPostGuiOverlayHandler {
 
+    private static final int X = 10;
+
+    private static final CachedComponent<Integer> MODE_TEXT = new CachedComponent<>(ItemJetpack::getModeText);
+
+    private static final CachedComponent<Long> GAS_RATIO_TEXT = new CachedComponent<>(packed -> {
+	int amount = (int) (packed >>> 32);
+	int capacity = (int) (packed & 0xFFFF_FFFFL);
+	return VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(amount),
+		ChatFormatter.formatFluidMilibuckets(capacity));
+    });
+
+    private static final CachedComponent<Integer> GAS_TEMP_TEXT = new CachedComponent<>(
+	    tempK -> ChatFormatter.getChatDisplayShort(tempK, DisplayUnits.TEMPERATURE_KELVIN));
+
+    private static final CachedComponent<Integer> GAS_PRESSURE_TEXT = new CachedComponent<>(
+	    atm -> ChatFormatter.getChatDisplayShort(atm, DisplayUnits.PRESSURE_ATM));
+
     @Override
     public void renderToScreen(GuiGraphics graphics, DeltaTracker tracker, Minecraft minecraft) {
-        List<ItemStack> armor = new ArrayList<>();
-        minecraft.player.getArmorSlots().forEach(armor::add);
-        ItemStack chestSlot = armor.get(2);
+	if (minecraft.player == null || minecraft.level == null) {
+	    return;
+	}
 
-        if (!ItemUtils.testItems(chestSlot.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
-            return;
-        }
+	ItemStack chestSlot = minecraft.player.getInventory().armor.get(2);
 
-        PoseStack stack = graphics.pose();
+	if (!ItemUtils.testItems(chestSlot.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get(),
+		ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
+	    return;
+	}
 
-        stack.pushPose();
+	int height = graphics.guiHeight();
 
-        Component mode = ItemJetpack.getModeText(chestSlot.getOrDefault(VoltaicDataComponentTypes.MODE, -1));
+	PoseStack stack = graphics.pose();
+	stack.pushPose();
 
-        int height = graphics.guiHeight();
+	int modeVal = chestSlot.getOrDefault(VoltaicDataComponentTypes.MODE, -1);
+	Component mode = MODE_TEXT.get(modeVal);
 
-        IGasHandlerItem handler = chestSlot.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	IGasHandlerItem handler = chestSlot.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	if (handler == null) {
+	    stack.popPose();
+	    return;
+	}
 
-        GasStack gas = handler.getGasInTank(0);
-        if (gas.isEmpty()) {
-            graphics.drawString(minecraft.font, mode, 10, height - 30, 0);
-            graphics.drawString(minecraft.font, VoltaicTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 10, height - 20, -1);
-        } else {
-            graphics.drawString(minecraft.font, mode, 10, height - 50, 0);
-            graphics.drawString(minecraft.font, VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 10, height - 40, -1);
-            graphics.drawString(minecraft.font, ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnits.TEMPERATURE_KELVIN), 10, height - 30, -1);
-            graphics.drawString(minecraft.font, ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnits.PRESSURE_ATM), 10, height - 20, -1);
-        }
+	GasStack gas = handler.getGasInTank(0);
 
-        stack.popPose();
+	if (gas.isEmpty()) {
+	    Component ratio = GAS_RATIO_TEXT.get(packInts(0, ItemJetpack.MAX_CAPACITY));
 
+	    graphics.drawString(minecraft.font, mode, X, height - 30, 0);
+	    graphics.drawString(minecraft.font, ratio, X, height - 20, -1);
+
+	    stack.popPose();
+	    return;
+	}
+
+	int amount = gas.getAmount();
+	Component ratio = GAS_RATIO_TEXT.get(packInts(amount, ItemJetpack.MAX_CAPACITY));
+
+	Component temp = GAS_TEMP_TEXT.get(gas.getTemperature());
+	Component pressure = GAS_PRESSURE_TEXT.get(gas.getPressure());
+
+	graphics.drawString(minecraft.font, mode, X, height - 50, 0);
+	graphics.drawString(minecraft.font, ratio, X, height - 40, -1);
+	graphics.drawString(minecraft.font, temp, X, height - 30, -1);
+	graphics.drawString(minecraft.font, pressure, X, height - 20, -1);
+
+	stack.popPose();
+    }
+
+    private static long packInts(int high, int low) {
+	return ((long) high << 32) | (low & 0xFFFF_FFFFL);
     }
 
 }

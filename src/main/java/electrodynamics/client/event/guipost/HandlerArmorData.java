@@ -21,6 +21,7 @@ import voltaic.api.gas.GasStack;
 import voltaic.api.gas.IGasHandlerItem;
 import voltaic.api.item.IItemElectric;
 import voltaic.client.event.AbstractPostGuiOverlayHandler;
+import voltaic.prefab.screen.component.CachedComponent;
 import voltaic.prefab.utilities.ItemUtils;
 import voltaic.prefab.utilities.RenderingUtils;
 import voltaic.prefab.utilities.VoltaicTextUtils;
@@ -30,176 +31,198 @@ import voltaic.registers.VoltaicDataComponentTypes;
 
 public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
 
-    private final Component statusGogglesOn = ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN));
-    private final Component statusGogglesOff = ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED));
+    private static final float SMALL_SCALE = 0.8F;
+    private static final int ICON_X = 10;
+    private static final int TEXT_X = 35;
+
+    private final Component statusGogglesOn = ElectroTextUtils.tooltip("nightvisiongoggles.status")
+	    .withStyle(ChatFormatting.GRAY)
+	    .append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN));
+    private final Component statusGogglesOff = ElectroTextUtils.tooltip("nightvisiongoggles.status")
+	    .withStyle(ChatFormatting.GRAY)
+	    .append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED));
+
+    private final CachedComponent<Integer> jetpackModeCached = new CachedComponent<>(ItemJetpack::getModeText);
+    private final CachedComponent<Integer> servoModeCached = new CachedComponent<>(ItemServoLeggings::getModeText);
+    private final CachedComponent<Integer> ceramicPlateCountCached = new CachedComponent<>(plates -> ElectroTextUtils
+	    .tooltip("ceramicplatecount", Component.literal(Integer.toString(plates))).withStyle(ChatFormatting.AQUA));
+
+    private final CachedComponent<Double> joulesStorageCached = new CachedComponent<>(
+	    joules -> ChatFormatter.getChatDisplayShort(joules, DisplayUnits.JOULES));
 
     @Override
     public void renderToScreen(GuiGraphics graphics, DeltaTracker tracker, Minecraft minecraft) {
 
-        if (!ElectrodynamicsConfig.INSTANCE.RENDER_COMBAT_ARMOR_STATUS.get()) {
-            return;
-        }
+	if (!ElectrodynamicsConfig.INSTANCE.RENDER_COMBAT_ARMOR_STATUS.get() || minecraft.player == null) {
+	    return;
+	}
 
-        List<ItemStack> armor = minecraft.player.getInventory().armor;
+	List<ItemStack> armor = minecraft.player.getInventory().armor;
 
-        graphics.pose().pushPose();
+	graphics.pose().pushPose();
 
-        int heightOffset = graphics.guiHeight();
+	int heightOffset = graphics.guiHeight();
 
-        if (!armor.get(0).isEmpty() && handleBoots(armor.get(0), graphics, minecraft, heightOffset)) {
-            heightOffset -= 30;
-        }
+	if (!armor.get(0).isEmpty() && handleBoots(armor.get(0), graphics, minecraft, heightOffset)) {
+	    heightOffset -= 30;
+	}
 
-        if (!armor.get(1).isEmpty() && handleLeggings(armor.get(1), graphics, minecraft, heightOffset)) {
-            heightOffset -= 30;
-        }
+	if (!armor.get(1).isEmpty() && handleLeggings(armor.get(1), graphics, minecraft, heightOffset)) {
+	    heightOffset -= 30;
+	}
 
-        if (!armor.get(2).isEmpty() && handleChestplate(armor.get(2), graphics, minecraft, heightOffset)) {
-            heightOffset -= 30;
-        }
+	if (!armor.get(2).isEmpty() && handleChestplate(armor.get(2), graphics, minecraft, heightOffset)) {
+	    heightOffset -= 30;
+	}
 
-        if (!armor.get(3).isEmpty() && handleHelmet(armor.get(3), graphics, minecraft, heightOffset)) {
-            heightOffset -= 30;
-        }
+	if (!armor.get(3).isEmpty() && handleHelmet(armor.get(3), graphics, minecraft, heightOffset)) {
+	    heightOffset -= 30;
+	}
 
-        graphics.pose().popPose();
+	graphics.pose().popPose();
 
     }
 
     private boolean handleHelmet(ItemStack helmet, GuiGraphics graphics, Minecraft minecraft, int heightOffset) {
 
-        boolean renderItem = false;
+	if (!ItemUtils.testItems(helmet.getItem(), ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get(),
+		ElectrodynamicsItems.ITEM_COMBATHELMET.get())) {
+	    return false;
+	}
 
-        if (ItemUtils.testItems(helmet.getItem(), ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get(), ElectrodynamicsItems.ITEM_COMBATHELMET.get())) {
-            renderItem = true;
-            Component mode;
-            if (helmet.getOrDefault(VoltaicDataComponentTypes.ON, false)) {
-                mode = statusGogglesOn;
-            } else {
-                mode = statusGogglesOff;
-            }
-            graphics.drawString(minecraft.font, mode, 35, heightOffset - 30, Color.BLACK.color());
-            graphics.drawString(minecraft.font, ChatFormatter.getChatDisplayShort(((IItemElectric)helmet.getItem()).getJoulesStored(helmet), DisplayUnits.JOULES), 35, heightOffset - 20, Color.WHITE.color(), false);
-        }
+	Component status = helmet.getOrDefault(VoltaicDataComponentTypes.ON, false) ? statusGogglesOn
+		: statusGogglesOff;
+	double joules = ((IItemElectric) helmet.getItem()).getJoulesStored(helmet);
 
-        if (renderItem) {
-            RenderingUtils.renderItemScaled(graphics, helmet.getItem(), 10, heightOffset - 30, 1.5F);
-        }
+	graphics.drawString(minecraft.font, status, TEXT_X, heightOffset - 30, Color.BLACK.color());
+	graphics.drawString(minecraft.font, joulesStorageCached.get(joules), TEXT_X, heightOffset - 20,
+		Color.WHITE.color(), false);
 
-        return renderItem;
+	RenderingUtils.renderItemScaled(graphics, helmet.getItem(), ICON_X, heightOffset - 30, 1.5F);
+	return true;
 
     }
 
-    private static boolean handleChestplate(ItemStack chestplate, GuiGraphics graphics, Minecraft minecraft, int heightOffset) {
+    private boolean handleChestplate(ItemStack chestplate, GuiGraphics graphics, Minecraft minecraft,
+	    int heightOffset) {
 
-        boolean renderItem = false;
+	// Jetpack
+	if (ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get())) {
 
-        if (ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get())) {
-            renderItem = true;
-            Component mode = ItemJetpack.getModeText(chestplate.getOrDefault(VoltaicDataComponentTypes.MODE, 0));
+	    Component mode = jetpackModeCached.get(chestplate.getOrDefault(VoltaicDataComponentTypes.MODE, 0));
+	    IGasHandlerItem handler = chestplate.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-            IGasHandlerItem handler = chestplate.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	    if (handler != null) {
+		GasStack gas = handler.getGasInTank(0);
+		Component gasText = gas.isEmpty()
+			? VoltaicTextUtils.ratio(Component.literal("0"),
+				ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY))
+			: VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()),
+				ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY));
 
-            graphics.pose().pushPose();
+		graphics.drawString(minecraft.font, mode, TEXT_X, heightOffset - 30, 0);
+		graphics.drawString(minecraft.font, gasText, TEXT_X, heightOffset - 20, Color.WHITE.color(), false);
+	    }
 
-            if (handler != null) {
-                GasStack gas = handler.getGasInTank(0);
-                if (gas.isEmpty()) {
-                    graphics.drawString(minecraft.font, mode, 35, heightOffset - 30, 0);
-                    graphics.drawString(minecraft.font, VoltaicTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 35, heightOffset - 20, Color.WHITE.color());
-                } else {
-                    graphics.drawString(minecraft.font, mode, 35, heightOffset - 30, 0);
-                    graphics.drawString(minecraft.font, VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), 35, heightOffset - 20, Color.WHITE.color(), false);
-                }
-            }
+	    RenderingUtils.renderItemScaled(graphics, chestplate.getItem(), ICON_X, heightOffset - 30, 1.5F);
+	    return true;
 
-            graphics.pose().popPose();
-        }
+	}
 
-        if (ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
+	// Combat chestplate (scaled)
+	if (ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
 
-            graphics.pose().pushPose();
+	    graphics.pose().pushPose();
+	    graphics.pose().scale(SMALL_SCALE, SMALL_SCALE, SMALL_SCALE);
 
-            graphics.pose().scale(0.8F, 0.8F, 0.8F);
-            renderItem = true;
-            Component mode = ItemJetpack.getModeText(chestplate.getOrDefault(VoltaicDataComponentTypes.MODE, 0));
+	    int scaledX = (int) (TEXT_X / SMALL_SCALE);
+	    int scaledY0 = (int) ((heightOffset - 34) / SMALL_SCALE);
+	    int scaledY1 = (int) ((heightOffset - 25) / SMALL_SCALE);
+	    int scaledY2 = (int) ((heightOffset - 16) / SMALL_SCALE);
 
-            IGasHandlerItem handler = chestplate.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	    Component mode = jetpackModeCached.get(chestplate.getOrDefault(VoltaicDataComponentTypes.MODE, 0));
+	    IGasHandlerItem handler = chestplate.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-            if (handler != null) {
-                GasStack gas = handler.getGasInTank(0);
-                int x = (int) (35 / 0.8F);
-                if (gas.isEmpty()) {
-                    graphics.drawString(minecraft.font, mode, x, (int) ((heightOffset - 34) / 0.8F), 0);
-                    graphics.drawString(minecraft.font, VoltaicTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), x, (int) ((heightOffset - 25) / 0.8F), -1);
-                    graphics.drawString(minecraft.font, ElectroTextUtils.tooltip("ceramicplatecount", Component.literal(chestplate.getOrDefault(VoltaicDataComponentTypes.PLATES, 0) + "")).withStyle(ChatFormatting.AQUA), x, (int) ((heightOffset - 16) / 0.8F), Color.WHITE.color());
-                } else {
-                    graphics.drawString(minecraft.font, mode, x, (int) ((heightOffset - 34) / 0.8F), 0);
-                    graphics.drawString(minecraft.font, VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY)), x, (int) ((heightOffset - 25) / 0.8F), -1);
-                    graphics.drawString(minecraft.font, ElectroTextUtils.tooltip("ceramicplatecount", Component.literal(chestplate.getOrDefault(VoltaicDataComponentTypes.PLATES, 0) + "")).withStyle(ChatFormatting.AQUA), x, (int) ((heightOffset - 16) / 0.8F), Color.WHITE.color());
-                }
-            }
+	    if (handler != null) {
+		GasStack gas = handler.getGasInTank(0);
+		Component gasText = gas.isEmpty()
+			? VoltaicTextUtils.ratio(Component.literal("0"),
+				ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY))
+			: VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()),
+				ChatFormatter.formatFluidMilibuckets(ItemJetpack.MAX_CAPACITY));
 
-            graphics.pose().popPose();
-        }
+		int plates = chestplate.getOrDefault(VoltaicDataComponentTypes.PLATES, 0);
 
-        if (ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get())) {
-            renderItem = true;
-            graphics.drawString(minecraft.font, ElectroTextUtils.tooltip("ceramicplatecount", Component.literal(chestplate.getOrDefault(VoltaicDataComponentTypes.PLATES, 0) + "")).withStyle(ChatFormatting.AQUA), 35, heightOffset - 25, Color.WHITE.color(), false);
-        }
+		graphics.drawString(minecraft.font, mode, scaledX, scaledY0, 0);
+		graphics.drawString(minecraft.font, gasText, scaledX, scaledY1, -1, false);
+		graphics.drawString(minecraft.font, ceramicPlateCountCached.get(plates), scaledX, scaledY2,
+			Color.WHITE.color());
+	    }
 
-        if (renderItem) {
-            RenderingUtils.renderItemScaled(graphics, chestplate.getItem(), 10, heightOffset - 30, 1.5F);
-        }
+	    graphics.pose().popPose();
+	    RenderingUtils.renderItemScaled(graphics, chestplate.getItem(), ICON_X, heightOffset - 30, 1.5F);
+	    return true;
 
-        return renderItem;
+	}
+
+	// Composite chestplate
+	if (ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get())) {
+	    int plates = chestplate.getOrDefault(VoltaicDataComponentTypes.PLATES, 0);
+	    graphics.drawString(minecraft.font, ceramicPlateCountCached.get(plates), TEXT_X, heightOffset - 25,
+		    Color.WHITE.color(), false);
+	    RenderingUtils.renderItemScaled(graphics, chestplate.getItem(), ICON_X, heightOffset - 30, 1.5F);
+	    return true;
+	}
+
+	return false;
+
     }
 
-    private static boolean handleLeggings(ItemStack leggings, GuiGraphics graphics, Minecraft minecraft, int heightOffset) {
+    private boolean handleLeggings(ItemStack leggings, GuiGraphics graphics, Minecraft minecraft, int heightOffset) {
 
-        boolean renderItem = false;
+	if (!ItemUtils.testItems(leggings.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get(),
+		ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
+	    return false;
+	}
 
-        if (ItemUtils.testItems(leggings.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
-            renderItem = true;
-            Component on;
-            if (leggings.getOrDefault(VoltaicDataComponentTypes.ON, false)) {
-                on = ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN));
-            } else {
-                on = ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED));
-            }
-            int x = (int) (35 / 0.8F);
-            graphics.pose().pushPose();
-            graphics.pose().scale(0.8F, 0.8F, 0.8F);
-            graphics.drawString(minecraft.font, on, x, (int) ((heightOffset - 34) / 0.8F), 0);
-            graphics.drawString(minecraft.font, ItemServoLeggings.getModeText(leggings.getOrDefault(VoltaicDataComponentTypes.MODE, -1)), x, (int) ((heightOffset - 25) / 0.8F), Color.BLACK.color(), false);
-            graphics.drawString(minecraft.font, ChatFormatter.getChatDisplayShort(((IItemElectric)leggings.getItem()).getJoulesStored(leggings), DisplayUnits.JOULES), x, (int) ((heightOffset - 16) / 0.8F), Color.WHITE.color(), false);
-            graphics.pose().popPose();
-        }
+	Component status = leggings.getOrDefault(VoltaicDataComponentTypes.ON, false) ? statusGogglesOn
+		: statusGogglesOff;
+	Component mode = servoModeCached.get(leggings.getOrDefault(VoltaicDataComponentTypes.MODE, -1));
+	double joules = ((IItemElectric) leggings.getItem()).getJoulesStored(leggings);
 
-        if (renderItem) {
-            RenderingUtils.renderItemScaled(graphics, leggings.getItem(), 10, heightOffset - 30, 1.5F);
-        }
+	int x = (int) (TEXT_X / SMALL_SCALE);
 
-        return renderItem;
+	graphics.pose().pushPose();
+	graphics.pose().scale(SMALL_SCALE, SMALL_SCALE, SMALL_SCALE);
+	graphics.drawString(minecraft.font, status, x, (int) ((heightOffset - 34) / SMALL_SCALE), 0);
+	graphics.drawString(minecraft.font, mode, x, (int) ((heightOffset - 25) / SMALL_SCALE), Color.BLACK.color(),
+		false);
+	graphics.drawString(minecraft.font, joulesStorageCached.get(joules), x,
+		(int) ((heightOffset - 16) / SMALL_SCALE), Color.WHITE.color(), false);
+	graphics.pose().popPose();
+
+	RenderingUtils.renderItemScaled(graphics, leggings.getItem(), ICON_X, heightOffset - 30, 1.5F);
+	return true;
+
     }
 
-    private static boolean handleBoots(ItemStack boots, GuiGraphics graphics, Minecraft minecraft, int heightOffset) {
+    private boolean handleBoots(ItemStack boots, GuiGraphics graphics, Minecraft minecraft, int heightOffset) {
 
-        boolean renderItem = false;
+	if (!ItemUtils.testItems(boots.getItem(), ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get(),
+		ElectrodynamicsItems.ITEM_COMBATBOOTS.get())) {
+	    return false;
+	}
 
-        if (ItemUtils.testItems(boots.getItem(), ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get(), ElectrodynamicsItems.ITEM_COMBATBOOTS.get())) {
-            renderItem = true;
-            IFluidHandlerItem handler = boots.getCapability(Capabilities.FluidHandler.ITEM);
-            if (handler != null) {
-                graphics.drawString(minecraft.font, ChatFormatter.formatFluidMilibuckets(handler.getFluidInTank(0).getAmount()), 35, heightOffset - 25, Color.WHITE.color());
-            }
-        }
+	IFluidHandlerItem handler = boots.getCapability(Capabilities.FluidHandler.ITEM);
+	if (handler != null) {
+	    graphics.drawString(minecraft.font,
+		    ChatFormatter.formatFluidMilibuckets(handler.getFluidInTank(0).getAmount()), TEXT_X,
+		    heightOffset - 25, Color.WHITE.color());
+	}
 
-        if (renderItem) {
-            RenderingUtils.renderItemScaled(graphics, boots.getItem(), 10, heightOffset - 30, 1.5F);
-        }
+	RenderingUtils.renderItemScaled(graphics, boots.getItem(), ICON_X, heightOffset - 30, 1.5F);
+	return true;
 
-        return renderItem;
     }
 
 }
