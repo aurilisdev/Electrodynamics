@@ -105,7 +105,7 @@ configurations {
 dependencies {
 	minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 	
-    implementation "voltaic:Voltaic:1.20.1-1.0.1-0:deobf"
+    implementation "voltaic:Voltaic:1.20.1-1.0.2-0:deobf"
     
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
