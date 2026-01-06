@@ -37,6 +37,7 @@ import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.BubbleColumnBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -873,7 +874,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	}
 
 	private boolean skipBlock(BlockState state) {
-		return state.isAir() || state.is(Blocks.BEDROCK) || miningPos.getValue().getY() == level.getMinBuildHeight() || state.getBlock() instanceof LiquidBlock;
+		return state.isAir() || state.is(Blocks.BEDROCK) || miningPos.getValue().getY() == level.getMinBuildHeight() || state.getBlock() instanceof LiquidBlock || state.getBlock() instanceof BubbleColumnBlock;
 	}
 
 	private void tickClient(ComponentTickable tick) {
