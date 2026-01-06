@@ -79,12 +79,12 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 
     @Override
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
-	TileWire tile = (TileWire) worldIn.getBlockEntity(pos);
-	if (tile != null && tile.getNetwork() != null && tile.getNetwork().getActiveTransmitted() > 0) {
-	    int shockVoltage = tile.wire.getInsulation().shockVoltage();
-	    if (shockVoltage == 0 || tile.getNetwork().getActiveVoltage() > shockVoltage) {
+	if (worldIn.getBlockEntity(pos) instanceof TileWire wire && wire.getNetwork() != null
+		&& wire.getNetwork().getActiveTransmitted() > 0) {
+	    int shockVoltage = wire.wire.getInsulation().shockVoltage();
+	    if (shockVoltage == 0 || wire.getNetwork().getActiveVoltage() > shockVoltage) {
 		ElectricityUtils.electrecuteEntity(entityIn, TransferPack
-			.joulesVoltage(tile.getNetwork().getActiveTransmitted(), tile.getNetwork().getActiveVoltage()));
+			.joulesVoltage(wire.getNetwork().getActiveTransmitted(), wire.getNetwork().getActiveVoltage()));
 	    }
 	}
     }
