@@ -10,15 +10,16 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import voltaic.api.ISubtype;
 import voltaic.api.gas.Gas;
 import voltaic.api.network.cable.type.IGasPipe;
+import voltaic.common.block.states.VoltaicMaterials;
 
 public enum SubtypeGasPipe implements ISubtype, IGasPipe {
 
     /*
      * UNINSULATED
      */
-    UNINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.NONE, 10000, 2.5, Blocks.IRON_BLOCK.properties(), SoundType.METAL), //
-    UNINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.NONE, 30000, 2.5, Blocks.IRON_BLOCK.properties(), SoundType.METAL), //
-    UNINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.NONE, 1000, 2.5, Blocks.IRON_BLOCK.properties(), SoundType.STONE);//
+    UNINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.NONE, 10000, 2.5, VoltaicMaterials.metal(), SoundType.METAL), //
+    UNINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.NONE, 30000, 2.5, VoltaicMaterials.metal(), SoundType.METAL), //
+    UNINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.NONE, 1000, 2.5, VoltaicMaterials.metal(), SoundType.STONE);//
 
     /*
      * CERAMIC INSULATED

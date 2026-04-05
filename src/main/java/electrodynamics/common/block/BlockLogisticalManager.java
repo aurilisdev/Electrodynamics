@@ -21,6 +21,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import voltaic.common.block.connect.AbstractConnectBlock;
 import voltaic.common.block.connect.EnumConnectType;
+import voltaic.common.block.states.VoltaicMaterials;
 import voltaic.prefab.block.GenericEntityBlockWaterloggable;
 import voltaic.prefab.tile.types.IConnectTile;
 import voltaic.prefab.utilities.BlockEntityUtils;
@@ -40,7 +41,7 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 
 
     public BlockLogisticalManager() {
-        super(Blocks.IRON_BLOCK.properties().strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
+        super(VoltaicMaterials.metal().strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
         generateBoundingBoxes(3);
     }
 

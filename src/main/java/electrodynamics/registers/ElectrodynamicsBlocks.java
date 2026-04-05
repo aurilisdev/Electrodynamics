@@ -44,6 +44,7 @@ import voltaic.api.tile.IMachine;
 import voltaic.common.block.BlockCustomGlass;
 import voltaic.common.block.BlockMachine;
 import voltaic.common.block.connect.BlockScaffold;
+import voltaic.common.block.states.VoltaicMaterials;
 import voltaic.common.block.voxelshapes.VoxelShapeProvider;
 import voltaic.prefab.block.GenericMachineBlock;
 
@@ -120,7 +121,7 @@ public class ElectrodynamicsBlocks {
     public static final DeferredHolder<Block, BlockGasTransformerAddonTank> BLOCK_COMPRESSOR_ADDONTANK = BLOCKS.register("compressoraddontank", BlockGasTransformerAddonTank::new);
     public static final DeferredHolder<Block, BlockThermoelectricManipulator> BLOCK_THERMOELECTRICMANIPULATOR = BLOCKS.register("thermoelectricmanipulator", BlockThermoelectricManipulator::new);
     public static final DeferredHolder<Block, BlockAdvancedThermoelectricManipulator> BLOCK_ADVANCED_THERMOELECTRICMANIPULATOR = BLOCKS.register("advancedthermoelectricmanipulator", BlockAdvancedThermoelectricManipulator::new);
-    public static final DeferredHolder<Block, BlockScaffold> BLOCK_STEELSCAFFOLDING = BLOCKS.register("steelscaffold", () -> new BlockScaffold(Blocks.IRON_BLOCK.properties().requiresCorrectToolForDrops().strength(2.0F, 3.0F).sound(SoundType.METAL).noOcclusion()));
+    public static final DeferredHolder<Block, BlockScaffold> BLOCK_STEELSCAFFOLDING = BLOCKS.register("steelscaffold", () -> new BlockScaffold(VoltaicMaterials.metal().requiresCorrectToolForDrops().strength(2.0F, 3.0F).sound(SoundType.METAL).noOcclusion()));
     public static final DeferredHolder<Block, BlockChemicalReactorExtra> BLOCK_CHEMICALREACTOREXTRA_MIDDLE = BLOCKS.register("chemicalreactorextramiddle", () -> new BlockChemicalReactorExtra(BlockChemicalReactorExtra.Location.MIDDLE));
     public static final DeferredHolder<Block, BlockChemicalReactorExtra> BLOCK_CHEMICALREACTOREXTRA_TOP = BLOCKS.register("chemicalreactorextratop", () -> new BlockChemicalReactorExtra(BlockChemicalReactorExtra.Location.TOP));
 

@@ -36,6 +36,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import voltaic.common.block.states.VoltaicBlockStates;
+import voltaic.common.block.states.VoltaicMaterials;
 
 public class BlockFrame extends BaseEntityBlock {
 
@@ -46,7 +47,7 @@ public class BlockFrame extends BaseEntityBlock {
     private final int type;
 
     public BlockFrame(int type) {
-        super(Blocks.IRON_BLOCK.properties().strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
+        super(VoltaicMaterials.metal().strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
         registerDefaultState(stateDefinition.any().setValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY, Boolean.FALSE).setValue(VoltaicBlockStates.WATERLOGGED, false).setValue(VoltaicBlockStates.FACING, Direction.NORTH));
         this.type = type;
     }

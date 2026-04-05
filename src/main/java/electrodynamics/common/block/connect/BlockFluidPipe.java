@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import voltaic.api.network.cable.type.IFluidPipe;
 import voltaic.common.block.connect.AbstractRefreshingConnectBlock;
 import voltaic.common.block.connect.EnumConnectType;
+import voltaic.common.block.states.VoltaicMaterials;
 import voltaic.common.network.utils.FluidUtilities;
 
 public class BlockFluidPipe extends AbstractRefreshingConnectBlock<GenericTileFluidPipe> {
@@ -26,7 +27,7 @@ public class BlockFluidPipe extends AbstractRefreshingConnectBlock<GenericTileFl
     public final IFluidPipe pipe;
 
     public BlockFluidPipe(IFluidPipe pipe) {
-        super(Blocks.IRON_BLOCK.properties().sound(SoundType.METAL).strength(0.15f).dynamicShape().noOcclusion(), 3);
+        super(VoltaicMaterials.metal().sound(SoundType.METAL).strength(0.15f).dynamicShape().noOcclusion(), 3);
         this.pipe = pipe;
         PIPESET.add(this);
     }
