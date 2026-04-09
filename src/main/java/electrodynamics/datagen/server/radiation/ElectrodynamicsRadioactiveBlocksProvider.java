@@ -16,11 +16,11 @@ public class ElectrodynamicsRadioactiveBlocksProvider extends BaseRadioactiveBlo
     @Override
     public void getRadioactiveBlocks(JsonObject json) {
 
-        addTag(VoltaicTags.Blocks.ORE_THORIUM, 500, 1, json);
-        addTag(VoltaicTags.Blocks.ORE_URANIUM, 100, 1, json);
+        addTag(VoltaicTags.Blocks.ORE_THORIUM, 15, 1, json);
+        addTag(VoltaicTags.Blocks.ORE_URANIUM, 10, 1, json);
 
-        addTag(VoltaicTags.Blocks.BLOCK_RAW_ORE_THORIUM, 500, 1, json);
-        addTag(VoltaicTags.Blocks.BLOCK_RAW_ORE_URANIUM, 450, 1, json);
+        addTag(VoltaicTags.Blocks.BLOCK_RAW_ORE_THORIUM, 30, 1, json);
+        addTag(VoltaicTags.Blocks.BLOCK_RAW_ORE_URANIUM, 20, 1, json);
 
     }
 }

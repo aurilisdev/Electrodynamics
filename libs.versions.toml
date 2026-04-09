@@ -1,5 +1,5 @@
 [versions]
-mod = "1.0.2"
+mod = "1.0.3"
 minecraft = "1.21.1"
 minecraftRange = "[1.21,1.21.1)"
 # forge deps
