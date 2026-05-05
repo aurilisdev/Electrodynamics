@@ -80,13 +80,15 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
             return FluidStack.EMPTY;
         }
 
-        // This algorithm is not perfect, but it helps deal with tiles that do not accept the full amount allotted to them
+        // Greedy distribution with a running remainder. The previous implementation
+        // pre-divided the available amount across acceptors using truncating integer
+        // division, so when amount < acceptors * connections the per-share rounded to
+        // 0 and the trailing 1..N mB never moved, leaving residual fluid in upstream
+        // tanks indefinitely. Offering the full remainder to each acceptor in turn
+        // preserves throughput on evenly-divisible amounts while correctly delivering
+        // the remainder.
 
-        FluidStack perTile, prePerTile, perConnection, prePerConnection;
-
-        int size = availableAcceptors.size();
-
-        int connectionsSize, amtTaken, takenAmt;
+        int amtTaken;
 
         HashSet<Direction> connections;
 
@@ -98,34 +100,27 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
                 continue;
             }
 
-            perTile = new FluidStack(initial.getFluid(), (int) ((double) initial.getAmount() / (double) size));
-            prePerTile = perTile.copy();
+            if (initial.isEmpty()) {
+                break;
+            }
 
             connections = acceptorInputMap.getOrDefault(tile, new HashSet<>());
 
-            connectionsSize = connections.size();
-
             for (Direction dir : connections) {
 
-                perConnection = new FluidStack(initial.getFluid(), (int) ((double) perTile.getAmount() / (double) connectionsSize));
-                prePerConnection = perConnection.copy();
+                if (initial.isEmpty()) {
+                    break;
+                }
 
-                amtTaken = FluidUtilities.receiveFluid(tile, dir, perConnection, false);
+                FluidStack offer = new FluidStack(initial.getFluid(), initial.getAmount());
 
-                perConnection.shrink(amtTaken);
+                amtTaken = FluidUtilities.receiveFluid(tile, dir, offer, false);
 
-                perTile.shrink(prePerConnection.getAmount() - perConnection.getAmount());
-
-                connectionsSize--;
+                if (amtTaken > 0) {
+                    initial.shrink(amtTaken);
+                    taken.grow(amtTaken);
+                }
             }
-
-            takenAmt = prePerTile.getAmount() - perTile.getAmount();
-
-            initial.shrink(takenAmt);
-
-            taken.grow(takenAmt);
-
-            size--;
         }
 
         return taken;
@@ -179,52 +174,46 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
         FluidStack initial = transfer.copy();
         FluidStack taken = new FluidStack(transfer.getFluid(), 0);
 
-        FluidStack perTile, prePerTile, perConnection, prePerConnection;
+        // Greedy distribution; same fix as in emit(). See comment there.
 
         HashSet<TileFluidPipePump> filledPumps = new HashSet<>();
 
-        int size = recievingTiles.size();
-
-        int connectionsSize, amtTaken, takenAmt;
+        int amtTaken;
 
         HashSet<Direction> connections;
 
         for (TileFluidPipePump tile : recievingTiles) {
             if (!tile.isPowered() || ignored.contains(tile)) {
-                size--;
                 continue;
             }
 
-            perTile = new FluidStack(initial.getFluid(), initial.getAmount() / size);
-            prePerTile = perTile.copy();
+            if (initial.isEmpty()) {
+                break;
+            }
+
+            int beforeAmount = initial.getAmount();
 
             connections = acceptorInputMap.getOrDefault(tile, new HashSet<>());
 
-            connectionsSize = connections.size();
-
             for (Direction dir : connections) {
 
-                perConnection = new FluidStack(initial.getFluid(), perTile.getAmount() / connectionsSize);
-                prePerConnection = perConnection.copy();
+                if (initial.isEmpty()) {
+                    break;
+                }
 
-                amtTaken = FluidUtilities.receiveFluid(tile, dir, perConnection, false);
+                FluidStack offer = new FluidStack(initial.getFluid(), initial.getAmount());
 
-                perConnection.shrink(amtTaken);
+                amtTaken = FluidUtilities.receiveFluid(tile, dir, offer, false);
 
-                perTile.shrink(prePerConnection.getAmount() - perConnection.getAmount());
-
-                connectionsSize--;
+                if (amtTaken > 0) {
+                    initial.shrink(amtTaken);
+                    taken.grow(amtTaken);
+                }
             }
 
-            takenAmt = prePerTile.getAmount() - perTile.getAmount();
-
-            initial.shrink(takenAmt);
-
-            taken.grow(takenAmt);
-
-            filledPumps.add(tile);
-
-            size--;
+            if (initial.getAmount() < beforeAmount) {
+                filledPumps.add(tile);
+            }
         }
 
         return Pair.of(taken, filledPumps);

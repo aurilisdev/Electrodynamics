@@ -144,6 +144,18 @@ public class TileElectrolosisChamber extends TileMultiblockController {
 
 	int amtToProcess = Math.min(room, processAmount.getValue());
 
+	// Clamp to the actual amount available in the input tank. drain() already caps
+	// to whatever's stored, but the matching fill() below uses amtToProcess directly,
+	// so without this clamp a partially-filled input tank produces strictly more
+	// output fluid than was consumed (e.g. 1 mB in -> processAmount mB out at high
+	// energy levels). This is most visible with intermittent upstream flow.
+	amtToProcess = Math.min(amtToProcess, fluidHandler.getInputTanks()[0].getFluidAmount());
+
+	if (amtToProcess <= 0) {
+	    isActive.setValue(false);
+	    return;
+	}
+
 	electro.setJoulesStored(0);
 
 	isActive.setValue(true);
@@ -171,24 +183,52 @@ public class TileElectrolosisChamber extends TileMultiblockController {
 	return false;
     }
 
+    /**
+     * Index of the fluid-output slave port in the multiblock layout
+     * ({@code data/electrodynamics/voltaic/multiblock/electrolosischamber.json}).
+     */
+    private static final int FLUID_OUT_SLAVE_INDEX = 39;
+
     private void outputToPipe() {
+
+	if (level == null || level.isClientSide()) {
+	    return;
+	}
+
+	if (!isFormed.getValue()) {
+	    return;
+	}
 
 	ComponentFluidHandlerMulti component = getComponent(IComponentType.FluidHandler);
 	Direction[] outputDirections = component.outputDirections;
 
 	Direction facing = getFacing();
 
+	// Resolve the fluid-out port's actual world position from slavePositions instead
+	// of guessing with a fixed (2, 0, 2) offset. The fixed offset only matched the
+	// port's location for east-facing builds; for the other three facings the
+	// neighbour lookup hit empty / wrong blocks and no fluid was ever output.
+	@SuppressWarnings("unchecked")
+	List<BlockPos> positions = (List<BlockPos>) slavePositions.getValue();
+	if (positions == null || positions.size() <= FLUID_OUT_SLAVE_INDEX) {
+	    return;
+	}
+	BlockPos portPos = positions.get(FLUID_OUT_SLAVE_INDEX);
+	if (portPos == null) {
+	    return;
+	}
+
 	for (Direction relative : outputDirections) {
 
 	    Direction direction = BlockEntityUtils.getRelativeSide(facing, relative);
 
-	    BlockEntity faceTile = getLevel().getBlockEntity(getBlockPos().relative(direction).offset(2, 0, 2));
+	    BlockEntity faceTile = level.getBlockEntity(portPos.relative(direction));
 
 	    if (faceTile == null) {
 		continue;
 	    }
 
-	    IFluidHandler handler = getLevel().getCapability(Capabilities.FluidHandler.BLOCK, faceTile.getBlockPos(),
+	    IFluidHandler handler = level.getCapability(Capabilities.FluidHandler.BLOCK, faceTile.getBlockPos(),
 		    faceTile.getBlockState(), faceTile, direction.getOpposite());
 
 	    if (handler == null) {
@@ -199,11 +239,15 @@ public class TileElectrolosisChamber extends TileMultiblockController {
 
 		FluidStack tankFluid = fluidTank.getFluid();
 
+		if (tankFluid.isEmpty()) {
+		    continue;
+		}
+
 		int amtAccepted = handler.fill(tankFluid, IFluidHandler.FluidAction.EXECUTE);
 
-		FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
-
-		fluidTank.drain(taken, IFluidHandler.FluidAction.EXECUTE);
+		if (amtAccepted > 0) {
+		    fluidTank.drain(new FluidStack(tankFluid.getFluid(), amtAccepted), IFluidHandler.FluidAction.EXECUTE);
+		}
 	    }
 	}
     }
