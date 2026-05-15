@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "electrodynamics:item/wire/wireceramicinsulatedcopper",
+    "layer1": "electrodynamics:item/wire/wireceramicinsulatedcolortips",
+    "layer2": "electrodynamics:item/wire/wireceramicinsulatedcoil"
+  }
+}

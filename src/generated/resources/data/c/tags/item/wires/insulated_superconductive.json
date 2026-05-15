@@ -6,6 +6,15 @@
     "electrodynamics:wireinsulatedsuperconductivegreen",
     "electrodynamics:wireinsulatedsuperconductiveblue",
     "electrodynamics:wireinsulatedsuperconductiveyellow",
-    "electrodynamics:wireinsulatedsuperconductivebrown"
+    "electrodynamics:wireinsulatedsuperconductivebrown",
+    "electrodynamics:wireinsulatedsuperconductiveorange",
+    "electrodynamics:wireinsulatedsuperconductivelime",
+    "electrodynamics:wireinsulatedsuperconductivelightblue",
+    "electrodynamics:wireinsulatedsuperconductivecyan",
+    "electrodynamics:wireinsulatedsuperconductivepurple",
+    "electrodynamics:wireinsulatedsuperconductivemagenta",
+    "electrodynamics:wireinsulatedsuperconductivepink",
+    "electrodynamics:wireinsulatedsuperconductivelightgray",
+    "electrodynamics:wireinsulatedsuperconductivegray"
   ]
 }

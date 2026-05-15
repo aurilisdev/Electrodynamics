@@ -6,6 +6,15 @@
     "electrodynamics:wireinsulatedtingreen",
     "electrodynamics:wireinsulatedtinblue",
     "electrodynamics:wireinsulatedtinyellow",
-    "electrodynamics:wireinsulatedtinbrown"
+    "electrodynamics:wireinsulatedtinbrown",
+    "electrodynamics:wireinsulatedtinorange",
+    "electrodynamics:wireinsulatedtinlime",
+    "electrodynamics:wireinsulatedtinlightblue",
+    "electrodynamics:wireinsulatedtincyan",
+    "electrodynamics:wireinsulatedtinpurple",
+    "electrodynamics:wireinsulatedtinmagenta",
+    "electrodynamics:wireinsulatedtinpink",
+    "electrodynamics:wireinsulatedtinlightgray",
+    "electrodynamics:wireinsulatedtingray"
   ]
 }

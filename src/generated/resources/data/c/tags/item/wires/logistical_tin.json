@@ -6,6 +6,15 @@
     "electrodynamics:wirelogisticstingreen",
     "electrodynamics:wirelogisticstinblue",
     "electrodynamics:wirelogisticstinyellow",
-    "electrodynamics:wirelogisticstinbrown"
+    "electrodynamics:wirelogisticstinbrown",
+    "electrodynamics:wirelogisticswiretinorange",
+    "electrodynamics:wirelogisticswiretinlime",
+    "electrodynamics:wirelogisticswiretinlightblue",
+    "electrodynamics:wirelogisticswiretincyan",
+    "electrodynamics:wirelogisticswiretinpurple",
+    "electrodynamics:wirelogisticswiretinmagenta",
+    "electrodynamics:wirelogisticswiretinpink",
+    "electrodynamics:wirelogisticswiretinlightgray",
+    "electrodynamics:wirelogisticswiretingray"
   ]
 }
