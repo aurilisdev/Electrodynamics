@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "tag": "forge:dyes/magenta"
+    },
+    "W": {
+      "tag": "forge:wires/ceramic_superconductive"
+    }
+  },
+  "pattern": [
+    "WWW",
+    "WDW",
+    "WWW"
+  ],
+  "result": {
+    "count": 8,
+    "item": "electrodynamics:wireceramicinsulatedsuperconductivemagenta"
+  },
+  "show_notification": false
+}

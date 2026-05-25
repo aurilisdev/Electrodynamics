@@ -1,0 +1,10 @@
+{
+  "parent": "electrodynamics:parent/logisticswire_none",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "conductor": "electrodynamics:block/wire/logisticswirecopper",
+    "insulation": "electrodynamics:block/wire/logisticswireinsulation_center",
+    "particle": "#insulation",
+    "redstone": "electrodynamics:block/wire/logisticswireredstone_center"
+  }
+}
