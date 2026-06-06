@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:block/cube",
+  "inventory": {
+    "parent": "electrodynamics:block/wire/wirelogisticswiretinlightblue_side"
+  },
+  "loader": "voltaic:voltaiccableloader",
+  "none": {
+    "parent": "electrodynamics:block/wire/wirelogisticswiretinlightblue_none"
+  },
+  "render_type": "minecraft:cutout",
+  "wire": {
+    "parent": "electrodynamics:block/wire/wirelogisticswiretinlightblue_side"
+  }
+}

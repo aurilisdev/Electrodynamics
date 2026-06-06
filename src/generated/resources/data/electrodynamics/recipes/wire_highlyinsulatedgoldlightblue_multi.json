@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "tag": "forge:dyes/light_blue"
+    },
+    "W": {
+      "tag": "forge:wires/thick_gold"
+    }
+  },
+  "pattern": [
+    "WWW",
+    "WDW",
+    "WWW"
+  ],
+  "result": {
+    "count": 8,
+    "item": "electrodynamics:wirehighlyinsulatedgoldlightblue"
+  },
+  "show_notification": false
+}

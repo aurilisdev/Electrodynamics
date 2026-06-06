@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "tag": "forge:dyes/light_gray"
+    },
+    "W": {
+      "tag": "forge:wires/thick_superconductive"
+    }
+  },
+  "pattern": [
+    "WWW",
+    "WDW",
+    "WWW"
+  ],
+  "result": {
+    "count": 8,
+    "item": "electrodynamics:wirehighlyinsulatedsuperconductivelightgray"
+  },
+  "show_notification": false
+}
