@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 import net.minecraft.world.phys.AABB;
 import voltaic.api.radiation.RadiationManager;
 import voltaic.api.radiation.util.IRadiationRecipient;
@@ -32,13 +33,13 @@ public class BlockOre extends DropExperienceBlock {
     public final SubtypeOreDeepslate deepOre;
 
     public BlockOre(SubtypeOre ore) {
-        super(UniformInt.of(ore.minXP, ore.maxXP), Blocks.STONE.properties().requiresCorrectToolForDrops().strength(ore.hardness, ore.resistance).randomTicks());
+        super(UniformInt.of(ore.minXP, ore.maxXP), Properties.ofFullCopy(Blocks.STONE).requiresCorrectToolForDrops().strength(ore.hardness, ore.resistance).randomTicks());
         this.ore = ore;
         deepOre = null;
     }
 
     public BlockOre(SubtypeOreDeepslate ore) {
-        super(UniformInt.of(ore.minXP, ore.maxXP), Blocks.STONE.properties().sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(ore.hardness + 1.5f, ore.resistance + 1.5f).randomTicks());
+        super(UniformInt.of(ore.minXP, ore.maxXP), Properties.ofFullCopy(Blocks.STONE).sound(SoundType.DEEPSLATE).requiresCorrectToolForDrops().strength(ore.hardness + 1.5f, ore.resistance + 1.5f).randomTicks());
         deepOre = ore;
         this.ore = null;
     }

@@ -16,9 +16,9 @@ public enum SubtypeGasPipe implements ISubtype, IGasPipe {
     /*
      * UNINSULATED
      */
-    UNINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.NONE, 10000, 2.5, Blocks.IRON_BLOCK.properties(), SoundType.METAL), //
-    UNINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.NONE, 30000, 2.5, Blocks.IRON_BLOCK.properties(), SoundType.METAL), //
-    UNINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.NONE, 1000, 2.5, Blocks.IRON_BLOCK.properties(), SoundType.STONE);//
+    UNINSULATEDCOPPER(PipeMaterial.COPPER, InsulationMaterial.NONE, 10000, 2.5, Properties.ofFullCopy(Blocks.IRON_BLOCK), SoundType.METAL), //
+    UNINSULATEDSTEEL(PipeMaterial.STEEL, InsulationMaterial.NONE, 30000, 2.5, Properties.ofFullCopy(Blocks.IRON_BLOCK), SoundType.METAL), //
+    UNINSULATEDPLASTIC(PipeMaterial.HDPE, InsulationMaterial.NONE, 1000, 2.5, Properties.ofFullCopy(Blocks.IRON_BLOCK), SoundType.STONE);//
 
     /*
      * CERAMIC INSULATED

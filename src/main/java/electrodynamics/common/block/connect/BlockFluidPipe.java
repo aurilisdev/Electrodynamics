@@ -26,7 +26,7 @@ public class BlockFluidPipe extends AbstractRefreshingConnectBlock<GenericTileFl
     public final IFluidPipe pipe;
 
     public BlockFluidPipe(IFluidPipe pipe) {
-        super(Blocks.IRON_BLOCK.properties().sound(SoundType.METAL).strength(0.15f).dynamicShape().noOcclusion(), 3);
+        super(Properties.ofFullCopy(Blocks.IRON_BLOCK).sound(SoundType.METAL).strength(0.15f).dynamicShape().noOcclusion(), 3);
         this.pipe = pipe;
         PIPESET.add(this);
     }

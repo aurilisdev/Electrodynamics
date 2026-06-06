@@ -53,227 +53,262 @@ import voltaic.registers.VoltaicCapabilities;
 
 public class TileElectrolosisChamber extends TileMultiblockController {
 
-    public static final ResourceLocation ID = Electrodynamics.rl("electrolosischamber");
-    public static final ResourceKey<Multiblock> RESOURCE_KEY = Multiblock.makeKey(ID);
+	public static final ResourceLocation ID = Electrodynamics.rl("electrolosischamber");
+	public static final ResourceKey<Multiblock> RESOURCE_KEY = Multiblock.makeKey(ID);
 
-    public static final int MAX_INPUT_TANK_CAPACITY = 5000;
-    public static final int MAX_OUTPUT_TANK_CAPACITY = 5000;
+	public static final int MAX_INPUT_TANK_CAPACITY = 5000;
+	public static final int MAX_OUTPUT_TANK_CAPACITY = 5000;
 
-    public final SingleProperty<Integer> processAmount = property(
-	    new SingleProperty<>(PropertyTypes.INTEGER, "processamount", 0));
-    public final SingleProperty<Double> operatingTicks = property(
-	    new SingleProperty<>(PropertyTypes.DOUBLE, "operatingticks", 0.0));
-    public final SingleProperty<Double> neededTicks = property(
-	    new SingleProperty<>(PropertyTypes.DOUBLE, "neededticks", 0.0));
-    public final SingleProperty<Boolean> isActive = property(
-	    new SingleProperty<>(PropertyTypes.BOOLEAN, "isactive", false));
+	private static final int FLUID_OUT_SLAVE_INDEX = 39;
 
-    private @Nullable ElectrolosisChamberRecipe currRecipe = null;
+	public final SingleProperty<Integer> processAmount = property(
+			new SingleProperty<>(PropertyTypes.INTEGER, "processamount", 0));
+	public final SingleProperty<Double> operatingTicks = property(
+			new SingleProperty<>(PropertyTypes.DOUBLE, "operatingticks", 0.0));
+	public final SingleProperty<Double> neededTicks = property(
+			new SingleProperty<>(PropertyTypes.DOUBLE, "neededticks", 0.0));
+	public final SingleProperty<Boolean> isActive = property(
+			new SingleProperty<>(PropertyTypes.BOOLEAN, "isactive", false));
 
-    public TileElectrolosisChamber(BlockPos worldPos, BlockState blockState) {
-	super(ElectrodynamicsTiles.TILE_ELECTROLOSISCHAMBER.get(), worldPos, blockState);
+	private @Nullable ElectrolosisChamberRecipe currRecipe = null;
 
-	addComponent(new ComponentElectrodynamic(this, false, true)
-		.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
-		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 16)
-		.maxJoules(ElectrodynamicsConfig.INSTANCE.ELECTROLOSIS_CHAMBER_TARGET_JOULES.get() * 20 * 100));
-	addComponent(new ComponentFluidHandlerMulti(this).setInputDirections(BlockEntityUtils.MachineDirection.RIGHT)
-		.setInputTanks(1, arr(MAX_INPUT_TANK_CAPACITY))
-		.setOutputDirections(BlockEntityUtils.MachineDirection.LEFT).setOutputTanks(1, MAX_OUTPUT_TANK_CAPACITY)
-		.setRecipeType(ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_TYPE.get()));
-	addComponent(new ComponentContainerProvider(SubtypeMachine.electrolosischamber.tag(), this)
-		.createMenu((id, player) -> new ContainerElectrolosisChamber(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
-	addComponent(new ComponentInventory(this,
-		ComponentInventory.InventoryBuilder.newInv().bucketInputs(1).bucketOutputs(1))
-		.valid(machineValidator()));
+	public TileElectrolosisChamber(BlockPos worldPos, BlockState blockState) {
+		super(ElectrodynamicsTiles.TILE_ELECTROLOSISCHAMBER.get(), worldPos, blockState);
 
-    }
+		addComponent(new ComponentElectrodynamic(this, false, true)
+				.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
+				.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 16)
+				.maxJoules(ElectrodynamicsConfig.INSTANCE.ELECTROLOSIS_CHAMBER_TARGET_JOULES.get() * 20 * 100));
+		addComponent(new ComponentFluidHandlerMulti(this).setInputDirections(BlockEntityUtils.MachineDirection.RIGHT)
+				.setInputTanks(1, arr(MAX_INPUT_TANK_CAPACITY))
+				.setOutputDirections(BlockEntityUtils.MachineDirection.LEFT).setOutputTanks(1, MAX_OUTPUT_TANK_CAPACITY)
+				.setRecipeType(ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_TYPE.get()));
+		addComponent(new ComponentContainerProvider(SubtypeMachine.electrolosischamber.tag(), this)
+				.createMenu((id, player) -> new ContainerElectrolosisChamber(id, player,
+						getComponent(IComponentType.Inventory), getCoordsArray())));
+		addComponent(new ComponentInventory(this,
+				ComponentInventory.InventoryBuilder.newInv().bucketInputs(1).bucketOutputs(1))
+				.valid(machineValidator()));
 
-    @Override
-    public void tickServer(ComponentTickable tickable) {
-	super.tickServer(tickable);
+	}
 
-	ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
-	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+	@Override
+	public void tickServer(ComponentTickable tickable) {
+		super.tickServer(tickable);
 
-	FluidUtilities.drainItem(this, fluidHandler.getInputTanks());
-	FluidUtilities.fillItem(this, fluidHandler.getOutputTanks());
+		ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
+		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-	outputToPipe();
+		FluidUtilities.drainItem(this, fluidHandler.getInputTanks());
+		FluidUtilities.fillItem(this, fluidHandler.getOutputTanks());
 
-	if (currRecipe == null) {
-	    for (RecipeHolder<ElectrolosisChamberRecipe> recipe : getLevel().getRecipeManager()
-		    .getAllRecipesFor(ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_TYPE.get())) {
-		if (testRecipe(recipe.value(), fluidHandler.getInputTanks())) {
-		    currRecipe = recipe.value();
-		    break;
+		outputToPipe();
+
+		if (currRecipe == null) {
+			for (RecipeHolder<ElectrolosisChamberRecipe> recipe : getLevel().getRecipeManager()
+					.getAllRecipesFor(ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_TYPE.get())) {
+				if (testRecipe(recipe.value(), fluidHandler.getInputTanks())) {
+					currRecipe = recipe.value();
+					break;
+				}
+			}
+		} else if (!testRecipe(currRecipe, fluidHandler.getInputTanks())) {
+			currRecipe = null;
 		}
-	    }
-	} else if (!testRecipe(currRecipe, fluidHandler.getInputTanks())) {
-	    currRecipe = null;
-	}
 
-	if (currRecipe == null || electro.getJoulesStored() <= 0 || (!fluidHandler.getOutputTanks()[0].isEmpty()
-		&& !fluidHandler.getOutputTanks()[0].getFluid().is(currRecipe.getFluidRecipeOutput().getFluid()))) {
-	    operatingTicks.setValue(0.0);
-	    isActive.setValue(false);
-	    processAmount.setValue(0);
-	    neededTicks.setValue(0.0);
-	    return;
-	}
+		if (currRecipe == null || electro.getJoulesStored() <= 0 || (!fluidHandler.getOutputTanks()[0].isEmpty()
+				&& !fluidHandler.getOutputTanks()[0].getFluid().is(currRecipe.getFluidRecipeOutput().getFluid()))) {
+			operatingTicks.setValue(0.0);
+			isActive.setValue(false);
+			processAmount.setValue(0);
+			neededTicks.setValue(0.0);
+			return;
+		}
 
-	double energySatisfaction = electro.getJoulesStored()
-		/ ElectrodynamicsConfig.INSTANCE.ELECTROLOSIS_CHAMBER_TARGET_JOULES.get();
+		double energySatisfaction = electro.getJoulesStored()
+				/ ElectrodynamicsConfig.INSTANCE.ELECTROLOSIS_CHAMBER_TARGET_JOULES.get();
 
-	if (energySatisfaction < 1) {
-	    neededTicks.setValue(1.0 / energySatisfaction);
-	    processAmount.setValue(1);
-	} else {
-	    neededTicks.setValue(0.0);
-	    operatingTicks.setValue(0.0);
-	    processAmount.setValue((int) energySatisfaction);
-	}
+		if (energySatisfaction < 1) {
+			neededTicks.setValue(1.0 / energySatisfaction);
+			processAmount.setValue(1);
+		} else {
+			neededTicks.setValue(0.0);
+			operatingTicks.setValue(0.0);
+			processAmount.setValue((int) energySatisfaction);
+		}
 
-	int room = fluidHandler.getOutputTanks()[0].getCapacity() - fluidHandler.getOutputTanks()[0].getFluidAmount();
+		int room = fluidHandler.getOutputTanks()[0].getCapacity() - fluidHandler.getOutputTanks()[0].getFluidAmount();
 
-	if (room <= 0) {
-	    isActive.setValue(false);
-	    return;
-	}
+		if (room <= 0) {
+			isActive.setValue(false);
+			return;
+		}
 
-	int amtToProcess = Math.min(room, processAmount.getValue());
+		int amtToProcess = Math.min(room, processAmount.getValue());
 
-	electro.setJoulesStored(0);
+		amtToProcess = Math.min(amtToProcess, fluidHandler.getInputTanks()[0].getFluidAmount());
 
-	isActive.setValue(true);
+		if (amtToProcess <= 0) {
+			isActive.setValue(false);
+			return;
+		}
 
-	if (neededTicks.getValue() > 0 && operatingTicks.getValue() < neededTicks.getValue()) {
-	    operatingTicks.setValue(operatingTicks.getValue() + 1.0);
-	    return;
-	}
+		electro.setJoulesStored(0);
 
-	operatingTicks.setValue(0.0);
+		isActive.setValue(true);
 
-	fluidHandler.getInputTanks()[0].drain(amtToProcess, IFluidHandler.FluidAction.EXECUTE);
-	fluidHandler.getOutputTanks()[0].fill(
-		new FluidStack(currRecipe.getFluidRecipeOutput().getFluidHolder(), amtToProcess),
-		IFluidHandler.FluidAction.EXECUTE);
+		if (neededTicks.getValue() > 0 && operatingTicks.getValue() < neededTicks.getValue()) {
+			operatingTicks.setValue(operatingTicks.getValue() + 1.0);
+			return;
+		}
 
-    }
+		operatingTicks.setValue(0.0);
 
-    private static boolean testRecipe(ElectrolosisChamberRecipe recipe, FluidTank[] inputTanks) {
-	Pair<List<Integer>, Boolean> pair = VoltaicRecipe.areFluidsValid(recipe.getFluidIngredients(), inputTanks);
-	if (pair.getSecond()) {
-	    recipe.setFluidArrangement(pair.getFirst());
-	    return true;
-	}
-	return false;
-    }
-
-    private void outputToPipe() {
-
-	ComponentFluidHandlerMulti component = getComponent(IComponentType.FluidHandler);
-	Direction[] outputDirections = component.outputDirections;
-
-	Direction facing = getFacing();
-
-	for (Direction relative : outputDirections) {
-
-	    Direction direction = BlockEntityUtils.getRelativeSide(facing, relative);
-
-	    BlockEntity faceTile = getLevel().getBlockEntity(getBlockPos().relative(direction).offset(2, 0, 2));
-
-	    if (faceTile == null) {
-		continue;
-	    }
-
-	    IFluidHandler handler = getLevel().getCapability(Capabilities.FluidHandler.BLOCK, faceTile.getBlockPos(),
-		    faceTile.getBlockState(), faceTile, direction.getOpposite());
-
-	    if (handler == null) {
-		continue;
-	    }
-
-	    for (FluidTank fluidTank : component.getOutputTanks()) {
-
-		FluidStack tankFluid = fluidTank.getFluid();
-
-		int amtAccepted = handler.fill(tankFluid, IFluidHandler.FluidAction.EXECUTE);
-
-		FluidStack taken = new FluidStack(tankFluid.getFluid(), amtAccepted);
-
-		fluidTank.drain(taken, IFluidHandler.FluidAction.EXECUTE);
-	    }
-	}
-    }
-
-    @Override
-    public @Nullable IFluidHandler getFluidHandlerCapability(@Nullable Direction side) {
-	return null;
-    }
-
-    @Nullable
-    @Override
-    public IFluidHandler getSlaveFluidHandlerCapability(TileMultiblockSlave slave, @Nullable Direction side) {
-	if (slave.index.getValue() != 35 && slave.index.getValue() != 39) {
-	    return null;
-	}
-	return this.<IComponentFluidHandler>getComponent(IComponentType.FluidHandler).getCapability(side,
-		CapabilityInputType.NONE);
-    }
-
-    @Override
-    public @Nullable ICapabilityElectrodynamic getElectrodynamicCapability(@Nullable Direction side) {
-	return null;
-    }
-
-    @Nullable
-    @Override
-    public ICapabilityElectrodynamic getSlaveCapabilityElectrodynamic(TileMultiblockSlave slave,
-	    @Nullable Direction side) {
-	if (slave.index.getValue() != 7) {
-	    return null;
-	}
-	return this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getCapability(side,
-		CapabilityInputType.NONE);
-    }
-
-    @Override
-    public @Nullable IItemHandler getItemHandlerCapability(@Nullable Direction side) {
-	return null;
-    }
-
-    @Override
-    public ItemInteractionResult useWithItem(ItemStack used, Player player, InteractionHand hand, BlockHitResult hit) {
-	if (!level.isClientSide() && hit.getBlockPos().equals(getBlockPos()) && used.getItem() instanceof IWrenchItem) {
-	    checkFormed();
-	    if (isFormed.getValue()) {
-		formMultiblock();
-	    } else {
-		destroyMultiblock();
-	    }
-	    return ItemInteractionResult.CONSUME;
+		fluidHandler.getInputTanks()[0].drain(amtToProcess, IFluidHandler.FluidAction.EXECUTE);
+		fluidHandler.getOutputTanks()[0].fill(
+				new FluidStack(currRecipe.getFluidRecipeOutput().getFluidHolder(), amtToProcess),
+				IFluidHandler.FluidAction.EXECUTE);
 
 	}
-	return super.useWithItem(used, player, hand, hit);
-    }
 
-    @Override
-    public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
-	if (!isFormed.getValue()) {
-	    return InteractionResult.FAIL;
+	private static boolean testRecipe(ElectrolosisChamberRecipe recipe, FluidTank[] inputTanks) {
+		Pair<List<Integer>, Boolean> pair = VoltaicRecipe.areFluidsValid(recipe.getFluidIngredients(), inputTanks);
+		if (pair.getSecond()) {
+			recipe.setFluidArrangement(pair.getFirst());
+			return true;
+		}
+		return false;
 	}
-	return super.useWithoutItem(player, hit);
-    }
 
-    @Override
-    public ResourceLocation getMultiblockId() {
-	return ID;
-    }
+	private void outputToPipe() {
 
-    @Override
-    public ResourceKey<Multiblock> getResourceKey() {
-	return RESOURCE_KEY;
-    }
+		if (level == null || level.isClientSide()) {
+			return;
+		}
+
+		if (!isFormed.getValue()) {
+			return;
+		}
+
+		ComponentFluidHandlerMulti component = getComponent(IComponentType.FluidHandler);
+		Direction[] outputDirections = component.outputDirections;
+
+		Direction facing = getFacing();
+
+		List<BlockPos> positions = slavePositions.getValue();
+
+		if (positions == null || positions.size() <= FLUID_OUT_SLAVE_INDEX) {
+			return;
+		}
+
+		BlockPos portPos = positions.get(FLUID_OUT_SLAVE_INDEX);
+
+		if (portPos == null) {
+			return;
+		}
+
+		for (Direction relative : outputDirections) {
+
+			Direction direction = BlockEntityUtils.getRelativeSide(facing, relative);
+
+			BlockEntity faceTile = level.getBlockEntity(portPos.relative(direction));
+
+			if (faceTile == null) {
+				continue;
+			}
+
+			IFluidHandler handler = level.getCapability(Capabilities.FluidHandler.BLOCK, faceTile.getBlockPos(),
+					faceTile.getBlockState(), faceTile, direction.getOpposite());
+
+			if (handler == null) {
+				continue;
+			}
+
+			for (FluidTank fluidTank : component.getOutputTanks()) {
+
+				FluidStack tankFluid = fluidTank.getFluid();
+
+				if (tankFluid.isEmpty()) {
+					continue;
+				}
+
+				FluidStack offer = tankFluid.copy();
+
+				int amtAccepted = handler.fill(offer, IFluidHandler.FluidAction.EXECUTE);
+
+				if (amtAccepted > 0) {
+					fluidTank.drain(amtAccepted, IFluidHandler.FluidAction.EXECUTE);
+				}
+			}
+		}
+	}
+
+	@Override
+	public @Nullable IFluidHandler getFluidHandlerCapability(@Nullable Direction side) {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public IFluidHandler getSlaveFluidHandlerCapability(TileMultiblockSlave slave, @Nullable Direction side) {
+		if (slave.index.getValue() != 35 && slave.index.getValue() != 39) {
+			return null;
+		}
+		return this.<IComponentFluidHandler>getComponent(IComponentType.FluidHandler).getCapability(side,
+				CapabilityInputType.NONE);
+	}
+
+	@Override
+	public @Nullable ICapabilityElectrodynamic getElectrodynamicCapability(@Nullable Direction side) {
+		return null;
+	}
+
+	@Nullable
+	@Override
+	public ICapabilityElectrodynamic getSlaveCapabilityElectrodynamic(TileMultiblockSlave slave,
+			@Nullable Direction side) {
+		if (slave.index.getValue() != 7) {
+			return null;
+		}
+		return this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getCapability(side,
+				CapabilityInputType.NONE);
+	}
+
+	@Override
+	public @Nullable IItemHandler getItemHandlerCapability(@Nullable Direction side) {
+		return null;
+	}
+
+	@Override
+	public ItemInteractionResult useWithItem(ItemStack used, Player player, InteractionHand hand, BlockHitResult hit) {
+		if (!level.isClientSide() && hit.getBlockPos().equals(getBlockPos()) && used.getItem() instanceof IWrenchItem) {
+			checkFormed();
+			if (isFormed.getValue()) {
+				formMultiblock();
+			} else {
+				destroyMultiblock();
+			}
+			return ItemInteractionResult.CONSUME;
+
+		}
+		return super.useWithItem(used, player, hand, hit);
+	}
+
+	@Override
+	public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
+		if (!isFormed.getValue()) {
+			return InteractionResult.FAIL;
+		}
+		return super.useWithoutItem(player, hit);
+	}
+
+	@Override
+	public ResourceLocation getMultiblockId() {
+		return ID;
+	}
+
+	@Override
+	public ResourceKey<Multiblock> getResourceKey() {
+		return RESOURCE_KEY;
+	}
 }

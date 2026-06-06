@@ -46,7 +46,7 @@ public class BlockFrame extends BaseEntityBlock {
     private final int type;
 
     public BlockFrame(int type) {
-        super(Blocks.IRON_BLOCK.properties().strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
+        super(Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(3.5F).sound(SoundType.METAL).noOcclusion().requiresCorrectToolForDrops());
         registerDefaultState(stateDefinition.any().setValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY, Boolean.FALSE).setValue(VoltaicBlockStates.WATERLOGGED, false).setValue(VoltaicBlockStates.FACING, Direction.NORTH));
         this.type = type;
     }

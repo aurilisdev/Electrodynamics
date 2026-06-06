@@ -42,7 +42,6 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
         networkMaxTransfer = 0;
         super.refreshNewNetwork();
     }
-
     @Override
     public FluidStack emit(FluidStack inserted, ArrayList<BlockEntity> ignored, boolean debug) {
 
@@ -61,15 +60,12 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
         taken.grow(priorityFilled.getFirst().getAmount());
 
         if (initial.isEmpty()) {
-
             return taken;
-
         }
 
         HashSet<BlockEntity> availableAcceptors = Sets.newHashSet();
 
         availableAcceptors.addAll(acceptorSet);
-
         availableAcceptors.removeAll(ignored);
 
         if (priorityFilled.getSecond().size() > 0) {
@@ -77,10 +73,11 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
         }
 
         if (availableAcceptors.isEmpty()) {
-            return FluidStack.EMPTY;
+            return taken;
         }
 
-        // This algorithm is not perfect, but it helps deal with tiles that do not accept the full amount allotted to them
+        // Fair distribution with a running remainder.
+        // The Math.max(1, ...) prevents small residual amounts from being rounded to zero.
 
         FluidStack perTile, prePerTile, perConnection, prePerConnection;
 
@@ -92,22 +89,36 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
 
         for (BlockEntity tile : availableAcceptors) {
 
-            if(tile == null || tile.isRemoved()) {
+            if (tile == null || tile.isRemoved()) {
                 acceptorInputMap.remove(tile);
                 acceptorSet.remove(tile);
+                size--;
                 continue;
             }
 
-            perTile = new FluidStack(initial.getFluid(), (int) ((double) initial.getAmount() / (double) size));
-            prePerTile = perTile.copy();
+            if (initial.isEmpty() || size <= 0) {
+                break;
+            }
 
             connections = acceptorInputMap.getOrDefault(tile, new HashSet<>());
 
             connectionsSize = connections.size();
 
+            if (connectionsSize <= 0) {
+                size--;
+                continue;
+            }
+
+            perTile = new FluidStack(initial.getFluid(), Math.max(1, initial.getAmount() / size));
+            prePerTile = perTile.copy();
+
             for (Direction dir : connections) {
 
-                perConnection = new FluidStack(initial.getFluid(), (int) ((double) perTile.getAmount() / (double) connectionsSize));
+                if (perTile.isEmpty() || connectionsSize <= 0) {
+                    break;
+                }
+
+                perConnection = new FluidStack(initial.getFluid(), Math.max(1, perTile.getAmount() / connectionsSize));
                 prePerConnection = perConnection.copy();
 
                 amtTaken = FluidUtilities.receiveFluid(tile, dir, perConnection, false);
@@ -129,7 +140,6 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
         }
 
         return taken;
-
     }
 
     private Pair<FluidStack, Set<TileFluidPipePump>> emitToPumps(FluidStack transfer, ArrayList<BlockEntity> ignored) {
@@ -181,7 +191,7 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
 
         FluidStack perTile, prePerTile, perConnection, prePerConnection;
 
-        HashSet<TileFluidPipePump> filledPumps = new HashSet<>();
+        HashSet<TileFluidPipePump> handledPumps = new HashSet<>();
 
         int size = recievingTiles.size();
 
@@ -190,21 +200,43 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
         HashSet<Direction> connections;
 
         for (TileFluidPipePump tile : recievingTiles) {
+
+            if (tile == null || tile.isRemoved()) {
+                acceptorInputMap.remove(tile);
+                acceptorSet.remove(tile);
+                size--;
+                continue;
+            }
+
             if (!tile.isPowered() || ignored.contains(tile)) {
                 size--;
                 continue;
             }
 
-            perTile = new FluidStack(initial.getFluid(), initial.getAmount() / size);
-            prePerTile = perTile.copy();
+            if (initial.isEmpty() || size <= 0) {
+                break;
+            }
 
             connections = acceptorInputMap.getOrDefault(tile, new HashSet<>());
 
             connectionsSize = connections.size();
 
+            if (connectionsSize <= 0) {
+                handledPumps.add(tile);
+                size--;
+                continue;
+            }
+
+            perTile = new FluidStack(initial.getFluid(), Math.max(1, initial.getAmount() / size));
+            prePerTile = perTile.copy();
+
             for (Direction dir : connections) {
 
-                perConnection = new FluidStack(initial.getFluid(), perTile.getAmount() / connectionsSize);
+                if (perTile.isEmpty() || connectionsSize <= 0) {
+                    break;
+                }
+
+                perConnection = new FluidStack(initial.getFluid(), Math.max(1, perTile.getAmount() / connectionsSize));
                 prePerConnection = perConnection.copy();
 
                 amtTaken = FluidUtilities.receiveFluid(tile, dir, perConnection, false);
@@ -222,13 +254,12 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
 
             taken.grow(takenAmt);
 
-            filledPumps.add(tile);
+            handledPumps.add(tile);
 
             size--;
         }
 
-        return Pair.of(taken, filledPumps);
-
+        return Pair.of(taken, handledPumps);
     }
 
     @Override
