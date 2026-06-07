@@ -231,11 +231,7 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
             int deltaT = targetTemperature.getValue() - evaporatedGas.getCondensationTemp();
 
-            conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
-
-            if (conversionRate < 1) {
-                conversionRate = 1;
-            }
+            conversionRate = getAdjustedConversionRate(conversionRate, deltaT);
 
             int maxTake = Math.min(inputTank.getFluidAmount(), conversionRate);
 
@@ -265,11 +261,7 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
             int deltaT = targetTemp - inputTank.getGas().getTemperature();
 
-            conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
-
-            if (conversionRate < 1) {
-                conversionRate = 1;
-            }
+            conversionRate = getAdjustedConversionRate(conversionRate, deltaT);
 
             GasStack condensedPotential = new GasStack(inputTank.getGas().getGas(), inputTank.getGasAmount(), inputTank.getGas().getTemperature(), inputTank.getGas().getPressure());
 
@@ -307,8 +299,8 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
             int deltaT = targetTemperature.getValue() - inputTank.getGas().getTemperature();
 
-            conversionRate = conversionRate * getAdjustedHeatingFactor(deltaT);
-
+            conversionRate = getAdjustedConversionRate(conversionRate, deltaT);
+            
             int maxTake = inputTank.getGasAmount() > conversionRate ? conversionRate : inputTank.getGasAmount();
 
             GasStack condensedPotential = new GasStack(inputTank.getGas().getGas(), maxTake, inputTank.getGas().getTemperature(), inputTank.getGas().getPressure());
@@ -367,14 +359,12 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
         };
     }
 
-    private int getAdjustedHeatingFactor(int deltaT) {
-
+    private int getAdjustedConversionRate(int conversionRate, int deltaT) {
         if (deltaT == 0) {
-            return 1;
+            return conversionRate;
         }
 
-        return (int) Math.max(1, Math.abs((double) getHeatTransfer() / (double) deltaT));
-
+        return Math.max(1, (int) Math.floor((double) conversionRate * (double) getHeatTransfer() / (double) Math.abs(deltaT)));
     }
 
     public abstract int getHeatTransfer();

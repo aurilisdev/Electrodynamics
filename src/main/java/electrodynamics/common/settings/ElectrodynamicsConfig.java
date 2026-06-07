@@ -169,8 +169,11 @@ public class ElectrodynamicsConfig {
 		Integer.MAX_VALUE);
 	GAS_TRANSFORMER_OUTPUT_PRESSURE_CAP = builder.defineInRange("gastransformer_output_pressure_cap", 1048576, 1,
 		Integer.MAX_VALUE);// 2^20
-	GAS_TRANSFORMER_OUTPUT_TEMP_CAP = builder.defineInRange("gastransformer_output_temp_cap", 1000000, 1,
-		Integer.MAX_VALUE);
+	// The thermoelectric manipulator can turn water into steam. With the default advanced manipulator values,
+	// very high steam temperatures can become energy-positive in a turbine if conversion-rate scaling is disabled
+	// or bypassed. Keep the default conservative.
+	GAS_TRANSFORMER_OUTPUT_TEMP_CAP = builder.defineInRange("gastransformer_output_temp_cap", 1000, 1,
+	    Integer.MAX_VALUE);
 	GAS_TRANSFORMER_BASE_OUTPUT_CAPACITY = builder.defineInRange("gastransformer_base_output_capacity", 5000, 1,
 		Integer.MAX_VALUE);
 	GAS_TRANSFORMER_ADDON_TANK_CAPACITY = builder.defineInRange("gastransformer_addon_tank_capacity", 5000, 1,
