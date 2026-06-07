@@ -280,7 +280,7 @@ public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {
 	    addItem(ElectrodynamicsItems.ITEMS_RAWORE.getValue(SubtypeRawOre.fluorite), "Raw Fluorite Crystal");
 	    addItem(ElectrodynamicsItems.ITEMS_RAWORE.getValue(SubtypeRawOre.lead), "Raw Galena");
 	    addItem(ElectrodynamicsItems.ITEMS_RAWORE.getValue(SubtypeRawOre.lepidolite), "Raw Lepidolite");
-	    addItem(ElectrodynamicsItems.ITEMS_RAWORE.getValue(SubtypeRawOre.silver), "Raw Argentite");
+	    addItem(ElectrodynamicsItems.ITEMS_RAWORE.getValue(SubtypeRawOre.silver), "Raw Acanthite");
 	    addItem(ElectrodynamicsItems.ITEMS_RAWORE.getValue(SubtypeRawOre.thorium), "Raw Thorianite");
 	    addItem(ElectrodynamicsItems.ITEMS_RAWORE.getValue(SubtypeRawOre.tin), "Raw Cassiterite");
 	    addItem(ElectrodynamicsItems.ITEMS_RAWORE.getValue(SubtypeRawOre.titanium), "Raw Rutile");
@@ -435,7 +435,7 @@ public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.monazite), "Monazite Ore");
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.niter), "Saltpeter Ore");
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.salt), "Halite Ore");
-	    addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.silver), "Argentite Ore");
+	    addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.silver), "Acanthite Ore");
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.sulfur), "Sulfur Ore");
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.sylvite), "Sylvite Ore");
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.titanium), "Rutile Ore");
@@ -461,7 +461,7 @@ public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {
 		    "Deep Saltpeter Ore");
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.salt), "Deep Halite Ore");
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.silver),
-		    "Deep Argentite Ore");
+		    "Deep Acanthite Ore");
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.sulfur), "Deep Sulfur Ore");
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.sylvite),
 		    "Deep Sylvite Ore");
@@ -482,7 +482,7 @@ public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_RAWORE.getValue(SubtypeRawOreBlock.chromium),
 		    "Block of Raw Chromite");
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_RAWORE.getValue(SubtypeRawOreBlock.lead), "Block of Raw Galena");
-	    addBlock(ElectrodynamicsBlocks.BLOCKS_RAWORE.getValue(SubtypeRawOreBlock.silver), "Block of Raw Argentite");
+	    addBlock(ElectrodynamicsBlocks.BLOCKS_RAWORE.getValue(SubtypeRawOreBlock.silver), "Block of Raw Acanthite");
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_RAWORE.getValue(SubtypeRawOreBlock.thorium),
 		    "Block of Raw Thorianite");
 	    addBlock(ElectrodynamicsBlocks.BLOCKS_RAWORE.getValue(SubtypeRawOreBlock.tin), "Block of Raw Cassiterite");
@@ -1126,8 +1126,8 @@ public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {
 	    addAdvancement("rawtin.desc", "Find some Raw Cassiterite Ore!");
 	    addAdvancement("rawthorium.title", "Raw Thorianite Ore");
 	    addAdvancement("rawthorium.desc", "Find some Raw Thorianite Ore!");
-	    addAdvancement("rawsilver.title", "Raw Argentite Ore");
-	    addAdvancement("rawsilver.desc", "Find some Raw Argentite Ore!");
+	    addAdvancement("rawsilver.title", "Raw Acanthite Ore");
+	    addAdvancement("rawsilver.desc", "Find some Raw Acanthite Ore!");
 	    addAdvancement("rawlithium.title", "Raw Lepidolite Ore");
 	    addAdvancement("rawlithium.desc", "Find some Raw Lepidolite Ore!");
 	    addAdvancement("rawvanadinite.title", "Raw Vanadinite Crystals");
