@@ -26,7 +26,7 @@ public class RenderHydroelectricGenerator extends AbstractTileRenderer<TileHydro
 	public void render(@NotNull TileHydroelectricGenerator tileEntityIn, float partialTicks, @NotNull PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 		BakedModel ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_HYDROELECTRICGENERATORBLADES);
 		RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
-		float partial = (float) (partialTicks * tileEntityIn.rotationSpeed * (tileEntityIn.directionFlag.getValue() ? 1 : -1));
+		float partial = (float) (partialTicks * tileEntityIn.rotationSpeed);
 		matrixStackIn.mulPose(MathUtils.rotQuaternionDeg((float) (-(tileEntityIn.savedTickRotation + partial) * 5f), 0, 0));
 		// matrixStackIn.mulPose(new Quaternion((float) (-(tileEntityIn.savedTickRotation + partial) * 5f), 0, 0, true));
 		RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
