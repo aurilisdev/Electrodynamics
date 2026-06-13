@@ -6,6 +6,15 @@
     "electrodynamics:wireinsulatedcoppergreen",
     "electrodynamics:wireinsulatedcopperblue",
     "electrodynamics:wireinsulatedcopperyellow",
-    "electrodynamics:wireinsulatedcopperbrown"
+    "electrodynamics:wireinsulatedcopperbrown",
+    "electrodynamics:wireinsulatedcopperorange",
+    "electrodynamics:wireinsulatedcopperlime",
+    "electrodynamics:wireinsulatedcopperlightblue",
+    "electrodynamics:wireinsulatedcoppercyan",
+    "electrodynamics:wireinsulatedcopperpurple",
+    "electrodynamics:wireinsulatedcoppermagenta",
+    "electrodynamics:wireinsulatedcopperpink",
+    "electrodynamics:wireinsulatedcopperlightgray",
+    "electrodynamics:wireinsulatedcoppergray"
   ]
 }
