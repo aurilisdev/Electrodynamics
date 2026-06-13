@@ -15,15 +15,14 @@ public class ElectrodynamicsRadioactiveItemsProvider extends BaseRadioactiveItem
     @Override
     public void getRadioactiveItems(JsonObject json) {
 
-        addTag(VoltaicTags.Items.ORE_THORIUM, 6, 1, json);
-        addTag(VoltaicTags.Items.ORE_URANIUM, 4, 1, json);
+        addTag(VoltaicTags.Items.ORE_THORIUM, 2, 1, json);
+        addTag(VoltaicTags.Items.ORE_URANIUM, 3, 1, json);
 
-        addTag(VoltaicTags.Items.RAW_ORE_THORIUM, 30, 1, json);
-        addTag(VoltaicTags.Items.RAW_ORE_URANIUM, 20, 1, json);
+        addTag(VoltaicTags.Items.RAW_ORE_THORIUM, 4, 1, json);
+        addTag(VoltaicTags.Items.RAW_ORE_URANIUM, 6, 1, json);
 
-        addTag(VoltaicTags.Items.BLOCK_RAW_ORE_THORIUM, 15, 1, json);
-        addTag(VoltaicTags.Items.BLOCK_RAW_ORE_URANIUM, 10, 1, json);
-
+        addTag(VoltaicTags.Items.BLOCK_RAW_ORE_THORIUM, 20, 1, json);
+        addTag(VoltaicTags.Items.BLOCK_RAW_ORE_URANIUM, 30, 1, json);
 
     }
 }

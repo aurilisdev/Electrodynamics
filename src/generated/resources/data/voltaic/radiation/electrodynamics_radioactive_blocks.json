@@ -1,6 +1,6 @@
 {
   "#forge:ores/thorium": {
-    "amount": 15.0,
+    "amount": 5.0,
     "strength": 1.0
   },
   "#forge:ores/uranium": {
@@ -8,11 +8,11 @@
     "strength": 1.0
   },
   "#forge:storage_blocks/rawthorium": {
-    "amount": 30.0,
+    "amount": 20.0,
     "strength": 1.0
   },
   "#forge:storage_blocks/rawuranium": {
-    "amount": 20.0,
+    "amount": 30.0,
     "strength": 1.0
   }
 }

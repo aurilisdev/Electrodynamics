@@ -13,6 +13,7 @@ import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import voltaic.api.ISubtype;
 import voltaic.common.tags.VoltaicTags;
@@ -261,7 +262,7 @@ public enum SubtypeOre implements ISubtype {
             //
             1,
             //
-            () -> ElectrodynamicsItems.ITEMS_RAWORE.getValue(SubtypeRawOre.thorium),
+            () -> Items.STONE,
             //
             null,
             //
@@ -269,9 +270,9 @@ public enum SubtypeOre implements ISubtype {
             //
             0,
             //
-            VoltaicTags.Items.ORE_THORIUM,
+            VoltaicTags.Items.ORE_MONAZITE,
             //
-            VoltaicTags.Blocks.ORE_THORIUM
+            VoltaicTags.Blocks.ORE_MONAZITE
             //
     ), niter(
             //
