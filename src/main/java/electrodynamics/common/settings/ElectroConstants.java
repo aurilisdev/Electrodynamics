@@ -89,8 +89,8 @@ public class ElectroConstants {
 	public static int GAS_TRANSFORMER_BASE_INPUT_CAPCITY = 5000;
 	@IntValue(def = 1048576)
 	public static int GAS_TRANSFORMER_OUTPUT_PRESSURE_CAP = 1048576;// 2^20
-	@IntValue(def = 1000000)
-	public static int GAS_TRANSFORMER_OUTPUT_TEMP_CAP = 1000000;
+	@IntValue(def = 1000, comment="The thermoelectric manipulator can turn water into steam. With the default advanced manipulator values very high steam temperatures can become energy-positive in a turbine if conversion-rate scaling is disabled or bypassed. Keep the default conservative.")
+	public static int GAS_TRANSFORMER_OUTPUT_TEMP_CAP = 1000;
 	@IntValue(def = 5000)
 	public static int GAS_TRANSFORMER_BASE_OUTPUT_CAPCITY = 5000;
 	@IntValue(def = 5000)
