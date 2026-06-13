@@ -52,7 +52,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "electrodynamics:raworethorium"
+              "name": "minecraft:stone"
             }
           ]
         }
