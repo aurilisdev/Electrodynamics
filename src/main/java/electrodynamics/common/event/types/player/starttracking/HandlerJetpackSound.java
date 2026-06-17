@@ -15,16 +15,18 @@ import voltaic.prefab.utilities.ItemUtils;
 
 public class HandlerJetpackSound extends AbstractPlayerStartTrackingHandler {
 
-	@Override
-	public void handle(StartTracking event) {
-		Entity entity = event.getTarget();
-		if (entity instanceof Player player) {
-			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-			if (!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()))) {
-				ServerPlayer server = (ServerPlayer) event.getEntity();
-				NetworkHandler.CHANNEL.sendTo(new PacketJetpackEquipedSound(player.getUUID()), server.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
-			}
-		}
+    @Override
+    public void handle(StartTracking event) {
+	Entity entity = event.getTarget();
+	if (entity instanceof Player player) {
+	    ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+	    if (!chest.isEmpty() && (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get())
+		    || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()))) {
+		ServerPlayer server = (ServerPlayer) event.getEntity();
+		NetworkHandler.CHANNEL.sendTo(new PacketJetpackEquipedSound(player.getUUID()),
+			server.connection.connection, NetworkDirection.PLAY_TO_CLIENT);
+	    }
 	}
+    }
 
 }

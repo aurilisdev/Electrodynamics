@@ -22,66 +22,72 @@ import voltaic.prefab.utilities.math.MathUtils;
 
 public class RenderLathe extends AbstractTileRenderer<TileLathe> {
 
-	public RenderLathe(BlockEntityRendererProvider.Context context) {
-		super(context);
+    public RenderLathe(BlockEntityRendererProvider.Context context) {
+	super(context);
+    }
+
+    @Override
+    public void render(@NotNull TileLathe tile, float partialTicks, PoseStack poseStack,
+	    @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+
+	poseStack.pushPose();
+
+	RenderingUtils.prepareRotationalTileModel(tile, poseStack);
+
+	poseStack.translate(0f, 1.0 / 16.0, 0f);
+
+	double progress = Math.sin(0.05 * Math.PI * partialTicks);
+
+	float progressDegrees = 0.0F;
+
+	if (tile.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0)) {
+
+	    progressDegrees = 360.0f * (float) progress;
+
 	}
 
-	@Override
-	public void render(@NotNull TileLathe tile, float partialTicks, PoseStack poseStack, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	poseStack.mulPose(MathUtils.rotVectorQuaternionDeg(progressDegrees, MathUtils.YP));
+	// matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F),
+	// progressDegrees, true));
 
-		poseStack.pushPose();
+	BakedModel lathe = getModel(ElectrodynamicsClientRegister.MODEL_LATHESHAFT);
 
-		RenderingUtils.prepareRotationalTileModel(tile, poseStack);
+	RenderingUtils.renderModel(lathe, tile, RenderType.solid(), poseStack, bufferIn, combinedLightIn,
+		combinedOverlayIn);
 
-		poseStack.translate(0f, 1.0 / 16.0, 0f);
+	poseStack.popPose();
 
-		double progress = Math.sin(0.05 * Math.PI * partialTicks);
+	ItemStack stack = tile.<ComponentInventory>getComponent(IComponentType.Inventory).getInputsForProcessor(0)
+		.get(0);
 
-		float progressDegrees = 0.0F;
+	if (stack.isEmpty()) {
 
-		if (tile.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0)) {
+	    return;
 
-			progressDegrees = 360.0f * (float) progress;
-
-		}
-
-		poseStack.mulPose(MathUtils.rotVectorQuaternionDeg(progressDegrees, MathUtils.YP));
-		// matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), progressDegrees, true));
-
-		BakedModel lathe = getModel(ElectrodynamicsClientRegister.MODEL_LATHESHAFT);
-
-		RenderingUtils.renderModel(lathe, tile, RenderType.solid(), poseStack, bufferIn, combinedLightIn, combinedOverlayIn);
-
-		poseStack.popPose();
-
-		ItemStack stack = tile.<ComponentInventory>getComponent(IComponentType.Inventory).getInputsForProcessor(0).get(0);
-
-		if (stack.isEmpty()) {
-
-			return;
-
-		}
-
-		poseStack.pushPose();
-
-		if (stack.getItem() instanceof BlockItem) {
-
-			poseStack.translate(0.5f, 0.66f, 0.5f);
-			poseStack.scale(0.5f, 0.5f, 0.5f);
-
-		} else {
-
-			poseStack.translate(0.5f, 0.71f, 0.5f);
-			poseStack.scale(0.35f, 0.35f, 0.35f);
-
-		}
-
-		poseStack.mulPose(MathUtils.rotVectorQuaternionDeg(progressDegrees, MathUtils.YP));
-		// matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F), progressDegrees, true));
-
-		renderItem(stack, ItemDisplayContext.GROUND, combinedLightIn, combinedOverlayIn, poseStack, bufferIn, tile.getLevel(), 0);
-
-		poseStack.popPose();
 	}
+
+	poseStack.pushPose();
+
+	if (stack.getItem() instanceof BlockItem) {
+
+	    poseStack.translate(0.5f, 0.66f, 0.5f);
+	    poseStack.scale(0.5f, 0.5f, 0.5f);
+
+	} else {
+
+	    poseStack.translate(0.5f, 0.71f, 0.5f);
+	    poseStack.scale(0.35f, 0.35f, 0.35f);
+
+	}
+
+	poseStack.mulPose(MathUtils.rotVectorQuaternionDeg(progressDegrees, MathUtils.YP));
+	// matrixStackIn.mulPose(new Quaternion(new Vector3f(0.0F, 1.0F, 0.0F),
+	// progressDegrees, true));
+
+	renderItem(stack, ItemDisplayContext.GROUND, combinedLightIn, combinedOverlayIn, poseStack, bufferIn,
+		tile.getLevel(), 0);
+
+	poseStack.popPose();
+    }
 
 }

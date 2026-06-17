@@ -5,9 +5,9 @@ import voltaic.common.event.type.AbstractRightClickBlockHandler;
 
 public class HandlerWrench extends AbstractRightClickBlockHandler {
 
-	@Override
-	public void handle(RightClickBlock event) {
+    @Override
+    public void handle(RightClickBlock event) {
 
-	}
+    }
 
 }

@@ -15,15 +15,17 @@ import voltaic.prefab.utilities.ItemUtils;
 
 public class HandlerModeSwitchServoLegs extends AbstractKeyPressHandler {
 
-	@Override
-	public void handler(Key event, Minecraft minecraft) {
-		Player player = minecraft.player;
-		if (KeyBinds.switchServoLeggingsMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchServoLeggingsMode.isDown()) {
-			ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
-			if (ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get()) || ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
-				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.SERVOLEGS));
-			}
-		}
+    @Override
+    public void handler(Key event, Minecraft minecraft) {
+	Player player = minecraft.player;
+	if (KeyBinds.switchServoLeggingsMode.matches(event.getKey(), event.getScanCode())
+		&& KeyBinds.switchServoLeggingsMode.isDown()) {
+	    ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);
+	    if (ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get())
+		    || ItemUtils.testItems(legs.getItem(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get())) {
+		NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.SERVOLEGS));
+	    }
 	}
+    }
 
 }

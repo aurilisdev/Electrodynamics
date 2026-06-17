@@ -8,24 +8,24 @@ import voltaic.prefab.utilities.BlockEntityUtils;
 
 public class TileLogisticalWire extends TileWire {
 
-	public boolean isPowered = false;
+    public boolean isPowered = false;
 
-	public TileLogisticalWire(BlockPos pos, BlockState state) {
-		super(ElectrodynamicsTiles.TILE_LOGISTICALWIRE.get(), pos, state);
-		forceComponent(new ComponentTickable(this).tickServer(this::tickServer).tickClient(this::tickClient));
-	}
+    public TileLogisticalWire(BlockPos pos, BlockState state) {
+	super(ElectrodynamicsTiles.TILE_LOGISTICALWIRE.get(), pos, state);
+	forceComponent(new ComponentTickable(this).tickServer(this::tickServer).tickClient(this::tickClient));
+    }
 
-	private void tickClient(ComponentTickable componentTickable) {
-	}
+    private void tickClient(ComponentTickable componentTickable) {
+    }
 
-	protected void tickServer(ComponentTickable component) {
-		if (component.getTicks() % 10 == 0) {
-			boolean shouldPower = getNetwork().getActiveTransmitted() > 0;
-			if (shouldPower != isPowered) {
-				isPowered = shouldPower;
-				level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
-				BlockEntityUtils.updateLit(this, isPowered);
-			}
-		}
+    protected void tickServer(ComponentTickable component) {
+	if (component.getTicks() % 10 == 0) {
+	    boolean shouldPower = getNetwork().getActiveTransmitted() > 0;
+	    if (shouldPower != isPowered) {
+		isPowered = shouldPower;
+		level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
+		BlockEntityUtils.updateLit(this, isPowered);
+	    }
 	}
+    }
 }

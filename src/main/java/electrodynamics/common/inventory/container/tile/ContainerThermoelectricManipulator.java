@@ -13,28 +13,32 @@ import voltaic.prefab.inventory.container.slot.item.type.SlotGas;
 import voltaic.prefab.inventory.container.slot.item.type.SlotUpgrade;
 import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
-public class ContainerThermoelectricManipulator extends GenericContainerBlockEntity<GenericTileThermoelectricManipulator> {
+public class ContainerThermoelectricManipulator
+	extends GenericContainerBlockEntity<GenericTileThermoelectricManipulator> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
+	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
 
-	public ContainerThermoelectricManipulator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_THERMOELECTRICMANIPULATOR.get(), id, playerinv, inventory, inventorydata);
-	}
+    public ContainerThermoelectricManipulator(int id, Inventory playerinv, Container inventory,
+	    ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_THERMOELECTRICMANIPULATOR.get(), id, playerinv, inventory,
+		inventorydata);
+    }
 
-	public ContainerThermoelectricManipulator(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(7), new SimpleContainerData(5));
-	}
+    public ContainerThermoelectricManipulator(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainer(7), new SimpleContainerData(5));
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
-		setPlayerInvOffset(30);
-		addSlot(new SlotFluid(inv, nextIndex(), 27, 19));
-		addSlot(new SlotFluid(inv, nextIndex(), 113, 19));
-		addSlot(new SlotGas(inv, nextIndex(), 27, 50));
-		addSlot(new SlotGas(inv, nextIndex(), 113, 50));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
-	}
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
+	setPlayerInvOffset(30);
+	addSlot(new SlotFluid(inv, nextIndex(), 27, 19));
+	addSlot(new SlotFluid(inv, nextIndex(), 113, 19));
+	addSlot(new SlotGas(inv, nextIndex(), 27, 50));
+	addSlot(new SlotGas(inv, nextIndex(), 113, 50));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
+    }
 
 }

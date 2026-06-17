@@ -18,7 +18,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.material.Fluid;
 
 /**
- * Apparently with packets, certain class calls cannot be called within the packet itself because Java
+ * Apparently with packets, certain class calls cannot be called within the
+ * packet itself because Java
  * 
  * SoundInstance for example is an exclusively client class only
  * 
@@ -26,47 +27,48 @@ import net.minecraft.world.level.material.Fluid;
  */
 public class ClientBarrierMethods {
 
-	public static void handlePacketJetpackEquipedSound(UUID messageId) {
-		Minecraft minecraft = Minecraft.getInstance();
-		ClientLevel world = minecraft.level;
-		if (world != null) {
-			minecraft.getSoundManager().play(new TickableSoundJetpack(messageId));
-		}
+    public static void handlePacketJetpackEquipedSound(UUID messageId) {
+	Minecraft minecraft = Minecraft.getInstance();
+	ClientLevel world = minecraft.level;
+	if (world != null) {
+	    minecraft.getSoundManager().play(new TickableSoundJetpack(messageId));
 	}
+    }
 
-	public static void handleJetpackParticleRendering(UUID player, boolean bool) {
-		Minecraft minecraft = Minecraft.getInstance();
-		ClientLevel world = minecraft.level;
-		if (world != null) {
-			Player clientPlayer = minecraft.player;
-			if (clientPlayer != null && !clientPlayer.getUUID().equals(player)) {
-				Player ownerPlayer = world.getPlayerByUUID(player);
-				if (ownerPlayer != null) {
-					ItemJetpack.renderClientParticles(world, ownerPlayer, bool ? ItemCombatArmor.OFFSET : ItemJetpack.OFFSET);
-				}
-			}
+    public static void handleJetpackParticleRendering(UUID player, boolean bool) {
+	Minecraft minecraft = Minecraft.getInstance();
+	ClientLevel world = minecraft.level;
+	if (world != null) {
+	    Player clientPlayer = minecraft.player;
+	    if (clientPlayer != null && !clientPlayer.getUUID().equals(player)) {
+		Player ownerPlayer = world.getPlayerByUUID(player);
+		if (ownerPlayer != null) {
+		    ItemJetpack.renderClientParticles(world, ownerPlayer,
+			    bool ? ItemCombatArmor.OFFSET : ItemJetpack.OFFSET);
 		}
+	    }
 	}
+    }
 
-	public static void handlerClientCombustionFuels(HashSet<CombustionFuelSource> fuels) {
-		Minecraft minecraft = Minecraft.getInstance();
-		if (minecraft.level != null && minecraft.player != null) {
-			CombustionFuelRegister.INSTANCE.setClientValues(fuels);
-		}
+    public static void handlerClientCombustionFuels(HashSet<CombustionFuelSource> fuels) {
+	Minecraft minecraft = Minecraft.getInstance();
+	if (minecraft.level != null && minecraft.player != null) {
+	    CombustionFuelRegister.INSTANCE.setClientValues(fuels);
 	}
+    }
 
-	public static void handlerClientCoalGenFuels(HashSet<Item> fuels) {
-		Minecraft minecraft = Minecraft.getInstance();
-		if (minecraft.level != null && minecraft.player != null) {
-			CoalGeneratorFuelRegister.INSTANCE.setClientValues(fuels);
-		}
+    public static void handlerClientCoalGenFuels(HashSet<Item> fuels) {
+	Minecraft minecraft = Minecraft.getInstance();
+	if (minecraft.level != null && minecraft.player != null) {
+	    CoalGeneratorFuelRegister.INSTANCE.setClientValues(fuels);
 	}
+    }
 
-	public static void handlerClientThermoGenHeatSources(HashMap<Fluid, Double> heatSources) {
-		Minecraft minecraft = Minecraft.getInstance();
-		if (minecraft.level != null && minecraft.player != null) {
-			ThermoelectricGeneratorHeatRegister.INSTANCE.setClientValues(heatSources);
-		}
+    public static void handlerClientThermoGenHeatSources(HashMap<Fluid, Double> heatSources) {
+	Minecraft minecraft = Minecraft.getInstance();
+	if (minecraft.level != null && minecraft.player != null) {
+	    ThermoelectricGeneratorHeatRegister.INSTANCE.setClientValues(heatSources);
 	}
+    }
 
 }

@@ -8,8 +8,9 @@ import voltaic.registers.VoltaicCapabilities;
 
 public class TileCarbyneBatteryBox extends TileBatteryBox {
 
-	public TileCarbyneBatteryBox(BlockPos worldPosition, BlockState blockState) {
-		super(ElectrodynamicsTiles.TILE_CARBYNEBATTERYBOX.get(), SubtypeMachine.carbynebatterybox, 480, 359.0 * (4 * VoltaicCapabilities.DEFAULT_VOLTAGE) / 20.0, 80000000, worldPosition, blockState);
-	}
+    public TileCarbyneBatteryBox(BlockPos worldPosition, BlockState blockState) {
+	super(ElectrodynamicsTiles.TILE_CARBYNEBATTERYBOX.get(), SubtypeMachine.carbynebatterybox, 480,
+		359.0 * (4 * VoltaicCapabilities.DEFAULT_VOLTAGE) / 20.0, 80000000, worldPosition, blockState);
+    }
 
 }

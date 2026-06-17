@@ -88,216 +88,253 @@ import voltaic.common.block.voxelshapes.VoxelShapeProvider;
 
 public enum SubtypeMachine implements ISubtype, IMachine {
 
-	electricfurnace(true, TileElectricFurnace::new, MachineProperties.builder().setLitBrightness(8)),
+    electricfurnace(true, TileElectricFurnace::new, MachineProperties.builder().setLitBrightness(8)),
     electricfurnacedouble(true, TileElectricFurnaceDouble::new, MachineProperties.builder().setLitBrightness(8)),
     electricfurnacetriple(true, TileElectricFurnaceTriple::new, MachineProperties.builder().setLitBrightness(8)),
     electricarcfurnace(true, TileElectricArcFurnace::new, MachineProperties.builder().setLitBrightness(9)),
     electricarcfurnacedouble(true, TileElectricArcFurnaceDouble::new, MachineProperties.builder().setLitBrightness(9)),
     electricarcfurnacetriple(true, TileElectricArcFurnaceTriple::new, MachineProperties.builder().setLitBrightness(9)),
     coalgenerator(true, TileCoalGenerator::new, MachineProperties.builder().setLitBrightness(12)),
-    wiremill(true, TileWireMill::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.WIREMILL)),
-    wiremilldouble(true, TileWireMillDouble::new),
-    wiremilltriple(true, TileWireMillTriple::new),
-    mineralcrusher(true, TileMineralCrusher::new),
-    mineralcrusherdouble(true, TileMineralCrusherDouble::new),
-    mineralcrushertriple(true, TileMineralCrusherTriple::new),
-    mineralgrinder(true, TileMineralGrinder::new),
+    wiremill(true, TileWireMill::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.WIREMILL)),
+    wiremilldouble(true, TileWireMillDouble::new), wiremilltriple(true, TileWireMillTriple::new),
+    mineralcrusher(true, TileMineralCrusher::new), mineralcrusherdouble(true, TileMineralCrusherDouble::new),
+    mineralcrushertriple(true, TileMineralCrusherTriple::new), mineralgrinder(true, TileMineralGrinder::new),
     mineralgrinderdouble(true, TileMineralGrinderDouble::new),
     mineralgrindertriple(true, TileMineralGrinderTriple::new),
     batterybox(true, TileBatteryBox::new, MachineProperties.builder().setRenderShape(RenderShape.ENTITYBLOCK_ANIMATED)),
-    lithiumbatterybox(true, TileLithiumBatteryBox::new, MachineProperties.builder().setRenderShape(RenderShape.ENTITYBLOCK_ANIMATED)),
-    carbynebatterybox(true, TileCarbyneBatteryBox::new, MachineProperties.builder().setRenderShape(RenderShape.ENTITYBLOCK_ANIMATED)),
+    lithiumbatterybox(true, TileLithiumBatteryBox::new,
+	    MachineProperties.builder().setRenderShape(RenderShape.ENTITYBLOCK_ANIMATED)),
+    carbynebatterybox(true, TileCarbyneBatteryBox::new,
+	    MachineProperties.builder().setRenderShape(RenderShape.ENTITYBLOCK_ANIMATED)),
     oxidationfurnace(true, TileOxidationFurnace::new, MachineProperties.builder().setLitBrightness(6)),
-    downgradetransformer(true, TileDowngradeTransformer::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.DOWNGRADE_TRANSFORMER)),
-    upgradetransformer(true, TileUpgradeTransformer::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.UPGRADE_TRANSFORMER)),
-    solarpanel(true, TileSolarPanel::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.SOLAR_PANEL)),
-    advancedsolarpanel(true, TileAdvancedSolarPanel::new, MachineProperties.builder().setSubnodes(Subnodes.ADVANCEDSOLARPANEL).setShapeProvider(ElectrodynamicsVoxelShapes.ADVANCED_SOLAR_PANEL)),
-    electricpump(true, TileElectricPump::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.ELECTRIC_PUMP)),
-    thermoelectricgenerator(true, TileThermoelectricGenerator::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.THERMOELECTRIC_GENERATOR)),
-    fermentationplant(true, TileFermentationPlant::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.FERMENTATION_PLANT)),
-    combustionchamber(true, TileCombustionChamber::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.COMBUSTION_CHAMBER)),
-    hydroelectricgenerator(true, TileHydroelectricGenerator::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.HYDROELECTRIC_GENERATOR)),
-    windmill(true, TileWindmill::new, MachineProperties.builder().setSubnodes(Subnodes.WINDMILL).setShapeProvider(ElectrodynamicsVoxelShapes.WINDMILL)),
+    downgradetransformer(true, TileDowngradeTransformer::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.DOWNGRADE_TRANSFORMER)),
+    upgradetransformer(true, TileUpgradeTransformer::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.UPGRADE_TRANSFORMER)),
+    solarpanel(true, TileSolarPanel::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.SOLAR_PANEL)),
+    advancedsolarpanel(true, TileAdvancedSolarPanel::new,
+	    MachineProperties.builder().setSubnodes(Subnodes.ADVANCEDSOLARPANEL)
+		    .setShapeProvider(ElectrodynamicsVoxelShapes.ADVANCED_SOLAR_PANEL)),
+    electricpump(true, TileElectricPump::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.ELECTRIC_PUMP)),
+    thermoelectricgenerator(true, TileThermoelectricGenerator::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.THERMOELECTRIC_GENERATOR)),
+    fermentationplant(true, TileFermentationPlant::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.FERMENTATION_PLANT)),
+    combustionchamber(true, TileCombustionChamber::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.COMBUSTION_CHAMBER)),
+    hydroelectricgenerator(true, TileHydroelectricGenerator::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.HYDROELECTRIC_GENERATOR)),
+    windmill(true, TileWindmill::new,
+	    MachineProperties.builder().setSubnodes(Subnodes.WINDMILL)
+		    .setShapeProvider(ElectrodynamicsVoxelShapes.WINDMILL)),
     mineralwasher(true, TileMineralWasher::new),
-    chemicalmixer(true, TileChemicalMixer::new, MachineProperties.builder().setRenderShape(RenderShape.ENTITYBLOCK_ANIMATED)),
-    chemicalcrystallizer(true, TileChemicalCrystallizer::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.CHEMICAL_CRYSTALIZER)),
-    circuitbreaker(true, TileCircuitBreaker::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.CIRCUIT_BREAKER)),
+    chemicalmixer(true, TileChemicalMixer::new,
+	    MachineProperties.builder().setRenderShape(RenderShape.ENTITYBLOCK_ANIMATED)),
+    chemicalcrystallizer(true, TileChemicalCrystallizer::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.CHEMICAL_CRYSTALIZER)),
+    circuitbreaker(true, TileCircuitBreaker::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.CIRCUIT_BREAKER)),
     multimeterblock(true, TileMultimeterBlock::new),
     energizedalloyer(true, TileEnergizedAlloyer::new, MachineProperties.builder().setLitBrightness(10)),
     lathe(true, TileLathe::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.LATHE)),
     reinforcedalloyer(true, TileReinforcedAlloyer::new, MachineProperties.builder().setLitBrightness(15)),
-    chargerlv(true, TileChargerLV::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.LV_CHARGER)),
-    chargermv(true, TileChargerMV::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.MV_CHARGER)),
-    chargerhv(true, TileChargerHV::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.HV_CHARGER)),
-    tanksteel(true, TileFluidTankSteel::new),
-    tankreinforced(true, TileFluidTankReinforced::new),
-    tankhsla(true, TileFluidTankHSLA::new),
-    creativepowersource(true, TileCreativePowerSource::new),
-    creativefluidsource(true, TileCreativeFluidSource::new),
-    creativegassource(true, TileCreativeGasSource::new),
+    chargerlv(true, TileChargerLV::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.LV_CHARGER)),
+    chargermv(true, TileChargerMV::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.MV_CHARGER)),
+    chargerhv(true, TileChargerHV::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.HV_CHARGER)),
+    tanksteel(true, TileFluidTankSteel::new), tankreinforced(true, TileFluidTankReinforced::new),
+    tankhsla(true, TileFluidTankHSLA::new), creativepowersource(true, TileCreativePowerSource::new),
+    creativefluidsource(true, TileCreativeFluidSource::new), creativegassource(true, TileCreativeGasSource::new),
     fluidvoid(true, TileFluidVoid::new),
-    electrolyticseparator(true, TileElectrolyticSeparator::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.ELECTROLYTIC_SEPARATOR)),
-    seismicrelay(true, TileSeismicRelay::new),
-    quarry(true, TileQuarry::new),
+    electrolyticseparator(true, TileElectrolyticSeparator::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.ELECTROLYTIC_SEPARATOR)),
+    seismicrelay(true, TileSeismicRelay::new), quarry(true, TileQuarry::new),
     coolantresavoir(true, TileCoolantResavoir::new),
-    motorcomplex(true, TileMotorComplex::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.MOTOR_COMPLEX)),
-    gastanksteel(true, TileGasTankSteel::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.STEEL_GAS_TANK)),
-    gastankreinforced(true, TileGasTankReinforced::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.REINFORCED_GAS_TANK)),
-    gastankhsla(true, TileGasTankHSLA::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.HSLA_GAS_TANK)),
-    gasvent(true, TileGasVent::new),
-    relay(true, TileRelay::new),
-    potentiometer(true, TilePotentiometer::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.POTENTIOMETER)),
-    advancedupgradetransformer(true, TileAdvancedUpgradeTransformer::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.UPGRADE_TRANSFORMER_MK2)),
-    advanceddowngradetransformer(true, TileAdvancedDowngradeTransformer::new, MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.DOWNGRADE_TRANSFORMER_MK2)),
-    circuitmonitor(true, TileCircuitMonitor::new),
-    currentregulator(true, TileCurrentRegulator::new),
-    fluidvalve(true, TileFluidValve::new, MachineProperties.builder().setPropegateLightDown().setShapeProvider(ElectrodynamicsVoxelShapes.FLUID_PIPE_VALVE)),
-    fluidpipepump(true, TileFluidPipePump::new, MachineProperties.builder().setPropegateLightDown().setShapeProvider(ElectrodynamicsVoxelShapes.FLUID_PIPE_PUMP)),
-    fluidpipefilter(true, TileFluidPipeFilter::new, MachineProperties.builder().setPropegateLightDown().setShapeProvider(ElectrodynamicsVoxelShapes.FLUID_PIPE_FILTER)),
-    gasvalve(true, TileGasValve::new, MachineProperties.builder().setPropegateLightDown().setShapeProvider(ElectrodynamicsVoxelShapes.GAS_PIPE_VALVE)),
-    gaspipepump(true, TileGasPipePump::new, MachineProperties.builder().setPropegateLightDown().setShapeProvider(ElectrodynamicsVoxelShapes.GAS_PIPE_PUMP)),
-    gaspipefilter(true, TileGasPipeFilter::new, MachineProperties.builder().setPropegateLightDown().setShapeProvider(ElectrodynamicsVoxelShapes.GAS_PIPE_FILTER));
+    motorcomplex(true, TileMotorComplex::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.MOTOR_COMPLEX)),
+    gastanksteel(true, TileGasTankSteel::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.STEEL_GAS_TANK)),
+    gastankreinforced(true, TileGasTankReinforced::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.REINFORCED_GAS_TANK)),
+    gastankhsla(true, TileGasTankHSLA::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.HSLA_GAS_TANK)),
+    gasvent(true, TileGasVent::new), relay(true, TileRelay::new),
+    potentiometer(true, TilePotentiometer::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.POTENTIOMETER)),
+    advancedupgradetransformer(true, TileAdvancedUpgradeTransformer::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.UPGRADE_TRANSFORMER_MK2)),
+    advanceddowngradetransformer(true, TileAdvancedDowngradeTransformer::new,
+	    MachineProperties.builder().setShapeProvider(ElectrodynamicsVoxelShapes.DOWNGRADE_TRANSFORMER_MK2)),
+    circuitmonitor(true, TileCircuitMonitor::new), currentregulator(true, TileCurrentRegulator::new),
+    fluidvalve(true, TileFluidValve::new,
+	    MachineProperties.builder().setPropegateLightDown()
+		    .setShapeProvider(ElectrodynamicsVoxelShapes.FLUID_PIPE_VALVE)),
+    fluidpipepump(true, TileFluidPipePump::new,
+	    MachineProperties.builder().setPropegateLightDown()
+		    .setShapeProvider(ElectrodynamicsVoxelShapes.FLUID_PIPE_PUMP)),
+    fluidpipefilter(true, TileFluidPipeFilter::new,
+	    MachineProperties.builder().setPropegateLightDown()
+		    .setShapeProvider(ElectrodynamicsVoxelShapes.FLUID_PIPE_FILTER)),
+    gasvalve(true, TileGasValve::new,
+	    MachineProperties.builder().setPropegateLightDown()
+		    .setShapeProvider(ElectrodynamicsVoxelShapes.GAS_PIPE_VALVE)),
+    gaspipepump(true, TileGasPipePump::new,
+	    MachineProperties.builder().setPropegateLightDown()
+		    .setShapeProvider(ElectrodynamicsVoxelShapes.GAS_PIPE_PUMP)),
+    gaspipefilter(true, TileGasPipeFilter::new, MachineProperties.builder().setPropegateLightDown()
+	    .setShapeProvider(ElectrodynamicsVoxelShapes.GAS_PIPE_FILTER));
 
     private final BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier;
     private final boolean showInItemGroup;
     private final MachineProperties properties;
 
-    private SubtypeMachine(boolean showInItemGroup, BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
-        this(showInItemGroup, blockEntitySupplier, MachineProperties.DEFAULT);
+    private SubtypeMachine(boolean showInItemGroup,
+	    BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
+	this(showInItemGroup, blockEntitySupplier, MachineProperties.DEFAULT);
     }
 
-    private SubtypeMachine(boolean showInItemGroup, BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier, MachineProperties properties) {
-        this.showInItemGroup = showInItemGroup;
-        this.blockEntitySupplier = blockEntitySupplier;
-        this.properties = properties;
+    private SubtypeMachine(boolean showInItemGroup,
+	    BlockEntityType.BlockEntitySupplier<BlockEntity> blockEntitySupplier, MachineProperties properties) {
+	this.showInItemGroup = showInItemGroup;
+	this.blockEntitySupplier = blockEntitySupplier;
+	this.properties = properties;
     }
 
     @Override
     public BlockEntityType.BlockEntitySupplier<BlockEntity> getBlockEntitySupplier() {
-        return blockEntitySupplier;
+	return blockEntitySupplier;
     }
 
     @Override
     public int getLitBrightness() {
-        return properties.litBrightness;
+	return properties.litBrightness;
     }
 
     @Override
     public RenderShape getRenderShape() {
-        return properties.renderShape;
+	return properties.renderShape;
     }
 
     @Override
     public boolean isMultiblock() {
-        return properties.isMultiblock;
+	return properties.isMultiblock;
     }
 
     @Override
     public boolean propegatesLightDown() {
-        return properties.propegatesLightDown;
+	return properties.propegatesLightDown;
     }
 
     @Override
     public String tag() {
-        return name();
+	return name();
     }
 
     @Override
     public String forgeTag() {
-        return tag();
+	return tag();
     }
 
     @Override
     public boolean isItem() {
-        return false;
+	return false;
     }
 
     @Override
     public boolean isPlayerStorable() {
-        return this == quarry;
+	return this == quarry;
     }
 
     @Override
     public IMultiblockParentBlock.SubnodeWrapper getSubnodes() {
-        return properties.wrapper;
+	return properties.wrapper;
     }
 
     @Override
     public VoxelShapeProvider getVoxelShapeProvider() {
-        return properties.provider;
+	return properties.provider;
     }
 
     @Override
     public boolean usesLit() {
-        return properties.usesLit;
+	return properties.usesLit;
     }
 
     public boolean showInItemGroup() {
-        return showInItemGroup;
+	return showInItemGroup;
     }
-
 
     public static class Subnodes {
 
-        public static final IMultiblockParentBlock.SubnodeWrapper WINDMILL = IMultiblockParentBlock.SubnodeWrapper.createOmni(
-                //
-                new Subnode[]{
-                        //
-                        new Subnode(
-                                //
-                                new BlockPos(0, 1, 0),
-                                //
-                                new VoxelShape[]{
-                                        //
-                                        Shapes.block(),
-                                        //
-                                        Shapes.block(),
-                                        //
-                                        Shapes.or(Block.box(5, 0, 5, 11, 16, 11), Block.box(5, 10, 3, 11, 16, 13)),
-                                        //
-                                        Shapes.or(Block.box(5, 0, 5, 11, 16, 11), Block.box(5, 10, 3, 11, 16, 13)),
-                                        //
-                                        Shapes.or(Block.box(5, 0, 5, 11, 16, 11), Block.box(3, 10, 5, 13, 16, 11)),
-                                        //
-                                        Shapes.or(Block.box(5, 0, 5, 11, 16, 11), Block.box(3, 10, 5, 13, 16, 11))
-                                })
-                        //
-                }
-                //
-        );
-        public static final IMultiblockParentBlock.SubnodeWrapper ADVANCEDSOLARPANEL = IMultiblockParentBlock.SubnodeWrapper.createOmni(make(() -> {
+	public static final IMultiblockParentBlock.SubnodeWrapper WINDMILL = IMultiblockParentBlock.SubnodeWrapper
+		.createOmni(
+			//
+			new Subnode[] {
+				//
+				new Subnode(
+					//
+					new BlockPos(0, 1, 0),
+					//
+					new VoxelShape[] {
+						//
+						Shapes.block(),
+						//
+						Shapes.block(),
+						//
+						Shapes.or(Block.box(5, 0, 5, 11, 16, 11),
+							Block.box(5, 10, 3, 11, 16, 13)),
+						//
+						Shapes.or(Block.box(5, 0, 5, 11, 16, 11),
+							Block.box(5, 10, 3, 11, 16, 13)),
+						//
+						Shapes.or(Block.box(5, 0, 5, 11, 16, 11),
+							Block.box(3, 10, 5, 13, 16, 11)),
+						//
+						Shapes.or(Block.box(5, 0, 5, 11, 16, 11),
+							Block.box(3, 10, 5, 13, 16, 11)) })
+			//
+			}
+		//
+		);
+	public static final IMultiblockParentBlock.SubnodeWrapper ADVANCEDSOLARPANEL = IMultiblockParentBlock.SubnodeWrapper
+		.createOmni(make(() -> {
 
-            Subnode[] subnodes = new Subnode[9];
+		    Subnode[] subnodes = new Subnode[9];
 
-            int counter = 0;
+		    int counter = 0;
 
-            int radius = 1;
+		    int radius = 1;
 
-            for (int i = -radius; i <= radius; i++) {
+		    for (int i = -radius; i <= radius; i++) {
 
-                for (int j = -radius; j <= radius; j++) {
-                    if (i == 0 && j == 0) {
-                        subnodes[counter] = new Subnode(
-                                //
-                                new BlockPos(i, 1, j),
-                                //
-                                Shapes.or(Block.box(6, 0, 6, 10, 16, 10), Block.box(5, 13, 5, 11, 16, 11), Block.box(0, 14, 0, 16, 16, 16)));
-                    } else {
-                        subnodes[counter] = new Subnode(new BlockPos(i, 1, j), Block.box(0, 14, 0, 16, 16, 16));
-                    }
+			for (int j = -radius; j <= radius; j++) {
+			    if (i == 0 && j == 0) {
+				subnodes[counter] = new Subnode(
+					//
+					new BlockPos(i, 1, j),
+					//
+					Shapes.or(Block.box(6, 0, 6, 10, 16, 10), Block.box(5, 13, 5, 11, 16, 11),
+						Block.box(0, 14, 0, 16, 16, 16)));
+			    } else {
+				subnodes[counter] = new Subnode(new BlockPos(i, 1, j), Block.box(0, 14, 0, 16, 16, 16));
+			    }
 
-                    counter++;
-                }
-            }
+			    counter++;
+			}
+		    }
 
-            return subnodes;
+		    return subnodes;
 
-        }));
+		}));
 
-
-        public static Subnode[] make(Supplier<Subnode[]> maker) {
-            return maker.get();
-        }
+	public static Subnode[] make(Supplier<Subnode[]> maker) {
+	    return maker.get();
+	}
 
     }
 }

@@ -25,35 +25,35 @@ import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
 
 public class ElectrodynamicsRecipeProvider extends RecipeProvider {
 
-	public final List<AbstractRecipeGenerator> GENERATORS = new ArrayList<>();
+    public final List<AbstractRecipeGenerator> GENERATORS = new ArrayList<>();
 
-	public ElectrodynamicsRecipeProvider(PackOutput output) {
-		super(output);
-		addRecipes();
-	}
+    public ElectrodynamicsRecipeProvider(PackOutput output) {
+	super(output);
+	addRecipes();
+    }
 
-	public void addRecipes() {
-		GENERATORS.add(new ElectrodynamicsCraftingTableRecipes());
-		GENERATORS.add(new ElectrodynamicsSmeltingRecipes());
-		GENERATORS.add(new ElectrodynamicsElectrolyticSeparatorRecipes());
-		GENERATORS.add(new ElectrodynamicsChemicalCrystallizerRecipes());
-		GENERATORS.add(new ElectrodynamicsMineralWasherRecipes());
-		GENERATORS.add(new ElectrodynamicsFermentationPlantRecipes());
-		GENERATORS.add(new ElectrodynamicsChemicalMixerRecipes());
-		GENERATORS.add(new ElectrodynamicsEnergizedAlloyerRecipes());
-		GENERATORS.add(new ElectrodynamicsLatheRecipes());
-		GENERATORS.add(new ElectrodynamicsMineralCrusherRecipes());
-		GENERATORS.add(new ElectrodynamicsMineralGrinderRecipes());
-		GENERATORS.add(new ElectrodynamicsOxidationFurnaceRecipes());
-		GENERATORS.add(new ElectrodynamicsReinforcedAlloyerRecipes());
-		GENERATORS.add(new ElectrodynamicsWireMillRecipes());
-	}
+    public void addRecipes() {
+	GENERATORS.add(new ElectrodynamicsCraftingTableRecipes());
+	GENERATORS.add(new ElectrodynamicsSmeltingRecipes());
+	GENERATORS.add(new ElectrodynamicsElectrolyticSeparatorRecipes());
+	GENERATORS.add(new ElectrodynamicsChemicalCrystallizerRecipes());
+	GENERATORS.add(new ElectrodynamicsMineralWasherRecipes());
+	GENERATORS.add(new ElectrodynamicsFermentationPlantRecipes());
+	GENERATORS.add(new ElectrodynamicsChemicalMixerRecipes());
+	GENERATORS.add(new ElectrodynamicsEnergizedAlloyerRecipes());
+	GENERATORS.add(new ElectrodynamicsLatheRecipes());
+	GENERATORS.add(new ElectrodynamicsMineralCrusherRecipes());
+	GENERATORS.add(new ElectrodynamicsMineralGrinderRecipes());
+	GENERATORS.add(new ElectrodynamicsOxidationFurnaceRecipes());
+	GENERATORS.add(new ElectrodynamicsReinforcedAlloyerRecipes());
+	GENERATORS.add(new ElectrodynamicsWireMillRecipes());
+    }
 
-	@Override
-	protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
-		for (AbstractRecipeGenerator generator : GENERATORS) {
-			generator.addRecipes(consumer);
-		}
+    @Override
+    protected void buildRecipes(Consumer<FinishedRecipe> consumer) {
+	for (AbstractRecipeGenerator generator : GENERATORS) {
+	    generator.addRecipes(consumer);
 	}
+    }
 
 }

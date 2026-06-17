@@ -10,16 +10,16 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerPotentiometer extends GenericContainerBlockEntity<TilePotentiometer> {
 
-	public ContainerPotentiometer(int id, Inventory playerinv, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_POTENTIOMETER.get(), id, playerinv, EMPTY, inventorydata);
-	}
+    public ContainerPotentiometer(int id, Inventory playerinv, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_POTENTIOMETER.get(), id, playerinv, EMPTY, inventorydata);
+    }
 
-	public ContainerPotentiometer(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainerData(5));
-	}
+    public ContainerPotentiometer(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainerData(5));
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
 
-	}
+    }
 }

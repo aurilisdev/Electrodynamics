@@ -16,29 +16,33 @@ import voltaic.common.block.states.VoltaicBlockStates;
 
 public class RenderLogisticalWire extends AbstractTileRenderer<TileLogisticalWire> {
 
-	public RenderLogisticalWire(Context context) {
-		super(context);
+    public RenderLogisticalWire(Context context) {
+	super(context);
+    }
+
+    @Override
+    public void render(@NotNull TileLogisticalWire tile, float partialTick, @NotNull PoseStack poseStack,
+	    @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+
+	if (!tile.getBlockState().getValue(VoltaicBlockStates.LIT)) {
+	    return;
 	}
 
-	@Override
-	public void render(@NotNull TileLogisticalWire tile, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+	Minecraft minecraft = minecraft();
 
-		if (!tile.getBlockState().getValue(VoltaicBlockStates.LIT)) {
-			return;
-		}
+	BlockPos pos = tile.getBlockPos();
 
-		Minecraft minecraft = minecraft();
+	RandomSource random = minecraft.level.getRandom();
 
-		BlockPos pos = tile.getBlockPos();
-
-		RandomSource random = minecraft.level.getRandom();
-
-		if (random.nextFloat() > 0.02) {
-			return;
-		}
-
-		minecraft.level.addParticle(new DustParticleOptions(DustParticleOptions.REDSTONE_PARTICLE_COLOR, random.nextFloat()), pos.getX() + random.nextDouble(), pos.getY() + random.nextDouble(), pos.getZ() + random.nextDouble(), 0, 0, 0);
-
+	if (random.nextFloat() > 0.02) {
+	    return;
 	}
+
+	minecraft.level.addParticle(
+		new DustParticleOptions(DustParticleOptions.REDSTONE_PARTICLE_COLOR, random.nextFloat()),
+		pos.getX() + random.nextDouble(), pos.getY() + random.nextDouble(), pos.getZ() + random.nextDouble(), 0,
+		0, 0);
+
+    }
 
 }

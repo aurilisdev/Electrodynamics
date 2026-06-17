@@ -14,23 +14,24 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerCompressor extends GenericContainerBlockEntity<GenericTileBasicCompressor.TileCompressor> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
+	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
 
-	public ContainerCompressor(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_COMPRESSOR.get(), id, playerinv, inventory, inventorydata);
-	}
+    public ContainerCompressor(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_COMPRESSOR.get(), id, playerinv, inventory, inventorydata);
+    }
 
-	public ContainerCompressor(int id, Inventory playerInv) {
-		this(id, playerInv, new SimpleContainer(5), new SimpleContainerData(5));
-	}
+    public ContainerCompressor(int id, Inventory playerInv) {
+	this(id, playerInv, new SimpleContainer(5), new SimpleContainerData(5));
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotGas(inv, nextIndex(), 20, 50));
-		addSlot(new SlotGas(inv, nextIndex(), 109, 50));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
-	}
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
+	addSlot(new SlotGas(inv, nextIndex(), 20, 50));
+	addSlot(new SlotGas(inv, nextIndex(), 109, 50));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
+    }
 
 }

@@ -24,11 +24,14 @@ public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory
 
     public static final BackgroundObject BACK_WRAP = new BackgroundObject(132, 64);
 
-    public static final ItemSlotObject IN_BUCKET_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, ScreenComponentSlot.IconType.FLUID_DARK, 26, 36, RecipeIngredientRole.INPUT);
+    public static final ItemSlotObject IN_BUCKET_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL,
+	    ScreenComponentSlot.IconType.FLUID_DARK, 26, 36, RecipeIngredientRole.INPUT);
 
-    public static final ItemSlotObject OUT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, 100, 16, RecipeIngredientRole.OUTPUT);
+    public static final ItemSlotObject OUT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, 100, 16,
+	    RecipeIngredientRole.OUTPUT);
 
-    public static final ArrowAnimatedObject ANIM_RIGHT_ARROW = new ArrowAnimatedObject(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT_BIG, 32, 17, StartDirection.LEFT);
+    public static final ArrowAnimatedObject ANIM_RIGHT_ARROW = new ArrowAnimatedObject(
+	    ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT_BIG, 32, 17, StartDirection.LEFT);
 
     public static final FluidGaugeObject IN_GAUGE = new FluidGaugeObject(14, 5);
 
@@ -37,17 +40,20 @@ public class ChemicalCrystallizerRecipeCategory extends Fluid2ItemRecipeCategory
 
     public static final int ANIM_TIME = 50;
 
-    public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chemicalcrystallizer));
+    public static ItemStack INPUT_MACHINE = new ItemStack(
+	    ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.chemicalcrystallizer));
 
-    public static final RecipeType<ChemicalCrystalizerRecipe> RECIPE_TYPE = RecipeType.create(Electrodynamics.ID, ChemicalCrystalizerRecipe.RECIPE_GROUP, ChemicalCrystalizerRecipe.class);
+    public static final RecipeType<ChemicalCrystalizerRecipe> RECIPE_TYPE = RecipeType.create(Electrodynamics.ID,
+	    ChemicalCrystalizerRecipe.RECIPE_GROUP, ChemicalCrystalizerRecipe.class);
 
     public ChemicalCrystallizerRecipeCategory(IGuiHelper guiHelper) {
-        super(guiHelper, ElectroTextUtils.jeiTranslated(ChemicalCrystalizerRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
-        setInputSlots(guiHelper, IN_BUCKET_SLOT);
-        setOutputSlots(guiHelper, OUT_SLOT);
-        setFluidInputs(guiHelper, IN_GAUGE);
-        setAnimatedArrows(guiHelper, ANIM_RIGHT_ARROW);
-        setLabels(POWER_LABEL, TIME_LABEL);
+	super(guiHelper, ElectroTextUtils.jeiTranslated(ChemicalCrystalizerRecipe.RECIPE_GROUP), INPUT_MACHINE,
+		BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
+	setInputSlots(guiHelper, IN_BUCKET_SLOT);
+	setOutputSlots(guiHelper, OUT_SLOT);
+	setFluidInputs(guiHelper, IN_GAUGE);
+	setAnimatedArrows(guiHelper, ANIM_RIGHT_ARROW);
+	setLabels(POWER_LABEL, TIME_LABEL);
     }
 
 }

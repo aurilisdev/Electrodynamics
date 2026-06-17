@@ -13,59 +13,58 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ScreenGasPipePump extends GenericScreen<ContainerGasPipePump> {
 
-	private ScreenComponentEditBox priority;
+    private ScreenComponentEditBox priority;
 
-	private boolean needsUpdate = true;
+    private boolean needsUpdate = true;
 
-	public ScreenGasPipePump(ContainerGasPipePump screenContainer, Inventory inv, Component titleIn) {
-		super(screenContainer, inv, titleIn);
+    public ScreenGasPipePump(ContainerGasPipePump screenContainer, Inventory inv, Component titleIn) {
+	super(screenContainer, inv, titleIn);
 
-		addComponent(priority = new ScreenComponentEditBox(94, 35, 59, 16, getFontRenderer()).setTextColor(Color.WHITE).setTextColorUneditable(Color.WHITE).setMaxLength(1).setResponder(this::setPriority).setFilter(ScreenComponentEditBox.POSITIVE_INTEGER));
-		addComponent(new ScreenComponentSimpleLabel(20, 39, 10, Color.TEXT_GRAY, ElectroTextUtils.gui("prioritypump.priority")));
+	addComponent(priority = new ScreenComponentEditBox(94, 35, 59, 16, getFontRenderer()).setTextColor(Color.WHITE)
+		.setTextColorUneditable(Color.WHITE).setMaxLength(1).setResponder(this::setPriority)
+		.setFilter(ScreenComponentEditBox.POSITIVE_INTEGER));
+	addComponent(new ScreenComponentSimpleLabel(20, 39, 10, Color.TEXT_GRAY,
+		ElectroTextUtils.gui("prioritypump.priority")));
+    }
+
+    private void setPriority(String prior) {
+
+	TileGasPipePump pump = menu.getSafeHost();
+
+	if ((pump == null) || prior.isEmpty()) {
+	    return;
 	}
 
-	private void setPriority(String prior) {
+	int priority = 0;
 
-		TileGasPipePump pump = menu.getSafeHost();
-
-		if (pump == null) {
-			return;
-		}
-
-		if (prior.isEmpty()) {
-			return;
-		}
-
-		int priority = 0;
-
-		try {
-			priority = Integer.parseInt(prior);
-		} catch (Exception e) {
-
-		}
-
-		if (priority > 9) {
-			priority = 9;
-			this.priority.setValue(priority + "");
-		} else if (priority < 0) {
-			priority = 0;
-			this.priority.setValue(priority + "");
-		}
-
-		pump.priority.setValue(priority);
+	try {
+	    priority = Integer.parseInt(prior);
+	} catch (Exception e) {
 
 	}
 
-	@Override
-	public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
-		super.render(graphics, mouseX, mouseY, partialTicks);
-		if (needsUpdate) {
-			needsUpdate = false;
-			TileGasPipePump pump = menu.getSafeHost();
-			if (pump != null) {
-				priority.setValue("" + pump.priority.getValue());
-			}
-		}
+	if (priority > 9) {
+	    priority = 9;
+	    this.priority.setValue(priority + "");
+	} else if (priority < 0) {
+	    priority = 0;
+	    this.priority.setValue(priority + "");
 	}
+
+	pump.priority.setValue(priority);
+
+    }
+
+    @Override
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+	super.render(graphics, mouseX, mouseY, partialTicks);
+	if (needsUpdate) {
+	    needsUpdate = false;
+	    TileGasPipePump pump = menu.getSafeHost();
+	    if (pump != null) {
+		priority.setValue("" + pump.priority.getValue());
+	    }
+	}
+    }
 
 }

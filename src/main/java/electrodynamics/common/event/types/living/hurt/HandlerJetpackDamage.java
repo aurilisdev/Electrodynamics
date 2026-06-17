@@ -12,24 +12,25 @@ import voltaic.prefab.utilities.ItemUtils;
 
 public class HandlerJetpackDamage extends AbstractLivingDamageHandler {
 
-	// this way we know the impulse was because of the player being hurt
-	@Override
-	public void handle(LivingDamageEvent event) {
+    // this way we know the impulse was because of the player being hurt
+    @Override
+    public void handle(LivingDamageEvent event) {
 
-		Entity entity = event.getEntity();
-		ArrayList<ItemStack> armor = new ArrayList<>();
-		entity.getArmorSlots().forEach(armor::add);
-		if (armor.size() < 3) {
-			return;
-		}
-		ItemStack chestplate = armor.get(3);
-
-		if (chestplate.isEmpty() || !ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
-			return;
-		}
-
-		chestplate.getOrCreateTag().putBoolean(ItemJetpack.WAS_HURT_KEY, true);
-
+	Entity entity = event.getEntity();
+	ArrayList<ItemStack> armor = new ArrayList<>();
+	entity.getArmorSlots().forEach(armor::add);
+	if (armor.size() < 3) {
+	    return;
 	}
+	ItemStack chestplate = armor.get(3);
+
+	if (chestplate.isEmpty() || !ItemUtils.testItems(chestplate.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get(),
+		ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
+	    return;
+	}
+
+	chestplate.getOrCreateTag().putBoolean(ItemJetpack.WAS_HURT_KEY, true);
+
+    }
 
 }

@@ -25,29 +25,37 @@ public class WireMillRecipeCategory extends Item2ItemRecipeCategory<WireMillReci
 
     public static final BackgroundObject BACK_WRAP = new BackgroundObject(132, 58);
 
-    public static final ItemSlotObject INPUT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, 17, 20, RecipeIngredientRole.INPUT);
-    public static final ItemSlotObject OUTPUT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.BIG, 69, 16, RecipeIngredientRole.OUTPUT);
-    public static final ItemSlotObject BIPRODUCT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, 100, 20, RecipeIngredientRole.OUTPUT);
+    public static final ItemSlotObject INPUT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, 17, 20,
+	    RecipeIngredientRole.INPUT);
+    public static final ItemSlotObject OUTPUT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.BIG, 69, 16,
+	    RecipeIngredientRole.OUTPUT);
+    public static final ItemSlotObject BIPRODUCT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, 100, 20,
+	    RecipeIngredientRole.OUTPUT);
 
-    public static final ArrowAnimatedObject ANIM_ARROW = new ArrowAnimatedObject(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, 41, 23, StartDirection.LEFT);
+    public static final ArrowAnimatedObject ANIM_ARROW = new ArrowAnimatedObject(
+	    ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, 41, 23, StartDirection.LEFT);
 
     public static final PowerLabelWrapperElectroRecipe POWER_LABEL = new PowerLabelWrapperElectroRecipe(2, 48, 120);
-    public static final BiproductPercentWrapperElectroRecipe ITEM_LABEL = new BiproductPercentWrapperElectroRecipe(100, 40, BiproductPercentWrapperElectroRecipe.BiproductType.ITEM, 0);
+    public static final BiproductPercentWrapperElectroRecipe ITEM_LABEL = new BiproductPercentWrapperElectroRecipe(100,
+	    40, BiproductPercentWrapperElectroRecipe.BiproductType.ITEM, 0);
     public static final TimeLabelWrapperElectroRecipe TIME_LABEL = new TimeLabelWrapperElectroRecipe(130, 48);
 
     public static final int ANIM_TIME = 50;
 
-    public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.wiremill));
+    public static ItemStack INPUT_MACHINE = new ItemStack(
+	    ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.wiremill));
 
-    public static final RecipeType<WireMillRecipe> RECIPE_TYPE = RecipeType.create(Electrodynamics.ID, WireMillRecipe.RECIPE_GROUP, WireMillRecipe.class);
+    public static final RecipeType<WireMillRecipe> RECIPE_TYPE = RecipeType.create(Electrodynamics.ID,
+	    WireMillRecipe.RECIPE_GROUP, WireMillRecipe.class);
 
     public WireMillRecipeCategory(IGuiHelper guiHelper) {
-        super(guiHelper, ElectroTextUtils.jeiTranslated(WireMillRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
-        VoltaicJEIPlugin.addO2OCategory(RECIPE_TYPE);
-        setInputSlots(guiHelper, INPUT_SLOT);
-        setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);
-        setAnimatedArrows(guiHelper, ANIM_ARROW);
-        setLabels(POWER_LABEL, ITEM_LABEL, TIME_LABEL);
+	super(guiHelper, ElectroTextUtils.jeiTranslated(WireMillRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP,
+		RECIPE_TYPE, ANIM_TIME);
+	VoltaicJEIPlugin.addO2OCategory(RECIPE_TYPE);
+	setInputSlots(guiHelper, INPUT_SLOT);
+	setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);
+	setAnimatedArrows(guiHelper, ANIM_ARROW);
+	setLabels(POWER_LABEL, ITEM_LABEL, TIME_LABEL);
     }
 
 }

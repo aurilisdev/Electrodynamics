@@ -13,16 +13,16 @@ import voltaic.prefab.tile.components.type.ComponentFluidHandlerSimple;
 
 public class ScreenCoolantResavoir extends GenericMaterialScreen<ContainerCoolantResavoir> {
 
-	public ScreenCoolantResavoir(ContainerCoolantResavoir container, Inventory inv, Component titleIn) {
-		super(container, inv, titleIn);
-		addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.ARROW_RIGHT_OFF, 72, 33));
-		addComponent(new ScreenComponentFluidGauge(() -> {
-			TileCoolantResavoir boiler = menu.getSafeHost();
-			if (boiler != null) {
-				return boiler.<ComponentFluidHandlerSimple>getComponent(IComponentType.FluidHandler);
-			}
-			return null;
-		}, 101, 18));
-	}
+    public ScreenCoolantResavoir(ContainerCoolantResavoir container, Inventory inv, Component titleIn) {
+	super(container, inv, titleIn);
+	addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.ARROW_RIGHT_OFF, 72, 33));
+	addComponent(new ScreenComponentFluidGauge(() -> {
+	    TileCoolantResavoir boiler = menu.getSafeHost();
+	    if (boiler != null) {
+		return boiler.<ComponentFluidHandlerSimple>getComponent(IComponentType.FluidHandler);
+	    }
+	    return null;
+	}, 101, 18));
+    }
 
 }

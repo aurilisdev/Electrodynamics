@@ -4,33 +4,32 @@ import voltaic.api.ISubtype;
 import voltaic.api.network.cable.type.IFluidPipe;
 
 public enum SubtypeFluidPipe implements ISubtype, IFluidPipe {
-    copper(5000),
-    steel(10000);
+    copper(5000), steel(10000);
 
     private final long maxTransfer;
 
     SubtypeFluidPipe(long maxTransfer) {
-        this.maxTransfer = maxTransfer;
+	this.maxTransfer = maxTransfer;
 
     }
 
     @Override
     public String tag() {
-        return "pipe" + name();
+	return "pipe" + name();
     }
 
     @Override
     public String forgeTag() {
-        return tag();
+	return tag();
     }
 
     @Override
     public boolean isItem() {
-        return false;
+	return false;
     }
 
     @Override
     public long getMaxTransfer() {
-        return maxTransfer;
+	return maxTransfer;
     }
 }

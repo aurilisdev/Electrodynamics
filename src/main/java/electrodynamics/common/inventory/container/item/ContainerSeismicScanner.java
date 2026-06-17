@@ -15,20 +15,24 @@ import voltaic.prefab.screen.component.types.ScreenComponentSlot.IconType;
 import voltaic.prefab.screen.component.types.ScreenComponentSlot.SlotType;
 
 public class ContainerSeismicScanner extends GenericContainerItem {
-	
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = {SubtypeItemUpgrade.range};
 
-	public ContainerSeismicScanner(int id, Inventory playerinv) {
-		this(id, playerinv, new CapabilityItemStackHandler(ItemSeismicScanner.SLOT_COUNT, new ItemStack(Items.COBBLESTONE)), makeDefaultData(1));
-	}
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.range };
 
-	public ContainerSeismicScanner(int id, Inventory playerinv, CapabilityItemStackHandler handler, ContainerData data) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_SEISMICSCANNER.get(), id, playerinv, handler, data);
-	}
+    public ContainerSeismicScanner(int id, Inventory playerinv) {
+	this(id, playerinv,
+		new CapabilityItemStackHandler(ItemSeismicScanner.SLOT_COUNT, new ItemStack(Items.COBBLESTONE)),
+		makeDefaultData(1));
+    }
 
-	@Override
-	public void addInventorySlots(CapabilityItemStackHandler inv, Inventory playerinv) {
-		addSlot(new SlotItemHandlerRestricted(SlotType.NORMAL, IconType.NONE, inv, nextIndex(), 25, 42).setRestriction(stack -> (stack != null && stack.getItem() instanceof BlockItem)));
-	}
+    public ContainerSeismicScanner(int id, Inventory playerinv, CapabilityItemStackHandler handler,
+	    ContainerData data) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_SEISMICSCANNER.get(), id, playerinv, handler, data);
+    }
+
+    @Override
+    public void addInventorySlots(CapabilityItemStackHandler inv, Inventory playerinv) {
+	addSlot(new SlotItemHandlerRestricted(SlotType.NORMAL, IconType.NONE, inv, nextIndex(), 25, 42)
+		.setRestriction(stack -> (stack != null && stack.getItem() instanceof BlockItem)));
+    }
 
 }

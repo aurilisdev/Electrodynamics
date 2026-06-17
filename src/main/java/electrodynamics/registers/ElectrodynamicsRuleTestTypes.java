@@ -1,7 +1,5 @@
 package electrodynamics.registers;
 
-import com.mojang.serialization.Codec;
-
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.world.ruletests.RuleTestOre;
 import net.minecraft.core.registries.Registries;
@@ -11,15 +9,10 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ElectrodynamicsRuleTestTypes {
 
-	public static final DeferredRegister<RuleTestType<?>> RULE_TEST_TYPES = DeferredRegister.create(Registries.RULE_TEST, Electrodynamics.ID);
+    public static final DeferredRegister<RuleTestType<?>> RULE_TEST_TYPES = DeferredRegister
+	    .create(Registries.RULE_TEST, Electrodynamics.ID);
 
-	public static final RegistryObject<RuleTestType<?>> TEST_CONFIG_ORESPAWN = RULE_TEST_TYPES.register("configorespawn", () -> new RuleTestType<RuleTestOre>() {
-
-		@Override
-		public Codec<RuleTestOre> codec() {
-			return RuleTestOre.CODEC;
-		}
-
-	});
+    public static final RegistryObject<RuleTestType<RuleTestOre>> TEST_CONFIG_ORESPAWN = RULE_TEST_TYPES
+	    .register("configorespawn", () -> () -> RuleTestOre.CODEC);
 
 }

@@ -14,16 +14,19 @@ import voltaic.prefab.utilities.ItemUtils;
 
 public class HandlerJetpackEquiped extends AbstractEquipmentChangeHandler {
 
-	@Override
-	public void handler(LivingEquipmentChangeEvent event) {
-		Entity entity = event.getEntity();
-		if (event.getSlot() == EquipmentSlot.CHEST && entity instanceof Player player) {
-			ItemStack chest = event.getTo();
-			if (event.getFrom().isEmpty() && (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()))) {
-				NetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player), new PacketJetpackEquipedSound(player.getUUID()));
-			}
-		}
-
+    @Override
+    public void handler(LivingEquipmentChangeEvent event) {
+	Entity entity = event.getEntity();
+	if (event.getSlot() == EquipmentSlot.CHEST && entity instanceof Player player) {
+	    ItemStack chest = event.getTo();
+	    if (event.getFrom().isEmpty()
+		    && (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils
+			    .testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()))) {
+		NetworkHandler.CHANNEL.send(PacketDistributor.TRACKING_ENTITY_AND_SELF.with(() -> player),
+			new PacketJetpackEquipedSound(player.getUUID()));
+	    }
 	}
+
+    }
 
 }

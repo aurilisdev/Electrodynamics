@@ -18,23 +18,23 @@ import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
 @OnlyIn(Dist.CLIENT)
 public class ScreenCombustionChamber extends GenericMaterialScreen<ContainerCombustionChamber> {
 
-	public ScreenCombustionChamber(ContainerCombustionChamber container, Inventory playerInventory, Component title) {
-		super(container, playerInventory, title);
-		addComponent(new ScreenComponentFluidGauge(() -> {
-			TileCombustionChamber boiler = container.getSafeHost();
-			if (boiler != null) {
-				return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks()[0];
-			}
-			return null;
-		}, 98, 18));
-		addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.ARROW_RIGHT_OFF, 69, 33));
-		addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.COUNTDOWN_FLAME, () -> {
-			TileCombustionChamber boiler = container.getSafeHost();
-			if (boiler != null) {
-				return boiler.burnTime.getValue() / (double) TileCombustionChamber.TICKS_PER_MILLIBUCKET;
-			}
-			return 0;
-		}, 119, 34));
-		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
-	}
+    public ScreenCombustionChamber(ContainerCombustionChamber container, Inventory playerInventory, Component title) {
+	super(container, playerInventory, title);
+	addComponent(new ScreenComponentFluidGauge(() -> {
+	    TileCombustionChamber boiler = container.getSafeHost();
+	    if (boiler != null) {
+		return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks()[0];
+	    }
+	    return null;
+	}, 98, 18));
+	addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.ARROW_RIGHT_OFF, 69, 33));
+	addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.COUNTDOWN_FLAME, () -> {
+	    TileCombustionChamber boiler = container.getSafeHost();
+	    if (boiler != null) {
+		return boiler.burnTime.getValue() / (double) TileCombustionChamber.TICKS_PER_MILLIBUCKET;
+	    }
+	    return 0;
+	}, 119, 34));
+	addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
+    }
 }

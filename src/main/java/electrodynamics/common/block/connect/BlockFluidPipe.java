@@ -23,33 +23,35 @@ public class BlockFluidPipe extends AbstractRefreshingConnectBlock<GenericTileFl
     public final IFluidPipe pipe;
 
     public BlockFluidPipe(IFluidPipe pipe) {
-        super(Properties.copy(Blocks.IRON_BLOCK).sound(SoundType.METAL).strength(0.15f).dynamicShape().noOcclusion(), 3);
-        this.pipe = pipe;
-        PIPESET.add(this);
+	super(Properties.copy(Blocks.IRON_BLOCK).sound(SoundType.METAL).strength(0.15f).dynamicShape().noOcclusion(),
+		3);
+	this.pipe = pipe;
+	PIPESET.add(this);
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileFluidPipe(pos, state);
+	return new TileFluidPipe(pos, state);
     }
 
     @Override
-    public EnumConnectType getConnection(BlockState otherState, BlockEntity otherTile, GenericTileFluidPipe thisConductor, Direction dir) {
-        EnumConnectType connection = EnumConnectType.NONE;
-        if (otherTile instanceof GenericTileFluidPipe) {
-            connection = EnumConnectType.WIRE;
-        } else if (FluidUtilities.isFluidReceiver(otherTile, dir.getOpposite())) {
-            connection = EnumConnectType.INVENTORY;
-        }
-        return connection;
+    public EnumConnectType getConnection(BlockState otherState, BlockEntity otherTile,
+	    GenericTileFluidPipe thisConductor, Direction dir) {
+	EnumConnectType connection = EnumConnectType.NONE;
+	if (otherTile instanceof GenericTileFluidPipe) {
+	    connection = EnumConnectType.WIRE;
+	} else if (FluidUtilities.isFluidReceiver(otherTile, dir.getOpposite())) {
+	    connection = EnumConnectType.INVENTORY;
+	}
+	return connection;
     }
 
     @Override
     public GenericTileFluidPipe getCableIfValid(BlockEntity tile) {
-        if (tile instanceof GenericTileFluidPipe pipe) {
-            return pipe;
-        }
-        return null;
+	if (tile instanceof GenericTileFluidPipe pipe) {
+	    return pipe;
+	}
+	return null;
     }
 
 }

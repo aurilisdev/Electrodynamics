@@ -20,19 +20,26 @@ public abstract class GenericTileGasTransformer extends GenericGasTile implement
     protected boolean isSoundPlaying = false;
 
     public GenericTileGasTransformer(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
-        super(tileEntityTypeIn, worldPos, blockState);
-        addComponent(new ComponentPacketHandler(this));
-        addComponent(new ComponentTickable(this).tickClient(this::tickClient));
-        addComponent(getInventory());
-        addComponent(new ComponentProcessor(this).canProcess(this::canProcess).process(this::process).usage(getUsagePerTick(), 0));
-        addComponent(new ComponentGasHandlerMulti(this).setTanks(
-                //
-                1, arr(ElectroConstants.GAS_TRANSFORMER_BASE_INPUT_CAPCITY), arr(ElectroConstants.GAS_TRANSFORMER_INPUT_TEMP_CAP), arr(ElectroConstants.GAS_TRANSFORMER_INPUT_PRESSURE_CAP),
-                //
-                1, arr(ElectroConstants.GAS_TRANSFORMER_BASE_OUTPUT_CAPCITY), arr(ElectroConstants.GAS_TRANSFORMER_OUTPUT_TEMP_CAP), arr(ElectroConstants.GAS_TRANSFORMER_OUTPUT_PRESSURE_CAP)
-                //
-        ).setInputDirections(BlockEntityUtils.MachineDirection.RIGHT).setOutputDirections(BlockEntityUtils.MachineDirection.LEFT).setCondensedHandler(getCondensedHandler()));
-        addComponent(getContainerProvider());
+	super(tileEntityTypeIn, worldPos, blockState);
+	addComponent(new ComponentPacketHandler(this));
+	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
+	addComponent(getInventory());
+	addComponent(new ComponentProcessor(this).canProcess(this::canProcess).process(this::process)
+		.usage(getUsagePerTick(), 0));
+	addComponent(new ComponentGasHandlerMulti(this).setTanks(
+		//
+		1, arr(ElectroConstants.GAS_TRANSFORMER_BASE_INPUT_CAPCITY),
+		arr(ElectroConstants.GAS_TRANSFORMER_INPUT_TEMP_CAP),
+		arr(ElectroConstants.GAS_TRANSFORMER_INPUT_PRESSURE_CAP),
+		//
+		1, arr(ElectroConstants.GAS_TRANSFORMER_BASE_OUTPUT_CAPCITY),
+		arr(ElectroConstants.GAS_TRANSFORMER_OUTPUT_TEMP_CAP),
+		arr(ElectroConstants.GAS_TRANSFORMER_OUTPUT_PRESSURE_CAP)
+	//
+	).setInputDirections(BlockEntityUtils.MachineDirection.RIGHT)
+		.setOutputDirections(BlockEntityUtils.MachineDirection.LEFT)
+		.setCondensedHandler(getCondensedHandler()));
+	addComponent(getContainerProvider());
     }
 
     public abstract boolean canProcess(ComponentProcessor processor, int procNumber);
@@ -43,12 +50,12 @@ public abstract class GenericTileGasTransformer extends GenericGasTile implement
 
     @Override
     public void setNotPlaying() {
-        isSoundPlaying = false;
+	isSoundPlaying = false;
     }
 
     @Override
     public boolean shouldPlaySound() {
-        return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
+	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
     }
 
     public abstract ComponentContainerProvider getContainerProvider();

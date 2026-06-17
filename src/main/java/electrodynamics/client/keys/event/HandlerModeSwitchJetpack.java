@@ -15,15 +15,17 @@ import voltaic.prefab.utilities.ItemUtils;
 
 public class HandlerModeSwitchJetpack extends AbstractKeyPressHandler {
 
-	@Override
-	public void handler(Key event, Minecraft minecraft) {
-		Player player = minecraft.player;
-		if (KeyBinds.switchJetpackMode.matches(event.getKey(), event.getScanCode()) && KeyBinds.switchJetpackMode.isDown()) {
-			ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-			if (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
-				NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.JETPACK));
-			}
-		}
+    @Override
+    public void handler(Key event, Minecraft minecraft) {
+	Player player = minecraft.player;
+	if (KeyBinds.switchJetpackMode.matches(event.getKey(), event.getScanCode())
+		&& KeyBinds.switchJetpackMode.isDown()) {
+	    ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+	    if (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get())
+		    || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
+		NetworkHandler.CHANNEL.sendToServer(new PacketModeSwitchServer(player.getUUID(), Mode.JETPACK));
+	    }
 	}
+    }
 
 }

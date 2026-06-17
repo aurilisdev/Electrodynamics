@@ -18,41 +18,42 @@ import net.minecraftforge.common.Tags;
 
 public class CoalGeneratorFuelSourceProvider implements DataProvider {
 
-	public static final String LOC = "data/" + Electrodynamics.ID + "/" + CoalGeneratorFuelRegister.FOLDER + "/" + CoalGeneratorFuelRegister.FILE_NAME;
+    public static final String LOC = "data/" + Electrodynamics.ID + "/" + CoalGeneratorFuelRegister.FOLDER + "/"
+	    + CoalGeneratorFuelRegister.FILE_NAME;
 
-	private final PackOutput output;
+    private final PackOutput output;
 
-	public CoalGeneratorFuelSourceProvider(PackOutput output) {
-		this.output = output;
-	}
+    public CoalGeneratorFuelSourceProvider(PackOutput output) {
+	this.output = output;
+    }
 
-	@Override
-	public CompletableFuture<?> run(CachedOutput cache) {
-		JsonObject json = new JsonObject();
+    @Override
+    public CompletableFuture<?> run(CachedOutput cache) {
+	JsonObject json = new JsonObject();
 
-		getFuels(json);
+	getFuels(json);
 
-		Path parent = output.getOutputFolder().resolve(LOC + ".json");
+	Path parent = output.getOutputFolder().resolve(LOC + ".json");
 
-		return CompletableFuture.allOf(DataProvider.saveStable(cache, json, parent));
-	}
+	return CompletableFuture.allOf(DataProvider.saveStable(cache, json, parent));
+    }
 
-	private static void getFuels(JsonObject object) {
-		JsonArray json = new JsonArray();
+    private static void getFuels(JsonObject object) {
+	JsonArray json = new JsonArray();
 
-		addTag(ItemTags.COALS, json);
-		addTag(Tags.Items.STORAGE_BLOCKS_COAL, json);
+	addTag(ItemTags.COALS, json);
+	addTag(Tags.Items.STORAGE_BLOCKS_COAL, json);
 
-		object.add(CoalGeneratorFuelRegister.KEY, json);
-	}
+	object.add(CoalGeneratorFuelRegister.KEY, json);
+    }
 
-	private static void addTag(TagKey<Item> item, JsonArray json) {
-		json.add("#" + item.location().toString());
-	}
+    private static void addTag(TagKey<Item> item, JsonArray json) {
+	json.add("#" + item.location().toString());
+    }
 
-	@Override
-	public String getName() {
-		return "Electrodynamics Coal Generator Fuel Provider";
-	}
+    @Override
+    public String getName() {
+	return "Electrodynamics Coal Generator Fuel Provider";
+    }
 
 }

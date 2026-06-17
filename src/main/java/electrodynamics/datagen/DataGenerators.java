@@ -48,89 +48,98 @@ import voltaic.datagen.utils.client.BaseLangKeyProvider.Locale;
 
 @Mod.EventBusSubscriber(modid = Electrodynamics.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
-	
-	public static final HashMap<IWire.IWireClass, HashSet<SubtypeWire>> WIRES = new HashMap<>();
+
+    public static final HashMap<IWire.IWireClass, HashSet<SubtypeWire>> WIRES = new HashMap<>();
 
     static {
-        for (SubtypeWire wire : SubtypeWire.values()) {
-            HashSet<SubtypeWire> wireSet = WIRES.getOrDefault(wire.getWireClass(), new HashSet<>());
-            wireSet.add(wire);
-            WIRES.put(wire.getWireClass(), wireSet);
-        }
+	for (SubtypeWire wire : SubtypeWire.values()) {
+	    HashSet<SubtypeWire> wireSet = WIRES.getOrDefault(wire.getWireClass(), new HashSet<>());
+	    wireSet.add(wire);
+	    WIRES.put(wire.getWireClass(), wireSet);
+	}
     }
 
     @Nullable
-    public static SubtypeWire getWire(IWire.IWireMaterial conductor, SubtypeWire.InsulationMaterial insulation, SubtypeWire.WireClass wireClass, SubtypeWire.WireColor color) {
+    public static SubtypeWire getWire(IWire.IWireMaterial conductor, SubtypeWire.InsulationMaterial insulation,
+	    SubtypeWire.WireClass wireClass, SubtypeWire.WireColor color) {
 
-        for (SubtypeWire wire : WIRES.getOrDefault(wireClass, new HashSet<>())) {
-            if (wire.getWireMaterial() == conductor && wire.getInsulation() == insulation && wire.getWireClass() == wireClass && wire.getWireColor() == color) {
-                return wire;
-            }
-        }
-        return null;
-    }
-
-    public static SubtypeWire[] getWires(IWire.IWireMaterial[] conductors, SubtypeWire.InsulationMaterial insulation, SubtypeWire.WireClass wireClass, SubtypeWire.WireColor... colors) {
-
-        List<SubtypeWire> list = new ArrayList<>();
-
-        SubtypeWire wire;
-        for (IWire.IWireMaterial conductor : conductors) {
-            for (SubtypeWire.WireColor color : colors) {
-                wire = getWire(conductor, insulation, wireClass, color);
-                if (wire != null) {
-                    list.add(wire);
-                }
-            }
-        }
-
-        return list.toArray(new SubtypeWire[0]);
-    }
-
-	@SubscribeEvent
-	public static void gatherData(GatherDataEvent event) {
-
-		DataGenerator generator = event.getGenerator();
-
-		PackOutput output = generator.getPackOutput();
-
-		ExistingFileHelper helper = event.getExistingFileHelper();
-
-		CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-
-		if (event.includeServer()) {
-			generator.addProvider(true, new LootTableProvider(output, Collections.emptySet(), List.of(new LootTableProvider.SubProviderEntry(ElectrodynamicsLootTablesProvider::new, LootContextParamSets.BLOCK))));
-			generator.addProvider(true, new ElectrodynamicsRecipeProvider(output));
-			generator.addProvider(true, new CombustionChamberFuelSourceProvider(output));
-			generator.addProvider(true, new CoalGeneratorFuelSourceProvider(output));
-			generator.addProvider(true, new ThermoelectricGenHeatSourceProvider(output));
-			generator.addProvider(true, new ElectrodynamicsRadioactiveBlocksProvider(output));
-            generator.addProvider(true, new ElectrodynamicsRadioactiveItemsProvider(output));
-            generator.addProvider(true, new ElectrodynamicsRadiationShieldingProvider(output));
-			generator.addProvider(true, new ForgeAdvancementProvider(output, event.getLookupProvider(), helper, List.of(new ElectrodynamicsAdvancementProvider())));
-
-			DatapackBuiltinEntriesProvider datapacks = new DatapackBuiltinEntriesProvider(output, lookupProvider, new RegistrySetBuilder()
-					//
-					.add(Registries.DAMAGE_TYPE, ElectrodynamicsDamageTypes::registerTypes)
-					//
-					.add(Registries.CONFIGURED_FEATURE, context -> ElectrodynamicsFeatures.registerConfigured(context))
-					//
-					.add(Registries.PLACED_FEATURE, ElectrodynamicsFeatures::registerPlaced)
-					//
-					.add(ForgeRegistries.Keys.BIOME_MODIFIERS, ElectrodynamicsFeatures::registerModifiers)
-			//
-					, Set.of(Electrodynamics.ID));
-
-			generator.addProvider(true, datapacks);
-			ElectrodynamicsTagsProvider.addTagProviders(generator, output, datapacks.getRegistryProvider(), helper);
-		}
-		if (event.includeClient()) {
-			generator.addProvider(true, new ElectrodynamicsBlockStateProvider(output, helper));
-			generator.addProvider(true, new ElectrodynamicsBlockModelsProvider(output, helper));
-			generator.addProvider(true, new ElectrodynamicsItemModelsProvider(output, helper));
-			generator.addProvider(true, new ElectrodynamicsLangKeyProvider(output, Locale.EN_US));
-			generator.addProvider(true, new ElectrodynamicsSoundProvider(output, helper));
-		}
+	for (SubtypeWire wire : WIRES.getOrDefault(wireClass, new HashSet<>())) {
+	    if (wire.getWireMaterial() == conductor && wire.getInsulation() == insulation
+		    && wire.getWireClass() == wireClass && wire.getWireColor() == color) {
+		return wire;
+	    }
 	}
+	return null;
+    }
+
+    public static SubtypeWire[] getWires(IWire.IWireMaterial[] conductors, SubtypeWire.InsulationMaterial insulation,
+	    SubtypeWire.WireClass wireClass, SubtypeWire.WireColor... colors) {
+
+	List<SubtypeWire> list = new ArrayList<>();
+
+	SubtypeWire wire;
+	for (IWire.IWireMaterial conductor : conductors) {
+	    for (SubtypeWire.WireColor color : colors) {
+		wire = getWire(conductor, insulation, wireClass, color);
+		if (wire != null) {
+		    list.add(wire);
+		}
+	    }
+	}
+
+	return list.toArray(new SubtypeWire[0]);
+    }
+
+    @SubscribeEvent
+    public static void gatherData(GatherDataEvent event) {
+
+	DataGenerator generator = event.getGenerator();
+
+	PackOutput output = generator.getPackOutput();
+
+	ExistingFileHelper helper = event.getExistingFileHelper();
+
+	CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+
+	if (event.includeServer()) {
+	    generator.addProvider(true,
+		    new LootTableProvider(output, Collections.emptySet(),
+			    List.of(new LootTableProvider.SubProviderEntry(ElectrodynamicsLootTablesProvider::new,
+				    LootContextParamSets.BLOCK))));
+	    generator.addProvider(true, new ElectrodynamicsRecipeProvider(output));
+	    generator.addProvider(true, new CombustionChamberFuelSourceProvider(output));
+	    generator.addProvider(true, new CoalGeneratorFuelSourceProvider(output));
+	    generator.addProvider(true, new ThermoelectricGenHeatSourceProvider(output));
+	    generator.addProvider(true, new ElectrodynamicsRadioactiveBlocksProvider(output));
+	    generator.addProvider(true, new ElectrodynamicsRadioactiveItemsProvider(output));
+	    generator.addProvider(true, new ElectrodynamicsRadiationShieldingProvider(output));
+	    generator.addProvider(true, new ForgeAdvancementProvider(output, event.getLookupProvider(), helper,
+		    List.of(new ElectrodynamicsAdvancementProvider())));
+
+	    DatapackBuiltinEntriesProvider datapacks = new DatapackBuiltinEntriesProvider(output, lookupProvider,
+		    new RegistrySetBuilder()
+			    //
+			    .add(Registries.DAMAGE_TYPE, ElectrodynamicsDamageTypes::registerTypes)
+			    //
+			    .add(Registries.CONFIGURED_FEATURE,
+				    ElectrodynamicsFeatures::registerConfigured)
+			    //
+			    .add(Registries.PLACED_FEATURE, ElectrodynamicsFeatures::registerPlaced)
+			    //
+			    .add(ForgeRegistries.Keys.BIOME_MODIFIERS, ElectrodynamicsFeatures::registerModifiers)
+		    //
+		    , Set.of(Electrodynamics.ID));
+
+	    generator.addProvider(true, datapacks);
+	    ElectrodynamicsTagsProvider.addTagProviders(generator, output, datapacks.getRegistryProvider(), helper);
+	}
+	if (event.includeClient()) {
+	    generator.addProvider(true, new ElectrodynamicsBlockStateProvider(output, helper));
+	    generator.addProvider(true, new ElectrodynamicsBlockModelsProvider(output, helper));
+	    generator.addProvider(true, new ElectrodynamicsItemModelsProvider(output, helper));
+	    generator.addProvider(true, new ElectrodynamicsLangKeyProvider(output, Locale.EN_US));
+	    generator.addProvider(true, new ElectrodynamicsSoundProvider(output, helper));
+	}
+    }
 
 }

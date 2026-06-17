@@ -22,41 +22,58 @@ import voltaic.registers.VoltaicCapabilities;
 
 public class TileChemicalMixer extends GenericMaterialTile {
 
-	public static final int MAX_TANK_CAPACITY = 5000;
+    public static final int MAX_TANK_CAPACITY = 5000;
 
-	public TileChemicalMixer(BlockPos worldPosition, BlockState blockState) {
-		super(ElectrodynamicsTiles.TILE_CHEMICALMIXER.get(), worldPosition, blockState);
-		addComponent(new ComponentTickable(this).tickClient(this::tickClient));
-		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BACK).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2));
-		addComponent(new ComponentFluidHandlerMulti(this).setTanks(1, 1, new int[] { MAX_TANK_CAPACITY }, new int[] { MAX_TANK_CAPACITY }).setInputDirections(BlockEntityUtils.MachineDirection.RIGHT).setOutputDirections(BlockEntityUtils.MachineDirection.LEFT).setRecipeType(ElectrodynamicsRecipies.CHEMICAL_MIXER_TYPE.get()));
-		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().processors(1, 1, 0, 0).bucketInputs(1).bucketOutputs(1).upgrades(3))
-				//
-				.setDirectionsBySlot(0, BlockEntityUtils.MachineDirection.FRONT, BlockEntityUtils.MachineDirection.TOP, BlockEntityUtils.MachineDirection.BOTTOM).validUpgrades(ContainerChemicalMixer.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentProcessor(this).canProcess((component, procNumber) -> component.outputToFluidPipe().consumeBucket().dispenseBucket().canProcessFluidItem2FluidRecipe(procNumber, ElectrodynamicsRecipies.CHEMICAL_MIXER_TYPE.get())).process(ComponentProcessor::processFluidItem2FluidRecipe));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.chemicalmixer.tag(), this).createMenu((id, player) -> new ContainerChemicalMixer(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+    public TileChemicalMixer(BlockPos worldPosition, BlockState blockState) {
+	super(ElectrodynamicsTiles.TILE_CHEMICALMIXER.get(), worldPosition, blockState);
+	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
+	addComponent(new ComponentPacketHandler(this));
+	addComponent(new ComponentElectrodynamic(this, false, true)
+		.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
+		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2));
+	addComponent(new ComponentFluidHandlerMulti(this)
+		.setTanks(1, 1, new int[] { MAX_TANK_CAPACITY }, new int[] { MAX_TANK_CAPACITY })
+		.setInputDirections(BlockEntityUtils.MachineDirection.RIGHT)
+		.setOutputDirections(BlockEntityUtils.MachineDirection.LEFT)
+		.setRecipeType(ElectrodynamicsRecipies.CHEMICAL_MIXER_TYPE.get()));
+	addComponent(new ComponentInventory(this,
+		ComponentInventory.InventoryBuilder.newInv().processors(1, 1, 0, 0).bucketInputs(1).bucketOutputs(1)
+			.upgrades(3))
+		//
+		.setDirectionsBySlot(0, BlockEntityUtils.MachineDirection.FRONT, BlockEntityUtils.MachineDirection.TOP,
+			BlockEntityUtils.MachineDirection.BOTTOM)
+		.validUpgrades(ContainerChemicalMixer.VALID_UPGRADES).valid(machineValidator()));
+	addComponent(new ComponentProcessor(this)
+		.canProcess((component, procNumber) -> component.outputToFluidPipe().consumeBucket().dispenseBucket()
+			.canProcessFluidItem2FluidRecipe(procNumber, ElectrodynamicsRecipies.CHEMICAL_MIXER_TYPE.get()))
+		.process(ComponentProcessor::processFluidItem2FluidRecipe));
+	addComponent(new ComponentContainerProvider(SubtypeMachine.chemicalmixer.tag(), this)
+		.createMenu((id, player) -> new ContainerChemicalMixer(id, player,
+			getComponent(IComponentType.Inventory), getCoordsArray())));
 
+    }
+
+    protected void tickClient(ComponentTickable tickable) {
+	if (!this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0)) {
+	    return;
 	}
 
-	protected void tickClient(ComponentTickable tickable) {
-		if (!this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0)) {
-			return;
-		}
-
-		if (level.random.nextDouble() < 0.15) {
-			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
-		}
-
+	if (level.random.nextDouble() < 0.15) {
+	    level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(),
+		    worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5,
+		    worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 	}
 
-	@Override
-	public int getComparatorSignal() {
-		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
-	}
-	
-	@Override
-	public AABB getRenderBoundingBox() {
-		return super.getRenderBoundingBox().inflate(1);
-	}
+    }
+
+    @Override
+    public int getComparatorSignal() {
+	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
+    }
+
+    @Override
+    public AABB getRenderBoundingBox() {
+	return super.getRenderBoundingBox().inflate(1);
+    }
 
 }

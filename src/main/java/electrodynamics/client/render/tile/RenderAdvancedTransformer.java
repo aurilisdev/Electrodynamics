@@ -19,98 +19,101 @@ import voltaic.prefab.utilities.math.MathUtils;
 public abstract class RenderAdvancedTransformer extends AbstractTileRenderer<TileAdvancedTransformer> {
 
     public RenderAdvancedTransformer(BlockEntityRendererProvider.Context context) {
-        super(context);
+	super(context);
     }
 
     @Override
-    public void render(@NotNull TileAdvancedTransformer tile, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(@NotNull TileAdvancedTransformer tile, float partialTick, @NotNull PoseStack poseStack,
+	    @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
-        Direction facing = tile.getFacing();
+	Direction facing = tile.getFacing();
 
-        Font font = Minecraft.getInstance().font;
+	Font font = Minecraft.getInstance().font;
 
-        Component transfer = Component.literal(getTurnsString(tile));
+	Component transfer = Component.literal(getTurnsString(tile));
 
-        float scale = 0.0215f / (font.width(transfer) / 16f);
+	float scale = 0.0215f / (font.width(transfer) / 16f);
 
-        float textX = -font.width(transfer) / 2.0f;
+	float textX = -font.width(transfer) / 2.0f;
 
+	poseStack.pushPose();
 
+	Direction clockwise = facing.getClockWise();
 
-        poseStack.pushPose();
+	poseStack.translate(0.5 + clockwise.getStepX() * 0.438, 0.55 + clockwise.getStepY() / 2.0,
+		0.5 + clockwise.getStepZ() * 0.438);
 
-        Direction clockwise = facing.getClockWise();
+	rotateMatrix(poseStack, clockwise);
 
-        poseStack.translate(0.5 + clockwise.getStepX() * 0.438, 0.55 + clockwise.getStepY() / 2.0, 0.5 + clockwise.getStepZ() * 0.438);
+	poseStack.scale(-scale, -scale, -scale);
 
-        rotateMatrix(poseStack, clockwise);
+	Matrix4f matrix4f = poseStack.last().pose();
 
-        poseStack.scale(-scale, -scale, -scale);
+	font.drawInBatch(transfer, textX, 0, Color.WHITE.color(), false, matrix4f, bufferSource,
+		Font.DisplayMode.NORMAL, 0, packedLight);
 
-        Matrix4f matrix4f = poseStack.last().pose();
+	poseStack.popPose();
 
-        font.drawInBatch(transfer, textX, 0, Color.WHITE.color(), false, matrix4f, bufferSource, Font.DisplayMode.NORMAL, 0, packedLight);
+	poseStack.pushPose();
 
-        poseStack.popPose();
+	Direction counterClockwise = facing.getCounterClockWise();
 
+	poseStack.translate(0.5 - clockwise.getStepX() * 0.438, 0.55 + clockwise.getStepY() / 2.0,
+		0.5 - clockwise.getStepZ() * 0.438);
 
+	rotateMatrix(poseStack, counterClockwise);
 
+	poseStack.scale(-scale, -scale, -scale);
 
-        poseStack.pushPose();
+	matrix4f = poseStack.last().pose();
 
-        Direction counterClockwise = facing.getCounterClockWise();
+	font.drawInBatch(transfer, textX, 0, Color.WHITE.color(), false, matrix4f, bufferSource,
+		Font.DisplayMode.NORMAL, 0, packedLight);
 
-        poseStack.translate(0.5 - clockwise.getStepX() * 0.438, 0.55 + clockwise.getStepY() / 2.0, 0.5 - clockwise.getStepZ() * 0.438);
-
-        rotateMatrix(poseStack, counterClockwise);
-
-        poseStack.scale(-scale, -scale, -scale);
-
-        matrix4f = poseStack.last().pose();
-
-        font.drawInBatch(transfer, textX, 0, Color.WHITE.color(), false, matrix4f, bufferSource, Font.DisplayMode.NORMAL, 0, packedLight);
-
-        poseStack.popPose();
+	poseStack.popPose();
 
     }
 
     public abstract String getTurnsString(TileAdvancedTransformer transformer);
 
     private static void rotateMatrix(PoseStack stack, Direction dir) {
-        switch (dir) {
-            case EAST -> stack.mulPose(MathUtils.rotQuaternionDeg(0, -90, 0));// stack.mulPose(new Quaternion(0, -90, 0, true));
-            case SOUTH -> stack.mulPose(MathUtils.rotQuaternionDeg(0, 180, 0));// stack.mulPose(new Quaternion(0, 180, 0, true));
-            case WEST -> stack.mulPose(MathUtils.rotQuaternionDeg(0, 90, 0));// stack.mulPose(new Quaternion(0, 90, 0, true));
-            default -> {
-            }
-        }
+	switch (dir) {
+	case EAST -> stack.mulPose(MathUtils.rotQuaternionDeg(0, -90, 0));// stack.mulPose(new Quaternion(0, -90, 0,
+									  // true));
+	case SOUTH -> stack.mulPose(MathUtils.rotQuaternionDeg(0, 180, 0));// stack.mulPose(new Quaternion(0, 180, 0,
+									   // true));
+	case WEST -> stack.mulPose(MathUtils.rotQuaternionDeg(0, 90, 0));// stack.mulPose(new Quaternion(0, 90, 0,
+									 // true));
+	default -> {
+	}
+	}
     }
 
     public static class RenderAdvancedUpgradeTransformer extends RenderAdvancedTransformer {
 
-        public RenderAdvancedUpgradeTransformer(BlockEntityRendererProvider.Context context) {
-            super(context);
-        }
+	public RenderAdvancedUpgradeTransformer(BlockEntityRendererProvider.Context context) {
+	    super(context);
+	}
 
-        @Override
-        public String getTurnsString(TileAdvancedTransformer transformer) {
-            int ratio = transformer.coilRatio.getValue().intValue();
+	@Override
+	public String getTurnsString(TileAdvancedTransformer transformer) {
+	    int ratio = transformer.coilRatio.getValue().intValue();
 
-            return "1 : " + ratio;
-        }
+	    return "1 : " + ratio;
+	}
     }
 
     public static class RenderAdvancedDowngradeTransformer extends RenderAdvancedTransformer {
 
-        public RenderAdvancedDowngradeTransformer(BlockEntityRendererProvider.Context context) {
-            super(context);
-        }
+	public RenderAdvancedDowngradeTransformer(BlockEntityRendererProvider.Context context) {
+	    super(context);
+	}
 
-        @Override
-        public String getTurnsString(TileAdvancedTransformer transformer) {
-            int ratio = (int) (1.0 / transformer.coilRatio.getValue());
+	@Override
+	public String getTurnsString(TileAdvancedTransformer transformer) {
+	    int ratio = (int) (1.0 / transformer.coilRatio.getValue());
 
-            return ratio + " : 1";
-        }
+	    return ratio + " : 1";
+	}
     }
 }

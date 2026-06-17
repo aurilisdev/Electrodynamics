@@ -20,39 +20,39 @@ import voltaic.common.tags.VoltaicTags;
 
 public class CombustionChamberFuelSourceProvider implements DataProvider {
 
-	public static final String LOC = "data/" + Electrodynamics.ID + "/" + CombustionFuelRegister.FOLDER + "/";
+    public static final String LOC = "data/" + Electrodynamics.ID + "/" + CombustionFuelRegister.FOLDER + "/";
 
-	private final PackOutput output;
+    private final PackOutput output;
 
-	private final Map<String, JsonObject> jsons = new HashMap<>();
+    private final Map<String, JsonObject> jsons = new HashMap<>();
 
-	public CombustionChamberFuelSourceProvider(PackOutput output) {
-		this.output = output;
+    public CombustionChamberFuelSourceProvider(PackOutput output) {
+	this.output = output;
+    }
+
+    @Override
+    public CompletableFuture<?> run(CachedOutput cache) {
+	addFuels();
+
+	Path parent = output.getOutputFolder().resolve(LOC);
+
+	List<CompletableFuture<?>> completed = new ArrayList<>();
+
+	for (Entry<String, JsonObject> json : jsons.entrySet()) {
+	    completed.add(DataProvider.saveStable(cache, json.getValue(), parent.resolve(json.getKey() + ".json")));
 	}
 
-	@Override
-	public CompletableFuture<?> run(CachedOutput cache) {
-		addFuels();
+	return CompletableFuture.allOf(completed.toArray(size -> new CompletableFuture[size]));
+    }
 
-		Path parent = output.getOutputFolder().resolve(LOC);
+    private void addFuels() {
+	jsons.put("ethanol", CombustionFuelSource.toJson(VoltaicTags.Fluids.ETHANOL, 1, 1));
+	jsons.put("hydrogen", CombustionFuelSource.toJson(VoltaicTags.Fluids.HYDROGEN, 1000, 1));
+    }
 
-		List<CompletableFuture<?>> completed = new ArrayList<>();
-
-		for (Entry<String, JsonObject> json : jsons.entrySet()) {
-			completed.add(DataProvider.saveStable(cache, json.getValue(), parent.resolve(json.getKey() + ".json")));
-		}
-
-		return CompletableFuture.allOf(completed.toArray(size -> new CompletableFuture[size]));
-	}
-
-	private void addFuels() {
-		jsons.put("ethanol", CombustionFuelSource.toJson(VoltaicTags.Fluids.ETHANOL, 1, 1));
-		jsons.put("hydrogen", CombustionFuelSource.toJson(VoltaicTags.Fluids.HYDROGEN, 1000, 1));
-	}
-
-	@Override
-	public String getName() {
-		return "Combustion Chamber Fuel Sources";
-	}
+    @Override
+    public String getName() {
+	return "Combustion Chamber Fuel Sources";
+    }
 
 }

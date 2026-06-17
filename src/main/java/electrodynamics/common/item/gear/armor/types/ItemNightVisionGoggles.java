@@ -43,173 +43,192 @@ import voltaic.prefab.utilities.VoltaicTextUtils;
 
 public class ItemNightVisionGoggles extends ItemVoltaicArmor implements IItemElectric {
 
-	private final ElectricItemProperties properties;
+    private final ElectricItemProperties properties;
 
-	public static final int JOULES_PER_TICK = 5;
-	public static final int DURATION_SECONDS = 12;
+    public static final int JOULES_PER_TICK = 5;
+    public static final int DURATION_SECONDS = 12;
 
-	private static final String ARMOR_TEXTURE_OFF = Electrodynamics.ID + ":textures/model/armor/nightvisiongogglesoff.png";
-	private static final String ARMOR_TEXTURE_ON = Electrodynamics.ID + ":textures/model/armor/nightvisiongoggleson.png";
+    private static final String ARMOR_TEXTURE_OFF = Electrodynamics.ID
+	    + ":textures/model/armor/nightvisiongogglesoff.png";
+    private static final String ARMOR_TEXTURE_ON = Electrodynamics.ID
+	    + ":textures/model/armor/nightvisiongoggleson.png";
 
-	public ItemNightVisionGoggles(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
-		super(NightVisionGoggles.NVGS, Type.HELMET, properties, creativeTab);
-		this.properties = properties;
+    public ItemNightVisionGoggles(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
+	super(NightVisionGoggles.NVGS, Type.HELMET, properties, creativeTab);
+	this.properties = properties;
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+	consumer.accept(new IClientItemExtensions() {
+	    @Override
+	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
+		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
+		ModelNightVisionGoggles<LivingEntity> model = new ModelNightVisionGoggles<>(
+			ElectrodynamicsClientRegister.NIGHT_VISION_GOGGLES.bakeRoot());
+
+		model.crouching = properties.crouching;
+		model.riding = properties.riding;
+		model.young = properties.young;
+
+		return model;
+	    }
+	});
+    }
+
+    @SuppressWarnings("removal")
+    @Override
+    public void onArmorTick(ItemStack stack, Level world, Player player) {
+	super.onArmorTick(stack, world, player);
+	armorTick(stack, world, player);
+    }
+
+    protected static void armorTick(ItemStack stack, Level world, Player player) {
+	if (!world.isClientSide) {
+	    IItemElectric nvgs = (IItemElectric) stack.getItem();
+	    CompoundTag tag = stack.getOrCreateTag();
+	    if (tag.getBoolean(NBTUtils.ON) && nvgs.getJoulesStored(stack) >= JOULES_PER_TICK) {
+		nvgs.extractPower(stack, JOULES_PER_TICK, false);
+		player.addEffect(
+			new MobEffectInstance(MobEffects.NIGHT_VISION, DURATION_SECONDS * 20, 0, false, false, false));
+	    }
+	}
+    }
+
+    @Override
+    public ElectricItemProperties getElectricProperties() {
+	return properties;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack p_41456_) {
+	return false;
+    }
+
+    @Override
+    public boolean isRepairable(ItemStack stack) {
+	return false;
+    }
+
+    @Override
+    public boolean canBeDepleted() {
+	return false;
+    }
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+	return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
+    }
+
+    @Override
+    public boolean isBarVisible(ItemStack stack) {
+	return getJoulesStored(stack) < getMaximumCapacity(stack);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
+	super.appendHoverText(stack, world, tooltip, flagIn);
+	tooltip.add(
+		ElectroTextUtils
+			.tooltip("item.electric.info",
+				VoltaicTextUtils.ratio(
+					ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES),
+					ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack),
+						DisplayUnits.JOULES))
+					.withStyle(ChatFormatting.GRAY))
+			.withStyle(ChatFormatting.DARK_GRAY));
+	tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage",
+		ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE)
+			.withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY));
+	IItemElectric.addBatteryTooltip(stack, world, tooltip);
+	if (stack.hasTag() && stack.getTag().getBoolean(NBTUtils.ON)) {
+	    tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)
+		    .append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
+	} else {
+	    tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)
+		    .append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
+	}
+    }
+
+    @Override
+    public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
+
+	ItemStack empty = new ItemStack(this);
+	IItemElectric.setEnergyStored(empty, 0);
+	items.add(empty);
+
+	ItemStack charged = new ItemStack(this);
+	IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
+	items.add(charged);
+
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	return !oldStack.is(newStack.getItem());
+    }
+
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+	boolean isOn = stack.hasTag() && stack.getTag().getBoolean(NBTUtils.ON);
+	if (isOn) {
+	    return ARMOR_TEXTURE_ON;
+	}
+	return ARMOR_TEXTURE_OFF;
+    }
+
+    public enum NightVisionGoggles implements ICustomArmor {
+	NVGS;
+
+	@Override
+	public SoundEvent getEquipSound() {
+	    return SoundEvents.ARMOR_EQUIP_IRON;
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(new IClientItemExtensions() {
-			@Override
-			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
-				ModelNightVisionGoggles<LivingEntity> model = new ModelNightVisionGoggles<>(ElectrodynamicsClientRegister.NIGHT_VISION_GOGGLES.bakeRoot());
-
-				model.crouching = properties.crouching;
-				model.riding = properties.riding;
-				model.young = properties.young;
-
-				return model;
-			}
-		});
-	}
-
-	@SuppressWarnings("removal")
-	@Override
-	public void onArmorTick(ItemStack stack, Level world, Player player) {
-		super.onArmorTick(stack, world, player);
-		armorTick(stack, world, player);
-	}
-
-	protected static void armorTick(ItemStack stack, Level world, Player player) {
-		if (!world.isClientSide) {
-			IItemElectric nvgs = (IItemElectric) stack.getItem();
-			CompoundTag tag = stack.getOrCreateTag();
-			if (tag.getBoolean(NBTUtils.ON) && nvgs.getJoulesStored(stack) >= JOULES_PER_TICK) {
-				nvgs.extractPower(stack, JOULES_PER_TICK, false);
-				player.addEffect(new MobEffectInstance(MobEffects.NIGHT_VISION, DURATION_SECONDS * 20, 0, false, false, false));
-			}
-		}
+	public String getName() {
+	    return Electrodynamics.ID + ":nvgs";
 	}
 
 	@Override
-	public ElectricItemProperties getElectricProperties() {
-		return properties;
+	public float getToughness() {
+	    return 0.0F;
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack p_41456_) {
-		return false;
+	public float getKnockbackResistance() {
+	    return 0.0F;
 	}
 
 	@Override
-	public boolean isRepairable(ItemStack stack) {
-		return false;
+	public int getDurabilityForType(Type pType) {
+	    return 100;
 	}
 
 	@Override
-	public boolean canBeDepleted() {
-		return false;
+	public int getDefenseForType(Type pType) {
+	    return 1;
 	}
 
-	@Override
-	public int getBarWidth(ItemStack stack) {
-		return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
+    }
+
+    @Override
+    public Item getDefaultStorageBattery() {
+	return ElectrodynamicsItems.ITEM_BATTERY.get();
+    }
+
+    @Override
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action,
+	    Player player, SlotAccess access) {
+
+	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
 	}
 
-	@Override
-	public boolean isBarVisible(ItemStack stack) {
-		return getJoulesStored(stack) < getMaximumCapacity(stack);
-	}
+	return true;
 
-	@Override
-	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
-		super.appendHoverText(stack, world, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-		IItemElectric.addBatteryTooltip(stack, world, tooltip);
-		if (stack.hasTag() && stack.getTag().getBoolean(NBTUtils.ON)) {
-			tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
-		} else {
-			tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
-		}
-	}
-
-	@Override
-	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
-
-		ItemStack empty = new ItemStack(this);
-		IItemElectric.setEnergyStored(empty, 0);
-		items.add(empty);
-
-		ItemStack charged = new ItemStack(this);
-		IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
-		items.add(charged);
-
-	}
-
-	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return !oldStack.is(newStack.getItem());
-	}
-
-	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		boolean isOn = stack.hasTag() && stack.getTag().getBoolean(NBTUtils.ON);
-		if (isOn) {
-			return ARMOR_TEXTURE_ON;
-		}
-		return ARMOR_TEXTURE_OFF;
-	}
-
-	public enum NightVisionGoggles implements ICustomArmor {
-		NVGS;
-
-		@Override
-		public SoundEvent getEquipSound() {
-			return SoundEvents.ARMOR_EQUIP_IRON;
-		}
-
-		@Override
-		public String getName() {
-			return Electrodynamics.ID + ":nvgs";
-		}
-
-		@Override
-		public float getToughness() {
-			return 0.0F;
-		}
-
-		@Override
-		public float getKnockbackResistance() {
-			return 0.0F;
-		}
-
-		@Override
-		public int getDurabilityForType(Type pType) {
-			return 100;
-		}
-
-		@Override
-		public int getDefenseForType(Type pType) {
-			return 1;
-		}
-
-	}
-
-	@Override
-	public Item getDefaultStorageBattery() {
-		return ElectrodynamicsItems.ITEM_BATTERY.get();
-	}
-
-	@Override
-	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-
-		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
-			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-		}
-
-		return true;
-
-	}
+    }
 
 }

@@ -18,19 +18,23 @@ import voltaic.registers.VoltaicRegistries;
 
 public class ElectrodynamicsGasTagsProvider extends IntrinsicHolderTagsProvider<Gas> {
 
-	public ElectrodynamicsGasTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, String modId, @Nullable ExistingFileHelper existingFileHelper) {
-		super(output, VoltaicRegistries.GAS_REGISTRY_KEY, lookupProvider, gas -> ResourceKey.create(VoltaicRegistries.GAS_REGISTRY_KEY, VoltaicRegistries.gasRegistry().getKey(gas)), modId, existingFileHelper);
-	}
+    public ElectrodynamicsGasTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
+	    String modId, @Nullable ExistingFileHelper existingFileHelper) {
+	super(output, VoltaicRegistries.GAS_REGISTRY_KEY, lookupProvider, gas -> ResourceKey
+		.create(VoltaicRegistries.GAS_REGISTRY_KEY, VoltaicRegistries.gasRegistry().getKey(gas)), modId,
+		existingFileHelper);
+    }
 
-	public ElectrodynamicsGasTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-		this(output, lookupProvider, Electrodynamics.ID, existingFileHelper);
-	}
+    public ElectrodynamicsGasTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
+	    ExistingFileHelper existingFileHelper) {
+	this(output, lookupProvider, Electrodynamics.ID, existingFileHelper);
+    }
 
-	@Override
-	protected void addTags(Provider pProvider) {
-		tag(VoltaicTags.Gases.HYDROGEN).add(ElectrodynamicsGases.HYDROGEN.get());
-		tag(VoltaicTags.Gases.OXYGEN).add(ElectrodynamicsGases.OXYGEN.get());
-		tag(VoltaicTags.Gases.STEAM).add(ElectrodynamicsGases.STEAM.get());
-	}
+    @Override
+    protected void addTags(Provider pProvider) {
+	tag(VoltaicTags.Gases.HYDROGEN).add(ElectrodynamicsGases.HYDROGEN.get());
+	tag(VoltaicTags.Gases.OXYGEN).add(ElectrodynamicsGases.OXYGEN.get());
+	tag(VoltaicTags.Gases.STEAM).add(ElectrodynamicsGases.STEAM.get());
+    }
 
 }

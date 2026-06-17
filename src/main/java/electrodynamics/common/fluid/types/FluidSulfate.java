@@ -7,11 +7,11 @@ import voltaic.common.fluid.FluidNonPlaceable;
 
 public class FluidSulfate extends FluidNonPlaceable {
 
-	public SubtypeSulfateFluid mineral;
+    public SubtypeSulfateFluid mineral;
 
-	public FluidSulfate(SubtypeSulfateFluid mineral, FluidType type) {
-		super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), type);
-		this.mineral = mineral;
-	}
+    public FluidSulfate(SubtypeSulfateFluid mineral, FluidType type) {
+	super(() -> ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get(), type);
+	this.mineral = mineral;
+    }
 
 }

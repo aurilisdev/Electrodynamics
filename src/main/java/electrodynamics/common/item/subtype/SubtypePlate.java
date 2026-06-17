@@ -7,7 +7,7 @@ import voltaic.api.ISubtype;
 import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypePlate implements ISubtype {
-	copper(VoltaicTags.Items.PLATE_COPPER, Tags.Items.INGOTS_COPPER),
+    copper(VoltaicTags.Items.PLATE_COPPER, Tags.Items.INGOTS_COPPER),
     iron(VoltaicTags.Items.PLATE_IRON, Tags.Items.INGOTS_IRON),
     steel(VoltaicTags.Items.PLATE_STEEL, VoltaicTags.Items.INGOT_STEEL),
     lead(VoltaicTags.Items.PLATE_LEAD, VoltaicTags.Items.INGOT_LEAD),
@@ -20,26 +20,26 @@ public enum SubtypePlate implements ISubtype {
     hslasteel(VoltaicTags.Items.PLATE_HSLASTEEL, VoltaicTags.Items.INGOT_HSLASTEEL),
     titaniumcarbide(VoltaicTags.Items.PLATE_TITANIUMCARBIDE, VoltaicTags.Items.INGOT_TITANIUMCARBIDE);
 
-	public final TagKey<Item> tag;
-	public final TagKey<Item> sourceIngot;
+    public final TagKey<Item> tag;
+    public final TagKey<Item> sourceIngot;
 
-	SubtypePlate(TagKey<Item> tag, TagKey<Item> sourceIngot) {
-		this.tag = tag;
-		this.sourceIngot = sourceIngot;
-	}
+    SubtypePlate(TagKey<Item> tag, TagKey<Item> sourceIngot) {
+	this.tag = tag;
+	this.sourceIngot = sourceIngot;
+    }
 
-	@Override
-	public String tag() {
-		return "plate" + name();
-	}
+    @Override
+    public String tag() {
+	return "plate" + name();
+    }
 
-	@Override
-	public String forgeTag() {
-		return "plates/" + name();
-	}
+    @Override
+    public String forgeTag() {
+	return "plates/" + name();
+    }
 
-	@Override
-	public boolean isItem() {
-		return true;
-	}
+    @Override
+    public boolean isItem() {
+	return true;
+    }
 }

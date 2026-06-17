@@ -16,21 +16,23 @@ import voltaic.common.recipe.recipeutils.ProbableItem;
 
 public class LatheRecipe extends Item2ItemRecipe {
 
-	public static final String RECIPE_GROUP = "lathe_recipe";
-	public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
+    public static final String RECIPE_GROUP = "lathe_recipe";
+    public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
 
-	public LatheRecipe(ResourceLocation group, List<CountableIngredient> inputs, ItemStack output, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
-		super(group, inputs, output, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
-	}
+    public LatheRecipe(ResourceLocation group, List<CountableIngredient> inputs, ItemStack output, double experience,
+	    int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts,
+	    List<ProbableGas> gasBiproducts) {
+	super(group, inputs, output, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
+    }
 
-	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return ElectrodynamicsRecipies.LATHE_SERIALIZER.get();
-	}
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+	return ElectrodynamicsRecipies.LATHE_SERIALIZER.get();
+    }
 
-	@Override
-	public RecipeType<?> getType() {
-		return ElectrodynamicsRecipies.LATHE_TYPE.get();
-	}
+    @Override
+    public RecipeType<?> getType() {
+	return ElectrodynamicsRecipies.LATHE_TYPE.get();
+    }
 
 }

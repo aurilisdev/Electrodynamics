@@ -40,97 +40,104 @@ import voltaic.prefab.utilities.object.Location;
 
 public class ItemSeismicScanner extends ItemElectric {
 
-	private static final Component CONTAINER_TITLE = Component.translatable("container.seismicscanner");
+    private static final Component CONTAINER_TITLE = Component.translatable("container.seismicscanner");
 
-	public static final int SLOT_COUNT = 1;
-	public static final int RADUIS_BLOCKS = 16;
-	public static final int COOLDOWN_SECONDS = 10;
-	public static final int JOULES_PER_SCAN = 1000;
+    public static final int SLOT_COUNT = 1;
+    public static final int RADUIS_BLOCKS = 16;
+    public static final int COOLDOWN_SECONDS = 10;
+    public static final int JOULES_PER_SCAN = 1000;
 
-	public static final String PLAY_LOC = "player";
-	public static final String BLOCK_LOC = "block";
+    public static final String PLAY_LOC = "player";
+    public static final String BLOCK_LOC = "block";
 
-	public ItemSeismicScanner(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
-		super(properties, creativeTab, item -> ElectrodynamicsItems.ITEM_BATTERY.get());
+    public ItemSeismicScanner(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
+	super(properties, creativeTab, item -> ElectrodynamicsItems.ITEM_BATTERY.get());
+    }
+
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
+	return new CapabilityItemStackHandler(1, stack);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
+	super.appendHoverText(stack, world, tooltips, flag);
+	tooltips.add(ElectroTextUtils.tooltip("seismicscanner.use"));
+	tooltips.add(ElectroTextUtils.tooltip("seismicscanner.opengui").withStyle(ChatFormatting.GRAY));
+	boolean onCooldown = stack.hasTag() && stack.getTag().getInt(NBTUtils.TIMER) > 0;
+	if (onCooldown) {
+	    tooltips.add(ElectroTextUtils.tooltip("seismicscanner.oncooldown").withStyle(ChatFormatting.BOLD,
+		    ChatFormatting.RED));
+	} else {
+	    tooltips.add(ElectroTextUtils.tooltip("seismicscanner.showuse").withStyle(ChatFormatting.GRAY));
 	}
 
-	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new CapabilityItemStackHandler(1, stack);
-	}
+    }
 
-	@Override
-	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltips, TooltipFlag flag) {
-		super.appendHoverText(stack, world, tooltips, flag);
-		tooltips.add(ElectroTextUtils.tooltip("seismicscanner.use"));
-		tooltips.add(ElectroTextUtils.tooltip("seismicscanner.opengui").withStyle(ChatFormatting.GRAY));
-		boolean onCooldown = stack.hasTag() && stack.getTag().getInt(NBTUtils.TIMER) > 0;
-		if (onCooldown) {
-			tooltips.add(ElectroTextUtils.tooltip("seismicscanner.oncooldown").withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
-		} else {
-			tooltips.add(ElectroTextUtils.tooltip("seismicscanner.showuse").withStyle(ChatFormatting.GRAY));
+    @Override
+    public boolean canBeDepleted() {
+	return false;
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(final Level world, Player player, InteractionHand hand) {
+	if (!world.isClientSide) {
+	    ItemStack scanner = player.getItemInHand(hand);
+	    ItemSeismicScanner seismic = (ItemSeismicScanner) scanner.getItem();
+	    CompoundTag tag = scanner.getOrCreateTag();
+	    boolean isTimerUp = tag.getInt(NBTUtils.TIMER) <= 0;
+	    boolean isPowered = seismic.getJoulesStored(scanner) >= JOULES_PER_SCAN;
+	    ItemStack ore = scanner.getCapability(ForgeCapabilities.ITEM_HANDLER).map(m -> m.getStackInSlot(0))
+		    .orElse(ItemStack.EMPTY);
+	    if (player.isShiftKeyDown() && isTimerUp && isPowered && !ore.isEmpty()) {
+		extractPower(scanner, getElectricProperties().extract.getJoules(), false);
+		tag.putInt(NBTUtils.TIMER, COOLDOWN_SECONDS * 20);
+		world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_SEISMICSCANNER.get(),
+			SoundSource.PLAYERS, 1, 1);
+		if (ore.getItem() instanceof BlockItem oreBlockItem) {
+		    Location playerPos = new Location(player.getOnPos());
+		    Location blockPos = new Location(WorldUtils.getClosestBlockToCenter(world, playerPos.toBlockPos(),
+			    RADUIS_BLOCKS, oreBlockItem.getBlock()));
+		    playerPos.writeToNBT(tag, NBTUtils.LOCATION + PLAY_LOC);
+		    blockPos.writeToNBT(tag, NBTUtils.LOCATION + BLOCK_LOC);
+		    NetworkHandler.CHANNEL.sendTo(
+			    new PacketAddClientRenderInfo(player.getUUID(), blockPos.toBlockPos()),
+			    ((ServerPlayer) player).connection.connection, NetworkDirection.PLAY_TO_CLIENT);
 		}
-
+	    } else {
+		player.openMenu(getMenuProvider(world, player, scanner, hand));
+	    }
 	}
+	return super.use(world, player, hand);
+    }
 
-	@Override
-	public boolean canBeDepleted() {
-		return false;
-	}
+    public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack, InteractionHand hand) {
+	return new SimpleMenuProvider((id, inv, play) -> {
+	    IItemHandler capability = stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
+		    .orElse(CapabilityUtils.EMPTY_ITEM_HANDLER);
+	    CapabilityItemStackHandler handler = new CapabilityItemStackHandler(SLOT_COUNT, stack);
+	    if (capability != CapabilityUtils.EMPTY_ITEM_HANDLER) {
+		handler = (CapabilityItemStackHandler) capability;
+	    }
+	    return new ContainerSeismicScanner(id, player.getInventory(), handler, GenericContainerItem.makeData(hand));
+	}, CONTAINER_TITLE);
+    }
 
-	@Override
-	public InteractionResultHolder<ItemStack> use(final Level world, Player player, InteractionHand hand) {
-		if (!world.isClientSide) {
-			ItemStack scanner = player.getItemInHand(hand);
-			ItemSeismicScanner seismic = (ItemSeismicScanner) scanner.getItem();
-			CompoundTag tag = scanner.getOrCreateTag();
-			boolean isTimerUp = tag.getInt(NBTUtils.TIMER) <= 0;
-			boolean isPowered = seismic.getJoulesStored(scanner) >= JOULES_PER_SCAN;
-			ItemStack ore = scanner.getCapability(ForgeCapabilities.ITEM_HANDLER).map(m -> m.getStackInSlot(0)).orElse(ItemStack.EMPTY);
-			if (player.isShiftKeyDown() && isTimerUp && isPowered && !ore.isEmpty()) {
-				extractPower(scanner, getElectricProperties().extract.getJoules(), false);
-				tag.putInt(NBTUtils.TIMER, COOLDOWN_SECONDS * 20);
-				world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_SEISMICSCANNER.get(), SoundSource.PLAYERS, 1, 1);
-				if (ore.getItem() instanceof BlockItem oreBlockItem) {
-					Location playerPos = new Location(player.getOnPos());
-					Location blockPos = new Location(WorldUtils.getClosestBlockToCenter(world, playerPos.toBlockPos(), RADUIS_BLOCKS, oreBlockItem.getBlock()));
-					playerPos.writeToNBT(tag, NBTUtils.LOCATION + PLAY_LOC);
-					blockPos.writeToNBT(tag, NBTUtils.LOCATION + BLOCK_LOC);
-					NetworkHandler.CHANNEL.sendTo(new PacketAddClientRenderInfo(player.getUUID(), blockPos.toBlockPos()), ((ServerPlayer) player).connection.connection, NetworkDirection.PLAY_TO_CLIENT);
-				}
-			} else {
-				player.openMenu(getMenuProvider(world, player, scanner, hand));
-			}
-		}
-		return super.use(world, player, hand);
+    @Override
+    public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected) {
+	if (!world.isClientSide) {
+	    CompoundTag tag = stack.getOrCreateTag();
+	    int time = tag.getInt(NBTUtils.TIMER);
+	    if (time > 0) {
+		tag.putInt(NBTUtils.TIMER, time - 1);
+	    }
 	}
+	super.inventoryTick(stack, world, entity, itemSlot, isSelected);
+    }
 
-	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack, InteractionHand hand) {
-		return new SimpleMenuProvider((id, inv, play) -> {
-			IItemHandler capability = stack.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(CapabilityUtils.EMPTY_ITEM_HANDLER);
-			CapabilityItemStackHandler handler = new CapabilityItemStackHandler(SLOT_COUNT, stack);
-			if (capability != CapabilityUtils.EMPTY_ITEM_HANDLER) {
-				handler = (CapabilityItemStackHandler) capability;
-			}
-			return new ContainerSeismicScanner(id, player.getInventory(), handler, GenericContainerItem.makeData(hand));
-		}, CONTAINER_TITLE);
-	}
-
-	@Override
-	public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected) {
-		if (!world.isClientSide) {
-			CompoundTag tag = stack.getOrCreateTag();
-			int time = tag.getInt(NBTUtils.TIMER);
-			if (time > 0) {
-				tag.putInt(NBTUtils.TIMER, time - 1);
-			}
-		}
-		super.inventoryTick(stack, world, entity, itemSlot, isSelected);
-	}
-
-	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return !oldStack.is(newStack.getItem());
-	}
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	return !oldStack.is(newStack.getItem());
+    }
 
 }

@@ -7,8 +7,8 @@ import voltaic.prefab.screen.GenericScreen;
 
 public class ScreenFluidVoid extends GenericScreen<ContainerFluidVoid> {
 
-	public ScreenFluidVoid(ContainerFluidVoid container, Inventory inv, Component titleIn) {
-		super(container, inv, titleIn);
-	}
+    public ScreenFluidVoid(ContainerFluidVoid container, Inventory inv, Component titleIn) {
+	super(container, inv, titleIn);
+    }
 
 }

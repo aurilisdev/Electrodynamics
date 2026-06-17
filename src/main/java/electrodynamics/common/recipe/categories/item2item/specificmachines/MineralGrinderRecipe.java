@@ -16,21 +16,23 @@ import voltaic.common.recipe.recipeutils.ProbableItem;
 
 public class MineralGrinderRecipe extends Item2ItemRecipe {
 
-	public static final String RECIPE_GROUP = "mineral_grinder_recipe";
-	public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
+    public static final String RECIPE_GROUP = "mineral_grinder_recipe";
+    public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
 
-	public MineralGrinderRecipe(ResourceLocation group, List<CountableIngredient> inputs, ItemStack output, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
-		super(group, inputs, output, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
-	}
+    public MineralGrinderRecipe(ResourceLocation group, List<CountableIngredient> inputs, ItemStack output,
+	    double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts,
+	    List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
+	super(group, inputs, output, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
+    }
 
-	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return ElectrodynamicsRecipies.MINERAL_GRINDER_SERIALIZER.get();
-	}
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+	return ElectrodynamicsRecipies.MINERAL_GRINDER_SERIALIZER.get();
+    }
 
-	@Override
-	public RecipeType<?> getType() {
-		return ElectrodynamicsRecipies.MINERAL_GRINDER_TYPE.get();
-	}
+    @Override
+    public RecipeType<?> getType() {
+	return ElectrodynamicsRecipies.MINERAL_GRINDER_TYPE.get();
+    }
 
 }

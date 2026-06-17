@@ -20,13 +20,16 @@ public class BlockItemFluidPipe extends BlockItemVoltaic {
     public final BlockFluidPipe pipe;
 
     public BlockItemFluidPipe(BlockFluidPipe block, Properties properties, Supplier<CreativeModeTab> creativeTab) {
-        super(block, properties, creativeTab);
-        pipe = block;
+	super(block, properties, creativeTab);
+	pipe = block;
     }
 
     @Override
     public void appendHoverText(ItemStack stack, Level context, List<Component> tooltips, TooltipFlag advanced) {
-        super.appendHoverText(stack, context, tooltips, advanced);
-        tooltips.add(ElectroTextUtils.tooltip("pipethroughput", ChatFormatter.getChatDisplayShort(pipe.pipe.getMaxTransfer() / 1000.0, DisplayUnits.BUCKETS).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
+	super.appendHoverText(stack, context, tooltips, advanced);
+	tooltips.add(ElectroTextUtils.tooltip("pipethroughput",
+		ChatFormatter.getChatDisplayShort(pipe.pipe.getMaxTransfer() / 1000.0, DisplayUnits.BUCKETS)
+			.withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY));
     }
 }

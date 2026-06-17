@@ -41,243 +41,268 @@ import voltaic.prefab.utilities.VoltaicTextUtils;
 
 public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric {
 
-	public static final int JOULES_PER_TICK = 5;
-	public static final int DURATION_SECONDS = 1;
+    public static final int JOULES_PER_TICK = 5;
+    public static final int DURATION_SECONDS = 1;
 
-	public static final float DEFAULT_VANILLA_STEPUP = 0.6F;
+    public static final float DEFAULT_VANILLA_STEPUP = 0.6F;
 
-	private static final String ARMOR_TEXTURE = Electrodynamics.ID + ":textures/model/armor/servoleggings.png";
+    private static final String ARMOR_TEXTURE = Electrodynamics.ID + ":textures/model/armor/servoleggings.png";
 
-	final ElectricItemProperties properties;
+    final ElectricItemProperties properties;
 
-	public ItemServoLeggings(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
-		super(ServoLeggings.SERVOLEGGINGS, Type.LEGGINGS, properties, creativeTab);
-		this.properties = properties;
+    public ItemServoLeggings(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
+	super(ServoLeggings.SERVOLEGGINGS, Type.LEGGINGS, properties, creativeTab);
+	this.properties = properties;
+    }
+
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+	consumer.accept(new IClientItemExtensions() {
+	    @Override
+	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
+		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
+
+		ModelServoLeggings<LivingEntity> model = new ModelServoLeggings<>(
+			ElectrodynamicsClientRegister.SERVO_LEGGINGS.bakeRoot());
+
+		model.crouching = properties.crouching;
+		model.riding = properties.riding;
+		model.young = properties.young;
+
+		return model;
+	    }
+	});
+    }
+
+    @Override
+    public ElectricItemProperties getElectricProperties() {
+	return properties;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack p_41456_) {
+	return false;
+    }
+
+    @Override
+    public boolean isRepairable(ItemStack stack) {
+	return false;
+    }
+
+    @Override
+    public boolean canBeDepleted() {
+	return false;
+    }
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+	return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
+    }
+
+    @Override
+    public boolean isBarVisible(ItemStack stack) {
+	return getJoulesStored(stack) < getMaximumCapacity(stack);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
+	super.appendHoverText(stack, world, tooltip, flagIn);
+	tooltip.add(
+		ElectroTextUtils
+			.tooltip("item.electric.info",
+				VoltaicTextUtils.ratio(
+					ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES),
+					ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack),
+						DisplayUnits.JOULES))
+					.withStyle(ChatFormatting.GRAY))
+			.withStyle(ChatFormatting.DARK_GRAY));
+	tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage",
+		ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE)
+			.withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY));
+	staticAppendTooltips(stack, world, tooltip, flagIn);
+    }
+
+    protected static void staticAppendTooltips(ItemStack stack, Level world, List<Component> tooltip,
+	    TooltipFlag flagIn) {
+	if (stack.hasTag()) {
+	    CompoundTag tag = stack.getTag();
+	    if (tag.getBoolean(NBTUtils.ON)) {
+		tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)
+			.append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
+	    } else {
+		tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)
+			.append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
+	    }
+
+	    tooltip.add(getModeText(tag.getInt(NBTUtils.MODE)));
+	} else {
+	    tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY)
+		    .append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
+	    tooltip.add(ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY)
+		    .append(ElectroTextUtils.tooltip("servolegs.none").withStyle(ChatFormatting.RED)));
 	}
+	IItemElectric.addBatteryTooltip(stack, world, tooltip);
+    }
 
-	@Override
-	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(new IClientItemExtensions() {
-			@Override
-			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
+    public static Component getModeText(int mode) {
+	return switch (mode) {
+	case 0 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY)
+		.append(ElectroTextUtils.tooltip("servolegs.step").withStyle(ChatFormatting.GREEN));
+	case 1 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY)
+		.append(ElectroTextUtils.tooltip("servolegs.both").withStyle(ChatFormatting.AQUA));
+	case 2 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY)
+		.append(ElectroTextUtils.tooltip("servolegs.speed").withStyle(ChatFormatting.GREEN));
+	case 3 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY)
+		.append(ElectroTextUtils.tooltip("servolegs.none").withStyle(ChatFormatting.RED));
+	default -> Component.literal("");
+	};
+    }
 
-				ModelServoLeggings<LivingEntity> model = new ModelServoLeggings<>(ElectrodynamicsClientRegister.SERVO_LEGGINGS.bakeRoot());
+    @Override
+    public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
-				model.crouching = properties.crouching;
-				model.riding = properties.riding;
-				model.young = properties.young;
+	ItemStack empty = new ItemStack(this);
+	IItemElectric.setEnergyStored(empty, 0);
+	items.add(empty);
 
-				return model;
-			}
-		});
-	}
+	ItemStack charged = new ItemStack(this);
+	IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
+	items.add(charged);
 
-	@Override
-	public ElectricItemProperties getElectricProperties() {
-		return properties;
-	}
+    }
 
-	@Override
-	public boolean isEnchantable(ItemStack p_41456_) {
-		return false;
-	}
+    @SuppressWarnings("removal")
+    @Override
+    public void onArmorTick(ItemStack stack, Level world, Player player) {
+	super.onArmorTick(stack, world, player);
+	armorTick(stack, world, player);
+    }
 
-	@Override
-	public boolean isRepairable(ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	public boolean canBeDepleted() {
-		return false;
-	}
-
-	@Override
-	public int getBarWidth(ItemStack stack) {
-		return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
-	}
-
-	@Override
-	public boolean isBarVisible(ItemStack stack) {
-		return getJoulesStored(stack) < getMaximumCapacity(stack);
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
-		super.appendHoverText(stack, world, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-        tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-		staticAppendTooltips(stack, world, tooltip, flagIn);
-	}
-
-	protected static void staticAppendTooltips(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
-		if (stack.hasTag()) {
-			CompoundTag tag = stack.getTag();
-			if (tag.getBoolean(NBTUtils.ON)) {
-				tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.on").withStyle(ChatFormatting.GREEN)));
-			} else {
-				tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
-			}
-
-			tooltip.add(getModeText(tag.getInt(NBTUtils.MODE)));
-		} else {
-			tooltip.add(ElectroTextUtils.tooltip("nightvisiongoggles.status").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("nightvisiongoggles.off").withStyle(ChatFormatting.RED)));
-			tooltip.add(ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("servolegs.none").withStyle(ChatFormatting.RED)));
+    protected static void armorTick(ItemStack stack, Level world, Player player) {
+	if (!world.isClientSide) {
+	    IItemElectric legs = (IItemElectric) stack.getItem();
+	    CompoundTag tag = stack.getOrCreateTag();
+	    if (tag.getBoolean(NBTUtils.ON) && legs.getJoulesStored(stack) >= JOULES_PER_TICK) {
+		switch (tag.getInt(NBTUtils.MODE)) {
+		case 0:
+		    tag.putBoolean("reset", false);
+		    tag.putBoolean(NBTUtils.SUCESS, true);
+		    player.setMaxUpStep(1.1F);
+		    legs.extractPower(stack, JOULES_PER_TICK, false);
+		    break;
+		case 1:
+		    tag.putBoolean("reset", false);
+		    tag.putBoolean(NBTUtils.SUCESS, true);
+		    player.setMaxUpStep(1.1F);
+		    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false,
+			    false, false));
+		    legs.extractPower(stack, JOULES_PER_TICK, false);
+		    break;
+		case 2:
+		    tag.putBoolean("reset", false);
+		    tag.putBoolean(NBTUtils.SUCESS, false);
+		    player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false,
+			    false, false));
+		    legs.extractPower(stack, JOULES_PER_TICK, false);
+		    break;
+		case 3:
+		    tag.putBoolean(NBTUtils.SUCESS, false);
+		    if (!tag.getBoolean("reset")) {
+			player.setMaxUpStep(DEFAULT_VANILLA_STEPUP);
+		    }
+		    break;
+		default:
+		    break;
 		}
-		IItemElectric.addBatteryTooltip(stack, world, tooltip);
-	}
+	    } else {
+		tag.putBoolean(NBTUtils.SUCESS, false);
+		if (!tag.getBoolean("reset")) {
+		    player.setMaxUpStep(DEFAULT_VANILLA_STEPUP);
 
-	public static Component getModeText(int mode) {
-		return switch (mode) {
-		case 0 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("servolegs.step").withStyle(ChatFormatting.GREEN));
-		case 1 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("servolegs.both").withStyle(ChatFormatting.AQUA));
-		case 2 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("servolegs.speed").withStyle(ChatFormatting.GREEN));
-		case 3 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.GRAY).append(ElectroTextUtils.tooltip("servolegs.none").withStyle(ChatFormatting.RED));
-		default -> Component.literal("");
-		};
+		}
+	    }
+	} else if (stack.hasTag()) {
+	    CompoundTag tag = stack.getTag();
+	    if (tag.getBoolean(NBTUtils.SUCESS)) {
+		switch (tag.getInt(NBTUtils.MODE)) {
+		case 0, 1:
+		    player.setMaxUpStep(1.1F);
+		    break;
+		case 2, 3:
+		    if (!tag.getBoolean("reset")) {
+			player.setMaxUpStep(DEFAULT_VANILLA_STEPUP);
+		    }
+		    break;
+		default:
+		    break;
+		}
+	    } else if (!tag.getBoolean("reset")) {
+		player.setMaxUpStep(DEFAULT_VANILLA_STEPUP);
+	    }
+	}
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	return !oldStack.is(newStack.getItem());
+    }
+
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+	return ARMOR_TEXTURE;
+    }
+
+    public enum ServoLeggings implements ICustomArmor {
+	SERVOLEGGINGS;
+
+	@Override
+	public SoundEvent getEquipSound() {
+	    return SoundEvents.ARMOR_EQUIP_IRON;
 	}
 
 	@Override
-	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
-
-		ItemStack empty = new ItemStack(this);
-		IItemElectric.setEnergyStored(empty, 0);
-		items.add(empty);
-
-		ItemStack charged = new ItemStack(this);
-		IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
-		items.add(charged);
-
-	}
-
-	@SuppressWarnings("removal")
-	@Override
-	public void onArmorTick(ItemStack stack, Level world, Player player) {
-		super.onArmorTick(stack, world, player);
-		armorTick(stack, world, player);
-	}
-
-	protected static void armorTick(ItemStack stack, Level world, Player player) {
-		if (!world.isClientSide) {
-			IItemElectric legs = (IItemElectric) stack.getItem();
-			CompoundTag tag = stack.getOrCreateTag();
-			if (tag.getBoolean(NBTUtils.ON) && legs.getJoulesStored(stack) >= JOULES_PER_TICK) {
-				switch (tag.getInt(NBTUtils.MODE)) {
-				case 0:
-					tag.putBoolean("reset", false);
-					tag.putBoolean(NBTUtils.SUCESS, true);
-					player.setMaxUpStep(1.1F);
-					legs.extractPower(stack, JOULES_PER_TICK, false);
-					break;
-				case 1:
-					tag.putBoolean("reset", false);
-					tag.putBoolean(NBTUtils.SUCESS, true);
-					player.setMaxUpStep(1.1F);
-					player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false, false, false));
-					legs.extractPower(stack, JOULES_PER_TICK, false);
-					break;
-				case 2:
-					tag.putBoolean("reset", false);
-					tag.putBoolean(NBTUtils.SUCESS, false);
-					player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false, false, false));
-					legs.extractPower(stack, JOULES_PER_TICK, false);
-					break;
-				case 3:
-					tag.putBoolean(NBTUtils.SUCESS, false);
-					if (!tag.getBoolean("reset")) {
-						player.setMaxUpStep(DEFAULT_VANILLA_STEPUP);
-					}
-					break;
-				default:
-					break;
-				}
-			} else {
-				tag.putBoolean(NBTUtils.SUCESS, false);
-				if (!tag.getBoolean("reset")) {
-					player.setMaxUpStep(DEFAULT_VANILLA_STEPUP);
-
-				}
-			}
-		} else if (stack.hasTag()) {
-			CompoundTag tag = stack.getTag();
-			if (tag.getBoolean(NBTUtils.SUCESS)) {
-				switch (tag.getInt(NBTUtils.MODE)) {
-				case 0, 1:
-					player.setMaxUpStep(1.1F);
-					break;
-				case 2, 3:
-					if (!tag.getBoolean("reset")) {
-						player.setMaxUpStep(DEFAULT_VANILLA_STEPUP);
-					}
-					break;
-				default:
-					break;
-				}
-			} else if (!tag.getBoolean("reset")) {
-				player.setMaxUpStep(DEFAULT_VANILLA_STEPUP);
-			}
-		}
+	public String getName() {
+	    return Electrodynamics.ID + ":servoleggings";
 	}
 
 	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return !oldStack.is(newStack.getItem());
+	public float getToughness() {
+	    return 0.0F;
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		return ARMOR_TEXTURE;
-	}
-
-	public enum ServoLeggings implements ICustomArmor {
-		SERVOLEGGINGS;
-
-		@Override
-		public SoundEvent getEquipSound() {
-			return SoundEvents.ARMOR_EQUIP_IRON;
-		}
-
-		@Override
-		public String getName() {
-			return Electrodynamics.ID + ":servoleggings";
-		}
-
-		@Override
-		public float getToughness() {
-			return 0.0F;
-		}
-
-		@Override
-		public float getKnockbackResistance() {
-			return 0.0F;
-		}
-
-		@Override
-		public int getDurabilityForType(Type pType) {
-			return 100;
-		}
-
-		@Override
-		public int getDefenseForType(Type pType) {
-			return 1;
-		}
-
+	public float getKnockbackResistance() {
+	    return 0.0F;
 	}
 
 	@Override
-	public Item getDefaultStorageBattery() {
-		return ElectrodynamicsItems.ITEM_BATTERY.get();
+	public int getDurabilityForType(Type pType) {
+	    return 100;
 	}
 
 	@Override
-	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-
-		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
-			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-		}
-
-		return true;
-
+	public int getDefenseForType(Type pType) {
+	    return 1;
 	}
+
+    }
+
+    @Override
+    public Item getDefaultStorageBattery() {
+	return ElectrodynamicsItems.ITEM_BATTERY.get();
+    }
+
+    @Override
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action,
+	    Player player, SlotAccess access) {
+
+	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
+	}
+
+	return true;
+
+    }
 
 }

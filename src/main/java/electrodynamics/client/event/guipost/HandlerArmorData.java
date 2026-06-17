@@ -55,8 +55,8 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
     private static final CachedComponent<Long> JOULES_TEXT = new CachedComponent<>(
 	    joules -> ChatFormatter.getChatDisplayShort(Double.longBitsToDouble(joules), DisplayUnits.JOULES));
 
-    private static final CachedComponent<Integer> BOOTS_FLUID_TEXT = new CachedComponent<>(
-	    amount -> ChatFormatter.formatFluidMilibuckets(amount));
+    private static final CachedComponent<Integer> BOOTS_FLUID_TEXT = new CachedComponent<Integer>(
+	    ChatFormatter::formatFluidMilibuckets);
 
     private static final CachedComponent<Integer> JETPACK_RATIO_EMPTY = new CachedComponent<>(
 	    cap -> VoltaicTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(cap)));
@@ -69,10 +69,7 @@ public class HandlerArmorData extends AbstractPostGuiOverlayHandler {
     public void renderToScreen(NamedGuiOverlay overlay, GuiGraphics graphics, Window window, Minecraft minecraft,
 	    float partialTicks) {
 
-	if (!ElectroConstants.RENDER_COMBAT_ARMOR_STATUS) {
-	    return;
-	}
-	if (minecraft.player == null || minecraft.level == null) {
+	if (!ElectroConstants.RENDER_COMBAT_ARMOR_STATUS || minecraft.player == null || minecraft.level == null) {
 	    return;
 	}
 

@@ -12,17 +12,18 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerSeismicRelay extends GenericContainerBlockEntity<TileSeismicRelay> {
 
-	public ContainerSeismicRelay(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_SEISMICRELAY.get(), id, playerinv, inventory, inventorydata);
-	}
+    public ContainerSeismicRelay(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_SEISMICRELAY.get(), id, playerinv, inventory, inventorydata);
+    }
 
-	public ContainerSeismicRelay(int id, Inventory playerinv) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_SEISMICRELAY.get(), id, playerinv, new SimpleContainer(1), new SimpleContainerData(5));
-	}
+    public ContainerSeismicRelay(int id, Inventory playerinv) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_SEISMICRELAY.get(), id, playerinv, new SimpleContainer(1),
+		new SimpleContainerData(5));
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotRestricted(inv, nextIndex(), 20, 34));
-	}
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
+	addSlot(new SlotRestricted(inv, nextIndex(), 20, 34));
+    }
 
 }

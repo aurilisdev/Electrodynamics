@@ -14,21 +14,23 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ContainerCoalGenerator extends GenericContainerBlockEntity<TileCoalGenerator> {
 
-	public ContainerCoalGenerator(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(1));
-	}
+    public ContainerCoalGenerator(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainer(1));
+    }
 
-	public ContainerCoalGenerator(int id, Inventory playerinv, Container inventory) {
-		this(id, playerinv, inventory, new SimpleContainerData(5));
-	}
+    public ContainerCoalGenerator(int id, Inventory playerinv, Container inventory) {
+	this(id, playerinv, inventory, new SimpleContainerData(5));
+    }
 
-	public ContainerCoalGenerator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_COALGENERATOR.get(), id, playerinv, inventory, inventorydata);
-	}
+    public ContainerCoalGenerator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_COALGENERATOR.get(), id, playerinv, inventory, inventorydata);
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotRestricted(inv, nextIndex(), 25, 42).setRestriction(stack -> CoalGeneratorFuelRegister.INSTANCE.isFuel(stack.getItem())).setIOColor(new Color(0, 240, 255, 255)));
-	}
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
+	addSlot(new SlotRestricted(inv, nextIndex(), 25, 42)
+		.setRestriction(stack -> CoalGeneratorFuelRegister.INSTANCE.isFuel(stack.getItem()))
+		.setIOColor(new Color(0, 240, 255, 255)));
+    }
 
 }

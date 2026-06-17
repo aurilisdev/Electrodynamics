@@ -10,10 +10,12 @@ import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 
 public class TileElectricArcFurnaceDouble extends TileElectricArcFurnace {
 
-	public TileElectricArcFurnaceDouble(BlockPos worldPosition, BlockState blockState) {
-		super(ElectrodynamicsTiles.TILE_ELECTRICARCFURNACEDOUBLE.get(), 2, worldPosition, blockState);
+    public TileElectricArcFurnaceDouble(BlockPos worldPosition, BlockState blockState) {
+	super(ElectrodynamicsTiles.TILE_ELECTRICARCFURNACEDOUBLE.get(), 2, worldPosition, blockState);
 
-		addComponent(new ComponentContainerProvider(SubtypeMachine.electricarcfurnacedouble.tag(), this).createMenu((id, player) -> new ContainerElectricArcFurnaceDouble(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
-	}
+	addComponent(new ComponentContainerProvider(SubtypeMachine.electricarcfurnacedouble.tag(), this)
+		.createMenu((id, player) -> new ContainerElectricArcFurnaceDouble(id, player,
+			getComponent(IComponentType.Inventory), getCoordsArray())));
+    }
 
 }

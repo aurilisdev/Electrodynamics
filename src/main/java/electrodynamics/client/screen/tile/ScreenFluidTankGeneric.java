@@ -13,18 +13,18 @@ import voltaic.prefab.tile.components.type.ComponentFluidHandlerSimple;
 
 public class ScreenFluidTankGeneric extends GenericMaterialScreen<ContainerFluidTankGeneric> {
 
-	public ScreenFluidTankGeneric(ContainerFluidTankGeneric screenContainer, Inventory inv, Component titleIn) {
-		super(screenContainer, inv, titleIn);
+    public ScreenFluidTankGeneric(ContainerFluidTankGeneric screenContainer, Inventory inv, Component titleIn) {
+	super(screenContainer, inv, titleIn);
 
-		addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.ARROW_RIGHT_OFF, 52, 33));
-		addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.ARROW_RIGHT_OFF, 102, 33));
-		addComponent(new ScreenComponentFluidGauge(() -> {
-			GenericTileFluidTank boiler = menu.getSafeHost();
-			if (boiler != null) {
-				return boiler.<ComponentFluidHandlerSimple>getComponent(IComponentType.FluidHandler);
-			}
-			return null;
-		}, 81, 18));
-	}
+	addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.ARROW_RIGHT_OFF, 52, 33));
+	addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.ARROW_RIGHT_OFF, 102, 33));
+	addComponent(new ScreenComponentFluidGauge(() -> {
+	    GenericTileFluidTank boiler = menu.getSafeHost();
+	    if (boiler != null) {
+		return boiler.<ComponentFluidHandlerSimple>getComponent(IComponentType.FluidHandler);
+	    }
+	    return null;
+	}, 81, 18));
+    }
 
 }

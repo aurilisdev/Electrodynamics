@@ -28,72 +28,89 @@ import voltaic.registers.VoltaicCapabilities;
 
 public class TileMineralGrinder extends GenericTile implements ITickableSound {
 
-	private final int procCount;
+    private final int procCount;
 
-	public long clientRunningTicks = 0;
-	private boolean isSoundPlaying = false;
+    public long clientRunningTicks = 0;
+    private boolean isSoundPlaying = false;
 
-	public TileMineralGrinder(BlockPos pos, BlockState state) {
-		this(ElectrodynamicsTiles.TILE_MINERALGRINDER.get(), 1, pos, state);
+    public TileMineralGrinder(BlockPos pos, BlockState state) {
+	this(ElectrodynamicsTiles.TILE_MINERALGRINDER.get(), 1, pos, state);
 
-		addComponent(new ComponentContainerProvider(SubtypeMachine.mineralgrinder.tag(), this).createMenu((id, player) -> new ContainerO2OProcessor(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+	addComponent(new ComponentContainerProvider(SubtypeMachine.mineralgrinder.tag(), this)
+		.createMenu((id, player) -> new ContainerO2OProcessor(id, player,
+			getComponent(IComponentType.Inventory), getCoordsArray())));
+    }
+
+    public TileMineralGrinder(BlockEntityType<?> type, int procCount, BlockPos pos, BlockState state) {
+	super(type, pos, state);
+
+	this.procCount = procCount;
+
+	int inputsPerProc = 1;
+	int outputPerProc = 1;
+	int biprodsPerProc = 1;
+
+	addComponent(new ComponentPacketHandler(this));
+	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
+	addComponent(new ComponentElectrodynamic(this, false, true)
+		.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
+		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * Math.pow(2, procCount - 1)));
+	addComponent(new ComponentInventory(this,
+		ComponentInventory.InventoryBuilder.newInv()
+			.processors(procCount, inputsPerProc, outputPerProc, biprodsPerProc).upgrades(3))
+		.validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator())
+		.implementMachineInputsAndOutputs());
+	addComponent(new ComponentProcessor(this, procCount)
+		.canProcess((component, procNumber) -> component.canProcessItem2ItemRecipe(procNumber,
+			ElectrodynamicsRecipies.MINERAL_GRINDER_TYPE.get()))
+		.process(ComponentProcessor::processItem2ItemRecipe));
+
+    }
+
+    protected void tickClient(ComponentTickable tickable) {
+	if (!this.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive()) {
+	    return;
 	}
 
-	public TileMineralGrinder(BlockEntityType<?> type, int procCount, BlockPos pos, BlockState state) {
-		super(type, pos, state);
-
-		this.procCount = procCount;
-
-		int inputsPerProc = 1;
-		int outputPerProc = 1;
-		int biprodsPerProc = 1;
-
-		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentTickable(this).tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BACK).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * Math.pow(2, procCount - 1)));
-		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().processors(procCount, inputsPerProc, outputPerProc, biprodsPerProc).upgrades(3)).validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator()).implementMachineInputsAndOutputs());
-		addComponent(new ComponentProcessor(this, procCount).canProcess((component, procNumber) -> component.canProcessItem2ItemRecipe(procNumber, ElectrodynamicsRecipies.MINERAL_GRINDER_TYPE.get())).process(ComponentProcessor::processItem2ItemRecipe));
-
+	if (level.random.nextDouble() < 0.15) {
+	    level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(),
+		    worldPosition.getY() + level.random.nextDouble() * 0.2 + 0.8,
+		    worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 	}
-
-	protected void tickClient(ComponentTickable tickable) {
-		if (!this.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive()) {
-			return;
-		}
-
-		if (level.random.nextDouble() < 0.15) {
-			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.2 + 0.8, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
-		}
-		for (int i = 0; i < procCount; i++) {
-			ComponentInventory inv = getComponent(IComponentType.Inventory);
-			ItemStack stack = inv.getInputsForProcessor(i).get(0);
-			if (stack.getItem() instanceof BlockItem it) {
-				Block block = it.getBlock();
-				double d4 = level.random.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
-				double d6 = level.random.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
-				ParticleAPI.addGrindedParticle(level, worldPosition.getX() + d4, worldPosition.getY() + 0.8, worldPosition.getZ() + d6, 0.0D, 5D, 0.0D, block.defaultBlockState(), worldPosition);
-			}
-		}
-		clientRunningTicks++;
-
-		if (!isSoundPlaying) {
-			isSoundPlaying = true;
-			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_MINERALGRINDER.get(), this, true);
-		}
+	for (int i = 0; i < procCount; i++) {
+	    ComponentInventory inv = getComponent(IComponentType.Inventory);
+	    ItemStack stack = inv.getInputsForProcessor(i).get(0);
+	    if (stack.getItem() instanceof BlockItem it) {
+		Block block = it.getBlock();
+		double d4 = level.random.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
+		double d6 = level.random.nextDouble() * 12.0 / 16.0 + 0.5 - 6.0 / 16.0;
+		ParticleAPI.addGrindedParticle(level, worldPosition.getX() + d4, worldPosition.getY() + 0.8,
+			worldPosition.getZ() + d6, 0.0D, 5D, 0.0D, block.defaultBlockState(), worldPosition);
+	    }
 	}
+	clientRunningTicks++;
 
-	@Override
-	public void setNotPlaying() {
-		isSoundPlaying = false;
+	if (!isSoundPlaying) {
+	    isSoundPlaying = true;
+	    SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_MINERALGRINDER.get(), this, true);
 	}
+    }
 
-	@Override
-	public boolean shouldPlaySound() {
-		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive();
-	}
+    @Override
+    public void setNotPlaying() {
+	isSoundPlaying = false;
+    }
 
-	@Override
-	public int getComparatorSignal() {
-		return (int) (((double) this.<ComponentProcessor>getComponent(IComponentType.Processor).getTotalActive() / (double) Math.max(1, this.<ComponentProcessor>getComponent(IComponentType.Processor).getProcessorCount())) * 15.0);
-	}
+    @Override
+    public boolean shouldPlaySound() {
+	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive();
+    }
+
+    @Override
+    public int getComparatorSignal() {
+	return (int) ((double) this.<ComponentProcessor>getComponent(IComponentType.Processor).getTotalActive()
+		/ (double) Math.max(1,
+			this.<ComponentProcessor>getComponent(IComponentType.Processor).getProcessorCount())
+		* 15.0);
+    }
 }

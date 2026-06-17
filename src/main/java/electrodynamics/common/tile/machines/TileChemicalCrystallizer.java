@@ -24,56 +24,73 @@ import voltaic.prefab.utilities.BlockEntityUtils;
 import voltaic.registers.VoltaicCapabilities;
 
 public class TileChemicalCrystallizer extends GenericMaterialTile implements ITickableSound {
-	public static final int MAX_TANK_CAPACITY = 5000;
-	// client-exclusive variable that is never saved
-	private boolean isSoundPlaying = false;
+    public static final int MAX_TANK_CAPACITY = 5000;
+    // client-exclusive variable that is never saved
+    private boolean isSoundPlaying = false;
 
-	public TileChemicalCrystallizer(BlockPos worldPosition, BlockState blockState) {
-		super(ElectrodynamicsTiles.TILE_CHEMICALCRYSTALLIZER.get(), worldPosition, blockState);
-		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentTickable(this).tickClient(this::tickClient));
-		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BACK).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2));
-		addComponent(new ComponentFluidHandlerMulti(this).setInputTanks(1, MAX_TANK_CAPACITY).setInputDirections(BlockEntityUtils.MachineDirection.LEFT, BlockEntityUtils.MachineDirection.RIGHT).setRecipeType(ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_TYPE.get()));
-		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().processors(1, 0, 1, 0).bucketInputs(1).upgrades(3))
-				//
-				.setDirectionsBySlot(0, BlockEntityUtils.MachineDirection.TOP, BlockEntityUtils.MachineDirection.BOTTOM, BlockEntityUtils.MachineDirection.FRONT).validUpgrades(ContainerChemicalCrystallizer.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentProcessor(this).canProcess((component, procNumber) -> component.consumeBucket().canProcessFluid2ItemRecipe(procNumber, ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_TYPE.get())).process(ComponentProcessor::processFluid2ItemRecipe));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.chemicalcrystallizer.tag(), this).createMenu((id, player) -> new ContainerChemicalCrystallizer(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+    public TileChemicalCrystallizer(BlockPos worldPosition, BlockState blockState) {
+	super(ElectrodynamicsTiles.TILE_CHEMICALCRYSTALLIZER.get(), worldPosition, blockState);
+	addComponent(new ComponentPacketHandler(this));
+	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
+	addComponent(new ComponentElectrodynamic(this, false, true)
+		.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
+		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2));
+	addComponent(new ComponentFluidHandlerMulti(this).setInputTanks(1, MAX_TANK_CAPACITY)
+		.setInputDirections(BlockEntityUtils.MachineDirection.LEFT, BlockEntityUtils.MachineDirection.RIGHT)
+		.setRecipeType(ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_TYPE.get()));
+	addComponent(new ComponentInventory(this,
+		ComponentInventory.InventoryBuilder.newInv().processors(1, 0, 1, 0).bucketInputs(1).upgrades(3))
+		//
+		.setDirectionsBySlot(0, BlockEntityUtils.MachineDirection.TOP, BlockEntityUtils.MachineDirection.BOTTOM,
+			BlockEntityUtils.MachineDirection.FRONT)
+		.validUpgrades(ContainerChemicalCrystallizer.VALID_UPGRADES).valid(machineValidator()));
+	addComponent(new ComponentProcessor(this)
+		.canProcess((component, procNumber) -> component.consumeBucket().canProcessFluid2ItemRecipe(procNumber,
+			ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_TYPE.get()))
+		.process(ComponentProcessor::processFluid2ItemRecipe));
+	addComponent(new ComponentContainerProvider(SubtypeMachine.chemicalcrystallizer.tag(), this)
+		.createMenu((id, player) -> new ContainerChemicalCrystallizer(id, player,
+			getComponent(IComponentType.Inventory), getCoordsArray())));
+    }
+
+    protected void tickClient(ComponentTickable tickable) {
+	if (!shouldPlaySound()) {
+	    return;
 	}
 
-	protected void tickClient(ComponentTickable tickable) {
-		if (!shouldPlaySound()) {
-			return;
-		}
-
-		if (level.random.nextDouble() < 0.15) {
-			Direction direction = getFacing();
-			double d4 = level.random.nextDouble();
-			double d5 = direction.getAxis() == Direction.Axis.X ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1) : d4;
-			double d6 = level.random.nextDouble();
-			double d7 = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1) : d4;
-			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6, worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
-		}
-
-		if (!isSoundPlaying) {
-			isSoundPlaying = true;
-			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HUM.get(), this, true);
-		}
+	if (level.random.nextDouble() < 0.15) {
+	    Direction direction = getFacing();
+	    double d4 = level.random.nextDouble();
+	    double d5 = direction.getAxis() == Direction.Axis.X
+		    ? direction.getStepX() * (direction.getStepX() == -1 ? 0 : 1)
+		    : d4;
+	    double d6 = level.random.nextDouble();
+	    double d7 = direction.getAxis() == Direction.Axis.Z
+		    ? direction.getStepZ() * (direction.getStepZ() == -1 ? 0 : 1)
+		    : d4;
+	    level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + d5, worldPosition.getY() + d6,
+		    worldPosition.getZ() + d7, 0.0D, 0.0D, 0.0D);
 	}
 
-	@Override
-	public void setNotPlaying() {
-		isSoundPlaying = false;
+	if (!isSoundPlaying) {
+	    isSoundPlaying = true;
+	    SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_HUM.get(), this, true);
 	}
+    }
 
-	@Override
-	public boolean shouldPlaySound() {
-		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
-	}
+    @Override
+    public void setNotPlaying() {
+	isSoundPlaying = false;
+    }
 
-	@Override
-	public int getComparatorSignal() {
-		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
-	}
+    @Override
+    public boolean shouldPlaySound() {
+	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
+    }
+
+    @Override
+    public int getComparatorSignal() {
+	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
+    }
 
 }

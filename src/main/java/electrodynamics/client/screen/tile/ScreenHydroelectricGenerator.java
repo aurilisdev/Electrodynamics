@@ -19,19 +19,29 @@ import voltaic.prefab.utilities.object.TransferPack;
 @OnlyIn(Dist.CLIENT)
 public class ScreenHydroelectricGenerator extends GenericScreen<ContainerHydroelectricGenerator> {
 
-	public ScreenHydroelectricGenerator(ContainerHydroelectricGenerator container, Inventory playerInventory, Component title) {
-		super(container, playerInventory, title);
-		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
-		addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> {
-			TileHydroelectricGenerator hydro = menu.getSafeHost();
-			if (hydro == null) {
-				return;
-			}
-			TransferPack transfer = hydro.getProduced();
-			graphics.drawString(font, ElectroTextUtils.gui("machine.current", ChatFormatter.getChatDisplayShort(transfer.getAmps(), DisplayUnits.AMPERE)), inventoryLabelX + 60, inventoryLabelY - 48, Color.TEXT_GRAY.color(), false);
-			graphics.drawString(font, ElectroTextUtils.gui("machine.output", ChatFormatter.getChatDisplayShort(transfer.getWatts(), DisplayUnits.WATT)), inventoryLabelX + 60, inventoryLabelY - 35, Color.TEXT_GRAY.color(), false);
-			graphics.drawString(font, ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(transfer.getVoltage(), DisplayUnits.VOLTAGE)), inventoryLabelX + 60, inventoryLabelY - 22, Color.TEXT_GRAY.color(), false);
-		}));
-	}
+    public ScreenHydroelectricGenerator(ContainerHydroelectricGenerator container, Inventory playerInventory,
+	    Component title) {
+	super(container, playerInventory, title);
+	addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
+	addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> {
+	    TileHydroelectricGenerator hydro = menu.getSafeHost();
+	    if (hydro == null) {
+		return;
+	    }
+	    TransferPack transfer = hydro.getProduced();
+	    graphics.drawString(font,
+		    ElectroTextUtils.gui("machine.current",
+			    ChatFormatter.getChatDisplayShort(transfer.getAmps(), DisplayUnits.AMPERE)),
+		    inventoryLabelX + 60, inventoryLabelY - 48, Color.TEXT_GRAY.color(), false);
+	    graphics.drawString(font,
+		    ElectroTextUtils.gui("machine.output",
+			    ChatFormatter.getChatDisplayShort(transfer.getWatts(), DisplayUnits.WATT)),
+		    inventoryLabelX + 60, inventoryLabelY - 35, Color.TEXT_GRAY.color(), false);
+	    graphics.drawString(font,
+		    ElectroTextUtils.gui("machine.voltage",
+			    ChatFormatter.getChatDisplayShort(transfer.getVoltage(), DisplayUnits.VOLTAGE)),
+		    inventoryLabelX + 60, inventoryLabelY - 22, Color.TEXT_GRAY.color(), false);
+	}));
+    }
 
 }

@@ -24,12 +24,17 @@ public class FermentationPlantRecipeCategory extends FluidItem2FluidRecipeCatego
 
     public static final BackgroundObject BACK_WRAP = new BackgroundObject(132, 64);
 
-    public static final ItemSlotObject INPUT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, 57, 16, RecipeIngredientRole.INPUT);
-    public static final ItemSlotObject INPUT_BUCKET_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, ScreenComponentSlot.IconType.FLUID_DARK, 26, 36, RecipeIngredientRole.INPUT);
-    public static final ItemSlotObject OUTPUT_BUCKET_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, ScreenComponentSlot.IconType.FLUID_DARK, 88, 36, RecipeIngredientRole.OUTPUT);
+    public static final ItemSlotObject INPUT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, 57, 16,
+	    RecipeIngredientRole.INPUT);
+    public static final ItemSlotObject INPUT_BUCKET_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL,
+	    ScreenComponentSlot.IconType.FLUID_DARK, 26, 36, RecipeIngredientRole.INPUT);
+    public static final ItemSlotObject OUTPUT_BUCKET_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL,
+	    ScreenComponentSlot.IconType.FLUID_DARK, 88, 36, RecipeIngredientRole.OUTPUT);
 
-    public static final ArrowAnimatedObject ANIM_RIGHT_ARROW_1 = new ArrowAnimatedObject(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, 30, 17, StartDirection.LEFT);
-    public static final ArrowAnimatedObject ANIM_RIGHT_ARROW_2 = new ArrowAnimatedObject(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, 80, 17, StartDirection.LEFT);
+    public static final ArrowAnimatedObject ANIM_RIGHT_ARROW_1 = new ArrowAnimatedObject(
+	    ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, 30, 17, StartDirection.LEFT);
+    public static final ArrowAnimatedObject ANIM_RIGHT_ARROW_2 = new ArrowAnimatedObject(
+	    ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, 80, 17, StartDirection.LEFT);
 
     public static final FluidGaugeObject IN_GAUGE = new FluidGaugeObject(10, 5);
     public static final FluidGaugeObject OUT_GAUGE = new FluidGaugeObject(108, 5);
@@ -39,18 +44,21 @@ public class FermentationPlantRecipeCategory extends FluidItem2FluidRecipeCatego
 
     public static final int ANIM_TIME = 50;
 
-    public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fermentationplant));
+    public static ItemStack INPUT_MACHINE = new ItemStack(
+	    ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.fermentationplant));
 
-    public static final RecipeType<FermentationPlantRecipe> RECIPE_TYPE = RecipeType.create(Electrodynamics.ID, FermentationPlantRecipe.RECIPE_GROUP, FermentationPlantRecipe.class);
+    public static final RecipeType<FermentationPlantRecipe> RECIPE_TYPE = RecipeType.create(Electrodynamics.ID,
+	    FermentationPlantRecipe.RECIPE_GROUP, FermentationPlantRecipe.class);
 
     public FermentationPlantRecipeCategory(IGuiHelper guiHelper) {
-        super(guiHelper, ElectroTextUtils.jeiTranslated(FermentationPlantRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
-        setInputSlots(guiHelper, INPUT_SLOT, INPUT_BUCKET_SLOT);
-        setOutputSlots(guiHelper, OUTPUT_BUCKET_SLOT);
-        setFluidInputs(guiHelper, IN_GAUGE);
-        setFluidOutputs(guiHelper, OUT_GAUGE);
-        setAnimatedArrows(guiHelper, ANIM_RIGHT_ARROW_1, ANIM_RIGHT_ARROW_2);
-        setLabels(POWER_LABEL, TIME_LABEL);
+	super(guiHelper, ElectroTextUtils.jeiTranslated(FermentationPlantRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP,
+		RECIPE_TYPE, ANIM_TIME);
+	setInputSlots(guiHelper, INPUT_SLOT, INPUT_BUCKET_SLOT);
+	setOutputSlots(guiHelper, OUTPUT_BUCKET_SLOT);
+	setFluidInputs(guiHelper, IN_GAUGE);
+	setFluidOutputs(guiHelper, OUT_GAUGE);
+	setAnimatedArrows(guiHelper, ANIM_RIGHT_ARROW_1, ANIM_RIGHT_ARROW_2);
+	setLabels(POWER_LABEL, TIME_LABEL);
     }
 
 }

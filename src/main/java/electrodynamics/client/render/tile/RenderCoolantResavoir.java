@@ -19,27 +19,30 @@ import voltaic.prefab.utilities.RenderingUtils;
 
 public class RenderCoolantResavoir extends AbstractTileRenderer<TileCoolantResavoir> {
 
-	private static final float MIN_X = 1.0F / 16.0F;
-	private static final float MAX_X = 15.0F / 16.0F;
-	private static final float MIN_Y = 1.001F / 16.0F;
-	private static final float MAX_Y = 14.99F / 16.0F;
-	private static final float MIN_Z = 1.0F / 16.0F;
-	private static final float MAX_Z = 15.0F / 16.0F;
+    private static final float MIN_X = 1.0F / 16.0F;
+    private static final float MAX_X = 15.0F / 16.0F;
+    private static final float MIN_Y = 1.001F / 16.0F;
+    private static final float MAX_Y = 14.99F / 16.0F;
+    private static final float MIN_Z = 1.0F / 16.0F;
+    private static final float MAX_Z = 15.0F / 16.0F;
 
-	public RenderCoolantResavoir(BlockEntityRendererProvider.Context context) {
-		super(context);
-	}
+    public RenderCoolantResavoir(BlockEntityRendererProvider.Context context) {
+	super(context);
+    }
 
-	@Override
-	public void render(TileCoolantResavoir entity, float tick, @NotNull PoseStack stack, @NotNull MultiBufferSource source, int light, int overlay) {
-		ComponentFluidHandlerSimple tank = entity.getComponent(IComponentType.FluidHandler);
-		if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
-			FluidStack fluid = tank.getFluid();
-			float yHeight = Math.max(Math.min((float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y), MIN_Y);
-			AABB aabb = new AABB(MIN_X, MIN_Y, MIN_Z, MAX_X, yHeight, MAX_Z);
-			VertexConsumer builder = source.getBuffer(Sheets.translucentCullBlockSheet());
-			RenderingUtils.renderFluidBox(stack, Minecraft.getInstance(), builder, aabb, fluid, light, overlay, RenderingUtils.ALL_FACES);
-		}
+    @Override
+    public void render(TileCoolantResavoir entity, float tick, @NotNull PoseStack stack,
+	    @NotNull MultiBufferSource source, int light, int overlay) {
+	ComponentFluidHandlerSimple tank = entity.getComponent(IComponentType.FluidHandler);
+	if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
+	    FluidStack fluid = tank.getFluid();
+	    float yHeight = Math.max(Math.min((float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y),
+		    MIN_Y);
+	    AABB aabb = new AABB(MIN_X, MIN_Y, MIN_Z, MAX_X, yHeight, MAX_Z);
+	    VertexConsumer builder = source.getBuffer(Sheets.translucentCullBlockSheet());
+	    RenderingUtils.renderFluidBox(stack, Minecraft.getInstance(), builder, aabb, fluid, light, overlay,
+		    RenderingUtils.ALL_FACES);
 	}
+    }
 
 }

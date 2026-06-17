@@ -44,182 +44,198 @@ import voltaic.prefab.utilities.VoltaicTextUtils;
 
 public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IItemElectric, CreativeTabSupplier {
 
-	private final ElectricItemProperties properties;
+    private final ElectricItemProperties properties;
 
-	private final Supplier<CreativeModeTab> creativeTab;
+    private final Supplier<CreativeModeTab> creativeTab;
 
-	public static final int JOULES_PER_SHOT = 5000;
-	public static final int NUMBER_OF_SHOTS = 200;
+    public static final int JOULES_PER_SHOT = 5000;
+    public static final int NUMBER_OF_SHOTS = 200;
 
-	public static final int PROJECTILE_RANGE = 20;
-	public static final int PROJECTILE_SPEED = 3;
+    public static final int PROJECTILE_RANGE = 20;
+    public static final int PROJECTILE_SPEED = 3;
 
-	public ItemMechanizedCrossbow(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
-		super(properties);
-		this.properties = properties;
-		this.creativeTab = creativeTab;
+    public ItemMechanizedCrossbow(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
+	super(properties);
+	this.properties = properties;
+	this.creativeTab = creativeTab;
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	ItemStack crossbow = player.getItemInHand(hand);
+
+	if (world.isClientSide) {
+	    return InteractionResultHolder.pass(crossbow);
 	}
 
-	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
-		ItemStack crossbow = player.getItemInHand(hand);
-
-		if (world.isClientSide) {
-			return InteractionResultHolder.pass(crossbow);
-		}
-
-		ItemMechanizedCrossbow mechanized = (ItemMechanizedCrossbow) crossbow.getItem();
-		if (mechanized.getJoulesStored(crossbow) < JOULES_PER_SHOT) {
-			world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
-			return InteractionResultHolder.pass(crossbow);
-		}
-
-		ItemStack arrow = getAmmo(player);
-		Projectile projectile = getArrow(world, player, crossbow, arrow);
-
-		if (arrow.isEmpty()) {
-			world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(), SoundSource.PLAYERS, 1, 1);
-			return InteractionResultHolder.pass(crossbow);
-		}
-
-		mechanized.extractPower(crossbow, JOULES_PER_SHOT, false);
-
-		if (!player.isCreative()) {
-			arrow.shrink(1);
-		}
-
-		Vec3 playerUpVector = player.getUpVector(1.0F);
-
-		Quaternionf quaternionf = (new Quaternionf()).setAngleAxis(0, playerUpVector.x, playerUpVector.y, playerUpVector.z);
-
-		Vec3 playerViewVector = player.getViewVector(1.0F);
-
-		Vector3f viewVector = playerViewVector.toVector3f().rotate(quaternionf);
-
-		projectile.shoot(viewVector.x(), viewVector.y(), viewVector.z(), PROJECTILE_SPEED, 1);
-
-		world.addFreshEntity(projectile);
-
-		world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_SHOOT, SoundSource.PLAYERS, 1.0F, 1);
-
-		return InteractionResultHolder.pass(crossbow);
+	ItemMechanizedCrossbow mechanized = (ItemMechanizedCrossbow) crossbow.getItem();
+	if (mechanized.getJoulesStored(crossbow) < JOULES_PER_SHOT) {
+	    world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(),
+		    SoundSource.PLAYERS, 1, 1);
+	    return InteractionResultHolder.pass(crossbow);
 	}
 
-	@Override
-	public boolean canBeDepleted() {
-		return false;
+	ItemStack arrow = getAmmo(player);
+	Projectile projectile = getArrow(world, player, crossbow, arrow);
+
+	if (arrow.isEmpty()) {
+	    world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_RAILGUNKINETIC_NOAMMO.get(),
+		    SoundSource.PLAYERS, 1, 1);
+	    return InteractionResultHolder.pass(crossbow);
 	}
 
-	@Override
-	public boolean isEnchantable(ItemStack stack) {
-		return false;
+	mechanized.extractPower(crossbow, JOULES_PER_SHOT, false);
+
+	if (!player.isCreative()) {
+	    arrow.shrink(1);
 	}
 
-	private static AbstractArrow getArrow(Level world, LivingEntity entity, ItemStack crossbow, ItemStack ammo) {
-		ArrowItem arrowitem = (ArrowItem) (ammo.getItem() instanceof ArrowItem ? ammo.getItem() : Items.ARROW);
-		AbstractArrow abstractarrow = arrowitem.createArrow(world, ammo, entity);
-		if (entity instanceof Player) {
-			abstractarrow.setCritArrow(true);
-		}
+	Vec3 playerUpVector = player.getUpVector(1.0F);
 
-		abstractarrow.setSoundEvent(SoundEvents.CROSSBOW_HIT);
-		abstractarrow.setShotFromCrossbow(true);
-		int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, crossbow);
-		if (i > 0) {
-			abstractarrow.setPierceLevel((byte) i);
-		}
+	Quaternionf quaternionf = new Quaternionf().setAngleAxis(0, playerUpVector.x, playerUpVector.y,
+		playerUpVector.z);
 
-		return abstractarrow;
+	Vec3 playerViewVector = player.getViewVector(1.0F);
+
+	Vector3f viewVector = playerViewVector.toVector3f().rotate(quaternionf);
+
+	projectile.shoot(viewVector.x(), viewVector.y(), viewVector.z(), PROJECTILE_SPEED, 1);
+
+	world.addFreshEntity(projectile);
+
+	world.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.CROSSBOW_SHOOT,
+		SoundSource.PLAYERS, 1.0F, 1);
+
+	return InteractionResultHolder.pass(crossbow);
+    }
+
+    @Override
+    public boolean canBeDepleted() {
+	return false;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+	return false;
+    }
+
+    private static AbstractArrow getArrow(Level world, LivingEntity entity, ItemStack crossbow, ItemStack ammo) {
+	ArrowItem arrowitem = (ArrowItem) (ammo.getItem() instanceof ArrowItem ? ammo.getItem() : Items.ARROW);
+	AbstractArrow abstractarrow = arrowitem.createArrow(world, ammo, entity);
+	if (entity instanceof Player) {
+	    abstractarrow.setCritArrow(true);
 	}
 
-	private ItemStack getAmmo(Player player) {
-		Inventory playerInv = player.getInventory();
-		for (ItemStack stack : playerInv.items) {
-			if (getAllSupportedProjectiles().test(stack)) {
-				return stack;
-			}
-		}
-		if (player.isCreative()) {
-			return new ItemStack(Items.ARROW);
-		}
-		return ItemStack.EMPTY;
+	abstractarrow.setSoundEvent(SoundEvents.CROSSBOW_HIT);
+	abstractarrow.setShotFromCrossbow(true);
+	int i = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PIERCING, crossbow);
+	if (i > 0) {
+	    abstractarrow.setPierceLevel((byte) i);
 	}
 
-	@Override
-	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
+	return abstractarrow;
+    }
 
-		ItemStack empty = new ItemStack(this);
-		IItemElectric.setEnergyStored(empty, 0);
-		items.add(empty);
+    private ItemStack getAmmo(Player player) {
+	Inventory playerInv = player.getInventory();
+	for (ItemStack stack : playerInv.items) {
+	    if (getAllSupportedProjectiles().test(stack)) {
+		return stack;
+	    }
+	}
+	if (player.isCreative()) {
+	    return new ItemStack(Items.ARROW);
+	}
+	return ItemStack.EMPTY;
+    }
 
-		ItemStack charged = new ItemStack(this);
-		IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
-		items.add(charged);
+    @Override
+    public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
+	ItemStack empty = new ItemStack(this);
+	IItemElectric.setEnergyStored(empty, 0);
+	items.add(empty);
+
+	ItemStack charged = new ItemStack(this);
+	IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
+	items.add(charged);
+
+    }
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+	return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
+    }
+
+    @Override
+    public boolean isBarVisible(ItemStack stack) {
+	return getJoulesStored(stack) < getMaximumCapacity(stack);
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	return !oldStack.is(newStack.getItem());
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	super.appendHoverText(stack, worldIn, tooltip, flagIn);
+	tooltip.add(
+		ElectroTextUtils
+			.tooltip("item.electric.info",
+				VoltaicTextUtils.ratio(
+					ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES),
+					ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack),
+						DisplayUnits.JOULES))
+					.withStyle(ChatFormatting.GRAY))
+			.withStyle(ChatFormatting.DARK_GRAY));
+	tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage",
+		ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE)
+			.withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY));
+	IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
+    }
+
+    @Override
+    public ElectricItemProperties getElectricProperties() {
+	return properties;
+    }
+
+    @Override
+    public Predicate<ItemStack> getAllSupportedProjectiles() {
+	return ARROW_ONLY;
+    }
+
+    @Override
+    public int getDefaultProjectileRange() {
+	return PROJECTILE_RANGE;
+    }
+
+    @Override
+    public Item getDefaultStorageBattery() {
+	return ElectrodynamicsItems.ITEM_BATTERY.get();
+    }
+
+    @Override
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action,
+	    Player player, SlotAccess access) {
+
+	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
 	}
 
-	@Override
-	public int getBarWidth(ItemStack stack) {
-		return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
-	}
+	return true;
 
-	@Override
-	public boolean isBarVisible(ItemStack stack) {
-		return getJoulesStored(stack) < getMaximumCapacity(stack);
-	}
+    }
 
-	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return !oldStack.is(newStack.getItem());
-	}
+    @Override
+    public boolean isAllowedInCreativeTab(CreativeModeTab tab) {
+	return creativeTab.get() == tab;
+    }
 
-	@Override
-	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-		IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
-	}
-
-	@Override
-	public ElectricItemProperties getElectricProperties() {
-		return properties;
-	}
-
-	@Override
-	public Predicate<ItemStack> getAllSupportedProjectiles() {
-		return ARROW_ONLY;
-	}
-
-	@Override
-	public int getDefaultProjectileRange() {
-		return PROJECTILE_RANGE;
-	}
-
-	@Override
-	public Item getDefaultStorageBattery() {
-		return ElectrodynamicsItems.ITEM_BATTERY.get();
-	}
-
-	@Override
-	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-
-		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
-			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-		}
-
-		return true;
-
-	}
-
-	@Override
-	public boolean isAllowedInCreativeTab(CreativeModeTab tab) {
-		return creativeTab.get() == tab;
-	}
-
-	@Override
-	public boolean hasCreativeTab() {
-		return creativeTab != null;
-	}
+    @Override
+    public boolean hasCreativeTab() {
+	return creativeTab != null;
+    }
 
 }

@@ -14,21 +14,21 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ContainerChargerGeneric extends GenericContainerBlockEntity<GenericTileCharger> {
 
-	public ContainerChargerGeneric(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(5), new SimpleContainerData(5));
-	}
+    public ContainerChargerGeneric(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainer(5), new SimpleContainerData(5));
+    }
 
-	public ContainerChargerGeneric(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_CHARGER.get(), id, playerinv, inventory, inventorydata);
-	}
+    public ContainerChargerGeneric(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_CHARGER.get(), id, playerinv, inventory, inventorydata);
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotCharging(inv, nextIndex(), 95, 34).setIOColor(new Color(0, 240, 255, 255)));
-		addSlot(new SlotCharging(inv, nextIndex(), 95, 54));
-		addSlot(new SlotCharging(inv, nextIndex(), 115, 54));
-		addSlot(new SlotCharging(inv, nextIndex(), 135, 54));
-		addSlot(new SlotRestricted(inv, nextIndex(), 145, 34).setIOColor(new Color(255, 0, 0, 255)));
-	}
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
+	addSlot(new SlotCharging(inv, nextIndex(), 95, 34).setIOColor(new Color(0, 240, 255, 255)));
+	addSlot(new SlotCharging(inv, nextIndex(), 95, 54));
+	addSlot(new SlotCharging(inv, nextIndex(), 115, 54));
+	addSlot(new SlotCharging(inv, nextIndex(), 135, 54));
+	addSlot(new SlotRestricted(inv, nextIndex(), 145, 34).setIOColor(new Color(255, 0, 0, 255)));
+    }
 
 }

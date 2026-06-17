@@ -23,101 +23,98 @@ import voltaic.registers.VoltaicCapabilities;
 public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 
     public GenericTileCompressor(BlockEntityType<?> type, BlockPos worldPos, BlockState blockState) {
-        super(type, worldPos, blockState);
-        addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE).maxJoules(getUsagePerTick() * 10));
+	super(type, worldPos, blockState);
+	addComponent(new ComponentElectrodynamic(this, false, true)
+		.setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM)
+		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE).maxJoules(getUsagePerTick() * 10));
     }
 
     @Override
     public void tickClient(ComponentTickable tickable) {
 
-        if (!isSoundPlaying && shouldPlaySound()) {
-            isSoundPlaying = true;
-            SoundBarrierMethods.playTileSound(getSound(), this, true);
-        }
+	if (!isSoundPlaying && shouldPlaySound()) {
+	    isSoundPlaying = true;
+	    SoundBarrierMethods.playTileSound(getSound(), this, true);
+	}
 
     }
 
     @Override
     public boolean canProcess(ComponentProcessor processor, int procNumber) {
 
-        ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+	ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
 
-        processor.consumeGasCylinder();
-        processor.dispenseGasCylinder();
+	processor.consumeGasCylinder();
+	processor.dispenseGasCylinder();
 
-        Direction facing = getFacing();
+	Direction facing = getFacing();
 
-        outputToPipe(processor, gasHandler, facing);
+	outputToPipe(processor, gasHandler, facing);
 
-        boolean canProcess = checkConditions(processor);
-        updateLit(canProcess, facing);
-        return canProcess;
+	boolean canProcess = checkConditions(processor);
+	updateLit(canProcess, facing);
+	return canProcess;
     }
 
     private boolean checkConditions(ComponentProcessor processor) {
 
-        ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
-        GasTank inputTank = gasHandler.getInputTanks()[0];
-        GasTank outputTank = gasHandler.getOutputTanks()[0];
-        if (inputTank.isEmpty()) {
-            return false;
-        }
+	ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+	GasTank inputTank = gasHandler.getInputTanks()[0];
+	GasTank outputTank = gasHandler.getOutputTanks()[0];
+	if (inputTank.isEmpty()) {
+	    return false;
+	}
 
-        ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-        if (electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.getValue()) {
-            return false;
-        }
+	if ((electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.getValue()) || (outputTank.getGasAmount() >= outputTank.getCapacity()) || (!outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas()))) {
+	    return false;
+	}
 
-        if (outputTank.getGasAmount() >= outputTank.getCapacity()) {
-            return false;
-        }
+	if (getPressureMultiplier() < 1.0 && inputTank.getGas().getPressure() <= GasStack.VACUUM) {
+	    return false;
+	}
 
-        if (!outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas())) {
-            return false;
-        }
-
-        if (getPressureMultiplier() < 1.0 && inputTank.getGas().getPressure() <= GasStack.VACUUM) {
-            return false;
-        }
-
-        return true;
+	return true;
     }
 
     @Override
     public void process(ComponentProcessor processor, int procNumber) {
 
-        int conversionRate = (int) (getConversionRate() * processor.operatingSpeed.getValue());
+	int conversionRate = (int) (getConversionRate() * processor.operatingSpeed.getValue());
 
-        ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
-        GasTank inputTank = gasHandler.getInputTanks()[0];
-        GasTank outputTank = gasHandler.getOutputTanks()[0];
+	ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+	GasTank inputTank = gasHandler.getInputTanks()[0];
+	GasTank outputTank = gasHandler.getOutputTanks()[0];
 
-        int currPressure = inputTank.getGas().getPressure();
+	int currPressure = inputTank.getGas().getPressure();
 
-        int newPressure = (int) (currPressure * getPressureMultiplier());
+	int newPressure = (int) (currPressure * getPressureMultiplier());
 
-        GasStack toTake = new GasStack(inputTank.getGas().getGas(), Math.min(conversionRate, inputTank.getGasAmount()), inputTank.getGas().getTemperature(), inputTank.getGas().getPressure());
+	GasStack toTake = new GasStack(inputTank.getGas().getGas(), Math.min(conversionRate, inputTank.getGasAmount()),
+		inputTank.getGas().getTemperature(), inputTank.getGas().getPressure());
 
-        toTake.bringPressureTo(newPressure);
+	toTake.bringPressureTo(newPressure);
 
-        int taken = outputTank.fill(toTake.copy(), GasAction.EXECUTE);
+	int taken = outputTank.fill(toTake.copy(), GasAction.EXECUTE);
 
-        if (taken == 0) {
-            return;
-        }
+	if (taken == 0) {
+	    return;
+	}
 
-        toTake.setAmount(taken);
+	toTake.setAmount(taken);
 
-        toTake.bringPressureTo(currPressure);
+	toTake.bringPressureTo(currPressure);
 
-        inputTank.drain(toTake.getAmount(), GasAction.EXECUTE);
+	inputTank.drain(toTake.getAmount(), GasAction.EXECUTE);
 
     }
 
     @Override
     public ComponentInventory getInventory() {
-        return new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().gasInputs(1).gasOutputs(1).upgrades(3)).valid(machineValidator()).validUpgrades(ContainerCompressor.VALID_UPGRADES);
+	return new ComponentInventory(this,
+		ComponentInventory.InventoryBuilder.newInv().gasInputs(1).gasOutputs(1).upgrades(3))
+		.valid(machineValidator()).validUpgrades(ContainerCompressor.VALID_UPGRADES);
     }
 
     public abstract double getPressureMultiplier();

@@ -39,144 +39,155 @@ import voltaic.prefab.utilities.VoltaicTextUtils;
 
 public class ItemHydraulicBoots extends ItemVoltaicArmor {
 
-	public static final int MAX_CAPACITY = 2000;
+    public static final int MAX_CAPACITY = 2000;
 
-	private static final String TEXTURE_LOCATION = Electrodynamics.ID + ":textures/model/armor/hydraulicboots.png";
+    private static final String TEXTURE_LOCATION = Electrodynamics.ID + ":textures/model/armor/hydraulicboots.png";
 
-	public ItemHydraulicBoots() {
-		super(HydraulicBoots.HYDRAULIC_BOOTS, Type.BOOTS, new Item.Properties().stacksTo(1), () -> ElectrodynamicsCreativeTabs.MAIN.get());
+    public ItemHydraulicBoots() {
+	super(HydraulicBoots.HYDRAULIC_BOOTS, Type.BOOTS, new Item.Properties().stacksTo(1),
+		() -> ElectrodynamicsCreativeTabs.MAIN.get());
+    }
+
+    @Override
+    public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
+	return new RestrictedFluidHandlerItemStack(stack, MAX_CAPACITY).setValidator(getPredicate());
+    }
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+	consumer.accept(new IClientItemExtensions() {
+	    @Override
+	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
+		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
+
+		ModelHydraulicBoots<LivingEntity> model = new ModelHydraulicBoots<>(
+			ElectrodynamicsClientRegister.HYDRAULIC_BOOTS.bakeRoot());
+
+		model.crouching = properties.crouching;
+		model.riding = properties.riding;
+		model.young = properties.young;
+
+		return model;
+	    }
+	});
+    }
+
+    @Override
+    public void addCreativeModeItems(CreativeModeTab tab, List<ItemStack> items) {
+
+	super.addCreativeModeItems(tab, items);
+	if (ForgeCapabilities.FLUID_HANDLER_ITEM != null) {
+	    ItemStack full = new ItemStack(this);
+	    full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM)
+		    .ifPresent(h -> ((RestrictedFluidHandlerItemStack) h)
+			    .setFluid(new FluidStack(ElectrodynamicsFluids.FLUID_HYDRAULIC.get(), MAX_CAPACITY)));
+	    items.add(full);
+
+	}
+
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
+	if (ForgeCapabilities.FLUID_HANDLER_ITEM != null) {
+	    stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM)
+		    .ifPresent(
+			    handler -> VoltaicTextUtils
+				    .ratio(ChatFormatter.formatFluidMilibuckets(handler.getFluidInTank(0).getAmount()),
+					    ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY))
+				    .withStyle(ChatFormatting.GRAY));
+	}
+	super.appendHoverText(stack, world, tooltip, flagIn);
+    }
+
+    @Override
+    public boolean canBeDepleted() {
+	return false;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+	return false;
+    }
+
+    @Override
+    public boolean isValidRepairItem(ItemStack stack1, ItemStack stack2) {
+	return false;
+    }
+
+    @Override
+    public boolean isBarVisible(ItemStack stack) {
+	return staticIsBarVisible(stack);
+    }
+
+    protected static boolean staticIsBarVisible(ItemStack stack) {
+	return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(m -> {
+	    RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
+	    return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0;
+	}).orElse(false);
+    }
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+	return staticGetBarWidth(stack);
+    }
+
+    protected static int staticGetBarWidth(ItemStack stack) {
+	return (int) Math.round(stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(h -> {
+	    RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
+	    return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
+	}).orElse(13.0));
+    }
+
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+	return TEXTURE_LOCATION;
+    }
+
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	return !oldStack.is(newStack.getItem());
+    }
+
+    public static Predicate<FluidStack> getPredicate() {
+	return fluid -> ForgeRegistries.FLUIDS.tags().getTag(VoltaicTags.Fluids.HYDRAULIC_FLUID)
+		.contains(fluid.getFluid());
+    }
+
+    public enum HydraulicBoots implements ICustomArmor {
+	HYDRAULIC_BOOTS;
+
+	@Override
+	public SoundEvent getEquipSound() {
+	    return SoundEvents.ARMOR_EQUIP_IRON;
 	}
 
 	@Override
-	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
-		return new RestrictedFluidHandlerItemStack(stack, MAX_CAPACITY).setValidator(getPredicate());
+	public String getName() {
+	    return Electrodynamics.ID + ":hydraulic_boots";
 	}
 
 	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(new IClientItemExtensions() {
-			@Override
-			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
-
-				ModelHydraulicBoots<LivingEntity> model = new ModelHydraulicBoots<>(ElectrodynamicsClientRegister.HYDRAULIC_BOOTS.bakeRoot());
-
-				model.crouching = properties.crouching;
-				model.riding = properties.riding;
-				model.young = properties.young;
-
-				return model;
-			}
-		});
+	public float getToughness() {
+	    return 0.0F;
 	}
 
 	@Override
-	public void addCreativeModeItems(CreativeModeTab tab, List<ItemStack> items) {
-
-		super.addCreativeModeItems(tab, items);
-		if (ForgeCapabilities.FLUID_HANDLER_ITEM != null) {
-			ItemStack full = new ItemStack(this);
-			full.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> ((RestrictedFluidHandlerItemStack) h).setFluid(new FluidStack(ElectrodynamicsFluids.FLUID_HYDRAULIC.get(), MAX_CAPACITY)));
-			items.add(full);
-
-		}
-
+	public float getKnockbackResistance() {
+	    return 0.0F;
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level world, List<Component> tooltip, TooltipFlag flagIn) {
-		if (ForgeCapabilities.FLUID_HANDLER_ITEM != null) {
-			stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(handler -> VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(handler.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY));
-		}
-		super.appendHoverText(stack, world, tooltip, flagIn);
+	public int getDurabilityForType(Type pType) {
+	    return 100;
 	}
 
 	@Override
-	public boolean canBeDepleted() {
-		return false;
+	public int getDefenseForType(Type pType) {
+	    return 1;
 	}
 
-	@Override
-	public boolean isEnchantable(ItemStack stack) {
-		return false;
-	}
-
-	@Override
-	public boolean isValidRepairItem(ItemStack stack1, ItemStack stack2) {
-		return false;
-	}
-
-	@Override
-	public boolean isBarVisible(ItemStack stack) {
-		return staticIsBarVisible(stack);
-	}
-
-	protected static boolean staticIsBarVisible(ItemStack stack) {
-		return stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(m -> {
-			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) m;
-			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0) < 13.0;
-		}).orElse(false);
-	}
-
-	@Override
-	public int getBarWidth(ItemStack stack) {
-		return staticGetBarWidth(stack);
-	}
-
-	protected static int staticGetBarWidth(ItemStack stack) {
-		return (int) Math.round(stack.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(h -> {
-			RestrictedFluidHandlerItemStack cap = (RestrictedFluidHandlerItemStack) h;
-			return 13.0 * cap.getFluidInTank(0).getAmount() / cap.getTankCapacity(0);
-		}).orElse(13.0));
-	}
-
-	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		return TEXTURE_LOCATION;
-	}
-
-	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return !oldStack.is(newStack.getItem());
-	}
-
-	public static Predicate<FluidStack> getPredicate() {
-		return fluid -> ForgeRegistries.FLUIDS.tags().getTag(VoltaicTags.Fluids.HYDRAULIC_FLUID).contains(fluid.getFluid());
-	}
-
-	public enum HydraulicBoots implements ICustomArmor {
-		HYDRAULIC_BOOTS;
-
-		@Override
-		public SoundEvent getEquipSound() {
-			return SoundEvents.ARMOR_EQUIP_IRON;
-		}
-
-		@Override
-		public String getName() {
-			return Electrodynamics.ID + ":hydraulic_boots";
-		}
-
-		@Override
-		public float getToughness() {
-			return 0.0F;
-		}
-
-		@Override
-		public float getKnockbackResistance() {
-			return 0.0F;
-		}
-
-		@Override
-		public int getDurabilityForType(Type pType) {
-			return 100;
-		}
-
-		@Override
-		public int getDefenseForType(Type pType) {
-			return 1;
-		}
-
-	}
+    }
 
 }

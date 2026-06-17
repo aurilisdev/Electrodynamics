@@ -18,43 +18,50 @@ import voltaic.prefab.utilities.math.MathUtils;
 
 public class RenderMineralGrinder extends AbstractTileRenderer<TileMineralGrinder> {
 
-	public RenderMineralGrinder(BlockEntityRendererProvider.Context context) {
-		super(context);
-	}
+    public RenderMineralGrinder(BlockEntityRendererProvider.Context context) {
+	super(context);
+    }
 
-	@Override
-	public void render(TileMineralGrinder tile, float partialTicks, PoseStack matrixStackIn, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    @Override
+    public void render(TileMineralGrinder tile, float partialTicks, PoseStack matrixStackIn,
+	    @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
-		double progress = (tile.clientRunningTicks + (tile.<ComponentProcessor>getComponent(IComponentType.Processor).operatingTicks.getValue()[0] > 0 ? partialTicks : 0)) * 10;
+	double progress = (tile.clientRunningTicks
+		+ (tile.<ComponentProcessor>getComponent(IComponentType.Processor).operatingTicks.getValue()[0] > 0
+			? partialTicks
+			: 0))
+		* 10;
 
-		BakedModel ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_MINERALGRINDERWHEEL);
+	BakedModel ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_MINERALGRINDERWHEEL);
 
-		matrixStackIn.pushPose();
+	matrixStackIn.pushPose();
 
-		RenderingUtils.prepareRotationalTileModel(tile, matrixStackIn);
-		matrixStackIn.translate(0.0, 7.0 / 16.0, 2.5 / 16.0);
-		matrixStackIn.mulPose(MathUtils.rotQuaternionDeg((float) -progress, 0, 0));
-		// matrixStackIn.mulPose(new Quaternion((float) -progress, 0, 0, true));
-		RenderingUtils.renderModel(ibakedmodel, tile, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+	RenderingUtils.prepareRotationalTileModel(tile, matrixStackIn);
+	matrixStackIn.translate(0.0, 7.0 / 16.0, 2.5 / 16.0);
+	matrixStackIn.mulPose(MathUtils.rotQuaternionDeg((float) -progress, 0, 0));
+	// matrixStackIn.mulPose(new Quaternion((float) -progress, 0, 0, true));
+	RenderingUtils.renderModel(ibakedmodel, tile, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
+		combinedOverlayIn);
 
-		matrixStackIn.popPose();
+	matrixStackIn.popPose();
 
-		matrixStackIn.pushPose();
+	matrixStackIn.pushPose();
 
-		RenderingUtils.prepareRotationalTileModel(tile, matrixStackIn);
-		matrixStackIn.translate(0.0, 7.0 / 16.0, -2.5 / 16.0);
-		matrixStackIn.mulPose(MathUtils.rotQuaternionDeg((float) progress, 0, 0));
-		// matrixStackIn.mulPose(new Quaternion((float) progress, 0, 0, true));
-		RenderingUtils.renderModel(ibakedmodel, tile, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn, combinedOverlayIn);
+	RenderingUtils.prepareRotationalTileModel(tile, matrixStackIn);
+	matrixStackIn.translate(0.0, 7.0 / 16.0, -2.5 / 16.0);
+	matrixStackIn.mulPose(MathUtils.rotQuaternionDeg((float) progress, 0, 0));
+	// matrixStackIn.mulPose(new Quaternion((float) progress, 0, 0, true));
+	RenderingUtils.renderModel(ibakedmodel, tile, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
+		combinedOverlayIn);
 
-		matrixStackIn.popPose();
+	matrixStackIn.popPose();
 
-		matrixStackIn.pushPose();
+	matrixStackIn.pushPose();
 
-		RenderingUtils.prepareRotationalTileModel(tile, matrixStackIn);
-		matrixStackIn.translate(0, 1.0 / 16.0, 0);
+	RenderingUtils.prepareRotationalTileModel(tile, matrixStackIn);
+	matrixStackIn.translate(0, 1.0 / 16.0, 0);
 
-		matrixStackIn.popPose();
+	matrixStackIn.popPose();
 
-	}
+    }
 }

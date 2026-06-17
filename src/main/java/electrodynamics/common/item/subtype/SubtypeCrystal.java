@@ -9,38 +9,38 @@ import net.minecraft.world.item.Item;
 import voltaic.api.ISubtype;
 
 public enum SubtypeCrystal implements ISubtype {
-	iron(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.iron)),
-	gold(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.gold)),
-	copper(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.copper)),
-	tin(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.tin)),
-	silver(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.silver)),
-	lead(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.lead)),
-	vanadium(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.vanadium)),
-	lithium(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.lithium)),
-	halite(() -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.salt)),
-	molybdenum(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.molybdenum)),
-	potassiumchloride(null),
-	netherite(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.netherite));
+    iron(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.iron)),
+    gold(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.gold)),
+    copper(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.copper)),
+    tin(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.tin)),
+    silver(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.silver)),
+    lead(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.lead)),
+    vanadium(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.vanadium)),
+    lithium(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.lithium)),
+    halite(() -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.salt)),
+    molybdenum(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.molybdenum)),
+    potassiumchloride(null),
+    netherite(() -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.netherite));
 
-	@Nullable
-	public final Supplier<Item> crushedItem;
+    @Nullable
+    public final Supplier<Item> crushedItem;
 
-	SubtypeCrystal(Supplier<Item> crushedItem) {
-		this.crushedItem = crushedItem;
-	}
+    SubtypeCrystal(Supplier<Item> crushedItem) {
+	this.crushedItem = crushedItem;
+    }
 
-	@Override
-	public String tag() {
-		return "crystal" + name();
-	}
+    @Override
+    public String tag() {
+	return "crystal" + name();
+    }
 
-	@Override
-	public String forgeTag() {
-		return "crystal/" + name();
-	}
+    @Override
+    public String forgeTag() {
+	return "crystal/" + name();
+    }
 
-	@Override
-	public boolean isItem() {
-		return true;
-	}
+    @Override
+    public boolean isItem() {
+	return true;
+    }
 }

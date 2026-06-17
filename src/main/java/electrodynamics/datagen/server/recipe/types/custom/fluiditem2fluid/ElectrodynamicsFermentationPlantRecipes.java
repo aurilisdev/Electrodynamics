@@ -17,90 +17,97 @@ import voltaic.datagen.utils.server.recipe.FinishedRecipeFluidOutput;
 
 public class ElectrodynamicsFermentationPlantRecipes extends AbstractRecipeGenerator {
 
-	public static double FERMENTATIONPLANT_USAGE_PER_TICK = 20.0;
-	public static int FERMENTATIONPLANT_REQUIRED_TICKS = 2000;
+    public static double FERMENTATIONPLANT_USAGE_PER_TICK = 20.0;
+    public static int FERMENTATIONPLANT_REQUIRED_TICKS = 2000;
 
-	private final String modID;
+    private final String modID;
 
-	public ElectrodynamicsFermentationPlantRecipes(String modID) {
-		this.modID = modID;
-	}
+    public ElectrodynamicsFermentationPlantRecipes(String modID) {
+	this.modID = modID;
+    }
 
-	public ElectrodynamicsFermentationPlantRecipes() {
-		this(Electrodynamics.ID);
-	}
+    public ElectrodynamicsFermentationPlantRecipes() {
+	this(Electrodynamics.ID);
+    }
 
-	@Override
-	public void addRecipes(Consumer<FinishedRecipe> consumer) {
+    @Override
+    public void addRecipes(Consumer<FinishedRecipe> consumer) {
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0, "ethanol_from_carrots")
-				//
-				.addFluidTagInput(FluidTags.WATER, 1000)
-				//
-				.addItemTagInput(Tags.Items.CROPS_CARROT, 12)
-				//
-				.complete(consumer);
+	newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0, "ethanol_from_carrots")
+		//
+		.addFluidTagInput(FluidTags.WATER, 1000)
+		//
+		.addItemTagInput(Tags.Items.CROPS_CARROT, 12)
+		//
+		.complete(consumer);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0, "ethanol_from_melon_slices")
-				//
-				.addFluidTagInput(FluidTags.WATER, 1000)
-				//
-				.addItemStackInput(new ItemStack(Items.MELON_SLICE, 3))
-				//
-				.complete(consumer);
+	newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0,
+		"ethanol_from_melon_slices")
+		//
+		.addFluidTagInput(FluidTags.WATER, 1000)
+		//
+		.addItemStackInput(new ItemStack(Items.MELON_SLICE, 3))
+		//
+		.complete(consumer);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0, "ethanol_from_mushrooms")
-				//
-				.addFluidTagInput(FluidTags.WATER, 1000)
-				//
-				.addItemTagInput(Tags.Items.MUSHROOMS, 11)
-				//
-				.complete(consumer);
+	newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0,
+		"ethanol_from_mushrooms")
+		//
+		.addFluidTagInput(FluidTags.WATER, 1000)
+		//
+		.addItemTagInput(Tags.Items.MUSHROOMS, 11)
+		//
+		.complete(consumer);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0, "ethanol_from_potatos")
-				//
-				.addFluidTagInput(FluidTags.WATER, 1000)
-				//
-				.addItemTagInput(Tags.Items.CROPS_POTATO, 13)
-				//
-				.complete(consumer);
+	newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0, "ethanol_from_potatos")
+		//
+		.addFluidTagInput(FluidTags.WATER, 1000)
+		//
+		.addItemTagInput(Tags.Items.CROPS_POTATO, 13)
+		//
+		.complete(consumer);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0, "ethanol_from_pumpkins")
-				//
-				.addFluidTagInput(FluidTags.WATER, 1000)
-				//
-				.addItemStackInput(new ItemStack(Items.PUMPKIN, 12))
-				//
-				.complete(consumer);
+	newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0,
+		"ethanol_from_pumpkins")
+		//
+		.addFluidTagInput(FluidTags.WATER, 1000)
+		//
+		.addItemStackInput(new ItemStack(Items.PUMPKIN, 12))
+		//
+		.complete(consumer);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0, "ethanol_from_seeds")
-				//
-				.addFluidTagInput(FluidTags.WATER, 1000)
-				//
-				.addItemTagInput(Tags.Items.SEEDS, 9)
-				//
-				.complete(consumer);
+	newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0, "ethanol_from_seeds")
+		//
+		.addFluidTagInput(FluidTags.WATER, 1000)
+		//
+		.addItemTagInput(Tags.Items.SEEDS, 9)
+		//
+		.complete(consumer);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0, "ethanol_from_sugar_cane")
-				//
-				.addFluidTagInput(FluidTags.WATER, 1000)
-				//
-				.addItemStackInput(new ItemStack(Items.SUGAR_CANE, 9))
-				//
-				.complete(consumer);
+	newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0,
+		"ethanol_from_sugar_cane")
+		//
+		.addFluidTagInput(FluidTags.WATER, 1000)
+		//
+		.addItemStackInput(new ItemStack(Items.SUGAR_CANE, 9))
+		//
+		.complete(consumer);
 
-		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0, "ethanol_from_wheat")
-				//
-				.addFluidTagInput(FluidTags.WATER, 1000)
-				//
-				.addItemTagInput(Tags.Items.CROPS_WHEAT, 9)
-				//
-				.complete(consumer);
+	newRecipe(new FluidStack(ElectrodynamicsFluids.FLUID_ETHANOL.get(), 100), 0, 2000, 20.0, "ethanol_from_wheat")
+		//
+		.addFluidTagInput(FluidTags.WATER, 1000)
+		//
+		.addItemTagInput(Tags.Items.CROPS_WHEAT, 9)
+		//
+		.complete(consumer);
 
-	}
+    }
 
-	public FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name) {
-		return FinishedRecipeFluidOutput.of(ElectrodynamicsRecipies.FERMENTATION_PLANT_SERIALIZER.get(), stack, xp, ticks, usagePerTick).name(RecipeCategory.FLUID_ITEM_2_FLUID, modID, "fermentation_plant/" + name);
-	}
+    public FinishedRecipeFluidOutput newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick,
+	    String name) {
+	return FinishedRecipeFluidOutput
+		.of(ElectrodynamicsRecipies.FERMENTATION_PLANT_SERIALIZER.get(), stack, xp, ticks, usagePerTick)
+		.name(RecipeCategory.FLUID_ITEM_2_FLUID, modID, "fermentation_plant/" + name);
+    }
 
 }

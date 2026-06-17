@@ -10,10 +10,12 @@ import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 
 public class TileMineralCrusherTriple extends TileMineralCrusher {
 
-	public TileMineralCrusherTriple(BlockPos pos, BlockState state) {
-		super(ElectrodynamicsTiles.TILE_MINERALCRUSHERTRIPLE.get(), 3, pos, state);
+    public TileMineralCrusherTriple(BlockPos pos, BlockState state) {
+	super(ElectrodynamicsTiles.TILE_MINERALCRUSHERTRIPLE.get(), 3, pos, state);
 
-		addComponent(new ComponentContainerProvider(SubtypeMachine.mineralcrushertriple.tag(), this).createMenu((id, player) -> new ContainerO2OProcessorTriple(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
-	}
+	addComponent(new ComponentContainerProvider(SubtypeMachine.mineralcrushertriple.tag(), this)
+		.createMenu((id, player) -> new ContainerO2OProcessorTriple(id, player,
+			getComponent(IComponentType.Inventory), getCoordsArray())));
+    }
 
 }

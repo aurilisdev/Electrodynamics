@@ -37,154 +37,172 @@ import voltaic.prefab.utilities.NBTUtils;
 
 public class ItemCompositeArmor extends ItemVoltaicArmor {
 
-	public static final String ARMOR_TEXTURE_LOCATION = Electrodynamics.ID + ":textures/model/armor/compositearmor.png";
+    public static final String ARMOR_TEXTURE_LOCATION = Electrodynamics.ID + ":textures/model/armor/compositearmor.png";
 
-	public ItemCompositeArmor(Type slot) {
-		super(CompositeArmor.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).fireResistant().setNoRepair(), () -> ElectrodynamicsCreativeTabs.MAIN.get());
-	}
-	
-	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return !oldStack.is(newStack.getItem());
-	}
+    public ItemCompositeArmor(Type slot) {
+	super(CompositeArmor.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).fireResistant().setNoRepair(),
+		() -> ElectrodynamicsCreativeTabs.MAIN.get());
+    }
 
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void initializeClient(Consumer<IClientItemExtensions> consumer) {
-		consumer.accept(new IClientItemExtensions() {
-			@Override
-			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	return !oldStack.is(newStack.getItem());
+    }
 
-				ItemStack[] armorPiecesArray = new ItemStack[] { new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get()) };
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+	consumer.accept(new IClientItemExtensions() {
+	    @Override
+	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
+		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-				List<ItemStack> armorPieces = new ArrayList<>();
-				entity.getArmorSlots().forEach(armorPieces::add);
+		ItemStack[] armorPiecesArray = {
+			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get()),
+			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get()),
+			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS.get()),
+			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get()) };
 
-				boolean isBoth = armorPieces.get(0).getItem() == armorPiecesArray[3].getItem() && armorPieces.get(1).getItem() == armorPiecesArray[2].getItem();
+		List<ItemStack> armorPieces = new ArrayList<>();
+		entity.getArmorSlots().forEach(armorPieces::add);
 
-				boolean hasChest = armorPieces.get(2).getItem() == armorPiecesArray[1].getItem();
+		boolean isBoth = armorPieces.get(0).getItem() == armorPiecesArray[3].getItem()
+			&& armorPieces.get(1).getItem() == armorPiecesArray[2].getItem();
 
-				ModelCompositeArmor<LivingEntity> model;
+		boolean hasChest = armorPieces.get(2).getItem() == armorPiecesArray[1].getItem();
 
-				if (isBoth) {
-					if (hasChest) {
-						model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_COMB_CHEST.bakeRoot(), getEquipmentSlot());
-					} else {
-						model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), getEquipmentSlot());
-					}
-				} else if (getEquipmentSlot() == EquipmentSlot.FEET) {
-					model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_BOOTS.bakeRoot(), getEquipmentSlot());
-				} else if (hasChest) {
-					model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(), getEquipmentSlot());
-				} else {
-					model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), getEquipmentSlot());
-				}
+		ModelCompositeArmor<LivingEntity> model;
 
-				model.crouching = properties.crouching;
-				model.riding = properties.riding;
-				model.young = properties.young;
-
-				return model;
-			}
-		});
-	}
-
-	@Override
-	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
-		super.addCreativeModeItems(group, items);
-
-		if (getEquipmentSlot() == EquipmentSlot.CHEST) {
-			ItemStack filled = new ItemStack(this);
-			CompoundTag tag = filled.getOrCreateTag();
-			tag.putInt(NBTUtils.PLATES, 2);
-			items.add(filled);
+		if (isBoth) {
+		    if (hasChest) {
+			model = new ModelCompositeArmor<>(
+				ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_COMB_CHEST.bakeRoot(),
+				getEquipmentSlot());
+		    } else {
+			model = new ModelCompositeArmor<>(
+				ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(),
+				getEquipmentSlot());
+		    }
+		} else if (getEquipmentSlot() == EquipmentSlot.FEET) {
+		    model = new ModelCompositeArmor<>(
+			    ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_BOOTS.bakeRoot(), getEquipmentSlot());
+		} else if (hasChest) {
+		    model = new ModelCompositeArmor<>(
+			    ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(),
+			    getEquipmentSlot());
+		} else {
+		    model = new ModelCompositeArmor<>(
+			    ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(),
+			    getEquipmentSlot());
 		}
 
+		model.crouching = properties.crouching;
+		model.riding = properties.riding;
+		model.young = properties.young;
+
+		return model;
+	    }
+	});
+    }
+
+    @Override
+    public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
+	super.addCreativeModeItems(group, items);
+
+	if (getEquipmentSlot() == EquipmentSlot.CHEST) {
+	    ItemStack filled = new ItemStack(this);
+	    CompoundTag tag = filled.getOrCreateTag();
+	    tag.putInt(NBTUtils.PLATES, 2);
+	    items.add(filled);
+	}
+
+    }
+
+    @Override
+    public boolean canBeDepleted() {
+	return false;
+    }
+
+    @Override
+    public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
+	return false;
+    }
+
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+	return false;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	super.appendHoverText(stack, worldIn, tooltip, flagIn);
+	if (((ArmorItem) stack.getItem()).getEquipmentSlot() == EquipmentSlot.CHEST) {
+	    staticAppendHoverText(stack, worldIn, tooltip, flagIn);
+	}
+    }
+
+    protected static void staticAppendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip,
+	    TooltipFlag flagIn) {
+	int plates = stack.hasTag() ? stack.getTag().getInt(NBTUtils.PLATES) : 0;
+	tooltip.add(ElectroTextUtils.tooltip("ceramicplatecount", Component.translatable(plates + ""))
+		.withStyle(ChatFormatting.AQUA));
+    }
+
+    @SuppressWarnings("removal")
+    @Override
+    public void onArmorTick(ItemStack stack, Level world, Player player) {
+	super.onArmorTick(stack, world, player);
+	player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20));
+    }
+
+    @Override
+    public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
+	return ARMOR_TEXTURE_LOCATION;
+    }
+
+    public enum CompositeArmor implements ICustomArmor {
+	COMPOSITE_ARMOR(Electrodynamics.ID + ":composite", new int[] { 6, 12, 16, 6 }, 2.0f);
+
+	private final String name;
+	private final int[] damageReductionAmountArray;
+	private final float toughness;
+
+	// Constructor
+	CompositeArmor(String name, int[] damageReductionAmountArray, float toughness) {
+	    this.name = name;
+	    this.damageReductionAmountArray = damageReductionAmountArray;
+	    this.toughness = toughness;
 	}
 
 	@Override
-	public boolean canBeDepleted() {
-		return false;
+	public SoundEvent getEquipSound() {
+	    return ElectrodynamicsSounds.SOUND_EQUIPHEAVYARMOR.get();
 	}
 
 	@Override
-	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
-		return false;
+	public String getName() {
+	    return name;
 	}
 
 	@Override
-	public boolean isEnchantable(ItemStack stack) {
-		return false;
+	public float getToughness() {
+	    return toughness;
 	}
 
 	@Override
-	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		if (((ArmorItem) stack.getItem()).getEquipmentSlot() == EquipmentSlot.CHEST) {
-			staticAppendHoverText(stack, worldIn, tooltip, flagIn);
-		}
-	}
-
-	protected static void staticAppendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		int plates = stack.hasTag() ? stack.getTag().getInt(NBTUtils.PLATES) : 0;
-		tooltip.add(ElectroTextUtils.tooltip("ceramicplatecount", Component.translatable(plates + "")).withStyle(ChatFormatting.AQUA));
-	}
-
-	@SuppressWarnings("removal")
-	@Override
-	public void onArmorTick(ItemStack stack, Level world, Player player) {
-		super.onArmorTick(stack, world, player);
-		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20));
+	public float getKnockbackResistance() {
+	    return 4;
 	}
 
 	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		return ARMOR_TEXTURE_LOCATION;
+	public int getDurabilityForType(Type type) {
+	    return 2000;
 	}
 
-	public enum CompositeArmor implements ICustomArmor {
-		COMPOSITE_ARMOR(Electrodynamics.ID + ":composite", new int[] { 6, 12, 16, 6 }, 2.0f);
-
-		private final String name;
-		private final int[] damageReductionAmountArray;
-		private final float toughness;
-
-		// Constructor
-		CompositeArmor(String name, int[] damageReductionAmountArray, float toughness) {
-			this.name = name;
-			this.damageReductionAmountArray = damageReductionAmountArray;
-			this.toughness = toughness;
-		}
-
-		@Override
-		public SoundEvent getEquipSound() {
-			return ElectrodynamicsSounds.SOUND_EQUIPHEAVYARMOR.get();
-		}
-
-		@Override
-		public String getName() {
-			return name;
-		}
-
-		@Override
-		public float getToughness() {
-			return toughness;
-		}
-
-		@Override
-		public float getKnockbackResistance() {
-			return 4;
-		}
-
-		@Override
-		public int getDurabilityForType(Type type) {
-			return 2000;
-		}
-
-		@Override
-		public int getDefenseForType(Type type) {
-			return damageReductionAmountArray[type.ordinal()];
-		}
-
+	@Override
+	public int getDefenseForType(Type type) {
+	    return damageReductionAmountArray[type.ordinal()];
 	}
+
+    }
 }

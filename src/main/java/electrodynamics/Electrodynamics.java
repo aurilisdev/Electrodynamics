@@ -32,64 +32,66 @@ import voltaic.prefab.configuration.ConfigurationHandler;
 @EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
 public class Electrodynamics {
 
-	public static final String ID = "electrodynamics";
-	public static final String NAME = "Electrodynamics";
+    public static final String ID = "electrodynamics";
+    public static final String NAME = "Electrodynamics";
 
-	public Electrodynamics() {
-		ConfigurationHandler.registerConfig(ElectroConstants.class);
-		ConfigurationHandler.registerConfig(OreConfig.class);
-		// MUST GO BEFORE BLOCKS!!!!
-		ElectrodynamicsBlockStates.init();
-		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-		UnifiedElectrodynamicsRegister.register(bus);
-		ElectrodynamicsAttributeModifiers.init();
-		bus.register(RegisterWiresEvent.class);
-	}
-
-	@SubscribeEvent
-	public static void onCommonSetup(FMLCommonSetupEvent event) {
-		ServerEventHandler.init();
-		NetworkHandler.init();
-		CombustionFuelRegister.INSTANCE = new CombustionFuelRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
-		CoalGeneratorFuelRegister.INSTANCE = new CoalGeneratorFuelRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
-		ThermoelectricGeneratorHeatRegister.INSTANCE = new ThermoelectricGeneratorHeatRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
-		// CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably wrong location after update from 1.18.2 to 1.19.2
-
-		// RegisterFluidToGasMapEvent map = new RegisterFluidToGasMapEvent();
-		// MinecraftForge.EVENT_BUS.post(map);
-		// ElectrodynamicsGases.MAPPED_GASSES.putAll(map.fluidToGasMap);
-
-		event.enqueueWork(() -> {
-
-			RegisterWiresEvent wiresEvent = new RegisterWiresEvent();
-
-			MinecraftForge.EVENT_BUS.post(wiresEvent);
-
-			wiresEvent.process();
-		});
-		ElectrodynamicsVoxelShapes.init();
-
-	}
-
-	// I wonder how long this bug has been there
-	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
-	public static void onClientSetup(FMLClientSetupEvent event) {
-		event.enqueueWork(() -> {
-			ElectrodynamicsClientRegister.setup();
-		});
-	}
-	
-	@SubscribeEvent
-    public static void registerWires(RegisterWiresEvent event) {
-        for (BlockWire wire : ElectrodynamicsBlocks.BLOCKS_WIRE.getAllValues()) {
-            event.registerWire(wire);
-        }
+    public Electrodynamics() {
+	ConfigurationHandler.registerConfig(ElectroConstants.class);
+	ConfigurationHandler.registerConfig(OreConfig.class);
+	// MUST GO BEFORE BLOCKS!!!!
+	ElectrodynamicsBlockStates.init();
+	IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+	UnifiedElectrodynamicsRegister.register(bus);
+	ElectrodynamicsAttributeModifiers.init();
+	bus.register(RegisterWiresEvent.class);
     }
 
-	public static final ResourceLocation rl(String path) {
-		return new ResourceLocation(ID, path);
-	}
+    @SubscribeEvent
+    public static void onCommonSetup(FMLCommonSetupEvent event) {
+	ServerEventHandler.init();
+	NetworkHandler.init();
+	CombustionFuelRegister.INSTANCE = new CombustionFuelRegister().subscribeAsSyncable(NetworkHandler.CHANNEL);
+	CoalGeneratorFuelRegister.INSTANCE = new CoalGeneratorFuelRegister()
+		.subscribeAsSyncable(NetworkHandler.CHANNEL);
+	ThermoelectricGeneratorHeatRegister.INSTANCE = new ThermoelectricGeneratorHeatRegister()
+		.subscribeAsSyncable(NetworkHandler.CHANNEL);
+	// CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably
+	// wrong location after update from 1.18.2 to 1.19.2
 
+	// RegisterFluidToGasMapEvent map = new RegisterFluidToGasMapEvent();
+	// MinecraftForge.EVENT_BUS.post(map);
+	// ElectrodynamicsGases.MAPPED_GASSES.putAll(map.fluidToGasMap);
+
+	event.enqueueWork(() -> {
+
+	    RegisterWiresEvent wiresEvent = new RegisterWiresEvent();
+
+	    MinecraftForge.EVENT_BUS.post(wiresEvent);
+
+	    wiresEvent.process();
+	});
+	ElectrodynamicsVoxelShapes.init();
+
+    }
+
+    // I wonder how long this bug has been there
+    @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
+    public static void onClientSetup(FMLClientSetupEvent event) {
+	event.enqueueWork(() -> {
+	    ElectrodynamicsClientRegister.setup();
+	});
+    }
+
+    @SubscribeEvent
+    public static void registerWires(RegisterWiresEvent event) {
+	for (BlockWire wire : ElectrodynamicsBlocks.BLOCKS_WIRE.getAllValues()) {
+	    event.registerWire(wire);
+	}
+    }
+
+    public static final ResourceLocation rl(String path) {
+	return new ResourceLocation(ID, path);
+    }
 
 }

@@ -15,15 +15,16 @@ import voltaic.prefab.utilities.ItemUtils;
 
 public class HandlerToggleNVGoggles extends AbstractKeyPressHandler {
 
-	@Override
-	public void handler(Key event, Minecraft minecraft) {
-		Player player = minecraft.player;
-		if (KeyBinds.toggleNvgs.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleNvgs.isDown()) {
-			ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
-			if (ItemUtils.testItems(playerHead.getItem(), ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get()) || ItemUtils.testItems(playerHead.getItem(), ElectrodynamicsItems.ITEM_COMBATHELMET.get())) {
-				NetworkHandler.CHANNEL.sendToServer(new PacketToggleOnServer(player.getUUID(), Type.NVGS));
-			}
-		}
+    @Override
+    public void handler(Key event, Minecraft minecraft) {
+	Player player = minecraft.player;
+	if (KeyBinds.toggleNvgs.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleNvgs.isDown()) {
+	    ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
+	    if (ItemUtils.testItems(playerHead.getItem(), ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get())
+		    || ItemUtils.testItems(playerHead.getItem(), ElectrodynamicsItems.ITEM_COMBATHELMET.get())) {
+		NetworkHandler.CHANNEL.sendToServer(new PacketToggleOnServer(player.getUUID(), Type.NVGS));
+	    }
 	}
+    }
 
 }

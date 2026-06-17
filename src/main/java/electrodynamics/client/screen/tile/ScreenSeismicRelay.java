@@ -16,50 +16,53 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ScreenSeismicRelay extends GenericScreen<ContainerSeismicRelay> {
 
-	public ScreenSeismicRelay(ContainerSeismicRelay container, Inventory inv, Component titleIn) {
-		super(container, inv, titleIn);
-		addComponent(new ScreenComponentSimpleLabel(70, 20, 10, Color.TEXT_GRAY, ElectroTextUtils.gui("seismicrelay.dataheader")));
-		addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> {
+    public ScreenSeismicRelay(ContainerSeismicRelay container, Inventory inv, Component titleIn) {
+	super(container, inv, titleIn);
+	addComponent(new ScreenComponentSimpleLabel(70, 20, 10, Color.TEXT_GRAY,
+		ElectroTextUtils.gui("seismicrelay.dataheader")));
+	addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> {
 
-			TileSeismicRelay relay = menu.getSafeHost();
+	    TileSeismicRelay relay = menu.getSafeHost();
 
-			if (relay != null) {
-				List<BlockPos> markers = relay.markerLocs.getValue();
-				if (!markers.isEmpty()) {
-					renderCoordinate(graphics, markers.get(0), 0, 1);
-				} else {
-					renderNotFound(graphics, 0, 1);
-				}
-				if (markers.size() > 1) {
-					renderCoordinate(graphics, markers.get(1), 10, 2);
-				} else {
-					renderNotFound(graphics, 10, 2);
-				}
-				if (markers.size() > 2) {
-					renderCoordinate(graphics, markers.get(2), 20, 3);
-				} else {
-					renderNotFound(graphics, 20, 3);
-				}
-				if (markers.size() > 3) {
-					renderCoordinate(graphics, markers.get(3), 30, 4);
-				} else {
-					renderNotFound(graphics, 30, 4);
-				}
-			} else {
-				renderNotFound(graphics, 0, 1);
-				renderNotFound(graphics, 10, 2);
-				renderNotFound(graphics, 20, 3);
-				renderNotFound(graphics, 30, 4);
-			}
-		}));
-	}
+	    if (relay != null) {
+		List<BlockPos> markers = relay.markerLocs.getValue();
+		if (!markers.isEmpty()) {
+		    renderCoordinate(graphics, markers.get(0), 0, 1);
+		} else {
+		    renderNotFound(graphics, 0, 1);
+		}
+		if (markers.size() > 1) {
+		    renderCoordinate(graphics, markers.get(1), 10, 2);
+		} else {
+		    renderNotFound(graphics, 10, 2);
+		}
+		if (markers.size() > 2) {
+		    renderCoordinate(graphics, markers.get(2), 20, 3);
+		} else {
+		    renderNotFound(graphics, 20, 3);
+		}
+		if (markers.size() > 3) {
+		    renderCoordinate(graphics, markers.get(3), 30, 4);
+		} else {
+		    renderNotFound(graphics, 30, 4);
+		}
+	    } else {
+		renderNotFound(graphics, 0, 1);
+		renderNotFound(graphics, 10, 2);
+		renderNotFound(graphics, 20, 3);
+		renderNotFound(graphics, 30, 4);
+	    }
+	}));
+    }
 
-	private void renderNotFound(GuiGraphics graphics, int offset, int index) {
-		graphics.drawString(font, ElectroTextUtils.gui("seismicrelay.posnotfound", index), 80, 30 + offset, Color.TEXT_GRAY.color(), false);
-	}
+    private void renderNotFound(GuiGraphics graphics, int offset, int index) {
+	graphics.drawString(font, ElectroTextUtils.gui("seismicrelay.posnotfound", index), 80, 30 + offset,
+		Color.TEXT_GRAY.color(), false);
+    }
 
-	private void renderCoordinate(GuiGraphics graphics, BlockPos pos, int offset, int index) {
-		graphics.drawString(font, ElectroTextUtils.gui("seismicrelay.posfound", index, pos.toShortString()), 80, 30 + offset, Color.TEXT_GRAY.color(), false);
-	}
+    private void renderCoordinate(GuiGraphics graphics, BlockPos pos, int offset, int index) {
+	graphics.drawString(font, ElectroTextUtils.gui("seismicrelay.posfound", index, pos.toShortString()), 80,
+		30 + offset, Color.TEXT_GRAY.color(), false);
+    }
 
 }

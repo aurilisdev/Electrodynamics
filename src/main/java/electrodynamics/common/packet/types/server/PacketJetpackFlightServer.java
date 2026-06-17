@@ -17,42 +17,43 @@ import voltaic.prefab.utilities.NBTUtils;
 
 public class PacketJetpackFlightServer {
 
-	private final UUID playerId;
-	private final boolean bool;
-	private final double prevDeltaY;
+    private final UUID playerId;
+    private final boolean bool;
+    private final double prevDeltaY;
 
-	public PacketJetpackFlightServer(UUID uuid, boolean bool, double prevDeltaY) {
-		playerId = uuid;
-		this.bool = bool;
-		this.prevDeltaY = prevDeltaY;
-	}
+    public PacketJetpackFlightServer(UUID uuid, boolean bool, double prevDeltaY) {
+	playerId = uuid;
+	this.bool = bool;
+	this.prevDeltaY = prevDeltaY;
+    }
 
-	public static void handle(PacketJetpackFlightServer message, Supplier<Context> context) {
-		Context ctx = context.get();
-		ctx.enqueueWork(() -> {
-			ServerLevel world = context.get().getSender().serverLevel();
-			if (world != null) {
-				Player player = world.getPlayerByUUID(message.playerId);
-				ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
-				if (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get()) || ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
-					CompoundTag tag = chest.getOrCreateTag();
-					tag.putBoolean(NBTUtils.USED, message.bool);
-					tag.putBoolean(ItemJetpack.WAS_HURT_KEY, false);
-					tag.putDouble(ItemJetpack.DELTA_Y_KEY, message.prevDeltaY);
-				}
-			}
-		});
-		ctx.setPacketHandled(true);
-	}
+    public static void handle(PacketJetpackFlightServer message, Supplier<Context> context) {
+	Context ctx = context.get();
+	ctx.enqueueWork(() -> {
+	    ServerLevel world = context.get().getSender().serverLevel();
+	    if (world != null) {
+		Player player = world.getPlayerByUUID(message.playerId);
+		ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
+		if (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get())
+			|| ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
+		    CompoundTag tag = chest.getOrCreateTag();
+		    tag.putBoolean(NBTUtils.USED, message.bool);
+		    tag.putBoolean(ItemJetpack.WAS_HURT_KEY, false);
+		    tag.putDouble(ItemJetpack.DELTA_Y_KEY, message.prevDeltaY);
+		}
+	    }
+	});
+	ctx.setPacketHandled(true);
+    }
 
-	public static void encode(PacketJetpackFlightServer message, FriendlyByteBuf buf) {
-		buf.writeUUID(message.playerId);
-		buf.writeBoolean(message.bool);
-		buf.writeDouble(message.prevDeltaY);
-	}
+    public static void encode(PacketJetpackFlightServer message, FriendlyByteBuf buf) {
+	buf.writeUUID(message.playerId);
+	buf.writeBoolean(message.bool);
+	buf.writeDouble(message.prevDeltaY);
+    }
 
-	public static PacketJetpackFlightServer decode(FriendlyByteBuf buf) {
-		return new PacketJetpackFlightServer(buf.readUUID(), buf.readBoolean(), buf.readDouble());
-	}
+    public static PacketJetpackFlightServer decode(FriendlyByteBuf buf) {
+	return new PacketJetpackFlightServer(buf.readUUID(), buf.readBoolean(), buf.readDouble());
+    }
 
 }

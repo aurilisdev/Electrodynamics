@@ -17,20 +17,30 @@ import voltaic.common.blockitem.BlockItemVoltaic;
 
 public class BlockItemGasPipe extends BlockItemVoltaic {
 
-	private final BlockGasPipe pipe;
+    private final BlockGasPipe pipe;
 
-	public BlockItemGasPipe(BlockGasPipe pipe, Properties properties, Supplier<CreativeModeTab> creativeTab) {
-		super(pipe, properties, creativeTab);
-		this.pipe = pipe;
-	}
+    public BlockItemGasPipe(BlockGasPipe pipe, Properties properties, Supplier<CreativeModeTab> creativeTab) {
+	super(pipe, properties, creativeTab);
+	this.pipe = pipe;
+    }
 
-	@Override
-	public void appendHoverText(ItemStack stack, Level level, List<Component> tooltips, TooltipFlag advanced) {
-		super.appendHoverText(stack, level, tooltips, advanced);
-		tooltips.add(ElectroTextUtils.tooltip("pipethroughput", ChatFormatter.getChatDisplayShort(pipe.pipe.getMaxTransfer() / 1000.0, DisplayUnits.BUCKETS).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-		// tooltips.add(TextUtils.tooltip("pipeinsulationmaterial", pipe.pipe.insulationMaterial.getTranslatedName()).withStyle(ChatFormatting.GRAY));
-		tooltips.add(ElectroTextUtils.tooltip("pipemaximumpressure", ChatFormatter.getChatDisplayShort(pipe.pipe.getPipeMaterial().getMaxPressuire(), DisplayUnits.PRESSURE_ATM).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-		// tooltips.add(TextUtils.tooltip("pipeheatloss", ChatFormatter.getChatDisplayShort(pipe.pipe.effectivePipeHeatLoss, DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
-	}
+    @Override
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltips, TooltipFlag advanced) {
+	super.appendHoverText(stack, level, tooltips, advanced);
+	tooltips.add(ElectroTextUtils.tooltip("pipethroughput",
+		ChatFormatter.getChatDisplayShort(pipe.pipe.getMaxTransfer() / 1000.0, DisplayUnits.BUCKETS)
+			.withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY));
+	// tooltips.add(TextUtils.tooltip("pipeinsulationmaterial",
+	// pipe.pipe.insulationMaterial.getTranslatedName()).withStyle(ChatFormatting.GRAY));
+	tooltips.add(ElectroTextUtils
+		.tooltip("pipemaximumpressure",
+			ChatFormatter.getChatDisplayShort(pipe.pipe.getPipeMaterial().getMaxPressuire(),
+				DisplayUnits.PRESSURE_ATM).withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY));
+	// tooltips.add(TextUtils.tooltip("pipeheatloss",
+	// ChatFormatter.getChatDisplayShort(pipe.pipe.effectivePipeHeatLoss,
+	// DisplayUnit.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
+    }
 
 }

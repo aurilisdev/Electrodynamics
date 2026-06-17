@@ -15,26 +15,30 @@ import voltaic.prefab.utilities.ItemUtils;
 
 public class HandlerHydraulicBoots extends AbstractLivingDamageHandler {
 
-	@Override
-	public void handle(LivingDamageEvent event) {
-		LivingEntity entity = event.getEntity();
-		if (!event.getSource().is(DamageTypes.FALL)) {
-			return;
-		}
-		ItemStack playerBoots = entity.getItemBySlot(EquipmentSlot.FEET);
-
-		if (!ItemUtils.testItems(playerBoots.getItem(), ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get(), ElectrodynamicsItems.ITEM_COMBATBOOTS.get())) {
-			return;
-		}
-
-		int fluidRequired = (int) Math.log10(event.getAmount());
-
-		if (playerBoots.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).map(m -> m.getFluidInTank(0).getAmount() - fluidRequired >= 0).orElse(false)) {
-			event.setCanceled(true);
-			playerBoots.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM).ifPresent(h -> h.drain(fluidRequired, FluidAction.EXECUTE));
-			entity.getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(), ElectrodynamicsSounds.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
-		}
-
+    @Override
+    public void handle(LivingDamageEvent event) {
+	LivingEntity entity = event.getEntity();
+	if (!event.getSource().is(DamageTypes.FALL)) {
+	    return;
 	}
+	ItemStack playerBoots = entity.getItemBySlot(EquipmentSlot.FEET);
+
+	if (!ItemUtils.testItems(playerBoots.getItem(), ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get(),
+		ElectrodynamicsItems.ITEM_COMBATBOOTS.get())) {
+	    return;
+	}
+
+	int fluidRequired = (int) Math.log10(event.getAmount());
+
+	if (playerBoots.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM)
+		.map(m -> m.getFluidInTank(0).getAmount() - fluidRequired >= 0).orElse(false)) {
+	    event.setCanceled(true);
+	    playerBoots.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM)
+		    .ifPresent(h -> h.drain(fluidRequired, FluidAction.EXECUTE));
+	    entity.getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(),
+		    ElectrodynamicsSounds.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
+	}
+
+    }
 
 }
