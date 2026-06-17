@@ -19,39 +19,42 @@ import voltaic.prefab.utilities.ItemUtils;
 import voltaic.registers.VoltaicDataComponentTypes;
 
 public class ItemCeramic extends ItemVoltaic {
-	public SubtypeCeramic subtype;
+    public SubtypeCeramic subtype;
 
-	public ItemCeramic(SubtypeCeramic subtype) {
-		super(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN);
-		this.subtype = subtype;
+    public ItemCeramic(SubtypeCeramic subtype) {
+	super(new Item.Properties().stacksTo(64), ElectrodynamicsCreativeTabs.MAIN);
+	this.subtype = subtype;
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+
+	ItemStack handStack = player.getItemInHand(hand);
+
+	if (world.isClientSide || !ItemUtils.testItems(handStack.getItem(),
+		ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate))) {
+	    return InteractionResultHolder.pass(player.getItemInHand(hand));
 	}
 
-	@Override
-	public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
+	List<ItemStack> armorPieces = new ArrayList<>();
+	player.getArmorSlots().forEach(armorPieces::add);
 
-		ItemStack handStack = player.getItemInHand(hand);
-
-		if (world.isClientSide || !ItemUtils.testItems(handStack.getItem(), ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate))) {
-			return InteractionResultHolder.pass(player.getItemInHand(hand));
+	ItemStack chestplate = armorPieces.get(2);
+	if (chestplate.getItem() == ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get()
+		|| chestplate.getItem() == ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()) {
+	    int stored = chestplate.getOrDefault(VoltaicDataComponentTypes.PLATES, 0);
+	    if (stored < 2) {
+		world.playSound(null, player.getOnPos(), ElectrodynamicsSounds.SOUND_CERAMICPLATEADDED.get(),
+			SoundSource.PLAYERS, 1.0F, 1.0F);
+		chestplate.set(VoltaicDataComponentTypes.PLATES, stored + 1);
+		if (!player.isCreative()) {
+		    handStack.shrink(1);
+		    player.setItemInHand(hand, handStack);
 		}
+	    }
 
-		List<ItemStack> armorPieces = new ArrayList<>();
-		player.getArmorSlots().forEach(armorPieces::add);
-
-		ItemStack chestplate = armorPieces.get(2);
-		if (chestplate.getItem() == ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get() || chestplate.getItem() == ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()) {
-			int stored = chestplate.getOrDefault(VoltaicDataComponentTypes.PLATES, 0);
-			if (stored < 2) {
-				world.playSound(null, player.getOnPos(), ElectrodynamicsSounds.SOUND_CERAMICPLATEADDED.get(), SoundSource.PLAYERS, 1.0F, 1.0F);
-				chestplate.set(VoltaicDataComponentTypes.PLATES, stored + 1);
-				if (!player.isCreative()) {
-					handStack.shrink(1);
-					player.setItemInHand(hand, handStack);
-				}
-			}
-
-		}
-		return InteractionResultHolder.pass(player.getItemInHand(hand));
 	}
+	return InteractionResultHolder.pass(player.getItemInHand(hand));
+    }
 
 }

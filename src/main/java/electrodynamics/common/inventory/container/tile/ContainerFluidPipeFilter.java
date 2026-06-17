@@ -10,17 +10,17 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerFluidPipeFilter extends GenericContainerBlockEntity<TileFluidPipeFilter> {
 
-	public ContainerFluidPipeFilter(int id, Inventory playerinv, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEFILTER.get(), id, playerinv, EMPTY, inventorydata);
-	}
+    public ContainerFluidPipeFilter(int id, Inventory playerinv, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEFILTER.get(), id, playerinv, EMPTY, inventorydata);
+    }
 
-	public ContainerFluidPipeFilter(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainerData(3));
-	}
+    public ContainerFluidPipeFilter(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainerData(3));
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
-		setPlayerInvOffset(20);
-	}
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
+	setPlayerInvOffset(20);
+    }
 
 }

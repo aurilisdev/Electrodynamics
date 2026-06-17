@@ -18,33 +18,36 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ContainerQuarry extends GenericContainerBlockEntity<TileQuarry> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.fortune, SubtypeItemUpgrade.silktouch, SubtypeItemUpgrade.unbreaking, SubtypeItemUpgrade.itemvoid };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.fortune,
+	    SubtypeItemUpgrade.silktouch, SubtypeItemUpgrade.unbreaking, SubtypeItemUpgrade.itemvoid };
 
-	public ContainerQuarry(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_QUARRY.get(), id, playerinv, inventory, inventorydata);
-	}
+    public ContainerQuarry(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_QUARRY.get(), id, playerinv, inventory, inventorydata);
+    }
 
-	public ContainerQuarry(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(19), new SimpleContainerData(3));
-	}
+    public ContainerQuarry(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainer(19), new SimpleContainerData(3));
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
-		setPlayerInvOffset(58);
-		addSlot(new SlotRestricted(ScreenComponentSlot.SlotType.NORMAL, ScreenComponentSlot.IconType.DRILL_HEAD_DARK, inv, nextIndex(), 30, 100).setRestriction(ItemDrillHead.class).setIOColor(new Color(0, 240, 255, 255)));
-		for (int i = 0; i < 2; ++i) {
-			for (int j = 0; j < 3; ++j) {
-				addSlot(new SlotQuarryTrashcan(inv, nextIndex(), 85 + j * 18, 26 + i * 18));
-			}
-		}
-		for (int i = 0; i < 3; ++i) {
-			for (int j = 0; j < 3; ++j) {
-				addSlot(new SlotRestricted(inv, nextIndex(), 85 + j * 18, 75 + i * 18).setIOColor(new Color(255, 0, 0, 255)));
-			}
-		}
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 71, VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 91, VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 111, VALID_UPGRADES));
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
+	setPlayerInvOffset(58);
+	addSlot(new SlotRestricted(ScreenComponentSlot.SlotType.NORMAL, ScreenComponentSlot.IconType.DRILL_HEAD_DARK,
+		inv, nextIndex(), 30, 100).setRestriction(ItemDrillHead.class).setIOColor(new Color(0, 240, 255, 255)));
+	for (int i = 0; i < 2; ++i) {
+	    for (int j = 0; j < 3; ++j) {
+		addSlot(new SlotQuarryTrashcan(inv, nextIndex(), 85 + j * 18, 26 + i * 18));
+	    }
 	}
+	for (int i = 0; i < 3; ++i) {
+	    for (int j = 0; j < 3; ++j) {
+		addSlot(new SlotRestricted(inv, nextIndex(), 85 + j * 18, 75 + i * 18)
+			.setIOColor(new Color(255, 0, 0, 255)));
+	    }
+	}
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 71, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 91, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 111, VALID_UPGRADES));
+    }
 
 }

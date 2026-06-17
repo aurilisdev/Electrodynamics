@@ -86,11 +86,7 @@ public class ScreenThermoelectricManipulator extends GenericScreen<ContainerTher
 
 	GenericTileThermoelectricManipulator manipulator = menu.getSafeHost();
 
-	if (manipulator == null) {
-	    return;
-	}
-
-	if (temp.isEmpty()) {
+	if ((manipulator == null) || temp.isEmpty()) {
 	    return;
 	}
 

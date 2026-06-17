@@ -12,36 +12,40 @@ import net.minecraft.world.level.WorldGenLevel;
 
 public class OreGeneration {
 
-	public static void generateSulfurAround(RandomSource random, BlockPos pos, WorldGenLevel level) {
+    public static void generateSulfurAround(RandomSource random, BlockPos pos, WorldGenLevel level) {
 
-		if (ElectrodynamicsConfig.INSTANCE.DISABLE_ALL_ORES.isTrue()) {
-			return;
-		}
-
-		boolean allowSulfur = ElectrodynamicsConfig.INSTANCE.DISABLE_STONE_ORES.isFalse() && ElectrodynamicsConfig.INSTANCE.SPAWN_SULFUR_ORE.isTrue();
-		boolean allowDeepSulfur = ElectrodynamicsConfig.INSTANCE.DISABLE_DEEPSLATE_ORES.isFalse() && ElectrodynamicsConfig.INSTANCE.SPAWN_DEEP_SULFUR_ORE.isTrue();
-
-		if (!allowSulfur && !allowDeepSulfur) {
-			return;
-		}
-
-		for (Direction direction : Direction.values()) {
-
-			if (random.nextFloat() > 0.3) {
-				continue;
-			}
-
-			BlockPos offset = pos.offset(direction.getNormal());
-
-			if (allowSulfur && level.getBlockState(pos).is(BlockTags.STONE_ORE_REPLACEABLES)) {
-
-				level.setBlock(offset, ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.sulfur).defaultBlockState(), 3);
-
-			} else if (allowDeepSulfur && level.getBlockState(pos).is(BlockTags.DEEPSLATE_ORE_REPLACEABLES)) {
-
-				level.setBlock(offset, ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.sulfur).defaultBlockState(), 3);
-
-			}
-		}
+	if (ElectrodynamicsConfig.INSTANCE.DISABLE_ALL_ORES.isTrue()) {
+	    return;
 	}
+
+	boolean allowSulfur = ElectrodynamicsConfig.INSTANCE.DISABLE_STONE_ORES.isFalse()
+		&& ElectrodynamicsConfig.INSTANCE.SPAWN_SULFUR_ORE.isTrue();
+	boolean allowDeepSulfur = ElectrodynamicsConfig.INSTANCE.DISABLE_DEEPSLATE_ORES.isFalse()
+		&& ElectrodynamicsConfig.INSTANCE.SPAWN_DEEP_SULFUR_ORE.isTrue();
+
+	if (!allowSulfur && !allowDeepSulfur) {
+	    return;
+	}
+
+	for (Direction direction : Direction.values()) {
+
+	    if (random.nextFloat() > 0.3) {
+		continue;
+	    }
+
+	    BlockPos offset = pos.offset(direction.getNormal());
+
+	    if (allowSulfur && level.getBlockState(pos).is(BlockTags.STONE_ORE_REPLACEABLES)) {
+
+		level.setBlock(offset, ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.sulfur).defaultBlockState(),
+			3);
+
+	    } else if (allowDeepSulfur && level.getBlockState(pos).is(BlockTags.DEEPSLATE_ORE_REPLACEABLES)) {
+
+		level.setBlock(offset, ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.sulfur)
+			.defaultBlockState(), 3);
+
+	    }
+	}
+    }
 }

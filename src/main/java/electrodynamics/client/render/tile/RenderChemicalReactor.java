@@ -31,264 +31,256 @@ import voltaic.prefab.utilities.math.MathUtils;
 
 public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReactor> {
     public RenderChemicalReactor(BlockEntityRendererProvider.Context context) {
-        super(context);
+	super(context);
     }
 
     @Override
-    public void render(@NotNull TileChemicalReactor tile, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(@NotNull TileChemicalReactor tile, float partialTick, @NotNull PoseStack poseStack,
+	    @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
-        poseStack.pushPose();
+	poseStack.pushPose();
 
-        switch (tile.getFacing()) {
-            case NORTH -> {
-                poseStack.mulPose(MathUtils.rotQuaternionDeg(0, 90, 0));
-                // matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
-                poseStack.translate(-1, 0, 0);
-            }
-            case SOUTH -> {
-                poseStack.mulPose(MathUtils.rotQuaternionDeg(0, 270, 0));
-                // matrixStackIn.mulPose(new Quaternion(0, 270, 0, true));
-                poseStack.translate(0, 0, -1);
-            }
-            case WEST -> {
-                poseStack.mulPose(MathUtils.rotQuaternionDeg(0, 180, 0));
-                // matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
-                poseStack.translate(-1, 0, -1);
-            }
-            default -> {
-            }
-        }
+	switch (tile.getFacing()) {
+	case NORTH -> {
+	    poseStack.mulPose(MathUtils.rotQuaternionDeg(0, 90, 0));
+	    // matrixStackIn.mulPose(new Quaternion(0, 90, 0, true));
+	    poseStack.translate(-1, 0, 0);
+	}
+	case SOUTH -> {
+	    poseStack.mulPose(MathUtils.rotQuaternionDeg(0, 270, 0));
+	    // matrixStackIn.mulPose(new Quaternion(0, 270, 0, true));
+	    poseStack.translate(0, 0, -1);
+	}
+	case WEST -> {
+	    poseStack.mulPose(MathUtils.rotQuaternionDeg(0, 180, 0));
+	    // matrixStackIn.mulPose(new Quaternion(0, 180, 0, true));
+	    poseStack.translate(-1, 0, -1);
+	}
+	default -> {
+	}
+	}
 
-        ComponentProcessor processor = tile.getComponent(IComponentType.Processor);
+	ComponentProcessor processor = tile.getComponent(IComponentType.Processor);
 
-        boolean active = processor.isActive(0);
+	boolean active = processor.isActive(0);
 
-        poseStack.pushPose();
+	poseStack.pushPose();
 
-        poseStack.translate(0.5, 0.5, 0.5);
+	poseStack.translate(0.5, 0.5, 0.5);
 
-        poseStack.translate(0, 1.0, 0);
+	poseStack.translate(0, 1.0, 0);
 
-        float progress = (float) (processor.operatingTicks.getValue()[0] / processor.requiredTicks.getValue()[0]);
+	float progress = (float) (processor.operatingTicks.getValue()[0] / processor.requiredTicks.getValue()[0]);
 
-        float rotation = progress * 90.0F;
+	float rotation = progress * 90.0F;
 
-        poseStack.mulPose(MathUtils.rotVectorQuaternionDeg(rotation, MathUtils.YP));
+	poseStack.mulPose(MathUtils.rotVectorQuaternionDeg(rotation, MathUtils.YP));
 
-        RenderingUtils.renderModel(getModel(ElectrodynamicsClientRegister.MODEL_CHEMICALREACTOR_ROTOR), tile, RenderType.solid(), poseStack, bufferSource, packedLight, packedOverlay);
+	RenderingUtils.renderModel(getModel(ElectrodynamicsClientRegister.MODEL_CHEMICALREACTOR_ROTOR), tile,
+		RenderType.solid(), poseStack, bufferSource, packedLight, packedOverlay);
 
-        poseStack.popPose();
+	poseStack.popPose();
 
+	// TODO
 
-        //TODO
+	poseStack.pushPose();
 
-        poseStack.pushPose();
+	ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
 
-        ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
+	if (tile.hasItemInputs.getValue()) {
 
+	    poseStack.translate(0.5, 0.5, 0.5);
 
-        if (tile.hasItemInputs.getValue()) {
+	    poseStack.translate(0, 0.75, 0);
 
-            poseStack.translate(0.5, 0.5, 0.5);
+	    ItemStack input1 = inv.getItem(0);
+	    ItemStack input2 = inv.getItem(1);
 
-            poseStack.translate(0, 0.75, 0);
+	    poseStack.pushPose();
 
-            ItemStack input1 = inv.getItem(0);
-            ItemStack input2 = inv.getItem(1);
+	    if (!input1.isEmpty()) {
 
-            poseStack.pushPose();
+		if (!input2.isEmpty()) {
+		    poseStack.translate(0.1875, 0, 0.1875);
+		}
 
-            if (!input1.isEmpty()) {
+		renderItem(input1, ItemDisplayContext.GROUND, packedLight, packedOverlay, poseStack, bufferSource,
+			tile.getLevel(), 0);
+	    }
 
-                if (!input2.isEmpty()) {
-                    poseStack.translate(0.1875, 0, 0.1875);
-                }
+	    poseStack.popPose();
 
-                renderItem(input1, ItemDisplayContext.GROUND, packedLight, packedOverlay, poseStack, bufferSource, tile.getLevel(), 0);
-            }
+	    poseStack.pushPose();
 
-            poseStack.popPose();
+	    if (!input2.isEmpty()) {
 
-            poseStack.pushPose();
+		if (!input1.isEmpty()) {
+		    poseStack.translate(-0.1875, 0, -0.1875);
+		}
 
-            if (!input2.isEmpty()) {
+		renderItem(input2, ItemDisplayContext.GROUND, packedLight, packedOverlay, poseStack, bufferSource,
+			tile.getLevel(), 0);
+	    }
 
-                if (!input1.isEmpty()) {
-                    poseStack.translate(-0.1875, 0, -0.1875);
-                }
+	    poseStack.popPose();
 
-                renderItem(input2, ItemDisplayContext.GROUND, packedLight, packedOverlay, poseStack, bufferSource, tile.getLevel(), 0);
-            }
+	}
 
-            poseStack.popPose();
+	poseStack.popPose();
 
+	// render fluids
 
-        }
+	if (tile.hasFluidInputs.getValue()) {
 
-        poseStack.popPose();
+	    ComponentFluidHandlerMulti multi = tile.getComponent(IComponentType.FluidHandler);
 
-        //render fluids
+	    PropertyFluidTank[] tanks = multi.getInputTanks();
 
+	    poseStack.pushPose();
 
-        if (tile.hasFluidInputs.getValue()) {
+	    FluidStack stack1 = tanks[0].getFluid();
+	    FluidStack stack2 = tanks[1].getFluid();
 
-            ComponentFluidHandlerMulti multi = tile.getComponent(IComponentType.FluidHandler);
+	    if (tile.hasItemInputs.getValue() && active && tile.getLevel().random.nextDouble() < 0.4) {
 
-            PropertyFluidTank[] tanks = multi.getInputTanks();
+		Color color = null;
 
-            poseStack.pushPose();
+		if (stack1.isEmpty() && !stack2.isEmpty()) {
+		    IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack2.getFluid());
 
-            FluidStack stack1 = tanks[0].getFluid();
-            FluidStack stack2 = tanks[1].getFluid();
+		    TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+			    .apply(attributes.getStillTexture());
 
-            if (tile.hasItemInputs.getValue() && active && tile.getLevel().random.nextDouble() < 0.4) {
+		    color = new Color(sp.getPixelRGBA(0, 5, 5));
+		    color = color.multiply(new Color(attributes.getTintColor()));
+		} else if ((stack2.isEmpty() && !stack1.isEmpty()) || (Voltaic.RANDOM.nextBoolean() && !stack1.isEmpty())) {
 
-                Color color = null;
+		    IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack1.getFluid());
 
-                if (stack1.isEmpty() && !stack2.isEmpty()) {
-                    IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack2.getFluid());
+		    TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+			    .apply(attributes.getStillTexture());
 
-                    TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(attributes.getStillTexture());
+		    color = new Color(sp.getPixelRGBA(0, 5, 5));
+		    color = color.multiply(new Color(attributes.getTintColor()));
 
-                    color = new Color(sp.getPixelRGBA(0, 5, 5));
-                    color = color.multiply(new Color(attributes.getTintColor()));
-                } else if (stack2.isEmpty() && !stack1.isEmpty()) {
+		} else if (!stack2.isEmpty()) {
+		IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack2.getFluid());
 
-                    IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack1.getFluid());
+		TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+			.apply(attributes.getStillTexture());
 
-                    TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(attributes.getStillTexture());
+		color = new Color(sp.getPixelRGBA(0, 5, 5));
+		color = color.multiply(new Color(attributes.getTintColor()));
+		}
 
-                    color = new Color(sp.getPixelRGBA(0, 5, 5));
-                    color = color.multiply(new Color(attributes.getTintColor()));
+		double x = tile.getBlockPos().getX();
+		double y = tile.getBlockPos().getY();
+		double z = tile.getBlockPos().getZ();
 
-                } else {
+		x += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
+		y += 1.6875;// Voltaic.RANDOM.nextDouble(0.375) + 1.3125;
+		z += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
 
-                    if (Voltaic.RANDOM.nextBoolean() && !stack1.isEmpty()) {
-                        IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack1.getFluid());
+		if (color != null) {
+		    minecraft().particleEngine.createParticle(new ParticleOptionFluidDrop()
+			    .setParameters(color.rFloat(), color.gFloat(), color.bFloat(), 0.5F), x, y, z, 0, -0.1, 0);
+		}
 
-                        TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(attributes.getStillTexture());
+	    } else if (!tile.hasItemInputs.getValue()) {
 
-                        color = new Color(sp.getPixelRGBA(0, 5, 5));
-                        color = color.multiply(new Color(attributes.getTintColor()));
-                    } else if (!stack2.isEmpty()) {
-                        IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack2.getFluid());
+		if (stack1.isEmpty() && !stack2.isEmpty()) {
+		    poseStack.translate(0, 1, 0);
+		    RenderingUtils.renderFluidBox(poseStack, minecraft(),
+			    bufferSource.getBuffer(RenderType.translucentMovingBlock()),
+			    new AABB(0.0625, 0.25, 0.0625, 0.9375, 1, 0.9375), stack2, packedLight, packedOverlay,
+			    RenderingUtils.ALL_FACES);
+		} else if (stack2.isEmpty() && !stack1.isEmpty()) {
+		    poseStack.translate(0, 1, 0);
+		    RenderingUtils.renderFluidBox(poseStack, minecraft(),
+			    bufferSource.getBuffer(RenderType.translucentMovingBlock()),
+			    new AABB(0.0625, 0.25, 0.0625, 0.9375, 1, 0.9375), stack1, packedLight, packedOverlay,
+			    RenderingUtils.ALL_FACES);
+		} else if (!stack1.isEmpty() && !stack2.isEmpty()) {
 
-                        TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(attributes.getStillTexture());
+		    poseStack.pushPose();
+		    poseStack.translate(0, 1, 0);
+		    RenderingUtils.renderFluidBox(poseStack, minecraft(),
+			    bufferSource.getBuffer(RenderType.translucentMovingBlock()),
+			    new AABB(0.0625, 0.25, 0.0625, 0.9375, 1, 0.9375), stack1, packedLight, packedOverlay,
+			    RenderingUtils.ALL_FACES);
+		    poseStack.popPose();
+		    if (!stack2.isEmpty() && tile.getLevel().getRandom().nextDouble() < 0.1) {
 
-                        color = new Color(sp.getPixelRGBA(0, 5, 5));
-                        color = color.multiply(new Color(attributes.getTintColor()));
-                    }
+			double x = tile.getBlockPos().getX();
+			double y = tile.getBlockPos().getY();
+			double z = tile.getBlockPos().getZ();
 
-                }
+			x += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
+			y += Voltaic.RANDOM.nextDouble(0.375) + 1.3125;
+			z += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
 
+			minecraft().particleEngine.createParticle(ParticleTypes.BUBBLE, x, y, z, 0, 0, 0);
 
-                double x = tile.getBlockPos().getX();
-                double y = tile.getBlockPos().getY();
-                double z = tile.getBlockPos().getZ();
+		    }
 
-                x += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
-                y += 1.6875;//Voltaic.RANDOM.nextDouble(0.375) + 1.3125;
-                z += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
+		}
 
-                if(color != null) {
-                    minecraft().particleEngine.createParticle(new ParticleOptionFluidDrop().setParameters(color.rFloat(), color.gFloat(), color.bFloat(), 0.5F), x, y, z, 0, -0.1, 0);
-                }
+	    }
 
-            } else if (!tile.hasItemInputs.getValue()) {
+	    poseStack.popPose();
 
-                if (stack1.isEmpty() && !stack2.isEmpty()) {
-                    poseStack.translate(0, 1, 0);
-                    RenderingUtils.renderFluidBox(poseStack, minecraft(), bufferSource.getBuffer(RenderType.translucentMovingBlock()), new AABB(0.0625, 0.25, 0.0625, 0.9375, 1, 0.9375), stack2, packedLight, packedOverlay, RenderingUtils.ALL_FACES);
-                } else if (stack2.isEmpty() && !stack1.isEmpty()) {
-                    poseStack.translate(0, 1, 0);
-                    RenderingUtils.renderFluidBox(poseStack, minecraft(), bufferSource.getBuffer(RenderType.translucentMovingBlock()), new AABB(0.0625, 0.25, 0.0625, 0.9375, 1, 0.9375), stack1, packedLight, packedOverlay, RenderingUtils.ALL_FACES);
-                } else if (!stack1.isEmpty() && !stack2.isEmpty()) {
+	}
 
-                    poseStack.pushPose();
-                    poseStack.translate(0, 1, 0);
-                    RenderingUtils.renderFluidBox(poseStack, minecraft(), bufferSource.getBuffer(RenderType.translucentMovingBlock()), new AABB(0.0625, 0.25, 0.0625, 0.9375, 1, 0.9375), stack1, packedLight, packedOverlay, RenderingUtils.ALL_FACES);
-                    poseStack.popPose();
-                    if (!stack2.isEmpty() && tile.getLevel().getRandom().nextDouble() < 0.1) {
+	// render gases
 
-                        double x = tile.getBlockPos().getX();
-                        double y = tile.getBlockPos().getY();
-                        double z = tile.getBlockPos().getZ();
+	poseStack.pushPose();
 
-                        x += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
-                        y += Voltaic.RANDOM.nextDouble(0.375) + 1.3125;
-                        z += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
+	if (tile.hasGasInputs.getValue() && active && tile.getLevel().getRandom().nextDouble() < 0.8) {
 
-                        minecraft().particleEngine.createParticle(ParticleTypes.BUBBLE, x, y, z, 0, 0, 0);
+	    double x = tile.getBlockPos().getX();
+	    double y = tile.getBlockPos().getY();
+	    double z = tile.getBlockPos().getZ();
 
-                    }
+	    y += 1.25;
 
+	    if (Voltaic.RANDOM.nextBoolean()) {
 
-                }
+		x += Voltaic.RANDOM.nextDouble(0.875) + 0.0625;
 
+		if (Voltaic.RANDOM.nextBoolean()) {
+		    z += Voltaic.RANDOM.nextDouble(0.125) + 0.0625;
+		} else {
+		    z += Voltaic.RANDOM.nextDouble(0.125) + 0.8125;
+		}
 
-            }
+	    } else {
+		z += Voltaic.RANDOM.nextDouble(0.875) + 0.0625;
 
-            poseStack.popPose();
+		if (Voltaic.RANDOM.nextBoolean()) {
+		    x += Voltaic.RANDOM.nextDouble(0.125) + 0.0625;
+		} else {
+		    x += Voltaic.RANDOM.nextDouble(0.125) + 0.8125;
+		}
+	    }
 
+	    // x += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
+	    // y += 1.6875;//Voltaic.RANDOM.nextDouble(0.375) + 1.3125;
+	    // z += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
 
-        }
+	    minecraft().particleEngine.createParticle(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
 
+	}
 
-        //render gases
+	poseStack.popPose();
 
-        poseStack.pushPose();
+	// end
 
-        if (tile.hasGasInputs.getValue() && active && tile.getLevel().getRandom().nextDouble() < 0.8) {
-
-            double x = tile.getBlockPos().getX();
-            double y = tile.getBlockPos().getY();
-            double z = tile.getBlockPos().getZ();
-
-            y += 1.25;
-
-            if (Voltaic.RANDOM.nextBoolean()) {
-
-                x += Voltaic.RANDOM.nextDouble(0.875) + 0.0625;
-
-                if (Voltaic.RANDOM.nextBoolean()) {
-                    z += Voltaic.RANDOM.nextDouble(0.125) + 0.0625;
-                } else {
-                    z += Voltaic.RANDOM.nextDouble(0.125) + 0.8125;
-                }
-
-
-            } else {
-                z += Voltaic.RANDOM.nextDouble(0.875) + 0.0625;
-
-                if (Voltaic.RANDOM.nextBoolean()) {
-                    x += Voltaic.RANDOM.nextDouble(0.125) + 0.0625;
-                } else {
-                    x += Voltaic.RANDOM.nextDouble(0.125) + 0.8125;
-                }
-            }
-
-
-            //x += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
-            //y += 1.6875;//Voltaic.RANDOM.nextDouble(0.375) + 1.3125;
-            //z += Voltaic.RANDOM.nextDouble(0.5) + 0.25;
-
-            minecraft().particleEngine.createParticle(ParticleTypes.SMOKE, x, y, z, 0, 0, 0);
-
-        }
-
-
-        poseStack.popPose();
-
-
-        //end
-
-        poseStack.popPose();
-
+	poseStack.popPose();
 
     }
 
     @Override
     public AABB getRenderBoundingBox(TileChemicalReactor blockEntity) {
-        return super.getRenderBoundingBox(blockEntity).expandTowards(0, 2, 0);
+	return super.getRenderBoundingBox(blockEntity).expandTowards(0, 2, 0);
     }
 }

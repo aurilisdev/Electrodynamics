@@ -18,17 +18,21 @@ public class ElectrolosisChamberRecipe extends Fluid2FluidRecipe {
 
     public static final String RECIPE_GROUP = "electrolosis_chamber_recipe";
     public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
-    public ElectrolosisChamberRecipe(String recipeGroup, List<FluidIngredient> inputFluids, FluidStack outputFluid, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
-        super(recipeGroup, inputFluids, outputFluid, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
+
+    public ElectrolosisChamberRecipe(String recipeGroup, List<FluidIngredient> inputFluids, FluidStack outputFluid,
+	    double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts,
+	    List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
+	super(recipeGroup, inputFluids, outputFluid, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts,
+		gasBiproducts);
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_SERIALIZER.get();
+	return ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_TYPE.get();
+	return ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_TYPE.get();
     }
 }

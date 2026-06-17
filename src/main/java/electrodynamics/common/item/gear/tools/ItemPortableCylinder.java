@@ -35,94 +35,111 @@ public class ItemPortableCylinder extends ItemVoltaic {
     public static final List<InventoryTickConsumer> INVENTORY_TICK_CONSUMERS = new ArrayList<>();
 
     public ItemPortableCylinder(Properties properties, Holder<CreativeModeTab> creativeTab) {
-        super(properties, creativeTab);
+	super(properties, creativeTab);
     }
 
     @Override
     public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
-        items.add(new ItemStack(this));
+	items.add(new ItemStack(this));
 
-        if (VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM == null) {
-            return;
-        }
+	if (VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM == null) {
+	    return;
+	}
 
-        VoltaicGases.GAS_REGISTRY.stream().forEach(gas -> {
-            if (gas.isEmpty()) {
-                return;
-            }
-            ItemStack temp = new ItemStack(this);
+	VoltaicGases.GAS_REGISTRY.stream().forEach(gas -> {
+	    if (gas.isEmpty()) {
+		return;
+	    }
+	    ItemStack temp = new ItemStack(this);
 
-            IGasHandlerItem handler = temp.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	    IGasHandlerItem handler = temp.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-            if (handler == null) {
-                return;
-            }
+	    if (handler == null) {
+		return;
+	    }
 
-            GasHandlerItemStack cap = (GasHandlerItemStack) handler;
+	    GasHandlerItemStack cap = (GasHandlerItemStack) handler;
 
-            cap.setGas(new GasStack(gas, MAX_GAS_CAPCITY, gas.getCondensationTemp() >= Gas.ROOM_TEMPERATURE ? gas.getCondensationTemp() + 1 : Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL));
+	    cap.setGas(new GasStack(gas, MAX_GAS_CAPCITY,
+		    gas.getCondensationTemp() >= Gas.ROOM_TEMPERATURE ? gas.getCondensationTemp() + 1
+			    : Gas.ROOM_TEMPERATURE,
+		    Gas.PRESSURE_AT_SEA_LEVEL));
 
-            items.add(temp);
-        });
+	    items.add(temp);
+	});
 
     }
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
-        super.inventoryTick(stack, level, entity, slot, isSelected);
-        INVENTORY_TICK_CONSUMERS.forEach(consumer -> consumer.apply(stack, level, entity, slot, isSelected));
+	super.inventoryTick(stack, level, entity, slot, isSelected);
+	INVENTORY_TICK_CONSUMERS.forEach(consumer -> consumer.apply(stack, level, entity, slot, isSelected));
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltips, TooltipFlag isAdvanced) {
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltips,
+	    TooltipFlag isAdvanced) {
 
-        IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-        if (handler == null) {
-            super.appendHoverText(stack, context, tooltips, isAdvanced);
-            return;
-        }
+	if (handler == null) {
+	    super.appendHoverText(stack, context, tooltips, isAdvanced);
+	    return;
+	}
 
-        GasStack gas = handler.getGasInTank(0);
-        if (gas.isEmpty()) {
-            tooltips.add(VoltaicTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(MAX_GAS_CAPCITY)).withStyle(ChatFormatting.DARK_GRAY));
-        } else {
-            tooltips.add(gas.getGas().getDescription().copy().withStyle(ChatFormatting.GRAY));
-            tooltips.add(VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_GAS_CAPCITY)).withStyle(ChatFormatting.DARK_GRAY));
-            tooltips.add(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnits.TEMPERATURE_KELVIN).withStyle(ChatFormatting.DARK_GRAY));
-            tooltips.add(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnits.PRESSURE_ATM).withStyle(ChatFormatting.DARK_GRAY));
-        }
-        if (Screen.hasShiftDown()) {
-            tooltips.add(ElectroTextUtils.tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnits.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
-            tooltips.add(ElectroTextUtils.tooltip("maxtemperature", ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnits.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
-        }
-        super.appendHoverText(stack, context, tooltips, isAdvanced);
+	GasStack gas = handler.getGasInTank(0);
+	if (gas.isEmpty()) {
+	    tooltips.add(VoltaicTextUtils
+		    .ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(MAX_GAS_CAPCITY))
+		    .withStyle(ChatFormatting.DARK_GRAY));
+	} else {
+	    tooltips.add(gas.getGas().getDescription().copy().withStyle(ChatFormatting.GRAY));
+	    tooltips.add(
+		    VoltaicTextUtils
+			    .ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()),
+				    ChatFormatter.formatFluidMilibuckets(MAX_GAS_CAPCITY))
+			    .withStyle(ChatFormatting.DARK_GRAY));
+	    tooltips.add(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnits.TEMPERATURE_KELVIN)
+		    .withStyle(ChatFormatting.DARK_GRAY));
+	    tooltips.add(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnits.PRESSURE_ATM)
+		    .withStyle(ChatFormatting.DARK_GRAY));
+	}
+	if (Screen.hasShiftDown()) {
+	    tooltips.add(ElectroTextUtils
+		    .tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnits.PRESSURE_ATM))
+		    .withStyle(ChatFormatting.GRAY));
+	    tooltips.add(ElectroTextUtils
+		    .tooltip("maxtemperature",
+			    ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnits.TEMPERATURE_KELVIN))
+		    .withStyle(ChatFormatting.GRAY));
+	}
+	super.appendHoverText(stack, context, tooltips, isAdvanced);
     }
 
     @Override
     public int getBarWidth(ItemStack stack) {
 
-        IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-        if (handler == null) {
-            return 13;
-        }
+	if (handler == null) {
+	    return 13;
+	}
 
-        return (int) (13.0 * handler.getGasInTank(0).getAmount() / handler.getTankCapacity(0));
+	return (int) (13.0 * handler.getGasInTank(0).getAmount() / handler.getTankCapacity(0));
 
     }
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
 
-        IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-        if (handler == null) {
-            return false;
-        }
+	if (handler == null) {
+	    return false;
+	}
 
-        return !handler.getGasInTank(0).isEmpty();
+	return !handler.getGasInTank(0).isEmpty();
 
     }
 

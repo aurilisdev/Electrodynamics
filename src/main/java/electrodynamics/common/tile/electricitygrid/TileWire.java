@@ -11,33 +11,33 @@ import voltaic.prefab.properties.variant.SingleProperty;
 
 public class TileWire extends GenericTileWire {
 
-	public SingleProperty<Double> transmit = property(new SingleProperty<>(PropertyTypes.DOUBLE, "transmit", 0.0));
+    public SingleProperty<Double> transmit = property(new SingleProperty<>(PropertyTypes.DOUBLE, "transmit", 0.0));
 
-	public IWire wire = null;
-	public IWire.IWireColor color = null;
+    public IWire wire = null;
+    public IWire.IWireColor color = null;
 
-	public TileWire(BlockPos pos, BlockState state) {
-		super(ElectrodynamicsTiles.TILE_WIRE.get(), pos, state);
+    public TileWire(BlockPos pos, BlockState state) {
+	super(ElectrodynamicsTiles.TILE_WIRE.get(), pos, state);
+    }
+
+    public TileWire(BlockEntityType<?> tileEntityType, BlockPos pos, BlockState state) {
+	super(tileEntityType, pos, state);
+    }
+
+    @Override
+    public IWire getCableType() {
+	if (wire == null) {
+	    wire = ((BlockWire) getBlockState().getBlock()).wire;
 	}
+	return wire;
+    }
 
-	public TileWire(BlockEntityType<?> tileEntityType, BlockPos pos, BlockState state) {
-		super(tileEntityType, pos, state);
+    @Override
+    public IWire.IWireColor getWireColor() {
+	if (color == null) {
+	    color = ((BlockWire) getBlockState().getBlock()).wire.getWireColor();
 	}
-
-	@Override
-	public IWire getCableType() {
-		if (wire == null) {
-			wire = ((BlockWire) getBlockState().getBlock()).wire;
-		}
-		return wire;
-	}
-
-	@Override
-	public IWire.IWireColor getWireColor() {
-		if (color == null) {
-			color = ((BlockWire) getBlockState().getBlock()).wire.getWireColor();
-		}
-		return color;
-	}
+	return color;
+    }
 
 }

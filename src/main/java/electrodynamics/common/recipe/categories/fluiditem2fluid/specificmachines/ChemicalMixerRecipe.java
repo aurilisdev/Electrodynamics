@@ -20,18 +20,21 @@ public class ChemicalMixerRecipe extends FluidItem2FluidRecipe {
     public static final String RECIPE_GROUP = "chemical_mixer_recipe";
     public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
 
-    public ChemicalMixerRecipe(String group, List<CountableIngredient> inputItems, List<FluidIngredient> inputFluids, FluidStack outputFluid, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
-        super(group, inputItems, inputFluids, outputFluid, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
+    public ChemicalMixerRecipe(String group, List<CountableIngredient> inputItems, List<FluidIngredient> inputFluids,
+	    FluidStack outputFluid, double experience, int ticks, double usagePerTick,
+	    List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
+	super(group, inputItems, inputFluids, outputFluid, experience, ticks, usagePerTick, itemBiproducts,
+		fluidBiproducts, gasBiproducts);
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ElectrodynamicsRecipies.CHEMICAL_MIXER_SERIALIZER.get();
+	return ElectrodynamicsRecipies.CHEMICAL_MIXER_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ElectrodynamicsRecipies.CHEMICAL_MIXER_TYPE.get();
+	return ElectrodynamicsRecipies.CHEMICAL_MIXER_TYPE.get();
     }
 
 }

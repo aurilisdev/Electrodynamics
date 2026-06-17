@@ -37,121 +37,128 @@ public class ChemicalReactorRecipe extends AbstractMaterialRecipe {
     private FluidStack fluidOutput;
     private GasStack gasOutput;
 
-    public ChemicalReactorRecipe(String recipeGroup, List<CountableIngredient> inputItems, List<FluidIngredient> inputFluids, List<GasIngredient> inputGases, ItemStack itemOutput, FluidStack fluidOutput, GasStack gasOutput, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
-        super(recipeGroup, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
-        if (inputItems.size() == 0 && inputGases.size() == 0 && inputFluids.size() == 0) {
-            throw new RuntimeException("Yoou have created a chemical reactor recipe with no inputs");
-        }
-        if (itemOutput.isEmpty() && fluidOutput.isEmpty() && gasOutput.isEmpty()) {
-            throw new RuntimeException("You have created a chemical reactor recipe with no outputs");
-        }
-        this.itemIngredients = inputItems;
-        this.fluidIngredients = inputFluids;
-        this.gasIngredients = inputGases;
-        this.itemOutput = itemOutput;
-        this.fluidOutput = fluidOutput;
-        this.gasOutput = gasOutput;
+    public ChemicalReactorRecipe(String recipeGroup, List<CountableIngredient> inputItems,
+	    List<FluidIngredient> inputFluids, List<GasIngredient> inputGases, ItemStack itemOutput,
+	    FluidStack fluidOutput, GasStack gasOutput, double experience, int ticks, double usagePerTick,
+	    List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
+	super(recipeGroup, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
+	if (inputItems.size() == 0 && inputGases.size() == 0 && inputFluids.size() == 0) {
+	    throw new RuntimeException("Yoou have created a chemical reactor recipe with no inputs");
+	}
+	if (itemOutput.isEmpty() && fluidOutput.isEmpty() && gasOutput.isEmpty()) {
+	    throw new RuntimeException("You have created a chemical reactor recipe with no outputs");
+	}
+	this.itemIngredients = inputItems;
+	this.fluidIngredients = inputFluids;
+	this.gasIngredients = inputGases;
+	this.itemOutput = itemOutput;
+	this.fluidOutput = fluidOutput;
+	this.gasOutput = gasOutput;
 
     }
 
     @Override
     public boolean matchesRecipe(ComponentProcessor pr, int index) {
 
-        int valid = 0b000;
+	int valid = 0b000;
 
-        if (hasItemInputs()) {
-            Pair<List<Integer>, Boolean> itemPair = areItemsValid(getCountedIngredients(), ((ComponentInventory) pr.getHolder().getComponent(IComponentType.Inventory)).getInputsForProcessor(index));
-            if (itemPair.getSecond()) {
-                setItemArrangement(index, itemPair.getFirst());
-                valid = valid | 1 << 2;
-            } else {
-                return false;
-            }
-        }
+	if (hasItemInputs()) {
+	    Pair<List<Integer>, Boolean> itemPair = areItemsValid(getCountedIngredients(),
+		    ((ComponentInventory) pr.getHolder().getComponent(IComponentType.Inventory))
+			    .getInputsForProcessor(index));
+	    if (itemPair.getSecond()) {
+		setItemArrangement(index, itemPair.getFirst());
+		valid = valid | 1 << 2;
+	    } else {
+		return false;
+	    }
+	}
 
-        if (hasFluidInputs()) {
-            Pair<List<Integer>, Boolean> fluidPair = areFluidsValid(getFluidIngredients(), pr.getHolder().<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks());
-            if (fluidPair.getSecond()) {
-                setFluidArrangement(fluidPair.getFirst());
-                valid = valid | 1 << 1;
-            } else {
-                return false;
-            }
-        }
+	if (hasFluidInputs()) {
+	    Pair<List<Integer>, Boolean> fluidPair = areFluidsValid(getFluidIngredients(), pr.getHolder()
+		    .<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks());
+	    if (fluidPair.getSecond()) {
+		setFluidArrangement(fluidPair.getFirst());
+		valid = valid | 1 << 1;
+	    } else {
+		return false;
+	    }
+	}
 
-        if (hasGasInputs()) {
-            Pair<List<Integer>, Boolean> gasPair = areGasesValid(getGasIngredients(), pr.getHolder().<ComponentGasHandlerMulti>getComponent(IComponentType.GasHandler).getInputTanks());
-            if (gasPair.getSecond()) {
-                setGasArrangement(gasPair.getFirst());
-                valid = valid | 1 << 0;
-            } else {
-                return false;
-            }
-        }
+	if (hasGasInputs()) {
+	    Pair<List<Integer>, Boolean> gasPair = areGasesValid(getGasIngredients(),
+		    pr.getHolder().<ComponentGasHandlerMulti>getComponent(IComponentType.GasHandler).getInputTanks());
+	    if (gasPair.getSecond()) {
+		setGasArrangement(gasPair.getFirst());
+		valid = valid | 1 << 0;
+	    } else {
+		return false;
+	    }
+	}
 
-        return valid > 0;
+	return valid > 0;
     }
 
     public boolean hasItemInputs() {
-        return getCountedIngredients().size() > 0;
+	return getCountedIngredients().size() > 0;
     }
 
     public boolean hasFluidInputs() {
-        return getFluidIngredients().size() > 0;
+	return getFluidIngredients().size() > 0;
     }
 
     public boolean hasGasInputs() {
-        return getGasIngredients().size() > 0;
+	return getGasIngredients().size() > 0;
     }
 
     public List<CountableIngredient> getCountedIngredients() {
-        return itemIngredients;
+	return itemIngredients;
     }
 
     @Override
     public List<FluidIngredient> getFluidIngredients() {
-        return fluidIngredients;
+	return fluidIngredients;
     }
 
     @Override
     public List<GasIngredient> getGasIngredients() {
-        return gasIngredients;
+	return gasIngredients;
     }
 
     public boolean hasItemOutput() {
-        return !getItemRecipeOutput().isEmpty();
+	return !getItemRecipeOutput().isEmpty();
     }
 
     public boolean hasFluidOutput() {
-        return !getFluidRecipeOutput().isEmpty();
+	return !getFluidRecipeOutput().isEmpty();
     }
 
     public boolean hasGasOutput() {
-        return !getGasRecipeOutput().isEmpty();
+	return !getGasRecipeOutput().isEmpty();
     }
 
     @Override
     public ItemStack getItemRecipeOutput() {
-        return itemOutput;
+	return itemOutput;
     }
 
     @Override
     public FluidStack getFluidRecipeOutput() {
-        return fluidOutput;
+	return fluidOutput;
     }
 
     @Override
     public GasStack getGasRecipeOutput() {
-        return gasOutput;
+	return gasOutput;
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ElectrodynamicsRecipies.CHEMICAL_REACTOR_SERIALIZER.get();
+	return ElectrodynamicsRecipies.CHEMICAL_REACTOR_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ElectrodynamicsRecipies.CHEMICAL_REACTOR_TYPE.get();
+	return ElectrodynamicsRecipies.CHEMICAL_REACTOR_TYPE.get();
     }
 }

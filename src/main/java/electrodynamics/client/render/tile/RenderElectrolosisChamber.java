@@ -28,237 +28,214 @@ public class RenderElectrolosisChamber extends AbstractTileRenderer<TileElectrol
     private final static AABB RENDER_SOUTH = new AABB(1, -1, 2, -4, 2, -3).inflate(2);
     private final static AABB RENDER_WEST = new AABB(0, -1, 2, -5, 2, -3).inflate(2);
 
-    private static final BlockPos[] POSITION_NORTH = {
-            new BlockPos(1, 0, 3),
-            new BlockPos(1, 0, 2),
-            new BlockPos(1, 0, 1),
-            new BlockPos(0, 0, 3),
-            new BlockPos(0, 0, 2),
-            new BlockPos(0, 0, 1),
-            new BlockPos(-1, 0, 3),
-            new BlockPos(-1, 0, 2),
-            new BlockPos(-1, 0, 1)
-    };
+    private static final BlockPos[] POSITION_NORTH = { new BlockPos(1, 0, 3), new BlockPos(1, 0, 2),
+	    new BlockPos(1, 0, 1), new BlockPos(0, 0, 3), new BlockPos(0, 0, 2), new BlockPos(0, 0, 1),
+	    new BlockPos(-1, 0, 3), new BlockPos(-1, 0, 2), new BlockPos(-1, 0, 1) };
 
-    private static final BlockPos[] POSITION_EAST = {
-            new BlockPos(-1, 0, 1),
-            new BlockPos(-1, 0, 0),
-            new BlockPos(-1, 0, -1),
-            new BlockPos(-2, 0, 1),
-            new BlockPos(-2, 0, 0),
-            new BlockPos(-2, 0, -1),
-            new BlockPos(-3, 0, 1),
-            new BlockPos(-3, 0, 0),
-            new BlockPos(-3, 0, -1),
-    };
+    private static final BlockPos[] POSITION_EAST = { new BlockPos(-1, 0, 1), new BlockPos(-1, 0, 0),
+	    new BlockPos(-1, 0, -1), new BlockPos(-2, 0, 1), new BlockPos(-2, 0, 0), new BlockPos(-2, 0, -1),
+	    new BlockPos(-3, 0, 1), new BlockPos(-3, 0, 0), new BlockPos(-3, 0, -1), };
 
-    private static final BlockPos[] POSITION_SOUTH = {
-            new BlockPos(1, 0, -1),
-            new BlockPos(1, 0, -2),
-            new BlockPos(1, 0, -3),
-            new BlockPos(0, 0, -1),
-            new BlockPos(0, 0, -2),
-            new BlockPos(0, 0, -3),
-            new BlockPos(-1, 0, -1),
-            new BlockPos(-1, 0, -2),
-            new BlockPos(-1, 0, -3),
-    };
+    private static final BlockPos[] POSITION_SOUTH = { new BlockPos(1, 0, -1), new BlockPos(1, 0, -2),
+	    new BlockPos(1, 0, -3), new BlockPos(0, 0, -1), new BlockPos(0, 0, -2), new BlockPos(0, 0, -3),
+	    new BlockPos(-1, 0, -1), new BlockPos(-1, 0, -2), new BlockPos(-1, 0, -3), };
 
-    private static final BlockPos[] POSITION_WEST = {
-            new BlockPos(3, 0, 1),
-            new BlockPos(3, 0, 0),
-            new BlockPos(3, 0, -1),
-            new BlockPos(2, 0, 1),
-            new BlockPos(2, 0, 0),
-            new BlockPos(2, 0, -1),
-            new BlockPos(1, 0, 1),
-            new BlockPos(1, 0, 0),
-            new BlockPos(1, 0, -1),
-    };
+    private static final BlockPos[] POSITION_WEST = { new BlockPos(3, 0, 1), new BlockPos(3, 0, 0),
+	    new BlockPos(3, 0, -1), new BlockPos(2, 0, 1), new BlockPos(2, 0, 0), new BlockPos(2, 0, -1),
+	    new BlockPos(1, 0, 1), new BlockPos(1, 0, 0), new BlockPos(1, 0, -1), };
 
     private static final Pair[] FLUID_NORTH = {
-            //
-            Pair.of(new AABB(POSITION_NORTH[0]), new boolean[]{false, true, false, true, false, true}),
-            //
-            Pair.of(new AABB(POSITION_NORTH[1]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_NORTH[2]), new boolean[]{false, true, true, false, false, true}),
-            //
-            Pair.of(new AABB(POSITION_NORTH[3]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_NORTH[4]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_NORTH[5]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_NORTH[6]), new boolean[]{false, true, false, true, true, false}),
-            //
-            Pair.of(new AABB(POSITION_NORTH[7]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_NORTH[8]), new boolean[]{false, true, true, false, true, false}),}; //new AABB(-1, 0, 2, -4, 1, -1)
+	    //
+	    Pair.of(new AABB(POSITION_NORTH[0]), new boolean[] { false, true, false, true, false, true }),
+	    //
+	    Pair.of(new AABB(POSITION_NORTH[1]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_NORTH[2]), new boolean[] { false, true, true, false, false, true }),
+	    //
+	    Pair.of(new AABB(POSITION_NORTH[3]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_NORTH[4]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_NORTH[5]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_NORTH[6]), new boolean[] { false, true, false, true, true, false }),
+	    //
+	    Pair.of(new AABB(POSITION_NORTH[7]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_NORTH[8]), new boolean[] { false, true, true, false, true, false }), }; // new
+													      // AABB(-1,
+													      // 0, 2,
+													      // -4, 1,
+													      // -1)
     private static final Pair[] FLUID_EAST = {
-            //
-            Pair.of(new AABB(POSITION_EAST[0]), new boolean[]{false, true, false, true, false, true}),
-            //
-            Pair.of(new AABB(POSITION_EAST[1]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_EAST[2]), new boolean[]{false, true, true, false, false, true}),
-            //
-            Pair.of(new AABB(POSITION_EAST[3]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_EAST[4]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_EAST[5]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_EAST[6]), new boolean[]{false, true, false, true, true, false}),
-            //
-            Pair.of(new AABB(POSITION_EAST[7]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_EAST[8]), new boolean[]{false, true, true, false, true, false})};// new AABB(0, 0, 2, -3, 1, -1)
+	    //
+	    Pair.of(new AABB(POSITION_EAST[0]), new boolean[] { false, true, false, true, false, true }),
+	    //
+	    Pair.of(new AABB(POSITION_EAST[1]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_EAST[2]), new boolean[] { false, true, true, false, false, true }),
+	    //
+	    Pair.of(new AABB(POSITION_EAST[3]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_EAST[4]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_EAST[5]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_EAST[6]), new boolean[] { false, true, false, true, true, false }),
+	    //
+	    Pair.of(new AABB(POSITION_EAST[7]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_EAST[8]), new boolean[] { false, true, true, false, true, false }) };// new
+													   // AABB(0, 0,
+													   // 2, -3, 1,
+													   // -1)
     private static final Pair[] FLUID_SOUTH = {
-            //
-            Pair.of(new AABB(POSITION_SOUTH[0]), new boolean[]{false, true, false, true, false, true}),
-            //
-            Pair.of(new AABB(POSITION_SOUTH[1]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_SOUTH[2]), new boolean[]{false, true, true, false, false, true}),
-            //
-            Pair.of(new AABB(POSITION_SOUTH[3]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_SOUTH[4]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_SOUTH[5]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_SOUTH[6]), new boolean[]{false, true, false, true, true, false}),
-            //
-            Pair.of(new AABB(POSITION_SOUTH[7]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_SOUTH[8]), new boolean[]{false, true, true, false, true, false}),}; //new AABB(0, 0, 1, -3, 1, -2)
+	    //
+	    Pair.of(new AABB(POSITION_SOUTH[0]), new boolean[] { false, true, false, true, false, true }),
+	    //
+	    Pair.of(new AABB(POSITION_SOUTH[1]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_SOUTH[2]), new boolean[] { false, true, true, false, false, true }),
+	    //
+	    Pair.of(new AABB(POSITION_SOUTH[3]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_SOUTH[4]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_SOUTH[5]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_SOUTH[6]), new boolean[] { false, true, false, true, true, false }),
+	    //
+	    Pair.of(new AABB(POSITION_SOUTH[7]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_SOUTH[8]), new boolean[] { false, true, true, false, true, false }), }; // new
+													      // AABB(0,
+													      // 0, 1,
+													      // -3, 1,
+													      // -2)
     private static final Pair[] FLUID_WEST = {
-            //
-            Pair.of(new AABB(POSITION_WEST[0]), new boolean[]{false, true, false, true, false, true}),
-            //
-            Pair.of(new AABB(POSITION_WEST[1]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_WEST[2]), new boolean[]{false, true, true, false, false, true}),
-            //
-            Pair.of(new AABB(POSITION_WEST[3]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_WEST[4]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_WEST[5]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_WEST[6]), new boolean[]{false, true, false, true, true, false}),
-            //
-            Pair.of(new AABB(POSITION_WEST[7]), new boolean[]{false, true, false, false, false, false}),
-            //
-            Pair.of(new AABB(POSITION_WEST[8]), new boolean[]{false, true, true, false, true, false}),}; //new AABB(-1, 0, 1, -4, 1, -2)
-
+	    //
+	    Pair.of(new AABB(POSITION_WEST[0]), new boolean[] { false, true, false, true, false, true }),
+	    //
+	    Pair.of(new AABB(POSITION_WEST[1]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_WEST[2]), new boolean[] { false, true, true, false, false, true }),
+	    //
+	    Pair.of(new AABB(POSITION_WEST[3]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_WEST[4]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_WEST[5]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_WEST[6]), new boolean[] { false, true, false, true, true, false }),
+	    //
+	    Pair.of(new AABB(POSITION_WEST[7]), new boolean[] { false, true, false, false, false, false }),
+	    //
+	    Pair.of(new AABB(POSITION_WEST[8]), new boolean[] { false, true, true, false, true, false }), }; // new
+													     // AABB(-1,
+													     // 0, 1,
+													     // -4, 1,
+													     // -2)
 
     public RenderElectrolosisChamber(BlockEntityRendererProvider.Context context) {
-        super(context);
+	super(context);
     }
 
     @Override
-    public void render(@NotNull TileElectrolosisChamber tile, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(@NotNull TileElectrolosisChamber tile, float partialTick, @NotNull PoseStack poseStack,
+	    @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
-        if (!tile.isFormed.getValue()) {
-            return;
-        }
+	if (!tile.isFormed.getValue()) {
+	    return;
+	}
 
-        ComponentFluidHandlerMulti fluidHandler = tile.getComponent(IComponentType.FluidHandler);
+	ComponentFluidHandlerMulti fluidHandler = tile.getComponent(IComponentType.FluidHandler);
 
-        FluidStack input = fluidHandler.getInputTanks()[0].getFluid();
+	FluidStack input = fluidHandler.getInputTanks()[0].getFluid();
 
-        if (input.isEmpty()) {
-            //return;
-        }
+	if (input.isEmpty()) {
+	    // return;
+	}
 
-        poseStack.pushPose();
+	poseStack.pushPose();
 
-        Direction facing = tile.getFacing();
+	Direction facing = tile.getFacing();
 
-        for (Pair<AABB, boolean[]> pair : getFluidAABBs(facing)) {
-            RenderingUtils.renderFluidBox(poseStack, minecraft(), bufferSource.getBuffer(RenderType.TRANSLUCENT), pair.getFirst(), new FluidStack(Fluids.WATER, 100), packedLight, packedOverlay, pair.getSecond());
-        }
+	for (Pair<AABB, boolean[]> pair : getFluidAABBs(facing)) {
+	    RenderingUtils.renderFluidBox(poseStack, minecraft(), bufferSource.getBuffer(RenderType.TRANSLUCENT),
+		    pair.getFirst(), new FluidStack(Fluids.WATER, 100), packedLight, packedOverlay, pair.getSecond());
+	}
 
+	if (!tile.isActive.getValue() || (level().getRandom().nextDouble() > 0.5)) {
+	    poseStack.popPose();
+	    return;
+	}
 
-        if (!tile.isActive.getValue()) {
-            poseStack.popPose();
-            return;
-        }
+	BlockPos[] positions = getBlockPositions(facing);
+	BlockPos pos;
 
+	for (int i = 0; i < 9; i++) {
+	    if (i == 4) {
+		continue;
+	    }
+	    pos = tile.getBlockPos().offset(positions[i]);
+	    minecraft().particleEngine.createParticle(ParticleTypes.BUBBLE, pos.getX() + Voltaic.RANDOM.nextDouble(1.0),
+		    pos.getY() + Voltaic.RANDOM.nextDouble(1.0), pos.getZ() + Voltaic.RANDOM.nextDouble(1.0), 0, 0, 0);
+	}
 
-        if (level().getRandom().nextDouble() > 0.5) {
-            poseStack.popPose();
-            return;
-        }
-
-        BlockPos[] positions = getBlockPositions(facing);
-        BlockPos pos;
-
-        for (int i = 0; i < 9; i++) {
-            if (i == 4) {
-                continue;
-            }
-            pos = tile.getBlockPos().offset(positions[i]);
-            minecraft().particleEngine.createParticle(ParticleTypes.BUBBLE, pos.getX() + Voltaic.RANDOM.nextDouble(1.0), pos.getY() + Voltaic.RANDOM.nextDouble(1.0), pos.getZ() + Voltaic.RANDOM.nextDouble(1.0), 0, 0, 0);
-        }
-
-
-        poseStack.popPose();
+	poseStack.popPose();
 
     }
 
     @Override
     public AABB getRenderBoundingBox(TileElectrolosisChamber tile) {
 
-        switch (tile.getFacing()) {
-            case WEST:
-                return RENDER_WEST.move(tile.getBlockPos());
-            case EAST:
-                return RENDER_EAST.move(tile.getBlockPos());
-            case NORTH:
-                return RENDER_NORTH.move(tile.getBlockPos());
-            case SOUTH:
-                return RENDER_SOUTH.move(tile.getBlockPos());
+	switch (tile.getFacing()) {
+	case WEST:
+	    return RENDER_WEST.move(tile.getBlockPos());
+	case EAST:
+	    return RENDER_EAST.move(tile.getBlockPos());
+	case NORTH:
+	    return RENDER_NORTH.move(tile.getBlockPos());
+	case SOUTH:
+	    return RENDER_SOUTH.move(tile.getBlockPos());
 
-        }
+	}
 
-        return super.getRenderBoundingBox(tile);
+	return super.getRenderBoundingBox(tile);
     }
 
     private static Pair[] getFluidAABBs(Direction facing) {
-        switch (facing) {
-            case WEST:
-                return FLUID_WEST;
-            case EAST:
-                return FLUID_EAST;
-            case NORTH:
-                return FLUID_NORTH;
-            case SOUTH:
-                return FLUID_SOUTH;
+	switch (facing) {
+	case WEST:
+	    return FLUID_WEST;
+	case EAST:
+	    return FLUID_EAST;
+	case NORTH:
+	    return FLUID_NORTH;
+	case SOUTH:
+	    return FLUID_SOUTH;
 
-        }
-        return new Pair[]{};
+	}
+	return new Pair[] {};
     }
 
     private static BlockPos[] getBlockPositions(Direction facing) {
-        switch (facing) {
-            case WEST:
-                return POSITION_WEST;
-            case EAST:
-                return POSITION_EAST;
-            case NORTH:
-                return POSITION_NORTH;
-            case SOUTH:
-                return POSITION_SOUTH;
+	switch (facing) {
+	case WEST:
+	    return POSITION_WEST;
+	case EAST:
+	    return POSITION_EAST;
+	case NORTH:
+	    return POSITION_NORTH;
+	case SOUTH:
+	    return POSITION_SOUTH;
 
-        }
-        return new BlockPos[]{};
+	}
+	return new BlockPos[] {};
     }
 
     @Override
     public boolean shouldRenderOffScreen(TileElectrolosisChamber blockEntity) {
-        return true;
+	return true;
     }
 }

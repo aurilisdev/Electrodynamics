@@ -15,28 +15,28 @@ public class ItemDecoratorRailgun implements IItemDecorator {
     @Override
     public boolean render(GuiGraphics guiGraphics, Font font, ItemStack stack, int x, int y) {
 
-        FluidStack fluid = stack.getOrDefault(VoltaicDataComponentTypes.FLUID_STACK.get(), FluidStackComponent.EMPTY).fluid;
+	FluidStack fluid = stack.getOrDefault(VoltaicDataComponentTypes.FLUID_STACK.get(),
+		FluidStackComponent.EMPTY).fluid;
 
-        if(fluid.isEmpty() || fluid.getAmount() == ItemRailgun.CAPACITY) {
-            return false;
-        }
+	if (fluid.isEmpty() || fluid.getAmount() == ItemRailgun.CAPACITY) {
+	    return false;
+	}
 
-        int blackBoxHeight = 1;
+	int blackBoxHeight = 1;
 
-        if(!stack.isBarVisible()){
-            y += 1;
-            blackBoxHeight = 2;
-        }
+	if (!stack.isBarVisible()) {
+	    y += 1;
+	    blackBoxHeight = 2;
+	}
 
-        guiGraphics.setColor(0, 0, 0, 255);
-        guiGraphics.blit(ITexture.Textures.WHITE.getLocation(), x + 2, y + 12, 199, 0, 0, 13, blackBoxHeight, 16, 16);
-        guiGraphics.setColor(0, 255, 0, 255);
+	guiGraphics.setColor(0, 0, 0, 255);
+	guiGraphics.blit(ITexture.Textures.WHITE.getLocation(), x + 2, y + 12, 199, 0, 0, 13, blackBoxHeight, 16, 16);
+	guiGraphics.setColor(0, 255, 0, 255);
 
-        int width = (int) (13 * ((double) fluid.getAmount() / (double) ItemRailgun.CAPACITY));
-        guiGraphics.blit(ITexture.Textures.WHITE.getLocation(), x + 2, y + 12, 199, 0, 0, width, 1, 16, 16);
-        RenderingUtils.resetShaderColor();
+	int width = (int) (13 * ((double) fluid.getAmount() / (double) ItemRailgun.CAPACITY));
+	guiGraphics.blit(ITexture.Textures.WHITE.getLocation(), x + 2, y + 12, 199, 0, 0, width, 1, 16, 16);
+	RenderingUtils.resetShaderColor();
 
-
-        return false;
+	return false;
     }
 }

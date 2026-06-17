@@ -15,33 +15,31 @@ public class PacketToggleOnServer implements CustomPacketPayload {
 
     public static final ResourceLocation PACKET_TOGGLEONSERVER_PACKETID = NetworkHandler.id("packettoggleonserver");
 
-    public static final CustomPacketPayload.Type<PacketToggleOnServer> TYPE = new CustomPacketPayload.Type<>(PACKET_TOGGLEONSERVER_PACKETID);
-    public static final StreamCodec<ByteBuf, PacketToggleOnServer> CODEC = StreamCodec.composite(
-            UUIDUtil.STREAM_CODEC, instance -> instance.playerId,
-            ByteBufCodecs.INT, instance -> instance.type.ordinal(),
-            (id, ord) -> new PacketToggleOnServer(id, Type.values()[ord])
-    );
+    public static final CustomPacketPayload.Type<PacketToggleOnServer> TYPE = new CustomPacketPayload.Type<>(
+	    PACKET_TOGGLEONSERVER_PACKETID);
+    public static final StreamCodec<ByteBuf, PacketToggleOnServer> CODEC = StreamCodec.composite(UUIDUtil.STREAM_CODEC,
+	    instance -> instance.playerId, ByteBufCodecs.INT, instance -> instance.type.ordinal(),
+	    (id, ord) -> new PacketToggleOnServer(id, Type.values()[ord]));
 
     private final UUID playerId;
     private final Type type;
 
     public PacketToggleOnServer(UUID uuid, Type type) {
-        playerId = uuid;
-        this.type = type;
+	playerId = uuid;
+	this.type = type;
     }
 
     public static void handle(PacketToggleOnServer message, IPayloadContext context) {
-        ServerBarrierMethods.handleToogleOnServer(context.player().level(), message.playerId, message.type);
+	ServerBarrierMethods.handleToogleOnServer(context.player().level(), message.playerId, message.type);
     }
 
     @Override
     public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+	return TYPE;
     }
 
     public enum Type {
-        NVGS,
-        SERVOLEGGINGS;
+	NVGS, SERVOLEGGINGS;
     }
 
 }

@@ -18,29 +18,31 @@ public class HandlerHydraulicBoots extends AbstractLivingDamageHandler {
 
     @Override
     public void handle(LivingDamageEvent.Pre event) {
-        LivingEntity entity = event.getEntity();
-        if (!event.getSource().is(DamageTypes.FALL)) {
-            return;
-        }
-        ItemStack playerBoots = entity.getItemBySlot(EquipmentSlot.FEET);
+	LivingEntity entity = event.getEntity();
+	if (!event.getSource().is(DamageTypes.FALL)) {
+	    return;
+	}
+	ItemStack playerBoots = entity.getItemBySlot(EquipmentSlot.FEET);
 
-        if (!ItemUtils.testItems(playerBoots.getItem(), ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get(), ElectrodynamicsItems.ITEM_COMBATBOOTS.get())) {
-            return;
-        }
+	if (!ItemUtils.testItems(playerBoots.getItem(), ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get(),
+		ElectrodynamicsItems.ITEM_COMBATBOOTS.get())) {
+	    return;
+	}
 
-        int fluidRequired = (int) Math.log10(event.getOriginalDamage());
+	int fluidRequired = (int) Math.log10(event.getOriginalDamage());
 
-        IFluidHandlerItem handler = playerBoots.getCapability(Capabilities.FluidHandler.ITEM);
+	IFluidHandlerItem handler = playerBoots.getCapability(Capabilities.FluidHandler.ITEM);
 
-        if (handler == null || handler.getFluidInTank(0).getAmount() < fluidRequired) {
-            return;
-        }
+	if (handler == null || handler.getFluidInTank(0).getAmount() < fluidRequired) {
+	    return;
+	}
 
-        event.setNewDamage(0);
+	event.setNewDamage(0);
 
-        handler.drain(fluidRequired, FluidAction.EXECUTE);
+	handler.drain(fluidRequired, FluidAction.EXECUTE);
 
-        entity.getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(), ElectrodynamicsSounds.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
+	entity.getCommandSenderWorld().playSound(null, event.getEntity().blockPosition(),
+		ElectrodynamicsSounds.SOUND_HYDRAULICBOOTS.get(), SoundSource.PLAYERS, 1, 1);
 
     }
 

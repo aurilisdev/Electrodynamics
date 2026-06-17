@@ -21,31 +21,35 @@ import voltaic.prefab.utilities.BlockEntityUtils;
 public abstract class BlockGenericAdvancedGasTransformer extends GenericMachineBlock {
 
     public BlockGenericAdvancedGasTransformer(BlockEntitySupplier<BlockEntity> blockEntitySupplier) {
-        super(blockEntitySupplier, VoxelShapeProvider.DEFAULT);
+	super(blockEntitySupplier, VoxelShapeProvider.DEFAULT);
     }
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        if (!state.hasProperty(VoltaicBlockStates.FACING)) {
-            return false;
-        }
-        Direction facing = state.getValue(VoltaicBlockStates.FACING);
-        BlockState left = level.getBlockState(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
-        BlockState right = level.getBlockState(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
-        return left.isAir() && right.isAir() && super.canSurvive(state, level, pos);
+	if (!state.hasProperty(VoltaicBlockStates.FACING)) {
+	    return false;
+	}
+	Direction facing = state.getValue(VoltaicBlockStates.FACING);
+	BlockState left = level.getBlockState(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
+	BlockState right = level.getBlockState(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
+	return left.isAir() && right.isAir() && super.canSurvive(state, level, pos);
     }
 
     @Override
     public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        super.setPlacedBy(level, pos, state, placer, stack);
-        Direction facing = state.getValue(VoltaicBlockStates.FACING);
-        level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)), ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get().defaultBlockState().setValue(VoltaicBlockStates.WATERLOGGED, false).setValue(VoltaicBlockStates.FACING, facing));
-        level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)), ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get().defaultBlockState().setValue(VoltaicBlockStates.WATERLOGGED, false).setValue(VoltaicBlockStates.FACING, facing));
+	super.setPlacedBy(level, pos, state, placer, stack);
+	Direction facing = state.getValue(VoltaicBlockStates.FACING);
+	level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)),
+		ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get().defaultBlockState()
+			.setValue(VoltaicBlockStates.WATERLOGGED, false).setValue(VoltaicBlockStates.FACING, facing));
+	level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)),
+		ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE.get().defaultBlockState()
+			.setValue(VoltaicBlockStates.WATERLOGGED, false).setValue(VoltaicBlockStates.FACING, facing));
     }
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        throw new UnsupportedOperationException("Need to implement CODEC");
+	throw new UnsupportedOperationException("Need to implement CODEC");
     }
 
 }

@@ -27,70 +27,87 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ScreenElectrolosisChamber extends GenericMaterialScreen<ContainerElectrolosisChamber> {
     public ScreenElectrolosisChamber(ContainerElectrolosisChamber container, Inventory inv, Component titleIn) {
-        super(container, inv, titleIn);
+	super(container, inv, titleIn);
 
-        addComponent(new ScreenComponentElectricInfo(this::getElectricInfo, -AbstractScreenComponentInfo.SIZE + 1, 2));
+	addComponent(new ScreenComponentElectricInfo(this::getElectricInfo, -AbstractScreenComponentInfo.SIZE + 1, 2));
 
-        addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT_BIG, () -> {
-            TileElectrolosisChamber chamber = container.getSafeHost();
-            if(chamber == null || !chamber.isActive.getValue()) {
-                return 0;
-            }
-            if(chamber.neededTicks.getValue() <= 0) {
-                return 1;
-            }
+	addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT_BIG, () -> {
+	    TileElectrolosisChamber chamber = container.getSafeHost();
+	    if (chamber == null || !chamber.isActive.getValue()) {
+		return 0;
+	    }
+	    if (chamber.neededTicks.getValue() <= 0) {
+		return 1;
+	    }
 
-            return Math.min(1, chamber.operatingTicks.getValue() / chamber.neededTicks.getValue());
-        }, 56, 31));
+	    return Math.min(1, chamber.operatingTicks.getValue() / chamber.neededTicks.getValue());
+	}, 56, 31));
 
-        addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> {
-            TileElectrolosisChamber chamber = container.getSafeHost();
-            if(chamber == null) {
-                return;
-            }
-            Component text = VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort((double) chamber.processAmount.getValue() / 1000.0, DisplayUnits.BUCKETS), ChatFormatter.getChatDisplayShort(chamber.neededTicks.getValue(), DisplayUnits.TIME_TICKS));
-            int width = getFontRenderer().width(text);
-            float scale = 1;
-            if(width >  70) {
-                scale = 70.0F / width;
-                width = 70;
-            }
-            int diff = 70 - width;
-            int half = diff / 2;
-            int x = (int) Math.ceil((52 + half) / scale) + 1;
-            int y = (int) Math.ceil(52.0F / scale);
-            graphics.pose().pushPose();
-            graphics.pose().scale(scale, scale, scale);
-            graphics.drawString(getFontRenderer(), text, x, y, Color.TEXT_GRAY.color(), false);
-            graphics.pose().popPose();
-        }));
+	addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> {
+	    TileElectrolosisChamber chamber = container.getSafeHost();
+	    if (chamber == null) {
+		return;
+	    }
+	    Component text = VoltaicTextUtils.ratio(
+		    ChatFormatter.getChatDisplayShort((double) chamber.processAmount.getValue() / 1000.0,
+			    DisplayUnits.BUCKETS),
+		    ChatFormatter.getChatDisplayShort(chamber.neededTicks.getValue(), DisplayUnits.TIME_TICKS));
+	    int width = getFontRenderer().width(text);
+	    float scale = 1;
+	    if (width > 70) {
+		scale = 70.0F / width;
+		width = 70;
+	    }
+	    int diff = 70 - width;
+	    int half = diff / 2;
+	    int x = (int) Math.ceil((52 + half) / scale) + 1;
+	    int y = (int) Math.ceil(52.0F / scale);
+	    graphics.pose().pushPose();
+	    graphics.pose().scale(scale, scale, scale);
+	    graphics.drawString(getFontRenderer(), text, x, y, Color.TEXT_GRAY.color(), false);
+	    graphics.pose().popPose();
+	}));
 
-        addComponent(new ScreenComponentFluidGauge(() -> {
-            TileElectrolosisChamber boiler = container.getSafeHost();
-            if (boiler != null) {
-                return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks()[0];
-            }
-            return null;
-        }, 38, 18));
-        addComponent(new ScreenComponentFluidGauge(() -> {
-            TileElectrolosisChamber boiler = container.getSafeHost();
-            if (boiler != null) {
-                return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getOutputTanks()[0];
-            }
-            return null;
-        }, 124, 18));
+	addComponent(new ScreenComponentFluidGauge(() -> {
+	    TileElectrolosisChamber boiler = container.getSafeHost();
+	    if (boiler != null) {
+		return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks()[0];
+	    }
+	    return null;
+	}, 38, 18));
+	addComponent(new ScreenComponentFluidGauge(() -> {
+	    TileElectrolosisChamber boiler = container.getSafeHost();
+	    if (boiler != null) {
+		return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getOutputTanks()[0];
+	    }
+	    return null;
+	}, 124, 18));
     }
 
     private List<FormattedCharSequence> getElectricInfo() {
-        List<FormattedCharSequence> list = new ArrayList<>();
-        TileElectrolosisChamber chamber = menu.getSafeHost();
-        if(chamber == null) {
-            return list;
-        }
-        ComponentElectrodynamic el = chamber.getComponent(IComponentType.Electrodynamic);
-        list.add(ElectroTextUtils.gui("machine.usage", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.ELECTROLOSIS_CHAMBER_TARGET_JOULES.get() * 20, DisplayUnits.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-        list.add(ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(el.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-        list.add(ElectroTextUtils.tooltip("electrolosischamber.satisfaction", ChatFormatter.getChatDisplayShort(el.getJoulesStored() / ElectrodynamicsConfig.INSTANCE.ELECTROLOSIS_CHAMBER_TARGET_JOULES.get() * 100.0, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-        return list;
+	List<FormattedCharSequence> list = new ArrayList<>();
+	TileElectrolosisChamber chamber = menu.getSafeHost();
+	if (chamber == null) {
+	    return list;
+	}
+	ComponentElectrodynamic el = chamber.getComponent(IComponentType.Electrodynamic);
+	list.add(ElectroTextUtils
+		.gui("machine.usage",
+			ChatFormatter.getChatDisplayShort(
+				ElectrodynamicsConfig.INSTANCE.ELECTROLOSIS_CHAMBER_TARGET_JOULES.get() * 20,
+				DisplayUnits.WATT).withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+	list.add(ElectroTextUtils
+		.gui("machine.voltage",
+			ChatFormatter.getChatDisplayShort(el.getVoltage(), DisplayUnits.VOLTAGE)
+				.withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+	list.add(ElectroTextUtils
+		.tooltip("electrolosischamber.satisfaction",
+			ChatFormatter.getChatDisplayShort(el.getJoulesStored()
+				/ ElectrodynamicsConfig.INSTANCE.ELECTROLOSIS_CHAMBER_TARGET_JOULES.get() * 100.0,
+				DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+	return list;
     }
 }

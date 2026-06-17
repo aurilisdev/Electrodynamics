@@ -13,30 +13,30 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class PacketAddClientRenderInfo implements CustomPacketPayload {
 
-    public static final ResourceLocation PACKET_ADDCLIENTRENDERINFO_PACKETID = NetworkHandler.id("packetaddclientrenderinfo");
+    public static final ResourceLocation PACKET_ADDCLIENTRENDERINFO_PACKETID = NetworkHandler
+	    .id("packetaddclientrenderinfo");
     public static final Type<PacketAddClientRenderInfo> TYPE = new Type<>(PACKET_ADDCLIENTRENDERINFO_PACKETID);
 
     public static final StreamCodec<FriendlyByteBuf, PacketAddClientRenderInfo> CODEC = StreamCodec.composite(
 
-            UUIDUtil.STREAM_CODEC, instance0 -> instance0.playerId,
-            BlockPos.STREAM_CODEC, instance0 -> instance0.pos,
-            PacketAddClientRenderInfo::new
+	    UUIDUtil.STREAM_CODEC, instance0 -> instance0.playerId, BlockPos.STREAM_CODEC, instance0 -> instance0.pos,
+	    PacketAddClientRenderInfo::new
 
     );
     private final UUID playerId;
     private final BlockPos pos;
 
     public PacketAddClientRenderInfo(UUID uuid, BlockPos pos) {
-        playerId = uuid;
-        this.pos = pos;
+	playerId = uuid;
+	this.pos = pos;
     }
 
     public static void handle(PacketAddClientRenderInfo message, IPayloadContext context) {
-        ClientBarrierMethods.handleAddClientRenderInfo(message.playerId, message.pos);
+	ClientBarrierMethods.handleAddClientRenderInfo(message.playerId, message.pos);
     }
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+	return TYPE;
     }
 }

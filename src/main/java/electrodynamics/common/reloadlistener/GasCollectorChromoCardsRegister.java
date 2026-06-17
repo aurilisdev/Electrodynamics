@@ -73,132 +73,138 @@ public class GasCollectorChromoCardsRegister extends SimplePreparableReloadListe
 
     @Override
     protected HashSet<JsonObject> prepare(ResourceManager manager, ProfilerFiller profiler) {
-        HashSet<JsonObject> fuels = new HashSet<>();
-        List<Map.Entry<ResourceLocation, Resource>> resources = new ArrayList<>(manager.listResources(FOLDER, GasCollectorChromoCardsRegister::isJson).entrySet());
-        Collections.reverse(resources);
+	HashSet<JsonObject> fuels = new HashSet<>();
+	List<Map.Entry<ResourceLocation, Resource>> resources = new ArrayList<>(
+		manager.listResources(FOLDER, GasCollectorChromoCardsRegister::isJson).entrySet());
+	Collections.reverse(resources);
 
-        for (Map.Entry<ResourceLocation, Resource> entry : resources) {
-            ResourceLocation loc = entry.getKey();
-            final String namespace = loc.getNamespace();
-            final String filePath = loc.getPath();
-            final String dataPath = filePath.substring(FOLDER.length() + 1, filePath.length() - JSON_EXTENSION_LENGTH);
+	for (Map.Entry<ResourceLocation, Resource> entry : resources) {
+	    ResourceLocation loc = entry.getKey();
+	    final String namespace = loc.getNamespace();
+	    final String filePath = loc.getPath();
+	    final String dataPath = filePath.substring(FOLDER.length() + 1, filePath.length() - JSON_EXTENSION_LENGTH);
 
-            final ResourceLocation jsonFile = ResourceLocation.fromNamespaceAndPath(namespace, dataPath);
+	    final ResourceLocation jsonFile = ResourceLocation.fromNamespaceAndPath(namespace, dataPath);
 
-            Resource resource = entry.getValue();
-            try (final InputStream inputStream = resource.open(); final Reader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));) {
-                final JsonObject json = (JsonObject) GsonHelper.fromJson(GSON, reader, JsonElement.class);
-                fuels.add(json);
-            } catch (RuntimeException | IOException exception) {
-                logger.error("Data loader for {} could not read data {} from file {} in data pack {}", FOLDER, jsonFile, loc, resource.sourcePackId(), exception);
-            }
+	    Resource resource = entry.getValue();
+	    try (final InputStream inputStream = resource.open();
+		    final Reader reader = new BufferedReader(
+			    new InputStreamReader(inputStream, StandardCharsets.UTF_8));) {
+		final JsonObject json = (JsonObject) GsonHelper.fromJson(GSON, reader, JsonElement.class);
+		fuels.add(json);
+	    } catch (RuntimeException | IOException exception) {
+		logger.error("Data loader for {} could not read data {} from file {} in data pack {}", FOLDER, jsonFile,
+			loc, resource.sourcePackId(), exception);
+	    }
 
-        }
+	}
 
-        return fuels;
+	return fuels;
     }
 
     @Override
     protected void apply(HashSet<JsonObject> json, ResourceManager manager, ProfilerFiller profiler) {
-        results.clear();
-        tags.clear();
+	results.clear();
+	tags.clear();
 
-        json.forEach(set -> {
+	json.forEach(set -> {
 
-            String item = set.get(ITEM_KEY).getAsString();
-            Gas gas = VoltaicGases.GAS_REGISTRY.get(ResourceKey.create(VoltaicGases.GAS_REGISTRY_KEY, ResourceLocation.parse(set.get(GAS_KEY).getAsString())));
-            int amount = set.get(AMOUNT_KEY).getAsInt();
-            int temperature = set.get(TEMPERATURE_KEY).getAsInt();
-            int pressure = set.get(PRESSURE_KEY).getAsInt();
+	    String item = set.get(ITEM_KEY).getAsString();
+	    Gas gas = VoltaicGases.GAS_REGISTRY.get(ResourceKey.create(VoltaicGases.GAS_REGISTRY_KEY,
+		    ResourceLocation.parse(set.get(GAS_KEY).getAsString())));
+	    int amount = set.get(AMOUNT_KEY).getAsInt();
+	    int temperature = set.get(TEMPERATURE_KEY).getAsInt();
+	    int pressure = set.get(PRESSURE_KEY).getAsInt();
 
-            ResourceKey<Biome> biome = null;
-            TagKey<Biome> biomeTag = null;
+	    ResourceKey<Biome> biome = null;
+	    TagKey<Biome> biomeTag = null;
 
-            if(set.has(BIOME_KEY)){
-                String biomeString = set.get(BIOME_KEY).getAsString();
+	    if (set.has(BIOME_KEY)) {
+		String biomeString = set.get(BIOME_KEY).getAsString();
 
-                if (biomeString.contains("#")) {
+		if (biomeString.contains("#")) {
 
-                    biomeString = biomeString.substring(1);
+		    biomeString = biomeString.substring(1);
 
-                    biomeTag = TagKey.create(Registries.BIOME, ResourceLocation.parse(biomeString));
+		    biomeTag = TagKey.create(Registries.BIOME, ResourceLocation.parse(biomeString));
 
-                } else {
+		} else {
 
-                    biome = ResourceKey.create(Registries.BIOME, ResourceLocation.parse(biomeString));
+		    biome = ResourceKey.create(Registries.BIOME, ResourceLocation.parse(biomeString));
 
-                }
+		}
 
-            }
+	    }
 
-            AtmosphericResult result = new AtmosphericResult(new GasStack(gas, amount, temperature, pressure), biome, biomeTag);
+	    AtmosphericResult result = new AtmosphericResult(new GasStack(gas, amount, temperature, pressure), biome,
+		    biomeTag);
 
-            if (item.contains("#")) {
+	    if (item.contains("#")) {
 
-                item = item.substring(1);
+		item = item.substring(1);
 
-                tags.put(ItemTags.create(ResourceLocation.parse(item)), result);
+		tags.put(ItemTags.create(ResourceLocation.parse(item)), result);
 
-            } else {
+	    } else {
 
-                results.put(BuiltInRegistries.ITEM.get(ResourceLocation.parse(item)), result);
+		results.put(BuiltInRegistries.ITEM.get(ResourceLocation.parse(item)), result);
 
-            }
+	    }
 
-
-        });
+	});
 
     }
 
     public void generateTagValues() {
-        for (Map.Entry<TagKey<Item>, AtmosphericResult> entry : tags.entrySet()) {
-            for (ItemStack item : Ingredient.of(entry.getKey()).getItems()) {
-                results.put(item.getItem(), entry.getValue());
-            }
-        }
-        tags.clear();
+	for (Map.Entry<TagKey<Item>, AtmosphericResult> entry : tags.entrySet()) {
+	    for (ItemStack item : Ingredient.of(entry.getKey()).getItems()) {
+		results.put(item.getItem(), entry.getValue());
+	    }
+	}
+	tags.clear();
     }
 
     public void setClientValues(HashMap<Item, AtmosphericResult> values) {
-        this.results.clear();
-        this.results.putAll(values);
+	this.results.clear();
+	this.results.putAll(values);
     }
 
     public GasCollectorChromoCardsRegister subscribeAsSyncable() {
-        NeoForge.EVENT_BUS.addListener(getDatapackSyncListener());
-        return this;
+	NeoForge.EVENT_BUS.addListener(getDatapackSyncListener());
+	return this;
     }
 
     public HashMap<Item, AtmosphericResult> getEntries() {
-        return results;
+	return results;
     }
 
     public boolean hasResult(Item item) {
-        return results.containsKey(item);
+	return results.containsKey(item);
     }
 
     public AtmosphericResult getResult(Item item) {
-        return results.get(item);
+	return results.get(item);
     }
 
     private Consumer<OnDatapackSyncEvent> getDatapackSyncListener() {
-        return event -> {
-            generateTagValues();
-            ServerPlayer player = event.getPlayer();
-            PacketSetClientGasCollectorCards packet = new PacketSetClientGasCollectorCards(results);
-            if (player == null) {
-                PacketDistributor.sendToAllPlayers(packet);
-            } else {
-                PacketDistributor.sendToPlayer(player, packet);
-            }
-        };
+	return event -> {
+	    generateTagValues();
+	    ServerPlayer player = event.getPlayer();
+	    PacketSetClientGasCollectorCards packet = new PacketSetClientGasCollectorCards(results);
+	    if (player == null) {
+		PacketDistributor.sendToAllPlayers(packet);
+	    } else {
+		PacketDistributor.sendToPlayer(player, packet);
+	    }
+	};
     }
 
     private static boolean isJson(final ResourceLocation filename) {
-        return filename.toString().contains(FOLDER) && filename.toString().endsWith(JSON_EXTENSION);
+	return filename.toString().contains(FOLDER) && filename.toString().endsWith(JSON_EXTENSION);
     }
 
-    public static final record AtmosphericResult(GasStack stack, @Nullable ResourceKey<Biome> biome, @Nullable TagKey<Biome> biomeTag) {
+    public static final record AtmosphericResult(GasStack stack, @Nullable ResourceKey<Biome> biome,
+	    @Nullable TagKey<Biome> biomeTag) {
 
     }
 }

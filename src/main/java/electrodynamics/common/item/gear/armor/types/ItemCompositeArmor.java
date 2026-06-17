@@ -32,127 +32,113 @@ import voltaic.registers.VoltaicDataComponentTypes;
 
 public class ItemCompositeArmor extends ItemVoltaicArmor {
 
-	public static final EnumMap<Type, Integer> DEFENSE_MAP = Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-		map.put(Type.HELMET, 6);
-		map.put(Type.CHESTPLATE, 12);
-		map.put(Type.LEGGINGS, 16);
-		map.put(Type.BOOTS, 6);
-	});
+    public static final EnumMap<Type, Integer> DEFENSE_MAP = Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
+	map.put(Type.HELMET, 6);
+	map.put(Type.CHESTPLATE, 12);
+	map.put(Type.LEGGINGS, 16);
+	map.put(Type.BOOTS, 6);
+    });
 
-	public static final ResourceLocation ARMOR_TEXTURE_LOCATION = Electrodynamics.rl("textures/model/armor/compositearmor.png");
+    public static final ResourceLocation ARMOR_TEXTURE_LOCATION = Electrodynamics
+	    .rl("textures/model/armor/compositearmor.png");
 
-	public ItemCompositeArmor(Type slot) {
-		super(ElectrodynamicsArmorMaterials.COMPOSITE_ARMOR, slot, new Item.Properties().stacksTo(1).fireResistant().setNoRepair().durability(2000), ElectrodynamicsCreativeTabs.MAIN);
+    public ItemCompositeArmor(Type slot) {
+	super(ElectrodynamicsArmorMaterials.COMPOSITE_ARMOR, slot,
+		new Item.Properties().stacksTo(1).fireResistant().setNoRepair().durability(2000),
+		ElectrodynamicsCreativeTabs.MAIN);
+    }
+
+    @Override
+    public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
+	super.addCreativeModeItems(group, items);
+
+	if (getEquipmentSlot() == EquipmentSlot.CHEST) {
+	    ItemStack filled = new ItemStack(this);
+	    filled.set(VoltaicDataComponentTypes.PLATES, 2);
+	    items.add(filled);
 	}
 
+    }
 
-	@Override
-	public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
-		super.addCreativeModeItems(group, items);
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity,
+	    Consumer<Item> onBroken) {
+	return 0;
+    }
 
-		if (getEquipmentSlot() == EquipmentSlot.CHEST) {
-			ItemStack filled = new ItemStack(this);
-			filled.set(VoltaicDataComponentTypes.PLATES, 2);
-			items.add(filled);
-		}
+    @Override
+    public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
+	return false;
+    }
 
+    @Override
+    public boolean isEnchantable(ItemStack stack) {
+	return false;
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
+	super.appendHoverText(stack, context, tooltip, flagIn);
+	if (((ArmorItem) stack.getItem()).getEquipmentSlot() == EquipmentSlot.CHEST) {
+	    staticAppendHoverText(stack, context, tooltip, flagIn);
 	}
+    }
 
-	@Override
-	public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
-		return 0;
-	}
+    protected static void staticAppendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip,
+	    TooltipFlag flagIn) {
+	tooltip.add(ElectroTextUtils
+		.tooltip("ceramicplatecount",
+			Component.translatable(stack.getOrDefault(VoltaicDataComponentTypes.PLATES, 0) + ""))
+		.withStyle(ChatFormatting.AQUA));
+    }
 
-	@Override
-	public boolean isValidRepairItem(ItemStack toRepair, ItemStack repair) {
-		return false;
-	}
+    @Override
+    public void onWearingTick(ItemStack stack, Level world, Player player, int slotId, boolean isSelected) {
+	super.onWearingTick(stack, world, player, slotId, isSelected);
+	player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20));
+    }
 
-	@Override
-	public boolean isEnchantable(ItemStack stack) {
-		return false;
-	}
+    @Override
+    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
+	    ArmorMaterial.Layer layer, boolean innerModel) {
+	return ARMOR_TEXTURE_LOCATION;
+    }
 
-	@Override
-	public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-		super.appendHoverText(stack, context, tooltip, flagIn);
-		if (((ArmorItem) stack.getItem()).getEquipmentSlot() == EquipmentSlot.CHEST) {
-			staticAppendHoverText(stack, context, tooltip, flagIn);
-		}
-	}
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	return !oldStack.is(newStack.getItem());
+    }
 
-	protected static void staticAppendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-		tooltip.add(ElectroTextUtils.tooltip("ceramicplatecount", Component.translatable(stack.getOrDefault(VoltaicDataComponentTypes.PLATES, 0) + "")).withStyle(ChatFormatting.AQUA));
-	}
-
-
-	@Override
-	public void onWearingTick(ItemStack stack, Level world, Player player, int slotId, boolean isSelected) {
-		super.onWearingTick(stack, world, player, slotId, isSelected);
-		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20));
-	}
-
-	@Override
-	public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-		return ARMOR_TEXTURE_LOCATION;
-	}
-
-	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return !oldStack.is(newStack.getItem());
-	}
-
-	/*
-	@Override
-	public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
-		return ARMOR_TEXTURE_LOCATION;
-	}
-
-	public enum CompositeArmor implements ICustomArmor {
-		COMPOSITE_ARMOR(References.ID + ":composite", new int[] { 6, 12, 16, 6 }, 2.0f);
-
-		private final String name;
-		private final int[] damageReductionAmountArray;
-		private final float toughness;
-
-		// Constructor
-		CompositeArmor(String name, int[] damageReductionAmountArray, float toughness) {
-			this.name = name;
-			this.damageReductionAmountArray = damageReductionAmountArray;
-			this.toughness = toughness;
-		}
-
-		@Override
-		public SoundEvent getEquipSound() {
-			return ElectrodynamicsSounds.SOUND_EQUIPHEAVYARMOR.get();
-		}
-
-		@Override
-		public String getName() {
-			return name;
-		}
-
-		@Override
-		public float getToughness() {
-			return toughness;
-		}
-
-		@Override
-		public float getKnockbackResistance() {
-			return 4;
-		}
-
-		@Override
-		public int getDurabilityForType(Type type) {
-			return 2000;
-		}
-
-		@Override
-		public int getDefenseForType(Type type) {
-			return damageReductionAmountArray[type.ordinal()];
-		}
-
-	}
-
-	 */
+    /*
+     * @Override public String getArmorTexture(ItemStack stack, Entity entity,
+     * EquipmentSlot slot, String type) { return ARMOR_TEXTURE_LOCATION; }
+     * 
+     * public enum CompositeArmor implements ICustomArmor {
+     * COMPOSITE_ARMOR(References.ID + ":composite", new int[] { 6, 12, 16, 6 },
+     * 2.0f);
+     * 
+     * private final String name; private final int[] damageReductionAmountArray;
+     * private final float toughness;
+     * 
+     * // Constructor CompositeArmor(String name, int[] damageReductionAmountArray,
+     * float toughness) { this.name = name; this.damageReductionAmountArray =
+     * damageReductionAmountArray; this.toughness = toughness; }
+     * 
+     * @Override public SoundEvent getEquipSound() { return
+     * ElectrodynamicsSounds.SOUND_EQUIPHEAVYARMOR.get(); }
+     * 
+     * @Override public String getName() { return name; }
+     * 
+     * @Override public float getToughness() { return toughness; }
+     * 
+     * @Override public float getKnockbackResistance() { return 4; }
+     * 
+     * @Override public int getDurabilityForType(Type type) { return 2000; }
+     * 
+     * @Override public int getDefenseForType(Type type) { return
+     * damageReductionAmountArray[type.ordinal()]; }
+     * 
+     * }
+     * 
+     */
 }

@@ -16,22 +16,25 @@ import voltaic.common.recipe.recipeutils.ProbableItem;
 
 public class ElectrolyticSeparatorRecipe extends Fluid2GasRecipe {
 
-	public static final String RECIPE_GROUP = "electrolytic_separator_recipe";
-	public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
+    public static final String RECIPE_GROUP = "electrolytic_separator_recipe";
+    public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
 
-	public ElectrolyticSeparatorRecipe(String recipeGroup, List<FluidIngredient> inputFluidIngredients, GasStack outputGasStack, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
-		super(recipeGroup, inputFluidIngredients, outputGasStack, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
+    public ElectrolyticSeparatorRecipe(String recipeGroup, List<FluidIngredient> inputFluidIngredients,
+	    GasStack outputGasStack, double experience, int ticks, double usagePerTick,
+	    List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
+	super(recipeGroup, inputFluidIngredients, outputGasStack, experience, ticks, usagePerTick, itemBiproducts,
+		fluidBiproducts, gasBiproducts);
 
-	}
+    }
 
-	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return ElectrodynamicsRecipies.ELECTROLYTIC_SEPARATOR_SERIALIZER.get();
-	}
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+	return ElectrodynamicsRecipies.ELECTROLYTIC_SEPARATOR_SERIALIZER.get();
+    }
 
-	@Override
-	public RecipeType<?> getType() {
-		return ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get();
-	}
+    @Override
+    public RecipeType<?> getType() {
+	return ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get();
+    }
 
 }

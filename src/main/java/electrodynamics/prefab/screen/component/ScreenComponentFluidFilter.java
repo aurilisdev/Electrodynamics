@@ -35,152 +35,155 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
     private final int index;
 
     public ScreenComponentFluidFilter(int x, int y, int index) {
-        super(AbstractScreenComponentGauge.GaugeTextures.BACKGROUND_DEFAULT, x, y);
-        this.index = index;
+	super(AbstractScreenComponentGauge.GaugeTextures.BACKGROUND_DEFAULT, x, y);
+	this.index = index;
     }
 
     @Override
     public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-        super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
+	super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 
-        TileFluidPipeFilter filter = (TileFluidPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui).getMenu()).getSafeHost();
+	TileFluidPipeFilter filter = (TileFluidPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui)
+		.getMenu()).getSafeHost();
 
-        if (filter == null) {
-            return;
-        }
+	if (filter == null) {
+	    return;
+	}
 
-        SingleProperty<FluidStack> property = filter.filteredFluids[index];
+	SingleProperty<FluidStack> property = filter.filteredFluids[index];
 
-        FluidStack fluid = property.getValue();
+	FluidStack fluid = property.getValue();
 
-        if (!fluid.isEmpty()) {
+	if (!fluid.isEmpty()) {
 
-            ResourceLocation fluidText = IClientFluidTypeExtensions.of(fluid.getFluid()).getStillTexture();
+	    ResourceLocation fluidText = IClientFluidTypeExtensions.of(fluid.getFluid()).getStillTexture();
 
-            if (fluidText != null) {
+	    if (fluidText != null) {
 
-                ResourceLocation blocks = InventoryMenu.BLOCK_ATLAS;
-                TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(blocks).apply(fluidText);
-                RenderingUtils.bindTexture(sprite.atlasLocation());
+		ResourceLocation blocks = InventoryMenu.BLOCK_ATLAS;
+		TextureAtlasSprite sprite = Minecraft.getInstance().getTextureAtlas(blocks).apply(fluidText);
+		RenderingUtils.bindTexture(sprite.atlasLocation());
 
-                int scale = AbstractScreenComponentGauge.GaugeTextures.BACKGROUND_DEFAULT.textureHeight() - 2;
+		int scale = AbstractScreenComponentGauge.GaugeTextures.BACKGROUND_DEFAULT.textureHeight() - 2;
 
-                RenderingUtils.setShaderColor(new Color(IClientFluidTypeExtensions.of(fluid.getFluid()).getTintColor(fluid)));
+		RenderingUtils
+			.setShaderColor(new Color(IClientFluidTypeExtensions.of(fluid.getFluid()).getTintColor(fluid)));
 
-                for (int i = 0; i < 16; i += 16) {
-                    for (int j = 0; j < scale; j += 16) {
-                        int drawWidth = Math.min(super.texture.textureWidth() - 2 - i, 16);
-                        int drawHeight = Math.min(scale - j, 16);
+		for (int i = 0; i < 16; i += 16) {
+		    for (int j = 0; j < scale; j += 16) {
+			int drawWidth = Math.min(super.texture.textureWidth() - 2 - i, 16);
+			int drawHeight = Math.min(scale - j, 16);
 
-                        int drawX = guiWidth + xLocation + 1;
-                        int drawY = guiHeight + yLocation - 1 + super.texture.textureHeight() - Math.min(scale - j, super.texture.textureHeight());
-                        graphics.blit(drawX, drawY, 0, drawWidth, drawHeight, sprite);
-                    }
-                }
-                RenderSystem.setShaderColor(1, 1, 1, 1);
+			int drawX = guiWidth + xLocation + 1;
+			int drawY = guiHeight + yLocation - 1 + super.texture.textureHeight()
+				- Math.min(scale - j, super.texture.textureHeight());
+			graphics.blit(drawX, drawY, 0, drawWidth, drawHeight, sprite);
+		    }
+		}
+		RenderSystem.setShaderColor(1, 1, 1, 1);
 
-            }
+	    }
 
-        }
+	}
 
-        graphics.blit(
-                AbstractScreenComponentGauge.GaugeTextures.LEVEL_DEFAULT.getLocation(),
-                guiWidth + xLocation,
-                guiHeight + yLocation,
-                AbstractScreenComponentGauge.GaugeTextures.LEVEL_DEFAULT.textureU(),
-                0,
-                AbstractScreenComponentGauge.GaugeTextures.LEVEL_DEFAULT.textureWidth(),
-                AbstractScreenComponentGauge.GaugeTextures.LEVEL_DEFAULT.textureHeight(),
-                AbstractScreenComponentGauge.GaugeTextures.LEVEL_DEFAULT.imageWidth(),
-                AbstractScreenComponentGauge.GaugeTextures.LEVEL_DEFAULT.imageHeight());
+	graphics.blit(AbstractScreenComponentGauge.GaugeTextures.LEVEL_DEFAULT.getLocation(), guiWidth + xLocation,
+		guiHeight + yLocation, AbstractScreenComponentGauge.GaugeTextures.LEVEL_DEFAULT.textureU(), 0,
+		AbstractScreenComponentGauge.GaugeTextures.LEVEL_DEFAULT.textureWidth(),
+		AbstractScreenComponentGauge.GaugeTextures.LEVEL_DEFAULT.textureHeight(),
+		AbstractScreenComponentGauge.GaugeTextures.LEVEL_DEFAULT.imageWidth(),
+		AbstractScreenComponentGauge.GaugeTextures.LEVEL_DEFAULT.imageHeight());
 
     }
 
     @Override
     public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
 
-        if (!isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(), super.texture.textureHeight())) {
-            return;
-        }
+	if (!isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(),
+		super.texture.textureHeight())) {
+	    return;
+	}
 
-        TileFluidPipeFilter filter = (TileFluidPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui).getMenu()).getSafeHost();
+	TileFluidPipeFilter filter = (TileFluidPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui)
+		.getMenu()).getSafeHost();
 
-        if (filter == null) {
-            return;
-        }
+	if (filter == null) {
+	    return;
+	}
 
-        SingleProperty<FluidStack> property = filter.filteredFluids[index];
+	SingleProperty<FluidStack> property = filter.filteredFluids[index];
 
-        List<FormattedCharSequence> tooltips = new ArrayList<>();
+	List<FormattedCharSequence> tooltips = new ArrayList<>();
 
-        tooltips.add(Component.translatable(property.getValue().getFluidType().getDescriptionId()).getVisualOrderText());
+	tooltips.add(
+		Component.translatable(property.getValue().getFluidType().getDescriptionId()).getVisualOrderText());
 
-        graphics.renderTooltip(gui.getFontRenderer(), tooltips, xAxis, yAxis);
+	graphics.renderTooltip(gui.getFontRenderer(), tooltips, xAxis, yAxis);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
+	if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
 
-            onMouseClick(mouseX, mouseY);
+	    onMouseClick(mouseX, mouseY);
 
-            return true;
-        }
-        return false;
+	    return true;
+	}
+	return false;
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (isValidClick(button)) {
-            onMouseRelease(mouseX, mouseY);
-            return true;
-        }
-        return false;
+	if (isValidClick(button)) {
+	    onMouseRelease(mouseX, mouseY);
+	    return true;
+	}
+	return false;
     }
 
     @Override
     public void onMouseClick(double mouseX, double mouseY) {
 
-        GenericScreen<?> screen = (GenericScreen<?>) gui;
+	GenericScreen<?> screen = (GenericScreen<?>) gui;
 
-        TileFluidPipeFilter filter = (TileFluidPipeFilter) ((GenericContainerBlockEntity<?>) screen.getMenu()).getSafeHost();
+	TileFluidPipeFilter filter = (TileFluidPipeFilter) ((GenericContainerBlockEntity<?>) screen.getMenu())
+		.getSafeHost();
 
-        if (filter == null) {
-            return;
-        }
+	if (filter == null) {
+	    return;
+	}
 
-        SingleProperty<FluidStack> property = filter.filteredFluids[index];
+	SingleProperty<FluidStack> property = filter.filteredFluids[index];
 
-        ItemStack holding = screen.getMenu().getCarried();
+	ItemStack holding = screen.getMenu().getCarried();
 
-        if (holding.isEmpty()) {
+	if (holding.isEmpty()) {
 
-            if (!Screen.hasShiftDown()) {
-                return;
-            }
-            property.setValue(FluidStack.EMPTY);
+	    if (!Screen.hasShiftDown()) {
+		return;
+	    }
+	    property.setValue(FluidStack.EMPTY);
 
-            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_EMPTY, 1.0F));
+	    Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_EMPTY, 1.0F));
 
-            return;
+	    return;
 
-        }
+	}
 
-        IFluidHandlerItem handler = holding.getCapability(Capabilities.FluidHandler.ITEM);
+	IFluidHandlerItem handler = holding.getCapability(Capabilities.FluidHandler.ITEM);
 
-        if (handler == null) {
-            return;
-        }
+	if (handler == null) {
+	    return;
+	}
 
-        FluidStack taken = handler.drain(Integer.MAX_VALUE, FluidAction.SIMULATE);
+	FluidStack taken = handler.drain(Integer.MAX_VALUE, FluidAction.SIMULATE);
 
-        if (taken.isEmpty()) {
-            return;
-        }
+	if (taken.isEmpty()) {
+	    return;
+	}
 
-        property.setValue(taken);
+	property.setValue(taken);
 
-        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
+	Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.BUCKET_FILL, 1.0F));
 
     }
 

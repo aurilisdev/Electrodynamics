@@ -13,16 +13,16 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 public class ContainerCreativeGasSource extends GenericContainerBlockEntity<TileCreativeGasSource> {
 
     public ContainerCreativeGasSource(int id, Inventory playerinv) {
-        this(id, playerinv, new SimpleContainer(2), new SimpleContainerData(3));
+	this(id, playerinv, new SimpleContainer(2), new SimpleContainerData(3));
     }
 
     public ContainerCreativeGasSource(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-        super(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEGASSOURCE.get(), id, playerinv, inventory, inventorydata);
+	super(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEGASSOURCE.get(), id, playerinv, inventory, inventorydata);
     }
 
     @Override
     public void addInventorySlots(Container inv, Inventory playerinv) {
-        addSlot(new SlotGas(inv, nextIndex(), 58, 34));
-        addSlot(new SlotGas(inv, nextIndex(), 133, 34));
+	addSlot(new SlotGas(inv, nextIndex(), 58, 34));
+	addSlot(new SlotGas(inv, nextIndex(), 133, 34));
     }
 }

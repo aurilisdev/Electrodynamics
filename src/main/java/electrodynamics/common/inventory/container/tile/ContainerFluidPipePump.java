@@ -10,16 +10,16 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerFluidPipePump extends GenericContainerBlockEntity<TileFluidPipePump> {
 
-	public ContainerFluidPipePump(int id, Inventory playerinv, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEPUMP.get(), id, playerinv, EMPTY, inventorydata);
-	}
+    public ContainerFluidPipePump(int id, Inventory playerinv, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEPUMP.get(), id, playerinv, EMPTY, inventorydata);
+    }
 
-	public ContainerFluidPipePump(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainerData(3));
-	}
+    public ContainerFluidPipePump(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainerData(3));
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
 
-	}
+    }
 }

@@ -30,49 +30,63 @@ public class GasCollectorRecipeCategory extends AbstractRecipeCategory<PsuedoGas
 
     public static final BackgroundObject BACK_WRAP = new BackgroundObject(132, 65);
 
-    public static final ItemSlotObject INPUT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, 25, 26, RecipeIngredientRole.INPUT);
+    public static final ItemSlotObject INPUT_SLOT = new ItemSlotObject(ScreenComponentSlot.SlotType.NORMAL, 25, 26,
+	    RecipeIngredientRole.INPUT);
 
     public static final GasGaugeObject OUTPUT_GAUGE = new GasGaugeObject(90, 10);
 
-    public static final PowerLabelWrapperConstant POWER_LABEL = new PowerLabelWrapperConstant(2, 55, ElectrodynamicsConfig.INSTANCE.GAS_COLLECTOR_USAGE_PER_TICK.get(), 240);
+    public static final PowerLabelWrapperConstant POWER_LABEL = new PowerLabelWrapperConstant(2, 55,
+	    ElectrodynamicsConfig.INSTANCE.GAS_COLLECTOR_USAGE_PER_TICK.get(), 240);
 
     public static final AbstractLabelWrapper BIOME_LABEL = new AbstractLabelWrapper(Color.JEI_TEXT_GRAY, 2, 2, false) {
-        @Override
-        public Component getComponent(AbstractRecipeCategory<?> category, Object recipe) {
-            PsuedoGasCollectorRecipe psuedo = (PsuedoGasCollectorRecipe) recipe;
-            if(psuedo.output.biome() != null){
-                return ElectroTextUtils.jeiTranslated("validbiome", Component.literal(psuedo.output.biome().location().getPath().toString()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.DARK_GRAY);
-            } else if (psuedo.output.biomeTag() != null){
-                return ElectroTextUtils.jeiTranslated("validbiome", Component.literal("#" + psuedo.output.biomeTag().location().getPath().toString()).withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.DARK_GRAY);
-            } else {
-                return ElectroTextUtils.jeiTranslated("validbiome", ElectroTextUtils.jeiTranslated("anybiome").withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.DARK_GRAY);
-            }
-        }
+	@Override
+	public Component getComponent(AbstractRecipeCategory<?> category, Object recipe) {
+	    PsuedoGasCollectorRecipe psuedo = (PsuedoGasCollectorRecipe) recipe;
+	    if (psuedo.output.biome() != null) {
+		return ElectroTextUtils.jeiTranslated("validbiome",
+			Component.literal(psuedo.output.biome().location().getPath().toString())
+				.withStyle(ChatFormatting.DARK_GRAY))
+			.withStyle(ChatFormatting.DARK_GRAY);
+	    } else if (psuedo.output.biomeTag() != null) {
+		return ElectroTextUtils.jeiTranslated("validbiome",
+			Component.literal("#" + psuedo.output.biomeTag().location().getPath().toString())
+				.withStyle(ChatFormatting.DARK_GRAY))
+			.withStyle(ChatFormatting.DARK_GRAY);
+	    } else {
+		return ElectroTextUtils
+			.jeiTranslated("validbiome",
+				ElectroTextUtils.jeiTranslated("anybiome").withStyle(ChatFormatting.DARK_GRAY))
+			.withStyle(ChatFormatting.DARK_GRAY);
+	    }
+	}
     };
 
     public static final ScreenObject FAN = new ScreenObject(ScreenComponentProgress.ProgressTextures.FAN_ON, 57, 26);
 
     public static final int ANIM_TIME = 50;
 
-    public static ItemStack INPUT_MACHINE = new ItemStack(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.gascollector));
+    public static ItemStack INPUT_MACHINE = new ItemStack(
+	    ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.gascollector));
 
-    public static final RecipeType<PsuedoGasCollectorRecipe> RECIPE_TYPE = RecipeType.create(Electrodynamics.ID, "gascollector", PsuedoGasCollectorRecipe.class);
+    public static final RecipeType<PsuedoGasCollectorRecipe> RECIPE_TYPE = RecipeType.create(Electrodynamics.ID,
+	    "gascollector", PsuedoGasCollectorRecipe.class);
+
     public GasCollectorRecipeCategory(IGuiHelper guiHelper) {
-        super(guiHelper, ElectroTextUtils.jeiTranslated("gascollector"), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE, ANIM_TIME);
-        setInputSlots(guiHelper, INPUT_SLOT);
-        setGasOutputs(guiHelper, OUTPUT_GAUGE);
-        setScreenObjects(guiHelper, FAN);
-        setLabels(POWER_LABEL, BIOME_LABEL);
+	super(guiHelper, ElectroTextUtils.jeiTranslated("gascollector"), INPUT_MACHINE, BACK_WRAP, RECIPE_TYPE,
+		ANIM_TIME);
+	setInputSlots(guiHelper, INPUT_SLOT);
+	setGasOutputs(guiHelper, OUTPUT_GAUGE);
+	setScreenObjects(guiHelper, FAN);
+	setLabels(POWER_LABEL, BIOME_LABEL);
     }
-
 
     @Override
     public List<List<ItemStack>> getItemInputs(PsuedoGasCollectorRecipe recipe) {
-        return List.of(List.of(recipe.input));
+	return List.of(List.of(recipe.input));
     }
 
     @Override
     public List<GasStack> getGasOutputs(PsuedoGasCollectorRecipe recipe) {
-        return List.of(recipe.output.stack());
+	return List.of(recipe.output.stack());
     }
 }

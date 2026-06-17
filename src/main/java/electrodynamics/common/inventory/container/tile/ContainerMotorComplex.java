@@ -13,21 +13,22 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerMotorComplex extends GenericContainerBlockEntity<TileMotorComplex> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
+	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
 
-	public ContainerMotorComplex(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_MOTORCOMPLEX.get(), id, playerinv, inventory, inventorydata);
-	}
+    public ContainerMotorComplex(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_MOTORCOMPLEX.get(), id, playerinv, inventory, inventorydata);
+    }
 
-	public ContainerMotorComplex(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(3), new SimpleContainerData(3));
-	}
+    public ContainerMotorComplex(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainer(3), new SimpleContainerData(3));
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
-	}
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
+    }
 
 }

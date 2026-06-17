@@ -12,18 +12,18 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerCreativeFluidSource extends GenericContainerBlockEntity<TileCreativeFluidSource> {
 
-	public ContainerCreativeFluidSource(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(2), new SimpleContainerData(3));
-	}
+    public ContainerCreativeFluidSource(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainer(2), new SimpleContainerData(3));
+    }
 
-	public ContainerCreativeFluidSource(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEFLUIDSOURCE.get(), id, playerinv, inventory, inventorydata);
-	}
+    public ContainerCreativeFluidSource(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEFLUIDSOURCE.get(), id, playerinv, inventory, inventorydata);
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotFluid(inv, nextIndex(), 58, 34));
-		addSlot(new SlotFluid(inv, nextIndex(), 133, 34));
-	}
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
+	addSlot(new SlotFluid(inv, nextIndex(), 58, 34));
+	addSlot(new SlotFluid(inv, nextIndex(), 133, 34));
+    }
 
 }

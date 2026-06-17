@@ -10,21 +10,21 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerCircuitMonitor extends GenericContainerBlockEntity<TileCircuitMonitor> {
 
-	public ContainerCircuitMonitor(int id, Inventory playerinv, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_CIRCUITMONITOR.get(), id, playerinv, EMPTY, inventorydata);
-	}
+    public ContainerCircuitMonitor(int id, Inventory playerinv, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_CIRCUITMONITOR.get(), id, playerinv, EMPTY, inventorydata);
+    }
 
-	public ContainerCircuitMonitor(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainerData(3));
-	}
+    public ContainerCircuitMonitor(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainerData(3));
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
-		setPlayerInvOffset(40);
-	}
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
+	setPlayerInvOffset(40);
+    }
 
-	@Override
-	public void addPlayerInventory(Inventory playerinv) {
+    @Override
+    public void addPlayerInventory(Inventory playerinv) {
 
-	}
+    }
 }

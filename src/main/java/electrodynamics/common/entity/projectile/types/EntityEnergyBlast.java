@@ -18,50 +18,55 @@ import net.minecraft.world.phys.EntityHitResult;
 
 public class EntityEnergyBlast extends EntityCustomProjectile {
 
-	public EntityEnergyBlast(EntityType<? extends ThrowableItemProjectile> type, Level world) {
-		super(type, world);
-	}
+    public EntityEnergyBlast(EntityType<? extends ThrowableItemProjectile> type, Level world) {
+	super(type, world);
+    }
 
-	public EntityEnergyBlast(LivingEntity entity, Level world) {
-		super(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), entity, world);
-	}
+    public EntityEnergyBlast(LivingEntity entity, Level world) {
+	super(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), entity, world);
+    }
 
-	public EntityEnergyBlast(double x, double y, double z, Level worldIn) {
-		super(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), x, y, z, worldIn);
-	}
+    public EntityEnergyBlast(double x, double y, double z, Level worldIn) {
+	super(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), x, y, z, worldIn);
+    }
 
-	@Override
-	protected void onHitBlock(BlockHitResult hit) {
-		BlockState state = level().getBlockState(hit.getBlockPos());
-		if (!state.isAir()) {
-			if (!level().isClientSide) {
-				level().explode(null, hit.getBlockPos().getX(), hit.getBlockPos().getY(), hit.getBlockPos().getZ(), 4f / (tickCount / 40.0f + 1), true, ExplosionInteraction.BLOCK);
-				level().playSound(null, hit.getBlockPos(), ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_HIT.get(), SoundSource.BLOCKS, 1f, 1f);
-			}
-			remove(Entity.RemovalReason.DISCARDED);
-		}
-		if (tickCount > 100) {
-			remove(Entity.RemovalReason.DISCARDED);
-
-		}
+    @Override
+    protected void onHitBlock(BlockHitResult hit) {
+	BlockState state = level().getBlockState(hit.getBlockPos());
+	if (!state.isAir()) {
+	    if (!level().isClientSide) {
+		level().explode(null, hit.getBlockPos().getX(), hit.getBlockPos().getY(), hit.getBlockPos().getZ(),
+			4f / (tickCount / 40.0f + 1), true, ExplosionInteraction.BLOCK);
+		level().playSound(null, hit.getBlockPos(), ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_HIT.get(),
+			SoundSource.BLOCKS, 1f, 1f);
+	    }
+	    remove(Entity.RemovalReason.DISCARDED);
 	}
+	if (tickCount > 100) {
+	    remove(Entity.RemovalReason.DISCARDED);
 
-	@Override
-	public void tick() {
-		super.tick();
-		if (isInWater() || isInLava()) {
-			remove(Entity.RemovalReason.DISCARDED);
-		}
 	}
+    }
 
-	@Override
-	public void onHitEntity(EntityHitResult hit) {
-		Entity entity = hit.getEntity();
-		hit.getEntity().hurt(entity.damageSources().source(ElectrodynamicsDamageTypes.PLASMA_BOLT, this, entity), 40F / (tickCount / 40.0f + 1));
-		if(!level().isClientSide()){
-			level().playSound(null, new BlockPos((int) hit.getLocation().x(), (int) hit.getLocation().y(), (int) hit.getLocation().z()), ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_HIT.get(), SoundSource.BLOCKS, 1f, 1f);
-		}
-		super.onHitEntity(hit);
+    @Override
+    public void tick() {
+	super.tick();
+	if (isInWater() || isInLava()) {
+	    remove(Entity.RemovalReason.DISCARDED);
 	}
+    }
+
+    @Override
+    public void onHitEntity(EntityHitResult hit) {
+	Entity entity = hit.getEntity();
+	hit.getEntity().hurt(entity.damageSources().source(ElectrodynamicsDamageTypes.PLASMA_BOLT, this, entity),
+		40F / (tickCount / 40.0f + 1));
+	if (!level().isClientSide()) {
+	    level().playSound(null,
+		    new BlockPos((int) hit.getLocation().x(), (int) hit.getLocation().y(), (int) hit.getLocation().z()),
+		    ElectrodynamicsSounds.SOUND_RAILGUNPLASMA_HIT.get(), SoundSource.BLOCKS, 1f, 1f);
+	}
+	super.onHitEntity(hit);
+    }
 
 }

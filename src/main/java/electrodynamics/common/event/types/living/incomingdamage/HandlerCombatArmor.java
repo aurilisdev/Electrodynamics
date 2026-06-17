@@ -13,40 +13,45 @@ import voltaic.registers.VoltaicDataComponentTypes;
 
 public class HandlerCombatArmor extends AbstractIncomingDamageHandler {
 
-    private static final ItemStack[] COMBAT_ARMOR = new ItemStack[] { new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get()) };
+    private static final ItemStack[] COMBAT_ARMOR = {
+	    new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()),
+	    new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()),
+	    new ItemStack(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get()),
+	    new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get()) };
 
     @Override
     public void handle(LivingIncomingDamageEvent event) {
 
-        if(!event.getSource().is(DamageTypeTags.IS_FIRE)){
-            return;
-        }
+	if (!event.getSource().is(DamageTypeTags.IS_FIRE)) {
+	    return;
+	}
 
-        List<ItemStack> armorPieces = new ArrayList<>();
-        event.getEntity().getArmorSlots().forEach(piece -> armorPieces.add(piece));
+	List<ItemStack> armorPieces = new ArrayList<>();
+	event.getEntity().getArmorSlots().forEach(piece -> armorPieces.add(piece));
 
-        if (!compareArmor(armorPieces, COMBAT_ARMOR)) {
-            return;
-        }
+	if (!compareArmor(armorPieces, COMBAT_ARMOR)) {
+	    return;
+	}
 
-        GasStack gas = armorPieces.get(1).getOrDefault(VoltaicDataComponentTypes.GAS_STACK, GasStack.EMPTY);
+	GasStack gas = armorPieces.get(1).getOrDefault(VoltaicDataComponentTypes.GAS_STACK, GasStack.EMPTY);
 
-        if(gas.isEmpty()){
-            return;
-        }
+	if (gas.isEmpty()) {
+	    return;
+	}
 
-        gas.shrink(1);
+	gas.shrink(1);
 
-        armorPieces.get(1).set(VoltaicDataComponentTypes.GAS_STACK, gas.copy());
+	armorPieces.get(1).set(VoltaicDataComponentTypes.GAS_STACK, gas.copy());
 
-        event.setCanceled(true);
+	event.setCanceled(true);
 
     }
 
     private static boolean compareArmor(List<ItemStack> set1, ItemStack[] set2) {
-        if (set1.size() >= 3) {
-            return set1.get(0).getItem() == set2[3].getItem() && set1.get(1).getItem() == set2[2].getItem() && set1.get(2).getItem() == set2[1].getItem() && set1.get(3).getItem() == set2[0].getItem();
-        }
-        return false;
+	if (set1.size() >= 3) {
+	    return set1.get(0).getItem() == set2[3].getItem() && set1.get(1).getItem() == set2[2].getItem()
+		    && set1.get(2).getItem() == set2[1].getItem() && set1.get(3).getItem() == set2[0].getItem();
+	}
+	return false;
     }
 }

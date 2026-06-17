@@ -15,57 +15,59 @@ import net.neoforged.neoforge.entity.IEntityWithComplexSpawn;
 
 public abstract class EntityCustomProjectile extends ThrowableItemProjectile implements IEntityWithComplexSpawn {
 
-	public Vec3 clientDeltaX = Vec3.ZERO;
+    public Vec3 clientDeltaX = Vec3.ZERO;
 
-	protected EntityCustomProjectile(EntityType<? extends ThrowableItemProjectile> type, Level world) {
-		super(type, world);
-	}
+    protected EntityCustomProjectile(EntityType<? extends ThrowableItemProjectile> type, Level world) {
+	super(type, world);
+    }
 
-	protected EntityCustomProjectile(EntityType<? extends ThrowableItemProjectile> type, LivingEntity entity, Level world) {
-		super(type, entity, world);
-	}
+    protected EntityCustomProjectile(EntityType<? extends ThrowableItemProjectile> type, LivingEntity entity,
+	    Level world) {
+	super(type, entity, world);
+    }
 
-	protected EntityCustomProjectile(EntityType<? extends ThrowableItemProjectile> type, double x, double y, double z, Level worldIn) {
-		super(type, x, y, z, worldIn);
-	}
+    protected EntityCustomProjectile(EntityType<? extends ThrowableItemProjectile> type, double x, double y, double z,
+	    Level worldIn) {
+	super(type, x, y, z, worldIn);
+    }
 
-	@Override
-	protected void onHitBlock(BlockHitResult par) {
-		remove(Entity.RemovalReason.DISCARDED);
-	}
+    @Override
+    protected void onHitBlock(BlockHitResult par) {
+	remove(Entity.RemovalReason.DISCARDED);
+    }
 
-	@Override
-	public void onHitEntity(EntityHitResult par) {
-		remove(Entity.RemovalReason.DISCARDED);
-	}
+    @Override
+    public void onHitEntity(EntityHitResult par) {
+	remove(Entity.RemovalReason.DISCARDED);
+    }
 
-	@Override
-	protected Item getDefaultItem() {
-		return Items.COBBLESTONE;
-	}
+    @Override
+    protected Item getDefaultItem() {
+	return Items.COBBLESTONE;
+    }
 
-	@Override
-	public void tick() {
-		if (level().isClientSide) {
-			setDeltaMovement(clientDeltaX);
-		}
-		super.tick();
+    @Override
+    public void tick() {
+	if (level().isClientSide) {
+	    setDeltaMovement(clientDeltaX);
 	}
+	super.tick();
+    }
 
-	@Override
-	public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
-		buffer.writeDouble(getDeltaMovement().x);
-		buffer.writeDouble(getDeltaMovement().y);
-		buffer.writeDouble(getDeltaMovement().z);
-		buffer.writeFloat(getXRot());
-		buffer.writeFloat(getYRot());
-	}
+    @Override
+    public void writeSpawnData(RegistryFriendlyByteBuf buffer) {
+	buffer.writeDouble(getDeltaMovement().x);
+	buffer.writeDouble(getDeltaMovement().y);
+	buffer.writeDouble(getDeltaMovement().z);
+	buffer.writeFloat(getXRot());
+	buffer.writeFloat(getYRot());
+    }
 
-	@Override
-	public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
-		clientDeltaX = new Vec3(additionalData.readDouble(), additionalData.readDouble(), additionalData.readDouble());
-		setXRot(additionalData.readFloat());
-		setYRot(additionalData.readFloat());
-	}
+    @Override
+    public void readSpawnData(RegistryFriendlyByteBuf additionalData) {
+	clientDeltaX = new Vec3(additionalData.readDouble(), additionalData.readDouble(), additionalData.readDouble());
+	setXRot(additionalData.readFloat());
+	setYRot(additionalData.readFloat());
+    }
 
 }

@@ -26,118 +26,127 @@ public class ScreenComponentGasFilter extends ScreenComponentGeneric {
     private final int index;
 
     public ScreenComponentGasFilter(int x, int y, int index) {
-        super(ScreenComponentGasGauge.GasGaugeTextures.BACKGROUND_DEFAULT, x, y);
-        this.index = index;
+	super(ScreenComponentGasGauge.GasGaugeTextures.BACKGROUND_DEFAULT, x, y);
+	this.index = index;
     }
 
     @Override
     public void renderBackground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-        super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
+	super.renderBackground(graphics, xAxis, yAxis, guiWidth, guiHeight);
 
-        TileGasPipeFilter filter = (TileGasPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui).getMenu()).getSafeHost();
+	TileGasPipeFilter filter = (TileGasPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui)
+		.getMenu()).getSafeHost();
 
-        if (filter == null) {
-            return;
-        }
+	if (filter == null) {
+	    return;
+	}
 
-        SingleProperty<GasStack> property = filter.filteredGases[index];
+	SingleProperty<GasStack> property = filter.filteredGases[index];
 
-        if (!property.getValue().isEmpty()) {
+	if (!property.getValue().isEmpty()) {
 
-            ScreenComponentGasGauge.renderMercuryTexture(graphics, guiWidth + xLocation + 1, guiHeight + yLocation + 1, 1);
+	    ScreenComponentGasGauge.renderMercuryTexture(graphics, guiWidth + xLocation + 1, guiHeight + yLocation + 1,
+		    1);
 
-        }
+	}
 
-        ScreenComponentGasGauge.GasGaugeTextures texture = ScreenComponentGasGauge.GasGaugeTextures.LEVEL_DEFAULT;
+	ScreenComponentGasGauge.GasGaugeTextures texture = ScreenComponentGasGauge.GasGaugeTextures.LEVEL_DEFAULT;
 
-        graphics.blit(texture.getLocation(), guiWidth + xLocation, guiHeight + yLocation, texture.textureU(), texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(), texture.imageHeight());
+	graphics.blit(texture.getLocation(), guiWidth + xLocation, guiHeight + yLocation, texture.textureU(),
+		texture.textureV(), texture.textureWidth(), texture.textureHeight(), texture.imageWidth(),
+		texture.imageHeight());
 
     }
 
     @Override
     public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-        if (!isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(), super.texture.textureHeight())) {
-            return;
-        }
+	if (!isPointInRegion(xLocation, yLocation, xAxis, yAxis, super.texture.textureWidth(),
+		super.texture.textureHeight())) {
+	    return;
+	}
 
-        TileGasPipeFilter filter = (TileGasPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui).getMenu()).getSafeHost();
+	TileGasPipeFilter filter = (TileGasPipeFilter) ((GenericContainerBlockEntity<?>) ((GenericScreen<?>) gui)
+		.getMenu()).getSafeHost();
 
-        if (filter == null) {
-            return;
-        }
+	if (filter == null) {
+	    return;
+	}
 
-        List<FormattedCharSequence> tooltips = new ArrayList<>();
+	List<FormattedCharSequence> tooltips = new ArrayList<>();
 
-        SingleProperty<GasStack> property = filter.filteredGases[index];
+	SingleProperty<GasStack> property = filter.filteredGases[index];
 
-        tooltips.add(property.getValue().getGas().getDescription().getVisualOrderText());
+	tooltips.add(property.getValue().getGas().getDescription().getVisualOrderText());
 
-        graphics.renderTooltip(gui.getFontRenderer(), tooltips, xAxis, yAxis);
+	graphics.renderTooltip(gui.getFontRenderer(), tooltips, xAxis, yAxis);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
+	if (isActiveAndVisible() && isValidClick(button) && isInClickRegion(mouseX, mouseY)) {
 
-            onMouseClick(mouseX, mouseY);
+	    onMouseClick(mouseX, mouseY);
 
-            return true;
-        }
-        return false;
+	    return true;
+	}
+	return false;
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if (isValidClick(button)) {
-            onMouseRelease(mouseX, mouseY);
-            return true;
-        }
-        return false;
+	if (isValidClick(button)) {
+	    onMouseRelease(mouseX, mouseY);
+	    return true;
+	}
+	return false;
     }
 
     @Override
     public void onMouseClick(double mouseX, double mouseY) {
 
-        GenericScreen<?> screen = (GenericScreen<?>) gui;
+	GenericScreen<?> screen = (GenericScreen<?>) gui;
 
-        TileGasPipeFilter filter = (TileGasPipeFilter) ((GenericContainerBlockEntity<?>) screen.getMenu()).getSafeHost();
+	TileGasPipeFilter filter = (TileGasPipeFilter) ((GenericContainerBlockEntity<?>) screen.getMenu())
+		.getSafeHost();
 
-        if (filter == null) {
-            return;
-        }
+	if (filter == null) {
+	    return;
+	}
 
-        SingleProperty<GasStack> property = filter.filteredGases[index];
+	SingleProperty<GasStack> property = filter.filteredGases[index];
 
-        ItemStack holding = screen.getMenu().getCarried();
+	ItemStack holding = screen.getMenu().getCarried();
 
-        if (holding.isEmpty()) {
+	if (holding.isEmpty()) {
 
-            if (!Screen.hasShiftDown()) {
-                return;
-            }
-            property.setValue(GasStack.EMPTY);
+	    if (!Screen.hasShiftDown()) {
+		return;
+	    }
+	    property.setValue(GasStack.EMPTY);
 
-            Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), 1.0F));
+	    Minecraft.getInstance().getSoundManager()
+		    .play(SimpleSoundInstance.forUI(ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), 1.0F));
 
-            return;
+	    return;
 
-        }
+	}
 
-        IGasHandlerItem handler = holding.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	IGasHandlerItem handler = holding.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-        if (handler == null) {
-            return;
-        }
+	if (handler == null) {
+	    return;
+	}
 
-        GasStack taken = handler.drain(Integer.MAX_VALUE, GasAction.SIMULATE);
+	GasStack taken = handler.drain(Integer.MAX_VALUE, GasAction.SIMULATE);
 
-        if (taken.isEmpty()) {
-            return;
-        }
+	if (taken.isEmpty()) {
+	    return;
+	}
 
-        Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), 1.0F));
+	Minecraft.getInstance().getSoundManager()
+		.play(SimpleSoundInstance.forUI(ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(), 1.0F));
 
-        property.setValue(taken);
+	property.setValue(taken);
 
     }
 

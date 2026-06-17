@@ -20,18 +20,21 @@ public class MineralWasherRecipe extends FluidItem2FluidRecipe {
     public static final String RECIPE_GROUP = "mineral_washer_recipe";
     public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
 
-    public MineralWasherRecipe(String group, List<CountableIngredient> inputItems, List<FluidIngredient> inputFluids, FluidStack outputFluid, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
-        super(group, inputItems, inputFluids, outputFluid, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
+    public MineralWasherRecipe(String group, List<CountableIngredient> inputItems, List<FluidIngredient> inputFluids,
+	    FluidStack outputFluid, double experience, int ticks, double usagePerTick,
+	    List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
+	super(group, inputItems, inputFluids, outputFluid, experience, ticks, usagePerTick, itemBiproducts,
+		fluidBiproducts, gasBiproducts);
     }
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-        return ElectrodynamicsRecipies.MINERAL_WASHER_SERIALIZER.get();
+	return ElectrodynamicsRecipies.MINERAL_WASHER_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-        return ElectrodynamicsRecipies.MINERAL_WASHER_TYPE.get();
+	return ElectrodynamicsRecipies.MINERAL_WASHER_TYPE.get();
     }
 
 }

@@ -25,130 +25,145 @@ public class ElectrodynamicsOxidationFurnaceRecipes extends AbstractRecipeGenera
     public final String modID;
 
     public ElectrodynamicsOxidationFurnaceRecipes(String modID) {
-        this.modID = modID;
+	this.modID = modID;
     }
 
     public ElectrodynamicsOxidationFurnaceRecipes() {
-        this(Electrodynamics.ID);
+	this(Electrodynamics.ID);
     }
 
     @Override
     public void addRecipes(RecipeOutput output) {
 
-        newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.aluminum), 3), 0.4F, 200, 350.0, "ingot_aluminum", modID)
-                //
-                .addItemTagInput(VoltaicTags.Items.ORE_ALUMINUM, 1)
-                //
-                .addItemTagInput(VoltaicTags.Items.DUST_SALTPETER, 1)
-                //
-                .addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.5))
-                //
-                .save(output);
+	newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.aluminum), 3), 0.4F, 200, 350.0,
+		"ingot_aluminum", modID)
+		//
+		.addItemTagInput(VoltaicTags.Items.ORE_ALUMINUM, 1)
+		//
+		.addItemTagInput(VoltaicTags.Items.DUST_SALTPETER, 1)
+		//
+		.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.5))
+		//
+		.save(output);
 
-        newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.calciumcarbonate), 2), 0.1F, 200, 350.0, "calcium_carbonate", modID)
-                //
-                .addItemTagInput(VoltaicTags.Items.OXIDE_SODIUMCARBONATE, 1)
-                //
-                .addItemStackInput(new ItemStack(Items.BONE_MEAL))
-                //
-                .save(output);
+	newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.calciumcarbonate), 2), 0.1F, 200,
+		350.0, "calcium_carbonate", modID)
+		//
+		.addItemTagInput(VoltaicTags.Items.OXIDE_SODIUMCARBONATE, 1)
+		//
+		.addItemStackInput(new ItemStack(Items.BONE_MEAL))
+		//
+		.save(output);
 
-        newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.chromiumdisilicide)), 0.3F, 200, 350.0, "chromium_disilicide", modID)
-                //
-                .addItemTagInput(VoltaicTags.Items.OXIDE_CHROMIUM, 1)
-                //
-                .addItemTagInput(VoltaicTags.Items.DUST_SILICA, 1)
-                //
-                .save(output);
+	newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.chromiumdisilicide)), 0.3F, 200,
+		350.0, "chromium_disilicide", modID)
+		//
+		.addItemTagInput(VoltaicTags.Items.OXIDE_CHROMIUM, 1)
+		//
+		.addItemTagInput(VoltaicTags.Items.DUST_SILICA, 1)
+		//
+		.save(output);
 
-        newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.chromium)), 0.3F, 200, 350.0, "ingot_chromium", modID)
-                //
-                .addItemTagInput(VoltaicTags.Items.OXIDE_CHROMIUM, 1)
-                //
-                .addItemTagInput(VoltaicTags.Items.OXIDE_CALCIUMCARBONATE, 1)
-                //
-                .addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.75))
-                //
-                .save(output);
+	newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.chromium)), 0.3F, 200, 350.0,
+		"ingot_chromium", modID)
+		//
+		.addItemTagInput(VoltaicTags.Items.OXIDE_CHROMIUM, 1)
+		//
+		.addItemTagInput(VoltaicTags.Items.OXIDE_CALCIUMCARBONATE, 1)
+		//
+		.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.75))
+		//
+		.save(output);
 
-        newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.disulfur), 1), 0.1F, 200, 350.0, "sulfur_dioxide", modID)
-                //
-                .addItemTagInput(VoltaicTags.Items.DUST_SULFUR, 1)
-                //
-                .addItemTagInput(ItemTags.COALS, 1)
-                //
-                .save(output);
+	newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.disulfur), 1), 0.1F, 200, 350.0,
+		"sulfur_dioxide", modID)
+		//
+		.addItemTagInput(VoltaicTags.Items.DUST_SULFUR, 1)
+		//
+		.addItemTagInput(ItemTags.COALS, 1)
+		//
+		.save(output);
 
-        newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.silica), 3), 0.1F, 200, 350.0, "dust_silica", modID)
-                //
-                .addItemTagInput(Tags.Items.SANDS, 1)
-                //
-                .addItemTagInput(VoltaicTags.Items.COAL_COKE, 1)
-                //
-                .save(output);
+	newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.silica), 3), 0.1F, 200, 350.0,
+		"dust_silica", modID)
+		//
+		.addItemTagInput(Tags.Items.SANDS, 1)
+		//
+		.addItemTagInput(VoltaicTags.Items.COAL_COKE, 1)
+		//
+		.save(output);
 
-        newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.sodiumcarbonate), 1), 0.1F, 200, 350.0, "sodium_carbonate", modID)
-                //
-                .addItemTagInput(VoltaicTags.Items.DUST_SALT, 1)
-                //
-                .addItemTagInput(ItemTags.COALS, 1)
-                //
-                .save(output);
+	newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.sodiumcarbonate), 1), 0.1F, 200,
+		350.0, "sodium_carbonate", modID)
+		//
+		.addItemTagInput(VoltaicTags.Items.DUST_SALT, 1)
+		//
+		.addItemTagInput(ItemTags.COALS, 1)
+		//
+		.save(output);
 
-        newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.sulfurdichloride), 1), 0.1F, 200, 350.0, "sulfur_dichloride", modID)
-                //
-                .addItemTagInput(VoltaicTags.Items.DUST_SALT, 1)
-                //
-                .addItemTagInput(VoltaicTags.Items.DUST_SULFUR, 1)
-                //
-                .save(output);
+	newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.sulfurdichloride), 1), 0.1F, 200,
+		350.0, "sulfur_dichloride", modID)
+		//
+		.addItemTagInput(VoltaicTags.Items.DUST_SALT, 1)
+		//
+		.addItemTagInput(VoltaicTags.Items.DUST_SULFUR, 1)
+		//
+		.save(output);
 
-        newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.thionylchloride), 1), 0.1F, 200, 350.0, "thionyl_chloride", modID)
-                //
-                .addItemTagInput(VoltaicTags.Items.OXIDE_SULFURDICHLORIDE, 1)
-                //
-                .addItemTagInput(VoltaicTags.Items.OXIDE_TRISULFUR, 1)
-                //
-                .save(output);
+	newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.thionylchloride), 1), 0.1F, 200,
+		350.0, "thionyl_chloride", modID)
+		//
+		.addItemTagInput(VoltaicTags.Items.OXIDE_SULFURDICHLORIDE, 1)
+		//
+		.addItemTagInput(VoltaicTags.Items.OXIDE_TRISULFUR, 1)
+		//
+		.save(output);
 
-        newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.titanium), 1), 0.2F, 200, 350.0, "ingot_titanium", modID)
-                //
-                .addItemTagInput(VoltaicTags.Items.OXIDE_DITITANIUM, 1)
-                //
-                .addItemTagInput(VoltaicTags.Items.DUST_SALT, 1)
-                //
-                .addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.75))
-                //
-                .save(output);
+	newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.titanium), 1), 0.2F, 200, 350.0,
+		"ingot_titanium", modID)
+		//
+		.addItemTagInput(VoltaicTags.Items.OXIDE_DITITANIUM, 1)
+		//
+		.addItemTagInput(VoltaicTags.Items.DUST_SALT, 1)
+		//
+		.addItemBiproduct(new ProbableItem(new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()), 0.75))
+		//
+		.save(output);
 
-        newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.trisulfur), 1), 0.1F, 200, 350.0, "sulfur_trioxide", modID)
-                //
-                .addItemTagInput(VoltaicTags.Items.OXIDE_DISULFUR, 1)
-                //
-                .addItemTagInput(VoltaicTags.Items.OXIDE_VANADIUM, 1)
-                //
-                .save(output);
+	newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.trisulfur), 1), 0.1F, 200, 350.0,
+		"sulfur_trioxide", modID)
+		//
+		.addItemTagInput(VoltaicTags.Items.OXIDE_DISULFUR, 1)
+		//
+		.addItemTagInput(VoltaicTags.Items.OXIDE_VANADIUM, 1)
+		//
+		.save(output);
 
-        newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.vanadium), 1), 0.1F, 200, 350.0, "vanadium_oxide", modID)
-                //
-                .addItemTagInput(VoltaicTags.Items.DUST_VANADIUM, 1)
-                //
-                .addItemTagInput(ItemTags.COALS, 1)
-                //
-                .save(output);
+	newRecipe(new ItemStack(ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.vanadium), 1), 0.1F, 200, 350.0,
+		"vanadium_oxide", modID)
+		//
+		.addItemTagInput(VoltaicTags.Items.DUST_VANADIUM, 1)
+		//
+		.addItemTagInput(ItemTags.COALS, 1)
+		//
+		.save(output);
 
-        newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_FIBERGLASSSHEET.get(), 1), 0.1F, 200, 350.0, "fiberglass_sheet", modID)
-                //
-                .addItemTagInput(VoltaicTags.Items.PLASTIC, 1)
-                //
-                .addItemTagInput(Tags.Items.GLASS_BLOCKS, 1)
-                //
-                .save(output);
+	newRecipe(new ItemStack(ElectrodynamicsItems.ITEM_FIBERGLASSSHEET.get(), 1), 0.1F, 200, 350.0,
+		"fiberglass_sheet", modID)
+		//
+		.addItemTagInput(VoltaicTags.Items.PLASTIC, 1)
+		//
+		.addItemTagInput(Tags.Items.GLASS_BLOCKS, 1)
+		//
+		.save(output);
 
     }
 
-    public Item2ItemBuilder<OxidationFurnaceRecipe> newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick, String name, String group) {
-        return new Item2ItemBuilder<>(OxidationFurnaceRecipe::new, stack, BaseRecipeBuilder.RecipeCategory.ITEM_2_ITEM, modID, "oxidation_furnace/" + name, group, xp, ticks, usagePerTick);
+    public Item2ItemBuilder<OxidationFurnaceRecipe> newRecipe(ItemStack stack, float xp, int ticks, double usagePerTick,
+	    String name, String group) {
+	return new Item2ItemBuilder<>(OxidationFurnaceRecipe::new, stack, BaseRecipeBuilder.RecipeCategory.ITEM_2_ITEM,
+		modID, "oxidation_furnace/" + name, group, xp, ticks, usagePerTick);
     }
 
 }

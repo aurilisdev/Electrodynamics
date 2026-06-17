@@ -95,7 +95,7 @@ public class TileBasicThermoelectricManipulator extends GenericTileThermoelectri
 		break;
 	    }
 	    aboveTile = getLevel().getBlockEntity(abovePos);
-	    if ((aboveTile == null) || !(aboveTile instanceof TileGasTransformerAddonTank tank)) {
+	    if (aboveTile == null || !(aboveTile instanceof TileGasTransformerAddonTank tank)) {
 		break;
 	    }
 	    abovePos = abovePos.above();

@@ -36,56 +36,73 @@ public class GasCollectorChromoCardsProvider implements DataProvider {
     private final Map<String, JsonObject> jsons = new HashMap<>();
 
     public GasCollectorChromoCardsProvider(PackOutput output) {
-        this.output = output;
+	this.output = output;
     }
 
     @Override
     public CompletableFuture<?> run(CachedOutput cache) {
-        addGases();
+	addGases();
 
-        Path parent = output.getOutputFolder().resolve(LOC);
+	Path parent = output.getOutputFolder().resolve(LOC);
 
-        List<CompletableFuture<?>> completed = new ArrayList<>();
+	List<CompletableFuture<?>> completed = new ArrayList<>();
 
-        for (Map.Entry<String, JsonObject> json : jsons.entrySet()) {
-            completed.add(DataProvider.saveStable(cache, json.getValue(), parent.resolve(json.getKey() + ".json")));
-        }
+	for (Map.Entry<String, JsonObject> json : jsons.entrySet()) {
+	    completed.add(DataProvider.saveStable(cache, json.getValue(), parent.resolve(json.getKey() + ".json")));
+	}
 
-        return CompletableFuture.allOf(completed.toArray(size -> new CompletableFuture[size]));
+	return CompletableFuture.allOf(completed.toArray(size -> new CompletableFuture[size]));
     }
 
     public void addGases() {
-        jsons.put("nitrogen", toJson(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.nitrogen), ElectrodynamicsGases.NITROGEN.value(), 78, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL, null));
-        jsons.put("oxygen", toJson(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.oxygen), ElectrodynamicsGases.OXYGEN.value(), 21, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL, null));
-        jsons.put("argon", toJson(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.argon), ElectrodynamicsGases.ARGON.value(), 1, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL, null));
-        jsons.put("carbondioxide", toJson(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.carbondioxide), ElectrodynamicsGases.CARBON_DIOXIDE.value(), 1, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL, null));
-        jsons.put("sulfurdioxide", toJson(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.sulfurdioxide), ElectrodynamicsGases.SULFUR_DIOXIDE.value(), 1, 373, Gas.PRESSURE_AT_SEA_LEVEL, BiomeTags.IS_NETHER));
+	jsons.put("nitrogen",
+		toJson(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.nitrogen),
+			ElectrodynamicsGases.NITROGEN.value(), 78, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL,
+			null));
+	jsons.put("oxygen",
+		toJson(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.oxygen),
+			ElectrodynamicsGases.OXYGEN.value(), 21, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL,
+			null));
+	jsons.put("argon",
+		toJson(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.argon),
+			ElectrodynamicsGases.ARGON.value(), 1, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL, null));
+	jsons.put("carbondioxide",
+		toJson(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.carbondioxide),
+			ElectrodynamicsGases.CARBON_DIOXIDE.value(), 1, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL,
+			null));
+	jsons.put("sulfurdioxide",
+		toJson(ElectrodynamicsItems.ITEMS_CHROMOTOGRAPHYCARD.getValue(SubtypeChromotographyCard.sulfurdioxide),
+			ElectrodynamicsGases.SULFUR_DIOXIDE.value(), 1, 373, Gas.PRESSURE_AT_SEA_LEVEL,
+			BiomeTags.IS_NETHER));
     }
 
     @SuppressWarnings("unused") // TODO: Is this needed?
-    private static JsonObject toJson(TagKey<Item> tag, Gas gas, int amount, int temperature, int pressure, @Nullable TagKey<Biome> biomeTag) {
-        return toJson("#" + tag.location().toString(), gas, amount, temperature, pressure, biomeTag);
+    private static JsonObject toJson(TagKey<Item> tag, Gas gas, int amount, int temperature, int pressure,
+	    @Nullable TagKey<Biome> biomeTag) {
+	return toJson("#" + tag.location().toString(), gas, amount, temperature, pressure, biomeTag);
     }
 
-    private static JsonObject toJson(Item item, Gas gas, int amount, int temperature, int pressure, @Nullable TagKey<Biome> biomeTag) {
-        return toJson(BuiltInRegistries.ITEM.getKey(item).toString(), gas, amount, temperature, pressure, biomeTag);
+    private static JsonObject toJson(Item item, Gas gas, int amount, int temperature, int pressure,
+	    @Nullable TagKey<Biome> biomeTag) {
+	return toJson(BuiltInRegistries.ITEM.getKey(item).toString(), gas, amount, temperature, pressure, biomeTag);
     }
 
-    private static JsonObject toJson(String item, Gas gas, int amount, int temperature, int pressure, @Nullable TagKey<Biome> biomeTag) {
-        JsonObject json = new JsonObject();
-        json.addProperty(GasCollectorChromoCardsRegister.ITEM_KEY, item);
-        json.addProperty(GasCollectorChromoCardsRegister.GAS_KEY, VoltaicGases.GAS_REGISTRY.getKey(gas).toString());
-        json.addProperty(GasCollectorChromoCardsRegister.AMOUNT_KEY, amount);
-        json.addProperty(GasCollectorChromoCardsRegister.TEMPERATURE_KEY, temperature);
-        json.addProperty(GasCollectorChromoCardsRegister.PRESSURE_KEY, pressure);
-        if(biomeTag != null) {
-            json.addProperty(GasCollectorChromoCardsRegister.BIOME_KEY, "#" + biomeTag.location().toString());
-        }
-        return json;
+    private static JsonObject toJson(String item, Gas gas, int amount, int temperature, int pressure,
+	    @Nullable TagKey<Biome> biomeTag) {
+	JsonObject json = new JsonObject();
+	json.addProperty(GasCollectorChromoCardsRegister.ITEM_KEY, item);
+	json.addProperty(GasCollectorChromoCardsRegister.GAS_KEY, VoltaicGases.GAS_REGISTRY.getKey(gas).toString());
+	json.addProperty(GasCollectorChromoCardsRegister.AMOUNT_KEY, amount);
+	json.addProperty(GasCollectorChromoCardsRegister.TEMPERATURE_KEY, temperature);
+	json.addProperty(GasCollectorChromoCardsRegister.PRESSURE_KEY, pressure);
+	if (biomeTag != null) {
+	    json.addProperty(GasCollectorChromoCardsRegister.BIOME_KEY, "#" + biomeTag.location().toString());
+	}
+	return json;
     }
 
     @Override
     public String getName() {
-        return "Gas Collector Chromotography Cards Provider";
+	return "Gas Collector Chromotography Cards Provider";
     }
 }

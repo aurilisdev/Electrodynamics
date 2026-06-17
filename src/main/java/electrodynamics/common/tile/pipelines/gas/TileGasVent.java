@@ -20,39 +20,41 @@ import voltaic.registers.VoltaicCapabilities;
 public class TileGasVent extends GenericMaterialTile {
 
     public TileGasVent(BlockPos worldPos, BlockState blockState) {
-        super(ElectrodynamicsTiles.TILE_GASVENT.get(), worldPos, blockState);
-        addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-        addComponent(new ComponentPacketHandler(this));
-        addComponent(new ComponentGasHandlerSimple(this, "", 128000, 1000000, 1000000).universalInput());
-        addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().gasInputs(1)).valid((slot, stack, i) -> stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM) != null));
-        addComponent(new ComponentContainerProvider(SubtypeMachine.gasvent.tag(), this).createMenu((id, player) -> new ContainerGasVent(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+	super(ElectrodynamicsTiles.TILE_GASVENT.get(), worldPos, blockState);
+	addComponent(new ComponentTickable(this).tickServer(this::tickServer));
+	addComponent(new ComponentPacketHandler(this));
+	addComponent(new ComponentGasHandlerSimple(this, "", 128000, 1000000, 1000000).universalInput());
+	addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().gasInputs(1)).valid(
+		(slot, stack, i) -> stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM) != null));
+	addComponent(new ComponentContainerProvider(SubtypeMachine.gasvent.tag(), this).createMenu((id,
+		player) -> new ContainerGasVent(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
     public void tickServer(ComponentTickable tickable) {
 
-        ComponentInventory inv = getComponent(IComponentType.Inventory);
+	ComponentInventory inv = getComponent(IComponentType.Inventory);
 
-        ComponentGasHandlerSimple simple = getComponent(IComponentType.GasHandler);
+	ComponentGasHandlerSimple simple = getComponent(IComponentType.GasHandler);
 
-        simple.drain(simple.getGasAmount(), GasAction.EXECUTE);
+	simple.drain(simple.getGasAmount(), GasAction.EXECUTE);
 
-        ItemStack input = inv.getItem(0);
+	ItemStack input = inv.getItem(0);
 
-        if (input.isEmpty()) {
+	if (input.isEmpty()) {
 
-            return;
+	    return;
 
-        }
+	}
 
-        IGasHandlerItem handler = input.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	IGasHandlerItem handler = input.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-        if (handler == null) {
-            return;
-        }
+	if (handler == null) {
+	    return;
+	}
 
-        for (int i = 0; i < handler.getTanks(); i++) {
-            handler.drain(Integer.MAX_VALUE, GasAction.EXECUTE);
-        }
+	for (int i = 0; i < handler.getTanks(); i++) {
+	    handler.drain(Integer.MAX_VALUE, GasAction.EXECUTE);
+	}
 
     }
 

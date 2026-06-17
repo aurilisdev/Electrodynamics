@@ -29,35 +29,43 @@ public class NetworkHandler {
 
     @SubscribeEvent
     public static void registerPackets(final RegisterPayloadHandlersEvent event) {
-        final PayloadRegistrar registry = event.registrar(Electrodynamics.ID).versioned(PROTOCOL_VERSION).optional();
+	final PayloadRegistrar registry = event.registrar(Electrodynamics.ID).versioned(PROTOCOL_VERSION).optional();
 
-        // CLIENT
+	// CLIENT
 
-        registry.playToClient(PacketAddClientRenderInfo.TYPE, PacketAddClientRenderInfo.CODEC, PacketAddClientRenderInfo::handle);
-        registry.playToClient(PacketJetpackEquipedSound.TYPE, PacketJetpackEquipedSound.CODEC, PacketJetpackEquipedSound::handle);
-        registry.playToClient(PacketRenderJetpackParticles.TYPE, PacketRenderJetpackParticles.CODEC, PacketRenderJetpackParticles::handle);
-        registry.playToClient(PacketSetClientCoalGenFuels.TYPE, PacketSetClientCoalGenFuels.CODEC, PacketSetClientCoalGenFuels::handle);
-        registry.playToClient(PacketSetClientCombustionFuel.TYPE, PacketSetClientCombustionFuel.CODEC, PacketSetClientCombustionFuel::handle);
-        registry.playToClient(PacketSetClientGasCollectorCards.TYPE, PacketSetClientGasCollectorCards.CODEC, PacketSetClientGasCollectorCards::handle);
-        registry.playToClient(PacketSetClientThermoGenSources.TYPE, PacketSetClientThermoGenSources.CODEC, PacketSetClientThermoGenSources::handle);
+	registry.playToClient(PacketAddClientRenderInfo.TYPE, PacketAddClientRenderInfo.CODEC,
+		PacketAddClientRenderInfo::handle);
+	registry.playToClient(PacketJetpackEquipedSound.TYPE, PacketJetpackEquipedSound.CODEC,
+		PacketJetpackEquipedSound::handle);
+	registry.playToClient(PacketRenderJetpackParticles.TYPE, PacketRenderJetpackParticles.CODEC,
+		PacketRenderJetpackParticles::handle);
+	registry.playToClient(PacketSetClientCoalGenFuels.TYPE, PacketSetClientCoalGenFuels.CODEC,
+		PacketSetClientCoalGenFuels::handle);
+	registry.playToClient(PacketSetClientCombustionFuel.TYPE, PacketSetClientCombustionFuel.CODEC,
+		PacketSetClientCombustionFuel::handle);
+	registry.playToClient(PacketSetClientGasCollectorCards.TYPE, PacketSetClientGasCollectorCards.CODEC,
+		PacketSetClientGasCollectorCards::handle);
+	registry.playToClient(PacketSetClientThermoGenSources.TYPE, PacketSetClientThermoGenSources.CODEC,
+		PacketSetClientThermoGenSources::handle);
 
-        // SERVER
+	// SERVER
 
-        registry.playToServer(PacketJetpackFlightServer.TYPE, PacketJetpackFlightServer.CODEC, PacketJetpackFlightServer::handle);
-        registry.playToServer(PacketModeSwitchServer.TYPE, PacketModeSwitchServer.CODEC, PacketModeSwitchServer::handle);
-        registry.playToServer(PacketPowerSetting.TYPE, PacketPowerSetting.CODEC, PacketPowerSetting::handle);
-        registry.playToServer(PacketToggleOnServer.TYPE, PacketToggleOnServer.CODEC, PacketToggleOnServer::handle);
-        registry.playToServer(PacketSeismicScanner.TYPE, PacketSeismicScanner.CODEC, PacketSeismicScanner::handle);
+	registry.playToServer(PacketJetpackFlightServer.TYPE, PacketJetpackFlightServer.CODEC,
+		PacketJetpackFlightServer::handle);
+	registry.playToServer(PacketModeSwitchServer.TYPE, PacketModeSwitchServer.CODEC,
+		PacketModeSwitchServer::handle);
+	registry.playToServer(PacketPowerSetting.TYPE, PacketPowerSetting.CODEC, PacketPowerSetting::handle);
+	registry.playToServer(PacketToggleOnServer.TYPE, PacketToggleOnServer.CODEC, PacketToggleOnServer::handle);
+	registry.playToServer(PacketSeismicScanner.TYPE, PacketSeismicScanner.CODEC, PacketSeismicScanner::handle);
 
     }
 
     public static String getPlayerInformation(String username) {
-        return playerInformation.getOrDefault(username, "No Information");
+	return playerInformation.getOrDefault(username, "No Information");
     }
 
     public static ResourceLocation id(String name) {
-        return Electrodynamics.rl(name);
+	return Electrodynamics.rl(name);
     }
-
 
 }

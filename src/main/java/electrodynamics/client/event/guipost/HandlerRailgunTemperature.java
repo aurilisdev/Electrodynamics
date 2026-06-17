@@ -79,13 +79,13 @@ public class HandlerRailgunTemperature extends AbstractPostGuiOverlayHandler {
 	if (fluidCap != null) {
 	    int amount = fluidCap.getFluidInTank(0).getAmount();
 	    Component fluid = FLUID.get(amount);
-	    graphics.drawString(minecraft.font, fluid, X, Y0 + (LINE * lineIndex), 0);
+	    graphics.drawString(minecraft.font, fluid, X, Y0 + LINE * lineIndex, 0);
 	    lineIndex++;
 	}
 
 	if (temperature >= railgun.getOverheatTemp()) {
 	    Component warn = OVERHEAT.get(Boolean.TRUE);
-	    graphics.drawString(minecraft.font, warn, X, Y0 + (LINE * lineIndex), 0);
+	    graphics.drawString(minecraft.font, warn, X, Y0 + LINE * lineIndex, 0);
 	}
     }
 

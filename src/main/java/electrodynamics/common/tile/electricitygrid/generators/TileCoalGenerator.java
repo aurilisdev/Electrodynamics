@@ -135,7 +135,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 
     @Override
     public int getComparatorSignal() {
-	return (int) ((heat.getValue() / 3000.0) * 15.0);
+	return (int) (heat.getValue() / 3000.0 * 15.0);
     }
 
     @Override

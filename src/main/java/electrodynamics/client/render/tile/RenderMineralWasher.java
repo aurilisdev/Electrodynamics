@@ -28,68 +28,79 @@ import voltaic.prefab.utilities.math.Color;
 public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher> {
 
     public RenderMineralWasher(BlockEntityRendererProvider.Context context) {
-        super(context);
+	super(context);
     }
 
     @Override
-    public void render(TileMineralWasher tile, float partialTicks, @NotNull PoseStack matrix, @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(TileMineralWasher tile, float partialTicks, @NotNull PoseStack matrix,
+	    @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
-        ItemStack stack = tile.<ComponentInventory>getComponent(IComponentType.Inventory).getInputsForProcessor(0).get(0);
+	ItemStack stack = tile.<ComponentInventory>getComponent(IComponentType.Inventory).getInputsForProcessor(0)
+		.get(0);
 
-        if (stack.isEmpty()) {
+	if (stack.isEmpty()) {
 
-            return;
+	    return;
 
-        }
+	}
 
-        Direction dir = tile.getFacing();
+	Direction dir = tile.getFacing();
 
-        matrix.pushPose();
+	matrix.pushPose();
 
-        double scale = 12;
+	double scale = 12;
 
-        matrix.translate(0.5 + dir.getStepX() / scale, stack.getItem() instanceof BlockItem ? 0.48 : 0.39, 0.5 + dir.getStepZ() / scale);
+	matrix.translate(0.5 + dir.getStepX() / scale, stack.getItem() instanceof BlockItem ? 0.48 : 0.39,
+		0.5 + dir.getStepZ() / scale);
 
-        matrix.scale(0.35f, 0.35f, 0.35f);
+	matrix.scale(0.35f, 0.35f, 0.35f);
 
-        matrix.scale(0.3f, 0.3f, 0.3f);
+	matrix.scale(0.3f, 0.3f, 0.3f);
 
-        matrix.translate(0, -0.2, 0);
+	matrix.translate(0, -0.2, 0);
 
-        renderItem(stack, ItemDisplayContext.NONE, combinedLightIn, combinedOverlayIn, matrix, bufferIn, tile.getLevel(), 0);
+	renderItem(stack, ItemDisplayContext.NONE, combinedLightIn, combinedOverlayIn, matrix, bufferIn,
+		tile.getLevel(), 0);
 
-        matrix.popPose();
+	matrix.popPose();
 
-        ComponentFluidHandlerMulti multi = tile.getComponent(IComponentType.FluidHandler);
+	ComponentFluidHandlerMulti multi = tile.getComponent(IComponentType.FluidHandler);
 
-        FluidStack fluid = multi.getFluidInTank(0, true);
+	FluidStack fluid = multi.getFluidInTank(0, true);
 
-        if (!tile.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) || fluid.isEmpty() || level().getRandom().nextDouble() > 0.15) {
-            return;
-        }
+	if (!tile.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) || fluid.isEmpty()
+		|| level().getRandom().nextDouble() > 0.15) {
+	    return;
+	}
 
-        matrix.pushPose();
+	matrix.pushPose();
 
-        IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(fluid.getFluid());
+	IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(fluid.getFluid());
 
-        TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(attributes.getStillTexture());
+	TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+		.apply(attributes.getStillTexture());
 
-        Vector3f color = new Color(attributes.getTintColor(fluid)).multiply(Color.fromABGR(sp.getPixelRGBA(1, level().getRandom().nextIntBetweenInclusive(0, 15), level().getRandom().nextIntBetweenInclusive(0, 15)))).getFloatVector();
+	Vector3f color = new Color(attributes.getTintColor(fluid))
+		.multiply(Color.fromABGR(sp.getPixelRGBA(1, level().getRandom().nextIntBetweenInclusive(0, 15),
+			level().getRandom().nextIntBetweenInclusive(0, 15))))
+		.getFloatVector();
 
-        for (int i = 0; i < 2; i++) {
-            double x = 0.5 + level().random.nextDouble() * 0.4 - 0.2;
-            double y = 0.5 + level().random.nextDouble() * 0.3 - 0.15;
-            double z = 0.5 + level().random.nextDouble() * 0.4 - 0.2;
-            level().addParticle(new DustParticleOptions(color, 1), tile.getBlockPos().getX() + x, tile.getBlockPos().getY() + y, tile.getBlockPos().getZ() + z, level().random.nextDouble() * 0.2 - 0.1, level().random.nextDouble() * 0.2 - 0.1, level().random.nextDouble() * 0.2 - 0.1);
-        }
+	for (int i = 0; i < 2; i++) {
+	    double x = 0.5 + level().random.nextDouble() * 0.4 - 0.2;
+	    double y = 0.5 + level().random.nextDouble() * 0.3 - 0.15;
+	    double z = 0.5 + level().random.nextDouble() * 0.4 - 0.2;
+	    level().addParticle(new DustParticleOptions(color, 1), tile.getBlockPos().getX() + x,
+		    tile.getBlockPos().getY() + y, tile.getBlockPos().getZ() + z,
+		    level().random.nextDouble() * 0.2 - 0.1, level().random.nextDouble() * 0.2 - 0.1,
+		    level().random.nextDouble() * 0.2 - 0.1);
+	}
 
-        matrix.popPose();
-
+	matrix.popPose();
 
     }
 
     @Override
     public AABB getRenderBoundingBox(TileMineralWasher blockEntity) {
-        return super.getRenderBoundingBox(blockEntity).inflate(1);
+	return super.getRenderBoundingBox(blockEntity).inflate(1);
     }
 }

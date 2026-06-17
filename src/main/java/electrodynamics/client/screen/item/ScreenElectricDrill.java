@@ -7,8 +7,8 @@ import voltaic.prefab.screen.GenericScreen;
 
 public class ScreenElectricDrill extends GenericScreen<ContainerElectricDrill> {
 
-	public ScreenElectricDrill(ContainerElectricDrill screenContainer, Inventory inv, Component titleIn) {
-		super(screenContainer, inv, titleIn);
-	}
+    public ScreenElectricDrill(ContainerElectricDrill screenContainer, Inventory inv, Component titleIn) {
+	super(screenContainer, inv, titleIn);
+    }
 
 }

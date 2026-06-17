@@ -13,18 +13,18 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerWindmill extends GenericContainerBlockEntity<TileWindmill> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.stator };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.stator };
 
-	public ContainerWindmill(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));
-	}
+    public ContainerWindmill(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));
+    }
 
-	public ContainerWindmill(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_WINDMILL.get(), id, playerinv, inventory, inventorydata);
-	}
+    public ContainerWindmill(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_WINDMILL.get(), id, playerinv, inventory, inventorydata);
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotUpgrade(inv, nextIndex(), 25, 42, VALID_UPGRADES));
-	}
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
+	addSlot(new SlotUpgrade(inv, nextIndex(), 25, 42, VALID_UPGRADES));
+    }
 }

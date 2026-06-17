@@ -10,16 +10,16 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerCreativePowerSource extends GenericContainerBlockEntity<TileCreativePowerSource> {
 
-	public ContainerCreativePowerSource(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainerData(3));
-	}
+    public ContainerCreativePowerSource(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainerData(3));
+    }
 
-	public ContainerCreativePowerSource(int id, Inventory playerinv, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEPOWERSOURCE.get(), id, playerinv, EMPTY, inventorydata);
-	}
+    public ContainerCreativePowerSource(int id, Inventory playerinv, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEPOWERSOURCE.get(), id, playerinv, EMPTY, inventorydata);
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
 
-	}
+    }
 }

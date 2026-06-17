@@ -19,44 +19,48 @@ import voltaic.prefab.tile.types.GenericMaterialTile;
 import voltaic.prefab.utilities.BlockEntityUtils;
 
 public class TileFluidVoid extends GenericMaterialTile {
-	
-	public static final int CAPACITY = 128000;
-	
-	public static final int INPUT_SLOT = 0;
 
-	public TileFluidVoid(BlockPos worldPos, BlockState blockState) {
-		super(ElectrodynamicsTiles.TILE_FLUIDVOID.get(), worldPos, blockState);
-		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentFluidHandlerSimple(CAPACITY, this, "").setInputDirections(BlockEntityUtils.MachineDirection.values()));
-		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().bucketInputs(1)).valid((slot, stack, i) -> stack.getCapability(Capabilities.FluidHandler.ITEM) != null));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.fluidvoid.tag(), this).createMenu((id, player) -> new ContainerFluidVoid(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+    public static final int CAPACITY = 128000;
+
+    public static final int INPUT_SLOT = 0;
+
+    public TileFluidVoid(BlockPos worldPos, BlockState blockState) {
+	super(ElectrodynamicsTiles.TILE_FLUIDVOID.get(), worldPos, blockState);
+	addComponent(new ComponentTickable(this).tickServer(this::tickServer));
+	addComponent(new ComponentPacketHandler(this));
+	addComponent(new ComponentFluidHandlerSimple(CAPACITY, this, "")
+		.setInputDirections(BlockEntityUtils.MachineDirection.values()));
+	addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().bucketInputs(1))
+		.valid((slot, stack, i) -> stack.getCapability(Capabilities.FluidHandler.ITEM) != null));
+	addComponent(new ComponentContainerProvider(SubtypeMachine.fluidvoid.tag(), this)
+		.createMenu((id, player) -> new ContainerFluidVoid(id, player, getComponent(IComponentType.Inventory),
+			getCoordsArray())));
+    }
+
+    private void tickServer(ComponentTickable tick) {
+
+	ComponentInventory inv = getComponent(IComponentType.Inventory);
+
+	ComponentFluidHandlerSimple simple = getComponent(IComponentType.FluidHandler);
+
+	simple.drain(simple.getFluidAmount(), FluidAction.EXECUTE);
+
+	ItemStack input = inv.getItem(INPUT_SLOT);
+
+	if (input.isEmpty()) {
+	    return;
 	}
 
-	private void tickServer(ComponentTickable tick) {
-		
-		ComponentInventory inv = getComponent(IComponentType.Inventory);
-		
-		ComponentFluidHandlerSimple simple = getComponent(IComponentType.FluidHandler);
-		
-		simple.drain(simple.getFluidAmount(), FluidAction.EXECUTE);
-		
-		ItemStack input = inv.getItem(INPUT_SLOT);
-		
-		if(input.isEmpty()) {
-			return;
-		}
-		
-		IFluidHandlerItem handler = input.getCapability(Capabilities.FluidHandler.ITEM);
-	
-		if(handler == null) {
-		    return;
-		}
-		
-		handler.drain(Integer.MAX_VALUE, FluidAction.EXECUTE);
-		
-		inv.setItem(INPUT_SLOT, handler.getContainer());
-		
+	IFluidHandlerItem handler = input.getCapability(Capabilities.FluidHandler.ITEM);
+
+	if (handler == null) {
+	    return;
 	}
+
+	handler.drain(Integer.MAX_VALUE, FluidAction.EXECUTE);
+
+	inv.setItem(INPUT_SLOT, handler.getContainer());
+
+    }
 
 }

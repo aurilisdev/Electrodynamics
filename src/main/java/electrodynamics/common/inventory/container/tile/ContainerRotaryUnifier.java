@@ -13,22 +13,23 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerRotaryUnifier extends GenericContainerBlockEntity<TileRotaryUnifier> {
 
-    public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
+	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
 
     public ContainerRotaryUnifier(int id, Inventory playerinva) {
-        this(id, playerinva, new SimpleContainer(3), new SimpleContainerData(3));
+	this(id, playerinva, new SimpleContainer(3), new SimpleContainerData(3));
     }
 
     public ContainerRotaryUnifier(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-        super(ElectrodynamicsMenuTypes.CONTAINER_ROTARYUNIFIER.get(), id, playerinv, inventory, inventorydata);
+	super(ElectrodynamicsMenuTypes.CONTAINER_ROTARYUNIFIER.get(), id, playerinv, inventory, inventorydata);
     }
 
     @Override
     public void addInventorySlots(Container inv, Inventory playerinv) {
 
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
 
     }
 }

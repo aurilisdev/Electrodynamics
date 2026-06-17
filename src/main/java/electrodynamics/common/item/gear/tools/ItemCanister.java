@@ -42,141 +42,145 @@ public class ItemCanister extends ItemVoltaic {
     public static final List<InventoryTickConsumer> INVENTORY_TICK_CONSUMERS = new ArrayList<>();
 
     public ItemCanister(Item.Properties properties, Holder<CreativeModeTab> creativeTab) {
-        super(properties, creativeTab);
+	super(properties, creativeTab);
     }
 
     @Override
     public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
-        items.add(new ItemStack(this));
+	items.add(new ItemStack(this));
 
-        if (Capabilities.FluidHandler.ITEM == null) {
-            return;
-        }
+	if (Capabilities.FluidHandler.ITEM == null) {
+	    return;
+	}
 
-        BuiltInRegistries.FLUID.stream().forEach(fluid -> {
-            if (fluid.isSame(Fluids.EMPTY)) {
-                return;
-            }
-            ItemStack temp = new ItemStack(this);
+	BuiltInRegistries.FLUID.stream().forEach(fluid -> {
+	    if (fluid.isSame(Fluids.EMPTY)) {
+		return;
+	    }
+	    ItemStack temp = new ItemStack(this);
 
-            IFluidHandlerItem cap = temp.getCapability(Capabilities.FluidHandler.ITEM);
+	    IFluidHandlerItem cap = temp.getCapability(Capabilities.FluidHandler.ITEM);
 
-            if (cap == null) {
-                return;
-            }
+	    if (cap == null) {
+		return;
+	    }
 
-            RestrictedFluidHandlerItemStack restricted = (RestrictedFluidHandlerItemStack) cap;
+	    RestrictedFluidHandlerItemStack restricted = (RestrictedFluidHandlerItemStack) cap;
 
-            restricted.setFluid(new FluidStack(fluid, MAX_FLUID_CAPACITY));
+	    restricted.setFluid(new FluidStack(fluid, MAX_FLUID_CAPACITY));
 
-            items.add(temp);
-        });
+	    items.add(temp);
+	});
 
     }
 
     @Override
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slot, boolean isSelected) {
-        super.inventoryTick(stack, level, entity, slot, isSelected);
-        INVENTORY_TICK_CONSUMERS.forEach(consumer -> consumer.apply(stack, level, entity, slot, isSelected));
+	super.inventoryTick(stack, level, entity, slot, isSelected);
+	INVENTORY_TICK_CONSUMERS.forEach(consumer -> consumer.apply(stack, level, entity, slot, isSelected));
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        if (Capabilities.FluidHandler.ITEM == null) {
+	if (Capabilities.FluidHandler.ITEM == null) {
 
-            super.appendHoverText(stack, context, tooltip, flagIn);
+	    super.appendHoverText(stack, context, tooltip, flagIn);
 
-            return;
-        }
-        IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+	    return;
+	}
+	IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-        if (handler == null) {
-            super.appendHoverText(stack, context, tooltip, flagIn);
+	if (handler == null) {
+	    super.appendHoverText(stack, context, tooltip, flagIn);
 
-            return;
-        }
+	    return;
+	}
 
-        RestrictedFluidHandlerItemStack restricted = (RestrictedFluidHandlerItemStack) handler;
+	RestrictedFluidHandlerItemStack restricted = (RestrictedFluidHandlerItemStack) handler;
 
-        if(!restricted.getFluid().isEmpty()) {
-            tooltip.add(restricted.getFluid().getFluidType().getDescription().copy().withStyle(ChatFormatting.GRAY));
-        }
-        tooltip.add(VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(restricted.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_FLUID_CAPACITY)).withStyle(ChatFormatting.DARK_GRAY));
+	if (!restricted.getFluid().isEmpty()) {
+	    tooltip.add(restricted.getFluid().getFluidType().getDescription().copy().withStyle(ChatFormatting.GRAY));
+	}
+	tooltip.add(
+		VoltaicTextUtils
+			.ratio(ChatFormatter.formatFluidMilibuckets(restricted.getFluidInTank(0).getAmount()),
+				ChatFormatter.formatFluidMilibuckets(MAX_FLUID_CAPACITY))
+			.withStyle(ChatFormatting.DARK_GRAY));
 
-        super.appendHoverText(stack, context, tooltip, flagIn);
+	super.appendHoverText(stack, context, tooltip, flagIn);
     }
 
     @Override
     public int getBarWidth(ItemStack stack) {
 
-        IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+	IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-        if (handler == null) {
-            return 13;
-        }
+	if (handler == null) {
+	    return 13;
+	}
 
-        return (int) (13.0 * handler.getFluidInTank(0).getAmount() / handler.getTankCapacity(0));
+	return (int) (13.0 * handler.getFluidInTank(0).getAmount() / handler.getTankCapacity(0));
     }
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
 
-        IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+	IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-        if (handler == null) {
-            return false;
-        }
+	if (handler == null) {
+	    return false;
+	}
 
-        return !handler.getFluidInTank(0).isEmpty();
+	return !handler.getFluidInTank(0).isEmpty();
 
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level worldIn, Player playerIn, InteractionHand handIn) {
-        useCanister(worldIn, playerIn, handIn);
-        return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
+	useCanister(worldIn, playerIn, handIn);
+	return InteractionResultHolder.pass(playerIn.getItemInHand(handIn));
     }
 
     public void useCanister(Level world, Player player, InteractionHand hand) {
 
-        ItemStack stack = player.getItemInHand(hand);
+	ItemStack stack = player.getItemInHand(hand);
 
-        HitResult trace = getPlayerPOVHitResult(world, player, net.minecraft.world.level.ClipContext.Fluid.ANY);
+	HitResult trace = getPlayerPOVHitResult(world, player, net.minecraft.world.level.ClipContext.Fluid.ANY);
 
-        if (world.isClientSide || trace.getType() == Type.MISS || trace.getType() == Type.ENTITY) {
-            return;
-        }
+	if (world.isClientSide || trace.getType() == Type.MISS || trace.getType() == Type.ENTITY) {
+	    return;
+	}
 
-        BlockHitResult blockTrace = (BlockHitResult) trace;
+	BlockHitResult blockTrace = (BlockHitResult) trace;
 
-        BlockPos pos = blockTrace.getBlockPos();
+	BlockPos pos = blockTrace.getBlockPos();
 
-        BlockState state = world.getBlockState(pos);
+	BlockState state = world.getBlockState(pos);
 
-        if (!state.getFluidState().isSource() || state.getFluidState().isEmpty()) {
-            return;
-        }
+	if (!state.getFluidState().isSource() || state.getFluidState().isEmpty()) {
+	    return;
+	}
 
-        FluidStack sourceFluid = new FluidStack(state.getFluidState().getType(), 1000);
-        
-        IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
-        
-        if(handler == null) {
-            return;
-        }
+	FluidStack sourceFluid = new FluidStack(state.getFluidState().getType(), 1000);
 
-        int accepted = handler.fill(sourceFluid, FluidAction.SIMULATE);
+	IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-        if (accepted < 1000) {
-            return;
-        }
+	if (handler == null) {
+	    return;
+	}
 
-        handler.fill(sourceFluid, FluidAction.EXECUTE);
+	int accepted = handler.fill(sourceFluid, FluidAction.SIMULATE);
 
-        world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+	if (accepted < 1000) {
+	    return;
+	}
 
-        world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
+	handler.fill(sourceFluid, FluidAction.EXECUTE);
+
+	world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+
+	world.playSound(null, player.blockPosition(), SoundEvents.BUCKET_FILL, SoundSource.PLAYERS, 1, 1);
     }
 
 }

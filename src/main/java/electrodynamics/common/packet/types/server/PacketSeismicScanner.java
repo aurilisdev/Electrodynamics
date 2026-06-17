@@ -14,14 +14,12 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 public class PacketSeismicScanner implements CustomPacketPayload {
 
     public static final ResourceLocation PACKET_SEISMICSCANNER_PACKETID = NetworkHandler.id("packetseismicscanner");
-    public static final CustomPacketPayload.Type<PacketSeismicScanner> TYPE = new CustomPacketPayload.Type<>(PACKET_SEISMICSCANNER_PACKETID);
-    public static final StreamCodec<ByteBuf, PacketSeismicScanner> CODEC = StreamCodec.composite(
-            UUIDUtil.STREAM_CODEC, instance -> instance.playerId,
-            ByteBufCodecs.INT, instance -> instance.mode.ordinal(),
-            ByteBufCodecs.INT, instance -> instance.scannerMode,
-            ByteBufCodecs.INT, instance -> instance.hand,
-            (id, mode, scannermode, hand) -> new PacketSeismicScanner(id, PacketSeismicScanner.Type.values()[mode], scannermode, hand)
-    );
+    public static final CustomPacketPayload.Type<PacketSeismicScanner> TYPE = new CustomPacketPayload.Type<>(
+	    PACKET_SEISMICSCANNER_PACKETID);
+    public static final StreamCodec<ByteBuf, PacketSeismicScanner> CODEC = StreamCodec.composite(UUIDUtil.STREAM_CODEC,
+	    instance -> instance.playerId, ByteBufCodecs.INT, instance -> instance.mode.ordinal(), ByteBufCodecs.INT,
+	    instance -> instance.scannerMode, ByteBufCodecs.INT, instance -> instance.hand, (id, mode, scannermode,
+		    hand) -> new PacketSeismicScanner(id, PacketSeismicScanner.Type.values()[mode], scannermode, hand));
 
     private final UUID playerId;
     private final PacketSeismicScanner.Type mode;
@@ -30,25 +28,25 @@ public class PacketSeismicScanner implements CustomPacketPayload {
     private final int hand;
 
     public PacketSeismicScanner(UUID uuid, PacketSeismicScanner.Type mode, int scannerMode, int hand) {
-        playerId = uuid;
-        this.mode = mode;
-        this.scannerMode = scannerMode;
-        this.hand = hand;
+	playerId = uuid;
+	this.mode = mode;
+	this.scannerMode = scannerMode;
+	this.hand = hand;
     }
 
     public static void handle(PacketSeismicScanner message, IPayloadContext context) {
-        ServerBarrierMethods.handleSeismicScanner(context.player().level(), message.playerId, message.mode, message.scannerMode, message.hand);
+	ServerBarrierMethods.handleSeismicScanner(context.player().level(), message.playerId, message.mode,
+		message.scannerMode, message.hand);
     }
 
     @Override
     public CustomPacketPayload.Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+	return TYPE;
     }
-
 
     public static enum Type {
 
-        manualping, switchsonarmode;
+	manualping, switchsonarmode;
 
     }
 }

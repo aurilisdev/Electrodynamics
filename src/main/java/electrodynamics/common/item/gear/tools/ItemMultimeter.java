@@ -16,49 +16,58 @@ import voltaic.prefab.utilities.VoltaicTextUtils;
 
 public class ItemMultimeter extends ItemVoltaic {
 
-	public ItemMultimeter(Properties properties, Holder<CreativeModeTab> creativeTab) {
-		super(properties, creativeTab);
+    public ItemMultimeter(Properties properties, Holder<CreativeModeTab> creativeTab) {
+	super(properties, creativeTab);
+    }
+
+    @Override
+    public InteractionResult useOn(UseOnContext context) {
+
+	if (context.getLevel().isClientSide) {
+	    return super.useOn(context);
 	}
 
-	@Override
-	public InteractionResult useOn(UseOnContext context) {
+	BlockEntity tile = context.getLevel().getBlockEntity(context.getClickedPos());
+	if (tile instanceof TileWire wire) {
+	    ElectricNetwork net = wire.getNetwork();
 
-		if (context.getLevel().isClientSide) {
-			return super.useOn(context);
-		}
+	    MutableComponent display = Component.empty();
 
-		BlockEntity tile = context.getLevel().getBlockEntity(context.getClickedPos());
-		if (tile instanceof TileWire wire) {
-			ElectricNetwork net = wire.getNetwork();
+	    // active current to max current ratio
+	    double transferAmps = net.getActiveVoltage() == 0 ? 0
+		    : net.getActiveVoltage() == 0 ? 0 : net.getActiveTransmitted() * 20 / net.getActiveVoltage();
+	    display.append(VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(transferAmps, DisplayUnits.AMPERE),
+		    ChatFormatter.getChatDisplayShort(net.networkMaxTransfer, DisplayUnits.AMPERE)));
+	    display.append(", ");
 
-			MutableComponent display = Component.empty();
+	    // active voltage
+	    display.append(ChatFormatter.getChatDisplayShort(net.getActiveVoltage(), DisplayUnits.VOLTAGE));
+	    display.append(", ");
 
-			// active current to max current ratio
-			double transferAmps = net.getActiveVoltage() == 0 ? 0 : net.getActiveVoltage() == 0 ? 0 : net.getActiveTransmitted() * 20 / net.getActiveVoltage();
-			display.append(VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(transferAmps, DisplayUnits.AMPERE), ChatFormatter.getChatDisplayShort(net.networkMaxTransfer, DisplayUnits.AMPERE)));
-			display.append(", ");
+	    // active power
+	    display.append(ChatFormatter.getChatDisplayShort(net.getActiveTransmitted() * 20, DisplayUnits.WATT));
+	    display.append(", ");
 
-			// active voltage
-			display.append(ChatFormatter.getChatDisplayShort(net.getActiveVoltage(), DisplayUnits.VOLTAGE));
-			display.append(", ");
+	    // resistance and energy loss
+	    display.append(
+		    ChatFormatter.getChatDisplayShort(net.getResistance(), DisplayUnits.RESISTANCE).append(" ( -")
+			    .append(ChatFormatter.getChatDisplayShort(
+				    Math.round(net.getLastEnergyLoss() / net.getActiveTransmitted() * 100.0),
+				    DisplayUnits.PERCENTAGE))
+			    .append(" ")
+			    .append(ChatFormatter.getChatDisplayShort(net.getLastEnergyLoss() * 20, DisplayUnits.WATT)
+				    .append(" )")));
+	    display.append(", ");
 
-			// active power
-			display.append(ChatFormatter.getChatDisplayShort(net.getActiveTransmitted() * 20, DisplayUnits.WATT));
-			display.append(", ");
+	    // minimum voltage
+	    double minimumVoltage = net.getMinimumVoltage();
+	    if (minimumVoltage < 0) {
+		minimumVoltage = net.getActiveVoltage();
+	    }
+	    display.append(ChatFormatter.getChatDisplayShort(minimumVoltage, DisplayUnits.VOLTAGE));
 
-			// resistance and energy loss
-			display.append(ChatFormatter.getChatDisplayShort(net.getResistance(), DisplayUnits.RESISTANCE).append(" ( -").append(ChatFormatter.getChatDisplayShort(Math.round(net.getLastEnergyLoss() / net.getActiveTransmitted() * 100.0), DisplayUnits.PERCENTAGE)).append(" ").append(ChatFormatter.getChatDisplayShort(net.getLastEnergyLoss() * 20, DisplayUnits.WATT).append(" )")));
-			display.append(", ");
-
-			// minimum voltage
-			double minimumVoltage = net.getMinimumVoltage();
-			if (minimumVoltage < 0) {
-				minimumVoltage = net.getActiveVoltage();
-			}
-			display.append(ChatFormatter.getChatDisplayShort(minimumVoltage, DisplayUnits.VOLTAGE));
-
-			context.getPlayer().displayClientMessage(display, true);
-		}
-		return super.useOn(context);
+	    context.getPlayer().displayClientMessage(display, true);
 	}
+	return super.useOn(context);
+    }
 }

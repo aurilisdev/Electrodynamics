@@ -7,8 +7,8 @@ import voltaic.prefab.screen.GenericScreen;
 
 public class ScreenGasVent extends GenericScreen<ContainerGasVent> {
 
-	public ScreenGasVent(ContainerGasVent container, Inventory inv, Component titleIn) {
-		super(container, inv, titleIn);
-	}
+    public ScreenGasVent(ContainerGasVent container, Inventory inv, Component titleIn) {
+	super(container, inv, titleIn);
+    }
 
 }

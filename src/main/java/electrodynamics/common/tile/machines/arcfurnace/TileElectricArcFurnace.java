@@ -243,9 +243,9 @@ public class TileElectricArcFurnace extends GenericTile implements ITickableSoun
 
     @Override
     public int getComparatorSignal() {
-	return (int) (((double) this.<ComponentProcessor>getComponent(IComponentType.Processor).getTotalActive()
+	return (int) ((double) this.<ComponentProcessor>getComponent(IComponentType.Processor).getTotalActive()
 		/ (double) Math.max(1,
-			this.<ComponentProcessor>getComponent(IComponentType.Processor).getProcessorCount()))
+			this.<ComponentProcessor>getComponent(IComponentType.Processor).getProcessorCount())
 		* 15.0);
     }
 

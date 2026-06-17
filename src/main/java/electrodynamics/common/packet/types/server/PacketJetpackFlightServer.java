@@ -13,14 +13,12 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class PacketJetpackFlightServer implements CustomPacketPayload {
 
-    public static final ResourceLocation PACKET_JETPACKFLIGHTSERVER_PACKETID = NetworkHandler.id("packetjetpackflightserver");
+    public static final ResourceLocation PACKET_JETPACKFLIGHTSERVER_PACKETID = NetworkHandler
+	    .id("packetjetpackflightserver");
     public static final Type<PacketJetpackFlightServer> TYPE = new Type<>(PACKET_JETPACKFLIGHTSERVER_PACKETID);
     public static final StreamCodec<ByteBuf, PacketJetpackFlightServer> CODEC = StreamCodec.composite(
-            UUIDUtil.STREAM_CODEC, instance -> instance.playerId,
-            ByteBufCodecs.BOOL, instance -> instance.bool,
-            ByteBufCodecs.DOUBLE, instance -> instance.prevDeltaY,
-            PacketJetpackFlightServer::new
-
+	    UUIDUtil.STREAM_CODEC, instance -> instance.playerId, ByteBufCodecs.BOOL, instance -> instance.bool,
+	    ByteBufCodecs.DOUBLE, instance -> instance.prevDeltaY, PacketJetpackFlightServer::new
 
     );
     private final UUID playerId;
@@ -28,17 +26,18 @@ public class PacketJetpackFlightServer implements CustomPacketPayload {
     private final double prevDeltaY;
 
     public PacketJetpackFlightServer(UUID uuid, boolean bool, double prevDeltaY) {
-        playerId = uuid;
-        this.bool = bool;
-        this.prevDeltaY = prevDeltaY;
+	playerId = uuid;
+	this.bool = bool;
+	this.prevDeltaY = prevDeltaY;
     }
 
     public static void handle(PacketJetpackFlightServer message, IPayloadContext context) {
-        ServerBarrierMethods.handleJetpackFlightServer(context.player().level(), message.playerId, message.bool, message.prevDeltaY);
+	ServerBarrierMethods.handleJetpackFlightServer(context.player().level(), message.playerId, message.bool,
+		message.prevDeltaY);
     }
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+	return TYPE;
     }
 }

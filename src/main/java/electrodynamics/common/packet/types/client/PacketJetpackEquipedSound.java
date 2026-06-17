@@ -12,28 +12,28 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class PacketJetpackEquipedSound implements CustomPacketPayload {
 
-	public static final ResourceLocation PACKET_JETPACKEQUIPEDSOUND_PACKETID = NetworkHandler.id("packetjetpackequipedsound");
-	public static final Type<PacketJetpackEquipedSound> TYPE = new Type<>(PACKET_JETPACKEQUIPEDSOUND_PACKETID);
+    public static final ResourceLocation PACKET_JETPACKEQUIPEDSOUND_PACKETID = NetworkHandler
+	    .id("packetjetpackequipedsound");
+    public static final Type<PacketJetpackEquipedSound> TYPE = new Type<>(PACKET_JETPACKEQUIPEDSOUND_PACKETID);
 
-	public static final StreamCodec<FriendlyByteBuf, PacketJetpackEquipedSound> CODEC = StreamCodec.composite(
+    public static final StreamCodec<FriendlyByteBuf, PacketJetpackEquipedSound> CODEC = StreamCodec.composite(
 
-			UUIDUtil.STREAM_CODEC, instance -> instance.player,
-			PacketJetpackEquipedSound::new
+	    UUIDUtil.STREAM_CODEC, instance -> instance.player, PacketJetpackEquipedSound::new
 
-	);
+    );
 
-	private final UUID player;
+    private final UUID player;
 
-	public PacketJetpackEquipedSound(UUID uuid) {
-		player = uuid;
-	}
+    public PacketJetpackEquipedSound(UUID uuid) {
+	player = uuid;
+    }
 
-	public static void handle(PacketJetpackEquipedSound message, IPayloadContext context) {
-	    ClientBarrierMethods.handlePacketJetpackEquipedSound(message.player);
-	}
+    public static void handle(PacketJetpackEquipedSound message, IPayloadContext context) {
+	ClientBarrierMethods.handlePacketJetpackEquipedSound(message.player);
+    }
 
-	@Override
-	public Type<? extends CustomPacketPayload> type() {
-		return TYPE;
-	}
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+	return TYPE;
+    }
 }

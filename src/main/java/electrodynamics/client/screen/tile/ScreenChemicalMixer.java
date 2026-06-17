@@ -19,45 +19,49 @@ import voltaic.prefab.tile.components.type.ComponentProcessor;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenChemicalMixer extends GenericMaterialScreen<ContainerChemicalMixer> {
-	public ScreenChemicalMixer(ContainerChemicalMixer container, Inventory playerInventory, Component title) {
-		super(container, playerInventory, title);
-		addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
-			GenericTile furnace = container.getSafeHost();
-			if (furnace != null) {
-				ComponentProcessor processor = furnace.getComponent(IComponentType.Processor);
-				if (processor.operatingTicks.getValue()[0] > 0) {
-					return Math.min(1.0, processor.operatingTicks.getValue()[0] / (processor.requiredTicks.getValue()[0] / 2.0));
-				}
-			}
-			return 0;
-		}, 42, 30));
-		addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
-			GenericTile furnace = container.getSafeHost();
-			if (furnace != null) {
-				ComponentProcessor processor = furnace.getComponent(IComponentType.Processor);
-				if (processor.operatingTicks.getValue()[0] > processor.requiredTicks.getValue()[0] / 2.0) {
-					return Math.min(1.0, (processor.operatingTicks.getValue()[0] - processor.requiredTicks.getValue()[0] / 2.0) / (processor.requiredTicks.getValue()[0] / 2.0));
-				}
-			}
-			return 0;
-		}, 98, 30));
-		addComponent(new ScreenComponentFluidGauge(() -> {
-			TileChemicalMixer boiler = container.getSafeHost();
-			if (boiler != null) {
-				return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks()[0];
-			}
-			return null;
-		}, 21, 18));
-		addComponent(new ScreenComponentFluidGauge(() -> {
-			TileChemicalMixer boiler = container.getSafeHost();
-			if (boiler != null) {
-				return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getOutputTanks()[0];
-			}
-			return null;
-		}, 127, 18));
-		addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
+    public ScreenChemicalMixer(ContainerChemicalMixer container, Inventory playerInventory, Component title) {
+	super(container, playerInventory, title);
+	addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
+	    GenericTile furnace = container.getSafeHost();
+	    if (furnace != null) {
+		ComponentProcessor processor = furnace.getComponent(IComponentType.Processor);
+		if (processor.operatingTicks.getValue()[0] > 0) {
+		    return Math.min(1.0,
+			    processor.operatingTicks.getValue()[0] / (processor.requiredTicks.getValue()[0] / 2.0));
+		}
+	    }
+	    return 0;
+	}, 42, 30));
+	addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
+	    GenericTile furnace = container.getSafeHost();
+	    if (furnace != null) {
+		ComponentProcessor processor = furnace.getComponent(IComponentType.Processor);
+		if (processor.operatingTicks.getValue()[0] > processor.requiredTicks.getValue()[0] / 2.0) {
+		    return Math.min(1.0,
+			    (processor.operatingTicks.getValue()[0] - processor.requiredTicks.getValue()[0] / 2.0)
+				    / (processor.requiredTicks.getValue()[0] / 2.0));
+		}
+	    }
+	    return 0;
+	}, 98, 30));
+	addComponent(new ScreenComponentFluidGauge(() -> {
+	    TileChemicalMixer boiler = container.getSafeHost();
+	    if (boiler != null) {
+		return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks()[0];
+	    }
+	    return null;
+	}, 21, 18));
+	addComponent(new ScreenComponentFluidGauge(() -> {
+	    TileChemicalMixer boiler = container.getSafeHost();
+	    if (boiler != null) {
+		return boiler.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getOutputTanks()[0];
+	    }
+	    return null;
+	}, 127, 18));
+	addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
 
-		new WrapperInventoryIO(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75, 82, 8, 72);
-	}
+	new WrapperInventoryIO(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75,
+		82, 8, 72);
+    }
 
 }

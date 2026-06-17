@@ -26,60 +26,78 @@ import voltaic.registers.VoltaicCapabilities;
 
 public class TileElectrolyticSeparator extends GenericGasTile implements ITickableSound {
 
-	public static final int MAX_INPUT_TANK_CAPACITY = 5000;
-	public static final int MAX_OUTPUT_TANK_CAPACITY = 5000;
-	public long clientTicks = 0;
+    public static final int MAX_INPUT_TANK_CAPACITY = 5000;
+    public static final int MAX_OUTPUT_TANK_CAPACITY = 5000;
+    public long clientTicks = 0;
 
-	private static final BlockEntityUtils.MachineDirection OXYGEN_DIRECTION = BlockEntityUtils.MachineDirection.RIGHT;
-	private static final BlockEntityUtils.MachineDirection HYDROGEN_DIRECTION = BlockEntityUtils.MachineDirection.LEFT;
+    private static final BlockEntityUtils.MachineDirection OXYGEN_DIRECTION = BlockEntityUtils.MachineDirection.RIGHT;
+    private static final BlockEntityUtils.MachineDirection HYDROGEN_DIRECTION = BlockEntityUtils.MachineDirection.LEFT;
 
-	private boolean isSoundPlaying = false;
+    private boolean isSoundPlaying = false;
 
-	public TileElectrolyticSeparator(BlockPos worldPos, BlockState blockState) {
-		super(ElectrodynamicsTiles.TILE_ELECTROLYTICSEPARATOR.get(), worldPos, blockState);
-		addComponent(new ComponentTickable(this).tickClient(this::tickClient).tickServer(this::tickServer));
-		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this, false, true).setInputDirections(BlockEntityUtils.MachineDirection.FRONT).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2));
-		addComponent(new ComponentFluidHandlerMulti(this).setInputDirections(BlockEntityUtils.MachineDirection.BACK).setInputTanks(1, arr(MAX_INPUT_TANK_CAPACITY)).setRecipeType(ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get()));
-		addComponent(new ComponentGasHandlerMulti(this).setOutputDirections(OXYGEN_DIRECTION, HYDROGEN_DIRECTION).setOutputTanks(2, arr(MAX_OUTPUT_TANK_CAPACITY, MAX_OUTPUT_TANK_CAPACITY), arr(1000, 1000), arr(1024, 1024)).setRecipeType(ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get()).setCondensedHandler(getCondensedHandler()));
-		addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().bucketInputs(1).gasOutputs(2).upgrades(3)).validUpgrades(ContainerElectrolyticSeparator.VALID_UPGRADES).valid(machineValidator()));
-		addComponent(new ComponentProcessor(this).canProcess((component, procNumber) -> component.consumeBucket().dispenseGasCylinder().canProcessFluid2GasRecipe(procNumber, ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get())).process(ComponentProcessor::processFluid2GasRecipe));
-		addComponent(new ComponentContainerProvider(SubtypeMachine.electrolyticseparator.tag(), this).createMenu((id, player) -> new ContainerElectrolyticSeparator(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+    public TileElectrolyticSeparator(BlockPos worldPos, BlockState blockState) {
+	super(ElectrodynamicsTiles.TILE_ELECTROLYTICSEPARATOR.get(), worldPos, blockState);
+	addComponent(new ComponentTickable(this).tickClient(this::tickClient).tickServer(this::tickServer));
+	addComponent(new ComponentPacketHandler(this));
+	addComponent(new ComponentElectrodynamic(this, false, true)
+		.setInputDirections(BlockEntityUtils.MachineDirection.FRONT)
+		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2));
+	addComponent(new ComponentFluidHandlerMulti(this).setInputDirections(BlockEntityUtils.MachineDirection.BACK)
+		.setInputTanks(1, arr(MAX_INPUT_TANK_CAPACITY))
+		.setRecipeType(ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get()));
+	addComponent(new ComponentGasHandlerMulti(this).setOutputDirections(OXYGEN_DIRECTION, HYDROGEN_DIRECTION)
+		.setOutputTanks(2, arr(MAX_OUTPUT_TANK_CAPACITY, MAX_OUTPUT_TANK_CAPACITY), arr(1000, 1000),
+			arr(1024, 1024))
+		.setRecipeType(ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get())
+		.setCondensedHandler(getCondensedHandler()));
+	addComponent(new ComponentInventory(this,
+		ComponentInventory.InventoryBuilder.newInv().bucketInputs(1).gasOutputs(2).upgrades(3))
+		.validUpgrades(ContainerElectrolyticSeparator.VALID_UPGRADES).valid(machineValidator()));
+	addComponent(new ComponentProcessor(this)
+		.canProcess((component, procNumber) -> component.consumeBucket().dispenseGasCylinder()
+			.canProcessFluid2GasRecipe(procNumber,
+				ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get()))
+		.process(ComponentProcessor::processFluid2GasRecipe));
+	addComponent(new ComponentContainerProvider(SubtypeMachine.electrolyticseparator.tag(), this)
+		.createMenu((id, player) -> new ContainerElectrolyticSeparator(id, player,
+			getComponent(IComponentType.Inventory), getCoordsArray())));
+    }
+
+    public void tickServer(ComponentTickable tickable) {
+	ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
+	GasUtilities.outputToPipe(this, handler.getOutputTanks()[0].asArray(), OXYGEN_DIRECTION.mappedDir);
+	GasUtilities.outputToPipe(this, handler.getOutputTanks()[1].asArray(), HYDROGEN_DIRECTION.mappedDir);
+    }
+
+    protected void tickClient(ComponentTickable tickable) {
+	if (!shouldPlaySound()) {
+	    return;
+	}
+	if (level.random.nextDouble() < 0.15) {
+	    level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(),
+		    worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5,
+		    worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 	}
 
-	public void tickServer(ComponentTickable tickable) {
-		ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
-		GasUtilities.outputToPipe(this, handler.getOutputTanks()[0].asArray(), OXYGEN_DIRECTION.mappedDir);
-		GasUtilities.outputToPipe(this, handler.getOutputTanks()[1].asArray(), HYDROGEN_DIRECTION.mappedDir);
+	if (!isSoundPlaying) {
+	    isSoundPlaying = true;
+	    SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_ELECTROLYTICSEPARATOR.get(), this, true);
 	}
+    }
 
-	protected void tickClient(ComponentTickable tickable) {
-		if (!shouldPlaySound()) {
-			return;
-		}
-		if (level.random.nextDouble() < 0.15) {
-			level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(), worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5, worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
-		}
+    @Override
+    public void setNotPlaying() {
+	isSoundPlaying = false;
+    }
 
-		if (!isSoundPlaying) {
-			isSoundPlaying = true;
-			SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_ELECTROLYTICSEPARATOR.get(), this, true);
-		}
-	}
+    @Override
+    public boolean shouldPlaySound() {
+	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
+    }
 
-	@Override
-	public void setNotPlaying() {
-		isSoundPlaying = false;
-	}
-
-	@Override
-	public boolean shouldPlaySound() {
-		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
-	}
-
-	@Override
-	public int getComparatorSignal() {
-		return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
-	}
+    @Override
+    public int getComparatorSignal() {
+	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
+    }
 
 }

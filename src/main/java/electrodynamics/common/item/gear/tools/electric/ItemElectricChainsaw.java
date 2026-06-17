@@ -37,19 +37,20 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
     private final Holder<CreativeModeTab> creativeTab;
 
     public ItemElectricChainsaw(ElectricItemProperties properties, Holder<CreativeModeTab> creativeTab) {
-        super(ElectricItemTier.ELECTRIC_CHAINSAW, BlockTags.MINEABLE_WITH_AXE, properties.durability(0).attributes(createAttributes(ElectricItemTier.ELECTRIC_CHAINSAW, 4, -2.4F)));
-        this.properties = properties;
-        this.creativeTab = creativeTab;
+	super(ElectricItemTier.ELECTRIC_CHAINSAW, BlockTags.MINEABLE_WITH_AXE,
+		properties.durability(0).attributes(createAttributes(ElectricItemTier.ELECTRIC_CHAINSAW, 4, -2.4F)));
+	this.properties = properties;
+	this.creativeTab = creativeTab;
     }
 
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-        return true;
+	return true;
     }
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return !oldStack.is(newStack.getItem());
+	return !oldStack.is(newStack.getItem());
     }
 
     @Override
@@ -60,25 +61,26 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
     @Override
     public void addCreativeModeItems(CreativeModeTab group, List<ItemStack> items) {
 
-        ItemStack empty = new ItemStack(this);
-        IItemElectric.setEnergyStored(empty, 0);
-        items.add(empty);
+	ItemStack empty = new ItemStack(this);
+	IItemElectric.setEnergyStored(empty, 0);
+	items.add(empty);
 
-        ItemStack charged = new ItemStack(this);
-        IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
-        items.add(charged);
+	ItemStack charged = new ItemStack(this);
+	IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
+	items.add(charged);
 
     }
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-        return getJoulesStored(stack) > properties.extract.getJoules() ? super.getDestroySpeed(stack, state) : 0;
+	return getJoulesStored(stack) > properties.extract.getJoules() ? super.getDestroySpeed(stack, state) : 0;
     }
 
     @Override
-    public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-        extractPower(stack, properties.extract.getJoules(), false);
-        return super.mineBlock(stack, worldIn, state, pos, entityLiving);
+    public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos,
+	    LivingEntity entityLiving) {
+	extractPower(stack, properties.extract.getJoules(), false);
+	return super.mineBlock(stack, worldIn, state, pos, entityLiving);
     }
 
     @Override
@@ -88,57 +90,71 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
+	return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
     }
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return getJoulesStored(stack) < getMaximumCapacity(stack);
+	return getJoulesStored(stack) < getMaximumCapacity(stack);
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        super.appendHoverText(stack, context, tooltip, flagIn);
-        tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-        tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-        IItemElectric.addBatteryTooltip(stack, context, tooltip);
+	super.appendHoverText(stack, context, tooltip, flagIn);
+	tooltip.add(
+		ElectroTextUtils
+			.tooltip("item.electric.info",
+				VoltaicTextUtils.ratio(
+					ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES),
+					ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack),
+						DisplayUnits.JOULES))
+					.withStyle(ChatFormatting.GRAY))
+			.withStyle(ChatFormatting.DARK_GRAY));
+	tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage",
+		ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE)
+			.withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY));
+	IItemElectric.addBatteryTooltip(stack, context, tooltip);
     }
 
     @Override
     public ElectricItemProperties getElectricProperties() {
-        return properties;
+	return properties;
     }
 
     @Override
     public Item getDefaultStorageBattery() {
-        return ElectrodynamicsItems.ITEM_BATTERY.get();
+	return ElectrodynamicsItems.ITEM_BATTERY.get();
     }
 
     @Override
-    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action,
+	    Player player, SlotAccess access) {
 
-        if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
-            return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-        }
+	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
+	}
 
-        return true;
+	return true;
 
     }
 
     @Override
     public boolean isAllowedInCreativeTab(CreativeModeTab tab) {
-        return creativeTab.value() == tab;
+	return creativeTab.value() == tab;
     }
 
     @Override
     public boolean hasCreativeTab() {
-        return creativeTab != null;
+	return creativeTab != null;
     }
 
     @Override
     public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
-        return getJoulesStored(stack) > properties.extract.getJoules() ? ItemAbilities.DEFAULT_AXE_ACTIONS.contains(itemAbility) || ItemAbilities.DEFAULT_SHEARS_ACTIONS.contains(itemAbility) : false;
+	return getJoulesStored(stack) > properties.extract.getJoules()
+		? ItemAbilities.DEFAULT_AXE_ACTIONS.contains(itemAbility)
+			|| ItemAbilities.DEFAULT_SHEARS_ACTIONS.contains(itemAbility)
+		: false;
     }
-
 
 }

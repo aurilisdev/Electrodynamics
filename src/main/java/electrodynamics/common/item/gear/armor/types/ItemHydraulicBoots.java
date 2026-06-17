@@ -36,167 +36,155 @@ import voltaic.prefab.utilities.VoltaicTextUtils;
 public class ItemHydraulicBoots extends ItemVoltaicArmor {
 
     public static final EnumMap<Type, Integer> DEFENSE_MAP = Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-        map.put(Type.HELMET, 0);
-        map.put(Type.CHESTPLATE, 0);
-        map.put(Type.LEGGINGS, 0);
-        map.put(Type.BOOTS, 1);
+	map.put(Type.HELMET, 0);
+	map.put(Type.CHESTPLATE, 0);
+	map.put(Type.LEGGINGS, 0);
+	map.put(Type.BOOTS, 1);
     });
     public static final int MAX_CAPACITY = 2000;
 
-    private static final ResourceLocation TEXTURE_LOCATION = Electrodynamics.rl("textures/model/armor/hydraulicboots.png");
+    private static final ResourceLocation TEXTURE_LOCATION = Electrodynamics
+	    .rl("textures/model/armor/hydraulicboots.png");
 
     public ItemHydraulicBoots() {
-        super(ElectrodynamicsArmorMaterials.HYDRAULIC_BOOTS, Type.BOOTS, new Item.Properties().stacksTo(1), ElectrodynamicsCreativeTabs.MAIN);
+	super(ElectrodynamicsArmorMaterials.HYDRAULIC_BOOTS, Type.BOOTS, new Item.Properties().stacksTo(1),
+		ElectrodynamicsCreativeTabs.MAIN);
     }
 
     @Override
     public void addCreativeModeItems(CreativeModeTab tab, List<ItemStack> items) {
 
-        super.addCreativeModeItems(tab, items);
+	super.addCreativeModeItems(tab, items);
 
-        if (Capabilities.FluidHandler.ITEM == null) {
-            return;
-        }
+	if (Capabilities.FluidHandler.ITEM == null) {
+	    return;
+	}
 
-        ItemStack full = new ItemStack(this);
+	ItemStack full = new ItemStack(this);
 
-        IFluidHandlerItem handler = full.getCapability(Capabilities.FluidHandler.ITEM);
+	IFluidHandlerItem handler = full.getCapability(Capabilities.FluidHandler.ITEM);
 
-        if (handler == null) {
-            return;
-        }
+	if (handler == null) {
+	    return;
+	}
 
-        RestrictedFluidHandlerItemStack restricted = (RestrictedFluidHandlerItemStack) handler;
+	RestrictedFluidHandlerItemStack restricted = (RestrictedFluidHandlerItemStack) handler;
 
-        restricted.setFluid(new FluidStack(ElectrodynamicsFluids.FLUID_HYDRAULIC, MAX_CAPACITY));
+	restricted.setFluid(new FluidStack(ElectrodynamicsFluids.FLUID_HYDRAULIC, MAX_CAPACITY));
 
-        items.add(full);
+	items.add(full);
 
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
 
-        if (Capabilities.FluidHandler.ITEM == null) {
+	if (Capabilities.FluidHandler.ITEM == null) {
 
-            super.appendHoverText(stack, context, tooltip, flagIn);
+	    super.appendHoverText(stack, context, tooltip, flagIn);
 
-            return;
+	    return;
 
-        }
+	}
 
-        IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+	IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-        if (handler == null) {
+	if (handler == null) {
 
-            super.appendHoverText(stack, context, tooltip, flagIn);
+	    super.appendHoverText(stack, context, tooltip, flagIn);
 
-            return;
+	    return;
 
-        }
+	}
 
-        tooltip.add(VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(handler.getFluidInTank(0).getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY));
+	tooltip.add(VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(handler.getFluidInTank(0).getAmount()),
+		ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY));
 
-        super.appendHoverText(stack, context, tooltip, flagIn);
+	super.appendHoverText(stack, context, tooltip, flagIn);
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
-        return 0;
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity,
+	    Consumer<Item> onBroken) {
+	return 0;
     }
 
     @Override
     public boolean isEnchantable(ItemStack stack) {
-        return false;
+	return false;
     }
 
     @Override
     public boolean isValidRepairItem(ItemStack stack1, ItemStack stack2) {
-        return false;
+	return false;
     }
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return staticIsBarVisible(stack);
+	return staticIsBarVisible(stack);
     }
 
     protected static boolean staticIsBarVisible(ItemStack stack) {
 
-        IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+	IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-        if (handler == null) {
-            return false;
-        }
+	if (handler == null) {
+	    return false;
+	}
 
-        return !handler.getFluidInTank(0).isEmpty();
+	return !handler.getFluidInTank(0).isEmpty();
     }
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return staticGetBarWidth(stack);
+	return staticGetBarWidth(stack);
     }
 
     protected static int staticGetBarWidth(ItemStack stack) {
 
-        IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
+	IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-        if (handler == null) {
-            return 13;
-        }
+	if (handler == null) {
+	    return 13;
+	}
 
-        return (int) (13.0 * handler.getFluidInTank(0).getAmount() / handler.getTankCapacity(0));
+	return (int) (13.0 * handler.getFluidInTank(0).getAmount() / handler.getTankCapacity(0));
 
     }
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return !oldStack.is(newStack.getItem());
+	return !oldStack.is(newStack.getItem());
     }
 
     public static Predicate<FluidStack> getPredicate() {
-        return fluid -> fluid.getFluid().builtInRegistryHolder().is(VoltaicTags.Fluids.HYDRAULIC_FLUID);
+	return fluid -> fluid.getFluid().builtInRegistryHolder().is(VoltaicTags.Fluids.HYDRAULIC_FLUID);
     }
 
     @Override
-    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-        return TEXTURE_LOCATION;
+    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
+	    ArmorMaterial.Layer layer, boolean innerModel) {
+	return TEXTURE_LOCATION;
     }
 
     /*
-    public enum HydraulicBoots implements ICustomArmor {
-        HYDRAULIC_BOOTS;
-
-        @Override
-        public SoundEvent getEquipSound() {
-            return SoundEvents.ARMOR_EQUIP_IRON;
-        }
-
-        @Override
-        public String getName() {
-            return References.ID + ":hydraulic_boots";
-        }
-
-        @Override
-        public float getToughness() {
-            return 0.0F;
-        }
-
-        @Override
-        public float getKnockbackResistance() {
-            return 0.0F;
-        }
-
-        @Override
-        public int getDurabilityForType(Type pType) {
-            return 100;
-        }
-
-        @Override
-        public int getDefenseForType(Type pType) {
-            return 1;
-        }
-
-    }
+     * public enum HydraulicBoots implements ICustomArmor { HYDRAULIC_BOOTS;
+     * 
+     * @Override public SoundEvent getEquipSound() { return
+     * SoundEvents.ARMOR_EQUIP_IRON; }
+     * 
+     * @Override public String getName() { return References.ID +
+     * ":hydraulic_boots"; }
+     * 
+     * @Override public float getToughness() { return 0.0F; }
+     * 
+     * @Override public float getKnockbackResistance() { return 0.0F; }
+     * 
+     * @Override public int getDurabilityForType(Type pType) { return 100; }
+     * 
+     * @Override public int getDefenseForType(Type pType) { return 1; }
+     * 
+     * }
      */
 
 }

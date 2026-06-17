@@ -24,22 +24,22 @@ public enum SubtypePlate implements ISubtype {
     public final TagKey<Item> sourceIngot;
 
     SubtypePlate(TagKey<Item> tag, TagKey<Item> sourceIngot) {
-        this.tag = tag;
-        this.sourceIngot = sourceIngot;
+	this.tag = tag;
+	this.sourceIngot = sourceIngot;
     }
 
     @Override
     public String tag() {
-        return "plate" + name();
+	return "plate" + name();
     }
 
     @Override
     public String forgeTag() {
-        return "plates/" + name();
+	return "plates/" + name();
     }
 
     @Override
     public boolean isItem() {
-        return true;
+	return true;
     }
 }

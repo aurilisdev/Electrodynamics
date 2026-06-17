@@ -29,51 +29,51 @@ public class BlockLogisticalWire extends BlockWire {
     public static final HashSet<Block> WIRES = new HashSet<>();
 
     public BlockLogisticalWire(IWire wire) {
-        super(wire);
-        WIRES.add(this);
-        stateDefinition.any().setValue(VoltaicBlockStates.LIT, false);
+	super(wire);
+	WIRES.add(this);
+	stateDefinition.any().setValue(VoltaicBlockStates.LIT, false);
     }
 
     @Override
     public void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(VoltaicBlockStates.LIT);
+	super.createBlockStateDefinition(builder);
+	builder.add(VoltaicBlockStates.LIT);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        BlockState superState = super.getStateForPlacement(context);
-        return superState.setValue(VoltaicBlockStates.LIT, false);
+	BlockState superState = super.getStateForPlacement(context);
+	return superState.setValue(VoltaicBlockStates.LIT, false);
     }
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new TileLogisticalWire(pos, state);
+	return new TileLogisticalWire(pos, state);
     }
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
-        throw new UnsupportedOperationException("Need to implement CODEC");
+	throw new UnsupportedOperationException("Need to implement CODEC");
     }
 
     @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
     private static class ColorHandler {
 
-        @SubscribeEvent
-        public static void registerColoredBlocks(RegisterColorHandlersEvent.Block event) {
-            WIRES.forEach(block -> event.register((state, level, pos, tintIndex) -> {
-                if (tintIndex == 0) {
-                    return ((BlockLogisticalWire) block).wire.getWireColor().getColor().color();
-                }
-                if (tintIndex != 1) {
-                    return 0xFFFFFFFF;
-                }
-                if (state.getValue(VoltaicBlockStates.LIT)) {
-                    return REDSTONE_ON.color();
-                }
-                return REDSTONE_OFF.color();
-            }, block));
-        }
+	@SubscribeEvent
+	public static void registerColoredBlocks(RegisterColorHandlersEvent.Block event) {
+	    WIRES.forEach(block -> event.register((state, level, pos, tintIndex) -> {
+		if (tintIndex == 0) {
+		    return ((BlockLogisticalWire) block).wire.getWireColor().getColor().color();
+		}
+		if (tintIndex != 1) {
+		    return 0xFFFFFFFF;
+		}
+		if (state.getValue(VoltaicBlockStates.LIT)) {
+		    return REDSTONE_ON.color();
+		}
+		return REDSTONE_OFF.color();
+	    }, block));
+	}
     }
 
 }

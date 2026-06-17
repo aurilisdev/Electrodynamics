@@ -10,62 +10,62 @@ import voltaic.prefab.utilities.BlockEntityUtils;
 
 public class GenericTileValve extends GenericTile {
 
-	public static final BlockEntityUtils.MachineDirection INPUT_DIR = BlockEntityUtils.MachineDirection.FRONT;
-	public static final BlockEntityUtils.MachineDirection OUTPUT_DIR = BlockEntityUtils.MachineDirection.BACK;
+    public static final BlockEntityUtils.MachineDirection INPUT_DIR = BlockEntityUtils.MachineDirection.FRONT;
+    public static final BlockEntityUtils.MachineDirection OUTPUT_DIR = BlockEntityUtils.MachineDirection.BACK;
 
-	public boolean isClosed = false;
+    public boolean isClosed = false;
 
-	protected boolean isLocked = false;
+    protected boolean isLocked = false;
 
-	public GenericTileValve(BlockEntityType<?> tile, BlockPos pos, BlockState state) {
-		super(tile, pos, state);
+    public GenericTileValve(BlockEntityType<?> tile, BlockPos pos, BlockState state) {
+	super(tile, pos, state);
+    }
+
+    @Override
+    public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
+	if (level.isClientSide) {
+	    return;
 	}
 
-	@Override
-	public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
-		if (level.isClientSide) {
-			return;
-		}
-
-		if (level.hasNeighborSignal(worldPosition)) {
-			isClosed = true;
-		} else {
-			isClosed = false;
-		}
-
-		if (BlockEntityUtils.isLit(this) ^ isClosed) {
-			BlockEntityUtils.updateLit(this, isClosed);
-		}
-
+	if (level.hasNeighborSignal(worldPosition)) {
+	    isClosed = true;
+	} else {
+	    isClosed = false;
 	}
 
-	@Override
-	public void onPlace(BlockState oldState, boolean isMoving) {
-		super.onPlace(oldState, isMoving);
-		if (level.isClientSide) {
-			return;
-		}
-		if (level.hasNeighborSignal(worldPosition)) {
-			isClosed = true;
-		} else {
-			isClosed = false;
-		}
-
-		if (BlockEntityUtils.isLit(this) ^ isClosed) {
-			BlockEntityUtils.updateLit(this, isClosed);
-		}
+	if (BlockEntityUtils.isLit(this) ^ isClosed) {
+	    BlockEntityUtils.updateLit(this, isClosed);
 	}
 
-	@Override
-	protected void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
-		super.saveAdditional(compound, registries);
+    }
 
-		compound.putBoolean("valveisclosed", isClosed);
+    @Override
+    public void onPlace(BlockState oldState, boolean isMoving) {
+	super.onPlace(oldState, isMoving);
+	if (level.isClientSide) {
+	    return;
+	}
+	if (level.hasNeighborSignal(worldPosition)) {
+	    isClosed = true;
+	} else {
+	    isClosed = false;
 	}
 
-	@Override
-	protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
-		super.loadAdditional(compound, registries);
-		isClosed = compound.getBoolean("valveisclosed");
+	if (BlockEntityUtils.isLit(this) ^ isClosed) {
+	    BlockEntityUtils.updateLit(this, isClosed);
 	}
+    }
+
+    @Override
+    protected void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+	super.saveAdditional(compound, registries);
+
+	compound.putBoolean("valveisclosed", isClosed);
+    }
+
+    @Override
+    protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
+	super.loadAdditional(compound, registries);
+	isClosed = compound.getBoolean("valveisclosed");
+    }
 }

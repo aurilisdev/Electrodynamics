@@ -10,26 +10,28 @@ import voltaic.client.guidebook.utils.pagedata.text.TextWrapperObject;
 
 public class ChapterGettingStarted extends Chapter {
 
-	private static final ItemWrapperObject LOGO = new ItemWrapperObject(7, 10, 32, 32, 32, 2.0F, Items.FILLED_MAP);
+    private static final ItemWrapperObject LOGO = new ItemWrapperObject(7, 10, 32, 32, 32, 2.0F, Items.FILLED_MAP);
 
-	public ChapterGettingStarted(Module module) {
-		super(module);
-	}
+    public ChapterGettingStarted(Module module) {
+	super(module);
+    }
 
-	@Override
-	public ItemWrapperObject getLogo() {
-		return LOGO;
-	}
+    @Override
+    public ItemWrapperObject getLogo() {
+	return LOGO;
+    }
 
-	@Override
-	public MutableComponent getTitle() {
-		return ElectroTextUtils.guidebook("chapter.gettingstarted");
-	}
+    @Override
+    public MutableComponent getTitle() {
+	return ElectroTextUtils.guidebook("chapter.gettingstarted");
+    }
 
-	@Override
-	public void addData() {
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gettingstarted.l1")).setIndentions(1).setSeparateStart());
-		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gettingstarted.l2")).setIndentions(1).setSeparateStart());
-	}
+    @Override
+    public void addData() {
+	pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gettingstarted.l1")).setIndentions(1)
+		.setSeparateStart());
+	pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gettingstarted.l2")).setIndentions(1)
+		.setSeparateStart());
+    }
 
 }

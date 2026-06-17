@@ -25,78 +25,85 @@ import voltaic.registers.VoltaicCapabilities;
 
 public class TileGasPipePump extends GenericTile {
 
-	public static final BlockEntityUtils.MachineDirection INPUT_DIR = BlockEntityUtils.MachineDirection.FRONT;
-	public static final BlockEntityUtils.MachineDirection OUTPUT_DIR = BlockEntityUtils.MachineDirection.BACK;
-	
-	private boolean isLocked = false;
+    public static final BlockEntityUtils.MachineDirection INPUT_DIR = BlockEntityUtils.MachineDirection.FRONT;
+    public static final BlockEntityUtils.MachineDirection OUTPUT_DIR = BlockEntityUtils.MachineDirection.BACK;
 
-	public final SingleProperty<Integer> priority = property(new SingleProperty<>(PropertyTypes.INTEGER, "pumppriority", 0).onChange((prop, oldval) -> {
+    private boolean isLocked = false;
+
+    public final SingleProperty<Integer> priority = property(
+	    new SingleProperty<>(PropertyTypes.INTEGER, "pumppriority", 0).onChange((prop, oldval) -> {
 
 		if (level == null || level.isClientSide) {
-			return;
+		    return;
 		}
 
 		BlockEntity entity = level.getBlockEntity(worldPosition.relative(getFacing()));
 
 		if (entity instanceof TileGasPipe pipe) {
-			GasNetwork network = pipe.getNetwork();
+		    GasNetwork network = pipe.getNetwork();
 
-			if (network != null) {
-				network.updateGasPipePumpStats(this, prop.getValue(), oldval);
-			}
+		    if (network != null) {
+			network.updateGasPipePumpStats(this, prop.getValue(), oldval);
+		    }
 		}
 
-	}));
+	    }));
 
-	public TileGasPipePump(BlockPos pos, BlockState state) {
-		super(ElectrodynamicsTiles.TILE_GASPIPEPUMP.get(), pos, state);
-		addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-		addComponent(new ComponentPacketHandler(this));
-		addComponent(new ComponentElectrodynamic(this, false, true).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE).maxJoules(ElectrodynamicsConfig.INSTANCE.PIPE_PUMP_USAGE_PER_TICK.get() * 10).setInputDirections(BlockEntityUtils.MachineDirection.LEFT));
-		addComponent(new ComponentContainerProvider("gaspipepump", this).createMenu((id, inv) -> new ContainerGasPipePump(id, inv, getCoordsArray())));
+    public TileGasPipePump(BlockPos pos, BlockState state) {
+	super(ElectrodynamicsTiles.TILE_GASPIPEPUMP.get(), pos, state);
+	addComponent(new ComponentTickable(this).tickServer(this::tickServer));
+	addComponent(new ComponentPacketHandler(this));
+	addComponent(new ComponentElectrodynamic(this, false, true).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE)
+		.maxJoules(ElectrodynamicsConfig.INSTANCE.PIPE_PUMP_USAGE_PER_TICK.get() * 10)
+		.setInputDirections(BlockEntityUtils.MachineDirection.LEFT));
+	addComponent(new ComponentContainerProvider("gaspipepump", this)
+		.createMenu((id, inv) -> new ContainerGasPipePump(id, inv, getCoordsArray())));
+    }
+
+    public void tickServer(ComponentTickable tick) {
+
+	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+
+	electro.joules(
+		Math.max(electro.getJoulesStored() - ElectrodynamicsConfig.INSTANCE.PIPE_PUMP_USAGE_PER_TICK.get(), 0));
+
+    }
+
+    @Override
+    public @Nullable IGasHandler getGasHandlerCapability(@Nullable Direction side) {
+	if (side == null || isLocked) {
+	    return null;
+	}
+	Direction facing = getFacing();
+
+	if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR.mappedDir)) {
+	    return CapabilityUtils.EMPTY_GAS;
 	}
 
-	public void tickServer(ComponentTickable tick) {
+	if (side == BlockEntityUtils.getRelativeSide(facing, INPUT_DIR.mappedDir)) {
 
-		ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-
-		electro.joules(Math.max(electro.getJoulesStored() - ElectrodynamicsConfig.INSTANCE.PIPE_PUMP_USAGE_PER_TICK.get(), 0));
-
-	}
-	
-	@Override
-	public @Nullable IGasHandler getGasHandlerCapability(@Nullable Direction side) {
-	    if(side == null || isLocked) {
-	        return null;
-	    }
-	    Direction facing = getFacing();
-
-        if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR.mappedDir)) {
-            return CapabilityUtils.EMPTY_GAS;
-        }
-
-        if (side == BlockEntityUtils.getRelativeSide(facing, INPUT_DIR.mappedDir)) {
-
-            BlockEntity output = level.getBlockEntity(worldPosition.relative(side.getOpposite()));
-            if (output == null) {
+	    BlockEntity output = level.getBlockEntity(worldPosition.relative(side.getOpposite()));
+	    if (output == null) {
 		return CapabilityUtils.EMPTY_GAS;
 	    }
 
 	    isLocked = true;
 
-            IGasHandler gas = output.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK, output.getBlockPos(), output.getBlockState(), output, side);
-            
-            isLocked = false;
-            
-            return gas == null ? CapabilityUtils.EMPTY_GAS : gas;
+	    IGasHandler gas = output.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK,
+		    output.getBlockPos(), output.getBlockState(), output, side);
 
-        }
-        
-        return null;
+	    isLocked = false;
+
+	    return gas == null ? CapabilityUtils.EMPTY_GAS : gas;
+
 	}
 
-	public boolean isPowered() {
-		return this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getJoulesStored() >= ElectrodynamicsConfig.INSTANCE.PIPE_PUMP_USAGE_PER_TICK.get();
-	}
+	return null;
+    }
+
+    public boolean isPowered() {
+	return this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic)
+		.getJoulesStored() >= ElectrodynamicsConfig.INSTANCE.PIPE_PUMP_USAGE_PER_TICK.get();
+    }
 
 }

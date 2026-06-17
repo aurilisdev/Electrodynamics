@@ -23,35 +23,36 @@ import voltaic.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
 
 public final class ModuleElectrodynamics extends Module {
 
-	private static final ImageWrapperObject LOGO = new ImageWrapperObject(0, 0, 0, 0, 32, 32, 32, 32, Electrodynamics.rl("textures/screen/guidebook/electrodynamicslogo.png"));
+    private static final ImageWrapperObject LOGO = new ImageWrapperObject(0, 0, 0, 0, 32, 32, 32, 32,
+	    Electrodynamics.rl("textures/screen/guidebook/electrodynamicslogo.png"));
 
-	@Override
-	public ImageWrapperObject getLogo() {
-		return LOGO;
-	}
+    @Override
+    public ImageWrapperObject getLogo() {
+	return LOGO;
+    }
 
-	@Override
-	public MutableComponent getTitle() {
-		return ElectroTextUtils.guidebook(Electrodynamics.ID);
-	}
+    @Override
+    public MutableComponent getTitle() {
+	return ElectroTextUtils.guidebook(Electrodynamics.ID);
+    }
 
-	@Override
-	public void addChapters() {
-		chapters.add(new ChapterGettingStarted(this));
-		chapters.add(new ChapterOre(this));
-		chapters.add(new ChapterMetricPrefixes(this));
-		chapters.add(new ChapterElectricity(this));
-		chapters.add(new ChapterFluids(this));
-		chapters.add(new ChapterGases(this));
-		chapters.add(new ChapterGenerators(this));
-		chapters.add(new ChapterMachines(this));
-		chapters.add(new ChapterQuarry(this));
-		chapters.add(new ChapterElectrolosisChamber(this));
-		chapters.add(new ChapterUpgrades(this));
-		chapters.add(new ChapterTools(this));
-		chapters.add(new ChapterArmor(this));
-		chapters.add(new ChapterMisc(this));
-		chapters.add(new ChapterTips(this));
-	}
+    @Override
+    public void addChapters() {
+	chapters.add(new ChapterGettingStarted(this));
+	chapters.add(new ChapterOre(this));
+	chapters.add(new ChapterMetricPrefixes(this));
+	chapters.add(new ChapterElectricity(this));
+	chapters.add(new ChapterFluids(this));
+	chapters.add(new ChapterGases(this));
+	chapters.add(new ChapterGenerators(this));
+	chapters.add(new ChapterMachines(this));
+	chapters.add(new ChapterQuarry(this));
+	chapters.add(new ChapterElectrolosisChamber(this));
+	chapters.add(new ChapterUpgrades(this));
+	chapters.add(new ChapterTools(this));
+	chapters.add(new ChapterArmor(this));
+	chapters.add(new ChapterMisc(this));
+	chapters.add(new ChapterTips(this));
+    }
 
 }

@@ -17,46 +17,52 @@ import voltaic.prefab.block.GenericMachineBlock;
 
 public class BlockThermoelectricManipulator extends GenericMachineBlock {
     public BlockThermoelectricManipulator() {
-        super(TileBasicThermoelectricManipulator::new, VoxelShapeProvider.DEFAULT);
-        registerDefaultState(stateDefinition.any().setValue(VoltaicBlockStates.LIT, false).setValue(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS,ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF).setValue(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false));
+	super(TileBasicThermoelectricManipulator::new, VoxelShapeProvider.DEFAULT);
+	registerDefaultState(stateDefinition.any().setValue(VoltaicBlockStates.LIT, false)
+		.setValue(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS,
+			ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF)
+		.setValue(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false));
     }
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(VoltaicBlockStates.LIT);
-        builder.add(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS);
-        builder.add(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK);
+	super.createBlockStateDefinition(builder);
+	builder.add(VoltaicBlockStates.LIT);
+	builder.add(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS);
+	builder.add(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK);
     }
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return getStatusFromTop(context.getLevel(), context.getClickedPos(), super.getStateForPlacement(context).setValue(VoltaicBlockStates.LIT, false).setValue(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF));
+	return getStatusFromTop(context.getLevel(), context.getClickedPos(),
+		super.getStateForPlacement(context).setValue(VoltaicBlockStates.LIT, false).setValue(
+			ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS,
+			ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF));
     }
 
     public BlockState getStatusFromTop(Level world, BlockPos pos, BlockState baseState) {
-        if (!baseState.hasProperty(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK)) {
-            return baseState;
-        }
-        if (world.getBlockState(pos.above()).is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK)) {
-            return baseState.setValue(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true);
-        }
-        return baseState.setValue(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false);
+	if (!baseState.hasProperty(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK)) {
+	    return baseState;
+	}
+	if (world.getBlockState(pos.above()).is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK)) {
+	    return baseState.setValue(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true);
+	}
+	return baseState.setValue(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false);
     }
 
     @Override
     public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
-        super.onNeighborChange(state, level, pos, neighbor);
-        if (level instanceof Level world) {
-            world.setBlockAndUpdate(pos, getStatusFromTop(world, pos, state));
-        }
+	super.onNeighborChange(state, level, pos, neighbor);
+	if (level instanceof Level world) {
+	    world.setBlockAndUpdate(pos, getStatusFromTop(world, pos, state));
+	}
     }
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-        if (state.hasProperty(VoltaicBlockStates.LIT) && state.getValue(VoltaicBlockStates.LIT)) {
-            return 15;
-        }
-        return super.getLightEmission(state, level, pos);
+	if (state.hasProperty(VoltaicBlockStates.LIT) && state.getValue(VoltaicBlockStates.LIT)) {
+	    return 15;
+	}
+	return super.getLightEmission(state, level, pos);
     }
 }

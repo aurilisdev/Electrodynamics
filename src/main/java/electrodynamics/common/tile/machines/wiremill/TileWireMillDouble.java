@@ -10,10 +10,12 @@ import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 
 public class TileWireMillDouble extends TileWireMill {
 
-	public TileWireMillDouble(BlockPos worldPosition, BlockState blockState) {
-		super(ElectrodynamicsTiles.TILE_WIREMILLDOUBLE.get(), 2, worldPosition, blockState);
+    public TileWireMillDouble(BlockPos worldPosition, BlockState blockState) {
+	super(ElectrodynamicsTiles.TILE_WIREMILLDOUBLE.get(), 2, worldPosition, blockState);
 
-		addComponent(new ComponentContainerProvider(SubtypeMachine.wiremilldouble.tag(), this).createMenu((id, player) -> new ContainerO2OProcessorDouble(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
-	}
+	addComponent(new ComponentContainerProvider(SubtypeMachine.wiremilldouble.tag(), this)
+		.createMenu((id, player) -> new ContainerO2OProcessorDouble(id, player,
+			getComponent(IComponentType.Inventory), getCoordsArray())));
+    }
 
 }

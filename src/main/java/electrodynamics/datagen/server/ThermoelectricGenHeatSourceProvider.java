@@ -16,35 +16,36 @@ import net.minecraft.world.level.material.Fluid;
 
 public class ThermoelectricGenHeatSourceProvider implements DataProvider {
 
-	public static final String LOC = "data/" + Electrodynamics.ID + "/" + ThermoelectricGeneratorHeatRegister.FOLDER + "/" + ThermoelectricGeneratorHeatRegister.FILE_NAME;
+    public static final String LOC = "data/" + Electrodynamics.ID + "/" + ThermoelectricGeneratorHeatRegister.FOLDER
+	    + "/" + ThermoelectricGeneratorHeatRegister.FILE_NAME;
 
-	private final PackOutput output;
+    private final PackOutput output;
 
-	public ThermoelectricGenHeatSourceProvider(PackOutput output) {
-		this.output = output;
-	}
+    public ThermoelectricGenHeatSourceProvider(PackOutput output) {
+	this.output = output;
+    }
 
-	@Override
-	public CompletableFuture<?> run(CachedOutput cache) {
-		JsonObject json = new JsonObject();
-		getFuels(json);
+    @Override
+    public CompletableFuture<?> run(CachedOutput cache) {
+	JsonObject json = new JsonObject();
+	getFuels(json);
 
-		Path parent = output.getOutputFolder().resolve(LOC + ".json");
+	Path parent = output.getOutputFolder().resolve(LOC + ".json");
 
-		return CompletableFuture.allOf(DataProvider.saveStable(cache, json, parent));
-	}
+	return CompletableFuture.allOf(DataProvider.saveStable(cache, json, parent));
+    }
 
-	private static void getFuels(JsonObject json) {
-		addTag(FluidTags.LAVA, 1.0, json);
-	}
+    private static void getFuels(JsonObject json) {
+	addTag(FluidTags.LAVA, 1.0, json);
+    }
 
-	private static void addTag(TagKey<Fluid> fluid, double multiplier, JsonObject json) {
-		json.addProperty("#" + fluid.location().toString(), multiplier);
-	}
+    private static void addTag(TagKey<Fluid> fluid, double multiplier, JsonObject json) {
+	json.addProperty("#" + fluid.location().toString(), multiplier);
+    }
 
-	@Override
-	public String getName() {
-		return "Electrodynamics Thermoelectric Generator Heat Source Provider";
-	}
+    @Override
+    public String getName() {
+	return "Electrodynamics Thermoelectric Generator Heat Source Provider";
+    }
 
 }

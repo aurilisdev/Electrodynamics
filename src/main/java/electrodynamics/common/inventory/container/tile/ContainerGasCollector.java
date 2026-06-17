@@ -16,22 +16,23 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ContainerGasCollector extends GenericContainerBlockEntity<TileGasCollector> {
 
-    public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[]{SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed};
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
+	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
 
     public ContainerGasCollector(int id, Inventory playerinv) {
-        this(id, playerinv, new SimpleContainer(5), new SimpleContainerData(3));
+	this(id, playerinv, new SimpleContainer(5), new SimpleContainerData(3));
     }
 
     public ContainerGasCollector(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-        super(ElectrodynamicsMenuTypes.CONTAINER_GASCOLLECTOR.get(), id, playerinv, inventory, inventorydata);
+	super(ElectrodynamicsMenuTypes.CONTAINER_GASCOLLECTOR.get(), id, playerinv, inventory, inventorydata);
     }
 
     @Override
     public void addInventorySlots(Container inv, Inventory playerinv) {
-        addSlot(new SlotGeneric(inv, nextIndex(), 25, 34).setIOColor(new Color(0, 240, 255, 255)));
-        addSlot(new SlotGas(inv, nextIndex(), 121, 51));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
-        addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
+	addSlot(new SlotGeneric(inv, nextIndex(), 25, 34).setIOColor(new Color(0, 240, 255, 255)));
+	addSlot(new SlotGas(inv, nextIndex(), 121, 51));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
     }
 }

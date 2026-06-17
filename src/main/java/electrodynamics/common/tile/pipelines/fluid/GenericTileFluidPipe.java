@@ -15,77 +15,81 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import voltaic.api.network.cable.type.IFluidPipe;
 import voltaic.prefab.tile.types.GenericRefreshingConnectTile;
 
-public abstract class GenericTileFluidPipe extends GenericRefreshingConnectTile<IFluidPipe, GenericTileFluidPipe, FluidNetwork> {
+public abstract class GenericTileFluidPipe
+	extends GenericRefreshingConnectTile<IFluidPipe, GenericTileFluidPipe, FluidNetwork> {
 
     private final IFluidHandler[] handler = new IFluidHandler[6];
 
     @Override
-    public @org.jetbrains.annotations.Nullable IFluidHandler getFluidHandlerCapability(@org.jetbrains.annotations.Nullable Direction side) {
-        if (side == null) {
-            return null;
-        }
-        return handler[side.ordinal()];
+    public @org.jetbrains.annotations.Nullable IFluidHandler getFluidHandlerCapability(
+	    @org.jetbrains.annotations.Nullable Direction side) {
+	if (side == null) {
+	    return null;
+	}
+	return handler[side.ordinal()];
     }
 
     protected GenericTileFluidPipe(BlockEntityType<?> tileEntityTypeIn, BlockPos pos, BlockState state) {
-        super(tileEntityTypeIn, pos, state);
-        for (Direction dir : Direction.values()) {
-            handler[dir.ordinal()] = new IFluidHandler() {
+	super(tileEntityTypeIn, pos, state);
+	for (Direction dir : Direction.values()) {
+	    handler[dir.ordinal()] = new IFluidHandler() {
 
-                @Override
-                public int getTanks() {
-                    return 1;
-                }
+		@Override
+		public int getTanks() {
+		    return 1;
+		}
 
-                @Override
-                public FluidStack getFluidInTank(int tank) {
-                    return new FluidStack(Fluids.WATER, 0);
-                }
+		@Override
+		public FluidStack getFluidInTank(int tank) {
+		    return new FluidStack(Fluids.WATER, 0);
+		}
 
-                @Override
-                public int getTankCapacity(int tank) {
-                    return 0;
-                }
+		@Override
+		public int getTankCapacity(int tank) {
+		    return 0;
+		}
 
-                @Override
-                public boolean isFluidValid(int tank, FluidStack stack) {
-                    return stack != null;
-                }
+		@Override
+		public boolean isFluidValid(int tank, FluidStack stack) {
+		    return stack != null;
+		}
 
-                @Override
-                public int fill(FluidStack resource, FluidAction action) {
-                    if (action == FluidAction.SIMULATE || getNetwork() == null || resource.isEmpty()) {
-                        return 0;
-                    }
-                    return getNetwork().emit(resource, Lists.newArrayList(level.getBlockEntity(new BlockPos(worldPosition).relative(dir))), false).getAmount();
-                }
+		@Override
+		public int fill(FluidStack resource, FluidAction action) {
+		    if (action == FluidAction.SIMULATE || getNetwork() == null || resource.isEmpty()) {
+			return 0;
+		    }
+		    return getNetwork().emit(resource,
+			    Lists.newArrayList(level.getBlockEntity(new BlockPos(worldPosition).relative(dir))), false)
+			    .getAmount();
+		}
 
-                @Override
-                public FluidStack drain(FluidStack resource, FluidAction action) {
-                    return FluidStack.EMPTY;
-                }
+		@Override
+		public FluidStack drain(FluidStack resource, FluidAction action) {
+		    return FluidStack.EMPTY;
+		}
 
-                @Override
-                public FluidStack drain(int maxDrain, FluidAction action) {
-                    return FluidStack.EMPTY;
-                }
-            };
-        }
+		@Override
+		public FluidStack drain(int maxDrain, FluidAction action) {
+		    return FluidStack.EMPTY;
+		}
+	    };
+	}
     }
 
     @Override
     public FluidNetwork createInstance(Set<FluidNetwork> fluidNetworks) {
-        return new FluidNetwork(fluidNetworks);
+	return new FluidNetwork(fluidNetworks);
     }
 
     @Override
     public FluidNetwork createInstanceConductor(Set<GenericTileFluidPipe> genericTileFluidPipes) {
-        return new FluidNetwork(genericTileFluidPipes);
+	return new FluidNetwork(genericTileFluidPipes);
     }
 
     @Override
     public double getMaxTransfer() {
-        return getCableType().getMaxTransfer();
+	return getCableType().getMaxTransfer();
     }
 
     @Override

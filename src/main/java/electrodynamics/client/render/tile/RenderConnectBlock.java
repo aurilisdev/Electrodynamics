@@ -13,28 +13,30 @@ import voltaic.prefab.tile.types.GenericConnectTile;
 
 public class RenderConnectBlock extends AbstractTileRenderer<GenericConnectTile> {
 
-	public RenderConnectBlock(Context context) {
-		super(context);
+    public RenderConnectBlock(Context context) {
+	super(context);
+    }
+
+    @Override
+    public void render(@NotNull GenericConnectTile tile, float partialTick, @NotNull PoseStack poseStack,
+	    @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+	BlockState state = tile.getBlockState();
+
+	if (!state.getValue(VoltaicBlockStates.HAS_SCAFFOLDING)) {
+	    return;
 	}
 
-	@Override
-	public void render(@NotNull GenericConnectTile tile, float partialTick, @NotNull PoseStack poseStack, @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-		BlockState state = tile.getBlockState();
+	BlockState blockToRender;
 
-		if (!state.getValue(VoltaicBlockStates.HAS_SCAFFOLDING)) {
-			return;
-		}
-
-		BlockState blockToRender;
-
-		if (tile.isCamoAir()) {
-			blockToRender = tile.getScaffoldBlock();
-		} else {
-			blockToRender = tile.getCamoBlock();
-		}
-
-		minecraft().getBlockRenderer().renderSingleBlock(blockToRender, poseStack, bufferSource, packedLight, packedOverlay);
-
+	if (tile.isCamoAir()) {
+	    blockToRender = tile.getScaffoldBlock();
+	} else {
+	    blockToRender = tile.getCamoBlock();
 	}
+
+	minecraft().getBlockRenderer().renderSingleBlock(blockToRender, poseStack, bufferSource, packedLight,
+		packedOverlay);
+
+    }
 
 }

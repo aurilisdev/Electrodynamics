@@ -16,22 +16,25 @@ import voltaic.common.recipe.recipeutils.ProbableItem;
 
 public class ChemicalCrystalizerRecipe extends Fluid2ItemRecipe {
 
-	public static final String RECIPE_GROUP = "chemical_crystallizer_recipe";
-	public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
+    public static final String RECIPE_GROUP = "chemical_crystallizer_recipe";
+    public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
 
-	public ChemicalCrystalizerRecipe(String group, List<FluidIngredient> fluidInputs, ItemStack itemOutput, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
-		super(group, fluidInputs, itemOutput, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
+    public ChemicalCrystalizerRecipe(String group, List<FluidIngredient> fluidInputs, ItemStack itemOutput,
+	    double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts,
+	    List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
+	super(group, fluidInputs, itemOutput, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts,
+		gasBiproducts);
 
-	}
+    }
 
-	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_SERIALIZER.get();
-	}
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+	return ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_SERIALIZER.get();
+    }
 
-	@Override
-	public RecipeType<?> getType() {
-		return ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_TYPE.get();
-	}
+    @Override
+    public RecipeType<?> getType() {
+	return ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_TYPE.get();
+    }
 
 }

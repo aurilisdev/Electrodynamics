@@ -16,21 +16,23 @@ import voltaic.common.recipe.recipeutils.ProbableItem;
 
 public class EnergizedAlloyerRecipe extends Item2ItemRecipe {
 
-	public static final String RECIPE_GROUP = "energized_alloyer_recipe";
-	public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
+    public static final String RECIPE_GROUP = "energized_alloyer_recipe";
+    public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
 
-	public EnergizedAlloyerRecipe(String group, List<CountableIngredient> inputs, ItemStack output, double experience, int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
-		super(group, inputs, output, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
-	}
+    public EnergizedAlloyerRecipe(String group, List<CountableIngredient> inputs, ItemStack output, double experience,
+	    int ticks, double usagePerTick, List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts,
+	    List<ProbableGas> gasBiproducts) {
+	super(group, inputs, output, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
+    }
 
-	@Override
-	public RecipeSerializer<?> getSerializer() {
-		return ElectrodynamicsRecipies.ENERGIZED_ALLOYER_SERIALIZER.get();
-	}
+    @Override
+    public RecipeSerializer<?> getSerializer() {
+	return ElectrodynamicsRecipies.ENERGIZED_ALLOYER_SERIALIZER.get();
+    }
 
-	@Override
-	public RecipeType<?> getType() {
-		return ElectrodynamicsRecipies.ENERGIZED_ALLOYER_TYPE.get();
-	}
+    @Override
+    public RecipeType<?> getType() {
+	return ElectrodynamicsRecipies.ENERGIZED_ALLOYER_TYPE.get();
+    }
 
 }

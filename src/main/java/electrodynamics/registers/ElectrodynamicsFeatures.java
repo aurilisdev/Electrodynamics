@@ -131,40 +131,40 @@ public class ElectrodynamicsFeatures {
 	HolderGetter<ConfiguredFeature<?, ?>> holderGetter = context.lookup(Registries.CONFIGURED_FEATURE);
 
 	PlacementUtils.register(context, ORE_ALUMINUM_PLACED, holderGetter.getOrThrow(ORE_ALUMINUM_CONFIGURED),
-		orePlacement((SubtypeOre.aluminum.veinsPerChunk), SubtypeOre.aluminum.minY, SubtypeOre.aluminum.maxY));
+		orePlacement(SubtypeOre.aluminum.veinsPerChunk, SubtypeOre.aluminum.minY, SubtypeOre.aluminum.maxY));
 	PlacementUtils.register(context, ORE_CHROMIUM_PLACED, holderGetter.getOrThrow(ORE_CHROMIUM_CONFIGURED),
-		orePlacement((SubtypeOre.chromium.veinsPerChunk), SubtypeOre.chromium.minY, SubtypeOre.chromium.maxY));
+		orePlacement(SubtypeOre.chromium.veinsPerChunk, SubtypeOre.chromium.minY, SubtypeOre.chromium.maxY));
 	PlacementUtils.register(context, ORE_FLUORITE_PLACED, holderGetter.getOrThrow(ORE_FLUORITE_CONFIGURED),
-		orePlacement((SubtypeOre.fluorite.veinsPerChunk), SubtypeOre.fluorite.minY, SubtypeOre.fluorite.maxY));
+		orePlacement(SubtypeOre.fluorite.veinsPerChunk, SubtypeOre.fluorite.minY, SubtypeOre.fluorite.maxY));
 	PlacementUtils.register(context, ORE_LEAD_PLACED, holderGetter.getOrThrow(ORE_LEAD_CONFIGURED),
-		orePlacement((SubtypeOre.lead.veinsPerChunk), SubtypeOre.lead.minY, SubtypeOre.lead.maxY));
+		orePlacement(SubtypeOre.lead.veinsPerChunk, SubtypeOre.lead.minY, SubtypeOre.lead.maxY));
 	PlacementUtils.register(context, ORE_LITHIUM_PLACED, holderGetter.getOrThrow(ORE_LITHIUM_CONFIGURED),
-		orePlacement((SubtypeOre.lithium.veinsPerChunk), SubtypeOre.lithium.minY, SubtypeOre.lithium.maxY));
+		orePlacement(SubtypeOre.lithium.veinsPerChunk, SubtypeOre.lithium.minY, SubtypeOre.lithium.maxY));
 	PlacementUtils.register(context, ORE_MOLYBDENUM_PLACED, holderGetter.getOrThrow(ORE_MOLYBDENUM_CONFIGURED),
-		orePlacement((SubtypeOre.molybdenum.veinsPerChunk), SubtypeOre.molybdenum.minY,
+		orePlacement(SubtypeOre.molybdenum.veinsPerChunk, SubtypeOre.molybdenum.minY,
 			SubtypeOre.molybdenum.maxY));
 	PlacementUtils.register(context, ORE_MONAZITE_PLACED, holderGetter.getOrThrow(ORE_MONAZITE_CONFIGURED),
-		orePlacement((SubtypeOre.monazite.veinsPerChunk), SubtypeOre.monazite.minY, SubtypeOre.monazite.maxY));
+		orePlacement(SubtypeOre.monazite.veinsPerChunk, SubtypeOre.monazite.minY, SubtypeOre.monazite.maxY));
 	PlacementUtils.register(context, ORE_NITER_PLACED, holderGetter.getOrThrow(ORE_NITER_CONFIGURED),
-		orePlacement((SubtypeOre.niter.veinsPerChunk), SubtypeOre.niter.minY, SubtypeOre.niter.maxY));
+		orePlacement(SubtypeOre.niter.veinsPerChunk, SubtypeOre.niter.minY, SubtypeOre.niter.maxY));
 	PlacementUtils.register(context, ORE_SALT_PLACED, holderGetter.getOrThrow(ORE_SALT_CONFIGURED),
-		orePlacement((SubtypeOre.salt.veinsPerChunk), SubtypeOre.salt.minY, SubtypeOre.salt.maxY));
+		orePlacement(SubtypeOre.salt.veinsPerChunk, SubtypeOre.salt.minY, SubtypeOre.salt.maxY));
 	PlacementUtils.register(context, ORE_SILVER_PLACED, holderGetter.getOrThrow(ORE_SILVER_CONFIGURED),
-		orePlacement((SubtypeOre.silver.veinsPerChunk), SubtypeOre.silver.minY, SubtypeOre.silver.maxY));
+		orePlacement(SubtypeOre.silver.veinsPerChunk, SubtypeOre.silver.minY, SubtypeOre.silver.maxY));
 	PlacementUtils.register(context, ORE_SULFUR_PLACED, holderGetter.getOrThrow(ORE_SULFUR_CONFIGURED),
-		orePlacement((SubtypeOre.sulfur.veinsPerChunk), SubtypeOre.sulfur.minY, SubtypeOre.sulfur.maxY));
+		orePlacement(SubtypeOre.sulfur.veinsPerChunk, SubtypeOre.sulfur.minY, SubtypeOre.sulfur.maxY));
 	PlacementUtils.register(context, ORE_SYLVITE_PLACED, holderGetter.getOrThrow(ORE_SYLVITE_CONFIGURED),
-		orePlacement((SubtypeOre.sylvite.veinsPerChunk), SubtypeOre.sylvite.minY, SubtypeOre.sylvite.maxY));
+		orePlacement(SubtypeOre.sylvite.veinsPerChunk, SubtypeOre.sylvite.minY, SubtypeOre.sylvite.maxY));
 	PlacementUtils.register(context, ORE_TIN_PLACED, holderGetter.getOrThrow(ORE_TIN_CONFIGURED),
-		orePlacement((SubtypeOre.tin.veinsPerChunk), SubtypeOre.tin.minY, SubtypeOre.tin.maxY));
+		orePlacement(SubtypeOre.tin.veinsPerChunk, SubtypeOre.tin.minY, SubtypeOre.tin.maxY));
 	PlacementUtils.register(context, ORE_TITANIUM_PLACED, holderGetter.getOrThrow(ORE_TITANIUM_CONFIGURED),
-		orePlacement((SubtypeOre.titanium.veinsPerChunk), SubtypeOre.titanium.minY, SubtypeOre.titanium.maxY));
+		orePlacement(SubtypeOre.titanium.veinsPerChunk, SubtypeOre.titanium.minY, SubtypeOre.titanium.maxY));
 	PlacementUtils.register(context, ORE_THORIUM_PLACED, holderGetter.getOrThrow(ORE_THORIUM_CONFIGURED),
-		orePlacement((SubtypeOre.thorium.veinsPerChunk), SubtypeOre.thorium.minY, SubtypeOre.thorium.maxY));
+		orePlacement(SubtypeOre.thorium.veinsPerChunk, SubtypeOre.thorium.minY, SubtypeOre.thorium.maxY));
 	PlacementUtils.register(context, ORE_URANIUM_PLACED, holderGetter.getOrThrow(ORE_URANIUM_CONFIGURED),
-		orePlacement((SubtypeOre.uranium.veinsPerChunk), SubtypeOre.uranium.minY, SubtypeOre.uranium.maxY));
+		orePlacement(SubtypeOre.uranium.veinsPerChunk, SubtypeOre.uranium.minY, SubtypeOre.uranium.maxY));
 	PlacementUtils.register(context, ORE_VANADIUM_PLACED, holderGetter.getOrThrow(ORE_VANADIUM_CONFIGURED),
-		orePlacement((SubtypeOre.vanadium.veinsPerChunk), SubtypeOre.vanadium.minY, SubtypeOre.vanadium.maxY));
+		orePlacement(SubtypeOre.vanadium.veinsPerChunk, SubtypeOre.vanadium.minY, SubtypeOre.vanadium.maxY));
 
     }
 

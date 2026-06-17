@@ -13,17 +13,18 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 public class ContainerElectrolosisChamber extends GenericContainerBlockEntity<TileElectrolosisChamber> {
 
     public ContainerElectrolosisChamber(int id, Inventory playerinv) {
-        this(id, playerinv, new SimpleContainer(2), new SimpleContainerData(3));
+	this(id, playerinv, new SimpleContainer(2), new SimpleContainerData(3));
     }
+
     public ContainerElectrolosisChamber(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-        super(ElectrodynamicsMenuTypes.CONTAINER_ELECTROLOSISCHAMBER.get(), id, playerinv, inventory, inventorydata);
+	super(ElectrodynamicsMenuTypes.CONTAINER_ELECTROLOSISCHAMBER.get(), id, playerinv, inventory, inventorydata);
     }
 
     @Override
     public void addInventorySlots(Container inv, Inventory playerinv) {
 
-        addSlot(new SlotFluid(inv, nextIndex(), 19, 51));
-        addSlot(new SlotFluid(inv, nextIndex(), 141, 51));
+	addSlot(new SlotFluid(inv, nextIndex(), 19, 51));
+	addSlot(new SlotFluid(inv, nextIndex(), 141, 51));
 
     }
 }

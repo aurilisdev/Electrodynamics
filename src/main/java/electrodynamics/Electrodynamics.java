@@ -42,7 +42,7 @@ public final class Electrodynamics {
 	container.registerConfig(ModConfig.Type.COMMON, ElectrodynamicsConfig.INSTANCE.SPEC);
 	if (FMLEnvironment.dist == Dist.CLIENT) {
 	    container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
-	}	// MUST GO BEFORE BLOCKS!!!!
+	} // MUST GO BEFORE BLOCKS!!!!
 	ElectrodynamicsBlockStates.init();
 	ElectrodynamicsVoxelShapes.init();
 	UnifiedElectrodynamicsRegister.register(bus);

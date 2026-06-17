@@ -9,12 +9,14 @@ import voltaic.common.fluid.SimpleWaterBasedFluidType;
 public class FluidDirtyMineral extends FluidNonPlaceable {
 
     public SubtypeDirtyMineralFluid subtype;
+
     public FluidDirtyMineral(SubtypeDirtyMineralFluid subtype) {
-        super(ElectrodynamicsItems.ITEM_CANISTERREINFORCED, new SimpleWaterBasedFluidType(Electrodynamics.ID, "fluiddirtymineral" + subtype.name(), "dirty/dirtymineralfluid", subtype.color));
-        this.subtype = subtype;
+	super(ElectrodynamicsItems.ITEM_CANISTERREINFORCED, new SimpleWaterBasedFluidType(Electrodynamics.ID,
+		"fluiddirtymineral" + subtype.name(), "dirty/dirtymineralfluid", subtype.color));
+	this.subtype = subtype;
     }
 
     public SubtypeDirtyMineralFluid getSubtype() {
-        return subtype;
+	return subtype;
     }
 }

@@ -16,7 +16,8 @@ public enum SubtypeImpureMineralFluid implements ISubtype {
     iron(() -> ElectrodynamicsFluids.FLUIDS_PUREMINERAL.getValue(SubtypePureMineralFluid.iron), Color.WHITE),
     gold(() -> ElectrodynamicsFluids.FLUIDS_PUREMINERAL.getValue(SubtypePureMineralFluid.gold), Color.WHITE),
     lithium(() -> ElectrodynamicsFluids.FLUIDS_PUREMINERAL.getValue(SubtypePureMineralFluid.lithium), Color.WHITE),
-    molybdenum(() -> ElectrodynamicsFluids.FLUIDS_PUREMINERAL.getValue(SubtypePureMineralFluid.molybdenum), Color.WHITE),
+    molybdenum(() -> ElectrodynamicsFluids.FLUIDS_PUREMINERAL.getValue(SubtypePureMineralFluid.molybdenum),
+	    Color.WHITE),
     netherite(() -> ElectrodynamicsFluids.FLUIDS_PUREMINERAL.getValue(SubtypePureMineralFluid.netherite), Color.WHITE),
     aluminum(() -> ElectrodynamicsFluids.FLUIDS_PUREMINERAL.getValue(SubtypePureMineralFluid.aluminum), Color.WHITE),
     titanium(() -> ElectrodynamicsFluids.FLUIDS_PUREMINERAL.getValue(SubtypePureMineralFluid.titanium), Color.WHITE),
@@ -26,22 +27,22 @@ public enum SubtypeImpureMineralFluid implements ISubtype {
     public final Color color;
 
     SubtypeImpureMineralFluid(Supplier<Fluid> result, Color color) {
-        this.result = result;
-        this.color = color;
+	this.result = result;
+	this.color = color;
     }
 
     @Override
     public String tag() {
-        return "fluid" + name();
+	return "fluid" + name();
     }
 
     @Override
     public String forgeTag() {
-        return "fluid/" + name();
+	return "fluid/" + name();
     }
 
     @Override
     public boolean isItem() {
-        return false;
+	return false;
     }
 }

@@ -52,10 +52,10 @@ public class ItemJetpack extends ItemVoltaicArmor {
     // public static final Fluid EMPTY_FLUID = Fluids.EMPTY;
 
     public static final EnumMap<Type, Integer> DEFENSE_MAP = Util.make(new EnumMap<>(ArmorItem.Type.class), map -> {
-        map.put(Type.HELMET, 0);
-        map.put(Type.CHESTPLATE, 1);
-        map.put(Type.LEGGINGS, 0);
-        map.put(Type.BOOTS, 0);
+	map.put(Type.HELMET, 0);
+	map.put(Type.CHESTPLATE, 1);
+	map.put(Type.LEGGINGS, 0);
+	map.put(Type.BOOTS, 0);
     });
 
     public static final int MAX_CAPACITY = 30000;
@@ -66,7 +66,8 @@ public class ItemJetpack extends ItemVoltaicArmor {
     public static final int MAX_PRESSURE = 4;
     public static final int MAX_TEMPERATURE = Gas.ROOM_TEMPERATURE;
 
-    private static final ResourceLocation ARMOR_TEXTURE_LOCATION = Electrodynamics.rl("textures/model/armor/jetpack.png");
+    private static final ResourceLocation ARMOR_TEXTURE_LOCATION = Electrodynamics
+	    .rl("textures/model/armor/jetpack.png");
 
     public static final float OFFSET = 0.1F;
 
@@ -74,374 +75,384 @@ public class ItemJetpack extends ItemVoltaicArmor {
     public static final String WAS_HURT_KEY = "washurt";
 
     public ItemJetpack() {
-        super(ElectrodynamicsArmorMaterials.JETPACK, Type.CHESTPLATE, new Item.Properties().stacksTo(1), ElectrodynamicsCreativeTabs.MAIN);
+	super(ElectrodynamicsArmorMaterials.JETPACK, Type.CHESTPLATE, new Item.Properties().stacksTo(1),
+		ElectrodynamicsCreativeTabs.MAIN);
     }
-
 
     @Override
     public void addCreativeModeItems(CreativeModeTab tab, List<ItemStack> items) {
-        super.addCreativeModeItems(tab, items);
-        if (VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM == null) {
+	super.addCreativeModeItems(tab, items);
+	if (VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM == null) {
 
-            return;
+	    return;
 
-        }
-        ItemStack full = new ItemStack(this);
+	}
+	ItemStack full = new ItemStack(this);
 
-        IGasHandlerItem handler = full.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	IGasHandlerItem handler = full.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-        if (handler == null) {
-            return;
-        }
+	if (handler == null) {
+	    return;
+	}
 
-        GasStack gas = new GasStack(ElectrodynamicsGases.HYDROGEN.value(), MAX_CAPACITY, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL);
+	GasStack gas = new GasStack(ElectrodynamicsGases.HYDROGEN.value(), MAX_CAPACITY, Gas.ROOM_TEMPERATURE,
+		Gas.PRESSURE_AT_SEA_LEVEL);
 
-        handler.fill(gas, GasAction.EXECUTE);
+	handler.fill(gas, GasAction.EXECUTE);
 
-        items.add(full);
+	items.add(full);
 
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltip, TooltipFlag flagIn) {
-        staticAppendHoverText(stack, context, tooltip, flagIn);
-        super.appendHoverText(stack, context, tooltip, flagIn);
+	staticAppendHoverText(stack, context, tooltip, flagIn);
+	super.appendHoverText(stack, context, tooltip, flagIn);
     }
 
-    public static void staticAppendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltips, TooltipFlag flagIn) {
-        if (VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM != null) {
+    public static void staticAppendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltips,
+	    TooltipFlag flagIn) {
+	if (VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM != null) {
 
-            IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	    IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-            if (handler != null) {
+	    if (handler != null) {
 
-                GasStack gas = handler.getGasInTank(0);
-                // tooltips.add(gas.getGas().getDescription());
-                if (gas.isEmpty()) {
-                    tooltips.add(VoltaicTextUtils.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY));
-                } else {
-                    tooltips.add(VoltaicTextUtils.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY)).withStyle(ChatFormatting.GRAY));
-                    tooltips.add(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnits.TEMPERATURE_KELVIN).withStyle(ChatFormatting.GRAY));
-                    tooltips.add(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnits.PRESSURE_ATM).withStyle(ChatFormatting.GRAY));
-                }
+		GasStack gas = handler.getGasInTank(0);
+		// tooltips.add(gas.getGas().getDescription());
+		if (gas.isEmpty()) {
+		    tooltips.add(VoltaicTextUtils
+			    .ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY))
+			    .withStyle(ChatFormatting.GRAY));
+		} else {
+		    tooltips.add(
+			    VoltaicTextUtils
+				    .ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()),
+					    ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY))
+				    .withStyle(ChatFormatting.GRAY));
+		    tooltips.add(
+			    ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnits.TEMPERATURE_KELVIN)
+				    .withStyle(ChatFormatting.GRAY));
+		    tooltips.add(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnits.PRESSURE_ATM)
+			    .withStyle(ChatFormatting.GRAY));
+		}
 
-            }
+	    }
 
-            if (Screen.hasShiftDown()) {
-                tooltips.add(ElectroTextUtils.tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnits.PRESSURE_ATM)).withStyle(ChatFormatting.GRAY));
-                tooltips.add(ElectroTextUtils.tooltip("maxtemperature", ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnits.TEMPERATURE_KELVIN)).withStyle(ChatFormatting.GRAY));
-            }
-        }
-        // cheesing sync issues one line of code at a time
-        tooltips.add(getModeText(stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0)));
+	    if (Screen.hasShiftDown()) {
+		tooltips.add(ElectroTextUtils
+			.tooltip("maxpressure",
+				ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnits.PRESSURE_ATM))
+			.withStyle(ChatFormatting.GRAY));
+		tooltips.add(ElectroTextUtils
+			.tooltip("maxtemperature",
+				ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnits.TEMPERATURE_KELVIN))
+			.withStyle(ChatFormatting.GRAY));
+	    }
+	}
+	// cheesing sync issues one line of code at a time
+	tooltips.add(getModeText(stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0)));
     }
 
     public static Component getModeText(int mode) {
-        return switch (mode) {
-        case 0 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.DARK_GRAY).append(ElectroTextUtils.tooltip("jetpack.moderegular").withStyle(ChatFormatting.GREEN));
-        case 1 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.DARK_GRAY).append(ElectroTextUtils.tooltip("jetpack.modehover").withStyle(ChatFormatting.AQUA));
-        case 2 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.DARK_GRAY).append(ElectroTextUtils.tooltip("jetpack.modeelytra").withStyle(ChatFormatting.YELLOW));
-        case 3 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.DARK_GRAY).append(ElectroTextUtils.tooltip("jetpack.modeoff").withStyle(ChatFormatting.RED));
-        default -> Component.empty();
-        };
+	return switch (mode) {
+	case 0 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.DARK_GRAY)
+		.append(ElectroTextUtils.tooltip("jetpack.moderegular").withStyle(ChatFormatting.GREEN));
+	case 1 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.DARK_GRAY)
+		.append(ElectroTextUtils.tooltip("jetpack.modehover").withStyle(ChatFormatting.AQUA));
+	case 2 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.DARK_GRAY)
+		.append(ElectroTextUtils.tooltip("jetpack.modeelytra").withStyle(ChatFormatting.YELLOW));
+	case 3 -> ElectroTextUtils.tooltip("jetpack.mode").withStyle(ChatFormatting.DARK_GRAY)
+		.append(ElectroTextUtils.tooltip("jetpack.modeoff").withStyle(ChatFormatting.RED));
+	default -> Component.empty();
+	};
     }
 
     @Override
     public void onWearingTick(ItemStack stack, Level level, Player player, int slotId, boolean isSelected) {
-        super.onWearingTick(stack, level, player, slotId, isSelected);
-        wearingTick(stack, level, player, OFFSET, false);
+	super.onWearingTick(stack, level, player, slotId, isSelected);
+	wearingTick(stack, level, player, OFFSET, false);
     }
 
     public static void wearingTick(ItemStack stack, Level world, Player player, float particleZ, boolean isCombat) {
-        if (world.isClientSide) {
+	if (world.isClientSide) {
 
-            ArmorItem item = (ArmorItem) stack.getItem();
-            if (item.getEquipmentSlot() == EquipmentSlot.CHEST) {
-                boolean isDown = KeyBinds.jetpackAscend.isDown();
-                int mode = stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0);
+	    ArmorItem item = (ArmorItem) stack.getItem();
+	    if (item.getEquipmentSlot() == EquipmentSlot.CHEST) {
+		boolean isDown = KeyBinds.jetpackAscend.isDown();
+		int mode = stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0);
 
-                IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+		IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-                boolean enoughFuel = handler == null ? false : handler.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK;
+		boolean enoughFuel = handler == null ? false
+			: handler.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK;
 
-                if (enoughFuel) {
-                    @SuppressWarnings("null") // no it cannot be null?!? compiler issue due to advanced boolean above.
-		    int pressure = handler.getGasInTank(0).getPressure(); 
-                    if (mode == 0 && isDown) {
-                        double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE, ItemJetpack.TERMINAL_VERTICAL_VELOCITY * pressure, player, stack);
-                        renderClientParticles(world, player, particleZ);
-                        sendPacket(player, true, deltaY);
-                    } else if (mode == 1 && isDown) {
-                        double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2.0 * pressure, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2.0 * pressure, player, stack);
-                        renderClientParticles(world, player, particleZ);
-                        sendPacket(player, true, deltaY);
-                    } else if (mode == 1 && player.getBlockStateOn().isAir()) {
-                        double deltaY = hoverWithJetpack(pressure, player, stack);
-                        renderClientParticles(world, player, particleZ);
-                        sendPacket(player, true, deltaY);
-                    } else if (mode == 2 && isDown) {
-                        double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 4.0 * pressure, ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 4.0 * pressure, player, stack);
-                        sendPacket(player, true, deltaY);
-                        // TODO elytra fuel particles?
-                    } else {
-                        sendPacket(player, false, player.getDeltaMovement().y);
-                    }
-                } else {
-                    sendPacket(player, false, player.getDeltaMovement().y);
-                }
-            } else {
-                sendPacket(player, false, player.getDeltaMovement().y);
-            }
-        } else {
-            boolean hasRan = stack.getOrDefault(VoltaicDataComponentTypes.USED, false);
-            if (hasRan) {
-                drainHydrogen(stack);
+		if (enoughFuel) {
+		    @SuppressWarnings("null") // no it cannot be null?!? compiler issue due to advanced boolean above.
+		    int pressure = handler.getGasInTank(0).getPressure();
+		    if (mode == 0 && isDown) {
+			double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE,
+				ItemJetpack.TERMINAL_VERTICAL_VELOCITY * pressure, player, stack);
+			renderClientParticles(world, player, particleZ);
+			sendPacket(player, true, deltaY);
+		    } else if (mode == 1 && isDown) {
+			double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2.0 * pressure,
+				ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2.0 * pressure, player, stack);
+			renderClientParticles(world, player, particleZ);
+			sendPacket(player, true, deltaY);
+		    } else if (mode == 1 && player.getBlockStateOn().isAir()) {
+			double deltaY = hoverWithJetpack(pressure, player, stack);
+			renderClientParticles(world, player, particleZ);
+			sendPacket(player, true, deltaY);
+		    } else if (mode == 2 && isDown) {
+			double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 4.0 * pressure,
+				ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 4.0 * pressure, player, stack);
+			sendPacket(player, true, deltaY);
+			// TODO elytra fuel particles?
+		    } else {
+			sendPacket(player, false, player.getDeltaMovement().y);
+		    }
+		} else {
+		    sendPacket(player, false, player.getDeltaMovement().y);
+		}
+	    } else {
+		sendPacket(player, false, player.getDeltaMovement().y);
+	    }
+	} else {
+	    boolean hasRan = stack.getOrDefault(VoltaicDataComponentTypes.USED, false);
+	    if (hasRan) {
+		drainHydrogen(stack);
 
-                PacketDistributor.sendToPlayer((ServerPlayer) player, new PacketRenderJetpackParticles(player.getUUID(), isCombat));
+		PacketDistributor.sendToPlayer((ServerPlayer) player,
+			new PacketRenderJetpackParticles(player.getUUID(), isCombat));
 
-                player.resetFallDistance();
-            }
-        }
+		player.resetFallDistance();
+	    }
+	}
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity, Consumer<Item> onBroken) {
-        return 0;
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity,
+	    Consumer<Item> onBroken) {
+	return 0;
     }
 
     @Override
     public boolean isEnchantable(ItemStack stack) {
-        return false;
+	return false;
     }
 
     @Override
     public boolean isValidRepairItem(ItemStack stack1, ItemStack stack2) {
-        return false;
+	return false;
     }
 
     @Override
     public boolean isBarVisible(ItemStack stack) {
-        return staticIsBarVisible(stack);
+	return staticIsBarVisible(stack);
     }
 
     public static boolean staticIsBarVisible(ItemStack stack) {
 
-        IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-        if (handler == null) {
-            return false;
-        }
+	if (handler == null) {
+	    return false;
+	}
 
-        return !handler.getGasInTank(0).isEmpty();
+	return !handler.getGasInTank(0).isEmpty();
 
     }
 
     @Override
     public int getBarWidth(ItemStack stack) {
-        return staticGetBarWidth(stack);
+	return staticGetBarWidth(stack);
     }
 
     public static int staticGetBarWidth(ItemStack stack) {
 
-        IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-        if (handler == null) {
-            return 13;
-        }
+	if (handler == null) {
+	    return 13;
+	}
 
-        return (int) (13.0 * handler.getGasInTank(0).getAmount() / handler.getTankCapacity(0));
+	return (int) (13.0 * handler.getGasInTank(0).getAmount() / handler.getTankCapacity(0));
 
     }
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return !oldStack.is(newStack.getItem());
+	return !oldStack.is(newStack.getItem());
     }
 
     public static Predicate<GasStack> getGasValidator() {
-        return gas -> gas.getGas().equals(ElectrodynamicsGases.HYDROGEN.value());
+	return gas -> gas.getGas().equals(ElectrodynamicsGases.HYDROGEN.value());
     }
 
     @Override
     public boolean canElytraFly(ItemStack stack, LivingEntity entity) {
-        return staticCanElytraFly(stack, entity);
+	return staticCanElytraFly(stack, entity);
     }
 
     public static boolean staticCanElytraFly(ItemStack stack, LivingEntity entity) {
-        int mode = stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0);
+	int mode = stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0);
 
-        if (mode != 2) {
-            return false;
-        }
+	if (mode != 2) {
+	    return false;
+	}
 
-        IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-        if (handler == null) {
-            return false;
-        }
+	if (handler == null) {
+	    return false;
+	}
 
-        return handler.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK;
+	return handler.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK;
 
     }
 
     @Override
     public boolean elytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
-        return staticElytraFlightTick(stack, entity, flightTicks);
+	return staticElytraFlightTick(stack, entity, flightTicks);
     }
 
     public static boolean staticElytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
-        if (entity.level().isClientSide) {
-            return true;
-        }
-        int nextFlightTick = flightTicks + 1;
-        if (nextFlightTick % 10 == 0) {
-            if (nextFlightTick % 20 == 0) {
+	if (entity.level().isClientSide) {
+	    return true;
+	}
+	int nextFlightTick = flightTicks + 1;
+	if (nextFlightTick % 10 == 0) {
+	    if (nextFlightTick % 20 == 0) {
 
-                drainHydrogen(stack);
+		drainHydrogen(stack);
 
-            }
-            entity.gameEvent(net.minecraft.world.level.gameevent.GameEvent.ELYTRA_GLIDE);
-        }
-        return true;
+	    }
+	    entity.gameEvent(net.minecraft.world.level.gameevent.GameEvent.ELYTRA_GLIDE);
+	}
+	return true;
     }
 
     protected static double moveWithJetpack(double speed, double termVelocity, Player player, ItemStack jetpack) {
 
-        Vec3 movement = player.getDeltaMovement();
+	Vec3 movement = player.getDeltaMovement();
 
-        // if (player.hasImpulse && wasEntityHurt(jetpack)) {
-        // movement = new Vec3(movement.x, getPrevDeltaY(jetpack), movement.z);
-        // }
+	// if (player.hasImpulse && wasEntityHurt(jetpack)) {
+	// movement = new Vec3(movement.x, getPrevDeltaY(jetpack), movement.z);
+	// }
 
-        double newY = Math.min(movement.y + speed, termVelocity);
-        Vec3 currMovement = new Vec3(movement.x, newY, movement.z);
+	double newY = Math.min(movement.y + speed, termVelocity);
+	Vec3 currMovement = new Vec3(movement.x, newY, movement.z);
 
-        player.setDeltaMovement(currMovement);
-        player.resetFallDistance();
-        // we keep track of the previous delta y for impulses
-        return currMovement.y;
+	player.setDeltaMovement(currMovement);
+	player.resetFallDistance();
+	// we keep track of the previous delta y for impulses
+	return currMovement.y;
     }
 
     protected static double hoverWithJetpack(double multiplier, Player player, ItemStack jetpack) {
 
-        Vec3 movement = player.getDeltaMovement();
+	Vec3 movement = player.getDeltaMovement();
 
-        if (player.hasImpulse && wasEntityHurt(jetpack)) {
-            movement = new Vec3(movement.x, getPrevDeltaY(jetpack), movement.z);
-        }
+	if (player.hasImpulse && wasEntityHurt(jetpack)) {
+	    movement = new Vec3(movement.x, getPrevDeltaY(jetpack), movement.z);
+	}
 
-        if (player.isShiftKeyDown()) {
-            movement = new Vec3(movement.x, -0.3 * multiplier, movement.z);
-        } else {
-            movement = new Vec3(movement.x, 0, movement.z);
-        }
-        player.setDeltaMovement(movement);
-        player.resetFallDistance();
-        // we keep track of the previous delta y for impulses
-        return movement.y;
+	if (player.isShiftKeyDown()) {
+	    movement = new Vec3(movement.x, -0.3 * multiplier, movement.z);
+	} else {
+	    movement = new Vec3(movement.x, 0, movement.z);
+	}
+	player.setDeltaMovement(movement);
+	player.resetFallDistance();
+	// we keep track of the previous delta y for impulses
+	return movement.y;
     }
 
     public static void renderClientParticles(Level world, Player player, float particleZ) {
-        Vec3 worldPosition = player.position();
-        float rad = (float) (processDeg(player.yBodyRot) / 180.0F * Math.PI);
-        double cosY = Mth.cos(rad);
-        double sinY = Mth.sin(rad);
-        double xOffCos = cosY * 0.2;
-        double xOffSin = sinY * 0.2;
-        double zOffCos = cosY * particleZ;
-        double zOffSin = sinY * particleZ;
-        double xRight = worldPosition.x - xOffCos + zOffSin;
-        double xLeft = worldPosition.x + xOffCos + zOffSin;
-        double zRight = worldPosition.z - zOffCos - xOffSin;
-        double zLeft = worldPosition.z - zOffCos + xOffSin;
-        double y = worldPosition.y + (player.isShiftKeyDown() ? 0.5 : 0.8);
-        for (int i = 0; i < 10; i++) {
-            world.addParticle(ParticleTypes.FLAME, xRight, y, zRight, 0, -2D, 0);
-            // world.sendParticles(ParticleTypes.FLAME, xRight, y , zRight, 0, 0.0D, -2D,
-            // 0.0D, 2D);
-        }
-        for (int i = 0; i < 10; i++) {
-            world.addParticle(ParticleTypes.FLAME, xLeft, y, zLeft, 0, -2D, 0);
-            // world.sendParticles(ParticleTypes.FLAME, xLeft, y, zLeft, 0, 0.0D, -2D, 0.0D,
-            // 2D);
-        }
+	Vec3 worldPosition = player.position();
+	float rad = (float) (processDeg(player.yBodyRot) / 180.0F * Math.PI);
+	double cosY = Mth.cos(rad);
+	double sinY = Mth.sin(rad);
+	double xOffCos = cosY * 0.2;
+	double xOffSin = sinY * 0.2;
+	double zOffCos = cosY * particleZ;
+	double zOffSin = sinY * particleZ;
+	double xRight = worldPosition.x - xOffCos + zOffSin;
+	double xLeft = worldPosition.x + xOffCos + zOffSin;
+	double zRight = worldPosition.z - zOffCos - xOffSin;
+	double zLeft = worldPosition.z - zOffCos + xOffSin;
+	double y = worldPosition.y + (player.isShiftKeyDown() ? 0.5 : 0.8);
+	for (int i = 0; i < 10; i++) {
+	    world.addParticle(ParticleTypes.FLAME, xRight, y, zRight, 0, -2D, 0);
+	    // world.sendParticles(ParticleTypes.FLAME, xRight, y , zRight, 0, 0.0D, -2D,
+	    // 0.0D, 2D);
+	}
+	for (int i = 0; i < 10; i++) {
+	    world.addParticle(ParticleTypes.FLAME, xLeft, y, zLeft, 0, -2D, 0);
+	    // world.sendParticles(ParticleTypes.FLAME, xLeft, y, zLeft, 0, 0.0D, -2D, 0.0D,
+	    // 2D);
+	}
     }
 
     protected static void drainHydrogen(ItemStack stack) {
 
-        IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-        if (handler == null) {
-            return;
-        }
+	if (handler == null) {
+	    return;
+	}
 
-        handler.drain(ItemJetpack.USAGE_PER_TICK, GasAction.EXECUTE);
+	handler.drain(ItemJetpack.USAGE_PER_TICK, GasAction.EXECUTE);
 
     }
 
     protected static void sendPacket(Player player, boolean state, double prevDeltaMove) {
-        PacketDistributor.sendToServer(new PacketJetpackFlightServer(player.getUUID(), state, prevDeltaMove));
+	PacketDistributor.sendToServer(new PacketJetpackFlightServer(player.getUUID(), state, prevDeltaMove));
     }
 
     protected static double getPrevDeltaY(ItemStack stack) {
-        return stack.getOrDefault(VoltaicDataComponentTypes.DELTA_Y, 0.0);
+	return stack.getOrDefault(VoltaicDataComponentTypes.DELTA_Y, 0.0);
     }
 
     protected static boolean wasEntityHurt(ItemStack stack) {
-        return stack.getOrDefault(VoltaicDataComponentTypes.HURT, false);
+	return stack.getOrDefault(VoltaicDataComponentTypes.HURT, false);
     }
 
     // we need to do this based upon some testing I did
     private static float processDeg(float deg) {
-        if (deg > 180) {
-            return deg - 360;
-        }
-        if (deg < 180) {
-            return deg + 360;
-        }
-        return deg;
+	if (deg > 180) {
+	    return deg - 360;
+	}
+	if (deg < 180) {
+	    return deg + 360;
+	}
+	return deg;
     }
 
     /*
-
-    public enum Jetpack implements ICustomArmor {
-        JETPACK;
-
-        @Override
-        public SoundEvent getEquipSound() {
-            return SoundEvents.ARMOR_EQUIP_IRON;
-        }
-
-        @Override
-        public String getName() {
-            return References.ID + ":jetpack";
-        }
-
-        @Override
-        public float getToughness() {
-            return 0.0F;
-        }
-
-        @Override
-        public float getKnockbackResistance() {
-            return 0.0F;
-        }
-
-        @Override
-        public int getDurabilityForType(Type pType) {
-            return 100;
-        }
-
-        @Override
-        public int getDefenseForType(Type pType) {
-            return 1;
-        }
-
-    }
-    */
+     * 
+     * public enum Jetpack implements ICustomArmor { JETPACK;
+     * 
+     * @Override public SoundEvent getEquipSound() { return
+     * SoundEvents.ARMOR_EQUIP_IRON; }
+     * 
+     * @Override public String getName() { return References.ID + ":jetpack"; }
+     * 
+     * @Override public float getToughness() { return 0.0F; }
+     * 
+     * @Override public float getKnockbackResistance() { return 0.0F; }
+     * 
+     * @Override public int getDurabilityForType(Type pType) { return 100; }
+     * 
+     * @Override public int getDefenseForType(Type pType) { return 1; }
+     * 
+     * }
+     */
 
     @Override
-    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, ArmorMaterial.Layer layer, boolean innerModel) {
-        return ARMOR_TEXTURE_LOCATION;
+    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
+	    ArmorMaterial.Layer layer, boolean innerModel) {
+	return ARMOR_TEXTURE_LOCATION;
     }
 }

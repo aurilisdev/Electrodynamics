@@ -15,24 +15,26 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerElectrolyticSeparator extends GenericContainerBlockEntity<TileElectrolyticSeparator> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
+	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
 
-	public ContainerElectrolyticSeparator(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));
-	}
+    public ContainerElectrolyticSeparator(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));
+    }
 
-	public ContainerElectrolyticSeparator(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_ELECTROLYTICSEPARATOR.get(), id, playerinv, inventory, inventorydata);
-	}
+    public ContainerElectrolyticSeparator(int id, Inventory playerinv, Container inventory,
+	    ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_ELECTROLYTICSEPARATOR.get(), id, playerinv, inventory, inventorydata);
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotFluid(inv, nextIndex(), 40, 51));
-		addSlot(new SlotGas(inv, nextIndex(), 81, 51));
-		addSlot(new SlotGas(inv, nextIndex(), 121, 51));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
-		addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
-	}
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
+	addSlot(new SlotFluid(inv, nextIndex(), 40, 51));
+	addSlot(new SlotGas(inv, nextIndex(), 81, 51));
+	addSlot(new SlotGas(inv, nextIndex(), 121, 51));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 14, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 34, VALID_UPGRADES));
+	addSlot(new SlotUpgrade(inv, nextIndex(), 153, 54, VALID_UPGRADES));
+    }
 
 }

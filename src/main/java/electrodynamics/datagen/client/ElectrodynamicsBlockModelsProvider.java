@@ -13,13 +13,13 @@ import net.neoforged.neoforge.common.data.ExistingFileHelper;
  */
 public class ElectrodynamicsBlockModelsProvider extends BlockModelProvider {
 
-	public ElectrodynamicsBlockModelsProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-		super(output, Electrodynamics.ID, existingFileHelper);
-	}
+    public ElectrodynamicsBlockModelsProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
+	super(output, Electrodynamics.ID, existingFileHelper);
+    }
 
-	@Override
-	protected void registerModels() {
+    @Override
+    protected void registerModels() {
 
-	}
+    }
 
 }

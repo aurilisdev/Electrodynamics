@@ -54,7 +54,7 @@ public class TileCoolantResavoir extends GenericMaterialTile {
     @Override
     public int getComparatorSignal() {
 	ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(IComponentType.FluidHandler);
-	return (int) (((double) handler.getFluidAmount() / (double) Math.max(1, handler.getCapacity())) * 15.0);
+	return (int) ((double) handler.getFluidAmount() / (double) Math.max(1, handler.getCapacity()) * 15.0);
     }
 
 }

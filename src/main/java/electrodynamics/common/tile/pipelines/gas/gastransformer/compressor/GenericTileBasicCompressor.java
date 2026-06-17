@@ -51,7 +51,7 @@ public abstract class GenericTileBasicCompressor extends GenericTileCompressor i
 		break;
 	    }
 	    aboveTile = getLevel().getBlockEntity(abovePos);
-	    if ((aboveTile == null) || !(aboveTile instanceof TileGasTransformerAddonTank tank)) {
+	    if (aboveTile == null || !(aboveTile instanceof TileGasTransformerAddonTank tank)) {
 		break;
 	    }
 	    abovePos = abovePos.above();

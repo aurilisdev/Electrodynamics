@@ -12,17 +12,17 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerCoolantResavoir extends GenericContainerBlockEntity<TileCoolantResavoir> {
 
-	public ContainerCoolantResavoir(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
-		super(ElectrodynamicsMenuTypes.CONTAINER_COOLANTRESAVOIR.get(), id, playerinv, inventory, inventorydata);
-	}
+    public ContainerCoolantResavoir(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
+	super(ElectrodynamicsMenuTypes.CONTAINER_COOLANTRESAVOIR.get(), id, playerinv, inventory, inventorydata);
+    }
 
-	public ContainerCoolantResavoir(int id, Inventory playerinv) {
-		this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));
-	}
+    public ContainerCoolantResavoir(int id, Inventory playerinv) {
+	this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));
+    }
 
-	@Override
-	public void addInventorySlots(Container inv, Inventory playerinv) {
-		addSlot(new SlotFluid(inv, nextIndex(), 47, 34));
-	}
+    @Override
+    public void addInventorySlots(Container inv, Inventory playerinv) {
+	addSlot(new SlotFluid(inv, nextIndex(), 47, 34));
+    }
 
 }

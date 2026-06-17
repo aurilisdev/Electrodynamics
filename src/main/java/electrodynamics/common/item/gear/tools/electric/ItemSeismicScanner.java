@@ -59,145 +59,153 @@ public class ItemSeismicScanner extends ItemElectric {
     public static final String BLOCK_LOC = "block";
 
     public ItemSeismicScanner(ElectricItemProperties properties, Holder<CreativeModeTab> creativeTab) {
-        super(properties, creativeTab, item -> ElectrodynamicsItems.ITEM_BATTERY.get());
+	super(properties, creativeTab, item -> ElectrodynamicsItems.ITEM_BATTERY.get());
     }
 
     @Override
     public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltips, TooltipFlag flag) {
-        super.appendHoverText(stack, context, tooltips, flag);
-        tooltips.add(ElectroTextUtils.tooltip("seismicscanner.range", stack.getOrDefault(VoltaicDataComponentTypes.RANGE.get(), 1) * RADUIS_BLOCKS).withStyle(ChatFormatting.YELLOW));
-        int cooldown = stack.getOrDefault(VoltaicDataComponentTypes.TIMER, 0);
-        if (cooldown > 0) {
-            tooltips.add(ElectroTextUtils.tooltip("seismicscanner.cooldown", ChatFormatter.getChatDisplay(cooldown, DisplayUnits.TIME_TICKS)).withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
-        }
+	super.appendHoverText(stack, context, tooltips, flag);
+	tooltips.add(ElectroTextUtils
+		.tooltip("seismicscanner.range",
+			stack.getOrDefault(VoltaicDataComponentTypes.RANGE.get(), 1) * RADUIS_BLOCKS)
+		.withStyle(ChatFormatting.YELLOW));
+	int cooldown = stack.getOrDefault(VoltaicDataComponentTypes.TIMER, 0);
+	if (cooldown > 0) {
+	    tooltips.add(ElectroTextUtils
+		    .tooltip("seismicscanner.cooldown", ChatFormatter.getChatDisplay(cooldown, DisplayUnits.TIME_TICKS))
+		    .withStyle(ChatFormatting.BOLD, ChatFormatting.RED));
+	}
 
     }
 
     @Override
     public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
 
-        if (context.getLevel().isClientSide() || !context.getPlayer().isShiftKeyDown()) {
-            return super.onItemUseFirst(stack, context);
-        }
+	if (context.getLevel().isClientSide() || !context.getPlayer().isShiftKeyDown()) {
+	    return super.onItemUseFirst(stack, context);
+	}
 
-        BlockState state = context.getLevel().getBlockState(context.getClickedPos());
+	BlockState state = context.getLevel().getBlockState(context.getClickedPos());
 
-        if (state.isAir()) {
-            stack.remove(VoltaicDataComponentTypes.BLOCK);
-            stack.remove(VoltaicDataComponentTypes.PATTERN_INTEGRITY);
-        } else {
-            stack.set(VoltaicDataComponentTypes.BLOCK, state.getBlock());
-            stack.set(VoltaicDataComponentTypes.PATTERN_INTEGRITY, FULL_PATTERN);
-        }
+	if (state.isAir()) {
+	    stack.remove(VoltaicDataComponentTypes.BLOCK);
+	    stack.remove(VoltaicDataComponentTypes.PATTERN_INTEGRITY);
+	} else {
+	    stack.set(VoltaicDataComponentTypes.BLOCK, state.getBlock());
+	    stack.set(VoltaicDataComponentTypes.PATTERN_INTEGRITY, FULL_PATTERN);
+	}
 
-
-        return InteractionResult.SUCCESS;
+	return InteractionResult.SUCCESS;
     }
 
     @Override
     public InteractionResultHolder<ItemStack> use(final Level world, Player player, InteractionHand hand) {
-        if (!world.isClientSide && !player.isShiftKeyDown()) {
-            player.openMenu(getMenuProvider(world, player, player.getItemInHand(hand), hand));
-        }
-        return super.use(world, player, hand);
+	if (!world.isClientSide && !player.isShiftKeyDown()) {
+	    player.openMenu(getMenuProvider(world, player, player.getItemInHand(hand), hand));
+	}
+	return super.use(world, player, hand);
     }
 
     public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack, InteractionHand hand) {
-        return new SimpleMenuProvider((id, inv, play) -> {
-            CapabilityItemStackHandler handler = (CapabilityItemStackHandler) stack.getCapability(Capabilities.ItemHandler.ITEM);
-            if (handler == null) {
-                handler = new CapabilityItemStackHandler(SLOT_COUNT, stack);
-            }
-            return new ContainerSeismicScanner(id, player.getInventory(), handler, GenericContainerItem.makeData(hand));
-        }, CONTAINER_TITLE);
+	return new SimpleMenuProvider((id, inv, play) -> {
+	    CapabilityItemStackHandler handler = (CapabilityItemStackHandler) stack
+		    .getCapability(Capabilities.ItemHandler.ITEM);
+	    if (handler == null) {
+		handler = new CapabilityItemStackHandler(SLOT_COUNT, stack);
+	    }
+	    return new ContainerSeismicScanner(id, player.getInventory(), handler, GenericContainerItem.makeData(hand));
+	}, CONTAINER_TITLE);
     }
 
     @Override
     public void inventoryTick(ItemStack stack, Level world, Entity entity, int itemSlot, boolean isSelected) {
-        if (!world.isClientSide) {
+	if (!world.isClientSide) {
 
-            int time = stack.getOrDefault(VoltaicDataComponentTypes.TIMER, 0);
+	    int time = stack.getOrDefault(VoltaicDataComponentTypes.TIMER, 0);
 
-            if (time <= 0) {
-                if (stack.getOrDefault(VoltaicDataComponentTypes.USED, false)) {
+	    if (time <= 0) {
+		if (stack.getOrDefault(VoltaicDataComponentTypes.USED, false)) {
 
-                    performScan(world, stack, entity);
-                    stack.remove(VoltaicDataComponentTypes.USED);
-                } else if (ScannerMode.values()[stack.getOrDefault(VoltaicDataComponentTypes.ENUM, 0)] == ScannerMode.ACTIVE) {
-                    performScan(world, stack, entity);
-                }
-            } else {
-                stack.set(VoltaicDataComponentTypes.TIMER, time - 1);
-            }
-        }
-        super.inventoryTick(stack, world, entity, itemSlot, isSelected);
+		    performScan(world, stack, entity);
+		    stack.remove(VoltaicDataComponentTypes.USED);
+		} else if (ScannerMode.values()[stack.getOrDefault(VoltaicDataComponentTypes.ENUM,
+			0)] == ScannerMode.ACTIVE) {
+		    performScan(world, stack, entity);
+		}
+	    } else {
+		stack.set(VoltaicDataComponentTypes.TIMER, time - 1);
+	    }
+	}
+	super.inventoryTick(stack, world, entity, itemSlot, isSelected);
     }
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return !oldStack.is(newStack.getItem());
+	return !oldStack.is(newStack.getItem());
     }
 
     public static void performScan(Level world, ItemStack stack, Entity entity) {
 
-        ItemSeismicScanner seismic = (ItemSeismicScanner) stack.getItem();
+	ItemSeismicScanner seismic = (ItemSeismicScanner) stack.getItem();
 
-        boolean isTimerUp = stack.getOrDefault(VoltaicDataComponentTypes.TIMER, 0) <= 0;
-        boolean isPowered = seismic.getJoulesStored(stack) >= JOULES_PER_SCAN;
+	boolean isTimerUp = stack.getOrDefault(VoltaicDataComponentTypes.TIMER, 0) <= 0;
+	boolean isPowered = seismic.getJoulesStored(stack) >= JOULES_PER_SCAN;
 
-        if (!isTimerUp || !isPowered) {
-            return;
-        }
+	if (!isTimerUp || !isPowered) {
+	    return;
+	}
 
-        Block pattern = stack.getOrDefault(VoltaicDataComponentTypes.BLOCK, Blocks.AIR);
-        double patternIntegrity = stack.getOrDefault(VoltaicDataComponentTypes.PATTERN_INTEGRITY, 0.0);
+	Block pattern = stack.getOrDefault(VoltaicDataComponentTypes.BLOCK, Blocks.AIR);
+	double patternIntegrity = stack.getOrDefault(VoltaicDataComponentTypes.PATTERN_INTEGRITY, 0.0);
 
-        Block toScanFor = Blocks.AIR;
+	Block toScanFor = Blocks.AIR;
 
-        if (pattern == Blocks.AIR || patternIntegrity < PATTERN_PER_SCAN) {
-            IItemHandler handler = stack.getCapability(Capabilities.ItemHandler.ITEM);
-            ItemStack ore = handler == null ? ItemStack.EMPTY : handler.getStackInSlot(0);
+	if (pattern == Blocks.AIR || patternIntegrity < PATTERN_PER_SCAN) {
+	    IItemHandler handler = stack.getCapability(Capabilities.ItemHandler.ITEM);
+	    ItemStack ore = handler == null ? ItemStack.EMPTY : handler.getStackInSlot(0);
 
-            if (ore.getItem() instanceof BlockItem blockItem) {
-                toScanFor = blockItem.getBlock();
-            }
+	    if (ore.getItem() instanceof BlockItem blockItem) {
+		toScanFor = blockItem.getBlock();
+	    }
 
+	} else {
 
-        } else if (pattern != Blocks.AIR && patternIntegrity >= PATTERN_PER_SCAN) {
+	    toScanFor = pattern;
+	    patternIntegrity -= PATTERN_PER_SCAN;
+	    if (patternIntegrity <= 0) {
+		stack.remove(VoltaicDataComponentTypes.BLOCK);
+		stack.remove(VoltaicDataComponentTypes.PATTERN_INTEGRITY);
+	    } else {
+		stack.set(VoltaicDataComponentTypes.PATTERN_INTEGRITY, patternIntegrity);
+	    }
 
-            toScanFor = pattern;
-            patternIntegrity -= PATTERN_PER_SCAN;
-            if (patternIntegrity <= 0) {
-                stack.remove(VoltaicDataComponentTypes.BLOCK);
-                stack.remove(VoltaicDataComponentTypes.PATTERN_INTEGRITY);
-            } else {
-                stack.set(VoltaicDataComponentTypes.PATTERN_INTEGRITY, patternIntegrity);
-            }
+	}
 
-        }
+	if (toScanFor == Blocks.AIR) {
+	    stack.remove(VoltaicDataComponentTypes.BLOCK);
+	    stack.remove(VoltaicDataComponentTypes.PATTERN_INTEGRITY);
+	    return;
+	}
 
-        if (toScanFor == Blocks.AIR) {
-            stack.remove(VoltaicDataComponentTypes.BLOCK);
-            stack.remove(VoltaicDataComponentTypes.PATTERN_INTEGRITY);
-            return;
-        }
+	seismic.extractPower(stack, JOULES_PER_SCAN, false);
 
-        seismic.extractPower(stack, JOULES_PER_SCAN, false);
+	stack.set(VoltaicDataComponentTypes.TIMER, COOLDOWN);
 
-        stack.set(VoltaicDataComponentTypes.TIMER, COOLDOWN);
+	world.playSound(null, entity.blockPosition(), ElectrodynamicsSounds.SOUND_SEISMICSCANNER.get(),
+		SoundSource.PLAYERS, 1, 1);
 
-        world.playSound(null, entity.blockPosition(), ElectrodynamicsSounds.SOUND_SEISMICSCANNER.get(), SoundSource.PLAYERS, 1, 1);
-
-        Location playerPos = new Location(entity.getOnPos());
-        Location blockPos = new Location(WorldUtils.getClosestBlockToCenter(world, playerPos.toBlockPos(), RADUIS_BLOCKS * stack.getOrDefault(VoltaicDataComponentTypes.RANGE, 1), toScanFor));
-        stack.set(VoltaicDataComponentTypes.LOCATION_1, playerPos);
-        stack.set(VoltaicDataComponentTypes.LOCATION_2, blockPos);
-        PacketDistributor.sendToPlayer((ServerPlayer) entity, new PacketAddClientRenderInfo(entity.getUUID(), blockPos.toBlockPos()));
+	Location playerPos = new Location(entity.getOnPos());
+	Location blockPos = new Location(WorldUtils.getClosestBlockToCenter(world, playerPos.toBlockPos(),
+		RADUIS_BLOCKS * stack.getOrDefault(VoltaicDataComponentTypes.RANGE, 1), toScanFor));
+	stack.set(VoltaicDataComponentTypes.LOCATION_1, playerPos);
+	stack.set(VoltaicDataComponentTypes.LOCATION_2, blockPos);
+	PacketDistributor.sendToPlayer((ServerPlayer) entity,
+		new PacketAddClientRenderInfo(entity.getUUID(), blockPos.toBlockPos()));
 
     }
 
     public static enum ScannerMode {
-        PASSIVE, ACTIVE;
+	PASSIVE, ACTIVE;
     }
 
 }

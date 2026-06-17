@@ -16,32 +16,29 @@ public class PacketModeSwitchServer implements CustomPacketPayload {
     public static final ResourceLocation PACKET_MODESWITCHSERVER_PACKETID = NetworkHandler.id("packetmodeswitchserver");
     public static final Type<PacketModeSwitchServer> TYPE = new Type<>(PACKET_MODESWITCHSERVER_PACKETID);
     public static final StreamCodec<ByteBuf, PacketModeSwitchServer> CODEC = StreamCodec.composite(
-            UUIDUtil.STREAM_CODEC, instance -> instance.playerId,
-            ByteBufCodecs.INT, instance -> instance.mode.ordinal(),
-            (id, mode) -> new PacketModeSwitchServer(id, Mode.values()[mode])
-    );
+	    UUIDUtil.STREAM_CODEC, instance -> instance.playerId, ByteBufCodecs.INT,
+	    instance -> instance.mode.ordinal(), (id, mode) -> new PacketModeSwitchServer(id, Mode.values()[mode]));
 
     private final UUID playerId;
     private final Mode mode;
 
     public PacketModeSwitchServer(UUID uuid, Mode mode) {
-        playerId = uuid;
-        this.mode = mode;
+	playerId = uuid;
+	this.mode = mode;
     }
 
     public static void handle(PacketModeSwitchServer message, IPayloadContext context) {
-        ServerBarrierMethods.handleModeSwitchServer(context.player().level(), message.playerId, message.mode);
+	ServerBarrierMethods.handleModeSwitchServer(context.player().level(), message.playerId, message.mode);
     }
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
-        return TYPE;
+	return TYPE;
     }
 
     // Mekanism gave me this idea
     public enum Mode {
-        JETPACK,
-        SERVOLEGS;
+	JETPACK, SERVOLEGS;
     }
 
 }

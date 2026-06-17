@@ -16,24 +16,25 @@ import voltaic.common.item.ItemVoltaic;
 
 public class ItemDrillHead extends ItemVoltaic {
 
-	private static final List<ItemDrillHead> HEADS = new ArrayList<>();
+    private static final List<ItemDrillHead> HEADS = new ArrayList<>();
 
-	public SubtypeDrillHead head;
+    public SubtypeDrillHead head;
 
-	public ItemDrillHead(SubtypeDrillHead head) {
-		super(new Item.Properties().durability(head.durability).durability(head.durability).rarity(head.isUnbreakable ? Rarity.UNCOMMON : Rarity.COMMON), ElectrodynamicsCreativeTabs.MAIN);
-		this.head = head;
-		HEADS.add(this);
+    public ItemDrillHead(SubtypeDrillHead head) {
+	super(new Item.Properties().durability(head.durability).durability(head.durability)
+		.rarity(head.isUnbreakable ? Rarity.UNCOMMON : Rarity.COMMON), ElectrodynamicsCreativeTabs.MAIN);
+	this.head = head;
+	HEADS.add(this);
+    }
+
+    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
+    private static class ColorHandler {
+
+	@SubscribeEvent
+	public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
+	    HEADS.forEach(item -> event.register((stack, index) -> item.head.color.color(), item));
 	}
 
-	@EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
-	private static class ColorHandler {
-
-		@SubscribeEvent
-		public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
-			HEADS.forEach(item -> event.register((stack, index) -> item.head.color.color(), item));
-		}
-
-	}
+    }
 
 }

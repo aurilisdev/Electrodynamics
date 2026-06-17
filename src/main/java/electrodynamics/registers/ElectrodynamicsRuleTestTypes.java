@@ -9,8 +9,10 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ElectrodynamicsRuleTestTypes {
 
-	public static final DeferredRegister<RuleTestType<?>> RULE_TEST_TYPES = DeferredRegister.create(Registries.RULE_TEST, Electrodynamics.ID);
+    public static final DeferredRegister<RuleTestType<?>> RULE_TEST_TYPES = DeferredRegister
+	    .create(Registries.RULE_TEST, Electrodynamics.ID);
 
-	public static final DeferredHolder<RuleTestType<?>, RuleTestType<?>> TEST_CONFIG_ORESPAWN = RULE_TEST_TYPES.register("configorespawn", () -> (RuleTestType<RuleTestOre>) () -> RuleTestOre.CODEC);
+    public static final DeferredHolder<RuleTestType<?>, RuleTestType<?>> TEST_CONFIG_ORESPAWN = RULE_TEST_TYPES
+	    .register("configorespawn", () -> (RuleTestType<RuleTestOre>) () -> RuleTestOre.CODEC);
 
 }

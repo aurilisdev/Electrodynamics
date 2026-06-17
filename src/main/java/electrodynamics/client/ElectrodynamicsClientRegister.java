@@ -133,15 +133,18 @@ import voltaic.client.misc.SWBFClientExtensions;
 import voltaic.common.fluid.SimpleWaterBasedFluidType;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD, value = {Dist.CLIENT})
+@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD, value = { Dist.CLIENT })
 public class ElectrodynamicsClientRegister {
 
     // sometimes I fucking hate this game
-    public static final LayerDefinition COMPOSITE_ARMOR_LAYER_LEG_NOCHEST = ModelCompositeArmor.createBodyLayer(1, true);
+    public static final LayerDefinition COMPOSITE_ARMOR_LAYER_LEG_NOCHEST = ModelCompositeArmor.createBodyLayer(1,
+	    true);
     public static final LayerDefinition COMPOSITE_ARMOR_LAYER_BOOTS = ModelCompositeArmor.createBodyLayer(2, false);
-    public static final LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_NOCHEST = ModelCompositeArmor.createBodyLayer(3, true);
+    public static final LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_NOCHEST = ModelCompositeArmor.createBodyLayer(3,
+	    true);
     public static final LayerDefinition COMPOSITE_ARMOR_LAYER_LEG_CHEST = ModelCompositeArmor.createBodyLayer(1, false);
-    public static final LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_CHEST = ModelCompositeArmor.createBodyLayer(3, false);
+    public static final LayerDefinition COMPOSITE_ARMOR_LAYER_COMB_CHEST = ModelCompositeArmor.createBodyLayer(3,
+	    false);
 
     public static final LayerDefinition NIGHT_VISION_GOGGLES = ModelNightVisionGoggles.createBodyLayer();
 
@@ -157,46 +160,84 @@ public class ElectrodynamicsClientRegister {
     public static final LayerDefinition COMBAT_ARMOR_LAYER_LEG_CHEST = ModelCombatArmor.createBodyLayer(1, false);
     public static final LayerDefinition COMBAT_ARMOR_LAYER_COMB_CHEST = ModelCombatArmor.createBodyLayer(3, false);
 
-    public static final ModelResourceLocation MODEL_ADVSOLARTOP = ModelResourceLocation.standalone(Electrodynamics.rl("block/advancedsolarpaneltop"));
-    public static final ModelResourceLocation MODEL_BATTERYBOX = ModelResourceLocation.standalone(Electrodynamics.rl("block/batterybox"));
-    public static final ModelResourceLocation MODEL_BATTERYBOX2 = ModelResourceLocation.standalone(Electrodynamics.rl("block/batterybox2"));
-    public static final ModelResourceLocation MODEL_BATTERYBOX3 = ModelResourceLocation.standalone(Electrodynamics.rl("block/batterybox3"));
-    public static final ModelResourceLocation MODEL_BATTERYBOX4 = ModelResourceLocation.standalone(Electrodynamics.rl("block/batterybox4"));
-    public static final ModelResourceLocation MODEL_BATTERYBOX5 = ModelResourceLocation.standalone(Electrodynamics.rl("block/batterybox5"));
-    public static final ModelResourceLocation MODEL_BATTERYBOX6 = ModelResourceLocation.standalone(Electrodynamics.rl("block/batterybox6"));
-    public static final ModelResourceLocation MODEL_BATTERYBOX7 = ModelResourceLocation.standalone(Electrodynamics.rl("block/batterybox7"));
-    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX = ModelResourceLocation.standalone(Electrodynamics.rl("block/lithiumbatterybox"));
-    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX2 = ModelResourceLocation.standalone(Electrodynamics.rl("block/lithiumbatterybox2"));
-    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX3 = ModelResourceLocation.standalone(Electrodynamics.rl("block/lithiumbatterybox3"));
-    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX4 = ModelResourceLocation.standalone(Electrodynamics.rl("block/lithiumbatterybox4"));
-    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX5 = ModelResourceLocation.standalone(Electrodynamics.rl("block/lithiumbatterybox5"));
-    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX6 = ModelResourceLocation.standalone(Electrodynamics.rl("block/lithiumbatterybox6"));
-    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX7 = ModelResourceLocation.standalone(Electrodynamics.rl("block/lithiumbatterybox7"));
-    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX = ModelResourceLocation.standalone(Electrodynamics.rl("block/carbynebatterybox"));
-    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX2 = ModelResourceLocation.standalone(Electrodynamics.rl("block/carbynebatterybox2"));
-    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX3 = ModelResourceLocation.standalone(Electrodynamics.rl("block/carbynebatterybox3"));
-    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX4 = ModelResourceLocation.standalone(Electrodynamics.rl("block/carbynebatterybox4"));
-    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX5 = ModelResourceLocation.standalone(Electrodynamics.rl("block/carbynebatterybox5"));
-    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX6 = ModelResourceLocation.standalone(Electrodynamics.rl("block/carbynebatterybox6"));
-    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX7 = ModelResourceLocation.standalone(Electrodynamics.rl("block/carbynebatterybox7"));
-    public static final ModelResourceLocation MODEL_CHEMICALMIXERBASE = ModelResourceLocation.standalone(Electrodynamics.rl("block/chemicalmixerbase"));
-    public static final ModelResourceLocation MODEL_HYDROELECTRICGENERATORBLADES = ModelResourceLocation.standalone(Electrodynamics.rl("block/hydroelectricgeneratorblades"));
-    public static final ModelResourceLocation MODEL_WINDMILLBLADES = ModelResourceLocation.standalone(Electrodynamics.rl("block/windmillblades"));
-    public static final ModelResourceLocation MODEL_MINERALCRUSHERHANDLE = ModelResourceLocation.standalone(Electrodynamics.rl("block/mineralcrusherhandle"));
-    public static final ModelResourceLocation MODEL_MINERALCRUSHERDOUBLEHANDLE = ModelResourceLocation.standalone(Electrodynamics.rl("block/mineralcrusherdoublehandle"));
-    public static final ModelResourceLocation MODEL_MINERALCRUSHERTRIPLEHANDLE = ModelResourceLocation.standalone(Electrodynamics.rl("block/mineralcrushertriplehandle"));
-    public static final ModelResourceLocation MODEL_MINERALGRINDERWHEEL = ModelResourceLocation.standalone(Electrodynamics.rl("block/mineralgrinderwheel"));
-    public static final ModelResourceLocation MODEL_CHEMICALMIXERBLADES = ModelResourceLocation.standalone(Electrodynamics.rl("block/chemicalmixerblades"));
-    public static final ModelResourceLocation MODEL_LATHESHAFT = ModelResourceLocation.standalone(Electrodynamics.rl("block/latheshaft"));
-    public static final ModelResourceLocation MODEL_MOTORCOMPLEXROTOR = ModelResourceLocation.standalone(Electrodynamics.rl("block/motorcomplexrotor"));
-    public static final ModelResourceLocation MODEL_CHEMICALREACTOR_ROTOR = ModelResourceLocation.standalone(Electrodynamics.rl("block/chemicalreactormodelrotor"));
+    public static final ModelResourceLocation MODEL_ADVSOLARTOP = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/advancedsolarpaneltop"));
+    public static final ModelResourceLocation MODEL_BATTERYBOX = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/batterybox"));
+    public static final ModelResourceLocation MODEL_BATTERYBOX2 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/batterybox2"));
+    public static final ModelResourceLocation MODEL_BATTERYBOX3 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/batterybox3"));
+    public static final ModelResourceLocation MODEL_BATTERYBOX4 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/batterybox4"));
+    public static final ModelResourceLocation MODEL_BATTERYBOX5 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/batterybox5"));
+    public static final ModelResourceLocation MODEL_BATTERYBOX6 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/batterybox6"));
+    public static final ModelResourceLocation MODEL_BATTERYBOX7 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/batterybox7"));
+    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/lithiumbatterybox"));
+    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX2 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/lithiumbatterybox2"));
+    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX3 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/lithiumbatterybox3"));
+    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX4 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/lithiumbatterybox4"));
+    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX5 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/lithiumbatterybox5"));
+    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX6 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/lithiumbatterybox6"));
+    public static final ModelResourceLocation MODEL_LITHIUMBATTERYBOX7 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/lithiumbatterybox7"));
+    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/carbynebatterybox"));
+    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX2 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/carbynebatterybox2"));
+    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX3 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/carbynebatterybox3"));
+    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX4 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/carbynebatterybox4"));
+    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX5 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/carbynebatterybox5"));
+    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX6 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/carbynebatterybox6"));
+    public static final ModelResourceLocation MODEL_CARBYNEBATTERYBOX7 = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/carbynebatterybox7"));
+    public static final ModelResourceLocation MODEL_CHEMICALMIXERBASE = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/chemicalmixerbase"));
+    public static final ModelResourceLocation MODEL_HYDROELECTRICGENERATORBLADES = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/hydroelectricgeneratorblades"));
+    public static final ModelResourceLocation MODEL_WINDMILLBLADES = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/windmillblades"));
+    public static final ModelResourceLocation MODEL_MINERALCRUSHERHANDLE = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/mineralcrusherhandle"));
+    public static final ModelResourceLocation MODEL_MINERALCRUSHERDOUBLEHANDLE = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/mineralcrusherdoublehandle"));
+    public static final ModelResourceLocation MODEL_MINERALCRUSHERTRIPLEHANDLE = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/mineralcrushertriplehandle"));
+    public static final ModelResourceLocation MODEL_MINERALGRINDERWHEEL = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/mineralgrinderwheel"));
+    public static final ModelResourceLocation MODEL_CHEMICALMIXERBLADES = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/chemicalmixerblades"));
+    public static final ModelResourceLocation MODEL_LATHESHAFT = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/latheshaft"));
+    public static final ModelResourceLocation MODEL_MOTORCOMPLEXROTOR = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/motorcomplexrotor"));
+    public static final ModelResourceLocation MODEL_CHEMICALREACTOR_ROTOR = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/chemicalreactormodelrotor"));
 
-    public static final ModelResourceLocation MODEL_RODSTEEL = ModelResourceLocation.standalone(Electrodynamics.rl("entity/rodsteel"));
-    public static final ModelResourceLocation MODEL_RODSTAINLESSSTEEL = ModelResourceLocation.standalone(Electrodynamics.rl("entity/rodstainlesssteel"));
-    public static final ModelResourceLocation MODEL_RODHSLASTEEL = ModelResourceLocation.standalone(Electrodynamics.rl("entity/rodhslasteel"));
+    public static final ModelResourceLocation MODEL_RODSTEEL = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("entity/rodsteel"));
+    public static final ModelResourceLocation MODEL_RODSTAINLESSSTEEL = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("entity/rodstainlesssteel"));
+    public static final ModelResourceLocation MODEL_RODHSLASTEEL = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("entity/rodhslasteel"));
 
-    public static final ModelResourceLocation MODEL_QUARRYWHEEL_STILL = ModelResourceLocation.standalone(Electrodynamics.rl("block/quarrywheelstill"));
-    public static final ModelResourceLocation MODEL_QUARRYWHEEL_ROT = ModelResourceLocation.standalone(Electrodynamics.rl("block/quarrywheelrot"));
+    public static final ModelResourceLocation MODEL_QUARRYWHEEL_STILL = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/quarrywheelstill"));
+    public static final ModelResourceLocation MODEL_QUARRYWHEEL_ROT = ModelResourceLocation
+	    .standalone(Electrodynamics.rl("block/quarrywheelrot"));
 
     // Custom Textures
     public static final ResourceLocation TEXTURE_QUARRYARM = Electrodynamics.rl("block/custom/quarryarm");
@@ -204,333 +245,403 @@ public class ElectrodynamicsClientRegister {
 
     private static final HashMap<ResourceLocation, TextureAtlasSprite> CACHED_TEXTUREATLASSPRITES = new HashMap<>();
     // for registration purposes only!
-    private static final List<ResourceLocation> CUSTOM_TEXTURES = List.of(ElectrodynamicsClientRegister.TEXTURE_QUARRYARM, ElectrodynamicsClientRegister.TEXTURE_QUARRYARM_DARK);
+    private static final List<ResourceLocation> CUSTOM_TEXTURES = List
+	    .of(ElectrodynamicsClientRegister.TEXTURE_QUARRYARM, ElectrodynamicsClientRegister.TEXTURE_QUARRYARM_DARK);
 
     public static void setup() {
-        ElectrodynamicsClientEvents.init();
+	ElectrodynamicsClientEvents.init();
 
-        ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICBATON.get(), VoltaicClientRegister.ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricBaton) stack.getItem()).getJoulesStored(stack) > ((ItemElectricBaton) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
-        ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICDRILL.get(), VoltaicClientRegister.ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricDrill) stack.getItem()).getJoulesStored(stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
-        ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW.get(), VoltaicClientRegister.ON, (stack, world, entity, call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack) && ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract.getJoules() ? 1 : 0);
+	ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICBATON.get(), VoltaicClientRegister.ON, (stack, world,
+		entity,
+		call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack)
+			&& ((ItemElectricBaton) stack.getItem()).getJoulesStored(
+				stack) > ((ItemElectricBaton) stack.getItem()).getElectricProperties().extract
+					.getJoules() ? 1 : 0);
+	ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICDRILL.get(), VoltaicClientRegister.ON, (stack, world,
+		entity,
+		call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack)
+			&& ((ItemElectricDrill) stack.getItem()).getJoulesStored(
+				stack) > ((ItemElectricDrill) stack.getItem()).getElectricProperties().extract
+					.getJoules() ? 1 : 0);
+	ItemProperties.register(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW.get(), VoltaicClientRegister.ON, (stack,
+		world, entity,
+		call) -> entity != null && (entity.getMainHandItem() == stack || entity.getOffhandItem() == stack)
+			&& ((ItemElectricChainsaw) stack.getItem()).getJoulesStored(
+				stack) > ((ItemElectricChainsaw) stack.getItem()).getElectricProperties().extract
+					.getJoules() ? 1 : 0);
 
-        ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
+	ScreenGuidebook.addGuidebookModule(new ModuleElectrodynamics());
     }
 
     @SubscribeEvent
     public static void onModelEvent(RegisterAdditional event) {
-        event.register(MODEL_ADVSOLARTOP);
-        event.register(MODEL_BATTERYBOX);
-        event.register(MODEL_BATTERYBOX2);
-        event.register(MODEL_BATTERYBOX3);
-        event.register(MODEL_BATTERYBOX4);
-        event.register(MODEL_BATTERYBOX5);
-        event.register(MODEL_BATTERYBOX6);
-        event.register(MODEL_BATTERYBOX7);
-        event.register(MODEL_LITHIUMBATTERYBOX);
-        event.register(MODEL_LITHIUMBATTERYBOX2);
-        event.register(MODEL_LITHIUMBATTERYBOX3);
-        event.register(MODEL_LITHIUMBATTERYBOX4);
-        event.register(MODEL_LITHIUMBATTERYBOX5);
-        event.register(MODEL_LITHIUMBATTERYBOX6);
-        event.register(MODEL_LITHIUMBATTERYBOX7);
-        event.register(MODEL_CHEMICALMIXERBASE);
-        event.register(MODEL_CARBYNEBATTERYBOX);
-        event.register(MODEL_CARBYNEBATTERYBOX2);
-        event.register(MODEL_CARBYNEBATTERYBOX3);
-        event.register(MODEL_CARBYNEBATTERYBOX4);
-        event.register(MODEL_CARBYNEBATTERYBOX5);
-        event.register(MODEL_CARBYNEBATTERYBOX6);
-        event.register(MODEL_CARBYNEBATTERYBOX7);
-        event.register(MODEL_HYDROELECTRICGENERATORBLADES);
-        event.register(MODEL_WINDMILLBLADES);
-        event.register(MODEL_MINERALCRUSHERHANDLE);
-        event.register(MODEL_MINERALCRUSHERDOUBLEHANDLE);
-        event.register(MODEL_MINERALCRUSHERTRIPLEHANDLE);
-        event.register(MODEL_MINERALGRINDERWHEEL);
-        event.register(MODEL_CHEMICALMIXERBLADES);
-        event.register(MODEL_RODSTEEL);
-        event.register(MODEL_RODSTAINLESSSTEEL);
-        event.register(MODEL_RODHSLASTEEL);
-        event.register(MODEL_LATHESHAFT);
-        event.register(MODEL_MOTORCOMPLEXROTOR);
-        event.register(MODEL_QUARRYWHEEL_STILL);
-        event.register(MODEL_QUARRYWHEEL_ROT);
-        event.register(MODEL_CHEMICALREACTOR_ROTOR);
+	event.register(MODEL_ADVSOLARTOP);
+	event.register(MODEL_BATTERYBOX);
+	event.register(MODEL_BATTERYBOX2);
+	event.register(MODEL_BATTERYBOX3);
+	event.register(MODEL_BATTERYBOX4);
+	event.register(MODEL_BATTERYBOX5);
+	event.register(MODEL_BATTERYBOX6);
+	event.register(MODEL_BATTERYBOX7);
+	event.register(MODEL_LITHIUMBATTERYBOX);
+	event.register(MODEL_LITHIUMBATTERYBOX2);
+	event.register(MODEL_LITHIUMBATTERYBOX3);
+	event.register(MODEL_LITHIUMBATTERYBOX4);
+	event.register(MODEL_LITHIUMBATTERYBOX5);
+	event.register(MODEL_LITHIUMBATTERYBOX6);
+	event.register(MODEL_LITHIUMBATTERYBOX7);
+	event.register(MODEL_CHEMICALMIXERBASE);
+	event.register(MODEL_CARBYNEBATTERYBOX);
+	event.register(MODEL_CARBYNEBATTERYBOX2);
+	event.register(MODEL_CARBYNEBATTERYBOX3);
+	event.register(MODEL_CARBYNEBATTERYBOX4);
+	event.register(MODEL_CARBYNEBATTERYBOX5);
+	event.register(MODEL_CARBYNEBATTERYBOX6);
+	event.register(MODEL_CARBYNEBATTERYBOX7);
+	event.register(MODEL_HYDROELECTRICGENERATORBLADES);
+	event.register(MODEL_WINDMILLBLADES);
+	event.register(MODEL_MINERALCRUSHERHANDLE);
+	event.register(MODEL_MINERALCRUSHERDOUBLEHANDLE);
+	event.register(MODEL_MINERALCRUSHERTRIPLEHANDLE);
+	event.register(MODEL_MINERALGRINDERWHEEL);
+	event.register(MODEL_CHEMICALMIXERBLADES);
+	event.register(MODEL_RODSTEEL);
+	event.register(MODEL_RODSTAINLESSSTEEL);
+	event.register(MODEL_RODHSLASTEEL);
+	event.register(MODEL_LATHESHAFT);
+	event.register(MODEL_MOTORCOMPLEXROTOR);
+	event.register(MODEL_QUARRYWHEEL_STILL);
+	event.register(MODEL_QUARRYWHEEL_ROT);
+	event.register(MODEL_CHEMICALREACTOR_ROTOR);
     }
 
     @SubscribeEvent
     public static void registerMenus(RegisterMenuScreensEvent event) {
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICFURNACEDOUBLE.get(), ScreenElectricFurnaceDouble::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICFURNACETRIPLE.get(), ScreenElectricFurnaceTriple::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICARCFURNACE.get(), ScreenElectricArcFurnace::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICARCFURNACEDOUBLE.get(), ScreenElectricArcFurnaceDouble::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICARCFURNACETRIPLE.get(), ScreenElectricArcFurnaceTriple::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_FERMENTATIONPLANT.get(), ScreenFermentationPlant::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_MINERALWASHER.get(), ScreenMineralWasher::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_CHEMICALMIXER.get(), ScreenChemicalMixer::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_CHEMICALCRYSTALLIZER.get(), ScreenChemicalCrystallizer::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_CHARGER.get(), ScreenChargerGeneric::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_TANK.get(), ScreenFluidTankGeneric::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_COMBUSTION_CHAMBER.get(), ScreenCombustionChamber::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_SOLARPANEL.get(), ScreenSolarPanel::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_WINDMILL.get(), ScreenWindmill::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_HYDROELECTRICGENERATOR.get(), ScreenHydroelectricGenerator::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEPOWERSOURCE.get(), ScreenCreativePowerSource::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEFLUIDSOURCE.get(), ScreenCreativeFluidSource::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDVOID.get(), ScreenFluidVoid::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_SEISMICSCANNER.get(), ScreenSeismicScanner::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTROLYTICSEPARATOR.get(), ScreenElectrolyticSeparator::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_SEISMICRELAY.get(), ScreenSeismicRelay::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_COOLANTRESAVOIR.get(), ScreenCoolantResavoir::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_MOTORCOMPLEX.get(), ScreenMotorComplex::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_QUARRY.get(), ScreenQuarry::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_GASTANK.get(), ScreenGasTankGeneric::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_COMPRESSOR.get(), ScreenCompressor::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_DECOMPRESSOR.get(), ScreenDecompressor::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDCOMPRESSOR.get(), ScreenAdvancedCompressor::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDDECOMPRESSOR.get(), ScreenAdvancedDecompressor::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_GASVENT.get(), ScreenGasVent::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_THERMOELECTRICMANIPULATOR.get(), ScreenThermoelectricManipulator::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_GASPIPEPUMP.get(), ScreenGasPipePump::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEPUMP.get(), ScreenFluidPipePump::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_GASPIPEFILTER.get(), ScreenGasPipeFilter::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEFILTER.get(), ScreenFluidPipeFilter::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICDRILL.get(), ScreenElectricDrill::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_POTENTIOMETER.get(), ScreenPotentiometer::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDDOWNGRADETRANSFORMER.get(), ScreenAdvancedDowngradeTransformer::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDUPGRADETRANSFORMER.get(), ScreenAdvancedUpgradeTransformer::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_CIRCUITMONITOR.get(), ScreenCircuitMonitor::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_GASCOLLECTOR.get(), ScreenGasCollector::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_CHEMICALREACTOR.get(), ScreenChemicalReactor::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEGASSOURCE.get(), ScreenCreativeGasSource::new);
-        event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTROLOSISCHAMBER.get(), ScreenElectrolosisChamber::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICFURNACEDOUBLE.get(),
+		ScreenElectricFurnaceDouble::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICFURNACETRIPLE.get(),
+		ScreenElectricFurnaceTriple::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICARCFURNACE.get(), ScreenElectricArcFurnace::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICARCFURNACEDOUBLE.get(),
+		ScreenElectricArcFurnaceDouble::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICARCFURNACETRIPLE.get(),
+		ScreenElectricArcFurnaceTriple::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_BATTERYBOX.get(), ScreenBatteryBox::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_FERMENTATIONPLANT.get(), ScreenFermentationPlant::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_MINERALWASHER.get(), ScreenMineralWasher::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_CHEMICALMIXER.get(), ScreenChemicalMixer::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_CHEMICALCRYSTALLIZER.get(), ScreenChemicalCrystallizer::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_CHARGER.get(), ScreenChargerGeneric::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_TANK.get(), ScreenFluidTankGeneric::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_COMBUSTION_CHAMBER.get(), ScreenCombustionChamber::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_SOLARPANEL.get(), ScreenSolarPanel::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_WINDMILL.get(), ScreenWindmill::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_HYDROELECTRICGENERATOR.get(),
+		ScreenHydroelectricGenerator::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEPOWERSOURCE.get(), ScreenCreativePowerSource::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEFLUIDSOURCE.get(), ScreenCreativeFluidSource::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDVOID.get(), ScreenFluidVoid::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_SEISMICSCANNER.get(), ScreenSeismicScanner::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTROLYTICSEPARATOR.get(),
+		ScreenElectrolyticSeparator::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_SEISMICRELAY.get(), ScreenSeismicRelay::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_COOLANTRESAVOIR.get(), ScreenCoolantResavoir::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_MOTORCOMPLEX.get(), ScreenMotorComplex::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_QUARRY.get(), ScreenQuarry::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_GASTANK.get(), ScreenGasTankGeneric::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_COMPRESSOR.get(), ScreenCompressor::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_DECOMPRESSOR.get(), ScreenDecompressor::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDCOMPRESSOR.get(), ScreenAdvancedCompressor::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDDECOMPRESSOR.get(), ScreenAdvancedDecompressor::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_GASVENT.get(), ScreenGasVent::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_THERMOELECTRICMANIPULATOR.get(),
+		ScreenThermoelectricManipulator::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_GASPIPEPUMP.get(), ScreenGasPipePump::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEPUMP.get(), ScreenFluidPipePump::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_GASPIPEFILTER.get(), ScreenGasPipeFilter::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_FLUIDPIPEFILTER.get(), ScreenFluidPipeFilter::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICDRILL.get(), ScreenElectricDrill::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_POTENTIOMETER.get(), ScreenPotentiometer::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDDOWNGRADETRANSFORMER.get(),
+		ScreenAdvancedDowngradeTransformer::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDUPGRADETRANSFORMER.get(),
+		ScreenAdvancedUpgradeTransformer::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_CIRCUITMONITOR.get(), ScreenCircuitMonitor::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_GASCOLLECTOR.get(), ScreenGasCollector::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_CHEMICALREACTOR.get(), ScreenChemicalReactor::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_CREATIVEGASSOURCE.get(), ScreenCreativeGasSource::new);
+	event.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTROLOSISCHAMBER.get(), ScreenElectrolosisChamber::new);
 
-        if(ModList.get().isLoaded(Voltaic.MEKANISM_ID)) {
-            MekanismClientHandler.registerMenus(event);
-        }
+	if (ModList.get().isLoaded(Voltaic.MEKANISM_ID)) {
+	    MekanismClientHandler.registerMenus(event);
+	}
     }
 
     @SubscribeEvent
     public static void registerEntities(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
-        event.registerEntityRenderer(ElectrodynamicsEntities.ENTITY_METALROD.get(), RenderMetalRod::new);
+	event.registerEntityRenderer(ElectrodynamicsEntities.ENTITY_ENERGYBLAST.get(), RenderEnergyBlast::new);
+	event.registerEntityRenderer(ElectrodynamicsEntities.ENTITY_METALROD.get(), RenderMetalRod::new);
 
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_ADVANCEDSOLARPANEL.get(), RenderAdvancedSolarPanel::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_BATTERYBOX.get(), RenderBatteryBox::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_LITHIUMBATTERYBOX.get(), RenderLithiumBatteryBox::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_CARBYNEBATTERYBOX.get(), RenderCarbyneBatteryBox::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_HYDROELECTRICGENERATOR.get(), RenderHydroelectricGenerator::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_WINDMILL.get(), RenderWindmill::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALCRUSHER.get(), RenderMineralCrusher::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALCRUSHERDOUBLE.get(), RenderMineralCrusherDouble::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALCRUSHERTRIPLE.get(), RenderMineralCrusherTriple::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALGRINDER.get(), RenderMineralGrinder::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALGRINDERDOUBLE.get(), RenderMineralGrinderDouble::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALGRINDERTRIPLE.get(), RenderMineralGrinderTriple::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_FERMENTATIONPLANT.get(), RenderFermentationPlant::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_COMBUSTIONCHAMBER.get(), RenderCombustionChamber::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALWASHER.get(), RenderMineralWasher::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_CHEMICALMIXER.get(), RenderChemicalMixer::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MULTIMETERBLOCK.get(), RenderMultimeterBlock::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_LATHE.get(), RenderLathe::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_CHARGERLV.get(), RenderChargerGeneric::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_CHARGERMV.get(), RenderChargerGeneric::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_CHARGERHV.get(), RenderChargerGeneric::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_SEISMICRELAY.get(), RenderSeismicRelay::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_COOLANTRESAVOIR.get(), RenderCoolantResavoir::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_TANKHSLA.get(), RenderTankGeneric::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_TANKREINFORCED.get(), RenderTankGeneric::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_TANKSTEEL.get(), RenderTankGeneric::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MOTORCOMPLEX.get(), RenderMotorComplex::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_ELECTROLYTICSEPARATOR.get(), RenderElectrolyticSeparator::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_GASPIPEPUMP.get(), RenderGasPipePump::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_FLUIDPIPEPUMP.get(), RenderFluidPipePump::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_LOGISTICALWIRE.get(), RenderLogisticalWire::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_ELECTROLOSISCHAMBER.get(), RenderElectrolosisChamber::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_ADVANCEDSOLARPANEL.get(),
+		RenderAdvancedSolarPanel::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_BATTERYBOX.get(), RenderBatteryBox::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_LITHIUMBATTERYBOX.get(),
+		RenderLithiumBatteryBox::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_CARBYNEBATTERYBOX.get(),
+		RenderCarbyneBatteryBox::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_HYDROELECTRICGENERATOR.get(),
+		RenderHydroelectricGenerator::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_WINDMILL.get(), RenderWindmill::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALCRUSHER.get(), RenderMineralCrusher::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALCRUSHERDOUBLE.get(),
+		RenderMineralCrusherDouble::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALCRUSHERTRIPLE.get(),
+		RenderMineralCrusherTriple::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALGRINDER.get(), RenderMineralGrinder::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALGRINDERDOUBLE.get(),
+		RenderMineralGrinderDouble::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALGRINDERTRIPLE.get(),
+		RenderMineralGrinderTriple::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_FERMENTATIONPLANT.get(),
+		RenderFermentationPlant::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_COMBUSTIONCHAMBER.get(),
+		RenderCombustionChamber::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MINERALWASHER.get(), RenderMineralWasher::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_CHEMICALMIXER.get(), RenderChemicalMixer::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MULTIMETERBLOCK.get(), RenderMultimeterBlock::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_LATHE.get(), RenderLathe::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_CHARGERLV.get(), RenderChargerGeneric::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_CHARGERMV.get(), RenderChargerGeneric::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_CHARGERHV.get(), RenderChargerGeneric::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_SEISMICRELAY.get(), RenderSeismicRelay::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_COOLANTRESAVOIR.get(), RenderCoolantResavoir::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_TANKHSLA.get(), RenderTankGeneric::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_TANKREINFORCED.get(), RenderTankGeneric::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_TANKSTEEL.get(), RenderTankGeneric::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_MOTORCOMPLEX.get(), RenderMotorComplex::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_ELECTROLYTICSEPARATOR.get(),
+		RenderElectrolyticSeparator::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_GASPIPEPUMP.get(), RenderGasPipePump::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_FLUIDPIPEPUMP.get(), RenderFluidPipePump::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_LOGISTICALWIRE.get(), RenderLogisticalWire::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_ELECTROLOSISCHAMBER.get(),
+		RenderElectrolosisChamber::new);
 
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_WIRE.get(), RenderConnectBlock::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_LOGISTICALWIRE.get(), RenderConnectBlock::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_PIPE.get(), RenderConnectBlock::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_GAS_PIPE.get(), RenderConnectBlock::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_WIRE.get(), RenderConnectBlock::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_LOGISTICALWIRE.get(), RenderConnectBlock::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_PIPE.get(), RenderConnectBlock::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_GAS_PIPE.get(), RenderConnectBlock::new);
 
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_ADVANCEDUPGRADETRANSFORMER.get(), RenderAdvancedTransformer.RenderAdvancedUpgradeTransformer::new);
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_ADVANCEDDOWNGRADETRANSFORMER.get(), RenderAdvancedTransformer.RenderAdvancedDowngradeTransformer::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_ADVANCEDUPGRADETRANSFORMER.get(),
+		RenderAdvancedTransformer.RenderAdvancedUpgradeTransformer::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_ADVANCEDDOWNGRADETRANSFORMER.get(),
+		RenderAdvancedTransformer.RenderAdvancedDowngradeTransformer::new);
 
-        event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_CHEMICALREACTOR.get(), RenderChemicalReactor::new);
+	event.registerBlockEntityRenderer(ElectrodynamicsTiles.TILE_CHEMICALREACTOR.get(), RenderChemicalReactor::new);
     }
 
     @SubscribeEvent
     public static void cacheCustomTextureAtlases(TextureAtlasStitchedEvent event) {
-        if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
-            CACHED_TEXTUREATLASSPRITES.clear();
-            for (ResourceLocation loc : CUSTOM_TEXTURES) {
-                ElectrodynamicsClientRegister.CACHED_TEXTUREATLASSPRITES.put(loc, event.getAtlas().getSprite(loc));
-            }
-        }
+	if (event.getAtlas().location().equals(TextureAtlas.LOCATION_BLOCKS)) {
+	    CACHED_TEXTUREATLASSPRITES.clear();
+	    for (ResourceLocation loc : CUSTOM_TEXTURES) {
+		ElectrodynamicsClientRegister.CACHED_TEXTUREATLASSPRITES.put(loc, event.getAtlas().getSprite(loc));
+	    }
+	}
     }
 
     @SubscribeEvent
     public static void registerItemDecorators(final RegisterItemDecorationsEvent event) {
-        event.register(ElectrodynamicsItems.ITEM_COMBATHELMET.get(), new ItemDecoratorCombatHelmet());
-        event.register(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get(), new ItemDecoratorCombatLeggings());
+	event.register(ElectrodynamicsItems.ITEM_COMBATHELMET.get(), new ItemDecoratorCombatHelmet());
+	event.register(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get(), new ItemDecoratorCombatLeggings());
 
-        event.register(ElectrodynamicsItems.ITEM_KINETICRAILGUN.get(), new ItemDecoratorRailgun());
-        event.register(ElectrodynamicsItems.ITEM_PLASMARAILGUN.get(), new ItemDecoratorRailgun());
+	event.register(ElectrodynamicsItems.ITEM_KINETICRAILGUN.get(), new ItemDecoratorRailgun());
+	event.register(ElectrodynamicsItems.ITEM_PLASMARAILGUN.get(), new ItemDecoratorRailgun());
     }
 
     @SubscribeEvent
     public static void registerClientExtensions(final RegisterClientExtensionsEvent event) {
 
-        /* ITEMS */
+	/* ITEMS */
 
-        //Combat Armor
-        event.registerItem(new IClientItemExtensions() {
-            @Override
-            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
-                ItemStack[] armorPiecesArray = new ItemStack[]{new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get())};
+	// Combat Armor
+	event.registerItem(new IClientItemExtensions() {
+	    @Override
+	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
+		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
+		ItemStack[] armorPiecesArray = {
+			new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()),
+			new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()),
+			new ItemStack(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get()),
+			new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get()) };
 
-                List<ItemStack> armorPieces = new ArrayList<>();
-                entity.getArmorSlots().forEach(armorPieces::add);
+		List<ItemStack> armorPieces = new ArrayList<>();
+		entity.getArmorSlots().forEach(armorPieces::add);
 
-                boolean isBoth = armorPieces.get(0).getItem() == armorPiecesArray[3].getItem() && armorPieces.get(1).getItem() == armorPiecesArray[2].getItem();
+		boolean isBoth = armorPieces.get(0).getItem() == armorPiecesArray[3].getItem()
+			&& armorPieces.get(1).getItem() == armorPiecesArray[2].getItem();
 
-                boolean hasChest = armorPieces.get(2).getItem() == armorPiecesArray[1].getItem();
+		boolean hasChest = armorPieces.get(2).getItem() == armorPiecesArray[1].getItem();
 
-                ModelCombatArmor<LivingEntity> model;
+		ModelCombatArmor<LivingEntity> model;
 
-                if (isBoth) {
-                    if (hasChest) {
-                        model = new ModelCombatArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_COMB_CHEST.bakeRoot(), armorSlot);
-                    } else {
-                        model = new ModelCombatArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), armorSlot);
-                    }
-                } else if (armorSlot == EquipmentSlot.FEET) {
-                    model = new ModelCombatArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_BOOTS.bakeRoot(), armorSlot);
-                } else if (hasChest) {
-                    model = new ModelCombatArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_LEG_CHEST.bakeRoot(), armorSlot);
-                } else {
-                    model = new ModelCombatArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), armorSlot);
-                }
+		if (isBoth) {
+		    if (hasChest) {
+			model = new ModelCombatArmor<>(
+				ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_COMB_CHEST.bakeRoot(), armorSlot);
+		    } else {
+			model = new ModelCombatArmor<>(
+				ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), armorSlot);
+		    }
+		} else if (armorSlot == EquipmentSlot.FEET) {
+		    model = new ModelCombatArmor<>(ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_BOOTS.bakeRoot(),
+			    armorSlot);
+		} else if (hasChest) {
+		    model = new ModelCombatArmor<>(
+			    ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_LEG_CHEST.bakeRoot(), armorSlot);
+		} else {
+		    model = new ModelCombatArmor<>(
+			    ElectrodynamicsClientRegister.COMBAT_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), armorSlot);
+		}
 
-                model.crouching = properties.crouching;
-                model.riding = properties.riding;
-                model.young = properties.young;
+		model.crouching = properties.crouching;
+		model.riding = properties.riding;
+		model.young = properties.young;
 
-                return model;
-            }
-        }, ElectrodynamicsItems.ITEM_COMBATHELMET, ElectrodynamicsItems.ITEM_COMBATCHESTPLATE, ElectrodynamicsItems.ITEM_COMBATLEGGINGS, ElectrodynamicsItems.ITEM_COMBATBOOTS);
+		return model;
+	    }
+	}, ElectrodynamicsItems.ITEM_COMBATHELMET, ElectrodynamicsItems.ITEM_COMBATCHESTPLATE,
+		ElectrodynamicsItems.ITEM_COMBATLEGGINGS, ElectrodynamicsItems.ITEM_COMBATBOOTS);
 
-        //Composite Armor
-        event.registerItem(new IClientItemExtensions() {
-            @Override
-            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
+	// Composite Armor
+	event.registerItem(new IClientItemExtensions() {
+	    @Override
+	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
+		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-                ItemStack[] armorPiecesArray = new ItemStack[]{new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get())};
+		ItemStack[] armorPiecesArray = {
+			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get()),
+			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get()),
+			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS.get()),
+			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get()) };
 
-                List<ItemStack> armorPieces = new ArrayList<>();
-                entity.getArmorSlots().forEach(armorPieces::add);
+		List<ItemStack> armorPieces = new ArrayList<>();
+		entity.getArmorSlots().forEach(armorPieces::add);
 
-                boolean isBoth = armorPieces.get(0).getItem() == armorPiecesArray[3].getItem() && armorPieces.get(1).getItem() == armorPiecesArray[2].getItem();
+		boolean isBoth = armorPieces.get(0).getItem() == armorPiecesArray[3].getItem()
+			&& armorPieces.get(1).getItem() == armorPiecesArray[2].getItem();
 
-                boolean hasChest = armorPieces.get(2).getItem() == armorPiecesArray[1].getItem();
+		boolean hasChest = armorPieces.get(2).getItem() == armorPiecesArray[1].getItem();
 
-                ModelCompositeArmor<LivingEntity> model;
+		ModelCompositeArmor<LivingEntity> model;
 
-                if (isBoth) {
-                    if (hasChest) {
-                        model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_COMB_CHEST.bakeRoot(), armorSlot);
-                    } else {
-                        model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), armorSlot);
-                    }
-                } else if (armorSlot == EquipmentSlot.FEET) {
-                    model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_BOOTS.bakeRoot(), armorSlot);
-                } else if (hasChest) {
-                    model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(), armorSlot);
-                } else {
-                    model = new ModelCompositeArmor<>(ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), armorSlot);
-                }
+		if (isBoth) {
+		    if (hasChest) {
+			model = new ModelCompositeArmor<>(
+				ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_COMB_CHEST.bakeRoot(), armorSlot);
+		    } else {
+			model = new ModelCompositeArmor<>(
+				ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_COMB_NOCHEST.bakeRoot(), armorSlot);
+		    }
+		} else if (armorSlot == EquipmentSlot.FEET) {
+		    model = new ModelCompositeArmor<>(
+			    ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_BOOTS.bakeRoot(), armorSlot);
+		} else if (hasChest) {
+		    model = new ModelCompositeArmor<>(
+			    ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_LEG_CHEST.bakeRoot(), armorSlot);
+		} else {
+		    model = new ModelCompositeArmor<>(
+			    ElectrodynamicsClientRegister.COMPOSITE_ARMOR_LAYER_LEG_NOCHEST.bakeRoot(), armorSlot);
+		}
 
-                model.crouching = properties.crouching;
-                model.riding = properties.riding;
-                model.young = properties.young;
+		model.crouching = properties.crouching;
+		model.riding = properties.riding;
+		model.young = properties.young;
 
-                return model;
-            }
-        }, ElectrodynamicsItems.ITEM_COMPOSITEHELMET, ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE, ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS, ElectrodynamicsItems.ITEM_COMPOSITEBOOTS);
+		return model;
+	    }
+	}, ElectrodynamicsItems.ITEM_COMPOSITEHELMET, ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE,
+		ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS, ElectrodynamicsItems.ITEM_COMPOSITEBOOTS);
 
-        //Night Vision Goggles
-        event.registerItem(new IClientItemExtensions() {
-            @Override
-            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
-                ModelNightVisionGoggles<LivingEntity> model = new ModelNightVisionGoggles<>(ElectrodynamicsClientRegister.NIGHT_VISION_GOGGLES.bakeRoot());
+	// Night Vision Goggles
+	event.registerItem(new IClientItemExtensions() {
+	    @Override
+	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
+		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
+		ModelNightVisionGoggles<LivingEntity> model = new ModelNightVisionGoggles<>(
+			ElectrodynamicsClientRegister.NIGHT_VISION_GOGGLES.bakeRoot());
 
-                model.crouching = properties.crouching;
-                model.riding = properties.riding;
-                model.young = properties.young;
+		model.crouching = properties.crouching;
+		model.riding = properties.riding;
+		model.young = properties.young;
 
-                return model;
-            }
-        }, ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES);
+		return model;
+	    }
+	}, ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES);
 
-        //Jetpack
-        event.registerItem(new IClientItemExtensions() {
-            @Override
-            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
+	// Jetpack
+	event.registerItem(new IClientItemExtensions() {
+	    @Override
+	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
+		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-                ModelJetpack<LivingEntity> model = new ModelJetpack<>(ElectrodynamicsClientRegister.JETPACK.bakeRoot());
+		ModelJetpack<LivingEntity> model = new ModelJetpack<>(ElectrodynamicsClientRegister.JETPACK.bakeRoot());
 
-                model.crouching = properties.crouching;
-                model.riding = properties.riding;
-                model.young = properties.young;
+		model.crouching = properties.crouching;
+		model.riding = properties.riding;
+		model.young = properties.young;
 
-                return model;
-            }
-        }, ElectrodynamicsItems.ITEM_JETPACK);
+		return model;
+	    }
+	}, ElectrodynamicsItems.ITEM_JETPACK);
 
-        //Servo Leggings
-        event.registerItem(new IClientItemExtensions() {
-            @Override
-            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
+	// Servo Leggings
+	event.registerItem(new IClientItemExtensions() {
+	    @Override
+	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
+		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-                ModelServoLeggings<LivingEntity> model = new ModelServoLeggings<>(ElectrodynamicsClientRegister.SERVO_LEGGINGS.bakeRoot());
+		ModelServoLeggings<LivingEntity> model = new ModelServoLeggings<>(
+			ElectrodynamicsClientRegister.SERVO_LEGGINGS.bakeRoot());
 
-                model.crouching = properties.crouching;
-                model.riding = properties.riding;
-                model.young = properties.young;
+		model.crouching = properties.crouching;
+		model.riding = properties.riding;
+		model.young = properties.young;
 
-                return model;
-            }
-        }, ElectrodynamicsItems.ITEM_SERVOLEGGINGS);
+		return model;
+	    }
+	}, ElectrodynamicsItems.ITEM_SERVOLEGGINGS);
 
-        //Hydraulic Boots
-        event.registerItem(new IClientItemExtensions() {
-            @Override
-            public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
+	// Hydraulic Boots
+	event.registerItem(new IClientItemExtensions() {
+	    @Override
+	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
+		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-                ModelHydraulicBoots<LivingEntity> model = new ModelHydraulicBoots<>(ElectrodynamicsClientRegister.HYDRAULIC_BOOTS.bakeRoot());
+		ModelHydraulicBoots<LivingEntity> model = new ModelHydraulicBoots<>(
+			ElectrodynamicsClientRegister.HYDRAULIC_BOOTS.bakeRoot());
 
-                model.crouching = properties.crouching;
-                model.riding = properties.riding;
-                model.young = properties.young;
+		model.crouching = properties.crouching;
+		model.riding = properties.riding;
+		model.young = properties.young;
 
-                return model;
-            }
-        }, ElectrodynamicsItems.ITEM_HYDRAULICBOOTS);
+		return model;
+	    }
+	}, ElectrodynamicsItems.ITEM_HYDRAULICBOOTS);
 
-        /* FLUIDS */
+	/* FLUIDS */
 
-        ElectrodynamicsFluids.FLUIDS.getEntries().forEach(fluid -> {
-            event.registerFluidType(new SWBFClientExtensions((SimpleWaterBasedFluidType) fluid.get().getFluidType()), fluid.get().getFluidType());
-        });
-
+	ElectrodynamicsFluids.FLUIDS.getEntries().forEach(fluid -> {
+	    event.registerFluidType(new SWBFClientExtensions((SimpleWaterBasedFluidType) fluid.get().getFluidType()),
+		    fluid.get().getFluidType());
+	});
 
     }
 
     public static TextureAtlasSprite getSprite(ResourceLocation sprite) {
-        return CACHED_TEXTUREATLASSPRITES.getOrDefault(sprite, VoltaicClientRegister.whiteSprite());
+	return CACHED_TEXTUREATLASSPRITES.getOrDefault(sprite, VoltaicClientRegister.whiteSprite());
     }
 
 }

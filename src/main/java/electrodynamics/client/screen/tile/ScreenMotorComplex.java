@@ -23,31 +23,42 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ScreenMotorComplex extends GenericScreen<ContainerMotorComplex> {
 
-	public ScreenMotorComplex(ContainerMotorComplex container, Inventory inv, Component titleIn) {
-		super(container, inv, titleIn);
-		addComponent(new ScreenComponentElectricInfo(this::getElectricInformation, -AbstractScreenComponentInfo.SIZE + 1, 2));
-		addComponent(new ScreenComponentSimpleLabel(30, 40, 10, Color.TEXT_GRAY, () -> {
-			int blocksPerTick = 0;
-			TileMotorComplex motor = menu.getSafeHost();
-			if (motor != null && motor.isPowered.getValue()) {
-				blocksPerTick = motor.speed.getValue();
-			}
-			return ElectroTextUtils.gui("motorcomplex.speed", blocksPerTick);
-		}));
+    public ScreenMotorComplex(ContainerMotorComplex container, Inventory inv, Component titleIn) {
+	super(container, inv, titleIn);
+	addComponent(new ScreenComponentElectricInfo(this::getElectricInformation,
+		-AbstractScreenComponentInfo.SIZE + 1, 2));
+	addComponent(new ScreenComponentSimpleLabel(30, 40, 10, Color.TEXT_GRAY, () -> {
+	    int blocksPerTick = 0;
+	    TileMotorComplex motor = menu.getSafeHost();
+	    if (motor != null && motor.isPowered.getValue()) {
+		blocksPerTick = motor.speed.getValue();
+	    }
+	    return ElectroTextUtils.gui("motorcomplex.speed", blocksPerTick);
+	}));
+    }
+
+    private List<? extends FormattedCharSequence> getElectricInformation() {
+	ArrayList<FormattedCharSequence> list = new ArrayList<>();
+	TileMotorComplex motor = menu.getSafeHost();
+	if (motor == null) {
+	    return list;
 	}
 
-	private List<? extends FormattedCharSequence> getElectricInformation() {
-		ArrayList<FormattedCharSequence> list = new ArrayList<>();
-		TileMotorComplex motor = menu.getSafeHost();
-		if (motor == null) {
-			return list;
-		}
+	ComponentElectrodynamic electro = motor.getComponent(IComponentType.Electrodynamic);
+	list.add(ElectroTextUtils
+		.gui("machine.usage",
+			ChatFormatter
+				.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.MOTORCOMPLEX_USAGE_PER_TICK.get()
+					* motor.powerMultiplier.getValue() * 20, DisplayUnits.WATT)
+				.withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
+	list.add(ElectroTextUtils
+		.gui("machine.voltage",
+			ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnits.VOLTAGE)
+				.withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
 
-		ComponentElectrodynamic electro = motor.getComponent(IComponentType.Electrodynamic);
-		list.add(ElectroTextUtils.gui("machine.usage", ChatFormatter.getChatDisplayShort(ElectrodynamicsConfig.INSTANCE.MOTORCOMPLEX_USAGE_PER_TICK.get() * motor.powerMultiplier.getValue() * 20, DisplayUnits.WATT).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-		list.add(ElectroTextUtils.gui("machine.voltage", ChatFormatter.getChatDisplayShort(electro.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY).getVisualOrderText());
-
-		return list;
-	}
+	return list;
+    }
 
 }

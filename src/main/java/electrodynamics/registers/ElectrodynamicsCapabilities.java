@@ -9,6 +9,7 @@ import electrodynamics.common.item.gear.tools.ItemPortableCylinder;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import electrodynamics.common.item.gear.tools.electric.ItemSeismicScanner;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
+import electrodynamics.common.tile.electricitygrid.batteries.TileBatteryBox;
 import electrodynamics.compatibility.mekanism.MekanismHandler;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -37,157 +38,215 @@ public class ElectrodynamicsCapabilities {
     @SubscribeEvent
     public static void register(RegisterCapabilitiesEvent event) {
 
-        /* ITEMS */
+	/* ITEMS */
 
-        // Electric Drill
+	// Electric Drill
 
-        event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new CapabilityItemStackHandler(ItemElectricDrill.SLOT_COUNT, itemStack)
-                //
-                .setOnChange((onChangeWrapper) -> {
-                    //
-                    int fortune = 0;
-                    boolean silkTouch = false;
-                    double speedBoost = 1;
+	event.registerItem(Capabilities.ItemHandler.ITEM,
+		(itemStack, context) -> new CapabilityItemStackHandler(ItemElectricDrill.SLOT_COUNT, itemStack)
+			//
+			.setOnChange(onChangeWrapper -> {
+			    //
+			    int fortune = 0;
+			    boolean silkTouch = false;
+			    double speedBoost = 1;
 
-                    for (ItemStack content : onChangeWrapper.capability().getItems()) {
-                        if (!content.isEmpty() && content.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype.isEmpty) {
-                            for (int i = 0; i < content.getCount(); i++) {
+			    for (ItemStack content : onChangeWrapper.capability().getItems()) {
+				if (!content.isEmpty() && content.getItem() instanceof ItemUpgrade upgrade
+					&& upgrade.subtype.isEmpty) {
+				    for (int i = 0; i < content.getCount(); i++) {
 
-                                switch (upgrade.subtype) {
+					switch (upgrade.subtype) {
 
-                                    case basicspeed:
-                                        speedBoost = Math.min(speedBoost * 1.5, Math.pow(1.5, 3));
-                                        break;
-                                    case advancedspeed:
-                                        speedBoost = Math.min(speedBoost * 2.25, Math.pow(2.25, 3));
-                                        break;
-                                    case fortune:
-                                        if (!silkTouch) {
-                                            fortune = Math.min(fortune + 1, 9);
-                                        }
-                                        break;
-                                    case silktouch:
-                                        if (fortune == 0) {
-                                            silkTouch = true;
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                        }
-                    }
+					case basicspeed:
+					    speedBoost = Math.min(speedBoost * 1.5, Math.pow(1.5, 3));
+					    break;
+					case advancedspeed:
+					    speedBoost = Math.min(speedBoost * 2.25, Math.pow(2.25, 3));
+					    break;
+					case fortune:
+					    if (!silkTouch) {
+						fortune = Math.min(fortune + 1, 9);
+					    }
+					    break;
+					case silktouch:
+					    if (fortune == 0) {
+						silkTouch = true;
+					    }
+					    break;
+					default:
+					    break;
+					}
+				    }
+				}
+			    }
 
-                    final int finalFortune = fortune;
-                    final boolean finalSilkTouch = silkTouch;
+			    final int finalFortune = fortune;
+			    final boolean finalSilkTouch = silkTouch;
 
-                    onChangeWrapper.levelAccess().execute((level, pos) -> {
+			    onChangeWrapper.levelAccess().execute((level, pos) -> {
 
-                        ItemStack stack = onChangeWrapper.owner();
+				ItemStack stack = onChangeWrapper.owner();
 
-                        Holder<Enchantment> fortuneEnchantment = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.FORTUNE);
+				Holder<Enchantment> fortuneEnchantment = level.registryAccess()
+					.registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.FORTUNE);
 
-                        EnchantmentHelper.updateEnchantments(stack, enchantments -> enchantments.set(fortuneEnchantment, 0));
-                        EnchantmentHelper.updateEnchantments(stack, enchantments -> enchantments.set(fortuneEnchantment, finalFortune));
+				EnchantmentHelper.updateEnchantments(stack,
+					enchantments -> enchantments.set(fortuneEnchantment, 0));
+				EnchantmentHelper.updateEnchantments(stack,
+					enchantments -> enchantments.set(fortuneEnchantment, finalFortune));
 
-                        Holder<Enchantment> silkTouchEnchantment = level.registryAccess().registryOrThrow(Registries.ENCHANTMENT).getHolderOrThrow(Enchantments.SILK_TOUCH);
+				Holder<Enchantment> silkTouchEnchantment = level.registryAccess()
+					.registryOrThrow(Registries.ENCHANTMENT)
+					.getHolderOrThrow(Enchantments.SILK_TOUCH);
 
-                        EnchantmentHelper.updateEnchantments(stack, enchantments -> enchantments.set(silkTouchEnchantment, 0));
-                        EnchantmentHelper.updateEnchantments(stack, enchantments -> enchantments.set(silkTouchEnchantment, finalSilkTouch ? 1 : 0));
+				EnchantmentHelper.updateEnchantments(stack,
+					enchantments -> enchantments.set(silkTouchEnchantment, 0));
+				EnchantmentHelper.updateEnchantments(stack,
+					enchantments -> enchantments.set(silkTouchEnchantment, finalSilkTouch ? 1 : 0));
 
-                    });
+			    });
 
-                    onChangeWrapper.owner().set(VoltaicDataComponentTypes.SPEED, speedBoost);
+			    onChangeWrapper.owner().set(VoltaicDataComponentTypes.SPEED, speedBoost);
 
-                    double multiplier = 1;
+			    double multiplier = 1;
 
-                    if (silkTouch) {
-                        multiplier += 3;
-                    }
+			    if (silkTouch) {
+				multiplier += 3;
+			    }
 
-                    if (fortune > 0) {
-                        multiplier += fortune;
-                    }
+			    if (fortune > 0) {
+				multiplier += fortune;
+			    }
 
-                    onChangeWrapper.owner().set(VoltaicDataComponentTypes.POWER_USAGE, ItemElectricDrill.POWER_USAGE * multiplier);
+			    onChangeWrapper.owner().set(VoltaicDataComponentTypes.POWER_USAGE,
+				    ItemElectricDrill.POWER_USAGE * multiplier);
 
-                }), ElectrodynamicsItems.ITEM_ELECTRICDRILL.get());
+			}),
+		ElectrodynamicsItems.ITEM_ELECTRICDRILL.get());
 
-        // Seismic Scanner
+	// Seismic Scanner
 
-        event.registerItem(Capabilities.ItemHandler.ITEM, (itemStack, context) -> new CapabilityItemStackHandler(ItemSeismicScanner.SLOT_COUNT, itemStack).setOnChange(wrapper -> {
-            int range = 1;
+	event.registerItem(Capabilities.ItemHandler.ITEM,
+		(itemStack, context) -> new CapabilityItemStackHandler(ItemSeismicScanner.SLOT_COUNT, itemStack)
+			.setOnChange(wrapper -> {
+			    int range = 1;
 
-            for (ItemStack content : wrapper.capability().getItems()) {
-                if (!content.isEmpty() && content.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype.isEmpty) {
-                    for (int i = 0; i < content.getCount(); i++) {
+			    for (ItemStack content : wrapper.capability().getItems()) {
+				if (!content.isEmpty() && content.getItem() instanceof ItemUpgrade upgrade
+					&& upgrade.subtype.isEmpty) {
+				    for (int i = 0; i < content.getCount(); i++) {
 
-                        switch (upgrade.subtype) {
+					switch (upgrade.subtype) {
 
-                            case range:
-                                range = Math.min(4, range + 1);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                }
-            }
+					case range:
+					    range = Math.min(4, range + 1);
+					    break;
+					default:
+					    break;
+					}
+				    }
+				}
+			    }
 
-            wrapper.owner().set(VoltaicDataComponentTypes.RANGE, range);
-        }), ElectrodynamicsItems.ITEM_SEISMICSCANNER.get());
+			    wrapper.owner().set(VoltaicDataComponentTypes.RANGE, range);
+			}),
+		ElectrodynamicsItems.ITEM_SEISMICSCANNER.get());
 
-        // Reinforced Cannister
+	// Reinforced Cannister
 
-        event.registerItem(Capabilities.FluidHandler.ITEM, (itemStack, context) -> new RestrictedFluidHandlerItemStack.SwapEmpty(itemStack, itemStack, ItemCanister.MAX_FLUID_CAPACITY), ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get());
+	event.registerItem(Capabilities.FluidHandler.ITEM,
+		(itemStack, context) -> new RestrictedFluidHandlerItemStack.SwapEmpty(itemStack, itemStack,
+			ItemCanister.MAX_FLUID_CAPACITY),
+		ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get());
 
-        // Portable Cylinder
+	// Portable Cylinder
 
-        event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemPortableCylinder.MAX_GAS_CAPCITY, ItemPortableCylinder.MAX_TEMPERATURE, ItemPortableCylinder.MAX_PRESSURE), ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
+	event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM,
+		(itemStack, context) -> new GasHandlerItemStack(itemStack, ItemPortableCylinder.MAX_GAS_CAPCITY,
+			ItemPortableCylinder.MAX_TEMPERATURE, ItemPortableCylinder.MAX_PRESSURE),
+		ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
 
-        // Jetpack
+	// Jetpack
 
-        event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemJetpack.MAX_CAPACITY, ItemJetpack.MAX_TEMPERATURE, ItemJetpack.MAX_PRESSURE).setPredicate(ItemJetpack.getGasValidator()), ElectrodynamicsItems.ITEM_JETPACK.get());
+	event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM, (itemStack,
+		context) -> new GasHandlerItemStack(itemStack, ItemJetpack.MAX_CAPACITY, ItemJetpack.MAX_TEMPERATURE,
+			ItemJetpack.MAX_PRESSURE).setPredicate(ItemJetpack.getGasValidator()),
+		ElectrodynamicsItems.ITEM_JETPACK.get());
 
-        // Hydraulic Boots
+	// Hydraulic Boots
 
-        event.registerItem(Capabilities.FluidHandler.ITEM, (itemStack, context) -> new RestrictedFluidHandlerItemStack(itemStack, ItemHydraulicBoots.MAX_CAPACITY).setValidator(ItemHydraulicBoots.getPredicate()), ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get());
+	event.registerItem(Capabilities.FluidHandler.ITEM,
+		(itemStack, context) -> new RestrictedFluidHandlerItemStack(itemStack, ItemHydraulicBoots.MAX_CAPACITY)
+			.setValidator(ItemHydraulicBoots.getPredicate()),
+		ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get());
 
-        // Combat Helmet
+	// Combat Helmet
 
-        event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemCombatArmor.HELMET_CAPACITY, ItemCombatArmor.HELMET_MAX_TEMP, ItemCombatArmor.HELMET_MAX_PRESSURE).setPredicate(ItemCombatArmor.getHelmetGasValidator()), ElectrodynamicsItems.ITEM_COMBATHELMET.get());
+	event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM,
+		(itemStack,
+			context) -> new GasHandlerItemStack(itemStack, ItemCombatArmor.HELMET_CAPACITY,
+				ItemCombatArmor.HELMET_MAX_TEMP, ItemCombatArmor.HELMET_MAX_PRESSURE)
+				.setPredicate(ItemCombatArmor.getHelmetGasValidator()),
+		ElectrodynamicsItems.ITEM_COMBATHELMET.get());
 
-        // Combat Chestplate
+	// Combat Chestplate
 
-        event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemJetpack.MAX_CAPACITY, ItemJetpack.MAX_TEMPERATURE, ItemJetpack.MAX_PRESSURE).setPredicate(ItemJetpack.getGasValidator()), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get());
+	event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM, (itemStack,
+		context) -> new GasHandlerItemStack(itemStack, ItemJetpack.MAX_CAPACITY, ItemJetpack.MAX_TEMPERATURE,
+			ItemJetpack.MAX_PRESSURE).setPredicate(ItemJetpack.getGasValidator()),
+		ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get());
 
-        // Combat Leggings
+	// Combat Leggings
 
-        event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM, (itemStack, context) -> new GasHandlerItemStack(itemStack, ItemCombatArmor.LEGGINGS_CAPACITY, ItemCombatArmor.LEGGINGS_MAX_TEMP, ItemCombatArmor.LEGGINGS_MAX_PRESSURE).setPredicate(ItemCombatArmor.getLeggingsGasValidator()), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get());
+	event.registerItem(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM,
+		(itemStack,
+			context) -> new GasHandlerItemStack(itemStack, ItemCombatArmor.LEGGINGS_CAPACITY,
+				ItemCombatArmor.LEGGINGS_MAX_TEMP, ItemCombatArmor.LEGGINGS_MAX_PRESSURE)
+				.setPredicate(ItemCombatArmor.getLeggingsGasValidator()),
+		ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get());
 
-        // Combat Boots
+	// Combat Boots
 
-        event.registerItem(Capabilities.FluidHandler.ITEM, (itemStack, context) -> new RestrictedFluidHandlerItemStack(itemStack, ItemHydraulicBoots.MAX_CAPACITY).setValidator(ItemHydraulicBoots.getPredicate()), ElectrodynamicsItems.ITEM_COMBATBOOTS.get());
+	event.registerItem(Capabilities.FluidHandler.ITEM,
+		(itemStack, context) -> new RestrictedFluidHandlerItemStack(itemStack, ItemHydraulicBoots.MAX_CAPACITY)
+			.setValidator(ItemHydraulicBoots.getPredicate()),
+		ElectrodynamicsItems.ITEM_COMBATBOOTS.get());
 
-        // Railguns
+	// Railguns
 
-        event.registerItem(Capabilities.FluidHandler.ITEM, (itemStack, context) -> new RestrictedFluidHandlerItemStack(itemStack, ItemRailgun.CAPACITY).setValidator(ItemRailgun.getPredicate()), ElectrodynamicsItems.ITEM_KINETICRAILGUN.get());
-        event.registerItem(Capabilities.FluidHandler.ITEM, (itemStack, context) -> new RestrictedFluidHandlerItemStack(itemStack, ItemRailgun.CAPACITY).setValidator(ItemRailgun.getPredicate()), ElectrodynamicsItems.ITEM_PLASMARAILGUN.get());
+	event.registerItem(Capabilities.FluidHandler.ITEM,
+		(itemStack, context) -> new RestrictedFluidHandlerItemStack(itemStack, ItemRailgun.CAPACITY)
+			.setValidator(ItemRailgun.getPredicate()),
+		ElectrodynamicsItems.ITEM_KINETICRAILGUN.get());
+	event.registerItem(Capabilities.FluidHandler.ITEM,
+		(itemStack, context) -> new RestrictedFluidHandlerItemStack(itemStack, ItemRailgun.CAPACITY)
+			.setValidator(ItemRailgun.getPredicate()),
+		ElectrodynamicsItems.ITEM_PLASMARAILGUN.get());
 
-        /* TILES */
+	/* TILES */
 
-        ElectrodynamicsTiles.BLOCK_ENTITY_TYPES.getEntries().forEach(entry -> {
-            event.registerBlockEntity(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, (BlockEntityType<? extends GenericTile>) entry.get(), (tile, context) -> tile.getElectrodynamicCapability(context));
-            event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, (BlockEntityType<? extends GenericTile>) entry.get(), (tile, context) -> tile.getFluidHandlerCapability(context));
-            event.registerBlockEntity(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK, (BlockEntityType<? extends GenericTile>) entry.get(), (tile, context) -> tile.getGasHandlerCapability(context));
-            event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, (BlockEntityType<? extends GenericTile>) entry.get(), (tile, context) -> tile.getItemHandlerCapability(context));
-        });
+	ElectrodynamicsTiles.BLOCK_ENTITY_TYPES.getEntries().forEach(entry -> {
+	    event.registerBlockEntity(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
+		    (BlockEntityType<? extends GenericTile>) entry.get(),
+		    GenericTile::getElectrodynamicCapability);
+	    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK,
+		    (BlockEntityType<? extends GenericTile>) entry.get(),
+		    GenericTile::getFluidHandlerCapability);
+	    event.registerBlockEntity(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK,
+		    (BlockEntityType<? extends GenericTile>) entry.get(),
+		    GenericTile::getGasHandlerCapability);
+	    event.registerBlockEntity(Capabilities.ItemHandler.BLOCK,
+		    (BlockEntityType<? extends GenericTile>) entry.get(),
+		    GenericTile::getItemHandlerCapability);
+	});
 
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ElectrodynamicsTiles.TILE_BATTERYBOX.get(), (tile, context) -> tile.getFECapability(context));
+	event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ElectrodynamicsTiles.TILE_BATTERYBOX.get(),
+		TileBatteryBox::getFECapability);
 
-        if(ModList.get().isLoaded(Voltaic.MEKANISM_ID)) {
-            MekanismHandler.registerCapabilities(event);
-        }
+	if (ModList.get().isLoaded(Voltaic.MEKANISM_ID)) {
+	    MekanismHandler.registerCapabilities(event);
+	}
 
     }
 

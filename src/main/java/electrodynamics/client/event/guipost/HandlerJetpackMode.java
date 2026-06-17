@@ -93,7 +93,7 @@ public class HandlerJetpackMode extends AbstractPostGuiOverlayHandler {
     }
 
     private static long packInts(int high, int low) {
-	return ((long) high << 32) | (low & 0xFFFF_FFFFL);
+	return (long) high << 32 | low & 0xFFFF_FFFFL;
     }
 
 }

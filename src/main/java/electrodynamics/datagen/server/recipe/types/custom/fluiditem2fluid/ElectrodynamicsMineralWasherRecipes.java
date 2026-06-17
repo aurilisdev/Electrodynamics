@@ -18,58 +18,63 @@ import voltaic.datagen.utils.server.recipe.builders.FluidItem2FluidBuilder;
 
 public class ElectrodynamicsMineralWasherRecipes extends AbstractRecipeGenerator {
 
-	public static double MINERALWASHER_USAGE_PER_TICK = 400.0;
-	public static int MINERALWASHER_REQUIRED_TICKS = 200;
+    public static double MINERALWASHER_USAGE_PER_TICK = 400.0;
+    public static int MINERALWASHER_REQUIRED_TICKS = 200;
 
-	public final String modID;
+    public final String modID;
 
-	public ElectrodynamicsMineralWasherRecipes(String modID) {
-		this.modID = modID;
+    public ElectrodynamicsMineralWasherRecipes(String modID) {
+	this.modID = modID;
+    }
+
+    public ElectrodynamicsMineralWasherRecipes() {
+	this(Electrodynamics.ID);
+    }
+
+    @Override
+    public void addRecipes(RecipeOutput output) {
+
+	newRecipe(new FluidStack(Fluids.LAVA, 1500), 0, 200, 400.0, "lava_from_magma_block", modID)
+		//
+		.addFluidTagInput(FluidTags.LAVA, 1000)
+		//
+		.addItemStackInput(new ItemStack(Items.MAGMA_BLOCK))
+		//
+		.save(output);
+
+	for (SubtypeSulfateFluid fluid : SubtypeSulfateFluid.values()) {
+	    if (fluid.source != null) {
+		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(fluid), 1000), 0, 200, 400.0,
+			"sulfate_" + fluid.name(), modID)
+			//
+			.addItemTagInput(fluid.source, 1)
+			//
+			.addFluidTagInput(VoltaicTags.Fluids.SULFURIC_ACID, 1000)
+			//
+			.save(output);
+	    }
 	}
 
-	public ElectrodynamicsMineralWasherRecipes() {
-		this(Electrodynamics.ID);
+	for (SubtypeRoyalMineralFluid fluid : SubtypeRoyalMineralFluid.values()) {
+	    if (fluid.source != null) {
+		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUIDS_ROYALMINERAL.getValue(fluid), 4000), 0, 200,
+			400.0, "royalmineral_" + fluid.name(), modID)
+			//
+			.addItemTagInput(fluid.source, 1)
+			//
+			.addFluidTagInput(VoltaicTags.Fluids.AQUA_REGIA, 1000)
+			//
+			.save(output);
+	    }
 	}
 
-	@Override
-	public void addRecipes(RecipeOutput output) {
+    }
 
-		newRecipe(new FluidStack(Fluids.LAVA, 1500), 0, 200, 400.0, "lava_from_magma_block", modID)
-				//
-				.addFluidTagInput(FluidTags.LAVA, 1000)
-				//
-				.addItemStackInput(new ItemStack(Items.MAGMA_BLOCK))
-				//
-				.save(output);
-
-		for (SubtypeSulfateFluid fluid : SubtypeSulfateFluid.values()) {
-			if (fluid.source != null) {
-				newRecipe(new FluidStack(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(fluid), 1000), 0, 200, 400.0, "sulfate_" + fluid.name(), modID)
-						//
-						.addItemTagInput(fluid.source, 1)
-						//
-						.addFluidTagInput(VoltaicTags.Fluids.SULFURIC_ACID, 1000)
-						//
-						.save(output);
-			}
-		}
-
-		for (SubtypeRoyalMineralFluid fluid : SubtypeRoyalMineralFluid.values()) {
-			if (fluid.source != null) {
-				newRecipe(new FluidStack(ElectrodynamicsFluids.FLUIDS_ROYALMINERAL.getValue(fluid), 4000), 0, 200, 400.0, "royalmineral_" + fluid.name(), modID)
-						//
-						.addItemTagInput(fluid.source, 1)
-						//
-						.addFluidTagInput(VoltaicTags.Fluids.AQUA_REGIA, 1000)
-						//
-						.save(output);
-			}
-		}
-
-	}
-
-	public FluidItem2FluidBuilder<MineralWasherRecipe> newRecipe(FluidStack stack, float xp, int ticks, double usagePerTick, String name, String group) {
-		return new FluidItem2FluidBuilder<>(MineralWasherRecipe::new, stack, BaseRecipeBuilder.RecipeCategory.FLUID_ITEM_2_FLUID, modID, "mineral_washer/" + name, group, xp, ticks, usagePerTick);
-	}
+    public FluidItem2FluidBuilder<MineralWasherRecipe> newRecipe(FluidStack stack, float xp, int ticks,
+	    double usagePerTick, String name, String group) {
+	return new FluidItem2FluidBuilder<>(MineralWasherRecipe::new, stack,
+		BaseRecipeBuilder.RecipeCategory.FLUID_ITEM_2_FLUID, modID, "mineral_washer/" + name, group, xp, ticks,
+		usagePerTick);
+    }
 
 }

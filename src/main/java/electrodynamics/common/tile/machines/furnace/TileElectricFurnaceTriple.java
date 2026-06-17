@@ -10,11 +10,13 @@ import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 
 public class TileElectricFurnaceTriple extends TileElectricFurnace {
 
-	public TileElectricFurnaceTriple(BlockPos worldPosition, BlockState blockState) {
-		super(ElectrodynamicsTiles.TILE_ELECTRICFURNACETRIPLE.get(),3, worldPosition, blockState);
+    public TileElectricFurnaceTriple(BlockPos worldPosition, BlockState blockState) {
+	super(ElectrodynamicsTiles.TILE_ELECTRICFURNACETRIPLE.get(), 3, worldPosition, blockState);
 
-		addComponent(new ComponentContainerProvider(SubtypeMachine.electricfurnacetriple.tag(), this).createMenu((id, player) -> new ContainerElectricFurnaceTriple(id, player, getComponent(IComponentType.Inventory), getCoordsArray())));
+	addComponent(new ComponentContainerProvider(SubtypeMachine.electricfurnacetriple.tag(), this)
+		.createMenu((id, player) -> new ContainerElectricFurnaceTriple(id, player,
+			getComponent(IComponentType.Inventory), getCoordsArray())));
 
-	}
+    }
 
 }

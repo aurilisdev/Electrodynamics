@@ -16,15 +16,16 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ScreenCreativeGasSource extends GenericMaterialScreen<ContainerCreativeGasSource> {
     public ScreenCreativeGasSource(ContainerCreativeGasSource container, Inventory inv, Component titleIn) {
-        super(container, inv, titleIn);
-        addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.ARROW_RIGHT_OFF, 102, 33));
-        addComponent(new ScreenComponentGasGauge(() -> {
-            TileCreativeGasSource boiler = container.getSafeHost();
-            if (boiler != null) {
-                return boiler.<ComponentGasHandlerSimple>getComponent(IComponentType.GasHandler);
-            }
-            return null;
-        }, 81, 18));
-        addComponent(new ScreenComponentSimpleLabel(13, 38, 10, Color.TEXT_GRAY, ElectroTextUtils.gui("creativegassource.setgas")));
+	super(container, inv, titleIn);
+	addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.ARROW_RIGHT_OFF, 102, 33));
+	addComponent(new ScreenComponentGasGauge(() -> {
+	    TileCreativeGasSource boiler = container.getSafeHost();
+	    if (boiler != null) {
+		return boiler.<ComponentGasHandlerSimple>getComponent(IComponentType.GasHandler);
+	    }
+	    return null;
+	}, 81, 18));
+	addComponent(new ScreenComponentSimpleLabel(13, 38, 10, Color.TEXT_GRAY,
+		ElectroTextUtils.gui("creativegassource.setgas")));
     }
 }

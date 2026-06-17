@@ -13,26 +13,26 @@ import voltaic.registers.VoltaicDataComponentTypes;
 public class ItemDecoratorCombatLeggings implements IItemDecorator {
     @Override
     public boolean render(GuiGraphics guiGraphics, Font font, ItemStack stack, int x, int y) {
-        GasStack gas = stack.getOrDefault(VoltaicDataComponentTypes.GAS_STACK.get(), GasStack.EMPTY);
+	GasStack gas = stack.getOrDefault(VoltaicDataComponentTypes.GAS_STACK.get(), GasStack.EMPTY);
 
-        if(gas.isEmpty() || gas.getAmount() == ItemCombatArmor.LEGGINGS_CAPACITY){
-            return false;
-        }
+	if (gas.isEmpty() || gas.getAmount() == ItemCombatArmor.LEGGINGS_CAPACITY) {
+	    return false;
+	}
 
-        int blackBoxHeight = 1;
+	int blackBoxHeight = 1;
 
-        if(!stack.isBarVisible()) {
-            y += 1;
-            blackBoxHeight = 2;
-        }
+	if (!stack.isBarVisible()) {
+	    y += 1;
+	    blackBoxHeight = 2;
+	}
 
-        guiGraphics.setColor(0, 0, 0, 255);
-        guiGraphics.blit(ITexture.Textures.WHITE.getLocation(), x + 2, y + 12, 199, 0, 0, 13, blackBoxHeight, 16, 16);
-        guiGraphics.setColor(0, 255, 0, 255);
+	guiGraphics.setColor(0, 0, 0, 255);
+	guiGraphics.blit(ITexture.Textures.WHITE.getLocation(), x + 2, y + 12, 199, 0, 0, 13, blackBoxHeight, 16, 16);
+	guiGraphics.setColor(0, 255, 0, 255);
 
-        int width = (int) (13 * ((double) gas.getAmount() / (double) ItemCombatArmor.LEGGINGS_CAPACITY));
-        guiGraphics.blit(ITexture.Textures.WHITE.getLocation(), x + 2, y + 12, 199, 0, 0, width, 1, 16, 16);
-        RenderingUtils.resetShaderColor();
-        return false;
+	int width = (int) (13 * ((double) gas.getAmount() / (double) ItemCombatArmor.LEGGINGS_CAPACITY));
+	guiGraphics.blit(ITexture.Textures.WHITE.getLocation(), x + 2, y + 12, 199, 0, 0, width, 1, 16, 16);
+	RenderingUtils.resetShaderColor();
+	return false;
     }
 }

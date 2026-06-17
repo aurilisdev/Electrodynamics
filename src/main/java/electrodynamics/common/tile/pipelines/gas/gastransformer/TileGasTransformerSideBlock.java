@@ -32,124 +32,129 @@ public class TileGasTransformerSideBlock extends GenericTile implements IAddonTa
     private boolean isLeft = false;
 
     public TileGasTransformerSideBlock(BlockPos worldPos, BlockState blockState) {
-        super(ElectrodynamicsTiles.TILE_COMPRESSOR_SIDE.get(), worldPos, blockState);
+	super(ElectrodynamicsTiles.TILE_COMPRESSOR_SIDE.get(), worldPos, blockState);
     }
 
     public void setOwnerPos(BlockPos ownerPos) {
-        this.ownerPos = ownerPos;
+	this.ownerPos = ownerPos;
     }
 
     public void setIsLeft() {
-        isLeft = true;
+	isLeft = true;
     }
 
     public boolean isLeft() {
-        return isLeft;
+	return isLeft;
     }
 
     @Override
     public void onPlace(BlockState oldState, boolean isMoving) {
-        super.onPlace(oldState, isMoving);
-        if (level.isClientSide) {
-            return;
-        }
-        updateTankCount();
+	super.onPlace(oldState, isMoving);
+	if (level.isClientSide) {
+	    return;
+	}
+	updateTankCount();
     }
 
     @Override
     public void updateTankCount() {
-        BlockPos abovePos = getBlockPos().above();
-        BlockState aboveState = getLevel().getBlockState(abovePos);
-        BlockEntity aboveTile;
-        int tankCount = 0;
-        for (int i = 0; i < ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_ADDON_TANK_LIMIT.get(); i++) {
-            if (!aboveState.is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK)) {
-                break;
-            }
-            aboveTile = getLevel().getBlockEntity(abovePos);
-            if ((aboveTile == null) || !(aboveTile instanceof TileGasTransformerAddonTank tank)) {
-                break;
-            }
-            abovePos = abovePos.above();
-            aboveState = getLevel().getBlockState(abovePos);
-            tank.setOwnerPos(getBlockPos());
-            tankCount++;
-        }
-        BlockEntity owner = getLevel().getBlockEntity(ownerPos);
-        if (owner != null && owner instanceof IMultiblockGasTransformer compressor) {
-            compressor.updateAddonTanks(tankCount, isLeft);
-        }
+	BlockPos abovePos = getBlockPos().above();
+	BlockState aboveState = getLevel().getBlockState(abovePos);
+	BlockEntity aboveTile;
+	int tankCount = 0;
+	for (int i = 0; i < ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_ADDON_TANK_LIMIT.get(); i++) {
+	    if (!aboveState.is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK)) {
+		break;
+	    }
+	    aboveTile = getLevel().getBlockEntity(abovePos);
+	    if (aboveTile == null || !(aboveTile instanceof TileGasTransformerAddonTank tank)) {
+		break;
+	    }
+	    abovePos = abovePos.above();
+	    aboveState = getLevel().getBlockState(abovePos);
+	    tank.setOwnerPos(getBlockPos());
+	    tankCount++;
+	}
+	BlockEntity owner = getLevel().getBlockEntity(ownerPos);
+	if (owner != null && owner instanceof IMultiblockGasTransformer compressor) {
+	    compressor.updateAddonTanks(tankCount, isLeft);
+	}
     }
 
     @Override
     public void onBlockDestroyed() {
-        if (level.isClientSide) {
-            return;
-        }
-        if (getLevel().getBlockEntity(ownerPos) instanceof IMultiblockGasTransformer compressor) {
-            getLevel().destroyBlock(ownerPos, !compressor.hasBeenDestroyed());
-        }
+	if (level.isClientSide) {
+	    return;
+	}
+	if (getLevel().getBlockEntity(ownerPos) instanceof IMultiblockGasTransformer compressor) {
+	    getLevel().destroyBlock(ownerPos, !compressor.hasBeenDestroyed());
+	}
     }
 
     @Override
     protected void saveAdditional(CompoundTag compound, HolderLookup.Provider registries) {
-        super.saveAdditional(compound, registries);
-        compound.put("owner", NbtUtils.writeBlockPos(ownerPos));
-        compound.putBoolean("isleft", isLeft);
+	super.saveAdditional(compound, registries);
+	compound.put("owner", NbtUtils.writeBlockPos(ownerPos));
+	compound.putBoolean("isleft", isLeft);
     }
 
     @Override
     protected void loadAdditional(CompoundTag compound, HolderLookup.Provider registries) {
-        super.loadAdditional(compound, registries);
-        Optional<BlockPos> optional = NbtUtils.readBlockPos(compound, "owner");
-        ownerPos = optional.isPresent() ? optional.get() : BlockEntityUtils.OUT_OF_REACH;
-        isLeft = compound.getBoolean("isleft");
+	super.loadAdditional(compound, registries);
+	Optional<BlockPos> optional = NbtUtils.readBlockPos(compound, "owner");
+	ownerPos = optional.isPresent() ? optional.get() : BlockEntityUtils.OUT_OF_REACH;
+	isLeft = compound.getBoolean("isleft");
     }
 
     @Override
-    public @org.jetbrains.annotations.Nullable IFluidHandler getFluidHandlerCapability(@org.jetbrains.annotations.Nullable Direction side) {
-        if (ownerPos == null || ownerPos.equals(BlockEntityUtils.OUT_OF_REACH)) {
-            return null;
-        }
+    public @org.jetbrains.annotations.Nullable IFluidHandler getFluidHandlerCapability(
+	    @org.jetbrains.annotations.Nullable Direction side) {
+	if (ownerPos == null || ownerPos.equals(BlockEntityUtils.OUT_OF_REACH)) {
+	    return null;
+	}
 
-        if (getLevel().getBlockEntity(ownerPos) instanceof GenericTileGasTransformer compressor && compressor.hasComponent(IComponentType.FluidHandler)) {
+	if (getLevel().getBlockEntity(ownerPos) instanceof GenericTileGasTransformer compressor
+		&& compressor.hasComponent(IComponentType.FluidHandler)) {
 
-            if (isLeft) {
-                return compressor.<IComponentFluidHandler>getComponent(IComponentType.FluidHandler).getCapability(side, CapabilityInputType.INPUT);
-            }
-            return compressor.<IComponentFluidHandler>getComponent(IComponentType.FluidHandler).getCapability(side, CapabilityInputType.OUTPUT);
+	    if (isLeft) {
+		return compressor.<IComponentFluidHandler>getComponent(IComponentType.FluidHandler).getCapability(side,
+			CapabilityInputType.INPUT);
+	    }
+	    return compressor.<IComponentFluidHandler>getComponent(IComponentType.FluidHandler).getCapability(side,
+		    CapabilityInputType.OUTPUT);
 
-        }
-        return null;
+	}
+	return null;
     }
 
     @Override
-    public @org.jetbrains.annotations.Nullable IGasHandler getGasHandlerCapability(@org.jetbrains.annotations.Nullable Direction side) {
-        if (ownerPos == null || ownerPos.equals(BlockEntityUtils.OUT_OF_REACH)) {
-            return null;
-        }
+    public @org.jetbrains.annotations.Nullable IGasHandler getGasHandlerCapability(
+	    @org.jetbrains.annotations.Nullable Direction side) {
+	if (ownerPos == null || ownerPos.equals(BlockEntityUtils.OUT_OF_REACH)) {
+	    return null;
+	}
 
-        if (getLevel().getBlockEntity(ownerPos) instanceof GenericTileGasTransformer compressor) {
-            return compressor.getGasHandlerCapability(side);
-        }
+	if (getLevel().getBlockEntity(ownerPos) instanceof GenericTileGasTransformer compressor) {
+	    return compressor.getGasHandlerCapability(side);
+	}
 
-        return null;
+	return null;
     }
 
     @Override
     public ItemInteractionResult useWithItem(ItemStack used, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (getLevel().getBlockEntity(ownerPos) instanceof GenericTileGasTransformer compressor) {
-            return compressor.useWithItem(used, player, hand, hit);
-        }
-        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
+	if (getLevel().getBlockEntity(ownerPos) instanceof GenericTileGasTransformer compressor) {
+	    return compressor.useWithItem(used, player, hand, hit);
+	}
+	return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
     public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
-        if (getLevel().getBlockEntity(ownerPos) instanceof GenericTileGasTransformer compressor) {
-            return compressor.useWithoutItem(player, hit);
-        }
-        return InteractionResult.FAIL;
+	if (getLevel().getBlockEntity(ownerPos) instanceof GenericTileGasTransformer compressor) {
+	    return compressor.useWithoutItem(player, hit);
+	}
+	return InteractionResult.FAIL;
     }
 
 }

@@ -48,62 +48,66 @@ public class GasMapReloadListener extends SimplePreparableReloadListener<JsonObj
 
     @Override
     protected JsonObject prepare(ResourceManager manager, ProfilerFiller profiler) {
-        JsonObject combined = new JsonObject();
+	JsonObject combined = new JsonObject();
 
-        List<Map.Entry<ResourceLocation, Resource>> resources = new ArrayList<>(manager.listResources(FOLDER, GasMapReloadListener::isJson).entrySet());
-        Collections.reverse(resources);
+	List<Map.Entry<ResourceLocation, Resource>> resources = new ArrayList<>(
+		manager.listResources(FOLDER, GasMapReloadListener::isJson).entrySet());
+	Collections.reverse(resources);
 
-        for (Map.Entry<ResourceLocation, Resource> entry : resources) {
-            ResourceLocation loc = entry.getKey();
-            final String namespace = loc.getNamespace();
-            final String filePath = loc.getPath();
-            final String dataPath = filePath.substring(FOLDER.length() + 1, filePath.length() - JSON_EXTENSION_LENGTH);
+	for (Map.Entry<ResourceLocation, Resource> entry : resources) {
+	    ResourceLocation loc = entry.getKey();
+	    final String namespace = loc.getNamespace();
+	    final String filePath = loc.getPath();
+	    final String dataPath = filePath.substring(FOLDER.length() + 1, filePath.length() - JSON_EXTENSION_LENGTH);
 
-            final ResourceLocation jsonFile = ResourceLocation.fromNamespaceAndPath(namespace, dataPath);
+	    final ResourceLocation jsonFile = ResourceLocation.fromNamespaceAndPath(namespace, dataPath);
 
-            Resource resource = entry.getValue();
-            try (final InputStream inputStream = resource.open(); final Reader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));) {
-                final JsonObject json = (JsonObject) GsonHelper.fromJson(GSON, reader, JsonElement.class);
+	    Resource resource = entry.getValue();
+	    try (final InputStream inputStream = resource.open();
+		    final Reader reader = new BufferedReader(
+			    new InputStreamReader(inputStream, StandardCharsets.UTF_8));) {
+		final JsonObject json = (JsonObject) GsonHelper.fromJson(GSON, reader, JsonElement.class);
 
-                json.entrySet().forEach(set -> {
+		json.entrySet().forEach(set -> {
 
-                    if (combined.has(set.getKey())) {
-                        combined.remove(set.getKey());
-                    }
+		    if (combined.has(set.getKey())) {
+			combined.remove(set.getKey());
+		    }
 
-                    combined.add(set.getKey(), set.getValue());
-                });
+		    combined.add(set.getKey(), set.getValue());
+		});
 
-            } catch (RuntimeException | IOException exception) {
-                logger.error("Data loader for {} could not read data {} from file {} in data pack {}", FOLDER, jsonFile, loc, resource.sourcePackId(), exception);
-            }
+	    } catch (RuntimeException | IOException exception) {
+		logger.error("Data loader for {} could not read data {} from file {} in data pack {}", FOLDER, jsonFile,
+			loc, resource.sourcePackId(), exception);
+	    }
 
-        }
-        return combined;
+	}
+	return combined;
     }
 
     @Override
     protected void apply(JsonObject json, ResourceManager manager, ProfilerFiller profiler) {
-        gasToChemicalMap.clear();
-        chemicalToGasMap.clear();
+	gasToChemicalMap.clear();
+	chemicalToGasMap.clear();
 
-        json.entrySet().forEach(set -> {
+	json.entrySet().forEach(set -> {
 
-            ResourceLocation gasKey = ResourceLocation.parse(set.getKey());
-            ResourceLocation chemicalKey = ResourceLocation.parse(set.getValue().getAsString());
+	    ResourceLocation gasKey = ResourceLocation.parse(set.getKey());
+	    ResourceLocation chemicalKey = ResourceLocation.parse(set.getValue().getAsString());
 
-            Gas gas = VoltaicGases.GAS_REGISTRY.get(gasKey);
-            Chemical chemical = MekanismAPI.CHEMICAL_REGISTRY.get(chemicalKey);
+	    Gas gas = VoltaicGases.GAS_REGISTRY.get(gasKey);
+	    Chemical chemical = MekanismAPI.CHEMICAL_REGISTRY.get(chemicalKey);
 
-            gasToChemicalMap.put(gas, chemical);
-            chemicalToGasMap.put(chemical, gas);
+	    gasToChemicalMap.put(gas, chemical);
+	    chemicalToGasMap.put(chemical, gas);
 
-        });
+	});
 
     }
 
     private static boolean isJson(final ResourceLocation filename) {
-        return filename.getPath().contains(FILE_NAME + JSON_EXTENSION);
+	return filename.getPath().contains(FILE_NAME + JSON_EXTENSION);
     }
 
 }

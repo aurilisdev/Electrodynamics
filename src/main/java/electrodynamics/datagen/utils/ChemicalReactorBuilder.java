@@ -32,83 +32,86 @@ public class ChemicalReactorBuilder extends BaseRecipeBuilder<ChemicalReactorRec
     private List<GasStack> gasIngredients = new ArrayList<>();
     private List<Pair<TagKey<Gas>, GasIngWrapper>> tagGasIngredients = new ArrayList<>();
 
-    public ChemicalReactorBuilder(RecipeCategory category, String parent, String name, String group, double experience, int processTime, double usagePerTick) {
-        super(category, parent, name, group, experience, processTime, usagePerTick);
+    public ChemicalReactorBuilder(RecipeCategory category, String parent, String name, String group, double experience,
+	    int processTime, double usagePerTick) {
+	super(category, parent, name, group, experience, processTime, usagePerTick);
     }
 
     public ChemicalReactorBuilder setItemOutput(ItemStack stack) {
-        this.itemOutput = stack;
-        return this;
+	this.itemOutput = stack;
+	return this;
     }
 
     public ChemicalReactorBuilder setFluidOutput(FluidStack stack) {
-        this.fluidOutput = stack;
-        return this;
+	this.fluidOutput = stack;
+	return this;
     }
 
     public ChemicalReactorBuilder setGasOutput(GasStack stack) {
-        this.gasOutput = stack;
-        return this;
+	this.gasOutput = stack;
+	return this;
     }
 
     public ChemicalReactorBuilder addItemStackInput(ItemStack stack) {
-        itemIngredients.add(stack);
-        return this;
+	itemIngredients.add(stack);
+	return this;
     }
 
     public ChemicalReactorBuilder addItemTagInput(TagKey<Item> tag, int count) {
-        tagItemIngredients.add(Pair.of(tag, count));
-        return this;
+	tagItemIngredients.add(Pair.of(tag, count));
+	return this;
     }
 
     public ChemicalReactorBuilder addFluidStackInput(FluidStack stack) {
-        fluidIngredients.add(stack);
-        return this;
+	fluidIngredients.add(stack);
+	return this;
     }
 
     public ChemicalReactorBuilder addFluidTagInput(TagKey<Fluid> tag, int count) {
-        tagFluidIngredients.add(Pair.of(tag, count));
-        return this;
+	tagFluidIngredients.add(Pair.of(tag, count));
+	return this;
     }
 
     public ChemicalReactorBuilder addGasStackInput(GasStack stack) {
-        gasIngredients.add(stack);
-        return this;
+	gasIngredients.add(stack);
+	return this;
     }
 
     public ChemicalReactorBuilder addGasTagInput(TagKey<Gas> tag, GasIngWrapper count) {
-        tagGasIngredients.add(Pair.of(tag, count));
-        return this;
+	tagGasIngredients.add(Pair.of(tag, count));
+	return this;
     }
 
     @Override
     public ChemicalReactorRecipe makeRecipe() {
-        List<CountableIngredient> itemIngs = new ArrayList<>();
-        for (ItemStack item : itemIngredients) {
-            itemIngs.add(new CountableIngredient(item));
-        }
-        for (Pair<TagKey<Item>, Integer> pair : tagItemIngredients) {
-            itemIngs.add(new CountableIngredient(Ingredient.of(pair.getFirst()), pair.getSecond()));
-        }
-        List<FluidIngredient> fluidIngs = new ArrayList<>();
-        for (FluidStack fluid : fluidIngredients) {
-            fluidIngs.add(new FluidIngredient(fluid));
-        }
-        for (Pair<TagKey<Fluid>, Integer> pair : tagFluidIngredients) {
-            fluidIngs.add(new FluidIngredient(pair.getFirst(), pair.getSecond()));
-        }
-        List<GasIngredient> gasIngs = new ArrayList<>();
-        for (GasStack gas : gasIngredients) {
-            gasIngs.add(new GasIngredient(gas));
-        }
-        for (Pair<TagKey<Gas>, GasIngWrapper> pair : tagGasIngredients) {
-            gasIngs.add(new GasIngredient(pair.getFirst(), pair.getSecond().amt(), pair.getSecond().temp(), pair.getSecond().pressure()));
-        }
-        return new ChemicalReactorRecipe(group, itemIngs, fluidIngs, gasIngs, itemOutput, fluidOutput, gasOutput, experience, processTime, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
+	List<CountableIngredient> itemIngs = new ArrayList<>();
+	for (ItemStack item : itemIngredients) {
+	    itemIngs.add(new CountableIngredient(item));
+	}
+	for (Pair<TagKey<Item>, Integer> pair : tagItemIngredients) {
+	    itemIngs.add(new CountableIngredient(Ingredient.of(pair.getFirst()), pair.getSecond()));
+	}
+	List<FluidIngredient> fluidIngs = new ArrayList<>();
+	for (FluidStack fluid : fluidIngredients) {
+	    fluidIngs.add(new FluidIngredient(fluid));
+	}
+	for (Pair<TagKey<Fluid>, Integer> pair : tagFluidIngredients) {
+	    fluidIngs.add(new FluidIngredient(pair.getFirst(), pair.getSecond()));
+	}
+	List<GasIngredient> gasIngs = new ArrayList<>();
+	for (GasStack gas : gasIngredients) {
+	    gasIngs.add(new GasIngredient(gas));
+	}
+	for (Pair<TagKey<Gas>, GasIngWrapper> pair : tagGasIngredients) {
+	    gasIngs.add(new GasIngredient(pair.getFirst(), pair.getSecond().amt(), pair.getSecond().temp(),
+		    pair.getSecond().pressure()));
+	}
+	return new ChemicalReactorRecipe(group, itemIngs, fluidIngs, gasIngs, itemOutput, fluidOutput, gasOutput,
+		experience, processTime, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
     }
 
     @Override
     public Item getResult() {
-        return itemOutput.getItem();
+	return itemOutput.getItem();
     }
 }

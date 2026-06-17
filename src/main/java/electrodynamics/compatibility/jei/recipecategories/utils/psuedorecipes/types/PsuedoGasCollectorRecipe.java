@@ -8,8 +8,8 @@ public class PsuedoGasCollectorRecipe {
     public final ItemStack input;
     public final GasCollectorChromoCardsRegister.AtmosphericResult output;
 
-    public PsuedoGasCollectorRecipe(ItemStack input, GasCollectorChromoCardsRegister.AtmosphericResult output){
-        this.input = input;
-        this.output = output;
+    public PsuedoGasCollectorRecipe(ItemStack input, GasCollectorChromoCardsRegister.AtmosphericResult output) {
+	this.input = input;
+	this.output = output;
     }
 }
