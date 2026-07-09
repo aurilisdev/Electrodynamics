@@ -15,8 +15,6 @@ public class ElectrodynamicsRadiationShieldingProvider extends BaseRadiationShie
 
     @Override
     public void getRadiationShielding(JsonObject json) {
-
-	addTag(VoltaicTags.Blocks.STORAGE_BLOCK_LEAD, 20000, 1, json);
-
+	addTag(VoltaicTags.Blocks.STORAGE_BLOCK_LEAD, 0.05, 1, json);
     }
 }
