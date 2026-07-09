@@ -63,11 +63,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.aluminum.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -110,11 +110,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.chromium.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -155,11 +155,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.fluorite.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -200,11 +200,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.lead.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -245,11 +245,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.lithium.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -290,11 +290,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.molybdenum.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -335,11 +335,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.monazite.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -380,11 +380,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.niter.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -425,11 +425,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.salt.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -470,11 +470,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.silver.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -515,11 +515,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.sulfur.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -560,11 +560,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.sylvite.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -605,11 +605,11 @@ public class ChapterOre extends Chapter {
 			new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 				ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.tin.harvestLevel)))
 			.onTooltip((graphics, xAxis, yAxis, screen) -> {
-			if (JeiBuffer.isJeiInstalled()) {
-			    graphics.renderTooltip(screen.getFontRenderer(),
-				    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY),
-				    xAxis, yAxis);
-			}
+			    if (JeiBuffer.isJeiInstalled()) {
+				graphics.renderTooltip(screen.getFontRenderer(),
+					ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY),
+					xAxis, yAxis);
+			    }
 
 			}).onKeyPress(new OnKeyPress() {
 
@@ -650,11 +650,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.titanium.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -695,11 +695,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.thorium.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -740,11 +740,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.uranium.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -785,11 +785,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOre.vanadium.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -830,14 +830,15 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 40,
 			ElectroTextUtils.guidebook("chapter.ores.veinsize", SubtypeOreDeepslate.aluminum.veinSize)),
 		//
-		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50, ElectroTextUtils
-			.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.aluminum.harvestLevel)))
+		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
+			ElectroTextUtils.guidebook("chapter.ores.miningteir",
+				SubtypeOreDeepslate.aluminum.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -877,14 +878,15 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 40,
 			ElectroTextUtils.guidebook("chapter.ores.veinsize", SubtypeOreDeepslate.chromium.veinSize)),
 		//
-		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50, ElectroTextUtils
-			.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.chromium.harvestLevel)))
+		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
+			ElectroTextUtils.guidebook("chapter.ores.miningteir",
+				SubtypeOreDeepslate.chromium.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -924,14 +926,15 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 40,
 			ElectroTextUtils.guidebook("chapter.ores.veinsize", SubtypeOreDeepslate.fluorite.veinSize)),
 		//
-		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50, ElectroTextUtils
-			.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.fluorite.harvestLevel)))
+		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
+			ElectroTextUtils.guidebook("chapter.ores.miningteir",
+				SubtypeOreDeepslate.fluorite.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -974,11 +977,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.lead.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -1018,14 +1021,15 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 40,
 			ElectroTextUtils.guidebook("chapter.ores.veinsize", SubtypeOreDeepslate.lithium.veinSize)),
 		//
-		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50, ElectroTextUtils
-			.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.lithium.harvestLevel)))
+		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
+			ElectroTextUtils.guidebook("chapter.ores.miningteir",
+				SubtypeOreDeepslate.lithium.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -1065,14 +1069,15 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 40,
 			ElectroTextUtils.guidebook("chapter.ores.veinsize", SubtypeOreDeepslate.molybdenum.veinSize)),
 		//
-		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50, ElectroTextUtils
-			.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.molybdenum.harvestLevel)))
+		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
+			ElectroTextUtils.guidebook("chapter.ores.miningteir",
+				SubtypeOreDeepslate.molybdenum.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -1112,14 +1117,15 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 40,
 			ElectroTextUtils.guidebook("chapter.ores.veinsize", SubtypeOreDeepslate.monazite.veinSize)),
 		//
-		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50, ElectroTextUtils
-			.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.monazite.harvestLevel)))
+		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
+			ElectroTextUtils.guidebook("chapter.ores.miningteir",
+				SubtypeOreDeepslate.monazite.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -1162,11 +1168,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.niter.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -1209,11 +1215,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.salt.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -1256,11 +1262,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.silver.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -1303,11 +1309,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.sulfur.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -1347,14 +1353,15 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 40,
 			ElectroTextUtils.guidebook("chapter.ores.veinsize", SubtypeOreDeepslate.sylvite.veinSize)),
 		//
-		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50, ElectroTextUtils
-			.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.sylvite.harvestLevel)))
+		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
+			ElectroTextUtils.guidebook("chapter.ores.miningteir",
+				SubtypeOreDeepslate.sylvite.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -1397,11 +1404,11 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
 			ElectroTextUtils.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.tin.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -1440,14 +1447,15 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 40,
 			ElectroTextUtils.guidebook("chapter.ores.veinsize", SubtypeOreDeepslate.titanium.veinSize)),
 		//
-		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50, ElectroTextUtils
-			.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.titanium.harvestLevel)))
+		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
+			ElectroTextUtils.guidebook("chapter.ores.miningteir",
+				SubtypeOreDeepslate.titanium.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -1487,14 +1495,15 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 40,
 			ElectroTextUtils.guidebook("chapter.ores.veinsize", SubtypeOreDeepslate.thorium.veinSize)),
 		//
-		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50, ElectroTextUtils
-			.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.thorium.harvestLevel)))
+		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
+			ElectroTextUtils.guidebook("chapter.ores.miningteir",
+				SubtypeOreDeepslate.thorium.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -1534,14 +1543,15 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 40,
 			ElectroTextUtils.guidebook("chapter.ores.veinsize", SubtypeOreDeepslate.uranium.veinSize)),
 		//
-		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50, ElectroTextUtils
-			.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.uranium.harvestLevel)))
+		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
+			ElectroTextUtils.guidebook("chapter.ores.miningteir",
+				SubtypeOreDeepslate.uranium.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -1581,14 +1591,15 @@ public class ChapterOre extends Chapter {
 		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 40,
 			ElectroTextUtils.guidebook("chapter.ores.veinsize", SubtypeOreDeepslate.vanadium.veinSize)),
 		//
-		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50, ElectroTextUtils
-			.guidebook("chapter.ores.miningteir", SubtypeOreDeepslate.vanadium.harvestLevel)))
+		new AbstractGraphicWrapper.GraphicTextDescriptor(40, 50,
+			ElectroTextUtils.guidebook("chapter.ores.miningteir",
+				SubtypeOreDeepslate.vanadium.harvestLevel)))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    graphics.renderTooltip(screen.getFontRenderer(),
-			    ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
-			    yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			graphics.renderTooltip(screen.getFontRenderer(),
+				ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY), xAxis,
+				yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 

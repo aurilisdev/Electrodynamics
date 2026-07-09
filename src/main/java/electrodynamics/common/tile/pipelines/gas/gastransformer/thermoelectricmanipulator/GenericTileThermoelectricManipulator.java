@@ -161,7 +161,9 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
 	}
 	GasTank outputTank = gasHandler.getOutputTanks()[0];
-	if ((outputTank.getGasAmount() >= outputTank.getCapacity()) || (!outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas())) || (inputTank.getGas().getTemperature() <= GasStack.ABSOLUTE_ZERO)) {
+	if ((outputTank.getGasAmount() >= outputTank.getCapacity())
+		|| (!outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas()))
+		|| (inputTank.getGas().getTemperature() <= GasStack.ABSOLUTE_ZERO)) {
 	    return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF,
 		    false);
 	}
@@ -210,7 +212,8 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 	evaporatedGas = VoltaicGases.MAPPED_GASSES.getOrDefault(
 		BuiltInRegistries.FLUID.wrapAsHolder(inputTank.getFluid().getFluid()), VoltaicGases.EMPTY.value());
 
-	if (evaporatedGas.isEmpty() || (targetTemperature.getValue() <= evaporatedGas.getCondensationTemp()) || (!outputTank.isEmpty() && !outputTank.getGas().getGas().equals(evaporatedGas))) {
+	if (evaporatedGas.isEmpty() || (targetTemperature.getValue() <= evaporatedGas.getCondensationTemp())
+		|| (!outputTank.isEmpty() && !outputTank.getGas().getGas().equals(evaporatedGas))) {
 	    return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF,
 		    false);
 	}
@@ -375,8 +378,7 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 	    return conversionRate;
 	}
 
-	return Math.max(1,
-		(int) Math.floor((double) conversionRate * (double) getHeatTransfer() / Math.abs(deltaT)));
+	return Math.max(1, (int) Math.floor((double) conversionRate * (double) getHeatTransfer() / Math.abs(deltaT)));
     }
 
     public abstract int getHeatTransfer();

@@ -471,8 +471,7 @@ public class ElectrodynamicsClientRegister {
 	    @Override
 	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
 		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
-		ItemStack[] armorPiecesArray = {
-			new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()),
+		ItemStack[] armorPiecesArray = { new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()),
 			new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()),
 			new ItemStack(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get()),
 			new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get()) };
@@ -521,8 +520,7 @@ public class ElectrodynamicsClientRegister {
 	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
 		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-		ItemStack[] armorPiecesArray = {
-			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get()),
+		ItemStack[] armorPiecesArray = { new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get()),
 			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get()),
 			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS.get()),
 			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get()) };

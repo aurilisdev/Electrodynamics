@@ -16,9 +16,8 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ContainerMineralWasher extends GenericContainerBlockEntity<TileMineralWasher> {
 
-    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
-	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.iteminput,
-	    SubtypeItemUpgrade.experience };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed,
+	    SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience };
 
     public ContainerMineralWasher(int id, Inventory playerinv) {
 	this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));

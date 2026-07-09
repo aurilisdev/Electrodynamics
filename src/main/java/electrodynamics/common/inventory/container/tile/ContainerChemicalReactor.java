@@ -16,9 +16,9 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ContainerChemicalReactor extends GenericContainerBlockEntity<TileChemicalReactor> {
 
-    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
-	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.iteminput,
-	    SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.experience };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed,
+	    SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.itemoutput,
+	    SubtypeItemUpgrade.experience };
 
     public ContainerChemicalReactor(int id, Inventory playerinv) {
 	this(id, playerinv, new SimpleContainer(17), new SimpleContainerData(3));

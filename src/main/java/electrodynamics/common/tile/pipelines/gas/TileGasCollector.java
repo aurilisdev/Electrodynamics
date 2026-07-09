@@ -8,7 +8,6 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
@@ -111,9 +110,7 @@ public class TileGasCollector extends GenericGasTile implements ITickableSound {
 	    Holder<Biome> biomeHolder = getLevel().getBiome(getBlockPos());
 
 	    if (result.biome() != null) {
-	        return biomeHolder.unwrapKey()
-	                .map(result.biome()::equals)
-	                .orElse(false);
+		return biomeHolder.unwrapKey().map(result.biome()::equals).orElse(false);
 	    }
 
 	    return biomeHolder.is(result.biomeTag());

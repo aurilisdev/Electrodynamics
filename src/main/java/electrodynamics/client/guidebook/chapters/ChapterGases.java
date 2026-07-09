@@ -93,14 +93,14 @@ public class ChapterGases extends Chapter {
 		    new AbstractGraphicWrapper.GraphicTextDescriptor(36, 11, gas.get().getDescription()))
 
 		    .onTooltip((graphics, xAxis, yAxis, screen) -> {
-		        if (JeiBuffer.isJeiInstalled()) {
-		    	List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    	tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe")
-		    		.withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		    	tooltips.add(ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY)
-		    		.getVisualOrderText());
-		    	graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		        }
+			if (JeiBuffer.isJeiInstalled()) {
+			    List<FormattedCharSequence> tooltips = new ArrayList<>();
+			    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				    .getVisualOrderText());
+			    tooltips.add(ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY)
+				    .getVisualOrderText());
+			    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+			}
 
 		    }).onKeyPress(new OnKeyPress() {
 
@@ -197,24 +197,26 @@ public class ChapterGases extends Chapter {
 	blankLine();
 	pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.gases.l12")).setSeparateStart());
 	pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81,
-		Electrodynamics.rl("textures/screen/guidebook/gasio.png")).setNewPage().onTooltip((graphics, xAxis, yAxis, screen) -> {
-		List<FormattedCharSequence> tooltips = new ArrayList<>();
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.left",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gasvent)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.middle",
-			ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electrolyticseparator)
-				.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.right",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gaspipefilter)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		Electrodynamics.rl("textures/screen/guidebook/gasio.png")).setNewPage()
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    List<FormattedCharSequence> tooltips = new ArrayList<>();
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.left",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gasvent).getDescription()
+					    .copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.middle",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electrolyticseparator)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.right",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gaspipefilter)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
 
-		graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
 		}));
 
 	/* Gas Pipes */
@@ -322,12 +324,12 @@ public class ChapterGases extends Chapter {
 		.setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
 		ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get()).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -352,13 +354,14 @@ public class ChapterGases extends Chapter {
 	pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gasvalve)
 		.getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
-		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gasvalve)).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gasvalve))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -389,13 +392,14 @@ public class ChapterGases extends Chapter {
 	pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gaspipepump)
 		.getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
-		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gaspipepump)).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gaspipepump))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -428,13 +432,14 @@ public class ChapterGases extends Chapter {
 	pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gaspipefilter)
 		.getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
-		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gaspipefilter)).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gaspipefilter))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -477,13 +482,14 @@ public class ChapterGases extends Chapter {
 	pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gasvent)
 		.getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
-		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gasvent)).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gasvent))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -509,13 +515,14 @@ public class ChapterGases extends Chapter {
 		ElectroTextUtils.guidebook("chapter.gases.gascylinders").withStyle(ChatFormatting.BOLD)).setCentered()
 		.setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
-		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gastankhsla)).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gastankhsla))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 

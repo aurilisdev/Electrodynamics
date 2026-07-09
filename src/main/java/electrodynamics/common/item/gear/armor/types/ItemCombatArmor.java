@@ -362,7 +362,8 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action,
 	    Player player, SlotAccess access) {
 
-	if (getEquipmentSlot() == EquipmentSlot.CHEST || getEquipmentSlot() == EquipmentSlot.FEET || !IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	if (getEquipmentSlot() == EquipmentSlot.CHEST || getEquipmentSlot() == EquipmentSlot.FEET
+		|| !IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
 	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
 	}
 

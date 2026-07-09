@@ -153,7 +153,8 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
 
 		    color = new Color(sp.getPixelRGBA(0, 5, 5));
 		    color = color.multiply(new Color(attributes.getTintColor()));
-		} else if ((stack2.isEmpty() && !stack1.isEmpty()) || (Voltaic.RANDOM.nextBoolean() && !stack1.isEmpty())) {
+		} else if ((stack2.isEmpty() && !stack1.isEmpty())
+			|| (Voltaic.RANDOM.nextBoolean() && !stack1.isEmpty())) {
 
 		    IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack1.getFluid());
 
@@ -164,13 +165,13 @@ public class RenderChemicalReactor extends AbstractTileRenderer<TileChemicalReac
 		    color = color.multiply(new Color(attributes.getTintColor()));
 
 		} else if (!stack2.isEmpty()) {
-		IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack2.getFluid());
+		    IClientFluidTypeExtensions attributes = IClientFluidTypeExtensions.of(stack2.getFluid());
 
-		TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
-			.apply(attributes.getStillTexture());
+		    TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
+			    .apply(attributes.getStillTexture());
 
-		color = new Color(sp.getPixelRGBA(0, 5, 5));
-		color = color.multiply(new Color(attributes.getTintColor()));
+		    color = new Color(sp.getPixelRGBA(0, 5, 5));
+		    color = color.multiply(new Color(attributes.getTintColor()));
 		}
 
 		double x = tile.getBlockPos().getX();

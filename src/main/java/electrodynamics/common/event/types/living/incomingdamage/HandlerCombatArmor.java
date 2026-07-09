@@ -13,8 +13,7 @@ import voltaic.registers.VoltaicDataComponentTypes;
 
 public class HandlerCombatArmor extends AbstractIncomingDamageHandler {
 
-    private static final ItemStack[] COMBAT_ARMOR = {
-	    new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()),
+    private static final ItemStack[] COMBAT_ARMOR = { new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()),
 	    new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()),
 	    new ItemStack(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get()),
 	    new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get()) };

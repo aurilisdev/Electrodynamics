@@ -16,8 +16,8 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ContainerGasCollector extends GenericContainerBlockEntity<TileGasCollector> {
 
-    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
-	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed,
+	    SubtypeItemUpgrade.basicspeed };
 
     public ContainerGasCollector(int id, Inventory playerinv) {
 	this(id, playerinv, new SimpleContainer(5), new SimpleContainerData(3));

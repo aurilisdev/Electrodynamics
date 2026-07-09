@@ -15,8 +15,8 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 public class ContainerAdvancedCompressor
 	extends GenericContainerBlockEntity<GenericTileAdvancedCompressor.TileAdvancedCompressor> {
 
-    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
-	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed,
+	    SubtypeItemUpgrade.basicspeed };
 
     public ContainerAdvancedCompressor(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 	super(ElectrodynamicsMenuTypes.CONTAINER_ADVANCEDCOMPRESSOR.get(), id, playerinv, inventory, inventorydata);

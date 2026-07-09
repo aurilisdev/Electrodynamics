@@ -13,8 +13,8 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerRotaryUnifier extends GenericContainerBlockEntity<TileRotaryUnifier> {
 
-    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
-	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed,
+	    SubtypeItemUpgrade.basicspeed };
 
     public ContainerRotaryUnifier(int id, Inventory playerinva) {
 	this(id, playerinva, new SimpleContainer(3), new SimpleContainerData(3));

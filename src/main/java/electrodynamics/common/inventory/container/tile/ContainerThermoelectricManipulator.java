@@ -16,8 +16,8 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 public class ContainerThermoelectricManipulator
 	extends GenericContainerBlockEntity<GenericTileThermoelectricManipulator> {
 
-    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
-	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed,
+	    SubtypeItemUpgrade.basicspeed };
 
     public ContainerThermoelectricManipulator(int id, Inventory playerinv, Container inventory,
 	    ContainerData inventorydata) {

@@ -17,9 +17,8 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ContainerChemicalMixer extends GenericContainerBlockEntity<TileChemicalMixer> {
 
-    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
-	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.iteminput,
-	    SubtypeItemUpgrade.experience };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed,
+	    SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience };
 
     public ContainerChemicalMixer(int id, Inventory playerinv) {
 	this(id, playerinv, new SimpleContainer(6), new SimpleContainerData(3));

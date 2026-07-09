@@ -15,8 +15,8 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 public class ContainerAdvancedDecompressor
 	extends GenericContainerBlockEntity<GenericTileAdvancedCompressor.TileAdvancedDecompressor> {
 
-    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
-	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed,
+	    SubtypeItemUpgrade.basicspeed };
 
     public ContainerAdvancedDecompressor(int id, Inventory playerinv, Container inventory,
 	    ContainerData inventorydata) {

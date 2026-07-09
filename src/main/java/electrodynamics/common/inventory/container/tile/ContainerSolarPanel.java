@@ -13,8 +13,7 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerSolarPanel extends GenericContainerBlockEntity<TileSolarPanel> {
 
-    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
-	    SubtypeItemUpgrade.improvedsolarcell };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.improvedsolarcell };
 
     public ContainerSolarPanel(int id, Inventory playerinv) {
 	this(id, playerinv, new SimpleContainer(1), new SimpleContainerData(3));

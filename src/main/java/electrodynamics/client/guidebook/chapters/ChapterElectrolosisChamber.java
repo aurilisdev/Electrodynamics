@@ -75,43 +75,49 @@ public class ChapterElectrolosisChamber extends Chapter {
 		ElectroTextUtils.guidebook("chapter.electrolosischamber.step", 1).withStyle(ChatFormatting.BOLD))
 		.setNewPage());
 	pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81,
-		Electrodynamics.rl("textures/screen/guidebook/electrolosischamber1.png")).onTooltip((graphics, xAxis, yAxis, screen) -> graphics.renderTooltip(screen.getFontRenderer(), Component.literal("25 ")
-			.append(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get().getName()), xAxis, yAxis)));
+		Electrodynamics.rl("textures/screen/guidebook/electrolosischamber1.png"))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> graphics.renderTooltip(screen.getFontRenderer(),
+			Component.literal("25 ").append(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get().getName()),
+			xAxis, yAxis)));
 	pageData.add(new TextWrapperObject(
 		ElectroTextUtils.guidebook("chapter.electrolosischamber.step", 2).withStyle(ChatFormatting.BOLD))
 		.setNewPage());
 	pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81,
-		Electrodynamics.rl("textures/screen/guidebook/electrolosischamber2.png")).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		List<FormattedCharSequence> tooltips = new ArrayList<>();
-		tooltips.add(Component.literal("4 ")
-			.append(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get().getName())
-			.getVisualOrderText());
-		tooltips.add(Component.literal("8 ").append(
-			ElectrodynamicsBlocks.BLOCKS_CUSTOMGLASS.getValue(SubtypeGlass.aluminum).getName())
-			.getVisualOrderText());
+		Electrodynamics.rl("textures/screen/guidebook/electrolosischamber2.png"))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    List<FormattedCharSequence> tooltips = new ArrayList<>();
+		    tooltips.add(Component.literal("4 ")
+			    .append(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get().getName()).getVisualOrderText());
+		    tooltips.add(Component.literal("8 ")
+			    .append(ElectrodynamicsBlocks.BLOCKS_CUSTOMGLASS.getValue(SubtypeGlass.aluminum).getName())
+			    .getVisualOrderText());
 
-		graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
 		}));
 	pageData.add(new TextWrapperObject(
 		ElectroTextUtils.guidebook("chapter.electrolosischamber.step", 3).withStyle(ChatFormatting.BOLD))
 		.setNewPage());
 	pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81,
-		Electrodynamics.rl("textures/screen/guidebook/electrolosischamber3.png")).onTooltip((graphics, xAxis, yAxis, screen) -> graphics.renderTooltip(screen.getFontRenderer(), Component.literal("8 ").append(
-			ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.tanksteel).getName()),
+		Electrodynamics.rl("textures/screen/guidebook/electrolosischamber3.png"))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> graphics.renderTooltip(screen.getFontRenderer(),
+			Component.literal("8 ").append(
+				ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.tanksteel).getName()),
 			xAxis, yAxis)));
 	pageData.add(new TextWrapperObject(
 		ElectroTextUtils.guidebook("chapter.electrolosischamber.step", 4).withStyle(ChatFormatting.BOLD))
 		.setNewPage());
 	pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81,
-		Electrodynamics.rl("textures/screen/guidebook/electrolosischamber4.png")).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		List<FormattedCharSequence> tooltips = new ArrayList<>();
-		tooltips.add(Component.literal("3 ").append(Blocks.GOLD_BLOCK.getName()).getVisualOrderText());
-		tooltips.add(Component.literal("1 ")
-			.append(ElectrodynamicsBlocks.BLOCKS_MACHINE
-				.getValue(SubtypeMachine.electrolyticseparator).getName())
-			.getVisualOrderText());
+		Electrodynamics.rl("textures/screen/guidebook/electrolosischamber4.png"))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    List<FormattedCharSequence> tooltips = new ArrayList<>();
+		    tooltips.add(Component.literal("3 ").append(Blocks.GOLD_BLOCK.getName()).getVisualOrderText());
+		    tooltips.add(
+			    Component.literal("1 ")
+				    .append(ElectrodynamicsBlocks.BLOCKS_MACHINE
+					    .getValue(SubtypeMachine.electrolyticseparator).getName())
+				    .getVisualOrderText());
 
-		graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
 		}));
 	pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electrolosischamber.seperatororient")
 		.withStyle(ChatFormatting.ITALIC)));
@@ -119,14 +125,18 @@ public class ChapterElectrolosisChamber extends Chapter {
 		ElectroTextUtils.guidebook("chapter.electrolosischamber.step", 5).withStyle(ChatFormatting.BOLD))
 		.setNewPage());
 	pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81,
-		Electrodynamics.rl("textures/screen/guidebook/electrolosischamber5.png")).onTooltip((graphics, xAxis, yAxis, screen) -> graphics.renderTooltip(screen.getFontRenderer(), Component.literal("16 ")
-			.append(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get().getName()), xAxis, yAxis)));
+		Electrodynamics.rl("textures/screen/guidebook/electrolosischamber5.png"))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> graphics.renderTooltip(screen.getFontRenderer(),
+			Component.literal("16 ").append(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get().getName()),
+			xAxis, yAxis)));
 	pageData.add(new TextWrapperObject(
 		ElectroTextUtils.guidebook("chapter.electrolosischamber.step", 6).withStyle(ChatFormatting.BOLD))
 		.setNewPage());
 	pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81,
-		Electrodynamics.rl("textures/screen/guidebook/electrolosischamber6.png")).onTooltip((graphics, xAxis, yAxis, screen) -> graphics.renderTooltip(screen.getFontRenderer(), Component.literal("9 ").append(
-			ElectrodynamicsBlocks.BLOCKS_CUSTOMGLASS.getValue(SubtypeGlass.aluminum).getName()),
+		Electrodynamics.rl("textures/screen/guidebook/electrolosischamber6.png"))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> graphics.renderTooltip(screen.getFontRenderer(),
+			Component.literal("9 ").append(
+				ElectrodynamicsBlocks.BLOCKS_CUSTOMGLASS.getValue(SubtypeGlass.aluminum).getName()),
 			xAxis, yAxis)));
 	pageData.add(
 		new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electrolosischamber.l4")).setSeparateStart());

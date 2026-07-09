@@ -76,10 +76,10 @@ public class ItemRailgunPlasma extends ItemRailgun {
 	if (fluidStack.isEmpty() || (fluidStack.getAmount() < COOLANT_PER_SHOT)) {
 	    railgun.recieveHeat(gunStack, TEMPERATURE_PER_SHOT, false);
 	} else {
-	fluidStack.shrink(COOLANT_PER_SHOT);
-	world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(),
-		SoundSource.PLAYERS, 0.25F, 1);
-	gunStack.set(VoltaicDataComponentTypes.FLUID_STACK, new FluidStackComponent(fluidStack.copy()));
+	    fluidStack.shrink(COOLANT_PER_SHOT);
+	    world.playSound(null, player.blockPosition(), ElectrodynamicsSounds.SOUND_PRESSURERELEASE.get(),
+		    SoundSource.PLAYERS, 0.25F, 1);
+	    gunStack.set(VoltaicDataComponentTypes.FLUID_STACK, new FluidStackComponent(fluidStack.copy()));
 	}
 
 	return InteractionResultHolder.pass(gunStack);
