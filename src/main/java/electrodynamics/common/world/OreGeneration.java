@@ -31,11 +31,7 @@ public class OreGeneration {
 
 			BlockPos offset = pos.offset(direction.getNormal());
 
-			if (allowSulfur && level.getBlockState(pos).is(BlockTags.STONE_ORE_REPLACEABLES)) {
-
-				level.setBlock(offset, ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.sulfur).defaultBlockState(), 3);
-
-			} else if (allowDeepSulfur && level.getBlockState(pos).is(BlockTags.DEEPSLATE_ORE_REPLACEABLES)) {
+			if ((allowSulfur && level.getBlockState(pos).is(BlockTags.STONE_ORE_REPLACEABLES)) || (allowDeepSulfur && level.getBlockState(pos).is(BlockTags.DEEPSLATE_ORE_REPLACEABLES))) {
 
 				level.setBlock(offset, ElectrodynamicsBlocks.BLOCKS_ORE.getValue(SubtypeOre.sulfur).defaultBlockState(), 3);
 

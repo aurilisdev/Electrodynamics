@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.common.tile.electricitygrid.TileWire;
-import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionResult;

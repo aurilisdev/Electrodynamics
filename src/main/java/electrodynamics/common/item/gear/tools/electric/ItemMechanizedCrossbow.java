@@ -3,6 +3,7 @@ package electrodynamics.common.item.gear.tools.electric;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 

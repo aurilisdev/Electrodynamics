@@ -23,6 +23,7 @@ public class ElectrodynamicsRecipeProvider extends BaseRecipeProvider {
 		super(gen);
 	}
 
+	@Override
 	public void addRecipes() {
 		generators.add(new ElectrodynamicsCraftingTableRecipes());
 		generators.add(new ElectrodynamicsSmeltingRecipes());

@@ -514,7 +514,7 @@ public enum SubtypeWire implements ISubtype, IWire {
          * @return the resistance per meter
          */
         public static double calculateResistance(double resistivity, double area, double length) {
-            return (resistivity * length) / area;
+            return resistivity * length / area;
         }
 
         /**

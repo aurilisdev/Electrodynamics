@@ -3,8 +3,6 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -22,7 +20,6 @@ import voltaic.client.guidebook.ScreenGuidebook;
 import voltaic.client.guidebook.utils.components.Chapter;
 import voltaic.client.guidebook.utils.components.Module;
 import voltaic.client.guidebook.utils.pagedata.OnKeyPress;
-import voltaic.client.guidebook.utils.pagedata.OnTooltip;
 import voltaic.client.guidebook.utils.pagedata.graphics.AbstractGraphicWrapper;
 import voltaic.client.guidebook.utils.pagedata.graphics.FluidWrapperObject;
 import voltaic.client.guidebook.utils.pagedata.graphics.ImageWrapperObject;
@@ -68,19 +65,15 @@ public class ChapterFluids extends Chapter {
         for (RegistryObject<? extends Fluid> fluid : ElectrodynamicsFluids.FLUIDS.getEntries()) {
             pageData.add(new FluidWrapperObject(0, 0, 32, 32, 36, fluid.get(), new AbstractGraphicWrapper.GraphicTextDescriptor(36, 11, fluid.get().getFluidType().getDescription()))
 
-                    .onTooltip(new OnTooltip() {
+                    .onTooltip((poseStack, xAxis, yAxis, screen) -> {
+		        if (JeiBuffer.isJeiInstalled()) {
+		            List<FormattedCharSequence> tooltips = new ArrayList<>();
+		            tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		            tooltips.add(ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		            screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
+		        }
 
-                        @Override
-                        public void onTooltip(PoseStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-                            if (JeiBuffer.isJeiInstalled()) {
-                                List<FormattedCharSequence> tooltips = new ArrayList<>();
-                                tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-                                tooltips.add(ElectroTextUtils.tooltip("guidebookjeiuse").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-                                screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-                            }
-
-                        }
-                    }).onKeyPress(new OnKeyPress() {
+		    }).onKeyPress(new OnKeyPress() {
 
                         @Override
                         public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
@@ -106,19 +99,14 @@ public class ChapterFluids extends Chapter {
         pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.fluidoutput")).setIndentions(1).setSeparateStart());
         blankLine();
         pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.l3.2")).setSeparateStart());
-        pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, Electrodynamics.rl("textures/screen/guidebook/fluidio.png")).onTooltip(new OnTooltip() {
+        pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81, Electrodynamics.rl("textures/screen/guidebook/fluidio.png")).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+	    List<FormattedCharSequence> tooltips = new ArrayList<>();
+	    tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.left", ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralwasher).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+	    tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.middle", ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.chemicalcrystallizer).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
+	    tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.right", ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricpump).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
 
-            @Override
-            public void onTooltip(PoseStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-                List<FormattedCharSequence> tooltips = new ArrayList<>();
-                tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.left", ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralwasher).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
-                tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.middle", ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.chemicalcrystallizer).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
-                tooltips.add(ElectroTextUtils.guidebook("chapter.electricity.right", ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricpump).getDescription().copy().withStyle(ChatFormatting.DARK_GRAY)).withStyle(ChatFormatting.GRAY).getVisualOrderText());
-
-                screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-            }
-
-        }));
+	    screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
+	}));
 
         /* Fluid Pipes */
 
@@ -138,18 +126,14 @@ public class ChapterFluids extends Chapter {
         // Reinforced Canister
 
         pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get().getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
-        pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get()).onTooltip(new OnTooltip() {
+        pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get()).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+	    if (JeiBuffer.isJeiInstalled()) {
+	        List<FormattedCharSequence> tooltips = new ArrayList<>();
+	        tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+	        screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
+	    }
 
-            @Override
-            public void onTooltip(PoseStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-                if (JeiBuffer.isJeiInstalled()) {
-                    List<FormattedCharSequence> tooltips = new ArrayList<>();
-                    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-                    screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-                }
-
-            }
-        }).onKeyPress(new OnKeyPress() {
+	}).onKeyPress(new OnKeyPress() {
 
             @Override
             public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
@@ -168,18 +152,14 @@ public class ChapterFluids extends Chapter {
         // Fluid Valve
 
         pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidvalve).getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
-        pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidvalve)).onTooltip(new OnTooltip() {
+        pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidvalve)).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+	    if (JeiBuffer.isJeiInstalled()) {
+	        List<FormattedCharSequence> tooltips = new ArrayList<>();
+	        tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+	        screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
+	    }
 
-            @Override
-            public void onTooltip(PoseStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-                if (JeiBuffer.isJeiInstalled()) {
-                    List<FormattedCharSequence> tooltips = new ArrayList<>();
-                    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-                    screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-                }
-
-            }
-        }).onKeyPress(new OnKeyPress() {
+	}).onKeyPress(new OnKeyPress() {
 
             @Override
             public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
@@ -201,18 +181,14 @@ public class ChapterFluids extends Chapter {
         // Fluid Pipe Pump
 
         pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidpipepump).getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
-        pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidpipepump)).onTooltip(new OnTooltip() {
+        pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidpipepump)).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+	    if (JeiBuffer.isJeiInstalled()) {
+	        List<FormattedCharSequence> tooltips = new ArrayList<>();
+	        tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+	        screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
+	    }
 
-            @Override
-            public void onTooltip(PoseStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-                if (JeiBuffer.isJeiInstalled()) {
-                    List<FormattedCharSequence> tooltips = new ArrayList<>();
-                    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-                    screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-                }
-
-            }
-        }).onKeyPress(new OnKeyPress() {
+	}).onKeyPress(new OnKeyPress() {
 
             @Override
             public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
@@ -235,18 +211,14 @@ public class ChapterFluids extends Chapter {
         // Fluid Pipe Filter
 
         pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidpipefilter).getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
-        pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidpipefilter)).onTooltip(new OnTooltip() {
+        pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidpipefilter)).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+	    if (JeiBuffer.isJeiInstalled()) {
+	        List<FormattedCharSequence> tooltips = new ArrayList<>();
+	        tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+	        screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
+	    }
 
-            @Override
-            public void onTooltip(PoseStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-                if (JeiBuffer.isJeiInstalled()) {
-                    List<FormattedCharSequence> tooltips = new ArrayList<>();
-                    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-                    screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-                }
-
-            }
-        }).onKeyPress(new OnKeyPress() {
+	}).onKeyPress(new OnKeyPress() {
 
             @Override
             public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
@@ -273,18 +245,14 @@ public class ChapterFluids extends Chapter {
         // Fluid Void
 
         pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidvoid).getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
-        pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidvoid)).onTooltip(new OnTooltip() {
+        pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidvoid)).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+	    if (JeiBuffer.isJeiInstalled()) {
+	        List<FormattedCharSequence> tooltips = new ArrayList<>();
+	        tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+	        screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
+	    }
 
-            @Override
-            public void onTooltip(PoseStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-                if (JeiBuffer.isJeiInstalled()) {
-                    List<FormattedCharSequence> tooltips = new ArrayList<>();
-                    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-                    screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-                }
-
-            }
-        }).onKeyPress(new OnKeyPress() {
+	}).onKeyPress(new OnKeyPress() {
 
             @Override
             public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {
@@ -303,18 +271,14 @@ public class ChapterFluids extends Chapter {
         // Fluid Tanks
 
         pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.fluids.fluidtanks").withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
-        pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.tankhsla)).onTooltip(new OnTooltip() {
+        pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.tankhsla)).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+	    if (JeiBuffer.isJeiInstalled()) {
+	        List<FormattedCharSequence> tooltips = new ArrayList<>();
+	        tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+	        screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
+	    }
 
-            @Override
-            public void onTooltip(PoseStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-                if (JeiBuffer.isJeiInstalled()) {
-                    List<FormattedCharSequence> tooltips = new ArrayList<>();
-                    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-                    screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-                }
-
-            }
-        }).onKeyPress(new OnKeyPress() {
+	}).onKeyPress(new OnKeyPress() {
 
             @Override
             public void onKeyPress(int keyCode, int scanCode, int modifiers, int x, int y, int xAxis, int yAxis, ScreenGuidebook screen) {

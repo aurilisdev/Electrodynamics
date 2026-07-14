@@ -13,7 +13,7 @@ import voltaic.prefab.inventory.container.types.GenericContainerItem;
 
 public class ContainerElectricDrill extends GenericContainerItem {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.fortune, SubtypeItemUpgrade.silktouch };
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.fortune, SubtypeItemUpgrade.silktouch };
 
 	public ContainerElectricDrill(int id, Inventory playerinv, CapabilityItemStackHandler handler, ContainerData data) {
 		super(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICDRILL.get(), id, playerinv, handler, data);

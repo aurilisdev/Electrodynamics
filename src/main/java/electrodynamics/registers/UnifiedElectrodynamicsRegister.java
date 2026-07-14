@@ -1,12 +1,9 @@
 package electrodynamics.registers;
 
-import java.util.function.Supplier;
-
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
-import net.minecraft.world.level.block.Block;
 import net.minecraftforge.eventbus.api.IEventBus;
 import voltaic.api.electricity.formatting.ChatFormatter;
 import voltaic.api.electricity.formatting.DisplayUnits;

@@ -72,7 +72,7 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 		consumer.accept(new IClientItemExtensions() {
 			@Override
 			public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack, EquipmentSlot armorSlot, HumanoidModel<?> properties) {
-				ItemStack[] armorPiecesArray = new ItemStack[] { new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get()) };
+				ItemStack[] armorPiecesArray = { new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get()) };
 
 				List<ItemStack> armorPieces = new ArrayList<>();
 				entity.getArmorSlots().forEach(armorPieces::add);
@@ -109,14 +109,11 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 	@Override
 	public ICapabilityProvider initCapabilities(ItemStack stack, CompoundTag nbt) {
 		ArmorItem armor = (ArmorItem) stack.getItem();
-		switch (armor.getSlot()) {
-		case CHEST:
-			return new RestrictedFluidHandlerItemStack(stack, ItemJetpack.MAX_CAPACITY).setValidator(ItemJetpack.getValidator());
-		case FEET:
-			return new RestrictedFluidHandlerItemStack(stack, ItemHydraulicBoots.MAX_CAPACITY).setValidator(ItemHydraulicBoots.getPredicate());
-		default:
-			return super.initCapabilities(stack, nbt);
-		}
+		return switch (armor.getSlot()) {
+		case CHEST -> new RestrictedFluidHandlerItemStack(stack, ItemJetpack.MAX_CAPACITY).setValidator(ItemJetpack.getValidator());
+		case FEET -> new RestrictedFluidHandlerItemStack(stack, ItemHydraulicBoots.MAX_CAPACITY).setValidator(ItemHydraulicBoots.getPredicate());
+		default -> super.initCapabilities(stack, nbt);
+		};
 	}
 
 	@Override
@@ -219,31 +216,23 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 	@Override
 	public boolean isBarVisible(ItemStack stack) {
 		ItemCombatArmor combat = (ItemCombatArmor) stack.getItem();
-		switch (combat.getSlot()) {
-		case HEAD, LEGS:
-			return getJoulesStored(stack) < getMaximumCapacity(stack);
-		case CHEST:
-			return ItemJetpack.staticIsBarVisible(stack);
-		case FEET:
-			return ItemHydraulicBoots.staticIsBarVisible(stack);
-		default:
-			return false;
-		}
+		return switch (combat.getSlot()) {
+		case HEAD, LEGS -> getJoulesStored(stack) < getMaximumCapacity(stack);
+		case CHEST -> ItemJetpack.staticIsBarVisible(stack);
+		case FEET -> ItemHydraulicBoots.staticIsBarVisible(stack);
+		default -> false;
+		};
 	}
 
 	@Override
 	public int getBarWidth(ItemStack stack) {
 		ItemCombatArmor combat = (ItemCombatArmor) stack.getItem();
-		switch (combat.getSlot()) {
-		case HEAD, LEGS:
-			return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
-		case CHEST:
-			return ItemJetpack.staticGetBarWidth(stack);
-		case FEET:
-			return ItemHydraulicBoots.staticGetBarWidth(stack);
-		default:
-			return 0;
-		}
+		return switch (combat.getSlot()) {
+		case HEAD, LEGS -> (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
+		case CHEST -> ItemJetpack.staticGetBarWidth(stack);
+		case FEET -> ItemHydraulicBoots.staticGetBarWidth(stack);
+		default -> 0;
+		};
 	}
 
 	@Override
@@ -297,11 +286,7 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 	@Override
 	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
 
-		if (getSlot() == EquipmentSlot.CHEST || getSlot() == EquipmentSlot.FEET) {
-			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-		}
-
-		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+		if (getSlot() == EquipmentSlot.CHEST || getSlot() == EquipmentSlot.FEET || !IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
 			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
 		}
 

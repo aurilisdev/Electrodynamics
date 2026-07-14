@@ -1,13 +1,12 @@
 package electrodynamics.registers;
 
+import electrodynamics.Electrodynamics;
+import electrodynamics.common.fluid.subtype.SubtypeSulfateFluid;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import voltaic.api.registration.BulkRegistryObject;
-
-import electrodynamics.Electrodynamics;
-import electrodynamics.common.fluid.subtype.SubtypeSulfateFluid;
 
 public class ElectrodynamicsFluidTypes {
 	public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(ForgeRegistries.Keys.FLUID_TYPES, Electrodynamics.ID);
