@@ -30,6 +30,7 @@ public class ElectrodynamicsAdvancementProvider extends BaseAdvancementProvider 
 	 * 
 	 * @param consumer
 	 */
+	@Override
 	public void registerAdvancements(Consumer<AdvancementBuilder> consumer) {
 
 		Advancement root = advancement("root")

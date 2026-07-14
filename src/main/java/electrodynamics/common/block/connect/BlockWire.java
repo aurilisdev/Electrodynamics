@@ -299,7 +299,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
         BlockState curCamo = Blocks.AIR.defaultBlockState();
         BlockState curScaffold = Blocks.AIR.defaultBlockState();
         TileEntity entity = level.getBlockEntity(pos);
-        if (entity != null && entity instanceof GenericTileWire) {
+        if (entity instanceof GenericTileWire) {
         	GenericTileWire generic = (GenericTileWire) entity;
             curCamo = generic.getCamoBlock();
             curScaffold = generic.getScaffoldBlock();
@@ -508,7 +508,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
                     continue;
                 }
 
-                int overvoltage = (int) Math.ceil((voltage / wireShockVoltage));
+                int overvoltage = (int) Math.ceil(voltage / wireShockVoltage);
 
                 if (flamability > overvoltage) {
                     continue;
@@ -520,7 +520,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 
                     firePos = relativePos.relative(relDir);
 
-                    if (firePos.equals(pos) || !AbstractFireBlock.canBePlacedAt(level, firePos, (relDir == Direction.DOWN || relDir == Direction.UP) ? dir : relDir.getOpposite())) {
+                    if (firePos.equals(pos) || !AbstractFireBlock.canBePlacedAt(level, firePos, relDir == Direction.DOWN || relDir == Direction.UP ? dir : relDir.getOpposite())) {
                         continue;
                     }
 

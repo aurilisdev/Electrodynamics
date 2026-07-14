@@ -54,7 +54,11 @@ import voltaic.prefab.properties.variant.ListProperty;
 import voltaic.prefab.properties.variant.SingleProperty;
 import voltaic.prefab.tile.GenericTile;
 import voltaic.prefab.tile.components.IComponentType;
-import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentPacketHandler;
+import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
 import voltaic.prefab.utilities.ItemUtils;
 import voltaic.registers.VoltaicCapabilities;
@@ -635,7 +639,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		while (it.hasNext()) {
 			pos = it.next();
 			entity = world.getBlockEntity(pos);
-			if (entity != null && entity instanceof TileFrame) {
+			if (entity instanceof TileFrame) {
 				((TileFrame) entity).setQuarryPos(getBlockPos());
 				it.remove();
 			}
@@ -822,10 +826,10 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
 		// reformatted to allow for individual components to be missing
 
-		if (leftEntity != null && leftEntity instanceof TileMotorComplex && ((TileMotorComplex) leftEntity).getFacing() == left) {
+		if (leftEntity instanceof TileMotorComplex && ((TileMotorComplex) leftEntity).getFacing() == left) {
 			complex = (TileMotorComplex) leftEntity;
 			hasMotorComplex.setValue(true);
-		} else if (rightEntity != null && rightEntity instanceof TileMotorComplex && ((TileMotorComplex) rightEntity).getFacing() == right) {
+		} else if (rightEntity instanceof TileMotorComplex && ((TileMotorComplex) rightEntity).getFacing() == right) {
 			complex = (TileMotorComplex) rightEntity;
 			hasMotorComplex.setValue(true);
 		} else {
@@ -833,14 +837,14 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			hasMotorComplex.setValue(false);
 		}
 
-		if (leftEntity != null && leftEntity instanceof TileSeismicRelay && ((TileSeismicRelay) leftEntity).getFacing() == facing.getOpposite()) {
+		if (leftEntity instanceof TileSeismicRelay && ((TileSeismicRelay) leftEntity).getFacing() == facing.getOpposite()) {
 			TileSeismicRelay relayin = (TileSeismicRelay) leftEntity;
 			corners.wipeList();
 			corners.addValues(relayin.markerLocs.getValue());
 			cornerOnRight.setValue(relayin.cornerOnRight);
 			relay = relayin;
 			hasSeismicRelay.setValue(true);
-		} else if (rightEntity != null && rightEntity instanceof TileSeismicRelay && ((TileSeismicRelay) rightEntity).getFacing() == facing.getOpposite()) {
+		} else if (rightEntity instanceof TileSeismicRelay && ((TileSeismicRelay) rightEntity).getFacing() == facing.getOpposite()) {
 			TileSeismicRelay relayin = (TileSeismicRelay) rightEntity;
 			corners.wipeList();
 			corners.addValues(relayin.markerLocs.getValue());
@@ -852,7 +856,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 			hasSeismicRelay.setValue(false);
 		}
 
-		if (aboveEntity != null && aboveEntity instanceof TileCoolantResavoir) {
+		if (aboveEntity instanceof TileCoolantResavoir) {
 			resavoir = (TileCoolantResavoir) aboveEntity;
 			hasCoolantResavoir.setValue(true);
 		} else {
@@ -1183,11 +1187,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	public TileMotorComplex getMotorComplex() {
 		Direction facing = getFacing().getOpposite();
 		TileEntity entity = level.getBlockEntity(getBlockPos().relative(facing.getClockWise()));
-		if (entity != null && entity instanceof TileMotorComplex) {
+		if (entity instanceof TileMotorComplex) {
 			return (TileMotorComplex) entity;
 		}
 		entity = level.getBlockEntity(getBlockPos().relative(facing.getCounterClockWise()));
-		if (entity != null && entity instanceof TileMotorComplex) {
+		if (entity instanceof TileMotorComplex) {
 			return (TileMotorComplex) entity;
 		}
 		return null;
@@ -1196,7 +1200,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	@Nullable
 	public TileCoolantResavoir getFluidResavoir() {
 		TileEntity entity = level.getBlockEntity(getBlockPos().offset(0, 1, 0));
-		if (entity != null && entity instanceof TileCoolantResavoir) {
+		if (entity instanceof TileCoolantResavoir) {
 			return (TileCoolantResavoir) entity;
 		}
 
@@ -1207,11 +1211,11 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	public TileSeismicRelay getSeismicRelay() {
 		Direction facing = getFacing().getOpposite();
 		TileEntity entity = level.getBlockEntity(getBlockPos().relative(facing.getClockWise()));
-		if (entity != null && entity instanceof TileSeismicRelay) {
+		if (entity instanceof TileSeismicRelay) {
 			return (TileSeismicRelay) entity;
 		}
 		entity = level.getBlockEntity(getBlockPos().relative(facing.getCounterClockWise()));
-		if (entity != null && entity instanceof TileSeismicRelay) {
+		if (entity instanceof TileSeismicRelay) {
 			return (TileSeismicRelay) entity;
 		}
 		return null;
@@ -1231,7 +1235,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	public boolean canMineIfFrame(BlockState state, BlockPos pos) {
 		if (state.is(ElectrodynamicsBlocks.BLOCK_FRAME.get()) || state.is(ElectrodynamicsBlocks.BLOCK_FRAME_CORNER.get())) {
 			TileEntity entity = level.getBlockEntity(pos);
-			if (entity != null && entity instanceof TileFrame) {
+			if (entity instanceof TileFrame) {
 				return ((TileFrame) entity).ownerQuarryPos != null;
 			}
 		}

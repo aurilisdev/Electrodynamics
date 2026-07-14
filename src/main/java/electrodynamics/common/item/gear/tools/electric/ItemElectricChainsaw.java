@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-import com.google.common.collect.Sets;
 import com.google.common.collect.ImmutableMap.Builder;
+import com.google.common.collect.Sets;
 
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
@@ -40,7 +40,7 @@ public class ItemElectricChainsaw extends ToolItem implements IItemElectric {
 
 	private static final Set<Material> DIGGABLE_MATERIALS = Sets.newHashSet(Material.WOOD, Material.NETHER_WOOD, Material.PLANT, Material.REPLACEABLE_PLANT, Material.BAMBOO, Material.VEGETABLE);
 	private static final Set<Block> OTHER_DIGGABLE_BLOCKS = Sets.newHashSet(Blocks.LADDER, Blocks.SCAFFOLDING, Blocks.OAK_BUTTON, Blocks.SPRUCE_BUTTON, Blocks.BIRCH_BUTTON, Blocks.JUNGLE_BUTTON, Blocks.DARK_OAK_BUTTON, Blocks.ACACIA_BUTTON, Blocks.CRIMSON_BUTTON, Blocks.WARPED_BUTTON);
-	protected static final Map<Block, Block> STRIPABLES = (new Builder<Block, Block>()).put(Blocks.OAK_WOOD, Blocks.STRIPPED_OAK_WOOD).put(Blocks.OAK_LOG, Blocks.STRIPPED_OAK_LOG).put(Blocks.DARK_OAK_WOOD, Blocks.STRIPPED_DARK_OAK_WOOD).put(Blocks.DARK_OAK_LOG, Blocks.STRIPPED_DARK_OAK_LOG).put(Blocks.ACACIA_WOOD, Blocks.STRIPPED_ACACIA_WOOD).put(Blocks.ACACIA_LOG, Blocks.STRIPPED_ACACIA_LOG)
+	protected static final Map<Block, Block> STRIPABLES = new Builder<Block, Block>().put(Blocks.OAK_WOOD, Blocks.STRIPPED_OAK_WOOD).put(Blocks.OAK_LOG, Blocks.STRIPPED_OAK_LOG).put(Blocks.DARK_OAK_WOOD, Blocks.STRIPPED_DARK_OAK_WOOD).put(Blocks.DARK_OAK_LOG, Blocks.STRIPPED_DARK_OAK_LOG).put(Blocks.ACACIA_WOOD, Blocks.STRIPPED_ACACIA_WOOD).put(Blocks.ACACIA_LOG, Blocks.STRIPPED_ACACIA_LOG)
 			.put(Blocks.BIRCH_WOOD, Blocks.STRIPPED_BIRCH_WOOD).put(Blocks.BIRCH_LOG, Blocks.STRIPPED_BIRCH_LOG).put(Blocks.JUNGLE_WOOD, Blocks.STRIPPED_JUNGLE_WOOD).put(Blocks.JUNGLE_LOG, Blocks.STRIPPED_JUNGLE_LOG).put(Blocks.SPRUCE_WOOD, Blocks.STRIPPED_SPRUCE_WOOD).put(Blocks.SPRUCE_LOG, Blocks.STRIPPED_SPRUCE_LOG).put(Blocks.WARPED_STEM, Blocks.STRIPPED_WARPED_STEM)
 			.put(Blocks.WARPED_HYPHAE, Blocks.STRIPPED_WARPED_HYPHAE).put(Blocks.CRIMSON_STEM, Blocks.STRIPPED_CRIMSON_STEM).put(Blocks.CRIMSON_HYPHAE, Blocks.STRIPPED_CRIMSON_HYPHAE).build();
 
@@ -103,7 +103,7 @@ public class ItemElectricChainsaw extends ToolItem implements IItemElectric {
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		return 1.0D - (getJoulesStored(stack) / properties.capacity);
+		return 1.0D - getJoulesStored(stack) / properties.capacity;
 	}
 
 	@Override
@@ -118,6 +118,7 @@ public class ItemElectricChainsaw extends ToolItem implements IItemElectric {
 		tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(TextFormatting.GRAY)).withStyle(TextFormatting.DARK_GRAY));
 	}
 
+	@Override
 	public ActionResultType useOn(ItemUseContext context) {
 		World world = context.getLevel();
 		BlockPos blockpos = context.getClickedPos();
@@ -129,7 +130,7 @@ public class ItemElectricChainsaw extends ToolItem implements IItemElectric {
 			if (!world.isClientSide) {
 				world.setBlock(blockpos, block, 11);
 				if (playerentity != null) {
-					context.getItemInHand().hurtAndBreak(1, playerentity, (player) -> {
+					context.getItemInHand().hurtAndBreak(1, playerentity, player -> {
 						player.broadcastBreakEvent(context.getHand());
 					});
 				}

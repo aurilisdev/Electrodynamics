@@ -13,7 +13,7 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerWindmill extends GenericContainerBlockEntity<TileWindmill> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.stator };
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.stator };
 
 	public ContainerWindmill(int id, PlayerInventory playerinv) {
 		this(id, playerinv, new Inventory(1), new IntArray(5));

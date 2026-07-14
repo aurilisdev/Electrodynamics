@@ -16,7 +16,7 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ContainerElectricFurnace extends GenericContainerBlockEntity<TileElectricFurnace> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience };
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput, SubtypeItemUpgrade.iteminput, SubtypeItemUpgrade.experience };
 
 	public ContainerElectricFurnace(int id, PlayerInventory playerinv) {
 		this(id, playerinv, new Inventory(5), new IntArray(5));

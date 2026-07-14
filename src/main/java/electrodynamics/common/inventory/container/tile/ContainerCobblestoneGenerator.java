@@ -15,7 +15,7 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ContainerCobblestoneGenerator extends GenericContainerBlockEntity<TileCobblestoneGenerator> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput };
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.itemoutput };
 
 	public ContainerCobblestoneGenerator(int id, PlayerInventory playerinv) {
 		this(id, playerinv, new Inventory(4), new IntArray(5));

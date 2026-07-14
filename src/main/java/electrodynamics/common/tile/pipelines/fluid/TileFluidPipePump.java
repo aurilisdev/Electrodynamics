@@ -39,7 +39,7 @@ public class TileFluidPipePump extends GenericTile {
 
         TileEntity entity = level.getBlockEntity(worldPosition.relative(getFacing()));
 
-        if (entity != null && entity instanceof TileFluidPipe) {
+        if (entity instanceof TileFluidPipe) {
             FluidNetwork network = ((TileFluidPipe) entity).getNetwork();
 
             if (network != null) {

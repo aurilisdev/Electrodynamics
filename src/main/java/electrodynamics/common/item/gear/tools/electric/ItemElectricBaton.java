@@ -89,7 +89,7 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric {
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		return 1.0D - (getJoulesStored(stack) / getMaximumCapacity(stack));
+		return 1.0D - getJoulesStored(stack) / getMaximumCapacity(stack);
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package electrodynamics.datagen.server.radiation;
 
 import com.google.gson.JsonObject;
+
 import electrodynamics.Electrodynamics;
 import net.minecraft.data.DataGenerator;
 import voltaic.common.tags.VoltaicTags;

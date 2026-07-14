@@ -52,16 +52,7 @@ public class RuleTestOre extends RuleTest {
 
 	private boolean isEnabled() {
 
-		if (OreConfig.DISABLE_ALL_ORES) {
-			return false;
-		}
-
-		if (thisOre == null) {
-
-			return false;
-		}
-
-		if (OreConfig.DISABLE_ALL_ORES) {
+		if (OreConfig.DISABLE_ALL_ORES || thisOre == null || OreConfig.DISABLE_ALL_ORES) {
 			return false;
 		}
 

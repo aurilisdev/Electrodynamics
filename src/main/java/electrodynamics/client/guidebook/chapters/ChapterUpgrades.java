@@ -3,8 +3,6 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IReorderingProcessor;
@@ -14,7 +12,6 @@ import voltaic.client.guidebook.ScreenGuidebook;
 import voltaic.client.guidebook.utils.components.Chapter;
 import voltaic.client.guidebook.utils.components.Module;
 import voltaic.client.guidebook.utils.pagedata.OnKeyPress;
-import voltaic.client.guidebook.utils.pagedata.OnTooltip;
 import voltaic.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
 import voltaic.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import voltaic.common.item.subtype.SubtypeItemUpgrade;
@@ -43,17 +40,13 @@ public class ChapterUpgrades extends Chapter {
 	public void addData() {
 		// Injector Upgrade tutorial
 		pageData.add(new TextWrapperObject(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput).getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setSeparateStart());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput)).onTooltip(new OnTooltip() {
-
-			@Override
-			public void onTooltip(MatrixStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				if (JeiBuffer.isJeiInstalled()) {
-					List<IReorderingProcessor> tooltips = new ArrayList<>();
-					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
-					screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-				}
-
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput)).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+			if (JeiBuffer.isJeiInstalled()) {
+				List<IReorderingProcessor> tooltips = new ArrayList<>();
+				tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
+				screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
 			}
+
 		}).onKeyPress(new OnKeyPress() {
 
 			@Override
@@ -75,17 +68,13 @@ public class ChapterUpgrades extends Chapter {
 
 		// Ejector Upgrade tutorial
 		pageData.add(new TextWrapperObject(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput).getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setNewPage());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput)).onTooltip(new OnTooltip() {
-
-			@Override
-			public void onTooltip(MatrixStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				if (JeiBuffer.isJeiInstalled()) {
-					List<IReorderingProcessor> tooltips = new ArrayList<>();
-					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
-					screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-				}
-
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput)).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+			if (JeiBuffer.isJeiInstalled()) {
+				List<IReorderingProcessor> tooltips = new ArrayList<>();
+				tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
+				screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
 			}
+
 		}).onKeyPress(new OnKeyPress() {
 
 			@Override

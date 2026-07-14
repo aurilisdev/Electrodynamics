@@ -3,8 +3,6 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
-
 import electrodynamics.common.item.subtype.SubtypeDrillHead;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
@@ -20,7 +18,6 @@ import voltaic.client.guidebook.ScreenGuidebook;
 import voltaic.client.guidebook.utils.components.Chapter;
 import voltaic.client.guidebook.utils.components.Module;
 import voltaic.client.guidebook.utils.pagedata.OnKeyPress;
-import voltaic.client.guidebook.utils.pagedata.OnTooltip;
 import voltaic.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
 import voltaic.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import voltaic.compatibility.jei.JeiBuffer;
@@ -48,17 +45,13 @@ public class ChapterTools extends Chapter {
 
 		// Kinetic Railgun
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_KINETICRAILGUN.get().getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setSeparateStart());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEM_KINETICRAILGUN.get()).onTooltip(new OnTooltip() {
-
-			@Override
-			public void onTooltip(MatrixStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				if (JeiBuffer.isJeiInstalled()) {
-					List<IReorderingProcessor> tooltips = new ArrayList<>();
-					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
-					screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-				}
-
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEM_KINETICRAILGUN.get()).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+			if (JeiBuffer.isJeiInstalled()) {
+				List<IReorderingProcessor> tooltips = new ArrayList<>();
+				tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
+				screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
 			}
+
 		}).onKeyPress(new OnKeyPress() {
 
 			@Override
@@ -86,17 +79,13 @@ public class ChapterTools extends Chapter {
 
 		// Plasma Railgun
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_PLASMARAILGUN.get().getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setNewPage());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEM_PLASMARAILGUN.get()).onTooltip(new OnTooltip() {
-
-			@Override
-			public void onTooltip(MatrixStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				if (JeiBuffer.isJeiInstalled()) {
-					List<IReorderingProcessor> tooltips = new ArrayList<>();
-					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
-					screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-				}
-
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEM_PLASMARAILGUN.get()).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+			if (JeiBuffer.isJeiInstalled()) {
+				List<IReorderingProcessor> tooltips = new ArrayList<>();
+				tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
+				screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
 			}
+
 		}).onKeyPress(new OnKeyPress() {
 
 			@Override
@@ -120,17 +109,13 @@ public class ChapterTools extends Chapter {
 
 		// Seismic Scanner
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_SEISMICSCANNER.get().getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setNewPage());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEM_SEISMICSCANNER.get()).onTooltip(new OnTooltip() {
-
-			@Override
-			public void onTooltip(MatrixStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				if (JeiBuffer.isJeiInstalled()) {
-					List<IReorderingProcessor> tooltips = new ArrayList<>();
-					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
-					screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-				}
-
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F, ElectrodynamicsItems.ITEM_SEISMICSCANNER.get()).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+			if (JeiBuffer.isJeiInstalled()) {
+				List<IReorderingProcessor> tooltips = new ArrayList<>();
+				tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
+				screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
 			}
+
 		}).onKeyPress(new OnKeyPress() {
 
 			@Override
@@ -148,17 +133,13 @@ public class ChapterTools extends Chapter {
 
 		// Electric Drill
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_ELECTRICDRILL.get().getDescription().copy().withStyle(TextFormatting.BOLD)).setCentered().setNewPage());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEM_ELECTRICDRILL.get()).onTooltip(new OnTooltip() {
-
-			@Override
-			public void onTooltip(MatrixStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				if (JeiBuffer.isJeiInstalled()) {
-					List<IReorderingProcessor> tooltips = new ArrayList<>();
-					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
-					screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-				}
-
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEM_ELECTRICDRILL.get()).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+			if (JeiBuffer.isJeiInstalled()) {
+				List<IReorderingProcessor> tooltips = new ArrayList<>();
+				tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(TextFormatting.GRAY).getVisualOrderText());
+				screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
 			}
+
 		}).onKeyPress(new OnKeyPress() {
 
 			@Override

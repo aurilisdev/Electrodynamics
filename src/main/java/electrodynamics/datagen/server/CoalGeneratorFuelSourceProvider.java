@@ -14,13 +14,13 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DirectoryCache;
 import net.minecraft.data.IDataProvider;
 import net.minecraft.item.Item;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.ITag.INamedTag;
+import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 
 public class CoalGeneratorFuelSourceProvider implements IDataProvider {
 
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
+	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	public static final String LOC = "data/" + Electrodynamics.ID + "/" + CoalGeneratorFuelRegister.FOLDER + "/" + CoalGeneratorFuelRegister.FILE_NAME;
 
 	private final DataGenerator dataGenerator;

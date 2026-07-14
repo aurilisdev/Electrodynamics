@@ -165,7 +165,7 @@ public class ItemMechanizedCrossbow extends ShootableItem implements IItemElectr
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		return 1.0D - (getJoulesStored(stack) / getMaximumCapacity(stack));
+		return 1.0D - getJoulesStored(stack) / getMaximumCapacity(stack);
 	}
 
 	@Override

@@ -221,9 +221,7 @@ public class ElectricNetwork extends AbstractNetwork<GenericTileWire, IWire, Tra
             return;
         }
 
-        if (minimumVoltage <= 0) {
-            minimumVoltage = electro.getVoltage();
-        } else if (electro.getVoltage() < minimumVoltage) {
+        if (minimumVoltage <= 0 || electro.getVoltage() < minimumVoltage) {
             minimumVoltage = electro.getVoltage();
         }
     }

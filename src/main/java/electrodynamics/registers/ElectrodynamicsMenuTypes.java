@@ -27,6 +27,7 @@ import electrodynamics.common.inventory.container.tile.ContainerElectrolyticSepa
 import electrodynamics.common.inventory.container.tile.ContainerFermentationPlant;
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipeFilter;
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipePump;
+import electrodynamics.common.inventory.container.tile.ContainerFluidTankGeneric;
 import electrodynamics.common.inventory.container.tile.ContainerFluidVoid;
 import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
 import electrodynamics.common.inventory.container.tile.ContainerMineralWasher;
@@ -35,7 +36,6 @@ import electrodynamics.common.inventory.container.tile.ContainerPotentiometer;
 import electrodynamics.common.inventory.container.tile.ContainerQuarry;
 import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
-import electrodynamics.common.inventory.container.tile.ContainerFluidTankGeneric;
 import electrodynamics.common.inventory.container.tile.ContainerWindmill;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;

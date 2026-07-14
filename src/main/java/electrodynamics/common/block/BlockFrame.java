@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import javax.annotation.Nullable;
-import javax.naming.CompoundName;
 
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.tile.machines.quarry.TileFrame;
@@ -136,7 +135,7 @@ public class BlockFrame extends Block {
 	public void onRemove(BlockState state, World level, BlockPos pos, BlockState newState, boolean isMoving) {
 		if (newState.isAir(level, pos) && !state.getValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY) && !level.isClientSide) {
 			TileEntity entity = level.getBlockEntity(pos);
-			if (entity != null && entity instanceof TileFrame) {
+			if (entity instanceof TileFrame) {
 				((TileFrame) entity).purposefullyDestroyed();
 			}
 		}
@@ -177,7 +176,7 @@ public class BlockFrame extends Block {
 				break;
 			default:
 				break;
-			};
+			}
 		} else {
 			dir = tag.getInt("facing");
 		}

@@ -1,11 +1,11 @@
 package electrodynamics.datagen.client;
 
-import electrodynamics.common.block.subtype.SubtypeGlass;
-import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeGlass;
+import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.fluid.subtype.SubtypeSulfateFluid;
@@ -39,7 +39,6 @@ import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.world.World;
-import voltaic.common.item.subtype.SubtypeItemUpgrade;
 import voltaic.datagen.utils.client.BaseLangKeyProvider;
 
 public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {

@@ -85,7 +85,7 @@ public class QuarryRenderManger {
 		int wholeWidthLeft, wholeWidthRight, wholeWidthTop, wholeWidthBottom;
 		double remainderWidthLeft, remainderWidthRight, remainderWidthTop, remainderWidthBottom;
 
-		int[] markerLineSigns = new int[] { 1, 1, -1, -1 };
+		int[] markerLineSigns = { 1, 1, -1, -1 };
 
 		switch (facing) {
 

@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import electrodynamics.common.item.subtype.SubtypeCrystal;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.fluid.Fluid;
 import net.minecraft.item.Item;
 import net.minecraft.tags.ITag.INamedTag;
@@ -12,7 +13,6 @@ import net.minecraft.tags.ItemTags;
 import net.minecraftforge.common.Tags;
 import voltaic.api.ISubtype;
 import voltaic.common.tags.VoltaicTags;
-import electrodynamics.registers.ElectrodynamicsItems;
 
 public enum SubtypeSulfateFluid implements ISubtype {
 	copper(VoltaicTags.Fluids.COPPER_SULFATE, () -> ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(SubtypeCrystal.copper), VoltaicTags.Items.ORE_COPPER),

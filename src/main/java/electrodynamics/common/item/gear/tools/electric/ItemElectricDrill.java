@@ -213,7 +213,7 @@ public class ItemElectricDrill extends ToolItem implements IItemElectric {
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
-		return 1.0D - (getJoulesStored(stack) / properties.capacity);
+		return 1.0D - getJoulesStored(stack) / properties.capacity;
 	}
 
 	@Override

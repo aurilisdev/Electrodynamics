@@ -22,7 +22,7 @@ public class TileFrame extends TileEntity {
 			return;
 		}
 		TileEntity entity = level.getBlockEntity(ownerQuarryPos);
-		if (entity != null && entity instanceof TileQuarry) {
+		if (entity instanceof TileQuarry) {
 			((TileQuarry) entity).addBrokenFrame(getBlockPos(), getBlockState());
 		}
 	}
@@ -35,7 +35,7 @@ public class TileFrame extends TileEntity {
 	@Override
 	public CompoundNBT save(CompoundNBT tag) {
 		if (ownerQuarryPos != null) {
-			BlockPos.CODEC.encodeStart(NBTDynamicOps.INSTANCE, ownerQuarryPos).result().ifPresent(nbt -> tag.put(KEY, nbt));;
+			BlockPos.CODEC.encodeStart(NBTDynamicOps.INSTANCE, ownerQuarryPos).result().ifPresent(nbt -> tag.put(KEY, nbt));
 		}
 		return super.save(tag);
 	}

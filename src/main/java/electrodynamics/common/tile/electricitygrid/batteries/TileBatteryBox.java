@@ -20,7 +20,11 @@ import voltaic.prefab.properties.types.PropertyTypes;
 import voltaic.prefab.properties.variant.SingleProperty;
 import voltaic.prefab.tile.GenericTile;
 import voltaic.prefab.tile.components.IComponentType;
-import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentPacketHandler;
+import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
 import voltaic.prefab.utilities.CapabilityUtils;
 import voltaic.prefab.utilities.object.CachedTileOutput;
@@ -199,7 +203,7 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
     @Override
     public int getComparatorSignal() {
         ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-        return (int) ((electro.getJoulesStored() / Math.max(1, electro.getMaxJoulesStored())) * 15.0);
+        return (int) (electro.getJoulesStored() / Math.max(1, electro.getMaxJoulesStored()) * 15.0);
     }
 
 }

@@ -13,7 +13,12 @@ import voltaic.prefab.sound.ITickableSound;
 import voltaic.prefab.sound.SoundBarrierMethods;
 import voltaic.prefab.tile.GenericTile;
 import voltaic.prefab.tile.components.IComponentType;
-import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentPacketHandler;
+import voltaic.prefab.tile.components.type.ComponentProcessor;
+import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
 import voltaic.registers.VoltaicCapabilities;
 
@@ -59,7 +64,7 @@ public class TileEnergizedAlloyer extends GenericTile implements ITickableSound 
 			double zShift = direction.getAxis() == Direction.Axis.Z ? direction.getStepZ() * (direction.getStepZ() == -0.5 ? 0 : 0.5) : axisShift;
 
 			double xVel = (Math.random() * 2.0 - 1.0) * 0.4F;
-			double yVel = (Math.random()) * 0.4F;
+			double yVel = Math.random() * 0.4F;
 			double zVel = (Math.random() * 2.0 - 1.0) * 0.4F;
 			double d0 = (Math.random() + Math.random() + 1.0) * 0.15F;
 			double d1 = Math.sqrt(xVel * xVel + yVel * yVel + zVel * zVel);

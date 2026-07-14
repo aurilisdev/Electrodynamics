@@ -18,8 +18,8 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import net.minecraftforge.fluids.capability.IFluidHandlerItem;
 import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 import voltaic.prefab.properties.variant.SingleProperty;
@@ -79,7 +79,7 @@ public class ScreenComponentFluidFilter extends ScreenComponentGeneric {
                         blit(poseStack, drawX, drawY, 0, drawWidth, drawHeight, sprite);
                     }
                 }
-                RenderingUtils.resetShaderColor();;
+                RenderingUtils.resetShaderColor();
 
             }
 

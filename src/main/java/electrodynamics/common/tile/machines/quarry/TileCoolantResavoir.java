@@ -8,7 +8,11 @@ import net.minecraft.tags.FluidTags;
 import net.minecraftforge.fluids.capability.IFluidHandler.FluidAction;
 import voltaic.common.network.utils.FluidUtilities;
 import voltaic.prefab.tile.components.IComponentType;
-import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentFluidHandlerSimple;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentPacketHandler;
+import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.tile.types.GenericMaterialTile;
 import voltaic.prefab.utilities.BlockEntityUtils;
 
@@ -40,7 +44,7 @@ public class TileCoolantResavoir extends GenericMaterialTile {
 	@Override
 	public int getComparatorSignal() {
 		ComponentFluidHandlerSimple handler = (ComponentFluidHandlerSimple) getComponent(IComponentType.FluidHandler);
-		return (int) (((double) handler.getFluidAmount() / (double) Math.max(1, handler.getCapacity())) * 15.0);
+		return (int) ((double) handler.getFluidAmount() / (double) Math.max(1, handler.getCapacity()) * 15.0);
 	}
 
 }

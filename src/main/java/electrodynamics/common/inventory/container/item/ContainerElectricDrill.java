@@ -1,6 +1,6 @@
 package electrodynamics.common.inventory.container.item;
 
-import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;import electrodynamics.prefab.screen.slot.SlotElectricDrillHead;
+import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
 import electrodynamics.registers.ElectrodynamicsMenuTypes;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -13,7 +13,7 @@ import voltaic.prefab.inventory.container.types.GenericContainerItem;
 
 public class ContainerElectricDrill extends GenericContainerItem {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.fortune, SubtypeItemUpgrade.silktouch };
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed, SubtypeItemUpgrade.fortune, SubtypeItemUpgrade.silktouch };
 
 	public ContainerElectricDrill(int id, PlayerInventory playerinv, CapabilityItemStackHandler handler, IIntArray data) {
 		super(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICDRILL.get(), id, playerinv, handler, data);

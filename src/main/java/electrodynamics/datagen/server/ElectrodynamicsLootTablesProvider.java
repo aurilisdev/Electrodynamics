@@ -1,15 +1,15 @@
 package electrodynamics.datagen.server;
 
-import electrodynamics.common.block.subtype.SubtypeGlass;
-import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeGlass;
+import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
-import electrodynamics.registers.ElectrodynamicsTiles;
 import electrodynamics.registers.ElectrodynamicsBlocks;
+import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.block.Block;
 import net.minecraft.data.DataGenerator;
 import voltaic.datagen.utils.server.loottable.BaseLootTablesProvider;

@@ -7,7 +7,6 @@ import electrodynamics.common.inventory.container.item.ContainerSeismicScanner;
 import electrodynamics.common.packet.NetworkHandler;
 import electrodynamics.common.packet.types.client.PacketAddClientRenderInfo;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
-import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;

@@ -1,7 +1,7 @@
 package electrodynamics.datagen.server;
 
-import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.Electrodynamics;
+import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.block.Block;

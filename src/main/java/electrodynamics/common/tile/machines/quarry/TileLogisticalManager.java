@@ -217,7 +217,7 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
         // return EnumConnectType.NONE;
 
-        return EnumConnectType.values()[(extracted >> (dir.ordinal() * 4))];
+        return EnumConnectType.values()[extracted >> dir.ordinal() * 4];
 
     }
 
@@ -250,7 +250,7 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
                 break;
         }
 
-        connections.setValue(masked | (connection.ordinal() << (dir.ordinal() * 4)));
+        connections.setValue(masked | connection.ordinal() << dir.ordinal() * 4);
     }
 
     @Override
@@ -264,7 +264,7 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
     @Override
     public @Nonnull IModelData getModelData() {
-        return new ModelDataMap.Builder().withInitial(ModelPropertyConnections.INSTANCE, () -> readConnections()).build();
+        return new ModelDataMap.Builder().withInitial(ModelPropertyConnections.INSTANCE, this::readConnections).build();
     }
 
 }

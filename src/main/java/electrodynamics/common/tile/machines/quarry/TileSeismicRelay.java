@@ -47,7 +47,7 @@ public class TileSeismicRelay extends GenericTile {
 			Direction facing = getFacing().getOpposite();
 			World world = getLevel();
 			TileEntity tile = world.getBlockEntity(getBlockPos().relative(facing));
-			if (tile != null && tile instanceof TileSeismicMarker) {
+			if (tile instanceof TileSeismicMarker) {
 				getMarkers((TileSeismicMarker) tile, facing);
 			}
 		}

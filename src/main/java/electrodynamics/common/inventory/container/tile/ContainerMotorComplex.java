@@ -13,7 +13,7 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerMotorComplex extends GenericContainerBlockEntity<TileMotorComplex> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
 
 	public ContainerMotorComplex(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
 		super(ElectrodynamicsMenuTypes.CONTAINER_MOTORCOMPLEX.get(), id, playerinv, inventory, inventorydata);

@@ -17,7 +17,7 @@ public class HandlerCompositeArmor extends AbstractLivingDamageHandler {
 
 	private static final float LETHAL_DAMAGE_AMOUNT = 18.0f;
 
-	private static final ItemStack[] COMPOSITE_ARMOR = new ItemStack[] { new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get()) };
+	private static final ItemStack[] COMPOSITE_ARMOR = { new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS.get()), new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get()) };
 	@Override
 	public void handle(LivingDamageEvent event) {
 		if (event.getSource() == DamageSource.FALL) {

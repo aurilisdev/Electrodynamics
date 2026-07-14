@@ -7,10 +7,10 @@ import javax.annotation.Nullable;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.tags.ITag.INamedTag;
 import voltaic.api.ISubtype;
 import voltaic.common.tags.VoltaicTags;
-import net.minecraft.item.Items;
 
 public enum SubtypeDust implements ISubtype {
 	

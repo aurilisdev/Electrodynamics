@@ -18,7 +18,7 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ContainerQuarry extends GenericContainerBlockEntity<TileQuarry> {
 
-	public static final SubtypeItemUpgrade[] VALID_UPGRADES = new SubtypeItemUpgrade[] { SubtypeItemUpgrade.fortune, SubtypeItemUpgrade.silktouch, SubtypeItemUpgrade.unbreaking, SubtypeItemUpgrade.itemvoid };
+	public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.fortune, SubtypeItemUpgrade.silktouch, SubtypeItemUpgrade.unbreaking, SubtypeItemUpgrade.itemvoid };
 
 	public ContainerQuarry(int id, PlayerInventory playerinv, IInventory inventory, IIntArray inventorydata) {
 		super(ElectrodynamicsMenuTypes.CONTAINER_QUARRY.get(), id, playerinv, inventory, inventorydata);

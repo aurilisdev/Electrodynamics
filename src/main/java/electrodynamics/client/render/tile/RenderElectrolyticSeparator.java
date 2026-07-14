@@ -7,10 +7,10 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import electrodynamics.common.tile.machines.TileElectrolyticSeparator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.Atlases;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.client.renderer.Atlases;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.templates.FluidTank;
 import voltaic.client.render.AbstractTileRenderer;

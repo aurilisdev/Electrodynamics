@@ -5,7 +5,6 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 
 import electrodynamics.Electrodynamics;
-
 import electrodynamics.client.screen.tile.ScreenChemicalCrystallizer;
 import electrodynamics.client.screen.tile.ScreenChemicalMixer;
 import electrodynamics.client.screen.tile.ScreenElectricArcFurnace;

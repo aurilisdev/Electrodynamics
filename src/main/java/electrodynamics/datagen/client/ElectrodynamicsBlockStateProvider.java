@@ -1,11 +1,11 @@
 package electrodynamics.datagen.client;
 
-import electrodynamics.common.block.subtype.SubtypeGlass;
-import electrodynamics.common.block.subtype.SubtypeMachine;
-import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
+import electrodynamics.common.block.subtype.SubtypeGlass;
+import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.common.block.subtype.SubtypeWire.InsulationMaterial;

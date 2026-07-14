@@ -98,10 +98,7 @@ public abstract class TileGenericTransformer extends GenericTile implements ITic
 
     public TransferPack getConnectedLoad(ICapabilityElectrodynamic.LoadProfile lastEnergy, Direction dir) {
         Direction facing = getFacing();
-        if (facing.getOpposite() != dir) {
-            return TransferPack.EMPTY;
-        }
-        if (locked) {
+        if (facing.getOpposite() != dir || locked) {
             return TransferPack.EMPTY;
         }
         if (output == null) {
