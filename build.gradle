@@ -16,9 +16,6 @@ buildscript {
     }
 }
 
-plugins {
-    id "com.matthewprenger.cursegradle" version '1.4.0'
-}
 apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'org.spongepowered.mixin'
 apply plugin: 'org.parchmentmc.librarian.forgegradle'
@@ -108,6 +105,7 @@ dependencies {
     }
 
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    implementation fg.deobf("voltaic:Voltaic:1.16.5-1.0.0-8")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
 
@@ -162,6 +160,7 @@ publishing {
 This needs to stay. It's the Maven repository for JEI along with a fallback!
 */
 repositories{
+    mavenLocal()
 	mavenCentral()
 	maven {
 	    // location of the maven that hosts JEI files since January 2023
@@ -173,23 +172,4 @@ repositories{
     	name = "ModMaven"
     	url = "https://modmaven.dev"
   	}
-}
-
-tasks.curseforge.dependsOn jar
-
-curseforge {
-  apiKey = System.getenv("CURSEFORGE_KEY")
-  project {
-    id = '405322'
-    changelog = 'You can find changelog at: https://aurilis.dev/'
-    releaseType = 'release'
-    addGameVersion minecraft_version
-
-    mainArtifact(jar) {
-      relations {
-        requiredDependency 'electrodynamics'
-      }
-      displayName=project.name+' ' + project.version
-    }
-  }
 }
