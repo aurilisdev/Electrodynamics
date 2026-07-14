@@ -80,16 +80,12 @@ public class EntityMetalRod extends EntityCustomProjectile {
 
 	@Override
 	protected Item getDefaultItem() {
-		switch (number) {
-		case 0:
-			return ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.steel);
-		case 1:
-			return ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.stainlesssteel);
-		case 2:
-			return ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.hslasteel);
-		default:
-			return super.getDefaultItem();
-		}
+		return switch (number) {
+		case 0 -> ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.steel);
+		case 1 -> ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.stainlesssteel);
+		case 2 -> ElectrodynamicsItems.ITEMS_ROD.getValue(SubtypeRod.hslasteel);
+		default -> super.getDefaultItem();
+		};
 	}
 
 	public int getNumber() {

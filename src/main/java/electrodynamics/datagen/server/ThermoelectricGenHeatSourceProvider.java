@@ -18,7 +18,7 @@ import net.minecraft.world.level.material.Fluid;
 
 public class ThermoelectricGenHeatSourceProvider implements DataProvider {
 
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
+	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	public static final String LOC = "data/" + Electrodynamics.ID + "/" + ThermoelectricGeneratorHeatRegister.FOLDER + "/" + ThermoelectricGeneratorHeatRegister.FILE_NAME;
 
 	private final DataGenerator dataGenerator;

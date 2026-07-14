@@ -14,7 +14,6 @@ import electrodynamics.client.keys.event.HandlerSwapBattery;
 import electrodynamics.client.keys.event.HandlerToggleNVGoggles;
 import electrodynamics.client.keys.event.HandlerToggleServoLegs;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;

@@ -1,12 +1,12 @@
 package electrodynamics.datagen.server;
 
-import electrodynamics.common.block.subtype.SubtypeOre;
-import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.BlockOre;
 import electrodynamics.common.block.BlockRawOre;
 import electrodynamics.common.block.connect.BlockFluidPipe;
 import electrodynamics.common.block.connect.BlockWire;
+import electrodynamics.common.block.subtype.SubtypeOre;
+import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.registers.ElectrodynamicsBlocks;

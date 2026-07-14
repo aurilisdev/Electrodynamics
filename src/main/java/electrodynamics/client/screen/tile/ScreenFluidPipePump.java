@@ -30,11 +30,7 @@ public class ScreenFluidPipePump extends GenericScreen<ContainerFluidPipePump> {
 
 		TileFluidPipePump pump = menu.getSafeHost();
 
-		if (pump == null) {
-			return;
-		}
-
-		if (prior.isEmpty()) {
+		if ((pump == null) || prior.isEmpty()) {
 			return;
 		}
 

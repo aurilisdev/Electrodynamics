@@ -3,8 +3,6 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -16,7 +14,6 @@ import voltaic.client.guidebook.ScreenGuidebook;
 import voltaic.client.guidebook.utils.components.Chapter;
 import voltaic.client.guidebook.utils.components.Module;
 import voltaic.client.guidebook.utils.pagedata.OnKeyPress;
-import voltaic.client.guidebook.utils.pagedata.OnTooltip;
 import voltaic.client.guidebook.utils.pagedata.graphics.ItemWrapperObject;
 import voltaic.client.guidebook.utils.pagedata.text.TextWrapperObject;
 import voltaic.compatibility.jei.JeiBuffer;
@@ -44,17 +41,13 @@ public class ChapterArmor extends Chapter {
 
 		// Jetpack
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_JETPACK.get().getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setSeparateStart());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEM_JETPACK.get()).onTooltip(new OnTooltip() {
-
-			@Override
-			public void onTooltip(PoseStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				if (JeiBuffer.isJeiInstalled()) {
-					List<FormattedCharSequence> tooltips = new ArrayList<>();
-					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-					screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-				}
-
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEM_JETPACK.get()).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+			if (JeiBuffer.isJeiInstalled()) {
+				List<FormattedCharSequence> tooltips = new ArrayList<>();
+				tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
 			}
+
 		}).onKeyPress(new OnKeyPress() {
 
 			@Override
@@ -72,17 +65,13 @@ public class ChapterArmor extends Chapter {
 
 		// Hydraulic Boots
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get().getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get()).onTooltip(new OnTooltip() {
-
-			@Override
-			public void onTooltip(PoseStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				if (JeiBuffer.isJeiInstalled()) {
-					List<FormattedCharSequence> tooltips = new ArrayList<>();
-					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-					screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-				}
-
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get()).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+			if (JeiBuffer.isJeiInstalled()) {
+				List<FormattedCharSequence> tooltips = new ArrayList<>();
+				tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
 			}
+
 		}).onKeyPress(new OnKeyPress() {
 
 			@Override
@@ -100,17 +89,13 @@ public class ChapterArmor extends Chapter {
 
 		// Combat Chestplate
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get().getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()).onTooltip(new OnTooltip() {
-
-			@Override
-			public void onTooltip(PoseStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				if (JeiBuffer.isJeiInstalled()) {
-					List<FormattedCharSequence> tooltips = new ArrayList<>();
-					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-					screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-				}
-
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+			if (JeiBuffer.isJeiInstalled()) {
+				List<FormattedCharSequence> tooltips = new ArrayList<>();
+				tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
 			}
+
 		}).onKeyPress(new OnKeyPress() {
 
 			@Override
@@ -129,17 +114,13 @@ public class ChapterArmor extends Chapter {
 		// Combat Boots
 		pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEM_COMBATBOOTS.get().getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
 
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEM_COMBATBOOTS.get()).onTooltip(new OnTooltip() {
-
-			@Override
-			public void onTooltip(PoseStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				if (JeiBuffer.isJeiInstalled()) {
-					List<FormattedCharSequence> tooltips = new ArrayList<>();
-					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-					screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-				}
-
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEM_COMBATBOOTS.get()).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+			if (JeiBuffer.isJeiInstalled()) {
+				List<FormattedCharSequence> tooltips = new ArrayList<>();
+				tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
 			}
+
 		}).onKeyPress(new OnKeyPress() {
 
 			@Override
@@ -157,17 +138,13 @@ public class ChapterArmor extends Chapter {
 
 		// Ceramic Plate Protection
 		pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.armor.ceramicheader").withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
-		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate)).onTooltip(new OnTooltip() {
-
-			@Override
-			public void onTooltip(PoseStack poseStack, int xAxis, int yAxis, ScreenGuidebook screen) {
-				if (JeiBuffer.isJeiInstalled()) {
-					List<FormattedCharSequence> tooltips = new ArrayList<>();
-					tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
-					screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
-				}
-
+		pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F, ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate)).onTooltip((poseStack, xAxis, yAxis, screen) -> {
+			if (JeiBuffer.isJeiInstalled()) {
+				List<FormattedCharSequence> tooltips = new ArrayList<>();
+				tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY).getVisualOrderText());
+				screen.renderTooltip(poseStack, tooltips, xAxis, yAxis);
 			}
+
 		}).onKeyPress(new OnKeyPress() {
 
 			@Override

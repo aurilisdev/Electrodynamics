@@ -20,7 +20,7 @@ import voltaic.common.tags.VoltaicTags;
 
 public class CombustionChamberFuelSourceProvider implements DataProvider {
 
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
+	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	public static final String LOC = "data/" + Electrodynamics.ID + "/" + CombustionFuelRegister.FOLDER + "/";
 
 	private final DataGenerator dataGenerator;

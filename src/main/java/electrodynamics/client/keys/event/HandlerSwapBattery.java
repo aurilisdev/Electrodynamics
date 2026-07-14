@@ -1,7 +1,6 @@
 package electrodynamics.client.keys.event;
 
 import electrodynamics.client.keys.KeyBinds;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;

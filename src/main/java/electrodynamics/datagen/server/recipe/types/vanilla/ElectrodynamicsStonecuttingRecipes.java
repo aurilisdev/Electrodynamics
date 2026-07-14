@@ -4,7 +4,6 @@ import java.util.function.Consumer;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeConcrete;
-import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.world.item.crafting.Ingredient;

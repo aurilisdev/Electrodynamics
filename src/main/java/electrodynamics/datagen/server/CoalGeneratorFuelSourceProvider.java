@@ -20,7 +20,7 @@ import net.minecraftforge.common.Tags;
 
 public class CoalGeneratorFuelSourceProvider implements DataProvider {
 
-	private static final Gson GSON = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
+	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 	public static final String LOC = "data/" + Electrodynamics.ID + "/" + CoalGeneratorFuelRegister.FOLDER + "/" + CoalGeneratorFuelRegister.FILE_NAME;
 
 	private final DataGenerator dataGenerator;

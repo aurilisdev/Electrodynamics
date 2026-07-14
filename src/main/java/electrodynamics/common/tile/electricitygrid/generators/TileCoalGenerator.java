@@ -22,7 +22,11 @@ import voltaic.common.block.states.VoltaicBlockStates;
 import voltaic.prefab.properties.types.PropertyTypes;
 import voltaic.prefab.properties.variant.SingleProperty;
 import voltaic.prefab.tile.components.IComponentType;
-import voltaic.prefab.tile.components.type.*;
+import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
+import voltaic.prefab.tile.components.type.ComponentInventory;
+import voltaic.prefab.tile.components.type.ComponentPacketHandler;
+import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
 import voltaic.prefab.utilities.object.CachedTileOutput;
 import voltaic.prefab.utilities.object.TargetValue;
@@ -119,7 +123,7 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 
 	@Override
 	public int getComparatorSignal() {
-		return (int) ((heat.getValue() / 3000.0) * 15.0);
+		return (int) (heat.getValue() / 3000.0 * 15.0);
 	}
 
 	@Override

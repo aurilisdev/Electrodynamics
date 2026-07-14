@@ -495,7 +495,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
                     continue;
                 }
 
-                int overvoltage = (int) Math.ceil((voltage / wireShockVoltage));
+                int overvoltage = (int) Math.ceil(voltage / wireShockVoltage);
 
                 if (flamability > overvoltage) {
                     continue;
@@ -507,7 +507,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 
                     firePos = relativePos.relative(relDir);
 
-                    if (firePos.equals(pos) || !BaseFireBlock.canBePlacedAt(level, firePos, (relDir == Direction.DOWN || relDir == Direction.UP) ? dir : relDir.getOpposite())) {
+                    if (firePos.equals(pos) || !BaseFireBlock.canBePlacedAt(level, firePos, relDir == Direction.DOWN || relDir == Direction.UP ? dir : relDir.getOpposite())) {
                         continue;
                     }
 

@@ -217,40 +217,24 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
         // return EnumConnectType.NONE;
 
-        return EnumConnectType.values()[(extracted >> (dir.ordinal() * 4))];
+        return EnumConnectType.values()[extracted >> dir.ordinal() * 4];
 
     }
 
     public void writeConnection(Direction dir, EnumConnectType connection) {
 
         int connectionData = this.connections.getValue();
-        int masked;
+        int masked = switch (dir) {
+	case DOWN -> connectionData & ~DOWN_MASK;
+	case UP -> connectionData & ~UP_MASK;
+	case NORTH -> connectionData & ~NORTH_MASK;
+	case SOUTH -> connectionData & ~SOUTH_MASK;
+	case WEST -> connectionData & ~WEST_MASK;
+	case EAST -> connectionData & ~EAST_MASK;
+	default -> 0;
+	};
 
-        switch (dir) {
-            case DOWN:
-                masked = connectionData & ~DOWN_MASK;
-                break;
-            case UP:
-                masked = connectionData & ~UP_MASK;
-                break;
-            case NORTH:
-                masked = connectionData & ~NORTH_MASK;
-                break;
-            case SOUTH:
-                masked = connectionData & ~SOUTH_MASK;
-                break;
-            case WEST:
-                masked = connectionData & ~WEST_MASK;
-                break;
-            case EAST:
-                masked = connectionData & ~EAST_MASK;
-                break;
-            default:
-                masked = 0;
-                break;
-        }
-
-        connections.setValue(masked | (connection.ordinal() << (dir.ordinal() * 4)));
+        connections.setValue(masked | connection.ordinal() << dir.ordinal() * 4);
     }
 
     @Override
@@ -264,7 +248,7 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
     @Override
     public @NotNull IModelData getModelData() {
-        return new ModelDataMap.Builder().withInitial(ModelPropertyConnections.INSTANCE, () -> readConnections()).build();
+        return new ModelDataMap.Builder().withInitial(ModelPropertyConnections.INSTANCE, this::readConnections).build();
     }
 
 }

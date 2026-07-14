@@ -1,12 +1,12 @@
 package electrodynamics.registers;
 
 import electrodynamics.Electrodynamics;
+import electrodynamics.common.block.subtype.SubtypeConcrete;
+import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
-import electrodynamics.common.block.subtype.SubtypeConcrete;
-import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeRawOreBlock;
 import electrodynamics.common.block.subtype.SubtypeResourceBlock;
 import electrodynamics.common.block.subtype.SubtypeWire;
@@ -54,9 +54,7 @@ import voltaic.api.registration.BulkRegistryObject;
 import voltaic.common.blockitem.BlockItemDescriptable;
 import voltaic.common.item.ItemBoneMeal;
 import voltaic.common.item.ItemDescriptable;
-import voltaic.common.item.ItemUpgrade;
 import voltaic.common.item.ItemVoltaic;
-import voltaic.common.item.subtype.SubtypeItemUpgrade;
 import voltaic.prefab.item.ElectricItemProperties;
 import voltaic.prefab.item.ItemElectric;
 import voltaic.prefab.utilities.object.TransferPack;
@@ -83,7 +81,7 @@ public class ElectrodynamicsItems {
 	public static final RegistryObject<BlockItemDescriptable> ITEM_STEELSCAFFOLD = ITEMS.register("steelscaffold", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_STEELSCAFFOLDING.get(), new Item.Properties().stacksTo(64), () -> ElectrodynamicsCreativeTabs.MAIN));
 	public static final RegistryObject<BlockItemDescriptable> ITEM_FRAME = ITEMS.register("frame", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_FRAME.get(), new Item.Properties().stacksTo(64), null));
 	public static final RegistryObject<BlockItemDescriptable> ITEM_FRAMECORNER = ITEMS.register("framecorner", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_FRAME_CORNER.get(), new Item.Properties().stacksTo(64), null));
-	public static final RegistryObject<BlockItemDescriptable> ITEM_LOGISTICALMANAGER = ITEMS.register("logisticalmanager", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_LOGISTICALMANAGER.get(), new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN));;
+	public static final RegistryObject<BlockItemDescriptable> ITEM_LOGISTICALMANAGER = ITEMS.register("logisticalmanager", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_LOGISTICALMANAGER.get(), new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN));
 	public static final RegistryObject<BlockItemDescriptable> ITEM_SEISMICMARKER = ITEMS.register("seismicmarker", () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCK_SEISMICMARKER.get(), new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN));
 	public static final BulkRegistryObject<BlockItemWire, SubtypeWire> ITEMS_WIRE = new BulkRegistryObject<>(SubtypeWire.values(), subtype -> ITEMS.register(subtype.tag(), () -> new BlockItemWire(ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(subtype), new Item.Properties(), () -> ElectrodynamicsCreativeTabs.GRID)));
 	public static final BulkRegistryObject<BlockItemFluidPipe, SubtypeFluidPipe> ITEMS_PIPE = new BulkRegistryObject<>(SubtypeFluidPipe.values(), subtype -> ITEMS.register(subtype.tag(), () -> new BlockItemFluidPipe(ElectrodynamicsBlocks.BLOCKS_FLUIDPIPE.getValue(subtype), new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN)));

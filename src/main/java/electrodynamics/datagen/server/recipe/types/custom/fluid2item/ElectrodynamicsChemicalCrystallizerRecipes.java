@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeConcrete;
 import electrodynamics.common.fluid.subtype.SubtypeSulfateFluid;
-import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsRecipies;
 import net.minecraft.data.recipes.FinishedRecipe;
