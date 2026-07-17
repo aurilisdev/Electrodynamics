@@ -7,57 +7,27 @@ import electrodynamics.common.block.connect.BlockWire;
 import electrodynamics.common.block.subtype.SubtypeWire;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.event.IModBusEvent;
-import voltaic.api.network.cable.type.IWire;
 
 public class RegisterWiresEvent extends Event implements IModBusEvent {
 
     private final HashSet<BlockWire> wires = new HashSet<>();
 
     public void registerWire(BlockWire wire) {
-        wires.add(wire);
+	wires.add(wire);
     }
-
 
     public void process() {
-
-        HashMap<IWire.IWireMaterial, HashMap<IWire.IInsulationMaterial, HashMap<IWire.IWireClass, HashMap<IWire.IWireColor, BlockWire>>>> wireToColorMapping = new HashMap<>();
-
-        HashSet<IWire.IWireMaterial> wireMaterials = new HashSet<>();
-
-        HashSet<IWire.IWireColor> wireColors = new HashSet<>();
-
-        for(BlockWire wire : wires) {
-
-            wireMaterials.add(wire.wire.getWireMaterial());
-
-            HashMap<IWire.IInsulationMaterial, HashMap<IWire.IWireClass, HashMap<IWire.IWireColor, BlockWire>>> wTC1 = wireToColorMapping.getOrDefault(wire.wire.getWireMaterial(), new HashMap<>());
-
-            HashMap<IWire.IWireClass, HashMap<IWire.IWireColor, BlockWire>> wTC2 = wTC1.getOrDefault(wire.wire.getInsulation(), new HashMap<>());
-
-            HashMap<IWire.IWireColor, BlockWire> wTC3 = wTC2.getOrDefault(wire.wire.getWireColor(), new HashMap<>());
-
-            wTC3.put(wire.wire.getWireColor(), wire);
-
-            wTC2.put(wire.wire.getWireClass(), wTC3);
-
-            wTC1.put(wire.wire.getInsulation(), wTC2);
-
-            wireToColorMapping.put(wire.wire.getWireMaterial(), wTC1);
-
-            wireColors.add(wire.wire.getWireColor());
-
-        }
-
-        SubtypeWire.WIRE_MATERIALS.clear();
-        SubtypeWire.WIRE_MATERIALS.addAll(wireMaterials);
-
-        SubtypeWire.WIRES.clear();
-        SubtypeWire.WIRES.putAll(wireToColorMapping);
-
-        SubtypeWire.WireColor.WIRE_COLORS.clear();
-        SubtypeWire.WireColor.WIRE_COLORS.addAll(wireColors);
-
+	for (BlockWire wire : wires) {
+	    SubtypeWire.WIRE_MATERIALS.add(wire.wire.getWireMaterial());
+	    SubtypeWire.WireColor.WIRE_COLORS.add(wire.wire.getWireColor());
+	    var materialmap = SubtypeWire.WIRES.getOrDefault(wire.wire.getWireMaterial(), new HashMap<>());
+	    var insulationmap = materialmap.getOrDefault(wire.wire.getInsulation(), new HashMap<>());
+	    var classmap = insulationmap.getOrDefault(wire.wire.getWireClass(), new HashMap<>());
+	    classmap.put(wire.wire.getWireColor(), wire);
+	    insulationmap.put(wire.wire.getWireClass(), classmap);
+	    materialmap.put(wire.wire.getInsulation(), insulationmap);
+	    SubtypeWire.WIRES.put(wire.wire.getWireMaterial(), materialmap);
+	}
     }
-
 
 }

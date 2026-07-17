@@ -6,6 +6,15 @@
     "electrodynamics:wireinsulatedsilvergreen",
     "electrodynamics:wireinsulatedsilverblue",
     "electrodynamics:wireinsulatedsilveryellow",
-    "electrodynamics:wireinsulatedsilverbrown"
+    "electrodynamics:wireinsulatedsilverbrown",
+    "electrodynamics:wireinsulatedsilverorange",
+    "electrodynamics:wireinsulatedsilverlime",
+    "electrodynamics:wireinsulatedsilverlightblue",
+    "electrodynamics:wireinsulatedsilvercyan",
+    "electrodynamics:wireinsulatedsilverpurple",
+    "electrodynamics:wireinsulatedsilvermagenta",
+    "electrodynamics:wireinsulatedsilverpink",
+    "electrodynamics:wireinsulatedsilverlightgray",
+    "electrodynamics:wireinsulatedsilvergray"
   ]
 }

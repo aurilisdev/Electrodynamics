@@ -24,276 +24,315 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
     public HashMap<Integer, HashSet<TileFluidPipePump>> priorityPumpMap = new HashMap<>();
 
     public FluidNetwork(Collection<GenericTileFluidPipe> varCables) {
-        conductorSet.addAll(varCables);
-        NetworkRegistry.register(this);
+	conductorSet.addAll(varCables);
+	NetworkRegistry.register(this);
     }
 
     public FluidNetwork(Set<FluidNetwork> networks) {
-        for (FluidNetwork net : networks) {
-            conductorSet.addAll(net.conductorSet);
-            net.deregister();
-        }
-        NetworkRegistry.register(this);
+	for (FluidNetwork net : networks) {
+	    conductorSet.addAll(net.conductorSet);
+	    net.deregister();
+	}
+	NetworkRegistry.register(this);
     }
 
     @Override
     public void refreshNewNetwork() {
-        priorityPumpMap.clear();
-        networkMaxTransfer = 0;
-        super.refreshNewNetwork();
+	priorityPumpMap.clear();
+	networkMaxTransfer = 0;
+	super.refreshNewNetwork();
     }
 
     @Override
     public FluidStack emit(FluidStack inserted, ArrayList<BlockEntity> ignored, boolean debug) {
 
-        FluidStack transfer = new FluidStack(inserted.getFluid(), Math.min((int) networkMaxTransfer, inserted.getAmount()));
+	FluidStack transfer = new FluidStack(inserted.getFluid(),
+		Math.min((int) networkMaxTransfer, inserted.getAmount()));
 
-        if (transfer.getAmount() <= 0) {
-            return FluidStack.EMPTY;
-        }
+	if (transfer.getAmount() <= 0) {
+	    return FluidStack.EMPTY;
+	}
 
-        FluidStack initial = transfer.copy();
-        FluidStack taken = new FluidStack(transfer.getFluid(), 0);
+	FluidStack initial = transfer.copy();
+	FluidStack taken = new FluidStack(transfer.getFluid(), 0);
 
-        Pair<FluidStack, Set<TileFluidPipePump>> priorityFilled = emitToPumps(transfer, ignored);
+	Pair<FluidStack, Set<TileFluidPipePump>> priorityFilled = emitToPumps(transfer, ignored);
 
-        initial.shrink(priorityFilled.getFirst().getAmount());
-        taken.grow(priorityFilled.getFirst().getAmount());
+	initial.shrink(priorityFilled.getFirst().getAmount());
+	taken.grow(priorityFilled.getFirst().getAmount());
 
-        if (initial.isEmpty()) {
+	if (initial.isEmpty()) {
 
-            return taken;
+	    return taken;
 
-        }
+	}
 
-        HashSet<BlockEntity> availableAcceptors = Sets.newHashSet();
+	HashSet<BlockEntity> availableAcceptors = Sets.newHashSet();
 
-        availableAcceptors.addAll(acceptorSet);
+	availableAcceptors.addAll(acceptorSet);
 
-        availableAcceptors.removeAll(ignored);
+	availableAcceptors.removeAll(ignored);
 
-        if (priorityFilled.getSecond().size() > 0) {
-            availableAcceptors.removeAll(priorityFilled.getSecond());
-        }
+	if (priorityFilled.getSecond().size() > 0) {
+	    availableAcceptors.removeAll(priorityFilled.getSecond());
+	}
 
-        if (availableAcceptors.isEmpty()) {
-            return FluidStack.EMPTY;
-        }
+	if (availableAcceptors.isEmpty()) {
+	    return taken;
+	}
 
-        // This algorithm is not perfect, but it helps deal with tiles that do not accept the full amount allotted to them
+	// This algorithm is not perfect, but it helps deal with tiles that do not
+	// accept the full amount allotted to them
 
-        FluidStack perTile, prePerTile, perConnection, prePerConnection;
+	FluidStack perTile, prePerTile, perConnection, prePerConnection;
 
-        int size = availableAcceptors.size();
+	int size = availableAcceptors.size();
 
-        int connectionsSize, amtTaken, takenAmt;
+	int connectionsSize, amtTaken, takenAmt;
 
-        HashSet<Direction> connections;
+	HashSet<Direction> connections;
 
-        for (BlockEntity tile : availableAcceptors) {
-        	
-        	if(tile == null || tile.isRemoved()) {
-                acceptorInputMap.remove(tile);
-                acceptorSet.remove(tile);
-                continue;
-            }
+	for (BlockEntity tile : availableAcceptors) {
 
-            perTile = new FluidStack(initial.getFluid(), (int) ((double) initial.getAmount() / (double) size));
-            prePerTile = perTile.copy();
+	    if (tile == null || tile.isRemoved()) {
+		acceptorInputMap.remove(tile);
+		acceptorSet.remove(tile);
+		size--;
+		continue;
+	    }
 
-            connections = acceptorInputMap.getOrDefault(tile, new HashSet<>());
+	    if (initial.isEmpty() || size <= 0) {
+		break;
+	    }
 
-            connectionsSize = connections.size();
+	    connections = acceptorInputMap.getOrDefault(tile, new HashSet<>());
 
-            for (Direction dir : connections) {
+	    connectionsSize = connections.size();
 
-                perConnection = new FluidStack(initial.getFluid(), (int) ((double) perTile.getAmount() / (double) connectionsSize));
-                prePerConnection = perConnection.copy();
+	    if (connectionsSize <= 0) {
+		size--;
+		continue;
+	    }
 
-                amtTaken = FluidUtilities.receiveFluid(tile, dir, perConnection, false);
+	    perTile = new FluidStack(initial.getFluid(), Math.max(1, initial.getAmount() / size));
+	    prePerTile = perTile.copy();
 
-                perConnection.shrink(amtTaken);
+	    for (Direction dir : connections) {
 
-                perTile.shrink(prePerConnection.getAmount() - perConnection.getAmount());
+		if (perTile.isEmpty() || connectionsSize <= 0) {
+		    break;
+		}
 
-                connectionsSize--;
-            }
+		perConnection = new FluidStack(initial.getFluid(), Math.max(1, perTile.getAmount() / connectionsSize));
+		prePerConnection = perConnection.copy();
 
-            takenAmt = prePerTile.getAmount() - perTile.getAmount();
+		amtTaken = FluidUtilities.receiveFluid(tile, dir, perConnection, false);
 
-            initial.shrink(takenAmt);
+		perConnection.shrink(amtTaken);
 
-            taken.grow(takenAmt);
+		perTile.shrink(prePerConnection.getAmount() - perConnection.getAmount());
 
-            size--;
-        }
+		connectionsSize--;
+	    }
 
-        return taken;
+	    takenAmt = prePerTile.getAmount() - perTile.getAmount();
+
+	    initial.shrink(takenAmt);
+
+	    taken.grow(takenAmt);
+
+	    size--;
+	}
+
+	return taken;
 
     }
 
     private Pair<FluidStack, Set<TileFluidPipePump>> emitToPumps(FluidStack transfer, ArrayList<BlockEntity> ignored) {
 
-        FluidStack taken = new FluidStack(transfer.getFluid(), 0);
+	FluidStack taken = new FluidStack(transfer.getFluid(), 0);
 
-        HashSet<TileFluidPipePump> acceptedPumps = new HashSet<>();
+	HashSet<TileFluidPipePump> acceptedPumps = new HashSet<>();
 
-        if (priorityPumpMap.isEmpty()) {
-            return Pair.of(taken, acceptedPumps);
-        }
+	if (priorityPumpMap.isEmpty()) {
+	    return Pair.of(taken, acceptedPumps);
+	}
 
-        Pair<FluidStack, Set<TileFluidPipePump>> accepted;
+	Pair<FluidStack, Set<TileFluidPipePump>> accepted;
 
-        Set<TileFluidPipePump> prioritySet;
+	Set<TileFluidPipePump> prioritySet;
 
-        FluidStack copy = transfer.copy();
+	FluidStack copy = transfer.copy();
 
-        for (int i = 9; i >= 0; i--) {
+	for (int i = 9; i >= 0; i--) {
 
-            if (copy.isEmpty()) {
-                return Pair.of(taken, acceptedPumps);
-            }
+	    if (copy.isEmpty()) {
+		return Pair.of(taken, acceptedPumps);
+	    }
 
-            prioritySet = priorityPumpMap.getOrDefault(i, new HashSet<>());
+	    prioritySet = priorityPumpMap.getOrDefault(i, new HashSet<>());
 
-            if (prioritySet.isEmpty()) {
-                continue;
-            }
+	    if (prioritySet.isEmpty()) {
+		continue;
+	    }
 
-            accepted = emitToPumpSet(copy, prioritySet, ignored);
+	    accepted = emitToPumpSet(copy, prioritySet, ignored);
 
-            acceptedPumps.addAll(accepted.getSecond());
+	    acceptedPumps.addAll(accepted.getSecond());
 
-            taken.grow(accepted.getFirst().getAmount());
+	    taken.grow(accepted.getFirst().getAmount());
 
-            copy.shrink(accepted.getFirst().getAmount());
+	    copy.shrink(accepted.getFirst().getAmount());
 
-        }
+	}
 
-        return Pair.of(taken, acceptedPumps);
+	return Pair.of(taken, acceptedPumps);
 
     }
 
-    private Pair<FluidStack, Set<TileFluidPipePump>> emitToPumpSet(FluidStack transfer, Set<TileFluidPipePump> recievingTiles, ArrayList<BlockEntity> ignored) {
+    private Pair<FluidStack, Set<TileFluidPipePump>> emitToPumpSet(FluidStack transfer,
+	    Set<TileFluidPipePump> recievingTiles, ArrayList<BlockEntity> ignored) {
 
-        FluidStack initial = transfer.copy();
-        FluidStack taken = new FluidStack(transfer.getFluid(), 0);
+	FluidStack initial = transfer.copy();
+	FluidStack taken = new FluidStack(transfer.getFluid(), 0);
 
-        FluidStack perTile, prePerTile, perConnection, prePerConnection;
+	FluidStack perTile, prePerTile, perConnection, prePerConnection;
 
-        HashSet<TileFluidPipePump> filledPumps = new HashSet<>();
+	HashSet<TileFluidPipePump> handledPumps = new HashSet<>();
 
-        int size = recievingTiles.size();
+	int size = recievingTiles.size();
 
-        int connectionsSize, amtTaken, takenAmt;
+	int connectionsSize, amtTaken, takenAmt;
 
-        HashSet<Direction> connections;
+	HashSet<Direction> connections;
 
-        for (TileFluidPipePump tile : recievingTiles) {
-            if (!tile.isPowered() || ignored.contains(tile)) {
+	for (TileFluidPipePump tile : recievingTiles) {
+	    if (tile == null || tile.isRemoved()) {
+		acceptorInputMap.remove(tile);
+		acceptorSet.remove(tile);
+		size--;
+		continue;
+	    }
+	    if (!tile.isPowered() || ignored.contains(tile)) {
+		size--;
+		continue;
+	    }
+            if (initial.isEmpty() || size <= 0) {
+                break;
+            }
+	    connections = acceptorInputMap.getOrDefault(tile, new HashSet<>());
+
+	    connectionsSize = connections.size();
+
+            if (connectionsSize <= 0) {
+                handledPumps.add(tile);
                 size--;
                 continue;
             }
 
-            perTile = new FluidStack(initial.getFluid(), initial.getAmount() / size);
+            perTile = new FluidStack(initial.getFluid(), Math.max(1, initial.getAmount() / size));
             prePerTile = perTile.copy();
+	    for (Direction dir : connections) {
 
-            connections = acceptorInputMap.getOrDefault(tile, new HashSet<>());
+                if (perTile.isEmpty() || connectionsSize <= 0) {
+                    break;
+                }
+		perConnection = new FluidStack(initial.getFluid(), perTile.getAmount() / connectionsSize);
+		prePerConnection = perConnection.copy();
 
-            connectionsSize = connections.size();
+		amtTaken = FluidUtilities.receiveFluid(tile, dir, perConnection, false);
 
-            for (Direction dir : connections) {
+		perConnection.shrink(amtTaken);
 
-                perConnection = new FluidStack(initial.getFluid(), perTile.getAmount() / connectionsSize);
-                prePerConnection = perConnection.copy();
+		perTile.shrink(prePerConnection.getAmount() - perConnection.getAmount());
 
-                amtTaken = FluidUtilities.receiveFluid(tile, dir, perConnection, false);
+		connectionsSize--;
+	    }
 
-                perConnection.shrink(amtTaken);
+	    takenAmt = prePerTile.getAmount() - perTile.getAmount();
 
-                perTile.shrink(prePerConnection.getAmount() - perConnection.getAmount());
+	    initial.shrink(takenAmt);
 
-                connectionsSize--;
-            }
+	    taken.grow(takenAmt);
 
-            takenAmt = prePerTile.getAmount() - perTile.getAmount();
+	    handledPumps.add(tile);
 
-            initial.shrink(takenAmt);
+	    size--;
+	}
 
-            taken.grow(takenAmt);
-
-            filledPumps.add(tile);
-
-            size--;
-        }
-
-        return Pair.of(taken, filledPumps);
+	return Pair.of(taken, handledPumps);
 
     }
 
     @Override
     public void updateRecieverStatistics(BlockEntity reciever, Direction dir) {
 
-        if (reciever instanceof TileFluidPipePump pump) {
-            int priority = pump.priority.getValue();
-            HashSet<TileFluidPipePump> set = priorityPumpMap.getOrDefault(priority, new HashSet<>());
-            set.add(pump);
-            priorityPumpMap.put(priority, set);
+	if (reciever instanceof TileFluidPipePump pump) {
+	    int priority = pump.priority.getValue();
+	    HashSet<TileFluidPipePump> set = priorityPumpMap.getOrDefault(priority, new HashSet<>());
+	    set.add(pump);
+	    priorityPumpMap.put(priority, set);
 
-        }
+	}
 
     }
 
     public void updateFluidPipePumpStats(TileFluidPipePump changedPump, int newPriority, int prevPriority) {
-        HashSet<TileFluidPipePump> oldSet = priorityPumpMap.getOrDefault(prevPriority, new HashSet<>());
-        oldSet.remove(changedPump);
-        priorityPumpMap.put(prevPriority, oldSet);
+	HashSet<TileFluidPipePump> oldSet = priorityPumpMap.getOrDefault(prevPriority, new HashSet<>());
+	oldSet.remove(changedPump);
+	priorityPumpMap.put(prevPriority, oldSet);
 
-        HashSet<TileFluidPipePump> newSet = priorityPumpMap.getOrDefault(newPriority, new HashSet<>());
-        newSet.add(changedPump);
-        priorityPumpMap.put(newPriority, newSet);
+	HashSet<TileFluidPipePump> newSet = priorityPumpMap.getOrDefault(newPriority, new HashSet<>());
+	newSet.add(changedPump);
+	priorityPumpMap.put(newPriority, newSet);
     }
 
     @Override
     public void updateConductorStatistics(GenericTileFluidPipe cable, boolean remove) {
-        super.updateConductorStatistics(cable, remove);
+	super.updateConductorStatistics(cable, remove);
 
-        if (!remove) {
+	if (!remove) {
 
-            if (networkMaxTransfer == 0 || cable.getCableType().getMaxTransfer() < networkMaxTransfer) {
-                networkMaxTransfer = cable.getCableType().getMaxTransfer();
-            }
+	    if (networkMaxTransfer == 0 || cable.getCableType().getMaxTransfer() < networkMaxTransfer) {
+		networkMaxTransfer = cable.getCableType().getMaxTransfer();
+	    }
 
-        }
+	}
     }
 
     @Override
     public void resetConductorStatistics() {
-        networkMaxTransfer = 0;
-        super.resetConductorStatistics();
+	networkMaxTransfer = 0;
+	super.resetConductorStatistics();
     }
 
     @Override
     public void resetReceiverStatistics() {
-        priorityPumpMap.clear();
-        super.resetReceiverStatistics();
+	priorityPumpMap.clear();
+	super.resetReceiverStatistics();
     }
 
     /*
      *
-     * There is no need for this as we have no concept of fluid pressure nor temperature
+     * There is no need for this as we have no concept of fluid pressure nor
+     * temperature
      *
-     * private boolean checkForOverload(int attemptSend) { if (attemptSend >= networkMaxTransfer) { HashSet<SubtypeFluidPipe> checkList = new HashSet<>(); for (SubtypeFluidPipe type : SubtypeFluidPipe.values()) { if (type.maxTransfer <= attemptSend) { checkList.add(type); } } for (SubtypeFluidPipe index : checkList) { for (IFluidPipe conductor : conductorTypeMap.get(index)) { conductor.destroyViolently(); } } return true; } return false; }
+     * private boolean checkForOverload(int attemptSend) { if (attemptSend >=
+     * networkMaxTransfer) { HashSet<SubtypeFluidPipe> checkList = new HashSet<>();
+     * for (SubtypeFluidPipe type : SubtypeFluidPipe.values()) { if
+     * (type.maxTransfer <= attemptSend) { checkList.add(type); } } for
+     * (SubtypeFluidPipe index : checkList) { for (IFluidPipe conductor :
+     * conductorTypeMap.get(index)) { conductor.destroyViolently(); } } return true;
+     * } return false; }
      */
-
 
     @Override
     public boolean isConductor(BlockEntity tile, GenericTileFluidPipe requsterCable) {
-        return tile instanceof GenericTileFluidPipe;
+	return tile instanceof GenericTileFluidPipe;
     }
 
     @Override
     public FluidNetwork createInstanceConductor(Set<GenericTileFluidPipe> conductors) {
-        return new FluidNetwork(conductors);
+	return new FluidNetwork(conductors);
     }
 }

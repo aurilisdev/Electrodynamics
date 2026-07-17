@@ -6,6 +6,15 @@
     "electrodynamics:wirelogisticsgoldgreen",
     "electrodynamics:wirelogisticsgoldblue",
     "electrodynamics:wirelogisticsgoldyellow",
-    "electrodynamics:wirelogisticsgoldbrown"
+    "electrodynamics:wirelogisticsgoldbrown",
+    "electrodynamics:wirelogisticswiregoldorange",
+    "electrodynamics:wirelogisticswiregoldlime",
+    "electrodynamics:wirelogisticswiregoldlightblue",
+    "electrodynamics:wirelogisticswiregoldcyan",
+    "electrodynamics:wirelogisticswiregoldpurple",
+    "electrodynamics:wirelogisticswiregoldmagenta",
+    "electrodynamics:wirelogisticswiregoldpink",
+    "electrodynamics:wirelogisticswiregoldlightgray",
+    "electrodynamics:wirelogisticswiregoldgray"
   ]
 }

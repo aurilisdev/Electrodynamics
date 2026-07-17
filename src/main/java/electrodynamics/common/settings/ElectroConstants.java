@@ -89,8 +89,8 @@ public class ElectroConstants {
 	public static int GAS_TRANSFORMER_BASE_INPUT_CAPCITY = 5000;
 	@IntValue(def = 1048576)
 	public static int GAS_TRANSFORMER_OUTPUT_PRESSURE_CAP = 1048576;// 2^20
-	@IntValue(def = 1000000)
-	public static int GAS_TRANSFORMER_OUTPUT_TEMP_CAP = 1000000;
+	@IntValue(def = 1000)
+	public static int GAS_TRANSFORMER_OUTPUT_TEMP_CAP = 1000;
 	@IntValue(def = 5000)
 	public static int GAS_TRANSFORMER_BASE_OUTPUT_CAPCITY = 5000;
 	@IntValue(def = 5000)

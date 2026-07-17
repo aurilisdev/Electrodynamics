@@ -6,6 +6,15 @@
     "electrodynamics:wireinsulatedgoldgreen",
     "electrodynamics:wireinsulatedgoldblue",
     "electrodynamics:wireinsulatedgoldyellow",
-    "electrodynamics:wireinsulatedgoldbrown"
+    "electrodynamics:wireinsulatedgoldbrown",
+    "electrodynamics:wireinsulatedgoldorange",
+    "electrodynamics:wireinsulatedgoldlime",
+    "electrodynamics:wireinsulatedgoldlightblue",
+    "electrodynamics:wireinsulatedgoldcyan",
+    "electrodynamics:wireinsulatedgoldpurple",
+    "electrodynamics:wireinsulatedgoldmagenta",
+    "electrodynamics:wireinsulatedgoldpink",
+    "electrodynamics:wireinsulatedgoldlightgray",
+    "electrodynamics:wireinsulatedgoldgray"
   ]
 }

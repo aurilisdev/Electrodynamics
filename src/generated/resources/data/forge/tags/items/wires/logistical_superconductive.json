@@ -6,6 +6,15 @@
     "electrodynamics:wirelogisticssuperconductivegreen",
     "electrodynamics:wirelogisticssuperconductiveblue",
     "electrodynamics:wirelogisticssuperconductiveyellow",
-    "electrodynamics:wirelogisticssuperconductivebrown"
+    "electrodynamics:wirelogisticssuperconductivebrown",
+    "electrodynamics:wirelogisticswiresuperconductiveorange",
+    "electrodynamics:wirelogisticswiresuperconductivelime",
+    "electrodynamics:wirelogisticswiresuperconductivelightblue",
+    "electrodynamics:wirelogisticswiresuperconductivecyan",
+    "electrodynamics:wirelogisticswiresuperconductivepurple",
+    "electrodynamics:wirelogisticswiresuperconductivemagenta",
+    "electrodynamics:wirelogisticswiresuperconductivepink",
+    "electrodynamics:wirelogisticswiresuperconductivelightgray",
+    "electrodynamics:wirelogisticswiresuperconductivegray"
   ]
 }

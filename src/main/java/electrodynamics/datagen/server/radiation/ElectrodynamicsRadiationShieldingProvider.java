@@ -10,13 +10,11 @@ import voltaic.datagen.utils.server.radiation.BaseRadiationShieldingProvider;
 public class ElectrodynamicsRadiationShieldingProvider extends BaseRadiationShieldingProvider {
 
     public ElectrodynamicsRadiationShieldingProvider(DataGenerator gen) {
-        super(gen, Electrodynamics.ID);
+	super(gen, Electrodynamics.ID);
     }
 
     @Override
     public void getRadiationShielding(JsonObject json) {
-
-        addTag(VoltaicTags.Blocks.STORAGE_BLOCK_LEAD, 20000, 1, json);
-
+	addTag(VoltaicTags.Blocks.STORAGE_BLOCK_LEAD, 0.05, 1, json);
     }
 }

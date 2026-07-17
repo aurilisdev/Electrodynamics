@@ -16,44 +16,63 @@ import voltaic.api.electricity.formatting.ChatFormatter;
 import voltaic.api.electricity.formatting.DisplayUnits;
 import voltaic.api.item.IItemTemperate;
 import voltaic.client.event.AbstractPostGuiOverlayHandler;
+import voltaic.prefab.screen.component.CachedComponent;
 
 public class HandlerRailgunTemperature extends AbstractPostGuiOverlayHandler {
 
-	@Override
-	public void renderToScreen(NamedGuiOverlay overlay, PoseStack stack, Window window, Minecraft minecraft, float partialTicks) {
-		Player player = minecraft.player;
-		ItemStack gunStackMainHand = player.getItemBySlot(EquipmentSlot.MAINHAND);
-		ItemStack gunStackOffHand = player.getItemBySlot(EquipmentSlot.OFFHAND);
+    private static final int X = 2;
+    private static final int Y0 = 2;
+    private static final int LINE = 10;
 
-		if (gunStackMainHand.getItem() instanceof ItemRailgun) {
-			renderHeatToolTip(stack, minecraft, gunStackMainHand);
-		} else if (gunStackOffHand.getItem() instanceof ItemRailgun) {
-			renderHeatToolTip(stack, minecraft, gunStackOffHand);
-		}
+    private static final CachedComponent<Double> CURR_TEMP = new CachedComponent<>(temperature -> ElectroTextUtils
+	    .tooltip("railguntemp", ChatFormatter.getChatDisplayShort(temperature, DisplayUnits.TEMPERATURE_CELCIUS))
+	    .withStyle(ChatFormatting.YELLOW));
 
+    private static final CachedComponent<Double> MAX_TEMP = new CachedComponent<>(max -> ElectroTextUtils
+	    .tooltip("railgunmaxtemp", ChatFormatter.getChatDisplayShort(max, DisplayUnits.TEMPERATURE_CELCIUS))
+	    .withStyle(ChatFormatting.YELLOW));
+
+    private static final CachedComponent<Boolean> OVERHEAT = new CachedComponent<>(
+	    unused -> ElectroTextUtils.tooltip("railgunoverheat").withStyle(ChatFormatting.RED, ChatFormatting.BOLD));
+
+    @Override
+    public void renderToScreen(NamedGuiOverlay overlay, PoseStack stack, Window window, Minecraft minecraft,
+	    float partialTicks) {
+
+	Player player = minecraft.player;
+
+	if (player == null || minecraft.level == null) {
+	    return;
 	}
 
-	private void renderHeatToolTip(PoseStack stack, Minecraft minecraft, ItemStack item) {
+	ItemStack main = player.getItemBySlot(EquipmentSlot.MAINHAND);
 
-		ItemRailgun railgun = (ItemRailgun) item.getItem();
-		double temperature = IItemTemperate.getTemperature(item);
-
-		stack.pushPose();
-
-		// ElectroTextUtils.tooltip("railguntemp", Component.literal(temperature + correction + " C"));
-
-		Component currTempText = ElectroTextUtils.tooltip("railguntemp", ChatFormatter.getChatDisplayShort(temperature, DisplayUnits.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.YELLOW);
-		Component maxTempText = ElectroTextUtils.tooltip("railgunmaxtemp", ChatFormatter.getChatDisplayShort(railgun.getMaxTemp(), DisplayUnits.TEMPERATURE_CELCIUS)).withStyle(ChatFormatting.YELLOW);
-
-		minecraft.font.draw(stack, currTempText, 2, 2, 0);
-		minecraft.font.draw(stack, maxTempText, 2, 12, 0);
-
-		if (temperature >= railgun.getOverheatTemp()) {
-			Component overheatWarn = ElectroTextUtils.tooltip("railgunoverheat").withStyle(ChatFormatting.RED, ChatFormatting.BOLD);
-			minecraft.font.draw(stack, overheatWarn, 2, 22, 0);
-		}
-
-		stack.popPose();
+	if (main.getItem() instanceof ItemRailgun) {
+	    renderHeatToolTip(stack, minecraft, main);
+	    return;
 	}
 
+	ItemStack off = player.getItemBySlot(EquipmentSlot.OFFHAND);
+
+	if (off.getItem() instanceof ItemRailgun) {
+	    renderHeatToolTip(stack, minecraft, off);
+	}
+    }
+
+    private static void renderHeatToolTip(PoseStack stack, Minecraft minecraft, ItemStack item) {
+
+	ItemRailgun railgun = (ItemRailgun) item.getItem();
+	double temperature = IItemTemperate.getTemperature(item);
+
+	Component currentTemperature = CURR_TEMP.get(temperature);
+	Component maximumTemperature = MAX_TEMP.get(railgun.getMaxTemp());
+
+	minecraft.font.draw(stack, currentTemperature, X, Y0, 0);
+
+	minecraft.font.draw(stack, maximumTemperature, X, Y0 + LINE, 0);
+
+	if (temperature >= railgun.getOverheatTemp()) {
+	    minecraft.font.draw(stack, OVERHEAT.get(Boolean.TRUE), X, Y0 + LINE * 2, 0);
+	}
+    }
 }

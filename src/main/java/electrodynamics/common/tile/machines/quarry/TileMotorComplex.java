@@ -74,12 +74,12 @@ public class TileMotorComplex extends GenericTile implements ITickableSound {
 					for (int i = 0; i < stack.getCount(); i++) {
 						switch (((ItemUpgrade) stack.getItem()).subtype) {
 						case basicspeed:
-							speed.setValue((int) Math.max((double) speed.getValue() * 0.8, MAX_SPEED));
-							powerMultiplier.setValue(powerMultiplier.getValue() * 3);
+							speed.setValue((int) Math.max((double) speed.getValue() / 1.5, MAX_SPEED));
+							powerMultiplier.setValue(Math.min(powerMultiplier.getValue() * 1.5, DEFAULT_SPEED));
 							break;
 						case advancedspeed:
-							speed.setValue((int) Math.max((double) speed.getValue() * 0.5, MAX_SPEED));
-							powerMultiplier.setValue(powerMultiplier.getValue() * 2);
+							speed.setValue((int) Math.max((double) speed.getValue() / 2.25, MAX_SPEED));
+							powerMultiplier.setValue(Math.min(powerMultiplier.getValue() * 2.25, DEFAULT_SPEED));
 							break;
 						default:
 							break;

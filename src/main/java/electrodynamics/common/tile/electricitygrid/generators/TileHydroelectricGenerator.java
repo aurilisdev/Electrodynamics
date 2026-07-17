@@ -34,7 +34,7 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 	public SingleProperty<Boolean> isGenerating = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "isGenerating", false));
 	public SingleProperty<Boolean> directionFlag = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "directionFlag", false));
 	public SingleProperty<Double> multiplier = property(new SingleProperty<>(PropertyTypes.DOUBLE, "multiplier", 1.0));
-	private SingleProperty<Boolean> hasRedstoneSignal = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "redstonesignal", false));
+	public SingleProperty<Float> waterLevel = property(new SingleProperty<>(PropertyTypes.FLOAT, "waterLevel", 1.0f));	private SingleProperty<Boolean> hasRedstoneSignal = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "redstonesignal", false));
 	public double savedTickRotation;
 	public double rotationSpeed;
 
@@ -58,26 +58,47 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 		if (output == null) {
 			output = new CachedTileOutput(level, worldPosition.relative(facing.getOpposite()));
 		}
-		if (tickable.getTicks() % 20 == 0) {
-			BlockPos shift = worldPosition.relative(facing);
-			BlockState onShift = level.getBlockState(shift);
-			isGenerating.setValue(onShift.getFluidState().getType() == Fluids.FLOWING_WATER);
-			if (isGenerating.getValue() && onShift.getBlock() instanceof LiquidBlock) {
-				int amount = level.getBlockState(shift).getValue(LiquidBlock.LEVEL);
-				shift = worldPosition.relative(facing).relative(facing.getClockWise());
-				onShift = level.getBlockState(shift);
-				if (onShift.getBlock() instanceof LiquidBlock && amount > onShift.getValue(LiquidBlock.LEVEL)) {
+		if (tickable.getTicks() % 5 == 0) {
+			BlockPos frontPos = worldPosition.relative(facing);
+			BlockState frontState = level.getBlockState(frontPos);
+
+			boolean generating = frontState.getFluidState().getType() == Fluids.FLOWING_WATER;
+
+			if (generating) {
+				int frontLevel = frontState.getValue(LiquidBlock.LEVEL);
+
+				Direction clockwise = facing.getClockWise();
+				Direction counterClockwise = facing.getCounterClockWise();
+
+				BlockState clockwiseState = level.getBlockState(frontPos.relative(clockwise));
+				BlockState counterState = level.getBlockState(frontPos.relative(counterClockwise));
+
+				boolean clockwiseWater = clockwiseState.getFluidState().getType() == Fluids.FLOWING_WATER;
+				boolean counterWater = counterState.getFluidState().getType() == Fluids.FLOWING_WATER;
+				
+				boolean flowsFromClockwise = clockwiseWater && clockwiseState.getValue(LiquidBlock.LEVEL) < frontLevel;
+
+				boolean flowsFromCounterClockwise = counterWater
+						&& counterState.getValue(LiquidBlock.LEVEL) <= frontLevel;
+
+				if (flowsFromClockwise && !flowsFromCounterClockwise) {
 					directionFlag.setValue(true);
+				} else if (flowsFromCounterClockwise && !flowsFromClockwise) {
+					directionFlag.setValue(false);
 				} else {
-					shift = worldPosition.relative(facing).relative(facing.getClockWise().getOpposite());
-					onShift = level.getBlockState(shift);
-					if (onShift.getBlock() instanceof LiquidBlock && amount >= onShift.getValue(LiquidBlock.LEVEL)) {
-						directionFlag.setValue(false);
-					} else {
-						isGenerating.setValue(false);
-					}
+					// Either no clear side flow, or water comes from both sides and cancels out
+					// here.
+					generating = false;
 				}
+				int levelValue = frontState.getValue(LiquidBlock.LEVEL);
+
+				// LEVEL 1 -> 1.0, LEVEL 7 -> 0.5
+				waterLevel.setValue(1.0F - ((levelValue - 1.0F) / 6.0F) * 0.5F);
+			} else {
+				waterLevel.setValue(0.0F);
 			}
+
+			isGenerating.setValue(generating);
 			output.update(worldPosition.relative(facing.getOpposite()));
 		}
 		if (isGenerating.getValue() && output.valid()) {
@@ -85,10 +106,17 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 		}
 	}
 
+
 	protected void tickCommon(ComponentTickable tickable) {
-		savedTickRotation += (directionFlag.getValue() ? 1 : -1) * rotationSpeed;
-		rotationSpeed = Mth.clamp(rotationSpeed + 0.05 * (isGenerating.getValue() ? 1 : -1), 0.0, 1.0);
+		double targetSpeed = isGenerating.getValue()
+				? (directionFlag.getValue() ? -waterLevel.getValue() : waterLevel.getValue())
+				: 0.0;
+
+		rotationSpeed += Mth.clamp(targetSpeed - rotationSpeed, -0.05, 0.05);
+
+		savedTickRotation += rotationSpeed;
 	}
+
 
 	protected void tickClient(ComponentTickable tickable) {
 		if (!shouldPlaySound()) {
@@ -128,11 +156,16 @@ public class TileHydroelectricGenerator extends GenericGeneratorTile implements 
 		return multiplier.getValue();
 	}
 
+
 	@Override
 	public TransferPack getProduced() {
-		return TransferPack.ampsVoltage(ElectroConstants.HYDROELECTRICGENERATOR_AMPERAGE * (isGenerating.getValue() ? multiplier.getValue() : 0), this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getVoltage());
+		return TransferPack.ampsVoltage(ElectroConstants.HYDROELECTRICGENERATOR_AMPERAGE
+				* (isGenerating.getValue() ? multiplier.getValue() * waterLevel.getValue() * Math.abs(rotationSpeed)
+						: 0),
+				this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getVoltage());
 
 	}
+
 
 	@Override
 	public int getComparatorSignal() {
