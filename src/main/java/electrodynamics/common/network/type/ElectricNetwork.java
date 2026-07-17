@@ -423,13 +423,13 @@ public class ElectricNetwork extends AbstractNetwork<GenericTileWire, IWire, Tra
 		continue;
 	    }
 
-	    lastPerTile = lastTransfer.getOrDefault(load, new HashMap<>());
+	    lastPerTile = lastTransfer.getOrDefault(tile, new HashMap<>());
 
 	    boolean noUsage = true;
 
 	    for (Direction direction : acceptorInputMap.getOrDefault(tile, new HashSet<>())) {
 
-		final LoadProfile profile = new LoadProfile(lastPerTile.getOrDefault(lastPerTile, TransferPack.EMPTY),
+		final LoadProfile profile = new LoadProfile(lastPerTile.getOrDefault(direction, TransferPack.EMPTY),
 			loadProfile.maximumAvailable());
 
 		ICapabilityElectrodynamic electro = tile
