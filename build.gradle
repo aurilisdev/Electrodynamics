@@ -82,7 +82,7 @@ configurations {
 }
 
 dependencies {
-    implementation "voltaic:Voltaic:1.21.1-1.0.10"
+    implementation "voltaic:Voltaic:1.21.1-1.0.12"
     implementation libs.neo.neoforge
     compileOnly libs.bundles.jeiApi
     localRuntime libs.jei

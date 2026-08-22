@@ -267,7 +267,7 @@ public class TileChemicalReactor extends GenericGasTile {
 	    List<FluidIngredient> fluidIngs = locRecipe.getFluidIngredients();
 	    List<Integer> tankOrientation = locRecipe.getFluidArrangement();
 	    for (int i = 0; i < tankOrientation.size(); i++) {
-		tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getFluidStack().getAmount(),
+		tanks[tankOrientation.get(i)].drain(fluidIngs.get(i).getAmount(),
 			IFluidHandler.FluidAction.EXECUTE);
 	    }
 	}

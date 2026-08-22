@@ -34,7 +34,7 @@ public enum SubtypeDust implements ISubtype {
 	    200),
     molybdenum(VoltaicTags.Items.DUST_MOLYBDENUM,
 	    () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.molybdenum), 200),
-    netherite(VoltaicTags.Items.DUST_NETHERITE, () -> Items.NETHERITE_SCRAP, 200),
+    netherite(VoltaicTags.Items.DUST_NETHERITE_SCRAP, () -> Items.NETHERITE_SCRAP, 200),
     aluminum(VoltaicTags.Items.DUST_ALUMINUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.aluminum),
 	    200),
     chromium(VoltaicTags.Items.DUST_CHROMIUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.chromium),
