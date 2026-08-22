@@ -4,7 +4,7 @@
   "cookingtime": 100,
   "experience": 0.0,
   "ingredient": {
-    "tag": "forge:dusts/netherite"
+    "tag": "forge:dusts/netherite_scrap"
   },
   "result": "minecraft:netherite_scrap"
 }

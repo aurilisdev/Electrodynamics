@@ -98,7 +98,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		//
 		.addKey('T', VoltaicTags.Items.PLATE_TITANIUMCARBIDE)
 		//
-		.addKey('N', VoltaicTags.Items.DUST_NETHERITE)
+		.addKey('N', VoltaicTags.Items.DUST_NETHERITE_SCRAP)
 		//
 		.complete(Electrodynamics.ID, "battery_carbyne", consumer);
 

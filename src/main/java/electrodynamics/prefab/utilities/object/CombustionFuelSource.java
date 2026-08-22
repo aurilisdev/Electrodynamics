@@ -48,7 +48,7 @@ public class CombustionFuelSource {
     }
 
     public int getFuelUsage() {
-	return fuel.getFluidStack().getAmount();
+	return fuel.getAmount();
     }
 
     public boolean isEmpty() {
@@ -71,7 +71,7 @@ public class CombustionFuelSource {
 
     public void writeToBuffer(FriendlyByteBuf buffer) {
 	buffer.writeUtf(fuel.tag.location().toString());
-	buffer.writeInt(fuel.getFluidStack().getAmount());
+	buffer.writeInt(fuel.getAmount());
 	buffer.writeDouble(powerMultiplier);
     }
 
