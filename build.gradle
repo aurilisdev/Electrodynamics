@@ -115,7 +115,7 @@ dependencies {
         implementation fileTree(Folder2)
     }
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("voltaic:Voltaic:1.19.2-1.0.11")
+    implementation fg.deobf("voltaic:Voltaic:1.19.2-1.0.12")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
     compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
     runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")

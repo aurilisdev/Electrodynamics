@@ -997,7 +997,7 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 				//
 				.addKey('W', VoltaicTags.Items.THICK_SUPERCONDUCTIVE_WIRES)
 				//
-				.addKey('N', Items.NETHERITE_SCRAP)
+				.addKey('N', VoltaicTags.Items.DUST_NETHERITE_SCRAP)
 				//
 				.addKey('M', ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.chargermv))
 				//

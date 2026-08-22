@@ -8,7 +8,7 @@
       "item": "electrodynamics:chargermv"
     },
     "N": {
-      "item": "minecraft:netherite_scrap"
+      "tag": "forge:dusts/netherite_scrap"
     },
     "P": {
       "tag": "forge:plates/hslasteel"
