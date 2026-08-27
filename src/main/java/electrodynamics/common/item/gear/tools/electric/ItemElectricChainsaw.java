@@ -1,6 +1,7 @@
 package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
@@ -38,7 +39,7 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
 
     public ItemElectricChainsaw(ElectricItemProperties properties, Holder<CreativeModeTab> creativeTab) {
 	super(ElectricItemTier.ELECTRIC_CHAINSAW, BlockTags.MINEABLE_WITH_AXE,
-		properties.durability(0).attributes(createAttributes(ElectricItemTier.ELECTRIC_CHAINSAW, 4, -2.4F)));
+		properties.attributes(createAttributes(ElectricItemTier.ELECTRIC_CHAINSAW, 4, -2.4F)));
 	this.properties = properties;
 	this.creativeTab = creativeTab;
     }
@@ -46,6 +47,11 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 	return true;
+    }
+
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
+	return 0;
     }
 
     @Override
@@ -73,7 +79,15 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-	return getJoulesStored(stack) > properties.extract.getJoules() ? super.getDestroySpeed(stack, state) : 0;
+	if (getJoulesStored(stack) < properties.extract.getJoules()) {
+	    return 0;
+	}
+
+	if (state.is(BlockTags.LOGS)) {
+	    return ElectricItemTier.ELECTRIC_CHAINSAW.getSpeed();
+	}
+
+	return super.getDestroySpeed(stack, state);
     }
 
     @Override
@@ -150,11 +164,10 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
     }
 
     @Override
-    public boolean canPerformAction(ItemStack stack, ItemAbility itemAbility) {
-	return getJoulesStored(stack) > properties.extract.getJoules()
-		? ItemAbilities.DEFAULT_AXE_ACTIONS.contains(itemAbility)
-			|| ItemAbilities.DEFAULT_SHEARS_ACTIONS.contains(itemAbility)
-		: false;
+    public boolean canPerformAction(ItemStack stack, ItemAbility ability) {
+	return getJoulesStored(stack) >= properties.extract.getJoules()
+		&& (ItemAbilities.DEFAULT_AXE_ACTIONS.contains(ability)
+			|| ItemAbilities.DEFAULT_SHEARS_ACTIONS.contains(ability));
     }
 
 }

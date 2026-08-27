@@ -2,6 +2,7 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.inventory.container.item.ContainerElectricDrill;
@@ -65,7 +66,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
 
     public ItemElectricDrill(ElectricItemProperties properties, Holder<CreativeModeTab> creativeTab) {
 	super(ElectricItemTier.ELECTRIC_DRILL, VoltaicTags.Blocks.ELECTRIC_DRILL_BLOCKS,
-		properties.durability(0).attributes(createAttributes(ElectricItemTier.ELECTRIC_DRILL, 4, -2.4F)));
+		properties.attributes(createAttributes(ElectricItemTier.ELECTRIC_DRILL, 4, -2.4F)));
 	this.properties = properties;
 	this.creativeTab = creativeTab;
 	DRILLS.add(this);
@@ -74,6 +75,11 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 	return true;
+    }
+
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
+	return 0;
     }
 
     @Override

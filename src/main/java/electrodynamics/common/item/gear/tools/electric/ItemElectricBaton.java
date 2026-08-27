@@ -1,6 +1,7 @@
 package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
@@ -33,7 +34,7 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
 
     public ItemElectricBaton(ElectricItemProperties properties, Holder<CreativeModeTab> creativeTab) {
 	super(ElectricItemTier.ELECTRIC_BATON,
-		properties.durability(0).attributes(createAttributes(ElectricItemTier.ELECTRIC_BATON, 12, -2.4F)));
+		properties.attributes(createAttributes(ElectricItemTier.ELECTRIC_BATON, 12, -2.4F)));
 	this.properties = properties;
 	this.creativeTab = creativeTab;
     }
@@ -41,6 +42,11 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 	return false;
+    }
+
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
+	return 0;
     }
 
     @Override
