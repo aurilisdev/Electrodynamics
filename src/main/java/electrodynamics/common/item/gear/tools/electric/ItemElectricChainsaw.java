@@ -1,6 +1,7 @@
 package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
@@ -33,105 +34,132 @@ import voltaic.prefab.utilities.VoltaicTextUtils;
 
 public class ItemElectricChainsaw extends DiggerItem implements IItemElectric {
 
-	private final ElectricItemProperties properties;
-	private final Supplier<CreativeModeTab> creativeTab;
+    private final ElectricItemProperties properties;
+    private final Supplier<CreativeModeTab> creativeTab;
 
-	public ItemElectricChainsaw(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
-		super(4, -2.4f, ElectricItemTier.DRILL, BlockTags.MINEABLE_WITH_AXE, properties.durability(0));
-		this.properties = properties;
-		this.creativeTab = creativeTab;
-	}
-	
-	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return !oldStack.is(newStack.getItem());
-	}
+    public ItemElectricChainsaw(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
+	super(4, -2.4f, ElectricItemTier.DRILL, BlockTags.MINEABLE_WITH_AXE, properties);
+	this.properties = properties;
+	this.creativeTab = creativeTab;
+    }
 
-	@Override
-	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-		return true;
-	}
-	
-	@Override
-	protected boolean allowedIn(CreativeModeTab category) {
-		return creativeTab != null && (category == creativeTab.get() || category == CreativeModeTab.TAB_SEARCH);
-	}
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	return !oldStack.is(newStack.getItem());
+    }
 
-	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
+	return 0;
+    }
 
-		if(!allowedIn(group)) {
-			return;
-		}
-		
-		ItemStack empty = new ItemStack(this);
-		IItemElectric.setEnergyStored(empty, 0);
-		items.add(empty);
+    @Override
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
+	return true;
+    }
 
-		ItemStack charged = new ItemStack(this);
-		IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
-		items.add(charged);
+    @Override
+    protected boolean allowedIn(CreativeModeTab category) {
+	return creativeTab != null && (category == creativeTab.get() || category == CreativeModeTab.TAB_SEARCH);
+    }
 
+    @Override
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+
+	if (!allowedIn(group)) {
+	    return;
 	}
 
-	@Override
-	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		return getJoulesStored(stack) > properties.extract.getJoules() ? super.getDestroySpeed(stack, state) : 0;
+	ItemStack empty = new ItemStack(this);
+	IItemElectric.setEnergyStored(empty, 0);
+	items.add(empty);
+
+	ItemStack charged = new ItemStack(this);
+	IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
+	items.add(charged);
+
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack stack, BlockState state) {
+	if (getJoulesStored(stack) < properties.extract.getJoules()) {
+	    return 0;
+	}
+	if (state.is(BlockTags.LOGS)) {
+	    return ElectricItemTier.DRILL.getSpeed();
+	}
+	return super.getDestroySpeed(stack, state);
+    }
+
+    @Override
+    public boolean canBeDepleted() {
+	return false;
+    }
+
+    @Override
+    public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos,
+	    LivingEntity entityLiving) {
+	extractPower(stack, properties.extract.getJoules(), false);
+	return super.mineBlock(stack, worldIn, state, pos, entityLiving);
+    }
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+	return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
+    }
+
+    @Override
+    public boolean isBarVisible(ItemStack stack) {
+	return getJoulesStored(stack) < getMaximumCapacity(stack);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	super.appendHoverText(stack, worldIn, tooltip, flagIn);
+	tooltip.add(
+		ElectroTextUtils
+			.tooltip("item.electric.info",
+				VoltaicTextUtils.ratio(
+					ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES),
+					ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack),
+						DisplayUnits.JOULES))
+					.withStyle(ChatFormatting.GRAY))
+			.withStyle(ChatFormatting.DARK_GRAY));
+	tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage",
+		ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE)
+			.withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY));
+	IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
+    }
+
+    @Override
+    public ElectricItemProperties getElectricProperties() {
+	return properties;
+    }
+
+    @Override
+    public Item getDefaultStorageBattery() {
+	return ElectrodynamicsItems.ITEM_BATTERY.get();
+    }
+
+    @Override
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action,
+	    Player player, SlotAccess access) {
+
+	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
 	}
 
-	@Override
-	public boolean canBeDepleted() {
-		return false;
-	}
+	return true;
 
-	@Override
-	public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-		extractPower(stack, properties.extract.getJoules(), false);
-		return super.mineBlock(stack, worldIn, state, pos, entityLiving);
-	}
+    }
 
-	@Override
-	public int getBarWidth(ItemStack stack) {
-		return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
-	}
-
-	@Override
-	public boolean isBarVisible(ItemStack stack) {
-		return getJoulesStored(stack) < getMaximumCapacity(stack);
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-        tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-		IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
-	}
-
-	@Override
-	public ElectricItemProperties getElectricProperties() {
-		return properties;
-	}
-
-	@Override
-	public Item getDefaultStorageBattery() {
-		return ElectrodynamicsItems.ITEM_BATTERY.get();
-	}
-
-	@Override
-	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-
-		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
-			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-		}
-
-		return true;
-
-	}
-
-	@Override
-	public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
-		return getJoulesStored(stack) > properties.extract.getJoules() ? ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction) || ToolActions.DEFAULT_SHEARS_ACTIONS.contains(toolAction) : false;
-	}
+    @Override
+    public boolean canPerformAction(ItemStack stack, ToolAction toolAction) {
+	return getJoulesStored(stack) > properties.extract.getJoules()
+		? ToolActions.DEFAULT_AXE_ACTIONS.contains(toolAction)
+			|| ToolActions.DEFAULT_SHEARS_ACTIONS.contains(toolAction)
+		: false;
+    }
 
 }

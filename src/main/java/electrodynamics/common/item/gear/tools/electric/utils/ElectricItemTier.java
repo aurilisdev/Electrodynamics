@@ -23,7 +23,7 @@ public enum ElectricItemTier implements Tier {
 
 	@Override
 	public int getUses() {
-		return 0;
+		return 1;
 	}
 
 	@Override

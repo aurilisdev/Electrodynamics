@@ -44,7 +44,9 @@ import electrodynamics.common.item.subtype.SubtypeRawOre;
 import electrodynamics.common.item.subtype.SubtypeRod;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -177,7 +179,12 @@ public class ElectrodynamicsItems {
 	    SubtypeDrillHead.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemDrillHead(subtype)));
 
     public static final RegistryObject<ItemVoltaic> ITEM_COAL_COKE = ITEMS.register("coalcoke",
-	    () -> new ItemVoltaic(new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN));
+	    () -> new ItemVoltaic(new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN) {
+		@Override
+		public int getBurnTime(ItemStack stack, RecipeType<?> recipeType) {
+		    return 3200;
+		}
+	    });
     public static final RegistryObject<ItemVoltaic> ITEM_SLAG = ITEMS.register("slag",
 	    () -> new ItemVoltaic(new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN));
     public static final RegistryObject<ItemVoltaic> ITEM_SHEETPLASTIC = ITEMS.register("sheetplastic",

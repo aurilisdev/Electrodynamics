@@ -2,6 +2,7 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
@@ -61,265 +62,294 @@ import voltaic.prefab.utilities.math.Color;
 
 public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric {
 
-	private final Supplier<CreativeModeTab> creativeTab;
+    private final Supplier<CreativeModeTab> creativeTab;
 
-	private static final List<ItemElectricDrill> DRILLS = new ArrayList<>();
+    private static final List<ItemElectricDrill> DRILLS = new ArrayList<>();
 
-	private static final Component CONTAINER_TITLE = Component.translatable("container.electricdrill");
+    private static final Component CONTAINER_TITLE = Component.translatable("container.electricdrill");
 
-	public static final int SLOT_COUNT = 3;
+    public static final int SLOT_COUNT = 3;
 
-	public static final double POWER_USAGE = 1666666.66667 / (120.0 * 20.0);
+    public static final double POWER_USAGE = 1666666.66667 / (120.0 * 20.0);
 
-	private static final String SUBTYPE = "subtype";
-	private final ElectricItemProperties properties;
+    private static final String SUBTYPE = "subtype";
+    private final ElectricItemProperties properties;
 
-	public ItemElectricDrill(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
-		super(4, -2.4f, ElectricItemTier.DRILL, properties.durability(0), BlockTags.MINEABLE_WITH_SHOVEL, BlockTags.MINEABLE_WITH_PICKAXE);
-		this.properties = properties;
-		this.creativeTab = creativeTab;
-		DRILLS.add(this);
-	}
-	
-	@Override
-	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-		return !oldStack.is(newStack.getItem());
-	}
+    public ItemElectricDrill(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
+	super(4, -2.4f, ElectricItemTier.DRILL, properties, BlockTags.MINEABLE_WITH_SHOVEL,
+		BlockTags.MINEABLE_WITH_PICKAXE);
+	this.properties = properties;
+	this.creativeTab = creativeTab;
+	DRILLS.add(this);
+    }
 
-	@Override
-	public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
-		return new CapabilityItemStackHandler(SLOT_COUNT, stack).setOnChange((item, cap, slot) -> {
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+	return !oldStack.is(newStack.getItem());
+    }
 
-			int fortune = 0;
-			boolean silkTouch = false;
-			double speedBoost = 1;
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
+	return 0;
+    }
 
-			for (ItemStack content : cap.getItems()) {
-				if (!content.isEmpty() && content.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype.isEmpty) {
-					for (int i = 0; i < content.getCount(); i++) {
+    @Override
+    public @Nullable ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag nbt) {
+	return new CapabilityItemStackHandler(SLOT_COUNT, stack).setOnChange((item, cap, slot) -> {
 
-						switch (upgrade.subtype) {
+	    int fortune = 0;
+	    boolean silkTouch = false;
+	    double speedBoost = 1;
 
-						case basicspeed:
-							speedBoost = Math.min(speedBoost * 1.5, Math.pow(1.5, 3));
-							break;
-						case advancedspeed:
-							speedBoost = Math.min(speedBoost * 2.25, Math.pow(2.25, 3));
-							break;
-						case fortune:
+	    for (ItemStack content : cap.getItems()) {
+		if (!content.isEmpty() && content.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype.isEmpty) {
+		    for (int i = 0; i < content.getCount(); i++) {
 
-							if (!silkTouch) {
-								fortune = Math.min(fortune + 1, 9);
-							}
-							break;
-						case silktouch:
-							if (fortune == 0) {
-								silkTouch = true;
-							}
-							break;
-						default:
-							break;
-						}
-					}
-				}
+			switch (upgrade.subtype) {
+
+			case basicspeed:
+			    speedBoost = Math.min(speedBoost * 1.5, Math.pow(1.5, 3));
+			    break;
+			case advancedspeed:
+			    speedBoost = Math.min(speedBoost * 2.25, Math.pow(2.25, 3));
+			    break;
+			case fortune:
+
+			    if (!silkTouch) {
+				fortune = Math.min(fortune + 1, 9);
+			    }
+			    break;
+			case silktouch:
+			    if (fortune == 0) {
+				silkTouch = true;
+			    }
+			    break;
+			default:
+			    break;
 			}
-
-			CompoundTag tag = stack.getOrCreateTag();
-
-			ItemUtils.removeEnchantment(item, Enchantments.BLOCK_FORTUNE);
-
-			if (fortune > 0) {
-				stack.enchant(Enchantments.BLOCK_FORTUNE, fortune);
-			}
-
-			ItemUtils.removeEnchantment(item, Enchantments.SILK_TOUCH);
-
-			if (silkTouch) {
-				stack.enchant(Enchantments.SILK_TOUCH, 1);
-			}
-
-			tag.putDouble(NBTUtils.SPEED_ENCHANT, speedBoost);
-
-		});
-	}
-
-	@Override
-	public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
-		return true;
-	}
-	
-	@Override
-	protected boolean allowedIn(CreativeModeTab category) {
-		return creativeTab != null && (category == creativeTab.get() || category == CreativeModeTab.TAB_SEARCH);
-	}
-
-	@Override
-	public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
-		
-		if(!allowedIn(group)) {
-			return;
+		    }
 		}
+	    }
 
-		ItemStack empty = new ItemStack(this);
-		IItemElectric.setEnergyStored(empty, 0);
-		items.add(empty);
+	    CompoundTag tag = stack.getOrCreateTag();
 
-		ItemStack charged = new ItemStack(this);
-		IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
-		items.add(charged);
+	    ItemUtils.removeEnchantment(item, Enchantments.BLOCK_FORTUNE);
+
+	    if (fortune > 0) {
+		stack.enchant(Enchantments.BLOCK_FORTUNE, fortune);
+	    }
+
+	    ItemUtils.removeEnchantment(item, Enchantments.SILK_TOUCH);
+
+	    if (silkTouch) {
+		stack.enchant(Enchantments.SILK_TOUCH, 1);
+	    }
+
+	    tag.putDouble(NBTUtils.SPEED_ENCHANT, speedBoost);
+
+	});
+    }
+
+    @Override
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
+	return true;
+    }
+
+    @Override
+    protected boolean allowedIn(CreativeModeTab category) {
+	return creativeTab != null && (category == creativeTab.get() || category == CreativeModeTab.TAB_SEARCH);
+    }
+
+    @Override
+    public void fillItemCategory(CreativeModeTab group, NonNullList<ItemStack> items) {
+
+	if (!allowedIn(group)) {
+	    return;
+	}
+
+	ItemStack empty = new ItemStack(this);
+	IItemElectric.setEnergyStored(empty, 0);
+	items.add(empty);
+
+	ItemStack charged = new ItemStack(this);
+	IItemElectric.setEnergyStored(charged, getMaximumCapacity(charged));
+	items.add(charged);
+
+    }
+
+    @Override
+    public boolean canBeDepleted() {
+	return false;
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack stack, BlockState state) {
+	if (getJoulesStored(stack) < properties.extract.getJoules()) {
+	    return 0;
+	}
+
+	float normalized = (float) Math.max(1, getHead(stack).speedBoost * getSpeedBoost(stack));
+
+	return super.getDestroySpeed(stack, state) * normalized;
+
+    }
+
+    @Override
+    public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos,
+	    LivingEntity entityLiving) {
+
+	IItemElectric.setEnergyStored(stack, getJoulesStored(stack) - getPowerUsage(stack));
+
+	// extractPower(stack, properties.extract.getJoules() * multiplier, false);
+	return super.mineBlock(stack, worldIn, state, pos, entityLiving);
+    }
+
+    public double getPowerUsage(ItemStack stack) {
+	double multiplier = Math.max(1, getSpeedBoost(stack));
+
+	if (EnchantmentHelper.getEnchantments(stack).getOrDefault(Enchantments.SILK_TOUCH, 0) > 0) {
+	    multiplier += 3;
+	}
+
+	int fortune = EnchantmentHelper.getEnchantments(stack).getOrDefault(Enchantments.BLOCK_FORTUNE, 0);
+
+	if (fortune > 0) {
+	    multiplier += fortune;
+	}
+
+	return POWER_USAGE * multiplier;
+    }
+
+    @Override
+    public int getBarWidth(ItemStack stack) {
+	return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
+    }
+
+    @Override
+    public boolean isBarVisible(ItemStack stack) {
+	return getJoulesStored(stack) < getMaximumCapacity(stack);
+    }
+
+    @Override
+    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	super.appendHoverText(stack, worldIn, tooltip, flagIn);
+	tooltip.add(
+		ElectroTextUtils
+			.tooltip("item.electric.info",
+				VoltaicTextUtils.ratio(
+					ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES),
+					ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack),
+						DisplayUnits.JOULES))
+					.withStyle(ChatFormatting.GRAY))
+			.withStyle(ChatFormatting.DARK_GRAY));
+	tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage",
+		ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE)
+			.withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY));
+
+	IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
+	tooltip.add(ElectroTextUtils.tooltip("electricdrill.miningspeed",
+		ChatFormatter.getChatDisplayShort(getHead(stack).speedBoost * 100, DisplayUnits.PERCENTAGE)
+			.withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY));
+	tooltip.add(ElectroTextUtils
+		.tooltip("electricdrill.usage", ChatFormatter
+			.getChatDisplayShort(getPowerUsage(stack), DisplayUnits.JOULES).withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY));
+
+	tooltip.add(ElectroTextUtils.tooltip("electricdrill.overclock",
+		ChatFormatter.getChatDisplayShort(getSpeedBoost(stack) * 100, DisplayUnits.PERCENTAGE)
+			.withStyle(ChatFormatting.GRAY))
+		.withStyle(ChatFormatting.DARK_GRAY));
+
+    }
+
+    @Override
+    public ElectricItemProperties getElectricProperties() {
+	return properties;
+    }
+
+    @Override
+    public Item getDefaultStorageBattery() {
+	return ElectrodynamicsItems.ITEM_BATTERY.get();
+    }
+
+    @Override
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+
+	if (!level.isClientSide) {
+
+	    player.openMenu(getMenuProvider(level, player, player.getItemInHand(hand), hand));
 
 	}
 
-	@Override
-	public boolean canBeDepleted() {
-		return false;
+	return super.use(level, player, hand);
+    }
+
+    public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack, InteractionHand hand) {
+	return new SimpleMenuProvider((id, inv, play) -> {
+	    IItemHandler capability = stack.getCapability(ForgeCapabilities.ITEM_HANDLER)
+		    .orElse(CapabilityUtils.EMPTY_ITEM_HANDLER);
+	    CapabilityItemStackHandler handler = new CapabilityItemStackHandler(SLOT_COUNT, stack);
+	    if (capability != CapabilityUtils.EMPTY_ITEM_HANDLER) {
+		handler = (CapabilityItemStackHandler) capability;
+	    }
+	    return new ContainerElectricDrill(id, player.getInventory(), handler, GenericContainerItem.makeData(hand));
+	}, CONTAINER_TITLE);
+    }
+
+    @Override
+    public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action,
+	    Player player, SlotAccess access) {
+
+	if (!other.isEmpty() && other.getItem() instanceof ItemDrillHead head) {
+
+	    ItemStack oldHead = new ItemStack(ElectrodynamicsItems.ITEMS_DRILLHEAD.getValue(getHead(stack)));
+
+	    saveHead(stack, head.head);
+
+	    access.set(oldHead);
+
+	    player.level.playLocalSound(player.getX(), player.getY(), player.getZ(),
+		    ElectrodynamicsSounds.SOUND_BATTERY_SWAP.get(), SoundSource.PLAYERS, 0.25F, 1.0F, false);
+
+	    return true;
+
 	}
 
-	@Override
-	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		if (getJoulesStored(stack) < properties.extract.getJoules()) {
-			return 0;
+	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
+	}
+
+	return true;
+
+    }
+
+    public static double getSpeedBoost(ItemStack stack) {
+	return stack.getOrCreateTag().getDouble(NBTUtils.SPEED_ENCHANT);
+    }
+
+    public static SubtypeDrillHead getHead(ItemStack stack) {
+	return SubtypeDrillHead.values()[stack.getOrCreateTag().getInt(SUBTYPE)];
+    }
+
+    public static void saveHead(ItemStack stack, SubtypeDrillHead head) {
+	stack.getOrCreateTag().putInt(SUBTYPE, head.ordinal());
+    }
+
+    @Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    private static class ColorHandler {
+
+	@SubscribeEvent
+	public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
+	    DRILLS.forEach(item -> event.register((stack, index) -> {
+		if (index == 1) {
+		    return getHead(stack).color.color();
 		}
-
-		float normalized = (float) Math.max(1, getHead(stack).speedBoost * getSpeedBoost(stack));
-
-		return super.getDestroySpeed(stack, state) * normalized;
-
+		return Color.WHITE.color();
+	    }, item));
 	}
 
-	@Override
-	public boolean mineBlock(ItemStack stack, Level worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-
-		IItemElectric.setEnergyStored(stack, getJoulesStored(stack) - getPowerUsage(stack));
-
-		// extractPower(stack, properties.extract.getJoules() * multiplier, false);
-		return super.mineBlock(stack, worldIn, state, pos, entityLiving);
-	}
-
-	public double getPowerUsage(ItemStack stack) {
-		double multiplier = Math.max(1, getSpeedBoost(stack));
-
-		if (EnchantmentHelper.getEnchantments(stack).getOrDefault(Enchantments.SILK_TOUCH, 0) > 0) {
-			multiplier += 3;
-		}
-
-		int fortune = EnchantmentHelper.getEnchantments(stack).getOrDefault(Enchantments.BLOCK_FORTUNE, 0);
-
-		if (fortune > 0) {
-			multiplier += fortune;
-		}
-
-		return POWER_USAGE * multiplier;
-	}
-
-	@Override
-	public int getBarWidth(ItemStack stack) {
-		return (int) Math.round(13.0f * getJoulesStored(stack) / getMaximumCapacity(stack));
-	}
-
-	@Override
-	public boolean isBarVisible(ItemStack stack) {
-		return getJoulesStored(stack) < getMaximumCapacity(stack);
-	}
-
-	@Override
-	public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
-		super.appendHoverText(stack, worldIn, tooltip, flagIn);
-		tooltip.add(ElectroTextUtils.tooltip("item.electric.info", VoltaicTextUtils.ratio(ChatFormatter.getChatDisplayShort(getJoulesStored(stack), DisplayUnits.JOULES), ChatFormatter.getChatDisplayShort(getMaximumCapacity(stack), DisplayUnits.JOULES)).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-        tooltip.add(ElectroTextUtils.tooltip("item.electric.voltage", ChatFormatter.getChatDisplayShort(properties.receive.getVoltage(), DisplayUnits.VOLTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-
-        IItemElectric.addBatteryTooltip(stack, worldIn, tooltip);
-        tooltip.add(ElectroTextUtils.tooltip("electricdrill.miningspeed", ChatFormatter.getChatDisplayShort(getHead(stack).speedBoost * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-        tooltip.add(ElectroTextUtils.tooltip("electricdrill.usage", ChatFormatter.getChatDisplayShort(getPowerUsage(stack), DisplayUnits.JOULES).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-
-        tooltip.add(ElectroTextUtils.tooltip("electricdrill.overclock", ChatFormatter.getChatDisplayShort(getSpeedBoost(stack) * 100, DisplayUnits.PERCENTAGE).withStyle(ChatFormatting.GRAY)).withStyle(ChatFormatting.DARK_GRAY));
-
-	}
-
-	@Override
-	public ElectricItemProperties getElectricProperties() {
-		return properties;
-	}
-
-	@Override
-	public Item getDefaultStorageBattery() {
-		return ElectrodynamicsItems.ITEM_BATTERY.get();
-	}
-
-	@Override
-	public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-
-		if (!level.isClientSide) {
-
-			player.openMenu(getMenuProvider(level, player, player.getItemInHand(hand), hand));
-
-		}
-
-		return super.use(level, player, hand);
-	}
-
-	public MenuProvider getMenuProvider(Level world, Player player, ItemStack stack, InteractionHand hand) {
-		return new SimpleMenuProvider((id, inv, play) -> {
-			IItemHandler capability = stack.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(CapabilityUtils.EMPTY_ITEM_HANDLER);
-			CapabilityItemStackHandler handler = new CapabilityItemStackHandler(SLOT_COUNT, stack);
-			if (capability != CapabilityUtils.EMPTY_ITEM_HANDLER) {
-				handler = (CapabilityItemStackHandler) capability;
-			}
-			return new ContainerElectricDrill(id, player.getInventory(), handler, GenericContainerItem.makeData(hand));
-		}, CONTAINER_TITLE);
-	}
-
-	@Override
-	public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action, Player player, SlotAccess access) {
-
-		if (!other.isEmpty() && other.getItem() instanceof ItemDrillHead head) {
-
-			ItemStack oldHead = new ItemStack(ElectrodynamicsItems.ITEMS_DRILLHEAD.getValue(getHead(stack)));
-
-			saveHead(stack, head.head);
-
-			access.set(oldHead);
-
-			player.level.playLocalSound(player.getX(), player.getY(), player.getZ(), ElectrodynamicsSounds.SOUND_BATTERY_SWAP.get(), SoundSource.PLAYERS, 0.25F, 1.0F, false);
-
-			return true;
-
-		}
-
-		if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
-			return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-		}
-
-		return true;
-
-	}
-
-	public static double getSpeedBoost(ItemStack stack) {
-		return stack.getOrCreateTag().getDouble(NBTUtils.SPEED_ENCHANT);
-	}
-
-	public static SubtypeDrillHead getHead(ItemStack stack) {
-		return SubtypeDrillHead.values()[stack.getOrCreateTag().getInt(SUBTYPE)];
-	}
-
-	public static void saveHead(ItemStack stack, SubtypeDrillHead head) {
-		stack.getOrCreateTag().putInt(SUBTYPE, head.ordinal());
-	}
-
-	@Mod.EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-	private static class ColorHandler {
-
-		@SubscribeEvent
-		public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
-			DRILLS.forEach(item -> event.register((stack, index) -> {
-				if (index == 1) {
-					return getHead(stack).color.color();
-				}
-				return Color.WHITE.color();
-			}, item));
-		}
-
-	}
-
+    }
 
 }
