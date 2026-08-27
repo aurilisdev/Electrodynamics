@@ -3,6 +3,8 @@ package electrodynamics.registers;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
@@ -52,6 +54,7 @@ import net.minecraft.world.item.ArmorItem.Type;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -219,7 +222,12 @@ public class ElectrodynamicsItems {
 	    SubtypeDrillHead.values(), subtype -> ITEMS.register(subtype.tag(), () -> new ItemDrillHead(subtype)));
 
     public static final RegistryObject<ItemVoltaic> ITEM_COAL_COKE = ITEMS.register("coalcoke",
-	    () -> new ItemVoltaic(new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN.get()));
+	    () -> new ItemVoltaic(new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN.get()) {
+		@Override
+		public int getBurnTime(ItemStack stack, @Nullable RecipeType<?> recipeType) {
+		    return 3200;
+		}
+	    });
     public static final RegistryObject<ItemVoltaic> ITEM_SLAG = ITEMS.register("slag",
 	    () -> new ItemVoltaic(new Item.Properties(), () -> ElectrodynamicsCreativeTabs.MAIN.get()));
     public static final RegistryObject<ItemVoltaic> ITEM_SHEETPLASTIC = ITEMS.register("sheetplastic",

@@ -2,6 +2,7 @@ package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
@@ -75,7 +76,7 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
     private final ElectricItemProperties properties;
 
     public ItemElectricDrill(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
-	super(4, -2.4f, ElectricItemTier.DRILL, properties.durability(0), BlockTags.MINEABLE_WITH_SHOVEL,
+	super(4, -2.4f, ElectricItemTier.DRILL, properties, BlockTags.MINEABLE_WITH_SHOVEL,
 		BlockTags.MINEABLE_WITH_PICKAXE);
 	this.properties = properties;
 	this.creativeTab = creativeTab;
@@ -85,6 +86,11 @@ public class ItemElectricDrill extends ItemMultiDigger implements IItemElectric,
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 	return !oldStack.is(newStack.getItem());
+    }
+
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
+	return 0;
     }
 
     @Override

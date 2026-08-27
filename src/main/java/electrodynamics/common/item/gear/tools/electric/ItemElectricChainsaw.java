@@ -1,6 +1,7 @@
 package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
@@ -37,7 +38,7 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
     private final Supplier<CreativeModeTab> creativeTab;
 
     public ItemElectricChainsaw(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
-	super(4, -2.4f, ElectricItemTier.DRILL, BlockTags.MINEABLE_WITH_AXE, properties.durability(0));
+	super(4, -2.4f, ElectricItemTier.DRILL, BlockTags.MINEABLE_WITH_AXE, properties);
 	this.properties = properties;
 	this.creativeTab = creativeTab;
     }
@@ -45,6 +46,11 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 	return true;
+    }
+
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
+	return 0;
     }
 
     @Override
@@ -67,7 +73,13 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-	return getJoulesStored(stack) > properties.extract.getJoules() ? super.getDestroySpeed(stack, state) : 0;
+	if (getJoulesStored(stack) < properties.extract.getJoules()) {
+	    return 0;
+	}
+	if (state.is(BlockTags.LOGS)) {
+	    return ElectricItemTier.DRILL.getSpeed();
+	}
+	return super.getDestroySpeed(stack, state);
     }
 
     @Override

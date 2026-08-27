@@ -15,6 +15,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.common.Tags;
+import voltaic.common.tags.VoltaicTags;
 
 public class CoalGeneratorFuelSourceProvider implements DataProvider {
 
@@ -42,6 +43,7 @@ public class CoalGeneratorFuelSourceProvider implements DataProvider {
 	JsonArray json = new JsonArray();
 
 	addTag(ItemTags.COALS, json);
+	addTag(VoltaicTags.Items.COAL_COKE, json);
 	addTag(Tags.Items.STORAGE_BLOCKS_COAL, json);
 
 	object.add(CoalGeneratorFuelRegister.KEY, json);

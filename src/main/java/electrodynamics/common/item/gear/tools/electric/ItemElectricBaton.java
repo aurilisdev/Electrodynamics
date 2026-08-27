@@ -1,6 +1,7 @@
 package electrodynamics.common.item.gear.tools.electric;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import com.google.common.collect.ImmutableMultimap;
@@ -39,7 +40,7 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
     private final Supplier<CreativeModeTab> creativeTab;
 
     public ItemElectricBaton(ElectricItemProperties properties, Supplier<CreativeModeTab> creativeTab) {
-	super(ElectricItemTier.DRILL, 12, -2.4f, properties.durability(0));
+	super(ElectricItemTier.DRILL, 12, -2.4f, properties);
 	this.properties = properties;
 	this.creativeTab = creativeTab;
     }
@@ -47,6 +48,11 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
     @Override
     public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
 	return false;
+    }
+
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
+	return 0;
     }
 
     @Override
