@@ -3,12 +3,13 @@ package electrodynamics.common.tile.pipelines.gas;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import electrodynamics.common.inventory.container.tile.ContainerGasPipeFilter;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.api.gas.Gas;
@@ -19,7 +20,6 @@ import voltaic.prefab.properties.types.PropertyTypes;
 import voltaic.prefab.properties.variant.SingleProperty;
 import voltaic.prefab.tile.GenericTile;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.utilities.BlockEntityUtils;
 import voltaic.prefab.utilities.CapabilityUtils;
 import voltaic.registers.VoltaicCapabilities;
@@ -31,50 +31,52 @@ public class TileGasPipeFilter extends GenericTile {
 
     private boolean isLocked = false;
 
-    public final SingleProperty[] filteredGases = {
-	    //
-	    property(new SingleProperty<>(PropertyTypes.GAS_STACK, "gasone", GasStack.EMPTY)),
-	    //
-	    property(new SingleProperty<>(PropertyTypes.GAS_STACK, "gastwo", GasStack.EMPTY)),
-	    //
-	    property(new SingleProperty<>(PropertyTypes.GAS_STACK, "gasthree", GasStack.EMPTY)),
-	    //
-	    property(new SingleProperty<>(PropertyTypes.GAS_STACK, "gasfour", GasStack.EMPTY)) };
+    public final SingleProperty[] filteredGases = { (SingleProperty) //
+	    property(new SingleProperty<>(getPropertyManager(), PropertyTypes.GAS_STACK, "gasone",
+		    GasStack.EMPTY).setUpdateServer()),
+	    (SingleProperty) //
+	    property(new SingleProperty<>(getPropertyManager(), PropertyTypes.GAS_STACK, "gastwo",
+		    GasStack.EMPTY).setUpdateServer()),
+	    (SingleProperty) //
+	    property(new SingleProperty<>(getPropertyManager(), PropertyTypes.GAS_STACK, "gasthree",
+		    GasStack.EMPTY).setUpdateServer()),
+	    (SingleProperty) //
+	    property(new SingleProperty<>(getPropertyManager(), PropertyTypes.GAS_STACK, "gasfour",
+		    GasStack.EMPTY).setUpdateServer()) };
 
     public final SingleProperty<Boolean> isWhitelist = property(
-	    new SingleProperty<>(PropertyTypes.BOOLEAN, "iswhitelist", false));
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.BOOLEAN, "iswhitelist", false)).setUpdateServer();
 
     public TileGasPipeFilter(BlockPos worldPos, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_GASPIPEFILTER.get(), worldPos, blockState);
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentContainerProvider("gaspipefilter", this)
 		.createMenu((id, inv) -> new ContainerGasPipeFilter(id, inv, getCoordsArray())));
     }
 
     @Override
-    public @Nullable IGasHandler getGasHandlerCapability(@Nullable Direction side) {
-	if (side == null || isLocked) {
+    @Nullable
+    public IGasHandler getGasHandlerCapability(@Nullable Direction side) {
+	Level level = this.level;
+	if (level == null || side == null || isLocked)
 	    return null;
-	}
 
 	Direction facing = getFacing();
 
-	if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR.mappedDir)) {
+	if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR.mappedDir))
 	    return CapabilityUtils.EMPTY_GAS;
-	}
 
 	if (side == BlockEntityUtils.getRelativeSide(facing, INPUT_DIR.mappedDir)) {
 
 	    BlockEntity output = level.getBlockEntity(getBlockPos().relative(side.getOpposite()));
 
-	    if (output == null) {
+	    if (output == null)
 		return CapabilityUtils.EMPTY_GAS;
-	    }
 
 	    isLocked = true;
 
-	    IGasHandler gas = output.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK,
-		    output.getBlockPos(), output.getBlockState(), output, side);
+	    IGasHandler gas = level.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK, output.getBlockPos(),
+		    output.getBlockState(), output, side);
 
 	    isLocked = false;
 
@@ -112,9 +114,8 @@ public class TileGasPipeFilter extends GenericTile {
 
 	@Override
 	public int getTanks() {
-	    if (isLocked) {
+	    if (isLocked)
 		return 0;
-	    }
 	    isLocked = true;
 	    int count = outputCap.getTanks();
 	    isLocked = false;
@@ -123,9 +124,8 @@ public class TileGasPipeFilter extends GenericTile {
 
 	@Override
 	public GasStack getGasInTank(int tank) {
-	    if (isLocked) {
+	    if (isLocked)
 		return GasStack.EMPTY;
-	    }
 	    isLocked = true;
 	    GasStack stack = outputCap.getGasInTank(tank);
 	    isLocked = false;
@@ -134,9 +134,8 @@ public class TileGasPipeFilter extends GenericTile {
 
 	@Override
 	public int getTankCapacity(int tank) {
-	    if (isLocked) {
+	    if (isLocked)
 		return 0;
-	    }
 	    isLocked = true;
 	    int cap = outputCap.getTankCapacity(tank);
 	    isLocked = false;
@@ -145,9 +144,8 @@ public class TileGasPipeFilter extends GenericTile {
 
 	@Override
 	public int getTankMaxTemperature(int tank) {
-	    if (isLocked) {
+	    if (isLocked)
 		return 0;
-	    }
 	    isLocked = true;
 	    int temp = outputCap.getTankMaxTemperature(tank);
 
@@ -157,9 +155,8 @@ public class TileGasPipeFilter extends GenericTile {
 
 	@Override
 	public int getTankMaxPressure(int tank) {
-	    if (isLocked) {
+	    if (isLocked)
 		return 0;
-	    }
 	    isLocked = true;
 	    int pres = outputCap.getTankMaxPressure(tank);
 	    isLocked = false;
@@ -169,15 +166,13 @@ public class TileGasPipeFilter extends GenericTile {
 	@Override
 	public boolean isGasValid(int tank, GasStack gas) {
 
-	    if (isLocked) {
+	    if (isLocked)
 		return false;
-	    }
 
 	    if (whitelist) {
 
-		if (validGases.isEmpty()) {
+		if (validGases.isEmpty())
 		    return false;
-		}
 
 		if (validGases.contains(gas.getGas())) {
 		    isLocked = true;
@@ -206,9 +201,8 @@ public class TileGasPipeFilter extends GenericTile {
 
 	@Override
 	public int fill(GasStack gas, GasAction action) {
-	    if (isLocked) {
+	    if (isLocked)
 		return 0;
-	    }
 	    for (int i = 0; i < outputCap.getTanks(); i++) {
 		if (isGasValid(i, gas)) {
 		    isLocked = true;
@@ -224,9 +218,8 @@ public class TileGasPipeFilter extends GenericTile {
 
 	@Override
 	public GasStack drain(GasStack gas, GasAction action) {
-	    if (isLocked) {
+	    if (isLocked)
 		return GasStack.EMPTY;
-	    }
 	    isLocked = true;
 	    GasStack drain = outputCap.drain(gas, action);
 
@@ -236,9 +229,8 @@ public class TileGasPipeFilter extends GenericTile {
 
 	@Override
 	public GasStack drain(int maxFill, GasAction action) {
-	    if (isLocked) {
+	    if (isLocked)
 		return GasStack.EMPTY;
-	    }
 	    isLocked = true;
 	    GasStack drain = outputCap.drain(maxFill, action);
 	    isLocked = false;
@@ -247,9 +239,8 @@ public class TileGasPipeFilter extends GenericTile {
 
 	@Override
 	public int heat(int tank, int deltaTemperature, GasAction action) {
-	    if (isLocked) {
+	    if (isLocked)
 		return -1;
-	    }
 	    isLocked = true;
 	    int heat = outputCap.heat(tank, deltaTemperature, action);
 
@@ -259,9 +250,8 @@ public class TileGasPipeFilter extends GenericTile {
 
 	@Override
 	public int bringPressureTo(int tank, int atm, GasAction action) {
-	    if (isLocked) {
+	    if (isLocked)
 		return -1;
-	    }
 	    isLocked = true;
 	    int pres = outputCap.bringPressureTo(tank, atm, action);
 

@@ -1,7 +1,5 @@
 package electrodynamics.client.model.armor;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -413,12 +411,12 @@ public class ModelCombatArmor<T extends LivingEntity> extends GenericArmorModel<
     }
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight,
-	    int packedOverlay, int light) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay,
+	    int light) {
 	if (parentHead.visible) {
 	    parentHead.render(poseStack,
-		    getCustomConsumer(RenderType.entityTranslucent(ItemCombatArmor.ARMOR_TEXTURE_LOCATION)),
-		    packedLight, packedOverlay);
+		    getCustomConsumer(RenderType.entityCutout(ItemCombatArmor.ARMOR_TEXTURE_LOCATION)), packedLight,
+		    packedOverlay);
 	}
 	if (parentChest.visible) {
 	    parentChest.render(poseStack, buffer, packedLight, packedOverlay);

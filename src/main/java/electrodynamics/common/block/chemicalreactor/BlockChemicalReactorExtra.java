@@ -41,7 +41,8 @@ public class BlockChemicalReactorExtra extends GenericMachineBlock {
     }
 
     public static enum Location {
-	MIDDLE(1), TOP(2);
+	MIDDLE(1),
+	TOP(2);
 
 	public final Vec3i offsetDownToParent;
 	public final Vec3i offsetUpFromParent;

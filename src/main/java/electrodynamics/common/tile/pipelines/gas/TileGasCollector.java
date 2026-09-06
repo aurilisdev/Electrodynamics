@@ -8,7 +8,10 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.api.gas.GasAction;
@@ -21,7 +24,6 @@ import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentGasHandlerSimple;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentProcessor;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.tile.types.GenericGasTile;
@@ -36,7 +38,7 @@ public class TileGasCollector extends GenericGasTile implements ITickableSound {
 
     public TileGasCollector(BlockPos worldPos, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_GASCOLLECTOR.get(), worldPos, blockState);
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM)
@@ -48,38 +50,37 @@ public class TileGasCollector extends GenericGasTile implements ITickableSound {
 	addComponent(new ComponentProcessor(this).canProcess(this::canProcess).process(this::process));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.gascollector.tag(), this)
 		.createMenu((id, player) -> new ContainerGasCollector(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
 	addComponent(new ComponentGasHandlerSimple(this, "", 5000, 1000, 10)
 		.setOutputDirections(BlockEntityUtils.MachineDirection.BACK).setOnGasCondensed(getCondensedHandler()));
     }
 
-    private void tickClient(ComponentTickable componentTickable) {
+    private void tickClient(Level level, ComponentTickable componentTickable) {
 	if (!isSoundPlaying) {
 	    isSoundPlaying = true;
 	    SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_WINDMILL.get(), this, true);
 	}
     }
 
-    private void tickServer(ComponentTickable componentTickable) {
-
-	ComponentGasHandlerSimple handler = getComponent(IComponentType.GasHandler);
+    private void tickServer(Level level, ComponentTickable componentTickable) {
+	ComponentGasHandlerSimple handler = requireComponent(IComponentType.GasHandler);
 	GasUtilities.fillItem(this, handler.asArray());
 	GasUtilities.outputToPipe(this, handler.asArray(), handler.outputDirections);
 
     }
 
-    private void process(ComponentProcessor componentProcessor, int procNumber) {
-	ComponentInventory inv = getComponent(IComponentType.Inventory);
+    private void process(ComponentProcessor componentProcessor, Level level, int procNumber) {
+	ComponentInventory inv = requireComponent(IComponentType.Inventory);
 	ItemStack card = inv.getItem(CARD_SLOT);
 	GasCollectorChromoCardsRegister.AtmosphericResult result = GasCollectorChromoCardsRegister.INSTANCE
 		.getResult(card.getItem());
-	ComponentGasHandlerSimple tank = getComponent(IComponentType.GasHandler);
+	ComponentGasHandlerSimple tank = requireComponent(IComponentType.GasHandler);
 	tank.fill(new GasStack(result.stack().getGas(),
 		(int) (result.stack().getAmount() * componentProcessor.operatingSpeed.getValue()),
 		result.stack().getTemperature(), result.stack().getPressure()), GasAction.EXECUTE);
     }
 
-    private boolean canProcess(ComponentProcessor componentProcessor, int procNumber) {
+    private boolean canProcess(ComponentProcessor componentProcessor, Level level, int procNumber) {
 	boolean valid = checkRecipe(componentProcessor);
 	if (BlockEntityUtils.isLit(this) ^ valid) {
 	    BlockEntityUtils.updateLit(this, valid);
@@ -88,32 +89,35 @@ public class TileGasCollector extends GenericGasTile implements ITickableSound {
     }
 
     private boolean checkRecipe(ComponentProcessor componentProcessor) {
-	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-	if (electro.getJoulesStored() < componentProcessor.getUsage(0)) {
+	Level level = this.level;
+	if (level == null)
 	    return false;
-	}
-	ComponentInventory inv = getComponent(IComponentType.Inventory);
+
+	ComponentElectrodynamic electro = requireComponent(IComponentType.Electrodynamic);
+	if (electro.getJoulesStored() < componentProcessor.getUsage(0))
+	    return false;
+	ComponentInventory inv = requireComponent(IComponentType.Inventory);
 	ItemStack card = inv.getItem(CARD_SLOT);
-	if (card.isEmpty() || !GasCollectorChromoCardsRegister.INSTANCE.hasResult(card.getItem())) {
+	if (card.isEmpty() || !GasCollectorChromoCardsRegister.INSTANCE.hasResult(card.getItem()))
 	    return false;
-	}
 	GasCollectorChromoCardsRegister.AtmosphericResult result = GasCollectorChromoCardsRegister.INSTANCE
 		.getResult(card.getItem());
 
-	ComponentGasHandlerSimple tank = getComponent(IComponentType.GasHandler);
-	if (!tank.isEmpty() && !tank.getGas().getGas().equals(result.stack().getGas())) {
+	ComponentGasHandlerSimple tank = requireComponent(IComponentType.GasHandler);
+	if (!tank.isEmpty() && !tank.getGas().getGas().equals(result.stack().getGas()))
 	    return false;
+
+	ResourceKey<Biome> biome = result.biome();
+	TagKey<Biome> biomeTag = result.biomeTag();
+
+	if (biome != null) {
+	    Holder<Biome> biomeHolder = level.getBiome(getBlockPos());
+	    return biomeHolder.unwrapKey().map(biome::equals).orElse(false);
 	}
 
-	if (result.biome() != null || result.biomeTag() != null) {
-
-	    Holder<Biome> biomeHolder = getLevel().getBiome(getBlockPos());
-
-	    if (result.biome() != null) {
-		return biomeHolder.unwrapKey().map(result.biome()::equals).orElse(false);
-	    }
-
-	    return biomeHolder.is(result.biomeTag());
+	if (biomeTag != null) {
+	    Holder<Biome> biomeHolder = level.getBiome(getBlockPos());
+	    return biomeHolder.is(biomeTag);
 	}
 
 	return true;
@@ -126,12 +130,12 @@ public class TileGasCollector extends GenericGasTile implements ITickableSound {
 
     @Override
     public boolean shouldPlaySound() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0);
     }
 
     @Override
-    public int getComparatorSignal() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
+    public int getComparatorSignal(Level level) {
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
     }
 
 }

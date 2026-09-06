@@ -10,6 +10,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -41,12 +42,11 @@ public class TileAdvancedThermoelectricManipulator extends GenericTileThermoelec
     }
 
     @Override
-    public void tickClient(ComponentTickable tickable) {
+    public void tickClient(Level level, ComponentTickable tickable) {
 	ElectrodynamicsBlockStates.ManipulatorHeatingStatus status = getBlockState()
 		.getValue(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS);
-	if (status == ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF) {
+	if (status == ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF)
 	    return;
-	}
 	if (level.random.nextDouble() < 0.5) {
 
 	    Direction direction = getFacing();
@@ -83,7 +83,7 @@ public class TileAdvancedThermoelectricManipulator extends GenericTileThermoelec
     public ComponentContainerProvider getContainerProvider() {
 	return new ComponentContainerProvider("advancedthermoelectricmanipulator", this)
 		.createMenu((id, inv) -> new ContainerThermoelectricManipulator(id, inv,
-			getComponent(IComponentType.Inventory), getCoordsArray()));
+			requireComponent(IComponentType.Inventory), getCoordsArray()));
     }
 
     @Override
@@ -98,8 +98,8 @@ public class TileAdvancedThermoelectricManipulator extends GenericTileThermoelec
 
     @Override
     public void updateAddonTanks(int count, boolean isLeft) {
-	ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
-	ComponentFluidHandlerMulti multi = getComponent(IComponentType.FluidHandler);
+	ComponentGasHandlerMulti handler = requireComponent(IComponentType.GasHandler);
+	ComponentFluidHandlerMulti multi = requireComponent(IComponentType.FluidHandler);
 	if (isLeft) {
 	    multi.getInputTanks()[0]
 		    .setCapacity(ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_BASE_INPUT_CAPACITY.get()
@@ -123,16 +123,15 @@ public class TileAdvancedThermoelectricManipulator extends GenericTileThermoelec
     }
 
     @Override
-    public void onPlace(BlockState oldState, boolean isMoving) {
-	super.onPlace(oldState, isMoving);
-	if (level.isClientSide) {
+    public void onPlace(Level level, BlockState oldState, boolean isMoving) {
+	super.onPlace(level, oldState, isMoving);
+	if (level.isClientSide)
 	    return;
-	}
 	Direction facing = getFacing();
 
-	BlockEntity left = getLevel()
+	BlockEntity left = level
 		.getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
-	BlockEntity right = getLevel()
+	BlockEntity right = level
 		.getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
 
 	if (left != null && right != null && left instanceof TileGasTransformerSideBlock leftTile
@@ -146,28 +145,28 @@ public class TileAdvancedThermoelectricManipulator extends GenericTileThermoelec
     }
 
     @Override
-    public void onBlockDestroyed() {
-	if (level.isClientSide || hasBeenDestroyed) {
+    public void onBlockDestroyed(Level level) {
+	if (level.isClientSide || hasBeenDestroyed)
 	    return;
-	}
 	hasBeenDestroyed = true;
 	Direction facing = getFacing();
-	getLevel().destroyBlock(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)),
-		false);
-	getLevel().destroyBlock(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)),
-		false);
+	level.destroyBlock(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)), false);
+	level.destroyBlock(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)), false);
     }
 
     @Override
     public void outputToPipe(ComponentProcessor processor, ComponentGasHandlerMulti gasHandler, Direction facing) {
+	Level level = this.level;
+	if (level == null)
+	    return;
 
 	Direction direction = BlockEntityUtils.getRelativeSide(facing,
 		BlockEntityUtils.MachineDirection.LEFT.mappedDir);// opposite of west is east
 	BlockPos face = getBlockPos().relative(direction, 2);
-	BlockEntity faceTile = getLevel().getBlockEntity(face);
+	BlockEntity faceTile = level.getBlockEntity(face);
 	if (faceTile != null) {
 
-	    IGasHandler handler = faceTile.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK,
+	    IGasHandler handler = level.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK,
 		    faceTile.getBlockPos(), faceTile.getBlockState(), faceTile, direction.getOpposite());
 
 	    if (handler != null) {
@@ -185,14 +184,14 @@ public class TileAdvancedThermoelectricManipulator extends GenericTileThermoelec
 
 	}
 
-	ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
+	ComponentFluidHandlerMulti fluidHandler = requireComponent(IComponentType.FluidHandler);
 
 	face = getBlockPos().relative(direction).relative(Direction.DOWN);
-	faceTile = getLevel().getBlockEntity(face);
+	faceTile = level.getBlockEntity(face);
 	if (faceTile != null) {
 
-	    IFluidHandler handler = faceTile.getLevel().getCapability(Capabilities.FluidHandler.BLOCK,
-		    faceTile.getBlockPos(), faceTile.getBlockState(), faceTile, Direction.UP);
+	    IFluidHandler handler = level.getCapability(Capabilities.FluidHandler.BLOCK, faceTile.getBlockPos(),
+		    faceTile.getBlockState(), faceTile, Direction.UP);
 
 	    if (handler != null) {
 
@@ -209,11 +208,15 @@ public class TileAdvancedThermoelectricManipulator extends GenericTileThermoelec
 
     @Override
     public void updateLit(boolean isHeating, Direction facing) {
+	Level level = this.level;
+	if (level == null)
+	    return;
+
 	if (BlockEntityUtils.isLit(this) ^ isHeating) {
 	    BlockEntityUtils.updateLit(this, isHeating);
-	    BlockEntity left = getLevel()
+	    BlockEntity left = level
 		    .getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
-	    BlockEntity right = getLevel()
+	    BlockEntity right = level
 		    .getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
 	    if (left != null && left instanceof TileGasTransformerSideBlock leftTile && right != null
 		    && right instanceof TileGasTransformerSideBlock rightTile) {

@@ -2,6 +2,8 @@ package electrodynamics.common.block;
 
 import java.util.stream.Stream;
 
+import javax.annotation.Nullable;
+
 import com.mojang.serialization.MapCodec;
 
 import electrodynamics.common.tile.machines.quarry.TileSeismicMarker;
@@ -49,7 +51,8 @@ public class BlockSeismicMarker extends GenericMachineBlock {
     }
 
     @Override
-    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction direction) {
+    public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos,
+	    @Nullable Direction direction) {
 	return true;
     }
 

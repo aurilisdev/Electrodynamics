@@ -1,7 +1,5 @@
 package electrodynamics.common.tile.electricitygrid.generators;
 
-import javax.annotation.Nullable;
-
 import org.apache.commons.lang3.ArrayUtils;
 
 import net.minecraft.core.BlockPos;
@@ -17,7 +15,7 @@ import voltaic.prefab.tile.components.type.ComponentInventory;
 public abstract class GenericGeneratorTile extends GenericTile implements IElectricGenerator {
 
     public final double upgradeMultiplier;
-    @Nullable
+
     public final SubtypeItemUpgrade[] validMultipliers;
 
     protected GenericGeneratorTile(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState,
@@ -31,8 +29,7 @@ public abstract class GenericGeneratorTile extends GenericTile implements IElect
     public void onInventoryChange(ComponentInventory inv, int slot) {
 	super.onInventoryChange(inv, slot);
 
-	if (!inv.getUpgradeContents().isEmpty() && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)
-		&& validMultipliers != null) {
+	if (!inv.getUpgradeContents().isEmpty() && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
 	    setMultiplier(1);
 	    for (ItemStack stack : inv.getUpgradeContents()) {
 		if (!stack.isEmpty() && stack.getItem() instanceof ItemUpgrade upgrade && upgrade.subtype.isEmpty) {

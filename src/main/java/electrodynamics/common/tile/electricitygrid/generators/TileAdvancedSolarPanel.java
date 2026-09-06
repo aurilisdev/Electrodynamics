@@ -12,6 +12,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import voltaic.api.multiblock.subnodebased.TileMultiSubnode;
@@ -32,15 +33,19 @@ public class TileAdvancedSolarPanel extends TileSolarPanel implements IMultibloc
     public TileAdvancedSolarPanel(BlockPos worldPosition, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_ADVANCEDSOLARPANEL.get(), worldPosition, blockState, 2.25,
 		SubtypeItemUpgrade.improvedsolarcell);
-	this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic)
+	this.<ComponentElectrodynamic>requireComponent(IComponentType.Electrodynamic)
 		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2);
 	forceComponent(new ComponentContainerProvider(SubtypeMachine.advancedsolarpanel.tag(), this)
-		.createMenu((id, player) -> new ContainerSolarPanel(id, player, getComponent(IComponentType.Inventory),
-			getCoordsArray())));
+		.createMenu((id, player) -> new ContainerSolarPanel(id, player,
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
     @Override
     public TransferPack getProduced() {
+	Level level = this.level;
+	if (level == null)
+	    return TransferPack.EMPTY;
+
 	double mod = 1.0f - Mth.clamp(1.0F - (Mth.cos(level.getTimeOfDay(1f) * ((float) Math.PI * 2f)) * 2.0f + 0.2f),
 		0.0f, 1.0f);
 	double temp = level.getBiomeManager().getBiome(getBlockPos()).value().getBaseTemperature();
@@ -48,7 +53,7 @@ public class TileAdvancedSolarPanel extends TileSolarPanel implements IMultibloc
 	return TransferPack.ampsVoltage(
 		getMultiplier() * ElectrodynamicsConfig.INSTANCE.ADVANCEDSOLARPANEL_AMPERAGE.get() * lerped * mod
 			* (level.isRaining() || level.isThundering() ? 0.8f : 1),
-		this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getVoltage());
+		this.<ComponentElectrodynamic>requireComponent(IComponentType.Electrodynamic).getVoltage());
     }
 
     @Override
@@ -57,24 +62,25 @@ public class TileAdvancedSolarPanel extends TileSolarPanel implements IMultibloc
     }
 
     @Override
-    public void onSubnodeDestroyed(TileMultiSubnode subnode) {
+    public void onSubnodeDestroyed(Level level, TileMultiSubnode subnode) {
 	level.destroyBlock(worldPosition, true);
     }
 
     @Override
-    public InteractionResult onSubnodeUseWithoutItem(Player player, BlockHitResult hit, TileMultiSubnode subnode) {
-	return useWithoutItem(player, hit);
+    public InteractionResult onSubnodeUseWithoutItem(Level level, Player player, BlockHitResult hit,
+	    TileMultiSubnode subnode) {
+	return useWithoutItem(level, player, hit);
     }
 
     @Override
-    public ItemInteractionResult onSubnodeUseWithItem(ItemStack used, Player player, InteractionHand hand,
+    public ItemInteractionResult onSubnodeUseWithItem(Level level, ItemStack used, Player player, InteractionHand hand,
 	    BlockHitResult hit, TileMultiSubnode subnode) {
-	return useWithItem(used, player, hand, hit);
+	return useWithItem(level, used, player, hand, hit);
     }
 
     @Override
-    public int getSubdnodeComparatorSignal(TileMultiSubnode subnode) {
-	return getComparatorSignal();
+    public int getSubdnodeComparatorSignal(Level level, TileMultiSubnode subnode) {
+	return getComparatorSignal(level);
     }
 
     @Override

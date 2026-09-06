@@ -49,7 +49,7 @@ import voltaic.registers.VoltaicGases;
 
 public class GasCollectorChromoCardsRegister extends SimplePreparableReloadListener<HashSet<JsonObject>> {
 
-    public static GasCollectorChromoCardsRegister INSTANCE = null;
+    public static final GasCollectorChromoCardsRegister INSTANCE = new GasCollectorChromoCardsRegister();
 
     public static final String FOLDER = "machines/gas_collector_chromotography_cards";
 
@@ -136,6 +136,8 @@ public class GasCollectorChromoCardsRegister extends SimplePreparableReloadListe
 
 	    }
 
+	    if (gas == null)
+		return;
 	    AtmosphericResult result = new AtmosphericResult(new GasStack(gas, amount, temperature, pressure), biome,
 		    biomeTag);
 
@@ -165,8 +167,8 @@ public class GasCollectorChromoCardsRegister extends SimplePreparableReloadListe
     }
 
     public void setClientValues(HashMap<Item, AtmosphericResult> values) {
-	this.results.clear();
-	this.results.putAll(values);
+	results.clear();
+	results.putAll(values);
     }
 
     public GasCollectorChromoCardsRegister subscribeAsSyncable() {

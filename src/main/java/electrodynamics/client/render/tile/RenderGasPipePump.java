@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -24,8 +22,8 @@ public class RenderGasPipePump extends AbstractTileRenderer<TileGasPipePump> {
     }
 
     @Override
-    public void render(@NotNull TileGasPipePump tile, float partialTick, @NotNull PoseStack poseStack,
-	    @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(TileGasPipePump tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+	    int packedLight, int packedOverlay) {
 
 	poseStack.pushPose();
 

@@ -56,10 +56,10 @@ public enum SubtypeResourceBlock implements ISubtype {
 	    VoltaicTags.Items.INGOT_TITANIUMCARBIDE,
 	    () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.titaniumcarbide));
 
-    private float hardness;
-    private float resistance;
-    private Properties material;
-    private SoundType soundType;
+    private final float hardness;
+    private final float resistance;
+    private final Properties material;
+    private final SoundType soundType;
     // 0 = wood, 1 = stone, 2 = iron, 3 = diamond
     public final int miningLevel;
     public final TagKey<Item> itemTag;

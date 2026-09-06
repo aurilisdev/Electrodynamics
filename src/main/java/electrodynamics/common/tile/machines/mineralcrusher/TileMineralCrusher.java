@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,7 +22,6 @@ import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentProcessor;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
@@ -39,7 +39,7 @@ public class TileMineralCrusher extends GenericTile implements ITickableSound {
 
 	addComponent(new ComponentContainerProvider(SubtypeMachine.mineralcrusher.tag(), this)
 		.createMenu((id, player) -> new ContainerO2OProcessor(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
     public TileMineralCrusher(BlockEntityType<?> type, int procCount, BlockPos pos, BlockState state) {
@@ -51,7 +51,6 @@ public class TileMineralCrusher extends GenericTile implements ITickableSound {
 	int outputPerProc = 1;
 	int biprodsPerProc = 1;
 
-	addComponent(new ComponentPacketHandler(this));
 	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
@@ -62,15 +61,14 @@ public class TileMineralCrusher extends GenericTile implements ITickableSound {
 		.validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator())
 		.implementMachineInputsAndOutputs());
 	addComponent(new ComponentProcessor(this, procCount)
-		.canProcess((component, procNumber) -> component.canProcessItem2ItemRecipe(procNumber,
+		.canProcess((component, level, procNumber) -> component.canProcessItem2ItemRecipe(level, procNumber,
 			ElectrodynamicsRecipies.MINERAL_CRUSHER_TYPE.get()))
 		.process(ComponentProcessor::processItem2ItemRecipe));
     }
 
-    protected void tickClient(ComponentTickable tickable) {
-	if (!this.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive()) {
+    protected void tickClient(Level level, ComponentTickable tickable) {
+	if (!this.<ComponentProcessor>requireComponent(IComponentType.Processor).isAnyActive())
 	    return;
-	}
 
 	Direction direction = getFacing();
 	if (level.random.nextDouble() < 0.15) {
@@ -96,7 +94,7 @@ public class TileMineralCrusher extends GenericTile implements ITickableSound {
 	    }
 	    for (int procNum = 0; procNum < procCount; procNum++) {
 
-		ComponentInventory inv = getComponent(IComponentType.Inventory);
+		ComponentInventory inv = requireComponent(IComponentType.Inventory);
 
 		ItemStack stack = inv.getInputsForProcessor(procNum).get(0);
 
@@ -128,14 +126,14 @@ public class TileMineralCrusher extends GenericTile implements ITickableSound {
 
     @Override
     public boolean shouldPlaySound() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive();
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isAnyActive();
     }
 
     @Override
-    public int getComparatorSignal() {
-	return (int) ((double) this.<ComponentProcessor>getComponent(IComponentType.Processor).getTotalActive()
+    public int getComparatorSignal(Level level) {
+	return (int) ((double) this.<ComponentProcessor>requireComponent(IComponentType.Processor).getTotalActive()
 		/ (double) Math.max(1,
-			this.<ComponentProcessor>getComponent(IComponentType.Processor).getProcessorCount())
+			this.<ComponentProcessor>requireComponent(IComponentType.Processor).getProcessorCount())
 		* 15.0);
     }
 

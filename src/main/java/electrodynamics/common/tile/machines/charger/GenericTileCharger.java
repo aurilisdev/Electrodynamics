@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -20,7 +21,6 @@ import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
 import voltaic.prefab.utilities.object.TransferPack;
@@ -33,7 +33,7 @@ public abstract class GenericTileCharger extends GenericTile {
     protected GenericTileCharger(BlockEntityType<?> typeIn, int voltageMultiplier, SubtypeMachine machine,
 	    BlockPos worldPosition, BlockState blockState) {
 	super(typeIn, worldPosition, blockState);
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
@@ -47,32 +47,27 @@ public abstract class GenericTileCharger extends GenericTile {
 			BlockEntityUtils.MachineDirection.BOTTOM));
 	addComponent(new ComponentContainerProvider(machine.tag(), this)
 		.createMenu((id, player) -> new ContainerChargerGeneric(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
 
     }
 
-    public void tickServer(ComponentTickable tickable) {
-
-	ComponentInventory inventory = getComponent(IComponentType.Inventory);
-	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+    public void tickServer(Level level, ComponentTickable tickable) {
+	ComponentInventory inventory = requireComponent(IComponentType.Inventory);
+	ComponentElectrodynamic electro = requireComponent(IComponentType.Electrodynamic);
 
 	ItemStack itemInput = inventory.getItem(0);
-
-	if (itemInput.isEmpty()) {
+	if (itemInput.isEmpty())
 	    return;
-	}
 
 	if (itemInput.getItem() instanceof IItemElectric electricItem) {
 
-	    if (inventory.inputs() > 1 && drainBatterySlots(inventory, electro)) {
+	    if (inventory.inputs() > 1 && drainBatterySlots(inventory, electro))
 		return;
-	    }
 
 	    double room = electricItem.getMaximumCapacity(itemInput) - electricItem.getJoulesStored(itemInput);
 
-	    if (electro.getJoulesStored() <= 0 || room <= 0) {
+	    if (electro.getJoulesStored() <= 0 || room <= 0)
 		return;
-	    }
 
 	    double recieveVoltage = electricItem.getElectricProperties().receive.getVoltage();
 	    double machineVoltage = electro.getVoltage();
@@ -129,15 +124,13 @@ public abstract class GenericTileCharger extends GenericTile {
 
 	} else if (itemInput.getCapability(Capabilities.EnergyStorage.ITEM) instanceof IEnergyStorage storage) {
 
-	    if (inventory.inputs() > 1 && drainBatterySlots(inventory, electro) || !storage.canReceive()) {
+	    if (inventory.inputs() > 1 && drainBatterySlots(inventory, electro) || !storage.canReceive())
 		return;
-	    }
 
 	    int room = storage.receiveEnergy(Integer.MAX_VALUE, true);
 
-	    if (electro.getJoulesStored() <= 0 || room <= 0) {
+	    if (electro.getJoulesStored() <= 0 || room <= 0)
 		return;
-	    }
 
 	    double machineVoltage = electro.getVoltage();
 
@@ -164,16 +157,18 @@ public abstract class GenericTileCharger extends GenericTile {
 
     // to simulate undervolting a chargeable object
     private static float getRationalFunctionValue(float x) {
-	if (x >= 100.0F) {
+	if (x >= 100.0F)
 	    return 0.0F;
-	}
-	if (x <= 1.0F) {
+	if (x <= 1.0F)
 	    return 1.0F;
-	}
 	return 1 / x;
     }
 
     private boolean drainBatterySlots(ComponentInventory inv, ComponentElectrodynamic electro) {
+	Level level = this.level;
+	if (level == null)
+	    return false;
+
 	double machineVoltage = electro.getVoltage();
 	double battVoltage = 0;
 	for (int i = 0; i < BATTERY_COUNT; i++) {
@@ -182,8 +177,8 @@ public abstract class GenericTileCharger extends GenericTile {
 		battVoltage = electricItem.getElectricProperties().receive.getVoltage();
 		if (battVoltage < machineVoltage) {
 		    inv.setItem(i + 1, new ItemStack(ElectrodynamicsItems.ITEM_SLAG.get()).copy());
-		    getLevel().playSound(null, getBlockPos(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS,
-			    1F, 1F);
+		    level.playSound(null, getBlockPos(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 1F,
+			    1F);
 		} else if (battVoltage > machineVoltage) {
 		    electro.overVoltage(TransferPack.joulesVoltage(electro.getJoulesStored(), battVoltage));
 		    return true;

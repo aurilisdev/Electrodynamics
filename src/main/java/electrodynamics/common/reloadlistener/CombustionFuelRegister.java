@@ -38,7 +38,7 @@ import voltaic.Voltaic;
 
 public class CombustionFuelRegister extends SimplePreparableReloadListener<HashSet<JsonObject>> {
 
-    public static CombustionFuelRegister INSTANCE = null;
+    public static final CombustionFuelRegister INSTANCE = new CombustionFuelRegister();
 
     public static final String FOLDER = "machines/combustion_fuel";
 
@@ -110,9 +110,8 @@ public class CombustionFuelRegister extends SimplePreparableReloadListener<HashS
 
     public CombustionFuelSource getFuelFromFluid(FluidStack stack) {
 	for (CombustionFuelSource fuel : fuels) {
-	    if (fuel.isFuelSource(stack)) {
+	    if (fuel.isFuelSource(stack))
 		return fuel;
-	    }
 	}
 	return CombustionFuelSource.EMPTY;
     }

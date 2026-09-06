@@ -106,9 +106,8 @@ public enum SubtypeGasPipe implements ISubtype, IGasPipe {
 
     public static SubtypeGasPipe getPipeForType(PipeMaterial material, InsulationMaterial insulation) {
 	for (SubtypeGasPipe pipe : SubtypeGasPipe.values()) {
-	    if (pipe.pipeMaterial == material && pipe.insulationMaterial == insulation) {
+	    if (pipe.pipeMaterial == material && pipe.insulationMaterial == insulation)
 		return pipe;
-	    }
 	}
 	return SubtypeGasPipe.UNINSULATEDCOPPER;
     }

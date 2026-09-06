@@ -3,6 +3,8 @@ package electrodynamics.common.tile.pipelines;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.prefab.tile.GenericTile;
@@ -22,29 +24,29 @@ public class GenericTileValve extends GenericTile {
     }
 
     @Override
-    public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
-	if (level.isClientSide) {
-	    return;
-	}
+    public void onNeighbourChanged(LevelReader reader, BlockPos neighbor, boolean blockStateTrigger) {
+	if (reader instanceof Level level) {
+	    if (level.isClientSide)
+		return;
 
-	if (level.hasNeighborSignal(worldPosition)) {
-	    isClosed = true;
-	} else {
-	    isClosed = false;
-	}
+	    if (level.hasNeighborSignal(worldPosition)) {
+		isClosed = true;
+	    } else {
+		isClosed = false;
+	    }
 
-	if (BlockEntityUtils.isLit(this) ^ isClosed) {
-	    BlockEntityUtils.updateLit(this, isClosed);
-	}
+	    if (BlockEntityUtils.isLit(this) ^ isClosed) {
+		BlockEntityUtils.updateLit(this, isClosed);
+	    }
 
+	}
     }
 
     @Override
-    public void onPlace(BlockState oldState, boolean isMoving) {
-	super.onPlace(oldState, isMoving);
-	if (level.isClientSide) {
+    public void onPlace(Level level, BlockState oldState, boolean isMoving) {
+	super.onPlace(level, oldState, isMoving);
+	if (level.isClientSide)
 	    return;
-	}
 	if (level.hasNeighborSignal(worldPosition)) {
 	    isClosed = true;
 	} else {

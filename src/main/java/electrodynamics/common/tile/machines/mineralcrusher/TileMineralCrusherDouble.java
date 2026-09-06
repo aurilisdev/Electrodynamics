@@ -15,7 +15,7 @@ public class TileMineralCrusherDouble extends TileMineralCrusher {
 
 	addComponent(new ComponentContainerProvider(SubtypeMachine.mineralcrusherdouble.tag(), this)
 		.createMenu((id, player) -> new ContainerO2OProcessorDouble(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
 
     }
 

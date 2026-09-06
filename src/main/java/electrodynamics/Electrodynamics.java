@@ -38,7 +38,6 @@ public final class Electrodynamics {
     public static final String NAME = "Electrodynamics";
 
     public Electrodynamics(IEventBus bus, ModContainer container) {
-	ElectrodynamicsConfig.INSTANCE = new ElectrodynamicsConfig();
 	container.registerConfig(ModConfig.Type.COMMON, ElectrodynamicsConfig.INSTANCE.SPEC);
 	if (FMLEnvironment.dist == Dist.CLIENT) {
 	    container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
@@ -54,18 +53,10 @@ public final class Electrodynamics {
     @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event) {
 	ServerEventHandler.init();
-	CombustionFuelRegister.INSTANCE = new CombustionFuelRegister().subscribeAsSyncable();
-	CoalGeneratorFuelRegister.INSTANCE = new CoalGeneratorFuelRegister().subscribeAsSyncable();
-	GasCollectorChromoCardsRegister.INSTANCE = new GasCollectorChromoCardsRegister().subscribeAsSyncable();
-	ThermoelectricGeneratorHeatRegister.INSTANCE = new ThermoelectricGeneratorHeatRegister().subscribeAsSyncable();
-	// CraftingHelper.register(ConfigCondition.Serializer.INSTANCE); // Probably
-	// wrong location after update from 1.18.2 to
-	// 1.19.2
-
-	// RegisterFluidToGasMapEvent map = new RegisterFluidToGasMapEvent();
-	// MinecraftForge.EVENT_BUS.post(map);
-	// ElectrodynamicsGases.MAPPED_GASSES.putAll(map.fluidToGasMap);
-
+	CombustionFuelRegister.INSTANCE.subscribeAsSyncable();
+	CoalGeneratorFuelRegister.INSTANCE.subscribeAsSyncable();
+	GasCollectorChromoCardsRegister.INSTANCE.subscribeAsSyncable();
+	ThermoelectricGeneratorHeatRegister.INSTANCE.subscribeAsSyncable();
 	event.enqueueWork(() -> {
 
 	    RegisterWiresEvent wiresEvent = new RegisterWiresEvent();
@@ -78,13 +69,10 @@ public final class Electrodynamics {
 
     }
 
-    // I wonder how long this bug has been there
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onClientSetup(FMLClientSetupEvent event) {
-	event.enqueueWork(() -> {
-	    ElectrodynamicsClientRegister.setup();
-	});
+	event.enqueueWork(() -> { ElectrodynamicsClientRegister.setup(); });
     }
 
     @SubscribeEvent

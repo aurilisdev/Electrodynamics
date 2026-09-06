@@ -6,13 +6,13 @@ import electrodynamics.registers.ElectrodynamicsRecipies;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentProcessor;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.tile.types.GenericMaterialTile;
@@ -25,7 +25,7 @@ public class TileMineralWasher extends GenericMaterialTile {
     public TileMineralWasher(BlockPos worldPosition, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_MINERALWASHER.get(), worldPosition, blockState);
 	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
 		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 4));
@@ -42,16 +42,17 @@ public class TileMineralWasher extends GenericMaterialTile {
 			BlockEntityUtils.MachineDirection.FRONT)
 		.validUpgrades(ContainerMineralWasher.VALID_UPGRADES).valid(machineValidator()));
 	addComponent(new ComponentProcessor(this)
-		.canProcess((component, procNumber) -> component.outputToFluidPipe().consumeBucket().dispenseBucket()
-			.canProcessFluidItem2FluidRecipe(procNumber, ElectrodynamicsRecipies.MINERAL_WASHER_TYPE.get()))
+		.canProcess((component, level, procNumber) -> component.outputToFluidPipe().consumeBucket()
+			.dispenseBucket().canProcessFluidItem2FluidRecipe(level, procNumber,
+				ElectrodynamicsRecipies.MINERAL_WASHER_TYPE.get()))
 		.process(ComponentProcessor::processFluidItem2FluidRecipe));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.mineralwasher.tag(), this)
 		.createMenu((id, player) -> new ContainerMineralWasher(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
-    protected void tickClient(ComponentTickable tickable) {
-	if (this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0)
+    protected void tickClient(Level level, ComponentTickable tickable) {
+	if (this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0)
 		&& level.getRandom().nextDouble() < 0.15) {
 	    level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(),
 		    worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5,
@@ -60,8 +61,8 @@ public class TileMineralWasher extends GenericMaterialTile {
     }
 
     @Override
-    public int getComparatorSignal() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
+    public int getComparatorSignal(Level level) {
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
     }
 
 }

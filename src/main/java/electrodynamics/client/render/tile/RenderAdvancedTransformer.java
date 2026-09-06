@@ -1,6 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -23,8 +22,8 @@ public abstract class RenderAdvancedTransformer extends AbstractTileRenderer<Til
     }
 
     @Override
-    public void render(@NotNull TileAdvancedTransformer tile, float partialTick, @NotNull PoseStack poseStack,
-	    @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(TileAdvancedTransformer tile, float partialTick, PoseStack poseStack,
+	    MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 
 	Direction facing = tile.getFacing();
 

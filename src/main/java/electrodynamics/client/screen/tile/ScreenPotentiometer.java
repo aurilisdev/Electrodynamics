@@ -1,7 +1,6 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerPotentiometer;
-import electrodynamics.common.tile.electricitygrid.TilePotentiometer;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -29,27 +28,15 @@ public class ScreenPotentiometer extends GenericScreen<ContainerPotentiometer> {
     }
 
     private void setConsumption(String value) {
-
-	if (value.isEmpty()) {
+	if (value.isEmpty())
 	    return;
-	}
-
-	TilePotentiometer potentiometer = menu.getSafeHost();
-
-	if (potentiometer == null) {
-	    return;
-	}
-
-	double consumption = 0;
-
+	double parsedConsumption;
 	try {
-	    consumption = Double.parseDouble(value);
-	} catch (Exception e) {
-
+	    parsedConsumption = Double.parseDouble(value);
+	} catch (NumberFormatException e) {
+	    return;
 	}
-
-	potentiometer.powerConsumption.setValue(consumption);
-
+	menu.getSafeHost().ifPresent(potentiometer -> potentiometer.powerConsumption.setValue(parsedConsumption));
     }
 
     @Override
@@ -57,10 +44,8 @@ public class ScreenPotentiometer extends GenericScreen<ContainerPotentiometer> {
 	super.render(graphics, mouseX, mouseY, partialTicks);
 	if (needsUpdate) {
 	    needsUpdate = false;
-	    TilePotentiometer source = menu.getSafeHost();
-	    if (source != null) {
-		consumption.setValue("" + source.powerConsumption.getValue());
-	    }
+	    menu.getSafeHost()
+		    .ifPresent(source -> consumption.setValue(String.valueOf(source.powerConsumption.getValue())));
 	}
     }
 

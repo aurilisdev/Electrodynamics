@@ -1,5 +1,7 @@
 package electrodynamics.datagen.server.recipe.types.vanilla;
 
+import java.util.function.Supplier;
+
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeGlass;
 import electrodynamics.common.block.subtype.SubtypeOre;
@@ -9,6 +11,7 @@ import electrodynamics.common.item.subtype.SubtypeIngot;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.common.Tags;
 import voltaic.common.tags.VoltaicTags;
 import voltaic.datagen.utils.server.recipe.AbstractRecipeGenerator;
@@ -24,10 +27,11 @@ public class ElectrodynamicsSmeltingRecipes extends AbstractRecipeGenerator {
 
 	for (SubtypeDust dust : SubtypeDust.values()) {
 
-	    if (dust.smeltedItem != null) {
+	    Supplier<Item> smeltedItem = dust.smeltedItem;
+	    if (smeltedItem != null) {
 		CustomCookingRecipe
 			.smeltingRecipe(Electrodynamics.rl(SMELTING_LOC + dust.name() + "_ingot_from_dust"),
-				Electrodynamics.ID, dust.smeltedItem.get(), 0, dust.smeltTime)
+				Electrodynamics.ID, smeltedItem.get(), 0, dust.smeltTime)
 			//
 			.input(dust.tag)
 			//
@@ -35,7 +39,7 @@ public class ElectrodynamicsSmeltingRecipes extends AbstractRecipeGenerator {
 
 		CustomCookingRecipe
 			.blastingRecipe(Electrodynamics.rl(BLASTING_LOC + dust.name() + "_ingot_from_dust"),
-				Electrodynamics.ID, dust.smeltedItem.get(), 0, dust.smeltTime / 2)
+				Electrodynamics.ID, smeltedItem.get(), 0, dust.smeltTime / 2)
 			//
 			.input(dust.tag)
 			//
@@ -45,17 +49,19 @@ public class ElectrodynamicsSmeltingRecipes extends AbstractRecipeGenerator {
 	}
 
 	for (SubtypeOre ore : SubtypeOre.values()) {
-	    if (ore.smeltingItem != null) {
+	    Supplier<Item> smeltingItem = ore.smeltingItem;
+	    if (smeltingItem != null) {
 		CustomCookingRecipe
 			.smeltingRecipe(Electrodynamics.rl(SMELTING_LOC + ore.name() + "_ingot_from_ore"),
-				Electrodynamics.ID, ore.smeltingItem.get(), (float) ore.smeltingXp, ore.smeltingTime)
+				Electrodynamics.ID, smeltingItem.get(), (float) ore.smeltingXp, ore.smeltingTime)
 			//
 			.input(ore.itemTag)
 			//
 			.save(output);
 
-		CustomCookingRecipe.blastingRecipe(Electrodynamics.rl(BLASTING_LOC + ore.name() + "_ingot_from_ore"),
-			Electrodynamics.ID, ore.smeltingItem.get(), (float) ore.smeltingXp, ore.smeltingTime / 2)
+		CustomCookingRecipe
+			.blastingRecipe(Electrodynamics.rl(BLASTING_LOC + ore.name() + "_ingot_from_ore"),
+				Electrodynamics.ID, smeltingItem.get(), (float) ore.smeltingXp, ore.smeltingTime / 2)
 			//
 			.input(ore.itemTag)
 			//

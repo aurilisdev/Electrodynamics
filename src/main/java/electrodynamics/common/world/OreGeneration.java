@@ -14,18 +14,16 @@ public class OreGeneration {
 
     public static void generateSulfurAround(RandomSource random, BlockPos pos, WorldGenLevel level) {
 
-	if (ElectrodynamicsConfig.INSTANCE.DISABLE_ALL_ORES.isTrue()) {
+	if (ElectrodynamicsConfig.INSTANCE.DISABLE_ALL_ORES.isTrue())
 	    return;
-	}
 
 	boolean allowSulfur = ElectrodynamicsConfig.INSTANCE.DISABLE_STONE_ORES.isFalse()
 		&& ElectrodynamicsConfig.INSTANCE.SPAWN_SULFUR_ORE.isTrue();
 	boolean allowDeepSulfur = ElectrodynamicsConfig.INSTANCE.DISABLE_DEEPSLATE_ORES.isFalse()
 		&& ElectrodynamicsConfig.INSTANCE.SPAWN_DEEP_SULFUR_ORE.isTrue();
 
-	if (!allowSulfur && !allowDeepSulfur) {
+	if (!allowSulfur && !allowDeepSulfur)
 	    return;
-	}
 
 	for (Direction direction : Direction.values()) {
 

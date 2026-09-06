@@ -3,6 +3,8 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.network.type.ElectricNetwork;
@@ -404,7 +406,7 @@ public class ChapterElectricity extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEM_MULTIMETER.get());
 		    }
 
@@ -440,7 +442,7 @@ public class ChapterElectricity extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.multimeterblock));
 		    }
@@ -473,7 +475,7 @@ public class ChapterElectricity extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.relay));
 		    }
 
@@ -511,7 +513,7 @@ public class ChapterElectricity extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.circuitbreaker));
 		    }
@@ -549,7 +551,7 @@ public class ChapterElectricity extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.currentregulator));
 		    }
@@ -582,7 +584,7 @@ public class ChapterElectricity extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.circuitmonitor));
 		    }
@@ -629,7 +631,7 @@ public class ChapterElectricity extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.potentiometer));
 		    }
 

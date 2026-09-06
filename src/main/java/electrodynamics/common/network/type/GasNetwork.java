@@ -81,13 +81,11 @@ public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, Ga
 	GasStack transfer = new GasStack(inserted.getGas(), Math.min(inserted.getAmount(), (int) networkMaxTransfer),
 		inserted.getTemperature(), inserted.getPressure());
 
-	if (transfer.getAmount() <= 0 || ignored.isEmpty()) {
+	if (transfer.getAmount() <= 0 || ignored.isEmpty())
 	    return GasStack.EMPTY;
-	}
 
-	if (checkForOverloadAndHandle(transfer, !debug)) {
+	if (checkForOverloadAndHandle(transfer, !debug))
 	    return transfer;
-	}
 
 	GasStack copy = transfer.copy();
 
@@ -99,9 +97,8 @@ public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, Ga
 	copy.shrink(priorityTaken.getFirst().getAmount());
 	taken.grow(priorityTaken.getFirst().getAmount());
 
-	if (copy.isEmpty()) {
+	if (copy.isEmpty())
 	    return taken;
-	}
 
 	Set<BlockEntity> recievingTiles = ConcurrentHashMap.newKeySet();
 
@@ -110,9 +107,8 @@ public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, Ga
 	recievingTiles.removeAll(ignored);
 	recievingTiles.removeAll(priorityTaken.getSecond());
 
-	if (recievingTiles.isEmpty()) {
+	if (recievingTiles.isEmpty())
 	    return GasStack.EMPTY;
-	}
 
 	GasStack gasPerTile, preGasPerTile, gasPerConnection, preGasPerConnection;
 
@@ -133,11 +129,11 @@ public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, Ga
 
 	for (BlockEntity tile : recievingTiles) {
 
-	    if (tile == null || tile.isRemoved()) {
-		acceptorInputMap.remove(tile);
-		acceptorSet.remove(tile);
-		continue;
-	    }
+//	    if (tile == null || tile.isRemoved()) {
+//		acceptorInputMap.remove(tile);
+//		acceptorSet.remove(tile);
+//		continue;
+//	    }
 
 	    gasPerTile = new GasStack(copy.getGas(), copy.getAmount() / size, copy.getTemperature(),
 		    copy.getPressure());
@@ -207,9 +203,8 @@ public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, Ga
 
 	Set<TileGasPipePump> acceptedPumps = ConcurrentHashMap.newKeySet();
 
-	if (priorityPumpMap.isEmpty()) {
+	if (priorityPumpMap.isEmpty())
 	    return Pair.of(taken, acceptedPumps);
-	}
 
 	Pair<GasStack, Set<TileGasPipePump>> accepted;
 
@@ -219,9 +214,8 @@ public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, Ga
 
 	for (int i = 9; i >= 0; i--) {
 
-	    if (copy.isEmpty()) {
+	    if (copy.isEmpty())
 		return Pair.of(taken, acceptedPumps);
-	    }
 
 	    prioritySet = priorityPumpMap.getOrDefault(i, new HashSet<>());
 
@@ -342,9 +336,8 @@ public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, Ga
 
 	boolean isCorrosive = stack.is(VoltaicTags.Gases.IS_CORROSIVE);
 
-	if (stack.getPressure() <= maxPressure && !isCorrosive) {
+	if (stack.getPressure() <= maxPressure && !isCorrosive)
 	    return false;
-	}
 
 	HashSet<GenericTileGasPipe> overloadedPipes = new HashSet<>();
 
@@ -362,13 +355,11 @@ public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, Ga
 	    overloadedPipes.addAll(destroyedByCorrosion);
 	}
 
-	if (overloadedPipes.isEmpty()) {
+	if (overloadedPipes.isEmpty())
 	    return false;
-	}
 
-	if (!live) {
+	if (!live)
 	    return true;
-	}
 
 	for (GenericTileGasPipe pipe : overloadedPipes) {
 	    Scheduler.schedule(1, pipe::destroyViolently);
@@ -425,7 +416,6 @@ public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, Ga
 
     @Override
     public void updateRecieverStatistics(BlockEntity reciever, Direction dir) {
-
 	if (reciever instanceof TileGasPipePump pump) {
 	    int priority = pump.priority.getValue();
 	    HashSet<TileGasPipePump> set = priorityPumpMap.getOrDefault(priority, new HashSet<>());
@@ -433,7 +423,6 @@ public class GasNetwork extends AbstractNetwork<GenericTileGasPipe, IGasPipe, Ga
 	    priorityPumpMap.put(priority, set);
 
 	}
-
     }
 
     @Override

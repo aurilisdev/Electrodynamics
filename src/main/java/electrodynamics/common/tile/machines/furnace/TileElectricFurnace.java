@@ -2,6 +2,8 @@ package electrodynamics.common.tile.machines.furnace;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnace;
 import electrodynamics.common.settings.ElectrodynamicsConfig;
@@ -15,6 +17,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.Voltaic;
@@ -27,7 +30,6 @@ import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentProcessor;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
@@ -36,9 +38,9 @@ import voltaic.registers.VoltaicDataComponentTypes;
 
 public class TileElectricFurnace extends GenericTile implements ITickableSound {
 
-    protected SmeltingRecipe[] cachedRecipe = null;
+    protected @Nullable SmeltingRecipe[] cachedRecipe = {};
 
-    private List<RecipeHolder<SmeltingRecipe>> cachedRecipes = null;
+    private @Nullable List<RecipeHolder<SmeltingRecipe>> cachedRecipes = null;
 
     private boolean isSoundPlaying = false;
 
@@ -49,7 +51,7 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 
 	addComponent(new ComponentContainerProvider(SubtypeMachine.electricfurnace.tag(), this)
 		.createMenu((id, player) -> new ContainerElectricFurnace(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
 
     }
 
@@ -61,7 +63,6 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 	int inputsPerProc = 1;
 	int outputPerProc = 1;
 
-	addComponent(new ComponentPacketHandler(this));
 	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
@@ -73,12 +74,11 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 		.validUpgrades(ContainerElectricFurnace.VALID_UPGRADES).valid(machineValidator())
 		.implementMachineInputsAndOutputs());
 	addComponent(new ComponentProcessor(this, procCount).canProcess(this::canProcess).process(this::process));
-
 	cachedRecipe = new SmeltingRecipe[procCount];
     }
 
-    protected boolean canProcess(ComponentProcessor component, int procNumber) {
-	boolean canProcess = checkConditions(component, procNumber);
+    protected boolean canProcess(ComponentProcessor component, Level level, int procNumber) {
+	boolean canProcess = checkConditions(component, level, procNumber);
 
 	if (BlockEntityUtils.isLit(this) ^ (canProcess || component.isAnyActive()) || component.isActive(procNumber)) {
 	    BlockEntityUtils.updateLit(this, canProcess || component.isActive(procNumber));
@@ -87,9 +87,9 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 	return canProcess;
     }
 
-    private boolean checkConditions(ComponentProcessor component, int procNumber) {
+    private boolean checkConditions(ComponentProcessor component, Level level, int procNumber) {
 	component.setShouldKeepProgress(true, procNumber);
-	ComponentInventory inv = getComponent(IComponentType.Inventory);
+	ComponentInventory inv = requireComponent(IComponentType.Inventory);
 	ItemStack input = inv.getInputsForProcessor(procNumber).get(0);
 	if (input.isEmpty()) {
 	    component.setShouldKeepProgress(false, procNumber);
@@ -97,21 +97,22 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 	    component.usage(0.0, procNumber);
 	    return false;
 	}
-
 	cachedRecipes = level.getRecipeManager().getAllRecipesFor(RecipeType.SMELTING);
 	if (cachedRecipes == null) {
+	    return false;
 	}
 
-	if (cachedRecipe == null) {
+	SmeltingRecipe[] pCachedRecipe = cachedRecipe;
+	if (pCachedRecipe == null) {
 	    component.setShouldKeepProgress(false, procNumber);
 	    component.operatingTicks.setValue(0.0, procNumber);
 	    component.usage(0.0, procNumber);
 	    return false;
 	}
 
-	if (cachedRecipe[procNumber] == null) {
-	    cachedRecipe[procNumber] = getMatchedRecipe(input);
-	    if (cachedRecipe[procNumber] == null) {
+	if (pCachedRecipe[procNumber] == null) {
+	    pCachedRecipe[procNumber] = getMatchedRecipe(level, input);
+	    if (pCachedRecipe[procNumber] == null) {
 		component.setShouldKeepProgress(false, procNumber);
 		component.operatingTicks.setValue(0.0, procNumber);
 		component.usage(0.0, procNumber);
@@ -119,8 +120,8 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 	    }
 	}
 
-	if (!cachedRecipe[procNumber].matches(new SingleRecipeInput(input), level)) {
-	    cachedRecipe[procNumber] = null;
+	if (!pCachedRecipe[procNumber].matches(new SingleRecipeInput(input), level)) {
+	    pCachedRecipe[procNumber] = null;
 	    component.setShouldKeepProgress(false, procNumber);
 	    component.operatingTicks.setValue(0.0, procNumber);
 	    component.usage(0.0, procNumber);
@@ -131,23 +132,26 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 	component.requiredTicks.setValue((double) ElectrodynamicsConfig.INSTANCE.ELECTRICFURNACE_REQUIRED_TICKS.get(),
 		procNumber);
 
-	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-	if (electro.getJoulesStored() < component.getUsage(procNumber) * component.operatingSpeed.getValue()) {
+	ComponentElectrodynamic electro = requireComponent(IComponentType.Electrodynamic);
+	if (electro.getJoulesStored() < component.getUsage(procNumber) * component.operatingSpeed.getValue())
 	    return false;
-	}
 
 	ItemStack output = inv.getOutputContents().get(procNumber);
-	ItemStack result = cachedRecipe[procNumber].getResultItem(level.registryAccess());
+	ItemStack result = pCachedRecipe[procNumber].getResultItem(level.registryAccess());
 	return (output.isEmpty() || output.getItem() == result.getItem())
 		&& output.getCount() + result.getCount() <= output.getMaxStackSize();
 
     }
 
-    protected void process(ComponentProcessor component, int procNumber) {
-	ComponentInventory inv = getComponent(IComponentType.Inventory);
+    protected void process(ComponentProcessor component, Level level, int procNumber) {
+	ComponentInventory inv = requireComponent(IComponentType.Inventory);
 	ItemStack input = inv.getInputsForProcessor(procNumber).get(0);
 	ItemStack output = inv.getOutputsForProcessor(procNumber).get(0);
-	ItemStack result = cachedRecipe[procNumber].getResultItem(level.registryAccess());
+	SmeltingRecipe[] pCachedRecipe = cachedRecipe;
+	if (pCachedRecipe == null)
+	    return;
+
+	ItemStack result = pCachedRecipe[procNumber].getResultItem(level.registryAccess());
 	int index = inv.getOutputSlots().get(procNumber);
 	if (!output.isEmpty()) {
 	    output.setCount(output.getCount() + result.getCount());
@@ -160,16 +164,15 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 	for (ItemStack stack : inv.getUpgradeContents()) {
 	    if (!stack.isEmpty() && ((ItemUpgrade) stack.getItem()).subtype == SubtypeItemUpgrade.experience) {
 		stack.set(VoltaicDataComponentTypes.XP, stack.getOrDefault(VoltaicDataComponentTypes.XP, 0.0)
-			+ cachedRecipe[procNumber].getExperience());
+			+ pCachedRecipe[procNumber].getExperience());
 		break;
 	    }
 	}
     }
 
-    protected void tickClient(ComponentTickable tickable) {
-	if (!this.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive()) {
+    protected void tickClient(Level level, ComponentTickable tickable) {
+	if (!this.<ComponentProcessor>requireComponent(IComponentType.Processor).isAnyActive())
 	    return;
-	}
 
 	double threshhold = 0.15;
 
@@ -307,23 +310,25 @@ public class TileElectricFurnace extends GenericTile implements ITickableSound {
 
     @Override
     public boolean shouldPlaySound() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive();
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isAnyActive();
     }
 
-    private SmeltingRecipe getMatchedRecipe(ItemStack stack) {
-	for (RecipeHolder<SmeltingRecipe> recipe : cachedRecipes) {
-	    if (recipe.value().matches(new SingleRecipeInput(stack), level)) {
-		return recipe.value();
+    private @Nullable SmeltingRecipe getMatchedRecipe(Level level, ItemStack stack) {
+	List<RecipeHolder<SmeltingRecipe>> pCachedRecipes = cachedRecipes;
+	if (pCachedRecipes != null) {
+	    for (RecipeHolder<SmeltingRecipe> recipe : pCachedRecipes) {
+		if (recipe.value().matches(new SingleRecipeInput(stack), level))
+		    return recipe.value();
 	    }
 	}
 	return null;
     }
 
     @Override
-    public int getComparatorSignal() {
-	return (int) ((double) this.<ComponentProcessor>getComponent(IComponentType.Processor).getTotalActive()
+    public int getComparatorSignal(Level level) {
+	return (int) ((double) this.<ComponentProcessor>requireComponent(IComponentType.Processor).getTotalActive()
 		/ (double) Math.max(1,
-			this.<ComponentProcessor>getComponent(IComponentType.Processor).getProcessorCount())
+			this.<ComponentProcessor>requireComponent(IComponentType.Processor).getProcessorCount())
 		* 15.0);
     }
 

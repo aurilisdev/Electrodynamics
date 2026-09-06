@@ -8,6 +8,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.Voltaic;
@@ -42,7 +44,7 @@ public class TileCircuitBreaker extends GenericTile {
 	addComponent(new ComponentTickable(this).tickServer(this::tickServer));
     }
 
-    public void tickServer(ComponentTickable tickable) {
+    public void tickServer(Level level, ComponentTickable tickable) {
 	if (tripCurveTimer > 0) {
 	    tripCurveTimer--;
 	    return;
@@ -58,18 +60,16 @@ public class TileCircuitBreaker extends GenericTile {
     // recieving
     // end current if recieving end is wire
     public TransferPack receivePower(TransferPack transfer, boolean debug) {
-
-	if (recievedRedstoneSignal || isLocked || tripped) {
+	Level level = this.level;
+	if (level == null || recievedRedstoneSignal || isLocked || tripped)
 	    return TransferPack.EMPTY;
-	}
 
 	Direction output = BlockEntityUtils.getRelativeSide(getFacing(), OUTPUT.mappedDir);
 
 	BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
 
-	if (tile == null) {
+	if (tile == null)
 	    return TransferPack.EMPTY;
-	}
 
 	isLocked = true;
 
@@ -112,13 +112,10 @@ public class TileCircuitBreaker extends GenericTile {
 
 	    isLocked = false;
 
-	    if (accepted.getJoules() > 0) {
-
+	    if (accepted.getJoules() > 0)
 		return TransferPack.joulesVoltage(
 			accepted.getJoules() / ElectrodynamicsConfig.INSTANCE.CIRCUITBREAKER_EFFICIENCY.get(),
 			accepted.getVoltage());
-
-	    }
 	    return TransferPack.EMPTY;
 
 	}
@@ -135,22 +132,19 @@ public class TileCircuitBreaker extends GenericTile {
     }
 
     public TransferPack getConnectedLoad(ICapabilityElectrodynamic.LoadProfile lastEnergy, Direction dir) {
-
-	if (recievedRedstoneSignal || isLocked || tripped) {
+	Level level = this.level;
+	if (level == null || recievedRedstoneSignal || isLocked || tripped)
 	    return TransferPack.EMPTY;
-	}
 
 	Direction output = BlockEntityUtils.getRelativeSide(getFacing(), OUTPUT.mappedDir);
 
-	if (dir != output.getOpposite()) {
+	if (dir != output.getOpposite())
 	    return TransferPack.EMPTY;
-	}
 
 	BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
 
-	if (tile == null) {
+	if (tile == null)
 	    return TransferPack.EMPTY;
-	}
 
 	isLocked = true;
 
@@ -207,19 +201,20 @@ public class TileCircuitBreaker extends GenericTile {
     }
 
     public double getMinimumVoltage() {
-	Direction facing = getFacing();
-	if (isLocked) {
+	Level level = this.level;
+	if (level == null)
 	    return 0;
-	}
+
+	Direction facing = getFacing();
+	if (isLocked)
+	    return 0;
 	BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
-	if (output == null) {
+	if (output == null)
 	    return -1;
-	}
 	isLocked = true;
 
-	ICapabilityElectrodynamic electro = output.getLevel().getCapability(
-		VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getBlockPos(), output.getBlockState(),
-		output, facing.getOpposite());
+	ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
+		output.getBlockPos(), output.getBlockState(), output, facing.getOpposite());
 
 	if (electro == null) {
 	    isLocked = false;
@@ -234,18 +229,20 @@ public class TileCircuitBreaker extends GenericTile {
 
     public double getAmpacity() {
 	Direction facing = getFacing();
-	if (isLocked) {
+	if (isLocked)
 	    return 0;
-	}
+
+	Level level = this.level;
+	if (level == null)
+	    return 0;
+
 	BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
-	if (output == null) {
+	if (output == null)
 	    return -1;
-	}
 	isLocked = true;
 
-	ICapabilityElectrodynamic electro = output.getLevel().getCapability(
-		VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getBlockPos(), output.getBlockState(),
-		output, facing.getOpposite());
+	ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
+		output.getBlockPos(), output.getBlockState(), output, facing.getOpposite());
 
 	if (electro == null) {
 	    isLocked = false;
@@ -273,27 +270,28 @@ public class TileCircuitBreaker extends GenericTile {
     }
 
     @Override
-    public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
-	if (level.isClientSide) {
-	    return;
-	}
-	recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
-	if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
-	    BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
-	    if (recievedRedstoneSignal) {
-		level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
-	    } else {
-		level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
+    public void onNeighbourChanged(LevelReader reader, BlockPos neighbor, boolean blockStateTrigger) {
+	if (reader instanceof Level level) {
+	    if (level.isClientSide)
+		return;
+
+	    recievedRedstoneSignal = reader.hasNeighborSignal(getBlockPos());
+	    if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
+		BlockEntityUtils.updateLit(this, recievedRedstoneSignal);
+		if (recievedRedstoneSignal) {
+		    level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_OPEN, SoundSource.BLOCKS);
+		} else {
+		    level.playSound(null, getBlockPos(), SoundEvents.IRON_TRAPDOOR_CLOSE, SoundSource.BLOCKS);
+		}
 	    }
 	}
     }
 
     @Override
-    public void onPlace(BlockState oldState, boolean isMoving) {
-	super.onPlace(oldState, isMoving);
-	if (level.isClientSide) {
+    public void onPlace(Level level, BlockState oldState, boolean isMoving) {
+	super.onPlace(level, oldState, isMoving);
+	if (level.isClientSide)
 	    return;
-	}
 	recievedRedstoneSignal = level.hasNeighborSignal(getBlockPos());
 	if (BlockEntityUtils.isLit(this) ^ recievedRedstoneSignal) {
 	    BlockEntityUtils.updateLit(this, recievedRedstoneSignal);

@@ -1,5 +1,7 @@
 package electrodynamics.prefab.utilities;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.common.tile.electricitygrid.GenericTileWire;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -11,6 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.Level.ExplosionInteraction;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import voltaic.api.electricity.ICapabilityElectrodynamic;
@@ -41,50 +44,49 @@ public class ElectricityUtils {
 		(float) Math.min(9999, Math.max(0, transfer.getAmps())));
     }
 
-    public static boolean isElectricReceiver(BlockEntity tile, Direction dir) {
-	return tile != null && (tile.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
-		tile.getBlockPos(), tile.getBlockState(), tile, dir) != null
-		|| tile.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, tile.getBlockPos(),
-			tile.getBlockState(), tile, dir) != null);
+    public static boolean isElectricReceiver(@Nullable BlockEntity tile, Direction dir) {
+	if (tile == null)
+	    return false;
+
+	Level level = tile.getLevel();
+	if (level == null)
+	    return false;
+
+	BlockPos pos = tile.getBlockPos();
+	BlockState state = tile.getBlockState();
+	return level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, pos, state, tile, dir) != null
+		|| level.getCapability(Capabilities.EnergyStorage.BLOCK, pos, state, tile, dir) != null;
     }
 
     public static boolean isConductor(BlockEntity acceptor, GenericTileWire requesterWire) {
-	if (acceptor instanceof GenericTileWire conductor) {
+	if (acceptor instanceof GenericTileWire conductor)
 	    return conductor.getCableType().isDefaultColor() || requesterWire.getCableType().isDefaultColor()
 		    || conductor.getWireColor() == requesterWire.getWireColor();
-	}
 	return false;
     }
 
     public static TransferPack receivePower(BlockEntity tile, Direction direction, TransferPack transfer,
 	    boolean debug) {
-
-	if (tile == null) {
+	Level level = tile.getLevel();
+	if (level == null)
 	    return TransferPack.EMPTY;
-	}
 
-	ICapabilityElectrodynamic electro = tile.getLevel().getCapability(
-		VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile,
-		direction);
+	BlockPos pos = tile.getBlockPos();
+	BlockState state = tile.getBlockState();
 
-	if (electro != null) {
-
+	ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
+		pos, state, tile, direction);
+	if (electro != null)
 	    return electro.receivePower(transfer, debug);
 
-	}
-
-	IEnergyStorage fe = tile.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK, tile.getBlockPos(),
-		tile.getBlockState(), tile, direction);
-
+	IEnergyStorage fe = level.getCapability(Capabilities.EnergyStorage.BLOCK, pos, state, tile, direction);
 	if (fe != null) {
 	    TransferPack returner = TransferPack.joulesVoltage(
 		    fe.receiveEnergy((int) Math.min(Integer.MAX_VALUE, transfer.getJoules()), debug),
 		    transfer.getVoltage());
 	    if (transfer.getVoltage() > VoltaicCapabilities.DEFAULT_VOLTAGE) {
-		Level world = tile.getLevel();
-		BlockPos pos = tile.getBlockPos();
-		world.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
-		world.explode(null, pos.getX(), pos.getY(), pos.getZ(),
+		level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+		level.explode(null, pos.getX(), pos.getY(), pos.getZ(),
 			(float) Math.log10(10 + transfer.getVoltage() / VoltaicCapabilities.DEFAULT_VOLTAGE),
 			ExplosionInteraction.BLOCK);
 	    }

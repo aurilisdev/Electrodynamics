@@ -73,7 +73,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
     }
 
     @Override
-    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
 	return true;
     }
 
@@ -102,9 +102,8 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-	if (getJoulesStored(stack) < properties.extract.getJoules()) {
+	if (getJoulesStored(stack) < properties.extract.getJoules())
 	    return 0;
-	}
 
 	float normalized = (float) Math.max(1, getHead(stack).speedBoost * getSpeedBoost(stack));
 
@@ -219,9 +218,8 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
 
 	}
 
-	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access))
 	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-	}
 
 	return true;
 
@@ -250,9 +248,8 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
 	@SubscribeEvent
 	public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
 	    DRILLS.forEach(item -> event.register((stack, index) -> {
-		if (index == 1) {
+		if (index == 1)
 		    return getHead(stack).color.color();
-		}
 		return Color.WHITE.color();
 	    }, item));
 	}
@@ -271,7 +268,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
 
     @Override
     public boolean hasCreativeTab() {
-	return creativeTab != null;
+	return true;
     }
 
 }

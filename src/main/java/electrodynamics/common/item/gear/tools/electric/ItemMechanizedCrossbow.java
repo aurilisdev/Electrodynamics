@@ -3,7 +3,8 @@ package electrodynamics.common.item.gear.tools.electric;
 import java.util.List;
 import java.util.function.Predicate;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
+
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -66,9 +67,8 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 
     @Override
     public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-	if (getJoulesStored(stack) < properties.extract.getJoules()) {
+	if (getJoulesStored(stack) < properties.extract.getJoules())
 	    return false;
-	}
 	return super.hurtEnemy(stack, target, attacker);
     }
 
@@ -81,9 +81,8 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand) {
 	ItemStack crossbow = player.getItemInHand(hand);
 
-	if (world.isClientSide) {
+	if (world.isClientSide)
 	    return InteractionResultHolder.pass(crossbow);
-	}
 
 	ItemMechanizedCrossbow mechanized = (ItemMechanizedCrossbow) crossbow.getItem();
 	if (mechanized.getJoulesStored(crossbow) < JOULES_PER_SHOT) {
@@ -146,13 +145,11 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
     private ItemStack getAmmo(Player player) {
 	Inventory playerInv = player.getInventory();
 	for (ItemStack stack : playerInv.items) {
-	    if (getAllSupportedProjectiles().test(stack)) {
+	    if (getAllSupportedProjectiles().test(stack))
 		return stack;
-	    }
 	}
-	if (player.isCreative()) {
+	if (player.isCreative())
 	    return new ItemStack(Items.ARROW);
-	}
 	return ItemStack.EMPTY;
     }
 
@@ -233,9 +230,8 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action,
 	    Player player, SlotAccess access) {
 
-	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access))
 	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-	}
 
 	return true;
 
@@ -248,7 +244,7 @@ public class ItemMechanizedCrossbow extends ProjectileWeaponItem implements IIte
 
     @Override
     public boolean hasCreativeTab() {
-	return creativeTab != null;
+	return true;
     }
 
 }

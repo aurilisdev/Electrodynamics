@@ -55,15 +55,13 @@ public class BlockOre extends DropExperienceBlock {
 	super.randomTick(state, level, pos, random);
 
 	if (!VoltaicConfig.INSTANCE.ORES_EMIT_RADIATION.get()
-		|| level.getLevelData().getGameTime() % VoltaicConfig.INSTANCE.ORE_RADIATION_ADMIT_RATE.get() != 0) {
+		|| level.getLevelData().getGameTime() % VoltaicConfig.INSTANCE.ORE_RADIATION_ADMIT_RATE.get() != 0)
 	    return;
-	}
 
 	RadioactiveObject rad = RadioactiveBlockRegister.getValue(state.getBlock());
 
-	if (rad.amount() <= 0) {
+	if (rad.amount() <= 0)
 	    return;
-	}
 
 	for (Entity entity : level.getAllEntities()) {
 

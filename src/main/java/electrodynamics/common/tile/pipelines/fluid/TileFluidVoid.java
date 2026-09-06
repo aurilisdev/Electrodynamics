@@ -5,6 +5,7 @@ import electrodynamics.common.inventory.container.tile.ContainerFluidVoid;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction;
@@ -13,7 +14,6 @@ import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentFluidHandlerSimple;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.tile.types.GenericMaterialTile;
 import voltaic.prefab.utilities.BlockEntityUtils;
@@ -27,35 +27,32 @@ public class TileFluidVoid extends GenericMaterialTile {
     public TileFluidVoid(BlockPos worldPos, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_FLUIDVOID.get(), worldPos, blockState);
 	addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentFluidHandlerSimple(CAPACITY, this, "")
 		.setInputDirections(BlockEntityUtils.MachineDirection.values()));
 	addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().bucketInputs(1))
 		.valid((slot, stack, i) -> stack.getCapability(Capabilities.FluidHandler.ITEM) != null));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.fluidvoid.tag(), this)
-		.createMenu((id, player) -> new ContainerFluidVoid(id, player, getComponent(IComponentType.Inventory),
-			getCoordsArray())));
+		.createMenu((id, player) -> new ContainerFluidVoid(id, player,
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
-    private void tickServer(ComponentTickable tick) {
+    private void tickServer(Level level, ComponentTickable tick) {
+	ComponentInventory inv = requireComponent(IComponentType.Inventory);
 
-	ComponentInventory inv = getComponent(IComponentType.Inventory);
-
-	ComponentFluidHandlerSimple simple = getComponent(IComponentType.FluidHandler);
+	ComponentFluidHandlerSimple simple = requireComponent(IComponentType.FluidHandler);
 
 	simple.drain(simple.getFluidAmount(), FluidAction.EXECUTE);
 
 	ItemStack input = inv.getItem(INPUT_SLOT);
 
-	if (input.isEmpty()) {
+	if (input.isEmpty())
 	    return;
-	}
 
 	IFluidHandlerItem handler = input.getCapability(Capabilities.FluidHandler.ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return;
-	}
 
 	handler.drain(Integer.MAX_VALUE, FluidAction.EXECUTE);
 

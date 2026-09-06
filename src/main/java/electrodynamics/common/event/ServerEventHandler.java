@@ -120,15 +120,13 @@ public class ServerEventHandler {
     @SubscribeEvent
     public static void handleElectricToolDamage(AttackEntityEvent event) {
 	ItemStack stack = event.getEntity().getWeaponItem();
-	if (stack.isEmpty() || !(stack.is(ElectrodynamicsItems.ITEM_ELECTRICBATON)
-		|| stack.is(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW)
-		|| stack.is(ElectrodynamicsItems.ITEM_ELECTRICDRILL))) {
+	if (stack.isEmpty() || !stack.is(ElectrodynamicsItems.ITEM_ELECTRICBATON)
+		&& !stack.is(ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW)
+		&& !stack.is(ElectrodynamicsItems.ITEM_ELECTRICDRILL))
 	    return;
-	}
 	IItemElectric electric = (IItemElectric) stack.getItem();
-	if (electric.getJoulesStored(stack) >= electric.getElectricProperties().extract.getJoules()) {
+	if (electric.getJoulesStored(stack) >= electric.getElectricProperties().extract.getJoules())
 	    return;
-	}
 	event.setCanceled(true);
     }
 

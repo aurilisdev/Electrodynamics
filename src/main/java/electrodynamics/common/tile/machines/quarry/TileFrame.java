@@ -1,17 +1,20 @@
 package electrodynamics.common.tile.machines.quarry;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.prefab.tile.GenericTile;
 
 public class TileFrame extends GenericTile {
 
-    public BlockPos ownerQuarryPos = null;
+    public @Nullable BlockPos ownerQuarryPos = null;
 
     private static final String KEY = "quarrypos";
 
@@ -19,11 +22,12 @@ public class TileFrame extends GenericTile {
 	super(ElectrodynamicsTiles.TILE_QUARRY_FRAME.get(), pos, state);
     }
 
-    public void purposefullyDestroyed() {
-	if (ownerQuarryPos == null) {
+    public void purposefullyDestroyed(Level level) {
+	BlockPos pOwnerQuarryPos = ownerQuarryPos;
+	if (pOwnerQuarryPos == null)
 	    return;
-	}
-	BlockEntity entity = level.getBlockEntity(ownerQuarryPos);
+
+	BlockEntity entity = level.getBlockEntity(pOwnerQuarryPos);
 	if (entity != null && entity instanceof TileQuarry quarry) {
 	    quarry.addBrokenFrame(getBlockPos(), getBlockState());
 	}

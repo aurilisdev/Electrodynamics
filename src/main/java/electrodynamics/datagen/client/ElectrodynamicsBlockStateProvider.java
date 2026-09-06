@@ -22,6 +22,7 @@ import electrodynamics.registers.ElectrodynamicsBlocks;
 import net.minecraft.core.Direction;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import voltaic.Voltaic;
@@ -85,9 +86,14 @@ public class ElectrodynamicsBlockStateProvider extends BaseBlockstateProvider {
 	horrRotatedLitBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.coalgenerator),
 		existingBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.coalgenerator)),
 		existingBlock(blockLoc("coalgeneratorrunning")), true);
-	horrRotatedBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.combustionchamber),
-		existingBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.combustionchamber)), true)
-		.transforms().transform(ItemDisplayContext.GUI).rotation(35, 40, 0).scale(0.665F).end();
+	ItemModelBuilder model = horrRotatedBlock(
+		ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.combustionchamber),
+		existingBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.combustionchamber)), true);
+
+	if (model == null)
+	    throw new IllegalStateException("Failed to generate the combustion chamber item model");
+
+	model.transforms().transform(ItemDisplayContext.GUI).rotation(35, 40, 0).scale(0.665F).end();
 	horrRotatedBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.coolantresavoir),
 		existingBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.coolantresavoir)), true);
 	horrRotatedBlock(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(SubtypeMachine.creativefluidsource),
@@ -665,14 +671,6 @@ public class ElectrodynamicsBlockStateProvider extends BaseBlockstateProvider {
 	gasPipeUninsulated(SubtypeGasPipe.UNINSULATEDCOPPER);
 	gasPipeUninsulated(SubtypeGasPipe.UNINSULATEDSTEEL);
 	gasPipeUninsulatedPlastic(SubtypeGasPipe.UNINSULATEDPLASTIC);
-
-	// gasPipeWoolInsulated(SubtypeGasPipe.WOOLINSULATEDCOPPER);
-	// gasPipeWoolInsulated(SubtypeGasPipe.WOOLINSULATEDSTEEL);
-	// gasPipeWoolInsulatedPlastic(SubtypeGasPipe.WOOLINSULATEDPLASTIC);
-
-	// gasPipeCeramicInsulated(SubtypeGasPipe.CERAMICINSULATEDCOPPER);
-	// gasPipeCeramicInsulated(SubtypeGasPipe.CERAMICINSULATEDSTEEL);
-	// gasPipeCeramicInsulatedPlastic(SubtypeGasPipe.CERAMICINSULATEDPLASTIC);
     }
 
     private void gasPipeUninsulated(SubtypeGasPipe pipe) {

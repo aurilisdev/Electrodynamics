@@ -47,7 +47,7 @@ public enum SubtypeSulfateFluid implements ISubtype {
 	    Tags.Items.ORES_NETHERITE_SCRAP, Color.WHITE);
 
     public final TagKey<Fluid> tag;
-    @Nullable
+
     public final TagKey<Item> source;
     @Nullable
     public final Supplier<Fluid> result;
@@ -57,7 +57,7 @@ public enum SubtypeSulfateFluid implements ISubtype {
 	this(tag, null, source, color);
     }
 
-    SubtypeSulfateFluid(TagKey<Fluid> tag, Supplier<Fluid> result, TagKey<Item> source, Color color) {
+    SubtypeSulfateFluid(TagKey<Fluid> tag, @Nullable Supplier<Fluid> result, TagKey<Item> source, Color color) {
 	this.tag = tag;
 	this.result = result;
 	this.source = source;

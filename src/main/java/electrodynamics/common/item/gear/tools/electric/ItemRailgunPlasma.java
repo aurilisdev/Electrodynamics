@@ -48,9 +48,8 @@ public class ItemRailgunPlasma extends ItemRailgun {
 	    gunStack = player.getOffhandItem();
 	}
 
-	if (world.isClientSide) {
+	if (world.isClientSide)
 	    return InteractionResultHolder.pass(gunStack);
-	}
 
 	ItemRailgunPlasma railgun = (ItemRailgunPlasma) gunStack.getItem();
 
@@ -73,7 +72,7 @@ public class ItemRailgunPlasma extends ItemRailgun {
 	FluidStack fluidStack = gunStack.getOrDefault(VoltaicDataComponentTypes.FLUID_STACK.get(),
 		FluidStackComponent.EMPTY).fluid;
 
-	if (fluidStack.isEmpty() || (fluidStack.getAmount() < COOLANT_PER_SHOT)) {
+	if (fluidStack.isEmpty() || fluidStack.getAmount() < COOLANT_PER_SHOT) {
 	    railgun.recieveHeat(gunStack, TEMPERATURE_PER_SHOT, false);
 	} else {
 	    fluidStack.shrink(COOLANT_PER_SHOT);

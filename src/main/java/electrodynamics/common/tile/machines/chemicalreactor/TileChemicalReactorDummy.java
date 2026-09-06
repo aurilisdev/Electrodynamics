@@ -1,6 +1,6 @@
 package electrodynamics.common.tile.machines.chemicalreactor;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import electrodynamics.common.block.chemicalreactor.BlockChemicalReactorExtra;
 import electrodynamics.registers.ElectrodynamicsTiles;
@@ -11,6 +11,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -32,78 +33,84 @@ public class TileChemicalReactorDummy extends GenericTile {
     }
 
     @Override
-    public @Nullable ICapabilityElectrodynamic getElectrodynamicCapability(@Nullable Direction side) {
+    @Nullable
+    public ICapabilityElectrodynamic getElectrodynamicCapability(@Nullable Direction side) {
+	Level level = this.level;
+	if (level == null)
+	    return null;
 
-	if (getLevel().getBlockEntity(
+	if (level.getBlockEntity(
 		getBlockPos().offset(getLocation().offsetDownToParent)) instanceof TileChemicalReactor reactor
-		&& getLocation() == BlockChemicalReactorExtra.Location.TOP) {
-	    return reactor.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getCapability(side,
+		&& getLocation() == BlockChemicalReactorExtra.Location.TOP)
+	    return reactor.<ComponentElectrodynamic>requireComponent(IComponentType.Electrodynamic).getCapability(side,
 		    CapabilityInputType.NONE);
-	}
 
 	return null;
     }
 
     @Override
-    public @Nullable IFluidHandler getFluidHandlerCapability(@Nullable Direction side) {
+    @Nullable
+    public IFluidHandler getFluidHandlerCapability(@Nullable Direction side) {
+	Level level = this.level;
+	if (level == null)
+	    return null;
 
-	if (getLevel().getBlockEntity(
+	if (level.getBlockEntity(
 		getBlockPos().offset(getLocation().offsetDownToParent)) instanceof TileChemicalReactor reactor
-		&& getLocation() == BlockChemicalReactorExtra.Location.TOP) {
-	    return reactor.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getCapability(side,
+		&& getLocation() == BlockChemicalReactorExtra.Location.TOP)
+	    return reactor.<ComponentFluidHandlerMulti>requireComponent(IComponentType.FluidHandler).getCapability(side,
 		    CapabilityInputType.NONE);
-	}
-
 	return null;
     }
 
     @Override
-    public @Nullable IItemHandler getItemHandlerCapability(@Nullable Direction side) {
-	if (getLevel().getBlockEntity(
-		getBlockPos().offset(getLocation().offsetDownToParent)) instanceof TileChemicalReactor reactor
-		&& getLocation() == BlockChemicalReactorExtra.Location.MIDDLE) {
-	    return reactor.<ComponentInventory>getComponent(IComponentType.Inventory).getCapability(side,
-		    CapabilityInputType.NONE);
-	}
+    @Nullable
+    public IItemHandler getItemHandlerCapability(@Nullable Direction side) {
+	Level level = this.level;
+	if (level == null)
+	    return null;
 
+	if (level.getBlockEntity(
+		getBlockPos().offset(getLocation().offsetDownToParent)) instanceof TileChemicalReactor reactor
+		&& getLocation() == BlockChemicalReactorExtra.Location.MIDDLE)
+	    return reactor.<ComponentInventory>requireComponent(IComponentType.Inventory).getCapability(side,
+		    CapabilityInputType.NONE);
 	return null;
     }
 
     @Override
-    public void onBlockDestroyed() {
-	if (!destroyed && getLevel().getBlockEntity(
+    public void onBlockDestroyed(Level level) {
+	if (!destroyed && level.getBlockEntity(
 		getBlockPos().offset(getLocation().offsetDownToParent)) instanceof TileChemicalReactor) {
-	    getLevel().destroyBlock(getBlockPos().offset(getLocation().offsetDownToParent), true);
+	    level.destroyBlock(getBlockPos().offset(getLocation().offsetDownToParent), true);
 	    destroyed = true;
 	}
-	super.onBlockDestroyed();
+	super.onBlockDestroyed(level);
     }
 
     @Override
-    public ItemInteractionResult useWithItem(ItemStack used, Player player, InteractionHand hand, BlockHitResult hit) {
-	if (getLevel().getBlockEntity(
-		getBlockPos().offset(getLocation().offsetDownToParent)) instanceof TileChemicalReactor reactor) {
-	    return reactor.useWithItem(used, player, hand, hit);
-	}
-	return super.useWithItem(used, player, hand, hit);
+    public ItemInteractionResult useWithItem(Level level, ItemStack used, Player player, InteractionHand hand,
+	    BlockHitResult hit) {
+	if (level.getBlockEntity(
+		getBlockPos().offset(getLocation().offsetDownToParent)) instanceof TileChemicalReactor reactor)
+	    return reactor.useWithItem(level, used, player, hand, hit);
+	return super.useWithItem(level, used, player, hand, hit);
     }
 
     @Override
-    public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
-	if (getLevel().getBlockEntity(
-		getBlockPos().offset(getLocation().offsetDownToParent)) instanceof TileChemicalReactor reactor) {
-	    return reactor.useWithoutItem(player, hit);
-	}
-	return super.useWithoutItem(player, hit);
+    public InteractionResult useWithoutItem(Level level, Player player, BlockHitResult hit) {
+	if (level.getBlockEntity(
+		getBlockPos().offset(getLocation().offsetDownToParent)) instanceof TileChemicalReactor reactor)
+	    return reactor.useWithoutItem(level, player, hit);
+	return super.useWithoutItem(level, player, hit);
     }
 
     @Override
-    public int getComparatorSignal() {
-	if (getLevel().getBlockEntity(
-		getBlockPos().offset(getLocation().offsetDownToParent)) instanceof TileChemicalReactor reactor) {
-	    return reactor.getComparatorSignal();
-	}
-	return super.getComparatorSignal();
+    public int getComparatorSignal(Level level) {
+	if (level.getBlockEntity(
+		getBlockPos().offset(getLocation().offsetDownToParent)) instanceof TileChemicalReactor reactor)
+	    return reactor.getComparatorSignal(level);
+	return super.getComparatorSignal(level);
     }
 
     public BlockChemicalReactorExtra.Location getLocation() {

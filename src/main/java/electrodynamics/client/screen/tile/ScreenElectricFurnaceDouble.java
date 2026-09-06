@@ -1,7 +1,6 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceDouble;
-import electrodynamics.common.tile.machines.furnace.TileElectricFurnace;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.api.distmarker.Dist;
@@ -20,50 +19,24 @@ public class ScreenElectricFurnaceDouble extends GenericScreen<ContainerElectric
     public ScreenElectricFurnaceDouble(ContainerElectricFurnaceDouble container, Inventory playerInventory,
 	    Component title) {
 	super(container, playerInventory, title);
-	addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
-	    TileElectricFurnace furnace = container.getSafeHost();
-	    if (furnace != null) {
-		ComponentProcessor processor = furnace.getComponent(IComponentType.Processor);
-		if (processor.isActive(0)) {
-		    return processor.operatingTicks.getValue()[0] / processor.requiredTicks.getValue()[0];
-		}
-	    }
-	    return 0;
-	}, 84, 24));
-	addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.COUNTDOWN_FLAME, () -> {
-	    TileElectricFurnace furnace = container.getSafeHost();
-	    if (furnace != null) {
-		ComponentProcessor processor = furnace.getComponent(IComponentType.Processor);
-		if (processor.isActive(0)) {
-		    return 1;
-		}
-	    }
-	    return 0;
-	}, 39, 26));
-	addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT, () -> {
-	    TileElectricFurnace furnace = container.getSafeHost();
-	    if (furnace != null) {
-		ComponentProcessor processor = furnace.getComponent(IComponentType.Processor);
-		if (processor.isActive(1)) {
-		    return processor.operatingTicks.getValue()[1] / processor.requiredTicks.getValue()[1];
-		}
-	    }
-	    return 0;
-	}, 84, 44));
-	addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.COUNTDOWN_FLAME, () -> {
-	    TileElectricFurnace furnace = container.getSafeHost();
-	    if (furnace != null) {
-		ComponentProcessor processor = furnace.getComponent(IComponentType.Processor);
-		if (processor.isActive(1)) {
-		    return 1;
-		}
-	    }
-	    return 0;
-	}, 39, 46));
+	for (int i = 0; i < 2; i++) {
+	    int processorIndex = i;
+	    addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.PROGRESS_ARROW_RIGHT,
+		    () -> container.getSafeHost()
+			    .map(tile -> tile.<ComponentProcessor>requireComponent(IComponentType.Processor))
+			    .filter(processor -> processor.isActive(processorIndex))
+			    .map(processor -> processor.operatingTicks.getValue()[processorIndex]
+				    / processor.requiredTicks.getValue()[processorIndex])
+			    .orElse(0.0),
+		    84, 24 + i * 20));
+	    addComponent(new ScreenComponentProgress(ScreenComponentProgress.ProgressBars.COUNTDOWN_FLAME,
+		    () -> container.getSafeHost()
+			    .map(tile -> tile.<ComponentProcessor>requireComponent(IComponentType.Processor))
+			    .filter(processor -> processor.isActive(processorIndex)).map(processor -> 1.0).orElse(0.0),
+		    39, 26 + i * 20));
+	}
 	addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
-
 	new WrapperInventoryIO(this, -AbstractScreenComponentInfo.SIZE + 1, AbstractScreenComponentInfo.SIZE + 2, 75,
 		82, 8, 72);
     }
-
 }

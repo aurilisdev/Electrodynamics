@@ -16,6 +16,9 @@ public class HandlerSwapBattery extends AbstractKeyPressHandler {
     @Override
     public void handler(Key event, Minecraft minecraft) {
 	Player player = minecraft.player;
+	if (player == null)
+	    return;
+
 	if (KeyBinds.swapBattery.matches(event.getKey(), event.getScanCode()) && KeyBinds.swapBattery.isDown()) {
 	    ItemStack playerHand = player.getItemInHand(InteractionHand.MAIN_HAND);
 	    if (playerHand.getItem() instanceof IItemElectric) {

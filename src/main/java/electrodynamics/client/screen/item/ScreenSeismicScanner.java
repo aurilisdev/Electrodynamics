@@ -36,8 +36,8 @@ import voltaic.registers.VoltaicDataComponentTypes;
 
 public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner> {
 
-    private List<AbstractScreenComponent> componentsToHide = new ArrayList<>();
-    private List<AbstractScreenComponent> componentsToShow = new ArrayList<>();
+    private final List<AbstractScreenComponent> componentsToHide = new ArrayList<>();
+    private final List<AbstractScreenComponent> componentsToShow = new ArrayList<>();
 
     private final ScreenComponentButton<?> button;
 
@@ -126,13 +126,11 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 	componentsToHide.add(addComponent(new ScreenComponentButton<>(15, 24, 120, 20)
 		.setLabel(ElectroTextUtils.gui("seismicscanner.performscan")).setOnPress(button -> {
 		    ItemStack owner = menu.getOwnerItem();
-		    if (owner.isEmpty()) {
+		    if (owner.isEmpty())
 			return;
-		    }
 		    InteractionHand hand = menu.getHand();
-		    if (hand == null) {
+		    if (hand == null)
 			return;
-		    }
 		    PacketDistributor.sendToServer(new PacketSeismicScanner(inv.player.getUUID(),
 			    PacketSeismicScanner.Type.manualping, 0, hand.ordinal()));
 		})));
@@ -140,13 +138,11 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 		//
 		.setOnPress(button -> {
 		    ItemStack owner = menu.getOwnerItem();
-		    if (owner.isEmpty()) {
+		    if (owner.isEmpty())
 			return;
-		    }
 		    InteractionHand hand = menu.getHand();
-		    if (hand == null) {
+		    if (hand == null)
 			return;
-		    }
 		    ItemSeismicScanner.ScannerMode mode = ItemSeismicScanner.ScannerMode.values()[owner
 			    .getOrDefault(VoltaicDataComponentTypes.ENUM, 0)];
 		    if (mode == ItemSeismicScanner.ScannerMode.PASSIVE) {
@@ -159,9 +155,8 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 		}).setLabel(() -> {
 		    //
 		    ItemStack owner = menu.getOwnerItem();
-		    if (owner.isEmpty()) {
+		    if (owner.isEmpty())
 			return Component.empty();
-		    }
 		    ItemSeismicScanner.ScannerMode mode = ItemSeismicScanner.ScannerMode.values()[owner
 			    .getOrDefault(VoltaicDataComponentTypes.ENUM, 0)];
 		    return mode == ItemSeismicScanner.ScannerMode.PASSIVE
@@ -169,35 +164,29 @@ public class ScreenSeismicScanner extends GenericScreen<ContainerSeismicScanner>
 			    : ElectroTextUtils.gui("seismicscanner.scanactive");
 		})));
 
-	componentsToShow.forEach(component -> {
-	    component.setActive(false);
-	    component.setVisible(false);
-	});
+	componentsToShow.forEach(component -> { component.setActive(false); component.setVisible(false); });
 
     }
 
     private static Component getPatternDurability(ItemStack owner) {
-	if (owner.getOrDefault(VoltaicDataComponentTypes.BLOCK, Blocks.AIR) == Blocks.AIR) {
+	if (owner.getOrDefault(VoltaicDataComponentTypes.BLOCK, Blocks.AIR) == Blocks.AIR)
 	    return ElectroTextUtils.gui("seismicscanner.nopattern");
-	}
 	return ChatFormatter.getChatDisplayShort(owner.getOrDefault(VoltaicDataComponentTypes.PATTERN_INTEGRITY, 0.0)
 		/ ItemSeismicScanner.FULL_PATTERN * 100, DisplayUnits.PERCENTAGE);
     }
 
     private static Component getPatternName(ItemStack owner) {
 	Block block = owner.getOrDefault(VoltaicDataComponentTypes.BLOCK, Blocks.AIR);
-	if (block == Blocks.AIR) {
+	if (block == Blocks.AIR)
 	    return ElectroTextUtils.gui("seismicscanner.nopatternstored");
-	}
 	return block.getName();
     }
 
     @Override
     public void renderBackground(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
 	super.renderBackground(graphics, mouseX, mouseY, partialTick);
-	if (!button.isPressed) {
+	if (!button.isPressed)
 	    return;
-	}
 	int x = (int) getGuiWidth() + 21;
 	int y = (int) getGuiHeight() + 73;
 

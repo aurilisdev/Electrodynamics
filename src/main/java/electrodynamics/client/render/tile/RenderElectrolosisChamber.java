@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.datafixers.util.Pair;
 
@@ -12,6 +10,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -141,38 +140,30 @@ public class RenderElectrolosisChamber extends AbstractTileRenderer<TileElectrol
     }
 
     @Override
-    public void render(@NotNull TileElectrolosisChamber tile, float partialTick, @NotNull PoseStack poseStack,
-	    @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
-
-	if (!tile.isFormed.getValue()) {
+    public void render(TileElectrolosisChamber tile, float partialTick, PoseStack poseStack,
+	    MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+	Level level = level();
+	if ((level == null) || !tile.isFormed.getValue())
 	    return;
-	}
 
-	ComponentFluidHandlerMulti fluidHandler = tile.getComponent(IComponentType.FluidHandler);
-
+	ComponentFluidHandlerMulti fluidHandler = tile.requireComponent(IComponentType.FluidHandler);
 	FluidStack input = fluidHandler.getInputTanks()[0].getFluid();
-
 	if (input.isEmpty()) {
 	    // return;
 	}
 
 	poseStack.pushPose();
-
 	Direction facing = tile.getFacing();
-
 	for (Pair<AABB, boolean[]> pair : getFluidAABBs(facing)) {
 	    RenderingUtils.renderFluidBox(poseStack, minecraft(), bufferSource.getBuffer(RenderType.TRANSLUCENT),
 		    pair.getFirst(), new FluidStack(Fluids.WATER, 100), packedLight, packedOverlay, pair.getSecond());
 	}
-
-	if (!tile.isActive.getValue() || (level().getRandom().nextDouble() > 0.5)) {
+	if (!tile.isActive.getValue() || level.getRandom().nextDouble() > 0.5) {
 	    poseStack.popPose();
 	    return;
 	}
-
 	BlockPos[] positions = getBlockPositions(facing);
 	BlockPos pos;
-
 	for (int i = 0; i < 9; i++) {
 	    if (i == 4) {
 		continue;
@@ -181,7 +172,6 @@ public class RenderElectrolosisChamber extends AbstractTileRenderer<TileElectrol
 	    minecraft().particleEngine.createParticle(ParticleTypes.BUBBLE, pos.getX() + Voltaic.RANDOM.nextDouble(1.0),
 		    pos.getY() + Voltaic.RANDOM.nextDouble(1.0), pos.getZ() + Voltaic.RANDOM.nextDouble(1.0), 0, 0, 0);
 	}
-
 	poseStack.popPose();
 
     }

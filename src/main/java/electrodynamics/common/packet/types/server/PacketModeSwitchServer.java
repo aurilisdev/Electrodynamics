@@ -38,7 +38,8 @@ public class PacketModeSwitchServer implements CustomPacketPayload {
 
     // Mekanism gave me this idea
     public enum Mode {
-	JETPACK, SERVOLEGS;
+	JETPACK,
+	SERVOLEGS;
     }
 
 }

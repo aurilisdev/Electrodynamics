@@ -25,12 +25,12 @@ public class ChemicalReactorBuilder extends BaseRecipeBuilder<ChemicalReactorRec
     private FluidStack fluidOutput = FluidStack.EMPTY;
     private GasStack gasOutput = GasStack.EMPTY;
 
-    private List<ItemStack> itemIngredients = new ArrayList<>();
-    private List<Pair<TagKey<Item>, Integer>> tagItemIngredients = new ArrayList<>();
-    private List<FluidStack> fluidIngredients = new ArrayList<>();
-    private List<Pair<TagKey<Fluid>, Integer>> tagFluidIngredients = new ArrayList<>();
-    private List<GasStack> gasIngredients = new ArrayList<>();
-    private List<Pair<TagKey<Gas>, GasIngWrapper>> tagGasIngredients = new ArrayList<>();
+    private final List<ItemStack> itemIngredients = new ArrayList<>();
+    private final List<Pair<TagKey<Item>, Integer>> tagItemIngredients = new ArrayList<>();
+    private final List<FluidStack> fluidIngredients = new ArrayList<>();
+    private final List<Pair<TagKey<Fluid>, Integer>> tagFluidIngredients = new ArrayList<>();
+    private final List<GasStack> gasIngredients = new ArrayList<>();
+    private final List<Pair<TagKey<Gas>, GasIngWrapper>> tagGasIngredients = new ArrayList<>();
 
     public ChemicalReactorBuilder(RecipeCategory category, String parent, String name, String group, double experience,
 	    int processTime, double usagePerTick) {
@@ -38,17 +38,17 @@ public class ChemicalReactorBuilder extends BaseRecipeBuilder<ChemicalReactorRec
     }
 
     public ChemicalReactorBuilder setItemOutput(ItemStack stack) {
-	this.itemOutput = stack;
+	itemOutput = stack;
 	return this;
     }
 
     public ChemicalReactorBuilder setFluidOutput(FluidStack stack) {
-	this.fluidOutput = stack;
+	fluidOutput = stack;
 	return this;
     }
 
     public ChemicalReactorBuilder setGasOutput(GasStack stack) {
-	this.gasOutput = stack;
+	gasOutput = stack;
 	return this;
     }
 

@@ -18,7 +18,7 @@ import voltaic.prefab.utilities.object.TransferPack;
 public class TilePotentiometer extends GenericTile {
 
     public final SingleProperty<Double> powerConsumption = property(
-	    new SingleProperty<>(PropertyTypes.DOUBLE, "consumption", -1.0));
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.DOUBLE, "consumption", -1.0)).setUpdateServer();
 
     public TilePotentiometer(BlockPos pos, BlockState state) {
 	super(ElectrodynamicsTiles.TILE_POTENTIOMETER.get(), pos, state);
@@ -34,17 +34,15 @@ public class TilePotentiometer extends GenericTile {
     }
 
     private TransferPack receivePower(TransferPack pack, boolean debug) {
-	if (powerConsumption.getValue() < 0) {
+	if (powerConsumption.getValue() < 0)
 	    return pack;
-	}
 	double accepted = Math.min(pack.getJoules(), powerConsumption.getValue());
 	return TransferPack.joulesVoltage(accepted, pack.getVoltage());
     }
 
     private TransferPack getConnectedLoad(ICapabilityElectrodynamic.LoadProfile loadProfile, Direction dir) {
-	if (dir == Direction.DOWN) {
+	if (dir == Direction.DOWN)
 	    return TransferPack.EMPTY;
-	}
 	return TransferPack
 		.joulesVoltage(powerConsumption.getValue() < 0 ? Double.MAX_VALUE : powerConsumption.getValue(), -1);
     }

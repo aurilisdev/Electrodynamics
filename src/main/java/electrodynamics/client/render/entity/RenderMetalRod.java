@@ -1,7 +1,5 @@
 package electrodynamics.client.render.entity;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
@@ -35,7 +33,7 @@ public class RenderMetalRod extends EntityRenderer<EntityMetalRod> {
 
     @Override
     public void render(EntityMetalRod entity, float entityYaw, float partialTicks, PoseStack matrixStack,
-	    @NotNull MultiBufferSource bufferIn, int packedLightIn) {
+	    MultiBufferSource bufferIn, int packedLightIn) {
 
 	matrixStack.pushPose();
 

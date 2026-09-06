@@ -31,7 +31,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.aluminum.smeltingTime, //
 	    SubtypeOre.aluminum.itemTag, //
 	    SubtypeOre.aluminum.blockTag//
-    ), chromium(//
+    ),
+    chromium(//
 	    SubtypeOre.chromium.harvestLevel, //
 	    SubtypeOre.chromium.veinsPerChunk, //
 	    SubtypeOre.chromium.veinSize, //
@@ -49,7 +50,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.chromium.smeltingTime, //
 	    SubtypeOre.chromium.itemTag, //
 	    SubtypeOre.chromium.blockTag//
-    ), fluorite(//
+    ),
+    fluorite(//
 	    SubtypeOre.fluorite.harvestLevel, //
 	    SubtypeOre.fluorite.veinsPerChunk, //
 	    SubtypeOre.fluorite.veinSize, //
@@ -67,7 +69,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.fluorite.smeltingTime, //
 	    SubtypeOre.fluorite.itemTag, //
 	    SubtypeOre.fluorite.blockTag//
-    ), lead(//
+    ),
+    lead(//
 	    SubtypeOre.lead.harvestLevel, //
 	    SubtypeOre.lead.veinsPerChunk, //
 	    SubtypeOre.lead.veinSize, //
@@ -85,7 +88,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.lead.smeltingTime, //
 	    SubtypeOre.lead.itemTag, //
 	    SubtypeOre.lead.blockTag//
-    ), lithium(//
+    ),
+    lithium(//
 	    SubtypeOre.lithium.harvestLevel, //
 	    SubtypeOre.lithium.veinsPerChunk, //
 	    SubtypeOre.lithium.veinSize, //
@@ -103,7 +107,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.lithium.smeltingTime, //
 	    SubtypeOre.lithium.itemTag, //
 	    SubtypeOre.lithium.blockTag//
-    ), molybdenum(//
+    ),
+    molybdenum(//
 	    SubtypeOre.molybdenum.harvestLevel, //
 	    SubtypeOre.molybdenum.veinsPerChunk, //
 	    SubtypeOre.molybdenum.veinSize, //
@@ -121,7 +126,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.molybdenum.smeltingTime, //
 	    SubtypeOre.molybdenum.itemTag, //
 	    SubtypeOre.molybdenum.blockTag//
-    ), monazite(//
+    ),
+    monazite(//
 	    SubtypeOre.monazite.harvestLevel, //
 	    SubtypeOre.monazite.veinsPerChunk, //
 	    SubtypeOre.monazite.veinSize, //
@@ -139,7 +145,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.monazite.smeltingTime, //
 	    SubtypeOre.monazite.itemTag, //
 	    SubtypeOre.monazite.blockTag//
-    ), niter(//
+    ),
+    niter(//
 	    SubtypeOre.niter.harvestLevel, //
 	    SubtypeOre.niter.veinsPerChunk, //
 	    SubtypeOre.niter.veinSize, //
@@ -157,7 +164,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.niter.smeltingTime, //
 	    SubtypeOre.niter.itemTag, //
 	    SubtypeOre.niter.blockTag//
-    ), tin(//
+    ),
+    tin(//
 	    SubtypeOre.tin.harvestLevel, //
 	    SubtypeOre.tin.veinsPerChunk, //
 	    SubtypeOre.tin.veinSize, //
@@ -175,7 +183,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.tin.smeltingTime, //
 	    SubtypeOre.tin.itemTag, //
 	    SubtypeOre.tin.blockTag//
-    ), titanium(//
+    ),
+    titanium(//
 	    SubtypeOre.titanium.harvestLevel, //
 	    SubtypeOre.titanium.veinsPerChunk, //
 	    SubtypeOre.titanium.veinSize, //
@@ -193,7 +202,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.titanium.smeltingTime, //
 	    SubtypeOre.titanium.itemTag, //
 	    SubtypeOre.titanium.blockTag//
-    ), thorium(//
+    ),
+    thorium(//
 	    SubtypeOre.thorium.harvestLevel, //
 	    SubtypeOre.thorium.veinsPerChunk, //
 	    SubtypeOre.thorium.veinSize, //
@@ -211,7 +221,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.thorium.smeltingTime, //
 	    SubtypeOre.thorium.itemTag, //
 	    SubtypeOre.thorium.blockTag//
-    ), salt(//
+    ),
+    salt(//
 	    SubtypeOre.salt.harvestLevel, //
 	    SubtypeOre.salt.veinsPerChunk, //
 	    SubtypeOre.salt.veinSize, //
@@ -229,7 +240,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.salt.smeltingTime, //
 	    SubtypeOre.salt.itemTag, //
 	    SubtypeOre.salt.blockTag//
-    ), silver(//
+    ),
+    silver(//
 	    SubtypeOre.silver.harvestLevel, //
 	    SubtypeOre.silver.veinsPerChunk, //
 	    SubtypeOre.silver.veinSize, //
@@ -247,7 +259,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.silver.smeltingTime, //
 	    SubtypeOre.silver.itemTag, //
 	    SubtypeOre.silver.blockTag//
-    ), sulfur(//
+    ),
+    sulfur(//
 	    SubtypeOre.sulfur.harvestLevel, //
 	    SubtypeOre.sulfur.veinsPerChunk, //
 	    SubtypeOre.sulfur.veinSize, //
@@ -265,7 +278,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.sulfur.smeltingTime, //
 	    SubtypeOre.sulfur.itemTag, //
 	    SubtypeOre.sulfur.blockTag//
-    ), sylvite(//
+    ),
+    sylvite(//
 	    SubtypeOre.sylvite.harvestLevel, //
 	    SubtypeOre.sylvite.veinsPerChunk, //
 	    SubtypeOre.sylvite.veinSize, //
@@ -283,7 +297,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.sylvite.smeltingTime, //
 	    SubtypeOre.sylvite.itemTag, //
 	    SubtypeOre.sylvite.blockTag//
-    ), uranium(//
+    ),
+    uranium(//
 	    SubtypeOre.uranium.harvestLevel, //
 	    SubtypeOre.uranium.veinsPerChunk, //
 	    SubtypeOre.uranium.veinSize, //
@@ -301,7 +316,8 @@ public enum SubtypeOreDeepslate implements ISubtype {
 	    SubtypeOre.uranium.smeltingTime, //
 	    SubtypeOre.uranium.itemTag, //
 	    SubtypeOre.uranium.blockTag//
-    ), vanadium(//
+    ),
+    vanadium(//
 	    SubtypeOre.vanadium.harvestLevel, //
 	    SubtypeOre.vanadium.veinsPerChunk, //
 	    SubtypeOre.vanadium.veinSize, //

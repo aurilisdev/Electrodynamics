@@ -3,6 +3,8 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.MutableComponent;
@@ -61,7 +63,7 @@ public class ChapterUpgrades extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.iteminput));
 		    }
 
@@ -97,7 +99,7 @@ public class ChapterUpgrades extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(VoltaicItems.ITEMS_UPGRADE.getValue(SubtypeItemUpgrade.itemoutput));
 		    }
 

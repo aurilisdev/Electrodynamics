@@ -1,7 +1,6 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerWindmill;
-import electrodynamics.common.tile.electricitygrid.generators.TileWindmill;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -18,15 +17,10 @@ import voltaic.prefab.utilities.object.TransferPack;
 
 @OnlyIn(Dist.CLIENT)
 public class ScreenWindmill extends GenericScreen<ContainerWindmill> {
-
     public ScreenWindmill(ContainerWindmill container, Inventory playerInventory, Component title) {
 	super(container, playerInventory, title);
 	addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
-	addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> {
-	    TileWindmill windmill = menu.getSafeHost();
-	    if (windmill == null) {
-		return;
-	    }
+	addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> menu.getSafeHost().ifPresent(windmill -> {
 	    TransferPack transfer = windmill.getProduced();
 	    graphics.drawString(font,
 		    ElectroTextUtils.gui("machine.current",
@@ -40,7 +34,7 @@ public class ScreenWindmill extends GenericScreen<ContainerWindmill> {
 		    ElectroTextUtils.gui("machine.voltage",
 			    ChatFormatter.getChatDisplayShort(transfer.getVoltage(), DisplayUnits.VOLTAGE)),
 		    inventoryLabelX + 60, inventoryLabelY - 22, Color.TEXT_GRAY.color(), false);
-	}));
+	})));
     }
 
 }

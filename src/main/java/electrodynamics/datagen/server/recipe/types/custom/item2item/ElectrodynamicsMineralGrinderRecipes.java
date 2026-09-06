@@ -1,5 +1,7 @@
 package electrodynamics.datagen.server.recipe.types.custom.item2item;
 
+import java.util.function.Supplier;
+
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
 import electrodynamics.common.item.subtype.SubtypeDust;
@@ -10,6 +12,7 @@ import electrodynamics.common.recipe.categories.item2item.specificmachines.Miner
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.Tags;
@@ -38,8 +41,9 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
     public void addRecipes(RecipeOutput output) {
 
 	for (SubtypeIngot ingot : SubtypeIngot.values()) {
-	    if (ingot.grindedDust != null) {
-		newRecipe(new ItemStack(ingot.grindedDust.get()), 0, 200, 350.0, "dust_" + ingot.name() + "_from_ingot",
+	    Supplier<Item> grindedDust = ingot.grindedDust;
+	    if (grindedDust != null) {
+		newRecipe(new ItemStack(grindedDust.get()), 0, 200, 350.0, "dust_" + ingot.name() + "_from_ingot",
 			modID)
 			//
 			.addItemTagInput(ingot.tag, 1)
@@ -87,9 +91,10 @@ public class ElectrodynamicsMineralGrinderRecipes extends AbstractRecipeGenerato
 	}
 
 	for (SubtypeRawOre raw : SubtypeRawOre.values()) {
-	    if (raw.grindedItem != null) {
-		newRecipe(new ItemStack(raw.grindedItem.get(), 2), 0.1F, 200, 350.0,
-			"dust_" + raw.name() + "_from_raw_ore", modID)
+	    Supplier<Item> grindedItem = raw.grindedItem;
+	    if (grindedItem != null) {
+		newRecipe(new ItemStack(grindedItem.get(), 2), 0.1F, 200, 350.0, "dust_" + raw.name() + "_from_raw_ore",
+			modID)
 			//
 			.addItemTagInput(raw.tag, 1)
 			//

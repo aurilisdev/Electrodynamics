@@ -3,6 +3,8 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeGasPipe;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -111,7 +113,7 @@ public class ChapterGases extends Chapter {
 			}
 
 			@Override
-			public Object getJeiLookup() {
+			public @Nullable Object getJeiLookup() {
 			    return new GasStack(gas.get(), 1, Gas.ROOM_TEMPERATURE, Gas.PRESSURE_AT_SEA_LEVEL);
 			}
 
@@ -340,7 +342,7 @@ public class ChapterGases extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
 		    }
 
@@ -372,7 +374,7 @@ public class ChapterGases extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gasvalve));
 		    }
 
@@ -410,7 +412,7 @@ public class ChapterGases extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gaspipepump));
 		    }
 
@@ -450,7 +452,7 @@ public class ChapterGases extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gaspipefilter));
 		    }
 
@@ -500,7 +502,7 @@ public class ChapterGases extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gasvent));
 		    }
 
@@ -533,7 +535,7 @@ public class ChapterGases extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.gastankhsla));
 		    }
 

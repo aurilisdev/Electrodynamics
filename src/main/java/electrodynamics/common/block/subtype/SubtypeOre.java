@@ -40,7 +40,8 @@ public enum SubtypeOre implements ISubtype {
 	    0, //
 	    VoltaicTags.Items.ORE_ALUMINUM, //
 	    VoltaicTags.Blocks.ORE_ALUMINUM//
-    ), chromium(
+    ),
+    chromium(
 	    //
 	    3,
 	    //
@@ -70,7 +71,8 @@ public enum SubtypeOre implements ISubtype {
 	    0, //
 	    VoltaicTags.Items.ORE_CHROMIUM, //
 	    VoltaicTags.Blocks.ORE_CHROMIUM//
-    ), fluorite(
+    ),
+    fluorite(
 	    //
 	    1,
 	    //
@@ -100,7 +102,8 @@ public enum SubtypeOre implements ISubtype {
 	    0, //
 	    VoltaicTags.Items.ORE_FLUORITE, //
 	    VoltaicTags.Blocks.ORE_FLUORITE//
-    ), lead(
+    ),
+    lead(
 	    //
 	    2,
 	    //
@@ -131,7 +134,8 @@ public enum SubtypeOre implements ISubtype {
 	    200, //
 	    VoltaicTags.Items.ORE_LEAD, //
 	    VoltaicTags.Blocks.ORE_LEAD//
-    ), lithium(
+    ),
+    lithium(
 	    //
 	    2,
 	    //
@@ -161,7 +165,8 @@ public enum SubtypeOre implements ISubtype {
 	    0, //
 	    VoltaicTags.Items.ORE_LITHIUM, //
 	    VoltaicTags.Blocks.ORE_LITHIUM//
-    ), molybdenum(
+    ),
+    molybdenum(
 	    //
 	    1,
 	    //
@@ -192,7 +197,8 @@ public enum SubtypeOre implements ISubtype {
 	    200, //
 	    VoltaicTags.Items.ORE_MOLYBDENUM, //
 	    VoltaicTags.Blocks.ORE_MOLYBDENUM//
-    ), monazite(
+    ),
+    monazite(
 	    //
 	    2,
 	    //
@@ -222,7 +228,8 @@ public enum SubtypeOre implements ISubtype {
 	    0, //
 	    VoltaicTags.Items.ORE_MONAZITE, //
 	    VoltaicTags.Blocks.ORE_MONAZITE//
-    ), niter(
+    ),
+    niter(
 	    //
 	    1,
 	    //
@@ -252,7 +259,8 @@ public enum SubtypeOre implements ISubtype {
 	    0, //
 	    VoltaicTags.Items.ORE_SALTPETER, //
 	    VoltaicTags.Blocks.ORE_SALTPETER//
-    ), salt(
+    ),
+    salt(
 	    //
 	    1,
 	    //
@@ -282,7 +290,8 @@ public enum SubtypeOre implements ISubtype {
 	    0, //
 	    VoltaicTags.Items.ORE_SALT, //
 	    VoltaicTags.Blocks.ORE_SALT//
-    ), silver(
+    ),
+    silver(
 	    //
 	    2,
 	    //
@@ -313,7 +322,8 @@ public enum SubtypeOre implements ISubtype {
 	    200, //
 	    VoltaicTags.Items.ORE_SILVER, //
 	    VoltaicTags.Blocks.ORE_SILVER//
-    ), sulfur(
+    ),
+    sulfur(
 	    //
 	    1,
 	    //
@@ -343,7 +353,8 @@ public enum SubtypeOre implements ISubtype {
 	    0, //
 	    VoltaicTags.Items.ORE_SULFUR, //
 	    VoltaicTags.Blocks.ORE_SULFUR//
-    ), sylvite(
+    ),
+    sylvite(
 	    //
 	    1,
 	    //
@@ -373,7 +384,8 @@ public enum SubtypeOre implements ISubtype {
 	    0, //
 	    VoltaicTags.Items.ORE_POTASSIUMCHLORIDE, //
 	    VoltaicTags.Blocks.ORE_POTASSIUMCHLORIDE//
-    ), tin(
+    ),
+    tin(
 	    //
 	    1,
 	    //
@@ -404,7 +416,8 @@ public enum SubtypeOre implements ISubtype {
 	    200, //
 	    VoltaicTags.Items.ORE_TIN, //
 	    VoltaicTags.Blocks.ORE_TIN//
-    ), titanium(
+    ),
+    titanium(
 	    //
 	    3,
 	    //
@@ -434,7 +447,8 @@ public enum SubtypeOre implements ISubtype {
 	    0, //
 	    VoltaicTags.Items.ORE_TITANIUM, //
 	    VoltaicTags.Blocks.ORE_TITANIUM//
-    ), thorium(
+    ),
+    thorium(
 	    //
 	    3,
 	    //
@@ -464,7 +478,8 @@ public enum SubtypeOre implements ISubtype {
 	    0, //
 	    VoltaicTags.Items.ORE_THORIUM, //
 	    VoltaicTags.Blocks.ORE_THORIUM//
-    ), uranium(
+    ),
+    uranium(
 	    //
 	    3,
 	    //
@@ -494,7 +509,8 @@ public enum SubtypeOre implements ISubtype {
 	    0, //
 	    VoltaicTags.Items.ORE_URANIUM, //
 	    VoltaicTags.Blocks.ORE_URANIUM//
-    ), vanadium(
+    ),
+    vanadium(
 	    //
 	    2,
 	    //
@@ -542,6 +558,7 @@ public enum SubtypeOre implements ISubtype {
     @Nullable
     public final Supplier<Item> nonSilkLootItem;
     // Leaving this null will result in the ore not smelting into anything
+
     @Nullable
     public final Supplier<Item> smeltingItem;
     public final double smeltingXp;

@@ -80,10 +80,9 @@ public class ItemSeismicScanner extends ItemElectric {
 
     @Override
     public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
-
-	if (context.getLevel().isClientSide() || !context.getPlayer().isShiftKeyDown()) {
+	Player player = context.getPlayer();
+	if (context.getLevel().isClientSide() || player == null || !player.isShiftKeyDown())
 	    return super.onItemUseFirst(stack, context);
-	}
 
 	BlockState state = context.getLevel().getBlockState(context.getClickedPos());
 
@@ -151,9 +150,8 @@ public class ItemSeismicScanner extends ItemElectric {
 	boolean isTimerUp = stack.getOrDefault(VoltaicDataComponentTypes.TIMER, 0) <= 0;
 	boolean isPowered = seismic.getJoulesStored(stack) >= JOULES_PER_SCAN;
 
-	if (!isTimerUp || !isPowered) {
+	if (!isTimerUp || !isPowered)
 	    return;
-	}
 
 	Block pattern = stack.getOrDefault(VoltaicDataComponentTypes.BLOCK, Blocks.AIR);
 	double patternIntegrity = stack.getOrDefault(VoltaicDataComponentTypes.PATTERN_INTEGRITY, 0.0);
@@ -205,7 +203,8 @@ public class ItemSeismicScanner extends ItemElectric {
     }
 
     public static enum ScannerMode {
-	PASSIVE, ACTIVE;
+	PASSIVE,
+	ACTIVE;
     }
 
 }

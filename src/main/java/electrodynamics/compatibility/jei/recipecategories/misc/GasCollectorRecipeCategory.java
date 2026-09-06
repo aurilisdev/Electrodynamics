@@ -2,6 +2,8 @@ package electrodynamics.compatibility.jei.recipecategories.misc;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.settings.ElectrodynamicsConfig;
@@ -13,7 +15,10 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.biome.Biome;
 import voltaic.api.gas.GasStack;
 import voltaic.compatibility.jei.recipecategories.AbstractRecipeCategory;
 import voltaic.compatibility.jei.utils.gui.ScreenObject;
@@ -39,25 +44,25 @@ public class GasCollectorRecipeCategory extends AbstractRecipeCategory<PsuedoGas
 	    ElectrodynamicsConfig.INSTANCE.GAS_COLLECTOR_USAGE_PER_TICK.get(), 240);
 
     public static final AbstractLabelWrapper BIOME_LABEL = new AbstractLabelWrapper(Color.JEI_TEXT_GRAY, 2, 2, false) {
+
 	@Override
-	public Component getComponent(AbstractRecipeCategory<?> category, Object recipe) {
-	    PsuedoGasCollectorRecipe psuedo = (PsuedoGasCollectorRecipe) recipe;
-	    if (psuedo.output.biome() != null) {
-		return ElectroTextUtils.jeiTranslated("validbiome",
-			Component.literal(psuedo.output.biome().location().getPath().toString())
-				.withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.DARK_GRAY);
-	    } else if (psuedo.output.biomeTag() != null) {
-		return ElectroTextUtils.jeiTranslated("validbiome",
-			Component.literal("#" + psuedo.output.biomeTag().location().getPath().toString())
-				.withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.DARK_GRAY);
-	    } else {
-		return ElectroTextUtils
-			.jeiTranslated("validbiome",
-				ElectroTextUtils.jeiTranslated("anybiome").withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.DARK_GRAY);
-	    }
+	public @Nullable Component getComponent(AbstractRecipeCategory<?> category, Object recipe) {
+	    PsuedoGasCollectorRecipe pseudo = (PsuedoGasCollectorRecipe) recipe;
+	    var output = pseudo.output;
+
+	    ResourceKey<Biome> keyBiome = output.biome();
+	    if (keyBiome != null)
+		return validBiome(Component.literal(keyBiome.location().getPath()));
+
+	    TagKey<Biome> keyBiomeTag = output.biomeTag();
+	    if (keyBiomeTag != null)
+		return validBiome(Component.literal("#" + keyBiomeTag.location().getPath()));
+
+	    return validBiome(ElectroTextUtils.jeiTranslated("anybiome"));
+	}
+
+	private Component validBiome(Component biome) {
+	    return ElectroTextUtils.jeiTranslated("validbiome", biome).withStyle(ChatFormatting.DARK_GRAY);
 	}
     };
 

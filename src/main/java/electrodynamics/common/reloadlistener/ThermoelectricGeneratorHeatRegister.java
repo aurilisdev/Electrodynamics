@@ -38,7 +38,7 @@ import voltaic.Voltaic;
 
 public class ThermoelectricGeneratorHeatRegister extends SimplePreparableReloadListener<JsonObject> {
 
-    public static ThermoelectricGeneratorHeatRegister INSTANCE = null;
+    public static final ThermoelectricGeneratorHeatRegister INSTANCE = new ThermoelectricGeneratorHeatRegister();
 
     public static final String FOLDER = "machines";
     public static final String FILE_NAME = "thermo_gen_heat_sources";
@@ -136,8 +136,8 @@ public class ThermoelectricGeneratorHeatRegister extends SimplePreparableReloadL
     }
 
     public void setClientValues(HashMap<Fluid, Double> fuels) {
-	this.heatSources.clear();
-	this.heatSources.putAll(fuels);
+	heatSources.clear();
+	heatSources.putAll(fuels);
     }
 
     public ThermoelectricGeneratorHeatRegister subscribeAsSyncable() {

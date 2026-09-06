@@ -10,6 +10,7 @@ import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -36,15 +37,13 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
     public GenericTileAdvancedCompressor(BlockEntityType<?> type, BlockPos worldPos, BlockState blockState,
 	    double defaultMultiplier) {
 	super(type, worldPos, blockState);
-	pressureMultiplier = property(
-		new SingleProperty<>(PropertyTypes.DOUBLE, "pressuremultiplier", defaultMultiplier));
+	pressureMultiplier = property(new SingleProperty<>(getPropertyManager(), PropertyTypes.DOUBLE,
+		"pressuremultiplier", defaultMultiplier)).setUpdateServer();
     }
 
     @Override
-    public void tickClient(ComponentTickable tickable) {
-
-	super.tickClient(tickable);
-
+    public void tickClient(Level level, ComponentTickable tickable) {
+	super.tickClient(level, tickable);
 	if (level.getRandom().nextDouble() < 0.15) {
 
 	    // TODO add particles?
@@ -55,7 +54,7 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
 
     @Override
     public void updateAddonTanks(int count, boolean isLeft) {
-	ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
+	ComponentGasHandlerMulti handler = requireComponent(IComponentType.GasHandler);
 	if (isLeft) {
 	    handler.getInputTanks()[0]
 		    .setCapacity(ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_BASE_INPUT_CAPACITY.get()
@@ -73,16 +72,15 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
     }
 
     @Override
-    public void onPlace(BlockState oldState, boolean isMoving) {
-	super.onPlace(oldState, isMoving);
-	if (level.isClientSide) {
+    public void onPlace(Level level, BlockState oldState, boolean isMoving) {
+	super.onPlace(level, oldState, isMoving);
+	if (level.isClientSide)
 	    return;
-	}
 	Direction facing = getFacing();
 
-	BlockEntity left = getLevel()
+	BlockEntity left = level
 		.getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
-	BlockEntity right = getLevel()
+	BlockEntity right = level
 		.getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
 
 	if (left != null && right != null && left instanceof TileGasTransformerSideBlock leftTile
@@ -96,27 +94,28 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
     }
 
     @Override
-    public void onBlockDestroyed() {
-	if (level.isClientSide || hasBeenDestroyed) {
+    public void onBlockDestroyed(Level level) {
+	if (level.isClientSide || hasBeenDestroyed)
 	    return;
-	}
 	hasBeenDestroyed = true;
 	Direction facing = getFacing();
-	getLevel().destroyBlock(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)),
-		false);
-	getLevel().destroyBlock(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)),
-		false);
+	level.destroyBlock(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)), false);
+	level.destroyBlock(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)), false);
     }
 
     @Override
     public void outputToPipe(ComponentProcessor processor, ComponentGasHandlerMulti gasHandler, Direction facing) {
+	Level level = this.level;
+	if (level == null)
+	    return;
+
 	Direction direction = BlockEntityUtils.getRelativeSide(facing,
 		BlockEntityUtils.MachineDirection.LEFT.mappedDir);// opposite of west is east
 	BlockPos face = getBlockPos().relative(direction, 2);
-	BlockEntity faceTile = getLevel().getBlockEntity(face);
+	BlockEntity faceTile = level.getBlockEntity(face);
 	if (faceTile != null) {
 
-	    IGasHandler handler = faceTile.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK,
+	    IGasHandler handler = level.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK,
 		    faceTile.getBlockPos(), faceTile.getBlockState(), faceTile, direction.getOpposite());
 
 	    if (handler != null) {
@@ -134,11 +133,15 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
 
     @Override
     public void updateLit(boolean canProcess, Direction facing) {
+	Level level = this.level;
+	if (level == null)
+	    return;
+
 	if (BlockEntityUtils.isLit(this) ^ canProcess) {
 	    BlockEntityUtils.updateLit(this, canProcess);
-	    BlockEntity left = getLevel()
+	    BlockEntity left = level
 		    .getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
-	    BlockEntity right = getLevel()
+	    BlockEntity right = level
 		    .getBlockEntity(getBlockPos().relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
 	    if (left != null && left instanceof TileGasTransformerSideBlock leftTile && right != null
 		    && right instanceof TileGasTransformerSideBlock rightTile) {
@@ -167,7 +170,7 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
 	public ComponentContainerProvider getContainerProvider() {
 	    return new ComponentContainerProvider("advancedcompressor", this)
 		    .createMenu((id, inv) -> new ContainerAdvancedCompressor(id, inv,
-			    getComponent(IComponentType.Inventory), getCoordsArray()));
+			    requireComponent(IComponentType.Inventory), getCoordsArray()));
 	}
 
 	@Override
@@ -195,7 +198,7 @@ public abstract class GenericTileAdvancedCompressor extends GenericTileCompresso
 	public ComponentContainerProvider getContainerProvider() {
 	    return new ComponentContainerProvider("advanceddecompressor", this)
 		    .createMenu((id, inv) -> new ContainerAdvancedDecompressor(id, inv,
-			    getComponent(IComponentType.Inventory), getCoordsArray()));
+			    requireComponent(IComponentType.Inventory), getCoordsArray()));
 	}
 
 	@Override

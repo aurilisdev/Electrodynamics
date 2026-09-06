@@ -14,6 +14,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -34,59 +35,56 @@ public class TileGasTransformerAddonTank extends GenericTile {
     }
 
     @Override
-    public void onBlockDestroyed() {
-	if (level.isClientSide) {
+    public void onBlockDestroyed(Level level) {
+	if (level.isClientSide)
 	    return;
-	}
 	BlockPos above = getBlockPos().above();
-	BlockEntity aboveTile = getLevel().getBlockEntity(above);
+	BlockEntity aboveTile = level.getBlockEntity(above);
 	for (int i = 0; i < ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_ADDON_TANK_LIMIT.get(); i++) {
 	    if (aboveTile instanceof TileGasTransformerAddonTank tank) {
 		tank.setOwnerPos(BlockEntityUtils.OUT_OF_REACH);
 	    }
 	    above = above.above();
-	    aboveTile = getLevel().getBlockEntity(above);
+	    aboveTile = level.getBlockEntity(above);
 	}
-	if (getLevel().getBlockEntity(ownerPos) instanceof IAddonTankManager manager) {
+	if (level.getBlockEntity(ownerPos) instanceof IAddonTankManager manager) {
 	    // isDestroyed = true;
-	    manager.updateTankCount();
+	    manager.updateTankCount(level);
 	}
     }
 
     @Override
-    public void onPlace(BlockState oldState, boolean isMoving) {
-	super.onPlace(oldState, isMoving);
-	if (level.isClientSide) {
+    public void onPlace(Level level, BlockState oldState, boolean isMoving) {
+	super.onPlace(level, oldState, isMoving);
+	if (level.isClientSide)
 	    return;
-	}
 	BlockPos belowPos = getBlockPos().below();
-	BlockState below = getLevel().getBlockState(belowPos);
+	BlockState below = level.getBlockState(belowPos);
 	for (int i = 0; i < ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_ADDON_TANK_LIMIT.get(); i++) {
-	    if (getLevel().getBlockEntity(belowPos) instanceof IAddonTankManager manager) {
-		manager.updateTankCount();
+	    if (level.getBlockEntity(belowPos) instanceof IAddonTankManager manager) {
+		manager.updateTankCount(level);
 		break;
 	    }
 	    if (!below.is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK)) {
 		break;
 	    }
 	    belowPos = belowPos.below();
-	    below = getLevel().getBlockState(belowPos);
+	    below = level.getBlockState(belowPos);
 	}
     }
 
     @Override
-    public ItemInteractionResult useWithItem(ItemStack used, Player player, InteractionHand hand, BlockHitResult hit) {
-	if (getLevel().getBlockEntity(ownerPos) instanceof GenericTile compressor) {
-	    return compressor.useWithItem(used, player, hand, hit);
-	}
+    public ItemInteractionResult useWithItem(Level level, ItemStack used, Player player, InteractionHand hand,
+	    BlockHitResult hit) {
+	if (level.getBlockEntity(ownerPos) instanceof GenericTile compressor)
+	    return compressor.useWithItem(level, used, player, hand, hit);
 	return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
     @Override
-    public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
-	if (getLevel().getBlockEntity(ownerPos) instanceof GenericTile compressor) {
-	    return compressor.useWithoutItem(player, hit);
-	}
+    public InteractionResult useWithoutItem(Level level, Player player, BlockHitResult hit) {
+	if (level.getBlockEntity(ownerPos) instanceof GenericTile compressor)
+	    return compressor.useWithoutItem(level, player, hit);
 	return InteractionResult.FAIL;
     }
 

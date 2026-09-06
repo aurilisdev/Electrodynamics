@@ -7,13 +7,13 @@ import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentProcessor;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.tile.types.GenericMaterialTile;
@@ -27,7 +27,7 @@ public class TileFermentationPlant extends GenericMaterialTile {
     public TileFermentationPlant(BlockPos worldPosition, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_FERMENTATIONPLANT.get(), worldPosition, blockState);
 	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM)
 		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE));
@@ -44,18 +44,18 @@ public class TileFermentationPlant extends GenericMaterialTile {
 			BlockEntityUtils.MachineDirection.TOP, BlockEntityUtils.MachineDirection.BOTTOM)
 		.validUpgrades(ContainerFermentationPlant.VALID_UPGRADES).valid(machineValidator()));
 	addComponent(new ComponentProcessor(this)
-		.canProcess((processor, procNumber) -> processor.outputToFluidPipe().consumeBucket().dispenseBucket()
-			.canProcessFluidItem2FluidRecipe(procNumber,
+		.canProcess((processor, level, procNumber) -> processor.outputToFluidPipe().consumeBucket()
+			.dispenseBucket().canProcessFluidItem2FluidRecipe(level, procNumber,
 				ElectrodynamicsRecipies.FERMENTATION_PLANT_TYPE.get()))
 		.process(ComponentProcessor::processFluidItem2FluidRecipe));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.fermentationplant.tag(), this)
 		.createMenu((id, player) -> new ContainerFermentationPlant(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
 
     }
 
-    protected void tickClient(ComponentTickable tickable) {
-	if (this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0)) {
+    protected void tickClient(Level level, ComponentTickable tickable) {
+	if (this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0)) {
 	    if (level.random.nextDouble() < 0.15) {
 		level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(),
 			worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5,
@@ -69,8 +69,8 @@ public class TileFermentationPlant extends GenericMaterialTile {
     }
 
     @Override
-    public int getComparatorSignal() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
+    public int getComparatorSignal(Level level) {
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
     }
 
 }

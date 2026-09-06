@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -27,9 +25,9 @@ public class RenderFermentationPlant extends AbstractTileRenderer<TileFermentati
 
     @Override
     public void render(TileFermentationPlant tileEntityIn, float partialTicks, PoseStack matrixStackIn,
-	    @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	    MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 	matrixStackIn.pushPose();
-	ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(IComponentType.FluidHandler);
+	ComponentFluidHandlerMulti multi = tileEntityIn.requireComponent(IComponentType.FluidHandler);
 
 	Direction facing = tileEntityIn.getFacing();
 

@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.ElectrodynamicsClientRegister;
@@ -28,8 +26,8 @@ public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineral
     }
 
     @Override
-    public void render(@NotNull TileMineralCrusherTriple tile, float partialTicks, PoseStack matrixStackIn,
-	    @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(TileMineralCrusherTriple tile, float partialTicks, PoseStack matrixStackIn,
+	    MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
 	matrixStackIn.pushPose();
 
@@ -38,7 +36,8 @@ public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineral
 	matrixStackIn.translate(0, 1.0 / 16.0, 0);
 
 	double ticks = (tile.clientRunningTicks
-		+ (tile.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive() ? partialTicks : 0))
+		+ (tile.<ComponentProcessor>requireComponent(IComponentType.Processor).isAnyActive() ? partialTicks
+			: 0))
 		% 20;
 
 	double progress = ticks < 10.010392739868964 ? Math.sin(0.05 * Math.PI * ticks)
@@ -48,12 +47,12 @@ public class RenderMineralCrusherTriple extends AbstractTileRenderer<TileMineral
 
 	BakedModel ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_MINERALCRUSHERTRIPLEHANDLE);
 
-	RenderingUtils.renderModel(ibakedmodel, tile, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
+	RenderingUtils.renderModel(ibakedmodel, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
 		combinedOverlayIn);
 
 	matrixStackIn.popPose();
 
-	ComponentInventory inv = tile.getComponent(IComponentType.Inventory);
+	ComponentInventory inv = tile.requireComponent(IComponentType.Inventory);
 
 	ItemStack stack = inv.getInputsForProcessor(1).get(0);
 

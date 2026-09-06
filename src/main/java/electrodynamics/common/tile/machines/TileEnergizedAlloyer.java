@@ -7,6 +7,7 @@ import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.Voltaic;
 import voltaic.client.particle.lavawithphysics.ParticleOptionLavaWithPhysics;
@@ -18,7 +19,6 @@ import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentProcessor;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
@@ -30,7 +30,7 @@ public class TileEnergizedAlloyer extends GenericTile implements ITickableSound 
 
     public TileEnergizedAlloyer(BlockPos worldPosition, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_ENERGIZEDALLOYER.get(), worldPosition, blockState);
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
@@ -47,14 +47,14 @@ public class TileEnergizedAlloyer extends GenericTile implements ITickableSound 
 		.validUpgrades(ContainerDO2OProcessor.VALID_UPGRADES).valid(machineValidator()));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.energizedalloyer.tag(), this)
 		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
 
 	addComponent(new ComponentProcessor(this).canProcess(this::canProcessEnergAlloy)
 		.process(ComponentProcessor::processItem2ItemRecipe));
     }
 
-    protected boolean canProcessEnergAlloy(ComponentProcessor component, int procNumber) {
-	boolean canProcess = component.canProcessItem2ItemRecipe(procNumber,
+    protected boolean canProcessEnergAlloy(ComponentProcessor component, Level level, int procNumber) {
+	boolean canProcess = component.canProcessItem2ItemRecipe(level, procNumber,
 		ElectrodynamicsRecipies.ENERGIZED_ALLOYER_TYPE.get());
 	if (BlockEntityUtils.isLit(this) ^ canProcess) {
 	    BlockEntityUtils.updateLit(this, canProcess);
@@ -62,10 +62,9 @@ public class TileEnergizedAlloyer extends GenericTile implements ITickableSound 
 	return canProcess;
     }
 
-    protected void tickClient(ComponentTickable tickable) {
-	if (!shouldPlaySound()) {
+    protected void tickClient(Level level, ComponentTickable tickable) {
+	if (!shouldPlaySound())
 	    return;
-	}
 	if (level.random.nextDouble() < 0.2) {
 	    Direction direction = getFacing();
 
@@ -146,12 +145,12 @@ public class TileEnergizedAlloyer extends GenericTile implements ITickableSound 
 
     @Override
     public boolean shouldPlaySound() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0);
     }
 
     @Override
-    public int getComparatorSignal() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
+    public int getComparatorSignal(Level level) {
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
     }
 
 }

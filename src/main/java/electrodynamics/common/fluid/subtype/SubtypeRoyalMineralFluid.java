@@ -42,7 +42,6 @@ public enum SubtypeRoyalMineralFluid implements ISubtype {
     chromium(() -> ElectrodynamicsFluids.FLUIDS_DIRTYMINERAL.getValue(SubtypeDirtyMineralFluid.chromium),
 	    VoltaicTags.Items.ORE_CHROMIUM, Color.WHITE);
 
-    @Nullable
     public final TagKey<Item> source;
     @Nullable
     public final Supplier<Fluid> result;
@@ -52,7 +51,7 @@ public enum SubtypeRoyalMineralFluid implements ISubtype {
 	this(null, source, color);
     }
 
-    SubtypeRoyalMineralFluid(Supplier<Fluid> result, TagKey<Item> source, Color color) {
+    SubtypeRoyalMineralFluid(@Nullable Supplier<Fluid> result, TagKey<Item> source, Color color) {
 	this.result = result;
 	this.source = source;
 	this.color = color;

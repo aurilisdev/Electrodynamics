@@ -2,6 +2,8 @@ package electrodynamics.common.block.connect;
 
 import java.util.HashSet;
 
+import javax.annotation.Nullable;
+
 import com.mojang.serialization.MapCodec;
 
 import electrodynamics.Electrodynamics;
@@ -20,6 +22,7 @@ import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
@@ -50,6 +53,9 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.common.Tags;
 import voltaic.api.electricity.IInsulator;
 import voltaic.api.network.cable.type.IWire;
+import voltaic.api.network.cable.type.IWire.IInsulationMaterial;
+import voltaic.api.network.cable.type.IWire.IWireClass;
+import voltaic.api.network.cable.type.IWire.IWireMaterial;
 import voltaic.common.block.connect.AbstractRefreshingConnectBlock;
 import voltaic.common.block.connect.EnumConnectType;
 import voltaic.common.block.states.VoltaicBlockStates;
@@ -79,12 +85,14 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 
     @Override
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
-	if (worldIn.getBlockEntity(pos) instanceof TileWire wire && wire.getNetwork() != null
-		&& wire.getNetwork().getActiveTransmitted() > 0) {
-	    int shockVoltage = wire.wire.getInsulation().shockVoltage();
-	    if (shockVoltage == 0 || wire.getNetwork().getActiveVoltage() > shockVoltage) {
-		ElectricityUtils.electrecuteEntity(entityIn, TransferPack
-			.joulesVoltage(wire.getNetwork().getActiveTransmitted(), wire.getNetwork().getActiveVoltage()));
+	if (worldIn.getBlockEntity(pos) instanceof TileWire wire) {
+	    ElectricNetwork network = wire.getNetwork();
+	    if (network.getActiveTransmitted() > 0) {
+		int shockVoltage = wire.getCableType().getInsulation().shockVoltage();
+		if (shockVoltage == 0 || network.getActiveVoltage() > shockVoltage) {
+		    ElectricityUtils.electrecuteEntity(entityIn,
+			    TransferPack.joulesVoltage(network.getActiveTransmitted(), network.getActiveVoltage()));
+		}
 	    }
 	}
     }
@@ -92,237 +100,100 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
 	    Player player, InteractionHand hand, BlockHitResult hitResult) {
-	if (stack.isEmpty() || state.isAir()) {
+	if (stack.isEmpty())
+	    return ItemInteractionResult.FAIL;
+
+	BlockPlaceContext context = new BlockPlaceContext(player, hand, stack, hitResult);
+
+	IInsulationMaterial insulation = wire.getInsulation();
+	IWireMaterial material = wire.getWireMaterial();
+	IWireClass wireClass = wire.getWireClass();
+
+	if (stack.is(Items.SHEARS)) {
+	    if (insulation == InsulationMaterial.CERAMIC)
+		return replaceWire(SubtypeWire.getWire(material, InsulationMaterial.WOOL, wireClass, WireColor.BLACK),
+			state, level, pos, player, context, () -> {
+			    handlePlayerItemDrops(player, ElectrodynamicsItems.ITEM_CERAMICINSULATION.get());
+			    damageHeldItem(stack, player, hand);
+			}, SoundEvents.TUFF_BREAK);
+
+	    if (insulation == InsulationMaterial.WOOL)
+		return replaceWire(
+			SubtypeWire.getWire(material, InsulationMaterial.BARE, WireClass.BARE, WireColor.NONE), state,
+			level, pos, player, context, () -> {
+			    handlePlayerItemDrops(player, SubtypeWire.getWoolFromWireColor(wire.getWireColor()));
+			    if (wireClass == WireClass.LOGISTICAL) {
+				handlePlayerItemDrops(player, Items.REDSTONE);
+			    }
+			    damageHeldItem(stack, player, hand);
+			}, SoundEvents.SHEEP_SHEAR);
+
 	    return ItemInteractionResult.FAIL;
 	}
 
-	Item item = stack.getItem();
-
-	boolean isServerSide = !level.isClientSide;
-
-	BlockPlaceContext newCtx = new BlockPlaceContext(player, hand, stack, hitResult);
-
-	if (item == Items.SHEARS) {
-
-	    if (wire.getInsulation() == InsulationMaterial.CERAMIC) {
-
-		BlockWire newWire = SubtypeWire.getWire(wire.getWireMaterial(), InsulationMaterial.WOOL,
-			wire.getWireClass(), WireColor.BLACK);
-
-		if (newWire == null) {
-		    return ItemInteractionResult.FAIL;
-		}
-
-		if (isServerSide) {
-
-		    // Block newWire =
-		    // ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.getWire(wire.conductor,
-		    // InsulationMaterial.WOOL, wire.wireClass, WireColor.BLACK));
-
-		    handleDataCopyAndSet(newWire.getStateForPlacement(newCtx), level, pos, player, hand, stack, state);
-
-		    if (!player.isCreative()) {
-
-			handlePlayerItemDrops(player, ElectrodynamicsItems.ITEM_CERAMICINSULATION.get());
-
-			stack.hurtAndBreak(1, player,
-				hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
-
-		    }
-
-		    level.playSound(null, pos, SoundEvents.TUFF_BREAK, SoundSource.BLOCKS, 1.0F, 1.0F);
-		}
-
-		return ItemInteractionResult.CONSUME;
-
-	    }
-
-	    if (wire.getInsulation() == InsulationMaterial.WOOL) {
-
-		Block newWire = SubtypeWire.getWire(wire.getWireMaterial(), InsulationMaterial.BARE, WireClass.BARE,
-			WireColor.NONE);
-
-		if (newWire == null) {
-		    return ItemInteractionResult.FAIL;
-		}
-
-		if (isServerSide) {
-
-		    // Block newWire =
-		    // ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.getWire(wire.conductor,
-		    // InsulationMaterial.BARE, WireClass.BARE, WireColor.NONE));
-
-		    handleDataCopyAndSet(newWire.getStateForPlacement(newCtx), level, pos, player, hand, stack, state);
-
-		    if (!player.isCreative()) {
-
-			handlePlayerItemDrops(player, ElectrodynamicsItems.ITEM_INSULATION.get());
-
-			if (wire.getWireClass() == WireClass.LOGISTICAL) {
-
-			    handlePlayerItemDrops(player, Items.REDSTONE);
-
-			}
-
-			stack.hurtAndBreak(1, player,
-				hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
-
-		    }
-
-		    level.playSound(null, pos, SoundEvents.SHEEP_SHEAR, SoundSource.BLOCKS, 1.0F, 1.0F);
-
-		}
-
-		return ItemInteractionResult.CONSUME;
-
-	    }
-
-	    return ItemInteractionResult.FAIL;
-
-	}
-
-	if (item == ElectrodynamicsItems.ITEM_INSULATION.get()) {
-
-	    if (wire.getInsulation() == InsulationMaterial.BARE) {
-
-		Block newWire = SubtypeWire.getWire(wire.getWireMaterial(), InsulationMaterial.WOOL,
-			WireClass.INSULATED, WireColor.BLACK);
-
-		if (newWire == null) {
-		    return ItemInteractionResult.FAIL;
-		}
-
-		if (isServerSide) {
-
-		    // Block newWire =
-		    // ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.getWire(wire.conductor,
-		    // InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.BLACK));
-
-		    handleDataCopyAndSet(newWire.getStateForPlacement(newCtx), level, pos, player, hand, stack, state);
-
-		    if (!player.isCreative()) {
-
-			stack.shrink(1);
-
-			player.setItemInHand(hand, stack);
-
-		    }
-
-		    level.playSound(null, pos, SoundEvents.WOOL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-		}
-
-		return ItemInteractionResult.CONSUME;
-
-	    }
-
-	    return ItemInteractionResult.FAIL;
-
-	}
-
-	if (item == ElectrodynamicsItems.ITEM_CERAMICINSULATION.get() && wire.getInsulation() == InsulationMaterial.WOOL
-		&& wire.getWireClass() == WireClass.INSULATED) {
-
-	    Block newWire = SubtypeWire.getWire(wire.getWireMaterial(), InsulationMaterial.CERAMIC, WireClass.CERAMIC,
-		    WireColor.BROWN);
-
-	    if (newWire == null) {
+	if (stack.is(ElectrodynamicsItems.ITEM_INSULATION.get())) {
+	    if (insulation != InsulationMaterial.BARE)
 		return ItemInteractionResult.FAIL;
-	    }
 
-	    if (isServerSide) {
-
-		// Block newWire =
-		// ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.getWire(wire.conductor,
-		// InsulationMaterial.CERAMIC, WireClass.CERAMIC, WireColor.BLACK));
-
-		handleDataCopyAndSet(newWire.getStateForPlacement(newCtx), level, pos, player, hand, stack, state);
-
-		if (!player.isCreative()) {
-
-		    stack.shrink(1);
-
-		    player.setItemInHand(hand, stack);
-
-		}
-
-		level.playSound(null, pos, SoundEvents.TUFF_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-	    }
-
-	    return ItemInteractionResult.CONSUME;
-
+	    return replaceWire(
+		    SubtypeWire.getWire(material, InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.BLACK), state,
+		    level, pos, player, context, () -> consumeHeldItem(stack, player, hand), SoundEvents.WOOL_PLACE);
 	}
 
-	if (stack.is(Tags.Items.DUSTS_REDSTONE) && wire.getInsulation() == InsulationMaterial.WOOL
-		&& wire.getWireClass() == WireClass.INSULATED) {
+	if (stack.is(ElectrodynamicsItems.ITEM_CERAMICINSULATION.get()) && insulation == InsulationMaterial.WOOL
+		&& wireClass == WireClass.INSULATED)
+	    return replaceWire(
+		    SubtypeWire.getWire(material, InsulationMaterial.CERAMIC, WireClass.CERAMIC, WireColor.BROWN),
+		    state, level, pos, player, context, () -> consumeHeldItem(stack, player, hand),
+		    SoundEvents.TUFF_PLACE);
 
-	    Block newWire = SubtypeWire.getWire(wire.getWireMaterial(), InsulationMaterial.WOOL, WireClass.LOGISTICAL,
-		    WireColor.BLACK);
-
-	    if (newWire == null) {
-		return ItemInteractionResult.FAIL;
-	    }
-
-	    if (isServerSide) {
-
-		// Block newWire =
-		// ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.getWire(wire.conductor,
-		// InsulationMaterial.WOOL, WireClass.LOGISTICAL, WireColor.BLACK));
-
-		handleDataCopyAndSet(newWire.getStateForPlacement(newCtx), level, pos, player, hand, stack, state);
-
-		if (!player.isCreative()) {
-
-		    stack.shrink(1);
-
-		    player.setItemInHand(hand, stack);
-
-		}
-
-		level.playSound(null, pos, SoundEvents.STONE_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
-	    }
-
-	    return ItemInteractionResult.CONSUME;
-
-	}
+	if (stack.is(Tags.Items.DUSTS_REDSTONE) && insulation == InsulationMaterial.WOOL
+		&& wireClass == WireClass.INSULATED)
+	    return replaceWire(
+		    SubtypeWire.getWire(material, InsulationMaterial.WOOL, WireClass.LOGISTICAL, WireColor.BLACK),
+		    state, level, pos, player, context, () -> consumeHeldItem(stack, player, hand),
+		    SoundEvents.STONE_PLACE);
 
 	IWire.IWireColor dyeColor = WireColor.getColorFromDye(stack);
 
-	if (dyeColor != null) {
+	if (dyeColor != null)
+	    return replaceWire(SubtypeWire.getWire(wire.getWireMaterial(), insulation, wireClass, dyeColor), state,
+		    level, pos, player, context, () -> consumeHeldItem(stack, player, hand), SoundEvents.DYE_USE);
 
-	    Block newWire = SubtypeWire.getWire(wire.getWireMaterial(), wire.getInsulation(), wire.getWireClass(),
-		    dyeColor);
-
-	    if (newWire == null) {
-		return ItemInteractionResult.FAIL;
-	    }
-
-	    if (isServerSide) {
-
-		// Block newWire =
-		// ElectrodynamicsBlocks.BLOCKS_WIRE.getValue(SubtypeWire.getWire(wire.conductor,
-		// wire.insulation, wire.wireClass, dyeColor));
-
-		handleDataCopyAndSet(newWire.getStateForPlacement(newCtx), level, pos, player, hand, stack, state);
-
-		if (!player.isCreative()) {
-
-		    stack.shrink(1);
-
-		    player.setItemInHand(hand, stack);
-
-		}
-
-		level.playSound(null, pos, SoundEvents.DYE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
-	    }
-
-	    return ItemInteractionResult.CONSUME;
-
-	}
 	return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
 
-    private static void handleDataCopyAndSet(BlockState newWire, Level level, BlockPos pos, Player player,
-	    InteractionHand hand, ItemStack stack, BlockState oldWire) {
+    private static ItemInteractionResult replaceWire(@Nullable BlockWire newWire, BlockState oldState, Level level,
+	    BlockPos pos, Player player, BlockPlaceContext context, Runnable consume, SoundEvent dyeUse) {
+	if (!level.isClientSide && newWire != null) {
+	    BlockState newState = newWire.getStateForPlacement(context);
+
+	    if (newState == null)
+		return ItemInteractionResult.FAIL;
+
+	    replaceWirePreservingData(newState, level, pos, oldState);
+
+	    if (!player.isCreative()) {
+		consume.run();
+	    }
+
+	    level.playSound(null, pos, dyeUse, SoundSource.BLOCKS, 1.0F, 1.0F);
+	}
+
+	return ItemInteractionResult.CONSUME;
+    }
+
+    private static void consumeHeldItem(ItemStack stack, Player player, InteractionHand hand) {
+	stack.shrink(1);
+	player.setItemInHand(hand, stack);
+    }
+
+    private static void damageHeldItem(ItemStack stack, Player player, InteractionHand hand) {
+	stack.hurtAndBreak(1, player,
+		hand == InteractionHand.MAIN_HAND ? EquipmentSlot.MAINHAND : EquipmentSlot.OFFHAND);
+    }
+
+    private static void replaceWirePreservingData(BlockState newWire, Level level, BlockPos pos, BlockState oldWire) {
 	BlockState curCamo = Blocks.AIR.defaultBlockState();
 	BlockState curScaffold = Blocks.AIR.defaultBlockState();
 	BlockEntity entity = level.getBlockEntity(pos);
@@ -343,18 +214,12 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
     }
 
     private static void handlePlayerItemDrops(Player player, Item... items) {
-
 	for (Item item : items) {
-
 	    ItemStack stack = new ItemStack(item);
-
 	    if (!player.addItem(stack)) {
-
 		player.level().addFreshEntity(new ItemEntity(player.level(), (int) player.getX(), (int) player.getY(),
 			(int) player.getZ(), stack));
-
 	    }
-
 	}
     }
 
@@ -371,17 +236,15 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
     @Override
     public int getSignal(BlockState blockState, BlockGetter blockAccess, BlockPos pos, Direction side) {
 	BlockEntity tile = blockAccess.getBlockEntity(pos);
-	if (tile instanceof TileLogisticalWire w) {
+	if (tile instanceof TileLogisticalWire w)
 	    return w.isPowered ? 15 : 0;
-	}
 	return 0;
     }
 
     @Override
     public int getFlammability(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-	if (wire.getInsulation().fireproof()) {
+	if (wire.getInsulation().fireproof())
 	    return 0;
-	}
 
 	return state.hasProperty(VoltaicBlockStates.WATERLOGGED) && state.getValue(VoltaicBlockStates.WATERLOGGED) ? 0
 		: 150;
@@ -389,9 +252,8 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 
     @Override
     public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
-	if (wire.getInsulation().fireproof()) {
+	if (wire.getInsulation().fireproof())
 	    return 0;
-	}
 
 	return state.hasProperty(VoltaicBlockStates.WATERLOGGED) && state.getValue(VoltaicBlockStates.WATERLOGGED) ? 0
 		: 400;
@@ -417,13 +279,13 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 	return new TileWire(pos, state);
     }
 
     @Override
-    public EnumConnectType getConnection(BlockState otherState, BlockEntity otherTile, GenericTileWire thisConductor,
-	    Direction dir) {
+    public EnumConnectType getConnection(BlockState otherState, @Nullable BlockEntity otherTile,
+	    GenericTileWire thisConductor, Direction dir) {
 	EnumConnectType connection = EnumConnectType.NONE;
 	if (otherTile instanceof GenericTileWire conductor) {
 	    if (conductor.getCableType().isDefaultColor() || wire.isDefaultColor()
@@ -443,38 +305,30 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
     }
 
     @Override
-    public GenericTileWire getCableIfValid(BlockEntity tile) {
+    public @Nullable GenericTileWire getCableIfValid(BlockEntity tile) {
 	if (tile instanceof GenericTileWire conductor && (conductor.getCableType().isDefaultColor()
-		|| wire.isDefaultColor() || conductor.getWireColor() == wire.getWireColor())) {
+		|| wire.isDefaultColor() || conductor.getWireColor() == wire.getWireColor()))
 	    return conductor;
-	}
 	return null;
     }
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-
-	if (!ElectrodynamicsConfig.INSTANCE.CONDUCTORS_BURN_SURROUNDINGS.get()) {
+	if (!ElectrodynamicsConfig.INSTANCE.CONDUCTORS_BURN_SURROUNDINGS.get())
 	    return;
-	}
 
 	if (level.getBlockEntity(pos) instanceof GenericTileWire tile) {
-
 	    ElectricNetwork network = tile.getNetwork();
 
-	    if (network == null) {
-		return;
-	    }
+	    IInsulationMaterial insulation = wire.getInsulation();
 
 	    double voltage = network.getActiveVoltage();
-
-	    if (voltage <= 0 || voltage <= wire.getInsulation().shockVoltage() || network.getActiveTransmitted() <= 0) {
+	    if (voltage <= 0 || voltage <= insulation.shockVoltage() || network.getActiveTransmitted() <= 0)
 		return;
-	    }
 
 	    boolean overMaxVoltage = voltage > TileGenericTransformer.MAX_VOLTAGE_CAP;
 
-	    double wireShockVoltage = Math.max(wire.getInsulation().shockVoltage(), 1);
+	    double wireShockVoltage = Math.max(insulation.shockVoltage(), 1);
 
 	    BlockPos relativePos, firePos;
 	    BlockState relative;
@@ -491,50 +345,37 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 		boolean isFlammable = relative.isFlammable(level, relativePos, dir);
 
 		if (relative.getBlock() instanceof BlockWire) {
-
 		    continue;
-
 		}
+
 		if (relative.getBlock() instanceof IInsulator insulator) {
-
 		    if (overMaxVoltage && voltage > insulator.getMaximumVoltage()) {
-
 			level.playSound(null, relativePos, insulator.getBreakingSound(), SoundSource.BLOCKS, 1.0F,
 				1.0F);
 			level.destroyBlock(relativePos, false);
-
 		    }
-
 		    continue;
-
 		}
-		if (overMaxVoltage) {
 
+		if (overMaxVoltage) {
 		    if (isFlammable || relative.getBlock()
 			    .getExplosionResistance() < ElectrodynamicsConfig.INSTANCE.BLOCK_VAPORIZATION_HARDNESS
 				    .get()) {
 
 			level.playSound(null, relativePos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
 			level.destroyBlock(relativePos, false);
-
 		    }
-
 		    continue;
-
 		} else if (!isFlammable) {
-
 		    continue;
-
 		}
 
 		int flamability = relative.getFlammability(level, relativePos, dir);
-
 		if (flamability <= 0) {
 		    continue;
 		}
 
 		int overvoltage = (int) Math.ceil(voltage / wireShockVoltage);
-
 		if (flamability > overvoltage) {
 		    continue;
 		}
@@ -542,20 +383,14 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 		boolean blockCaughtFire = false;
 
 		for (Direction relDir : Direction.values()) {
-
 		    firePos = relativePos.relative(relDir);
-
 		    if (firePos.equals(pos) || !BaseFireBlock.canBePlacedAt(level, firePos,
 			    relDir == Direction.DOWN || relDir == Direction.UP ? dir : relDir.getOpposite())) {
 			continue;
 		    }
-
 		    level.setBlock(firePos, BaseFireBlock.getState(level, firePos), 11);
-
 		    blockCaughtFire = true;
-
 		    break;
-
 		}
 
 		if (blockCaughtFire) {
@@ -564,7 +399,6 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 
 		level.playSound(null, pos, SoundEvents.LAVA_EXTINGUISH, SoundSource.BLOCKS, 1.0F, 1.0F);
 		level.destroyBlock(pos, false);
-
 		break;
 
 	    }
@@ -579,9 +413,8 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 	@SubscribeEvent
 	public static void registerColoredBlocks(RegisterColorHandlersEvent.Block event) {
 	    WIRES.forEach(block -> event.register((state, level, pos, tintIndex) -> {
-		if (tintIndex == 0) {
+		if (tintIndex == 0)
 		    return ((BlockWire) block).wire.getWireColor().getColor().color();
-		}
 		return Color.WHITE.color();
 	    }, block));
 	}

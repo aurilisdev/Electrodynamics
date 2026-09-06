@@ -1,7 +1,5 @@
 package electrodynamics.client.model.armor;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -86,8 +84,8 @@ public class ModelNightVisionGoggles<T extends LivingEntity> extends GenericArmo
     }
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight,
-	    int packedOverlay, int light) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay,
+	    int light) {
 	parentHead.render(poseStack, buffer, packedLight, packedOverlay);
     }
 }

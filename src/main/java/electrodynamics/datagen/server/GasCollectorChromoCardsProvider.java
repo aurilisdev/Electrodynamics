@@ -20,6 +20,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
@@ -91,7 +92,8 @@ public class GasCollectorChromoCardsProvider implements DataProvider {
 	    @Nullable TagKey<Biome> biomeTag) {
 	JsonObject json = new JsonObject();
 	json.addProperty(GasCollectorChromoCardsRegister.ITEM_KEY, item);
-	json.addProperty(GasCollectorChromoCardsRegister.GAS_KEY, VoltaicGases.GAS_REGISTRY.getKey(gas).toString());
+	ResourceLocation gasKey = VoltaicGases.GAS_REGISTRY.getKey(gas);
+	json.addProperty(GasCollectorChromoCardsRegister.GAS_KEY, gasKey == null ? "" : gasKey.toString());
 	json.addProperty(GasCollectorChromoCardsRegister.AMOUNT_KEY, amount);
 	json.addProperty(GasCollectorChromoCardsRegister.TEMPERATURE_KEY, temperature);
 	json.addProperty(GasCollectorChromoCardsRegister.PRESSURE_KEY, pressure);

@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -31,9 +29,9 @@ public class RenderCoolantResavoir extends AbstractTileRenderer<TileCoolantResav
     }
 
     @Override
-    public void render(TileCoolantResavoir entity, float tick, @NotNull PoseStack stack,
-	    @NotNull MultiBufferSource source, int light, int overlay) {
-	ComponentFluidHandlerSimple tank = entity.getComponent(IComponentType.FluidHandler);
+    public void render(TileCoolantResavoir entity, float tick, PoseStack stack, MultiBufferSource source, int light,
+	    int overlay) {
+	ComponentFluidHandlerSimple tank = entity.requireComponent(IComponentType.FluidHandler);
 	if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
 	    FluidStack fluid = tank.getFluid();
 	    float yHeight = Math.max(Math.min((float) tank.getFluidAmount() / (float) tank.getCapacity(), MAX_Y),

@@ -6,42 +6,42 @@ import electrodynamics.common.network.type.ElectricNetwork;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.prefab.properties.types.PropertyTypes;
 import voltaic.prefab.properties.variant.SingleProperty;
 import voltaic.prefab.tile.GenericTile;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
-import voltaic.prefab.utilities.object.CachedTileOutput;
 import voltaic.prefab.utilities.object.TransferPack;
 
 public class TileCircuitMonitor extends GenericTile {
 
     public final SingleProperty<Integer> networkProperty = property(
-	    new SingleProperty<>(PropertyTypes.INTEGER, "networkproperty", 0));
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.INTEGER, "networkproperty", 0)).setUpdateServer();
     public final SingleProperty<Integer> booleanOperator = property(
-	    new SingleProperty<>(PropertyTypes.INTEGER, "booleanoperator", 0));
-    public final SingleProperty<Double> value = property(new SingleProperty<>(PropertyTypes.DOUBLE, "value", 0.0));
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.INTEGER, "booleanoperator", 0)).setUpdateServer();
+    public final SingleProperty<Double> value = property(
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.DOUBLE, "value", 0.0)).setUpdateServer();
     public final SingleProperty<Boolean> redstoneSignal = property(
-	    new SingleProperty<>(PropertyTypes.BOOLEAN, "redstonesignal", false).onChange((prop, old) -> {
-		if (level == null || level.isClientSide) {
-		    return;
-		}
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.BOOLEAN, "redstonesignal", false)
+		    .onChange((prop, old) -> {
+			Level level = this.level;
 
-		if (old ^ prop.getValue()) {
-		    level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
-		}
+			if (level == null || level.isClientSide)
+			    return;
 
-	    }).setNoUpdateClient());
+			if (old ^ prop.getValue()) {
+			    level.updateNeighborsAt(worldPosition, getBlockState().getBlock());
+			}
 
-    protected CachedTileOutput output;
+		    }).setNoUpdateClient());
 
     public TileCircuitMonitor(BlockPos worldPos, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_CIRCUITMONITOR.get(), worldPos, blockState);
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 	addComponent(new ComponentElectrodynamic(this, false, false).voltage(-1)
 		.receivePower((transfer, debug) -> TransferPack.EMPTY)
@@ -56,9 +56,9 @@ public class TileCircuitMonitor extends GenericTile {
      * 
      * It shouldn't be too back with the cached output though
      */
-    public void tickServer(ComponentTickable tickable) {
+    public void tickServer(Level level, ComponentTickable tickable) {
 
-	double monitoredValue = getMonitoredValue(tickable.getTicks());
+	double monitoredValue = getMonitoredValue(level);
 	if (monitoredValue < 0) {
 	    redstoneSignal.setValue(false);
 	    return;
@@ -78,33 +78,19 @@ public class TileCircuitMonitor extends GenericTile {
 	return redstoneSignal.getValue() ? 15 : 0;
     }
 
-    public double getMonitoredValue(long ticks) {
-	Direction facing = getFacing();
-	if (output == null) {
-	    output = new CachedTileOutput(level, worldPosition.relative(facing.getOpposite()));
-	}
-	if (ticks % 40 == 0) {
-	    output.update(worldPosition.relative(facing));
-	}
-	if (output.valid() && output.getSafe() instanceof GenericTileWire wire) {
-
-	    ElectricNetwork network = wire.getNetwork();
-
-	    return switch (networkProperty.getValue()) {
-	    case 0 -> network.getActiveTransmitted() / 20.0; // Wattage in watts; network works in joules
-	    case 1 -> network.getActiveVoltage(); // Current network Voltage in volts
-	    case 2 -> network.getAmpacity(); // Maximum Current network can have before a wire is damaged in amps
-	    case 3 -> network.getMinimumVoltage(); // The lowest voltage a connected machine has in volts
-	    case 4 -> network.getResistance(); // The current resistance of the network in ohms
-	    case 5 -> network.getMaxJoulesStored() / 20.0; // The connected load on the network in watts
-	    // case 6 -> TransferPack.joulesVoltage(network.getActiveTransmitted(),
-	    // network.getActiveVoltage()).getAmps();
-	    default -> -1;
-	    };
-	}
-
-	return -1;
-
+    public double getMonitoredValue(Level level) {
+	if (!(level.getBlockEntity(worldPosition.relative(getFacing())) instanceof GenericTileWire wire))
+	    return -1;
+	ElectricNetwork network = wire.getNetwork();
+	return switch (networkProperty.getValue()) {
+	case 0 -> network.getActiveTransmitted() / 20.0;
+	case 1 -> network.getActiveVoltage();
+	case 2 -> network.getAmpacity();
+	case 3 -> network.getMinimumVoltage();
+	case 4 -> network.getResistance();
+	case 5 -> network.getMaxJoulesStored() / 20.0;
+	default -> -1;
+	};
     }
 
     public boolean performCheck(double monitoredValue) {

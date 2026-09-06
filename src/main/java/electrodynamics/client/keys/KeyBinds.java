@@ -16,32 +16,25 @@ public class KeyBinds {
     private static final String ELECTRODYNAMICS_CATEGORY = "keycategory.electrodynamics";
 
     // KEYS
-    public static KeyMapping jetpackAscend;
-    public static KeyMapping switchJetpackMode;
-    public static KeyMapping toggleNvgs;
-    public static KeyMapping switchServoLeggingsMode;
-    public static KeyMapping toggleServoLeggings;
-    public static KeyMapping swapBattery;
-
-    private KeyBinds() {
-    }
+    public static KeyMapping jetpackAscend = createKeyMapping("jetpackascend", InputConstants.KEY_SPACE);
+    public static KeyMapping switchJetpackMode = createKeyMapping("jetpackmode", InputConstants.KEY_M);
+    public static KeyMapping toggleNvgs = createKeyMapping("togglenvgs", InputConstants.KEY_N);
+    public static KeyMapping switchServoLeggingsMode = createKeyMapping("servoleggingsmode", InputConstants.KEY_L);
+    public static KeyMapping toggleServoLeggings = createKeyMapping("toggleservoleggings", InputConstants.KEY_K);
+    public static KeyMapping swapBattery = createKeyMapping("swapbattery", InputConstants.KEY_R);
 
     @SubscribeEvent
-    public static void keyEVent(RegisterKeyMappingsEvent event) {
-	jetpackAscend = registerKey("jetpackascend", InputConstants.KEY_SPACE, event);
-	switchJetpackMode = registerKey("jetpackmode", InputConstants.KEY_M, event);
-	toggleNvgs = registerKey("togglenvgs", InputConstants.KEY_N, event);
-	switchServoLeggingsMode = registerKey("servoleggingsmode", InputConstants.KEY_L, event);
-	toggleServoLeggings = registerKey("toggleservoleggings", InputConstants.KEY_K, event);
-	swapBattery = registerKey("swapbattery", InputConstants.KEY_R, event);
-
+    public static void keyEvent(RegisterKeyMappingsEvent event) {
+	event.register(jetpackAscend);
+	event.register(switchJetpackMode);
+	event.register(toggleNvgs);
+	event.register(switchServoLeggingsMode);
+	event.register(toggleServoLeggings);
+	event.register(swapBattery);
     }
 
-    private static KeyMapping registerKey(String name, int keyCode, RegisterKeyMappingsEvent event) {
-	final var key = new KeyMapping("key." + Electrodynamics.ID + "." + name, keyCode,
-		KeyBinds.ELECTRODYNAMICS_CATEGORY);
-	event.register(key);
-	return key;
+    private static KeyMapping createKeyMapping(String name, int keyCode) {
+	return new KeyMapping("key." + Electrodynamics.ID + "." + name, keyCode, KeyBinds.ELECTRODYNAMICS_CATEGORY);
     }
 
 }

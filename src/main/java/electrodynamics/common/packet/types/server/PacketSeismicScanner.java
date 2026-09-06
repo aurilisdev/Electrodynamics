@@ -46,7 +46,8 @@ public class PacketSeismicScanner implements CustomPacketPayload {
 
     public static enum Type {
 
-	manualping, switchsonarmode;
+	manualping,
+	switchsonarmode;
 
     }
 }

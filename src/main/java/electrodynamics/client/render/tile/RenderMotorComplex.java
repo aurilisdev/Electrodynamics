@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.ElectrodynamicsClientRegister;
@@ -24,13 +22,13 @@ public class RenderMotorComplex extends AbstractTileRenderer<TileMotorComplex> {
     }
 
     @Override
-    public void render(TileMotorComplex tile, float ticks, PoseStack stack, @NotNull MultiBufferSource source,
-	    int light, int overlay) {
+    public void render(TileMotorComplex tile, float ticks, PoseStack stack, MultiBufferSource source, int light,
+	    int overlay) {
 
 	stack.pushPose();
 
 	Direction facing = tile.getFacing();
-	float clientTicks = tile.<ComponentTickable>getComponent(IComponentType.Tickable).getTicks();
+	float clientTicks = tile.<ComponentTickable>requireComponent(IComponentType.Tickable).getTicks();
 	float progressDegrees = 0.0F;
 
 	if (tile.isPowered.getValue()) {
@@ -72,7 +70,7 @@ public class RenderMotorComplex extends AbstractTileRenderer<TileMotorComplex> {
 	}
 	}
 
-	RenderingUtils.renderModel(shaft, tile, RenderType.solid(), stack, source, light, overlay);
+	RenderingUtils.renderModel(shaft, RenderType.solid(), stack, source, light, overlay);
 
 	stack.popPose();
     }

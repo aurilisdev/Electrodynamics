@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -30,22 +28,22 @@ public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer>
     }
 
     @Override
-    public void render(@NotNull TileChemicalMixer tileEntityIn, float partialTicks, PoseStack matrixStackIn,
-	    @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(TileChemicalMixer tileEntityIn, float partialTicks, PoseStack matrixStackIn,
+	    MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 
 	BakedModel ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_CHEMICALMIXERBASE);
 	matrixStackIn.pushPose();
 	RenderingUtils.prepareRotationalTileModel(tileEntityIn, matrixStackIn);
 	matrixStackIn.translate(0, 1 / 16.0, 0);
-	RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn,
-		combinedLightIn, combinedOverlayIn);
+	RenderingUtils.renderModel(ibakedmodel, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
+		combinedOverlayIn);
 	matrixStackIn.popPose();
 
 	matrixStackIn.pushPose();
 	ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_CHEMICALMIXERBLADES);
 	matrixStackIn.translate(0.5, 7.0 / 16.0, 0.5);
 
-	ComponentProcessor proc = tileEntityIn.getComponent(IComponentType.Processor);
+	ComponentProcessor proc = tileEntityIn.requireComponent(IComponentType.Processor);
 
 	float degrees = 0.0F;
 
@@ -57,12 +55,12 @@ public class RenderChemicalMixer extends AbstractTileRenderer<TileChemicalMixer>
 
 	matrixStackIn.mulPose(MathUtils.rotQuaternionDeg(0, degrees, 0));
 	// matrixStackIn.mulPose(new Quaternion(0, degrees, 0, true));
-	RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn,
-		combinedLightIn, combinedOverlayIn);
+	RenderingUtils.renderModel(ibakedmodel, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
+		combinedOverlayIn);
 	matrixStackIn.popPose();
 
 	matrixStackIn.pushPose();
-	ComponentFluidHandlerMulti multi = tileEntityIn.getComponent(IComponentType.FluidHandler);
+	ComponentFluidHandlerMulti multi = tileEntityIn.requireComponent(IComponentType.FluidHandler);
 	FluidStack fluid = null;
 	for (FluidTank tank : multi.getInputTanks()) {
 	    if (!tank.isEmpty()) {

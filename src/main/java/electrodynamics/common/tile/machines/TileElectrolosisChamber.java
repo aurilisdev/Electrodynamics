@@ -2,7 +2,7 @@ package electrodynamics.common.tile.machines;
 
 import java.util.List;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import com.mojang.datafixers.util.Pair;
 
@@ -23,6 +23,7 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -62,19 +63,17 @@ public class TileElectrolosisChamber extends TileMultiblockController {
     private static final int FLUID_OUT_SLAVE_INDEX = 39;
 
     public final SingleProperty<Integer> processAmount = property(
-	    new SingleProperty<>(PropertyTypes.INTEGER, "processamount", 0));
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.INTEGER, "processamount", 0));
     public final SingleProperty<Double> operatingTicks = property(
-	    new SingleProperty<>(PropertyTypes.DOUBLE, "operatingticks", 0.0));
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.DOUBLE, "operatingticks", 0.0));
     public final SingleProperty<Double> neededTicks = property(
-	    new SingleProperty<>(PropertyTypes.DOUBLE, "neededticks", 0.0));
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.DOUBLE, "neededticks", 0.0));
     public final SingleProperty<Boolean> isActive = property(
-	    new SingleProperty<>(PropertyTypes.BOOLEAN, "isactive", false));
-
-    private @Nullable ElectrolosisChamberRecipe currRecipe = null;
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.BOOLEAN, "isactive", false));
+    private @Nullable ElectrolosisChamberRecipe currRecipe;
 
     public TileElectrolosisChamber(BlockPos worldPos, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_ELECTROLOSISCHAMBER.get(), worldPos, blockState);
-
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
 		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 16)
@@ -85,49 +84,47 @@ public class TileElectrolosisChamber extends TileMultiblockController {
 		.setRecipeType(ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_TYPE.get()));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.electrolosischamber.tag(), this)
 		.createMenu((id, player) -> new ContainerElectrolosisChamber(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
 	addComponent(new ComponentInventory(this,
 		ComponentInventory.InventoryBuilder.newInv().bucketInputs(1).bucketOutputs(1))
 		.valid(machineValidator()));
-
     }
 
     @Override
-    public void tickServer(ComponentTickable tickable) {
-	super.tickServer(tickable);
-
-	ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
-	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-
+    public void tickServer(Level level, ComponentTickable tickable) {
+	super.tickServer(level, tickable);
+	ComponentFluidHandlerMulti fluidHandler = requireComponent(IComponentType.FluidHandler);
+	ComponentElectrodynamic electro = requireComponent(IComponentType.Electrodynamic);
 	FluidUtilities.drainItem(this, fluidHandler.getInputTanks());
 	FluidUtilities.fillItem(this, fluidHandler.getOutputTanks());
-
 	outputToPipe();
-
-	if (currRecipe == null) {
-	    for (RecipeHolder<ElectrolosisChamberRecipe> recipe : getLevel().getRecipeManager()
+	ElectrolosisChamberRecipe recipe = currRecipe;
+	if (recipe == null) {
+	    for (RecipeHolder<ElectrolosisChamberRecipe> holder : level.getRecipeManager()
 		    .getAllRecipesFor(ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_TYPE.get())) {
-		if (testRecipe(recipe.value(), fluidHandler.getInputTanks())) {
-		    currRecipe = recipe.value();
+		ElectrolosisChamberRecipe candidate = holder.value();
+		if (testRecipe(candidate, fluidHandler.getInputTanks())) {
+		    recipe = candidate;
+		    currRecipe = candidate;
 		    break;
 		}
 	    }
-	} else if (!testRecipe(currRecipe, fluidHandler.getInputTanks())) {
+	} else if (!testRecipe(recipe, fluidHandler.getInputTanks())) {
+	    recipe = null;
 	    currRecipe = null;
 	}
-
-	if (currRecipe == null || electro.getJoulesStored() <= 0 || !fluidHandler.getOutputTanks()[0].isEmpty()
-		&& !fluidHandler.getOutputTanks()[0].getFluid().is(currRecipe.getFluidRecipeOutput().getFluid())) {
-	    operatingTicks.setValue(0.0);
-	    isActive.setValue(false);
-	    processAmount.setValue(0);
-	    neededTicks.setValue(0.0);
+	if (recipe == null) {
+	    resetProcessing();
 	    return;
 	}
-
+	FluidTank outputTank = fluidHandler.getOutputTanks()[0];
+	if (electro.getJoulesStored() <= 0
+		|| !outputTank.isEmpty() && !outputTank.getFluid().is(recipe.getFluidRecipeOutput().getFluid())) {
+	    resetProcessing();
+	    return;
+	}
 	double energySatisfaction = electro.getJoulesStored()
 		/ ElectrodynamicsConfig.INSTANCE.ELECTROLOSIS_CHAMBER_TARGET_JOULES.get();
-
 	if (energySatisfaction < 1) {
 	    neededTicks.setValue(1.0 / energySatisfaction);
 	    processAmount.setValue(1);
@@ -136,39 +133,35 @@ public class TileElectrolosisChamber extends TileMultiblockController {
 	    operatingTicks.setValue(0.0);
 	    processAmount.setValue((int) energySatisfaction);
 	}
-
-	int room = fluidHandler.getOutputTanks()[0].getCapacity() - fluidHandler.getOutputTanks()[0].getFluidAmount();
-
+	int room = outputTank.getCapacity() - outputTank.getFluidAmount();
 	if (room <= 0) {
 	    isActive.setValue(false);
 	    return;
 	}
-
-	int amtToProcess = Math.min(room, processAmount.getValue());
-
-	amtToProcess = Math.min(amtToProcess, fluidHandler.getInputTanks()[0].getFluidAmount());
-
-	if (amtToProcess <= 0) {
+	FluidTank inputTank = fluidHandler.getInputTanks()[0];
+	int amountToProcess = Math.min(room, processAmount.getValue());
+	amountToProcess = Math.min(amountToProcess, inputTank.getFluidAmount());
+	if (amountToProcess <= 0) {
 	    isActive.setValue(false);
 	    return;
 	}
-
 	electro.setJoulesStored(0);
-
 	isActive.setValue(true);
-
 	if (neededTicks.getValue() > 0 && operatingTicks.getValue() < neededTicks.getValue()) {
 	    operatingTicks.setValue(operatingTicks.getValue() + 1.0);
 	    return;
 	}
-
 	operatingTicks.setValue(0.0);
-
-	fluidHandler.getInputTanks()[0].drain(amtToProcess, IFluidHandler.FluidAction.EXECUTE);
-	fluidHandler.getOutputTanks()[0].fill(
-		new FluidStack(currRecipe.getFluidRecipeOutput().getFluidHolder(), amtToProcess),
+	inputTank.drain(amountToProcess, IFluidHandler.FluidAction.EXECUTE);
+	outputTank.fill(new FluidStack(recipe.getFluidRecipeOutput().getFluidHolder(), amountToProcess),
 		IFluidHandler.FluidAction.EXECUTE);
+    }
 
+    private void resetProcessing() {
+	operatingTicks.setValue(0.0);
+	isActive.setValue(false);
+	processAmount.setValue(0);
+	neededTicks.setValue(0.0);
     }
 
     private static boolean testRecipe(ElectrolosisChamberRecipe recipe, FluidTank[] inputTanks) {
@@ -181,59 +174,40 @@ public class TileElectrolosisChamber extends TileMultiblockController {
     }
 
     private void outputToPipe() {
-
-	if (level == null || level.isClientSide() || !isFormed.getValue()) {
+	Level level = getLevel();
+	if (level == null || level.isClientSide() || !isFormed.getValue())
 	    return;
-	}
-
-	ComponentFluidHandlerMulti component = getComponent(IComponentType.FluidHandler);
-	Direction[] outputDirections = component.outputDirections;
-
-	Direction facing = getFacing();
 
 	List<BlockPos> positions = slavePositions.getValue();
-
-	if (positions == null || positions.size() <= FLUID_OUT_SLAVE_INDEX) {
+	if (positions.size() <= FLUID_OUT_SLAVE_INDEX)
 	    return;
-	}
 
 	BlockPos portPos = positions.get(FLUID_OUT_SLAVE_INDEX);
-
-	if (portPos == null) {
+	if (portPos == null)
 	    return;
-	}
 
-	for (Direction relative : outputDirections) {
-
+	ComponentFluidHandlerMulti component = requireComponent(IComponentType.FluidHandler);
+	Direction facing = getFacing();
+	for (Direction relative : component.outputDirections) {
 	    Direction direction = BlockEntityUtils.getRelativeSide(facing, relative);
-
-	    BlockEntity faceTile = level.getBlockEntity(portPos.relative(direction));
-
-	    if (faceTile == null) {
+	    BlockPos targetPos = portPos.relative(direction);
+	    BlockEntity faceTile = level.getBlockEntity(targetPos);
+	    if (faceTile == null)
 		continue;
-	    }
 
-	    IFluidHandler handler = level.getCapability(Capabilities.FluidHandler.BLOCK, faceTile.getBlockPos(),
+	    IFluidHandler handler = level.getCapability(Capabilities.FluidHandler.BLOCK, targetPos,
 		    faceTile.getBlockState(), faceTile, direction.getOpposite());
-
-	    if (handler == null) {
+	    if (handler == null)
 		continue;
-	    }
 
-	    for (FluidTank fluidTank : component.getOutputTanks()) {
-
-		FluidStack tankFluid = fluidTank.getFluid();
-
-		if (tankFluid.isEmpty()) {
+	    for (FluidTank tank : component.getOutputTanks()) {
+		FluidStack fluid = tank.getFluid();
+		if (fluid.isEmpty())
 		    continue;
-		}
 
-		FluidStack offer = tankFluid.copy();
-
-		int amtAccepted = handler.fill(offer, IFluidHandler.FluidAction.EXECUTE);
-
-		if (amtAccepted > 0) {
-		    fluidTank.drain(amtAccepted, IFluidHandler.FluidAction.EXECUTE);
+		int acceptedAmount = handler.fill(fluid.copy(), IFluidHandler.FluidAction.EXECUTE);
+		if (acceptedAmount > 0) {
+		    tank.drain(acceptedAmount, IFluidHandler.FluidAction.EXECUTE);
 		}
 	    }
 	}
@@ -244,13 +218,11 @@ public class TileElectrolosisChamber extends TileMultiblockController {
 	return null;
     }
 
-    @Nullable
     @Override
-    public IFluidHandler getSlaveFluidHandlerCapability(TileMultiblockSlave slave, @Nullable Direction side) {
-	if (slave.index.getValue() != 35 && slave.index.getValue() != 39) {
+    public @Nullable IFluidHandler getSlaveFluidHandlerCapability(TileMultiblockSlave slave, @Nullable Direction side) {
+	if (slave.index.getValue() != 35 && slave.index.getValue() != 39)
 	    return null;
-	}
-	return this.<IComponentFluidHandler>getComponent(IComponentType.FluidHandler).getCapability(side,
+	return this.<IComponentFluidHandler>requireComponent(IComponentType.FluidHandler).getCapability(side,
 		CapabilityInputType.NONE);
     }
 
@@ -259,14 +231,12 @@ public class TileElectrolosisChamber extends TileMultiblockController {
 	return null;
     }
 
-    @Nullable
     @Override
-    public ICapabilityElectrodynamic getSlaveCapabilityElectrodynamic(TileMultiblockSlave slave,
+    public @Nullable ICapabilityElectrodynamic getSlaveCapabilityElectrodynamic(TileMultiblockSlave slave,
 	    @Nullable Direction side) {
-	if (slave.index.getValue() != 7) {
+	if (slave.index.getValue() != 7)
 	    return null;
-	}
-	return this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic).getCapability(side,
+	return this.<ComponentElectrodynamic>requireComponent(IComponentType.Electrodynamic).getCapability(side,
 		CapabilityInputType.NONE);
     }
 
@@ -276,26 +246,29 @@ public class TileElectrolosisChamber extends TileMultiblockController {
     }
 
     @Override
-    public ItemInteractionResult useWithItem(ItemStack used, Player player, InteractionHand hand, BlockHitResult hit) {
-	if (!level.isClientSide() && hit.getBlockPos().equals(getBlockPos()) && used.getItem() instanceof IWrenchItem) {
+    public ItemInteractionResult useWithItem(Level level, ItemStack used, Player player, InteractionHand hand,
+	    BlockHitResult hit) {
+	if (level.isClientSide)
+	    return super.useWithItem(level, used, player, hand, hit);
+
+	if (hit.getBlockPos().equals(getBlockPos()) && used.getItem() instanceof IWrenchItem) {
 	    checkFormed();
 	    if (isFormed.getValue()) {
 		formMultiblock();
 	    } else {
-		destroyMultiblock();
+		destroyMultiblock(level);
 	    }
 	    return ItemInteractionResult.CONSUME;
-
 	}
-	return super.useWithItem(used, player, hand, hit);
+	return super.useWithItem(level, used, player, hand, hit);
+
     }
 
     @Override
-    public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
-	if (!isFormed.getValue()) {
+    public InteractionResult useWithoutItem(Level level, Player player, BlockHitResult hit) {
+	if (!isFormed.getValue())
 	    return InteractionResult.FAIL;
-	}
-	return super.useWithoutItem(player, hit);
+	return super.useWithoutItem(level, player, hit);
     }
 
     @Override

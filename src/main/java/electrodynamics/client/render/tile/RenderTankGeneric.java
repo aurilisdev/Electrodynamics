@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -32,9 +30,9 @@ public class RenderTankGeneric extends AbstractTileRenderer<GenericTileFluidTank
     }
 
     @Override
-    public void render(GenericTileFluidTank entity, float ticks, @NotNull PoseStack stack,
-	    @NotNull MultiBufferSource source, int light, int overlay) {
-	ComponentFluidHandlerSimple tank = entity.getComponent(IComponentType.FluidHandler);
+    public void render(GenericTileFluidTank entity, float ticks, PoseStack stack, MultiBufferSource source, int light,
+	    int overlay) {
+	ComponentFluidHandlerSimple tank = entity.requireComponent(IComponentType.FluidHandler);
 	if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
 	    FluidStack fluid = tank.getFluid();
 	    float yHeight = Mth.clamp((float) tank.getFluidAmount() / (float) tank.getCapacity(), MIN_Y + 0.065F,

@@ -14,6 +14,7 @@ import electrodynamics.prefab.utilities.object.QuarryArmFrameWrapper;
 import electrodynamics.prefab.utilities.object.QuarryWheelDataHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import voltaic.prefab.utilities.BlockEntityUtils;
 import voltaic.prefab.utilities.math.PrecisionVector;
@@ -28,7 +29,7 @@ import voltaic.prefab.utilities.object.Location;
  */
 public class QuarryRenderManger {
 
-    private QuarryArmFrameWrapper currentFrame = null;
+    private @Nullable QuarryArmFrameWrapper currentFrame = null;
     private boolean onRight = false;
 
     public QuarryRenderManger() {
@@ -37,16 +38,12 @@ public class QuarryRenderManger {
     public void render(TileQuarry quarry) {
 	BlockPos pos = quarry.getBlockPos();
 	HandlerQuarryArm.removeRenderData(pos);
-	if (!quarry.hasCorners() || quarry.miningPos.getValue() == null
-		|| quarry.miningPos.getValue().equals(BlockEntityUtils.OUT_OF_REACH)) {
+	if (!quarry.hasCorners() || quarry.miningPos.getValue().equals(BlockEntityUtils.OUT_OF_REACH))
 	    return;
-	}
 	onRight = quarry.cornerOnRight.getValue();
-	currentFrame = getCurrentFrame(quarry);
-	if (currentFrame == null) {
+	QuarryArmFrameWrapper currentFrame = this.currentFrame = getCurrentFrame(quarry);
+	if (currentFrame == null)
 	    return;
-	}
-
 	BlockPos start = quarry.corners.getValue().get(3);
 	BlockPos end = quarry.corners.getValue().get(0);
 
@@ -63,13 +60,16 @@ public class QuarryRenderManger {
 	List<Pair<PrecisionVector, AABB>> darkSegments = new ArrayList<>();
 	List<Pair<PrecisionVector, AABB>> titanium = new ArrayList<>();
 
-	double x = currentFrame.frame().x();
-	double z = currentFrame.frame().z();
+	Location frame = currentFrame.frame();
+	if (frame == null)
+	    return;
+	double x = frame.x();
+	double z = frame.z();
 	double y = start.getY() + 0.5;
 
 	/* Vertical Arm Segment */
 
-	double deltaY = start.getY() - currentFrame.frame().y() - 1.2;
+	double deltaY = start.getY() - frame.y() - 1.2;
 
 	vertical(x, y, z, deltaY, darkSegments, lightSegments, titanium);
 
@@ -245,7 +245,7 @@ public class QuarryRenderManger {
 
 	    break;
 	default:
-	    break;
+	    return;
 	}
 	HandlerQuarryArm.addRenderData(pos,
 		new QuarryArmDataHolder(lightSegments, darkSegments, titanium, Pair.of(headPos, headAabb), headType,
@@ -1751,20 +1751,17 @@ public class QuarryRenderManger {
 
     }
 
-    @Nullable
-    private QuarryArmFrameWrapper getCurrentFrame(TileQuarry quarry) {
-	if (quarry.miningPos.getValue().equals(BlockEntityUtils.OUT_OF_REACH)) {
+    private @Nullable QuarryArmFrameWrapper getCurrentFrame(TileQuarry quarry) {
+	Level level = quarry.getLevel();
+	if (level == null || quarry.miningPos.getValue().equals(BlockEntityUtils.OUT_OF_REACH))
 	    return new QuarryArmFrameWrapper(null, 0, 0, 0);
-	}
 
 	if (quarry.prevMiningPos.getValue().equals(BlockEntityUtils.OUT_OF_REACH)
-		|| quarry.prevMiningPos.getValue().equals(quarry.miningPos.getValue())) {
+		|| quarry.prevMiningPos.getValue().equals(quarry.miningPos.getValue()))
 	    return new QuarryArmFrameWrapper(new Location(quarry.miningPos.getValue()).add(-0.5, -0.5, -0.5), 0, 0, 0);
-	}
 
-	if (!quarry.hasHead.getValue() || !quarry.isMotorComplexPowered()) {
+	if (!quarry.hasHead.getValue() || !quarry.isMotorComplexPowered(level))
 	    return currentFrame;
-	}
 
 	int numberOfFrames = quarry.speed.getValue();
 	if (numberOfFrames == 0) {
@@ -1778,9 +1775,8 @@ public class QuarryRenderManger {
 	double deltaZ = (quarry.miningPos.getValue().getZ() - quarry.prevMiningPos.getValue().getZ())
 		/ (double) numberOfFrames;
 
-	if (Math.abs(deltaX) + Math.abs(deltaY) + Math.abs(deltaZ) == 0) {
+	if (Math.abs(deltaX) + Math.abs(deltaY) + Math.abs(deltaZ) == 0)
 	    return new QuarryArmFrameWrapper(new Location(quarry.miningPos.getValue().offset(0, -1, 0)), 0, 0, 0);
-	}
 	float degress = 360.0F * ((float) quarry.progressCounter.getValue() / (float) numberOfFrames);
 	int currFrame = quarry.progressCounter.getValue() % numberOfFrames;
 

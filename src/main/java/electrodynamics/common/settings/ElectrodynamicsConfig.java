@@ -3,7 +3,7 @@ package electrodynamics.common.settings;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class ElectrodynamicsConfig {
-    public static ElectrodynamicsConfig INSTANCE;
+    public static ElectrodynamicsConfig INSTANCE = new ElectrodynamicsConfig();
 
     public ModConfigSpec SPEC;
 
@@ -107,7 +107,7 @@ public class ElectrodynamicsConfig {
 
     public ModConfigSpec.DoubleValue ORE_GENERATION_MULTIPLIER;
 
-    public ElectrodynamicsConfig() {
+    private ElectrodynamicsConfig() {
 	var builder = new ModConfigSpec.Builder();
 
 	builder.push("common");

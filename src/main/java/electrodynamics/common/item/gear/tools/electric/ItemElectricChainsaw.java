@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
 import net.minecraft.world.entity.player.Player;
@@ -45,7 +46,7 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
     }
 
     @Override
-    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
 	return true;
     }
 
@@ -79,13 +80,11 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
 
     @Override
     public float getDestroySpeed(ItemStack stack, BlockState state) {
-	if (getJoulesStored(stack) < properties.extract.getJoules()) {
+	if (getJoulesStored(stack) < properties.extract.getJoules())
 	    return 0;
-	}
 
-	if (state.is(BlockTags.LOGS)) {
+	if (state.is(BlockTags.LOGS))
 	    return ElectricItemTier.ELECTRIC_CHAINSAW.getSpeed();
-	}
 
 	return super.getDestroySpeed(stack, state);
     }
@@ -145,9 +144,8 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action,
 	    Player player, SlotAccess access) {
 
-	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access))
 	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-	}
 
 	return true;
 
@@ -160,7 +158,7 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
 
     @Override
     public boolean hasCreativeTab() {
-	return creativeTab != null;
+	return true;
     }
 
     @Override

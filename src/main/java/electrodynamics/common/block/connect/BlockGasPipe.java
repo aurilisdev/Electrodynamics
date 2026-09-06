@@ -2,6 +2,8 @@ package electrodynamics.common.block.connect;
 
 import java.util.HashSet;
 
+import javax.annotation.Nullable;
+
 import com.mojang.serialization.MapCodec;
 
 import electrodynamics.common.network.type.GasNetwork;
@@ -66,10 +68,9 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock<GenericTileGasP
     @Override
     public void entityInside(BlockState state, Level worldIn, BlockPos pos, Entity entityIn) {
 	if (worldIn.getBlockEntity(pos) instanceof TileGasPipe pipe) {
-	    if (worldIn.isClientSide() || pipe.getNetwork() == null && pipe.getNetwork().transmittedThisTick <= 0) {
-		return;
-	    }
 	    GasNetwork network = pipe.getNetwork();
+	    if (worldIn.isClientSide() || network.transmittedThisTick <= 0)
+		return;
 
 	    double multipler = 1.0;// pipe.insulationMaterial == InsulationMaterial.NONE ? 1.0 : 1.2;
 
@@ -88,8 +89,8 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock<GenericTileGasP
     }
 
     @Override
-    public EnumConnectType getConnection(BlockState otherState, BlockEntity otherTile, GenericTileGasPipe thisConductor,
-	    Direction dir) {
+    public EnumConnectType getConnection(BlockState otherState, @Nullable BlockEntity otherTile,
+	    GenericTileGasPipe thisConductor, Direction dir) {
 	EnumConnectType connection = EnumConnectType.NONE;
 	if (otherTile instanceof GenericTileGasPipe) {
 	    connection = EnumConnectType.WIRE;
@@ -100,15 +101,14 @@ public class BlockGasPipe extends AbstractRefreshingConnectBlock<GenericTileGasP
     }
 
     @Override
-    public GenericTileGasPipe getCableIfValid(BlockEntity tile) {
-	if (tile instanceof GenericTileGasPipe pipe) {
+    public @Nullable GenericTileGasPipe getCableIfValid(BlockEntity tile) {
+	if (tile instanceof GenericTileGasPipe pipe)
 	    return pipe;
-	}
 	return null;
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 	return new TileGasPipe(pos, state);
     }
 

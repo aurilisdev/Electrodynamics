@@ -1,7 +1,6 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerFluidTankGeneric;
-import electrodynamics.common.tile.pipelines.fluid.tank.GenericTileFluidTank;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import voltaic.prefab.screen.component.ScreenComponentGeneric;
@@ -15,16 +14,10 @@ public class ScreenFluidTankGeneric extends GenericMaterialScreen<ContainerFluid
 
     public ScreenFluidTankGeneric(ContainerFluidTankGeneric screenContainer, Inventory inv, Component titleIn) {
 	super(screenContainer, inv, titleIn);
-
 	addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.ARROW_RIGHT_OFF, 52, 33));
 	addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.ARROW_RIGHT_OFF, 102, 33));
-	addComponent(new ScreenComponentFluidGauge(() -> {
-	    GenericTileFluidTank boiler = menu.getSafeHost();
-	    if (boiler != null) {
-		return boiler.<ComponentFluidHandlerSimple>getComponent(IComponentType.FluidHandler);
-	    }
-	    return null;
-	}, 81, 18));
+	addComponent(new ScreenComponentFluidGauge(() -> menu.getSafeHost()
+		.map(tile -> tile.<ComponentFluidHandlerSimple>requireComponent(IComponentType.FluidHandler))
+		.orElse(null), 81, 18));
     }
-
 }

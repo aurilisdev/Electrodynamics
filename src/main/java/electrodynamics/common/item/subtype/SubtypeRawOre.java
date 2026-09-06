@@ -27,7 +27,8 @@ public enum SubtypeRawOre implements ISubtype {
 	    () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.vanadium)),
     lepidolite(VoltaicTags.Items.RAW_ORE_LEPIDOLITE,
 	    () -> ElectrodynamicsItems.ITEMS_IMPUREDUST.getValue(SubtypeImpureDust.lithium), null),
-    fluorite(VoltaicTags.Items.RAW_ORE_FLUORITE, null, null), uranium(VoltaicTags.Items.RAW_ORE_URANIUM, null, null),
+    fluorite(VoltaicTags.Items.RAW_ORE_FLUORITE, null, null),
+    uranium(VoltaicTags.Items.RAW_ORE_URANIUM, null, null),
     thorium(VoltaicTags.Items.RAW_ORE_THORIUM, null, null);
 
     public final TagKey<Item> tag;
@@ -36,7 +37,7 @@ public enum SubtypeRawOre implements ISubtype {
     @Nullable
     public final Supplier<Item> grindedItem;
 
-    SubtypeRawOre(TagKey<Item> tag, Supplier<Item> crushedItem, Supplier<Item> grindedItem) {
+    SubtypeRawOre(TagKey<Item> tag, @Nullable Supplier<Item> crushedItem, @Nullable Supplier<Item> grindedItem) {
 	this.tag = tag;
 	this.crushedItem = crushedItem;
 	this.grindedItem = grindedItem;

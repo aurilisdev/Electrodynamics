@@ -57,22 +57,22 @@ public class BlockFrame extends BaseEntityBlock {
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-	if (type == 0) {
+	if (type == 0)
 	    return FRAME;
-	    // room for future expansion
-	}
-	if (type == 1) {
+	// room for future expansion
+	if (type == 1)
 	    return FRAME_CORNER;
-	}
 	return super.getShape(pState, pLevel, pPos, pContext);
     }
 
-    @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
 	FluidState fluidstate = context.getLevel().getFluidState(context.getClickedPos());
-	return super.getStateForPlacement(context)
-		.setValue(VoltaicBlockStates.WATERLOGGED, fluidstate.getType() == Fluids.WATER)
+	BlockState state = super.getStateForPlacement(context);
+	if (state == null)
+	    return null;
+
+	return state.setValue(VoltaicBlockStates.WATERLOGGED, fluidstate.getType() == Fluids.WATER)
 		.setValue(VoltaicBlockStates.FACING, context.getHorizontalDirection().getOpposite());
     }
 
@@ -131,7 +131,7 @@ public class BlockFrame extends BaseEntityBlock {
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 	return new TileFrame(pos, state);
     }
 
@@ -140,7 +140,7 @@ public class BlockFrame extends BaseEntityBlock {
 	if (newState.isAir() && !state.getValue(ElectrodynamicsBlockStates.QUARRY_FRAME_DECAY) && !level.isClientSide) {
 	    BlockEntity entity = level.getBlockEntity(pos);
 	    if (entity != null && entity instanceof TileFrame frame) {
-		frame.purposefullyDestroyed();
+		frame.purposefullyDestroyed(level);
 	    }
 	}
 	super.onRemove(state, level, pos, newState, isMoving);

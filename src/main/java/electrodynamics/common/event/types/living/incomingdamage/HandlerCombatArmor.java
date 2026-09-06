@@ -21,22 +21,19 @@ public class HandlerCombatArmor extends AbstractIncomingDamageHandler {
     @Override
     public void handle(LivingIncomingDamageEvent event) {
 
-	if (!event.getSource().is(DamageTypeTags.IS_FIRE)) {
+	if (!event.getSource().is(DamageTypeTags.IS_FIRE))
 	    return;
-	}
 
 	List<ItemStack> armorPieces = new ArrayList<>();
 	event.getEntity().getArmorSlots().forEach(piece -> armorPieces.add(piece));
 
-	if (!compareArmor(armorPieces, COMBAT_ARMOR)) {
+	if (!compareArmor(armorPieces, COMBAT_ARMOR))
 	    return;
-	}
 
 	GasStack gas = armorPieces.get(1).getOrDefault(VoltaicDataComponentTypes.GAS_STACK, GasStack.EMPTY);
 
-	if (gas.isEmpty()) {
+	if (gas.isEmpty())
 	    return;
-	}
 
 	gas.shrink(1);
 
@@ -47,10 +44,9 @@ public class HandlerCombatArmor extends AbstractIncomingDamageHandler {
     }
 
     private static boolean compareArmor(List<ItemStack> set1, ItemStack[] set2) {
-	if (set1.size() >= 3) {
+	if (set1.size() >= 3)
 	    return set1.get(0).getItem() == set2[3].getItem() && set1.get(1).getItem() == set2[2].getItem()
 		    && set1.get(2).getItem() == set2[1].getItem() && set1.get(3).getItem() == set2[0].getItem();
-	}
 	return false;
     }
 }

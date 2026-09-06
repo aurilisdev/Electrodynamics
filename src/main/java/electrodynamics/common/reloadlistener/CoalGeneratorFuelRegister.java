@@ -41,7 +41,7 @@ import voltaic.Voltaic;
 
 public class CoalGeneratorFuelRegister extends SimplePreparableReloadListener<JsonObject> {
 
-    public static CoalGeneratorFuelRegister INSTANCE = null;
+    public static final CoalGeneratorFuelRegister INSTANCE = new CoalGeneratorFuelRegister();
 
     public static final String KEY = "values";
     public static final String FOLDER = "machines";

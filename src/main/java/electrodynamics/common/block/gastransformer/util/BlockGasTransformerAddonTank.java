@@ -1,5 +1,7 @@
 package electrodynamics.common.block.gastransformer.util;
 
+import javax.annotation.Nullable;
+
 import com.mojang.serialization.MapCodec;
 
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
@@ -39,15 +41,17 @@ public class BlockGasTransformerAddonTank extends GenericMachineBlock {
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
 	BlockState state = super.getStateForPlacement(context);
+	if (state == null)
+	    return null;
+
 	return getStateFromNeighbors(context.getLevel(), context.getClickedPos(), state);
     }
 
     public BlockState getStateFromNeighbors(Level world, BlockPos pos, BlockState baseState) {
-	if (!baseState.hasProperty(ElectrodynamicsBlockStates.ADDONTANK_NEIGHBOR_STATUS)) {
+	if (!baseState.hasProperty(ElectrodynamicsBlockStates.ADDONTANK_NEIGHBOR_STATUS))
 	    return baseState;
-	}
 	BlockState above = world.getBlockState(pos.above());
 	BlockState below = world.getBlockState(pos.below());
 	boolean isTankBelow = below.is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_SIDE)

@@ -26,22 +26,26 @@ public class PacketSetClientGasCollectorCards implements CustomPacketPayload {
 	    PACKET_SETCLIENTGASCOLLECTORCARDS_PACKETID);
 
     public static final StreamCodec<RegistryFriendlyByteBuf, PacketSetClientGasCollectorCards> CODEC = new StreamCodec<>() {
-
 	@Override
 	public void encode(RegistryFriendlyByteBuf buf, PacketSetClientGasCollectorCards packet) {
 	    buf.writeInt(packet.results.size());
+
 	    for (Map.Entry<Item, GasCollectorChromoCardsRegister.AtmosphericResult> entry : packet.results.entrySet()) {
+		GasCollectorChromoCardsRegister.AtmosphericResult result = entry.getValue();
+		ResourceKey<Biome> biome = result.biome();
+		TagKey<Biome> biomeTag = result.biomeTag();
+
 		ItemStack.STREAM_CODEC.encode(buf, new ItemStack(entry.getKey()));
-		GasStack.STREAM_CODEC.encode(buf, entry.getValue().stack());
-		if (entry.getValue().biome() != null || entry.getValue().biomeTag() != null) {
+		GasStack.STREAM_CODEC.encode(buf, result.stack());
+
+		if (biome != null) {
 		    buf.writeBoolean(true);
-		    if (entry.getValue().biome() != null) {
-			buf.writeBoolean(true);
-			buf.writeResourceLocation(entry.getValue().biome().location());
-		    } else {
-			buf.writeBoolean(false);
-			buf.writeResourceLocation(entry.getValue().biomeTag().location());
-		    }
+		    buf.writeBoolean(true);
+		    buf.writeResourceLocation(biome.location());
+		} else if (biomeTag != null) {
+		    buf.writeBoolean(true);
+		    buf.writeBoolean(false);
+		    buf.writeResourceLocation(biomeTag.location());
 		} else {
 		    buf.writeBoolean(false);
 		}

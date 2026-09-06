@@ -6,13 +6,13 @@ import electrodynamics.registers.ElectrodynamicsRecipies;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentProcessor;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.tile.types.GenericMaterialTile;
@@ -26,7 +26,7 @@ public class TileChemicalMixer extends GenericMaterialTile {
     public TileChemicalMixer(BlockPos worldPosition, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_CHEMICALMIXER.get(), worldPosition, blockState);
 	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
 		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2));
@@ -43,19 +43,19 @@ public class TileChemicalMixer extends GenericMaterialTile {
 			BlockEntityUtils.MachineDirection.BOTTOM)
 		.validUpgrades(ContainerChemicalMixer.VALID_UPGRADES).valid(machineValidator()));
 	addComponent(new ComponentProcessor(this)
-		.canProcess((component, procNumber) -> component.outputToFluidPipe().consumeBucket().dispenseBucket()
-			.canProcessFluidItem2FluidRecipe(procNumber, ElectrodynamicsRecipies.CHEMICAL_MIXER_TYPE.get()))
+		.canProcess((component, level, procNumber) -> component.outputToFluidPipe().consumeBucket()
+			.dispenseBucket().canProcessFluidItem2FluidRecipe(level, procNumber,
+				ElectrodynamicsRecipies.CHEMICAL_MIXER_TYPE.get()))
 		.process(ComponentProcessor::processFluidItem2FluidRecipe));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.chemicalmixer.tag(), this)
 		.createMenu((id, player) -> new ContainerChemicalMixer(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
 
     }
 
-    protected void tickClient(ComponentTickable tickable) {
-	if (!this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0)) {
+    protected void tickClient(Level level, ComponentTickable tickable) {
+	if (!this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0))
 	    return;
-	}
 
 	if (level.random.nextDouble() < 0.15) {
 	    level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(),
@@ -66,8 +66,8 @@ public class TileChemicalMixer extends GenericMaterialTile {
     }
 
     @Override
-    public int getComparatorSignal() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
+    public int getComparatorSignal(Level level) {
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
     }
 
 }

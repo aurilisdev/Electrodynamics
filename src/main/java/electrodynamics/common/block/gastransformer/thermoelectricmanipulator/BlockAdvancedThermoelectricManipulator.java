@@ -1,5 +1,7 @@
 package electrodynamics.common.block.gastransformer.thermoelectricmanipulator;
 
+import javax.annotation.Nullable;
+
 import com.mojang.serialization.MapCodec;
 
 import electrodynamics.common.block.gastransformer.util.BlockGenericAdvancedGasTransformer;
@@ -25,15 +27,18 @@ public class BlockAdvancedThermoelectricManipulator extends BlockGenericAdvanced
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-	if (state.hasProperty(VoltaicBlockStates.LIT) && state.getValue(VoltaicBlockStates.LIT)) {
+	if (state.hasProperty(VoltaicBlockStates.LIT) && state.getValue(VoltaicBlockStates.LIT))
 	    return 15;
-	}
 	return super.getLightEmission(state, level, pos);
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-	return super.getStateForPlacement(context).setValue(VoltaicBlockStates.LIT, false).setValue(
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+	BlockState state = super.getStateForPlacement(context);
+	if (state == null)
+	    return null;
+
+	return state.setValue(VoltaicBlockStates.LIT, false).setValue(
 		ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS,
 		ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF);
     }

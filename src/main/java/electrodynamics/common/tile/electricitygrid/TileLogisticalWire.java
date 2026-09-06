@@ -2,6 +2,7 @@ package electrodynamics.common.tile.electricitygrid;
 
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
@@ -15,10 +16,10 @@ public class TileLogisticalWire extends TileWire {
 	forceComponent(new ComponentTickable(this).tickServer(this::tickServer).tickClient(this::tickClient));
     }
 
-    private void tickClient(ComponentTickable componentTickable) {
+    private void tickClient(Level level, ComponentTickable componentTickable) {
     }
 
-    protected void tickServer(ComponentTickable component) {
+    protected void tickServer(Level level, ComponentTickable component) {
 	if (component.getTicks() % 10 == 0) {
 	    boolean shouldPower = getNetwork().getActiveTransmitted() > 0;
 	    if (shouldPower != isPowered) {

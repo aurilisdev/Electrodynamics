@@ -8,12 +8,12 @@ import java.util.Locale;
 
 import javax.annotation.Nullable;
 
-import org.jetbrains.annotations.NotNull;
-
 import electrodynamics.common.block.connect.BlockWire;
+import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
@@ -898,9 +898,9 @@ public enum SubtypeWire implements ISubtype, IWire {
     private final TagKey<Item> itemTag;
 
     private SubtypeWire(WireMaterial conductor, InsulationMaterial insulation, WireClass wireClass, WireColor color,
-	    WireColor defaultColor, double dividend, TagKey<Item> tag) {
+	    WireColor defaultColor, double dividend, @Nullable TagKey<Item> tag) {
 	resistance = conductor.resistance / dividend;
-	this.ampacity = (long) (conductor.ampacity * dividend);
+	ampacity = (long) (conductor.ampacity * dividend);
 	this.conductor = conductor;
 	this.insulation = insulation;
 	this.wireClass = wireClass;
@@ -960,9 +960,8 @@ public enum SubtypeWire implements ISubtype, IWire {
 	return defaultColor;
     }
 
-    @org.jetbrains.annotations.Nullable
     @Override
-    public TagKey<Item> getItemTag() {
+    public @Nullable TagKey<Item> getItemTag() {
 	return itemTag;
     }
 
@@ -986,10 +985,8 @@ public enum SubtypeWire implements ISubtype, IWire {
 	return isDefaultColor;
     }
 
-    @Nullable
-    public static BlockWire getWire(IWireMaterial wireMaterial, IInsulationMaterial insulation, IWireClass wireClass,
-	    IWireColor color) {
-
+    public static @Nullable BlockWire getWire(IWireMaterial wireMaterial, IInsulationMaterial insulation,
+	    IWireClass wireClass, IWireColor color) {
 	return WIRES.getOrDefault(wireMaterial, new HashMap<>()).getOrDefault(insulation, new HashMap<>())
 		.getOrDefault(wireClass, new HashMap<>()).getOrDefault(color, null);
     }
@@ -1013,14 +1010,6 @@ public enum SubtypeWire implements ISubtype, IWire {
 	return list.toArray(new BlockWire[0]);
     }
 
-    /**
-     * A distinction is made between this and WireClass, as there can be multiple
-     * different wires with the same insulation but different properties like the
-     * Logistical Wire. It shares the same insulation value as the standard
-     * Insulated wire
-     *
-     * @author skip999
-     */
     public static enum InsulationMaterial implements IInsulationMaterial {
 
 	BARE(false, true, 0, 1,
@@ -1052,7 +1041,7 @@ public enum SubtypeWire implements ISubtype, IWire {
 	    this.shockVoltage = shockVoltage;
 	    this.radius = radius;
 	    this.material = material;
-	    this.soundType = sounndType;
+	    soundType = sounndType;
 	}
 
 	@Override
@@ -1094,7 +1083,11 @@ public enum SubtypeWire implements ISubtype, IWire {
      */
     public static enum WireClass implements IWireClass {
 
-	BARE(false), INSULATED(false), THICK(false), CERAMIC(false), LOGISTICAL(true);
+	BARE(false),
+	INSULATED(false),
+	THICK(false),
+	CERAMIC(false),
+	LOGISTICAL(true);
 
 	private final boolean conductsRedstone;
 
@@ -1118,9 +1111,12 @@ public enum SubtypeWire implements ISubtype, IWire {
     public static enum WireMaterial implements IWireMaterial {
 
 	COPPER(0.0030096, 360, 1.68E-8D), // annealed copper
-	GOLD(0.004294, 1000, 2.44E-8D), IRON(0.01709, 100, 1.0E-7D), SILVER(0.0027984, 600, 1.59E-8D),
-	SUPERCONDUCTIVE(0, Long.MAX_VALUE, 0D), TIN(0.020064, 60, 1.09E-7D); // Tin has 15% the conductivity of copper.
-									     // Tin resistance = copper / 0.15
+	GOLD(0.004294, 1000, 2.44E-8D),
+	IRON(0.01709, 100, 1.0E-7D),
+	SILVER(0.0027984, 600, 1.59E-8D),
+	SUPERCONDUCTIVE(0, Long.MAX_VALUE, 0D),
+	TIN(0.020064, 60, 1.09E-7D); // Tin has 15% the conductivity of copper.
+				     // Tin resistance = copper / 0.15
 
 	public static final double BASELINE_TEMP_K = 293.15D;
 
@@ -1206,23 +1202,31 @@ public enum SubtypeWire implements ISubtype, IWire {
     // based on NEC wire colors + The vanilla dyes
     public static enum WireColor implements IWireColor {
 
-	NONE(255, 255, 255, 255, null), BLACK(40, 40, 40, 255, Tags.Items.DYES_BLACK),
-	RED(200, 0, 0, 255, Tags.Items.DYES_RED), WHITE(255, 255, 255, 255, Tags.Items.DYES_WHITE),
-	GREEN(24, 147, 50, 255, Tags.Items.DYES_GREEN), BLUE(68, 140, 203, 255, Tags.Items.DYES_BLUE),
-	YELLOW(250, 240, 104, 255, Tags.Items.DYES_YELLOW), BROWN(102, 78, 55, 255, Tags.Items.DYES_BROWN),
-	ORANGE(249, 128, 29, 255, Tags.Items.DYES_ORANGE), LIME(128, 199, 31, 255, Tags.Items.DYES_LIME),
-	LIGHTBLUE(58, 179, 218, 255, Tags.Items.DYES_LIGHT_BLUE), CYAN(22, 156, 156, 255, Tags.Items.DYES_CYAN),
-	PURPLE(174, 114, 241, 255, Tags.Items.DYES_PURPLE), MAGENTA(199, 78, 189, 255, Tags.Items.DYES_MAGENTA),
-	PINK(243, 139, 170, 255, Tags.Items.DYES_PINK), LIGHTGRAY(157, 157, 151, 255, Tags.Items.DYES_LIGHT_GRAY),
+	NONE(255, 255, 255, 255, null),
+	BLACK(40, 40, 40, 255, Tags.Items.DYES_BLACK),
+	RED(200, 0, 0, 255, Tags.Items.DYES_RED),
+	WHITE(255, 255, 255, 255, Tags.Items.DYES_WHITE),
+	GREEN(24, 147, 50, 255, Tags.Items.DYES_GREEN),
+	BLUE(68, 140, 203, 255, Tags.Items.DYES_BLUE),
+	YELLOW(250, 240, 104, 255, Tags.Items.DYES_YELLOW),
+	BROWN(102, 78, 55, 255, Tags.Items.DYES_BROWN),
+	ORANGE(249, 128, 29, 255, Tags.Items.DYES_ORANGE),
+	LIME(128, 199, 31, 255, Tags.Items.DYES_LIME),
+	LIGHTBLUE(58, 179, 218, 255, Tags.Items.DYES_LIGHT_BLUE),
+	CYAN(22, 156, 156, 255, Tags.Items.DYES_CYAN),
+	PURPLE(174, 114, 241, 255, Tags.Items.DYES_PURPLE),
+	MAGENTA(199, 78, 189, 255, Tags.Items.DYES_MAGENTA),
+	PINK(243, 139, 170, 255, Tags.Items.DYES_PINK),
+	LIGHTGRAY(157, 157, 151, 255, Tags.Items.DYES_LIGHT_GRAY),
 	GRAY(71, 79, 82, 255, Tags.Items.DYES_GRAY);
-
-	public final Color color;
-	@Nullable
-	public final TagKey<Item> dyeTag;
 
 	public static final HashSet<IWireColor> WIRE_COLORS = new HashSet<>();
 
-	private WireColor(int r, int g, int b, int a, TagKey<Item> dyeTag) {
+	public final Color color;
+
+	public final @Nullable TagKey<Item> dyeTag;
+
+	private WireColor(int r, int g, int b, int a, @Nullable TagKey<Item> dyeTag) {
 	    color = new Color(r, g, b, a);
 	    this.dyeTag = dyeTag;
 	}
@@ -1232,27 +1236,48 @@ public enum SubtypeWire implements ISubtype, IWire {
 	    return super.toString().toLowerCase(Locale.ROOT);
 	}
 
-	@Nullable
-	public static IWireColor getColorFromDye(ItemStack item) {
+	public static @Nullable IWireColor getColorFromDye(ItemStack item) {
 	    for (IWireColor color : WIRE_COLORS) {
-		if (color.getDyeTag() != null && item.is(color.getDyeTag())) {
+		TagKey<Item> dyeTag = color.getDyeTag();
+		if (dyeTag != null && item.is(dyeTag))
 		    return color;
-		}
 	    }
 	    return null;
 	}
 
-	@NotNull
 	@Override
 	public Color getColor() {
 	    return color;
 	}
 
-	@NotNull
 	@Override
-	public TagKey<Item> getDyeTag() {
+	public @Nullable TagKey<Item> getDyeTag() {
 	    return dyeTag;
 	}
     }
 
+    public static Item getWoolFromWireColor(IWireColor color) {
+	if (!(color instanceof WireColor wireColor))
+	    return ElectrodynamicsItems.ITEM_INSULATION.get();
+
+	return switch (wireColor) {
+	case BLACK -> Items.BLACK_WOOL;
+	case RED -> Items.RED_WOOL;
+	case WHITE -> Items.WHITE_WOOL;
+	case GREEN -> Items.GREEN_WOOL;
+	case BLUE -> Items.BLUE_WOOL;
+	case YELLOW -> Items.YELLOW_WOOL;
+	case BROWN -> Items.BROWN_WOOL;
+	case ORANGE -> Items.ORANGE_WOOL;
+	case LIME -> Items.LIME_WOOL;
+	case LIGHTBLUE -> Items.LIGHT_BLUE_WOOL;
+	case CYAN -> Items.CYAN_WOOL;
+	case PURPLE -> Items.PURPLE_WOOL;
+	case MAGENTA -> Items.MAGENTA_WOOL;
+	case PINK -> Items.PINK_WOOL;
+	case LIGHTGRAY -> Items.LIGHT_GRAY_WOOL;
+	case GRAY -> Items.GRAY_WOOL;
+	case NONE -> ElectrodynamicsItems.ITEM_INSULATION.get();
+	};
+    }
 }

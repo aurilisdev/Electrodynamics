@@ -28,6 +28,8 @@ import electrodynamics.datagen.DataGenerators;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.Tags;
@@ -2981,89 +2983,77 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
     }
 
     private static void addWires(RecipeOutput output) {
-
 	// Insulated Wires
 	for (SubtypeWire wire : DataGenerators.getWires(WireMaterial.values(), InsulationMaterial.WOOL,
 		WireClass.INSULATED, WireColor.BLACK)) {
-
-	    SubtypeWire uninsulated = DataGenerators.getWire(wire.getWireMaterial(), InsulationMaterial.BARE,
-		    WireClass.BARE, WireColor.NONE);
-
+	    SubtypeWire uninsulated = DataGenerators
+		    .getWire(wire.getWireMaterial(), InsulationMaterial.BARE, WireClass.BARE, WireColor.NONE)
+		    .orElseThrow(() -> new IllegalStateException(
+			    "Missing bare wire for material " + wire.getWireMaterial()));
 	    ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 1)
-		    //
 		    .addIngredient(ElectrodynamicsItems.ITEMS_WIRE.getValue(uninsulated))
-		    //
 		    .addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
-		    //
 		    .complete(Electrodynamics.ID, "wire_" + wire.name(), output);
-
 	}
 
 	// Logistics Wires
 	for (SubtypeWire wire : DataGenerators.getWires(WireMaterial.values(), InsulationMaterial.WOOL,
 		WireClass.LOGISTICAL, WireColor.BLACK)) {
-
-	    SubtypeWire insulated = DataGenerators.getWire(wire.getWireMaterial(), InsulationMaterial.WOOL,
-		    WireClass.INSULATED, WireColor.BLACK);
-
+	    SubtypeWire insulated = DataGenerators
+		    .getWire(wire.getWireMaterial(), InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.BLACK)
+		    .orElseThrow(() -> new IllegalStateException(
+			    "Missing insulated wire for material " + wire.getWireMaterial()));
+	    TagKey<Item> itemTag = insulated.getItemTag();
+	    if (itemTag == null)
+		continue;
 	    ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 1)
-		    //
-		    .addIngredient(insulated.getItemTag())
-		    //
-		    .addIngredient(Tags.Items.DUSTS_REDSTONE)
-		    //
+		    .addIngredient(itemTag).addIngredient(Tags.Items.DUSTS_REDSTONE)
 		    .complete(Electrodynamics.ID, "wire_" + wire.name(), output);
-
 	}
 
 	// Ceramic Insulated
 	for (SubtypeWire wire : DataGenerators.getWires(WireMaterial.values(), InsulationMaterial.CERAMIC,
 		WireClass.CERAMIC, WireColor.BROWN)) {
-
-	    SubtypeWire insulated = DataGenerators.getWire(wire.getWireMaterial(), InsulationMaterial.WOOL,
-		    WireClass.INSULATED, WireColor.BLACK);
-
+	    SubtypeWire insulated = DataGenerators
+		    .getWire(wire.getWireMaterial(), InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.BLACK)
+		    .orElseThrow(() -> new IllegalStateException(
+			    "Missing insulated wire for material " + wire.getWireMaterial()));
+	    TagKey<Item> itemTag = insulated.getItemTag();
+	    if (itemTag == null)
+		continue;
 	    ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 1)
-		    //
-		    .addIngredient(insulated.getItemTag())
-		    //
-		    .addIngredient(ElectrodynamicsItems.ITEM_CERAMICINSULATION.get())
-		    //
+		    .addIngredient(itemTag).addIngredient(ElectrodynamicsItems.ITEM_CERAMICINSULATION.get())
 		    .complete(Electrodynamics.ID, "wire_" + wire.name(), output);
-
 	}
 
 	// Highly Insulated
 	for (SubtypeWire wire : DataGenerators.getWires(WireMaterial.values(), InsulationMaterial.THICK_WOOL,
 		WireClass.THICK, WireColor.BLACK)) {
-
-	    SubtypeWire insulated = DataGenerators.getWire(wire.getWireMaterial(), InsulationMaterial.WOOL,
-		    WireClass.INSULATED, WireColor.BLACK);
-
-	    ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 2)
-		    //
-		    .addIngredient(insulated.getItemTag())
-		    //
-		    .addIngredient(insulated.getItemTag())
-		    //
-		    .addIngredient(insulated.getItemTag())
-		    //
+	    SubtypeWire insulated = DataGenerators
+		    .getWire(wire.getWireMaterial(), InsulationMaterial.WOOL, WireClass.INSULATED, WireColor.BLACK)
+		    .orElseThrow(() -> new IllegalStateException(
+			    "Missing insulated wire for material " + wire.getWireMaterial()));
+	    TagKey<Item> itemTag = insulated.getItemTag();
+	    if (itemTag == null)
+		continue;
+	    ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 1)
+		    .addIngredient(itemTag).addIngredient(itemTag).addIngredient(itemTag)
 		    .addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
-		    //
 		    .addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
-		    //
 		    .addIngredient(ElectrodynamicsItems.ITEM_INSULATION.get())
-		    //
 		    .complete(Electrodynamics.ID, "wire_" + wire.name(), output);
-
 	}
-
 	// Insulated Wires
 	for (SubtypeWire wire : DataGenerators.getWires(WireMaterial.values(), InsulationMaterial.WOOL,
 		WireClass.INSULATED, WireColor.values())) {
 	    if (wire.getWireColor().getDyeTag() == null) {
 		continue;
 	    }
+	    TagKey<Item> itemTag = wire.getItemTag();
+	    TagKey<Item> dyeTag = wire.getWireColor().getDyeTag();
+	    if (itemTag == null || dyeTag == null)
+		continue;
+
 	    ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 8)
 		    //
 		    .addPattern("WWW")
@@ -3072,17 +3062,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		    //
 		    .addPattern("WWW")
 		    //
-		    .addKey('W', wire.getItemTag())
+		    .addKey('W', itemTag)
 		    //
-		    .addKey('D', wire.getWireColor().getDyeTag())
+		    .addKey('D', dyeTag)
 		    //
 		    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_multi", output);
 
 	    ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 1)
 		    //
-		    .addIngredient(wire.getItemTag())
+		    .addIngredient(itemTag)
 		    //
-		    .addIngredient(wire.getWireColor().getDyeTag())
+		    .addIngredient(dyeTag)
 		    //
 		    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_single", output);
 	}
@@ -3093,6 +3083,10 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 	    if (wire.getWireColor().getDyeTag() == null) {
 		continue;
 	    }
+	    TagKey<Item> itemTag = wire.getItemTag();
+	    TagKey<Item> dyeTag = wire.getWireColor().getDyeTag();
+	    if (itemTag == null || dyeTag == null)
+		continue;
 	    ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 8)
 		    //
 		    .addPattern("WWW")
@@ -3101,17 +3095,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		    //
 		    .addPattern("WWW")
 		    //
-		    .addKey('W', wire.getItemTag())
+		    .addKey('W', itemTag)
 		    //
-		    .addKey('D', wire.getWireColor().getDyeTag())
+		    .addKey('D', dyeTag)
 		    //
 		    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_multi", output);
 
 	    ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 1)
 		    //
-		    .addIngredient(wire.getItemTag())
+		    .addIngredient(itemTag)
 		    //
-		    .addIngredient(wire.getWireColor().getDyeTag())
+		    .addIngredient(dyeTag)
 		    //
 		    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_single", output);
 	}
@@ -3122,6 +3116,10 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 	    if (wire.getWireColor().getDyeTag() == null) {
 		continue;
 	    }
+	    TagKey<Item> itemTag = wire.getItemTag();
+	    TagKey<Item> dyeTag = wire.getWireColor().getDyeTag();
+	    if (itemTag == null || dyeTag == null)
+		continue;
 	    ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 8)
 		    //
 		    .addPattern("WWW")
@@ -3130,17 +3128,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		    //
 		    .addPattern("WWW")
 		    //
-		    .addKey('W', wire.getItemTag())
+		    .addKey('W', itemTag)
 		    //
-		    .addKey('D', wire.getWireColor().getDyeTag())
+		    .addKey('D', dyeTag)
 		    //
 		    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_multi", output);
 
 	    ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 1)
 		    //
-		    .addIngredient(wire.getItemTag())
+		    .addIngredient(itemTag)
 		    //
-		    .addIngredient(wire.getWireColor().getDyeTag())
+		    .addIngredient(dyeTag)
 		    //
 		    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_single", output);
 	}
@@ -3151,6 +3149,10 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 	    if (wire.getWireColor().getDyeTag() == null) {
 		continue;
 	    }
+	    TagKey<Item> itemTag = wire.getItemTag();
+	    TagKey<Item> dyeTag = wire.getWireColor().getDyeTag();
+	    if (itemTag == null || dyeTag == null)
+		continue;
 	    ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 8)
 		    //
 		    .addPattern("WWW")
@@ -3159,17 +3161,17 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		    //
 		    .addPattern("WWW")
 		    //
-		    .addKey('W', wire.getItemTag())
+		    .addKey('W', itemTag)
 		    //
-		    .addKey('D', wire.getWireColor().getDyeTag())
+		    .addKey('D', dyeTag)
 		    //
 		    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_multi", output);
 
 	    ShapelessCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEMS_WIRE.getValue(wire), 1)
 		    //
-		    .addIngredient(wire.getItemTag())
+		    .addIngredient(itemTag)
 		    //
-		    .addIngredient(wire.getWireColor().getDyeTag())
+		    .addIngredient(dyeTag)
 		    //
 		    .complete(Electrodynamics.ID, "wire_" + wire.name() + "_single", output);
 	}

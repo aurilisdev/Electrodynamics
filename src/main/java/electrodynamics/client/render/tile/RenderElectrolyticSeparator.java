@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -32,9 +30,9 @@ public class RenderElectrolyticSeparator extends AbstractTileRenderer<TileElectr
     }
 
     @Override
-    public void render(TileElectrolyticSeparator entity, float ticks, @NotNull PoseStack stack,
-	    @NotNull MultiBufferSource source, int light, int overlay) {
-	FluidTank tank = entity.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler)
+    public void render(TileElectrolyticSeparator entity, float ticks, PoseStack stack, MultiBufferSource source,
+	    int light, int overlay) {
+	FluidTank tank = entity.<ComponentFluidHandlerMulti>requireComponent(IComponentType.FluidHandler)
 		.getInputTanks()[0];
 	if (!tank.isEmpty() && tank.getFluidAmount() > 0) {
 	    FluidStack fluid = tank.getFluid();

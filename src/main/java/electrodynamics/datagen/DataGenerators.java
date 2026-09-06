@@ -5,10 +5,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
-
-import javax.annotation.Nullable;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeWire;
@@ -60,40 +59,27 @@ public class DataGenerators {
 	}
     }
 
-    @Nullable
-    public static SubtypeWire getWire(IWire.IWireMaterial conductor, SubtypeWire.InsulationMaterial insulation,
-	    SubtypeWire.WireClass wireClass, SubtypeWire.WireColor color) {
-
-	for (SubtypeWire wire : WIRES.getOrDefault(wireClass, new HashSet<>())) {
-	    if (wire.getWireMaterial() == conductor && wire.getInsulation() == insulation
-		    && wire.getWireClass() == wireClass && wire.getWireColor() == color) {
-		return wire;
-	    }
-	}
-	return null;
+    public static Optional<SubtypeWire> getWire(IWire.IWireMaterial conductor,
+	    SubtypeWire.InsulationMaterial insulation, SubtypeWire.WireClass wireClass, SubtypeWire.WireColor color) {
+	var wires = WIRES.get(wireClass);
+	if (wires == null)
+	    return Optional.empty();
+	return wires.stream().filter(wire -> wire.getWireMaterial() == conductor && wire.getInsulation() == insulation
+		&& wire.getWireClass() == wireClass && wire.getWireColor() == color).findFirst();
     }
 
     public static SubtypeWire[] getWires(IWire.IWireMaterial[] conductors, SubtypeWire.InsulationMaterial insulation,
 	    SubtypeWire.WireClass wireClass, SubtypeWire.WireColor... colors) {
-
-	List<SubtypeWire> list = new ArrayList<>();
-
-	SubtypeWire wire;
+	List<SubtypeWire> wires = new ArrayList<>();
 	for (IWire.IWireMaterial conductor : conductors) {
-	    for (SubtypeWire.WireColor color : colors) {
-		wire = getWire(conductor, insulation, wireClass, color);
-		if (wire != null) {
-		    list.add(wire);
-		}
-	    }
+	    for (SubtypeWire.WireColor color : colors)
+		getWire(conductor, insulation, wireClass, color).ifPresent(wires::add);
 	}
-
-	return list.toArray(new SubtypeWire[0]);
+	return wires.toArray(SubtypeWire[]::new);
     }
 
     @SubscribeEvent
     public static void gatherData(GatherDataEvent event) {
-
 	DataGenerator generator = event.getGenerator();
 
 	PackOutput output = generator.getPackOutput();

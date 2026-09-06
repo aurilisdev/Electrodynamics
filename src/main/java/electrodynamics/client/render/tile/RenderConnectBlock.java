@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -18,13 +16,12 @@ public class RenderConnectBlock extends AbstractTileRenderer<GenericConnectTile>
     }
 
     @Override
-    public void render(@NotNull GenericConnectTile tile, float partialTick, @NotNull PoseStack poseStack,
-	    @NotNull MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+    public void render(GenericConnectTile tile, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource,
+	    int packedLight, int packedOverlay) {
 	BlockState state = tile.getBlockState();
 
-	if (!state.getValue(VoltaicBlockStates.HAS_SCAFFOLDING)) {
+	if (!state.getValue(VoltaicBlockStates.HAS_SCAFFOLDING))
 	    return;
-	}
 
 	BlockState blockToRender;
 

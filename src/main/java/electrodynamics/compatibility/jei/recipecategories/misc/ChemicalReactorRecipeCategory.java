@@ -223,11 +223,12 @@ public class ChemicalReactorRecipeCategory extends AbstractRecipeCategory<Chemic
 	SlotDataWrapper wrapper;
 	for (int i = 0; i < inputSlotWrappers.length; i++) {
 	    wrapper = inputSlotWrappers[i];
-	    if (inputs.get(i).isEmpty()) {
-		continue;
+	    if (wrapper != null) {
+		if (inputs.get(i).isEmpty()) {
+		    continue;
+		}
+		builder.addSlot(wrapper.role(), wrapper.x(), wrapper.y()).addItemStacks(inputs.get(i));
 	    }
-	    builder.addSlot(wrapper.role(), wrapper.x(), wrapper.y()).addItemStacks(inputs.get(i));
-
 	}
     }
 
@@ -236,12 +237,14 @@ public class ChemicalReactorRecipeCategory extends AbstractRecipeCategory<Chemic
 	SlotDataWrapper wrapper;
 	for (int i = 0; i < outputSlotWrappers.length; i++) {
 	    wrapper = outputSlotWrappers[i];
-	    if (i < outputs.size()) {
-		if (outputs.get(i).isEmpty()) {
-		    continue;
-		}
-		builder.addSlot(wrapper.role(), wrapper.x(), wrapper.y()).addItemStack(outputs.get(i));
+	    if (wrapper != null) {
+		if (i < outputs.size()) {
+		    if (outputs.get(i).isEmpty()) {
+			continue;
+		    }
+		    builder.addSlot(wrapper.role(), wrapper.x(), wrapper.y()).addItemStack(outputs.get(i));
 
+		}
 	    }
 	}
     }
@@ -327,7 +330,6 @@ public class ChemicalReactorRecipeCategory extends AbstractRecipeCategory<Chemic
 
     @Override
     public void setGasInputs(List<List<GasStack>> inputs, IRecipeLayoutBuilder builder) {
-
 	AbstractGasGaugeObject wrapper;
 	RecipeIngredientRole role = RecipeIngredientRole.INPUT;
 	List<GasStack> stacks;

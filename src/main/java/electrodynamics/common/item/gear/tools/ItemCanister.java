@@ -50,21 +50,18 @@ public class ItemCanister extends ItemVoltaic {
 
 	items.add(new ItemStack(this));
 
-	if (Capabilities.FluidHandler.ITEM == null) {
+	if (Capabilities.FluidHandler.ITEM == null)
 	    return;
-	}
 
 	BuiltInRegistries.FLUID.stream().forEach(fluid -> {
-	    if (fluid.isSame(Fluids.EMPTY)) {
+	    if (fluid.isSame(Fluids.EMPTY))
 		return;
-	    }
 	    ItemStack temp = new ItemStack(this);
 
 	    IFluidHandlerItem cap = temp.getCapability(Capabilities.FluidHandler.ITEM);
 
-	    if (cap == null) {
+	    if (cap == null)
 		return;
-	    }
 
 	    RestrictedFluidHandlerItemStack restricted = (RestrictedFluidHandlerItemStack) cap;
 
@@ -116,9 +113,8 @@ public class ItemCanister extends ItemVoltaic {
 
 	IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return 13;
-	}
 
 	return (int) (13.0 * handler.getFluidInTank(0).getAmount() / handler.getTankCapacity(0));
     }
@@ -128,9 +124,8 @@ public class ItemCanister extends ItemVoltaic {
 
 	IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return false;
-	}
 
 	return !handler.getFluidInTank(0).isEmpty();
 
@@ -148,9 +143,8 @@ public class ItemCanister extends ItemVoltaic {
 
 	HitResult trace = getPlayerPOVHitResult(world, player, net.minecraft.world.level.ClipContext.Fluid.ANY);
 
-	if (world.isClientSide || trace.getType() == Type.MISS || trace.getType() == Type.ENTITY) {
+	if (world.isClientSide || trace.getType() == Type.MISS || trace.getType() == Type.ENTITY)
 	    return;
-	}
 
 	BlockHitResult blockTrace = (BlockHitResult) trace;
 
@@ -158,23 +152,20 @@ public class ItemCanister extends ItemVoltaic {
 
 	BlockState state = world.getBlockState(pos);
 
-	if (!state.getFluidState().isSource() || state.getFluidState().isEmpty()) {
+	if (!state.getFluidState().isSource() || state.getFluidState().isEmpty())
 	    return;
-	}
 
 	FluidStack sourceFluid = new FluidStack(state.getFluidState().getType(), 1000);
 
 	IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return;
-	}
 
 	int accepted = handler.fill(sourceFluid, FluidAction.SIMULATE);
 
-	if (accepted < 1000) {
+	if (accepted < 1000)
 	    return;
-	}
 
 	handler.fill(sourceFluid, FluidAction.EXECUTE);
 

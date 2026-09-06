@@ -1,7 +1,5 @@
 package electrodynamics.client.model.armor;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -99,8 +97,8 @@ public class ModelHydraulicBoots<T extends LivingEntity> extends GenericArmorMod
     }
 
     @Override
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight,
-	    int packedOverlay, int light) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay,
+	    int light) {
 	parentRightLeg.render(poseStack, buffer, packedLight, packedOverlay);
 	parentLeftLeg.render(poseStack, buffer, packedLight, packedOverlay);
     }

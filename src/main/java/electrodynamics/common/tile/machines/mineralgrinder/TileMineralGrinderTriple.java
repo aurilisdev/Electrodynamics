@@ -15,7 +15,7 @@ public class TileMineralGrinderTriple extends TileMineralGrinder {
 
 	addComponent(new ComponentContainerProvider(SubtypeMachine.mineralgrindertriple.tag(), this)
 		.createMenu((id, player) -> new ContainerO2OProcessorTriple(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
 }

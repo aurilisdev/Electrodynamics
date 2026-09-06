@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import org.jetbrains.annotations.Nullable;
-
 import electrodynamics.Electrodynamics;
 import electrodynamics.client.keys.KeyBinds;
 import electrodynamics.common.packet.types.client.PacketRenderJetpackParticles;
@@ -82,18 +80,12 @@ public class ItemJetpack extends ItemVoltaicArmor {
     @Override
     public void addCreativeModeItems(CreativeModeTab tab, List<ItemStack> items) {
 	super.addCreativeModeItems(tab, items);
-	if (VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM == null) {
-
-	    return;
-
-	}
 	ItemStack full = new ItemStack(this);
 
 	IGasHandlerItem handler = full.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return;
-	}
 
 	GasStack gas = new GasStack(ElectrodynamicsGases.HYDROGEN.value(), MAX_CAPACITY, Gas.ROOM_TEMPERATURE,
 		Gas.PRESSURE_AT_SEA_LEVEL);
@@ -112,43 +104,39 @@ public class ItemJetpack extends ItemVoltaicArmor {
 
     public static void staticAppendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltips,
 	    TooltipFlag flagIn) {
-	if (VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM != null) {
 
-	    IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-	    if (handler != null) {
+	if (handler != null) {
 
-		GasStack gas = handler.getGasInTank(0);
-		// tooltips.add(gas.getGas().getDescription());
-		if (gas.isEmpty()) {
-		    tooltips.add(VoltaicTextUtils
-			    .ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY))
-			    .withStyle(ChatFormatting.GRAY));
-		} else {
-		    tooltips.add(
-			    VoltaicTextUtils
-				    .ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()),
-					    ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY))
-				    .withStyle(ChatFormatting.GRAY));
-		    tooltips.add(
-			    ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnits.TEMPERATURE_KELVIN)
-				    .withStyle(ChatFormatting.GRAY));
-		    tooltips.add(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnits.PRESSURE_ATM)
-			    .withStyle(ChatFormatting.GRAY));
-		}
-
-	    }
-
-	    if (Screen.hasShiftDown()) {
-		tooltips.add(ElectroTextUtils
-			.tooltip("maxpressure",
-				ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnits.PRESSURE_ATM))
+	    GasStack gas = handler.getGasInTank(0);
+	    // tooltips.add(gas.getGas().getDescription());
+	    if (gas.isEmpty()) {
+		tooltips.add(VoltaicTextUtils
+			.ratio(Component.literal("0"), ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY))
 			.withStyle(ChatFormatting.GRAY));
-		tooltips.add(ElectroTextUtils
-			.tooltip("maxtemperature",
-				ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnits.TEMPERATURE_KELVIN))
+	    } else {
+		tooltips.add(
+			VoltaicTextUtils
+				.ratio(ChatFormatter.formatFluidMilibuckets(gas.getAmount()),
+					ChatFormatter.formatFluidMilibuckets(MAX_CAPACITY))
+				.withStyle(ChatFormatting.GRAY));
+		tooltips.add(ChatFormatter.getChatDisplayShort(gas.getTemperature(), DisplayUnits.TEMPERATURE_KELVIN)
+			.withStyle(ChatFormatting.GRAY));
+		tooltips.add(ChatFormatter.getChatDisplayShort(gas.getPressure(), DisplayUnits.PRESSURE_ATM)
 			.withStyle(ChatFormatting.GRAY));
 	    }
+
+	}
+
+	if (Screen.hasShiftDown()) {
+	    tooltips.add(ElectroTextUtils
+		    .tooltip("maxpressure", ChatFormatter.getChatDisplayShort(MAX_PRESSURE, DisplayUnits.PRESSURE_ATM))
+		    .withStyle(ChatFormatting.GRAY));
+	    tooltips.add(ElectroTextUtils
+		    .tooltip("maxtemperature",
+			    ChatFormatter.getChatDisplayShort(MAX_TEMPERATURE, DisplayUnits.TEMPERATURE_KELVIN))
+		    .withStyle(ChatFormatting.GRAY));
 	}
 	// cheesing sync issues one line of code at a time
 	tooltips.add(getModeText(stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0)));
@@ -175,65 +163,79 @@ public class ItemJetpack extends ItemVoltaicArmor {
     }
 
     public static void wearingTick(ItemStack stack, Level world, Player player, float particleZ, boolean isCombat) {
-	if (world.isClientSide) {
+	if (!world.isClientSide) {
+	    if (!stack.getOrDefault(VoltaicDataComponentTypes.USED, false))
+		return;
 
-	    ArmorItem item = (ArmorItem) stack.getItem();
-	    if (item.getEquipmentSlot() == EquipmentSlot.CHEST) {
-		boolean isDown = KeyBinds.jetpackAscend.isDown();
-		int mode = stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0);
-
-		IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
-
-		boolean enoughFuel = handler == null ? false
-			: handler.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK;
-
-		if (enoughFuel) {
-		    @SuppressWarnings("null") // no it cannot be null?!? compiler issue due to advanced boolean above.
-		    int pressure = handler.getGasInTank(0).getPressure();
-		    if (mode == 0 && isDown) {
-			double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE,
-				ItemJetpack.TERMINAL_VERTICAL_VELOCITY * pressure, player, stack);
-			renderClientParticles(world, player, particleZ);
-			sendPacket(player, true, deltaY);
-		    } else if (mode == 1 && isDown) {
-			double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2.0 * pressure,
-				ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2.0 * pressure, player, stack);
-			renderClientParticles(world, player, particleZ);
-			sendPacket(player, true, deltaY);
-		    } else if (mode == 1 && player.getBlockStateOn().isAir()) {
-			double deltaY = hoverWithJetpack(pressure, player, stack);
-			renderClientParticles(world, player, particleZ);
-			sendPacket(player, true, deltaY);
-		    } else if (mode == 2 && isDown) {
-			double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 4.0 * pressure,
-				ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 4.0 * pressure, player, stack);
-			sendPacket(player, true, deltaY);
-			// TODO elytra fuel particles?
-		    } else {
-			sendPacket(player, false, player.getDeltaMovement().y);
-		    }
-		} else {
-		    sendPacket(player, false, player.getDeltaMovement().y);
-		}
-	    } else {
-		sendPacket(player, false, player.getDeltaMovement().y);
-	    }
-	} else {
-	    boolean hasRan = stack.getOrDefault(VoltaicDataComponentTypes.USED, false);
-	    if (hasRan) {
-		drainHydrogen(stack);
-
-		PacketDistributor.sendToPlayer((ServerPlayer) player,
-			new PacketRenderJetpackParticles(player.getUUID(), isCombat));
-
-		player.resetFallDistance();
-	    }
+	    drainHydrogen(stack);
+	    PacketDistributor.sendToPlayer((ServerPlayer) player,
+		    new PacketRenderJetpackParticles(player.getUUID(), isCombat));
+	    player.resetFallDistance();
+	    return;
 	}
+
+	if (!(stack.getItem() instanceof ArmorItem item) || item.getEquipmentSlot() != EquipmentSlot.CHEST) {
+	    sendPacket(player, false, player.getDeltaMovement().y);
+	    return;
+	}
+
+	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+
+	if (handler == null) {
+	    sendPacket(player, false, player.getDeltaMovement().y);
+	    return;
+	}
+
+	GasStack gas = handler.getGasInTank(0);
+
+	if (gas.getAmount() < ItemJetpack.USAGE_PER_TICK) {
+	    sendPacket(player, false, player.getDeltaMovement().y);
+	    return;
+	}
+
+	int mode = stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0);
+	int pressure = gas.getPressure();
+	boolean isDown = KeyBinds.jetpackAscend.isDown();
+
+	if (mode == 0 && isDown) {
+	    double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE,
+		    ItemJetpack.TERMINAL_VERTICAL_VELOCITY * pressure, player, stack);
+
+	    renderClientParticles(world, player, particleZ);
+	    sendPacket(player, true, deltaY);
+	    return;
+	}
+
+	if (mode == 1 && isDown) {
+	    double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 2.0 * pressure,
+		    ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 2.0 * pressure, player, stack);
+
+	    renderClientParticles(world, player, particleZ);
+	    sendPacket(player, true, deltaY);
+	    return;
+	}
+
+	if (mode == 1 && player.getBlockStateOn().isAir()) {
+	    double deltaY = hoverWithJetpack(pressure, player, stack);
+
+	    renderClientParticles(world, player, particleZ);
+	    sendPacket(player, true, deltaY);
+	    return;
+	}
+
+	if (mode == 2 && isDown) {
+	    double deltaY = moveWithJetpack(ItemJetpack.VERT_SPEED_INCREASE / 4.0 * pressure,
+		    ItemJetpack.TERMINAL_VERTICAL_VELOCITY / 4.0 * pressure, player, stack);
+
+	    sendPacket(player, true, deltaY);
+	    return;
+	}
+
+	sendPacket(player, false, player.getDeltaMovement().y);
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity,
-	    Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
 	return 0;
     }
 
@@ -256,9 +258,8 @@ public class ItemJetpack extends ItemVoltaicArmor {
 
 	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return false;
-	}
 
 	return !handler.getGasInTank(0).isEmpty();
 
@@ -273,9 +274,8 @@ public class ItemJetpack extends ItemVoltaicArmor {
 
 	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return 13;
-	}
 
 	return (int) (13.0 * handler.getGasInTank(0).getAmount() / handler.getTankCapacity(0));
 
@@ -298,15 +298,13 @@ public class ItemJetpack extends ItemVoltaicArmor {
     public static boolean staticCanElytraFly(ItemStack stack, LivingEntity entity) {
 	int mode = stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0);
 
-	if (mode != 2) {
+	if (mode != 2)
 	    return false;
-	}
 
 	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return false;
-	}
 
 	return handler.getGasInTank(0).getAmount() >= ItemJetpack.USAGE_PER_TICK;
 
@@ -318,9 +316,8 @@ public class ItemJetpack extends ItemVoltaicArmor {
     }
 
     public static boolean staticElytraFlightTick(ItemStack stack, LivingEntity entity, int flightTicks) {
-	if (entity.level().isClientSide) {
+	if (entity.level().isClientSide)
 	    return true;
-	}
 	int nextFlightTick = flightTicks + 1;
 	if (nextFlightTick % 10 == 0) {
 	    if (nextFlightTick % 20 == 0) {
@@ -399,9 +396,8 @@ public class ItemJetpack extends ItemVoltaicArmor {
 
 	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return;
-	}
 
 	handler.drain(ItemJetpack.USAGE_PER_TICK, GasAction.EXECUTE);
 
@@ -421,12 +417,10 @@ public class ItemJetpack extends ItemVoltaicArmor {
 
     // we need to do this based upon some testing I did
     private static float processDeg(float deg) {
-	if (deg > 180) {
+	if (deg > 180)
 	    return deg - 360;
-	}
-	if (deg < 180) {
+	if (deg < 180)
 	    return deg + 360;
-	}
 	return deg;
     }
 
@@ -451,7 +445,7 @@ public class ItemJetpack extends ItemVoltaicArmor {
      */
 
     @Override
-    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
+    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
 	    ArmorMaterial.Layer layer, boolean innerModel) {
 	return ARMOR_TEXTURE_LOCATION;
     }

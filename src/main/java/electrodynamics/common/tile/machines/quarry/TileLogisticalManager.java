@@ -1,13 +1,12 @@
 package electrodynamics.common.tile.machines.quarry;
 
-import org.jetbrains.annotations.NotNull;
-
 import electrodynamics.common.item.ItemDrillHead;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -40,36 +39,40 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
     public static final int EAST_MASK = 0b00000000111100000000000000000000;
 
     public final SingleProperty<Integer> connections = property(
-	    new SingleProperty<>(PropertyTypes.INTEGER, "connections", 0).onChange((property, old) -> {
-		requestModelDataUpdate();
-		if (level != null && level.isClientSide()) {
-		    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 8); //
-		}
-	    }).onTileLoaded(property -> requestModelDataUpdate())).setShouldUpdateOnChange();
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.INTEGER, "connections", 0)
+		    .onChange((property, old) -> {
+			requestModelDataUpdate();
+			Level level = this.level;
+			if (level == null)
+			    return;
+
+			if (level.isClientSide()) {
+			    level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), 8); //
+			}
+		    }).onTileLoaded(property -> requestModelDataUpdate()))
+	    .setShouldUpdateOnChange();
 
     public TileLogisticalManager(BlockPos pos, BlockState state) {
 	super(ElectrodynamicsTiles.TILE_LOGISTICALMANAGER.get(), pos, state);
 	addComponent(new ComponentTickable(this).tickServer(this::tickServer));
     }
 
-    private void tickServer(ComponentTickable tick) {
+    private void tickServer(Level level, ComponentTickable tick) {
 	for (int i = 0; i < 6; i++) {
 	    BlockEntity inventory = inventories[i];
-
 	    if (inventory == null) {
 		continue;
 	    }
 
-	    IItemHandler invHandler = inventory.getLevel().getCapability(Capabilities.ItemHandler.BLOCK,
-		    inventory.getBlockPos(), inventory.getBlockState(), inventory, Direction.values()[i].getOpposite());
-
+	    IItemHandler invHandler = level.getCapability(Capabilities.ItemHandler.BLOCK, inventory.getBlockPos(),
+		    inventory.getBlockState(), inventory, Direction.values()[i].getOpposite());
 	    if (invHandler == null) {
 		continue;
 	    }
 
 	    for (TileQuarry quarry : quarries) {
 		if (quarry != null) {
-		    manipulateItems(quarry.getComponent(IComponentType.Inventory), invHandler);
+		    manipulateItems(quarry.requireComponent(IComponentType.Inventory), invHandler);
 		}
 	    }
 
@@ -78,23 +81,23 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
     }
 
     @Override
-    public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
-	if (level.isClientSide) {
-	    return;
+    public void onNeighbourChanged(LevelReader reader, BlockPos neighbor, boolean blockStateTrigger) {
+	if (reader instanceof Level level) {
+	    if (level.isClientSide)
+		return;
+	    refreshConnections(level);
 	}
-	refreshConnections();
     }
 
     @Override
-    public void onPlace(BlockState oldState, boolean isMoving) {
-	super.onPlace(oldState, isMoving);
-	if (level.isClientSide) {
+    public void onPlace(Level level, BlockState oldState, boolean isMoving) {
+	super.onPlace(level, oldState, isMoving);
+	if (level.isClientSide)
 	    return;
-	}
-	refreshConnections();
+	refreshConnections(level);
     }
 
-    public void refreshConnections() {
+    public void refreshConnections(Level level) {
 	quarries = new TileQuarry[6];
 	inventories = new BlockEntity[6];
 	for (Direction dir : Direction.values()) {
@@ -106,8 +109,8 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
 	    if (entity instanceof TileQuarry quarry) {
 		quarries[dir.ordinal()] = quarry;
-	    } else if (entity.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, entity.getBlockPos(),
-		    entity.getBlockState(), entity, dir.getOpposite()) != null) {
+	    } else if (level.getCapability(Capabilities.ItemHandler.BLOCK, entity.getBlockPos(), entity.getBlockState(),
+		    entity, dir.getOpposite()) != null) {
 		inventories[dir.ordinal()] = entity;
 	    }
 
@@ -117,7 +120,10 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
     @Override
     public void onLoad() {
 	super.onLoad();
-	Scheduler.schedule(1, this::refreshConnections);
+	Level level = this.level;
+	if (level != null) {
+	    Scheduler.schedule(1, () -> refreshConnections(level));
+	}
     }
 
     private static void manipulateItems(ComponentInventory quarryInventory, IItemHandler handler) {
@@ -173,14 +179,16 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
     public static boolean isValidInventory(BlockPos pos, LevelReader world, Direction dir) {
 	BlockEntity entity = world.getBlockEntity(pos);
-	if (entity == null) {
+	if (entity == null)
 	    return false;
-	}
 
-	if (entity.getLevel().getCapability(Capabilities.ItemHandler.BLOCK, entity.getBlockPos(),
-		entity.getBlockState(), entity, dir) != null) {
+	Level level = entity.getLevel();
+	if (level == null)
+	    return false;
+
+	if (level.getCapability(Capabilities.ItemHandler.BLOCK, entity.getBlockPos(), entity.getBlockState(), entity,
+		dir) != null)
 	    return true;
-	}
 
 	return entity instanceof Container;
     }
@@ -189,9 +197,8 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
 	int connectionData = connections.getValue();
 
-	if (connectionData == 0) {
+	if (connectionData == 0)
 	    return EnumConnectType.NONE;
-	}
 
 	int extracted = 0;
 	switch (dir) {
@@ -225,7 +232,7 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
 
     public void writeConnection(Direction dir, EnumConnectType connection) {
 
-	int connectionData = this.connections.getValue();
+	int connectionData = connections.getValue();
 	int masked = switch (dir) {
 	case DOWN -> connectionData & ~DOWN_MASK;
 	case UP -> connectionData & ~UP_MASK;
@@ -249,7 +256,7 @@ public class TileLogisticalManager extends GenericTile implements IConnectTile {
     }
 
     @Override
-    public @NotNull ModelData getModelData() {
+    public ModelData getModelData() {
 	return ModelData.builder().with(ModelPropertyConnections.INSTANCE, this::readConnections).build();
     }
 

@@ -1,13 +1,13 @@
 package electrodynamics.common.tile.pipelines.fluid;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipePump;
-import electrodynamics.common.network.type.FluidNetwork;
 import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
@@ -18,7 +18,6 @@ import voltaic.prefab.tile.GenericTile;
 import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
 import voltaic.prefab.utilities.CapabilityUtils;
@@ -32,28 +31,25 @@ public class TileFluidPipePump extends GenericTile {
     private boolean isLocked = false;
 
     public final SingleProperty<Integer> priority = property(
-	    new SingleProperty<>(PropertyTypes.INTEGER, "pumppriority", 0).onChange((prop, oldval) -> {
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.INTEGER, "pumppriority", 0)
+		    .onChange((prop, oldval) -> {
+			Level level = this.level;
+			if (level == null || level.isClientSide)
+			    return;
 
-		if (level == null || level.isClientSide) {
-		    return;
-		}
+			BlockEntity entity = level.getBlockEntity(worldPosition.relative(getFacing()));
 
-		BlockEntity entity = level.getBlockEntity(worldPosition.relative(getFacing()));
+			if (entity != null && entity instanceof TileFluidPipe pipe) {
+			    pipe.getNetwork().updateFluidPipePumpStats(this, prop.getValue(), oldval);
+			}
 
-		if (entity != null && entity instanceof TileFluidPipe pipe) {
-		    FluidNetwork network = pipe.getNetwork();
-
-		    if (network != null) {
-			network.updateFluidPipePumpStats(this, prop.getValue(), oldval);
-		    }
-		}
-
-	    }));
+		    }))
+	    .setUpdateServer();
 
     public TileFluidPipePump(BlockPos pos, BlockState state) {
 	super(ElectrodynamicsTiles.TILE_FLUIDPIPEPUMP.get(), pos, state);
 	addComponent(new ComponentTickable(this).tickServer(this::tickServer));
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentElectrodynamic(this, false, true).voltage(VoltaicCapabilities.DEFAULT_VOLTAGE)
 		.maxJoules(ElectrodynamicsConfig.INSTANCE.PIPE_PUMP_USAGE_PER_TICK.get() * 10)
 		.setInputDirections(BlockEntityUtils.MachineDirection.LEFT));
@@ -61,9 +57,8 @@ public class TileFluidPipePump extends GenericTile {
 		.createMenu((id, inv) -> new ContainerFluidPipePump(id, inv, getCoordsArray())));
     }
 
-    public void tickServer(ComponentTickable tick) {
-
-	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+    public void tickServer(Level level, ComponentTickable tick) {
+	ComponentElectrodynamic electro = requireComponent(IComponentType.Electrodynamic);
 
 	electro.joules(
 		Math.max(electro.getJoulesStored() - ElectrodynamicsConfig.INSTANCE.PIPE_PUMP_USAGE_PER_TICK.get(), 0));
@@ -71,28 +66,29 @@ public class TileFluidPipePump extends GenericTile {
     }
 
     @Override
-    public net.neoforged.neoforge.fluids.capability.@Nullable IFluidHandler getFluidHandlerCapability(
-	    @Nullable Direction side) {
-	if (side == null || isLocked) {
+    @Nullable
+    public IFluidHandler getFluidHandlerCapability(@Nullable Direction side) {
+	if (side == null || isLocked)
 	    return null;
-	}
+
+	Level level = this.level;
+	if (level == null)
+	    return null;
 
 	Direction facing = getFacing();
 
-	if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR.mappedDir)) {
+	if (side == BlockEntityUtils.getRelativeSide(facing, OUTPUT_DIR.mappedDir))
 	    return CapabilityUtils.EMPTY_FLUID;
-	}
 
 	if (side == BlockEntityUtils.getRelativeSide(facing, INPUT_DIR.mappedDir)) {
 
 	    BlockEntity output = level.getBlockEntity(worldPosition.relative(side.getOpposite()));
-	    if (output == null) {
+	    if (output == null)
 		return CapabilityUtils.EMPTY_FLUID;
-	    }
 
 	    isLocked = true;
 
-	    IFluidHandler fluid = output.getLevel().getCapability(Capabilities.FluidHandler.BLOCK, output.getBlockPos(),
+	    IFluidHandler fluid = level.getCapability(Capabilities.FluidHandler.BLOCK, output.getBlockPos(),
 		    output.getBlockState(), output, side);
 
 	    isLocked = false;
@@ -105,7 +101,7 @@ public class TileFluidPipePump extends GenericTile {
     }
 
     public boolean isPowered() {
-	return this.<ComponentElectrodynamic>getComponent(IComponentType.Electrodynamic)
+	return this.<ComponentElectrodynamic>requireComponent(IComponentType.Electrodynamic)
 		.getJoulesStored() >= ElectrodynamicsConfig.INSTANCE.PIPE_PUMP_USAGE_PER_TICK.get();
     }
 

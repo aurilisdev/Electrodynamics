@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.ElectrodynamicsClientRegister;
@@ -23,11 +21,11 @@ public class RenderMineralGrinder extends AbstractTileRenderer<TileMineralGrinde
     }
 
     @Override
-    public void render(TileMineralGrinder tile, float partialTicks, PoseStack matrixStackIn,
-	    @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(TileMineralGrinder tile, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn,
+	    int combinedLightIn, int combinedOverlayIn) {
 
 	double progress = (tile.clientRunningTicks
-		+ (tile.<ComponentProcessor>getComponent(IComponentType.Processor).operatingTicks.getValue()[0] > 0
+		+ (tile.<ComponentProcessor>requireComponent(IComponentType.Processor).operatingTicks.getValue()[0] > 0
 			? partialTicks
 			: 0))
 		* 10;
@@ -40,7 +38,7 @@ public class RenderMineralGrinder extends AbstractTileRenderer<TileMineralGrinde
 	matrixStackIn.translate(0.0, 7.0 / 16.0, 2.5 / 16.0);
 	matrixStackIn.mulPose(MathUtils.rotQuaternionDeg((float) -progress, 0, 0));
 	// matrixStackIn.mulPose(new Quaternion((float) -progress, 0, 0, true));
-	RenderingUtils.renderModel(ibakedmodel, tile, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
+	RenderingUtils.renderModel(ibakedmodel, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
 		combinedOverlayIn);
 
 	matrixStackIn.popPose();
@@ -51,7 +49,7 @@ public class RenderMineralGrinder extends AbstractTileRenderer<TileMineralGrinde
 	matrixStackIn.translate(0.0, 7.0 / 16.0, -2.5 / 16.0);
 	matrixStackIn.mulPose(MathUtils.rotQuaternionDeg((float) progress, 0, 0));
 	// matrixStackIn.mulPose(new Quaternion((float) progress, 0, 0, true));
-	RenderingUtils.renderModel(ibakedmodel, tile, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
+	RenderingUtils.renderModel(ibakedmodel, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
 		combinedOverlayIn);
 
 	matrixStackIn.popPose();

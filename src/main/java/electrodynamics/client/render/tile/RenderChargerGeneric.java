@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.common.tile.machines.charger.GenericTileCharger;
@@ -24,25 +22,16 @@ public class RenderChargerGeneric extends AbstractTileRenderer<GenericTileCharge
     }
 
     @Override
-    public void render(GenericTileCharger tileEntityIn, float partialTicks, @NotNull PoseStack matrixStackIn,
-	    @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-
+    public void render(GenericTileCharger tileEntityIn, float partialTicks, PoseStack matrixStackIn,
+	    MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 	Direction dir = tileEntityIn.getFacing();
-
-	ComponentInventory inv = tileEntityIn.getComponent(IComponentType.Inventory);
-
+	ComponentInventory inv = tileEntityIn.requireComponent(IComponentType.Inventory);
 	ItemStack chargingItem = inv.getItem(0);
-
 	if (chargingItem.isEmpty()) {
-
 	    chargingItem = inv.getItem(1);
-
 	}
-
-	if (chargingItem != null && !chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric) {
-
+	if (!chargingItem.isEmpty() && chargingItem.getItem() instanceof IItemElectric) {
 	    matrixStackIn.pushPose();
-
 	    if (chargingItem.getItem() instanceof DiggerItem) {
 		switch (dir) {
 		case NORTH -> {

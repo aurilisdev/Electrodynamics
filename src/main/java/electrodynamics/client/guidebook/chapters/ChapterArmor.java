@@ -3,6 +3,8 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.common.item.subtype.SubtypeCeramic;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -62,7 +64,7 @@ public class ChapterArmor extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEM_JETPACK.get());
 		    }
 
@@ -91,7 +93,7 @@ public class ChapterArmor extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get());
 		    }
 
@@ -121,7 +123,7 @@ public class ChapterArmor extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get());
 		    }
 
@@ -151,7 +153,7 @@ public class ChapterArmor extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get());
 		    }
 
@@ -181,7 +183,7 @@ public class ChapterArmor extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get());
 		    }
 
@@ -212,7 +214,7 @@ public class ChapterArmor extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get());
 		    }
 
@@ -242,7 +244,7 @@ public class ChapterArmor extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate));
 		    }
 

@@ -2,7 +2,7 @@ package electrodynamics.common.tile.pipelines.gas;
 
 import java.util.Set;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 
@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.api.gas.GasAction;
@@ -30,7 +31,7 @@ public abstract class GenericTileGasPipe
 
 		@Override
 		public boolean isGasValid(int tank, GasStack gas) {
-		    return gas != null;
+		    return true;
 		}
 
 		@Override
@@ -50,7 +51,7 @@ public abstract class GenericTileGasPipe
 
 		@Override
 		public int getTankMaxPressure(int tank) {
-		    return getNetwork() == null ? 0 : getNetwork().maxPressure;
+		    return getNetwork().maxPressure;
 		}
 
 		@Override
@@ -65,10 +66,12 @@ public abstract class GenericTileGasPipe
 
 		@Override
 		public int fill(GasStack gas, GasAction action) {
-		    if (action == GasAction.SIMULATE || getNetwork() == null || gas.isEmpty()) {
+		    if (action == GasAction.SIMULATE || gas.isEmpty())
 			return 0;
-		    }
-		    return getNetwork().emit(gas, Lists.newArrayList(level.getBlockEntity(worldPos.relative(dir))),
+		    Level llevel = level;
+		    if (llevel == null)
+			return 0;
+		    return getNetwork().emit(gas, Lists.newArrayList(llevel.getBlockEntity(worldPos.relative(dir))),
 			    action == GasAction.SIMULATE).getAmount();
 		}
 
@@ -92,9 +95,8 @@ public abstract class GenericTileGasPipe
 
     @Override
     public @Nullable IGasHandler getGasHandlerCapability(@Nullable Direction side) {
-	if (side == null) {
+	if (side == null)
 	    return null;
-	}
 	return capability[side.ordinal()];
 
     }
@@ -105,20 +107,21 @@ public abstract class GenericTileGasPipe
     }
 
     @Override
-    public GasNetwork createInstance(Set<GasNetwork> gasNetworks) {
+    public GasNetwork createNetworkFromNetworks(Set<GasNetwork> gasNetworks) {
 	return new GasNetwork(gasNetworks);
     }
 
     @Override
-    public GasNetwork createInstanceConductor(Set<GenericTileGasPipe> genericTileGasPipes) {
+    public GasNetwork createNetworkFromConductors(Set<GenericTileGasPipe> genericTileGasPipes) {
 	return new GasNetwork(genericTileGasPipes);
     }
 
     @Override
     public void destroyViolently() {
-	if (level.isClientSide) {
+	Level level = this.level;
+	if (level == null || level.isClientSide)
 	    return;
-	}
+
 	level.playSound(null, getBlockPos(), SoundEvents.GENERIC_EXPLODE.value(), SoundSource.BLOCKS, 1.0F, 1.0F);
 	level.destroyBlock(getBlockPos(), false);
     }

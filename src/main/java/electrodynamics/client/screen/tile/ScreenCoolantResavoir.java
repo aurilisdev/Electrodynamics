@@ -1,7 +1,6 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerCoolantResavoir;
-import electrodynamics.common.tile.machines.quarry.TileCoolantResavoir;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import voltaic.prefab.screen.component.ScreenComponentGeneric;
@@ -16,13 +15,8 @@ public class ScreenCoolantResavoir extends GenericMaterialScreen<ContainerCoolan
     public ScreenCoolantResavoir(ContainerCoolantResavoir container, Inventory inv, Component titleIn) {
 	super(container, inv, titleIn);
 	addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.ARROW_RIGHT_OFF, 72, 33));
-	addComponent(new ScreenComponentFluidGauge(() -> {
-	    TileCoolantResavoir boiler = menu.getSafeHost();
-	    if (boiler != null) {
-		return boiler.<ComponentFluidHandlerSimple>getComponent(IComponentType.FluidHandler);
-	    }
-	    return null;
-	}, 101, 18));
+	addComponent(new ScreenComponentFluidGauge(() -> menu.getSafeHost()
+		.map(tile -> tile.<ComponentFluidHandlerSimple>requireComponent(IComponentType.FluidHandler))
+		.orElse(null), 101, 18));
     }
-
 }

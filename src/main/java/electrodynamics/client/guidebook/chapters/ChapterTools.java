@@ -3,6 +3,8 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.common.item.gear.tools.electric.ItemRailgunKinetic;
 import electrodynamics.common.item.gear.tools.electric.ItemRailgunPlasma;
 import electrodynamics.common.item.gear.tools.electric.utils.ItemRailgun;
@@ -69,7 +71,7 @@ public class ChapterTools extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEM_KINETICRAILGUN.get());
 		    }
 
@@ -122,7 +124,7 @@ public class ChapterTools extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEM_KINETICRAILGUN.get());
 		    }
 
@@ -169,7 +171,7 @@ public class ChapterTools extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEM_SEISMICSCANNER.get());
 		    }
 
@@ -199,7 +201,7 @@ public class ChapterTools extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEM_ELECTRICDRILL.get());
 		    }
 

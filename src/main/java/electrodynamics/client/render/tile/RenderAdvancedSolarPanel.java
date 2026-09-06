@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.ElectrodynamicsClientRegister;
@@ -10,6 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.resources.model.BakedModel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import voltaic.client.render.AbstractTileRenderer;
 import voltaic.prefab.utilities.RenderingUtils;
@@ -28,14 +27,17 @@ public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedS
 
     @Override
     public void render(TileAdvancedSolarPanel solarPanel, float partialTicks, PoseStack matrixStackIn,
-	    @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	    MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	Level level = solarPanel.getLevel();
+	if (level == null)
+	    return;
 
 	matrixStackIn.translate(0.5, 2, 0.5);
 
 	matrixStackIn.mulPose(MathUtils.rotVectorQuaternionDeg(90, MathUtils.YP));
 	// matrixStackIn.mulPose(new Quaternion(new Vector3f(0, 1, 0), 90, true));
 
-	long time = solarPanel.getLevel().getLevelData().getDayTime();
+	long time = level.getLevelData().getDayTime();
 
 	if (time < 13000 || time > 23000) {
 	    solarPanel.currentRotation.setValue(solarPanel.currentRotation.getValue()
@@ -51,8 +53,8 @@ public class RenderAdvancedSolarPanel extends AbstractTileRenderer<TileAdvancedS
 
 	BakedModel ibakedmodel = getModel(ElectrodynamicsClientRegister.MODEL_ADVSOLARTOP);
 
-	RenderingUtils.renderModel(ibakedmodel, solarPanel, RenderType.solid(), matrixStackIn, bufferIn,
-		combinedLightIn, combinedOverlayIn);
+	RenderingUtils.renderModel(ibakedmodel, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
+		combinedOverlayIn);
     }
 
 }

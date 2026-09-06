@@ -1,12 +1,13 @@
 package electrodynamics.client.event.guipost;
 
-import com.mojang.blaze3d.vertex.PoseStack;
+import javax.annotation.Nullable;
 
 import electrodynamics.common.item.gear.armor.types.ItemJetpack;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import voltaic.api.electricity.formatting.ChatFormatter;
@@ -34,66 +35,48 @@ public class HandlerJetpackMode extends AbstractPostGuiOverlayHandler {
     });
 
     private static final CachedComponent<Integer> GAS_TEMP_TEXT = new CachedComponent<>(
-	    tempK -> ChatFormatter.getChatDisplayShort(tempK, DisplayUnits.TEMPERATURE_KELVIN));
+	    temperature -> ChatFormatter.getChatDisplayShort(temperature, DisplayUnits.TEMPERATURE_KELVIN));
 
     private static final CachedComponent<Integer> GAS_PRESSURE_TEXT = new CachedComponent<>(
-	    atm -> ChatFormatter.getChatDisplayShort(atm, DisplayUnits.PRESSURE_ATM));
+	    pressure -> ChatFormatter.getChatDisplayShort(pressure, DisplayUnits.PRESSURE_ATM));
 
     @Override
     public void renderToScreen(GuiGraphics graphics, DeltaTracker tracker, Minecraft minecraft) {
-	if (minecraft.player == null || minecraft.level == null) {
+	LocalPlayer player = minecraft.player;
+	if (player == null || minecraft.level == null)
 	    return;
-	}
-
-	ItemStack chestSlot = minecraft.player.getInventory().armor.get(2);
-
+	ItemStack chestSlot = player.getInventory().armor.get(2);
 	if (!ItemUtils.testItems(chestSlot.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get(),
-		ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
+		ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()))
 	    return;
-	}
-
-	int height = graphics.guiHeight();
-
-	PoseStack stack = graphics.pose();
-	stack.pushPose();
-
-	int modeVal = chestSlot.getOrDefault(VoltaicDataComponentTypes.MODE, -1);
-	Component mode = MODE_TEXT.get(modeVal);
-
 	IGasHandlerItem handler = chestSlot.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
-	if (handler == null) {
-	    stack.popPose();
+	if (handler == null)
 	    return;
-	}
-
+	int height = graphics.guiHeight();
+	Component mode = MODE_TEXT.get(chestSlot.getOrDefault(VoltaicDataComponentTypes.MODE, -1));
 	GasStack gas = handler.getGasInTank(0);
-
 	if (gas.isEmpty()) {
 	    Component ratio = GAS_RATIO_TEXT.get(packInts(0, ItemJetpack.MAX_CAPACITY));
-
-	    graphics.drawString(minecraft.font, mode, X, height - 30, 0);
-	    graphics.drawString(minecraft.font, ratio, X, height - 20, -1);
-
-	    stack.popPose();
+	    drawString(graphics, minecraft, mode, height - 30, 0);
+	    drawString(graphics, minecraft, ratio, height - 20, -1);
 	    return;
 	}
-
-	int amount = gas.getAmount();
-	Component ratio = GAS_RATIO_TEXT.get(packInts(amount, ItemJetpack.MAX_CAPACITY));
-
-	Component temp = GAS_TEMP_TEXT.get(gas.getTemperature());
+	Component ratio = GAS_RATIO_TEXT.get(packInts(gas.getAmount(), ItemJetpack.MAX_CAPACITY));
+	Component temperature = GAS_TEMP_TEXT.get(gas.getTemperature());
 	Component pressure = GAS_PRESSURE_TEXT.get(gas.getPressure());
+	drawString(graphics, minecraft, mode, height - 50, 0);
+	drawString(graphics, minecraft, ratio, height - 40, -1);
+	drawString(graphics, minecraft, temperature, height - 30, -1);
+	drawString(graphics, minecraft, pressure, height - 20, -1);
+    }
 
-	graphics.drawString(minecraft.font, mode, X, height - 50, 0);
-	graphics.drawString(minecraft.font, ratio, X, height - 40, -1);
-	graphics.drawString(minecraft.font, temp, X, height - 30, -1);
-	graphics.drawString(minecraft.font, pressure, X, height - 20, -1);
-
-	stack.popPose();
+    private static void drawString(GuiGraphics graphics, Minecraft minecraft, @Nullable Component text, int y,
+	    int colour) {
+	if (text != null)
+	    graphics.drawString(minecraft.font, text, X, y, colour);
     }
 
     private static long packInts(int high, int low) {
 	return (long) high << 32 | low & 0xFFFF_FFFFL;
     }
-
 }

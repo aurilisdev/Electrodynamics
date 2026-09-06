@@ -129,21 +129,18 @@ public abstract class ItemRailgun extends ItemElectric implements IItemTemperate
 	public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
 	    ITEMS.forEach(item -> event.register((stack, index) -> {
 
-		if (index != 1) {
+		if (index != 1)
 		    return Color.WHITE.color();
-		}
 
 		double currHeat = IItemTemperate.getTemperature(stack);
 
-		if (currHeat <= 0) {
+		if (currHeat <= 0)
 		    return HEAT_COLORS[0].color();
-		}
 
 		double maxHeat = item.getMaxTemp();
 
-		if (currHeat >= maxHeat) {
+		if (currHeat >= maxHeat)
 		    return HEAT_COLORS[HEAT_COLORS.length - 1].color();
-		}
 
 		double amtPerTier = maxHeat / (HEAT_COLORS.length - 1);
 

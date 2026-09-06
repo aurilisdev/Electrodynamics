@@ -23,8 +23,10 @@ public enum SubtypeIngot implements ISubtype {
     lithium(VoltaicTags.Items.INGOT_LITHIUM, () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.lithium)),
     aluminum(VoltaicTags.Items.INGOT_ALUMINUM),
     chromium(VoltaicTags.Items.INGOT_CHROMIUM, () -> ElectrodynamicsItems.ITEMS_OXIDE.getValue(SubtypeOxide.chromite)),
-    stainlesssteel(VoltaicTags.Items.INGOT_STAINLESSSTEEL), vanadiumsteel(VoltaicTags.Items.INGOT_VANADIUMSTEEL),
-    hslasteel(VoltaicTags.Items.INGOT_HSLASTEEL), titanium(VoltaicTags.Items.INGOT_TITANIUM),
+    stainlesssteel(VoltaicTags.Items.INGOT_STAINLESSSTEEL),
+    vanadiumsteel(VoltaicTags.Items.INGOT_VANADIUMSTEEL),
+    hslasteel(VoltaicTags.Items.INGOT_HSLASTEEL),
+    titanium(VoltaicTags.Items.INGOT_TITANIUM),
     molybdenum(VoltaicTags.Items.INGOT_MOLYBDENUM,
 	    () -> ElectrodynamicsItems.ITEMS_DUST.getValue(SubtypeDust.molybdenum)),
     titaniumcarbide(VoltaicTags.Items.INGOT_TITANIUMCARBIDE);
@@ -37,7 +39,7 @@ public enum SubtypeIngot implements ISubtype {
 	this(tag, null);
     }
 
-    SubtypeIngot(TagKey<Item> tag, Supplier<Item> grindedDust) {
+    SubtypeIngot(TagKey<Item> tag, @Nullable Supplier<Item> grindedDust) {
 	this.tag = tag;
 	this.grindedDust = grindedDust;
     }

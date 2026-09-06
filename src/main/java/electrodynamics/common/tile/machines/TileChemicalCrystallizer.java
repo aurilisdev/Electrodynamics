@@ -8,6 +8,7 @@ import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.prefab.sound.ITickableSound;
 import voltaic.prefab.sound.SoundBarrierMethods;
@@ -16,7 +17,6 @@ import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentProcessor;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.tile.types.GenericMaterialTile;
@@ -30,7 +30,7 @@ public class TileChemicalCrystallizer extends GenericMaterialTile implements ITi
 
     public TileChemicalCrystallizer(BlockPos worldPosition, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_CHEMICALCRYSTALLIZER.get(), worldPosition, blockState);
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
@@ -45,18 +45,17 @@ public class TileChemicalCrystallizer extends GenericMaterialTile implements ITi
 			BlockEntityUtils.MachineDirection.FRONT)
 		.validUpgrades(ContainerChemicalCrystallizer.VALID_UPGRADES).valid(machineValidator()));
 	addComponent(new ComponentProcessor(this)
-		.canProcess((component, procNumber) -> component.consumeBucket().canProcessFluid2ItemRecipe(procNumber,
-			ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_TYPE.get()))
+		.canProcess((component, level, procNumber) -> component.consumeBucket().canProcessFluid2ItemRecipe(
+			level, procNumber, ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_TYPE.get()))
 		.process(ComponentProcessor::processFluid2ItemRecipe));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.chemicalcrystallizer.tag(), this)
 		.createMenu((id, player) -> new ContainerChemicalCrystallizer(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
-    protected void tickClient(ComponentTickable tickable) {
-	if (!shouldPlaySound()) {
+    protected void tickClient(Level level, ComponentTickable tickable) {
+	if (!shouldPlaySound())
 	    return;
-	}
 
 	if (level.random.nextDouble() < 0.15) {
 	    Direction direction = getFacing();
@@ -85,12 +84,12 @@ public class TileChemicalCrystallizer extends GenericMaterialTile implements ITi
 
     @Override
     public boolean shouldPlaySound() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0);
     }
 
     @Override
-    public int getComparatorSignal() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
+    public int getComparatorSignal(Level level) {
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
     }
 
 }

@@ -3,9 +3,12 @@ package electrodynamics.common.tile.electricitygrid;
 import java.util.ArrayList;
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.common.network.type.ElectricNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -46,13 +49,16 @@ public abstract class GenericTileWire extends GenericRefreshingConnectTile<IWire
 
 		@Override
 		public TransferPack receivePower(TransferPack transfer, boolean debug) {
-		    ArrayList<BlockEntity> ignored = new ArrayList<>();
-		    BlockEntity entity = level.getBlockEntity(new BlockPos(worldPosition).relative(dir));
-		    if (entity == null) {
+		    Level llevel = level;
+		    if (llevel == null)
 			return TransferPack.EMPTY;
-		    }
 
-		    ICapabilityElectrodynamic electro = level.getCapability(
+		    ArrayList<BlockEntity> ignored = new ArrayList<>();
+		    BlockEntity entity = llevel.getBlockEntity(new BlockPos(worldPosition).relative(dir));
+		    if (entity == null)
+			return TransferPack.EMPTY;
+
+		    ICapabilityElectrodynamic electro = llevel.getCapability(
 			    VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, entity.getBlockPos(),
 			    entity.getBlockState(), entity, dir.getOpposite());
 
@@ -104,16 +110,20 @@ public abstract class GenericTileWire extends GenericRefreshingConnectTile<IWire
     }
 
     @Override
-    public @org.jetbrains.annotations.Nullable ICapabilityElectrodynamic getElectrodynamicCapability(
-	    @org.jetbrains.annotations.Nullable Direction side) {
-	if (side == null) {
+    @Nullable
+    public ICapabilityElectrodynamic getElectrodynamicCapability(@Nullable Direction side) {
+	if (side == null)
 	    return null;
-	}
+
 	return handler[side.ordinal()];
     }
 
     @Override
     public void destroyViolently() {
+	Level level = this.level;
+	if (level == null)
+	    return;
+
 	level.setBlockAndUpdate(worldPosition, Blocks.FIRE.defaultBlockState());
     }
 
@@ -123,12 +133,12 @@ public abstract class GenericTileWire extends GenericRefreshingConnectTile<IWire
     }
 
     @Override
-    public ElectricNetwork createInstance(Set<ElectricNetwork> electricNetworks) {
+    public ElectricNetwork createNetworkFromNetworks(Set<ElectricNetwork> electricNetworks) {
 	return new ElectricNetwork(electricNetworks);
     }
 
     @Override
-    public ElectricNetwork createInstanceConductor(Set<GenericTileWire> genericTileWires) {
+    public ElectricNetwork createNetworkFromConductors(Set<GenericTileWire> genericTileWires) {
 	return new ElectricNetwork(genericTileWires);
     }
 

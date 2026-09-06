@@ -22,10 +22,9 @@ public class TileSeismicMarker extends GenericTile {
 	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
     }
 
-    private void tickClient(ComponentTickable tick) {
-	Level world = getLevel();
+    private void tickClient(Level level, ComponentTickable tick) {
 	BlockPos pos = getBlockPos();
-	if (world.hasNeighborSignal(pos)) {
+	if (level.hasNeighborSignal(pos)) {
 	    // do not combine!
 	    if (!HandlerMarkerLines.containsLines(pos)) {
 		List<AABB> boxes = new ArrayList<>();
@@ -47,7 +46,8 @@ public class TileSeismicMarker extends GenericTile {
     @Override
     public void setRemoved() {
 	super.setRemoved();
-	if (getLevel().isClientSide) {
+	Level level = this.level;
+	if (level != null && level.isClientSide) {
 	    HandlerMarkerLines.removeLines(getBlockPos());
 	}
     }

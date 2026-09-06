@@ -39,7 +39,8 @@ public class PacketToggleOnServer implements CustomPacketPayload {
     }
 
     public enum Type {
-	NVGS, SERVOLEGGINGS;
+	NVGS,
+	SERVOLEGGINGS;
     }
 
 }

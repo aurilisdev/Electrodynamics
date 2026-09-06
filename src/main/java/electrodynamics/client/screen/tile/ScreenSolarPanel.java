@@ -1,7 +1,6 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
-import electrodynamics.common.tile.electricitygrid.generators.TileSolarPanel;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -22,11 +21,7 @@ public class ScreenSolarPanel extends GenericScreen<ContainerSolarPanel> {
     public ScreenSolarPanel(ContainerSolarPanel container, Inventory playerInventory, Component title) {
 	super(container, playerInventory, title);
 	addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
-	addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> {
-	    TileSolarPanel panel = menu.getSafeHost();
-	    if (panel == null) {
-		return;
-	    }
+	addComponent(new ScreenComponentMultiLabel(0, 0, graphics -> menu.getSafeHost().ifPresent(panel -> {
 	    TransferPack transfer = panel.getProduced();
 	    graphics.drawString(font,
 		    ElectroTextUtils.gui("machine.current",
@@ -40,7 +35,6 @@ public class ScreenSolarPanel extends GenericScreen<ContainerSolarPanel> {
 		    ElectroTextUtils.gui("machine.voltage",
 			    ChatFormatter.getChatDisplayShort(transfer.getVoltage(), DisplayUnits.VOLTAGE)),
 		    inventoryLabelX + 60, inventoryLabelY - 22, Color.TEXT_GRAY.color(), false);
-	}));
+	})));
     }
-
 }

@@ -1,7 +1,6 @@
 package electrodynamics.common.tile.compatibility;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import electrodynamics.common.inventory.container.tile.ContainerRotaryUnifier;
 import electrodynamics.common.settings.ElectrodynamicsConfig;
@@ -15,6 +14,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.fml.ModList;
@@ -46,7 +46,8 @@ public class TileRotaryUnifier extends GenericGasTile implements ITickableSound 
     private final boolean mekIsLoaded;
     public final int chemStackIndex;
     public final SingleProperty<Boolean> conversionIsFlipped = property(
-	    new SingleProperty<>(PropertyTypes.BOOLEAN, "conversionisflipped", false));
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.BOOLEAN, "conversionisflipped", false))
+	    .setUpdateServer();
     public final PropertyGasTank gasTank = new PropertyGasTank(this, "gastank", MAX_GAS_AMOUNT, 1000, 1000);
 
     public Direction gasIO;
@@ -67,7 +68,7 @@ public class TileRotaryUnifier extends GenericGasTile implements ITickableSound 
 		.canProcess(this::canProcess).process(this::process));
 	addComponent(new ComponentContainerProvider("rotaryunifier", this)
 		.createMenu((id, player) -> new ContainerRotaryUnifier(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
 	gasIO = BlockEntityUtils.getRelativeSide(getFacing(), BlockEntityUtils.MachineDirection.RIGHT.mappedDir);
 	chemicalIO = BlockEntityUtils.getRelativeSide(getFacing(), BlockEntityUtils.MachineDirection.LEFT.mappedDir);
 	mekIsLoaded = ModList.get().isLoaded(Voltaic.MEKANISM_ID);
@@ -80,13 +81,12 @@ public class TileRotaryUnifier extends GenericGasTile implements ITickableSound 
 	}
     }
 
-    private void tickClient(ComponentTickable tickable) {
+    private void tickClient(Level level, ComponentTickable tickable) {
 
-	ComponentProcessor proc = getComponent(IComponentType.Processor);
+	ComponentProcessor proc = requireComponent(IComponentType.Processor);
 
-	if (!proc.isActive(0)) {
+	if (!proc.isActive(0))
 	    return;
-	}
 
 	if (!playing) {
 	    playing = true;
@@ -119,14 +119,14 @@ public class TileRotaryUnifier extends GenericGasTile implements ITickableSound 
 		worldPosition.getZ() + zShift, 0.0D, 0.0D, 0.0D);
     }
 
-    private void process(ComponentProcessor componentProcessor, int index) {
+    private void process(ComponentProcessor componentProcessor, Level level, int index) {
 	if (mekIsLoaded) {
 	    MekanismHandler.process(this, componentProcessor);
 	}
 
     }
 
-    private boolean canProcess(ComponentProcessor componentProcessor, int index) {
+    private boolean canProcess(ComponentProcessor componentProcessor, Level level, int index) {
 	boolean update = false;
 	if (mekIsLoaded) {
 	    update = MekanismHandler.canProcess(this, componentProcessor);
@@ -138,10 +138,10 @@ public class TileRotaryUnifier extends GenericGasTile implements ITickableSound 
     }
 
     @Override
-    public @Nullable IGasHandler getGasHandlerCapability(@Nullable Direction side) {
-	if (side == null || side != gasIO) {
+    @Nullable
+    public IGasHandler getGasHandlerCapability(@Nullable Direction side) {
+	if (side == null || side != gasIO)
 	    return null;
-	}
 	return new IGasHandler() {
 	    @Override
 	    public int getTanks() {
@@ -169,7 +169,7 @@ public class TileRotaryUnifier extends GenericGasTile implements ITickableSound 
 	    }
 
 	    @Override
-	    public boolean isGasValid(int tank, @NotNull GasStack gas) {
+	    public boolean isGasValid(int tank, GasStack gas) {
 		return gasTank.isGasValid(gas);
 	    }
 
@@ -201,8 +201,8 @@ public class TileRotaryUnifier extends GenericGasTile implements ITickableSound 
     }
 
     @Override
-    public void onBlockStateUpdate(BlockState oldState, BlockState newState) {
-	super.onBlockStateUpdate(oldState, newState);
+    public void onBlockStateUpdate(Level level, BlockState oldState, BlockState newState) {
+	super.onBlockStateUpdate(level, oldState, newState);
 	if (!level.isClientSide() && oldState.hasProperty(VoltaicBlockStates.FACING)
 		&& newState.hasProperty(VoltaicBlockStates.FACING)
 		&& oldState.getValue(VoltaicBlockStates.FACING) != newState.getValue(VoltaicBlockStates.FACING)) {
@@ -227,10 +227,9 @@ public class TileRotaryUnifier extends GenericGasTile implements ITickableSound 
     }
 
     @Override
-    public InteractionResult useWithoutItem(Player player, BlockHitResult hit) {
-	if (mekIsLoaded) {
-	    return super.useWithoutItem(player, hit);
-	}
+    public InteractionResult useWithoutItem(Level level, Player player, BlockHitResult hit) {
+	if (mekIsLoaded)
+	    return super.useWithoutItem(level, player, hit);
 	return InteractionResult.PASS;
     }
 
@@ -241,6 +240,6 @@ public class TileRotaryUnifier extends GenericGasTile implements ITickableSound 
 
     @Override
     public boolean shouldPlaySound() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0);
     }
 }

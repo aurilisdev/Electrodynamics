@@ -1,6 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -30,8 +29,8 @@ public class RenderMultimeterBlock extends AbstractTileRenderer<TileMultimeterBl
     }
 
     @Override
-    public void render(@NotNull TileMultimeterBlock multimeter, float partialTicks, @NotNull PoseStack stack,
-	    @NotNull MultiBufferSource buffer, int combinedLight, int combinedOverlay) {
+    public void render(TileMultimeterBlock multimeter, float partialTicks, PoseStack stack, MultiBufferSource buffer,
+	    int combinedLight, int combinedOverlay) {
 
 	for (Direction dir : DIRS_TO_CHECK) {
 

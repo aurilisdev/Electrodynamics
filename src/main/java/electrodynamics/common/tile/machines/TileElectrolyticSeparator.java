@@ -7,6 +7,7 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.common.network.utils.GasUtilities;
 import voltaic.prefab.sound.ITickableSound;
@@ -17,7 +18,6 @@ import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentFluidHandlerMulti;
 import voltaic.prefab.tile.components.type.ComponentGasHandlerMulti;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentProcessor;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.tile.types.GenericGasTile;
@@ -38,7 +38,7 @@ public class TileElectrolyticSeparator extends GenericGasTile implements ITickab
     public TileElectrolyticSeparator(BlockPos worldPos, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_ELECTROLYTICSEPARATOR.get(), worldPos, blockState);
 	addComponent(new ComponentTickable(this).tickClient(this::tickClient).tickServer(this::tickServer));
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.FRONT)
 		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2));
@@ -54,25 +54,24 @@ public class TileElectrolyticSeparator extends GenericGasTile implements ITickab
 		ComponentInventory.InventoryBuilder.newInv().bucketInputs(1).gasOutputs(2).upgrades(3))
 		.validUpgrades(ContainerElectrolyticSeparator.VALID_UPGRADES).valid(machineValidator()));
 	addComponent(new ComponentProcessor(this)
-		.canProcess((component, procNumber) -> component.consumeBucket().dispenseGasCylinder()
-			.canProcessFluid2GasRecipe(procNumber,
+		.canProcess((component, level, procNumber) -> component.consumeBucket().dispenseGasCylinder()
+			.canProcessFluid2GasRecipe(level, procNumber,
 				ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get()))
 		.process(ComponentProcessor::processFluid2GasRecipe));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.electrolyticseparator.tag(), this)
 		.createMenu((id, player) -> new ContainerElectrolyticSeparator(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
-    public void tickServer(ComponentTickable tickable) {
-	ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
+    public void tickServer(Level level, ComponentTickable tickable) {
+	ComponentGasHandlerMulti handler = requireComponent(IComponentType.GasHandler);
 	GasUtilities.outputToPipe(this, handler.getOutputTanks()[0].asArray(), OXYGEN_DIRECTION.mappedDir);
 	GasUtilities.outputToPipe(this, handler.getOutputTanks()[1].asArray(), HYDROGEN_DIRECTION.mappedDir);
     }
 
-    protected void tickClient(ComponentTickable tickable) {
-	if (!shouldPlaySound()) {
+    protected void tickClient(Level level, ComponentTickable tickable) {
+	if (!shouldPlaySound())
 	    return;
-	}
 	if (level.random.nextDouble() < 0.15) {
 	    level.addParticle(ParticleTypes.SMOKE, worldPosition.getX() + level.random.nextDouble(),
 		    worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5,
@@ -92,12 +91,12 @@ public class TileElectrolyticSeparator extends GenericGasTile implements ITickab
 
     @Override
     public boolean shouldPlaySound() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0);
     }
 
     @Override
-    public int getComparatorSignal() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
+    public int getComparatorSignal(Level level) {
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0) ? 15 : 0;
     }
 
 }

@@ -33,41 +33,19 @@ public class ElectrodynamicsMineralWasherRecipes extends AbstractRecipeGenerator
 
     @Override
     public void addRecipes(RecipeOutput output) {
-
 	newRecipe(new FluidStack(Fluids.LAVA, 1500), 0, 200, 400.0, "lava_from_magma_block", modID)
-		//
-		.addFluidTagInput(FluidTags.LAVA, 1000)
-		//
-		.addItemStackInput(new ItemStack(Items.MAGMA_BLOCK))
-		//
+		.addFluidTagInput(FluidTags.LAVA, 1000).addItemStackInput(new ItemStack(Items.MAGMA_BLOCK))
 		.save(output);
-
 	for (SubtypeSulfateFluid fluid : SubtypeSulfateFluid.values()) {
-	    if (fluid.source != null) {
-		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(fluid), 1000), 0, 200, 400.0,
-			"sulfate_" + fluid.name(), modID)
-			//
-			.addItemTagInput(fluid.source, 1)
-			//
-			.addFluidTagInput(VoltaicTags.Fluids.SULFURIC_ACID, 1000)
-			//
-			.save(output);
-	    }
+	    newRecipe(new FluidStack(ElectrodynamicsFluids.FLUIDS_SULFATE.getValue(fluid), 1000), 0, 200, 400.0,
+		    "sulfate_" + fluid.name(), modID).addItemTagInput(fluid.source, 1)
+		    .addFluidTagInput(VoltaicTags.Fluids.SULFURIC_ACID, 1000).save(output);
 	}
-
 	for (SubtypeRoyalMineralFluid fluid : SubtypeRoyalMineralFluid.values()) {
-	    if (fluid.source != null) {
-		newRecipe(new FluidStack(ElectrodynamicsFluids.FLUIDS_ROYALMINERAL.getValue(fluid), 4000), 0, 200,
-			400.0, "royalmineral_" + fluid.name(), modID)
-			//
-			.addItemTagInput(fluid.source, 1)
-			//
-			.addFluidTagInput(VoltaicTags.Fluids.AQUA_REGIA, 1000)
-			//
-			.save(output);
-	    }
+	    newRecipe(new FluidStack(ElectrodynamicsFluids.FLUIDS_ROYALMINERAL.getValue(fluid), 4000), 0, 200, 400.0,
+		    "royalmineral_" + fluid.name(), modID).addItemTagInput(fluid.source, 1)
+		    .addFluidTagInput(VoltaicTags.Fluids.AQUA_REGIA, 1000).save(output);
 	}
-
     }
 
     public FluidItem2FluidBuilder<MineralWasherRecipe> newRecipe(FluidStack stack, float xp, int ticks,

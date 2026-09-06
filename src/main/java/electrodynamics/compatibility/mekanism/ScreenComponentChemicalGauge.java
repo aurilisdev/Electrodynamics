@@ -32,23 +32,21 @@ public class ScreenComponentChemicalGauge extends ScreenComponentGeneric {
 	onTooltip((graphics, component, xAxis, yAxis) -> {
 	    List<FormattedCharSequence> tooltips = new ArrayList<>();
 	    ChemicalStack stack = chemicalStackSupplier.getChemical();
-	    if (stack != null) {
-		Chemical chemical = stack.getChemical();
-		if (stack.getAmount() > 0) {
-		    tooltips.add(Component.translatable(chemical.getTranslationKey()).getVisualOrderText());
-		    tooltips.add(VoltaicTextUtils
-			    .ratio(ChatFormatter.formatFluidMilibuckets(stack.getAmount()),
-				    ChatFormatter.formatFluidMilibuckets(TileRotaryUnifier.MAX_CHEM_AMOUNT))
-			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		} else {
-		    tooltips.add(VoltaicTextUtils
-			    .ratio(Component.literal("0"),
-				    ChatFormatter.formatFluidMilibuckets(TileRotaryUnifier.MAX_CHEM_AMOUNT))
-			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		}
+	    Chemical chemical = stack.getChemical();
+	    if (stack.getAmount() > 0) {
+		tooltips.add(Component.translatable(chemical.getTranslationKey()).getVisualOrderText());
+		tooltips.add(VoltaicTextUtils
+			.ratio(ChatFormatter.formatFluidMilibuckets(stack.getAmount()),
+				ChatFormatter.formatFluidMilibuckets(TileRotaryUnifier.MAX_CHEM_AMOUNT))
+			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
+	    } else {
+		tooltips.add(VoltaicTextUtils
+			.ratio(Component.literal("0"),
+				ChatFormatter.formatFluidMilibuckets(TileRotaryUnifier.MAX_CHEM_AMOUNT))
+			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
 	    }
 	    if (!tooltips.isEmpty()) {
-		graphics.renderTooltip(gui.getFontRenderer(), tooltips, xAxis, yAxis);
+		graphics.renderTooltip(requireScreen().getFontRenderer(), tooltips, xAxis, yAxis);
 	    }
 	});
     }

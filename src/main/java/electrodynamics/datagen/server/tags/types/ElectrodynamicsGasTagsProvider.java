@@ -2,15 +2,12 @@ package electrodynamics.datagen.server.tags.types;
 
 import java.util.concurrent.CompletableFuture;
 
-import org.jetbrains.annotations.Nullable;
-
 import electrodynamics.Electrodynamics;
 import electrodynamics.registers.ElectrodynamicsGases;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.IntrinsicHolderTagsProvider;
-import net.minecraft.resources.ResourceKey;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import voltaic.api.gas.Gas;
 import voltaic.common.tags.VoltaicTags;
@@ -19,10 +16,12 @@ import voltaic.registers.VoltaicGases;
 public class ElectrodynamicsGasTagsProvider extends IntrinsicHolderTagsProvider<Gas> {
 
     public ElectrodynamicsGasTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,
-	    String modId, @Nullable ExistingFileHelper existingFileHelper) {
+	    String modId, ExistingFileHelper existingFileHelper) {
+
 	super(output, VoltaicGases.GAS_REGISTRY_KEY, lookupProvider,
-		gas -> ResourceKey.create(VoltaicGases.GAS_REGISTRY_KEY, VoltaicGases.GAS_REGISTRY.getKey(gas)), modId,
-		existingFileHelper);
+		gas -> VoltaicGases.GAS_REGISTRY.getResourceKey(gas)
+			.orElseThrow(() -> new IllegalStateException("Gas is not registered: " + gas)),
+		modId, existingFileHelper);
     }
 
     public ElectrodynamicsGasTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider,

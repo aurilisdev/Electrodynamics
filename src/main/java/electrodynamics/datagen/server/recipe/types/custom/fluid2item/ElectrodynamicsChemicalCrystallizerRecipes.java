@@ -1,11 +1,14 @@
 package electrodynamics.datagen.server.recipe.types.custom.fluid2item;
 
+import java.util.function.Supplier;
+
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.fluid.subtype.SubtypePureMineralFluid;
 import electrodynamics.common.recipe.categories.fluid2item.specificmachines.ChemicalCrystalizerRecipe;
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.FluidTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import voltaic.common.tags.VoltaicTags;
@@ -50,9 +53,10 @@ public class ElectrodynamicsChemicalCrystallizerRecipes extends AbstractRecipeGe
 		.save(output);
 
 	for (SubtypePureMineralFluid fluid : SubtypePureMineralFluid.values()) {
-	    if (fluid.result != null) {
-		newRecipe(new ItemStack(fluid.result.get()), 0, 200, 800.0,
-			"crystal_" + fluid.name() + "_from_pure_fluid", modID)
+	    Supplier<Item> result = fluid.result;
+	    if (result != null) {
+		newRecipe(new ItemStack(result.get()), 0, 200, 800.0, "crystal_" + fluid.name() + "_from_pure_fluid",
+			modID)
 			//
 			.addFluidTagInput(fluid.tag, 200)
 			//

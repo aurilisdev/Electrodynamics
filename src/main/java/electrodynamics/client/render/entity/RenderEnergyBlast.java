@@ -1,7 +1,5 @@
 package electrodynamics.client.render.entity;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.Electrodynamics;
@@ -21,11 +19,10 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
 
     @Override
     public void render(EntityEnergyBlast entity, float entityYaw, float partialTicks, PoseStack matrixStack,
-	    @NotNull MultiBufferSource buffer, int packedLight) {
+	    MultiBufferSource buffer, int packedLight) {
 
-	if (entity.tickCount < 1) {
+	if (entity.tickCount < 1)
 	    return;
-	}
 
 	/*
 	 * int r = Electrodynamics.RANDOM.nextInt(0, 50); int g =
@@ -85,7 +82,7 @@ public class RenderEnergyBlast extends EntityRenderer<EntityEnergyBlast> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull EntityEnergyBlast entity) {
+    public ResourceLocation getTextureLocation(EntityEnergyBlast entity) {
 	return Electrodynamics.rl("custom/plasmaorb");
     }
 

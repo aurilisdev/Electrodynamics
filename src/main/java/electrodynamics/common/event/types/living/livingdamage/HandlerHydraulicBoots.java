@@ -19,23 +19,20 @@ public class HandlerHydraulicBoots extends AbstractLivingDamageHandler {
     @Override
     public void handle(LivingDamageEvent.Pre event) {
 	LivingEntity entity = event.getEntity();
-	if (!event.getSource().is(DamageTypes.FALL)) {
+	if (!event.getSource().is(DamageTypes.FALL))
 	    return;
-	}
 	ItemStack playerBoots = entity.getItemBySlot(EquipmentSlot.FEET);
 
 	if (!ItemUtils.testItems(playerBoots.getItem(), ElectrodynamicsItems.ITEM_HYDRAULICBOOTS.get(),
-		ElectrodynamicsItems.ITEM_COMBATBOOTS.get())) {
+		ElectrodynamicsItems.ITEM_COMBATBOOTS.get()))
 	    return;
-	}
 
 	int fluidRequired = (int) Math.log10(event.getOriginalDamage());
 
 	IFluidHandlerItem handler = playerBoots.getCapability(Capabilities.FluidHandler.ITEM);
 
-	if (handler == null || handler.getFluidInTank(0).getAmount() < fluidRequired) {
+	if (handler == null || handler.getFluidInTank(0).getAmount() < fluidRequired)
 	    return;
-	}
 
 	event.setNewDamage(0);
 

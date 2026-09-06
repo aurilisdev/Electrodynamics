@@ -27,9 +27,9 @@ public class HandlerCompositeArmor extends AbstractLivingDamageHandler {
 
     @Override
     public void handle(LivingDamageEvent.Pre event) {
-	if (event.getSource().is(DamageTypes.FALL)) {
+	if (event.getSource().is(DamageTypes.FALL))
 	    return;
-	}
+
 	List<ItemStack> armorPieces = new ArrayList<>();
 	event.getEntity().getArmorSlots().forEach(piece -> armorPieces.add(piece));
 
@@ -47,10 +47,9 @@ public class HandlerCompositeArmor extends AbstractLivingDamageHandler {
     }
 
     private static boolean compareArmor(List<ItemStack> set1, ItemStack[] set2) {
-	if (set1.size() >= 3) {
+	if (set1.size() >= 3)
 	    return set1.get(0).getItem() == set2[3].getItem() && set1.get(1).getItem() == set2[2].getItem()
 		    && set1.get(2).getItem() == set2[1].getItem() && set1.get(3).getItem() == set2[0].getItem();
-	}
 	return false;
     }
 

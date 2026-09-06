@@ -4,8 +4,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.jetbrains.annotations.Nullable;
-
 import electrodynamics.Electrodynamics;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsArmorMaterials;
@@ -61,8 +59,7 @@ public class ItemCompositeArmor extends ItemVoltaicArmor {
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity,
-	    Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
 	return 0;
     }
 
@@ -99,7 +96,7 @@ public class ItemCompositeArmor extends ItemVoltaicArmor {
     }
 
     @Override
-    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
+    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
 	    ArmorMaterial.Layer layer, boolean innerModel) {
 	return ARMOR_TEXTURE_LOCATION;
     }

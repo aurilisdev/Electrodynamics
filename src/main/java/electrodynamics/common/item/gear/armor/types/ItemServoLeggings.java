@@ -4,8 +4,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.jetbrains.annotations.Nullable;
-
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.entity.ElectrodynamicsAttributeModifiers;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
@@ -22,6 +20,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.ClickAction;
@@ -79,8 +78,7 @@ public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity,
-	    Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
 	return 0;
     }
 
@@ -161,90 +159,82 @@ public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric
     }
 
     protected static void wearingTick(ItemStack stack, Level world, Player player) {
+	if (world.isClientSide)
+	    return;
 
-	if (world.isClientSide) {
+	IItemElectric electricItem = (IItemElectric) stack.getItem();
+	int mode = stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0);
+
+	boolean active = stack.getOrDefault(VoltaicDataComponentTypes.ON, false)
+		&& electricItem.getJoulesStored(stack) >= JOULES_PER_TICK;
+
+	if (!active) {
+	    stack.set(VoltaicDataComponentTypes.SUCESS, false);
+
+	    if (!stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
+		updateStepHeight(player, false);
+	    }
+
 	    return;
 	}
 
-	IItemElectric legs = (IItemElectric) stack.getItem();
-	if (stack.getOrDefault(VoltaicDataComponentTypes.ON, false) && legs.getJoulesStored(stack) >= JOULES_PER_TICK) {
-	    switch (stack.getOrDefault(VoltaicDataComponentTypes.MODE, 0)) {
-	    case 0:
-		stack.set(VoltaicDataComponentTypes.RESET, false);
-		stack.set(VoltaicDataComponentTypes.SUCESS, true);
-		player.getAttribute(Attributes.STEP_HEIGHT)
-			.removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
-		player.getAttribute(Attributes.STEP_HEIGHT)
-			.addPermanentModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
-		legs.extractPower(stack, JOULES_PER_TICK, false);
-		break;
-	    case 1:
-		stack.set(VoltaicDataComponentTypes.RESET, false);
-		stack.set(VoltaicDataComponentTypes.SUCESS, true);
-		player.getAttribute(Attributes.STEP_HEIGHT)
-			.removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
-		player.getAttribute(Attributes.STEP_HEIGHT)
-			.addPermanentModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
-		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false,
-			false, false));
-		legs.extractPower(stack, JOULES_PER_TICK, false);
-		break;
-	    case 2:
-		stack.set(VoltaicDataComponentTypes.RESET, false);
-		stack.set(VoltaicDataComponentTypes.SUCESS, false);
-		player.getAttribute(Attributes.STEP_HEIGHT)
-			.removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
-		player.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false,
-			false, false));
-		legs.extractPower(stack, JOULES_PER_TICK, false);
-		break;
-	    case 3:
-		stack.set(VoltaicDataComponentTypes.SUCESS, false);
-		if (!stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
-		    player.getAttribute(Attributes.STEP_HEIGHT)
-			    .removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
-		}
-		break;
-	    default:
-		break;
+	switch (mode) {
+	case 0, 1:
+	    stack.set(VoltaicDataComponentTypes.RESET, false);
+	    stack.set(VoltaicDataComponentTypes.SUCESS, true);
+	    updateStepHeight(player, true);
+
+	    if (mode == 1) {
+		addSpeedEffect(player);
 	    }
-	} else {
+
+	    electricItem.extractPower(stack, JOULES_PER_TICK, false);
+	    break;
+
+	case 2:
+	    stack.set(VoltaicDataComponentTypes.RESET, false);
 	    stack.set(VoltaicDataComponentTypes.SUCESS, false);
+	    updateStepHeight(player, false);
+	    addSpeedEffect(player);
+	    electricItem.extractPower(stack, JOULES_PER_TICK, false);
+	    break;
+
+	case 3:
+	    stack.set(VoltaicDataComponentTypes.SUCESS, false);
+
 	    if (!stack.getOrDefault(VoltaicDataComponentTypes.RESET, false)) {
-		player.getAttribute(Attributes.STEP_HEIGHT)
-			.removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
-
+		updateStepHeight(player, false);
 	    }
-	}
 
+	    break;
+
+	default:
+	    break;
+	}
+    }
+
+    private static void updateStepHeight(Player player, boolean enabled) {
+	AttributeInstance stepHeight = player.getAttribute(Attributes.STEP_HEIGHT);
+
+	if (stepHeight == null)
+	    return;
+
+	stepHeight.removeModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
+
+	if (enabled) {
+	    stepHeight.addPermanentModifier(ElectrodynamicsAttributeModifiers.SERVO_LEGGINGS_STEP);
+	}
+    }
+
+    private static void addSpeedEffect(Player player) {
+	player.addEffect(
+		new MobEffectInstance(MobEffects.MOVEMENT_SPEED, DURATION_SECONDS * 20, 0, false, false, false));
     }
 
     @Override
     public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 	return !oldStack.is(newStack.getItem());
     }
-
-    /*
-     * 
-     * public enum ServoLeggings implements ICustomArmor { SERVOLEGGINGS;
-     * 
-     * @Override public SoundEvent getEquipSound() { return
-     * SoundEvents.ARMOR_EQUIP_IRON; }
-     * 
-     * @Override public String getName() { return References.ID + ":servoleggings";
-     * }
-     * 
-     * @Override public float getToughness() { return 0.0F; }
-     * 
-     * @Override public float getKnockbackResistance() { return 0.0F; }
-     * 
-     * @Override public int getDurabilityForType(Type pType) { return 100; }
-     * 
-     * @Override public int getDefenseForType(Type pType) { return 1; }
-     * 
-     * }
-     * 
-     */
 
     @Override
     public Item getDefaultStorageBattery() {
@@ -255,16 +245,15 @@ public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action,
 	    Player player, SlotAccess access) {
 
-	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access))
 	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-	}
 
 	return true;
 
     }
 
     @Override
-    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
+    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
 	    ArmorMaterial.Layer layer, boolean innerModel) {
 	return ARMOR_TEXTURE;
     }

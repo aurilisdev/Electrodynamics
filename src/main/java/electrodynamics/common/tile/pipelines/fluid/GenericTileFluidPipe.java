@@ -2,11 +2,14 @@ package electrodynamics.common.tile.pipelines.fluid;
 
 import java.util.Set;
 
+import javax.annotation.Nullable;
+
 import com.google.common.collect.Lists;
 
 import electrodynamics.common.network.type.FluidNetwork;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
@@ -21,11 +24,10 @@ public abstract class GenericTileFluidPipe
     private final IFluidHandler[] handler = new IFluidHandler[6];
 
     @Override
-    public @org.jetbrains.annotations.Nullable IFluidHandler getFluidHandlerCapability(
-	    @org.jetbrains.annotations.Nullable Direction side) {
-	if (side == null) {
+    @Nullable
+    public IFluidHandler getFluidHandlerCapability(@Nullable Direction side) {
+	if (side == null)
 	    return null;
-	}
 	return handler[side.ordinal()];
     }
 
@@ -51,16 +53,20 @@ public abstract class GenericTileFluidPipe
 
 		@Override
 		public boolean isFluidValid(int tank, FluidStack stack) {
-		    return stack != null;
+		    return true;
 		}
 
 		@Override
 		public int fill(FluidStack resource, FluidAction action) {
-		    if (action == FluidAction.SIMULATE || getNetwork() == null || resource.isEmpty()) {
+		    Level llevel = level;
+
+		    if (llevel == null || action == FluidAction.SIMULATE || resource.isEmpty())
 			return 0;
-		    }
-		    return getNetwork().emit(resource,
-			    Lists.newArrayList(level.getBlockEntity(new BlockPos(worldPosition).relative(dir))), false)
+		    return getNetwork()
+			    .emit(resource,
+				    Lists.newArrayList(
+					    llevel.getBlockEntity(new BlockPos(worldPosition).relative(dir))),
+				    false)
 			    .getAmount();
 		}
 
@@ -78,12 +84,12 @@ public abstract class GenericTileFluidPipe
     }
 
     @Override
-    public FluidNetwork createInstance(Set<FluidNetwork> fluidNetworks) {
+    public FluidNetwork createNetworkFromNetworks(Set<FluidNetwork> fluidNetworks) {
 	return new FluidNetwork(fluidNetworks);
     }
 
     @Override
-    public FluidNetwork createInstanceConductor(Set<GenericTileFluidPipe> genericTileFluidPipes) {
+    public FluidNetwork createNetworkFromConductors(Set<GenericTileFluidPipe> genericTileFluidPipes) {
 	return new FluidNetwork(genericTileFluidPipes);
     }
 

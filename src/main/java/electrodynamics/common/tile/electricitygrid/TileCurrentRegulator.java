@@ -4,6 +4,7 @@ import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.api.electricity.ICapabilityElectrodynamic;
@@ -30,25 +31,19 @@ public class TileCurrentRegulator extends GenericTile {
     }
 
     public TransferPack receivePower(TransferPack transfer, boolean debug) {
-
-	if (isLocked) {
+	Level level = this.level;
+	if (level == null || isLocked)
 	    return TransferPack.EMPTY;
-	}
 
 	Direction output = BlockEntityUtils.getRelativeSide(getFacing(), OUTPUT.mappedDir);
-
 	BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
-
-	if (tile == null) {
+	if (tile == null)
 	    return TransferPack.EMPTY;
-	}
 
 	isLocked = true;
 
-	ICapabilityElectrodynamic electro = tile.getLevel().getCapability(
-		VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile,
-		output.getOpposite());
-
+	ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
+		tile.getBlockPos(), tile.getBlockState(), tile, output.getOpposite());
 	if (electro == null) {
 	    isLocked = false;
 	    return TransferPack.EMPTY;
@@ -64,46 +59,35 @@ public class TileCurrentRegulator extends GenericTile {
 		accepted.getJoules() / ElectrodynamicsConfig.INSTANCE.CURRENTREGULATOR_EFFICIENCY.get(),
 		accepted.getVoltage());
 
-	double ampacityInTicks = electro.getAmpacity();
+	double ampacity = electro.getAmpacity();
 
-	if (ampacityInTicks < 0) {
+	if (ampacity < 0)
 	    return adjusted;
-	}
 
-	double currentInTicks = adjusted.getAmpsInTicks();
-
-	if (currentInTicks > ampacityInTicks) {
-
-	    adjusted = TransferPack.ampsVoltage(ampacityInTicks, adjusted.getVoltage());
-
+	if (adjusted.getAmpsInTicks() > ampacity) {
+	    adjusted = TransferPack.ampsVoltage(ampacity, adjusted.getVoltage());
 	}
 
 	return adjusted;
     }
 
     public TransferPack getConnectedLoad(ICapabilityElectrodynamic.LoadProfile lastEnergy, Direction dir) {
-
-	if (isLocked) {
+	Level level = this.level;
+	if (level == null || isLocked)
 	    return TransferPack.EMPTY;
-	}
 
 	Direction output = BlockEntityUtils.getRelativeSide(getFacing(), OUTPUT.mappedDir);
-
-	if (dir != output.getOpposite()) {
+	if (dir != output.getOpposite())
 	    return TransferPack.EMPTY;
-	}
 
 	BlockEntity tile = level.getBlockEntity(worldPosition.relative(output));
-
-	if (tile == null) {
+	if (tile == null)
 	    return TransferPack.EMPTY;
-	}
 
 	isLocked = true;
 
-	ICapabilityElectrodynamic electro = tile.getLevel().getCapability(
-		VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(), tile,
-		output.getOpposite());
+	ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
+		tile.getBlockPos(), tile.getBlockState(), tile, output.getOpposite());
 
 	if (electro == null) {
 	    isLocked = false;
@@ -128,18 +112,13 @@ public class TileCurrentRegulator extends GenericTile {
 		returner.getJoules() / ElectrodynamicsConfig.INSTANCE.CIRCUITBREAKER_EFFICIENCY.get(),
 		returner.getVoltage());
 
-	double ampacityInTicks = electro.getAmpacity();
+	double ampacity = electro.getAmpacity();
 
-	if (ampacityInTicks < 0) {
+	if (ampacity < 0)
 	    return adjusted;
-	}
 
-	double currentInTicks = adjusted.getAmpsInTicks();
-
-	if (currentInTicks > ampacityInTicks) {
-
-	    adjusted = TransferPack.ampsVoltage(ampacityInTicks, adjusted.getVoltage());
-
+	if (adjusted.getAmpsInTicks() > ampacity) {
+	    adjusted = TransferPack.ampsVoltage(ampacity, adjusted.getVoltage());
 	}
 
 	return adjusted;
@@ -147,18 +126,20 @@ public class TileCurrentRegulator extends GenericTile {
 
     public double getMinimumVoltage() {
 	Direction facing = getFacing();
-	if (isLocked) {
+	if (isLocked)
 	    return 0;
-	}
+
+	Level level = this.level;
+	if (level == null)
+	    return 0;
+
 	BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
-	if (output == null) {
+	if (output == null)
 	    return -1;
-	}
 	isLocked = true;
 
-	ICapabilityElectrodynamic electro = output.getLevel().getCapability(
-		VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getBlockPos(), output.getBlockState(),
-		output, facing.getOpposite());
+	ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
+		output.getBlockPos(), output.getBlockState(), output, facing.getOpposite());
 
 	if (electro == null) {
 	    isLocked = false;
@@ -172,18 +153,20 @@ public class TileCurrentRegulator extends GenericTile {
 
     public double getAmpacity() {
 	Direction facing = getFacing();
-	if (isLocked) {
+	if (isLocked)
 	    return 0;
-	}
+
+	Level level = this.level;
+	if (level == null)
+	    return 0;
+
 	BlockEntity output = level.getBlockEntity(worldPosition.relative(facing));
-	if (output == null) {
+	if (output == null)
 	    return -1;
-	}
 	isLocked = true;
 
-	ICapabilityElectrodynamic electro = output.getLevel().getCapability(
-		VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, output.getBlockPos(), output.getBlockState(),
-		output, facing.getOpposite());
+	ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
+		output.getBlockPos(), output.getBlockState(), output, facing.getOpposite());
 
 	if (electro == null) {
 	    isLocked = false;

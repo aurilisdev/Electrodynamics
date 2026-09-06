@@ -1,7 +1,6 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipePump;
-import electrodynamics.common.tile.pipelines.fluid.TileFluidPipePump;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -14,46 +13,30 @@ import voltaic.prefab.utilities.math.Color;
 public class ScreenFluidPipePump extends GenericScreen<ContainerFluidPipePump> {
 
     private ScreenComponentEditBox priority;
-
     private boolean needsUpdate = true;
 
     public ScreenFluidPipePump(ContainerFluidPipePump screenContainer, Inventory inv, Component titleIn) {
 	super(screenContainer, inv, titleIn);
-
 	addComponent(priority = new ScreenComponentEditBox(94, 35, 59, 16, getFontRenderer()).setTextColor(Color.WHITE)
 		.setTextColorUneditable(Color.WHITE).setMaxLength(1).setResponder(this::setPriority)
 		.setFilter(ScreenComponentEditBox.POSITIVE_INTEGER));
 	addComponent(new ScreenComponentSimpleLabel(20, 39, 10, Color.TEXT_GRAY,
 		ElectroTextUtils.gui("prioritypump.priority")));
-
     }
 
     private void setPriority(String prior) {
-
-	TileFluidPipePump pump = menu.getSafeHost();
-
-	if ((pump == null) || prior.isEmpty()) {
+	if (prior.isEmpty())
+	    return;
+	int parsedPriority;
+	try {
+	    parsedPriority = Integer.parseInt(prior);
+	} catch (NumberFormatException e) {
 	    return;
 	}
-
-	int priority = 0;
-
-	try {
-	    priority = Integer.parseInt(prior);
-	} catch (Exception e) {
-
-	}
-
-	if (priority > 9) {
-	    priority = 9;
-	    this.priority.setValue(priority + "");
-	} else if (priority < 0) {
-	    priority = 0;
-	    this.priority.setValue(priority + "");
-	}
-
-	pump.priority.setValue(priority);
-
+	int clampedPriority = Math.max(0, Math.min(9, parsedPriority));
+	if (clampedPriority != parsedPriority)
+	    priority.setValue(String.valueOf(clampedPriority));
+	menu.getSafeHost().ifPresent(pump -> pump.priority.setValue(clampedPriority));
     }
 
     @Override
@@ -61,11 +44,7 @@ public class ScreenFluidPipePump extends GenericScreen<ContainerFluidPipePump> {
 	super.render(graphics, mouseX, mouseY, partialTicks);
 	if (needsUpdate) {
 	    needsUpdate = false;
-	    TileFluidPipePump pump = menu.getSafeHost();
-	    if (pump != null) {
-		priority.setValue("" + pump.priority.getValue());
-	    }
+	    menu.getSafeHost().ifPresent(pump -> priority.setValue(String.valueOf(pump.priority.getValue())));
 	}
     }
-
 }

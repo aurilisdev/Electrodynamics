@@ -13,9 +13,11 @@ import mezz.jei.api.gui.drawable.IDrawableAnimated.StartDirection;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.level.Level;
 import voltaic.compatibility.jei.recipecategories.AbstractRecipeCategory;
 import voltaic.compatibility.jei.utils.gui.ScreenObject;
 import voltaic.compatibility.jei.utils.gui.types.ArrowAnimatedObject;
@@ -75,9 +77,12 @@ public class ElectricFurnaceRecipeCategory extends AbstractRecipeCategory<Smelti
 
     @Override
     public List<ItemStack> getItemOutputs(SmeltingRecipe recipe) {
-	List<ItemStack> outputs = new ArrayList<>();
-	outputs.add(recipe.getResultItem(null));
-	return outputs;
+	Minecraft minecraft = Minecraft.getInstance();
+	Level level = minecraft.level;
+	if (level == null)
+	    return List.of();
+
+	return List.of(recipe.getResultItem(level.registryAccess()));
     }
 
 }

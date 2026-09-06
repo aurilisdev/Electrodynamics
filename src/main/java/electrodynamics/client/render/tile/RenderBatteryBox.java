@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.ElectrodynamicsClientRegister;
@@ -24,10 +22,10 @@ public class RenderBatteryBox extends AbstractTileRenderer<TileBatteryBox> {
     }
 
     @Override
-    public void render(TileBatteryBox tileEntityIn, float partialTicks, @NotNull PoseStack matrixStackIn,
-	    @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(TileBatteryBox tileEntityIn, float partialTicks, PoseStack matrixStackIn,
+	    MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 	BakedModel ibakedmodel;
-	ComponentElectrodynamic el = tileEntityIn.getComponent(IComponentType.Electrodynamic);
+	ComponentElectrodynamic el = tileEntityIn.requireComponent(IComponentType.Electrodynamic);
 	int stored = (int) (el.getJoulesStored() / el.getMaxJoulesStored() * 6);
 	ibakedmodel = switch (stored) {
 	case 1 -> getModel(ElectrodynamicsClientRegister.MODEL_BATTERYBOX2);
@@ -59,8 +57,8 @@ public class RenderBatteryBox extends AbstractTileRenderer<TileBatteryBox> {
 	}
 	}
 	matrixStackIn.translate(0.5, 0.5, 0.5);
-	RenderingUtils.renderModel(ibakedmodel, tileEntityIn, RenderType.solid(), matrixStackIn, bufferIn,
-		combinedLightIn, combinedOverlayIn);
+	RenderingUtils.renderModel(ibakedmodel, RenderType.solid(), matrixStackIn, bufferIn, combinedLightIn,
+		combinedOverlayIn);
     }
 
     @Override

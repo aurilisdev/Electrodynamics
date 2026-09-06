@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import org.jetbrains.annotations.Nullable;
-
 import electrodynamics.Electrodynamics;
 import electrodynamics.registers.ElectrodynamicsArmorMaterials;
 import electrodynamics.registers.ElectrodynamicsCreativeTabs;
@@ -56,17 +54,15 @@ public class ItemHydraulicBoots extends ItemVoltaicArmor {
 
 	super.addCreativeModeItems(tab, items);
 
-	if (Capabilities.FluidHandler.ITEM == null) {
+	if (Capabilities.FluidHandler.ITEM == null)
 	    return;
-	}
 
 	ItemStack full = new ItemStack(this);
 
 	IFluidHandlerItem handler = full.getCapability(Capabilities.FluidHandler.ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return;
-	}
 
 	RestrictedFluidHandlerItemStack restricted = (RestrictedFluidHandlerItemStack) handler;
 
@@ -104,8 +100,7 @@ public class ItemHydraulicBoots extends ItemVoltaicArmor {
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity,
-	    Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
 	return 0;
     }
 
@@ -128,9 +123,8 @@ public class ItemHydraulicBoots extends ItemVoltaicArmor {
 
 	IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return false;
-	}
 
 	return !handler.getFluidInTank(0).isEmpty();
     }
@@ -144,9 +138,8 @@ public class ItemHydraulicBoots extends ItemVoltaicArmor {
 
 	IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return 13;
-	}
 
 	return (int) (13.0 * handler.getFluidInTank(0).getAmount() / handler.getTankCapacity(0));
 
@@ -162,7 +155,7 @@ public class ItemHydraulicBoots extends ItemVoltaicArmor {
     }
 
     @Override
-    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
+    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
 	    ArmorMaterial.Layer layer, boolean innerModel) {
 	return TEXTURE_LOCATION;
     }

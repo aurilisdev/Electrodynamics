@@ -108,12 +108,11 @@ public class ElectrodynamicsItems {
 			|| subtype == SubtypeMachine.relay || subtype == SubtypeMachine.potentiometer
 			|| subtype == SubtypeMachine.advanceddowngradetransformer
 			|| subtype == SubtypeMachine.advancedupgradetransformer
-			|| subtype == SubtypeMachine.circuitmonitor || subtype == SubtypeMachine.currentregulator) {
+			|| subtype == SubtypeMachine.circuitmonitor || subtype == SubtypeMachine.currentregulator)
 		    return ITEMS.register(subtype.tag(),
 			    () -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(subtype),
 				    new Item.Properties(),
 				    subtype.showInItemGroup() ? ElectrodynamicsCreativeTabs.GRID : null));
-		}
 		return ITEMS.register(subtype.tag(),
 			() -> new BlockItemDescriptable(ElectrodynamicsBlocks.BLOCKS_MACHINE.getValue(subtype),
 				new Item.Properties(),
@@ -129,9 +128,8 @@ public class ElectrodynamicsItems {
 		    ElectrodynamicsCreativeTabs.MAIN) {
 		@Override
 		public boolean isAllowedInCreativeTab(CreativeModeTab tab) {
-		    if (ModList.get().isLoaded(Voltaic.MEKANISM_ID)) {
+		    if (ModList.get().isLoaded(Voltaic.MEKANISM_ID))
 			return super.isAllowedInCreativeTab(tab);
-		    }
 		    return false;
 		}
 	    });

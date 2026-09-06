@@ -1,11 +1,12 @@
 package electrodynamics.common.tile.pipelines.gas;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import electrodynamics.common.tile.pipelines.GenericTileValve;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.api.gas.GasAction;
@@ -25,9 +26,9 @@ public class TileGasValve extends GenericTileValve {
 
     @Override
     public @Nullable IGasHandler getGasHandlerCapability(@Nullable Direction side) {
-	if (side == null || isLocked) {
+	Level level = this.level;
+	if (level == null || side == null || isLocked)
 	    return null;
-	}
 
 	Direction facing = getFacing();
 
@@ -36,13 +37,12 @@ public class TileGasValve extends GenericTileValve {
 
 	    BlockEntity relative = level.getBlockEntity(worldPosition.relative(side.getOpposite()));
 
-	    if (relative == null) {
+	    if (relative == null)
 		return CapabilityUtils.EMPTY_GAS;
-	    }
 
 	    isLocked = true;
 
-	    IGasHandler gas = relative.getLevel().getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK,
+	    IGasHandler gas = level.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_BLOCK,
 		    relative.getBlockPos(), relative.getBlockState(), relative, side);
 
 	    isLocked = false;
@@ -63,9 +63,8 @@ public class TileGasValve extends GenericTileValve {
 
 	@Override
 	public int getTanks() {
-	    if (isClosed || isLocked) {
+	    if (isClosed || isLocked)
 		return 0;
-	    }
 	    isLocked = true;
 	    int tanks = parent.getTanks();
 	    isLocked = false;
@@ -74,9 +73,8 @@ public class TileGasValve extends GenericTileValve {
 
 	@Override
 	public GasStack getGasInTank(int tank) {
-	    if (isClosed || isLocked) {
+	    if (isClosed || isLocked)
 		return GasStack.EMPTY;
-	    }
 	    isLocked = true;
 	    GasStack stack = parent.getGasInTank(tank);
 	    isLocked = false;
@@ -85,9 +83,8 @@ public class TileGasValve extends GenericTileValve {
 
 	@Override
 	public int getTankCapacity(int tank) {
-	    if (isClosed || isLocked) {
+	    if (isClosed || isLocked)
 		return 0;
-	    }
 	    isLocked = true;
 	    int cap = parent.getTankCapacity(tank);
 	    isLocked = false;
@@ -96,9 +93,8 @@ public class TileGasValve extends GenericTileValve {
 
 	@Override
 	public int getTankMaxTemperature(int tank) {
-	    if (isClosed || isLocked) {
+	    if (isClosed || isLocked)
 		return 0;
-	    }
 	    isLocked = true;
 	    int temp = parent.getTankMaxTemperature(tank);
 	    isLocked = false;
@@ -107,9 +103,8 @@ public class TileGasValve extends GenericTileValve {
 
 	@Override
 	public int getTankMaxPressure(int tank) {
-	    if (isClosed || isLocked) {
+	    if (isClosed || isLocked)
 		return 0;
-	    }
 	    isLocked = true;
 	    int pres = parent.getTankMaxPressure(tank);
 	    isLocked = false;
@@ -118,9 +113,8 @@ public class TileGasValve extends GenericTileValve {
 
 	@Override
 	public boolean isGasValid(int tank, GasStack gas) {
-	    if (isClosed || isLocked) {
+	    if (isClosed || isLocked)
 		return false;
-	    }
 	    isLocked = true;
 	    boolean valid = parent.isGasValid(tank, gas);
 	    isLocked = false;
@@ -129,9 +123,8 @@ public class TileGasValve extends GenericTileValve {
 
 	@Override
 	public int fill(GasStack gas, GasAction action) {
-	    if (isClosed || isLocked) {
+	    if (isClosed || isLocked)
 		return 0;
-	    }
 	    isLocked = true;
 	    int fill = parent.fill(gas, action);
 	    isLocked = false;
@@ -140,9 +133,8 @@ public class TileGasValve extends GenericTileValve {
 
 	@Override
 	public GasStack drain(GasStack gas, GasAction action) {
-	    if (isClosed || isLocked) {
+	    if (isClosed || isLocked)
 		return GasStack.EMPTY;
-	    }
 	    isLocked = true;
 	    GasStack drain = parent.drain(gas, action);
 	    isLocked = false;
@@ -151,9 +143,8 @@ public class TileGasValve extends GenericTileValve {
 
 	@Override
 	public GasStack drain(int maxFill, GasAction action) {
-	    if (isClosed || isLocked) {
+	    if (isClosed || isLocked)
 		return GasStack.EMPTY;
-	    }
 	    isLocked = true;
 	    GasStack drain = parent.drain(maxFill, action);
 	    isLocked = false;
@@ -162,9 +153,8 @@ public class TileGasValve extends GenericTileValve {
 
 	@Override
 	public int heat(int tank, int deltaTemperature, GasAction action) {
-	    if (isClosed || isLocked) {
+	    if (isClosed || isLocked)
 		return -1;
-	    }
 	    isLocked = true;
 	    int heat = parent.heat(tank, deltaTemperature, action);
 	    isLocked = false;
@@ -173,9 +163,8 @@ public class TileGasValve extends GenericTileValve {
 
 	@Override
 	public int bringPressureTo(int tank, int atm, GasAction action) {
-	    if (isClosed || isLocked) {
+	    if (isClosed || isLocked)
 		return -1;
-	    }
 	    isLocked = true;
 	    int pres = parent.bringPressureTo(tank, atm, action);
 	    isLocked = false;

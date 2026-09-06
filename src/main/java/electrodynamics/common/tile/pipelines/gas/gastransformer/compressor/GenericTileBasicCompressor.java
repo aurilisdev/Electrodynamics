@@ -11,6 +11,7 @@ import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,9 +29,8 @@ public abstract class GenericTileBasicCompressor extends GenericTileCompressor i
     }
 
     @Override
-    public void tickClient(ComponentTickable tickable) {
-
-	super.tickClient(tickable);
+    public void tickClient(Level level, ComponentTickable tickable) {
+	super.tickClient(level, tickable);
 
 	if (level.getRandom().nextDouble() < 0.15) {
 
@@ -41,25 +41,27 @@ public abstract class GenericTileBasicCompressor extends GenericTileCompressor i
     }
 
     @Override
-    public void updateTankCount() {
+    public void updateTankCount(Level level) {
 	BlockPos abovePos = getBlockPos().above();
-	BlockState aboveState = getLevel().getBlockState(abovePos);
+	BlockState aboveState = level.getBlockState(abovePos);
 	BlockEntity aboveTile;
 	int tankCount = 0;
 	for (int i = 0; i < ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_ADDON_TANK_LIMIT.get(); i++) {
 	    if (!aboveState.is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK)) {
 		break;
 	    }
-	    aboveTile = getLevel().getBlockEntity(abovePos);
-	    if (aboveTile == null || !(aboveTile instanceof TileGasTransformerAddonTank tank)) {
+
+	    aboveTile = level.getBlockEntity(abovePos);
+	    if (!(aboveTile instanceof TileGasTransformerAddonTank tank)) {
 		break;
 	    }
+
 	    abovePos = abovePos.above();
-	    aboveState = getLevel().getBlockState(abovePos);
+	    aboveState = level.getBlockState(abovePos);
 	    tank.setOwnerPos(getBlockPos());
 	    tankCount++;
 	}
-	ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
+	ComponentGasHandlerMulti handler = requireComponent(IComponentType.GasHandler);
 	handler.getInputTanks()[0].setCapacity(ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_BASE_INPUT_CAPACITY.get()
 		+ ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_ADDON_TANK_CAPACITY.get() * tankCount);
 	handler.getOutputTanks()[0]
@@ -96,8 +98,9 @@ public abstract class GenericTileBasicCompressor extends GenericTileCompressor i
 
 	@Override
 	public ComponentContainerProvider getContainerProvider() {
-	    return new ComponentContainerProvider("compressor", this).createMenu((id,
-		    inv) -> new ContainerCompressor(id, inv, getComponent(IComponentType.Inventory), getCoordsArray()));
+	    return new ComponentContainerProvider("compressor", this)
+		    .createMenu((id, inv) -> new ContainerCompressor(id, inv,
+			    requireComponent(IComponentType.Inventory), getCoordsArray()));
 	}
 
 	@Override
@@ -128,9 +131,9 @@ public abstract class GenericTileBasicCompressor extends GenericTileCompressor i
 
 	@Override
 	public ComponentContainerProvider getContainerProvider() {
-	    return new ComponentContainerProvider("container.decompressor", this)
-		    .createMenu((id, inv) -> new ContainerDecompressor(id, inv, getComponent(IComponentType.Inventory),
-			    getCoordsArray()));
+	    return new ComponentContainerProvider("decompressor", this)
+		    .createMenu((id, inv) -> new ContainerDecompressor(id, inv,
+			    requireComponent(IComponentType.Inventory), getCoordsArray()));
 	}
 
 	@Override

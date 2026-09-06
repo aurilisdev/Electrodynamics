@@ -1,5 +1,7 @@
 package electrodynamics.datagen.server.recipe.types.custom;
 
+import java.util.function.Supplier;
+
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.fluid.subtype.SubtypeCrudeMineralFluid;
 import electrodynamics.common.fluid.subtype.SubtypeDirtyMineralFluid;
@@ -14,6 +16,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 import voltaic.api.gas.Gas;
@@ -39,9 +42,14 @@ public class ElectrodynamicsChemicalReactorRecipes extends AbstractRecipeGenerat
     public void addRecipes(RecipeOutput output) {
 
 	for (SubtypeSulfateFluid fluid : SubtypeSulfateFluid.values()) {
+	    Supplier<Fluid> result = fluid.result;
+	    if (result == null) {
+		continue;
+	    }
+
 	    newRecipe(0, 200, 800.0, "pure_" + fluid.name() + "_from_" + fluid.name() + "_sulfate", modID)
 		    //
-		    .setFluidOutput(new FluidStack(fluid.result.get(), 200))
+		    .setFluidOutput(new FluidStack(result.get(), 200))
 		    //
 		    .addFluidTagInput(fluid.tag, 200)
 		    //
@@ -120,9 +128,13 @@ public class ElectrodynamicsChemicalReactorRecipes extends AbstractRecipeGenerat
 		.save(output);
 
 	for (SubtypeRoyalMineralFluid fluid : SubtypeRoyalMineralFluid.values()) {
+	    Supplier<Fluid> result = fluid.result;
+	    if (result == null) {
+		continue;
+	    }
 	    newRecipe(0, 100, 800.0, "crude_" + fluid.name() + "_from_royal_" + fluid.name(), modID)
 		    //
-		    .setFluidOutput(new FluidStack(fluid.result.get(), 200))
+		    .setFluidOutput(new FluidStack(result.get(), 200))
 		    //
 		    .addFluidStackInput(new FluidStack(ElectrodynamicsFluids.FLUIDS_ROYALMINERAL.getValue(fluid), 200))
 		    //

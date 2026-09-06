@@ -3,6 +3,8 @@ package electrodynamics.client.guidebook.chapters;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
 import electrodynamics.common.block.subtype.SubtypeMachine;
@@ -95,7 +97,7 @@ public class ChapterFluids extends Chapter {
 			}
 
 			@Override
-			public Object getJeiLookup() {
+			public @Nullable Object getJeiLookup() {
 			    return new FluidStack(fluid.get(), 1);
 			}
 
@@ -186,7 +188,7 @@ public class ChapterFluids extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEM_CANISTERREINFORCED.get());
 		    }
 
@@ -218,7 +220,7 @@ public class ChapterFluids extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidvalve));
 		    }
 
@@ -256,7 +258,7 @@ public class ChapterFluids extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidpipepump));
 		    }
 
@@ -296,7 +298,7 @@ public class ChapterFluids extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidpipefilter));
 		    }
@@ -347,7 +349,7 @@ public class ChapterFluids extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.fluidvoid));
 		    }
 
@@ -380,7 +382,7 @@ public class ChapterFluids extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.tankhsla));
 		    }
 

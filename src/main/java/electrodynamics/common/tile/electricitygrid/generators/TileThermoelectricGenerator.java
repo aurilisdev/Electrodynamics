@@ -6,6 +6,9 @@ import electrodynamics.prefab.utilities.ElectricityUtils;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
 import voltaic.prefab.properties.types.PropertyTypes;
@@ -15,18 +18,17 @@ import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
-import voltaic.prefab.utilities.object.CachedTileOutput;
 import voltaic.prefab.utilities.object.TransferPack;
 
 public class TileThermoelectricGenerator extends GenericTile {
 
-    protected CachedTileOutput output;
-
-    public SingleProperty<Boolean> hasHeat = property(new SingleProperty<>(PropertyTypes.BOOLEAN, "hasheat", false));
+    public SingleProperty<Boolean> hasHeat = property(
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.BOOLEAN, "hasheat", false));
     public SingleProperty<Double> heatMultipler = property(
-	    new SingleProperty<>(PropertyTypes.DOUBLE, "multiplier", 0.0));
-    private SingleProperty<Boolean> hasRedstoneSignal = property(
-	    new SingleProperty<>(PropertyTypes.BOOLEAN, "redstonesignal", false));
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.DOUBLE, "multiplier", 0.0));
+
+    private final SingleProperty<Boolean> hasRedstoneSignal = property(
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.BOOLEAN, "redstonesignal", false));
 
     public TileThermoelectricGenerator(BlockPos worldPosition, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_THERMOELECTRICGENERATOR.get(), worldPosition, blockState);
@@ -35,41 +37,36 @@ public class TileThermoelectricGenerator extends GenericTile {
 		.setOutputDirections(BlockEntityUtils.MachineDirection.TOP));
     }
 
-    protected void tickServer(ComponentTickable tickable) {
-	if (hasRedstoneSignal.getValue()) {
+    protected void tickServer(Level level, ComponentTickable tickable) {
+	if (hasRedstoneSignal.getValue())
 	    return;
-	}
-	if (output == null) {
-	    output = new CachedTileOutput(level, worldPosition.relative(Direction.UP));
-	}
 	Direction facing = getFacing();
-	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+	BlockPos heatSourcePos = worldPosition.relative(facing.getOpposite());
 	if (tickable.getTicks() % 60 == 0) {
-	    Fluid fluid = level.getFluidState(worldPosition.relative(facing.getOpposite())).getType();
+	    Fluid fluid = level.getFluidState(heatSourcePos).getType();
 	    hasHeat.setValue(ThermoelectricGeneratorHeatRegister.INSTANCE.isHeatSource(fluid));
 	    heatMultipler.setValue(ThermoelectricGeneratorHeatRegister.INSTANCE.getHeatMultiplier(fluid));
-	    output.update(worldPosition.relative(Direction.UP));
 	}
-	if (hasHeat.getValue() && output.valid()) {
-	    ElectricityUtils.receivePower(output.getSafe(), Direction.DOWN,
-		    TransferPack.ampsVoltage(ElectrodynamicsConfig.INSTANCE.THERMOELECTRICGENERATOR_AMPERAGE.get()
-			    * level.getFluidState(worldPosition.relative(facing.getOpposite())).getAmount() / 8.0
-			    * heatMultipler.getValue(), electro.getVoltage()),
-		    false);
-	}
+	if (!hasHeat.getValue())
+	    return;
+	BlockEntity target = level.getBlockEntity(worldPosition.above());
+	if (target == null || target.isRemoved())
+	    return;
+	ComponentElectrodynamic electro = requireComponent(IComponentType.Electrodynamic);
+	double amperage = ElectrodynamicsConfig.INSTANCE.THERMOELECTRICGENERATOR_AMPERAGE.get()
+		* level.getFluidState(heatSourcePos).getAmount() / 8.0 * heatMultipler.getValue();
+	ElectricityUtils.receivePower(target, Direction.DOWN, TransferPack.ampsVoltage(amperage, electro.getVoltage()),
+		false);
     }
 
     @Override
-    public int getComparatorSignal() {
+    public int getComparatorSignal(Level level) {
 	return hasHeat.getValue() ? 15 : 0;
     }
 
     @Override
-    public void onNeightborChanged(BlockPos neighbor, boolean blockStateTrigger) {
-	if (level.isClientSide) {
-	    return;
-	}
-	hasRedstoneSignal.setValue(level.hasNeighborSignal(getBlockPos()));
+    public void onNeighbourChanged(LevelReader reader, BlockPos neighbor, boolean blockStateTrigger) {
+	if (reader instanceof Level level && !level.isClientSide)
+	    hasRedstoneSignal.setValue(level.hasNeighborSignal(getBlockPos()));
     }
-
 }

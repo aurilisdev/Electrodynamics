@@ -27,13 +27,11 @@ public class BlockRawOre extends Block {
 	if (level.getLevelData().getGameTime() % 10 == 0 && !level.isClientSide
 		&& entity instanceof LivingEntity living) {
 	    IRadiationRecipient cap = living.getCapability(VoltaicCapabilities.CAPABILITY_RADIATIONRECIPIENT);
-	    if (cap == null) {
+	    if (cap == null)
 		return;
-	    }
 	    RadioactiveObject rad = RadioactiveBlockRegister.getValue(state.getBlock());
-	    if (rad.amount() <= 0) {
+	    if (rad.amount() <= 0)
 		return;
-	    }
 	    cap.recieveRadiation(living, rad.amount(), rad.strength());
 	}
     }
@@ -44,14 +42,12 @@ public class BlockRawOre extends Block {
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
 	super.randomTick(state, level, pos, random);
 
-	if (level.getLevelData().getGameTime() % 10 != 0) {
+	if (level.getLevelData().getGameTime() % 10 != 0)
 	    return;
-	}
 	RadioactiveObject rad = RadioactiveBlockRegister.getValue(state.getBlock());
 
-	if (rad.amount() <= 0 || RadiationSystem.getRadiationSources(level).contains(pos)) {
+	if (rad.amount() <= 0 || RadiationSystem.getRadiationSources(level).contains(pos))
 	    return;
-	}
 
 	RadiationSystem.addRadiationSource(level,
 		new SimpleRadiationSource(rad.amount(), rad.strength(), 10, false, 1, pos, false, false));
@@ -68,14 +64,12 @@ public class BlockRawOre extends Block {
     @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
 	super.onPlace(state, level, pos, oldState, movedByPiston);
-	if (level.isClientSide) {
+	if (level.isClientSide)
 	    return;
-	}
 	RadioactiveObject rad = RadioactiveBlockRegister.getValue(state.getBlock());
 
-	if (rad.amount() <= 0 || RadiationSystem.getRadiationSources(level).contains(pos)) {
+	if (rad.amount() <= 0 || RadiationSystem.getRadiationSources(level).contains(pos))
 	    return;
-	}
 	RadiationSystem.addRadiationSource(level,
 		new SimpleRadiationSource(rad.amount(), rad.strength(), 10, false, 1, pos, false, false));
     }

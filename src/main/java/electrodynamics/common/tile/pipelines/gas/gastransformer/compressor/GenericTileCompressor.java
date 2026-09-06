@@ -5,6 +5,7 @@ import electrodynamics.common.tile.pipelines.gas.gastransformer.GenericTileGasTr
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.api.gas.GasAction;
@@ -17,21 +18,15 @@ import voltaic.prefab.tile.components.type.ComponentGasHandlerMulti;
 import voltaic.prefab.tile.components.type.ComponentInventory;
 import voltaic.prefab.tile.components.type.ComponentProcessor;
 import voltaic.prefab.tile.components.type.ComponentTickable;
-import voltaic.prefab.utilities.BlockEntityUtils;
-import voltaic.registers.VoltaicCapabilities;
 
 public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 
     public GenericTileCompressor(BlockEntityType<?> type, BlockPos worldPos, BlockState blockState) {
 	super(type, worldPos, blockState);
-	addComponent(new ComponentElectrodynamic(this, false, true)
-		.setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM)
-		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE).maxJoules(getUsagePerTick() * 10));
     }
 
     @Override
-    public void tickClient(ComponentTickable tickable) {
-
+    public void tickClient(Level level, ComponentTickable tickable) {
 	if (!isSoundPlaying && shouldPlaySound()) {
 	    isSoundPlaying = true;
 	    SoundBarrierMethods.playTileSound(getSound(), this, true);
@@ -40,9 +35,9 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
     }
 
     @Override
-    public boolean canProcess(ComponentProcessor processor, int procNumber) {
+    public boolean canProcess(ComponentProcessor processor, Level level, int procNumber) {
 
-	ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+	ComponentGasHandlerMulti gasHandler = requireComponent(IComponentType.GasHandler);
 
 	processor.consumeGasCylinder();
 	processor.dispenseGasCylinder();
@@ -58,34 +53,29 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 
     private boolean checkConditions(ComponentProcessor processor) {
 
-	ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+	ComponentGasHandlerMulti gasHandler = requireComponent(IComponentType.GasHandler);
 	GasTank inputTank = gasHandler.getInputTanks()[0];
 	GasTank outputTank = gasHandler.getOutputTanks()[0];
-	if (inputTank.isEmpty()) {
+	if (inputTank.isEmpty())
 	    return false;
-	}
 
-	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
-
-	if ((electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.getValue())
-		|| (outputTank.getGasAmount() >= outputTank.getCapacity())
-		|| (!outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas()))) {
+	ComponentElectrodynamic electro = requireComponent(IComponentType.Electrodynamic);
+	if (electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.getValue()
+		|| outputTank.getGasAmount() >= outputTank.getCapacity()
+		|| !outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas()))
 	    return false;
-	}
 
-	if (getPressureMultiplier() < 1.0 && inputTank.getGas().getPressure() <= GasStack.VACUUM) {
+	if (getPressureMultiplier() < 1.0 && inputTank.getGas().getPressure() <= GasStack.VACUUM)
 	    return false;
-	}
 
 	return true;
     }
 
     @Override
-    public void process(ComponentProcessor processor, int procNumber) {
-
+    public void process(ComponentProcessor processor, Level level, int procNumber) {
 	int conversionRate = (int) (getConversionRate() * processor.operatingSpeed.getValue());
 
-	ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+	ComponentGasHandlerMulti gasHandler = requireComponent(IComponentType.GasHandler);
 	GasTank inputTank = gasHandler.getInputTanks()[0];
 	GasTank outputTank = gasHandler.getOutputTanks()[0];
 
@@ -99,17 +89,12 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 	toTake.bringPressureTo(newPressure);
 
 	int taken = outputTank.fill(toTake.copy(), GasAction.EXECUTE);
-
-	if (taken == 0) {
+	if (taken == 0)
 	    return;
-	}
 
 	toTake.setAmount(taken);
-
 	toTake.bringPressureTo(currPressure);
-
 	inputTank.drain(toTake.getAmount(), GasAction.EXECUTE);
-
     }
 
     @Override

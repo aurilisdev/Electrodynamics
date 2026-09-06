@@ -1,5 +1,7 @@
 package electrodynamics.client.guidebook.chapters;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.common.block.subtype.SubtypeOre;
 import electrodynamics.common.block.subtype.SubtypeOreDeepslate;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
@@ -78,7 +80,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.aluminum));
 		    }
 
@@ -125,7 +127,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.chromium));
 		    }
 
@@ -170,7 +172,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.fluorite));
 		    }
 
@@ -215,7 +217,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.lead));
 		    }
 
@@ -260,7 +262,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.lithium));
 		    }
 
@@ -305,7 +307,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.molybdenum));
 		    }
 
@@ -350,7 +352,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.monazite));
 		    }
 
@@ -395,7 +397,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.niter));
 		    }
 
@@ -440,7 +442,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.salt));
 		    }
 
@@ -485,7 +487,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.silver));
 		    }
 
@@ -530,7 +532,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.sulfur));
 		    }
 
@@ -575,7 +577,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.sylvite));
 		    }
 
@@ -620,7 +622,7 @@ public class ChapterOre extends Chapter {
 			    }
 
 			    @Override
-			    public Object getJeiLookup() {
+			    public @Nullable Object getJeiLookup() {
 				return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.tin));
 			    }
 
@@ -665,7 +667,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.titanium));
 		    }
 
@@ -710,7 +712,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.thorium));
 		    }
 
@@ -755,7 +757,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.uranium));
 		    }
 
@@ -800,7 +802,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_ORE.getValue(SubtypeOre.vanadium));
 		    }
 
@@ -849,7 +851,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.aluminum));
 		    }
@@ -897,7 +899,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.chromium));
 		    }
@@ -945,7 +947,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.fluorite));
 		    }
@@ -992,7 +994,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.lead));
 		    }
@@ -1040,7 +1042,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.lithium));
 		    }
@@ -1088,7 +1090,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.molybdenum));
 		    }
@@ -1136,7 +1138,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.monazite));
 		    }
@@ -1183,7 +1185,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.niter));
 		    }
@@ -1230,7 +1232,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.salt));
 		    }
@@ -1277,7 +1279,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.silver));
 		    }
@@ -1324,7 +1326,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.sulfur));
 		    }
@@ -1372,7 +1374,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.sylvite));
 		    }
@@ -1419,7 +1421,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.tin));
 		    }
 
@@ -1466,7 +1468,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.titanium));
 		    }
@@ -1514,7 +1516,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.thorium));
 		    }
@@ -1562,7 +1564,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.uranium));
 		    }
@@ -1610,7 +1612,7 @@ public class ChapterOre extends Chapter {
 		    }
 
 		    @Override
-		    public Object getJeiLookup() {
+		    public @Nullable Object getJeiLookup() {
 			return new ItemStack(
 				ElectrodynamicsItems.ITEMS_DEEPSLATEORE.getValue(SubtypeOreDeepslate.vanadium));
 		    }

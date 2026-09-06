@@ -1,5 +1,7 @@
 package electrodynamics.common.block;
 
+import javax.annotation.Nullable;
+
 import com.mojang.serialization.MapCodec;
 
 import electrodynamics.common.tile.machines.quarry.TileLogisticalManager;
@@ -69,16 +71,14 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 
 	BlockEntity entity = level.getBlockEntity(pos);
 
-	if (!(entity instanceof IConnectTile)) {
+	if (!(entity instanceof IConnectTile))
 	    return Shapes.empty();
-	}
 
 	EnumConnectType[] connections = ((IConnectTile) entity).readConnections();
 	int hash = AbstractConnectBlock.hashPresentSides(connections);
 
-	if (shapestates[hash] != null) {
+	if (shapestates[hash] != null)
 	    return shapestates[hash];
-	}
 
 	VoxelShape shape = boundingBoxes[6];
 
@@ -90,14 +90,13 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 	    shape = Shapes.join(shape, boundingBoxes[i], BooleanOp.OR);
 	}
 	shapestates[hash] = shape;
-	if (shape == null) {
+	if (shape == null)
 	    return Shapes.empty();
-	}
 	return shape;
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 	return new TileLogisticalManager(pos, state);
     }
 
@@ -109,13 +108,11 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
     @Override
     public void onPlace(BlockState newState, Level level, BlockPos pos, BlockState oldState, boolean isMoving) {
 	super.onPlace(newState, level, pos, oldState, isMoving);
-	if (level.isClientSide) {
+	if (level.isClientSide)
 	    return;
-	}
 	TileLogisticalManager tile = (TileLogisticalManager) level.getBlockEntity(pos);
-	if (tile == null) {
+	if (tile == null)
 	    return;
-	}
 	for (Direction dir : Direction.values()) {
 	    if (TileLogisticalManager.isQuarry(pos.relative(dir), level)) {
 		tile.writeConnection(dir, EnumConnectType.WIRE);
@@ -131,9 +128,8 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
 	stateIn = super.updateShape(stateIn, facing, facingState, world, currentPos, facingPos);
 	TileLogisticalManager tile = (TileLogisticalManager) world.getBlockEntity(currentPos);
 	EnumConnectType connection = EnumConnectType.NONE;
-	if (tile == null) {
+	if (tile == null)
 	    return stateIn;
-	}
 	if (TileLogisticalManager.isQuarry(facingPos, world)) {
 	    connection = EnumConnectType.WIRE;
 	} else if (TileLogisticalManager.isValidInventory(facingPos, world, facing.getOpposite())) {
@@ -146,15 +142,17 @@ public class BlockLogisticalManager extends GenericEntityBlockWaterloggable {
     @Override
     public void onNeighborChange(BlockState state, LevelReader world, BlockPos pos, BlockPos neighbor) {
 	super.onNeighborChange(state, world, pos, neighbor);
-	if (world.isClientSide()) {
+	if (world.isClientSide())
 	    return;
-	}
 	TileLogisticalManager tile = (TileLogisticalManager) world.getBlockEntity(pos);
 	EnumConnectType connection = EnumConnectType.NONE;
-	if (tile == null) {
+	if (tile == null)
 	    return;
-	}
+
 	Direction facing = BlockEntityUtils.directionFromPos(pos, neighbor);
+	if (facing == null)
+	    return;
+
 	if (TileLogisticalManager.isQuarry(neighbor, world)) {
 	    connection = EnumConnectType.WIRE;
 	} else if (TileLogisticalManager.isValidInventory(neighbor, world, facing.getOpposite())) {

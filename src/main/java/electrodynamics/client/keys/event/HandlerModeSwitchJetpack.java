@@ -18,6 +18,9 @@ public class HandlerModeSwitchJetpack extends AbstractKeyPressHandler {
     @Override
     public void handler(Key event, Minecraft minecraft) {
 	Player player = minecraft.player;
+	if (player == null)
+	    return;
+
 	if (KeyBinds.switchJetpackMode.matches(event.getKey(), event.getScanCode())
 		&& KeyBinds.switchJetpackMode.isDown()) {
 	    ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);

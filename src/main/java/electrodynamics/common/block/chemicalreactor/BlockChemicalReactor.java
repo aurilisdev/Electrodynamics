@@ -1,6 +1,6 @@
 package electrodynamics.common.block.chemicalreactor;
 
-import org.jetbrains.annotations.Nullable;
+import javax.annotation.Nullable;
 
 import electrodynamics.common.tile.machines.chemicalreactor.TileChemicalReactor;
 import electrodynamics.registers.ElectrodynamicsBlocks;

@@ -15,7 +15,7 @@ public class TileElectricArcFurnaceDouble extends TileElectricArcFurnace {
 
 	addComponent(new ComponentContainerProvider(SubtypeMachine.electricarcfurnacedouble.tag(), this)
 		.createMenu((id, player) -> new ContainerElectricArcFurnaceDouble(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
 }

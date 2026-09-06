@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.jetbrains.annotations.NotNull;
-
 import electrodynamics.Electrodynamics;
 import electrodynamics.client.screen.tile.ScreenChemicalCrystallizer;
 import electrodynamics.client.screen.tile.ScreenChemicalMixer;
@@ -89,13 +87,12 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
     private static final int FULL_FLUID_SQUARE = 1600;
 
     @Override
-    public @NotNull ResourceLocation getPluginUid() {
+    public ResourceLocation getPluginUid() {
 	return ID;
     }
 
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
-
 	registration.addRecipeCatalyst(ElectricFurnaceRecipeCategory.INPUT_MACHINE,
 		ElectricFurnaceRecipeCategory.RECIPE_TYPE);
 	registration.addRecipeCatalyst(
@@ -335,6 +332,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		ElectrolosisChamberRecipeCategory.RECIPE_TYPE);
     }
 
+    @SuppressWarnings("null")
     private static void electrodynamicsInfoTabs(IRecipeRegistration registration) {
 	// Items
 	for (Item item : TileCoalGenerator.getValidItems()) {

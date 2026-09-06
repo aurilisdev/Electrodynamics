@@ -28,7 +28,7 @@ public enum SubtypeCrystal implements ISubtype {
     @Nullable
     public final Supplier<Item> crushedItem;
 
-    SubtypeCrystal(Supplier<Item> crushedItem) {
+    SubtypeCrystal(@Nullable Supplier<Item> crushedItem) {
 	this.crushedItem = crushedItem;
     }
 

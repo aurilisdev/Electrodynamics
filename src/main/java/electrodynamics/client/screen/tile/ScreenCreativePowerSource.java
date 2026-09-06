@@ -1,7 +1,6 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerCreativePowerSource;
-import electrodynamics.common.tile.electricitygrid.generators.TileCreativePowerSource;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
@@ -17,7 +16,6 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 
     private ScreenComponentEditBox voltage;
     private ScreenComponentEditBox power;
-
     private boolean needsUpdate = true;
 
     public ScreenCreativePowerSource(ContainerCreativePowerSource container, Inventory inv, Component titleIn) {
@@ -44,25 +42,15 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
     }
 
     private void handleVoltage(String val) {
-	if (val.isEmpty()) {
+	if (val.isEmpty())
 	    return;
-	}
-
-	Integer voltage = 0;
-
+	int parsedVoltage;
 	try {
-	    voltage = Integer.parseInt(val);
-	} catch (Exception e) {
-
-	}
-
-	TileCreativePowerSource tile = menu.getSafeHost();
-
-	if (tile == null) {
+	    parsedVoltage = Integer.parseInt(val);
+	} catch (NumberFormatException e) {
 	    return;
 	}
-
-	tile.voltage.setValue(voltage);
+	menu.getSafeHost().ifPresent(tile -> tile.voltage.setValue(parsedVoltage));
     }
 
     private void setPower(String val) {
@@ -72,27 +60,15 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
     }
 
     private void handlePower(String val) {
-
-	if (val.isEmpty()) {
+	if (val.isEmpty())
 	    return;
-	}
-
-	Double power = 0.0;
-
+	double parsedPower;
 	try {
-	    power = Double.parseDouble(val);
-	} catch (Exception e) {
-
-	}
-
-	TileCreativePowerSource tile = menu.getSafeHost();
-
-	if (tile == null) {
+	    parsedPower = Double.parseDouble(val);
+	} catch (NumberFormatException e) {
 	    return;
 	}
-
-	tile.power.setValue(power);
-
+	menu.getSafeHost().ifPresent(tile -> tile.power.setValue(parsedPower));
     }
 
     @Override
@@ -100,12 +76,10 @@ public class ScreenCreativePowerSource extends GenericScreen<ContainerCreativePo
 	super.render(graphics, mouseX, mouseY, partialTicks);
 	if (needsUpdate) {
 	    needsUpdate = false;
-	    TileCreativePowerSource source = menu.getSafeHost();
-	    if (source != null) {
-		voltage.setValue("" + source.voltage.getValue());
-		power.setValue("" + source.power.getValue());
-	    }
+	    menu.getSafeHost().ifPresent(source -> {
+		voltage.setValue(String.valueOf(source.voltage.getValue()));
+		power.setValue(String.valueOf(source.power.getValue()));
+	    });
 	}
     }
-
 }

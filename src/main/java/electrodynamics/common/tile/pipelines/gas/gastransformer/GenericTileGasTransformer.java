@@ -2,18 +2,20 @@ package electrodynamics.common.tile.pipelines.gas.gastransformer;
 
 import electrodynamics.common.settings.ElectrodynamicsConfig;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.prefab.sound.ITickableSound;
 import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
+import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentGasHandlerMulti;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentProcessor;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.tile.types.GenericGasTile;
 import voltaic.prefab.utilities.BlockEntityUtils;
+import voltaic.registers.VoltaicCapabilities;
 
 public abstract class GenericTileGasTransformer extends GenericGasTile implements ITickableSound {
 
@@ -21,9 +23,11 @@ public abstract class GenericTileGasTransformer extends GenericGasTile implement
 
     public GenericTileGasTransformer(BlockEntityType<?> tileEntityTypeIn, BlockPos worldPos, BlockState blockState) {
 	super(tileEntityTypeIn, worldPos, blockState);
-	addComponent(new ComponentPacketHandler(this));
 	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 	addComponent(getInventory());
+	addComponent(new ComponentElectrodynamic(this, false, true)
+		.setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM)
+		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE).maxJoules(getUsagePerTick() * 10));
 	addComponent(new ComponentProcessor(this).canProcess(this::canProcess).process(this::process)
 		.usage(getUsagePerTick(), 0));
 	addComponent(new ComponentGasHandlerMulti(this).setTanks(
@@ -42,11 +46,11 @@ public abstract class GenericTileGasTransformer extends GenericGasTile implement
 	addComponent(getContainerProvider());
     }
 
-    public abstract boolean canProcess(ComponentProcessor processor, int procNumber);
+    public abstract boolean canProcess(ComponentProcessor processor, Level level, int procNumber);
 
-    public abstract void process(ComponentProcessor processor, int procNumber);
+    public abstract void process(ComponentProcessor processor, Level level, int procNumber);
 
-    public abstract void tickClient(ComponentTickable tickable);
+    public abstract void tickClient(Level level, ComponentTickable tickable);
 
     @Override
     public void setNotPlaying() {
@@ -55,7 +59,7 @@ public abstract class GenericTileGasTransformer extends GenericGasTile implement
 
     @Override
     public boolean shouldPlaySound() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0);
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0);
     }
 
     public abstract ComponentContainerProvider getContainerProvider();

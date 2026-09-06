@@ -1,6 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -9,12 +8,15 @@ import electrodynamics.common.tile.machines.TileMineralWasher;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -32,17 +34,16 @@ public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher>
     }
 
     @Override
-    public void render(TileMineralWasher tile, float partialTicks, @NotNull PoseStack matrix,
-	    @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-
-	ItemStack stack = tile.<ComponentInventory>getComponent(IComponentType.Inventory).getInputsForProcessor(0)
-		.get(0);
-
-	if (stack.isEmpty()) {
-
+    public void render(TileMineralWasher tile, float partialTicks, PoseStack matrix, MultiBufferSource bufferIn,
+	    int combinedLightIn, int combinedOverlayIn) {
+	Level level = level();
+	if (level == null)
 	    return;
 
-	}
+	ItemStack stack = tile.<ComponentInventory>requireComponent(IComponentType.Inventory).getInputsForProcessor(0)
+		.get(0);
+	if (stack.isEmpty())
+	    return;
 
 	Direction dir = tile.getFacing();
 
@@ -64,14 +65,13 @@ public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher>
 
 	matrix.popPose();
 
-	ComponentFluidHandlerMulti multi = tile.getComponent(IComponentType.FluidHandler);
+	ComponentFluidHandlerMulti multi = tile.requireComponent(IComponentType.FluidHandler);
 
 	FluidStack fluid = multi.getFluidInTank(0, true);
 
-	if (!tile.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0) || fluid.isEmpty()
-		|| level().getRandom().nextDouble() > 0.15) {
+	if (!tile.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0) || fluid.isEmpty()
+		|| level.getRandom().nextDouble() > 0.15)
 	    return;
-	}
 
 	matrix.pushPose();
 
@@ -80,19 +80,19 @@ public class RenderMineralWasher extends AbstractTileRenderer<TileMineralWasher>
 	TextureAtlasSprite sp = minecraft().getTextureAtlas(InventoryMenu.BLOCK_ATLAS)
 		.apply(attributes.getStillTexture());
 
-	Vector3f color = new Color(attributes.getTintColor(fluid))
-		.multiply(Color.fromABGR(sp.getPixelRGBA(1, level().getRandom().nextIntBetweenInclusive(0, 15),
-			level().getRandom().nextIntBetweenInclusive(0, 15))))
+	Vector3f color = new Color(attributes.getTintColor(fluid)).multiply(Color.fromABGR(sp.getPixelRGBA(1,
+		level.getRandom().nextIntBetweenInclusive(0, 15), level.getRandom().nextIntBetweenInclusive(0, 15))))
 		.getFloatVector();
 
+	BlockPos pos = tile.getBlockPos();
+	RandomSource rand = level.random;
+
 	for (int i = 0; i < 2; i++) {
-	    double x = 0.5 + level().random.nextDouble() * 0.4 - 0.2;
-	    double y = 0.5 + level().random.nextDouble() * 0.3 - 0.15;
-	    double z = 0.5 + level().random.nextDouble() * 0.4 - 0.2;
-	    level().addParticle(new DustParticleOptions(color, 1), tile.getBlockPos().getX() + x,
-		    tile.getBlockPos().getY() + y, tile.getBlockPos().getZ() + z,
-		    level().random.nextDouble() * 0.2 - 0.1, level().random.nextDouble() * 0.2 - 0.1,
-		    level().random.nextDouble() * 0.2 - 0.1);
+	    double x = 0.5 + rand.nextDouble() * 0.4 - 0.2;
+	    double y = 0.5 + rand.nextDouble() * 0.3 - 0.15;
+	    double z = 0.5 + rand.nextDouble() * 0.4 - 0.2;
+	    level.addParticle(new DustParticleOptions(color, 1), pos.getX() + x, pos.getY() + y, pos.getZ() + z,
+		    rand.nextDouble() * 0.2 - 0.1, rand.nextDouble() * 0.2 - 0.1, rand.nextDouble() * 0.2 - 0.1);
 	}
 
 	matrix.popPose();

@@ -16,6 +16,7 @@ import electrodynamics.prefab.sound.tickable.TickableSoundJetpack;
 import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.player.Player;
@@ -35,9 +36,9 @@ public class ClientBarrierMethods {
     public static void handleAddClientRenderInfo(UUID playerId, BlockPos pos) {
 	Minecraft minecraft = Minecraft.getInstance();
 	ClientLevel world = minecraft.level;
-	if (world == null || minecraft.player == null || !minecraft.player.getUUID().equals(playerId)) {
+	LocalPlayer player = minecraft.player;
+	if (world == null || player == null || !player.getUUID().equals(playerId))
 	    return;
-	}
 	HandlerSeismicScanner.addBlock(pos);
     }
 
@@ -58,58 +59,50 @@ public class ClientBarrierMethods {
     public static void handlePacketJetpackEquipedSound(UUID messageId) {
 	Minecraft minecraft = Minecraft.getInstance();
 	ClientLevel world = minecraft.level;
-	if (world == null) {
+	if (world == null)
 	    return;
-	}
 	minecraft.getSoundManager().play(new TickableSoundJetpack(messageId));
     }
 
     public static void handleJetpackParticleRendering(UUID player, boolean bool) {
 	Minecraft minecraft = Minecraft.getInstance();
 	ClientLevel world = minecraft.level;
-	if (world == null) {
+	if (world == null)
 	    return;
-	}
 	Player clientPlayer = minecraft.player;
-	if (clientPlayer == null || clientPlayer.getUUID().equals(player)) {
+	if (clientPlayer == null || clientPlayer.getUUID().equals(player))
 	    return;
-	}
 	Player ownerPlayer = world.getPlayerByUUID(player);
-	if (ownerPlayer == null) {
+	if (ownerPlayer == null)
 	    return;
-	}
 	ItemJetpack.renderClientParticles(world, ownerPlayer, bool ? ItemCombatArmor.OFFSET : ItemJetpack.OFFSET);
     }
 
     public static void handlerClientCombustionFuels(HashSet<CombustionFuelSource> fuels) {
 	Minecraft minecraft = Minecraft.getInstance();
-	if (minecraft.level == null || minecraft.player == null) {
+	if (minecraft.level == null || minecraft.player == null)
 	    return;
-	}
 	CombustionFuelRegister.INSTANCE.setClientValues(fuels);
     }
 
     public static void handlerClientCoalGenFuels(HashSet<Item> fuels) {
 	Minecraft minecraft = Minecraft.getInstance();
-	if (minecraft.level == null || minecraft.player == null) {
+	if (minecraft.level == null || minecraft.player == null)
 	    return;
-	}
 	CoalGeneratorFuelRegister.INSTANCE.setClientValues(fuels);
     }
 
     public static void handlerClientThermoGenHeatSources(HashMap<Fluid, Double> heatSources) {
 	Minecraft minecraft = Minecraft.getInstance();
-	if (minecraft.level == null || minecraft.player == null) {
+	if (minecraft.level == null || minecraft.player == null)
 	    return;
-	}
 	ThermoelectricGeneratorHeatRegister.INSTANCE.setClientValues(heatSources);
     }
 
     public static void handlerSpawnSmokeParicle(BlockPos pos) {
 	ClientLevel world = Minecraft.getInstance().level;
-	if (world == null) {
+	if (world == null)
 	    return;
-	}
 	world.addParticle(ParticleTypes.CAMPFIRE_COSY_SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0,
 		0);
     }

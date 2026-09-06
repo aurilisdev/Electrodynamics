@@ -18,6 +18,9 @@ public class HandlerToggleServoLegs extends AbstractKeyPressHandler {
     @Override
     public void handler(Key event, Minecraft minecraft) {
 	Player player = minecraft.player;
+	if (player == null)
+	    return;
+
 	if (KeyBinds.toggleServoLeggings.matches(event.getKey(), event.getScanCode())
 		&& KeyBinds.toggleServoLeggings.isDown()) {
 	    ItemStack legs = player.getItemBySlot(EquipmentSlot.LEGS);

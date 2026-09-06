@@ -27,8 +27,11 @@ import voltaic.registers.VoltaicDataComponentTypes;
 public class ServerBarrierMethods {
 
     public static void handleJetpackFlightServer(Level level, UUID playerId, boolean bool, double prevDeltaY) {
-	ServerLevel world = (ServerLevel) level;
-	Player player = world.getPlayerByUUID(playerId);
+	ServerLevel serverLevel = (ServerLevel) level;
+	Player player = serverLevel.getPlayerByUUID(playerId);
+	if (player == null)
+	    return;
+
 	ItemStack chest = player.getItemBySlot(EquipmentSlot.CHEST);
 	if (ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get())
 		|| ItemUtils.testItems(chest.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
@@ -38,12 +41,12 @@ public class ServerBarrierMethods {
 	}
     }
 
-    public static void handleModeSwitchServer(Level world, UUID playerId, PacketModeSwitchServer.Mode mode) {
-	ServerLevel serverWorld = (ServerLevel) world;
-	if (serverWorld == null) {
+    public static void handleModeSwitchServer(Level level, UUID playerId, PacketModeSwitchServer.Mode mode) {
+	ServerLevel serverLevel = (ServerLevel) level;
+	ServerPlayer serverPlayer = (ServerPlayer) serverLevel.getPlayerByUUID(playerId);
+	if (serverPlayer == null)
 	    return;
-	}
-	ServerPlayer serverPlayer = (ServerPlayer) serverWorld.getPlayerByUUID(playerId);
+
 	switch (mode) {
 	case JETPACK:
 	    ItemStack chest = serverPlayer.getItemBySlot(EquipmentSlot.CHEST);
@@ -85,35 +88,29 @@ public class ServerBarrierMethods {
     }
 
     public static void handlePacketPowerSetting(int voltage, int power, BlockPos pos, Level level) {
-	ServerLevel world = (ServerLevel) level;
-	if (world == null) {
+	ServerLevel serverLevel = (ServerLevel) level;
+	TileCreativePowerSource tile = (TileCreativePowerSource) serverLevel.getBlockEntity(pos);
+	if (tile == null)
 	    return;
-	}
-	TileCreativePowerSource tile = (TileCreativePowerSource) world.getBlockEntity(pos);
-	if (tile == null) {
-	    return;
-	}
+
 	tile.voltage.setValue(voltage);
 	tile.power.setValue(power);
     }
 
     public static void handleSendUpdatePropertiesServer(Level level, BlockPos tilePos, CompoundTag data, int index) {
-	ServerLevel world = (ServerLevel) level;
-	if (world == null) {
-	    return;
-	}
-	BlockEntity tile = world.getBlockEntity(tilePos);
+	ServerLevel serverLevel = (ServerLevel) level;
+	BlockEntity tile = serverLevel.getBlockEntity(tilePos);
 	if (tile instanceof IPropertyHolderTile holder) {
-	    holder.getPropertyManager().loadDataFromClient(index, data);
+	    holder.getPropertyManager().loadDataFromClient(serverLevel, index, data);
 	}
     }
 
     public static void handleSwapBattery(Level level, UUID playerId) {
-	ServerLevel world = (ServerLevel) level;
-	if (world == null) {
+	ServerLevel serverLevel = (ServerLevel) level;
+	Player player = serverLevel.getPlayerByUUID(playerId);
+	if (player == null)
 	    return;
-	}
-	Player player = world.getPlayerByUUID(playerId);
+
 	ItemStack handItem = player.getItemInHand(InteractionHand.MAIN_HAND);
 	if (!handItem.isEmpty() && handItem.getItem() instanceof IItemElectric electric) {
 	    electric.swapBatteryPackFirstItem(handItem, player);
@@ -121,11 +118,11 @@ public class ServerBarrierMethods {
     }
 
     public static void handleToogleOnServer(Level level, UUID playerId, PacketToggleOnServer.Type type) {
-	ServerLevel world = (ServerLevel) level;
-	if (world == null) {
+	ServerLevel serverLevel = (ServerLevel) level;
+	Player player = serverLevel.getPlayerByUUID(playerId);
+	if (player == null)
 	    return;
-	}
-	Player player = world.getPlayerByUUID(playerId);
+
 	switch (type) {
 	case NVGS:
 	    ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
@@ -161,11 +158,8 @@ public class ServerBarrierMethods {
 
     public static void handleUpdateCarriedItemServer(Level level, ItemStack carriedItem, BlockPos tilePos,
 	    UUID playerId) {
-	ServerLevel world = (ServerLevel) level;
-	if (world == null) {
-	    return;
-	}
-	GenericTile tile = (GenericTile) world.getBlockEntity(tilePos);
+	ServerLevel serverLevel = (ServerLevel) level;
+	GenericTile tile = (GenericTile) serverLevel.getBlockEntity(tilePos);
 	if (tile != null) {
 	    tile.updateCarriedItemInContainer(carriedItem, playerId);
 	}
@@ -173,17 +167,15 @@ public class ServerBarrierMethods {
 
     public static void handleSeismicScanner(Level level, UUID playerId, PacketSeismicScanner.Type mode, int scannerMode,
 	    int hand) {
-	ServerLevel world = (ServerLevel) level;
-	if (world == null) {
-	    return;
-	}
-	Player player = world.getPlayerByUUID(playerId);
+	ServerLevel serverLevel = (ServerLevel) level;
 
+	Player player = serverLevel.getPlayerByUUID(playerId);
+	if (player == null)
+	    return;
 	ItemStack stack = player.getItemInHand(InteractionHand.values()[hand]);
 
-	if (stack.isEmpty()) {
+	if (stack.isEmpty())
 	    return;
-	}
 
 	switch (mode) {
 

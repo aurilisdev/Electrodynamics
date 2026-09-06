@@ -4,7 +4,11 @@ import voltaic.api.ISubtype;
 
 public enum SubtypeChromotographyCard implements ISubtype {
 
-    nitrogen, oxygen, argon, carbondioxide, sulfurdioxide; // 78.1, 20.9, 0.93, 0.04
+    nitrogen,
+    oxygen,
+    argon,
+    carbondioxide,
+    sulfurdioxide; // 78.1, 20.9, 0.93, 0.04
 
     @Override
     public String tag() {

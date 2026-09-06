@@ -6,6 +6,7 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.api.particle.ParticleAPI;
@@ -17,7 +18,6 @@ import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentProcessor;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
@@ -29,7 +29,7 @@ public class TileLathe extends GenericTile implements ITickableSound {
 
     public TileLathe(BlockPos worldPosition, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_LATHE.get(), worldPosition, blockState);
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentTickable(this).tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.BACK)
@@ -46,18 +46,17 @@ public class TileLathe extends GenericTile implements ITickableSound {
 			BlockEntityUtils.MachineDirection.BOTTOM));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.lathe.tag(), this)
 		.createMenu((id, player) -> new ContainerO2OProcessor(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
 	addComponent(
 		new ComponentProcessor(this)
-			.canProcess((component, procNumber) -> component.canProcessItem2ItemRecipe(procNumber,
-				ElectrodynamicsRecipies.LATHE_TYPE.get()))
+			.canProcess((component, level, procNumber) -> component.canProcessItem2ItemRecipe(level,
+				procNumber, ElectrodynamicsRecipies.LATHE_TYPE.get()))
 			.process(ComponentProcessor::processItem2ItemRecipe));
     }
 
-    protected void tickClient(ComponentTickable tickable) {
-	if (!this.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0)) {
+    protected void tickClient(Level level, ComponentTickable tickable) {
+	if (!this.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0))
 	    return;
-	}
 	Direction direction = getFacing();
 	if (level.random.nextDouble() < 0.10) {
 	    for (int i = 0; i < 5; i++) {
@@ -81,14 +80,14 @@ public class TileLathe extends GenericTile implements ITickableSound {
 
     @Override
     public boolean shouldPlaySound() {
-	return this.<ComponentProcessor>getComponent(IComponentType.Processor).isAnyActive();
+	return this.<ComponentProcessor>requireComponent(IComponentType.Processor).isAnyActive();
     }
 
     @Override
-    public int getComparatorSignal() {
-	return (int) ((double) this.<ComponentProcessor>getComponent(IComponentType.Processor).getTotalActive()
+    public int getComparatorSignal(Level level) {
+	return (int) ((double) this.<ComponentProcessor>requireComponent(IComponentType.Processor).getTotalActive()
 		/ (double) Math.max(1,
-			this.<ComponentProcessor>getComponent(IComponentType.Processor).getProcessorCount())
+			this.<ComponentProcessor>requireComponent(IComponentType.Processor).getProcessorCount())
 		* 15.0);
     }
 

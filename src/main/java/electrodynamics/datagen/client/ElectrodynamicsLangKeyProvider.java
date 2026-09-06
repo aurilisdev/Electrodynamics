@@ -2163,9 +2163,8 @@ public class ElectrodynamicsLangKeyProvider extends BaseLangKeyProvider {
 	SubtypeWire.WireClass cls = (SubtypeWire.WireClass) wire.getWireClass();
 	SubtypeWire.WireColor col = (SubtypeWire.WireColor) wire.getWireColor();
 	String matName = capitalize(mat.toString());
-	if (cls == SubtypeWire.WireClass.BARE) {
+	if (cls == SubtypeWire.WireClass.BARE)
 	    return matName + " Wire";
-	}
 	String colorName = wireColorDisplayName(col);
 	return switch (cls) {
 	case INSULATED -> "Insulated " + matName + " Wire (" + colorName + ")";

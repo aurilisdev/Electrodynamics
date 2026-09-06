@@ -2,6 +2,8 @@ package electrodynamics.common.block.connect;
 
 import java.util.HashSet;
 
+import javax.annotation.Nullable;
+
 import com.mojang.serialization.MapCodec;
 
 import electrodynamics.Electrodynamics;
@@ -41,13 +43,17 @@ public class BlockLogisticalWire extends BlockWire {
     }
 
     @Override
+    @Nullable
     public BlockState getStateForPlacement(BlockPlaceContext context) {
 	BlockState superState = super.getStateForPlacement(context);
+	if (superState == null)
+	    return null;
+
 	return superState.setValue(VoltaicBlockStates.LIT, false);
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 	return new TileLogisticalWire(pos, state);
     }
 
@@ -62,15 +68,12 @@ public class BlockLogisticalWire extends BlockWire {
 	@SubscribeEvent
 	public static void registerColoredBlocks(RegisterColorHandlersEvent.Block event) {
 	    WIRES.forEach(block -> event.register((state, level, pos, tintIndex) -> {
-		if (tintIndex == 0) {
+		if (tintIndex == 0)
 		    return ((BlockLogisticalWire) block).wire.getWireColor().getColor().color();
-		}
-		if (tintIndex != 1) {
+		if (tintIndex != 1)
 		    return 0xFFFFFFFF;
-		}
-		if (state.getValue(VoltaicBlockStates.LIT)) {
+		if (state.getValue(VoltaicBlockStates.LIT))
 		    return REDSTONE_ON.color();
-		}
 		return REDSTONE_OFF.color();
 	    }, block));
 	}

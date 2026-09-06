@@ -11,6 +11,7 @@ import java.util.Set;
 import electrodynamics.common.tile.electricitygrid.GenericTileWire;
 import electrodynamics.prefab.utilities.ElectricityUtils;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.energy.IEnergyStorage;
@@ -85,17 +86,15 @@ public class ElectricNetwork extends AbstractNetwork<GenericTileWire, IWire, Tra
     }
 
     private TransferPack sendToReceivers(TransferPack maxTransfer, ArrayList<BlockEntity> ignored, boolean debug) {
-	if (maxTransfer.getJoules() <= 0 || maxTransfer.getVoltage() <= 0) {
+	if (maxTransfer.getJoules() <= 0 || maxTransfer.getVoltage() <= 0)
 	    return TransferPack.EMPTY;
-	}
 	Set<BlockEntity> availableAcceptors = getEnergyAcceptors();
 	double joulesSent = 0;
 	availableAcceptors.removeAll(ignored);
 	availableAcceptors.removeAll(noUsage);
 
-	if (availableAcceptors.isEmpty()) {
+	if (availableAcceptors.isEmpty())
 	    return TransferPack.EMPTY;
-	}
 
 	Iterator<BlockEntity> it = availableAcceptors.iterator();
 	double totalUsage = 0;
@@ -172,9 +171,8 @@ public class ElectricNetwork extends AbstractNetwork<GenericTileWire, IWire, Tra
 
 	ticksOverloaded++;
 
-	if (ticksOverloaded < MAXIMUM_OVERLOAD_PERIOD_TICKS) {
+	if (ticksOverloaded < MAXIMUM_OVERLOAD_PERIOD_TICKS)
 	    return true;
-	}
 
 	for (GenericTileWire wire : overloaded) {
 	    Scheduler.schedule(1, wire::destroyViolently);
@@ -215,16 +213,17 @@ public class ElectricNetwork extends AbstractNetwork<GenericTileWire, IWire, Tra
 
     @Override
     public void updateRecieverStatistics(BlockEntity reciever, Direction dir) {
-
-	ICapabilityElectrodynamic electro = reciever.getLevel().getCapability(
-		VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, reciever.getBlockPos(), reciever.getBlockState(),
-		reciever, dir);
-
-	if (electro == null || electro.getVoltage() < 0) {
+	Level level = reciever.getLevel();
+	if (level == null)
 	    return;
-	}
 
-	if ((minimumVoltage <= 0) || (electro.getVoltage() < minimumVoltage)) {
+	ICapabilityElectrodynamic electro = level.getCapability(VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK,
+		reciever.getBlockPos(), reciever.getBlockState(), reciever, dir);
+
+	if (electro == null || electro.getVoltage() < 0)
+	    return;
+
+	if (minimumVoltage <= 0 || electro.getVoltage() < minimumVoltage) {
 	    minimumVoltage = electro.getVoltage();
 	}
     }
@@ -398,10 +397,8 @@ public class ElectricNetwork extends AbstractNetwork<GenericTileWire, IWire, Tra
 
     @Override
     public TransferPack getConnectedLoad(LoadProfile loadProfile, Direction dir) {
-
-	if (locked) {
+	if (locked)
 	    return TransferPack.EMPTY;
-	}
 
 	locked = true;
 
@@ -416,9 +413,13 @@ public class ElectricNetwork extends AbstractNetwork<GenericTileWire, IWire, Tra
 
 	for (BlockEntity tile : load) {
 
-	    if (tile == null || tile.isRemoved()) {
-		acceptorInputMap.remove(tile);
-		acceptorSet.remove(tile);
+//	    if (tile == null || tile.isRemoved()) {
+//		acceptorInputMap.remove(tile);
+//		acceptorSet.remove(tile);
+//		continue;
+//	    }
+	    Level level = tile.getLevel();
+	    if (level == null) {
 		continue;
 	    }
 
@@ -431,14 +432,14 @@ public class ElectricNetwork extends AbstractNetwork<GenericTileWire, IWire, Tra
 		final LoadProfile profile = new LoadProfile(lastPerTile.getOrDefault(direction, TransferPack.EMPTY),
 			loadProfile.maximumAvailable());
 
-		ICapabilityElectrodynamic electro = tile.getLevel().getCapability(
+		ICapabilityElectrodynamic electro = level.getCapability(
 			VoltaicCapabilities.CAPABILITY_ELECTRODYNAMIC_BLOCK, tile.getBlockPos(), tile.getBlockState(),
 			tile, direction);
 
 		if (electro == null) {
 
-		    IEnergyStorage fe = tile.getLevel().getCapability(Capabilities.EnergyStorage.BLOCK,
-			    tile.getBlockPos(), tile.getBlockState(), tile, direction);
+		    IEnergyStorage fe = level.getCapability(Capabilities.EnergyStorage.BLOCK, tile.getBlockPos(),
+			    tile.getBlockState(), tile, direction);
 
 		    if (fe == null) {
 			capLoad = TransferPack.EMPTY;

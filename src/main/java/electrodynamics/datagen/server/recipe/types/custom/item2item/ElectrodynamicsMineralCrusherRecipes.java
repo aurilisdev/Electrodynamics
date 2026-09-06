@@ -1,5 +1,7 @@
 package electrodynamics.datagen.server.recipe.types.custom.item2item;
 
+import java.util.function.Supplier;
+
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.item.subtype.SubtypeCrystal;
 import electrodynamics.common.item.subtype.SubtypeDust;
@@ -11,6 +13,7 @@ import electrodynamics.common.recipe.categories.item2item.specificmachines.Miner
 import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
@@ -49,8 +52,9 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 	}
 
 	for (SubtypeCrystal crystal : SubtypeCrystal.values()) {
-	    if (crystal.crushedItem != null && crystal != SubtypeCrystal.halite) {
-		newRecipe(new ItemStack(crystal.crushedItem.get()), 0.0F, 200, 450.0,
+	    Supplier<Item> crushedItem = crystal.crushedItem;
+	    if (crushedItem != null && crystal != SubtypeCrystal.halite) {
+		newRecipe(new ItemStack(crushedItem.get()), 0.0F, 200, 450.0,
 			"imp_dust_" + crystal.name() + "_from_crystal", modID)
 			//
 			.addItemStackInput(new ItemStack(ElectrodynamicsItems.ITEMS_CRYSTAL.getValue(crystal)))
@@ -68,9 +72,10 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 		.save(output);
 
 	for (SubtypeRawOre raw : SubtypeRawOre.values()) {
-	    if (raw.crushedItem != null) {
+	    Supplier<Item> crushedItem = raw.crushedItem;
+	    if (crushedItem != null) {
 		if (raw == SubtypeRawOre.titanium || raw == SubtypeRawOre.chromium) {
-		    newRecipe(new ItemStack(raw.crushedItem.get(), 3), 0.5F, 200, 450.0,
+		    newRecipe(new ItemStack(crushedItem.get(), 3), 0.5F, 200, 450.0,
 			    "oxide_" + raw.name() + "_from_raw_ore", modID)
 			    //
 			    .addItemTagInput(raw.tag, 1)
@@ -82,7 +87,7 @@ public class ElectrodynamicsMineralCrusherRecipes extends AbstractRecipeGenerato
 			    //
 			    .save(output);
 		} else {
-		    newRecipe(new ItemStack(raw.crushedItem.get(), 3), 0.3F, 200, 450.0,
+		    newRecipe(new ItemStack(crushedItem.get(), 3), 0.3F, 200, 450.0,
 			    "imp_dust_" + raw.name() + "_from_raw_ore", modID)
 			    //
 			    .addItemTagInput(raw.tag, 1)

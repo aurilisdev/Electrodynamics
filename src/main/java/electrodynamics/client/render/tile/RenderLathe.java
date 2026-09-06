@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import electrodynamics.client.ElectrodynamicsClientRegister;
@@ -27,8 +25,8 @@ public class RenderLathe extends AbstractTileRenderer<TileLathe> {
     }
 
     @Override
-    public void render(@NotNull TileLathe tile, float partialTicks, PoseStack poseStack,
-	    @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(TileLathe tile, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn,
+	    int combinedLightIn, int combinedOverlayIn) {
 
 	poseStack.pushPose();
 
@@ -40,7 +38,7 @@ public class RenderLathe extends AbstractTileRenderer<TileLathe> {
 
 	float progressDegrees = 0.0F;
 
-	if (tile.<ComponentProcessor>getComponent(IComponentType.Processor).isActive(0)) {
+	if (tile.<ComponentProcessor>requireComponent(IComponentType.Processor).isActive(0)) {
 
 	    progressDegrees = 360.0f * (float) progress;
 
@@ -52,19 +50,15 @@ public class RenderLathe extends AbstractTileRenderer<TileLathe> {
 
 	BakedModel lathe = getModel(ElectrodynamicsClientRegister.MODEL_LATHESHAFT);
 
-	RenderingUtils.renderModel(lathe, tile, RenderType.solid(), poseStack, bufferIn, combinedLightIn,
-		combinedOverlayIn);
+	RenderingUtils.renderModel(lathe, RenderType.solid(), poseStack, bufferIn, combinedLightIn, combinedOverlayIn);
 
 	poseStack.popPose();
 
-	ItemStack stack = tile.<ComponentInventory>getComponent(IComponentType.Inventory).getInputsForProcessor(0)
+	ItemStack stack = tile.<ComponentInventory>requireComponent(IComponentType.Inventory).getInputsForProcessor(0)
 		.get(0);
 
-	if (stack.isEmpty()) {
-
+	if (stack.isEmpty())
 	    return;
-
-	}
 
 	poseStack.pushPose();
 

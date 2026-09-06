@@ -18,6 +18,9 @@ public class HandlerToggleNVGoggles extends AbstractKeyPressHandler {
     @Override
     public void handler(Key event, Minecraft minecraft) {
 	Player player = minecraft.player;
+	if (player == null)
+	    return;
+
 	if (KeyBinds.toggleNvgs.matches(event.getKey(), event.getScanCode()) && KeyBinds.toggleNvgs.isDown()) {
 	    ItemStack playerHead = player.getItemBySlot(EquipmentSlot.HEAD);
 	    if (ItemUtils.testItems(playerHead.getItem(), ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get())

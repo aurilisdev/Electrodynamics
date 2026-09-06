@@ -50,7 +50,7 @@ public enum SubtypePureMineralFluid implements ISubtype {
 	this(tag, null, color);
     }
 
-    SubtypePureMineralFluid(TagKey<Fluid> tag, Supplier<Item> result, Color color) {
+    SubtypePureMineralFluid(TagKey<Fluid> tag, @Nullable Supplier<Item> result, Color color) {
 	this.tag = tag;
 	this.result = result;
 	this.color = color;

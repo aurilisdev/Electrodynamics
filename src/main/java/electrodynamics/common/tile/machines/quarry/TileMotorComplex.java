@@ -7,6 +7,7 @@ import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.common.item.ItemUpgrade;
 import voltaic.prefab.properties.types.PropertyTypes;
@@ -18,7 +19,6 @@ import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentElectrodynamic;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
 import voltaic.registers.VoltaicCapabilities;
@@ -34,15 +34,15 @@ public class TileMotorComplex extends GenericTile implements ITickableSound {
     private boolean isSoundPlaying = false;
 
     public final SingleProperty<Integer> speed = property(
-	    new SingleProperty<>(PropertyTypes.INTEGER, "speed", DEFAULT_SPEED));
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.INTEGER, "speed", DEFAULT_SPEED));
     public final SingleProperty<Double> powerMultiplier = property(
-	    new SingleProperty<>(PropertyTypes.DOUBLE, "powerMultiplier", 1.0));
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.DOUBLE, "powerMultiplier", 1.0));
     public final SingleProperty<Boolean> isPowered = property(
-	    new SingleProperty<>(PropertyTypes.BOOLEAN, "isPowered", false));
+	    new SingleProperty<>(getPropertyManager(), PropertyTypes.BOOLEAN, "isPowered", false));
 
     public TileMotorComplex(BlockPos pos, BlockState state) {
 	super(ElectrodynamicsTiles.TILE_MOTORCOMPLEX.get(), pos, state);
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentTickable(this).tickServer(this::tickServer).tickClient(this::tickClient));
 	addComponent(new ComponentElectrodynamic(this, false, true)
 		.setInputDirections(BlockEntityUtils.MachineDirection.FRONT)
@@ -52,11 +52,11 @@ public class TileMotorComplex extends GenericTile implements ITickableSound {
 		.validUpgrades(ContainerMotorComplex.VALID_UPGRADES).valid(machineValidator()));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.motorcomplex.tag(), this)
 		.createMenu((id, player) -> new ContainerMotorComplex(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
-    private void tickServer(ComponentTickable tick) {
-	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+    private void tickServer(Level level, ComponentTickable tick) {
+	ComponentElectrodynamic electro = requireComponent(IComponentType.Electrodynamic);
 
 	if (electro.getJoulesStored() >= ElectrodynamicsConfig.INSTANCE.MOTORCOMPLEX_USAGE_PER_TICK.get()
 		* powerMultiplier.getValue()) {
@@ -68,7 +68,7 @@ public class TileMotorComplex extends GenericTile implements ITickableSound {
 	}
     }
 
-    private void tickClient(ComponentTickable tick) {
+    private void tickClient(Level level, ComponentTickable tick) {
 	if (shouldPlaySound() && !isSoundPlaying) {
 	    isSoundPlaying = true;
 	    SoundBarrierMethods.playTileSound(ElectrodynamicsSounds.SOUND_MOTORRUNNING.get(), this, true);
@@ -113,7 +113,7 @@ public class TileMotorComplex extends GenericTile implements ITickableSound {
     }
 
     @Override
-    public int getComparatorSignal() {
+    public int getComparatorSignal(Level level) {
 	return isPowered.getValue() ? 15 : 0;
     }
 

@@ -4,8 +4,6 @@ import java.util.EnumMap;
 import java.util.List;
 import java.util.function.Consumer;
 
-import org.jetbrains.annotations.Nullable;
-
 import electrodynamics.Electrodynamics;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsArmorMaterials;
@@ -97,8 +95,7 @@ public class ItemNightVisionGoggles extends ItemVoltaicArmor implements IItemEle
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity,
-	    Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
 	return 0;
     }
 
@@ -161,9 +158,8 @@ public class ItemNightVisionGoggles extends ItemVoltaicArmor implements IItemEle
     @Override
     public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
 	    ArmorMaterial.Layer layer, boolean innerModel) {
-	if (stack.getOrDefault(VoltaicDataComponentTypes.ON, false)) {
+	if (stack.getOrDefault(VoltaicDataComponentTypes.ON, false))
 	    return ARMOR_TEXTURE_ON;
-	}
 	return ARMOR_TEXTURE_OFF;
     }
 
@@ -196,9 +192,8 @@ public class ItemNightVisionGoggles extends ItemVoltaicArmor implements IItemEle
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action,
 	    Player player, SlotAccess access) {
 
-	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access))
 	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-	}
 
 	return true;
 

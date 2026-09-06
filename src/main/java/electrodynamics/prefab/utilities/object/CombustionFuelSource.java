@@ -22,8 +22,8 @@ public class CombustionFuelSource {
     public static final CombustionFuelSource EMPTY = new CombustionFuelSource(
 	    FluidTags.create(Voltaic.vanillarl("air")), 0, 0);
 
-    private FluidIngredient fuel;
-    private double powerMultiplier;
+    private final FluidIngredient fuel;
+    private final double powerMultiplier;
     private final TagKey<Fluid> tag;
 
     private CombustionFuelSource(TagKey<Fluid> tag, int usageAmount, double powerMultiplier) {
@@ -71,13 +71,14 @@ public class CombustionFuelSource {
     }
 
     public void writeToBuffer(FriendlyByteBuf buffer) {
-	buffer.writeUtf(fuel.tag.location().toString());
+	buffer.writeResourceLocation(tag.location());
 	buffer.writeInt(fuel.getAmount());
 	buffer.writeDouble(powerMultiplier);
     }
 
     public static CombustionFuelSource readFromBuffer(FriendlyByteBuf buffer) {
-	TagKey<Fluid> tag = FluidTags.create(ResourceLocation.parse(buffer.readUtf()));
+	TagKey<Fluid> tag = FluidTags.create(buffer.readResourceLocation());
+
 	return new CombustionFuelSource(tag, buffer.readInt(), buffer.readDouble());
     }
 

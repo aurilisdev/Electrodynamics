@@ -9,6 +9,7 @@ import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.prefab.tile.components.IComponentType;
@@ -57,7 +58,7 @@ public class TileBasicThermoelectricManipulator extends GenericTileThermoelectri
     public ComponentContainerProvider getContainerProvider() {
 	return new ComponentContainerProvider("thermoelectricmanipulator", this)
 		.createMenu((id, inv) -> new ContainerThermoelectricManipulator(id, inv,
-			getComponent(IComponentType.Inventory), getCoordsArray()));
+			requireComponent(IComponentType.Inventory), getCoordsArray()));
     }
 
     @Override
@@ -71,12 +72,11 @@ public class TileBasicThermoelectricManipulator extends GenericTileThermoelectri
     }
 
     @Override
-    public void tickClient(ComponentTickable tickable) {
+    public void tickClient(Level level, ComponentTickable tickable) {
 	ElectrodynamicsBlockStates.ManipulatorHeatingStatus status = getBlockState()
 		.getValue(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS);
-	if (status == ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF) {
+	if (status == ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF)
 	    return;
-	}
 	if (level.random.nextDouble() < 0.5) {
 
 	    // TODO particles
@@ -85,26 +85,26 @@ public class TileBasicThermoelectricManipulator extends GenericTileThermoelectri
     }
 
     @Override
-    public void updateTankCount() {
+    public void updateTankCount(Level level) {
 	BlockPos abovePos = getBlockPos().above();
-	BlockState aboveState = getLevel().getBlockState(abovePos);
+	BlockState aboveState = level.getBlockState(abovePos);
 	BlockEntity aboveTile;
 	int tankCount = 0;
 	for (int i = 0; i < ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_ADDON_TANK_LIMIT.get(); i++) {
 	    if (!aboveState.is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK)) {
 		break;
 	    }
-	    aboveTile = getLevel().getBlockEntity(abovePos);
+	    aboveTile = level.getBlockEntity(abovePos);
 	    if (aboveTile == null || !(aboveTile instanceof TileGasTransformerAddonTank tank)) {
 		break;
 	    }
 	    abovePos = abovePos.above();
-	    aboveState = getLevel().getBlockState(abovePos);
+	    aboveState = level.getBlockState(abovePos);
 	    tank.setOwnerPos(getBlockPos());
 	    tankCount++;
 	}
-	ComponentGasHandlerMulti handler = getComponent(IComponentType.GasHandler);
-	ComponentFluidHandlerMulti multi = getComponent(IComponentType.FluidHandler);
+	ComponentGasHandlerMulti handler = requireComponent(IComponentType.GasHandler);
+	ComponentFluidHandlerMulti multi = requireComponent(IComponentType.FluidHandler);
 	multi.getInputTanks()[0].setCapacity(ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_BASE_INPUT_CAPACITY.get()
 		+ ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_ADDON_TANK_CAPACITY.get() * tankCount);
 	handler.getInputTanks()[0].setCapacity(ElectrodynamicsConfig.INSTANCE.GAS_TRANSFORMER_BASE_INPUT_CAPACITY.get()

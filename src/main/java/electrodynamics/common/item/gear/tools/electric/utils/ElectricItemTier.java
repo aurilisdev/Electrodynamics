@@ -64,8 +64,8 @@ public enum ElectricItemTier implements Tier {
 
     @Override
     public Tool createToolProperties(TagKey<Block> pBlock) {
-	return new Tool(List.of(Tool.Rule.deniesDrops(this.getIncorrectBlocksForDrops()),
-		Tool.Rule.minesAndDrops(pBlock, this.getSpeed())), 1.0F, 0);
+	return new Tool(List.of(Tool.Rule.deniesDrops(getIncorrectBlocksForDrops()),
+		Tool.Rule.minesAndDrops(pBlock, getSpeed())), 1.0F, 0);
     }
 
     public String tag() {

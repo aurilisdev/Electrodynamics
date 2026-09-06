@@ -2,6 +2,8 @@ package electrodynamics.prefab.sound.tickable;
 
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.registers.ElectrodynamicsItems;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import net.minecraft.client.Minecraft;
@@ -11,6 +13,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import voltaic.prefab.utilities.ItemUtils;
 import voltaic.prefab.utilities.WorldUtils;
 import voltaic.registers.VoltaicDataComponentTypes;
@@ -18,8 +21,9 @@ import voltaic.registers.VoltaicDataComponentTypes;
 public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 
     private static final int MAX_DISTANCE = 10;
-    private UUID originId;
-    private Player originPlayer;
+
+    private final UUID originId;
+    private @Nullable Player originPlayer;
 
     public TickableSoundJetpack(UUID originPlayer) {
 	super(ElectrodynamicsSounds.SOUND_JETPACK.get(), SoundSource.PLAYERS, RandomSource.create());
@@ -31,7 +35,12 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
 
     @Override
     public void tick() {
-	originPlayer = Minecraft.getInstance().level.getPlayerByUUID(originId);
+	Level level = Minecraft.getInstance().level;
+	if (level == null) {
+	    stop();
+	    return;
+	}
+	originPlayer = level.getPlayerByUUID(originId);
 	if (checkStop()) {
 	    stop();
 	    return;
@@ -41,35 +50,25 @@ public class TickableSoundJetpack extends AbstractTickableSoundInstance {
     }
 
     public float getPlayedVolume() {
-	ItemStack jetpack = originPlayer.getItemBySlot(EquipmentSlot.CHEST);
-	if (jetpack.getOrDefault(VoltaicDataComponentTypes.USED, false)) {
-	    double distance = WorldUtils.distanceBetweenPositions(originPlayer.blockPosition(),
-		    Minecraft.getInstance().player.blockPosition());
-	    if (distance > 0 && distance <= MAX_DISTANCE) {
-		return (float) (0.5F / distance);
-	    }
-	    if (distance <= MAX_DISTANCE) {
-		return 0.5F;
-	    }
-	}
-	return 0;
+	Player origin = originPlayer;
+	Player listener = Minecraft.getInstance().player;
+	if (origin == null || listener == null)
+	    return 0;
+	ItemStack jetpack = origin.getItemBySlot(EquipmentSlot.CHEST);
+	if (!jetpack.getOrDefault(VoltaicDataComponentTypes.USED, false))
+	    return 0;
+	double distance = WorldUtils.distanceBetweenPositions(origin.blockPosition(), listener.blockPosition());
+	if (distance > MAX_DISTANCE)
+	    return 0;
+	return distance > 0 ? (float) (0.5F / distance) : 0.5F;
     }
 
     protected boolean checkStop() {
-	if (originPlayer == null || originPlayer.isRemoved()) {
+	Player origin = originPlayer;
+	if (origin == null || origin.isRemoved())
 	    return true;
-	}
-	ItemStack jetpack = originPlayer.getItemBySlot(EquipmentSlot.CHEST);
-	if (jetpack.isEmpty()) {
-	    return true;
-	}
-	if (!ItemUtils.testItems(jetpack.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get())) {
-	    if (!ItemUtils.testItems(jetpack.getItem(), ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get())) {
-		return true;
-	    }
-	}
-
-	return false;
+	ItemStack jetpack = origin.getItemBySlot(EquipmentSlot.CHEST);
+	return jetpack.isEmpty() || !ItemUtils.testItems(jetpack.getItem(), ElectrodynamicsItems.ITEM_JETPACK.get(),
+		ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get());
     }
-
 }

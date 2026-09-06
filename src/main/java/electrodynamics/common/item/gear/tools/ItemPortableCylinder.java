@@ -43,21 +43,15 @@ public class ItemPortableCylinder extends ItemVoltaic {
 
 	items.add(new ItemStack(this));
 
-	if (VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM == null) {
-	    return;
-	}
-
 	VoltaicGases.GAS_REGISTRY.stream().forEach(gas -> {
-	    if (gas.isEmpty()) {
+	    if (gas.isEmpty())
 		return;
-	    }
 	    ItemStack temp = new ItemStack(this);
 
 	    IGasHandlerItem handler = temp.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-	    if (handler == null) {
+	    if (handler == null)
 		return;
-	    }
 
 	    GasHandlerItemStack cap = (GasHandlerItemStack) handler;
 
@@ -122,9 +116,8 @@ public class ItemPortableCylinder extends ItemVoltaic {
 
 	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return 13;
-	}
 
 	return (int) (13.0 * handler.getGasInTank(0).getAmount() / handler.getTankCapacity(0));
 
@@ -135,9 +128,8 @@ public class ItemPortableCylinder extends ItemVoltaic {
 
 	IGasHandlerItem handler = stack.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-	if (handler == null) {
+	if (handler == null)
 	    return false;
-	}
 
 	return !handler.getGasInTank(0).isEmpty();
 

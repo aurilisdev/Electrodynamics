@@ -1,7 +1,5 @@
 package electrodynamics.client.model.armor;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -291,8 +289,8 @@ public class ModelCompositeArmor<T extends LivingEntity> extends GenericArmorMod
 
     @Override
     // Call me a butcher, because I am hacking this game
-    public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight,
-	    int packedOverlay, int light) {
+    public void renderToBuffer(PoseStack poseStack, VertexConsumer buffer, int packedLight, int packedOverlay,
+	    int light) {
 	if (parentHead.visible) {
 	    parentHead.render(poseStack,
 		    getCustomConsumer(RenderType.entityTranslucent(ItemCompositeArmor.ARMOR_TEXTURE_LOCATION)),

@@ -2,8 +2,6 @@ package electrodynamics.common.item.gear.armor.types;
 
 import java.util.EnumMap;
 
-import org.jetbrains.annotations.Nullable;
-
 import electrodynamics.Electrodynamics;
 import electrodynamics.registers.ElectrodynamicsArmorMaterials;
 import net.minecraft.Util;
@@ -34,7 +32,7 @@ public class ItemRubberArmor extends ItemVoltaicArmor {
     }
 
     @Override
-    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
+    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
 	    ArmorMaterial.Layer layer, boolean innerModel) {
 	return ARMOR_TEXTURE_LOCATION;
     }

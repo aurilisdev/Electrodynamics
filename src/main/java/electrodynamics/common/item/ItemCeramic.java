@@ -32,9 +32,8 @@ public class ItemCeramic extends ItemVoltaic {
 	ItemStack handStack = player.getItemInHand(hand);
 
 	if (world.isClientSide || !ItemUtils.testItems(handStack.getItem(),
-		ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate))) {
+		ElectrodynamicsItems.ITEMS_CERAMIC.getValue(SubtypeCeramic.plate)))
 	    return InteractionResultHolder.pass(player.getItemInHand(hand));
-	}
 
 	List<ItemStack> armorPieces = new ArrayList<>();
 	player.getArmorSlots().forEach(armorPieces::add);

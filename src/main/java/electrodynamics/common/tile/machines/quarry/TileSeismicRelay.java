@@ -1,6 +1,7 @@
 package electrodynamics.common.tile.machines.quarry;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
@@ -23,102 +24,90 @@ import voltaic.prefab.tile.GenericTile;
 import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 import voltaic.prefab.tile.components.type.ComponentInventory;
-import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.ItemUtils;
 
 public class TileSeismicRelay extends GenericTile {
 
     public ListProperty<BlockPos> markerLocs = property(
-	    new ListProperty<>(PropertyTypes.BLOCK_POS_LIST, "markerlocs", new ArrayList<>()));
+	    new ListProperty<>(getPropertyManager(), PropertyTypes.BLOCK_POS_LIST, "markerlocs", new ArrayList<>()));
 
     public boolean cornerOnRight = false;
 
     public TileSeismicRelay(BlockPos worldPosition, BlockState blockState) {
 	super(ElectrodynamicsTiles.TILE_SEISMICRELAY.get(), worldPosition, blockState);
-	addComponent(new ComponentPacketHandler(this));
+
 	addComponent(new ComponentTickable(this).tickServer(this::tickServer));
 	addComponent(new ComponentInventory(this, ComponentInventory.InventoryBuilder.newInv().outputs(1)).valid((slot,
 		stack, i) -> ItemUtils.testItems(stack.getItem(), ElectrodynamicsItems.ITEM_SEISMICMARKER.get())));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.seismicrelay.tag(), this)
 		.createMenu((id, player) -> new ContainerSeismicRelay(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
-    private void tickServer(ComponentTickable tickable) {
+    private void tickServer(Level level, ComponentTickable tickable) {
 	if (markerLocs.getValue().size() < 4) {
 	    Direction facing = getFacing().getOpposite();
-	    Level world = getLevel();
-	    BlockEntity tile = world.getBlockEntity(getBlockPos().relative(facing));
+	    BlockEntity tile = level.getBlockEntity(getBlockPos().relative(facing));
 	    if (tile != null && tile instanceof TileSeismicMarker marker) {
-		getMarkers(marker, facing);
+		getMarkers(level, marker, facing);
 	    }
 	}
 
     }
 
-    private void getMarkers(TileSeismicMarker marker, Direction facing) {
+    private void getMarkers(Level level, TileSeismicMarker marker, Direction facing) {
 	markerLocs.wipeList();
-	BlockPos frontMarker = getMarker(facing, marker.getBlockPos(), marker.getLevel());
-	BlockPos sideMarker = null;
-	BlockPos cornerMarker = null;
-	if (frontMarker != null) {
-	    sideMarker = getMarker(facing.getClockWise(), marker.getBlockPos(), marker.getLevel());
-	    if (sideMarker != null) {
+	cornerOnRight = false;
+	Optional<BlockPos> frontMarker = getMarker(facing, marker.getBlockPos(), level);
+	Optional<BlockPos> sideMarker = Optional.empty();
+	Optional<BlockPos> cornerMarker = Optional.empty();
+	if (frontMarker.isPresent()) {
+	    sideMarker = getMarker(facing.getClockWise(), marker.getBlockPos(), level);
+	    if (sideMarker.isPresent()) {
 		cornerOnRight = true;
-		cornerMarker = getMarker(facing, sideMarker, marker.getLevel());
+		cornerMarker = getMarker(facing, sideMarker.orElseThrow(), level);
 	    } else {
-		sideMarker = getMarker(facing.getCounterClockWise(), marker.getBlockPos(), marker.getLevel());
-		if (sideMarker != null) {
-		    cornerMarker = getMarker(facing, sideMarker, marker.getLevel());
-		}
+		sideMarker = getMarker(facing.getCounterClockWise(), marker.getBlockPos(), level);
+		if (sideMarker.isPresent())
+		    cornerMarker = getMarker(facing, sideMarker.orElseThrow(), level);
 	    }
 	}
 	markerLocs.addValue(marker.getBlockPos());
-	if (frontMarker != null) {
-	    markerLocs.addValue(frontMarker);
-	}
-	if (sideMarker != null) {
-	    markerLocs.addValue(sideMarker);
-	}
-	if (cornerMarker != null) {
-	    markerLocs.addValue(cornerMarker);
-	}
-
-	// markerLocs.forceDirty();
-
+	frontMarker.ifPresent(markerLocs::addValue);
+	sideMarker.ifPresent(markerLocs::addValue);
+	cornerMarker.ifPresent(markerLocs::addValue);
 	if (markerLocs.getValue().size() > 3) {
-	    collectMarkers();
-	    getLevel().playSound(null, getBlockPos(), SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
+	    collectMarkers(level);
+	    level.playSound(null, getBlockPos(), SoundEvents.ANVIL_PLACE, SoundSource.BLOCKS, 1.0F, 1.0F);
 	}
     }
 
-    private static BlockPos getMarker(Direction facing, BlockPos blockPos, Level level) {
+    private static Optional<BlockPos> getMarker(Direction facing, BlockPos blockPos, Level level) {
 	for (int i = 0; i <= TileSeismicMarker.MAX_RADIUS; i++) {
 	    blockPos = blockPos.relative(facing);
 	    BlockEntity marker = level.getBlockEntity(blockPos);
-	    if (marker instanceof TileSeismicMarker && i > 0) {
-		return marker.getBlockPos();
-	    }
+	    if (marker instanceof TileSeismicMarker && i > 0)
+		return Optional.of(blockPos);
 	}
-	return null;
+	return Optional.empty();
     }
 
-    private void collectMarkers() {
-	ComponentInventory inv = getComponent(IComponentType.Inventory);
+    private void collectMarkers(Level level) {
+	ComponentInventory inv = requireComponent(IComponentType.Inventory);
 	ItemStack input = inv.getOutputContents().get(0);
 	if (input.isEmpty()) {
 	    inv.setItem(0,
 		    new ItemStack(ElectrodynamicsItems.ITEM_SEISMICMARKER.get(), markerLocs.getValue().size()).copy());
 	    for (BlockPos pos : markerLocs.getValue()) {
-		getLevel().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+		level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 	    }
 	} else if (ItemUtils.testItems(input.getItem(), ElectrodynamicsItems.ITEM_SEISMICMARKER.get())) {
 	    int room = input.getMaxStackSize() - input.getCount();
 	    int accepted = Math.min(room, markerLocs.getValue().size());
 	    input.grow(accepted);
 	    for (BlockPos pos : markerLocs.getValue()) {
-		getLevel().setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
+		level.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 	    }
 	}
     }

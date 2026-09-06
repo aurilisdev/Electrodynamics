@@ -30,27 +30,25 @@ public class ChemicalReactorRecipe extends AbstractMaterialRecipe {
     public static final String RECIPE_GROUP = "chemical_reactor_recipe";
     public static final ResourceLocation RECIPE_ID = Electrodynamics.rl(RECIPE_GROUP);
 
-    private List<CountableIngredient> itemIngredients;
-    private List<FluidIngredient> fluidIngredients;
-    private List<GasIngredient> gasIngredients;
-    private ItemStack itemOutput;
-    private FluidStack fluidOutput;
-    private GasStack gasOutput;
+    private final List<CountableIngredient> itemIngredients;
+    private final List<FluidIngredient> fluidIngredients;
+    private final List<GasIngredient> gasIngredients;
+    private final ItemStack itemOutput;
+    private final FluidStack fluidOutput;
+    private final GasStack gasOutput;
 
     public ChemicalReactorRecipe(String recipeGroup, List<CountableIngredient> inputItems,
 	    List<FluidIngredient> inputFluids, List<GasIngredient> inputGases, ItemStack itemOutput,
 	    FluidStack fluidOutput, GasStack gasOutput, double experience, int ticks, double usagePerTick,
 	    List<ProbableItem> itemBiproducts, List<ProbableFluid> fluidBiproducts, List<ProbableGas> gasBiproducts) {
 	super(recipeGroup, experience, ticks, usagePerTick, itemBiproducts, fluidBiproducts, gasBiproducts);
-	if (inputItems.size() == 0 && inputGases.size() == 0 && inputFluids.size() == 0) {
+	if (inputItems.size() == 0 && inputGases.size() == 0 && inputFluids.size() == 0)
 	    throw new RuntimeException("Yoou have created a chemical reactor recipe with no inputs");
-	}
-	if (itemOutput.isEmpty() && fluidOutput.isEmpty() && gasOutput.isEmpty()) {
+	if (itemOutput.isEmpty() && fluidOutput.isEmpty() && gasOutput.isEmpty())
 	    throw new RuntimeException("You have created a chemical reactor recipe with no outputs");
-	}
-	this.itemIngredients = inputItems;
-	this.fluidIngredients = inputFluids;
-	this.gasIngredients = inputGases;
+	itemIngredients = inputItems;
+	fluidIngredients = inputFluids;
+	gasIngredients = inputGases;
 	this.itemOutput = itemOutput;
 	this.fluidOutput = fluidOutput;
 	this.gasOutput = gasOutput;
@@ -59,44 +57,37 @@ public class ChemicalReactorRecipe extends AbstractMaterialRecipe {
 
     @Override
     public boolean matchesRecipe(ComponentProcessor pr, int index) {
-
-	int valid = 0b000;
-
+	boolean hasInputs = false;
 	if (hasItemInputs()) {
+	    hasInputs = true;
+	    ComponentInventory inventory = pr.getHolder()
+		    .<ComponentInventory>requireComponent(IComponentType.Inventory);
 	    Pair<List<Integer>, Boolean> itemPair = areItemsValid(getCountedIngredients(),
-		    ((ComponentInventory) pr.getHolder().getComponent(IComponentType.Inventory))
-			    .getInputsForProcessor(index));
-	    if (itemPair.getSecond()) {
-		setItemArrangement(index, itemPair.getFirst());
-		valid = valid | 1 << 2;
-	    } else {
+		    inventory.getInputsForProcessor(index));
+	    if (!itemPair.getSecond())
 		return false;
-	    }
+	    setItemArrangement(index, itemPair.getFirst());
 	}
-
 	if (hasFluidInputs()) {
-	    Pair<List<Integer>, Boolean> fluidPair = areFluidsValid(getFluidIngredients(), pr.getHolder()
-		    .<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler).getInputTanks());
-	    if (fluidPair.getSecond()) {
-		setFluidArrangement(fluidPair.getFirst());
-		valid = valid | 1 << 1;
-	    } else {
+	    hasInputs = true;
+	    ComponentFluidHandlerMulti fluidHandler = pr.getHolder()
+		    .<ComponentFluidHandlerMulti>requireComponent(IComponentType.FluidHandler);
+	    Pair<List<Integer>, Boolean> fluidPair = areFluidsValid(getFluidIngredients(),
+		    fluidHandler.getInputTanks());
+	    if (!fluidPair.getSecond())
 		return false;
-	    }
+	    setFluidArrangement(fluidPair.getFirst());
 	}
-
 	if (hasGasInputs()) {
-	    Pair<List<Integer>, Boolean> gasPair = areGasesValid(getGasIngredients(),
-		    pr.getHolder().<ComponentGasHandlerMulti>getComponent(IComponentType.GasHandler).getInputTanks());
-	    if (gasPair.getSecond()) {
-		setGasArrangement(gasPair.getFirst());
-		valid = valid | 1 << 0;
-	    } else {
+	    hasInputs = true;
+	    ComponentGasHandlerMulti gasHandler = pr.getHolder()
+		    .<ComponentGasHandlerMulti>requireComponent(IComponentType.GasHandler);
+	    Pair<List<Integer>, Boolean> gasPair = areGasesValid(getGasIngredients(), gasHandler.getInputTanks());
+	    if (!gasPair.getSecond())
 		return false;
-	    }
+	    setGasArrangement(gasPair.getFirst());
 	}
-
-	return valid > 0;
+	return hasInputs;
     }
 
     public boolean hasItemInputs() {
@@ -111,6 +102,7 @@ public class ChemicalReactorRecipe extends AbstractMaterialRecipe {
 	return getGasIngredients().size() > 0;
     }
 
+    @Override
     public List<CountableIngredient> getCountedIngredients() {
 	return itemIngredients;
     }

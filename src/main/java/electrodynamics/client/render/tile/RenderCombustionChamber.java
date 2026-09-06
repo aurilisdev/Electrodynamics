@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -26,9 +24,9 @@ public class RenderCombustionChamber extends AbstractTileRenderer<TileCombustion
 
     @Override
     public void render(TileCombustionChamber tileEntityIn, float partialTicks, PoseStack matrixStackIn,
-	    @NotNull MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
+	    MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
 	matrixStackIn.pushPose();
-	FluidStack fuel = tileEntityIn.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler)
+	FluidStack fuel = tileEntityIn.<ComponentFluidHandlerMulti>requireComponent(IComponentType.FluidHandler)
 		.getFluidInTank(0, true);
 	float prog = fuel.getAmount() / (float) TileCombustionChamber.TANK_CAPACITY;
 	if (prog > 0) {

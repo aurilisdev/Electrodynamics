@@ -49,9 +49,8 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
 	FluidStack transfer = new FluidStack(inserted.getFluid(),
 		Math.min((int) networkMaxTransfer, inserted.getAmount()));
 
-	if (transfer.getAmount() <= 0) {
+	if (transfer.getAmount() <= 0)
 	    return FluidStack.EMPTY;
-	}
 
 	FluidStack initial = transfer.copy();
 	FluidStack taken = new FluidStack(transfer.getFluid(), 0);
@@ -61,9 +60,8 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
 	initial.shrink(priorityFilled.getFirst().getAmount());
 	taken.grow(priorityFilled.getFirst().getAmount());
 
-	if (initial.isEmpty()) {
+	if (initial.isEmpty())
 	    return taken;
-	}
 
 	HashSet<BlockEntity> availableAcceptors = Sets.newHashSet();
 
@@ -74,9 +72,8 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
 	    availableAcceptors.removeAll(priorityFilled.getSecond());
 	}
 
-	if (availableAcceptors.isEmpty()) {
+	if (availableAcceptors.isEmpty())
 	    return taken;
-	}
 
 	// Fair distribution with a running remainder.
 	// The Math.max(1, ...) prevents small residual amounts from being rounded to
@@ -92,12 +89,12 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
 
 	for (BlockEntity tile : availableAcceptors) {
 
-	    if (tile == null || tile.isRemoved()) {
-		acceptorInputMap.remove(tile);
-		acceptorSet.remove(tile);
-		size--;
-		continue;
-	    }
+//	    if (tile == null || tile.isRemoved()) {
+//		acceptorInputMap.remove(tile);
+//		acceptorSet.remove(tile);
+//		size--;
+//		continue;
+//	    }
 
 	    if (initial.isEmpty() || size <= 0) {
 		break;
@@ -151,9 +148,8 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
 
 	HashSet<TileFluidPipePump> acceptedPumps = new HashSet<>();
 
-	if (priorityPumpMap.isEmpty()) {
+	if (priorityPumpMap.isEmpty())
 	    return Pair.of(taken, acceptedPumps);
-	}
 
 	Pair<FluidStack, Set<TileFluidPipePump>> accepted;
 
@@ -163,9 +159,8 @@ public class FluidNetwork extends AbstractNetwork<GenericTileFluidPipe, IFluidPi
 
 	for (int i = 9; i >= 0; i--) {
 
-	    if (copy.isEmpty()) {
+	    if (copy.isEmpty())
 		return Pair.of(taken, acceptedPumps);
-	    }
 
 	    prioritySet = priorityPumpMap.getOrDefault(i, new HashSet<>());
 

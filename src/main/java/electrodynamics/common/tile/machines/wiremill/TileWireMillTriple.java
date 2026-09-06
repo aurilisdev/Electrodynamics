@@ -15,7 +15,7 @@ public class TileWireMillTriple extends TileWireMill {
 
 	addComponent(new ComponentContainerProvider(SubtypeMachine.wiremilltriple.tag(), this)
 		.createMenu((id, player) -> new ContainerO2OProcessorTriple(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
 }

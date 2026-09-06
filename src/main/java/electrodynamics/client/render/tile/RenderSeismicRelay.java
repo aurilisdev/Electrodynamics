@@ -1,7 +1,5 @@
 package electrodynamics.client.render.tile;
 
-import org.jetbrains.annotations.NotNull;
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
@@ -12,6 +10,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import voltaic.client.VoltaicClientRegister;
@@ -30,8 +29,12 @@ public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
     }
 
     @Override
-    public void render(TileSeismicRelay tile, float tick, @NotNull PoseStack stack, @NotNull MultiBufferSource source,
-	    int light, int overlay) {
+    public void render(TileSeismicRelay tile, float tick, PoseStack stack, MultiBufferSource source, int light,
+	    int overlay) {
+	Level level = level();
+	if (level == null)
+	    return;
+
 	if (tile.markerLocs.getValue().size() > 3) {
 	    Minecraft minecraft = Minecraft.getInstance();
 	    VertexConsumer sheetBuilder = source.getBuffer(RenderingUtils.beaconType());
@@ -47,18 +50,17 @@ public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 	    Direction facing = tile.getFacing().getOpposite();
 
 	    boolean doesQuarryHaveRing = false;
-	    BlockEntity entity = level().getBlockEntity(tile.getBlockPos().relative(facing.getClockWise()));
+	    BlockEntity entity = level.getBlockEntity(tile.getBlockPos().relative(facing.getClockWise()));
 	    if (entity instanceof TileQuarry quarry) {
 		doesQuarryHaveRing = quarry.hasRing.getValue();
 	    }
-	    entity = level().getBlockEntity(tile.getBlockPos().relative(facing.getCounterClockWise()));
+	    entity = level.getBlockEntity(tile.getBlockPos().relative(facing.getCounterClockWise()));
 	    if (entity instanceof TileQuarry quarry) {
 		doesQuarryHaveRing = quarry.hasRing.getValue();
 	    }
 
-	    if (!doesQuarryHaveRing) {
+	    if (!doesQuarryHaveRing)
 		return;
-	    }
 
 	    AABB beam;
 	    if (facing == Direction.NORTH) {
@@ -77,9 +79,8 @@ public class RenderSeismicRelay extends AbstractTileRenderer<TileSeismicRelay> {
 
 	    float alpha = getGameTime() % time;
 
-	    if (alpha < cutoff) {
+	    if (alpha < cutoff)
 		return;
-	    }
 
 	    alpha = time - alpha;
 	    if (alpha <= half) {

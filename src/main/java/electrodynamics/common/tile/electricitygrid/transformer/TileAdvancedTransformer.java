@@ -22,7 +22,9 @@ public abstract class TileAdvancedTransformer extends TileGenericTransformer {
     public TileAdvancedTransformer(BlockEntityType<?> type, BlockPos worldPosition, BlockState blockState,
 	    double defaultCoilRatio) {
 	super(type, worldPosition, blockState);
-	coilRatio = property(new SingleProperty<>(PropertyTypes.DOUBLE, "coilratio", defaultCoilRatio));
+	coilRatio = property(
+		new SingleProperty<>(getPropertyManager(), PropertyTypes.DOUBLE, "coilratio", defaultCoilRatio))
+		.setUpdateServer();
 	this.defaultCoilRatio = defaultCoilRatio;
     }
 

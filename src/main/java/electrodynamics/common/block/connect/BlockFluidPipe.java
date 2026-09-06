@@ -2,6 +2,8 @@ package electrodynamics.common.block.connect;
 
 import java.util.HashSet;
 
+import javax.annotation.Nullable;
+
 import com.mojang.serialization.MapCodec;
 
 import electrodynamics.common.tile.pipelines.fluid.GenericTileFluidPipe;
@@ -33,12 +35,12 @@ public class BlockFluidPipe extends AbstractRefreshingConnectBlock<GenericTileFl
     }
 
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
+    public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
 	return new TileFluidPipe(pos, state);
     }
 
     @Override
-    public EnumConnectType getConnection(BlockState otherState, BlockEntity otherTile,
+    public EnumConnectType getConnection(BlockState otherState, @Nullable BlockEntity otherTile,
 	    GenericTileFluidPipe thisConductor, Direction dir) {
 	EnumConnectType connection = EnumConnectType.NONE;
 	if (otherTile instanceof GenericTileFluidPipe) {
@@ -50,10 +52,9 @@ public class BlockFluidPipe extends AbstractRefreshingConnectBlock<GenericTileFl
     }
 
     @Override
-    public GenericTileFluidPipe getCableIfValid(BlockEntity tile) {
-	if (tile instanceof GenericTileFluidPipe pipe) {
+    public @Nullable GenericTileFluidPipe getCableIfValid(BlockEntity tile) {
+	if (tile instanceof GenericTileFluidPipe pipe)
 	    return pipe;
-	}
 	return null;
     }
 

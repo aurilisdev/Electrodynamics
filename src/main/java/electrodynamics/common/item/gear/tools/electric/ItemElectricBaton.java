@@ -9,6 +9,7 @@ import electrodynamics.registers.ElectrodynamicsItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.SlotAccess;
@@ -40,7 +41,7 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
     }
 
     @Override
-    public boolean onEntitySwing(ItemStack stack, LivingEntity entity) {
+    public boolean onEntitySwing(ItemStack stack, LivingEntity entity, InteractionHand hand) {
 	return false;
     }
 
@@ -126,9 +127,8 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action,
 	    Player player, SlotAccess access) {
 
-	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	if (!IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access))
 	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-	}
 
 	return true;
 
@@ -141,7 +141,7 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
 
     @Override
     public boolean hasCreativeTab() {
-	return creativeTab != null;
+	return true;
     }
 
 }

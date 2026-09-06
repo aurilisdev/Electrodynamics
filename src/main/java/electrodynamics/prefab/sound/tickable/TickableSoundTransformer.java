@@ -19,9 +19,8 @@ public class TickableSoundTransformer extends TickableSoundTile<TileGenericTrans
     public float getVolume() {
 	float volume = super.getVolume();
 
-	if (tile == null) {
+	if (tile == null)
 	    return volume;
-	}
 
 	double multiplier = 1;
 

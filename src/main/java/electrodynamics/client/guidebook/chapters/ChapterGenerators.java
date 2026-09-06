@@ -49,6 +49,7 @@ public class ChapterGenerators extends Chapter {
 	return ElectroTextUtils.guidebook("chapter.generators");
     }
 
+    @SuppressWarnings("null")
     @Override
     public void addData() {
 
@@ -100,9 +101,8 @@ public class ChapterGenerators extends Chapter {
 		.setSeparateStart());
 
 	ThermoelectricGeneratorHeatRegister.INSTANCE.getHeatSources().forEach((fluid, multiplier) -> {
-	    if (BuiltInRegistries.FLUID.getKey(fluid).toString().toLowerCase(Locale.ROOT).contains("flow")) {
+	    if (BuiltInRegistries.FLUID.getKey(fluid).toString().toLowerCase(Locale.ROOT).contains("flow"))
 		return;
-	    }
 	    pageData.add(new TextWrapperObject(fluid.getFluidType().getDescription()).setSeparateStart());
 	    pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.generators.multiplier", multiplier))
 		    .setSeparateStart().setIndentions(1));

@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import org.jetbrains.annotations.Nullable;
-
 import electrodynamics.Electrodynamics;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsArmorMaterials;
@@ -90,7 +88,6 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 
     @Override
     public void addCreativeModeItems(CreativeModeTab tab, List<ItemStack> items) {
-
 	switch (getEquipmentSlot()) {
 	case HEAD:
 	    ItemStack empty = new ItemStack(this);
@@ -105,9 +102,6 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 	    break;
 	case CHEST:
 	    items.add(new ItemStack(this));
-	    if (VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM == null) {
-		break;
-	    }
 	    ItemStack full = new ItemStack(this);
 
 	    GasStack gas = new GasStack(ElectrodynamicsGases.HYDROGEN.value(), ItemJetpack.MAX_CAPACITY,
@@ -115,9 +109,8 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 
 	    IGasHandlerItem handler = full.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
 
-	    if (handler == null) {
+	    if (handler == null)
 		return;
-	    }
 
 	    handler.fill(gas, GasAction.EXECUTE);
 
@@ -139,17 +132,15 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 	case FEET:
 	    items.add(new ItemStack(this));
 
-	    if (Capabilities.FluidHandler.ITEM == null) {
+	    if (Capabilities.FluidHandler.ITEM == null)
 		return;
-	    }
 
 	    full = new ItemStack(this);
 
 	    IFluidHandlerItem handlerFluid = full.getCapability(Capabilities.FluidHandler.ITEM);
 
-	    if (handlerFluid == null) {
+	    if (handlerFluid == null)
 		return;
-	    }
 
 	    ((RestrictedFluidHandlerItemStack) handlerFluid)
 		    .setFluid(new FluidStack(ElectrodynamicsFluids.FLUID_HYDRAULIC, ItemHydraulicBoots.MAX_CAPACITY));
@@ -237,14 +228,12 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 	    }
 	    break;
 	case FEET:
-	    if (Capabilities.FluidHandler.ITEM == null) {
+	    if (Capabilities.FluidHandler.ITEM == null)
 		return;
-	    }
 	    IFluidHandlerItem handler = stack.getCapability(Capabilities.FluidHandler.ITEM);
 
-	    if (handler == null) {
+	    if (handler == null)
 		return;
-	    }
 
 	    tooltips.add(VoltaicTextUtils
 		    .ratio(ChatFormatter.formatFluidMilibuckets(handler.getFluidInTank(0).getAmount()),
@@ -307,8 +296,7 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity,
-	    Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
 	return 0;
     }
 
@@ -363,16 +351,15 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 	    Player player, SlotAccess access) {
 
 	if (getEquipmentSlot() == EquipmentSlot.CHEST || getEquipmentSlot() == EquipmentSlot.FEET
-		|| !IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+		|| !IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access))
 	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
-	}
 
 	return true;
 
     }
 
     @Override
-    public @Nullable ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
+    public ResourceLocation getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot,
 	    ArmorMaterial.Layer layer, boolean innerModel) {
 	return ARMOR_TEXTURE_LOCATION;
     }

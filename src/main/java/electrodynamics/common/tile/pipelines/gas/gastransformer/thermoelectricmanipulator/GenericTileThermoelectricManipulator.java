@@ -2,12 +2,15 @@ package electrodynamics.common.tile.pipelines.gas.gastransformer.thermoelectricm
 
 import java.util.function.BiConsumer;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.inventory.container.tile.ContainerThermoelectricManipulator;
 import electrodynamics.common.tile.pipelines.gas.gastransformer.GenericTileGasTransformer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluid;
@@ -29,8 +32,6 @@ import voltaic.prefab.tile.components.type.ComponentGasHandlerMulti;
 import voltaic.prefab.tile.components.type.ComponentInventory;
 import voltaic.prefab.tile.components.type.ComponentProcessor;
 import voltaic.prefab.tile.components.utils.IComponentFluidHandler;
-import voltaic.prefab.utilities.BlockEntityUtils;
-import voltaic.registers.VoltaicCapabilities;
 import voltaic.registers.VoltaicGases;
 
 public abstract class GenericTileThermoelectricManipulator extends GenericTileGasTransformer {
@@ -41,28 +42,25 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
      * from Nuclear Science.
      */
 
-    public final SingleProperty<Integer> targetTemperature = property(
-	    new SingleProperty<>(PropertyTypes.INTEGER, "targettemperature", Gas.ROOM_TEMPERATURE));
+    public final SingleProperty<Integer> targetTemperature = property(new SingleProperty<>(getPropertyManager(),
+	    PropertyTypes.INTEGER, "targettemperature", Gas.ROOM_TEMPERATURE)).setUpdateServer();
 
     private boolean isFluid = false;
     private boolean changeState = false;
 
-    private Gas evaporatedGas;
+    private @Nullable Gas evaporatedGas;
 
     public GenericTileThermoelectricManipulator(BlockEntityType<?> type, BlockPos worldPos, BlockState blockState) {
 	super(type, worldPos, blockState);
-	addComponent(new ComponentElectrodynamic(this, false, true)
-		.setInputDirections(BlockEntityUtils.MachineDirection.BOTTOM)
-		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE).maxJoules(getUsagePerTick() * 10));
 	addComponent(getFluidHandler());
     }
 
     @Override
-    public boolean canProcess(ComponentProcessor processor, int procNumber) {
+    public boolean canProcess(ComponentProcessor processor, Level level, int procNumber) {
 
 	Direction facing = getFacing();
 
-	ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+	ComponentGasHandlerMulti gasHandler = requireComponent(IComponentType.GasHandler);
 
 	processor.consumeGasCylinder();
 	processor.dispenseGasCylinder();
@@ -95,7 +93,7 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
 	if (currStatus != result.status()) {
 
-	    getLevel().setBlockAndUpdate(worldPosition,
+	    level.setBlockAndUpdate(worldPosition,
 		    getBlockState().setValue(ElectrodynamicsBlockStates.MANIPULATOR_HEATING_STATUS, result.status()));
 
 	}
@@ -109,43 +107,35 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
     private ManipulatorStatusCheckWrapper checkGasConditions(ComponentProcessor processor) {
 
-	ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+	ComponentGasHandlerMulti gasHandler = requireComponent(IComponentType.GasHandler);
 	GasTank inputTank = gasHandler.getInputTanks()[0];
-	if (inputTank.isEmpty()) {
+	if (inputTank.isEmpty())
 	    return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF,
 		    false);
-	}
 
-	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+	ComponentElectrodynamic electro = requireComponent(IComponentType.Electrodynamic);
 
-	if (electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.getValue()) {
+	if (electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.getValue())
 	    return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF,
 		    false);
-	}
 
 	if (inputTank.getGas().getGas().getCondensationTemp() >= targetTemperature.getValue()) {
 
 	    // gas is condensed
-	    ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
+	    ComponentFluidHandlerMulti fluidHandler = requireComponent(IComponentType.FluidHandler);
 
 	    FluidTank outputTank = fluidHandler.getOutputTanks()[0];
 
-	    if (outputTank.getFluidAmount() >= outputTank.getCapacity()) {
+	    if (outputTank.getFluidAmount() >= outputTank.getCapacity()
+		    || inputTank.getGas().getGas().noCondensedFluid())
 		return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF,
 			false);
-	    }
-
-	    if (inputTank.getGas().getGas().noCondensedFluid()) {
-		return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF,
-			false);
-	    }
 
 	    Fluid condensedFluid = inputTank.getGas().getGas().getCondensedFluid();
 
-	    if (!outputTank.isEmpty() && !outputTank.getFluid().getFluid().isSame(condensedFluid)) {
+	    if (!outputTank.isEmpty() && !outputTank.getFluid().getFluid().isSame(condensedFluid))
 		return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF,
 			false);
-	    }
 
 	    ElectrodynamicsBlockStates.ManipulatorHeatingStatus status;
 
@@ -161,12 +151,11 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
 	}
 	GasTank outputTank = gasHandler.getOutputTanks()[0];
-	if ((outputTank.getGasAmount() >= outputTank.getCapacity())
-		|| (!outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas()))
-		|| (inputTank.getGas().getTemperature() <= GasStack.ABSOLUTE_ZERO)) {
+	if (outputTank.getGasAmount() >= outputTank.getCapacity()
+		|| !outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas())
+		|| inputTank.getGas().getTemperature() <= GasStack.ABSOLUTE_ZERO)
 	    return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF,
 		    false);
-	}
 
 	ElectrodynamicsBlockStates.ManipulatorHeatingStatus status;
 
@@ -184,47 +173,43 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
     private ManipulatorStatusCheckWrapper checkFluidConditions(ComponentProcessor processor) {
 
-	ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
+	ComponentFluidHandlerMulti fluidHandler = requireComponent(IComponentType.FluidHandler);
 
 	FluidTank inputTank = fluidHandler.getInputTanks()[0];
 
-	if (inputTank.isEmpty()) {
+	if (inputTank.isEmpty())
 	    return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF,
 		    false);
-	}
 
-	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
+	ComponentElectrodynamic electro = requireComponent(IComponentType.Electrodynamic);
 
-	if (electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.getValue()) {
+	if (electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.getValue())
 	    return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF,
 		    false);
-	}
 
-	ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+	ComponentGasHandlerMulti gasHandler = requireComponent(IComponentType.GasHandler);
 
 	GasTank outputTank = gasHandler.getOutputTanks()[0];
 
-	if (outputTank.getGasAmount() >= outputTank.getCapacity()) {
+	if (outputTank.getGasAmount() >= outputTank.getCapacity())
 	    return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF,
 		    false);
-	}
 
-	evaporatedGas = VoltaicGases.MAPPED_GASSES.getOrDefault(
+	Gas pEvaporatedGas = evaporatedGas = VoltaicGases.MAPPED_GASSES.getOrDefault(
 		BuiltInRegistries.FLUID.wrapAsHolder(inputTank.getFluid().getFluid()), VoltaicGases.EMPTY.value());
 
-	if (evaporatedGas.isEmpty() || (targetTemperature.getValue() <= evaporatedGas.getCondensationTemp())
-		|| (!outputTank.isEmpty() && !outputTank.getGas().getGas().equals(evaporatedGas))) {
+	if (pEvaporatedGas.isEmpty() || targetTemperature.getValue() <= pEvaporatedGas.getCondensationTemp()
+		|| !outputTank.isEmpty() && !outputTank.getGas().getGas().equals(pEvaporatedGas))
 	    return new ManipulatorStatusCheckWrapper(false, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.OFF,
 		    false);
-	}
 
 	return new ManipulatorStatusCheckWrapper(true, ElectrodynamicsBlockStates.ManipulatorHeatingStatus.HEAT, true);
     }
 
     @Override
-    public void process(ComponentProcessor processor, int procNumber) {
-	ComponentFluidHandlerMulti fluidHandler = getComponent(IComponentType.FluidHandler);
-	ComponentGasHandlerMulti gasHandler = getComponent(IComponentType.GasHandler);
+    public void process(ComponentProcessor processor, Level level, int procNumber) {
+	ComponentFluidHandlerMulti fluidHandler = requireComponent(IComponentType.FluidHandler);
+	ComponentGasHandlerMulti gasHandler = requireComponent(IComponentType.GasHandler);
 
 	int conversionRate = (int) (getConversionRate() * processor.operatingSpeed.getValue());
 
@@ -234,22 +219,25 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 	    FluidTank inputTank = fluidHandler.getInputTanks()[0];
 	    GasTank outputTank = gasHandler.getOutputTanks()[0];
 
-	    int deltaT = targetTemperature.getValue() - evaporatedGas.getCondensationTemp();
+	    Gas pEvaporatedGas = evaporatedGas;
+	    if (pEvaporatedGas == null)
+		return;
+
+	    int deltaT = targetTemperature.getValue() - pEvaporatedGas.getCondensationTemp();
 
 	    conversionRate = getAdjustedConversionRate(conversionRate, deltaT);
 
 	    int maxTake = Math.min(inputTank.getFluidAmount(), conversionRate);
 
-	    GasStack evaporatedPotential = new GasStack(evaporatedGas, maxTake, evaporatedGas.getCondensationTemp(),
+	    GasStack evaporatedPotential = new GasStack(pEvaporatedGas, maxTake, pEvaporatedGas.getCondensationTemp(),
 		    Gas.PRESSURE_AT_SEA_LEVEL);
 
 	    evaporatedPotential.heat(deltaT);
 
 	    int taken = outputTank.fill(evaporatedPotential, GasAction.EXECUTE);
 
-	    if (taken == 0) {
+	    if (taken == 0)
 		return;
-	    }
 
 	    evaporatedPotential.setAmount(taken);
 
@@ -280,17 +268,15 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
 	    int fluidAmount = Math.min(conversionRate, condensedPotential.getAmount());
 
-	    if (fluidAmount == 0) {
+	    if (fluidAmount == 0)
 		return;
-	    }
 
 	    FluidStack condensedFluid = new FluidStack(condensedPotential.getGas().getCondensedFluid(), fluidAmount);
 
 	    int taken = outputTank.fill(condensedFluid, IFluidHandler.FluidAction.EXECUTE);
 
-	    if (taken == 0) {
+	    if (taken == 0)
 		return;
-	    }
 
 	    condensedPotential.setAmount(taken);
 
@@ -319,9 +305,8 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
 	    int taken = outputTank.fill(condensedPotential, GasAction.EXECUTE);
 
-	    if (taken == 0) {
+	    if (taken == 0)
 		return;
-	    }
 
 	    condensedPotential.setAmount(taken);
 
@@ -344,25 +329,22 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
 
     @Override
     public BiConsumer<GasTank, GenericTile> getCondensedHandler() {
-
 	return (tank, tile) -> {
 
-	    FluidTank outputTank = tile.<ComponentFluidHandlerMulti>getComponent(IComponentType.FluidHandler)
+	    FluidTank outputTank = tile.<ComponentFluidHandlerMulti>requireComponent(IComponentType.FluidHandler)
 		    .getOutputTanks()[0];
 
 	    GasStack tankGas = tank.getGas().copy();
 
 	    tank.setGas(GasStack.EMPTY);
 
-	    if (tankGas.isEmpty() || !outputTank.isEmpty()) {
+	    if (tankGas.isEmpty() || !outputTank.isEmpty())
 		return;
-	    }
 
 	    Fluid fluid = tankGas.getGas().getCondensedFluid();
 
-	    if (fluid.isSame(Fluids.EMPTY)) {
+	    if (fluid.isSame(Fluids.EMPTY))
 		return;
-	    }
 
 	    tankGas.bringPressureTo(Gas.PRESSURE_AT_SEA_LEVEL);
 
@@ -374,9 +356,8 @@ public abstract class GenericTileThermoelectricManipulator extends GenericTileGa
     }
 
     private int getAdjustedConversionRate(int conversionRate, int deltaT) {
-	if (deltaT == 0) {
+	if (deltaT == 0)
 	    return conversionRate;
-	}
 
 	return Math.max(1, (int) Math.floor((double) conversionRate * (double) getHeatTransfer() / Math.abs(deltaT)));
     }

@@ -26,7 +26,8 @@ public enum SubtypeDust implements ISubtype {
     endereye(VoltaicTags.Items.DUST_ENDEREYE),
     vanadium(VoltaicTags.Items.DUST_VANADIUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.vanadium),
 	    200),
-    sulfur(VoltaicTags.Items.DUST_SULFUR), niter(VoltaicTags.Items.DUST_SALTPETER),
+    sulfur(VoltaicTags.Items.DUST_SULFUR),
+    niter(VoltaicTags.Items.DUST_SALTPETER),
     obsidian(VoltaicTags.Items.DUST_OBSIDIAN),
     lithium(VoltaicTags.Items.DUST_LITHIUM, () -> ElectrodynamicsItems.ITEMS_INGOT.getValue(SubtypeIngot.lithium), 200),
     salt(VoltaicTags.Items.DUST_SALT),
@@ -51,7 +52,7 @@ public enum SubtypeDust implements ISubtype {
 	this(tag, null, 0);
     }
 
-    SubtypeDust(TagKey<Item> tag, Supplier<Item> smeltedItem, int smeltTime) {
+    SubtypeDust(TagKey<Item> tag, @Nullable Supplier<Item> smeltedItem, int smeltTime) {
 	this.tag = tag;
 	this.smeltedItem = smeltedItem;
 	this.smeltTime = smeltTime;

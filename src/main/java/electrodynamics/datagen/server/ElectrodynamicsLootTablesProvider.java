@@ -1,6 +1,7 @@
 package electrodynamics.datagen.server;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.block.subtype.SubtypeFluidPipe;
@@ -15,6 +16,7 @@ import electrodynamics.common.block.subtype.SubtypeWire;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import voltaic.datagen.utils.server.loottable.BaseLootTablesProvider;
 
@@ -46,10 +48,11 @@ public class ElectrodynamicsLootTablesProvider extends BaseLootTablesProvider {
 	for (SubtypeOre ore : SubtypeOre.values()) {
 	    Block block = ElectrodynamicsBlocks.BLOCKS_ORE.getValue(ore);
 
-	    if (ore.nonSilkLootItem == null) {
+	    Supplier<Item> nonSilkLootItem = ore.nonSilkLootItem;
+	    if (nonSilkLootItem == null) {
 		addSimpleBlock(block);
 	    } else {
-		addFortuneAndSilkTouchTable(block, ore.nonSilkLootItem.get(), ore.minDrop, ore.maxDrop);
+		addFortuneAndSilkTouchTable(block, nonSilkLootItem.get(), ore.minDrop, ore.maxDrop);
 	    }
 
 	}
@@ -57,10 +60,11 @@ public class ElectrodynamicsLootTablesProvider extends BaseLootTablesProvider {
 	for (SubtypeOreDeepslate ore : SubtypeOreDeepslate.values()) {
 	    Block block = ElectrodynamicsBlocks.BLOCKS_DEEPSLATEORE.getValue(ore);
 
-	    if (ore.nonSilkLootItem == null) {
+	    Supplier<Item> nonSilkLootItem = ore.nonSilkLootItem;
+	    if (nonSilkLootItem == null) {
 		addSimpleBlock(block);
 	    } else {
-		addFortuneAndSilkTouchTable(block, ore.nonSilkLootItem.get(), ore.minDrop, ore.maxDrop);
+		addFortuneAndSilkTouchTable(block, nonSilkLootItem.get(), ore.minDrop, ore.maxDrop);
 	    }
 	}
 

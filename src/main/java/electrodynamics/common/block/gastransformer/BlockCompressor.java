@@ -1,5 +1,7 @@
 package electrodynamics.common.block.gastransformer;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.common.block.states.ElectrodynamicsBlockStates;
 import electrodynamics.common.tile.pipelines.gas.gastransformer.compressor.GenericTileBasicCompressor;
 import electrodynamics.registers.ElectrodynamicsBlocks;
@@ -32,18 +34,20 @@ public class BlockCompressor extends GenericMachineBlock {
     }
 
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
+    public @Nullable BlockState getStateForPlacement(BlockPlaceContext context) {
+	BlockState state = super.getStateForPlacement(context);
+	if (state == null)
+	    return null;
+
 	return getStatusFromTop(context.getLevel(), context.getClickedPos(),
-		super.getStateForPlacement(context).setValue(VoltaicBlockStates.LIT, false));
+		state.setValue(VoltaicBlockStates.LIT, false));
     }
 
     public BlockState getStatusFromTop(Level world, BlockPos pos, BlockState baseState) {
-	if (!baseState.hasProperty(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK)) {
+	if (!baseState.hasProperty(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK))
 	    return baseState;
-	}
-	if (world.getBlockState(pos.above()).is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK)) {
+	if (world.getBlockState(pos.above()).is(ElectrodynamicsBlocks.BLOCK_COMPRESSOR_ADDONTANK))
 	    return baseState.setValue(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, true);
-	}
 	return baseState.setValue(ElectrodynamicsBlockStates.COMPRESSORSIDE_HAS_TOPTANK, false);
     }
 
@@ -57,9 +61,8 @@ public class BlockCompressor extends GenericMachineBlock {
 
     @Override
     public int getLightEmission(BlockState state, BlockGetter level, BlockPos pos) {
-	if (state.hasProperty(VoltaicBlockStates.LIT) && state.getValue(VoltaicBlockStates.LIT)) {
+	if (state.hasProperty(VoltaicBlockStates.LIT) && state.getValue(VoltaicBlockStates.LIT))
 	    return 15;
-	}
 	return super.getLightEmission(state, level, pos);
     }
 

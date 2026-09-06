@@ -58,9 +58,8 @@ public class ItemRailgunKinetic extends ItemRailgun {
 	    ammoStack = player.getMainHandItem();
 	}
 
-	if (world.isClientSide) {
+	if (world.isClientSide)
 	    return InteractionResultHolder.pass(gunStack);
-	}
 
 	ItemRailgunKinetic railgun = (ItemRailgunKinetic) gunStack.getItem();
 
@@ -112,7 +111,7 @@ public class ItemRailgunKinetic extends ItemRailgun {
 	FluidStack fluidStack = gunStack.getOrDefault(VoltaicDataComponentTypes.FLUID_STACK.get(),
 		FluidStackComponent.EMPTY).fluid;
 
-	if (fluidStack.isEmpty() || (fluidStack.getAmount() < COOLANT_PER_SHOT)) {
+	if (fluidStack.isEmpty() || fluidStack.getAmount() < COOLANT_PER_SHOT) {
 	    railgun.recieveHeat(gunStack, TEMPERATURE_PER_SHOT, false);
 	} else {
 	    fluidStack.shrink(COOLANT_PER_SHOT);

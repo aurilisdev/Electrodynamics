@@ -1,7 +1,6 @@
 package electrodynamics.client.screen.tile;
 
 import electrodynamics.common.inventory.container.tile.ContainerCompressor;
-import electrodynamics.common.tile.pipelines.gas.gastransformer.compressor.GenericTileBasicCompressor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import voltaic.prefab.screen.component.ScreenComponentGeneric;
@@ -21,35 +20,18 @@ public class ScreenCompressor extends GenericMaterialScreen<ContainerCompressor>
     public ScreenCompressor(ContainerCompressor container, Inventory inv, Component titleIn) {
 	super(container, inv, titleIn);
 	addComponent(new ScreenComponentGeneric(ScreenComponentProgress.ProgressTextures.COMPRESS_ARROW_OFF, 65, 40));
-	addComponent(new ScreenComponentGasGauge(() -> {
-	    GenericTileBasicCompressor.TileCompressor boiler = container.getSafeHost();
-	    if (boiler != null) {
-		return boiler.<ComponentGasHandlerMulti>getComponent(IComponentType.GasHandler).getInputTanks()[0];
-	    }
-	    return null;
-	}, 41, 18));
-	addComponent(new ScreenComponentGasGauge(() -> {
-	    GenericTileBasicCompressor.TileCompressor boiler = container.getSafeHost();
-	    if (boiler != null) {
-		return boiler.<ComponentGasHandlerMulti>getComponent(IComponentType.GasHandler).getOutputTanks()[0];
-	    }
-	    return null;
-	}, 90, 18));
+	addComponent(new ScreenComponentGasGauge(() -> container.getSafeHost().map(
+		tile -> tile.<ComponentGasHandlerMulti>requireComponent(IComponentType.GasHandler).getInputTanks()[0])
+		.orElse(null), 41, 18));
+	addComponent(new ScreenComponentGasGauge(() -> container.getSafeHost().map(
+		tile -> tile.<ComponentGasHandlerMulti>requireComponent(IComponentType.GasHandler).getOutputTanks()[0])
+		.orElse(null), 90, 18));
 	addComponent(new ScreenComponentGasTemperature(-AbstractScreenComponentInfo.SIZE + 1,
 		2 + AbstractScreenComponentInfo.SIZE * 2));
 	addComponent(new ScreenComponentGasPressure(-AbstractScreenComponentInfo.SIZE + 1,
 		2 + AbstractScreenComponentInfo.SIZE));
 	addComponent(new ScreenComponentElectricInfo(-AbstractScreenComponentInfo.SIZE + 1, 2));
-
-	addComponent(new ScreenComponentCondensedFluid(() -> {
-	    GenericTileBasicCompressor.TileCompressor generic = container.getSafeHost();
-	    if (generic == null) {
-		return null;
-	    }
-
-	    return generic.condensedFluidFromGas;
-
-	}, 110, 20));
+	addComponent(new ScreenComponentCondensedFluid(
+		() -> container.getSafeHost().map(tile -> tile.condensedFluidFromGas).orElse(null), 110, 20));
     }
-
 }

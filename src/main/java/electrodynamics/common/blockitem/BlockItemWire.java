@@ -66,9 +66,8 @@ public class BlockItemWire extends BlockItemDescriptable {
 	@SubscribeEvent
 	public static void registerColoredBlocks(RegisterColorHandlersEvent.Item event) {
 	    WIRES.forEach(item -> event.register((stack, index) -> {
-		if (index == 1) {
+		if (index == 1)
 		    return item.wire.wire.getWireColor().getColor().color();
-		}
 		return Color.WHITE.color();
 	    }, item));
 	}

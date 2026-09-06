@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.settings.ElectrodynamicsConfig;
 import electrodynamics.compatibility.jei.recipecategories.utils.psuedorecipes.types.PsuedoGas2FluidRecipe;
@@ -48,7 +50,7 @@ public class CondensingGasRecipeCategory extends AbstractRecipeCategory<PsuedoGa
 	    true) {
 
 	@Override
-	public Component getComponent(AbstractRecipeCategory<?> category, Object recipe) {
+	public @Nullable Component getComponent(AbstractRecipeCategory<?> category, Object recipe) {
 	    PsuedoGas2FluidRecipe psuedo = (PsuedoGas2FluidRecipe) recipe;
 	    return Component.literal("<= ").append(ChatFormatter.getChatDisplayShort(
 		    psuedo.inputs.get(0).getGasStack().getTemperature(), DisplayUnits.TEMPERATURE_KELVIN));
@@ -92,17 +94,15 @@ public class CondensingGasRecipeCategory extends AbstractRecipeCategory<PsuedoGa
 
     @Override
     public List<List<ItemStack>> getItemInputs(PsuedoGas2FluidRecipe recipe) {
-	if (recipe.inputCylinder.isEmpty()) {
+	if (recipe.inputCylinder.isEmpty())
 	    return Collections.emptyList();
-	}
 	return Arrays.asList(Arrays.asList(recipe.inputCylinder));
     }
 
     @Override
     public List<ItemStack> getItemOutputs(PsuedoGas2FluidRecipe recipe) {
-	if (recipe.outputBucket.isEmpty()) {
+	if (recipe.outputBucket.isEmpty())
 	    return Collections.emptyList();
-	}
 	return Arrays.asList(recipe.outputBucket);
     }
 

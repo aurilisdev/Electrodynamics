@@ -6,6 +6,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -23,9 +24,9 @@ public class ItemMultimeter extends ItemVoltaic {
     @Override
     public InteractionResult useOn(UseOnContext context) {
 
-	if (context.getLevel().isClientSide) {
+	Player player = context.getPlayer();
+	if (player == null || context.getLevel().isClientSide)
 	    return super.useOn(context);
-	}
 
 	BlockEntity tile = context.getLevel().getBlockEntity(context.getClickedPos());
 	if (tile instanceof TileWire wire) {
@@ -66,7 +67,7 @@ public class ItemMultimeter extends ItemVoltaic {
 	    }
 	    display.append(ChatFormatter.getChatDisplayShort(minimumVoltage, DisplayUnits.VOLTAGE));
 
-	    context.getPlayer().displayClientMessage(display, true);
+	    player.displayClientMessage(display, true);
 	}
 	return super.useOn(context);
     }

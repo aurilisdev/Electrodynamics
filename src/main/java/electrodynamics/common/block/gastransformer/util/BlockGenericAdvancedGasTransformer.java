@@ -1,5 +1,7 @@
 package electrodynamics.common.block.gastransformer.util;
 
+import javax.annotation.Nullable;
+
 import com.mojang.serialization.MapCodec;
 
 import electrodynamics.registers.ElectrodynamicsBlocks;
@@ -26,9 +28,8 @@ public abstract class BlockGenericAdvancedGasTransformer extends GenericMachineB
 
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-	if (!state.hasProperty(VoltaicBlockStates.FACING)) {
+	if (!state.hasProperty(VoltaicBlockStates.FACING))
 	    return false;
-	}
 	Direction facing = state.getValue(VoltaicBlockStates.FACING);
 	BlockState left = level.getBlockState(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)));
 	BlockState right = level.getBlockState(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.EAST)));
@@ -36,7 +37,8 @@ public abstract class BlockGenericAdvancedGasTransformer extends GenericMachineB
     }
 
     @Override
-    public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level level, BlockPos pos, BlockState state, @Nullable LivingEntity placer,
+	    ItemStack stack) {
 	super.setPlacedBy(level, pos, state, placer, stack);
 	Direction facing = state.getValue(VoltaicBlockStates.FACING);
 	level.setBlockAndUpdate(pos.relative(BlockEntityUtils.getRelativeSide(facing, Direction.WEST)),
