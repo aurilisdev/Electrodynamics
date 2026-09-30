@@ -251,6 +251,10 @@ public class ElectrodynamicsCapabilities {
 
 	event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ElectrodynamicsTiles.TILE_BATTERYBOX.get(),
 		TileBatteryBox::getFECapability);
+	event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ElectrodynamicsTiles.TILE_LITHIUMBATTERYBOX.get(),
+		TileBatteryBox::getFECapability);
+	event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ElectrodynamicsTiles.TILE_CARBYNEBATTERYBOX.get(),
+		TileBatteryBox::getFECapability);
 
 	if (ModList.get().isLoaded(Voltaic.MEKANISM_ID)) {
 	    MekanismHandler.registerCapabilities(event);
