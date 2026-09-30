@@ -47,7 +47,8 @@ public class TileGasCollector extends GenericGasTile implements ITickableSound {
 	addComponent(new ComponentInventory(this,
 		ComponentInventory.InventoryBuilder.newInv().inputs(1).gasOutputs(1).upgrades(3))
 		.validUpgrades(ContainerGasCollector.VALID_UPGRADES).valid(machineValidator()));
-	addComponent(new ComponentProcessor(this).canProcess(this::canProcess).process(this::process));
+	addComponent(new ComponentProcessor(this).canProcess(this::canProcess).process(this::process)
+		.usage(ElectrodynamicsConfig.INSTANCE.GAS_COLLECTOR_USAGE_PER_TICK.get(), 0));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.gascollector.tag(), this)
 		.createMenu((id, player) -> new ContainerGasCollector(id, player,
 			requireComponent(IComponentType.Inventory), getCoordsArray())));
