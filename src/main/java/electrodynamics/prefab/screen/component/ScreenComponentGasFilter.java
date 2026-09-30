@@ -52,7 +52,8 @@ public class ScreenComponentGasFilter extends ScreenComponentGeneric {
 
     @Override
     public void renderForeground(GuiGraphics graphics, int xAxis, int yAxis, int guiWidth, int guiHeight) {
-	if (!isPointInRegion(xLocation, yLocation, xAxis, yAxis, texture.textureWidth(), texture.textureHeight()) || !(gui instanceof GenericScreen<?> screen))
+	if (!isPointInRegion(xLocation, yLocation, xAxis, yAxis, texture.textureWidth(), texture.textureHeight())
+		|| !(gui instanceof GenericScreen<?> screen))
 	    return;
 	TileGasPipeFilter filter = getFilter(screen);
 	if (filter == null)

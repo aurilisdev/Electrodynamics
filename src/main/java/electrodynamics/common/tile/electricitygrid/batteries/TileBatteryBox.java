@@ -14,6 +14,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.energy.IEnergyStorage;
+import voltaic.Voltaic;
 import voltaic.common.item.ItemUpgrade;
 import voltaic.common.item.subtype.SubtypeItemUpgrade;
 import voltaic.prefab.item.ItemElectric;
@@ -91,6 +92,9 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
     @Nullable
     public IEnergyStorage getFECapability(@Nullable Direction side) {
+	if (!Voltaic.isForgeEnergyEnabled())
+	    return null;
+
 	Direction facing = getFacing();
 	if (side == facing)
 	    return inputDispatcher;

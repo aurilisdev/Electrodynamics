@@ -32,17 +32,17 @@ public class TileGasPipeFilter extends GenericTile {
     private boolean isLocked = false;
 
     public final SingleProperty[] filteredGases = { (SingleProperty) //
-	    property(new SingleProperty<>(getPropertyManager(), PropertyTypes.GAS_STACK, "gasone",
-		    GasStack.EMPTY).setUpdateServer()),
+	    property(new SingleProperty<>(getPropertyManager(), PropertyTypes.GAS_STACK, "gasone", GasStack.EMPTY)
+		    .setUpdateServer()),
 	    (SingleProperty) //
-	    property(new SingleProperty<>(getPropertyManager(), PropertyTypes.GAS_STACK, "gastwo",
-		    GasStack.EMPTY).setUpdateServer()),
+	    property(new SingleProperty<>(getPropertyManager(), PropertyTypes.GAS_STACK, "gastwo", GasStack.EMPTY)
+		    .setUpdateServer()),
 	    (SingleProperty) //
-	    property(new SingleProperty<>(getPropertyManager(), PropertyTypes.GAS_STACK, "gasthree",
-		    GasStack.EMPTY).setUpdateServer()),
+	    property(new SingleProperty<>(getPropertyManager(), PropertyTypes.GAS_STACK, "gasthree", GasStack.EMPTY)
+		    .setUpdateServer()),
 	    (SingleProperty) //
-	    property(new SingleProperty<>(getPropertyManager(), PropertyTypes.GAS_STACK, "gasfour",
-		    GasStack.EMPTY).setUpdateServer()) };
+	    property(new SingleProperty<>(getPropertyManager(), PropertyTypes.GAS_STACK, "gasfour", GasStack.EMPTY)
+		    .setUpdateServer()) };
 
     public final SingleProperty<Boolean> isWhitelist = property(
 	    new SingleProperty<>(getPropertyManager(), PropertyTypes.BOOLEAN, "iswhitelist", false)).setUpdateServer();

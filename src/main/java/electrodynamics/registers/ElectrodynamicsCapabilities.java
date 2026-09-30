@@ -28,6 +28,7 @@ import voltaic.api.fluid.RestrictedFluidHandlerItemStack;
 import voltaic.api.gas.GasHandlerItemStack;
 import voltaic.api.item.CapabilityItemStackHandler;
 import voltaic.common.item.ItemUpgrade;
+import voltaic.prefab.item.CapabilityForgeEnergyItem;
 import voltaic.prefab.tile.GenericTile;
 import voltaic.registers.VoltaicCapabilities;
 import voltaic.registers.VoltaicDataComponentTypes;
@@ -39,6 +40,17 @@ public class ElectrodynamicsCapabilities {
     public static void register(RegisterCapabilitiesEvent event) {
 
 	/* ITEMS */
+	// Electric items
+	event.registerItem(Capabilities.EnergyStorage.ITEM,
+		(itemStack, context) -> !Voltaic.isForgeEnergyEnabled() ? null
+			: new CapabilityForgeEnergyItem(itemStack, true, true),
+		ElectrodynamicsItems.ITEM_BATTERY.get(), ElectrodynamicsItems.ITEM_LITHIUMBATTERY.get(),
+		ElectrodynamicsItems.ITEM_CARBYNEBATTERY.get(), ElectrodynamicsItems.ITEM_ELECTRICDRILL.get(),
+		ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW.get(), ElectrodynamicsItems.ITEM_ELECTRICBATON.get(),
+		ElectrodynamicsItems.ITEM_KINETICRAILGUN.get(), ElectrodynamicsItems.ITEM_PLASMARAILGUN.get(),
+		ElectrodynamicsItems.ITEM_SEISMICSCANNER.get(), ElectrodynamicsItems.ITEM_MECHANIZEDCROSSBOW.get(),
+		ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get(), ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get(),
+		ElectrodynamicsItems.ITEM_COMBATHELMET.get(), ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get());
 
 	// Electric Drill
 
