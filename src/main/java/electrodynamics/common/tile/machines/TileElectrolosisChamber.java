@@ -254,7 +254,7 @@ public class TileElectrolosisChamber extends TileMultiblockController {
 	if (hit.getBlockPos().equals(getBlockPos()) && used.getItem() instanceof IWrenchItem) {
 	    checkFormed();
 	    if (isFormed.getValue()) {
-		formMultiblock();
+		formMultiblock(level);
 	    } else {
 		destroyMultiblock(level);
 	    }
