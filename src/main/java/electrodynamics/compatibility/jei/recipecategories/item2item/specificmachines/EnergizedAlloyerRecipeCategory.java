@@ -10,7 +10,6 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.world.item.ItemStack;
-import voltaic.compatibility.jei.VoltaicJEIPlugin;
 import voltaic.compatibility.jei.recipecategories.item2item.Item2ItemRecipeCategory;
 import voltaic.compatibility.jei.utils.gui.types.ArrowAnimatedObject;
 import voltaic.compatibility.jei.utils.gui.types.BackgroundObject;
@@ -56,7 +55,6 @@ public class EnergizedAlloyerRecipeCategory extends Item2ItemRecipeCategory<Ener
     public EnergizedAlloyerRecipeCategory(IGuiHelper guiHelper) {
 	super(guiHelper, ElectroTextUtils.jeiTranslated(EnergizedAlloyerRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP,
 		RECIPE_TYPE, ANIM_TIME);
-	VoltaicJEIPlugin.addDO2OCategory(RECIPE_TYPE);
 	setInputSlots(guiHelper, INPUT_SLOT_1, INPUT_SLOT_2);
 	setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);
 	setAnimatedArrows(guiHelper, ANIM_ARROW);

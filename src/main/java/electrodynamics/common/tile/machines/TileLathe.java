@@ -1,6 +1,7 @@
 package electrodynamics.common.tile.machines;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.inventory.container.tile.ContainerLathe;
 import electrodynamics.registers.ElectrodynamicsRecipies;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
@@ -10,7 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.api.particle.ParticleAPI;
-import voltaic.common.inventory.container.ContainerO2OProcessor;
 import voltaic.prefab.sound.ITickableSound;
 import voltaic.prefab.sound.SoundBarrierMethods;
 import voltaic.prefab.tile.GenericTile;
@@ -45,8 +45,8 @@ public class TileLathe extends GenericTile implements ITickableSound {
 		.setDirectionsBySlot(2, BlockEntityUtils.MachineDirection.LEFT,
 			BlockEntityUtils.MachineDirection.BOTTOM));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.lathe.tag(), this)
-		.createMenu((id, player) -> new ContainerO2OProcessor(id, player,
-			requireComponent(IComponentType.Inventory), getCoordsArray())));
+		.createMenu((id, player) -> new ContainerLathe(id, player, requireComponent(IComponentType.Inventory),
+			getCoordsArray())));
 	addComponent(
 		new ComponentProcessor(this)
 			.canProcess((component, level, procNumber) -> component.canProcessItem2ItemRecipe(level,

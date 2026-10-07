@@ -10,7 +10,6 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.world.item.ItemStack;
-import voltaic.compatibility.jei.VoltaicJEIPlugin;
 import voltaic.compatibility.jei.recipecategories.item2item.Item2ItemRecipeCategory;
 import voltaic.compatibility.jei.utils.gui.types.ArrowAnimatedObject;
 import voltaic.compatibility.jei.utils.gui.types.BackgroundObject;
@@ -51,7 +50,6 @@ public class MineralCrusherRecipeCategory extends Item2ItemRecipeCategory<Minera
     public MineralCrusherRecipeCategory(IGuiHelper guiHelper) {
 	super(guiHelper, ElectroTextUtils.jeiTranslated(MineralCrusherRecipe.RECIPE_GROUP), INPUT_MACHINE, BACK_WRAP,
 		RECIPE_TYPE, ANIM_TIME);
-	VoltaicJEIPlugin.addO2OCategory(RECIPE_TYPE);
 	setInputSlots(guiHelper, INPUT_SLOT);
 	setOutputSlots(guiHelper, OUTPUT_SLOT, BIPRODUCT_SLOT);
 	setAnimatedArrows(guiHelper, ANIM_ARROW);

@@ -16,10 +16,23 @@ import electrodynamics.client.screen.tile.ScreenElectricFurnaceDouble;
 import electrodynamics.client.screen.tile.ScreenElectricFurnaceTriple;
 import electrodynamics.client.screen.tile.ScreenElectrolosisChamber;
 import electrodynamics.client.screen.tile.ScreenElectrolyticSeparator;
+import electrodynamics.client.screen.tile.ScreenEnergizedAlloyer;
 import electrodynamics.client.screen.tile.ScreenFermentationPlant;
 import electrodynamics.client.screen.tile.ScreenGasCollector;
+import electrodynamics.client.screen.tile.ScreenLathe;
+import electrodynamics.client.screen.tile.ScreenMineralCrusher;
+import electrodynamics.client.screen.tile.ScreenMineralCrusherDouble;
+import electrodynamics.client.screen.tile.ScreenMineralCrusherTriple;
+import electrodynamics.client.screen.tile.ScreenMineralGrinder;
+import electrodynamics.client.screen.tile.ScreenMineralGrinderDouble;
+import electrodynamics.client.screen.tile.ScreenMineralGrinderTriple;
 import electrodynamics.client.screen.tile.ScreenMineralWasher;
+import electrodynamics.client.screen.tile.ScreenOxidationFurnace;
+import electrodynamics.client.screen.tile.ScreenReinforcedAlloyer;
 import electrodynamics.client.screen.tile.ScreenThermoelectricManipulator;
+import electrodynamics.client.screen.tile.ScreenWireMill;
+import electrodynamics.client.screen.tile.ScreenWireMillDouble;
+import electrodynamics.client.screen.tile.ScreenWireMillTriple;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.reloadlistener.CombustionFuelRegister;
 import electrodynamics.common.settings.ElectrodynamicsConfig;
@@ -330,6 +343,28 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 	registry.addRecipeClickArea(ScreenGasCollector.class, 57, 34, 17, 17, GasCollectorRecipeCategory.RECIPE_TYPE);
 	registry.addRecipeClickArea(ScreenElectrolosisChamber.class, 56, 31, 64, 15,
 		ElectrolosisChamberRecipeCategory.RECIPE_TYPE);
+	registry.addRecipeClickArea(ScreenLathe.class, 48, 35, 22, 15, LatheRecipeCategory.RECIPE_TYPE);
+	registry.addRecipeClickArea(ScreenWireMill.class, 48, 35, 22, 15, WireMillRecipeCategory.RECIPE_TYPE);
+	registry.addRecipeClickArea(ScreenWireMillDouble.class, 48, 25, 22, 35, WireMillRecipeCategory.RECIPE_TYPE);
+	registry.addRecipeClickArea(ScreenWireMillTriple.class, 48, 25, 22, 55, WireMillRecipeCategory.RECIPE_TYPE);
+	registry.addRecipeClickArea(ScreenMineralCrusher.class, 48, 35, 22, 15,
+		MineralCrusherRecipeCategory.RECIPE_TYPE);
+	registry.addRecipeClickArea(ScreenMineralCrusherDouble.class, 48, 25, 22, 35,
+		MineralCrusherRecipeCategory.RECIPE_TYPE);
+	registry.addRecipeClickArea(ScreenMineralCrusherTriple.class, 48, 25, 22, 55,
+		MineralCrusherRecipeCategory.RECIPE_TYPE);
+	registry.addRecipeClickArea(ScreenMineralGrinder.class, 48, 35, 22, 15,
+		MineralGrinderRecipeCategory.RECIPE_TYPE);
+	registry.addRecipeClickArea(ScreenMineralGrinderDouble.class, 48, 25, 22, 35,
+		MineralGrinderRecipeCategory.RECIPE_TYPE);
+	registry.addRecipeClickArea(ScreenMineralGrinderTriple.class, 48, 25, 22, 55,
+		MineralGrinderRecipeCategory.RECIPE_TYPE);
+	registry.addRecipeClickArea(ScreenOxidationFurnace.class, 48, 35, 22, 15,
+		OxidationFurnaceRecipeCategory.RECIPE_TYPE);
+	registry.addRecipeClickArea(ScreenEnergizedAlloyer.class, 48, 35, 22, 15,
+		EnergizedAlloyerRecipeCategory.RECIPE_TYPE);
+	registry.addRecipeClickArea(ScreenReinforcedAlloyer.class, 48, 35, 22, 15,
+		ReinforcedAlloyerRecipeCategory.RECIPE_TYPE);
     }
 
     @SuppressWarnings("null")

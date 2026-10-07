@@ -1,6 +1,8 @@
 package electrodynamics.common.tile.machines;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.inventory.container.tile.ContainerEnergizedAlloyer;
+import electrodynamics.common.inventory.container.tile.ContainerProcessorDO2O;
 import electrodynamics.registers.ElectrodynamicsRecipies;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
@@ -11,7 +13,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.Voltaic;
 import voltaic.client.particle.lavawithphysics.ParticleOptionLavaWithPhysics;
-import voltaic.common.inventory.container.ContainerDO2OProcessor;
 import voltaic.prefab.sound.ITickableSound;
 import voltaic.prefab.sound.SoundBarrierMethods;
 import voltaic.prefab.tile.GenericTile;
@@ -44,9 +45,9 @@ public class TileEnergizedAlloyer extends GenericTile implements ITickableSound 
 			BlockEntityUtils.MachineDirection.LEFT)
 		.setDirectionsBySlot(3, BlockEntityUtils.MachineDirection.BOTTOM,
 			BlockEntityUtils.MachineDirection.LEFT)
-		.validUpgrades(ContainerDO2OProcessor.VALID_UPGRADES).valid(machineValidator()));
+		.validUpgrades(ContainerProcessorDO2O.VALID_UPGRADES).valid(machineValidator()));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.energizedalloyer.tag(), this)
-		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player,
+		.createMenu((id, player) -> new ContainerEnergizedAlloyer(id, player,
 			requireComponent(IComponentType.Inventory), getCoordsArray())));
 
 	addComponent(new ComponentProcessor(this).canProcess(this::canProcessEnergAlloy)

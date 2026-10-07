@@ -1,10 +1,10 @@
 package electrodynamics.common.tile.machines.mineralgrinder;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.inventory.container.tile.ContainerMineralGrinderTriple;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
-import voltaic.common.inventory.container.ContainerO2OProcessorTriple;
 import voltaic.prefab.tile.components.IComponentType;
 import voltaic.prefab.tile.components.type.ComponentContainerProvider;
 
@@ -14,7 +14,7 @@ public class TileMineralGrinderTriple extends TileMineralGrinder {
 	super(ElectrodynamicsTiles.TILE_MINERALGRINDERTRIPLE.get(), 3, pos, state);
 
 	addComponent(new ComponentContainerProvider(SubtypeMachine.mineralgrindertriple.tag(), this)
-		.createMenu((id, player) -> new ContainerO2OProcessorTriple(id, player,
+		.createMenu((id, player) -> new ContainerMineralGrinderTriple(id, player,
 			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 

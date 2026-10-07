@@ -1,6 +1,8 @@
 package electrodynamics.common.tile.machines.mineralcrusher;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.inventory.container.tile.ContainerMineralCrusher;
+import electrodynamics.common.inventory.container.tile.ContainerProcessorO2O;
 import electrodynamics.registers.ElectrodynamicsRecipies;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
@@ -14,7 +16,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.api.particle.ParticleAPI;
-import voltaic.common.inventory.container.ContainerO2OProcessor;
 import voltaic.prefab.sound.ITickableSound;
 import voltaic.prefab.sound.SoundBarrierMethods;
 import voltaic.prefab.tile.GenericTile;
@@ -38,7 +39,7 @@ public class TileMineralCrusher extends GenericTile implements ITickableSound {
 	this(ElectrodynamicsTiles.TILE_MINERALCRUSHER.get(), 1, pos, state);
 
 	addComponent(new ComponentContainerProvider(SubtypeMachine.mineralcrusher.tag(), this)
-		.createMenu((id, player) -> new ContainerO2OProcessor(id, player,
+		.createMenu((id, player) -> new ContainerMineralCrusher(id, player,
 			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
@@ -58,7 +59,7 @@ public class TileMineralCrusher extends GenericTile implements ITickableSound {
 	addComponent(new ComponentInventory(this,
 		ComponentInventory.InventoryBuilder.newInv()
 			.processors(procCount, inputsPerProc, outputPerProc, biprodsPerProc).upgrades(3))
-		.validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator())
+		.validUpgrades(ContainerProcessorO2O.VALID_UPGRADES).valid(machineValidator())
 		.implementMachineInputsAndOutputs());
 	addComponent(new ComponentProcessor(this, procCount)
 		.canProcess((component, level, procNumber) -> component.canProcessItem2ItemRecipe(level, procNumber,

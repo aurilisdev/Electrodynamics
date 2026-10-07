@@ -143,7 +143,7 @@ public class RenderElectrolosisChamber extends AbstractTileRenderer<TileElectrol
     public void render(TileElectrolosisChamber tile, float partialTick, PoseStack poseStack,
 	    MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
 	Level level = level();
-	if ((level == null) || !tile.isFormed.getValue())
+	if (level == null || !tile.isFormed.getValue())
 	    return;
 
 	ComponentFluidHandlerMulti fluidHandler = tile.requireComponent(IComponentType.FluidHandler);

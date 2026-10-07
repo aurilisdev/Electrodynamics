@@ -1,6 +1,8 @@
 package electrodynamics.common.tile.machines;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.inventory.container.tile.ContainerOxidationFurnace;
+import electrodynamics.common.inventory.container.tile.ContainerProcessorDO2O;
 import electrodynamics.registers.ElectrodynamicsRecipies;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
@@ -10,7 +12,6 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import voltaic.Voltaic;
-import voltaic.common.inventory.container.ContainerDO2OProcessor;
 import voltaic.prefab.sound.ITickableSound;
 import voltaic.prefab.sound.SoundBarrierMethods;
 import voltaic.prefab.tile.GenericTile;
@@ -43,9 +44,9 @@ public class TileOxidationFurnace extends GenericTile implements ITickableSound 
 			BlockEntityUtils.MachineDirection.LEFT)
 		.setDirectionsBySlot(3, BlockEntityUtils.MachineDirection.BOTTOM,
 			BlockEntityUtils.MachineDirection.LEFT)
-		.validUpgrades(ContainerDO2OProcessor.VALID_UPGRADES).valid(machineValidator()));
+		.validUpgrades(ContainerProcessorDO2O.VALID_UPGRADES).valid(machineValidator()));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.oxidationfurnace.tag(), this)
-		.createMenu((id, player) -> new ContainerDO2OProcessor(id, player,
+		.createMenu((id, player) -> new ContainerOxidationFurnace(id, player,
 			requireComponent(IComponentType.Inventory), getCoordsArray())));
 	addComponent(new ComponentProcessor(this).canProcess(this::canProcessOxideFurn)
 		.process(ComponentProcessor::processItem2ItemRecipe));
