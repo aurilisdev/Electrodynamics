@@ -3,10 +3,10 @@ mod = "1.1.0"
 minecraft = "1.21.1"
 minecraftRange = "[1.21,1.21.1)"
 # forge deps
-neoforge = "21.1.72"
+neoforge = "21.1.251"
 neoforgeRange = "[21.0.0-beta,)"
 loaderRange = "[4,)"
-jei = "19.21.0.246"
+jei = "19.57.0.451"
 mekanism = "1.21.1-10.7.0.55"
 
 [libraries]
