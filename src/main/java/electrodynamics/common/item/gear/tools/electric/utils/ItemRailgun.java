@@ -122,7 +122,7 @@ public abstract class ItemRailgun extends ItemElectric implements IItemTemperate
 	return fluid -> fluid.getFluid().builtInRegistryHolder().is(VoltaicTags.Fluids.AMMONIA);
     }
 
-    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID)
     private static class ColorHandler {
 
 	@SubscribeEvent

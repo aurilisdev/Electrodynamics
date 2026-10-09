@@ -397,7 +397,7 @@ public class ElectrodynamicsItems {
 	    "portablecylinder",
 	    () -> new ItemPortableCylinder(new Item.Properties().stacksTo(1), ElectrodynamicsCreativeTabs.MAIN));
 
-    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID)
     private static class ElectroCreativeRegistry {
 
 	@SubscribeEvent

@@ -40,7 +40,7 @@ import voltaic.common.event.type.AbstractLivingKnockbackHandler;
 import voltaic.common.event.type.AbstractPlayerStartTrackingHandler;
 import voltaic.common.event.type.AbstractRightClickBlockHandler;
 
-@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.GAME)
+@EventBusSubscriber(modid = Electrodynamics.ID)
 public class ServerEventHandler {
 
     private static final List<AbstractRightClickBlockHandler> RIGHT_CLICK_HANDLERS = new ArrayList<>();

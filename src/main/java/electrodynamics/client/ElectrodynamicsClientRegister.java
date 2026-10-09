@@ -146,7 +146,7 @@ import voltaic.client.misc.SWBFClientExtensions;
 import voltaic.common.fluid.SimpleWaterBasedFluidType;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD, value = { Dist.CLIENT })
+@EventBusSubscriber(modid = Electrodynamics.ID, value = { Dist.CLIENT })
 public class ElectrodynamicsClientRegister {
 
     // sometimes I fucking hate this game

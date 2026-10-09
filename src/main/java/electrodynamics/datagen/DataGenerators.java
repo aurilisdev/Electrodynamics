@@ -46,7 +46,7 @@ import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import voltaic.api.network.cable.type.IWire;
 import voltaic.datagen.utils.client.BaseLangKeyProvider;
 
-@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Electrodynamics.ID)
 public class DataGenerators {
 
     public static final HashMap<IWire.IWireClass, HashSet<SubtypeWire>> WIRES = new HashMap<>();

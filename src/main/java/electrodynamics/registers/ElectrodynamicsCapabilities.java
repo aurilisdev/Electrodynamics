@@ -33,7 +33,7 @@ import voltaic.prefab.tile.GenericTile;
 import voltaic.registers.VoltaicCapabilities;
 import voltaic.registers.VoltaicDataComponentTypes;
 
-@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Electrodynamics.ID)
 public class ElectrodynamicsCapabilities {
 
     @SubscribeEvent

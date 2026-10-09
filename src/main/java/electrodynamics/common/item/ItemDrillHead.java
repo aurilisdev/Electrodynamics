@@ -27,7 +27,7 @@ public class ItemDrillHead extends ItemVoltaic {
 	HEADS.add(this);
     }
 
-    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID)
     private static class ColorHandler {
 
 	@SubscribeEvent

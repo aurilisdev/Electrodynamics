@@ -21,7 +21,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Electrodynamics.ID)
 public class NetworkHandler {
 
     public static HashMap<String, String> playerInformation = new HashMap<>();

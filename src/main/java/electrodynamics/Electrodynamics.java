@@ -31,7 +31,7 @@ import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
 @Mod(Electrodynamics.ID)
-@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = Electrodynamics.ID)
 public final class Electrodynamics {
 
     public static final String ID = "electrodynamics";

@@ -27,7 +27,7 @@ import voltaic.client.event.AbstractKeyPressHandler;
 import voltaic.client.event.AbstractLevelStageHandler;
 import voltaic.client.event.AbstractPostGuiOverlayHandler;
 
-@EventBusSubscriber(modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.GAME, value = { Dist.CLIENT })
+@EventBusSubscriber(modid = Electrodynamics.ID, value = { Dist.CLIENT })
 public class ElectrodynamicsClientEvents {
 
     private static final List<AbstractKeyPressHandler> KEY_PRESS_HANDLERS = new ArrayList<>();

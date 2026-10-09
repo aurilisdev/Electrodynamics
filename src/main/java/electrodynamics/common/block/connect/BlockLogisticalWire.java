@@ -62,7 +62,7 @@ public class BlockLogisticalWire extends BlockWire {
 	throw new UnsupportedOperationException("Need to implement CODEC");
     }
 
-    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID)
     private static class ColorHandler {
 
 	@SubscribeEvent

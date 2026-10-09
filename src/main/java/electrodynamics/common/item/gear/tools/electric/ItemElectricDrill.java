@@ -242,7 +242,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
 	stack.set(VoltaicDataComponentTypes.ENUM, head.ordinal());
     }
 
-    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID)
     private static class ColorHandler {
 
 	@SubscribeEvent

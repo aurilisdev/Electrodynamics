@@ -407,7 +407,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 
     }
 
-    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(value = Dist.CLIENT, modid = Electrodynamics.ID)
     private static class ColorHandlerInternal {
 
 	@SubscribeEvent
