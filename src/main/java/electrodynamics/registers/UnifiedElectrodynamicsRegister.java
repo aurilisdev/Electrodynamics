@@ -25,8 +25,8 @@ public class UnifiedElectrodynamicsRegister {
 	ElectrodynamicsCreativeTabs.CREATIVE_TABS.register(bus);
 	ElectrodynamicsPlacementTypes.PLACEMENT_TYPES.register(bus);
 	ElectrodynamicsRuleTestTypes.RULE_TEST_TYPES.register(bus);
-	ElectrodynamicsRecipies.RECIPE_TYPES.register(bus);
-	ElectrodynamicsRecipies.RECIPE_SERIALIZER.register(bus);
+	ElectrodynamicsRecipes.RECIPE_TYPES.register(bus);
+	ElectrodynamicsRecipes.RECIPE_SERIALIZER.register(bus);
 	ElectrodynamicsArmorMaterials.ARMOR_MATERIALS.register(bus);
     }
 

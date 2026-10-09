@@ -3,7 +3,7 @@ package electrodynamics.common.recipe.categories.fluid2item.specificmachines;
 import java.util.List;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -29,12 +29,12 @@ public class ChemicalCrystalizerRecipe extends Fluid2ItemRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-	return ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_SERIALIZER.get();
+	return ElectrodynamicsRecipes.CHEMICAL_CRYSTALIZER_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-	return ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_TYPE.get();
+	return ElectrodynamicsRecipes.CHEMICAL_CRYSTALIZER_TYPE.get();
     }
 
 }

@@ -4,7 +4,7 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerProcessorO2O;
 import electrodynamics.common.inventory.container.tile.ContainerWireMill;
 import electrodynamics.common.settings.ElectrodynamicsConfig;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
@@ -55,7 +55,7 @@ public class TileWireMill extends GenericTile implements ITickableSound {
 		.implementMachineInputsAndOutputs());
 	addComponent(new ComponentProcessor(this, procCount)
 		.canProcess((component, level, procNumber) -> component.canProcessItem2ItemRecipe(level, procNumber,
-			ElectrodynamicsRecipies.WIRE_MILL_TYPE.get()))
+			ElectrodynamicsRecipes.WIRE_MILL_TYPE.get()))
 		.process(ComponentProcessor::processItem2ItemRecipe));
     }
 

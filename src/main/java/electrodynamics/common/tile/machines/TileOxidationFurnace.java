@@ -3,7 +3,7 @@ package electrodynamics.common.tile.machines;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerOxidationFurnace;
 import electrodynamics.common.inventory.container.tile.ContainerProcessorDO2O;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
@@ -54,7 +54,7 @@ public class TileOxidationFurnace extends GenericTile implements ITickableSound 
 
     protected boolean canProcessOxideFurn(ComponentProcessor component, Level level, int procNumber) {
 	boolean canProcess = component.canProcessItem2ItemRecipe(level, procNumber,
-		ElectrodynamicsRecipies.OXIDATION_FURNACE_TYPE.get());
+		ElectrodynamicsRecipes.OXIDATION_FURNACE_TYPE.get());
 	if (BlockEntityUtils.isLit(this) ^ canProcess) {
 	    BlockEntityUtils.updateLit(this, canProcess);
 	}

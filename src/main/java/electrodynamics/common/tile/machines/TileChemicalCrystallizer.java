@@ -2,7 +2,7 @@ package electrodynamics.common.tile.machines;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalCrystallizer;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
@@ -37,7 +37,7 @@ public class TileChemicalCrystallizer extends GenericMaterialTile implements ITi
 		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2));
 	addComponent(new ComponentFluidHandlerMulti(this).setInputTanks(1, MAX_TANK_CAPACITY)
 		.setInputDirections(BlockEntityUtils.MachineDirection.LEFT, BlockEntityUtils.MachineDirection.RIGHT)
-		.setRecipeType(ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_TYPE.get()));
+		.setRecipeType(ElectrodynamicsRecipes.CHEMICAL_CRYSTALIZER_TYPE.get()));
 	addComponent(new ComponentInventory(this,
 		ComponentInventory.InventoryBuilder.newInv().processors(1, 0, 1, 0).bucketInputs(1).upgrades(3))
 		//
@@ -46,7 +46,7 @@ public class TileChemicalCrystallizer extends GenericMaterialTile implements ITi
 		.validUpgrades(ContainerChemicalCrystallizer.VALID_UPGRADES).valid(machineValidator()));
 	addComponent(new ComponentProcessor(this)
 		.canProcess((component, level, procNumber) -> component.consumeBucket().canProcessFluid2ItemRecipe(
-			level, procNumber, ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_TYPE.get()))
+			level, procNumber, ElectrodynamicsRecipes.CHEMICAL_CRYSTALIZER_TYPE.get()))
 		.process(ComponentProcessor::processFluid2ItemRecipe));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.chemicalcrystallizer.tag(), this)
 		.createMenu((id, player) -> new ContainerChemicalCrystallizer(id, player,

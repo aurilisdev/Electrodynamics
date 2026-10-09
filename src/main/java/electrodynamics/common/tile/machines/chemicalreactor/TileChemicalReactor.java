@@ -5,7 +5,7 @@ import javax.annotation.Nullable;
 import electrodynamics.common.block.chemicalreactor.BlockChemicalReactorExtra;
 import electrodynamics.common.inventory.container.tile.ContainerChemicalReactor;
 import electrodynamics.common.recipe.categories.chemicalreactor.ChemicalReactorRecipe;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -59,7 +59,7 @@ public class TileChemicalReactor extends GenericGasTile {
 		.setInputDirections(BlockEntityUtils.MachineDirection.FRONT, BlockEntityUtils.MachineDirection.RIGHT)
 		//
 		.setOutputDirections(BlockEntityUtils.MachineDirection.BACK, BlockEntityUtils.MachineDirection.LEFT)
-		.setRecipeType(ElectrodynamicsRecipies.CHEMICAL_REACTOR_TYPE.get()));
+		.setRecipeType(ElectrodynamicsRecipes.CHEMICAL_REACTOR_TYPE.get()));
 	addComponent(new ComponentInventory(this,
 		ComponentInventory.InventoryBuilder.newInv().processors(1, 2, 1, 3).bucketInputs(2).bucketOutputs(2)
 			.gasInputs(2).gasOutputs(2).upgrades(3))
@@ -77,7 +77,7 @@ public class TileChemicalReactor extends GenericGasTile {
 		.setOutputTanks(2, arr(MAX_GAS_TANK_CAPACITY, MAX_GAS_TANK_CAPACITY), arr(1000, 1000), arr(1024, 1024))
 		.setCondensedHandler(getCondensedHandler())
 		//
-		.setRecipeType(ElectrodynamicsRecipies.CHEMICAL_REACTOR_TYPE.get()));
+		.setRecipeType(ElectrodynamicsRecipes.CHEMICAL_REACTOR_TYPE.get()));
 	addComponent(new ComponentProcessor(this).canProcess(this::canProcess).process(this::process));
     }
 
@@ -86,7 +86,7 @@ public class TileChemicalReactor extends GenericGasTile {
 	outputToPipe(level);
 
 	ChemicalReactorRecipe recipe = processor.prepareRecipe(procNumber,
-		ElectrodynamicsRecipies.CHEMICAL_REACTOR_TYPE.get(), ChemicalReactorRecipe.class);
+		ElectrodynamicsRecipes.CHEMICAL_REACTOR_TYPE.get(), ChemicalReactorRecipe.class);
 
 	if (recipe == null) {
 	    hasItemInputs.setValue(false);

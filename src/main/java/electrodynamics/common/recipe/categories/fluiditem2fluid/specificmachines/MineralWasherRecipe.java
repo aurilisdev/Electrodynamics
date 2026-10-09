@@ -3,7 +3,7 @@ package electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachine
 import java.util.List;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -29,12 +29,12 @@ public class MineralWasherRecipe extends FluidItem2FluidRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-	return ElectrodynamicsRecipies.MINERAL_WASHER_SERIALIZER.get();
+	return ElectrodynamicsRecipes.MINERAL_WASHER_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-	return ElectrodynamicsRecipies.MINERAL_WASHER_TYPE.get();
+	return ElectrodynamicsRecipes.MINERAL_WASHER_TYPE.get();
     }
 
 }

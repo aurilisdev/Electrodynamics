@@ -2,7 +2,7 @@ package electrodynamics.common.tile.machines;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerFermentationPlant;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,7 +35,7 @@ public class TileFermentationPlant extends GenericMaterialTile {
 		.setTanks(1, 1, new int[] { MAX_TANK_CAPACITY }, new int[] { MAX_TANK_CAPACITY })
 		.setInputDirections(BlockEntityUtils.MachineDirection.LEFT)
 		.setOutputDirections(BlockEntityUtils.MachineDirection.RIGHT)
-		.setRecipeType(ElectrodynamicsRecipies.FERMENTATION_PLANT_TYPE.get()));
+		.setRecipeType(ElectrodynamicsRecipes.FERMENTATION_PLANT_TYPE.get()));
 	addComponent(new ComponentInventory(this,
 		ComponentInventory.InventoryBuilder.newInv().processors(1, 1, 0, 0).bucketInputs(1).bucketOutputs(1)
 			.upgrades(3))
@@ -46,7 +46,7 @@ public class TileFermentationPlant extends GenericMaterialTile {
 	addComponent(new ComponentProcessor(this)
 		.canProcess((processor, level, procNumber) -> processor.outputToFluidPipe().consumeBucket()
 			.dispenseBucket().canProcessFluidItem2FluidRecipe(level, procNumber,
-				ElectrodynamicsRecipies.FERMENTATION_PLANT_TYPE.get()))
+				ElectrodynamicsRecipes.FERMENTATION_PLANT_TYPE.get()))
 		.process(ComponentProcessor::processFluidItem2FluidRecipe));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.fermentationplant.tag(), this)
 		.createMenu((id, player) -> new ContainerFermentationPlant(id, player,

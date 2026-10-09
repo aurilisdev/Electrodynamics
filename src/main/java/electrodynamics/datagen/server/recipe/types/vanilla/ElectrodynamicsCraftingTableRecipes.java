@@ -1085,8 +1085,6 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		//
 		.addPattern("BIB")
 		//
-		.addPattern("SSS")
-		//
 		.addKey('S', VoltaicTags.Items.PLATE_STEEL)
 		//
 		.addKey('L', Items.LEVER)
@@ -2127,11 +2125,11 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 
 	ShapedCraftingRecipeBuilder.start(ElectrodynamicsItems.ITEM_COMPRESSOR_ADDONTANK.get(), 1)
 		//
-		.addPattern("SSS")
+		.addPattern(" S ")
 		//
 		.addPattern("SCS")
 		//
-		.addPattern("SSS")
+		.addPattern(" S ")
 		//
 		.addKey('S', VoltaicTags.Items.PLATE_STEEL)
 		//
@@ -2144,8 +2142,6 @@ public class ElectrodynamicsCraftingTableRecipes extends AbstractRecipeGenerator
 		.addPattern(" V ")
 		//
 		.addPattern("SPS")
-		//
-		.addPattern(" S ")
 		//
 		.addKey('S', VoltaicTags.Items.PLATE_STEEL)
 		//

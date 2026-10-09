@@ -62,7 +62,7 @@ import electrodynamics.prefab.utilities.object.CombustionFuelSource;
 import electrodynamics.registers.ElectrodynamicsBlocks;
 import electrodynamics.registers.ElectrodynamicsFluids;
 import electrodynamics.registers.ElectrodynamicsGases;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.VanillaTypes;
@@ -199,61 +199,61 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	// Wire Mill
 	registration.addRecipes(WireMillRecipeCategory.RECIPE_TYPE,
-		recipeManager.getAllRecipesFor(ElectrodynamicsRecipies.WIRE_MILL_TYPE.get()).stream()
+		recipeManager.getAllRecipesFor(ElectrodynamicsRecipes.WIRE_MILL_TYPE.get()).stream()
 			.map(RecipeHolder::value).toList());
 
 	// Mineral Crusher
 	registration.addRecipes(MineralCrusherRecipeCategory.RECIPE_TYPE,
-		recipeManager.getAllRecipesFor(ElectrodynamicsRecipies.MINERAL_CRUSHER_TYPE.get()).stream()
+		recipeManager.getAllRecipesFor(ElectrodynamicsRecipes.MINERAL_CRUSHER_TYPE.get()).stream()
 			.map(RecipeHolder::value).toList());
 
 	// Mineral Grinder
 	registration.addRecipes(MineralGrinderRecipeCategory.RECIPE_TYPE,
-		recipeManager.getAllRecipesFor(ElectrodynamicsRecipies.MINERAL_GRINDER_TYPE.get()).stream()
+		recipeManager.getAllRecipesFor(ElectrodynamicsRecipes.MINERAL_GRINDER_TYPE.get()).stream()
 			.map(RecipeHolder::value).toList());
 
 	// Oxidation Furnace
 	registration.addRecipes(OxidationFurnaceRecipeCategory.RECIPE_TYPE,
-		recipeManager.getAllRecipesFor(ElectrodynamicsRecipies.OXIDATION_FURNACE_TYPE.get()).stream()
+		recipeManager.getAllRecipesFor(ElectrodynamicsRecipes.OXIDATION_FURNACE_TYPE.get()).stream()
 			.map(RecipeHolder::value).toList());
 
 	// Energized Alloyer
 	registration.addRecipes(EnergizedAlloyerRecipeCategory.RECIPE_TYPE,
-		recipeManager.getAllRecipesFor(ElectrodynamicsRecipies.ENERGIZED_ALLOYER_TYPE.get()).stream()
+		recipeManager.getAllRecipesFor(ElectrodynamicsRecipes.ENERGIZED_ALLOYER_TYPE.get()).stream()
 			.map(RecipeHolder::value).toList());
 
 	// Lathe
 	registration.addRecipes(LatheRecipeCategory.RECIPE_TYPE, recipeManager
-		.getAllRecipesFor(ElectrodynamicsRecipies.LATHE_TYPE.get()).stream().map(RecipeHolder::value).toList());
+		.getAllRecipesFor(ElectrodynamicsRecipes.LATHE_TYPE.get()).stream().map(RecipeHolder::value).toList());
 
 	// Mineral Washer
 	registration.addRecipes(MineralWasherRecipeCategory.RECIPE_TYPE,
-		recipeManager.getAllRecipesFor(ElectrodynamicsRecipies.MINERAL_WASHER_TYPE.get()).stream()
+		recipeManager.getAllRecipesFor(ElectrodynamicsRecipes.MINERAL_WASHER_TYPE.get()).stream()
 			.map(RecipeHolder::value).toList());
 
 	// Chemical Crystallizer
 	registration.addRecipes(ChemicalCrystallizerRecipeCategory.RECIPE_TYPE,
-		recipeManager.getAllRecipesFor(ElectrodynamicsRecipies.CHEMICAL_CRYSTALIZER_TYPE.get()).stream()
+		recipeManager.getAllRecipesFor(ElectrodynamicsRecipes.CHEMICAL_CRYSTALIZER_TYPE.get()).stream()
 			.map(RecipeHolder::value).toList());
 
 	// Chemical Mixer
 	registration.addRecipes(ChemicalMixerRecipeCategory.RECIPE_TYPE,
-		recipeManager.getAllRecipesFor(ElectrodynamicsRecipies.CHEMICAL_MIXER_TYPE.get()).stream()
+		recipeManager.getAllRecipesFor(ElectrodynamicsRecipes.CHEMICAL_MIXER_TYPE.get()).stream()
 			.map(RecipeHolder::value).toList());
 
 	// Fermentation Chamber
 	registration.addRecipes(FermentationPlantRecipeCategory.RECIPE_TYPE,
-		recipeManager.getAllRecipesFor(ElectrodynamicsRecipies.FERMENTATION_PLANT_TYPE.get()).stream()
+		recipeManager.getAllRecipesFor(ElectrodynamicsRecipes.FERMENTATION_PLANT_TYPE.get()).stream()
 			.map(RecipeHolder::value).toList());
 
 	// Reinforced Alloyer
 	registration.addRecipes(ReinforcedAlloyerRecipeCategory.RECIPE_TYPE,
-		recipeManager.getAllRecipesFor(ElectrodynamicsRecipies.REINFORCED_ALLOYER_TYPE.get()).stream()
+		recipeManager.getAllRecipesFor(ElectrodynamicsRecipes.REINFORCED_ALLOYER_TYPE.get()).stream()
 			.map(RecipeHolder::value).toList());
 
 	// Electrolytic Separator
 	registration.addRecipes(ElectrolyticSeparatorRecipeCategory.RECIPE_TYPE,
-		recipeManager.getAllRecipesFor(ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get()).stream()
+		recipeManager.getAllRecipesFor(ElectrodynamicsRecipes.ELECTROLYTIC_SEPERATOR_TYPE.get()).stream()
 			.map(RecipeHolder::value).toList());
 
 	// Thermoelectric Manipulator Condensing
@@ -266,7 +266,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	// Chemical Reactor
 	registration.addRecipes(ChemicalReactorRecipeCategory.RECIPE_TYPE,
-		recipeManager.getAllRecipesFor(ElectrodynamicsRecipies.CHEMICAL_REACTOR_TYPE.get()).stream()
+		recipeManager.getAllRecipesFor(ElectrodynamicsRecipes.CHEMICAL_REACTOR_TYPE.get()).stream()
 			.map(RecipeHolder::value).toList());
 
 	// Gas Collector
@@ -275,7 +275,7 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 
 	// Electrolosis Chamber
 	registration.addRecipes(ElectrolosisChamberRecipeCategory.RECIPE_TYPE,
-		recipeManager.getAllRecipesFor(ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_TYPE.get()).stream()
+		recipeManager.getAllRecipesFor(ElectrodynamicsRecipes.ELECTROLOSIS_CHAMBER_TYPE.get()).stream()
 			.map(RecipeHolder::value).toList());
 
 	electrodynamicsInfoTabs(registration);

@@ -14,8 +14,7 @@
   },
   "pattern": [
     " V ",
-    "SPS",
-    " S "
+    "SPS"
   ],
   "result": {
     "count": 1,

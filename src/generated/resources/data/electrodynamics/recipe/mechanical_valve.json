@@ -17,8 +17,7 @@
   },
   "pattern": [
     "SLS",
-    "BIB",
-    "SSS"
+    "BIB"
   ],
   "result": {
     "count": 1,

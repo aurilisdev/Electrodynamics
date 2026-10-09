@@ -5,7 +5,7 @@ import java.util.List;
 import com.mojang.datafixers.util.Pair;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -146,11 +146,11 @@ public class ChemicalReactorRecipe extends AbstractMaterialRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-	return ElectrodynamicsRecipies.CHEMICAL_REACTOR_SERIALIZER.get();
+	return ElectrodynamicsRecipes.CHEMICAL_REACTOR_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-	return ElectrodynamicsRecipies.CHEMICAL_REACTOR_TYPE.get();
+	return ElectrodynamicsRecipes.CHEMICAL_REACTOR_TYPE.get();
     }
 }

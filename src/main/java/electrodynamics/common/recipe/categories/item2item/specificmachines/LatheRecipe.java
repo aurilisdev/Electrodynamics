@@ -2,7 +2,7 @@ package electrodynamics.common.recipe.categories.item2item.specificmachines;
 
 import java.util.List;
 
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -24,12 +24,12 @@ public class LatheRecipe extends Item2ItemRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-	return ElectrodynamicsRecipies.LATHE_SERIALIZER.get();
+	return ElectrodynamicsRecipes.LATHE_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-	return ElectrodynamicsRecipies.LATHE_TYPE.get();
+	return ElectrodynamicsRecipes.LATHE_TYPE.get();
     }
 
 }

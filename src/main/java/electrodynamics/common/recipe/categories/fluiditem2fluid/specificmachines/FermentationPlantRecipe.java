@@ -3,7 +3,7 @@ package electrodynamics.common.recipe.categories.fluiditem2fluid.specificmachine
 import java.util.List;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -30,12 +30,12 @@ public class FermentationPlantRecipe extends FluidItem2FluidRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-	return ElectrodynamicsRecipies.FERMENTATION_PLANT_SERIALIZER.get();
+	return ElectrodynamicsRecipes.FERMENTATION_PLANT_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-	return ElectrodynamicsRecipies.FERMENTATION_PLANT_TYPE.get();
+	return ElectrodynamicsRecipes.FERMENTATION_PLANT_TYPE.get();
     }
 
 }

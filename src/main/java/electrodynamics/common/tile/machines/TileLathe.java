@@ -2,7 +2,7 @@ package electrodynamics.common.tile.machines;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerLathe;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
@@ -50,7 +50,7 @@ public class TileLathe extends GenericTile implements ITickableSound {
 	addComponent(
 		new ComponentProcessor(this)
 			.canProcess((component, level, procNumber) -> component.canProcessItem2ItemRecipe(level,
-				procNumber, ElectrodynamicsRecipies.LATHE_TYPE.get()))
+				procNumber, ElectrodynamicsRecipes.LATHE_TYPE.get()))
 			.process(ComponentProcessor::processItem2ItemRecipe));
     }
 

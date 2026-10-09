@@ -11,7 +11,7 @@ import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectrolosisChamber;
 import electrodynamics.common.recipe.categories.fluid2fluid.specificmachines.ElectrolosisChamberRecipe;
 import electrodynamics.common.settings.ElectrodynamicsConfig;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -81,7 +81,7 @@ public class TileElectrolosisChamber extends TileMultiblockController {
 	addComponent(new ComponentFluidHandlerMulti(this).setInputDirections(BlockEntityUtils.MachineDirection.RIGHT)
 		.setInputTanks(1, arr(MAX_INPUT_TANK_CAPACITY))
 		.setOutputDirections(BlockEntityUtils.MachineDirection.LEFT).setOutputTanks(1, MAX_OUTPUT_TANK_CAPACITY)
-		.setRecipeType(ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_TYPE.get()));
+		.setRecipeType(ElectrodynamicsRecipes.ELECTROLOSIS_CHAMBER_TYPE.get()));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.electrolosischamber.tag(), this)
 		.createMenu((id, player) -> new ContainerElectrolosisChamber(id, player,
 			requireComponent(IComponentType.Inventory), getCoordsArray())));
@@ -101,7 +101,7 @@ public class TileElectrolosisChamber extends TileMultiblockController {
 	ElectrolosisChamberRecipe recipe = currRecipe;
 	if (recipe == null) {
 	    for (RecipeHolder<ElectrolosisChamberRecipe> holder : level.getRecipeManager()
-		    .getAllRecipesFor(ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_TYPE.get())) {
+		    .getAllRecipesFor(ElectrodynamicsRecipes.ELECTROLOSIS_CHAMBER_TYPE.get())) {
 		ElectrolosisChamberRecipe candidate = holder.value();
 		if (testRecipe(candidate, fluidHandler.getInputTanks())) {
 		    recipe = candidate;

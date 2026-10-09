@@ -2,7 +2,7 @@ package electrodynamics.common.tile.machines;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerMineralWasher;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -33,7 +33,7 @@ public class TileMineralWasher extends GenericMaterialTile {
 		.setTanks(1, 1, new int[] { MAX_TANK_CAPACITY }, new int[] { MAX_TANK_CAPACITY })
 		.setInputDirections(BlockEntityUtils.MachineDirection.RIGHT)
 		.setOutputDirections(BlockEntityUtils.MachineDirection.LEFT)
-		.setRecipeType(ElectrodynamicsRecipies.MINERAL_WASHER_TYPE.get()));
+		.setRecipeType(ElectrodynamicsRecipes.MINERAL_WASHER_TYPE.get()));
 	addComponent(new ComponentInventory(this,
 		ComponentInventory.InventoryBuilder.newInv().processors(1, 1, 0, 0).bucketInputs(1).bucketOutputs(1)
 			.upgrades(3))
@@ -44,7 +44,7 @@ public class TileMineralWasher extends GenericMaterialTile {
 	addComponent(new ComponentProcessor(this)
 		.canProcess((component, level, procNumber) -> component.outputToFluidPipe().consumeBucket()
 			.dispenseBucket().canProcessFluidItem2FluidRecipe(level, procNumber,
-				ElectrodynamicsRecipies.MINERAL_WASHER_TYPE.get()))
+				ElectrodynamicsRecipes.MINERAL_WASHER_TYPE.get()))
 		.process(ComponentProcessor::processFluidItem2FluidRecipe));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.mineralwasher.tag(), this)
 		.createMenu((id, player) -> new ContainerMineralWasher(id, player,

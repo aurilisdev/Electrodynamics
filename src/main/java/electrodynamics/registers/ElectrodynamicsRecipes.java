@@ -28,7 +28,7 @@ import voltaic.common.recipe.categories.fluid2item.Fluid2ItemRecipeSerializer;
 import voltaic.common.recipe.categories.fluiditem2fluid.FluidItem2FluidRecipeSerializer;
 import voltaic.common.recipe.categories.item2item.Item2ItemRecipeSerializer;
 
-public class ElectrodynamicsRecipies {
+public class ElectrodynamicsRecipes {
 
     // Deferred Register
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZER = DeferredRegister

@@ -3,7 +3,7 @@ package electrodynamics.common.recipe.categories.fluid2fluid.specificmachines;
 import java.util.List;
 
 import electrodynamics.Electrodynamics;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -28,11 +28,11 @@ public class ElectrolosisChamberRecipe extends Fluid2FluidRecipe {
 
     @Override
     public RecipeSerializer<?> getSerializer() {
-	return ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_SERIALIZER.get();
+	return ElectrodynamicsRecipes.ELECTROLOSIS_CHAMBER_SERIALIZER.get();
     }
 
     @Override
     public RecipeType<?> getType() {
-	return ElectrodynamicsRecipies.ELECTROLOSIS_CHAMBER_TYPE.get();
+	return ElectrodynamicsRecipes.ELECTROLOSIS_CHAMBER_TYPE.get();
     }
 }

@@ -2,7 +2,7 @@ package electrodynamics.common.tile.machines;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerElectrolyticSeparator;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
@@ -44,11 +44,11 @@ public class TileElectrolyticSeparator extends GenericGasTile implements ITickab
 		.voltage(VoltaicCapabilities.DEFAULT_VOLTAGE * 2));
 	addComponent(new ComponentFluidHandlerMulti(this).setInputDirections(BlockEntityUtils.MachineDirection.BACK)
 		.setInputTanks(1, arr(MAX_INPUT_TANK_CAPACITY))
-		.setRecipeType(ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get()));
+		.setRecipeType(ElectrodynamicsRecipes.ELECTROLYTIC_SEPERATOR_TYPE.get()));
 	addComponent(new ComponentGasHandlerMulti(this).setOutputDirections(OXYGEN_DIRECTION, HYDROGEN_DIRECTION)
 		.setOutputTanks(2, arr(MAX_OUTPUT_TANK_CAPACITY, MAX_OUTPUT_TANK_CAPACITY), arr(1000, 1000),
 			arr(1024, 1024))
-		.setRecipeType(ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get())
+		.setRecipeType(ElectrodynamicsRecipes.ELECTROLYTIC_SEPERATOR_TYPE.get())
 		.setCondensedHandler(getCondensedHandler()));
 	addComponent(new ComponentInventory(this,
 		ComponentInventory.InventoryBuilder.newInv().bucketInputs(1).gasOutputs(2).upgrades(3))
@@ -56,7 +56,7 @@ public class TileElectrolyticSeparator extends GenericGasTile implements ITickab
 	addComponent(new ComponentProcessor(this)
 		.canProcess((component, level, procNumber) -> component.consumeBucket().dispenseGasCylinder()
 			.canProcessFluid2GasRecipe(level, procNumber,
-				ElectrodynamicsRecipies.ELECTROLYTIC_SEPERATOR_TYPE.get()))
+				ElectrodynamicsRecipes.ELECTROLYTIC_SEPERATOR_TYPE.get()))
 		.process(ComponentProcessor::processFluid2GasRecipe));
 	addComponent(new ComponentContainerProvider(SubtypeMachine.electrolyticseparator.tag(), this)
 		.createMenu((id, player) -> new ContainerElectrolyticSeparator(id, player,

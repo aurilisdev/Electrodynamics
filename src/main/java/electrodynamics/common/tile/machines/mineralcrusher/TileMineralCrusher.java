@@ -3,7 +3,7 @@ package electrodynamics.common.tile.machines.mineralcrusher;
 import electrodynamics.common.block.subtype.SubtypeMachine;
 import electrodynamics.common.inventory.container.tile.ContainerMineralCrusher;
 import electrodynamics.common.inventory.container.tile.ContainerProcessorO2O;
-import electrodynamics.registers.ElectrodynamicsRecipies;
+import electrodynamics.registers.ElectrodynamicsRecipes;
 import electrodynamics.registers.ElectrodynamicsSounds;
 import electrodynamics.registers.ElectrodynamicsTiles;
 import net.minecraft.core.BlockPos;
@@ -63,7 +63,7 @@ public class TileMineralCrusher extends GenericTile implements ITickableSound {
 		.implementMachineInputsAndOutputs());
 	addComponent(new ComponentProcessor(this, procCount)
 		.canProcess((component, level, procNumber) -> component.canProcessItem2ItemRecipe(level, procNumber,
-			ElectrodynamicsRecipies.MINERAL_CRUSHER_TYPE.get()))
+			ElectrodynamicsRecipes.MINERAL_CRUSHER_TYPE.get()))
 		.process(ComponentProcessor::processItem2ItemRecipe));
     }
 
