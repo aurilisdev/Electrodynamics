@@ -3,6 +3,8 @@ package electrodynamics.common.item.gear.tools.electric;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.common.item.gear.tools.electric.utils.ElectricItemTier;
 import electrodynamics.prefab.utilities.ElectroTextUtils;
 import electrodynamics.registers.ElectrodynamicsItems;
@@ -46,7 +48,7 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable     T entity, Consumer<Item> onBroken) {
 	return 0;
     }
 

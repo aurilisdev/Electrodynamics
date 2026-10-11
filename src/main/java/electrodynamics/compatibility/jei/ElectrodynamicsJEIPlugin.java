@@ -367,7 +367,6 @@ public class ElectrodynamicsJEIPlugin implements IModPlugin {
 		ReinforcedAlloyerRecipeCategory.RECIPE_TYPE);
     }
 
-    @SuppressWarnings("null")
     private static void electrodynamicsInfoTabs(IRecipeRegistration registration) {
 	// Items
 	for (Item item : TileCoalGenerator.getValidItems()) {

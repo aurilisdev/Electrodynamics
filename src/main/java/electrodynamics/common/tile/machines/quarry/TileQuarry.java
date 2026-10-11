@@ -35,6 +35,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -48,6 +49,7 @@ import net.neoforged.neoforge.common.util.FakePlayerFactory;
 import voltaic.api.tile.IPlayerStorable;
 import voltaic.common.block.states.VoltaicBlockStates;
 import voltaic.common.item.ItemUpgrade;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
 import voltaic.prefab.block.GenericMachineBlock;
 import voltaic.prefab.properties.types.PropertyTypes;
 import voltaic.prefab.properties.variant.ListProperty;
@@ -61,6 +63,7 @@ import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
 import voltaic.prefab.utilities.ItemUtils;
 import voltaic.registers.VoltaicCapabilities;
+import voltaic.registers.VoltaicDataComponentTypes;
 
 /**
  * Loosely based on Quarry concept from Buildcraft with aspects of Extra
@@ -507,8 +510,35 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
     private boolean mineBlock(Level level, BlockPos pos, BlockState state, float strength, Level world,
 	    ItemStack drillHead, ComponentInventory inv, @Nullable Player player) {
+	BlockEntity blockEntity = world.getBlockEntity(pos);
+	// TODO make this work with custom mining tiers
+	ItemStack pickaxe = new ItemStack(Items.NETHERITE_PICKAXE);
+	if (silkTouchLevel.getValue() > 0) {
+	    pickaxe.enchant(level.registryAccess().registryOrThrow(Registries.ENCHANTMENT)
+		    .getHolderOrThrow(Enchantments.SILK_TOUCH), silkTouchLevel.getValue());
+	} else if (fortuneLevel.getValue() > 0) {
+	    pickaxe.enchant(level.registryAccess().registryOrThrow(Registries.ENCHANTMENT)
+		    .getHolderOrThrow(Enchantments.FORTUNE), fortuneLevel.getValue());
+	}
+	int xp = 0;
+	if (world instanceof ServerLevel serverLevel) {
+	    int baseXp = state.getExpDrop(world, pos, blockEntity, null, pickaxe);
+	    xp = EnchantmentHelper.processBlockExperience(serverLevel, pickaxe,
+		    baseXp);
+	}
 	boolean sucess = world.destroyBlock(pos, false, player);
 	if (sucess) {
+	    if (xp > 0) {
+		for (ItemStack upgrade : inv.getUpgradeContents()) {
+		    if (!upgrade.isEmpty()
+			    && ((ItemUpgrade) upgrade.getItem()).subtype == SubtypeItemUpgrade.experience) {
+			upgrade.set(VoltaicDataComponentTypes.XP,
+				upgrade.getOrDefault(VoltaicDataComponentTypes.XP, 0.0) + xp);
+			inv.setChanged();
+			break;
+		    }
+		}
+	    }
 	    SubtypeDrillHead head = ((ItemDrillHead) drillHead.getItem()).head;
 	    if (!head.isUnbreakable) {
 		int durabilityUsed = (int) (Math.ceil(strength) / (unbreakingLevel.getValue() + 1.0F));
@@ -518,15 +548,6 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 		} else {
 		    drillHead.setDamageValue(drillHead.getDamageValue() + durabilityUsed);
 		}
-	    }
-	    // TODO make this work with custom mining tiers
-	    ItemStack pickaxe = new ItemStack(Items.NETHERITE_PICKAXE);
-	    if (silkTouchLevel.getValue() > 0) {
-		pickaxe.enchant(level.registryAccess().registryOrThrow(Registries.ENCHANTMENT)
-			.getHolderOrThrow(Enchantments.SILK_TOUCH), silkTouchLevel.getValue());
-	    } else if (fortuneLevel.getValue() > 0) {
-		pickaxe.enchant(level.registryAccess().registryOrThrow(Registries.ENCHANTMENT)
-			.getHolderOrThrow(Enchantments.FORTUNE), fortuneLevel.getValue());
 	    }
 	    List<ItemStack> lootItems = Block.getDrops(state, (ServerLevel) world, pos, null, null, pickaxe);
 	    List<ItemStack> voidItemStacks = inv.getInputContents().subList(1, inv.getInputContents().size());
@@ -1159,7 +1180,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
     public void onInventoryChange(ComponentInventory inv, int slot) {
 	super.onInventoryChange(inv, slot);
 	if (!inv.getUpgradeContents().isEmpty() && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
-	    double quarryPowerMultiplier = 0;
+	    double quarryPowerMultiplier = 1;
 	    int silkTouchLevel = 0;
 	    int fortuneLevel = 0;
 	    int unbreakingLevel = 0;

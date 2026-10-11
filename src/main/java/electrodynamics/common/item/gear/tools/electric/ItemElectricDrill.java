@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.annotation.Nullable;
+
 import electrodynamics.Electrodynamics;
 import electrodynamics.common.inventory.container.item.ContainerElectricDrill;
 import electrodynamics.common.item.ItemDrillHead;
@@ -78,7 +80,7 @@ public class ItemElectricDrill extends DiggerItem implements IItemElectric, Crea
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable     T entity, Consumer<Item> onBroken) {
 	return 0;
     }
 

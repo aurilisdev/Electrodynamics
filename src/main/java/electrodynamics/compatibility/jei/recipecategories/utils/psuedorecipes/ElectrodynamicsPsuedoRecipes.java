@@ -42,6 +42,8 @@ public class ElectrodynamicsPsuedoRecipes {
 	    ItemStack inputCylinder = new ItemStack(ElectrodynamicsItems.ITEM_PORTABLECYLINDER.get());
 
 	    IGasHandlerItem inputHandler = inputCylinder.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
+	    if (inputHandler == null)
+		return;
 
 	    inputHandler.fill(new GasStack(gas, 1000, gas.getCondensationTemp() + 1, Gas.PRESSURE_AT_SEA_LEVEL),
 		    GasAction.EXECUTE);
@@ -49,10 +51,8 @@ public class ElectrodynamicsPsuedoRecipes {
 	    ItemStack outputBucket = new ItemStack(gas.getCondensedFluid().getBucket());
 
 	    IFluidHandlerItem outputHandler = outputBucket.getCapability(Capabilities.FluidHandler.ITEM);
-
-	    if (outputHandler == null) {
+	    if (outputHandler == null)
 		continue;
-	    }
 
 	    outputHandler.fill(new FluidStack(gas.getCondensedFluid(), 1000), FluidAction.EXECUTE);
 
@@ -85,11 +85,11 @@ public class ElectrodynamicsPsuedoRecipes {
 
 	    IGasHandlerItem outputHandler = outputCylinder
 		    .getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM);
-
-	    outputHandler.fill(new GasStack(gas, 1000, gas.getCondensationTemp() + 1, Gas.PRESSURE_AT_SEA_LEVEL),
-		    GasAction.EXECUTE);
-
-	    outputCylinder = outputHandler.getContainer();
+	    if (outputHandler != null) {
+		outputHandler.fill(new GasStack(gas, 1000, gas.getCondensationTemp() + 1, Gas.PRESSURE_AT_SEA_LEVEL),
+			GasAction.EXECUTE);
+		outputCylinder = outputHandler.getContainer();
+	    }
 
 	    EVAPORATION_RECIPES.add(new PsuedoFluid2GasRecipe(Arrays.asList(new FluidStack(fluid, 1000)),
 		    new GasStack(gas, 1000, gas.getCondensationTemp(), 1), inputBucket, outputCylinder));

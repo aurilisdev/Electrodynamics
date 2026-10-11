@@ -64,7 +64,6 @@ public class TileCoalGenerator extends GenericGeneratorTile {
 			requireComponent(IComponentType.Inventory), getCoordsArray())));
     }
 
-    @SuppressWarnings("null")
     protected void tickServer(Level level, ComponentTickable tickable) {
 	if (burnTime.getValue() > 0)
 	    burnTime.setValue(burnTime.getValue() - 1);

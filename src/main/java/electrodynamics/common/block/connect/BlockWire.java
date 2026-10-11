@@ -260,7 +260,8 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
     }
 
     @Override
-    public void onCaughtFire(BlockState state, Level world, BlockPos pos, Direction face, LivingEntity igniter) {
+    public void onCaughtFire(BlockState state, Level world, BlockPos pos, @Nullable Direction face,
+	    @Nullable LivingEntity igniter) {
 	super.onCaughtFire(state, world, pos, face, igniter);
 	Scheduler.schedule(5, () -> {
 
