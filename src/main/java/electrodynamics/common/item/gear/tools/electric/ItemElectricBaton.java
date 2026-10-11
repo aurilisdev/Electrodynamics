@@ -48,7 +48,8 @@ public class ItemElectricBaton extends SwordItem implements IItemElectric, Creat
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable     T entity, Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity,
+	    Consumer<Item> onBroken) {
 	return 0;
     }
 

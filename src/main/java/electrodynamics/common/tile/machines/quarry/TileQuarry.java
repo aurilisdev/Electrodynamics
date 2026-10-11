@@ -523,8 +523,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 	int xp = 0;
 	if (world instanceof ServerLevel serverLevel) {
 	    int baseXp = state.getExpDrop(world, pos, blockEntity, null, pickaxe);
-	    xp = EnchantmentHelper.processBlockExperience(serverLevel, pickaxe,
-		    baseXp);
+	    xp = EnchantmentHelper.processBlockExperience(serverLevel, pickaxe, baseXp);
 	}
 	boolean sucess = world.destroyBlock(pos, false, player);
 	if (sucess) {
