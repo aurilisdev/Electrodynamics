@@ -80,7 +80,8 @@ public class ItemServoLeggings extends ItemVoltaicArmor implements IItemElectric
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable     T entity, Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity,
+	    Consumer<Item> onBroken) {
 	return 0;
     }
 

@@ -53,7 +53,8 @@ public class ItemElectricChainsaw extends DiggerItem implements IItemElectric, C
     }
 
     @Override
-    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable     T entity, Consumer<Item> onBroken) {
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, @Nullable T entity,
+	    Consumer<Item> onBroken) {
 	return 0;
     }
 
