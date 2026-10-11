@@ -61,10 +61,10 @@ public class TileFermentationPlant extends GenericMaterialTile {
 			worldPosition.getY() + level.random.nextDouble() * 0.4 + 0.5,
 			worldPosition.getZ() + level.random.nextDouble(), 0.0D, 0.0D, 0.0D);
 	    }
-	    Direction dir = getFacing();
-	    double x = worldPosition.getX() + 0.55 - dir.getStepX() * 0.2;
-	    double z = worldPosition.getZ() + 0.55 - dir.getStepZ() * 0.2;
-	    level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, worldPosition.getY() + 0.4, z, 0.0D, 0.0D, 0.0D);
+	    Direction dir = getFacing().getClockWise();
+	    double x = worldPosition.getX() + 0.5 - dir.getStepX() * 3 / 16.0;
+	    double z = worldPosition.getZ() + 0.5 - dir.getStepZ() * 3 / 16.0;
+	    level.addParticle(ParticleTypes.SOUL_FIRE_FLAME, x, worldPosition.getY() + 0.425, z, 0.0D, 0.0D, 0.0D);
 	}
     }
 
