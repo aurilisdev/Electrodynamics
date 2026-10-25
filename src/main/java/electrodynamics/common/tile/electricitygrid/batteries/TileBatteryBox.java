@@ -92,9 +92,6 @@ public class TileBatteryBox extends GenericTile implements IEnergyStorage {
 
     @Nullable
     public IEnergyStorage getFECapability(@Nullable Direction side) {
-	if (!Voltaic.isForgeEnergyEnabled())
-	    return null;
-
 	Direction facing = getFacing();
 	if (side == facing)
 	    return inputDispatcher;
