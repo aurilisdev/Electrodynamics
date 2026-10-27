@@ -18,9 +18,8 @@ public class PacketRenderJetpackParticles {
 
     public static void handle(PacketRenderJetpackParticles message, Supplier<Context> context) {
 	Context ctx = context.get();
-	ctx.enqueueWork(() -> {
-	    ClientBarrierMethods.handleJetpackParticleRendering(message.player, message.isCombat);
-	});
+	ctx.enqueueWork(
+		() -> { ClientBarrierMethods.handleJetpackParticleRendering(message.player, message.isCombat); });
 	ctx.setPacketHandled(true);
     }
 

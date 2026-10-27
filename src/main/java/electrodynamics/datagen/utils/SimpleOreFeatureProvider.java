@@ -87,7 +87,12 @@ public class SimpleOreFeatureProvider {
     }
 
     public enum BiomeModifierType {
-	NONE_BIOME, ADD_FEATURES, REMOVE_FEATURES, ADD_SPAWNS, REMOVE_SPAWNS, NONE_STRUCTURE;
+	NONE_BIOME,
+	ADD_FEATURES,
+	REMOVE_FEATURES,
+	ADD_SPAWNS,
+	REMOVE_SPAWNS,
+	NONE_STRUCTURE;
     }
 
 }

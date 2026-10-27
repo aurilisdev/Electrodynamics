@@ -77,8 +77,7 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 	    @Override
 	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
 		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
-		ItemStack[] armorPiecesArray = {
-			new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()),
+		ItemStack[] armorPiecesArray = { new ItemStack(ElectrodynamicsItems.ITEM_COMBATHELMET.get()),
 			new ItemStack(ElectrodynamicsItems.ITEM_COMBATCHESTPLATE.get()),
 			new ItemStack(ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get()),
 			new ItemStack(ElectrodynamicsItems.ITEM_COMBATBOOTS.get()) };
@@ -129,9 +128,9 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
 	ArmorItem armor = (ArmorItem) stack.getItem();
 	return switch (armor.getEquipmentSlot()) {
 	case CHEST -> new GasHandlerItemStack(stack, ItemJetpack.MAX_CAPACITY, ItemJetpack.MAX_TEMPERATURE,
-			    ItemJetpack.MAX_PRESSURE).setPredicate(ItemJetpack.getGasValidator());
+		ItemJetpack.MAX_PRESSURE).setPredicate(ItemJetpack.getGasValidator());
 	case FEET -> new RestrictedFluidHandlerItemStack(stack, ItemHydraulicBoots.MAX_CAPACITY)
-			    .setValidator(ItemHydraulicBoots.getPredicate());
+		.setValidator(ItemHydraulicBoots.getPredicate());
 	default -> super.initCapabilities(stack, nbt);
 	};
     }
@@ -332,7 +331,8 @@ public class ItemCombatArmor extends ItemVoltaicArmor implements IItemElectric {
     public boolean overrideOtherStackedOnMe(ItemStack stack, ItemStack other, Slot slot, ClickAction action,
 	    Player player, SlotAccess access) {
 
-	if (getEquipmentSlot() == EquipmentSlot.CHEST || getEquipmentSlot() == EquipmentSlot.FEET || !IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
+	if (getEquipmentSlot() == EquipmentSlot.CHEST || getEquipmentSlot() == EquipmentSlot.FEET
+		|| !IItemElectric.overrideOtherStackedOnMe(stack, other, slot, action, player, access)) {
 	    return super.overrideOtherStackedOnMe(stack, other, slot, action, player, access);
 	}
 

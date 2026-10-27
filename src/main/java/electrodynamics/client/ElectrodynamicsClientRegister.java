@@ -68,6 +68,7 @@ import electrodynamics.client.screen.tile.ScreenElectricFurnace;
 import electrodynamics.client.screen.tile.ScreenElectricFurnaceDouble;
 import electrodynamics.client.screen.tile.ScreenElectricFurnaceTriple;
 import electrodynamics.client.screen.tile.ScreenElectrolyticSeparator;
+import electrodynamics.client.screen.tile.ScreenEnergizedAlloyer;
 import electrodynamics.client.screen.tile.ScreenFermentationPlant;
 import electrodynamics.client.screen.tile.ScreenFluidPipeFilter;
 import electrodynamics.client.screen.tile.ScreenFluidPipePump;
@@ -78,14 +79,26 @@ import electrodynamics.client.screen.tile.ScreenGasPipePump;
 import electrodynamics.client.screen.tile.ScreenGasTankGeneric;
 import electrodynamics.client.screen.tile.ScreenGasVent;
 import electrodynamics.client.screen.tile.ScreenHydroelectricGenerator;
+import electrodynamics.client.screen.tile.ScreenLathe;
+import electrodynamics.client.screen.tile.ScreenMineralCrusher;
+import electrodynamics.client.screen.tile.ScreenMineralCrusherDouble;
+import electrodynamics.client.screen.tile.ScreenMineralCrusherTriple;
+import electrodynamics.client.screen.tile.ScreenMineralGrinder;
+import electrodynamics.client.screen.tile.ScreenMineralGrinderDouble;
+import electrodynamics.client.screen.tile.ScreenMineralGrinderTriple;
 import electrodynamics.client.screen.tile.ScreenMineralWasher;
 import electrodynamics.client.screen.tile.ScreenMotorComplex;
+import electrodynamics.client.screen.tile.ScreenOxidationFurnace;
 import electrodynamics.client.screen.tile.ScreenPotentiometer;
 import electrodynamics.client.screen.tile.ScreenQuarry;
+import electrodynamics.client.screen.tile.ScreenReinforcedAlloyer;
 import electrodynamics.client.screen.tile.ScreenSeismicRelay;
 import electrodynamics.client.screen.tile.ScreenSolarPanel;
 import electrodynamics.client.screen.tile.ScreenThermoelectricManipulator;
 import electrodynamics.client.screen.tile.ScreenWindmill;
+import electrodynamics.client.screen.tile.ScreenWireMill;
+import electrodynamics.client.screen.tile.ScreenWireMillDouble;
+import electrodynamics.client.screen.tile.ScreenWireMillTriple;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricBaton;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricChainsaw;
 import electrodynamics.common.item.gear.tools.electric.ItemElectricDrill;
@@ -195,6 +208,23 @@ public class ElectrodynamicsClientRegister {
 	ElectrodynamicsClientEvents.init();
 
 	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_COALGENERATOR.get(), ScreenCoalGenerator::new);
+	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_LATHE.get(), ScreenLathe::new);
+	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_WIREMILL.get(), ScreenWireMill::new);
+	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_WIREMILLDOUBLE.get(), ScreenWireMillDouble::new);
+	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_WIREMILLTRIPLE.get(), ScreenWireMillTriple::new);
+	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_MINERALCRUSHER.get(), ScreenMineralCrusher::new);
+	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_MINERALCRUSHERDOUBLE.get(),
+		ScreenMineralCrusherDouble::new);
+	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_MINERALCRUSHERTRIPLE.get(),
+		ScreenMineralCrusherTriple::new);
+	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_MINERALGRINDER.get(), ScreenMineralGrinder::new);
+	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_MINERALGRINDERDOUBLE.get(),
+		ScreenMineralGrinderDouble::new);
+	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_MINERALGRINDERTRIPLE.get(),
+		ScreenMineralGrinderTriple::new);
+	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_OXIDATIONFURNACE.get(), ScreenOxidationFurnace::new);
+	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ENERGIZEDALLOYER.get(), ScreenEnergizedAlloyer::new);
+	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_REINFORCEDALLOYER.get(), ScreenReinforcedAlloyer::new);
 	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICFURNACE.get(), ScreenElectricFurnace::new);
 	MenuScreens.register(ElectrodynamicsMenuTypes.CONTAINER_ELECTRICFURNACEDOUBLE.get(),
 		ScreenElectricFurnaceDouble::new);

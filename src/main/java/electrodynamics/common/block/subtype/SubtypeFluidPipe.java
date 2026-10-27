@@ -4,7 +4,8 @@ import voltaic.api.ISubtype;
 import voltaic.api.network.cable.type.IFluidPipe;
 
 public enum SubtypeFluidPipe implements ISubtype, IFluidPipe {
-    copper(5000), steel(10000);
+    copper(5000),
+    steel(10000);
 
     private final long maxTransfer;
 

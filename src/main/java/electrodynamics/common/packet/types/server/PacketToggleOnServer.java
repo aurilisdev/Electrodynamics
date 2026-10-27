@@ -82,6 +82,7 @@ public class PacketToggleOnServer {
     }
 
     public enum Type {
-	NVGS, SERVOLEGGINGS;
+	NVGS,
+	SERVOLEGGINGS;
     }
 }

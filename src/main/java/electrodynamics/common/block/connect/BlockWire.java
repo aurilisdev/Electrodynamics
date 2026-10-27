@@ -123,8 +123,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 
 			handlePlayerItemDrops(player, ElectrodynamicsItems.ITEM_CERAMICINSULATION.get());
 
-			stack.hurtAndBreak(1, player, stk -> {
-			});
+			stack.hurtAndBreak(1, player, stk -> {});
 
 		    }
 
@@ -162,8 +161,7 @@ public class BlockWire extends AbstractRefreshingConnectBlock<GenericTileWire> {
 
 			}
 
-			stack.hurtAndBreak(1, player, stk -> {
-			});
+			stack.hurtAndBreak(1, player, stk -> {});
 
 		    }
 

@@ -14,8 +14,8 @@ import voltaic.prefab.inventory.container.types.GenericContainerBlockEntity;
 
 public class ContainerDecompressor extends GenericContainerBlockEntity<GenericTileBasicCompressor.TileDecompressor> {
 
-    public static final SubtypeItemUpgrade[] VALID_UPGRADES = {
-	    SubtypeItemUpgrade.advancedspeed, SubtypeItemUpgrade.basicspeed };
+    public static final SubtypeItemUpgrade[] VALID_UPGRADES = { SubtypeItemUpgrade.advancedspeed,
+	    SubtypeItemUpgrade.basicspeed };
 
     public ContainerDecompressor(int id, Inventory playerinv, Container inventory, ContainerData inventorydata) {
 	super(ElectrodynamicsMenuTypes.CONTAINER_DECOMPRESSOR.get(), id, playerinv, inventory, inventorydata);

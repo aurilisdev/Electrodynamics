@@ -17,9 +17,7 @@ public class PacketSetClientCombustionFuel {
 
     public static void handle(PacketSetClientCombustionFuel message, Supplier<Context> context) {
 	Context ctx = context.get();
-	ctx.enqueueWork(() -> {
-	    ClientBarrierMethods.handlerClientCombustionFuels(message.fuels);
-	});
+	ctx.enqueueWork(() -> { ClientBarrierMethods.handlerClientCombustionFuels(message.fuels); });
 	ctx.setPacketHandled(true);
     }
 

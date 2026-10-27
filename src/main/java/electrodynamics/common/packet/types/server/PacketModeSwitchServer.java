@@ -84,7 +84,8 @@ public class PacketModeSwitchServer {
 
     // Mekanism gave me this idea
     public enum Mode {
-	JETPACK, SERVOLEGS;
+	JETPACK,
+	SERVOLEGS;
     }
 
 }

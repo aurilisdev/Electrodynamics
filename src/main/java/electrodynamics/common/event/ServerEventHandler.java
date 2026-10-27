@@ -26,9 +26,6 @@ import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import voltaic.Voltaic;
-import voltaic.api.item.IItemElectric;
-import voltaic.prefab.item.CapabilityForgeEnergyItem;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingEquipmentChangeEvent;
 import net.minecraftforge.event.entity.living.LivingKnockBackEvent;
@@ -38,16 +35,20 @@ import net.minecraftforge.event.server.ServerStartedEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import voltaic.Voltaic;
+import voltaic.api.item.IItemElectric;
 import voltaic.common.event.type.AbstractEquipmentChangeHandler;
 import voltaic.common.event.type.AbstractLivingDamageHandler;
 import voltaic.common.event.type.AbstractLivingKnockbackHandler;
 import voltaic.common.event.type.AbstractPlayerStartTrackingHandler;
 import voltaic.common.event.type.AbstractRightClickBlockHandler;
+import voltaic.prefab.item.CapabilityForgeEnergyItem;
 
 @EventBusSubscriber(modid = Electrodynamics.ID, bus = Bus.FORGE)
 public class ServerEventHandler {
 
-    private static final ResourceLocation FE_ITEM_CAP_ID = new ResourceLocation(Electrodynamics.ID, "forge_energy_item");
+    private static final ResourceLocation FE_ITEM_CAP_ID = new ResourceLocation(Electrodynamics.ID,
+	    "forge_energy_item");
 
     private static final List<AbstractRightClickBlockHandler> RIGHT_CLICK_HANDLERS = new ArrayList<>();
     private static final List<AbstractLivingDamageHandler> LIVING_HURT_HANDLERS = new ArrayList<>();
@@ -92,12 +93,18 @@ public class ServerEventHandler {
 
     private static boolean isForgeEnergyItem(Item item) {
 	return item == ElectrodynamicsItems.ITEM_BATTERY.get() || item == ElectrodynamicsItems.ITEM_LITHIUMBATTERY.get()
-		|| item == ElectrodynamicsItems.ITEM_CARBYNEBATTERY.get() || item == ElectrodynamicsItems.ITEM_ELECTRICDRILL.get()
-		|| item == ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW.get() || item == ElectrodynamicsItems.ITEM_ELECTRICBATON.get()
-		|| item == ElectrodynamicsItems.ITEM_KINETICRAILGUN.get() || item == ElectrodynamicsItems.ITEM_PLASMARAILGUN.get()
-		|| item == ElectrodynamicsItems.ITEM_SEISMICSCANNER.get() || item == ElectrodynamicsItems.ITEM_MECHANIZEDCROSSBOW.get()
-		|| item == ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get() || item == ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get()
-		|| item == ElectrodynamicsItems.ITEM_COMBATHELMET.get() || item == ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get();
+		|| item == ElectrodynamicsItems.ITEM_CARBYNEBATTERY.get()
+		|| item == ElectrodynamicsItems.ITEM_ELECTRICDRILL.get()
+		|| item == ElectrodynamicsItems.ITEM_ELECTRICCHAINSAW.get()
+		|| item == ElectrodynamicsItems.ITEM_ELECTRICBATON.get()
+		|| item == ElectrodynamicsItems.ITEM_KINETICRAILGUN.get()
+		|| item == ElectrodynamicsItems.ITEM_PLASMARAILGUN.get()
+		|| item == ElectrodynamicsItems.ITEM_SEISMICSCANNER.get()
+		|| item == ElectrodynamicsItems.ITEM_MECHANIZEDCROSSBOW.get()
+		|| item == ElectrodynamicsItems.ITEM_NIGHTVISIONGOGGLES.get()
+		|| item == ElectrodynamicsItems.ITEM_SERVOLEGGINGS.get()
+		|| item == ElectrodynamicsItems.ITEM_COMBATHELMET.get()
+		|| item == ElectrodynamicsItems.ITEM_COMBATLEGGINGS.get();
     }
 
     @SubscribeEvent

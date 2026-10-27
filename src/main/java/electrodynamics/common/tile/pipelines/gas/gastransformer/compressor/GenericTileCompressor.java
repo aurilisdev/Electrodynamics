@@ -67,7 +67,9 @@ public abstract class GenericTileCompressor extends GenericTileGasTransformer {
 
 	ComponentElectrodynamic electro = getComponent(IComponentType.Electrodynamic);
 
-	if ((electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.getValue()) || (outputTank.getGasAmount() >= outputTank.getCapacity()) || (!outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas()))) {
+	if ((electro.getJoulesStored() < getUsagePerTick() * processor.operatingSpeed.getValue())
+		|| (outputTank.getGasAmount() >= outputTank.getCapacity())
+		|| (!outputTank.isEmpty() && !outputTank.getGas().isSameGas(inputTank.getGas()))) {
 	    return false;
 	}
 

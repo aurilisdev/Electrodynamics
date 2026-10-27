@@ -16,9 +16,7 @@ public class PacketJetpackEquipedSound {
 
     public static void handle(PacketJetpackEquipedSound message, Supplier<Context> context) {
 	Context ctx = context.get();
-	ctx.enqueueWork(() -> {
-	    ClientBarrierMethods.handlePacketJetpackEquipedSound(message.player);
-	});
+	ctx.enqueueWork(() -> { ClientBarrierMethods.handlePacketJetpackEquipedSound(message.player); });
 	ctx.setPacketHandled(true);
     }
 

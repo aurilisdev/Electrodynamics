@@ -57,8 +57,7 @@ public class ItemCompositeArmor extends ItemVoltaicArmor {
 	    public HumanoidModel<?> getHumanoidArmorModel(LivingEntity entity, ItemStack itemStack,
 		    EquipmentSlot armorSlot, HumanoidModel<?> properties) {
 
-		ItemStack[] armorPiecesArray = {
-			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get()),
+		ItemStack[] armorPiecesArray = { new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEHELMET.get()),
 			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITECHESTPLATE.get()),
 			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITELEGGINGS.get()),
 			new ItemStack(ElectrodynamicsItems.ITEM_COMPOSITEBOOTS.get()) };

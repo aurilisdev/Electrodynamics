@@ -108,94 +108,98 @@ public class ChapterElectricity extends Chapter {
 	pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.voltageexample", 120))
 		.setCentered().setNewPage());
 	pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81,
-		Electrodynamics.rl("textures/screen/guidebook/120vmachines.png")).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		List<FormattedCharSequence> tooltips = new ArrayList<>();
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.left",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralgrinder)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.middle",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.batterybox)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.right",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricfurnace)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		Electrodynamics.rl("textures/screen/guidebook/120vmachines.png"))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    List<FormattedCharSequence> tooltips = new ArrayList<>();
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.left",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralgrinder)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.middle",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.batterybox)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.right",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.electricfurnace)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
 
-		graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
 		}));
 	pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.voltageexamplenote")));
 
 	pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.voltageexample", 240))
 		.setCentered().setNewPage());
 	pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81,
-		Electrodynamics.rl("textures/screen/guidebook/240vmachines.png")).onTooltip((graphics, xAxis, yAxis, screen) -> {
+		Electrodynamics.rl("textures/screen/guidebook/240vmachines.png"))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
 
-		List<FormattedCharSequence> tooltips = new ArrayList<>();
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.left",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.chemicalmixer)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.middle",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.lathe)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.right",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.oxidationfurnace)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		    List<FormattedCharSequence> tooltips = new ArrayList<>();
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.left",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.chemicalmixer)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.middle",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.lathe).getDescription()
+					    .copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.right",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.oxidationfurnace)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
 
-		graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
 		}));
 
 	pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.voltageexample", 480))
 		.setCentered().setNewPage());
 	pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81,
-		Electrodynamics.rl("textures/screen/guidebook/480vmachines.png")).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		List<FormattedCharSequence> tooltips = new ArrayList<>();
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.left",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralwasher)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.middle",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.energizedalloyer)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.right",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.carbynebatterybox)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		Electrodynamics.rl("textures/screen/guidebook/480vmachines.png"))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    List<FormattedCharSequence> tooltips = new ArrayList<>();
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.left",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralwasher)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.middle",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.energizedalloyer)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.right",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.carbynebatterybox)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
 
-		graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
 		}));
 
 	pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.voltageexample", 960))
 		.setCentered().setNewPage());
 	pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79, 81,
-		Electrodynamics.rl("textures/screen/guidebook/960vmachines.png")).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		List<FormattedCharSequence> tooltips = new ArrayList<>();
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.left",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.reinforcedalloyer)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.middle",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralcrushertriple)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		Electrodynamics.rl("textures/screen/guidebook/960vmachines.png"))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    List<FormattedCharSequence> tooltips = new ArrayList<>();
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.left",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.reinforcedalloyer)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.middle",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.mineralcrushertriple)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
 
-		graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
 		}));
 
 	pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l6")).setNewPage()
@@ -218,25 +222,26 @@ public class ChapterElectricity extends Chapter {
 		.setSeparateStart().setIndentions(1));
 	pageData.add(new TextWrapperObject(ElectroTextUtils.guidebook("chapter.electricity.l9")).setSeparateStart());
 	pageData.add(new ImageWrapperObject(0, 0, 0, 0, 150, 79, 150, 79,
-		Electrodynamics.rl("textures/screen/guidebook/energyio.png")).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		List<FormattedCharSequence> tooltips = new ArrayList<>();
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.left",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.batterybox)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.middle",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.relay)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
-		tooltips.add(ElectroTextUtils
-			.guidebook("chapter.electricity.right",
-				ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.downgradetransformer)
-					.getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
-			.withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		Electrodynamics.rl("textures/screen/guidebook/energyio.png"))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    List<FormattedCharSequence> tooltips = new ArrayList<>();
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.left",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.batterybox)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.middle",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.relay).getDescription()
+					    .copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
+		    tooltips.add(ElectroTextUtils
+			    .guidebook("chapter.electricity.right",
+				    ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.downgradetransformer)
+					    .getDescription().copy().withStyle(ChatFormatting.DARK_GRAY))
+			    .withStyle(ChatFormatting.GRAY).getVisualOrderText());
 
-		graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
 		}));
 
 	/* Wire Basics */
@@ -383,12 +388,12 @@ public class ChapterElectricity extends Chapter {
 		.setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
 		ElectrodynamicsItems.ITEM_MULTIMETER.get()).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -417,13 +422,14 @@ public class ChapterElectricity extends Chapter {
 	pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.multimeterblock)
 		.getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
-		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.multimeterblock)).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.multimeterblock))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -449,13 +455,14 @@ public class ChapterElectricity extends Chapter {
 	pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.relay)
 		.getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
-		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.relay)).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.relay))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -486,13 +493,14 @@ public class ChapterElectricity extends Chapter {
 	pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.circuitbreaker)
 		.getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
-		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.circuitbreaker)).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.circuitbreaker))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -525,12 +533,12 @@ public class ChapterElectricity extends Chapter {
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
 		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.currentregulator))
 		.onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -556,13 +564,14 @@ public class ChapterElectricity extends Chapter {
 	pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.circuitmonitor)
 		.getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
-		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.circuitmonitor)).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.circuitmonitor))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -602,13 +611,14 @@ public class ChapterElectricity extends Chapter {
 	pageData.add(new TextWrapperObject(ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.potentiometer)
 		.getDescription().copy().withStyle(ChatFormatting.BOLD)).setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
-		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.potentiometer)).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		ElectrodynamicsItems.ITEMS_MACHINE.getValue(SubtypeMachine.potentiometer))
+		.onTooltip((graphics, xAxis, yAxis, screen) -> {
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 

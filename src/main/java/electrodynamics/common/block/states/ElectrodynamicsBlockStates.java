@@ -19,7 +19,10 @@ public class ElectrodynamicsBlockStates {
 	    .create("manipulatorheatingstatus", ManipulatorHeatingStatus.class);
 
     public static enum AddonTankNeighborType implements StringRepresentable {
-	NONE, BOTTOMTANK, TOPTANK, BOTTOMANDTOPTANK;
+	NONE,
+	BOTTOMTANK,
+	TOPTANK,
+	BOTTOMANDTOPTANK;
 
 	@Override
 	public String getSerializedName() {
@@ -29,7 +32,9 @@ public class ElectrodynamicsBlockStates {
     }
 
     public static enum ManipulatorHeatingStatus implements StringRepresentable {
-	OFF, COOL, HEAT;
+	OFF,
+	COOL,
+	HEAT;
 
 	@Override
 	public String getSerializedName() {

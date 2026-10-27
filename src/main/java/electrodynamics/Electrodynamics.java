@@ -78,9 +78,7 @@ public class Electrodynamics {
     @SubscribeEvent
     @OnlyIn(Dist.CLIENT)
     public static void onClientSetup(FMLClientSetupEvent event) {
-	event.enqueueWork(() -> {
-	    ElectrodynamicsClientRegister.setup();
-	});
+	event.enqueueWork(() -> { ElectrodynamicsClientRegister.setup(); });
     }
 
     @SubscribeEvent

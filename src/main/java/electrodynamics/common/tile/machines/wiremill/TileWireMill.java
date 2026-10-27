@@ -1,6 +1,8 @@
 package electrodynamics.common.tile.machines.wiremill;
 
 import electrodynamics.common.block.subtype.SubtypeMachine;
+import electrodynamics.common.inventory.container.tile.ContainerProcessorO2O;
+import electrodynamics.common.inventory.container.tile.ContainerWireMill;
 import electrodynamics.common.settings.ElectroConstants;
 import electrodynamics.registers.ElectrodynamicsRecipies;
 import electrodynamics.registers.ElectrodynamicsSounds;
@@ -9,7 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import voltaic.common.inventory.container.ContainerO2OProcessor;
 import voltaic.prefab.sound.ITickableSound;
 import voltaic.prefab.sound.SoundBarrierMethods;
 import voltaic.prefab.tile.GenericTile;
@@ -31,8 +32,8 @@ public class TileWireMill extends GenericTile implements ITickableSound {
 	this(ElectrodynamicsTiles.TILE_WIREMILL.get(), 1, worldPosition, blockState);
 
 	addComponent(new ComponentContainerProvider(SubtypeMachine.wiremill.tag(), this)
-		.createMenu((id, player) -> new ContainerO2OProcessor(id, player,
-			getComponent(IComponentType.Inventory), getCoordsArray())));
+		.createMenu((id, player) -> new ContainerWireMill(id, player, getComponent(IComponentType.Inventory),
+			getCoordsArray())));
     }
 
     public TileWireMill(BlockEntityType<?> type, int procCount, BlockPos worldPosition, BlockState blockState) {
@@ -51,7 +52,7 @@ public class TileWireMill extends GenericTile implements ITickableSound {
 	addComponent(new ComponentInventory(this,
 		ComponentInventory.InventoryBuilder.newInv()
 			.processors(procCount, inputsPerProc, outputPerProc, biprodsPerProc).upgrades(3))
-		.validUpgrades(ContainerO2OProcessor.VALID_UPGRADES).valid(machineValidator())
+		.validUpgrades(ContainerProcessorO2O.VALID_UPGRADES).valid(machineValidator())
 		.implementMachineInputsAndOutputs());
 	addComponent(new ComponentProcessor(this, procCount)
 		.canProcess((component, procNumber) -> component.canProcessItem2ItemRecipe(procNumber,

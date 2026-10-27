@@ -18,9 +18,7 @@ public class PacketSetClientCoalGenFuels {
 
     public static void handle(PacketSetClientCoalGenFuels message, Supplier<Context> context) {
 	Context ctx = context.get();
-	ctx.enqueueWork(() -> {
-	    ClientBarrierMethods.handlerClientCoalGenFuels(message.fuels);
-	});
+	ctx.enqueueWork(() -> { ClientBarrierMethods.handlerClientCoalGenFuels(message.fuels); });
 	ctx.setPacketHandled(true);
     }
 

@@ -50,12 +50,12 @@ public class ChapterTools extends Chapter {
 		.setCentered().setSeparateStart());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
 		ElectrodynamicsItems.ITEM_KINETICRAILGUN.get()).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -101,12 +101,12 @@ public class ChapterTools extends Chapter {
 		.setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
 		ElectrodynamicsItems.ITEM_PLASMARAILGUN.get()).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -144,12 +144,12 @@ public class ChapterTools extends Chapter {
 		.setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 5, 32, 30, 30, 2.0F,
 		ElectrodynamicsItems.ITEM_SEISMICSCANNER.get()).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 
@@ -174,12 +174,12 @@ public class ChapterTools extends Chapter {
 		.setCentered().setNewPage());
 	pageData.add(new ItemWrapperObject(7 + ScreenGuidebook.TEXT_WIDTH / 2 - 16, 10, 32, 32, 32, 2.0F,
 		ElectrodynamicsItems.ITEM_ELECTRICDRILL.get()).onTooltip((graphics, xAxis, yAxis, screen) -> {
-		if (JeiBuffer.isJeiInstalled()) {
-		    List<FormattedCharSequence> tooltips = new ArrayList<>();
-		    tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
-			    .getVisualOrderText());
-		    graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
-		}
+		    if (JeiBuffer.isJeiInstalled()) {
+			List<FormattedCharSequence> tooltips = new ArrayList<>();
+			tooltips.add(ElectroTextUtils.tooltip("guidebookjeirecipe").withStyle(ChatFormatting.GRAY)
+				.getVisualOrderText());
+			graphics.renderTooltip(screen.getFontRenderer(), tooltips, xAxis, yAxis);
+		    }
 
 		}).onKeyPress(new OnKeyPress() {
 

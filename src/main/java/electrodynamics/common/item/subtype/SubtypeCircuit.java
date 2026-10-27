@@ -6,8 +6,10 @@ import voltaic.api.ISubtype;
 import voltaic.common.tags.VoltaicTags;
 
 public enum SubtypeCircuit implements ISubtype {
-    basic(VoltaicTags.Items.CIRCUITS_BASIC), advanced(VoltaicTags.Items.CIRCUITS_ADVANCED),
-    elite(VoltaicTags.Items.CIRCUITS_ELITE), ultimate(VoltaicTags.Items.CIRCUITS_ULTIMATE);
+    basic(VoltaicTags.Items.CIRCUITS_BASIC),
+    advanced(VoltaicTags.Items.CIRCUITS_ADVANCED),
+    elite(VoltaicTags.Items.CIRCUITS_ELITE),
+    ultimate(VoltaicTags.Items.CIRCUITS_ULTIMATE);
 
     public final TagKey<Item> tag;
 

@@ -1099,7 +1099,11 @@ public enum SubtypeWire implements ISubtype, IWire {
      */
     public static enum WireClass implements IWireClass {
 
-	BARE(false), INSULATED(false), THICK(false), CERAMIC(false), LOGISTICAL(true);
+	BARE(false),
+	INSULATED(false),
+	THICK(false),
+	CERAMIC(false),
+	LOGISTICAL(true);
 
 	private final boolean conductsRedstone;
 
@@ -1123,9 +1127,12 @@ public enum SubtypeWire implements ISubtype, IWire {
     public static enum WireMaterial implements IWireMaterial {
 
 	COPPER(0.0030096, 360, 1.68E-8D), // annealed copper
-	GOLD(0.004294, 1000, 2.44E-8D), IRON(0.01709, 100, 1.0E-7D), SILVER(0.0027984, 600, 1.59E-8D),
-	SUPERCONDUCTIVE(0, Long.MAX_VALUE, 0D), TIN(0.020064, 60, 1.09E-7D); // Tin has 15% the conductivity of copper.
-									     // Tin resistance = copper / 0.15
+	GOLD(0.004294, 1000, 2.44E-8D),
+	IRON(0.01709, 100, 1.0E-7D),
+	SILVER(0.0027984, 600, 1.59E-8D),
+	SUPERCONDUCTIVE(0, Long.MAX_VALUE, 0D),
+	TIN(0.020064, 60, 1.09E-7D); // Tin has 15% the conductivity of copper.
+				     // Tin resistance = copper / 0.15
 
 	public static final double BASELINE_TEMP_K = 293.15D;
 
@@ -1211,14 +1218,22 @@ public enum SubtypeWire implements ISubtype, IWire {
     // based on NEC wire colors
     public static enum WireColor implements IWireColor {
 
-	NONE(255, 255, 255, 255, null), BLACK(40, 40, 40, 255, Tags.Items.DYES_BLACK),
-	RED(200, 0, 0, 255, Tags.Items.DYES_RED), WHITE(255, 255, 255, 255, Tags.Items.DYES_WHITE),
-	GREEN(24, 147, 50, 255, Tags.Items.DYES_GREEN), BLUE(68, 140, 203, 255, Tags.Items.DYES_BLUE),
-	YELLOW(250, 240, 104, 255, Tags.Items.DYES_YELLOW), BROWN(102, 78, 55, 255, Tags.Items.DYES_BROWN),
-	ORANGE(249, 128, 29, 255, Tags.Items.DYES_ORANGE), LIME(128, 199, 31, 255, Tags.Items.DYES_LIME),
-	LIGHTBLUE(58, 179, 218, 255, Tags.Items.DYES_LIGHT_BLUE), CYAN(22, 156, 156, 255, Tags.Items.DYES_CYAN),
-	PURPLE(174, 114, 241, 255, Tags.Items.DYES_PURPLE), MAGENTA(199, 78, 189, 255, Tags.Items.DYES_MAGENTA),
-	PINK(243, 139, 170, 255, Tags.Items.DYES_PINK), LIGHTGRAY(157, 157, 151, 255, Tags.Items.DYES_LIGHT_GRAY),
+	NONE(255, 255, 255, 255, null),
+	BLACK(40, 40, 40, 255, Tags.Items.DYES_BLACK),
+	RED(200, 0, 0, 255, Tags.Items.DYES_RED),
+	WHITE(255, 255, 255, 255, Tags.Items.DYES_WHITE),
+	GREEN(24, 147, 50, 255, Tags.Items.DYES_GREEN),
+	BLUE(68, 140, 203, 255, Tags.Items.DYES_BLUE),
+	YELLOW(250, 240, 104, 255, Tags.Items.DYES_YELLOW),
+	BROWN(102, 78, 55, 255, Tags.Items.DYES_BROWN),
+	ORANGE(249, 128, 29, 255, Tags.Items.DYES_ORANGE),
+	LIME(128, 199, 31, 255, Tags.Items.DYES_LIME),
+	LIGHTBLUE(58, 179, 218, 255, Tags.Items.DYES_LIGHT_BLUE),
+	CYAN(22, 156, 156, 255, Tags.Items.DYES_CYAN),
+	PURPLE(174, 114, 241, 255, Tags.Items.DYES_PURPLE),
+	MAGENTA(199, 78, 189, 255, Tags.Items.DYES_MAGENTA),
+	PINK(243, 139, 170, 255, Tags.Items.DYES_PINK),
+	LIGHTGRAY(157, 157, 151, 255, Tags.Items.DYES_LIGHT_GRAY),
 	GRAY(71, 79, 82, 255, Tags.Items.DYES_GRAY);
 
 	public final Color color;

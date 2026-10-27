@@ -18,18 +18,14 @@ public class PacketSetClientThermoGenSources {
 
     public static void handle(PacketSetClientThermoGenSources message, Supplier<Context> context) {
 	Context ctx = context.get();
-	ctx.enqueueWork(() -> {
-	    ClientBarrierMethods.handlerClientThermoGenHeatSources(message.heatSources);
-	});
+	ctx.enqueueWork(() -> { ClientBarrierMethods.handlerClientThermoGenHeatSources(message.heatSources); });
 	ctx.setPacketHandled(true);
     }
 
     public static void encode(PacketSetClientThermoGenSources pkt, FriendlyByteBuf buf) {
 	buf.writeInt(pkt.heatSources.size());
-	pkt.heatSources.forEach((fluid, value) -> {
-	    buf.writeFluidStack(new FluidStack(fluid, 1));
-	    buf.writeDouble(value);
-	});
+	pkt.heatSources
+		.forEach((fluid, value) -> { buf.writeFluidStack(new FluidStack(fluid, 1)); buf.writeDouble(value); });
     }
 
     public static PacketSetClientThermoGenSources decode(FriendlyByteBuf buf) {

@@ -28,6 +28,7 @@ import electrodynamics.common.inventory.container.tile.ContainerElectricFurnace;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceDouble;
 import electrodynamics.common.inventory.container.tile.ContainerElectricFurnaceTriple;
 import electrodynamics.common.inventory.container.tile.ContainerElectrolyticSeparator;
+import electrodynamics.common.inventory.container.tile.ContainerEnergizedAlloyer;
 import electrodynamics.common.inventory.container.tile.ContainerFermentationPlant;
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipeFilter;
 import electrodynamics.common.inventory.container.tile.ContainerFluidPipePump;
@@ -38,14 +39,26 @@ import electrodynamics.common.inventory.container.tile.ContainerGasPipePump;
 import electrodynamics.common.inventory.container.tile.ContainerGasTankGeneric;
 import electrodynamics.common.inventory.container.tile.ContainerGasVent;
 import electrodynamics.common.inventory.container.tile.ContainerHydroelectricGenerator;
+import electrodynamics.common.inventory.container.tile.ContainerLathe;
+import electrodynamics.common.inventory.container.tile.ContainerMineralCrusher;
+import electrodynamics.common.inventory.container.tile.ContainerMineralCrusherDouble;
+import electrodynamics.common.inventory.container.tile.ContainerMineralCrusherTriple;
+import electrodynamics.common.inventory.container.tile.ContainerMineralGrinder;
+import electrodynamics.common.inventory.container.tile.ContainerMineralGrinderDouble;
+import electrodynamics.common.inventory.container.tile.ContainerMineralGrinderTriple;
 import electrodynamics.common.inventory.container.tile.ContainerMineralWasher;
 import electrodynamics.common.inventory.container.tile.ContainerMotorComplex;
+import electrodynamics.common.inventory.container.tile.ContainerOxidationFurnace;
 import electrodynamics.common.inventory.container.tile.ContainerPotentiometer;
 import electrodynamics.common.inventory.container.tile.ContainerQuarry;
+import electrodynamics.common.inventory.container.tile.ContainerReinforcedAlloyer;
 import electrodynamics.common.inventory.container.tile.ContainerSeismicRelay;
 import electrodynamics.common.inventory.container.tile.ContainerSolarPanel;
 import electrodynamics.common.inventory.container.tile.ContainerThermoelectricManipulator;
 import electrodynamics.common.inventory.container.tile.ContainerWindmill;
+import electrodynamics.common.inventory.container.tile.ContainerWireMill;
+import electrodynamics.common.inventory.container.tile.ContainerWireMillDouble;
+import electrodynamics.common.inventory.container.tile.ContainerWireMillTriple;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
@@ -147,6 +160,33 @@ public class ElectrodynamicsMenuTypes {
 	    "circuitmonitor", ContainerCircuitMonitor::new);
     public static final RegistryObject<MenuType<ContainerCreativeGasSource>> CONTAINER_CREATIVEGASSOURCE = register(
 	    "creativegassource", ContainerCreativeGasSource::new);
+
+    public static final RegistryObject<MenuType<ContainerLathe>> CONTAINER_LATHE = register(SubtypeMachine.lathe.tag(),
+	    ContainerLathe::new);
+    public static final RegistryObject<MenuType<ContainerWireMill>> CONTAINER_WIREMILL = register(
+	    SubtypeMachine.wiremill.tag(), ContainerWireMill::new);
+    public static final RegistryObject<MenuType<ContainerWireMillDouble>> CONTAINER_WIREMILLDOUBLE = register(
+	    SubtypeMachine.wiremilldouble.tag(), ContainerWireMillDouble::new);
+    public static final RegistryObject<MenuType<ContainerWireMillTriple>> CONTAINER_WIREMILLTRIPLE = register(
+	    SubtypeMachine.wiremilltriple.tag(), ContainerWireMillTriple::new);
+    public static final RegistryObject<MenuType<ContainerMineralCrusher>> CONTAINER_MINERALCRUSHER = register(
+	    SubtypeMachine.mineralcrusher.tag(), ContainerMineralCrusher::new);
+    public static final RegistryObject<MenuType<ContainerMineralCrusherDouble>> CONTAINER_MINERALCRUSHERDOUBLE = register(
+	    SubtypeMachine.mineralcrusherdouble.tag(), ContainerMineralCrusherDouble::new);
+    public static final RegistryObject<MenuType<ContainerMineralCrusherTriple>> CONTAINER_MINERALCRUSHERTRIPLE = register(
+	    SubtypeMachine.mineralcrushertriple.tag(), ContainerMineralCrusherTriple::new);
+    public static final RegistryObject<MenuType<ContainerMineralGrinder>> CONTAINER_MINERALGRINDER = register(
+	    SubtypeMachine.mineralgrinder.tag(), ContainerMineralGrinder::new);
+    public static final RegistryObject<MenuType<ContainerMineralGrinderDouble>> CONTAINER_MINERALGRINDERDOUBLE = register(
+	    SubtypeMachine.mineralgrinderdouble.tag(), ContainerMineralGrinderDouble::new);
+    public static final RegistryObject<MenuType<ContainerMineralGrinderTriple>> CONTAINER_MINERALGRINDERTRIPLE = register(
+	    SubtypeMachine.mineralgrindertriple.tag(), ContainerMineralGrinderTriple::new);
+    public static final RegistryObject<MenuType<ContainerOxidationFurnace>> CONTAINER_OXIDATIONFURNACE = register(
+	    SubtypeMachine.oxidationfurnace.tag(), ContainerOxidationFurnace::new);
+    public static final RegistryObject<MenuType<ContainerEnergizedAlloyer>> CONTAINER_ENERGIZEDALLOYER = register(
+	    SubtypeMachine.energizedalloyer.tag(), ContainerEnergizedAlloyer::new);
+    public static final RegistryObject<MenuType<ContainerReinforcedAlloyer>> CONTAINER_REINFORCEDALLOYER = register(
+	    SubtypeMachine.reinforcedalloyer.tag(), ContainerReinforcedAlloyer::new);
 
     private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> register(String id,
 	    MenuSupplier<T> supplier) {

@@ -121,8 +121,7 @@ public class DataGenerators {
 			    //
 			    .add(Registries.DAMAGE_TYPE, ElectrodynamicsDamageTypes::registerTypes)
 			    //
-			    .add(Registries.CONFIGURED_FEATURE,
-				    ElectrodynamicsFeatures::registerConfigured)
+			    .add(Registries.CONFIGURED_FEATURE, ElectrodynamicsFeatures::registerConfigured)
 			    //
 			    .add(Registries.PLACED_FEATURE, ElectrodynamicsFeatures::registerPlaced)
 			    //
