@@ -188,10 +188,6 @@ public class ElectrodynamicsClientRegister {
     public static final ResourceLocation MODEL_LATHESHAFT = Electrodynamics.rl("block/latheshaft");
     public static final ResourceLocation MODEL_MOTORCOMPLEXROTOR = Electrodynamics.rl("block/motorcomplexrotor");
 
-    public static final ResourceLocation MODEL_RODSTEEL = Electrodynamics.rl("entity/rodsteel");
-    public static final ResourceLocation MODEL_RODSTAINLESSSTEEL = Electrodynamics.rl("entity/rodstainlesssteel");
-    public static final ResourceLocation MODEL_RODHSLASTEEL = Electrodynamics.rl("entity/rodhslasteel");
-
     public static final ResourceLocation MODEL_QUARRYWHEEL_STILL = Electrodynamics.rl("block/quarrywheelstill");
     public static final ResourceLocation MODEL_QUARRYWHEEL_ROT = Electrodynamics.rl("block/quarrywheelrot");
 
@@ -339,9 +335,6 @@ public class ElectrodynamicsClientRegister {
 	event.register(MODEL_MINERALCRUSHERTRIPLEHANDLE);
 	event.register(MODEL_MINERALGRINDERWHEEL);
 	event.register(MODEL_CHEMICALMIXERBLADES);
-	event.register(MODEL_RODSTEEL);
-	event.register(MODEL_RODSTAINLESSSTEEL);
-	event.register(MODEL_RODHSLASTEEL);
 	event.register(MODEL_LATHESHAFT);
 	event.register(MODEL_MOTORCOMPLEXROTOR);
 	event.register(MODEL_QUARRYWHEEL_STILL);
