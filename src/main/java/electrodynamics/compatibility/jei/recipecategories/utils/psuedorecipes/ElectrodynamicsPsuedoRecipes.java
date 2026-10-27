@@ -41,6 +41,8 @@ public class ElectrodynamicsPsuedoRecipes {
 
 	    IGasHandlerItem inputHandler = inputCylinder.getCapability(VoltaicCapabilities.CAPABILITY_GASHANDLER_ITEM)
 		    .orElse(CapabilityUtils.EMPTY_GAS_ITEM);
+	    if (inputHandler == null)
+		return;
 
 	    inputHandler.fill(new GasStack(gas, 1000, gas.getCondensationTemp() + 1, Gas.PRESSURE_AT_SEA_LEVEL),
 		    GasAction.EXECUTE);
@@ -50,9 +52,8 @@ public class ElectrodynamicsPsuedoRecipes {
 	    IFluidHandlerItem outputHandler = outputBucket.getCapability(ForgeCapabilities.FLUID_HANDLER_ITEM)
 		    .orElse(CapabilityUtils.EMPTY_FLUID_ITEM);
 
-	    if (outputHandler == CapabilityUtils.EMPTY_FLUID_ITEM) {
+	    if (outputHandler == CapabilityUtils.EMPTY_FLUID_ITEM) 
 		continue;
-	    }
 
 	    outputHandler.fill(new FluidStack(gas.getCondensedFluid(), 1000), FluidAction.EXECUTE);
 

@@ -46,6 +46,7 @@ import net.minecraftforge.common.util.FakePlayerFactory;
 import voltaic.api.tile.IPlayerStorable;
 import voltaic.common.block.states.VoltaicBlockStates;
 import voltaic.common.item.ItemUpgrade;
+import voltaic.common.item.subtype.SubtypeItemUpgrade;
 import voltaic.prefab.block.GenericMachineBlock;
 import voltaic.prefab.properties.types.PropertyTypes;
 import voltaic.prefab.properties.variant.ListProperty;
@@ -59,6 +60,7 @@ import voltaic.prefab.tile.components.type.ComponentPacketHandler;
 import voltaic.prefab.tile.components.type.ComponentTickable;
 import voltaic.prefab.utilities.BlockEntityUtils;
 import voltaic.prefab.utilities.ItemUtils;
+import voltaic.prefab.utilities.NBTUtils;
 import voltaic.registers.VoltaicCapabilities;
 
 /**
@@ -507,8 +509,19 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
 
     private boolean mineBlock(BlockPos pos, BlockState state, float strength, Level world, ItemStack drillHead,
 	    ComponentInventory inv, Player player) {
+	int xp = state.getExpDrop(world, world.random, pos, fortuneLevel.getValue(), silkTouchLevel.getValue());
 	boolean sucess = world.destroyBlock(pos, false, player);
 	if (sucess) {
+	    if (xp > 0) {
+		for (ItemStack stack : inv.getUpgradeContents()) {
+		    if (!stack.isEmpty() && ((ItemUpgrade) stack.getItem()).subtype == SubtypeItemUpgrade.experience) {
+			CompoundTag tag = stack.getOrCreateTag();
+			tag.putDouble(NBTUtils.XP, tag.getDouble(NBTUtils.XP) + xp);
+			inv.setChanged();
+			break;
+		    }
+		}
+	    }
 	    SubtypeDrillHead head = ((ItemDrillHead) drillHead.getItem()).head;
 	    if (!head.isUnbreakable) {
 		int durabilityUsed = (int) (Math.ceil(strength) / (unbreakingLevel.getValue() + 1.0F));
@@ -1166,7 +1179,7 @@ public class TileQuarry extends GenericTile implements IPlayerStorable {
     public void onInventoryChange(ComponentInventory inv, int slot) {
 	super.onInventoryChange(inv, slot);
 	if (!inv.getUpgradeContents().isEmpty() && (slot >= inv.getUpgradeSlotStartIndex() || slot == -1)) {
-	    double quarryPowerMultiplier = 0;
+	    double quarryPowerMultiplier = 1;
 	    int silkTouchLevel = 0;
 	    int fortuneLevel = 0;
 	    int unbreakingLevel = 0;
